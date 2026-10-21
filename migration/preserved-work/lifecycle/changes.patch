@@ -1,0 +1,47 @@
+diff --git a/src/experimental-wallet-lifecycle.js b/src/experimental-wallet-lifecycle.js
+index 70dc078..191fe16 100644
+--- a/src/experimental-wallet-lifecycle.js
++++ b/src/experimental-wallet-lifecycle.js
+@@ -25,6 +25,26 @@ export function createWalletLifecycleHarness(registry, recoveryFactory = null) {
+     if (matches.length !== 1) throw Error("Missing or ambiguous experimental choice");
+     return matches[0];
+   }
++  // A store setter may reject before writing, or throw in a subscriber after
++  // applying the change. Reconcile the recovery ledger with the actual store
++  // and fail closed on either error; never leave an old choice authorized.
++  function updateStore(uid, connector, next, expectedPresent) {
++    let failure;
++    try { store.setState(next); }
++    catch (error) { failure = error; }
++    let present;
++    try { present = rows().includes(connector); }
++    catch (error) { registry.invalidateChoices(); throw error; }
++    if (present) removed.delete(uid);
++    else removed.set(uid, connector);
++    if (failure || present !== expectedPresent) {
++      registry.invalidateChoices();
++      throw failure ?? Error("Experimental connector store update did not take effect");
++    }
++    // Do not rely solely on store notifications for stale-callback protection.
++    // This is a synthetic connector-list mutation, never a wallet RPC call.
++    registry.map(rows(), configuredCount);
++  }
+   return Object.freeze({ map,
+     capture(uid) {
+       one(uid);
+@@ -34,13 +54,12 @@ export function createWalletLifecycleHarness(registry, recoveryFactory = null) {
+     remove(uid) {
+       const connector = one(uid);
+       if (removed.has(uid)) throw Error("Already removed");
+-      removed.set(uid, connector);
+-      store.setState(rows().filter(c => c.uid !== uid));
++      updateStore(uid, connector, rows().filter(c => c.uid !== uid), false);
+     },
+     restore(uid) {
+       const connector = removed.get(uid);
+       if (!connector || rows().some(c => c.uid === uid)) throw Error("Cannot restore experimental choice");
+-      removed.delete(uid); store.setState([...rows(), connector]);
++      updateStore(uid, connector, [...rows(), connector], true);
+     },
+     reverse() { const list = rows(); store.setState([...list.slice(0, configuredCount), ...list.slice(configuredCount).reverse()]); },
+     async trySavedConnect() {

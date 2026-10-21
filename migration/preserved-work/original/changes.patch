@@ -1,0 +1,111 @@
+diff --git a/README.md b/README.md
+index 44bd13b..ca32f54 100644
+--- a/README.md
++++ b/README.md
+@@ -95,6 +95,8 @@ Base Mainnet chain ID is `8453`, Base Sepolia is `84532`. Network support here i
+ 
+ All on-chain calls in this version are read-only. The mock tests demonstrate code behavior only and **do not establish real-world safety or independent security-audit certification**.
+ 
++The EIP-1193 session rechecks `eth_chainId` **after** each block-header, native-balance, ERC-20 `eth_call`, or contract-code response as well as before starting it. If an RPC provider silently switches networks during a pending read (even without a `chainChanged` event), the session is disconnected and the sampled result is discarded; it does not fall back to another network. `test/read-chain-boundaries.test.js` exercises these failure paths entirely with mock providers. This is a defensive check, not evidence of a completed third-party dApp login.
++
+ Related token repositories: [DAT](https://github.com/FordPrefect2026/DAT) · [EMA](https://github.com/FordPrefect2026/EMA-Draft) · [CAWELON](https://github.com/FordPrefect2026/CAWELON-Draft).
+ 
+ **DON'T PANIC. JUST CODE.**
+diff --git a/src/wallet-session.js b/src/wallet-session.js
+index 0bc99c6..2b5a637 100644
+--- a/src/wallet-session.js
++++ b/src/wallet-session.js
+@@ -263,6 +263,19 @@ export class ThreeCoreWalletSession {
+     return epoch;
+   }
+ 
++  /**
++   * A provider can change its RPC chain without emitting chainChanged.
++   * Verify the network again after each read before exposing the response.
++   * Never retry a failed or wrong-network read against another chain.
++   */
++  async #readOnExpectedChain(epoch, method, params) {
++    this.#assertReadEpoch(epoch);
++    const result = await this.#provider.request({ method, params });
++    this.#assertReadEpoch(epoch);
++    await this.#confirmChain(epoch, true);
++    return result;
++  }
++
+   /** Read a mined header. An explicit height is used to recheck canonicality. */
+   async getBlockSnapshot(blockNumber = "latest") {
+     if (blockNumber !== "latest" &&
+@@ -271,10 +284,9 @@ export class ThreeCoreWalletSession {
+     }
+     const tag = blockNumber === "latest" ? "latest" : "0x" + BigInt(blockNumber).toString(16);
+     const epoch = await this.#requireReadAccess();
+-    const result = await this.#provider.request({
+-      method: "eth_getBlockByNumber", params: [tag, false],
+-    });
+-    this.#assertReadEpoch(epoch);
++    const result = await this.#readOnExpectedChain(
++      epoch, "eth_getBlockByNumber", [tag, false],
++    );
+     const block = decodeBlockHeader(result);
+     if (tag !== "latest" && block.number !== tag) {
+       reject("INVALID_RPC_RESULT", "The provider returned a different block height");
+@@ -285,11 +297,9 @@ export class ThreeCoreWalletSession {
+   async getNativeBalance(blockHash) {
+     const block = blockSelector(blockHash);
+     const epoch = await this.#requireReadAccess();
+-    const result = await this.#provider.request({
+-      method: "eth_getBalance",
+-      params: [this.#expectedAccount, block],
+-    });
+-    this.#assertReadEpoch(epoch);
++    const result = await this.#readOnExpectedChain(
++      epoch, "eth_getBalance", [this.#expectedAccount, block],
++    );
+     return decodeQuantity(result);
+   }
+ 
+@@ -299,11 +309,9 @@ export class ThreeCoreWalletSession {
+     const epoch = await this.#requireReadAccess();
+     const token = normalizeAddress(tokenContractAddress);
+     const calldata = "0x70a08231" + this.#expectedAccount.slice(2).padStart(64, "0");
+-    const result = await this.#provider.request({
+-      method: "eth_call",
+-      params: [{ to: token, data: calldata }, block],
+-    });
+-    this.#assertReadEpoch(epoch);
++    const result = await this.#readOnExpectedChain(
++      epoch, "eth_call", [{ to: token, data: calldata }, block],
++    );
+     return decodeUint256Word(result);
+   }
+ 
+@@ -319,11 +327,9 @@ export class ThreeCoreWalletSession {
+     const calldata = "0xdd62ed3e" +
+       this.#expectedAccount.slice(2).padStart(64, "0") +
+       spender.slice(2).padStart(64, "0");
+-    const result = await this.#provider.request({
+-      method: "eth_call",
+-      params: [{ to: token, data: calldata }, block],
+-    });
+-    this.#assertReadEpoch(epoch);
++    const result = await this.#readOnExpectedChain(
++      epoch, "eth_call", [{ to: token, data: calldata }, block],
++    );
+     return decodeUint256Word(result);
+   }
+ 
+@@ -335,11 +341,9 @@ export class ThreeCoreWalletSession {
+     const block = blockSelector(blockHash);
+     const epoch = await this.#requireReadAccess();
+     const contract = normalizeAddress(contractAddress);
+-    const result = await this.#provider.request({
+-      method: "eth_getCode",
+-      params: [contract, block],
+-    });
+-    this.#assertReadEpoch(epoch);
++    const result = await this.#readOnExpectedChain(
++      epoch, "eth_getCode", [contract, block],
++    );
+     if (typeof result !== "string" || !/^0x(?:[0-9a-fA-F]{2})*$/.test(result)) {
+       reject("INVALID_RPC_RESULT", "Unexpected contract bytecode response");
+     }

@@ -1,0 +1,102 @@
+diff --git a/README.md b/README.md
+index 658db0e..026be2a 100644
+--- a/README.md
++++ b/README.md
+@@ -95,6 +95,8 @@ Base Mainnet chain ID is `8453`, Base Sepolia is `84532`. Network support here i
+ 
+ All on-chain calls in this version are read-only. The mock tests demonstrate code behavior only and **do not establish real-world safety or independent security-audit certification**.
+ 
++When returning a block header, native balance, ERC-20 balance/allowance or contract code, `ThreeCoreWalletSession` now checks `eth_chainId` and `eth_accounts` **again after the RPC completes**. Silent chain/account changes during a pending read therefore invalidate the session and discard its output, even if no EIP-1193 event fired. The extra checks use the bounded read deadline and do not request signatures, approval, transfers or automatic reconnection. Run `node --test test/postread-identity-guards.test.js` for offline regression coverage. These mock checks do not establish production wallet compatibility or third-party dApp login.
++
+ Related token repositories: [DAT](https://github.com/FordPrefect2026/DAT) · [EMA](https://github.com/FordPrefect2026/EMA-Draft) · [CAWELON](https://github.com/FordPrefect2026/CAWELON-Draft).
+ 
+ **DON'T PANIC. JUST CODE.**
+diff --git a/src/wallet-session.js b/src/wallet-session.js
+index 88473f8..8e7d039 100644
+--- a/src/wallet-session.js
++++ b/src/wallet-session.js
+@@ -290,11 +290,7 @@ export class ThreeCoreWalletSession {
+     }
+   }
+ 
+-  async #requireReadAccess() {
+-    if (!this.#connected) reject("NOT_CONNECTED", "Explicit wallet connection is required");
+-    const epoch = this.#connectionEpoch;
+-    await this.#confirmChain(epoch, true);
+-    this.#assertReadEpoch(epoch);
++  async #confirmReadAccount(epoch) {
+     const accounts = await this.#requestRead(epoch, { method: "eth_accounts" });
+     this.#assertReadEpoch(epoch);
+     let matches;
+@@ -309,9 +305,26 @@ export class ThreeCoreWalletSession {
+       this.disconnect();
+       reject("ACCOUNT_CHANGED", "The wallet no longer exposes the assigned account");
+     }
++  }
++
++  async #requireReadAccess() {
++    if (!this.#connected) reject("NOT_CONNECTED", "Explicit wallet connection is required");
++    const epoch = this.#connectionEpoch;
++    await this.#confirmChain(epoch, true);
++    await this.#confirmReadAccount(epoch);
+     return epoch;
+   }
+ 
++  // Providers may silently change chain or account during a pending RPC read.
++  // Recheck both before returning its value; never retry or expose stale data.
++  async #readOnVerifiedState(epoch, args) {
++    const value = await this.#requestRead(epoch, args);
++    this.#assertReadEpoch(epoch);
++    await this.#confirmChain(epoch, true);
++    await this.#confirmReadAccount(epoch);
++    return value;
++  }
++
+   /** Read a mined header. An explicit height is used to recheck canonicality. */
+   async getBlockSnapshot(blockNumber = "latest") {
+     if (blockNumber !== "latest" &&
+@@ -320,7 +333,7 @@ export class ThreeCoreWalletSession {
+     }
+     const tag = blockNumber === "latest" ? "latest" : "0x" + BigInt(blockNumber).toString(16);
+     const epoch = await this.#requireReadAccess();
+-    const result = await this.#requestRead(epoch, {
++    const result = await this.#readOnVerifiedState(epoch, {
+       method: "eth_getBlockByNumber", params: [tag, false],
+     });
+     this.#assertReadEpoch(epoch);
+@@ -334,7 +347,7 @@ export class ThreeCoreWalletSession {
+   async getNativeBalance(blockHash) {
+     const block = blockSelector(blockHash);
+     const epoch = await this.#requireReadAccess();
+-    const result = await this.#requestRead(epoch, {
++    const result = await this.#readOnVerifiedState(epoch, {
+       method: "eth_getBalance",
+       params: [this.#expectedAccount, block],
+     });
+@@ -348,7 +361,7 @@ export class ThreeCoreWalletSession {
+     const epoch = await this.#requireReadAccess();
+     const token = normalizeAddress(tokenContractAddress);
+     const calldata = "0x70a08231" + this.#expectedAccount.slice(2).padStart(64, "0");
+-    const result = await this.#requestRead(epoch, {
++    const result = await this.#readOnVerifiedState(epoch, {
+       method: "eth_call",
+       params: [{ to: token, data: calldata }, block],
+     });
+@@ -368,7 +381,7 @@ export class ThreeCoreWalletSession {
+     const calldata = "0xdd62ed3e" +
+       this.#expectedAccount.slice(2).padStart(64, "0") +
+       spender.slice(2).padStart(64, "0");
+-    const result = await this.#requestRead(epoch, {
++    const result = await this.#readOnVerifiedState(epoch, {
+       method: "eth_call",
+       params: [{ to: token, data: calldata }, block],
+     });
+@@ -384,7 +397,7 @@ export class ThreeCoreWalletSession {
+     const block = blockSelector(blockHash);
+     const epoch = await this.#requireReadAccess();
+     const contract = normalizeAddress(contractAddress);
+-    const result = await this.#requestRead(epoch, {
++    const result = await this.#readOnVerifiedState(epoch, {
+       method: "eth_getCode",
+       params: [contract, block],
+     });

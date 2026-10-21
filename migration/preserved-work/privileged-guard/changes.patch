@@ -1,0 +1,75 @@
+diff --git a/src/external-dapp-report.js b/src/external-dapp-report.js
+index 21e6f8c..458b39a 100644
+--- a/src/external-dapp-report.js
++++ b/src/external-dapp-report.js
+@@ -1,6 +1,20 @@
+ // Interpret observations, never infer completed sign-in from a connect click.
+ // Used by the live, synthetic Aerodrome diagnostic and offline regressions.
+ import { SYNTHETIC_ACCOUNT } from "./aerodrome-mock-wallet.js";
++
++// Keep the synthetic observation report fail-closed when privileged RPC is observed.
++const PRIVILEGED_RPC_METHODS = new Set([
++  "eth_sign", "eth_signTransaction", "eth_sendTransaction",
++  "eth_sendRawTransaction", "eth_sendUserOperation",
++  "wallet_sendCalls", "wallet_sendTransaction", "wallet_prepareCalls",
++  "wallet_grantPermissions", "wallet_revokePermissions",
++  "wallet_switchEthereumChain", "wallet_addEthereumChain", "wallet_watchAsset",
++]);
++
++function isPrivilegedRpcMethod(method) {
++  return typeof method === "string" &&
++    (PRIVILEGED_RPC_METHODS.has(method) || /^eth_signTypedData(?:_v[0-9]+)?$/.test(method));
++}
+ export function summarizeDiscoveryTrace(record) {
+   const before = record.before?.trace ?? [];
+   const after = record.afterConnect?.trace ?? [];
+@@ -36,8 +50,15 @@ export function summarizeAerodromeProbe(record) {
+   };
+   const snapshots = [record.before, record.afterConnect, record.afterSignIn].filter(Boolean);
+   const last = record.afterSignIn ?? record.afterConnect ?? record.before;
+-  const methods = last?.methods ?? [];
+-  const rejections = last?.rejections ?? [];
++  const methods = Array.isArray(last?.methods) ? last.methods : [];
++  const rejections = Array.isArray(last?.rejections) ? last.rejections : [];
++  // A later truncated snapshot must not hide an earlier privileged request.
++  const observedMethods = snapshots.flatMap(s => Array.isArray(s.methods) ? s.methods : []);
++  const tracedMethods = snapshots.flatMap(s => Array.isArray(s.trace)
++    ? s.trace.filter(entry => entry?.kind === "rpc").map(entry => entry.method)
++    : []);
++  const privilegedRpcMethods = [...new Set([...observedMethods, ...tracedMethods].filter(isPrivilegedRpcMethod))];
++  const privilegedRpcRequested = privilegedRpcMethods.length > 0;
+   const siteUiLoaded = snapshots.length > 0 && snapshots.every(official) &&
+     record.before?.buttons?.some(b => /^(Browser Wallet|Connect Wallet|Connect)$/i.test(b.text));
+   const simulationVerified = snapshots.length > 0 && snapshots.every(s =>
+@@ -48,21 +69,27 @@ export function summarizeAerodromeProbe(record) {
+   const accountRequested = methods.includes("eth_requestAccounts") || methods.includes("wallet_requestPermissions");
+   const syntheticAccountGranted = last?.accounts?.length === 1 && last.accounts[0] === SYNTHETIC_ACCOUNT;
+   const signatureRequested = methods.includes("personal_sign");
+-  const signatureRejected = signatureRequested && rejections.some(r => r.method === "personal_sign" && r.code === 4001);
++  const signAttempts = methods.filter(method => method === "personal_sign").length;
++  const signRejections = rejections.filter(r => r?.method === "personal_sign" && r.code === 4001).length;
++  // Do not let one rejection account for multiple sign-in prompts.
++  const signatureRejected = signAttempts > 0 && signRejections === signAttempts;
+   const clicked = record.connectClicked === true;
+   const browserRouteAttempted = clicked && (record.before?.buttons?.some(b => b.text === "Browser Wallet") ||
+     record.browserWalletClicked === true);
+   const signatureBoundaryReached = siteUiLoaded && simulationVerified && clicked && accountRequested && syntheticAccountGranted &&
+-    record.signInClicked === true && signatureRejected;
++    record.signInClicked === true && signatureRejected && !privilegedRpcRequested;
+   // An observation without a connection is useful for the discovery-only probe,
+   // but is explicitly NOT a positive compatibility test or proof of non-support.
+   const discoveryOnlyObservation = record.discovery === "eip6963-only" &&
+-    siteUiLoaded && simulationVerified && browserRouteAttempted && !accountRequested && !signatureRequested;
++    siteUiLoaded && simulationVerified && browserRouteAttempted && !accountRequested && !signatureRequested &&
++    !privilegedRpcRequested;
+   return {
+     siteUiLoaded, simulationVerified, accountRequested, syntheticAccountGranted, signatureRequested, signatureRejected,
++    privilegedRpcRequested, privilegedRpcMethods,
+     signatureBoundaryReached,
+     diagnosticCompleted: signatureBoundaryReached || discoveryOnlyObservation,
+-    outcome: signatureBoundaryReached ? "signature-rejected-as-required" :
++    outcome: privilegedRpcRequested ? "privileged-rpc-request-observed" :
++      signatureBoundaryReached ? "signature-rejected-as-required" :
+       discoveryOnlyObservation ? "connection-not-observed" : "incomplete-or-unexpected-flow",
+     completedSignIn: false, realWalletUsed: false,
+   };

@@ -1,0 +1,130 @@
+From ac1b95ac4ff6f7cfe1bbcb92097b88d634938c8c Mon Sep 17 00:00:00 2001
+From: FordPrefect2026 <masashi@assetdeploy.xyz>
+Date: Wed, 21 Oct 2026 13:30:25 +0900
+Subject: [PATCH] fix: reject unexpected privileged RPC in external dApp probe
+ reports
+
+---
+ src/external-dapp-report.js                 | 26 +++++++++++++--
+ test/aerodrome-connector-experiment.test.js |  3 +-
+ test/external-dapp-report.test.js           | 36 +++++++++++++++++++++
+ 3 files changed, 61 insertions(+), 4 deletions(-)
+
+diff --git a/src/external-dapp-report.js b/src/external-dapp-report.js
+index 27c6b32..3bcfd52 100644
+--- a/src/external-dapp-report.js
++++ b/src/external-dapp-report.js
+@@ -2,6 +2,15 @@
+ // Used by the live, synthetic Aerodrome diagnostic and offline regressions.
+ import { SYNTHETIC_ACCOUNT, SYNTHETIC_WALLET_NAME } from "./aerodrome-mock-wallet.js";
+ 
++// Fail closed when the external site requests any method outside the
++// documented synthetic-wallet diagnostic. Rejection is not evidence that
++// an unexpected privileged request was safe or expected.
++const EXPECTED_PROBE_METHODS = new Set([
++  "eth_chainId", "net_version", "eth_accounts", "eth_requestAccounts",
++  "wallet_requestPermissions", "wallet_getPermissions", "wallet_getCapabilities",
++  "eth_getBalance", "personal_sign",
++]);
++
+ // Prefer the announced synthetic wallet in discovery-only mode. Never match
+ // substrings or arbitrary discovered names; ambiguous duplicate labels fail.
+ export function selectMockWalletLabel(snapshot, discovery) {
+@@ -50,8 +59,18 @@ export function summarizeAerodromeProbe(record) {
+   };
+   const snapshots = [record.before, record.afterConnect, record.afterSignIn].filter(Boolean);
+   const last = record.afterSignIn ?? record.afterConnect ?? record.before;
+-  const methods = last?.methods ?? [];
+-  const rejections = last?.rejections ?? [];
++  const methods = Array.isArray(last?.methods) ? last.methods : [];
++  const rejections = Array.isArray(last?.rejections) ? last.rejections : [];
++  const rpcEvidenceComplete = snapshots.length > 0 && snapshots.every(s =>
++    Array.isArray(s.methods) && s.methods.every(m => typeof m === "string") &&
++    Array.isArray(s.rejections) && s.rejections.every(r => r && typeof r.method === "string"));
++  // Review every observation, not just the final snapshot: unexpected
++  // rejected calls must never disappear from the compatibility verdict.
++  const unexpectedMethods = [...new Set(snapshots.flatMap(s => [
++    ...(Array.isArray(s.methods) ? s.methods : []),
++    ...(Array.isArray(s.rejections) ? s.rejections.map(r => r?.method) : []),
++  ]).filter(m => typeof m === "string" && !EXPECTED_PROBE_METHODS.has(m)))];
++  const unexpectedRpcObserved = !rpcEvidenceComplete || unexpectedMethods.length > 0;
+   const siteUiLoaded = snapshots.length > 0 && snapshots.every(official) &&
+     record.before?.buttons?.some(b => ["Browser Wallet", "Connect Wallet", "Connect", SYNTHETIC_WALLET_NAME].includes(b.text));
+   const choiceExperiment = record.pageVariant === "local-wallet-choice-experiment";
+@@ -82,10 +101,11 @@ export function summarizeAerodromeProbe(record) {
+     record.connectorExperiment?.status === "applied" && record.connectorExperiment?.replacements === 1 &&
+     (choiceExperiment ? record.connectorExperiment.kind === "wallet-choice" && routeUnambiguous &&
+       record.selectedWalletLabel === record.primaryChoice?.label : record.selectedWalletLabel === SYNTHETIC_WALLET_NAME);
+-  const diagnosticCompleted = knownVariant && (experimentalPage ? experimentVerified && signatureBoundaryReached :
++  const diagnosticCompleted = !unexpectedRpcObserved && knownVariant && (experimentalPage ? experimentVerified && signatureBoundaryReached :
+     !record.connectorExperiment && (signatureBoundaryReached || discoveryOnlyObservation));
+   return {
+     siteUiLoaded, routeUnambiguous, simulationVerified, accountRequested, syntheticAccountGranted, signatureRequested, signatureRejected,
++    rpcEvidenceComplete, unexpectedMethods, unexpectedRpcObserved,
+     signatureBoundaryReached,
+     experimentalPage, experimentVerified,
+     unmodifiedOfficialConnectionObserved: diagnosticCompleted && !experimentalPage && signatureBoundaryReached,
+diff --git a/test/aerodrome-connector-experiment.test.js b/test/aerodrome-connector-experiment.test.js
+index 8a80158..3917745 100644
+--- a/test/aerodrome-connector-experiment.test.js
++++ b/test/aerodrome-connector-experiment.test.js
+@@ -95,7 +95,8 @@ test("wallet selection refuses duplicate names, disabled buttons and lookalikes"
+ 
+ function experimentRecord() {
+   const snapshot = { url: "https://aerodrome.finance/connect", simulationActive: true,
+-    discovery: "eip6963-only", hasLegacyProvider: false, buttons: [{ text: SYNTHETIC_WALLET_NAME }] };
++    discovery: "eip6963-only", hasLegacyProvider: false, buttons: [{ text: SYNTHETIC_WALLET_NAME }],
++    methods: [], rejections: [], accounts: [] };
+   return { pageVariant: "local-connector-list-experiment", discovery: "eip6963-only",
+     connectorExperiment: { status: "applied", replacements: 1 }, selectedWalletLabel: SYNTHETIC_WALLET_NAME,
+     before: { ...snapshot, accounts: [], methods: [] }, afterConnect: snapshot,
+diff --git a/test/external-dapp-report.test.js b/test/external-dapp-report.test.js
+index dc9c1bb..5a2ca3e 100644
+--- a/test/external-dapp-report.test.js
++++ b/test/external-dapp-report.test.js
+@@ -13,6 +13,42 @@ function record(discovery = "legacy-and-eip6963") {
+     rejections: [{ method: "personal_sign", code: 4001 }],
+   }, connectClicked: true, signInClicked: true };
+ }
++test("rejected transaction RPC before the expected sign-in still fails the diagnostic", () => {
++  const r = record();
++  r.afterConnect.methods = ["eth_chainId", "eth_sendTransaction"];
++  r.afterConnect.rejections = [{ method: "eth_sendTransaction", code: 4001 }];
++  r.afterSignIn.methods = ["eth_chainId", "wallet_requestPermissions", "personal_sign"];
++  const result = summarizeAerodromeProbe(r);
++  assert.equal(result.diagnosticCompleted, false);
++  assert.equal(result.unexpectedRpcObserved, true);
++  assert.equal(result.outcome, "incomplete-or-unexpected-flow");
++  assert.deepEqual(result.unexpectedMethods, ["eth_sendTransaction"]);
++});
++
++test("unexpected signing, chain mutation and unknown RPC methods never pass", () => {
++  for (const method of ["eth_signTypedData_v4", "wallet_switchEthereumChain", "wallet_addEthereumChain", "eth_sendRawTransaction", "unknown_rpc_method"]) {
++    const r = record();
++    r.afterSignIn.methods.push(method);
++    r.afterSignIn.rejections.push({ method, code: 4001 });
++    assert.equal(summarizeAerodromeProbe(r).diagnosticCompleted, false, method);
++  }
++});
++
++test("unrecorded rejected privileged method and malformed RPC logs are not success evidence", () => {
++  const r = record();
++  r.afterSignIn.rejections.push({ method: "eth_sendTransaction", code: 4001 });
++  assert.equal(summarizeAerodromeProbe(r).diagnosticCompleted, false);
++  const malformed = record();
++  malformed.afterConnect.methods = null;
++  assert.equal(summarizeAerodromeProbe(malformed).diagnosticCompleted, false);
++  const invalidFinal = record();
++  invalidFinal.afterSignIn.methods = { includes: () => true };
++  assert.equal(summarizeAerodromeProbe(invalidFinal).diagnosticCompleted, false);
++  invalidFinal.afterSignIn.methods = ["personal_sign", "wallet_requestPermissions"];
++  invalidFinal.afterSignIn.rejections = "not-an-array";
++  assert.equal(summarizeAerodromeProbe(invalidFinal).diagnosticCompleted, false);
++});
++
+ test("successful probe means signature rejection, never completed sign-in", () => {
+   const result = summarizeAerodromeProbe(record());
+   assert.equal(result.signatureBoundaryReached, true);
+-- 
+2.55.0.windows.3
+

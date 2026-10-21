@@ -1,0 +1,68 @@
+diff --git a/src/external-dapp-report.js b/src/external-dapp-report.js
+index 8fb7c27..f20c8aa 100644
+--- a/src/external-dapp-report.js
++++ b/src/external-dapp-report.js
+@@ -2,6 +2,22 @@
+ // Used by the live, synthetic Aerodrome diagnostic and offline regressions.
+ import { SYNTHETIC_ACCOUNT, SYNTHETIC_WALLET_NAME } from "./aerodrome-mock-wallet.js";
+ 
++// Only account discovery and read-only inspection are expected in a synthetic
++// compatibility probe. Treat state-changing and signing RPC as evidence that
++// the experiment crossed its intended permission boundary.
++const PRIVILEGED_RPC_METHODS = new Set([
++  "eth_sign", "eth_signTransaction", "eth_sendTransaction",
++  "eth_sendRawTransaction", "eth_sendUserOperation", "wallet_sendCalls",
++  "wallet_sendTransaction", "wallet_prepareCalls", "wallet_grantPermissions",
++  "wallet_revokePermissions", "wallet_switchEthereumChain",
++  "wallet_addEthereumChain", "wallet_watchAsset",
++]);
++
++function isPrivilegedRpcMethod(method) {
++  return typeof method === "string" &&
++    (PRIVILEGED_RPC_METHODS.has(method) || /^eth_signTypedData(?:_v[0-9]+)?$/.test(method));
++}
++
+ // Prefer the announced synthetic wallet in discovery-only mode. Never match
+ // substrings or arbitrary discovered names; ambiguous duplicate labels fail.
+ export function selectMockWalletLabel(snapshot, discovery) {
+@@ -50,8 +66,18 @@ export function summarizeAerodromeProbe(record) {
+   };
+   const snapshots = [record.before, record.afterConnect, record.afterSignIn].filter(Boolean);
+   const last = record.afterSignIn ?? record.afterConnect ?? record.before;
+-  const methods = last?.methods ?? [];
+-  const rejections = last?.rejections ?? [];
++  const methods = Array.isArray(last?.methods) ? last.methods : [];
++  const rejections = Array.isArray(last?.rejections) ? last.rejections : [];
++  // A final snapshot can be shortened or reset; inspect every phase and the
++  // RPC trace before declaring the synthetic boundary safe.
++  const observedMethods = snapshots.flatMap(s => Array.isArray(s.methods) ? s.methods : []);
++  const tracedMethods = snapshots.flatMap(s => Array.isArray(s.trace)
++    ? s.trace.filter(e => e?.kind === "rpc").map(e => e.method)
++    : []);
++  const privilegedRpcMethods = [...new Set(
++    [...observedMethods, ...tracedMethods].filter(isPrivilegedRpcMethod),
++  )];
++  const privilegedRpcRequested = privilegedRpcMethods.length > 0;
+   const siteUiLoaded = snapshots.length > 0 && snapshots.every(official) &&
+     !!selectMockWalletLabel(record.before, record.discovery);
+   const simulationVerified = snapshots.length > 0 && snapshots.every(s =>
+@@ -61,8 +87,17 @@ export function summarizeAerodromeProbe(record) {
+   // eth_requestAccounts call (observed with Aerodrome/viem).
+   const accountRequested = methods.includes("eth_requestAccounts") || methods.includes("wallet_requestPermissions");
+   const syntheticAccountGranted = last?.accounts?.length === 1 && last.accounts[0] === SYNTHETIC_ACCOUNT;
+-  const signatureRequested = methods.includes("personal_sign");
+-  const signatureRejected = signatureRequested && rejections.some(r => r.method === "personal_sign" && r.code === 4001);
++  const signatureRequested = observedMethods.includes("personal_sign") || tracedMethods.includes("personal_sign");
++  // Snapshots and traces are cumulative views: use the maximum, not a sum,
++  // to avoid double-counting the same request across observation phases.
++  const signAttempts = Math.max(0, ...snapshots.map(s => Math.max(
++    Array.isArray(s.methods) ? s.methods.filter(m => m === "personal_sign").length : 0,
++    Array.isArray(s.trace) ? s.trace.filter(e => e?.kind === "rpc" && e.method === "personal_sign").length : 0,
++  )));
++  const signRejections = rejections.filter(r => r?.method === "personal_sign");
++  const signatureRejected = !!record.afterSignIn && methods.includes("personal_sign") &&
++    signAttempts > 0 && signRejections.length === signAttempts &&
++    signRejections.every(r => r.code === 4001);
+   const clicked = record.connectClicked === true;
+   const browserRouteAttempted = clicked && (record.before?.buttons?.some(b => b.text === "Browser Wallet") ||
+     record.browserWalletClicked === true);
