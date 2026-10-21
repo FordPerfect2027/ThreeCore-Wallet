@@ -1,0 +1,22 @@
+{
+  "name": "@threecore/wallet-connector",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ThreeCore DAT/EMA/CAWELON EIP-1193 browser-wallet connection and read-only EVM integration",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "npm test",
+    "demo": "node examples/dev-server.js",
+    "test:demo-server": "node --test integration/demo-server.test.mjs",
+    "test:browser-ui": "node scripts/test-browser-ui.js",
+    "liquidity:progress": "node scripts/liquidity-progress.js",
+    "census": "node scripts/codebase-census.js",
+    "test:external-dapp": "node scripts/run-isolated-aerodrome-probe.js --mock-wallet",
+    "inspect:external-dapp": "node scripts/run-isolated-aerodrome-probe.js"
+  }
+}

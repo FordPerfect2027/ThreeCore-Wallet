@@ -1,0 +1,94 @@
+{
+  "phase": 11,
+  "testedCommit": "c715aeecce292340655ba6212b2e8fdd772a835f",
+  "workflow": {
+    "id": 39495046594,
+    "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39495046594",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "probes": [
+    {
+      "jobId": 118877829585,
+      "jobUrl": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39495046594/job/118877829585",
+      "observedAtUtc": "2026-10-20T20:48:03.734Z",
+      "discovery": "eip6963-only",
+      "officialUrl": "https://aerodrome.finance/connect",
+      "siteTitle": "Aerodrome Finance",
+      "verification": {
+        "siteUiLoaded": true,
+        "simulationVerified": true,
+        "accountRequested": false,
+        "syntheticAccountGranted": false,
+        "signatureRequested": false,
+        "signatureRejected": false,
+        "signatureBoundaryReached": false,
+        "diagnosticCompleted": true,
+        "outcome": "connection-not-observed",
+        "completedSignIn": false,
+        "realWalletUsed": false
+      },
+      "methods": [
+        "eth_accounts"
+      ],
+      "revocationEvents": [],
+      "accountsAfterRevocation": [],
+      "accountsAfterExplicitReconnect": null
+    },
+    {
+      "jobId": 118877829994,
+      "jobUrl": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39495046594/job/118877829994",
+      "observedAtUtc": "2026-10-20T20:48:10.239Z",
+      "discovery": "legacy-and-eip6963",
+      "officialUrl": "https://aerodrome.finance/connect",
+      "siteTitle": "Aerodrome Finance",
+      "verification": {
+        "siteUiLoaded": true,
+        "simulationVerified": true,
+        "accountRequested": true,
+        "syntheticAccountGranted": true,
+        "signatureRequested": true,
+        "signatureRejected": true,
+        "signatureBoundaryReached": true,
+        "diagnosticCompleted": true,
+        "outcome": "signature-rejected-as-required",
+        "completedSignIn": false,
+        "realWalletUsed": false,
+        "revocationObserved": true,
+        "explicitReconnectObserved": true
+      },
+      "methods": [
+        "wallet_requestPermissions",
+        "eth_chainId",
+        "eth_accounts",
+        "eth_accounts",
+        "eth_chainId",
+        "eth_chainId",
+        "wallet_getCapabilities",
+        "eth_chainId",
+        "personal_sign"
+      ],
+      "revocationEvents": [
+        {
+          "event": "accountsChanged",
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ]
+        },
+        {
+          "event": "accountsChanged",
+          "accounts": []
+        }
+      ],
+      "accountsAfterRevocation": [],
+      "accountsAfterExplicitReconnect": [
+        "0x1111111111111111111111111111111111111111"
+      ]
+    }
+  ],
+  "earlierRun": {
+    "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39494681483",
+    "explanationJa": "従来方式では署名拒否まで到達したが、検査側がeth_requestAccountsを必須としたため誤って失敗扱い。実際に観測したwallet_requestPermissionsのみの許可経路を受け入れ、模擬アカウント付与の証拠を確認するよう修正して再検証した。"
+  },
+  "interpretationJa": "診断ジョブの成功は2方式が同じように接続できるという意味ではない。EIP-6963のみではeth_accounts照会のみが観測され、接続許可・サインインは未成立。従来方式も署名を意図的に拒否するためログイン未完了。"
+}

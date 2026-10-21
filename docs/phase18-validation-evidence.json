@@ -1,0 +1,4466 @@
+{
+  "phase": 18,
+  "dateJst": "2026-10-21",
+  "candidateCommit": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+  "candidateTree": "953e1361a4a6b2db4842e554f04913dfbeb352a3",
+  "originalMockLineage": "4848c39b60bac2c63fc38f685cdef12cd96290a8",
+  "startingMain": {
+    "DAT": "08dd6dae0bde1d5d4fcee1fab8b7cb8b0e4b625c",
+    "EMA-Draft": "74feb00d762d73c402ff159270ded37ce8e2a1d6",
+    "CAWELON-Draft": "828c8bbe777a3820a33f44369281425466701f7e",
+    "ThreeCore-Wallet": "b722a49f204f0defa8827ba0967b3bd19ce203dc"
+  },
+  "scope": "Keyless mocks in disposable extension-free profiles; same-name and empty/whitespace display names, not privacy/anonymity.",
+  "productionAerodromeModified": false,
+  "publisherIdentityVerified": false,
+  "realWalletUsed": false,
+  "completedSignedLogin": false,
+  "metrics": {
+    "walletOffline": 448,
+    "newOfflineCases": 20,
+    "http": 2,
+    "intentionalBrowserErrorControls": 2,
+    "browserUiCases": 27,
+    "consecutiveFreshBrowserRuns": 3,
+    "tokenIntegrationCasesPerToken": 46,
+    "tokenIntegrationTotal": 138,
+    "tokenReadOnlyCasesPerToken": 120,
+    "tokenHistoryCasesPerToken": 10,
+    "externalDiagnosticConditions": 8
+  },
+  "runs": [
+    {
+      "id": 39524511497,
+      "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+      "head_branch": "validation/external-dapp-phase18",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511497",
+      "jobs": [
+        {
+          "id": 118975911002,
+          "name": "token-integration (EMA-Draft, 725710dcc1a5010b597fe8d4ffa3ebd89b90d3c4)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511497/job/118975911002",
+          "observedMetrics": [
+            "# tests 120",
+            "# pass 120",
+            "# fail 0",
+            "# tests 10",
+            "# pass 10",
+            "# fail 0",
+            "# tests 46",
+            "# pass 46",
+            "# fail 0"
+          ]
+        },
+        {
+          "id": 118975911173,
+          "name": "token-integration (CAWELON-Draft, f3c88348d2a9ed545732b8c5a18d3b0dfebe99df)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511497/job/118975911173",
+          "observedMetrics": [
+            "# tests 120",
+            "# pass 120",
+            "# fail 0",
+            "# tests 10",
+            "# pass 10",
+            "# fail 0",
+            "# tests 46",
+            "# pass 46",
+            "# fail 0"
+          ]
+        },
+        {
+          "id": 118975911205,
+          "name": "token-integration (DAT, 5c1a77a0cd6b83080ea368f74b5cbd4cd079544d)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511497/job/118975911205",
+          "observedMetrics": [
+            "# tests 120",
+            "# pass 120",
+            "# fail 0",
+            "# tests 10",
+            "# pass 10",
+            "# fail 0",
+            "# tests 46",
+            "# pass 46",
+            "# fail 0"
+          ]
+        },
+        {
+          "id": 118975911297,
+          "name": "test",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511497/job/118975911297",
+          "observedMetrics": [
+            "# tests 448",
+            "# pass 448",
+            "# fail 0",
+            "# tests 2",
+            "# pass 2",
+            "# fail 0",
+            "Harness correctly rejected synthetic error despite 27 passing UI cases.",
+            "Harness correctly rejected synthetic unhandledrejection despite 27 passing UI cases.",
+            "2 browser error-detection controls passed.",
+            "27 browser UI tests passed with a synthetic provider and no external RPC.",
+            "27 browser UI tests passed with a synthetic provider and no external RPC.",
+            "27 browser UI tests passed with a synthetic provider and no external RPC."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 39524511496,
+      "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+      "head_branch": "validation/external-dapp-phase18",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511496",
+      "jobs": [
+        {
+          "id": 118975911069,
+          "name": "aerodrome (eip6963-only, local-connector-list-experiment, multi-reannounce)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511496/job/118975911069"
+        },
+        {
+          "id": 118975911122,
+          "name": "aerodrome (legacy-and-eip6963, unmodified-official, single)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511496/job/118975911122"
+        },
+        {
+          "id": 118975911186,
+          "name": "aerodrome (eip6963-only, local-wallet-choice-experiment, unnamed)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511496/job/118975911186"
+        },
+        {
+          "id": 118975911243,
+          "name": "aerodrome (eip6963-only, unmodified-official, single)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511496/job/118975911243"
+        },
+        {
+          "id": 118975911269,
+          "name": "aerodrome (eip6963-only, local-connector-list-experiment, single)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511496/job/118975911269"
+        },
+        {
+          "id": 118975911310,
+          "name": "aerodrome (eip6963-only, local-connector-list-experiment, delayed)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511496/job/118975911310"
+        },
+        {
+          "id": 118975911357,
+          "name": "aerodrome (eip6963-only, local-wallet-choice-experiment, duplicate-name)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511496/job/118975911357"
+        },
+        {
+          "id": 118975911467,
+          "name": "aerodrome (eip6963-only, local-connector-list-experiment, duplicate-name)",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9f8e92c187623b336b70dd97bc9c107dfb072617",
+          "html_url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39524511496/job/118975911467"
+        }
+      ]
+    }
+  ],
+  "testedFiles": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/external-dapp.yml",
+    "scripts/aerodrome-connector-experiment.js",
+    "scripts/aerodrome-probe-options.js",
+    "scripts/aerodrome-ui-probe.js",
+    "src/aerodrome-choice-report.js",
+    "src/aerodrome-mock-wallet.js",
+    "src/experimental-wallet-choices.js",
+    "src/external-dapp-report.js",
+    "test/aerodrome-choice-report.test.js",
+    "test/experimental-wallet-choices.test.js"
+  ],
+  "sourceCensus": {
+    "goalPhysicalLines": 20000,
+    "physicalLines": 19717,
+    "remainingPhysicalLines": 283,
+    "activeImplementationAndTests": 17164,
+    "meaning": "Physical lines contain blank/comment/config; quality and completion are not measured by LOC.",
+    "repos": {
+      "DAT": {
+        "categories": {
+          "implementation": {
+            "files": 11,
+            "physical": 1280,
+            "active": 1128
+          },
+          "tests": {
+            "files": 12,
+            "physical": 2047,
+            "active": 1885
+          },
+          "tools": {
+            "files": 8,
+            "physical": 702,
+            "active": 603
+          },
+          "configuration": {
+            "files": 5,
+            "physical": 191,
+            "active": 185
+          }
+        },
+        "totalPhysicalLines": 4220,
+        "activeImplementationAndTests": 3616,
+        "blankLines": 272,
+        "commentOnlyLines": 147,
+        "configurationPhysicalLines": 191,
+        "skippedLargeFiles": []
+      },
+      "EMA-Draft": {
+        "categories": {
+          "implementation": {
+            "files": 10,
+            "physical": 904,
+            "active": 741
+          },
+          "tests": {
+            "files": 11,
+            "physical": 2032,
+            "active": 1870
+          },
+          "tools": {
+            "files": 6,
+            "physical": 303,
+            "active": 236
+          },
+          "configuration": {
+            "files": 3,
+            "physical": 94,
+            "active": 90
+          }
+        },
+        "totalPhysicalLines": 3333,
+        "activeImplementationAndTests": 2847,
+        "blankLines": 222,
+        "commentOnlyLines": 174,
+        "configurationPhysicalLines": 94,
+        "skippedLargeFiles": []
+      },
+      "CAWELON-Draft": {
+        "categories": {
+          "implementation": {
+            "files": 10,
+            "physical": 903,
+            "active": 742
+          },
+          "tests": {
+            "files": 11,
+            "physical": 2032,
+            "active": 1870
+          },
+          "tools": {
+            "files": 6,
+            "physical": 303,
+            "active": 236
+          },
+          "configuration": {
+            "files": 3,
+            "physical": 94,
+            "active": 90
+          }
+        },
+        "totalPhysicalLines": 3332,
+        "activeImplementationAndTests": 2848,
+        "blankLines": 222,
+        "commentOnlyLines": 172,
+        "configurationPhysicalLines": 94,
+        "skippedLargeFiles": []
+      },
+      "ThreeCore-Wallet": {
+        "categories": {
+          "implementation": {
+            "files": 17,
+            "physical": 2153,
+            "active": 1845
+          },
+          "tests": {
+            "files": 28,
+            "physical": 5626,
+            "active": 5228
+          },
+          "tools": {
+            "files": 11,
+            "physical": 890,
+            "active": 780
+          },
+          "configuration": {
+            "files": 3,
+            "physical": 163,
+            "active": 163
+          }
+        },
+        "totalPhysicalLines": 8832,
+        "activeImplementationAndTests": 7853,
+        "blankLines": 514,
+        "commentOnlyLines": 302,
+        "configurationPhysicalLines": 163,
+        "skippedLargeFiles": []
+      }
+    }
+  },
+  "conditions": [
+    {
+      "observedAtUtc": "2026-10-21T00:58:47.704Z",
+      "officialOrigin": "https://aerodrome.finance",
+      "profile": "temporary-isolated-Chromium",
+      "mockMode": true,
+      "discovery": "legacy-and-eip6963",
+      "scenario": "single",
+      "pageVariant": "unmodified-official",
+      "selectedWalletLabel": "Browser Wallet",
+      "connectClicked": true,
+      "signInClicked": true,
+      "reconnectClicked": true,
+      "verification": {
+        "siteUiLoaded": true,
+        "routeUnambiguous": true,
+        "simulationVerified": true,
+        "accountRequested": true,
+        "syntheticAccountGranted": true,
+        "signatureRequested": true,
+        "signatureRejected": true,
+        "signatureBoundaryReached": true,
+        "experimentalPage": false,
+        "experimentVerified": false,
+        "unmodifiedOfficialConnectionObserved": true,
+        "diagnosticCompleted": true,
+        "outcome": "signature-rejected-as-required",
+        "completedSignIn": false,
+        "realWalletUsed": false,
+        "revocationObserved": true,
+        "explicitReconnectObserved": true
+      },
+      "scenarioVerification": {
+        "scenario": "single",
+        "verified": true,
+        "additionalScenario": false
+      },
+      "snapshots": {
+        "before": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "legacy-and-eip6963",
+          "hasLegacyProvider": true,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "earlyUi": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "legacy-and-eip6963",
+          "hasLegacyProvider": true,
+          "methods": [],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "legacy-and-eip6963",
+          "hasLegacyProvider": true,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterSignIn": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "legacy-and-eip6963",
+          "hasLegacyProvider": true,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterSyntheticRevocation": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "legacy-and-eip6963",
+          "hasLegacyProvider": true,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterReconnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "legacy-and-eip6963",
+          "hasLegacyProvider": true,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        }
+      }
+    },
+    {
+      "observedAtUtc": "2026-10-21T00:58:33.046Z",
+      "officialOrigin": "https://aerodrome.finance",
+      "profile": "temporary-isolated-Chromium",
+      "mockMode": true,
+      "discovery": "eip6963-only",
+      "scenario": "single",
+      "pageVariant": "unmodified-official",
+      "selectedWalletLabel": "Browser Wallet",
+      "connectClicked": true,
+      "signInClicked": false,
+      "verification": {
+        "siteUiLoaded": true,
+        "routeUnambiguous": true,
+        "simulationVerified": true,
+        "accountRequested": false,
+        "syntheticAccountGranted": false,
+        "signatureRequested": false,
+        "signatureRejected": false,
+        "signatureBoundaryReached": false,
+        "experimentalPage": false,
+        "experimentVerified": false,
+        "unmodifiedOfficialConnectionObserved": false,
+        "diagnosticCompleted": true,
+        "outcome": "connection-not-observed",
+        "completedSignIn": false,
+        "realWalletUsed": false
+      },
+      "scenarioVerification": {
+        "scenario": "single",
+        "verified": true,
+        "additionalScenario": false
+      },
+      "snapshots": {
+        "before": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "earlyUi": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "firstConnectObservation": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterRediscovery": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterSyntheticRevocation": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        }
+      }
+    },
+    {
+      "observedAtUtc": "2026-10-21T00:58:34.205Z",
+      "officialOrigin": "https://aerodrome.finance",
+      "profile": "temporary-isolated-Chromium",
+      "mockMode": true,
+      "discovery": "eip6963-only",
+      "scenario": "single",
+      "pageVariant": "local-connector-list-experiment",
+      "connectorExperiment": {
+        "status": "applied",
+        "scope": "disposable-browser-response-only",
+        "kind": "connector-list",
+        "originalSha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+        "modifiedSha256": "69429c4d642607894a315b4d3797ff36dc30d09e851fb146a54d248190f3b34c",
+        "replacements": 1,
+        "url": "https://aerodrome.finance/assets/index-8N6caatx.js"
+      },
+      "selectedWalletLabel": "ThreeCore TEST ONLY (no funds)",
+      "connectClicked": true,
+      "signInClicked": true,
+      "reconnectClicked": true,
+      "verification": {
+        "siteUiLoaded": true,
+        "routeUnambiguous": true,
+        "simulationVerified": true,
+        "accountRequested": true,
+        "syntheticAccountGranted": true,
+        "signatureRequested": true,
+        "signatureRejected": true,
+        "signatureBoundaryReached": true,
+        "experimentalPage": true,
+        "experimentVerified": true,
+        "unmodifiedOfficialConnectionObserved": false,
+        "diagnosticCompleted": true,
+        "outcome": "experimental-page-signature-rejected",
+        "completedSignIn": false,
+        "realWalletUsed": false,
+        "revocationObserved": true,
+        "explicitReconnectObserved": true
+      },
+      "scenarioVerification": {
+        "scenario": "single",
+        "verified": true,
+        "additionalScenario": false
+      },
+      "snapshots": {
+        "before": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "earlyUi": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterSignIn": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterSyntheticRevocation": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterReconnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        }
+      }
+    },
+    {
+      "observedAtUtc": "2026-10-21T00:58:45.276Z",
+      "officialOrigin": "https://aerodrome.finance",
+      "profile": "temporary-isolated-Chromium",
+      "mockMode": true,
+      "discovery": "eip6963-only",
+      "scenario": "multi-reannounce",
+      "pageVariant": "local-connector-list-experiment",
+      "connectorExperiment": {
+        "status": "applied",
+        "scope": "disposable-browser-response-only",
+        "kind": "connector-list",
+        "originalSha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+        "modifiedSha256": "69429c4d642607894a315b4d3797ff36dc30d09e851fb146a54d248190f3b34c",
+        "replacements": 1,
+        "url": "https://aerodrome.finance/assets/index-8N6caatx.js"
+      },
+      "selectedWalletLabel": "ThreeCore TEST ONLY (no funds)",
+      "connectClicked": true,
+      "signInClicked": true,
+      "reconnectClicked": true,
+      "verification": {
+        "siteUiLoaded": true,
+        "routeUnambiguous": true,
+        "simulationVerified": true,
+        "accountRequested": true,
+        "syntheticAccountGranted": true,
+        "signatureRequested": true,
+        "signatureRejected": true,
+        "signatureBoundaryReached": true,
+        "experimentalPage": true,
+        "experimentVerified": true,
+        "unmodifiedOfficialConnectionObserved": false,
+        "diagnosticCompleted": true,
+        "outcome": "experimental-page-signature-rejected",
+        "completedSignIn": false,
+        "realWalletUsed": false,
+        "revocationObserved": true,
+        "explicitReconnectObserved": true
+      },
+      "scenarioVerification": {
+        "scenario": "multi-reannounce",
+        "additionalScenario": true,
+        "isolated": true,
+        "patched": true,
+        "cleanBeforeClick": true,
+        "secondaryUntouched": true,
+        "scenarioObserved": true,
+        "verified": true
+      },
+      "snapshots": {
+        "before": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore SECONDARY TEST ONLY (no funds)",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore SECONDARY TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "earlyUi": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore SECONDARY TEST ONLY (no funds)",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore SECONDARY TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "beforeScenario": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore SECONDARY TEST ONLY (no funds)",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore SECONDARY TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore SECONDARY TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterSignIn": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore SECONDARY TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterSyntheticRevocation": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore SECONDARY TEST ONLY (no funds)",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore SECONDARY TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterReconnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore SECONDARY TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        }
+      }
+    },
+    {
+      "observedAtUtc": "2026-10-21T00:58:25.147Z",
+      "officialOrigin": "https://aerodrome.finance",
+      "profile": "temporary-isolated-Chromium",
+      "mockMode": true,
+      "discovery": "eip6963-only",
+      "scenario": "delayed",
+      "pageVariant": "local-connector-list-experiment",
+      "connectorExperiment": {
+        "status": "applied",
+        "scope": "disposable-browser-response-only",
+        "kind": "connector-list",
+        "originalSha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+        "modifiedSha256": "69429c4d642607894a315b4d3797ff36dc30d09e851fb146a54d248190f3b34c",
+        "replacements": 1,
+        "url": "https://aerodrome.finance/assets/index-8N6caatx.js"
+      },
+      "selectedWalletLabel": "ThreeCore TEST ONLY (no funds)",
+      "connectClicked": true,
+      "signInClicked": true,
+      "reconnectClicked": true,
+      "verification": {
+        "siteUiLoaded": true,
+        "routeUnambiguous": true,
+        "simulationVerified": true,
+        "accountRequested": true,
+        "syntheticAccountGranted": true,
+        "signatureRequested": true,
+        "signatureRejected": true,
+        "signatureBoundaryReached": true,
+        "experimentalPage": true,
+        "experimentVerified": true,
+        "unmodifiedOfficialConnectionObserved": false,
+        "diagnosticCompleted": true,
+        "outcome": "experimental-page-signature-rejected",
+        "completedSignIn": false,
+        "realWalletUsed": false,
+        "revocationObserved": true,
+        "explicitReconnectObserved": true
+      },
+      "scenarioVerification": {
+        "scenario": "delayed",
+        "additionalScenario": true,
+        "isolated": true,
+        "patched": true,
+        "cleanBeforeClick": true,
+        "secondaryUntouched": null,
+        "scenarioObserved": true,
+        "verified": true
+      },
+      "snapshots": {
+        "before": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "earlyUi": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": false,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "beforeScenario": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": false,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterSignIn": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterSyntheticRevocation": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        },
+        "afterReconnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": []
+        }
+      }
+    },
+    {
+      "observedAtUtc": "2026-10-21T00:58:25.244Z",
+      "officialOrigin": "https://aerodrome.finance",
+      "profile": "temporary-isolated-Chromium",
+      "mockMode": true,
+      "discovery": "eip6963-only",
+      "scenario": "duplicate-name",
+      "pageVariant": "local-connector-list-experiment",
+      "connectorExperiment": {
+        "status": "applied",
+        "scope": "disposable-browser-response-only",
+        "kind": "connector-list",
+        "originalSha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+        "modifiedSha256": "69429c4d642607894a315b4d3797ff36dc30d09e851fb146a54d248190f3b34c",
+        "replacements": 1,
+        "url": "https://aerodrome.finance/assets/index-8N6caatx.js"
+      },
+      "connectClicked": false,
+      "signInClicked": false,
+      "verification": {
+        "siteUiLoaded": true,
+        "routeUnambiguous": false,
+        "simulationVerified": true,
+        "accountRequested": false,
+        "syntheticAccountGranted": false,
+        "signatureRequested": false,
+        "signatureRejected": false,
+        "signatureBoundaryReached": false,
+        "experimentalPage": true,
+        "experimentVerified": false,
+        "unmodifiedOfficialConnectionObserved": false,
+        "diagnosticCompleted": true,
+        "outcome": "ambiguous-synthetic-wallet-selection-refused",
+        "completedSignIn": false,
+        "realWalletUsed": false
+      },
+      "scenarioVerification": {
+        "scenario": "duplicate-name",
+        "additionalScenario": true,
+        "isolated": true,
+        "patched": true,
+        "cleanBeforeClick": true,
+        "secondaryUntouched": true,
+        "scenarioObserved": true,
+        "verified": true
+      },
+      "snapshots": {
+        "before": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "earlyUi": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "beforeScenario": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterSyntheticRevocation": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            },
+            {
+              "text": "ThreeCore TEST ONLY (no funds)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        }
+      }
+    },
+    {
+      "observedAtUtc": "2026-10-21T00:58:28.139Z",
+      "officialOrigin": "https://aerodrome.finance",
+      "profile": "temporary-isolated-Chromium",
+      "mockMode": true,
+      "discovery": "eip6963-only",
+      "scenario": "duplicate-name",
+      "pageVariant": "local-wallet-choice-experiment",
+      "connectorExperiment": {
+        "status": "applied",
+        "scope": "disposable-browser-response-only",
+        "kind": "wallet-choice",
+        "originalSha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+        "modifiedSha256": "801f2d4a7b81e9da2fab58d032921cabf98a052109ed653fedf30a64e46826ba",
+        "replacements": 1,
+        "url": "https://aerodrome.finance/assets/index-8N6caatx.js"
+      },
+      "primaryChoice": {
+        "uid": "eb637144ffa",
+        "id": 2,
+        "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+      },
+      "secondaryChoice": {
+        "uid": "aeb637144ff",
+        "id": 1,
+        "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+      },
+      "selectedWalletLabel": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)",
+      "connectClicked": true,
+      "signInClicked": true,
+      "reconnectClicked": true,
+      "secondaryConnectClicked": true,
+      "secondarySignInClicked": true,
+      "verification": {
+        "siteUiLoaded": true,
+        "routeUnambiguous": true,
+        "simulationVerified": true,
+        "accountRequested": true,
+        "syntheticAccountGranted": true,
+        "signatureRequested": true,
+        "signatureRejected": true,
+        "signatureBoundaryReached": true,
+        "experimentalPage": true,
+        "experimentVerified": true,
+        "unmodifiedOfficialConnectionObserved": false,
+        "diagnosticCompleted": true,
+        "outcome": "experimental-page-signature-rejected",
+        "completedSignIn": false,
+        "realWalletUsed": false,
+        "revocationObserved": true,
+        "explicitReconnectObserved": true
+      },
+      "scenarioVerification": {
+        "scenario": "duplicate-name",
+        "isolated": true,
+        "patched": true,
+        "choicesDistinct": true,
+        "choicesStable": true,
+        "boundChoices": true,
+        "cleanBeforeClick": true,
+        "primaryBoundary": true,
+        "secondaryUntouchedUntilSelected": true,
+        "secondaryBoundary": true,
+        "primaryStayedRevoked": true,
+        "bothRevoked": true,
+        "scenarioObserved": true,
+        "verified": true,
+        "publisherIdentityVerified": false,
+        "completedSignIn": false
+      },
+      "snapshots": {
+        "before": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "earlyUi": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "beforeChoices": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterSignIn": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterSyntheticRevocation": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterReconnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterPrimaryDisconnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterSecondaryConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities"
+            ],
+            "accounts": [
+              "0x2222222222222222222222222222222222222222"
+            ],
+            "rejections": [],
+            "emitted": [
+              {
+                "event": "accountsChanged",
+                "accounts": [
+                  "0x2222222222222222222222222222222222222222"
+                ]
+              }
+            ]
+          }
+        },
+        "afterSecondarySignIn": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [
+              "0x2222222222222222222222222222222222222222"
+            ],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "emitted": [
+              {
+                "event": "accountsChanged",
+                "accounts": [
+                  "0x2222222222222222222222222222222222222222"
+                ]
+              }
+            ]
+          }
+        },
+        "afterBothRevoked": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "ThreeCore TEST ONLY (no funds)",
+          "choices": [
+            {
+              "uid": "aeb637144ff",
+              "id": 1,
+              "label": "Wallet choice 1: ThreeCore TEST ONLY (no funds) (unverified name)"
+            },
+            {
+              "uid": "eb637144ffa",
+              "id": 2,
+              "label": "Wallet choice 2: ThreeCore TEST ONLY (no funds) (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "ThreeCore TEST ONLY (no funds)",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "emitted": [
+              {
+                "event": "accountsChanged",
+                "accounts": [
+                  "0x2222222222222222222222222222222222222222"
+                ]
+              },
+              {
+                "event": "accountsChanged",
+                "accounts": []
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "observedAtUtc": "2026-10-21T00:58:26.569Z",
+      "officialOrigin": "https://aerodrome.finance",
+      "profile": "temporary-isolated-Chromium",
+      "mockMode": true,
+      "discovery": "eip6963-only",
+      "scenario": "unnamed",
+      "pageVariant": "local-wallet-choice-experiment",
+      "connectorExperiment": {
+        "status": "applied",
+        "scope": "disposable-browser-response-only",
+        "kind": "wallet-choice",
+        "originalSha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+        "modifiedSha256": "801f2d4a7b81e9da2fab58d032921cabf98a052109ed653fedf30a64e46826ba",
+        "replacements": 1,
+        "url": "https://aerodrome.finance/assets/index-8N6caatx.js"
+      },
+      "primaryChoice": {
+        "uid": "a5bd99ab1b6",
+        "id": 2,
+        "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+      },
+      "secondaryChoice": {
+        "uid": "7a5bd99ab1b",
+        "id": 1,
+        "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+      },
+      "selectedWalletLabel": "Wallet choice 2: Unnamed wallet (unverified name)",
+      "connectClicked": true,
+      "signInClicked": true,
+      "reconnectClicked": true,
+      "secondaryConnectClicked": true,
+      "secondarySignInClicked": true,
+      "verification": {
+        "siteUiLoaded": true,
+        "routeUnambiguous": true,
+        "simulationVerified": true,
+        "accountRequested": true,
+        "syntheticAccountGranted": true,
+        "signatureRequested": true,
+        "signatureRejected": true,
+        "signatureBoundaryReached": true,
+        "experimentalPage": true,
+        "experimentVerified": true,
+        "unmodifiedOfficialConnectionObserved": false,
+        "diagnosticCompleted": true,
+        "outcome": "experimental-page-signature-rejected",
+        "completedSignIn": false,
+        "realWalletUsed": false,
+        "revocationObserved": true,
+        "explicitReconnectObserved": true
+      },
+      "scenarioVerification": {
+        "scenario": "unnamed",
+        "isolated": true,
+        "patched": true,
+        "choicesDistinct": true,
+        "choicesStable": true,
+        "boundChoices": true,
+        "cleanBeforeClick": true,
+        "primaryBoundary": true,
+        "secondaryUntouchedUntilSelected": true,
+        "secondaryBoundary": true,
+        "primaryStayedRevoked": true,
+        "bothRevoked": true,
+        "scenarioObserved": true,
+        "verified": true,
+        "publisherIdentityVerified": false,
+        "completedSignIn": false
+      },
+      "snapshots": {
+        "before": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: Unnamed wallet (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: Unnamed wallet (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "earlyUi": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: Unnamed wallet (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: Unnamed wallet (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "beforeChoices": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: Unnamed wallet (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: Unnamed wallet (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts"
+          ],
+          "rejections": [],
+          "emitted": [],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterSignIn": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterSyntheticRevocation": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: Unnamed wallet (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: Unnamed wallet (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterReconnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            }
+          ],
+          "accounts": [
+            "0x1111111111111111111111111111111111111111"
+          ],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterPrimaryDisconnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: Unnamed wallet (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: Unnamed wallet (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "emitted": []
+          }
+        },
+        "afterSecondaryConnect": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities"
+            ],
+            "accounts": [
+              "0x2222222222222222222222222222222222222222"
+            ],
+            "rejections": [],
+            "emitted": [
+              {
+                "event": "accountsChanged",
+                "accounts": [
+                  "0x2222222222222222222222222222222222222222"
+                ]
+              }
+            ]
+          }
+        },
+        "afterSecondarySignIn": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Sign-in",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [
+              "0x2222222222222222222222222222222222222222"
+            ],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "emitted": [
+              {
+                "event": "accountsChanged",
+                "accounts": [
+                  "0x2222222222222222222222222222222222222222"
+                ]
+              }
+            ]
+          }
+        },
+        "afterBothRevoked": {
+          "url": "https://aerodrome.finance/connect",
+          "title": "Aerodrome Finance",
+          "buttons": [
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Copy error",
+              "disabled": false
+            },
+            {
+              "text": "Browser Wallet",
+              "disabled": false
+            },
+            {
+              "text": "WalletConnect",
+              "disabled": false
+            },
+            {
+              "text": "Coinbase Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Binance Wallet",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 1: Unnamed wallet (unverified name)",
+              "disabled": false
+            },
+            {
+              "text": "Wallet choice 2: Unnamed wallet (unverified name)",
+              "disabled": false
+            }
+          ],
+          "simulationActive": true,
+          "discovery": "eip6963-only",
+          "hasLegacyProvider": false,
+          "methods": [
+            "eth_accounts",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities",
+            "eth_chainId",
+            "personal_sign",
+            "wallet_requestPermissions",
+            "eth_chainId",
+            "eth_accounts",
+            "eth_accounts",
+            "eth_chainId",
+            "eth_chainId",
+            "wallet_getCapabilities"
+          ],
+          "rejections": [
+            {
+              "method": "personal_sign",
+              "code": 4001
+            }
+          ],
+          "emitted": [
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": [
+                "0x1111111111111111111111111111111111111111"
+              ]
+            },
+            {
+              "event": "accountsChanged",
+              "accounts": []
+            }
+          ],
+          "accounts": [],
+          "announcementsEnabled": true,
+          "mockName": "",
+          "choices": [
+            {
+              "uid": "7a5bd99ab1b",
+              "id": 1,
+              "label": "Wallet choice 1: Unnamed wallet (unverified name)"
+            },
+            {
+              "uid": "a5bd99ab1b6",
+              "id": 2,
+              "label": "Wallet choice 2: Unnamed wallet (unverified name)"
+            }
+          ],
+          "secondary": {
+            "name": "   ",
+            "uuid": "f0c10000-1000-4000-8000-000000000002",
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "emitted": [
+              {
+                "event": "accountsChanged",
+                "accounts": [
+                  "0x2222222222222222222222222222222222222222"
+                ]
+              },
+              {
+                "event": "accountsChanged",
+                "accounts": []
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "limits": [
+    "Unmodified official EIP-6963-only connection still unsuccessful in observed build.",
+    "Numbered choices distinguish local connector instances; they do not authenticate a publisher.",
+    "Provider-reference lookup is mock test introspection, not a user-facing identity verification method.",
+    "No real extensions, mobile, WalletConnect, signed login, or independent security audit validated.",
+    "Earlier Phase 14 Chrome timeout remains unexplained."
+  ],
+  "evidenceNotes": "Compact snapshots omit page copy, RPC trace stacks, and external downloaded snippets; cumulative RPC methods, permission state and rejected signatures are retained. Raw observations remain in the external workflow artifacts. A green diagnostic includes expected failures/refusals; it does not mean eight successful connections."
+}

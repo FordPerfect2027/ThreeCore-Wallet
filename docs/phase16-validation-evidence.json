@@ -1,0 +1,2670 @@
+{
+  "phase": 16,
+  "dateJst": "2026-10-21",
+  "lineage": "4848c39b60bac2c63fc38f685cdef12cd96290a8",
+  "baseline": {
+    "sha": "311a655cf191e5d85dedfd35618ebb3d19a03d83",
+    "run": 39512681357,
+    "observations": [
+      {
+        "observedAtUtc": "2026-10-20T23:05:55.013Z",
+        "discovery": "eip6963-only",
+        "pageVariant": "unmodified-official",
+        "verification": {
+          "siteUiLoaded": true,
+          "simulationVerified": true,
+          "accountRequested": false,
+          "syntheticAccountGranted": false,
+          "signatureRequested": false,
+          "signatureRejected": false,
+          "signatureBoundaryReached": false,
+          "diagnosticCompleted": true,
+          "outcome": "connection-not-observed",
+          "completedSignIn": false,
+          "realWalletUsed": false
+        },
+        "diagnosis": {
+          "dappRequestedDiscovery": true,
+          "announcementAfterRequest": true,
+          "preClickAccountProbe": true,
+          "rediscoveryAnswered": true,
+          "permissionRequested": false,
+          "status": "discovered-but-no-permission-request",
+          "syntheticNameVisible": false,
+          "externalRoutingCauseProvenByTraceAlone": false
+        },
+        "connectClicked": true,
+        "secondConnectClicked": true,
+        "signInClicked": false,
+        "snapshots": {
+          "before": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              }
+            ]
+          },
+          "afterRediscovery": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "explicit-rediscovery",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 6,
+                "phase": "explicit-rediscovery",
+                "kind": "announcement"
+              }
+            ]
+          },
+          "afterConnect": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "explicit-rediscovery",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 6,
+                "phase": "explicit-rediscovery",
+                "kind": "announcement"
+              }
+            ]
+          },
+          "afterSyntheticRevocation": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "explicit-rediscovery",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 6,
+                "phase": "explicit-rediscovery",
+                "kind": "announcement"
+              }
+            ]
+          }
+        },
+        "originAssetFingerprints": [
+          {
+            "url": "https://aerodrome.finance/assets/index-8N6caatx.js",
+            "sha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+            "bytes": 2026768
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index.es-DZqHT0ls.js",
+            "sha256": "36073ccdf83680443b26a8ce4a31aeb841bdf41aba3d1d00b24c924f842b41c5",
+            "bytes": 397021
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-BbP3371Q.js",
+            "sha256": "b9445685a0a326915cbac64923db0867e58369d30d65b246844cd45a429d71d7",
+            "bytes": 49
+          },
+          {
+            "url": "https://aerodrome.finance/assets/browser-ponyfill-CEp-GVeJ.js",
+            "sha256": "a4756610550eb5bfe7db46b01a0b9f2818cdf68e15a5cc3490920da0a4f4888b",
+            "bytes": 8411
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-nibyPLVP.js",
+            "sha256": "1ec0c3e605b1f64e7d87a28c2540b084a517fb75ff5939ec04af40e574b875ba",
+            "bytes": 948
+          },
+          {
+            "url": "https://aerodrome.finance/assets/contracts-worker-BCdArQMb.js",
+            "sha256": "2935cba5722c7c3c162cbbab12883e5c3f3da742f176459882ae6c903f7317a4",
+            "bytes": 1413
+          },
+          {
+            "url": "https://aerodrome.finance/assets/execution-worker-B5SbFKgS.js",
+            "sha256": "32c219b867d8dfedc6a8087452073c53dccdc4fa3a924009311c2e0494ac5cdd",
+            "bytes": 1950
+          },
+          {
+            "url": "https://aerodrome.finance/assets/core-DuOiZXu-.js",
+            "sha256": "01c0f7cb9eef011b72c6f457cfe887b19d4c5e89ee1a73faae6d2fd771e7d54a",
+            "bytes": 510099
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-AGVd4dAZ.js",
+            "sha256": "50d252ddfd24aced0ccd55d7589ae559ccafbe428e3a7bce904dd7625056b5a7",
+            "bytes": 534388
+          },
+          {
+            "url": "https://aerodrome.finance/assets/clsx.m-DHulAg21.js",
+            "sha256": "fb137b760bacfb05fc2eacfee16f7954a01bd739c1846a2efd5ea53e24f454e1",
+            "bytes": 478
+          },
+          {
+            "url": "https://aerodrome.finance/assets/sha3-Bk1ffKuE.js",
+            "sha256": "a923f7fdca4ecd39093dafd3f7c9780b80fbf4bca169db37285e92f84681d48d",
+            "bytes": 10297
+          }
+        ]
+      },
+      {
+        "observedAtUtc": "2026-10-20T23:05:53.331Z",
+        "discovery": "legacy-and-eip6963",
+        "pageVariant": "unmodified-official",
+        "verification": {
+          "siteUiLoaded": true,
+          "simulationVerified": true,
+          "accountRequested": true,
+          "syntheticAccountGranted": true,
+          "signatureRequested": true,
+          "signatureRejected": true,
+          "signatureBoundaryReached": true,
+          "diagnosticCompleted": true,
+          "outcome": "signature-rejected-as-required",
+          "completedSignIn": false,
+          "realWalletUsed": false,
+          "revocationObserved": true,
+          "explicitReconnectObserved": true
+        },
+        "diagnosis": {
+          "dappRequestedDiscovery": true,
+          "announcementAfterRequest": true,
+          "preClickAccountProbe": true,
+          "rediscoveryAnswered": false,
+          "permissionRequested": true,
+          "status": "permission-request-observed",
+          "syntheticNameVisible": false,
+          "externalRoutingCauseProvenByTraceAlone": false
+        },
+        "connectClicked": true,
+        "signInClicked": true,
+        "reconnectClicked": true,
+        "snapshots": {
+          "before": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              }
+            ]
+          },
+          "afterConnect": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Sign-in",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities"
+            ],
+            "accounts": [
+              "0x1111111111111111111111111111111111111111"
+            ],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              }
+            ]
+          },
+          "afterSignIn": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Copy error",
+                "disabled": false
+              },
+              {
+                "text": "Sign-in",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [
+              "0x1111111111111111111111111111111111111111"
+            ],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              },
+              {
+                "sequence": 12,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 13,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "personal_sign"
+              }
+            ]
+          },
+          "afterSyntheticRevocation": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Copy error",
+                "disabled": false
+              },
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              },
+              {
+                "sequence": 12,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 13,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "personal_sign"
+              }
+            ]
+          },
+          "afterReconnect": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Copy error",
+                "disabled": false
+              },
+              {
+                "text": "Sign-in",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities"
+            ],
+            "accounts": [
+              "0x1111111111111111111111111111111111111111"
+            ],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              },
+              {
+                "sequence": 12,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 13,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "personal_sign"
+              },
+              {
+                "sequence": 14,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 15,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 16,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 17,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 18,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 19,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 20,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 21,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 22,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              }
+            ]
+          }
+        },
+        "originAssetFingerprints": [
+          {
+            "url": "https://aerodrome.finance/assets/index-8N6caatx.js",
+            "sha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+            "bytes": 2026768
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index.es-DZqHT0ls.js",
+            "sha256": "36073ccdf83680443b26a8ce4a31aeb841bdf41aba3d1d00b24c924f842b41c5",
+            "bytes": 397021
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-BbP3371Q.js",
+            "sha256": "b9445685a0a326915cbac64923db0867e58369d30d65b246844cd45a429d71d7",
+            "bytes": 49
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-nibyPLVP.js",
+            "sha256": "1ec0c3e605b1f64e7d87a28c2540b084a517fb75ff5939ec04af40e574b875ba",
+            "bytes": 948
+          },
+          {
+            "url": "https://aerodrome.finance/assets/browser-ponyfill-CEp-GVeJ.js",
+            "sha256": "a4756610550eb5bfe7db46b01a0b9f2818cdf68e15a5cc3490920da0a4f4888b",
+            "bytes": 8411
+          },
+          {
+            "url": "https://aerodrome.finance/assets/contracts-worker-BCdArQMb.js",
+            "sha256": "2935cba5722c7c3c162cbbab12883e5c3f3da742f176459882ae6c903f7317a4",
+            "bytes": 1413
+          },
+          {
+            "url": "https://aerodrome.finance/assets/execution-worker-B5SbFKgS.js",
+            "sha256": "32c219b867d8dfedc6a8087452073c53dccdc4fa3a924009311c2e0494ac5cdd",
+            "bytes": 1950
+          },
+          {
+            "url": "https://aerodrome.finance/assets/core-DuOiZXu-.js",
+            "sha256": "01c0f7cb9eef011b72c6f457cfe887b19d4c5e89ee1a73faae6d2fd771e7d54a",
+            "bytes": 510099
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-AGVd4dAZ.js",
+            "sha256": "50d252ddfd24aced0ccd55d7589ae559ccafbe428e3a7bce904dd7625056b5a7",
+            "bytes": 534388
+          },
+          {
+            "url": "https://aerodrome.finance/assets/clsx.m-DHulAg21.js",
+            "sha256": "fb137b760bacfb05fc2eacfee16f7954a01bd739c1846a2efd5ea53e24f454e1",
+            "bytes": 478
+          },
+          {
+            "url": "https://aerodrome.finance/assets/sha3-Bk1ffKuE.js",
+            "sha256": "a923f7fdca4ecd39093dafd3f7c9780b80fbf4bca169db37285e92f84681d48d",
+            "bytes": 10297
+          }
+        ]
+      }
+    ]
+  },
+  "candidate": {
+    "sha": "b77d054939d3b4148a916040eaeef81e345a489e",
+    "regressionRun": 39513426528,
+    "externalRun": 39513426445,
+    "regressionJobs": [
+      {
+        "id": 118939740860,
+        "name": "test",
+        "conclusion": "success"
+      },
+      {
+        "id": 118939741132,
+        "name": "token-integration (CAWELON-Draft, f3c88348d2a9ed545732b8c5a18d3b0dfebe99df)",
+        "conclusion": "success"
+      },
+      {
+        "id": 118939741214,
+        "name": "token-integration (DAT, 5c1a77a0cd6b83080ea368f74b5cbd4cd079544d)",
+        "conclusion": "success"
+      },
+      {
+        "id": 118939741284,
+        "name": "token-integration (EMA-Draft, 725710dcc1a5010b597fe8d4ffa3ebd89b90d3c4)",
+        "conclusion": "success"
+      }
+    ],
+    "externalJobs": [
+      {
+        "id": 118939740569,
+        "name": "aerodrome (eip6963-only, local-connector-list-experiment)",
+        "conclusion": "success"
+      },
+      {
+        "id": 118939740874,
+        "name": "aerodrome (legacy-and-eip6963, unmodified-official)",
+        "conclusion": "success"
+      },
+      {
+        "id": 118939741188,
+        "name": "aerodrome (eip6963-only, unmodified-official)",
+        "conclusion": "success"
+      }
+    ],
+    "observations": [
+      {
+        "observedAtUtc": "2026-10-20T23:12:17.061Z",
+        "discovery": "legacy-and-eip6963",
+        "pageVariant": "unmodified-official",
+        "verification": {
+          "siteUiLoaded": true,
+          "simulationVerified": true,
+          "accountRequested": true,
+          "syntheticAccountGranted": true,
+          "signatureRequested": true,
+          "signatureRejected": true,
+          "signatureBoundaryReached": true,
+          "experimentalPage": false,
+          "experimentVerified": false,
+          "unmodifiedOfficialConnectionObserved": true,
+          "diagnosticCompleted": true,
+          "outcome": "signature-rejected-as-required",
+          "completedSignIn": false,
+          "realWalletUsed": false,
+          "revocationObserved": true,
+          "explicitReconnectObserved": true
+        },
+        "diagnosis": {
+          "dappRequestedDiscovery": true,
+          "announcementAfterRequest": true,
+          "preClickAccountProbe": true,
+          "rediscoveryAnswered": false,
+          "permissionRequested": true,
+          "status": "permission-request-observed",
+          "syntheticNameVisible": false,
+          "externalRoutingCauseProvenByTraceAlone": false
+        },
+        "selectedWalletLabel": "Browser Wallet",
+        "connectClicked": true,
+        "signInClicked": true,
+        "reconnectClicked": true,
+        "snapshots": {
+          "before": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              }
+            ]
+          },
+          "afterConnect": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Sign-in",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities"
+            ],
+            "accounts": [
+              "0x1111111111111111111111111111111111111111"
+            ],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              }
+            ]
+          },
+          "afterSignIn": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Copy error",
+                "disabled": false
+              },
+              {
+                "text": "Sign-in",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [
+              "0x1111111111111111111111111111111111111111"
+            ],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              },
+              {
+                "sequence": 12,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 13,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "personal_sign"
+              }
+            ]
+          },
+          "afterSyntheticRevocation": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Copy error",
+                "disabled": false
+              },
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              },
+              {
+                "sequence": 12,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 13,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "personal_sign"
+              }
+            ]
+          },
+          "afterReconnect": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Copy error",
+                "disabled": false
+              },
+              {
+                "text": "Sign-in",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": true,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities"
+            ],
+            "accounts": [
+              "0x1111111111111111111111111111111111111111"
+            ],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              },
+              {
+                "sequence": 12,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 13,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "personal_sign"
+              },
+              {
+                "sequence": 14,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 15,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 16,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 17,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 18,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 19,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 20,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 21,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 22,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              }
+            ]
+          }
+        },
+        "originAssetFingerprints": [
+          {
+            "url": "https://aerodrome.finance/assets/index-8N6caatx.js",
+            "sha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+            "bytes": 2026768
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index.es-DZqHT0ls.js",
+            "sha256": "36073ccdf83680443b26a8ce4a31aeb841bdf41aba3d1d00b24c924f842b41c5",
+            "bytes": 397021
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-BbP3371Q.js",
+            "sha256": "b9445685a0a326915cbac64923db0867e58369d30d65b246844cd45a429d71d7",
+            "bytes": 49
+          },
+          {
+            "url": "https://aerodrome.finance/assets/browser-ponyfill-CEp-GVeJ.js",
+            "sha256": "a4756610550eb5bfe7db46b01a0b9f2818cdf68e15a5cc3490920da0a4f4888b",
+            "bytes": 8411
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-nibyPLVP.js",
+            "sha256": "1ec0c3e605b1f64e7d87a28c2540b084a517fb75ff5939ec04af40e574b875ba",
+            "bytes": 948
+          },
+          {
+            "url": "https://aerodrome.finance/assets/contracts-worker-BCdArQMb.js",
+            "sha256": "2935cba5722c7c3c162cbbab12883e5c3f3da742f176459882ae6c903f7317a4",
+            "bytes": 1413
+          },
+          {
+            "url": "https://aerodrome.finance/assets/execution-worker-B5SbFKgS.js",
+            "sha256": "32c219b867d8dfedc6a8087452073c53dccdc4fa3a924009311c2e0494ac5cdd",
+            "bytes": 1950
+          },
+          {
+            "url": "https://aerodrome.finance/assets/core-DuOiZXu-.js",
+            "sha256": "01c0f7cb9eef011b72c6f457cfe887b19d4c5e89ee1a73faae6d2fd771e7d54a",
+            "bytes": 510099
+          },
+          {
+            "url": "https://aerodrome.finance/assets/clsx.m-DHulAg21.js",
+            "sha256": "fb137b760bacfb05fc2eacfee16f7954a01bd739c1846a2efd5ea53e24f454e1",
+            "bytes": 478
+          },
+          {
+            "url": "https://aerodrome.finance/assets/sha3-Bk1ffKuE.js",
+            "sha256": "a923f7fdca4ecd39093dafd3f7c9780b80fbf4bca169db37285e92f84681d48d",
+            "bytes": 10297
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-AGVd4dAZ.js",
+            "sha256": "50d252ddfd24aced0ccd55d7589ae559ccafbe428e3a7bce904dd7625056b5a7",
+            "bytes": 534388
+          }
+        ]
+      },
+      {
+        "observedAtUtc": "2026-10-20T23:12:30.752Z",
+        "discovery": "eip6963-only",
+        "pageVariant": "unmodified-official",
+        "verification": {
+          "siteUiLoaded": true,
+          "simulationVerified": true,
+          "accountRequested": false,
+          "syntheticAccountGranted": false,
+          "signatureRequested": false,
+          "signatureRejected": false,
+          "signatureBoundaryReached": false,
+          "experimentalPage": false,
+          "experimentVerified": false,
+          "unmodifiedOfficialConnectionObserved": false,
+          "diagnosticCompleted": true,
+          "outcome": "connection-not-observed",
+          "completedSignIn": false,
+          "realWalletUsed": false
+        },
+        "diagnosis": {
+          "dappRequestedDiscovery": true,
+          "announcementAfterRequest": true,
+          "preClickAccountProbe": true,
+          "rediscoveryAnswered": true,
+          "permissionRequested": false,
+          "status": "discovered-but-no-permission-request",
+          "syntheticNameVisible": false,
+          "externalRoutingCauseProvenByTraceAlone": false
+        },
+        "selectedWalletLabel": "Browser Wallet",
+        "connectClicked": true,
+        "secondConnectClicked": true,
+        "signInClicked": false,
+        "snapshots": {
+          "before": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              }
+            ]
+          },
+          "afterRediscovery": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "explicit-rediscovery",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 6,
+                "phase": "explicit-rediscovery",
+                "kind": "announcement"
+              }
+            ]
+          },
+          "afterConnect": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "explicit-rediscovery",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 6,
+                "phase": "explicit-rediscovery",
+                "kind": "announcement"
+              }
+            ]
+          },
+          "afterSyntheticRevocation": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "explicit-rediscovery",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 6,
+                "phase": "explicit-rediscovery",
+                "kind": "announcement"
+              }
+            ]
+          }
+        },
+        "originAssetFingerprints": [
+          {
+            "url": "https://aerodrome.finance/assets/index-8N6caatx.js",
+            "sha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+            "bytes": 2026768
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index.es-DZqHT0ls.js",
+            "sha256": "36073ccdf83680443b26a8ce4a31aeb841bdf41aba3d1d00b24c924f842b41c5",
+            "bytes": 397021
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-BbP3371Q.js",
+            "sha256": "b9445685a0a326915cbac64923db0867e58369d30d65b246844cd45a429d71d7",
+            "bytes": 49
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-nibyPLVP.js",
+            "sha256": "1ec0c3e605b1f64e7d87a28c2540b084a517fb75ff5939ec04af40e574b875ba",
+            "bytes": 948
+          },
+          {
+            "url": "https://aerodrome.finance/assets/browser-ponyfill-CEp-GVeJ.js",
+            "sha256": "a4756610550eb5bfe7db46b01a0b9f2818cdf68e15a5cc3490920da0a4f4888b",
+            "bytes": 8411
+          },
+          {
+            "url": "https://aerodrome.finance/assets/contracts-worker-BCdArQMb.js",
+            "sha256": "2935cba5722c7c3c162cbbab12883e5c3f3da742f176459882ae6c903f7317a4",
+            "bytes": 1413
+          },
+          {
+            "url": "https://aerodrome.finance/assets/execution-worker-B5SbFKgS.js",
+            "sha256": "32c219b867d8dfedc6a8087452073c53dccdc4fa3a924009311c2e0494ac5cdd",
+            "bytes": 1950
+          },
+          {
+            "url": "https://aerodrome.finance/assets/core-DuOiZXu-.js",
+            "sha256": "01c0f7cb9eef011b72c6f457cfe887b19d4c5e89ee1a73faae6d2fd771e7d54a",
+            "bytes": 510099
+          },
+          {
+            "url": "https://aerodrome.finance/assets/clsx.m-DHulAg21.js",
+            "sha256": "fb137b760bacfb05fc2eacfee16f7954a01bd739c1846a2efd5ea53e24f454e1",
+            "bytes": 478
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-AGVd4dAZ.js",
+            "sha256": "50d252ddfd24aced0ccd55d7589ae559ccafbe428e3a7bce904dd7625056b5a7",
+            "bytes": 534388
+          },
+          {
+            "url": "https://aerodrome.finance/assets/sha3-Bk1ffKuE.js",
+            "sha256": "a923f7fdca4ecd39093dafd3f7c9780b80fbf4bca169db37285e92f84681d48d",
+            "bytes": 10297
+          }
+        ]
+      },
+      {
+        "observedAtUtc": "2026-10-20T23:12:18.239Z",
+        "discovery": "eip6963-only",
+        "pageVariant": "local-connector-list-experiment",
+        "verification": {
+          "siteUiLoaded": true,
+          "simulationVerified": true,
+          "accountRequested": true,
+          "syntheticAccountGranted": true,
+          "signatureRequested": true,
+          "signatureRejected": true,
+          "signatureBoundaryReached": true,
+          "experimentalPage": true,
+          "experimentVerified": true,
+          "unmodifiedOfficialConnectionObserved": false,
+          "diagnosticCompleted": true,
+          "outcome": "experimental-page-signature-rejected",
+          "completedSignIn": false,
+          "realWalletUsed": false,
+          "revocationObserved": true,
+          "explicitReconnectObserved": true
+        },
+        "diagnosis": {
+          "dappRequestedDiscovery": true,
+          "announcementAfterRequest": true,
+          "preClickAccountProbe": true,
+          "rediscoveryAnswered": false,
+          "permissionRequested": true,
+          "status": "permission-request-observed",
+          "syntheticNameVisible": true,
+          "externalRoutingCauseProvenByTraceAlone": false
+        },
+        "connectorExperiment": {
+          "status": "applied",
+          "scope": "disposable-browser-response-only",
+          "originalSha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+          "modifiedSha256": "69429c4d642607894a315b4d3797ff36dc30d09e851fb146a54d248190f3b34c",
+          "replacements": 1,
+          "url": "https://aerodrome.finance/assets/index-8N6caatx.js"
+        },
+        "selectedWalletLabel": "ThreeCore TEST ONLY (no funds)",
+        "connectClicked": true,
+        "signInClicked": true,
+        "reconnectClicked": true,
+        "snapshots": {
+          "before": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              },
+              {
+                "text": "ThreeCore TEST ONLY (no funds)",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts"
+            ],
+            "accounts": [],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              }
+            ]
+          },
+          "afterConnect": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Sign-in",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities"
+            ],
+            "accounts": [
+              "0x1111111111111111111111111111111111111111"
+            ],
+            "rejections": [],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              }
+            ]
+          },
+          "afterSignIn": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Copy error",
+                "disabled": false
+              },
+              {
+                "text": "Sign-in",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [
+              "0x1111111111111111111111111111111111111111"
+            ],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              },
+              {
+                "sequence": 12,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 13,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "personal_sign"
+              }
+            ]
+          },
+          "afterSyntheticRevocation": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Copy error",
+                "disabled": false
+              },
+              {
+                "text": "Browser Wallet",
+                "disabled": false
+              },
+              {
+                "text": "WalletConnect",
+                "disabled": false
+              },
+              {
+                "text": "Coinbase Wallet",
+                "disabled": false
+              },
+              {
+                "text": "Binance Wallet",
+                "disabled": false
+              },
+              {
+                "text": "ThreeCore TEST ONLY (no funds)",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign"
+            ],
+            "accounts": [],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              },
+              {
+                "sequence": 12,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 13,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "personal_sign"
+              }
+            ]
+          },
+          "afterReconnect": {
+            "url": "https://aerodrome.finance/connect",
+            "buttons": [
+              {
+                "text": "Copy error",
+                "disabled": false
+              },
+              {
+                "text": "Sign-in",
+                "disabled": false
+              }
+            ],
+            "simulationActive": true,
+            "hasLegacyProvider": false,
+            "methods": [
+              "eth_accounts",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities",
+              "eth_chainId",
+              "personal_sign",
+              "wallet_requestPermissions",
+              "eth_chainId",
+              "eth_accounts",
+              "eth_accounts",
+              "eth_chainId",
+              "eth_chainId",
+              "wallet_getCapabilities"
+            ],
+            "accounts": [
+              "0x1111111111111111111111111111111111111111"
+            ],
+            "rejections": [
+              {
+                "method": "personal_sign",
+                "code": 4001
+              }
+            ],
+            "trace": [
+              {
+                "sequence": 1,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 2,
+                "phase": "page-load",
+                "kind": "discovery-request"
+              },
+              {
+                "sequence": 3,
+                "phase": "page-load",
+                "kind": "announcement"
+              },
+              {
+                "sequence": 4,
+                "phase": "page-load",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 5,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 6,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 7,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 8,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 9,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 10,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 11,
+                "phase": "browser-wallet-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              },
+              {
+                "sequence": 12,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 13,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "personal_sign"
+              },
+              {
+                "sequence": 14,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "wallet_requestPermissions"
+              },
+              {
+                "sequence": 15,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 16,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 17,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_accounts"
+              },
+              {
+                "sequence": 18,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 19,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "eth_chainId"
+              },
+              {
+                "sequence": 20,
+                "phase": "sign-in-click",
+                "kind": "rpc",
+                "method": "wallet_getCapabilities"
+              }
+            ]
+          }
+        },
+        "originAssetFingerprints": [
+          {
+            "url": "https://aerodrome.finance/assets/index-8N6caatx.js",
+            "sha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+            "bytes": 2026768
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index.es-DZqHT0ls.js",
+            "sha256": "36073ccdf83680443b26a8ce4a31aeb841bdf41aba3d1d00b24c924f842b41c5",
+            "bytes": 397021
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-BbP3371Q.js",
+            "sha256": "b9445685a0a326915cbac64923db0867e58369d30d65b246844cd45a429d71d7",
+            "bytes": 49
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-nibyPLVP.js",
+            "sha256": "1ec0c3e605b1f64e7d87a28c2540b084a517fb75ff5939ec04af40e574b875ba",
+            "bytes": 948
+          },
+          {
+            "url": "https://aerodrome.finance/assets/browser-ponyfill-CEp-GVeJ.js",
+            "sha256": "a4756610550eb5bfe7db46b01a0b9f2818cdf68e15a5cc3490920da0a4f4888b",
+            "bytes": 8411
+          },
+          {
+            "url": "https://aerodrome.finance/assets/contracts-worker-BCdArQMb.js",
+            "sha256": "2935cba5722c7c3c162cbbab12883e5c3f3da742f176459882ae6c903f7317a4",
+            "bytes": 1413
+          },
+          {
+            "url": "https://aerodrome.finance/assets/execution-worker-B5SbFKgS.js",
+            "sha256": "32c219b867d8dfedc6a8087452073c53dccdc4fa3a924009311c2e0494ac5cdd",
+            "bytes": 1950
+          },
+          {
+            "url": "https://aerodrome.finance/assets/core-DuOiZXu-.js",
+            "sha256": "01c0f7cb9eef011b72c6f457cfe887b19d4c5e89ee1a73faae6d2fd771e7d54a",
+            "bytes": 510099
+          },
+          {
+            "url": "https://aerodrome.finance/assets/index-AGVd4dAZ.js",
+            "sha256": "50d252ddfd24aced0ccd55d7589ae559ccafbe428e3a7bce904dd7625056b5a7",
+            "bytes": 534388
+          },
+          {
+            "url": "https://aerodrome.finance/assets/clsx.m-DHulAg21.js",
+            "sha256": "fb137b760bacfb05fc2eacfee16f7954a01bd739c1846a2efd5ea53e24f454e1",
+            "bytes": 478
+          },
+          {
+            "url": "https://aerodrome.finance/assets/sha3-Bk1ffKuE.js",
+            "sha256": "a923f7fdca4ecd39093dafd3f7c9780b80fbf4bca169db37285e92f84681d48d",
+            "bytes": 10297
+          }
+        ]
+      }
+    ]
+  },
+  "counts": {
+    "walletOffline": 414,
+    "http": 2,
+    "browserDistinctCases": 27,
+    "browserConsecutiveRuns": 3,
+    "intentionalErrorControls": 2,
+    "integrationPerToken": 46,
+    "integrationAllThreeTokens": 138,
+    "tokenReadOnlyPerToken": 120,
+    "tokenHistoryPerToken": 10
+  },
+  "limits": [
+    "Counterfactual success is not an unmodified Aerodrome fix.",
+    "No signed login or real-wallet operation was completed.",
+    "One pinned desktop asset and synthetic provider; mobile, real extensions and WalletConnect remain unverified."
+  ]
+}

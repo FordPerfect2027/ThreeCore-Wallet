@@ -1,0 +1,1412 @@
+{
+  "period": {
+    "since": "2026-10-20T00:00:00+09:00",
+    "description": "2026-10-20 JST through verified published commits on 2026-10-21 around 06:21 JST",
+    "selectionUpperBound": "2026-10-22T00:00:00+09:00",
+    "observedThrough": "2026-10-21T06:21:31+09:00",
+    "timezone": "Asia/Tokyo"
+  },
+  "method": "Net snapshot diff from the parent of the first main commit in the period to the verified published main. Not cumulative edit churn. Added lines include replacements. Shared files across repositories are counted per repository, not deduplicated. Code counts exclude prose, lockfiles and generated/vendor artifacts, and include tests/tools/configuration/blank/comment lines. A repository created in this period uses an empty starting tree (base=null).",
+  "commits": 85,
+  "total": {
+    "implementation": {
+      "added": 4242,
+      "deleted": 0,
+      "files": 34
+    },
+    "tests": {
+      "added": 9613,
+      "deleted": 0,
+      "files": 52
+    },
+    "tools": {
+      "added": 1378,
+      "deleted": 0,
+      "files": 24
+    },
+    "configuration": {
+      "added": 241,
+      "deleted": 10,
+      "files": 9
+    },
+    "documentation": {
+      "added": 3130,
+      "deleted": 1,
+      "files": 56
+    },
+    "excluded": {
+      "added": 16,
+      "deleted": 0,
+      "files": 4
+    }
+  },
+  "repos": [
+    {
+      "repo": "DAT",
+      "base": "7d0d5fb765c54e918fd6df828e67d822c105f149",
+      "baseDate": "2026-10-17T14:32:04+09:00",
+      "head": "5ccb3419129dccb0bd5e1506eb464b1a38768e26",
+      "commits": 19,
+      "stats": {
+        "implementation": {
+          "added": 783,
+          "deleted": 0,
+          "files": 7
+        },
+        "tests": {
+          "added": 1658,
+          "deleted": 0,
+          "files": 10
+        },
+        "tools": {
+          "added": 227,
+          "deleted": 0,
+          "files": 5
+        },
+        "configuration": {
+          "added": 19,
+          "deleted": 2,
+          "files": 2
+        },
+        "documentation": {
+          "added": 528,
+          "deleted": 1,
+          "files": 13
+        },
+        "excluded": {
+          "added": 3,
+          "deleted": 0,
+          "files": 1
+        }
+      },
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "category": "configuration",
+          "added": 9,
+          "deleted": 0
+        },
+        {
+          "path": ".gitignore",
+          "category": "excluded",
+          "added": 3,
+          "deleted": 0
+        },
+        {
+          "path": "README.md",
+          "category": "documentation",
+          "added": 118,
+          "deleted": 1
+        },
+        {
+          "path": "docs/VALIDATION_2026-10-21.md",
+          "category": "documentation",
+          "added": 29,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE10_2026-10-21.md",
+          "category": "documentation",
+          "added": 45,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE11_2026-10-21.md",
+          "category": "documentation",
+          "added": 17,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE12_2026-10-21.md",
+          "category": "documentation",
+          "added": 15,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE2_2026-10-21.md",
+          "category": "documentation",
+          "added": 7,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE3_2026-10-21.md",
+          "category": "documentation",
+          "added": 30,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE4_2026-10-21.md",
+          "category": "documentation",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE5_2026-10-21.md",
+          "category": "documentation",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE6_2026-10-21.md",
+          "category": "documentation",
+          "added": 55,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE7_2026-10-21.md",
+          "category": "documentation",
+          "added": 50,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE8_2026-10-21.md",
+          "category": "documentation",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE9_2026-10-21.md",
+          "category": "documentation",
+          "added": 39,
+          "deleted": 0
+        },
+        {
+          "path": "integration/history-compatibility.test.mjs",
+          "category": "tests",
+          "added": 201,
+          "deleted": 0
+        },
+        {
+          "path": "package.json",
+          "category": "configuration",
+          "added": 10,
+          "deleted": 2
+        },
+        {
+          "path": "scripts/inspect-approvals.js",
+          "category": "tools",
+          "added": 58,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/inspect-transfers.js",
+          "category": "tools",
+          "added": 56,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/inspect-wallet-readiness.js",
+          "category": "tools",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/quote-dex.js",
+          "category": "tools",
+          "added": 48,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/verify-base-mainnet.js",
+          "category": "tools",
+          "added": 24,
+          "deleted": 0
+        },
+        {
+          "path": "src/approval-history.js",
+          "category": "implementation",
+          "added": 161,
+          "deleted": 0
+        },
+        {
+          "path": "src/dex-quote.js",
+          "category": "implementation",
+          "added": 176,
+          "deleted": 0
+        },
+        {
+          "path": "src/history-log.js",
+          "category": "implementation",
+          "added": 51,
+          "deleted": 0
+        },
+        {
+          "path": "src/history-snapshot.js",
+          "category": "implementation",
+          "added": 40,
+          "deleted": 0
+        },
+        {
+          "path": "src/onchain-identity.js",
+          "category": "implementation",
+          "added": 94,
+          "deleted": 0
+        },
+        {
+          "path": "src/transfer-history.js",
+          "category": "implementation",
+          "added": 154,
+          "deleted": 0
+        },
+        {
+          "path": "src/wallet-readiness.js",
+          "category": "implementation",
+          "added": 107,
+          "deleted": 0
+        },
+        {
+          "path": "test/PermitBoundaries.ts",
+          "category": "tests",
+          "added": 92,
+          "deleted": 0
+        },
+        {
+          "path": "test/TransferInvariants.ts",
+          "category": "tests",
+          "added": 87,
+          "deleted": 0
+        },
+        {
+          "path": "test/approval-history.test.mjs",
+          "category": "tests",
+          "added": 203,
+          "deleted": 0
+        },
+        {
+          "path": "test/dex-quote.test.mjs",
+          "category": "tests",
+          "added": 222,
+          "deleted": 0
+        },
+        {
+          "path": "test/history-boundaries.test.mjs",
+          "category": "tests",
+          "added": 140,
+          "deleted": 0
+        },
+        {
+          "path": "test/history-snapshot.test.mjs",
+          "category": "tests",
+          "added": 151,
+          "deleted": 0
+        },
+        {
+          "path": "test/onchain-identity.test.mjs",
+          "category": "tests",
+          "added": 127,
+          "deleted": 0
+        },
+        {
+          "path": "test/transfer-history.test.mjs",
+          "category": "tests",
+          "added": 213,
+          "deleted": 0
+        },
+        {
+          "path": "test/wallet-readiness.test.mjs",
+          "category": "tests",
+          "added": 222,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "repo": "EMA-Draft",
+      "base": "472bb52bd6045844038917628b3f352955af4e33",
+      "baseDate": "2026-10-17T14:32:40+09:00",
+      "head": "2ccab1335aa60502fda210e582aef7e06c3a9c6a",
+      "commits": 20,
+      "stats": {
+        "implementation": {
+          "added": 783,
+          "deleted": 0,
+          "files": 7
+        },
+        "tests": {
+          "added": 1658,
+          "deleted": 0,
+          "files": 10
+        },
+        "tools": {
+          "added": 227,
+          "deleted": 0,
+          "files": 5
+        },
+        "configuration": {
+          "added": 47,
+          "deleted": 4,
+          "files": 2
+        },
+        "documentation": {
+          "added": 527,
+          "deleted": 0,
+          "files": 13
+        },
+        "excluded": {
+          "added": 3,
+          "deleted": 0,
+          "files": 1
+        }
+      },
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "category": "configuration",
+          "added": 36,
+          "deleted": 0
+        },
+        {
+          "path": ".gitignore",
+          "category": "excluded",
+          "added": 3,
+          "deleted": 0
+        },
+        {
+          "path": "README.md",
+          "category": "documentation",
+          "added": 117,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_2026-10-21.md",
+          "category": "documentation",
+          "added": 29,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE10_2026-10-21.md",
+          "category": "documentation",
+          "added": 45,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE11_2026-10-21.md",
+          "category": "documentation",
+          "added": 17,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE12_2026-10-21.md",
+          "category": "documentation",
+          "added": 15,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE2_2026-10-21.md",
+          "category": "documentation",
+          "added": 7,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE3_2026-10-21.md",
+          "category": "documentation",
+          "added": 30,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE4_2026-10-21.md",
+          "category": "documentation",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE5_2026-10-21.md",
+          "category": "documentation",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE6_2026-10-21.md",
+          "category": "documentation",
+          "added": 55,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE7_2026-10-21.md",
+          "category": "documentation",
+          "added": 50,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE8_2026-10-21.md",
+          "category": "documentation",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE9_2026-10-21.md",
+          "category": "documentation",
+          "added": 39,
+          "deleted": 0
+        },
+        {
+          "path": "integration/history-compatibility.test.mjs",
+          "category": "tests",
+          "added": 201,
+          "deleted": 0
+        },
+        {
+          "path": "package.json",
+          "category": "configuration",
+          "added": 11,
+          "deleted": 4
+        },
+        {
+          "path": "scripts/inspect-approvals.js",
+          "category": "tools",
+          "added": 58,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/inspect-transfers.js",
+          "category": "tools",
+          "added": 56,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/inspect-wallet-readiness.js",
+          "category": "tools",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/quote-dex.js",
+          "category": "tools",
+          "added": 48,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/verify-base-mainnet.js",
+          "category": "tools",
+          "added": 24,
+          "deleted": 0
+        },
+        {
+          "path": "src/approval-history.js",
+          "category": "implementation",
+          "added": 161,
+          "deleted": 0
+        },
+        {
+          "path": "src/dex-quote.js",
+          "category": "implementation",
+          "added": 176,
+          "deleted": 0
+        },
+        {
+          "path": "src/history-log.js",
+          "category": "implementation",
+          "added": 51,
+          "deleted": 0
+        },
+        {
+          "path": "src/history-snapshot.js",
+          "category": "implementation",
+          "added": 40,
+          "deleted": 0
+        },
+        {
+          "path": "src/onchain-identity.js",
+          "category": "implementation",
+          "added": 94,
+          "deleted": 0
+        },
+        {
+          "path": "src/transfer-history.js",
+          "category": "implementation",
+          "added": 154,
+          "deleted": 0
+        },
+        {
+          "path": "src/wallet-readiness.js",
+          "category": "implementation",
+          "added": 107,
+          "deleted": 0
+        },
+        {
+          "path": "test/PermitBoundaries.ts",
+          "category": "tests",
+          "added": 92,
+          "deleted": 0
+        },
+        {
+          "path": "test/TransferInvariants.ts",
+          "category": "tests",
+          "added": 87,
+          "deleted": 0
+        },
+        {
+          "path": "test/approval-history.test.mjs",
+          "category": "tests",
+          "added": 203,
+          "deleted": 0
+        },
+        {
+          "path": "test/dex-quote.test.mjs",
+          "category": "tests",
+          "added": 222,
+          "deleted": 0
+        },
+        {
+          "path": "test/history-boundaries.test.mjs",
+          "category": "tests",
+          "added": 140,
+          "deleted": 0
+        },
+        {
+          "path": "test/history-snapshot.test.mjs",
+          "category": "tests",
+          "added": 151,
+          "deleted": 0
+        },
+        {
+          "path": "test/onchain-identity.test.mjs",
+          "category": "tests",
+          "added": 127,
+          "deleted": 0
+        },
+        {
+          "path": "test/transfer-history.test.mjs",
+          "category": "tests",
+          "added": 213,
+          "deleted": 0
+        },
+        {
+          "path": "test/wallet-readiness.test.mjs",
+          "category": "tests",
+          "added": 222,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "repo": "CAWELON-Draft",
+      "base": "7ca8c3c63fe9dbc9ee0ce8c4d3973dd8f918414b",
+      "baseDate": "2026-10-17T14:33:05+09:00",
+      "head": "171a6c9f4476f9412027e857dde1fef1017eb8c4",
+      "commits": 20,
+      "stats": {
+        "implementation": {
+          "added": 783,
+          "deleted": 0,
+          "files": 7
+        },
+        "tests": {
+          "added": 1658,
+          "deleted": 0,
+          "files": 10
+        },
+        "tools": {
+          "added": 227,
+          "deleted": 0,
+          "files": 5
+        },
+        "configuration": {
+          "added": 47,
+          "deleted": 4,
+          "files": 2
+        },
+        "documentation": {
+          "added": 527,
+          "deleted": 0,
+          "files": 13
+        },
+        "excluded": {
+          "added": 3,
+          "deleted": 0,
+          "files": 1
+        }
+      },
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "category": "configuration",
+          "added": 36,
+          "deleted": 0
+        },
+        {
+          "path": ".gitignore",
+          "category": "excluded",
+          "added": 3,
+          "deleted": 0
+        },
+        {
+          "path": "README.md",
+          "category": "documentation",
+          "added": 117,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_2026-10-21.md",
+          "category": "documentation",
+          "added": 29,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE10_2026-10-21.md",
+          "category": "documentation",
+          "added": 45,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE11_2026-10-21.md",
+          "category": "documentation",
+          "added": 17,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE12_2026-10-21.md",
+          "category": "documentation",
+          "added": 15,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE2_2026-10-21.md",
+          "category": "documentation",
+          "added": 7,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE3_2026-10-21.md",
+          "category": "documentation",
+          "added": 30,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE4_2026-10-21.md",
+          "category": "documentation",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE5_2026-10-21.md",
+          "category": "documentation",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE6_2026-10-21.md",
+          "category": "documentation",
+          "added": 55,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE7_2026-10-21.md",
+          "category": "documentation",
+          "added": 50,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE8_2026-10-21.md",
+          "category": "documentation",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE9_2026-10-21.md",
+          "category": "documentation",
+          "added": 39,
+          "deleted": 0
+        },
+        {
+          "path": "integration/history-compatibility.test.mjs",
+          "category": "tests",
+          "added": 201,
+          "deleted": 0
+        },
+        {
+          "path": "package.json",
+          "category": "configuration",
+          "added": 11,
+          "deleted": 4
+        },
+        {
+          "path": "scripts/inspect-approvals.js",
+          "category": "tools",
+          "added": 58,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/inspect-transfers.js",
+          "category": "tools",
+          "added": 56,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/inspect-wallet-readiness.js",
+          "category": "tools",
+          "added": 41,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/quote-dex.js",
+          "category": "tools",
+          "added": 48,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/verify-base-mainnet.js",
+          "category": "tools",
+          "added": 24,
+          "deleted": 0
+        },
+        {
+          "path": "src/approval-history.js",
+          "category": "implementation",
+          "added": 161,
+          "deleted": 0
+        },
+        {
+          "path": "src/dex-quote.js",
+          "category": "implementation",
+          "added": 176,
+          "deleted": 0
+        },
+        {
+          "path": "src/history-log.js",
+          "category": "implementation",
+          "added": 51,
+          "deleted": 0
+        },
+        {
+          "path": "src/history-snapshot.js",
+          "category": "implementation",
+          "added": 40,
+          "deleted": 0
+        },
+        {
+          "path": "src/onchain-identity.js",
+          "category": "implementation",
+          "added": 94,
+          "deleted": 0
+        },
+        {
+          "path": "src/transfer-history.js",
+          "category": "implementation",
+          "added": 154,
+          "deleted": 0
+        },
+        {
+          "path": "src/wallet-readiness.js",
+          "category": "implementation",
+          "added": 107,
+          "deleted": 0
+        },
+        {
+          "path": "test/PermitBoundaries.ts",
+          "category": "tests",
+          "added": 92,
+          "deleted": 0
+        },
+        {
+          "path": "test/TransferInvariants.ts",
+          "category": "tests",
+          "added": 87,
+          "deleted": 0
+        },
+        {
+          "path": "test/approval-history.test.mjs",
+          "category": "tests",
+          "added": 203,
+          "deleted": 0
+        },
+        {
+          "path": "test/dex-quote.test.mjs",
+          "category": "tests",
+          "added": 222,
+          "deleted": 0
+        },
+        {
+          "path": "test/history-boundaries.test.mjs",
+          "category": "tests",
+          "added": 140,
+          "deleted": 0
+        },
+        {
+          "path": "test/history-snapshot.test.mjs",
+          "category": "tests",
+          "added": 151,
+          "deleted": 0
+        },
+        {
+          "path": "test/onchain-identity.test.mjs",
+          "category": "tests",
+          "added": 127,
+          "deleted": 0
+        },
+        {
+          "path": "test/transfer-history.test.mjs",
+          "category": "tests",
+          "added": 213,
+          "deleted": 0
+        },
+        {
+          "path": "test/wallet-readiness.test.mjs",
+          "category": "tests",
+          "added": 222,
+          "deleted": 0
+        }
+      ]
+    },
+    {
+      "repo": "ThreeCore-Wallet",
+      "base": null,
+      "baseDate": null,
+      "head": "bb8cd3c8ef76de6cf6b5effc7daed10234e13276",
+      "commits": 26,
+      "stats": {
+        "implementation": {
+          "added": 1893,
+          "deleted": 0,
+          "files": 13
+        },
+        "tests": {
+          "added": 4639,
+          "deleted": 0,
+          "files": 22
+        },
+        "tools": {
+          "added": 697,
+          "deleted": 0,
+          "files": 9
+        },
+        "configuration": {
+          "added": 128,
+          "deleted": 0,
+          "files": 3
+        },
+        "documentation": {
+          "added": 1548,
+          "deleted": 0,
+          "files": 17
+        },
+        "excluded": {
+          "added": 7,
+          "deleted": 0,
+          "files": 1
+        }
+      },
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "category": "configuration",
+          "added": 64,
+          "deleted": 0
+        },
+        {
+          "path": ".github/workflows/external-dapp.yml",
+          "category": "configuration",
+          "added": 42,
+          "deleted": 0
+        },
+        {
+          "path": ".gitignore",
+          "category": "excluded",
+          "added": 7,
+          "deleted": 0
+        },
+        {
+          "path": "README.md",
+          "category": "documentation",
+          "added": 284,
+          "deleted": 0
+        },
+        {
+          "path": "docs/LIQUIDITY_TARGET_5000_USDC.md",
+          "category": "documentation",
+          "added": 43,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_2026-10-21.md",
+          "category": "documentation",
+          "added": 28,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE10_2026-10-21.md",
+          "category": "documentation",
+          "added": 74,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE11_2026-10-21.md",
+          "category": "documentation",
+          "added": 62,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE12_2026-10-21.md",
+          "category": "documentation",
+          "added": 67,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE2_2026-10-21.md",
+          "category": "documentation",
+          "added": 33,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE3_2026-10-21.md",
+          "category": "documentation",
+          "added": 60,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE4_2026-10-21.md",
+          "category": "documentation",
+          "added": 48,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE5_2026-10-21.md",
+          "category": "documentation",
+          "added": 77,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE6_2026-10-21.md",
+          "category": "documentation",
+          "added": 50,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE7_2026-10-21.md",
+          "category": "documentation",
+          "added": 48,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE8_2026-10-21.md",
+          "category": "documentation",
+          "added": 60,
+          "deleted": 0
+        },
+        {
+          "path": "docs/VALIDATION_PHASE9_2026-10-21.md",
+          "category": "documentation",
+          "added": 66,
+          "deleted": 0
+        },
+        {
+          "path": "docs/phase11-external-dapp-evidence.json",
+          "category": "documentation",
+          "added": 94,
+          "deleted": 0
+        },
+        {
+          "path": "docs/phase12-discovery-evidence.json",
+          "category": "documentation",
+          "added": 266,
+          "deleted": 0
+        },
+        {
+          "path": "docs/validation-evidence-2026-10-21.json",
+          "category": "documentation",
+          "added": 188,
+          "deleted": 0
+        },
+        {
+          "path": "examples/dev-server.js",
+          "category": "implementation",
+          "added": 56,
+          "deleted": 0
+        },
+        {
+          "path": "examples/index.html",
+          "category": "implementation",
+          "added": 45,
+          "deleted": 0
+        },
+        {
+          "path": "examples/wallet-demo.js",
+          "category": "implementation",
+          "added": 126,
+          "deleted": 0
+        },
+        {
+          "path": "integration/demo-server.test.mjs",
+          "category": "tests",
+          "added": 35,
+          "deleted": 0
+        },
+        {
+          "path": "integration/token-compatibility.test.mjs",
+          "category": "tests",
+          "added": 442,
+          "deleted": 0
+        },
+        {
+          "path": "package.json",
+          "category": "configuration",
+          "added": 22,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/aerodrome-ui-probe.js",
+          "category": "tools",
+          "added": 181,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/codebase-census.js",
+          "category": "tools",
+          "added": 171,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/inspect-aerodrome-pools.js",
+          "category": "tools",
+          "added": 19,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/inspect-aerodrome.js",
+          "category": "tools",
+          "added": 29,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/inspect-dapp-discovery.js",
+          "category": "tools",
+          "added": 40,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/liquidity-progress.js",
+          "category": "tools",
+          "added": 58,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/probe-base.js",
+          "category": "tools",
+          "added": 23,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/run-isolated-aerodrome-probe.js",
+          "category": "tools",
+          "added": 118,
+          "deleted": 0
+        },
+        {
+          "path": "scripts/test-browser-ui.js",
+          "category": "tools",
+          "added": 58,
+          "deleted": 0
+        },
+        {
+          "path": "src/aerodrome-mock-wallet.js",
+          "category": "implementation",
+          "added": 134,
+          "deleted": 0
+        },
+        {
+          "path": "src/aerodrome-pools.js",
+          "category": "implementation",
+          "added": 157,
+          "deleted": 0
+        },
+        {
+          "path": "src/aerodrome-readonly.js",
+          "category": "implementation",
+          "added": 157,
+          "deleted": 0
+        },
+        {
+          "path": "src/base-rpc-probe.js",
+          "category": "implementation",
+          "added": 104,
+          "deleted": 0
+        },
+        {
+          "path": "src/dapp-preflight.js",
+          "category": "implementation",
+          "added": 158,
+          "deleted": 0
+        },
+        {
+          "path": "src/external-dapp-report.js",
+          "category": "implementation",
+          "added": 69,
+          "deleted": 0
+        },
+        {
+          "path": "src/liquidity-target.js",
+          "category": "implementation",
+          "added": 123,
+          "deleted": 0
+        },
+        {
+          "path": "src/provider-registry.js",
+          "category": "implementation",
+          "added": 80,
+          "deleted": 0
+        },
+        {
+          "path": "src/wallet-card-controller.js",
+          "category": "implementation",
+          "added": 192,
+          "deleted": 0
+        },
+        {
+          "path": "src/wallet-session.js",
+          "category": "implementation",
+          "added": 492,
+          "deleted": 0
+        },
+        {
+          "path": "test/aerodrome-mock-wallet.test.js",
+          "category": "tests",
+          "added": 166,
+          "deleted": 0
+        },
+        {
+          "path": "test/aerodrome-pools.test.js",
+          "category": "tests",
+          "added": 164,
+          "deleted": 0
+        },
+        {
+          "path": "test/aerodrome-readonly.test.js",
+          "category": "tests",
+          "added": 229,
+          "deleted": 0
+        },
+        {
+          "path": "test/base-rpc-probe.test.js",
+          "category": "tests",
+          "added": 137,
+          "deleted": 0
+        },
+        {
+          "path": "test/block-snapshot.test.js",
+          "category": "tests",
+          "added": 228,
+          "deleted": 0
+        },
+        {
+          "path": "test/browser/index.html",
+          "category": "tests",
+          "added": 20,
+          "deleted": 0
+        },
+        {
+          "path": "test/browser/ui-tests.js",
+          "category": "tests",
+          "added": 385,
+          "deleted": 0
+        },
+        {
+          "path": "test/codebase-census.test.js",
+          "category": "tests",
+          "added": 135,
+          "deleted": 0
+        },
+        {
+          "path": "test/connect-deadlines.test.js",
+          "category": "tests",
+          "added": 299,
+          "deleted": 0
+        },
+        {
+          "path": "test/connection-boundaries.test.js",
+          "category": "tests",
+          "added": 167,
+          "deleted": 0
+        },
+        {
+          "path": "test/dapp-preflight.test.js",
+          "category": "tests",
+          "added": 276,
+          "deleted": 0
+        },
+        {
+          "path": "test/discovery-diagnostics.test.js",
+          "category": "tests",
+          "added": 99,
+          "deleted": 0
+        },
+        {
+          "path": "test/external-dapp-report.test.js",
+          "category": "tests",
+          "added": 72,
+          "deleted": 0
+        },
+        {
+          "path": "test/external-provider-compatibility.test.js",
+          "category": "tests",
+          "added": 180,
+          "deleted": 0
+        },
+        {
+          "path": "test/liquidity-target.test.js",
+          "category": "tests",
+          "added": 156,
+          "deleted": 0
+        },
+        {
+          "path": "test/provider-errors.test.js",
+          "category": "tests",
+          "added": 138,
+          "deleted": 0
+        },
+        {
+          "path": "test/provider-registry.test.js",
+          "category": "tests",
+          "added": 181,
+          "deleted": 0
+        },
+        {
+          "path": "test/read-deadlines.test.js",
+          "category": "tests",
+          "added": 253,
+          "deleted": 0
+        },
+        {
+          "path": "test/wallet-card-controller.test.js",
+          "category": "tests",
+          "added": 328,
+          "deleted": 0
+        },
+        {
+          "path": "test/wallet-session.test.js",
+          "category": "tests",
+          "added": 549,
+          "deleted": 0
+        }
+      ]
+    }
+  ],
+  "currentCensus": {
+    "goalPhysicalLines": 20000,
+    "physicalLines": 18242,
+    "remainingPhysicalLines": 1758,
+    "activeImplementationAndTests": 15846,
+    "meaning": "Physical lines contain blank/comment/config; quality and completion are not measured by LOC.",
+    "repos": {
+      "DAT": {
+        "categories": {
+          "implementation": {
+            "files": 11,
+            "physical": 1280,
+            "active": 1128
+          },
+          "tests": {
+            "files": 12,
+            "physical": 2047,
+            "active": 1885
+          },
+          "tools": {
+            "files": 8,
+            "physical": 702,
+            "active": 603
+          },
+          "configuration": {
+            "files": 5,
+            "physical": 191,
+            "active": 185
+          }
+        },
+        "totalPhysicalLines": 4220,
+        "activeImplementationAndTests": 3616,
+        "blankLines": 272,
+        "commentOnlyLines": 147,
+        "configurationPhysicalLines": 191,
+        "skippedLargeFiles": []
+      },
+      "EMA-Draft": {
+        "categories": {
+          "implementation": {
+            "files": 10,
+            "physical": 904,
+            "active": 741
+          },
+          "tests": {
+            "files": 11,
+            "physical": 2032,
+            "active": 1870
+          },
+          "tools": {
+            "files": 6,
+            "physical": 303,
+            "active": 236
+          },
+          "configuration": {
+            "files": 3,
+            "physical": 94,
+            "active": 90
+          }
+        },
+        "totalPhysicalLines": 3333,
+        "activeImplementationAndTests": 2847,
+        "blankLines": 222,
+        "commentOnlyLines": 174,
+        "configurationPhysicalLines": 94,
+        "skippedLargeFiles": []
+      },
+      "CAWELON-Draft": {
+        "categories": {
+          "implementation": {
+            "files": 10,
+            "physical": 903,
+            "active": 742
+          },
+          "tests": {
+            "files": 11,
+            "physical": 2032,
+            "active": 1870
+          },
+          "tools": {
+            "files": 6,
+            "physical": 303,
+            "active": 236
+          },
+          "configuration": {
+            "files": 3,
+            "physical": 94,
+            "active": 90
+          }
+        },
+        "totalPhysicalLines": 3332,
+        "activeImplementationAndTests": 2848,
+        "blankLines": 222,
+        "commentOnlyLines": 172,
+        "configurationPhysicalLines": 94,
+        "skippedLargeFiles": []
+      },
+      "ThreeCore-Wallet": {
+        "categories": {
+          "implementation": {
+            "files": 13,
+            "physical": 1893,
+            "active": 1613
+          },
+          "tests": {
+            "files": 22,
+            "physical": 4639,
+            "active": 4322
+          },
+          "tools": {
+            "files": 9,
+            "physical": 697,
+            "active": 600
+          },
+          "configuration": {
+            "files": 3,
+            "physical": 128,
+            "active": 128
+          }
+        },
+        "totalPhysicalLines": 7357,
+        "activeImplementationAndTests": 6535,
+        "blankLines": 424,
+        "commentOnlyLines": 270,
+        "configurationPhysicalLines": 128,
+        "skippedLargeFiles": []
+      }
+    }
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "dateJST": "2026-10-21",
+  "simulation": {
+    "officialOriginExpected": "https://aerodrome.finance",
+    "profile": "temporary-isolated-Edge",
+    "mockMode": true,
+    "before": {
+      "url": "https://aerodrome.finance/connect",
+      "title": "Aerodrome Finance",
+      "text": "Aerodrome Finance.\nConnect\n\nYou'll need an Ethereum Wallet to continue.\n\nBrowser Wallet\nWalletConnect\nCoinbase Wallet\nBinance Wallet\n2026 © Aerodrome Finance. v5.0.0+97eb4f",
+      "buttons": [
+        {
+          "text": "Browser Wallet",
+          "disabled": false
+        },
+        {
+          "text": "WalletConnect",
+          "disabled": false
+        },
+        {
+          "text": "Coinbase Wallet",
+          "disabled": false
+        },
+        {
+          "text": "Binance Wallet",
+          "disabled": false
+        }
+      ],
+      "simulationPresent": true
+    },
+    "buttonClicked": true,
+    "afterClick": {
+      "text": "Aerodrome Finance.\n\nMake sure that you have read and that you agree to the legal disclaimer before continuing using the web app.\n\nSign-in\n2026 © Aerodrome Finance. v5.0.0+97eb4f",
+      "simulatedMethods": [
+        "eth_accounts",
+        "wallet_requestPermissions",
+        "eth_requestAccounts",
+        "eth_chainId",
+        "eth_chainId",
+        "wallet_getCapabilities"
+      ],
+      "dialogs": [],
+      "buttons": [
+        "Sign-in"
+      ]
+    },
+    "signInButtonClicked": true,
+    "afterSignInAttempt": {
+      "text": "UserRejectedRequestError: User rejected the request. Details: personal_sign is blocked by the ThreeCore simulation Version: viem@2.38.6\nCopy error\nAerodrome Finance.\n\nMake sure that you have read and that you agree to the legal disclaimer before continuing using the web app.\n\nSign-in\n2026 © Aerodrome Finance. v5.0.0+97eb4f",
+      "simulatedMethods": [
+        "eth_accounts",
+        "wallet_requestPermissions",
+        "eth_requestAccounts",
+        "eth_chainId",
+        "eth_chainId",
+        "wallet_getCapabilities",
+        "eth_chainId",
+        "personal_sign"
+      ],
+      "simulationActive": true
+    },
+    "verification": {
+      "officialSiteUiLoaded": true,
+      "browserWalletOptionVisible": true,
+      "syntheticAccountPermissionRequested": true,
+      "signInRequestedPersonalSign": true,
+      "personalSignSafelyRejected": true,
+      "realWalletConnected": false,
+      "actualSignatureProduced": false,
+      "anyTransactionSent": false,
+      "isolatedBrowserProfile": true
+    }
+  },
+  "pools": {
+    "chainId": 8453,
+    "checkedBlockNumber": "52862187",
+    "factoryAddress": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+    "quoteTokenAddress": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "pools": {
+      "DAT": {
+        "volatile": {
+          "poolAddress": "0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6",
+          "contractCodePresent": true,
+          "tokenReserveBaseUnits": "10000000000000000000000000",
+          "usdcReserveBaseUnits": "100000000",
+          "reserveTimestamp": "1789362833"
+        },
+        "stable": {
+          "poolAddress": null,
+          "contractCodePresent": false,
+          "tokenReserveBaseUnits": null,
+          "usdcReserveBaseUnits": null,
+          "reserveTimestamp": null
+        }
+      },
+      "EMA": {
+        "volatile": {
+          "poolAddress": "0x8c0689ee10cf35a76149ba37808b5758c5826688",
+          "contractCodePresent": true,
+          "tokenReserveBaseUnits": "7770000000000000000000000",
+          "usdcReserveBaseUnits": "100000000",
+          "reserveTimestamp": "1789877169"
+        },
+        "stable": {
+          "poolAddress": null,
+          "contractCodePresent": false,
+          "tokenReserveBaseUnits": null,
+          "usdcReserveBaseUnits": null,
+          "reserveTimestamp": null
+        }
+      },
+      "CAWELON": {
+        "volatile": {
+          "poolAddress": "0x5445b0f683c74aff048149bb9e0865d05a85b0b4",
+          "contractCodePresent": true,
+          "tokenReserveBaseUnits": "4200000000000000000000000000000",
+          "usdcReserveBaseUnits": "100000000",
+          "reserveTimestamp": "1789877203"
+        },
+        "stable": {
+          "poolAddress": null,
+          "contractCodePresent": false,
+          "tokenReserveBaseUnits": null,
+          "usdcReserveBaseUnits": null,
+          "reserveTimestamp": null
+        }
+      }
+    },
+    "readOnly": true,
+    "classicFactoryOnly": true,
+    "walletConnected": false,
+    "transactionsExecuted": false,
+    "liquiditySafetyAudited": false
+  },
+  "identities": {
+    "DAT": {
+      "network": "Base Mainnet",
+      "chainId": 8453,
+      "blockNumber": "52862222",
+      "contractAddress": "0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5",
+      "tokenName": "DATCORE",
+      "tokenSymbol": "DAT",
+      "decimals": 18,
+      "totalSupplyBaseUnits": "1000000000000000000000000000",
+      "originalIssuanceTokenUnits": "1000000000",
+      "estimatedBurnedBaseUnits": "0",
+      "deployedCodePresent": true,
+      "readOnly": true,
+      "contractDeployedByCheck": false,
+      "transactionSent": false,
+      "securityAudit": false
+    },
+    "EMA-Draft": {
+      "network": "Base Mainnet",
+      "chainId": 8453,
+      "blockNumber": "52862224",
+      "contractAddress": "0xBaE0933d509b83B7bbAb3AaB9feD413504382a76",
+      "tokenName": "EMA CORE",
+      "tokenSymbol": "EMA",
+      "decimals": 18,
+      "totalSupplyBaseUnits": "777000000000000000000000000",
+      "originalIssuanceTokenUnits": "777000000",
+      "estimatedBurnedBaseUnits": "0",
+      "deployedCodePresent": true,
+      "readOnly": true,
+      "contractDeployedByCheck": false,
+      "transactionSent": false,
+      "securityAudit": false
+    },
+    "CAWELON-Draft": {
+      "network": "Base Mainnet",
+      "chainId": 8453,
+      "blockNumber": "52862225",
+      "contractAddress": "0xB4654b5a4617Fe2c27a0DD6EAEe98F8AA941b895",
+      "tokenName": "CAWELON CORE",
+      "tokenSymbol": "CAWELON",
+      "decimals": 18,
+      "totalSupplyBaseUnits": "420000000000000000000000000000000",
+      "originalIssuanceTokenUnits": "420000000000000",
+      "estimatedBurnedBaseUnits": "0",
+      "deployedCodePresent": true,
+      "readOnly": true,
+      "contractDeployedByCheck": false,
+      "transactionSent": false,
+      "securityAudit": false
+    }
+  }
+}

@@ -1,0 +1,93 @@
+name: External dApp synthetic compatibility diagnostic
+on:
+  workflow_dispatch:
+  push:
+    branches: ['validation/external-dapp-phase11*', 'validation/external-dapp-phase12*', 'validation/external-dapp-phase16*', 'validation/external-dapp-phase17*', 'validation/external-dapp-phase18*', 'validation/external-dapp-phase19*', 'validation/external-dapp-phase20*']
+permissions:
+  contents: read
+jobs:
+  aerodrome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - discovery: legacy-and-eip6963
+            variant: unmodified-official
+            scenario: single
+          - discovery: eip6963-only
+            variant: unmodified-official
+            scenario: single
+          - discovery: eip6963-only
+            variant: local-connector-list-experiment
+            scenario: single
+          - discovery: eip6963-only
+            variant: local-connector-list-experiment
+            scenario: multi-reannounce
+          - discovery: eip6963-only
+            variant: local-connector-list-experiment
+            scenario: delayed
+          - discovery: eip6963-only
+            variant: local-connector-list-experiment
+            scenario: duplicate-name
+          - discovery: eip6963-only
+            variant: local-wallet-choice-experiment
+            scenario: duplicate-name
+          - discovery: eip6963-only
+            variant: local-wallet-choice-experiment
+            scenario: unnamed
+          - discovery: eip6963-only
+            variant: local-wallet-choice-experiment
+            scenario: duplicate-name
+            lifecycle: true
+          - discovery: eip6963-only
+            variant: local-wallet-choice-experiment
+            scenario: unnamed
+            lifecycle: true
+          - discovery: eip6963-only
+            variant: local-wallet-choice-experiment
+            scenario: duplicate-name
+            lifecycle: true
+            recovery: true
+          - discovery: eip6963-only
+            variant: local-wallet-choice-experiment
+            scenario: unnamed
+            lifecycle: true
+            recovery: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Offline regressions before live diagnostic
+        run: npm test
+      - name: EIP-6963-only selection in the ThreeCore UI
+        run: npm run test:browser-ui
+      - name: Observe labeled page variant with a fresh synthetic Wallet
+        env:
+          DISCOVERY: ${{ matrix.discovery }}
+          VARIANT: ${{ matrix.variant }}
+          SCENARIO: ${{ matrix.scenario }}
+          LIFECYCLE: ${{ matrix.lifecycle }}
+          RECOVERY: ${{ matrix.recovery }}
+        run: |
+          args=(--mock-wallet --diagnose-discovery)
+          if [ "$DISCOVERY" = "eip6963-only" ]; then args+=(--eip6963-only); fi
+          if [ "$VARIANT" = "local-connector-list-experiment" ]; then args+=(--test-connector-list-fix); fi
+          if [ "$VARIANT" = "local-wallet-choice-experiment" ]; then args+=(--test-wallet-choice-fix); fi
+          if [ "$LIFECYCLE" = "true" ]; then args+=(--test-wallet-lifecycle); fi
+          if [ "$RECOVERY" = "true" ]; then args+=(--test-wallet-recovery-ui); fi
+          args+=("--scenario=$SCENARIO")
+          node scripts/run-isolated-aerodrome-probe.js "${args[@]}" > external-dapp.json
+      - name: Print diagnostic evidence
+        if: always()
+        run: test ! -f external-dapp.json || cat external-dapp.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aerodrome-${{ matrix.discovery }}-${{ matrix.variant }}-${{ matrix.scenario }}-lifecycle-${{ matrix.lifecycle || 'false' }}-recovery-${{ matrix.recovery || 'false' }}
+          path: external-dapp.json
+          if-no-files-found: error

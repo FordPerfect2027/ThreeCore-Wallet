@@ -1,0 +1,777 @@
+{
+  "report": "ThreeCore development and validation, October 20-21, 2026 JST",
+  "snapshotCutoff": "2026-10-21T06:21:31+09:00",
+  "verifiedAtUtc": "2026-10-20 21:23:48 UTC",
+  "scope": "Historical development snapshot before this documentation publication",
+  "counting": "Do not sum repeated runners or CI runs as independent test cases. The token project runner includes the separate read-only tests.",
+  "tests": {
+    "wallet": {
+      "unitTests": 361,
+      "httpTests": 2,
+      "chromeUiTests": 21,
+      "chromeUiAdded": 3
+    },
+    "tokens": {
+      "DAT": {
+        "projectRunnerIncludingReadOnly": 157,
+        "separateReadOnlyRunner": 120,
+        "historyLocalEvm": 10,
+        "walletIntegration": 42
+      },
+      "EMA-Draft": {
+        "projectRunnerIncludingReadOnly": 159,
+        "separateReadOnlyRunner": 120,
+        "historyLocalEvm": 10,
+        "walletIntegration": 42
+      },
+      "CAWELON-Draft": {
+        "projectRunnerIncludingReadOnly": 159,
+        "separateReadOnlyRunner": 120,
+        "historyLocalEvm": 10,
+        "walletIntegration": 42
+      }
+    }
+  },
+  "repositories": [
+    {
+      "repository": "FordPrefect2026/DAT",
+      "startingMain": "bc4669c5c7dcd739e32a388c65df695036135019",
+      "publishedMain": "5ccb3419129dccb0bd5e1506eb464b1a38768e26",
+      "tree": "936a6cce452fd4af4df9071ed0a8e972aa686856",
+      "commitUrl": "https://github.com/FordPrefect2026/DAT/commit/5ccb3419129dccb0bd5e1506eb464b1a38768e26",
+      "changedFiles": [
+        ".github/workflows/ci.yml",
+        "README.md",
+        "docs/VALIDATION_PHASE12_2026-10-21.md"
+      ],
+      "local": {
+        "head": "5ccb3419129dccb0bd5e1506eb464b1a38768e26",
+        "originMain": "5ccb3419129dccb0bd5e1506eb464b1a38768e26",
+        "clean": true
+      },
+      "ci": {
+        "id": 39499670830,
+        "url": "https://github.com/FordPrefect2026/DAT/actions/runs/39499670830",
+        "headSha": "5ccb3419129dccb0bd5e1506eb464b1a38768e26",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 118893663823,
+            "name": "test",
+            "conclusion": "success",
+            "url": "https://github.com/FordPrefect2026/DAT/actions/runs/39499670830/job/118893663823",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Set up Node.js",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Compile, test, and type-check",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out pinned Wallet integration suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Verify current token with Wallet on both simulated chain IDs",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out pinned Wallet integration suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Set up Node.js",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ],
+            "logEvidence": {
+              "id": 118893663823,
+              "name": "test",
+              "lines": [
+                "2026-10-20T21:21:40.5370505Z   157 passing (1447ms)",
+                "2026-10-20T21:21:45.2910405Z # tests 120",
+                "2026-10-20T21:21:45.2911148Z # pass 120",
+                "2026-10-20T21:21:45.2930798Z # fail 0",
+                "2026-10-20T21:21:45.2931528Z # cancelled 0",
+                "2026-10-20T21:21:45.2931939Z # skipped 0",
+                "2026-10-20T21:21:46.5246727Z # tests 10",
+                "2026-10-20T21:21:46.5247674Z # pass 10",
+                "2026-10-20T21:21:46.5248180Z # fail 0",
+                "2026-10-20T21:21:46.5248684Z # cancelled 0",
+                "2026-10-20T21:21:46.5249670Z # skipped 0",
+                "2026-10-20T21:21:52.7326522Z # tests 42",
+                "2026-10-20T21:21:52.7327294Z # pass 42",
+                "2026-10-20T21:21:52.7327668Z # fail 0",
+                "2026-10-20T21:21:52.7328046Z # cancelled 0",
+                "2026-10-20T21:21:52.7328454Z # skipped 0"
+              ],
+              "expectedCountsVerified": [
+                120,
+                10,
+                42
+              ],
+              "contractTestsVerified": 157
+            }
+          }
+        ]
+      }
+    },
+    {
+      "repository": "FordPrefect2026/EMA-Draft",
+      "startingMain": "99ae43bde36909ebd5763735be9576a732425e53",
+      "publishedMain": "2ccab1335aa60502fda210e582aef7e06c3a9c6a",
+      "tree": "faf580daf9f2401066a22069990dab99a7e98520",
+      "commitUrl": "https://github.com/FordPrefect2026/EMA-Draft/commit/2ccab1335aa60502fda210e582aef7e06c3a9c6a",
+      "changedFiles": [
+        ".github/workflows/ci.yml",
+        "README.md",
+        "docs/VALIDATION_PHASE12_2026-10-21.md"
+      ],
+      "local": {
+        "head": "2ccab1335aa60502fda210e582aef7e06c3a9c6a",
+        "originMain": "2ccab1335aa60502fda210e582aef7e06c3a9c6a",
+        "clean": true
+      },
+      "ci": {
+        "id": 39499685930,
+        "url": "https://github.com/FordPrefect2026/EMA-Draft/actions/runs/39499685930",
+        "headSha": "2ccab1335aa60502fda210e582aef7e06c3a9c6a",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 118893715430,
+            "name": "compile-test-typecheck",
+            "conclusion": "success",
+            "url": "https://github.com/FordPrefect2026/EMA-Draft/actions/runs/39499685930/job/118893715430",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Set up Node.js 22",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install locked dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Compile, run contract tests, and type-check",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out pinned Wallet integration suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Verify current token with Wallet on both simulated chain IDs",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out pinned Wallet integration suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Set up Node.js 22",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ],
+            "logEvidence": {
+              "id": 118893715430,
+              "name": "compile-test-typecheck",
+              "lines": [
+                "2026-10-20T21:21:53.3379971Z   159 passing (1466ms)",
+                "2026-10-20T21:21:57.9637920Z # tests 120",
+                "2026-10-20T21:21:57.9639474Z # pass 120",
+                "2026-10-20T21:21:57.9639881Z # fail 0",
+                "2026-10-20T21:21:57.9640239Z # cancelled 0",
+                "2026-10-20T21:21:57.9640628Z # skipped 0",
+                "2026-10-20T21:21:59.1541353Z # tests 10",
+                "2026-10-20T21:21:59.1541893Z # pass 10",
+                "2026-10-20T21:21:59.1542451Z # fail 0",
+                "2026-10-20T21:21:59.1542927Z # cancelled 0",
+                "2026-10-20T21:21:59.1543572Z # skipped 0",
+                "2026-10-20T21:22:05.3969733Z # tests 42",
+                "2026-10-20T21:22:05.3970257Z # pass 42",
+                "2026-10-20T21:22:05.3970950Z # fail 0",
+                "2026-10-20T21:22:05.3971415Z # cancelled 0",
+                "2026-10-20T21:22:05.3972069Z # skipped 0"
+              ],
+              "expectedCountsVerified": [
+                120,
+                10,
+                42
+              ],
+              "contractTestsVerified": 159
+            }
+          }
+        ]
+      }
+    },
+    {
+      "repository": "FordPrefect2026/CAWELON-Draft",
+      "startingMain": "0337ea55eca6a67aced765f36a519a5734fb4218",
+      "publishedMain": "171a6c9f4476f9412027e857dde1fef1017eb8c4",
+      "tree": "9d73126b1e20dd0656d683636634c85c3fb3bc14",
+      "commitUrl": "https://github.com/FordPrefect2026/CAWELON-Draft/commit/171a6c9f4476f9412027e857dde1fef1017eb8c4",
+      "changedFiles": [
+        ".github/workflows/ci.yml",
+        "README.md",
+        "docs/VALIDATION_PHASE12_2026-10-21.md"
+      ],
+      "local": {
+        "head": "171a6c9f4476f9412027e857dde1fef1017eb8c4",
+        "originMain": "171a6c9f4476f9412027e857dde1fef1017eb8c4",
+        "clean": true
+      },
+      "ci": {
+        "id": 39499702005,
+        "url": "https://github.com/FordPrefect2026/CAWELON-Draft/actions/runs/39499702005",
+        "headSha": "171a6c9f4476f9412027e857dde1fef1017eb8c4",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 118893769695,
+            "name": "compile-test-typecheck",
+            "conclusion": "success",
+            "url": "https://github.com/FordPrefect2026/CAWELON-Draft/actions/runs/39499702005/job/118893769695",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Set up Node.js 22",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install locked dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Compile, run contract tests, and type-check",
+                "conclusion": "success"
+              },
+              {
+                "name": "Check out pinned Wallet integration suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Verify current token with Wallet on both simulated chain IDs",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out pinned Wallet integration suite",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Set up Node.js 22",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Check out repository",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ],
+            "logEvidence": {
+              "id": 118893769695,
+              "name": "compile-test-typecheck",
+              "lines": [
+                "2026-10-20T21:21:55.6058144Z   159 passing (1481ms)",
+                "2026-10-20T21:22:00.3261711Z # tests 120",
+                "2026-10-20T21:22:00.3262744Z # pass 120",
+                "2026-10-20T21:22:00.3263145Z # fail 0",
+                "2026-10-20T21:22:00.3263659Z # cancelled 0",
+                "2026-10-20T21:22:00.3264128Z # skipped 0",
+                "2026-10-20T21:22:01.5563468Z # tests 10",
+                "2026-10-20T21:22:01.5564267Z # pass 10",
+                "2026-10-20T21:22:01.5564653Z # fail 0",
+                "2026-10-20T21:22:01.5565259Z # cancelled 0",
+                "2026-10-20T21:22:01.5565766Z # skipped 0",
+                "2026-10-20T21:22:07.8780964Z # tests 42",
+                "2026-10-20T21:22:07.8782370Z # pass 42",
+                "2026-10-20T21:22:07.8782951Z # fail 0",
+                "2026-10-20T21:22:07.8783540Z # cancelled 0",
+                "2026-10-20T21:22:07.8783969Z # skipped 0"
+              ],
+              "expectedCountsVerified": [
+                120,
+                10,
+                42
+              ],
+              "contractTestsVerified": 159
+            }
+          }
+        ]
+      }
+    },
+    {
+      "repository": "FordPrefect2026/ThreeCore-Wallet",
+      "startingMain": "2b6a23b61d04cd72f3d868f66c037a1aae07776b",
+      "publishedMain": "bb8cd3c8ef76de6cf6b5effc7daed10234e13276",
+      "tree": "7788e1b09c7ad738b57cfe5f92168d6d7c8dfb8d",
+      "commitUrl": "https://github.com/FordPrefect2026/ThreeCore-Wallet/commit/bb8cd3c8ef76de6cf6b5effc7daed10234e13276",
+      "changedFiles": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/external-dapp.yml",
+        "README.md",
+        "docs/VALIDATION_PHASE12_2026-10-21.md",
+        "docs/phase12-discovery-evidence.json",
+        "scripts/aerodrome-ui-probe.js",
+        "scripts/inspect-dapp-discovery.js",
+        "scripts/run-isolated-aerodrome-probe.js",
+        "scripts/test-browser-ui.js",
+        "src/aerodrome-mock-wallet.js",
+        "src/external-dapp-report.js",
+        "test/browser/ui-tests.js",
+        "test/discovery-diagnostics.test.js",
+        "test/external-provider-compatibility.test.js"
+      ],
+      "local": {
+        "head": "bb8cd3c8ef76de6cf6b5effc7daed10234e13276",
+        "originMain": "bb8cd3c8ef76de6cf6b5effc7daed10234e13276",
+        "clean": true
+      },
+      "ci": {
+        "id": 39499276746,
+        "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39499276746",
+        "headSha": "bb8cd3c8ef76de6cf6b5effc7daed10234e13276",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 118892325536,
+            "name": "test",
+            "conclusion": "success",
+            "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39499276746/job/118892325536",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Offline mock and read-only regression tests",
+                "conclusion": "success"
+              },
+              {
+                "name": "Demo HTTP routes and test fixture isolation",
+                "conclusion": "success"
+              },
+              {
+                "name": "Synthetic Wallet UI in isolated headless Chrome",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/setup-node@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ],
+            "logEvidence": {
+              "id": 118892325536,
+              "name": "test",
+              "lines": [
+                "2026-10-20T21:18:37.9546182Z # tests 361",
+                "2026-10-20T21:18:37.9547894Z # pass 361",
+                "2026-10-20T21:18:37.9548544Z # fail 0",
+                "2026-10-20T21:18:37.9549198Z # cancelled 0",
+                "2026-10-20T21:18:37.9549937Z # skipped 0",
+                "2026-10-20T21:18:38.4768062Z # tests 2",
+                "2026-10-20T21:18:38.4769678Z # pass 2",
+                "2026-10-20T21:18:38.4770397Z # fail 0",
+                "2026-10-20T21:18:38.4771764Z # cancelled 0",
+                "2026-10-20T21:18:38.4772281Z # skipped 0",
+                "2026-10-20T21:18:49.0368876Z 21 browser UI tests passed with a synthetic provider and no external RPC."
+              ],
+              "expectedCountsVerified": [
+                361,
+                2
+              ]
+            }
+          },
+          {
+            "id": 118892325743,
+            "name": "token-integration (EMA-Draft, 99ae43bde36909ebd5763735be9576a732425e53)",
+            "conclusion": "success",
+            "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39499276746/job/118892325743",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install pinned token dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Compile the actual token contract",
+                "conclusion": "success"
+              },
+              {
+                "name": "Validate actual token history and malformed log rejection",
+                "conclusion": "success"
+              },
+              {
+                "name": "Wallet against local EVM on both supported chain IDs",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/setup-node@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ],
+            "logEvidence": {
+              "id": 118892325743,
+              "name": "token-integration (EMA-Draft, 99ae43bde36909ebd5763735be9576a732425e53)",
+              "lines": [
+                "2026-10-20T21:18:46.6775123Z # tests 120",
+                "2026-10-20T21:18:46.6775618Z # pass 120",
+                "2026-10-20T21:18:46.6775821Z # fail 0",
+                "2026-10-20T21:18:46.6776003Z # cancelled 0",
+                "2026-10-20T21:18:46.6776192Z # skipped 0",
+                "2026-10-20T21:18:47.6260753Z # tests 10",
+                "2026-10-20T21:18:47.6261323Z # pass 10",
+                "2026-10-20T21:18:47.6261570Z # fail 0",
+                "2026-10-20T21:18:47.6261827Z # cancelled 0",
+                "2026-10-20T21:18:47.6262262Z # skipped 0",
+                "2026-10-20T21:18:52.8762384Z # tests 42",
+                "2026-10-20T21:18:52.8763321Z # pass 42",
+                "2026-10-20T21:18:52.8763807Z # fail 0",
+                "2026-10-20T21:18:52.8764112Z # cancelled 0",
+                "2026-10-20T21:18:52.8764397Z # skipped 0"
+              ],
+              "expectedCountsVerified": [
+                120,
+                10,
+                42
+              ]
+            }
+          },
+          {
+            "id": 118892325907,
+            "name": "token-integration (DAT, bc4669c5c7dcd739e32a388c65df695036135019)",
+            "conclusion": "success",
+            "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39499276746/job/118892325907",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install pinned token dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Compile the actual token contract",
+                "conclusion": "success"
+              },
+              {
+                "name": "Validate actual token history and malformed log rejection",
+                "conclusion": "success"
+              },
+              {
+                "name": "Wallet against local EVM on both supported chain IDs",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/setup-node@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ],
+            "logEvidence": {
+              "id": 118892325907,
+              "name": "token-integration (DAT, bc4669c5c7dcd739e32a388c65df695036135019)",
+              "lines": [
+                "2026-10-20T21:18:48.8640213Z # tests 120",
+                "2026-10-20T21:18:48.8640889Z # pass 120",
+                "2026-10-20T21:18:48.8641239Z # fail 0",
+                "2026-10-20T21:18:48.8641566Z # cancelled 0",
+                "2026-10-20T21:18:48.8641937Z # skipped 0",
+                "2026-10-20T21:18:50.1556042Z # tests 10",
+                "2026-10-20T21:18:50.1558067Z # pass 10",
+                "2026-10-20T21:18:50.1558403Z # fail 0",
+                "2026-10-20T21:18:50.1558726Z # cancelled 0",
+                "2026-10-20T21:18:50.1559076Z # skipped 0",
+                "2026-10-20T21:18:55.9849617Z # tests 42",
+                "2026-10-20T21:18:55.9851014Z # pass 42",
+                "2026-10-20T21:18:55.9851353Z # fail 0",
+                "2026-10-20T21:18:55.9856037Z # cancelled 0",
+                "2026-10-20T21:18:55.9856338Z # skipped 0"
+              ],
+              "expectedCountsVerified": [
+                120,
+                10,
+                42
+              ]
+            }
+          },
+          {
+            "id": 118892326050,
+            "name": "token-integration (CAWELON-Draft, 0337ea55eca6a67aced765f36a519a5734fb4218)",
+            "conclusion": "success",
+            "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39499276746/job/118892326050",
+            "steps": [
+              {
+                "name": "Set up job",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Run actions/setup-node@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Install pinned token dependencies",
+                "conclusion": "success"
+              },
+              {
+                "name": "Compile the actual token contract",
+                "conclusion": "success"
+              },
+              {
+                "name": "Validate actual token history and malformed log rejection",
+                "conclusion": "success"
+              },
+              {
+                "name": "Wallet against local EVM on both supported chain IDs",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/setup-node@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Post Run actions/checkout@v4",
+                "conclusion": "success"
+              },
+              {
+                "name": "Complete job",
+                "conclusion": "success"
+              }
+            ],
+            "logEvidence": {
+              "id": 118892326050,
+              "name": "token-integration (CAWELON-Draft, 0337ea55eca6a67aced765f36a519a5734fb4218)",
+              "lines": [
+                "2026-10-20T21:18:47.1879350Z # tests 120",
+                "2026-10-20T21:18:47.1879755Z # pass 120",
+                "2026-10-20T21:18:47.1879931Z # fail 0",
+                "2026-10-20T21:18:47.1880104Z # cancelled 0",
+                "2026-10-20T21:18:47.1880295Z # skipped 0",
+                "2026-10-20T21:18:47.9858197Z # tests 10",
+                "2026-10-20T21:18:47.9858595Z # pass 10",
+                "2026-10-20T21:18:47.9858768Z # fail 0",
+                "2026-10-20T21:18:47.9858945Z # cancelled 0",
+                "2026-10-20T21:18:47.9859148Z # skipped 0",
+                "2026-10-20T21:18:52.9491206Z # tests 42",
+                "2026-10-20T21:18:52.9491619Z # pass 42",
+                "2026-10-20T21:18:52.9491889Z # fail 0",
+                "2026-10-20T21:18:52.9492194Z # cancelled 0",
+                "2026-10-20T21:18:52.9492471Z # skipped 0"
+              ],
+              "expectedCountsVerified": [
+                120,
+                10,
+                42
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "externalDapp": {
+    "testedCommit": "1aa163c6edd128e5755f6a9245a20874d91af05c",
+    "workflow": {
+      "id": 39498715359,
+      "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39498715359",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "probes": [
+      {
+        "jobId": 118890398546,
+        "jobUrl": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39498715359/job/118890398546"
+      },
+      {
+        "jobId": 118890398820,
+        "jobUrl": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39498715359/job/118890398820"
+      }
+    ],
+    "testedFilesExactlyMatchPublishedWalletMain": [
+      {
+        "path": ".github/workflows/external-dapp.yml",
+        "match": true
+      },
+      {
+        "path": "scripts/aerodrome-ui-probe.js",
+        "match": true
+      },
+      {
+        "path": "scripts/inspect-dapp-discovery.js",
+        "match": true
+      },
+      {
+        "path": "scripts/run-isolated-aerodrome-probe.js",
+        "match": true
+      },
+      {
+        "path": "scripts/test-browser-ui.js",
+        "match": true
+      },
+      {
+        "path": "src/aerodrome-mock-wallet.js",
+        "match": true
+      },
+      {
+        "path": "src/external-dapp-report.js",
+        "match": true
+      },
+      {
+        "path": "test/browser/ui-tests.js",
+        "match": true
+      },
+      {
+        "path": "test/discovery-diagnostics.test.js",
+        "match": true
+      },
+      {
+        "path": "test/external-provider-compatibility.test.js",
+        "match": true
+      }
+    ],
+    "externalSiteModified": false,
+    "interpretation": "Diagnostic success means observations completed. EIP-6963-only connection to the observed official Aerodrome UI remains unestablished. Signed login was not completed in either mode."
+  },
+  "boundaries": {
+    "realWalletUsed": false,
+    "realWalletSignatures": false,
+    "liveTransactions": false,
+    "liveTokenApprovals": false,
+    "liquidityAdded": false,
+    "productionDeployment": false,
+    "gameDevelopment": false,
+    "localEvmOnly": "Contract tests use simulated accounts and local EVM transactions/permit signatures.",
+    "externalMock": "The official-site mock has no private key and rejects signature requests."
+  }
+}

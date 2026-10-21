@@ -1,0 +1,354 @@
+{
+  "phase": 15,
+  "description": "Browser validation rejects unexpected errors and requires three consecutive clean runs",
+  "startingMain": {
+    "DAT": "5c1a77a0cd6b83080ea368f74b5cbd4cd079544d",
+    "EMA-Draft": "725710dcc1a5010b597fe8d4ffa3ebd89b90d3c4",
+    "CAWELON-Draft": "f3c88348d2a9ed545732b8c5a18d3b0dfebe99df",
+    "ThreeCore-Wallet": "6ad394223f24b3e0a299a5ceca05fe9a2acbe825"
+  },
+  "baseline": {
+    "sha": "582e20928c4f452ad7f7296dc613728acf40cad5",
+    "runId": 39510279188,
+    "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39510279188",
+    "browserCases": 27,
+    "consecutiveRuns": 3,
+    "conclusion": "success",
+    "excerpts": [
+      "2026-10-20T22:44:34.4371943Z Synthetic browser validation attempt 1/3",
+      "2026-10-20T22:44:43.9006150Z 27 browser UI tests passed with a synthetic provider and no external RPC.",
+      "2026-10-20T22:44:43.9224962Z Synthetic browser validation attempt 2/3",
+      "2026-10-20T22:44:44.9824688Z 27 browser UI tests passed with a synthetic provider and no external RPC.",
+      "2026-10-20T22:44:45.0065579Z Synthetic browser validation attempt 3/3",
+      "2026-10-20T22:44:46.0583304Z 27 browser UI tests passed with a synthetic provider and no external RPC."
+    ]
+  },
+  "reproduction": {
+    "sha": "034d2d503c71da1d03c9df7d1be4b7e9f72d8728",
+    "runId": 39510677814,
+    "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39510677814",
+    "conclusion": "expected failure",
+    "controlCases": 2,
+    "failedControls": 2,
+    "description": "Uncaught exception and unhandled Promise rejection each left all 27 UI cases marked passed with no unexpected-error record.",
+    "excerpts": [
+      "2026-10-20T22:48:04.4000425Z </head><body data-suite-status=\"passed\" data-tests-count=\"27\" data-tests-passed=\"27\" data-tests-failed=\"0\" data-unexpected-errors=\"0\" data-error-kinds=\"\">",
+      "2026-10-20T22:48:05.0045096Z </head><body data-suite-status=\"passed\" data-tests-count=\"27\" data-tests-passed=\"27\" data-tests-failed=\"0\" data-unexpected-errors=\"0\" data-error-kinds=\"\">",
+      "2026-10-20T22:48:05.0055099Z Error: Harness did not reject the injected error",
+      "2026-10-20T22:48:05.0055446Z Harness did not reject the injected unhandledrejection"
+    ]
+  },
+  "local": {
+    "wallet": {
+      "tests": 402,
+      "pass": 402,
+      "fail": 0,
+      "skipped": 0,
+      "log": "phase15-wallet-unit.log"
+    }
+  },
+  "candidate": {
+    "sha": "b4ca74b82c1c4538108cb8691698d1e7af317724",
+    "runId": 39511016194,
+    "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39511016194",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 118931747971,
+        "name": "test",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Offline mock and read-only regression tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Demo HTTP routes and test fixture isolation",
+            "conclusion": "success"
+          },
+          {
+            "name": "Browser harness rejects uncaught exceptions and unhandled rejections",
+            "conclusion": "success"
+          },
+          {
+            "name": "Three consecutive synthetic Wallet UI runs in fresh Chrome profiles",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "excerpts": [
+          "2026-10-20T22:51:00.0272190Z # tests 402",
+          "2026-10-20T22:51:00.0272771Z # pass 402",
+          "2026-10-20T22:51:00.0272981Z # fail 0",
+          "2026-10-20T22:51:00.0273401Z # skipped 0",
+          "2026-10-20T22:51:00.2906630Z # tests 2",
+          "2026-10-20T22:51:00.2908065Z # pass 2",
+          "2026-10-20T22:51:00.2908732Z # fail 0",
+          "2026-10-20T22:51:00.2910190Z # skipped 0",
+          "2026-10-20T22:51:01.6969257Z Harness correctly rejected synthetic error despite 27 passing UI cases.",
+          "2026-10-20T22:51:02.3273347Z Harness correctly rejected synthetic unhandledrejection despite 27 passing UI cases.",
+          "2026-10-20T22:51:02.3274234Z 2 browser error-detection controls passed.",
+          "2026-10-20T22:51:02.3493703Z Synthetic browser validation attempt 1/3",
+          "2026-10-20T22:51:03.1554551Z 27 browser UI tests passed with a synthetic provider and no external RPC.",
+          "2026-10-20T22:51:03.1663098Z Synthetic browser validation attempt 2/3",
+          "2026-10-20T22:51:03.9239682Z 27 browser UI tests passed with a synthetic provider and no external RPC.",
+          "2026-10-20T22:51:03.9351676Z Synthetic browser validation attempt 3/3",
+          "2026-10-20T22:51:04.6640413Z 27 browser UI tests passed with a synthetic provider and no external RPC."
+        ]
+      },
+      {
+        "id": 118931748113,
+        "name": "token-integration (EMA-Draft, 725710dcc1a5010b597fe8d4ffa3ebd89b90d3c4)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install pinned token dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Compile the actual token contract",
+            "conclusion": "success"
+          },
+          {
+            "name": "Validate actual token history and malformed log rejection",
+            "conclusion": "success"
+          },
+          {
+            "name": "Wallet against local EVM on both supported chain IDs",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "excerpts": [
+          "2026-10-20T22:51:07.7135097Z # tests 120",
+          "2026-10-20T22:51:07.7135476Z # pass 120",
+          "2026-10-20T22:51:07.7135635Z # fail 0",
+          "2026-10-20T22:51:07.7135957Z # skipped 0",
+          "2026-10-20T22:51:08.5422077Z # tests 10",
+          "2026-10-20T22:51:08.5422288Z # pass 10",
+          "2026-10-20T22:51:08.5422388Z # fail 0",
+          "2026-10-20T22:51:08.5422600Z # skipped 0",
+          "2026-10-20T22:51:13.5369180Z # tests 46",
+          "2026-10-20T22:51:13.5369527Z # pass 46",
+          "2026-10-20T22:51:13.5369699Z # fail 0",
+          "2026-10-20T22:51:13.5370063Z # skipped 0"
+        ]
+      },
+      {
+        "id": 118931748129,
+        "name": "token-integration (CAWELON-Draft, f3c88348d2a9ed545732b8c5a18d3b0dfebe99df)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install pinned token dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Compile the actual token contract",
+            "conclusion": "success"
+          },
+          {
+            "name": "Validate actual token history and malformed log rejection",
+            "conclusion": "success"
+          },
+          {
+            "name": "Wallet against local EVM on both supported chain IDs",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "excerpts": [
+          "2026-10-20T22:51:13.1821598Z # tests 120",
+          "2026-10-20T22:51:13.1822655Z # pass 120",
+          "2026-10-20T22:51:13.1823203Z # fail 0",
+          "2026-10-20T22:51:13.1824497Z # skipped 0",
+          "2026-10-20T22:51:14.4523572Z # tests 10",
+          "2026-10-20T22:51:14.4524374Z # pass 10",
+          "2026-10-20T22:51:14.4524740Z # fail 0",
+          "2026-10-20T22:51:14.4525690Z # skipped 0",
+          "2026-10-20T22:51:20.2437564Z # tests 46",
+          "2026-10-20T22:51:20.2438633Z # pass 46",
+          "2026-10-20T22:51:20.2439136Z # fail 0",
+          "2026-10-20T22:51:20.2498975Z # skipped 0"
+        ]
+      },
+      {
+        "id": 118931748137,
+        "name": "token-integration (DAT, 5c1a77a0cd6b83080ea368f74b5cbd4cd079544d)",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install pinned token dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Compile the actual token contract",
+            "conclusion": "success"
+          },
+          {
+            "name": "Validate actual token history and malformed log rejection",
+            "conclusion": "success"
+          },
+          {
+            "name": "Wallet against local EVM on both supported chain IDs",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "excerpts": [
+          "2026-10-20T22:51:15.1476397Z # tests 120",
+          "2026-10-20T22:51:15.1477415Z # pass 120",
+          "2026-10-20T22:51:15.1477985Z # fail 0",
+          "2026-10-20T22:51:15.1478785Z # skipped 0",
+          "2026-10-20T22:51:16.4597327Z # tests 10",
+          "2026-10-20T22:51:16.4598704Z # pass 10",
+          "2026-10-20T22:51:16.4599108Z # fail 0",
+          "2026-10-20T22:51:16.4600174Z # skipped 0",
+          "2026-10-20T22:51:22.1393541Z # tests 46",
+          "2026-10-20T22:51:22.1394823Z # pass 46",
+          "2026-10-20T22:51:22.1395532Z # fail 0",
+          "2026-10-20T22:51:22.1406809Z # skipped 0"
+        ]
+      }
+    ],
+    "testedFiles": [
+      ".github/workflows/ci.yml",
+      "integration/demo-server.test.mjs",
+      "scripts/test-browser-ui.js",
+      "test/browser/ui-tests.js"
+    ]
+  },
+  "counts": {
+    "walletUnit": 402,
+    "http": 2,
+    "browserDistinctCases": 27,
+    "requiredConsecutiveRuns": 3,
+    "errorDetectionControls": 2,
+    "integrationPerToken": 46,
+    "integrationTotal": 138,
+    "note": "The repeated browser runs and control runs reuse the same 27 cases. Do not count them as new independent cases."
+  },
+  "limits": [
+    "The Phase 14 Chrome timeout was not reproduced; its root cause remains undetermined.",
+    "This phase improves test detection; it does not establish the cause or elimination of the prior timeout.",
+    "Official Aerodrome probe not rerun; previous EIP-6963-only limitation remains unresolved.",
+    "Real extension compatibility, WalletConnect, completed signed login and independent audit remain unverified.",
+    "No real-wallet signing or transactions, production deployments or game development."
+  ]
+}

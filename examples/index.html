@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ThreeCore Wallet — Read-only Demo</title>
+<style>
+:root{font:16px/1.5 system-ui;color:#edf2ff;background:#0a1020}
+body{max-width:1060px;margin:auto;padding:28px 18px}
+header{margin-bottom:25px}h1{margin-bottom:0}
+small,p{color:#c7d1e3}
+.notice{background:#1b2940;border:1px solid #7283a3;padding:12px 16px;border-radius:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{padding:18px;border-radius:15px;background:#172139;border:1px solid #405275}
+.card:nth-child(1){border-top:4px solid #e5b84d}
+.card:nth-child(2){border-top:4px solid #e890b3}
+.card:nth-child(3){border-top:4px solid #9fb5c7}
+label{display:block;font-weight:600;margin-top:13px}
+input,select{display:block;box-sizing:border-box;width:100%;padding:9px;margin-top:5px;color:#fff;background:#0b1426;border:1px solid #8292af;border-radius:8px}
+button{padding:10px;margin:12px 4px 0 0;border:none;border-radius:8px;cursor:pointer;background:#6dbde9;color:#061b2a;font-weight:700}
+button.secondary{background:#485d7d;color:white}
+button:disabled{opacity:.5;cursor:default}
+output{display:block;min-height:60px;word-wrap:break-word;white-space:pre-wrap;margin-top:15px;color:#9fe0ff}
+</style>
+</head>
+<body>
+<header>
+<h1>ThreeCore Wallet <span aria-hidden="true">👽</span></h1>
+<p>DAT • EMA • CAWELON — Ford Prefect</p>
+<p class="notice"><strong>開発用デモ・読み取り専用。</strong> Walletの接続と残高照会のみ。署名・送金・スワップ・ブリッジは実装していません。外部の分散型サービスへの接続実績を示すものではありません。秘密鍵やシードフレーズを入力しないでください。</p>
+</header>
+<main class="grid" id="grid"></main>
+<footer><p>各エージェントには別々のEVM公開アドレスを設定してください。接続時にWallet拡張の許可確認が必要です。残高表示は最小単位です。</p>DON'T PANIC. JUST CODE.</footer>
+<script type="module">
+import { mountWalletDemo } from "/examples/wallet-demo.js";
+const start = () => mountWalletDemo({
+  document, eventTarget: window, siteOrigin: window.location.origin,
+  getLegacyProvider: () => window.ethereum,
+});
+let app = start();
+window.addEventListener("pagehide", () => { app?.dispose(); app = null; });
+window.addEventListener("pageshow", () => { if (!app) app = start(); });
+</script>
+</body>
+</html>

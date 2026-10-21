@@ -1,0 +1,266 @@
+{
+  "phase": 12,
+  "scope": "Official Aerodrome desktop connection UI with synthetic providers",
+  "testedCommit": "1aa163c6edd128e5755f6a9245a20874d91af05c",
+  "workflow": {
+    "id": 39498715359,
+    "url": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39498715359",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "inheritedAerodromeMockWalletCommit": "4848c39b60bac2c63fc38f685cdef12cd96290a8",
+  "rootCauseJa": "EIP-6963検出は成功する。公式ページは検出したプロバイダーを内部候補へ追加するが、接続画面では初期設定コネクター数で候補を切り詰める。Browser Walletは標準のInjectedコネクターでwindow.ethereumを参照するため、window.ethereumを公開しない模擬Walletに許可要求が届かない。",
+  "sourceEvidence": {
+    "url": "https://aerodrome.finance/assets/index-8N6caatx.js",
+    "sha256": "1ab822229f1f4b7e20c1e7b4780cceb1afca995a31d8d4ef7f3a7a4ec8a94a38",
+    "bytes": 2026768,
+    "observations": [
+      {
+        "offset": 765368,
+        "findingJa": "EIP-6963検出が既定で有効。検出プロバイダーを初期コネクターの後ろに追加。"
+      },
+      {
+        "offset": 867412,
+        "findingJa": "qFは初期コネクターを作成。今回のトップレベルデスクトップ画面には4つの選択肢が表示された。"
+      },
+      {
+        "offset": 1119657,
+        "expression": "r.slice(0,_0e)",
+        "findingJa": "_0eはqF().length。接続画面が初期コネクター数で候補を切り詰め、InjectedをBrowser Walletに改名。"
+      },
+      {
+        "offset": 750588,
+        "expression": "provider(d){return d?.ethereum}",
+        "findingJa": "標準Injectedはwindow.ethereumを取得。未取得なら接続処理はprovider requestに進む前にエラーとなる。"
+      }
+    ]
+  },
+  "probes": [
+    {
+      "jobId": 118890398546,
+      "jobUrl": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39498715359/job/118890398546",
+      "observedAtUtc": "2026-10-20T21:14:33.958Z",
+      "discovery": "eip6963-only",
+      "verification": {
+        "siteUiLoaded": true,
+        "simulationVerified": true,
+        "accountRequested": false,
+        "syntheticAccountGranted": false,
+        "signatureRequested": false,
+        "signatureRejected": false,
+        "signatureBoundaryReached": false,
+        "diagnosticCompleted": true,
+        "outcome": "connection-not-observed",
+        "completedSignIn": false,
+        "realWalletUsed": false
+      },
+      "diagnosis": {
+        "dappRequestedDiscovery": true,
+        "announcementAfterRequest": true,
+        "preClickAccountProbe": true,
+        "rediscoveryAnswered": true,
+        "permissionRequested": false,
+        "status": "discovered-but-no-permission-request",
+        "syntheticNameVisible": false,
+        "externalRoutingCauseProvenByTraceAlone": false
+      },
+      "beforeClick": [
+        {
+          "sequence": 1,
+          "phase": "page-load",
+          "kind": "announcement"
+        },
+        {
+          "sequence": 2,
+          "phase": "page-load",
+          "kind": "discovery-request"
+        },
+        {
+          "sequence": 3,
+          "phase": "page-load",
+          "kind": "announcement"
+        },
+        {
+          "sequence": 4,
+          "phase": "page-load",
+          "kind": "rpc",
+          "method": "eth_accounts",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.getAccounts (https://aerodrome.finance/assets/index-8N6caatx.js:70:16950)\n    at async a (https://aerodrome.finance/assets/index-8N6caatx.js:58:3939)"
+        }
+      ],
+      "afterConnect": [
+        {
+          "sequence": 1,
+          "phase": "page-load",
+          "kind": "announcement"
+        },
+        {
+          "sequence": 2,
+          "phase": "page-load",
+          "kind": "discovery-request"
+        },
+        {
+          "sequence": 3,
+          "phase": "page-load",
+          "kind": "announcement"
+        },
+        {
+          "sequence": 4,
+          "phase": "page-load",
+          "kind": "rpc",
+          "method": "eth_accounts",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.getAccounts (https://aerodrome.finance/assets/index-8N6caatx.js:70:16950)\n    at async a (https://aerodrome.finance/assets/index-8N6caatx.js:58:3939)"
+        },
+        {
+          "sequence": 5,
+          "phase": "explicit-rediscovery",
+          "kind": "discovery-request"
+        },
+        {
+          "sequence": 6,
+          "phase": "explicit-rediscovery",
+          "kind": "announcement"
+        }
+      ],
+      "secondConnectClicked": true
+    },
+    {
+      "jobId": 118890398820,
+      "jobUrl": "https://github.com/FordPrefect2026/ThreeCore-Wallet/actions/runs/39498715359/job/118890398820",
+      "observedAtUtc": "2026-10-20T21:14:32.587Z",
+      "discovery": "legacy-and-eip6963",
+      "verification": {
+        "siteUiLoaded": true,
+        "simulationVerified": true,
+        "accountRequested": true,
+        "syntheticAccountGranted": true,
+        "signatureRequested": true,
+        "signatureRejected": true,
+        "signatureBoundaryReached": true,
+        "diagnosticCompleted": true,
+        "outcome": "signature-rejected-as-required",
+        "completedSignIn": false,
+        "realWalletUsed": false,
+        "revocationObserved": true,
+        "explicitReconnectObserved": true
+      },
+      "diagnosis": {
+        "dappRequestedDiscovery": true,
+        "announcementAfterRequest": true,
+        "preClickAccountProbe": true,
+        "rediscoveryAnswered": false,
+        "permissionRequested": true,
+        "status": "permission-request-observed",
+        "syntheticNameVisible": false,
+        "externalRoutingCauseProvenByTraceAlone": false
+      },
+      "beforeClick": [
+        {
+          "sequence": 1,
+          "phase": "page-load",
+          "kind": "announcement"
+        },
+        {
+          "sequence": 2,
+          "phase": "page-load",
+          "kind": "discovery-request"
+        },
+        {
+          "sequence": 3,
+          "phase": "page-load",
+          "kind": "announcement"
+        },
+        {
+          "sequence": 4,
+          "phase": "page-load",
+          "kind": "rpc",
+          "method": "eth_accounts",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.getAccounts (https://aerodrome.finance/assets/index-8N6caatx.js:70:16950)\n    at async a (https://aerodrome.finance/assets/index-8N6caatx.js:58:3939)"
+        }
+      ],
+      "afterConnect": [
+        {
+          "sequence": 1,
+          "phase": "page-load",
+          "kind": "announcement"
+        },
+        {
+          "sequence": 2,
+          "phase": "page-load",
+          "kind": "discovery-request"
+        },
+        {
+          "sequence": 3,
+          "phase": "page-load",
+          "kind": "announcement"
+        },
+        {
+          "sequence": 4,
+          "phase": "page-load",
+          "kind": "rpc",
+          "method": "eth_accounts",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.getAccounts (https://aerodrome.finance/assets/index-8N6caatx.js:70:16950)\n    at async a (https://aerodrome.finance/assets/index-8N6caatx.js:58:3939)"
+        },
+        {
+          "sequence": 5,
+          "phase": "browser-wallet-click",
+          "kind": "rpc",
+          "method": "wallet_requestPermissions",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.connect (https://aerodrome.finance/assets/index-8N6caatx.js:70:15444)\n    at async ote (https://aerodrome.finance/assets/index-8N6caatx.js:70:2317)"
+        },
+        {
+          "sequence": 6,
+          "phase": "browser-wallet-click",
+          "kind": "rpc",
+          "method": "eth_chainId",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.getChainId (https://aerodrome.finance/assets/index-8N6caatx.js:70:17086)\n    at async Object.onAccountsChanged (https://aerodrome.finance/assets/index-8N6caatx.js:70:19427)"
+        },
+        {
+          "sequence": 7,
+          "phase": "browser-wallet-click",
+          "kind": "rpc",
+          "method": "eth_accounts",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.getAccounts (https://aerodrome.finance/assets/index-8N6caatx.js:70:16950)\n    at async Object.connect (https://aerodrome.finance/assets/index-8N6caatx.js:70:15572)\n    at async ote (https://aerodrome.finance/assets/index-8N6caatx.js:70:2317)"
+        },
+        {
+          "sequence": 8,
+          "phase": "browser-wallet-click",
+          "kind": "rpc",
+          "method": "eth_accounts",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.getAccounts (https://aerodrome.finance/assets/index-8N6caatx.js:70:16950)\n    at async Object.onConnect (https://aerodrome.finance/assets/index-8N6caatx.js:70:19708)"
+        },
+        {
+          "sequence": 9,
+          "phase": "browser-wallet-click",
+          "kind": "rpc",
+          "method": "eth_chainId",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.getChainId (https://aerodrome.finance/assets/index-8N6caatx.js:70:17086)\n    at async Object.connect (https://aerodrome.finance/assets/index-8N6caatx.js:70:16004)\n    at async ote (https://aerodrome.finance/assets/index-8N6caatx.js:70:2317)"
+        },
+        {
+          "sequence": 10,
+          "phase": "browser-wallet-click",
+          "kind": "rpc",
+          "method": "eth_chainId",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at Object.getChainId (https://aerodrome.finance/assets/index-8N6caatx.js:70:17086)\n    at async cp (https://aerodrome.finance/assets/index-8N6caatx.js:70:3428)\n    at async hte (https://aerodrome.finance/assets/index-8N6caatx.js:70:8377)\n    at async queryFn (https://aerodrome.finance/assets/index-8N6caatx.js:70:41208)"
+        },
+        {
+          "sequence": 11,
+          "phase": "browser-wallet-click",
+          "kind": "rpc",
+          "method": "wallet_getCapabilities",
+          "stack": "Error\n    at note (<anonymous>:13:40)\n    at Object.request (<anonymous>:56:9)\n    at R2.delay.count (https://aerodrome.finance/assets/index-8N6caatx.js:58:15801)\n    at a (https://aerodrome.finance/assets/index-8N6caatx.js:58:3945)\n    at https://aerodrome.finance/assets/index-8N6caatx.js:58:4025\n    at new Promise (<anonymous>)\n    at R2 (https://aerodrome.finance/assets/index-8N6caatx.js:58:3765)\n    at wY.enabled (https://aerodrome.finance/assets/index-8N6caatx.js:58:15771)\n    at wY (https://aerodrome.finance/assets/index-8N6caatx.js:58:15309)\n    at Object.request (https://aerodrome.finance/assets/index-8N6caatx.js:58:15764)"
+        }
+      ],
+      "secondConnectClicked": false
+    }
+  ],
+  "interpretationJa": "診断ジョブ成功は観測完了を意味する。EIP-6963のみでの公式画面の接続は未成立。ThreeCore自身の模擬ブラウザー検査3件はEIP-6963のみの選択・接続を確認。外部サイトは変更していない。",
+  "upstreamCorrectionJa": "接続候補を初期設定数で切り詰めず、追加検出したコネクターも選択できるようにする。利用者が選んだコネクターをそのまま接続へ渡す。未選択のWalletへの自動フォールバックやwindow.ethereumの上書きで成功扱いにしない。",
+  "constraints": {
+    "realWallet": false,
+    "signaturesProduced": false,
+    "transactionsSent": false,
+    "externalSiteModified": false,
+    "completedSignIn": false
+  }
+}

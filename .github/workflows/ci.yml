@@ -1,0 +1,70 @@
+name: Read-only wallet regression tests
+on:
+  push:
+    branches: [main, 'validation/provider-discovery-*', 'validation/provider-errors-*', 'validation/browser-validation-*', 'validation/external-dapp-phase16*', 'validation/external-dapp-phase17*', 'validation/external-dapp-phase18*', 'validation/external-dapp-phase19*', 'validation/external-dapp-phase20*']
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Offline mock and read-only regression tests
+        run: npm test
+      - name: Demo HTTP routes and test fixture isolation
+        run: npm run test:demo-server
+      - name: Browser harness rejects uncaught exceptions and unhandled rejections
+        run: node scripts/test-browser-ui.js --verify-error-detection
+      - name: Three consecutive synthetic Wallet UI runs in fresh Chrome profiles
+        run: |
+          for attempt in 1 2 3; do
+            echo "Synthetic browser validation attempt ${attempt}/3"
+            npm run test:browser-ui
+          done
+  token-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - repository: DAT
+            ref: 5c1a77a0cd6b83080ea368f74b5cbd4cd079544d
+          - repository: EMA-Draft
+            ref: 725710dcc1a5010b597fe8d4ffa3ebd89b90d3c4
+          - repository: CAWELON-Draft
+            ref: f3c88348d2a9ed545732b8c5a18d3b0dfebe99df
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: wallet
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: FordPerfect2027/${{ matrix.repository }}
+          ref: ${{ matrix.ref }}
+          path: token
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: token/package-lock.json
+      - name: Install pinned token dependencies
+        working-directory: token
+        run: npm ci
+      - name: Compile the actual token contract
+        working-directory: token
+        run: npm run compile
+      - name: Validate actual token history and malformed log rejection
+        working-directory: token
+        run: npm run test:read-only && npm run test:history
+      - name: Wallet against local EVM on both supported chain IDs
+        working-directory: token
+        run: node --test ../wallet/integration/token-compatibility.test.mjs
