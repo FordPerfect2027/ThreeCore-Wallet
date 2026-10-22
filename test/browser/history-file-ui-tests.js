@@ -44,7 +44,9 @@ export function registerHistoryFileUITests(test) {
         transfer.items.add(new File([content], name, { type: "application/json" }));
         find("file-input").files = transfer.files;
         find("file-input").dispatchEvent(new Event("change", { bubbles: true }));
-        for (let n = 0; n < 100 && find("file-input").disabled; n++) await delay();
+        const deadline = Date.now() + 4000;
+        while (find("file-input").disabled && Date.now() < deadline) await delay();
+        assert(!find("file-input").disabled, "file reading must finish before the next selection");
       };
       try { await action({ parent, panel, history, downloads, imports, find, click, input, selectFile }); }
       finally { panel.dispose(); parent.remove(); }

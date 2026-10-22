@@ -10,6 +10,7 @@ import { registerHistoryFileUITests } from "/test/browser/history-file-ui-tests.
 import { registerHistoryUITests } from "/test/browser/history-ui-tests.js";
 import { mountWalletDemo } from "/examples/wallet-demo.js";
 import { readErrorMessage } from "/src/provider-error.js";
+import { ThreeCoreWalletSession } from "/src/wallet-session.js";
 
 const A = "0x1111111111111111111111111111111111111111";
 const B = "0x2222222222222222222222222222222222222222";
@@ -64,6 +65,10 @@ function fixture(override = () => undefined, { legacy = true, announced = false,
   // No reference to window.ethereum or an installed wallet is made.
   const app = mountWalletDemo({
     document, eventTarget, siteOrigin: location.origin, getLegacyProvider: () => legacy ? provider : undefined, checkpointStorage,
+    // Short, real-clock deadlines for synthetic fixtures only. Production defaults
+    // remain covered by the session unit tests and the normal demo's own factory.
+    createSession: options => new ThreeCoreWalletSession({ ...options,
+      readTimeoutMs: 1000, connectTimeoutMs: 1000, permissionTimeoutMs: 2000 }),
   });
   const card = document.querySelector('[data-agent="DAT"]');
   const field = selector => card.querySelector(selector);
@@ -315,7 +320,7 @@ test("未対応の読み取りでは結果を消し、接続と手動再試行�
   assert(f.calls.filter(x => x.method === "eth_requestAccounts").length === 1, "Unnecessary permission prompt");
 });
 
-test("無応答の読み取りを30秒で終了し、再接続後に古い応答を表示しない", async use => {
+test("無応答の読み取りを設定した期限で終了し、再接続後に古い応答を表示しない", async use => {
   const gate = deferred();
   let delayed = true;
   const f = use(({ method }) => delayed && method === "eth_getBalance" ? gate.promise : undefined);
@@ -356,7 +361,7 @@ test("無応答のdApp検査から手動切断でき、新しい接続で再検�
   assert(f.output() === fresh, "Old failure overwrote the new inspection");
 });
 
-test("接続確認の無応答を30秒で終了し、明示的な再接続で復帰する", async use => {
+test("接続確認の無応答を設定した期限で終了し、明示的な再接続で復帰する", async use => {
   const gate = deferred();
   let delayed = true;
   const f = use(({ method }) => delayed && method === "eth_chainId" ? gate.promise : undefined);
@@ -372,7 +377,7 @@ test("接続確認の無応答を30秒で終了し、明示的な再接続で復
   assert(f.output() === fresh, "Old chain response changed the new connection");
 });
 
-test("許可待ちを120秒で終了し、残っている許可要求を重複させない", async use => {
+test("許可待ちを設定した期限で終了し、残っている許可要求を重複させない", async use => {
   const gate = deferred();
   let delayed = true;
   const f = use(({ method }) => delayed && method === "eth_requestAccounts" ? gate.promise : undefined);
@@ -1219,6 +1224,16 @@ publishSummary = () => {
   document.body.dataset.suiteStatus = failed || unexpectedErrors.length ? "failed" : "passed";
 };
 publishSummary();
+// Only the isolated CI runner accepts this nonce-scoped completion receipt.
+// Report after actual IndexedDB/File tasks finish, without a virtual-time budget.
+const receipt = new URLSearchParams(location.search).get("ci-report");
+if (receipt && /^[a-f0-9-]{36}$/.test(receipt)) {
+  await new Promise(resolve => setTimeout(resolve, 50));
+  await fetch("/test/browser/ci-result/" + receipt, {
+    method: "POST", headers: { "Content-Type": "text/html" },
+    body: document.documentElement.outerHTML,
+  });
+}
 
 
 

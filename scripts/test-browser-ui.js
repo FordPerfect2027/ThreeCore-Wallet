@@ -7,6 +7,7 @@ import { tmpdir } from "node:os";
 import { join, resolve, sep } from "node:path";
 import { createDemoServer } from "../examples/dev-server.js";
 import { checkBrowserResult } from "./browser-result.js";
+import { installBrowserCompletion } from "./browser-completion.js";
 
 if (process.platform !== "linux") throw Error("Run the automated browser suite on Linux; use the local UI test page on other platforms");
 const options = process.argv.slice(2);
@@ -15,45 +16,37 @@ if (options.length > 1 || options.some(value => value !== "--verify-error-detect
 async function runBrowserPage(fault) {
   const server = createDemoServer({ uiTest: true });
   const profileRoot = resolve(tmpdir());
-  let browser, profile;
+  let browser, profile, receipt, exited;
   try {
     profile = await mkdtemp(join(profileRoot, "threecore-ui-test-"));
     await new Promise((resolve, reject) => {
       server.once("error", reject);
       server.listen(0, "127.0.0.1", resolve);
     });
-    const url = `http://127.0.0.1:${server.address().port}/test/browser/` +
-      (fault ? "?harness-fault=" + fault : "");
+    receipt = installBrowserCompletion(server);
+    const url = `http://127.0.0.1:${server.address().port}/test/browser/?ci-report=${receipt.nonce}` +
+      (fault ? "&harness-fault=" + fault : "");
     const args = [
       "--headless=new", "--disable-gpu", "--disable-extensions", "--disable-background-networking",
       "--enable-logging=stderr",
       "--no-first-run", "--no-default-browser-check", "--user-data-dir=" + profile,
-      "--dump-dom", "--virtual-time-budget=240000", url,
+      url,
     ];
-    const html = await new Promise((resolve, reject) => {
-      browser = spawn("google-chrome", args, { stdio: ["ignore", "pipe", "pipe"] });
-      let output = "", errors = "";
-      const timer = setTimeout(() => {
-        browser.kill("SIGKILL");
-        reject(Error("Browser suite timed out; recent diagnostics:\n" + errors));
-      }, 45000);
-      browser.stdout.setEncoding("utf8");
-      browser.stderr.setEncoding("utf8");
-      browser.stdout.on("data", data => {
-        output += data;
-        if (output.length > 1024 * 1024) { browser.kill("SIGKILL"); reject(Error("Unexpected browser output size")); }
-      });
-      browser.stderr.on("data", data => { errors = (errors + data).slice(-12000); });
-      browser.on("error", error => { clearTimeout(timer); reject(error); });
-      browser.on("close", code => {
-        clearTimeout(timer);
-        if (code !== 0) reject(Error("Browser failed: " + errors));
-        else resolve(output);
-      });
-    });
-    return html;
+    browser = spawn("google-chrome", args, { stdio: ["ignore", "ignore", "pipe"] });
+    let errors = "";
+    browser.stderr.setEncoding("utf8");
+    browser.stderr.on("data", data => { errors = (errors + data).slice(-12000); });
+    browser.on("error", error => receipt.fail(error));
+    exited = new Promise(resolve => browser.once("close", code => {
+      receipt.fail(Error("Browser exited before completion: " + code + "\n" + errors));
+      resolve();
+    }));
+    try { return await receipt.result; }
+    catch (error) { throw Error(error.message + "\nRecent browser diagnostics:\n" + errors); }
   } finally {
     if (browser && browser.exitCode === null) browser.kill("SIGKILL");
+    if (exited) await exited;
+    receipt?.dispose();
     server.closeAllConnections();
     await new Promise(resolve => server.close(resolve));
     if (profile) {

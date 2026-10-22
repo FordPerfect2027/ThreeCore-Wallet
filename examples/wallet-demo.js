@@ -13,7 +13,7 @@ import { describeAllowanceOverview } from "../src/allowance-overview.js";
 import { mountAllowanceBundlePanel } from "./allowance-bundle-panel.js";
 
 /** Dependencies are explicit so browser tests never consult a real extension. */
-export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage }) {
+export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession }) {
   const grid = document.querySelector("#grid");
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
   const allowancePanels = [];
@@ -117,7 +117,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     let identityPanel;
     let allowancePanel;
     let wasConnected = false;
-    const controller = createWalletCardController({ agent, siteOrigin, onChange: state => {
+    const controller = createWalletCardController({ agent, siteOrigin, createSession, onChange: state => {
       render(card, state);
       if (wasConnected && !state.connection?.connected) panel?.invalidate();
       if (wasConnected && !state.connection?.connected) identityPanel?.invalidate();
