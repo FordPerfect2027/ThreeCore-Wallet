@@ -95,7 +95,8 @@ test("wallet selection refuses duplicate names, disabled buttons and lookalikes"
 
 function experimentRecord() {
   const snapshot = { url: "https://aerodrome.finance/connect", simulationActive: true,
-    discovery: "eip6963-only", hasLegacyProvider: false, buttons: [{ text: SYNTHETIC_WALLET_NAME }] };
+    discovery: "eip6963-only", hasLegacyProvider: false, buttons: [{ text: SYNTHETIC_WALLET_NAME }],
+    methods: [], rejections: [], accounts: [] };
   return { pageVariant: "local-connector-list-experiment", discovery: "eip6963-only",
     connectorExperiment: { status: "applied", replacements: 1 }, selectedWalletLabel: SYNTHETIC_WALLET_NAME,
     before: { ...snapshot, accounts: [], methods: [] }, afterConnect: snapshot,

@@ -1,5 +1,7 @@
 import { ThreeCoreWalletSession, normalizeAddress, normalizeChainId } from "./wallet-session.js";
 import { inspectDappSpender } from "./dapp-preflight.js";
+import { readPortfolioSnapshot } from "./portfolio-snapshot.js";
+import { portfolioFailureStatus } from "./portfolio-progress.js";
 import { readErrorCode, readErrorMessage } from "./provider-error.js";
 
 /**
@@ -192,5 +194,21 @@ export function createWalletCardController({
   }
   return Object.freeze({
     get state() { return state; }, connect, disconnect, clearResult, readBalances, inspect, dispose,
+    async readPortfolio(options) {
+      let result;
+      let failure;
+      const accepted = await runRead(async (session, read) => {
+        try { result = await read(() => readPortfolioSnapshot(session, options)); }
+        catch (error) {
+          failure = portfolioFailureStatus(error);
+          throw Object.assign(Error(failure.message), { code: failure.code });
+        }
+        return { kind: "portfolio", ...result };
+      });
+      if (!accepted || !result) {
+        throw Object.assign(Error("Portfolio snapshot unavailable"), { code: failure?.code ?? "PORTFOLIO_UNAVAILABLE" });
+      }
+      return result;
+    },
   });
 }

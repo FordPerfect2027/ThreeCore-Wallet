@@ -5,6 +5,11 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/examples/token-plan-panel.js", { file: resolve(here, "token-plan-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/comparison-panel.js", { file: resolve(here, "comparison-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/portfolio-panel.js", { file: resolve(here, "portfolio-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["portfolio-snapshot", "portfolio-controller", "portfolio-report", "agent-portfolios", "portfolio-comparison", "token-plan", "portfolio-progress"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/", { file: resolve(here, "index.html"), mime: "text/html; charset=utf-8" }],
   ["/examples/wallet-demo.js", { file: resolve(here, "wallet-demo.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/wallet-card-controller.js", { file: resolve(here, "../src/wallet-card-controller.js"), mime: "text/javascript; charset=utf-8" }],
@@ -17,6 +22,8 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/progress-demo/", { file: resolve(here, "../test/browser/progress-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/progress-demo.js", { file: resolve(here, "../test/browser/progress-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/", { file: resolve(here, "../test/browser/index.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/ui-tests.js", { file: resolve(here, "../test/browser/ui-tests.js"), mime: "text/javascript; charset=utf-8" });
   }
@@ -55,3 +62,4 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
     console.log("Read-only wallet connector. No transaction/signing APIs.");
   });
 }
+

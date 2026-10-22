@@ -13,6 +13,42 @@ function record(discovery = "legacy-and-eip6963") {
     rejections: [{ method: "personal_sign", code: 4001 }],
   }, connectClicked: true, signInClicked: true };
 }
+test("rejected transaction RPC before the expected sign-in still fails the diagnostic", () => {
+  const r = record();
+  r.afterConnect.methods = ["eth_chainId", "eth_sendTransaction"];
+  r.afterConnect.rejections = [{ method: "eth_sendTransaction", code: 4001 }];
+  r.afterSignIn.methods = ["eth_chainId", "wallet_requestPermissions", "personal_sign"];
+  const result = summarizeAerodromeProbe(r);
+  assert.equal(result.diagnosticCompleted, false);
+  assert.equal(result.unexpectedRpcObserved, true);
+  assert.equal(result.outcome, "incomplete-or-unexpected-flow");
+  assert.deepEqual(result.unexpectedMethods, ["eth_sendTransaction"]);
+});
+
+test("unexpected signing, chain mutation and unknown RPC methods never pass", () => {
+  for (const method of ["eth_signTypedData_v4", "wallet_switchEthereumChain", "wallet_addEthereumChain", "eth_sendRawTransaction", "unknown_rpc_method"]) {
+    const r = record();
+    r.afterSignIn.methods.push(method);
+    r.afterSignIn.rejections.push({ method, code: 4001 });
+    assert.equal(summarizeAerodromeProbe(r).diagnosticCompleted, false, method);
+  }
+});
+
+test("unrecorded rejected privileged method and malformed RPC logs are not success evidence", () => {
+  const r = record();
+  r.afterSignIn.rejections.push({ method: "eth_sendTransaction", code: 4001 });
+  assert.equal(summarizeAerodromeProbe(r).diagnosticCompleted, false);
+  const malformed = record();
+  malformed.afterConnect.methods = null;
+  assert.equal(summarizeAerodromeProbe(malformed).diagnosticCompleted, false);
+  const invalidFinal = record();
+  invalidFinal.afterSignIn.methods = { includes: () => true };
+  assert.equal(summarizeAerodromeProbe(invalidFinal).diagnosticCompleted, false);
+  invalidFinal.afterSignIn.methods = ["personal_sign", "wallet_requestPermissions"];
+  invalidFinal.afterSignIn.rejections = "not-an-array";
+  assert.equal(summarizeAerodromeProbe(invalidFinal).diagnosticCompleted, false);
+});
+
 test("successful probe means signature rejection, never completed sign-in", () => {
   const result = summarizeAerodromeProbe(record());
   assert.equal(result.signatureBoundaryReached, true);
@@ -78,4 +114,22 @@ test("a rendered chooser with duplicate mock names is loaded but not unambiguous
   assert.equal(result.siteUiLoaded, true);
   assert.equal(result.routeUnambiguous, false);
   assert.equal(result.signatureBoundaryReached, false);
+});
+
+test("earlier duplicate signing requests cannot disappear from the final method list", () => {
+  const r = record();
+  r.afterConnect.methods = ["personal_sign", "personal_sign"];
+  assert.equal(summarizeAerodromeProbe(r).diagnosticCompleted, false);
+});
+
+test("structured RPC trace reveals signing requests omitted from method lists", () => {
+  const r = record();
+  r.afterConnect.trace = [{kind: "rpc", method: "personal_sign"}, {kind: "rpc", method: "personal_sign"}];
+  assert.equal(summarizeAerodromeProbe(r).diagnosticCompleted, false);
+});
+
+test("mixed refusal codes cannot be hidden by matching count of 4001 rejections", () => {
+  const r = record();
+  r.afterSignIn.rejections.push({method: "personal_sign", code: -32603});
+  assert.equal(summarizeAerodromeProbe(r).diagnosticCompleted, false);
 });

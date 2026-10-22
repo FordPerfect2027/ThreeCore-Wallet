@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; connect-src 'none'">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ThreeCore — 模擬Wallet進捗デモ</title>
+<style>
+body{font:15px/1.5 system-ui;background:#0a1020;color:#edf2ff;max-width:1100px;margin:auto;padding:20px}
+header{border:2px solid #e5b84d;padding:14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px}
+.card{background:#172139;border:1px solid #8292af;padding:15px;min-width:0}
+label,input,select,textarea,output{display:block;box-sizing:border-box;width:100%}
+input,select,textarea{padding:8px;background:#0b1426;color:#fff;border:1px solid #8292af}
+label,button,section,output{margin-top:10px}button{padding:8px;cursor:pointer}
+pre,output{white-space:pre-wrap;overflow-wrap:anywhere}progress{width:100%}
+.notice{color:#c7d1e3}button:disabled{opacity:.5}
+</style>
+<header><h1>模擬Walletの進捗確認</h1>
+<p>開発用の架空アドレスと残高です。実Wallet・実資産・外部RPCは使用しません。</p>
+<p>DATで「接続」→「まとめて確認」を押すと、ETH残高の模擬応答を待ちます。</p>
+<button id="release" disabled>模擬応答を返す</button><p id="scenario-status" role="status">模擬読み取りの開始待ち</p></header>
+<main id="grid" class="grid"></main>
+<script type="module" src="/test/browser/progress-demo.js"></script>
+</html>

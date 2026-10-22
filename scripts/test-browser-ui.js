@@ -67,8 +67,8 @@ function checkResult(html, fault) {
   // Only the actual body summary counts; fixture text cannot assert success.
   const body = html.match(/<body\b[^>]*>/i)?.[0] ?? "";
   const expected = {
-    "suite-status": fault ? "failed" : "passed", "tests-count": "27",
-    "tests-passed": "27", "tests-failed": "0",
+    "suite-status": fault ? "failed" : "passed", "tests-count": "84",
+    "tests-passed": "84", "tests-failed": "0",
     "unexpected-errors": fault ? "1" : "0", "error-kinds": fault ?? "", "injected-fault": fault ?? "",
   };
   if (Object.entries(expected).some(([key, value]) => !body.includes(`data-${key}="${value}"`))) {
@@ -82,12 +82,17 @@ if (options[0] === "--verify-error-detection") {
   for (const fault of ["error", "unhandledrejection"]) {
     try {
       checkResult(await runBrowserPage(fault), fault);
-      console.log("Harness correctly rejected synthetic " + fault + " despite 27 passing UI cases.");
+      console.log("Harness correctly rejected synthetic " + fault + " despite 84 passing UI cases.");
     } catch (error) { failures.push(error.message); }
   }
   if (failures.length) throw Error(failures.join("\n"));
   console.log("2 browser error-detection controls passed.");
 } else {
   checkResult(await runBrowserPage());
-  console.log("27 browser UI tests passed with a synthetic provider and no external RPC.");
+  console.log("84 browser UI tests passed with a synthetic provider and no external RPC.");
 }
+
+
+
+
+

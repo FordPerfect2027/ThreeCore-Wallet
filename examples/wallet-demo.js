@@ -1,11 +1,12 @@
 import { createWalletCardController } from "../src/wallet-card-controller.js";
 import { createWalletProviderRegistry } from "../src/provider-registry.js";
 import { AGENT_IDS, normalizeAddress } from "../src/wallet-session.js";
+import { mountPortfolioPanel } from "./portfolio-panel.js";
 
 /** Dependencies are explicit so browser tests never consult a real extension. */
 export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider }) {
   const grid = document.querySelector("#grid");
-  const cards = [], controllers = new Map(), cleanup = [];
+  const cards = [], controllers = new Map(), cleanup = [], panels = [];
   let registry;
   function listen(element, event, callback) {
     element.addEventListener(event, callback);
@@ -59,9 +60,21 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       '<output aria-live="polite">未接続</output>';
     grid.append(card);
     cards.push(card);
-    const controller = createWalletCardController({ agent, siteOrigin, onChange: state => render(card, state) });
+    let panel;
+    let wasConnected = false;
+    const controller = createWalletCardController({ agent, siteOrigin, onChange: state => {
+      render(card, state);
+      if (wasConnected && !state.connection?.connected) panel?.invalidate();
+      wasConnected = state.connection?.connected === true;
+    } });
     controllers.set(card, controller);
     render(card, controller.state);
+    panel = mountPortfolioPanel({ document, card,
+      read: options => controller.readPortfolio(options),
+      onCancel: () => controller.clearResult(),
+      getContext: () => ({ agent, chainId: Number(card.querySelector(".chain").value) }),
+    });
+    panels.push(panel);
     const value = selector => card.querySelector(selector).value.trim();
     listen(card.querySelector(".connect"), "click", () => {
       try {
@@ -89,6 +102,9 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     listen(card.querySelector(".account"), "input", () => controller.disconnect("公開アドレスを変更しました。再接続してください。"));
     for (const selector of [".token", ".spender"]) {
       listen(card.querySelector(selector), "input", () => controller.clearResult());
+    }
+    for (const selector of [".provider", ".chain", ".account"]) {
+      listen(card.querySelector(selector), selector === ".account" ? "input" : "change", () => panel.invalidate());
     }
   }
   function renderWalletProviders(wallets) {
@@ -118,9 +134,11 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   return Object.freeze({
     dispose() {
       registry.dispose();
+      for (const panel of panels) panel.dispose();
       for (const controller of controllers.values()) controller.dispose();
       for (const stop of cleanup) stop();
       grid.replaceChildren();
     },
   });
 }
+

@@ -4,7 +4,10 @@
 
 **Ford Prefect / DAT • EMA • CAWELON**
 
-**Latest validation:** [Phase 20 — Duplicate-wallet review and explicit reconnection](docs/VALIDATION_PHASE20_2026-10-21_EN.md) implements a visible recovery panel in the isolated Aerodrome proposal. It preserves distinct same-name/blank-name wallets, supports cancellation, rejects stale reviews and removes only explicitly selected duplicates without connecting automatically. Twelve diagnostic conditions include both recovery UI scenarios. Verified: 492 offline cases, the existing 27 Chrome UI cases in each of 3 consecutive runs, 2 error-detection controls and 138 token integration cases. Official EIP-6963-only connectivity and production deployment remain unresolved. Historical reports retain their original snapshots.
+**October 22, 2026 update:** [Portfolio features and validation](docs/VALIDATION_PORTFOLIO_2026-10-22_EN.md) adds hash-pinned multi-token reads, historical JSON reports/comparison, explicit token-list preview/application, progress reporting, cancellation and stale-response protection. Local validation: **1,078 unit tests, 84 synthetic browser UI cases and 2 HTTP tests passed**. GitHub Actions for the published commit is a separate check; see the commit's checks. Real-wallet signing, transactions and production/external-dApp compatibility remain unverified.
+
+
+**Previous published validation (historical snapshot):** [Phase 20 — Duplicate-wallet review and explicit reconnection](docs/VALIDATION_PHASE20_2026-10-21_EN.md) implements a visible recovery panel in the isolated Aerodrome proposal. It preserves distinct same-name/blank-name wallets, supports cancellation, rejects stale reviews and removes only explicitly selected duplicates without connecting automatically. Twelve diagnostic conditions include both recovery UI scenarios. Verified: 492 offline cases, the existing 27 Chrome UI cases in each of 3 consecutive runs, 2 error-detection controls and 138 token integration cases. Official EIP-6963-only connectivity and production deployment remain unresolved. Historical reports retain their original snapshots.
 
 **Development-only connector. Not a deployed autonomous wallet, bridge, custody service, dApp integration or trading system.** No production funds are touched.
 
@@ -286,3 +289,18 @@ Run `npm run test:external-dapp -- --eip6963-only` to inspect discovery without 
 [Phase 12 investigation](docs/VALIDATION_PHASE12_2026-10-21.md) confirms that the observed Aerodrome build discovers the synthetic Wallet but trims the displayed connector list to its initially configured entries. Its Browser Wallet route uses the legacy `window.ethereum` provider. The announced Wallet therefore receives readiness account queries, but no permission request from that route, even after rediscovery and a second click. The external site was not modified; pure EIP-6963 connection there remains unestablished.
 
 The diagnostic now records discovery and RPC phases, checks the public application asset fingerprint, and separates observed facts from source-based routing analysis. Three new Chrome cases confirm that ThreeCore's own selector connects without any legacy provider, accepts late announcements, and preserves the user's selected provider when others appear. Offline tests total 361; browser UI cases total 21. Run `npm run test:external-dapp -- --eip6963-only --diagnose-discovery` for the bounded live diagnostic. See the [cause evidence](docs/phase12-discovery-evidence.json). Real Wallet signatures and transactions remain prohibited.
+
+## Local read-result identity verification
+
+The local development version rechecks eth_chainId and eth_accounts after each block-header, native balance, token balance, allowance and contract-code read. If the provider silently changes networks/accounts while the read is pending, the session disconnects and does not return the sampled data. Post-read checks use the existing bounded request timeout and never request permissions, signatures or transactions. These checks cannot detect an unreported transient change that has already reverted before observation, nor independently authenticate a malicious RPC provider.
+
+Offline regression: node --test test/postread-identity-guards.test.js. Unit tests demonstrate mock-provider behavior, not real-wallet compatibility or an independent security audit.
+
+## Portfolio modules and browser interface
+
+Use readPortfolioSnapshot(session, { tokens: [explicitContractAddress], signal, timeoutMs }) from src/portfolio-snapshot.js with an already connected read-only session. Results contain raw integer strings, block number/hash and code-presence notices. Contract addresses and decimals must be independently verified; code presence does not authenticate a token.
+
+createPortfolioController() from src/portfolio-controller.js owns one application's refresh/cancel/clear lifecycle. It does not connect a wallet or persist data. encodePortfolioReport/decodePortfolioReport from src/portfolio-report.js serialize historical observations only. Imported reports cannot authorize connections or transactions. formatBaseUnits requires an explicitly supplied decimal count and never converts amounts through floating-point Number.
+
+readAgentPortfolios from src/agent-portfolios.js requires exactly DAT, EMA and CAWELON with distinct connected accounts and explicit token lists. It returns all portfolios or rejects. Each portfolio pins a block, but the three portfolios are not an atomic simultaneous observation. The browser demo integrates individual portfolio reads, historical comparisons, token-plan preview/application and progress reporting. The three-agent coordinator remains a library API.
+

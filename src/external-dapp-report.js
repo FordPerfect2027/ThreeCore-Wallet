@@ -2,6 +2,24 @@
 // Used by the live, synthetic Aerodrome diagnostic and offline regressions.
 import { SYNTHETIC_ACCOUNT, SYNTHETIC_WALLET_NAME } from "./aerodrome-mock-wallet.js";
 
+// Fail closed when the external site requests any method outside the
+// documented synthetic-wallet diagnostic. Rejection is not evidence that
+// an unexpected privileged request was safe or expected.
+const EXPECTED_PROBE_METHODS = new Set([
+  "eth_chainId", "net_version", "eth_accounts", "eth_requestAccounts",
+  "wallet_requestPermissions", "wallet_getPermissions", "wallet_getCapabilities",
+  "eth_getBalance", "eth_call", "personal_sign",
+]);
+
+const PRIVILEGED_RPC_METHODS = new Set([
+  "eth_sign", "eth_signTransaction", "eth_sendTransaction", "eth_sendRawTransaction",
+  "eth_sendUserOperation", "wallet_sendCalls", "wallet_sendTransaction", "wallet_prepareCalls",
+  "wallet_grantPermissions", "wallet_revokePermissions", "wallet_switchEthereumChain",
+  "wallet_addEthereumChain", "wallet_watchAsset",
+]);
+const isPrivilegedRpcMethod = method => typeof method === "string" &&
+  (PRIVILEGED_RPC_METHODS.has(method) || /^eth_signTypedData(?:_v[0-9]+)?$/.test(method));
+
 // Prefer the announced synthetic wallet in discovery-only mode. Never match
 // substrings or arbitrary discovered names; ambiguous duplicate labels fail.
 export function selectMockWalletLabel(snapshot, discovery) {
@@ -50,8 +68,23 @@ export function summarizeAerodromeProbe(record) {
   };
   const snapshots = [record.before, record.afterConnect, record.afterSignIn].filter(Boolean);
   const last = record.afterSignIn ?? record.afterConnect ?? record.before;
-  const methods = last?.methods ?? [];
-  const rejections = last?.rejections ?? [];
+  const methods = Array.isArray(last?.methods) ? last.methods : [];
+  const rejections = Array.isArray(last?.rejections) ? last.rejections : [];
+  const rpcEvidenceComplete = snapshots.length > 0 && snapshots.every(s =>
+    Array.isArray(s.methods) && s.methods.every(m => typeof m === "string") &&
+    Array.isArray(s.rejections) && s.rejections.every(r => r && typeof r.method === "string"));
+  // Review every observation, not just the final snapshot: unexpected
+  // rejected calls must never disappear from the compatibility verdict.
+  const observedMethods = snapshots.flatMap(s => [
+    ...(Array.isArray(s.methods) ? s.methods : []),
+    ...(Array.isArray(s.rejections) ? s.rejections.map(r => r?.method) : []),
+    ...(Array.isArray(s.trace) ? s.trace.filter(e => e?.kind === "rpc").map(e => e.method) : []),
+  ]);
+  const unexpectedMethods = [...new Set(observedMethods.filter(m =>
+    typeof m === "string" && !EXPECTED_PROBE_METHODS.has(m)))];
+  const privilegedRpcMethods = [...new Set(observedMethods.filter(isPrivilegedRpcMethod))];
+  const privilegedRpcRequested = privilegedRpcMethods.length > 0;
+  const unexpectedRpcObserved = !rpcEvidenceComplete || unexpectedMethods.length > 0;
   const siteUiLoaded = snapshots.length > 0 && snapshots.every(official) &&
     record.before?.buttons?.some(b => ["Browser Wallet", "Connect Wallet", "Connect", SYNTHETIC_WALLET_NAME].includes(b.text));
   const choiceExperiment = record.pageVariant === "local-wallet-choice-experiment";
@@ -65,27 +98,37 @@ export function summarizeAerodromeProbe(record) {
   // eth_requestAccounts call (observed with Aerodrome/viem).
   const accountRequested = methods.includes("eth_requestAccounts") || methods.includes("wallet_requestPermissions");
   const syntheticAccountGranted = last?.accounts?.length === 1 && last.accounts[0] === SYNTHETIC_ACCOUNT;
-  const signatureRequested = methods.includes("personal_sign");
-  const signatureRejected = signatureRequested && rejections.some(r => r.method === "personal_sign" && r.code === 4001);
+  const signatureRequested = observedMethods.includes("personal_sign");
+  // Snapshots and traces are cumulative: do not sum repeated observations,
+  // but never let a shorter final snapshot erase earlier signing attempts.
+  const signAttempts = Math.max(0, ...snapshots.map(s => Math.max(
+    Array.isArray(s.methods) ? s.methods.filter(m => m === "personal_sign").length : 0,
+    Array.isArray(s.trace) ? s.trace.filter(e => e?.kind === "rpc" && e.method === "personal_sign").length : 0,
+  )));
+  const signRejections = rejections.filter(r => r?.method === "personal_sign");
+  const signatureRejected = !!record.afterSignIn && methods.includes("personal_sign") &&
+    signAttempts > 0 && signRejections.length === signAttempts &&
+    signRejections.every(r => r.code === 4001);
   const clicked = record.connectClicked === true;
   const browserRouteAttempted = clicked && (record.before?.buttons?.some(b => b.text === "Browser Wallet") ||
     record.browserWalletClicked === true);
   const signatureBoundaryReached = siteUiLoaded && routeUnambiguous && simulationVerified && clicked && accountRequested && syntheticAccountGranted &&
-    record.signInClicked === true && signatureRejected;
+    record.signInClicked === true && signatureRejected && !unexpectedRpcObserved;
   // An observation without a connection is useful for the discovery-only probe,
   // but is explicitly NOT a positive compatibility test or proof of non-support.
   const discoveryOnlyObservation = record.discovery === "eip6963-only" &&
-    siteUiLoaded && routeUnambiguous && simulationVerified && browserRouteAttempted && !accountRequested && !signatureRequested;
+    siteUiLoaded && routeUnambiguous && simulationVerified && browserRouteAttempted && !accountRequested && !signatureRequested && !unexpectedRpcObserved;
   const experimentalPage = record.pageVariant === "local-connector-list-experiment" || choiceExperiment;
   const knownVariant = record.pageVariant === undefined || record.pageVariant === "unmodified-official" || experimentalPage;
   const experimentVerified = experimentalPage && record.discovery === "eip6963-only" &&
     record.connectorExperiment?.status === "applied" && record.connectorExperiment?.replacements === 1 &&
     (choiceExperiment ? record.connectorExperiment.kind === "wallet-choice" && routeUnambiguous &&
       record.selectedWalletLabel === record.primaryChoice?.label : record.selectedWalletLabel === SYNTHETIC_WALLET_NAME);
-  const diagnosticCompleted = knownVariant && (experimentalPage ? experimentVerified && signatureBoundaryReached :
+  const diagnosticCompleted = !unexpectedRpcObserved && knownVariant && (experimentalPage ? experimentVerified && signatureBoundaryReached :
     !record.connectorExperiment && (signatureBoundaryReached || discoveryOnlyObservation));
   return {
     siteUiLoaded, routeUnambiguous, simulationVerified, accountRequested, syntheticAccountGranted, signatureRequested, signatureRejected,
+    rpcEvidenceComplete, unexpectedMethods, unexpectedRpcObserved, privilegedRpcMethods, privilegedRpcRequested,
     signatureBoundaryReached,
     experimentalPage, experimentVerified,
     unmodifiedOfficialConnectionObserved: diagnosticCompleted && !experimentalPage && signatureBoundaryReached,
