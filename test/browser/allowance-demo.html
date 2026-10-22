@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ThreeCore Wallet — 承認額のローカル検証</title>
+<style>
+:root{font:16px/1.55 system-ui;color:#edf2ff;background:#0a1020}
+body{max-width:1260px;margin:auto;padding:28px}
+h1{font-size:28px;margin-bottom:8px}
+.notice{border:1px solid #7bbce0;background:#16334a;padding:16px;border-radius:12px}
+#summary{padding:20px;background:#172139;border:1px solid #405275;border-radius:12px}
+#cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.demo-card{background:#172139;padding:18px;border-radius:14px;border-top:4px solid #e5b84d}
+.demo-card:nth-child(2){border-color:#e890b3}
+.demo-card:nth-child(3){border-color:#9fb5c7}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
+label{display:block;margin-top:12px;font-weight:600}
+input,textarea,select{box-sizing:border-box;width:100%;padding:10px;border:1px solid #8292af;border-radius:8px;background:#0b1426;color:white}
+button{padding:10px;margin:9px 5px 0 0;border:0;border-radius:8px;background:#6dbde9;color:#061b2a;font-weight:700;cursor:pointer}
+button:disabled{opacity:.45;cursor:default}
+:focus-visible{outline:3px solid #ffd369;outline-offset:3px}
+.allowance-panel{border-top:1px solid #5d7297;margin-top:18px}
+.allowance-details{max-height:32rem;overflow:auto}
+.allowance-note{font-size:13px;color:#bdcce3}
+@media(max-width:800px){#cards{grid-template-columns:1fr}body{padding:14px}}
+</style>
+</head>
+<body>
+<h1>ThreeCore Wallet / 承認額の確認</h1>
+<p class="notice">すべて模擬データです。実際の資産残高・承認額ではありません。外部Walletへの接続、署名、送金を行いません。</p>
+<p>DAT・EMA・CAWELONそれぞれの読取り、保存、再読み込み、差分をPC内で検証できます。</p>
+<p id="rpc-count">模擬RPC: 0</p>
+<pre id="summary"></pre>
+<section id="bundle"></section>
+<main id="cards"></main>
+<script type="module" src="/test/browser/allowance-demo.js"></script>
+</body>
+</html>

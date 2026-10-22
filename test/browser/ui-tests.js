@@ -1,3 +1,13 @@
+import { registerWorkspaceUITests } from "/test/browser/workspace-ui-tests.js";
+import { registerTokenIdentityUITests } from "/test/browser/token-identity-ui-tests.js";
+import { registerAllowanceUITests } from "/test/browser/allowance-ui-tests.js";
+import { registerAllowanceBundleUITests } from "/test/browser/allowance-bundle-ui-tests.js";
+import { registerCheckpointUITests } from "/test/browser/checkpoint-ui-tests.js";
+import { registerHistoryRecoveryUITests } from "/test/browser/history-recovery-ui-tests.js";
+import { registerWalletSetupUITests } from "/test/browser/wallet-setup-ui-tests.js";
+import { registerHistoryReviewUITests } from "/test/browser/history-review-ui-tests.js";
+import { registerHistoryFileUITests } from "/test/browser/history-file-ui-tests.js";
+import { registerHistoryUITests } from "/test/browser/history-ui-tests.js";
 import { mountWalletDemo } from "/examples/wallet-demo.js";
 import { readErrorMessage } from "/src/provider-error.js";
 
@@ -21,7 +31,7 @@ async function waitFor(predicate, timeoutMs = 4000) {
     await new Promise(resolve => setTimeout(resolve, 10));
   }
 }
-function fixture(override = () => undefined, { legacy = true, announced = false } = {}) {
+function fixture(override = () => undefined, { legacy = true, announced = false, checkpointStorage } = {}) {
   const calls = [], listeners = new Map(), eventTarget = new EventTarget();
   const provider = {
     on(name, fn) {
@@ -53,7 +63,7 @@ function fixture(override = () => undefined, { legacy = true, announced = false 
   if (announced) eventTarget.addEventListener("eip6963:requestProvider", () => announce());
   // No reference to window.ethereum or an installed wallet is made.
   const app = mountWalletDemo({
-    document, eventTarget, siteOrigin: location.origin, getLegacyProvider: () => legacy ? provider : undefined,
+    document, eventTarget, siteOrigin: location.origin, getLegacyProvider: () => legacy ? provider : undefined, checkpointStorage,
   });
   const card = document.querySelector('[data-agent="DAT"]');
   const field = selector => card.querySelector(selector);
@@ -1162,8 +1172,21 @@ if (fault) setTimeout(() => {
   Promise.reject(Error("Synthetic harness rejection"));
 }, 0);
 
+registerHistoryUITests(test);
+registerHistoryFileUITests(test);
+registerHistoryReviewUITests(test);
+registerHistoryRecoveryUITests(test);
+registerWalletSetupUITests(test);
+registerWorkspaceUITests(test);
+registerCheckpointUITests(test);
+registerTokenIdentityUITests(test);
+registerAllowanceUITests(test);
+registerAllowanceBundleUITests(test);
 let passed = 0, failed = 0;
-for (const { name, run } of tests) {
+const requestedSuite = new URLSearchParams(location.search).get("suite");
+const selectedTests = ["history", "checkpoint", "identity", "allowance"].includes(requestedSuite)
+  ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
+for (const { name, run } of selectedTests) {
   console.info("Starting synthetic UI case: " + name);
   const fixtures = [];
   const item = document.createElement("li");
@@ -1188,7 +1211,7 @@ for (const { name, run } of tests) {
 await new Promise(resolve => setTimeout(resolve, 0));
 publishSummary = () => {
   document.querySelector("#summary").textContent = `${passed} passed / ${failed} failed / ${unexpectedErrors.length} unexpected browser errors`;
-  document.body.dataset.testsCount = String(tests.length);
+  document.body.dataset.testsCount = String(selectedTests.length);
   document.body.dataset.testsPassed = String(passed);
   document.body.dataset.testsFailed = String(failed);
   document.body.dataset.unexpectedErrors = String(unexpectedErrors.length);
@@ -1196,6 +1219,11 @@ publishSummary = () => {
   document.body.dataset.suiteStatus = failed || unexpectedErrors.length ? "failed" : "passed";
 };
 publishSummary();
+
+
+
+
+
 
 
 

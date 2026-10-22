@@ -1,3 +1,4 @@
+import { mountHistoryPanel } from "./history-panel.js";
 import { mountComparisonPanel } from "./comparison-panel.js";
 import { mountTokenPlanPanel } from "./token-plan-panel.js";
 import { createPortfolioProgressTracker, portfolioFailureStatus } from "../src/portfolio-progress.js";
@@ -22,6 +23,7 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
   let current = null;
   let comparison;
   let tokenPlan;
+  let historyPanel;
 
 
   function element(tag, className, text) {
@@ -110,6 +112,7 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
     status.textContent = message;
     comparison?.clearTarget();
     tokenPlan?.invalidate();
+    historyPanel?.invalidate();
     controls();
   }
   async function refresh() {
@@ -188,8 +191,12 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
       onCancel?.();
     },
   });
+  historyPanel = mountHistoryPanel({ document, parent: section, agent: card.dataset?.agent ?? getContext()?.agent,
+    getSnapshot: () => active ? null : current, getReport: () => report.value });
   controls();
   return Object.freeze({
+    exportHistory: () => historyPanel.exportArchive(),
+    replaceHistory: text => historyPanel.replaceArchive(text),
     invalidate,
     dispose() {
       if (disposed) return;
@@ -197,10 +204,13 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
       invalidate();
       comparison.dispose();
       tokenPlan.dispose();
+      historyPanel.dispose();
       for (const stop of listeners) stop();
       section.remove();
     },
   });
 }
+
+
 
 

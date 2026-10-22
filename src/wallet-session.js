@@ -10,6 +10,8 @@
  */
 
 import { readErrorCode } from "./provider-error.js";
+import { METADATA_FIELDS, decodeMetadataField, identityAddress, identityFail,
+  validateTokenMetadata } from "./token-identity-codec.js";
 
 export const AGENT_IDS = Object.freeze(["DAT", "EMA", "CAWELON"]);
 
@@ -450,6 +452,25 @@ export class ThreeCoreWalletSession {
     });
     this.#assertReadEpoch(epoch);
     return decodeUint256Word(result);
+  }
+
+  /** Four fixed view selectors only. A pinned block is mandatory for metadata. */
+  async getTokenMetadata(tokenContractAddress, blockHash) {
+    const token = identityAddress(tokenContractAddress);
+    if (blockHash === undefined) identityFail("IDENTITY_BLOCK_REQUIRED");
+    const block = blockSelector(blockHash);
+    const epoch = await this.#requireReadAccess();
+    const metadata = {};
+    for (const [field, selector] of Object.entries(METADATA_FIELDS)) {
+      this.#assertReadEpoch(epoch);
+      const raw = await this.#readOnVerifiedState(epoch, {
+        method: "eth_call",
+        params: [{ to: token, data: selector }, block],
+      });
+      this.#assertReadEpoch(epoch);
+      metadata[field] = decodeMetadataField(field, raw);
+    }
+    return validateTokenMetadata(metadata);
   }
 
   /**

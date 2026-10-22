@@ -23,9 +23,42 @@ button:disabled{opacity:.5;cursor:default}
 output{display:block;min-height:60px;word-wrap:break-word;white-space:pre-wrap;margin-top:15px;color:#9fe0ff}
 .portfolio-panel{border-top:1px solid #8292af;margin-top:20px;padding-top:10px}
 .portfolio-panel textarea{display:block;box-sizing:border-box;width:100%;background:#0b1426;color:#fff;border:1px solid #8292af;padding:10px;border-radius:8px;resize:vertical}
-.portfolio-details,.comparison-details,.token-plan-details{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
-.comparison-panel,.token-plan-panel{border-top:1px solid #8292af;margin-top:18px;padding-top:8px}
+.portfolio-details,.comparison-details,.token-plan-details,.history-details,.history-preview-details,.history-filter-results,.history-review-details,.history-recovery-details{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+.comparison-panel,.token-plan-panel,.history-panel{border-top:1px solid #8292af;margin-top:18px;padding-top:8px}
 .portfolio-panel button:focus-visible,.portfolio-panel textarea:focus-visible{outline:3px solid #ffd369;outline-offset:3px}
+.history-list{padding-left:20px;overflow-wrap:anywhere;font-size:12px}.history-panel input[type=checkbox]{display:inline-block;width:auto;margin:6px}.history-panel select{font-size:12px}
+.wallet-setup-panel{border:1px solid #7283a3;border-radius:14px;padding:18px;margin-bottom:24px;background:#172139}
+.wallet-setup-panel textarea{box-sizing:border-box;width:100%;background:#0b1426;color:#fff;border:1px solid #8292af;border-radius:8px;padding:12px}
+.wallet-setup-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+.wallet-setup-panel input[type=checkbox]{display:inline-block;width:auto;margin:6px}
+.wallet-setup-panel button:focus-visible,.wallet-setup-panel input:focus-visible,.wallet-setup-panel textarea:focus-visible{outline:3px solid #ffd369;outline-offset:3px}
+.workspace-panel {margin:1.5rem 0;padding:1.25rem;border:1px solid #64748b;border-radius:14px;background:#172139;}
+.workspace-panel textarea {width:100%;max-width:100%;box-sizing:border-box;}
+.workspace-panel pre {white-space:pre-wrap;overflow-wrap:anywhere;max-height:36rem;overflow:auto;}
+.workspace-panel input[type=checkbox] {width:auto;margin-left:.6rem;}
+.workspace-panel :focus-visible {outline:2px solid #67d5f0;outline-offset:3px;}
+.checkpoint-panel{margin:1.5rem 0;padding:1.25rem;border:1px solid #69a4bc;border-radius:14px;background:#152638}
+.checkpoint-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:30rem;overflow:auto}
+.checkpoint-panel input[type=checkbox]{display:inline-block;width:auto;margin:6px}
+.checkpoint-panel :focus-visible{outline:3px solid #ffd369;outline-offset:3px}
+</style>
+<style>
+.allowance-panel{border-top:2px solid #6dbde9;margin-top:24px;padding-top:12px}
+.allowance-panel textarea{box-sizing:border-box;width:100%;padding:12px;background:#0b1426;color:#fff;border:1px solid #8292af;border-radius:8px;resize:vertical}
+.allowance-panel pre,.allowance-overview pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+.allowance-overview{padding:18px;margin:20px 0;background:#172139;border:1px solid #405275;border-radius:14px}
+.allowance-panel :focus-visible{outline:3px solid #ffd369;outline-offset:3px}
+.allowance-panel .allowance-details{max-height:36rem;overflow:auto}
+</style>
+<style>
+.identity-panel{border-top:1px solid #69a4bc;margin-top:20px;padding-top:12px}
+.identity-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;max-height:32rem;overflow:auto}
+.identity-panel input[type=file]{font-size:12px}
+.identity-panel :focus-visible{outline:3px solid #ffd369;outline-offset:3px}
+.identity-status{color:#bfe7ff;font-weight:600}
+.identity-baseline-status{font-size:12px;overflow-wrap:anywhere}
+.identity-overview{margin:24px 0;padding:20px;border:1px solid #69a4bc;border-radius:14px;background:#152638}
+.identity-overview pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
 </style>
 </head>
 <body>
@@ -48,3 +81,7 @@ window.addEventListener("pageshow", () => { if (!app) app = start(); });
 </script>
 </body>
 </html>
+
+
+
+

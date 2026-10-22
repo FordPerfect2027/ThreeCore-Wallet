@@ -1,6 +1,8 @@
 import { ThreeCoreWalletSession, normalizeAddress, normalizeChainId } from "./wallet-session.js";
 import { inspectDappSpender } from "./dapp-preflight.js";
 import { readPortfolioSnapshot } from "./portfolio-snapshot.js";
+import { readTokenIdentity } from "./token-identity-reader.js";
+import { readAllowanceSnapshot } from "./allowance-reader.js";
 import { portfolioFailureStatus } from "./portfolio-progress.js";
 import { readErrorCode, readErrorMessage } from "./provider-error.js";
 
@@ -194,6 +196,32 @@ export function createWalletCardController({
   }
   return Object.freeze({
     get state() { return state; }, connect, disconnect, clearResult, readBalances, inspect, dispose,
+    async readAllowances(plan, options) {
+      let result;
+      let failure;
+      const accepted = await runRead(async (session, read) => {
+        try { result = await read(() => readAllowanceSnapshot(session, plan, options)); }
+        catch (error) { failure = readErrorCode(error); throw error; }
+        return { kind: "allowances", ...result };
+      });
+      if (!accepted || !result) {
+        throw Object.assign(Error("Allowance observation unavailable"), { code: failure ?? "ALLOWANCE_NOT_CONNECTED" });
+      }
+      return result;
+    },
+    async readIdentity(options) {
+      let result;
+      let failure;
+      const accepted = await runRead(async (session, read) => {
+        try { result = await read(() => readTokenIdentity(session, options)); }
+        catch (error) { failure = readErrorCode(error); throw error; }
+        return { kind: "token-identity", ...result };
+      });
+      if (!accepted || !result) {
+        throw Object.assign(Error("Token identity unavailable"), { code: failure ?? "IDENTITY_NOT_CONNECTED" });
+      }
+      return result;
+    },
     async readPortfolio(options) {
       let result;
       let failure;

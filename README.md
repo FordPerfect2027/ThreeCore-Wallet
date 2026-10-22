@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 23, 2026 publication:** [Wallet history, backup, identity and allowance update](docs/WALLET_UPDATE_2026-10-23_EN.md). The source now includes reviewed history imports, three-card backup/restore, opt-in saved checkpoints, block-pinned token identity and exact balances, and read-only allowance observations. These are development features; no public website or deployed contract is changed by this source release.
+
 **[October 20–21, 2026: English development and validation report](docs/DEVELOPMENT_REPORT_2026-10-20_21_EN.md)** — Per-token line counts, implemented changes, mock-wallet experiments, verified CI results, and remaining compatibility limits. Figures are tied to the recorded development snapshot.
 
 **Ford Prefect / DAT • EMA • CAWELON**
@@ -303,4 +305,110 @@ Use readPortfolioSnapshot(session, { tokens: [explicitContractAddress], signal, 
 createPortfolioController() from src/portfolio-controller.js owns one application's refresh/cancel/clear lifecycle. It does not connect a wallet or persist data. encodePortfolioReport/decodePortfolioReport from src/portfolio-report.js serialize historical observations only. Imported reports cannot authorize connections or transactions. formatBaseUnits requires an explicitly supplied decimal count and never converts amounts through floating-point Number.
 
 readAgentPortfolios from src/agent-portfolios.js requires exactly DAT, EMA and CAWELON with distinct connected accounts and explicit token lists. It returns all portfolios or rejects. Each portfolio pins a block, but the three portfolios are not an atomic simultaneous observation. The browser demo integrates individual portfolio reads, historical comparisons, token-plan preview/application and progress reporting. The three-agent coordinator remains a library API.
+
+### Local workspace backup and restore (2026-10-23)
+
+The local demo now combines all three cards into a single workspace backup:
+public account/network settings, the single-token input, token lists and saved
+historical observations. Restore starts with a preview and defaults to merging
+history. Replacement that removes records needs a separate acknowledgement.
+The detailed preview lists contract addresses and added/removed record identities.
+A changed configuration disconnects that card; importing never grants connection,
+signing or transaction permissions.
+
+The coordinator checks for edits after preview, validates all cards before writing,
+and attempts to return all local stores to their prior state after a write failure.
+One undo is available while the page remains open and the restored data is unchanged.
+If rollback fails, it retains a recovery draft for manual inspection and blocks
+further restores. Recovery drafts are deliberately distinct from importable backups.
+
+Workspace files contain a SHA-256 checksum for corruption detection. This is not
+proof of authorship, ownership, a live balance, or an independent security audit.
+Private keys, seed phrases, provider permissions and approval-spender inputs are
+excluded. Public addresses and historical balances are included: share deliberately.
+The demo does not automatically persist data when the page closes. Download the
+backup and confirm its presence on disk before closing the page.
+
+An offline read-back tool verifies an existing downloaded backup without restoring
+it or contacting any network:
+
+```sh
+node scripts/check-workspace-backup.js --file path/to/ThreeCore-workspace-backup.json
+node scripts/check-workspace-backup.js --file path/to/ThreeCore-workspace-backup.json --json
+```
+
+The CLI summary omits full public addresses and balances. Limits are three cards,
+64 observations per card, 32 configured tokens per card and an 8 MiB file envelope.
+The workspace browser tests use synthetic data; they do not establish that three
+separate real wallets have been connected. The source is included in this publication; the demo and saved data remain local to the browser.
+## Browser-local saved checkpoints (2026-10-23)
+
+The wallet demo now offers an opt-in checkpoint panel for all three cards. It opens
+IndexedDB only after **保存済みの控え一覧を読み込む** is clicked. Saving is explicit;
+typing, connecting a wallet, or reading a balance does not automatically persist data.
+
+1. Load the saved-checkpoint list, enter a name, and save the current three-card draft.
+2. After reopening the same browser and origin, load the list and inspect a checkpoint.
+3. Stage the inspected checkpoint into the existing workspace import panel. Preview
+   the changes and confirm before applying. Restoring does not reconnect a wallet.
+4. Save a separate file backup. The collection export includes names, archive states,
+   settings, token lists, and historical observations for every saved checkpoint.
+
+There are at most five checkpoints, including archived ones, with a combined payload
+limit of 24 MiB. Each nested workspace file remains limited to 8 MiB. Names are limited
+to 60 UTF-16 code units. Checkpoints are immutable snapshots; metadata can be renamed
+or archived. An archived checkpoint can be returned to the active list. Permanent
+deletion requires selecting an archived entry and checking a separate confirmation.
+Deletion cannot be undone in this panel; retain a file backup first.
+
+The collection importer verifies the outer checksum and every nested workspace file
+before offering a review. Import is append-only. An identical ID and file is skipped,
+retaining local metadata; an identical ID with different content rejects the whole
+batch. Capacity or revision conflicts also reject the complete write. IndexedDB writes
+use a single read/write transaction with an expected revision, so stale tabs cannot
+overwrite a newer list. A stale result requires explicit refresh.
+
+Public addresses and historical balances are stored **unencrypted**. Secret keys,
+seed phrases, wallet permission state, and spender authorization are not saved.
+Browser profiles, browsers, hostnames, and ports have separate storage. Private mode,
+clearing browser data, storage eviction, or device loss can remove it. This feature
+does not request persistent-storage permission or replace an independent backup.
+Checksums detect accidental changes; they do not authenticate the creator or prove
+ownership, current balances, contract safety, or an independent security audit.
+
+Inspect a downloaded collection locally without importing or modifying it:
+
+```powershell
+node scripts/check-checkpoint-collection.js --file "C:\path\ThreeCore-saved-checkpoints.json" --json
+```
+
+The inspection report excludes labels, full account addresses, and balance values.
+Test-only manual verification is served at `/test/browser/checkpoint-demo/` when the
+server starts with `--ui-test`. It uses synthetic data, has no wallet provider, denies
+network connections through CSP, and uses a different database from the normal demo.
+Automated browser cases use unique `threecore-test-checkpoint-` databases and close
+connections before cleaning up only their own test database. Production storage is
+never opened by those cases. The normal demo remains at `/`.
+
+Relevant checks are `node --test test/*.test.js`,
+`node --test integration/*server.test.mjs`, and the complete `/test/browser/` suite.
+`integration/token-compatibility.test.mjs` is a separate local-EVM harness that must
+run from a compiled token repository, not from the wallet directory. This checkpoint
+change does not modify any deployed contract or perform a blockchain transaction.
+
+IndexedDB behavior references: [transaction lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction)
+and [blocked upgrades](https://developer.mozilla.org/en-US/docs/Web/API/IDBOpenDBRequest/blocked_event).
+
+### Local allowance observations
+
+The DAT, EMA and CAWELON cards can now read existing ERC-20 allowances for up to
+20 explicitly reviewed spender addresses. Each observation pins token identity,
+balances and allowance reads to one block, rejects changed sessions/blocks, and
+keeps failed reads unknown. No signing, approval, revocation or transaction method
+is added. Search, filters, exact-amount comparisons, individual JSON files and a
+combined three-token file are available. Imported records are historical and
+do not reconnect wallets or replace the card configuration.
+
+See [allowance observations](docs/allowance-observations.md) for the workflow,
+file limits, offline checker and synthetic test routes. This publication includes the source; operation remains a local, read-only development workflow.
 

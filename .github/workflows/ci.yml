@@ -18,7 +18,7 @@ jobs:
       - name: Offline mock and read-only regression tests
         run: npm test
       - name: Demo HTTP routes and test fixture isolation
-        run: npm run test:demo-server
+        run: node --test integration/*server.test.mjs
       - name: Browser harness rejects uncaught exceptions and unhandled rejections
         run: node scripts/test-browser-ui.js --verify-error-detection
       - name: Three consecutive synthetic Wallet UI runs in fresh Chrome profiles

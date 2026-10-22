@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ThreeCore · トークン照合の動作確認</title>
+<style>
+:root { color-scheme: dark; font-family: system-ui, sans-serif; }
+body { margin: 0; background: #0d1525; color: #e3edf9; }
+main { max-width: 1480px; margin: auto; padding: 24px; }
+h1 { margin: 0 0 12px; font-size: 26px; }
+h2 { margin-top: 0; }
+p { line-height: 1.6; }
+.banner { background: #203954; border-left: 5px solid #5fcbe4; padding: 12px 18px; }
+#summary { padding: 18px; border: 1px solid #3e526b; border-radius: 12px; background: #152238; }
+#cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 20px; }
+.demo-card { padding: 18px; border: 1px solid #465976; border-radius: 14px; background: #142136; min-width: 0; }
+.demo-card[data-agent=DAT] { border-top: 5px solid #46d4e8; }
+.demo-card[data-agent=EMA] { border-top: 5px solid #db87e5; }
+.demo-card[data-agent=CAWELON] { border-top: 5px solid #efc674; }
+button, select, input { font: inherit; border-radius: 7px; }
+button { margin: 4px 6px 4px 0; padding: 8px 12px; background: #24577f; border: 1px solid #4381af; color: #fff; cursor: pointer; }
+button:disabled { opacity: .4; cursor: default; }
+select, input { width: 100%; box-sizing: border-box; background: #0b1729; border: 1px solid #50627b; color: #fff; padding: 8px; }
+label { display: block; margin: 10px 0; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.6 ui-monospace, monospace; }
+.identity-status { color: #95e4d3; }
+.identity-progress { color: #ead193; }
+.identity-intro, .identity-note { font-size: 13px; color: #b8c8df; }
+.identity-details { padding: 12px; border: 1px solid #314761; border-radius: 8px; }
+.identity-details:empty { display: none; }
+.identity-file { font-size: 12px; }
+:focus-visible { outline: 3px solid #ffdc7e; outline-offset: 3px; }
+@media(max-width: 1000px) { #cards { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+<h1>ThreeCore Wallet — トークン照合の動作確認</h1>
+<p class="banner">すべて模擬データです。実際の資産残高ではありません。実Wallet・拡張機能・外部通信を使わず、3つの独立した接続と保存ファイルを確認します。</p>
+<p>各カードで「模擬接続」、次に「接続中のWalletで照合」を押してください。ファイル保存後にこのページを再読み込みし、同じカードで読み込む操作も確認できます。</p>
+<pre id="summary" aria-live="polite"></pre>
+<div id="cards"></div>
+<p id="rpc-count" role="status">模擬RPC: 0</p>
+<p>この確認画面は開発サーバーのテストモードでのみ使用できます。実際の操作画面は <a href="/">ウォレット画面</a> です。</p>
+</main>
+<script type="module" src="/test/browser/token-identity-demo.js"></script>
+</body>
+</html>

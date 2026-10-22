@@ -6,6 +6,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve, sep } from "node:path";
 import { createDemoServer } from "../examples/dev-server.js";
+import { checkBrowserResult } from "./browser-result.js";
 
 if (process.platform !== "linux") throw Error("Run the automated browser suite on Linux; use the local UI test page on other platforms");
 const options = process.argv.slice(2);
@@ -64,16 +65,10 @@ async function runBrowserPage(fault) {
 }
 
 function checkResult(html, fault) {
-  // Only the actual body summary counts; fixture text cannot assert success.
-  const body = html.match(/<body\b[^>]*>/i)?.[0] ?? "";
-  const expected = {
-    "suite-status": fault ? "failed" : "passed", "tests-count": "84",
-    "tests-passed": "84", "tests-failed": "0",
-    "unexpected-errors": fault ? "1" : "0", "error-kinds": fault ?? "", "injected-fault": fault ?? "",
-  };
-  if (Object.entries(expected).some(([key, value]) => !body.includes(`data-${key}="${value}"`))) {
+  try { return checkBrowserResult(html, fault); }
+  catch (error) {
     process.stderr.write(html.slice(-14000) + "\n");
-    throw Error(fault ? "Harness did not reject the injected " + fault : "Browser tests failed or did not finish");
+    throw error;
   }
 }
 
@@ -81,15 +76,15 @@ if (options[0] === "--verify-error-detection") {
   const failures = [];
   for (const fault of ["error", "unhandledrejection"]) {
     try {
-      checkResult(await runBrowserPage(fault), fault);
-      console.log("Harness correctly rejected synthetic " + fault + " despite 84 passing UI cases.");
+      const result = checkResult(await runBrowserPage(fault), fault);
+      console.log("Harness correctly rejected synthetic " + fault + " despite " + result.passed + " passing UI cases.");
     } catch (error) { failures.push(error.message); }
   }
   if (failures.length) throw Error(failures.join("\n"));
   console.log("2 browser error-detection controls passed.");
 } else {
-  checkResult(await runBrowserPage());
-  console.log("84 browser UI tests passed with a synthetic provider and no external RPC.");
+  const result = checkResult(await runBrowserPage());
+  console.log(result.passed + " browser UI tests passed with a synthetic provider and no external RPC.");
 }
 
 
