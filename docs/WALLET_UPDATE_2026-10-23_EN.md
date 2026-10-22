@@ -39,6 +39,7 @@ application timeout defaults are unchanged. File-selection tests await completio
 before selecting another file. The receipt endpoint exists only in the isolated
 test runner and is not added to the normal demo server. The test page permits
 same-origin completion requests; its policy continues to block external RPC.
+Raw IndexedDB test reads await transaction completion before closing their handles.
 
 ```sh
 node --test test/*.test.js
@@ -57,9 +58,9 @@ not certify a completed CI run.
 
 ## Size and preservation
 
-The wallet repository's `.js`, `.mjs` and `.html` files total **42,355 physical
+The wallet repository's `.js`, `.mjs` and `.html` files total **42,362 physical
 lines**, including comments and blank lines, compared with **15,911** at the
-previous public commit: **26,444 net additional lines**. This includes test
+previous public commit: **26,451 net additional lines**. This includes test
 fixtures, browser demonstrations, developer tools and preserved migration tests;
 it is not a count of production-only or executable statements. Prose, JSON,
 workflow configuration, logs and screenshots are excluded from this measure.

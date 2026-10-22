@@ -168,7 +168,14 @@ export function registerCheckpointUITests(test) {
       try { await seed(storage); } catch (caught) { error = caught; }
       assert(error?.code === "CHECKPOINT_SHAPE", "malformed storage was accepted");
       const tx = db.transaction("checkpoints", "readonly");
+      // A successful get is earlier than transaction completion. Wait before
+      // closing this handle so test database deletion cannot race a pending read.
+      const completed = new Promise((resolve, reject) => {
+        tx.oncomplete = resolve;
+        tx.onabort = () => reject(tx.error || Error("Synthetic read aborted"));
+      });
       const preserved = await requestResult(tx.objectStore("checkpoints").get("current"));
+      await completed;
       equal(preserved, { damaged: "synthetic-data" }, "corrupt data was overwritten");
     });
   });
