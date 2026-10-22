@@ -37,7 +37,8 @@ IndexedDB and file tasks finish, rather than ending on a virtual-time budget.
 Synthetic session fixtures use shorter explicit real-clock deadlines; normal
 application timeout defaults are unchanged. File-selection tests await completion
 before selecting another file. The receipt endpoint exists only in the isolated
-test runner and is not added to the normal demo server.
+test runner and is not added to the normal demo server. The test page permits
+same-origin completion requests; its policy continues to block external RPC.
 
 ```sh
 node --test test/*.test.js
@@ -56,9 +57,9 @@ not certify a completed CI run.
 
 ## Size and preservation
 
-The wallet repository's `.js`, `.mjs` and `.html` files total **42,350 physical
+The wallet repository's `.js`, `.mjs` and `.html` files total **42,355 physical
 lines**, including comments and blank lines, compared with **15,911** at the
-previous public commit: **26,439 net additional lines**. This includes test
+previous public commit: **26,444 net additional lines**. This includes test
 fixtures, browser demonstrations, developer tools and preserved migration tests;
 it is not a count of production-only or executable statements. Prose, JSON,
 workflow configuration, logs and screenshots are excluded from this measure.

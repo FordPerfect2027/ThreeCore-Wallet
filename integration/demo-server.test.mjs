@@ -34,6 +34,11 @@ for (const uiTest of [false, true]) {
         assert.equal((await fetch(base + path)).status, 404, path);
       }
       assert.equal((await fetch(base + "/", { method: "POST" })).status, 404);
+      assert.equal((await fetch(base + "/test/browser/ci-result/unknown", { method: "POST" })).status, 404);
+      if (uiTest) {
+        const page = await (await fetch(base + "/test/browser/")).text();
+        assert.match(page, /connect-src 'self';/); // Local completion receipt only; external RPC is blocked.
+      }
     } finally {
       server.closeAllConnections();
       await new Promise(resolve => server.close(resolve));
