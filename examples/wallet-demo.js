@@ -1,3 +1,4 @@
+import { mountPeriodReportPanel } from "./period-report-panel.js";
 import { mountPeriodLibraryPanel } from "./period-library-panel.js";
 import { mountPeriodPanel } from "./period-panel.js";
 import { periodFail } from "../src/period-plan.js";
@@ -340,6 +341,9 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     getCheckpoint: () => periodPanel.getCheckpoint(),
     stageCheckpoint: (draft, options) => periodPanel.stageSaved(draft, options),
   });
+  const periodReportHost = document.createElement("div");
+  reconciliationHost.before(periodReportHost);
+  const periodReport = mountPeriodReportPanel({ document, parent: periodReportHost });
   for (const event of ["input", "change"]) listen(grid, event, () => periodPanel.invalidate());
   for (const event of ["input", "change", "click"]) listen(grid, event, () => {
     workspacePanel.invalidate();
@@ -373,6 +377,8 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   renderWalletProviders(registry.list());
   return Object.freeze({
     dispose() {
+      periodReport.dispose();
+      periodReportHost.remove();
       periodLibrary.dispose();
       periodLibraryHost.remove();
       periodPanel.dispose();

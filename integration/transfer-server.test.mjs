@@ -55,7 +55,7 @@ test("transfer server: complete import graph resolves on localhost", async () =>
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      assert.ok(visited.size < 110, "Unexpected dependency expansion");
+      assert.ok(visited.size < 120, "Unexpected dependency expansion");
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();
@@ -68,6 +68,9 @@ test("transfer server: complete import graph resolves on localhost", async () =>
     assert.ok(visited.has("/src/transfer-reader.js"));
     assert.ok(visited.has("/src/transfer-archive-file.js"));
     assert.ok(visited.has("/src/wallet-session.js"));
+    for (const name of ["model", "engine", "file", "query", "view", "export", "controller", "comparison"]) {
+      assert.ok(visited.has("/src/period-report-" + name + ".js"), "Missing report dependency: " + name);
+    }
   });
 });
 

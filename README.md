@@ -477,3 +477,21 @@ See [the saved-period guide](docs/PERIOD_LIBRARY_JA.md) and
 Run `npm run period-library:check -- saved-library.json --json` for offline checks.
 The synthetic preview is `/test/browser/period-library-demo/` in `--ui-test` mode.
 This round remains local and has not been pushed to GitHub.
+
+
+### Three-token historical period reports (local development)
+
+Select one saved checkpoint per token to review exact balances, history residuals,
+acquisition progress and shared-block hash consistency together. Partial, archived
+and restricted evidence remains explicit. Reports are fixed historical snapshots,
+not current wallet balances or a combined token valuation.
+
+Reviewed JSON recovery recomputes conclusions from original evidence. CSV and
+scriptless printable HTML summarize the accepted report. Replacement review shows
+changed accounts, periods, hashes, acquisition progress and event evidence.
+
+See [the Japanese report guide](docs/PERIOD_REPORT_JA.md) and
+[design and verification notes](docs/PERIOD_REPORT_DESIGN.md).
+Run `npm run period-report:check -- report.json --json` for offline checks.
+The synthetic preview is `/test/browser/period-report-demo/` in `--ui-test` mode.
+This work remains local and has not been pushed to GitHub.
