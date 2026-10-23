@@ -3,6 +3,7 @@ import { inspectDappSpender } from "./dapp-preflight.js";
 import { readPortfolioSnapshot } from "./portfolio-snapshot.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { readAllowanceSnapshot } from "./allowance-reader.js";
+import { readTransferSnapshot } from "./transfer-reader.js";
 import { portfolioFailureStatus } from "./portfolio-progress.js";
 import { readErrorCode, readErrorMessage } from "./provider-error.js";
 
@@ -196,6 +197,19 @@ export function createWalletCardController({
   }
   return Object.freeze({
     get state() { return state; }, connect, disconnect, clearResult, readBalances, inspect, dispose,
+    async readTransfers(request, options) {
+      let result;
+      let failure;
+      const accepted = await runRead(async (session, read) => {
+        try { result = await read(() => readTransferSnapshot(session, request, options)); }
+        catch (error) { failure = readErrorCode(error); throw error; }
+        return { kind: "transfers", ...result, blockNumber: result.range.toBlock };
+      });
+      if (!accepted || !result) {
+        throw Object.assign(Error("Transfer observation unavailable"), { code: failure ?? "TRANSFER_NOT_CONNECTED" });
+      }
+      return result;
+    },
     async readAllowances(plan, options) {
       let result;
       let failure;

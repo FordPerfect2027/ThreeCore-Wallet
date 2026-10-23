@@ -20,6 +20,8 @@
     "checkpoints:check": "node scripts/check-checkpoint-collection.js",
     "identity:check": "node scripts/check-token-identity.js",
     "allowance:check": "node scripts/check-allowance-file.js",
+    "transfers:check": "node scripts/check-transfer-file.js",
+    "test:transfer-server": "node --test integration/transfer-server.test.mjs",
     "test:allowance-server": "node --test integration/allowance-server.test.mjs",
     "test:identity-server": "node --test integration/token-identity-server.test.mjs",
     "test:external-dapp": "node scripts/run-isolated-aerodrome-probe.js --mock-wallet",

@@ -11,12 +11,14 @@ import { describeIdentityCards } from "../src/identity-overview.js";
 import { mountAllowancePanel } from "./allowance-panel.js";
 import { describeAllowanceOverview } from "../src/allowance-overview.js";
 import { mountAllowanceBundlePanel } from "./allowance-bundle-panel.js";
+import { mountTransferPanel } from "./transfer-panel.js";
 
 /** Dependencies are explicit so browser tests never consult a real extension. */
 export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession }) {
   const grid = document.querySelector("#grid");
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
   const allowancePanels = [];
+  const transferPanels = [];
   const allowanceStates = new Map(AGENT_IDS.map(agent => [agent, { agent, observation: null, provenance: null }]));
   const allowanceHost = document.createElement("section");
   allowanceHost.className = "allowance-overview";
@@ -78,11 +80,12 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       const result = state.result;
       text += "\n参照ブロック: " + (result.blockNumber ?? result.identity?.blockNumber);
       if (result.kind === "allowances") text += "\n承認額の記録を下のパネルに表示しています。";
+      if (result.kind === "transfers") text += "\n送受信履歴を下のパネルに表示しています。";
       if (result.kind === "balances") text += "\nETH残高（wei）: " + result.nativeBalanceBaseUnits;
       if (result.kind === "token-identity") {
         text += "\n公式トークンの照合結果を下のパネルに表示しています。";
       }
-      if (result.tokenAddress && result.kind !== "token-identity") {
+      if (result.tokenAddress && !["token-identity", "transfers"].includes(result.kind)) {
         text += "\nトークン: " + result.tokenAddress;
         text += "\nトークン残高（最小単位）: " + (result.tokenBalanceBaseUnits ?? "確認できません");
         if (!result.tokenHasCode) text += "\nこのアドレスにトークンのコードが見つかりません。";
@@ -116,12 +119,14 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     let panel;
     let identityPanel;
     let allowancePanel;
+    let transferPanel;
     let wasConnected = false;
     const controller = createWalletCardController({ agent, siteOrigin, createSession, onChange: state => {
       render(card, state);
       if (wasConnected && !state.connection?.connected) panel?.invalidate();
       if (wasConnected && !state.connection?.connected) identityPanel?.invalidate();
       if (wasConnected && !state.connection?.connected) allowancePanel?.invalidate();
+      if (wasConnected && !state.connection?.connected) transferPanel?.invalidate();
       wasConnected = state.connection?.connected === true;
     } });
     controllers.set(card, controller);
@@ -132,6 +137,14 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       getContext: () => ({ agent, chainId: Number(card.querySelector(".chain").value) }),
     });
     panels.push(panel);
+    transferPanel = mountTransferPanel({ document, parent: card,
+      getContext: () => ({ agent, chainId: Number(card.querySelector(".chain").value),
+        account: card.querySelector(".account").value.trim() }),
+      read: (request, options) => controller.readTransfers(request, options),
+      onCancel: () => controller.clearResult(),
+    });
+    transferPanels.push(transferPanel);
+    cleanup.push(() => transferPanel.dispose());
     identityPanel = mountTokenIdentityPanel({ document, parent: card,
       onStateChange: state => {
         identityStates.set(agent, { agent, phase: state.phase,
@@ -167,7 +180,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     cleanup.push(() => allowancePanel.dispose());
     for (const selector of [".account", ".chain", ".provider", ".token"]) {
       listen(card.querySelector(selector), [".chain", ".provider"].includes(selector) ? "change" : "input",
-        () => { identityPanel.invalidate(); allowancePanel.invalidate(); });
+        () => { identityPanel.invalidate(); allowancePanel.invalidate(); transferPanel.invalidate(); });
     }
     const value = selector => card.querySelector(selector).value.trim();
     listen(card.querySelector(".connect"), "click", () => {
@@ -221,6 +234,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         panels[index].invalidate();
         identityPanels[index].invalidate();
         allowancePanels[index].invalidate();
+        transferPanels[index].invalidate();
         card.querySelector(".account").value = change.after.account ?? "";
         card.querySelector(".chain").value = String(change.after.chainId);
         card.querySelector(".spender").value = "";
@@ -258,6 +272,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
           controllers.get(card).disconnect("一括復元で設定が変わりました。必要なら再接続してください。");
           identityPanels[index].invalidate();
           allowancePanels[index].invalidate();
+          transferPanels[index].invalidate();
         }
         panels[index].invalidate();
         if (configurationChanged) {

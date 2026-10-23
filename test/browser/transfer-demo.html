@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'">
+<title>ThreeCore Wallet — 送受信履歴の操作確認</title>
+<style>
+:root{font:16px/1.6 system-ui;color:#edf5ff;background:#0a1424}
+body{max-width:1120px;margin:auto;padding:28px 20px}
+header{border-bottom:1px solid #405275;margin-bottom:24px}
+h1{font-size:28px;margin-bottom:6px}h2{color:#8ee1cd}
+.notice{background:#253b50;border-left:4px solid #e0bc56;padding:14px 18px}
+.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+label{display:block;font-weight:600;margin:10px 0}
+input,select{display:block;width:100%;box-sizing:border-box;background:#102238;color:#edf5ff;border:1px solid #718ba5;border-radius:8px;padding:10px;margin-top:5px}
+button{border:0;border-radius:8px;background:#8ee1cd;color:#092923;padding:11px 14px;margin:8px 8px 8px 0;font-weight:700;cursor:pointer}
+button:disabled{opacity:.45;cursor:default}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+details{margin:18px 0;padding:14px;border:1px solid #405275;border-radius:10px}
+summary{cursor:pointer;font-weight:700}
+.transfer-bounds{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.transfer-summary{background:#142e43;border:1px solid #427c89;padding:18px;border-radius:10px}
+.transfer-filters{display:grid;grid-template-columns:1fr 2fr 1fr;gap:18px}
+.transfer-row{padding:14px;border-bottom:1px solid #405275}
+.transfer-rows{max-height:420px;overflow:auto;padding-left:24px}
+.transfer-row-heading,.transfer-status{color:#8ee1cd}.transfer-counter{margin-right:12px}
+:focus-visible{outline:3px solid #e0bc56;outline-offset:3px}
+@media(max-width:650px){.transfer-bounds,.transfer-filters{grid-template-columns:1fr}body{padding:16px}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<header>
+<h1>ThreeCore Wallet / 送受信履歴</h1>
+<p>DAT · EMA · CAWELON — ローカル開発版</p>
+<p class="notice"><strong>すべて模擬データです。</strong>実Wallet・資産・外部サービスへ接続せず、表示・保存・再読み込みを確認する画面です。</p>
+</header>
+<div class="controls"><label>確認するトークン<select id="agent"><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label><p>「送受信履歴を取得」で模擬の送信・受信・自己送信を表示できます。</p></div>
+<main id="transfer-demo"></main>
+<footer><p>ページを閉じると未保存の記録は消えます。保存JSONには公開アドレスと履歴が含まれます。</p></footer>
+<script type="module" src="/test/browser/transfer-demo.js"></script>
+</body>
+</html>

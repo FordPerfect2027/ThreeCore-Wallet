@@ -60,12 +60,27 @@ output{display:block;min-height:60px;word-wrap:break-word;white-space:pre-wrap;m
 .identity-overview{margin:24px 0;padding:20px;border:1px solid #69a4bc;border-radius:14px;background:#152638}
 .identity-overview pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
 </style>
+<style>
+.transfer-panel{border-top:2px solid #75d7c3;margin-top:24px;padding-top:12px;min-width:0}
+.transfer-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
+.transfer-panel .transfer-summary{padding:12px;background:#0b1426;border-radius:8px}
+.transfer-panel .transfer-rows{padding-left:20px;max-height:38rem;overflow:auto}
+.transfer-panel .transfer-row{padding:12px 0;border-bottom:1px solid #405275;overflow-wrap:anywhere}
+.transfer-panel .transfer-row-heading{color:#a4eddd}
+.transfer-panel .transfer-counter{display:inline-block;font-size:12px;padding:6px}
+.transfer-panel .transfer-status{color:#a4eddd;font-weight:600}
+.transfer-panel details{margin-top:16px;border:1px solid #405275;border-radius:8px;padding:12px}
+.transfer-panel summary{cursor:pointer;font-weight:700}
+.transfer-panel :focus-visible{outline:3px solid #ffd369;outline-offset:3px}
+.transfer-panel input[type=file]{font-size:12px}
+.transfer-panel .transfer-preview{border-left:3px solid #ffd369;padding-left:10px}
+</style>
 </head>
 <body>
 <header>
 <h1>ThreeCore Wallet <span aria-hidden="true">👽</span></h1>
 <p>DAT • EMA • CAWELON — Ford Prefect</p>
-<p class="notice"><strong>開発用デモ・読み取り専用。</strong> Walletの接続と残高照会のみ。署名・送金・スワップ・ブリッジは実装していません。外部の分散型サービスへの接続実績を示すものではありません。秘密鍵やシードフレーズを入力しないでください。</p>
+<p class="notice"><strong>開発用デモ・読み取り専用。</strong> Walletの接続、残高・承認額・送受信履歴などの読み取りに対応。署名・送金・スワップ・ブリッジは実装していません。外部の分散型サービスへの接続実績を示すものではありません。秘密鍵やシードフレーズを入力しないでください。</p>
 </header>
 <main class="grid" id="grid"></main>
 <footer><p>各エージェントには別々のEVM公開アドレスを設定してください。接続時にWallet拡張の許可確認が必要です。残高表示は最小単位です。</p>DON'T PANIC. JUST CODE.</footer>

@@ -1,4 +1,5 @@
 import { registerWorkspaceUITests } from "/test/browser/workspace-ui-tests.js";
+import { registerTransferUITests } from "/test/browser/transfer-ui-tests.js";
 import { registerTokenIdentityUITests } from "/test/browser/token-identity-ui-tests.js";
 import { registerAllowanceUITests } from "/test/browser/allowance-ui-tests.js";
 import { registerAllowanceBundleUITests } from "/test/browser/allowance-bundle-ui-tests.js";
@@ -1187,9 +1188,10 @@ registerCheckpointUITests(test);
 registerTokenIdentityUITests(test);
 registerAllowanceUITests(test);
 registerAllowanceBundleUITests(test);
+registerTransferUITests(test);
 let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");
-const selectedTests = ["history", "checkpoint", "identity", "allowance"].includes(requestedSuite)
+const selectedTests = ["history", "checkpoint", "identity", "allowance", "transfer"].includes(requestedSuite)
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
 for (const { name, run } of selectedTests) {
   console.info("Starting synthetic UI case: " + name);

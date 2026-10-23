@@ -412,3 +412,15 @@ do not reconnect wallets or replace the card configuration.
 See [allowance observations](docs/allowance-observations.md) for the workflow,
 file limits, offline checker and synthetic test routes. This publication includes the source; operation remains a local, read-only development workflow.
 
+### Local transfer history (unpublished development)
+
+The token cards also support bounded ERC-20 Transfer-event reads, precise amount
+display, direction/search filters, reviewed JSON import, CSV export and same-range
+comparison. A separate in-memory archive collects up to 12 compatible period
+records and reports gaps between queried ranges. Save the transfer/archive JSON
+before closing the screen; older workspace backups do not include these records.
+
+See [transfer history](docs/transfer-history.md) for limits, trust boundaries,
+offline verification and synthetic browser tests. This feature is read-only and
+has not been published to GitHub as part of the current local development task.
+

@@ -12,6 +12,9 @@
 import { readErrorCode } from "./provider-error.js";
 import { METADATA_FIELDS, decodeMetadataField, identityAddress, identityFail,
   validateTokenMetadata } from "./token-identity-codec.js";
+import { catalogToken } from "./token-catalog.js";
+import { TRANSFER_TOPIC, MAX_TRANSFER_EVENTS, addressTopic, decodeTransferLog,
+  hexQuantity, shape, transferFail, validateTransferRange } from "./transfer-codec.js";
 
 export const AGENT_IDS = Object.freeze(["DAT", "EMA", "CAWELON"]);
 
@@ -407,6 +410,37 @@ export class ThreeCoreWalletSession {
       reject("INVALID_RPC_RESULT", "The provider returned a different block height");
     }
     return block;
+  }
+
+  /** Fixed Transfer topic, registered token and assigned account; no arbitrary log query. */
+  async getTransferEvents(options) {
+    shape(options, ["fromBlock", "toBlock", "direction"]);
+    const range = validateTransferRange(options.fromBlock, options.toBlock);
+    const direction = options.direction;
+    if (!["incoming", "outgoing"].includes(direction)) transferFail("TRANSFER_FILTER_MISMATCH");
+    const context = { agent: this.#agent, chainId: this.#chainId, account: this.#expectedAccount };
+    const token = catalogToken({ agent: context.agent, chainId: context.chainId });
+    const topic = addressTopic(context.account);
+    const epoch = await this.#requireReadAccess();
+    const result = await this.#readOnVerifiedState(epoch, {
+      method: "eth_getLogs",
+      params: [{
+        address: token.address,
+        fromBlock: hexQuantity(range.fromBlock),
+        toBlock: hexQuantity(range.toBlock),
+        topics: direction === "incoming" ? [TRANSFER_TOPIC, null, topic] : [TRANSFER_TOPIC, topic],
+      }],
+    });
+    this.#assertReadEpoch(epoch);
+    if (!Array.isArray(result) || result.length > MAX_TRANSFER_EVENTS) transferFail("TRANSFER_EVENT_LIMIT");
+    const keys = new Set();
+    return Object.freeze(result.map(value => {
+      const event = decodeTransferLog(value, context, range, direction);
+      const key = event.transactionHash + ":" + event.logIndex;
+      if (keys.has(key)) transferFail("TRANSFER_DUPLICATE_RESPONSE");
+      keys.add(key);
+      return event;
+    }));
   }
 
   async getNativeBalance(blockHash) {

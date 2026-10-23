@@ -5,6 +5,11 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["transfer-codec", "transfer-reader", "transfer-view", "transfer-file", "transfer-controller", "transfer-messages",
+    "transfer-archive", "transfer-archive-file", "transfer-archive-controller", "transfer-window"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/transfer-panel.js", { file: resolve(here, "transfer-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/transfer-archive-panel.js", { file: resolve(here, "transfer-archive-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ...["allowance-targets", "allowance-observation", "allowance-reader", "allowance-file",
     "allowance-controller", "allowance-view", "allowance-overview", "allowance-bundle"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
@@ -43,6 +48,10 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/transfer-ui-tests.js", { file: resolve(here, "../test/browser/transfer-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/transfer-demo/", { file: resolve(here, "../test/browser/transfer-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/transfer-demo.js", { file: resolve(here, "../test/browser/transfer-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/transfer-fixtures.js", { file: resolve(here, "../test/helpers/transfer-fixtures.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/allowance-bundle-ui-tests.js", { file: resolve(here, "../test/browser/allowance-bundle-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/allowance-demo/", { file: resolve(here, "../test/browser/allowance-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/allowance-demo.js", { file: resolve(here, "../test/browser/allowance-demo.js"), mime: "text/javascript; charset=utf-8" });
