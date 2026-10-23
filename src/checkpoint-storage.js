@@ -17,7 +17,12 @@ export function checkpointStorageError(error) {
 
 /** Lazy, origin-scoped IndexedDB. No automatic read, save, migration or eviction. */
 export function createCheckpointStorage({ indexedDB,
-  name = CHECKPOINT_DATABASE, openTimeoutMs = 8000 } = {}) {
+  name = CHECKPOINT_DATABASE, openTimeoutMs = 8000, documentPolicy } = {}) {
+  const policy = documentPolicy ?? { empty: emptyCheckpointDocument, validate: validateCheckpointDocument,
+    mutate: mutateCheckpoints, mapError: checkpointStorageError };
+  if (!policy || !["empty", "validate", "mutate", "mapError"].every(key => typeof policy[key] === "function")) {
+    checkpointFail("CHECKPOINT_ADAPTER");
+  }
   if (typeof name !== "string" || !name.length || name.length > 160 ||
       !Number.isSafeInteger(openTimeoutMs) || openTimeoutMs < 1 || openTimeoutMs > 60000) {
     checkpointFail("CHECKPOINT_ADAPTER");
@@ -47,7 +52,7 @@ export function createCheckpointStorage({ indexedDB,
         settled = true;
         clearTimeout(timer);
         cancelOpen = null;
-        if (error) reject(checkpointStorageError(error));
+        if (error) reject(policy.mapError(error));
         else resolve(db);
       }
       cancelOpen = () => finish(new CheckpointError("CHECKPOINT_CLOSED"));
@@ -82,9 +87,12 @@ export function createCheckpointStorage({ indexedDB,
     return opening;
   }
 
-  async function transact(expectedRevision, operation, canCommit) {
+  async function transact(expectedRevision, operation, canCommit, signal) {
+    if (signal !== undefined && !(signal instanceof AbortSignal)) checkpointFail("CHECKPOINT_ADAPTER");
+    if (signal?.aborted) checkpointFail("CHECKPOINT_CANCELLED");
     const db = await openDatabase();
     if (disposed) checkpointFail("CHECKPOINT_CLOSED");
+    if (signal?.aborted) checkpointFail("CHECKPOINT_CANCELLED");
     return new Promise((resolve, reject) => {
       let transaction;
       let result;
@@ -94,34 +102,37 @@ export function createCheckpointStorage({ indexedDB,
         if (settled) return;
         settled = true;
         transactions.delete(transaction);
-        if (error) reject(checkpointStorageError(error));
+        signal?.removeEventListener("abort", onCancel);
+        if (error) reject(policy.mapError(error));
         else resolve(result);
       }
       function abort(error) {
         failure = error;
         try { transaction.abort(); } catch { finish(error); }
       }
+      const onCancel = () => abort(new CheckpointError("CHECKPOINT_CANCELLED"));
       try {
         transaction = db.transaction(STORE, operation ? "readwrite" : "readonly");
         transactions.add(transaction);
+        signal?.addEventListener("abort", onCancel, { once: true });
         transaction.onabort = () => finish(failure || transaction.error || new CheckpointError("CHECKPOINT_ABORTED"));
         transaction.onerror = () => { failure ||= transaction.error; };
         transaction.oncomplete = () => finish(failure);
         const store = transaction.objectStore(STORE);
         const request = store.get(KEY);
-        request.onerror = () => { failure = request.error; };
+        request.onerror = () => { failure ||= request.error; };
         request.onsuccess = () => {
           try {
             if (disposed) checkpointFail("CHECKPOINT_CLOSED");
-            const current = request.result === undefined ? emptyCheckpointDocument() : validateCheckpointDocument(request.result);
+            const current = request.result === undefined ? policy.empty() : policy.validate(request.result);
             result = current;
             if (operation) {
               // All computation is synchronous inside this request's active transaction.
-              result = mutateCheckpoints(current, expectedRevision, operation);
+              result = policy.mutate(current, expectedRevision, operation);
               if (typeof canCommit !== "function" || canCommit() !== true) checkpointFail("CHECKPOINT_CANCELLED");
               if (result.revision !== current.revision) {
                 const write = store.put(result, KEY);
-                write.onerror = () => { failure = write.error; };
+                write.onerror = () => { failure ||= write.error; };
               }
             }
           } catch (error) { abort(error); }
@@ -135,8 +146,8 @@ export function createCheckpointStorage({ indexedDB,
 
   return Object.freeze({
     read: () => transact(),
-    change(expectedRevision, operation, { canCommit = () => true } = {}) {
-      return transact(expectedRevision, operation, canCommit);
+    change(expectedRevision, operation, { canCommit = () => true, signal } = {}) {
+      return transact(expectedRevision, operation, canCommit, signal);
     },
     close() {
       if (disposed) return;

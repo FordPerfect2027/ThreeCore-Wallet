@@ -1,3 +1,5 @@
+import { mountTransferVaultPanel } from "./transfer-vault-panel.js";
+import { vaultBundle } from "../src/transfer-vault-model.js";
 import { createWalletCardController } from "../src/wallet-card-controller.js";
 import { createWalletProviderRegistry } from "../src/provider-registry.js";
 import { AGENT_IDS, normalizeAddress } from "../src/wallet-session.js";
@@ -14,11 +16,12 @@ import { mountAllowanceBundlePanel } from "./allowance-bundle-panel.js";
 import { mountTransferPanel } from "./transfer-panel.js";
 
 /** Dependencies are explicit so browser tests never consult a real extension. */
-export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession }) {
+export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage }) {
   const grid = document.querySelector("#grid");
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
   const allowancePanels = [];
   const transferPanels = [];
+  let transferVaultPanel;
   const allowanceStates = new Map(AGENT_IDS.map(agent => [agent, { agent, observation: null, provenance: null }]));
   const allowanceHost = document.createElement("section");
   allowanceHost.className = "allowance-overview";
@@ -292,10 +295,19 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     readDraft: readWorkspaceDraft, onStage: text => workspacePanel.stageText(text),
     ...(checkpointStorage ? { storage: checkpointStorage } : {}),
   });
+  const transferVaultHost = document.createElement("div");
+  transferVaultHost.className = "transfer-vault-host";
+  grid.before(transferVaultHost);
+  transferVaultPanel = mountTransferVaultPanel({ document, parent: transferVaultHost,
+    readCards: () => vaultBundle(transferPanels.map(panel => panel.exportArchive())),
+    stageArchive: (agent, archive, options) => transferPanels[AGENT_IDS.indexOf(agent)].stageArchive(archive, options),
+    ...(transferVaultStorage ? { storage: transferVaultStorage } : {}),
+  });
   // All local edits invalidate old reviews and backup preparation, never auto-save.
   for (const event of ["input", "change", "click"]) listen(grid, event, () => {
     workspacePanel.invalidate();
     checkpointPanel.invalidateDraft();
+    transferVaultPanel.invalidateCards();
   });
   function renderWalletProviders(wallets) {
     for (const card of cards) {
@@ -323,6 +335,8 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   renderWalletProviders(registry.list());
   return Object.freeze({
     dispose() {
+      transferVaultPanel.dispose();
+      transferVaultHost.remove();
       checkpointPanel.dispose();
       workspacePanel.dispose();
       setupPanel.dispose();

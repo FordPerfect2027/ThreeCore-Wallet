@@ -119,6 +119,23 @@ export function createTransferArchiveController({ getContext, onChange = () => {
       return null;
     }
   }
+  function capture() {
+    if (disposed) return null;
+    if (!state.archive) return null;
+    context();
+    return state.archive;
+  }
+  function reviewArchive(input) {
+    if (disposed) return false;
+    revision++;
+    try {
+      const key = context();
+      const archive = validateTransferArchive(input);
+      assertContext(archive, key);
+      publish({ phase: "preview", preview: Object.freeze({ id: revision, archive, digest: null, authenticated: false }), error: null });
+      return true;
+    } catch (error) { return fail(error); }
+  }
   function cancel() {
     if (disposed) return;
     revision++;
@@ -129,5 +146,5 @@ export function createTransferArchiveController({ getContext, onChange = () => {
     disposed = true;
     state = Object.freeze({ ...state, phase: "disposed" });
   }
-  return Object.freeze({ get state() { return state; }, add, remove, select, stage, apply, prepare, cancel, invalidate, dispose });
+  return Object.freeze({ get state() { return state; }, add, remove, select, stage, apply, prepare, capture, reviewArchive, cancel, invalidate, dispose });
 }

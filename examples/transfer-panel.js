@@ -1,3 +1,5 @@
+import { captureTransferArchive } from "../src/transfer-vault-model.js";
+import { transferContextKey, transferFail } from "../src/transfer-codec.js";
 import { createTransferController } from "../src/transfer-controller.js";
 import { DIRECTION_LABELS, TRANSFER_DIRECTIONS, queryTransfers, transferComparisonText, transferSummaryText } from "../src/transfer-view.js";
 import { transferErrorText, transferProgressText } from "../src/transfer-messages.js";
@@ -257,6 +259,19 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
   });
   render(controller.state);
   return Object.freeze({
+    exportArchive() {
+      if (disposed) return null;
+      const archive = archivePanel.getArchive();
+      const snapshot = currentState?.snapshot ?? null;
+      if (!archive && !snapshot) return null;
+      const key = transferContextKey(getContext());
+      if (snapshot && transferContextKey(snapshot.context) !== key) transferFail("TRANSFER_VAULT_CONTEXT");
+      return captureTransferArchive(archive, snapshot);
+    },
+    stageArchive(input, { current = () => true } = {}) {
+      if (disposed || current() !== true) return false;
+      return archivePanel.stageArchive(input);
+    },
     invalidate() { controller.invalidate(); archivePanel.invalidate(); },
     dispose() {
       if (disposed) return;

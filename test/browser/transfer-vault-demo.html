@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'">
+<title>ThreeCore — 履歴保管と集計の操作プレビュー</title>
+<style>
+body{font:15px/1.65 system-ui,sans-serif;background:#081122;color:#eaf0ff;margin:0}
+main,header{max-width:1080px;margin:0 auto;padding:24px}
+header{padding-bottom:0}h1{font-size:30px;margin:0}h2{font-size:24px;color:#b4efff}
+.notice{border-left:4px solid #efbc57;padding:12px;background:#242736}
+.transfer-vault-panel{background:#12203a;padding:24px;border:1px solid #324967;border-radius:14px}
+.transfer-vault-panel label{display:block;margin:12px 0}
+button,input,select{font:inherit;border:1px solid #516b8d;border-radius:7px;padding:8px;background:#09162b;color:#f5f8ff;max-width:100%;box-sizing:border-box}
+button{cursor:pointer;margin:4px 8px 4px 0;background:#19395a}
+button:disabled{opacity:.42;cursor:default}input[type=checkbox]{width:auto;margin-right:8px}
+pre,li{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.7 ui-monospace,monospace}
+details{border-top:1px solid #405775;margin-top:20px;padding-top:16px}summary{cursor:pointer;font-weight:700;color:#b4efff}
+.transfer-vault-review{border-left:3px solid #efbc57;padding-left:14px}
+.transfer-vault-status{color:#93edd8;font-weight:700}.transfer-vault-row{padding:10px 0;border-bottom:1px solid #405775}
+:focus-visible{outline:3px solid #efbc57;outline-offset:3px}
+@media(max-width:600px){main,header{padding:14px}.transfer-vault-panel{padding:14px}h1{font-size:24px}}
+.transfer-vault-panel [hidden]{display:none!important}
+</style>
+<header><p>THREECORE / DAT · EMA · CAWELON</p><h1>履歴をまとめて、安全に確認する</h1>
+<p class="notice">操作プレビュー：すべて模擬データです。実Wallet・資産・外部サービスには接続しません。PC内保存を試す場合も、通常の保管庫とは別のプレビュー専用領域を使います。</p>
+<p>「3枚のカードの履歴を確認」から始め、プレビューを反映してください。JSONのダウンロード、PC内保存、再読み込みを試せます。</p></header>
+<main id="vault-demo"></main>
+<script type="module" src="/test/browser/transfer-vault-demo.js"></script>
+</html>

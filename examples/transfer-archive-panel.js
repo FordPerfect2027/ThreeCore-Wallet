@@ -105,6 +105,8 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
   render(controller.state);
   return Object.freeze({
     refresh,
+    getArchive: () => controller.capture(),
+    stageArchive(input) { host.open = true; return controller.reviewArchive(input); },
     invalidate() { controller.invalidate(); },
     dispose() {
       if (disposed) return;

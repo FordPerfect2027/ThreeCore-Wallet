@@ -424,3 +424,15 @@ See [transfer history](docs/transfer-history.md) for limits, trust boundaries,
 offline verification and synthetic browser tests. This feature is read-only and
 has not been published to GitHub as part of the current local development task.
 
+
+### Three-token history vault (local development)
+
+DAT, EMA and CAWELON histories can now be captured together, reviewed, saved in an
+explicit browser-local list and restored after reopening. JSON backups cover both
+the current working copy and the whole saved list. Per-token activity summaries,
+filters and bounded working-copy undo/redo are included. Saving and restoration
+are explicit; no wallet connection or transaction is initiated by the vault.
+
+See [transfer history vault](docs/transfer-vault.md) for the workflow, file formats,
+limits, privacy details, offline checker and isolated preview. Existing workspace
+backups remain separate. This round remains on the PC and is not pushed to GitHub.

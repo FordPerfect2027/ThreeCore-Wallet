@@ -5,6 +5,9 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["transfer-vault-timeline", "transfer-vault-collection", "transfer-vault-model", "transfer-vault-file", "transfer-vault-analytics", "transfer-vault-storage", "transfer-vault-controller", "transfer-vault-messages"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/transfer-vault-panel.js", { file: resolve(here, "transfer-vault-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ...["transfer-codec", "transfer-reader", "transfer-view", "transfer-file", "transfer-controller", "transfer-messages",
     "transfer-archive", "transfer-archive-file", "transfer-archive-controller", "transfer-window"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
@@ -48,6 +51,10 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/transfer-vault-ui-tests.js", { file: resolve(here, "../test/browser/transfer-vault-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/vault-fixtures.js", { file: resolve(here, "../test/helpers/vault-fixtures.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/transfer-vault-demo/", { file: resolve(here, "../test/browser/transfer-vault-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/transfer-vault-demo.js", { file: resolve(here, "../test/browser/transfer-vault-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/transfer-ui-tests.js", { file: resolve(here, "../test/browser/transfer-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/transfer-demo/", { file: resolve(here, "../test/browser/transfer-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/transfer-demo.js", { file: resolve(here, "../test/browser/transfer-demo.js"), mime: "text/javascript; charset=utf-8" });
