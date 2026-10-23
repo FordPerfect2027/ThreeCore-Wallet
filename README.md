@@ -459,3 +459,21 @@ See [the period user guide](docs/PERIOD_COLLECTION_JA.md) and
 Run `npm run period:check -- saved.json --json` for an offline file inspection.
 The isolated preview at `/test/browser/period-demo/` uses synthetic data only.
 This development remains on the PC; no GitHub publication is performed here.
+
+### Saved period library (local development)
+
+Named period checkpoints can now be saved explicitly in an origin-scoped PC-local
+list. Reopen, filter, compare, rename, archive and review a checkpoint before
+restoring it to the collector. New acquisition progress creates a new record.
+Quarantined block-conflict records retain their restriction marker after restore.
+
+Collection JSON backs up every entry, including archived records; filtered CSV
+is an index only. A dedicated database keeps these records separate from the
+workspace and transfer vault. No automatic save, provider connection or network
+request is introduced by the library.
+
+See [the saved-period guide](docs/PERIOD_LIBRARY_JA.md) and
+[design and verification details](docs/PERIOD_LIBRARY_DESIGN.md).
+Run `npm run period-library:check -- saved-library.json --json` for offline checks.
+The synthetic preview is `/test/browser/period-library-demo/` in `--ui-test` mode.
+This round remains local and has not been pushed to GitHub.

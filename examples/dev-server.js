@@ -5,6 +5,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["model", "storage", "file", "query", "view", "controller"].map(name =>
+    ["/src/period-library-" + name + ".js", { file: resolve(here, "../src/period-library-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/period-library-panel.js", { file: resolve(here, "period-library-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/period-library.css", { file: resolve(here, "period-library.css"), mime: "text/css; charset=utf-8" }],
   ...["period-plan", "period-draft", "period-reader", "period-file", "period-view", "period-controller", "period-recovery", "period-progress"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/examples/period-panel.js", { file: resolve(here, "period-panel.js"), mime: "text/javascript; charset=utf-8" }],
@@ -59,6 +63,10 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/period-library-demo/", { file: resolve(here, "../test/browser/period-library-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/period-library-demo.js", { file: resolve(here, "../test/browser/period-library-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/period-library-ui-tests.js", { file: resolve(here, "../test/browser/period-library-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/period-library-fixtures.js", { file: resolve(here, "../test/helpers/period-library-fixtures.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/period-ui-tests.js", { file: resolve(here, "../test/browser/period-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/helpers/period-fixtures.js", { file: resolve(here, "../test/helpers/period-fixtures.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/period-demo/", { file: resolve(here, "../test/browser/period-demo.html"), mime: "text/html; charset=utf-8" });

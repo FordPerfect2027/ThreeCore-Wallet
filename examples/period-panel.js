@@ -1,5 +1,5 @@
 import { createPeriodController } from "../src/period-controller.js";
-import { periodPlanKey, periodWindows } from "../src/period-plan.js";
+import { periodPlanKey, periodWindows, periodFail } from "../src/period-plan.js";
 import { periodDraftProgress } from "../src/period-draft.js";
 import { periodPlanText, periodSummary, periodMessage } from "../src/period-view.js";
 import { periodRecovery } from "../src/period-recovery.js";
@@ -158,7 +158,8 @@ export function mountPeriodPanel({ document, parent, getContext, read, stageWork
       const p = periodDraftProgress(state.review.candidate);
       nodes["review-text"].textContent = periodPlanText(state.review.candidate.plan) +
         `\n取得済み: ${p.completed} / ${p.total}` +
-        (state.review.source === "file" ? "\nファイル内の過去の記録です。作成者と内容の真正性は未確認です。" : "");
+        (state.review.source === "library" ? "\n保存一覧に保管した過去の記録です。現在の接続先で再確認していません。" :
+          state.review.source === "file" ? "\nファイル内の過去の記録です。作成者と内容の真正性は未確認です。" : "");
     }
     nodes["ack-label"].hidden = !state.review?.requiresReplacement;
     nodes.apply.disabled = state.busy || !state.review || (state.review.requiresReplacement && !ack.checked);
@@ -234,7 +235,13 @@ export function mountPeriodPanel({ document, parent, getContext, read, stageWork
     listen(nodes[name], "click", () => { void controller.exportFile(kind, download); });
   }
   render(controller.state);
-  return Object.freeze({ getDraft: () => controller.state.draft, invalidate: () => controller.invalidate(),
+  return Object.freeze({ getDraft: () => controller.state.draft,
+    getCheckpoint() {
+      const state = controller.state;
+      if (state.busy) periodFail("PERIOD_BUSY");
+      return state.draft ? Object.freeze({ draft: state.draft, requiresNewPlan: state.requiresNewPlan }) : null;
+    },
+    stageSaved: (draft, options) => controller.stageSaved(draft, options), invalidate: () => controller.invalidate(),
     dispose() {
       if (disposed) return;
       disposed = true;

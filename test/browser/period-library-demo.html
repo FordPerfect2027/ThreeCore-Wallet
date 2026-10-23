@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>ThreeCore — 期間の控えをPC内に保管</title>
+  <link rel="stylesheet" href="/examples/period.css">
+  <link rel="stylesheet" href="/examples/period-library.css">
+  <link rel="stylesheet" href="/examples/reconciliation.css">
+  <style>
+    body { margin:0; background:#08121d; color:#edf6ff; font:16px/1.7 system-ui,sans-serif; }
+    main { max-width:1480px; margin:auto; padding:24px; }
+    h1 { font-size:clamp(25px,4vw,42px); line-height:1.3; max-width:850px; }
+    header p { color:#aec7da; }
+    .preview-banner { background:#332b19; border:1px solid #89713c; border-radius:10px; padding:14px; color:#ffe0a1; }
+    .preview-actions { display:flex; gap:10px; flex-wrap:wrap; margin:18px 0; }
+    .preview-actions button { background:#16465a; color:#f0fbff; padding:10px 16px; border:1px solid #5a91aa; border-radius:7px; cursor:pointer; }
+    .preview-actions button:focus-visible { outline:3px solid #78deff; outline-offset:3px; }
+    nav { display:flex; gap:18px; flex-wrap:wrap; margin:20px 0; }
+    nav a { color:#9ddfff; }
+    .preview-note { font-size:14px; }
+    @media (max-width:720px) { main { padding:12px; } .preview-actions button { width:100%; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p>THREECORE / LOCAL DEVELOPMENT</p>
+      <h1>途中の控えも、完了した記録も。<br>名前を付けて、次の確認へ。</h1>
+      <div class="preview-banner">すべて模擬データです。実際の資産残高ではありません。外部通信・実ウォレット接続・署名・送金を行いません。</div>
+      <p>保存の流れを試すプレビューです。例を選ぶ → 期間画面で反映 → 保存一覧を開く → 名前を付けて保存します。</p>
+      <div class="preview-actions">
+        <button id="example-dat" type="button">DATの途中例を確認</button>
+        <button id="example-ema" type="button">EMAの取得済み例を確認</button>
+        <button id="example-cawelon" type="button">CAWELONの再取得例を確認</button>
+      </div>
+      <p id="demo-notice" role="status">例を選んでも自動保存はしません。保存した控えは、このURLを開き直して読み込めます。</p>
+      <p class="preview-note">このプレビュー専用の保存領域を使用します。本番の控えとは別です。URLのポートが変わると保存領域も変わります。JSONへの保全もお試しください。</p>
+      <nav aria-label="画面内の移動">
+        <a href="#library-area">PC内の保存一覧</a>
+        <a href="#period-area">期間の取得と再開</a>
+        <a href="#comparison-area">残高と履歴の照合</a>
+      </nav>
+    </header>
+    <div id="library-area"></div>
+    <div id="period-area"></div>
+    <div id="comparison-area"></div>
+  </main>
+  <script type="module" src="/test/browser/period-library-demo.js"></script>
+</body>
+</html>

@@ -28,6 +28,7 @@
     "inspect:external-dapp": "node scripts/run-isolated-aerodrome-probe.js",
     "vault:check": "node scripts/check-transfer-vault.js",
     "reconciliation:check": "node scripts/check-reconciliation.js",
-    "period:check": "node scripts/check-period.js"
+    "period:check": "node scripts/check-period.js",
+    "period-library:check": "node scripts/check-period-library.js"
   }
 }

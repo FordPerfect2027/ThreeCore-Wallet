@@ -1,3 +1,4 @@
+import { mountPeriodLibraryPanel } from "./period-library-panel.js";
 import { mountPeriodPanel } from "./period-panel.js";
 import { periodFail } from "../src/period-plan.js";
 import { mountReconciliationPanel } from "./reconciliation-panel.js";
@@ -333,6 +334,12 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     },
     stageWorkspace: (workspace, agent) => reconciliationPanel.stageCollected(workspace, agent),
   });
+  const periodLibraryHost = document.createElement("div");
+  reconciliationHost.before(periodLibraryHost);
+  const periodLibrary = mountPeriodLibraryPanel({ document, parent: periodLibraryHost,
+    getCheckpoint: () => periodPanel.getCheckpoint(),
+    stageCheckpoint: (draft, options) => periodPanel.stageSaved(draft, options),
+  });
   for (const event of ["input", "change"]) listen(grid, event, () => periodPanel.invalidate());
   for (const event of ["input", "change", "click"]) listen(grid, event, () => {
     workspacePanel.invalidate();
@@ -366,6 +373,8 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   renderWalletProviders(registry.list());
   return Object.freeze({
     dispose() {
+      periodLibrary.dispose();
+      periodLibraryHost.remove();
       periodPanel.dispose();
       periodHost.remove();
       reconciliationPanel.dispose();

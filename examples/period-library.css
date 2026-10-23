@@ -1,0 +1,59 @@
+.period-library-panel {
+  margin: 28px 0;
+  padding: 26px;
+  color: #e0edf4;
+  background: #0d1c2b;
+  border: 1px solid #284759;
+  border-radius: 18px;
+}
+.period-library-panel [hidden] { display: none !important; }
+.period-library-eyebrow { color: #6cddd1; letter-spacing: .15em; font-size: .75rem; }
+.period-library-heading { margin: 8px 0 18px; }
+.period-library-intro, .period-library-notice, .period-library-file-note { line-height: 1.8; color: #b7cfdc; }
+.period-library-notice { border-left: 3px solid #79cbb9; padding-left: 14px; }
+.period-library-panel label { display: flex; flex-direction: column; gap: 8px; font-size: .85rem; color: #afc9d8; }
+.period-library-panel input, .period-library-panel select {
+  padding: 11px; color: #e0edf4; background: #0a1824; border: 1px solid #3c6073; border-radius: 7px; min-width: 0;
+}
+.period-library-panel input[type=checkbox] { width: auto; align-self: start; }
+.period-library-panel input[type=file] { max-width: 100%; box-sizing: border-box; }
+.period-library-panel button {
+  padding: 11px 16px; margin: 5px 6px 5px 0; color: #e0edf4; background: #19394b;
+  border: 1px solid #41667a; border-radius: 7px; cursor: pointer;
+}
+.period-library-panel button:hover:not(:disabled) { border-color: #6de1d3; background: #21495c; }
+.period-library-panel button:disabled { opacity: .4; cursor: default; }
+.period-library-panel :focus-visible { outline: 2px solid #8af0e1; outline-offset: 3px; }
+.period-library-apply { background: #157277 !important; }
+.period-library-status { border-radius: 8px; padding: 13px; background: #193649; line-height: 1.7; }
+.period-library-status[data-error=true] { color: #ffe5ab; background: #413722; }
+.period-library-capacity, .period-library-count { font-size: .85rem; color: #9fb9c9; }
+.period-library-save-form { display: grid; grid-template-columns: minmax(160px, 1fr) auto; align-items: end; gap: 15px; }
+.period-library-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 22px 0; }
+.period-library-summary article { border: 1px solid #365567; border-top: 3px solid #4cb8b4; border-radius: 10px; padding: 15px; background: #122c3b; }
+.period-library-summary article h3 { margin-top: 0; }
+.period-library-summary article p { color: #b5cedb; white-space: pre-line; line-height: 1.8; }
+.period-library-filters { display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)); gap: 12px; }
+.period-library-search-label { grid-column: 1 / -1; }
+.period-library-table { width: 100%; border-collapse: collapse; font-size: .85rem; table-layout: fixed; }
+.period-library-table caption { text-align: left; margin: 16px 0 12px; color: #b4d4e3; }
+.period-library-table th, .period-library-table td { text-align: left; padding: 12px 8px; border-bottom: 1px solid #28495a; overflow-wrap: anywhere; white-space: pre-line; }
+.period-library-table th:last-child, .period-library-table td:last-child { width: 90px; }
+.period-library-table tr[data-selected=true] { background: #183e4a; }
+.period-library-detail, .period-library-review { margin-top: 22px; padding: 20px; border: 1px solid #416778; border-radius: 12px; }
+.period-library-review { background: #153b43; }
+.period-library-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: .86rem; line-height: 1.8; }
+.period-library-rename-label { max-width: 500px; margin-top: 16px; }
+.period-library-purge-section { margin-top: 18px; padding-top: 12px; border-top: 1px solid #345469; }
+.period-library-purge-section summary { cursor: pointer; color: #d8bc92; margin-bottom: 14px; }
+.period-library-files { margin-top: 26px; border-top: 1px solid #2d4b5b; padding-top: 18px; }
+.period-library-file-label { margin-top: 18px; }
+@media (max-width: 720px) {
+  .period-library-panel { padding: 16px; }
+  .period-library-save-form, .period-library-summary { grid-template-columns: 1fr; }
+  .period-library-filters { grid-template-columns: 1fr 1fr; }
+  .period-library-table { font-size: .75rem; }
+  .period-library-table th, .period-library-table td { padding: 8px 3px; }
+  .period-library-table th:last-child, .period-library-table td:last-child { width: 55px; }
+  .period-library-table button { padding: 7px; margin: 0; }
+}

@@ -1,4 +1,4 @@
-import { createPeriodPlan, periodPlanKey, periodContextKey, periodFail } from "./period-plan.js";
+import { createPeriodPlan, periodPlanKey, periodContextKey, periodFail, periodShape } from "./period-plan.js";
 import { emptyPeriodDraft, validatePeriodDraft, periodDraftKey, periodDraftProgress, periodDraftWorkspace } from "./period-draft.js";
 import { periodFailureCode } from "./period-reader.js";
 import { preparePeriodFile, readPeriodFile } from "./period-file.js";
@@ -63,9 +63,10 @@ export function createPeriodController({
     return false;
   }
   function context(selected = agent) { return getContext(selected); }
-  function stage(value, source) {
+  function stage(value, source, requiresNewPlan = false) {
     const candidate = validatePeriodDraft(value);
-    review = Object.freeze({ candidate, source, revision, sourceEpoch,
+    if (requiresNewPlan && periodDraftProgress(candidate).completed === 0) periodFail("PERIOD_LIBRARY_ENTRY");
+    review = Object.freeze({ candidate, source, revision, sourceEpoch, requiresNewPlan,
       beforeKey: draftKey,
       requiresReplacement: draft !== null && draftKey !== periodDraftKey(candidate) &&
         periodDraftProgress(draft).completed > 0 });
@@ -98,10 +99,11 @@ export function createPeriodController({
       interrupt();
       draft = review.candidate;
       draftKey = periodDraftKey(draft);
-      origin = review.source === "file" ? "imported" : "new";
+      origin = review.source === "plan" ? "new" : "imported";
       agent = draft.plan.context.agent;
       checkedThisSession = false;
-      requiresNewPlan = draftKey === rejectedDraftKey;
+      requiresNewPlan = review.requiresNewPlan || draftKey === rejectedDraftKey;
+      if (requiresNewPlan) rejectedDraftKey = draftKey;
       revision++;
       review = null;
       phase = "ready";
@@ -110,6 +112,15 @@ export function createPeriodController({
       message = "控えに反映しました。読み取りの開始は別の操作です。";
       emit();
       return true;
+    } catch (value) { return fail(value); }
+  }
+  function stageSaved(value, options = {}) {
+    try {
+      if (!available()) return false;
+      review = null;
+      periodShape(options, ["requiresNewPlan"]);
+      if (typeof options.requiresNewPlan !== "boolean") periodFail("PERIOD_LIBRARY_ENTRY");
+      return stage(value, "library", options.requiresNewPlan);
     } catch (value) { return fail(value); }
   }
   function prepareRepair() {
@@ -311,7 +322,7 @@ export function createPeriodController({
       return fail(value);
     }
   }
-  return Object.freeze({ get state() { return state(); }, prepare, prepareRepair, apply, start, cancel, invalidate,
+  return Object.freeze({ get state() { return state(); }, prepare, prepareRepair, stageSaved, apply, start, cancel, invalidate,
     selectAgent, importFile, exportFile, sendToReconciliation,
     dispose() { if (!disposed) { interrupt(); disposed = true; review = null; } },
   });
