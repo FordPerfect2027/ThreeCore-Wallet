@@ -495,3 +495,20 @@ See [the Japanese report guide](docs/PERIOD_REPORT_JA.md) and
 Run `npm run period-report:check -- report.json --json` for offline checks.
 The synthetic preview is `/test/browser/period-report-demo/` in `--ui-test` mode.
 This work remains local and has not been pushed to GitHub.
+
+### Saved report history (local development)
+
+Keep named three-token report snapshots with notes and tags, reopen them after
+review, and compare their evidence and period boundaries. Optional source
+inspection shows whether the original acquisition checkpoints still match the
+PC-local library. It never changes the captured report or rechecks a live chain.
+
+Back up all reports, including archived records, in checksummed JSON. Restoration
+adds new reports, retains existing annotations and blocks same-ID conflicts until
+reviewed. Origin-scoped IndexedDB storage has a 12-report / 64 MiB limit.
+
+See [the Japanese history guide](docs/REPORT_HISTORY_JA.md) and
+[design and verification details](docs/REPORT_HISTORY_DESIGN.md).
+Run `npm run report-history:check -- backup.json --json` for offline diagnostics.
+The synthetic preview is `/test/browser/report-history-demo/` in `--ui-test` mode.
+This work remains on the PC and has not been pushed to GitHub.

@@ -67,8 +67,8 @@ test("allowance server: all browser imports resolve locally", async () => {
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      // 101 local modules currently include the period and reconciliation panels.
-      assert(visited.size <= 120, "Unexpected dependency expansion");
+      // The report-history modules extend the existing local-only import graph.
+      assert(visited.size <= 130, "Unexpected dependency expansion");
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();
@@ -80,6 +80,9 @@ test("allowance server: all browser imports resolve locally", async () => {
     }
     assert(visited.has("/src/wallet-session.js"));
     assert(visited.has("/src/allowance-reader.js"));
+    for (const name of ["model", "storage", "file", "query", "view", "controller", "sources", "continuity"]) {
+      assert(visited.has("/src/report-history-" + name + ".js"), "Missing history dependency: " + name);
+    }
   });
 });
 test("allowance server: production page styles and module remain present", async () => {

@@ -1,0 +1,61 @@
+.report-history-panel {
+  margin: 28px 0;
+  padding: 24px;
+  color: #eaf3fb;
+  background: #0d1d2c;
+  border: 1px solid #34546a;
+  border-radius: 20px;
+  font: 16px/1.6 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+.report-history-panel * { box-sizing: border-box; min-width: 0; }
+.report-history-panel [hidden] { display: none !important; }
+.report-history-eyebrow { color: #5ddbc1; font-size: 12px; letter-spacing: .16em; }
+.report-history-heading { font-size: clamp(24px, 3vw, 32px); margin: 8px 0; }
+.report-history-notice, .report-history-intro, .report-history-capacity { color: #bad0df; }
+.report-history-panel button {
+  padding: 11px 15px;
+  border: 1px solid #58869b;
+  border-radius: 9px;
+  background: #18394b;
+  color: #f0fbff;
+  font: inherit;
+  cursor: pointer;
+  white-space: normal;
+  max-width: 100%;
+}
+.report-history-panel button:hover:not(:disabled) { background: #26536a; }
+.report-history-panel :disabled { opacity: .5; cursor: default; }
+.report-history-panel :focus-visible { outline: 3px solid #70dfc4; outline-offset: 3px; }
+.report-history-panel label { display: grid; gap: 6px; margin: 10px 0; color: #c3d7e6; }
+.report-history-panel input:not([type=checkbox]), .report-history-panel select, .report-history-panel textarea {
+  width: 100%;
+  padding: 10px;
+  background: #091724;
+  color: #f0f8ff;
+  border: 1px solid #466074;
+  border-radius: 7px;
+  font: inherit;
+}
+.report-history-panel textarea { min-height: 90px; resize: vertical; }
+.report-history-panel input[type=checkbox] { width: 20px; height: 20px; }
+.report-history-filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.report-history-actions, .report-history-exports, .report-history-selected-actions, .report-history-edit-actions {
+  display: flex; flex-wrap: wrap; gap: 10px;
+}
+.report-history-selected-details, .report-history-editor, .report-history-review, .report-history-backup, .report-history-comparison {
+  margin-top: 22px; padding-top: 18px; border-top: 1px solid #334c60;
+}
+.report-history-review { padding: 18px; border: 1px solid #b4a86c; border-radius: 12px; background: #29291f; }
+.report-history-status { min-height: 26px; color: #7ce3c0; }
+.report-history-status[data-error=true] { color: #ffce83; }
+.report-history-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.7 system-ui, sans-serif; }
+.report-history-panel summary { cursor: pointer; padding: 8px 0; }
+.report-history-note-label { max-width: 100%; }
+.report-history-selection-note { color: #a8d8f0; }
+.report-history-comparison-note, .report-history-backup-note, .report-history-edit-note { font-size: 14px; color: #acc2d3; }
+@media (max-width: 760px) {
+  .report-history-panel { padding: 16px; border-radius: 13px; }
+  .report-history-filters { grid-template-columns: 1fr; }
+  .report-history-actions button, .report-history-exports button, .report-history-edit-actions button { width: 100%; }
+}

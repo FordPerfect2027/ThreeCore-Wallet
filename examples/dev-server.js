@@ -5,6 +5,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["model", "storage", "file", "query", "view", "controller", "sources", "continuity"].map(name =>
+    ["/src/report-history-" + name + ".js", { file: resolve(here, "../src/report-history-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/report-history-panel.js", { file: resolve(here, "report-history-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/report-history.css", { file: resolve(here, "report-history.css"), mime: "text/css; charset=utf-8" }],
   ...["model", "engine", "file", "query", "view", "export", "controller", "comparison"].map(name =>
     ["/src/period-report-" + name + ".js", { file: resolve(here, "../src/period-report-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/examples/period-report-panel.js", { file: resolve(here, "period-report-panel.js"), mime: "text/javascript; charset=utf-8" }],
@@ -67,6 +71,10 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/report-history-demo/", { file: resolve(here, "../test/browser/report-history-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/report-history-demo.js", { file: resolve(here, "../test/browser/report-history-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/report-history-ui-tests.js", { file: resolve(here, "../test/browser/report-history-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/report-history-fixtures.js", { file: resolve(here, "../test/helpers/report-history-fixtures.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/period-report-demo/", { file: resolve(here, "../test/browser/period-report-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/period-report-demo.js", { file: resolve(here, "../test/browser/period-report-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/period-report-ui-tests.js", { file: resolve(here, "../test/browser/period-report-ui-tests.js"), mime: "text/javascript; charset=utf-8" });

@@ -158,7 +158,7 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
     review.hidden = !value.review;
     nodes.apply.disabled = value.busy || !value.review;
     nodes["review-text"].textContent = value.review ? [value.review.input.title,
-      "出所: " + (value.review.origin === "file" ? "報告JSON（保存一覧には追加されません）" : "PC内の保存一覧"),
+      "出所: " + (value.review.origin === "history" ? "PC内の報告履歴" : value.review.origin === "file" ? "報告JSON（保存一覧には追加されません）" : "PC内の保存一覧"),
       reportStatusText(value.review.report.status),
       ...value.review.report.slots.map(slot => slot.agent + ": " + reportStatusText(slot.status) +
         (slot.plan ? " / chain " + slot.plan.context.chainId + " / " + slot.plan.earlierBlock + "→" + slot.plan.laterBlock + " / " + slot.plan.context.account : "")),
@@ -173,7 +173,7 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
         nodes["result-title"].textContent = report.title;
         nodes["result-status"].textContent = reportStatusText(report.status);
         nodes["result-status"].setAttribute("data-state", report.status);
-        nodes["result-meta"].textContent = `出所: ${value.origin === "file" ? "報告JSON" : "PC内の保存一覧"} · 作成: ${report.createdAt} · ${report.selectedCount}/3トークン · ${report.eventCount}イベント（トークン別件数の合計）`;
+        nodes["result-meta"].textContent = `出所: ${value.origin === "history" ? "PC内の報告履歴" : value.origin === "file" ? "報告JSON" : "PC内の保存一覧"} · 作成: ${report.createdAt} · ${report.selectedCount}/3トークン · ${report.eventCount}イベント（トークン別件数の合計）`;
         nodes.issues.replaceChildren();
         for (const code of [...report.issues, ...report.warnings]) {
           const li = document.createElement("li"); li.textContent = reportIssueText(code); nodes.issues.append(li);
@@ -217,6 +217,7 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
   listen("next", "click", () => { page++; renderEvents(); });
   render(controller.state);
   return Object.freeze({ getReport: () => controller.state.report, getInput: () => controller.state.input,
+    stageHistory: controller.stageHistory,
     dispose() {
       if (disposed) return; disposed = true; controller.dispose(); cleanup.forEach(remove => remove()); host.remove();
     } });

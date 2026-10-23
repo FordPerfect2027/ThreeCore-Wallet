@@ -118,6 +118,18 @@ export function createPeriodReportController({ storage, onChange = () => {},
       });
     } catch (value) { return fail(value); }
   }
+  function stageHistory(inputValue) {
+    try {
+      if (!guard()) return false;
+      const candidate = validatePeriodReportInput(inputValue);
+      review = Object.freeze({ origin: "history", input: candidate, report: analyzePeriodReport(candidate),
+        checksumVerified: false, authenticated: false,
+        comparison: input ? comparePeriodReports(input, candidate) : null });
+      phase = "review"; error = null;
+      message = "PC内の報告履歴から再計算しました。確認後に表示してください。";
+      emit(); return true;
+    } catch (value) { return fail(value); }
+  }
   async function applyReview() {
     try {
       if (!guard()) return false;
@@ -129,7 +141,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
       }, result => {
         if (result.fresh) { document = result.fresh; loaded = true; }
         input = result.input; report = result.report; origin = pending.origin;
-        if (origin === "file") {
+        if (origin !== "library") {
           selection = Object.freeze(Object.fromEntries(input.slots.map(({ agent, entry }) => [agent,
             loaded && entry && document.entries.some(row => JSON.stringify(row) === JSON.stringify(entry))
               ? entry.id : null])));
@@ -167,5 +179,5 @@ export function createPeriodReportController({ storage, onChange = () => {},
     try { storage.close(); } catch { /* A closed adapter cannot change an accepted snapshot. */ }
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare,
-    invalidateReview, importFile, applyReview, exportFile, cancel, dispose });
+    invalidateReview, importFile, stageHistory, applyReview, exportFile, cancel, dispose });
 }
