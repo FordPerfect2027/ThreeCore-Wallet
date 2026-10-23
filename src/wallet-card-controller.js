@@ -4,6 +4,7 @@ import { readPortfolioSnapshot } from "./portfolio-snapshot.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { readAllowanceSnapshot } from "./allowance-reader.js";
 import { readTransferSnapshot } from "./transfer-reader.js";
+import { collectPeriod } from "./period-reader.js";
 import { portfolioFailureStatus } from "./portfolio-progress.js";
 import { readErrorCode, readErrorMessage } from "./provider-error.js";
 
@@ -21,6 +22,11 @@ export function createWalletCardController({
   let pendingConnect = null;
   let unwatch = () => {};
   let disposed = false;
+  let activePeriodAborter = null;
+  function stopPeriodRead() {
+    activePeriodAborter?.abort();
+    activePeriodAborter = null;
+  }
   let state = Object.freeze({ phase: "disconnected", connection: null, result: null, error: null });
   const cancelled = () => Object.assign(new Error("Obsolete view operation"), { code: "STALE_VIEW" });
   const current = (id, session) => !disposed && id === generation && wallet === session;
@@ -29,6 +35,7 @@ export function createWalletCardController({
     onChange(state);
   }
   function release() {
+    stopPeriodRead();
     const previous = wallet;
     wallet = null; // Stale callbacks are inert before removing listeners.
     unwatch();
@@ -117,6 +124,7 @@ export function createWalletCardController({
   }
   function clearResult() {
     if (disposed || state.phase === "connecting") return;
+    stopPeriodRead();
     generation++;
     publish(wallet?.state.connected ? "connected" : "disconnected");
   }
@@ -127,6 +135,7 @@ export function createWalletCardController({
       if (state.phase !== "connecting") publish("disconnected", null, "先にWalletを接続してください。");
       return false;
     }
+    stopPeriodRead();
     const session = wallet;
     const id = ++generation;
     publish("reading");
@@ -197,6 +206,31 @@ export function createWalletCardController({
   }
   return Object.freeze({
     get state() { return state; }, connect, disconnect, clearResult, readBalances, inspect, dispose,
+    async readPeriod(plan, options = {}) {
+      let result;
+      let failure;
+      const accepted = await runRead(async (session, read) => {
+        const aborter = new AbortController();
+        activePeriodAborter = aborter;
+        const cancel = () => aborter.abort();
+        options.signal?.addEventListener("abort", cancel, { once: true });
+        if (options.signal?.aborted) aborter.abort();
+        try {
+          result = await read(() => collectPeriod(session, plan, { ...options, signal: aborter.signal }));
+          return { kind: "period", blockNumber: result.plan.laterBlock };
+        } catch (error) {
+          failure = readErrorCode(error);
+          throw error;
+        } finally {
+          options.signal?.removeEventListener("abort", cancel);
+          if (activePeriodAborter === aborter) activePeriodAborter = null;
+        }
+      });
+      if (!accepted || !result) {
+        throw Object.assign(Error("Period observation unavailable"), { code: failure ?? "PERIOD_NOT_CONNECTED" });
+      }
+      return result;
+    },
     async readTransfers(request, options) {
       let result;
       let failure;

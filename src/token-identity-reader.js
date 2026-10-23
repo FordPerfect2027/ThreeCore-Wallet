@@ -49,6 +49,9 @@ export async function readTokenIdentity(session, options = {}) {
   if (signal !== undefined && !(signal instanceof AbortSignal)) identityFail("IDENTITY_SIGNAL");
   const observer = options.onProgress;
   if (observer !== undefined && typeof observer !== "function") identityFail("IDENTITY_OBSERVER");
+  // Explicit historical reads keep the same hash-pinned subread contract as latest.
+  const requestedBlock = options.blockNumber;
+  if (requestedBlock !== undefined) identityUnits(requestedBlock);
   let stopped = false;
   let timer;
   let abort;
@@ -88,7 +91,11 @@ export async function readTokenIdentity(session, options = {}) {
     }
   });
   async function collect() {
-    const block = header(await read("block", () => session.getBlockSnapshot()));
+    const block = header(await read("block", () => session.getBlockSnapshot(
+      requestedBlock === undefined ? undefined : "0x" + BigInt(requestedBlock).toString(16))));
+    if (requestedBlock !== undefined && BigInt(block.number).toString() !== requestedBlock) {
+      identityFail("IDENTITY_BLOCK");
+    }
     const code = await read("code", () => session.getContractCode(selected.address, block.hash));
     if (!code || code.address !== selected.address || typeof code.deployed !== "boolean") identityFail("IDENTITY_CODE");
     const native = rawUnits(await read("native", () => session.getNativeBalance(block.hash)));

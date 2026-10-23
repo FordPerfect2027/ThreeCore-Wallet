@@ -1,3 +1,5 @@
+import { mountPeriodPanel } from "./period-panel.js";
+import { periodFail } from "../src/period-plan.js";
 import { mountReconciliationPanel } from "./reconciliation-panel.js";
 import { mountTransferVaultPanel } from "./transfer-vault-panel.js";
 import { vaultBundle } from "../src/transfer-vault-model.js";
@@ -24,6 +26,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   const transferPanels = [];
   let transferVaultPanel;
   let reconciliationPanel;
+  let periodPanel;
   const allowanceStates = new Map(AGENT_IDS.map(agent => [agent, { agent, observation: null, provenance: null }]));
   const allowanceHost = document.createElement("section");
   allowanceHost.className = "allowance-overview";
@@ -129,6 +132,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     let wasConnected = false;
     const controller = createWalletCardController({ agent, siteOrigin, createSession, onChange: state => {
       render(card, state);
+      if (wasConnected && !state.connection?.connected) periodPanel?.invalidate();
       if (wasConnected && !state.connection?.connected) panel?.invalidate();
       if (wasConnected && !state.connection?.connected) identityPanel?.invalidate();
       if (wasConnected && !state.connection?.connected) allowancePanel?.invalidate();
@@ -314,6 +318,22 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     readArchive: agent => transferPanels[AGENT_IDS.indexOf(agent)].exportArchive(),
   });
   // All local edits invalidate old reviews and backup preparation, never auto-save.
+  const periodHost = document.createElement("div");
+  reconciliationHost.before(periodHost);
+  periodPanel = mountPeriodPanel({ document, parent: periodHost,
+    getContext: agent => {
+      const card = cards.find(value => value.dataset.agent === agent);
+      const state = controllers.get(card).state.connection;
+      if (!state?.connected) periodFail("PERIOD_NOT_CONNECTED");
+      return { agent, chainId: state.chainId, account: state.account };
+    },
+    read: (agent, plan, options) => {
+      const card = cards.find(value => value.dataset.agent === agent);
+      return controllers.get(card).readPeriod(plan, options);
+    },
+    stageWorkspace: (workspace, agent) => reconciliationPanel.stageCollected(workspace, agent),
+  });
+  for (const event of ["input", "change"]) listen(grid, event, () => periodPanel.invalidate());
   for (const event of ["input", "change", "click"]) listen(grid, event, () => {
     workspacePanel.invalidate();
     checkpointPanel.invalidateDraft();
@@ -346,6 +366,8 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   renderWalletProviders(registry.list());
   return Object.freeze({
     dispose() {
+      periodPanel.dispose();
+      periodHost.remove();
       reconciliationPanel.dispose();
       reconciliationHost.remove();
       transferVaultPanel.dispose();

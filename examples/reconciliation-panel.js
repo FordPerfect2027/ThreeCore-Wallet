@@ -298,6 +298,11 @@ export function mountReconciliationPanel({
   render(controller.state);
   return Object.freeze({
     getWorkspace: () => controller.state.workspace,
+    stageCollected(workspace, agent) {
+      const next = { ...controller.state.workspace, slots: controller.state.workspace.slots.map(slot =>
+        slot.agent === agent ? workspace.slots.find(value => value.agent === agent) : slot) };
+      return controller.propose(next);
+    },
     invalidateSources: () => controller.invalidateSources(),
     dispose() {
       if (disposed) return;

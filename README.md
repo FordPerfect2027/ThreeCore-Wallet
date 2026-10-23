@@ -444,3 +444,18 @@ The wallet demo now compares saved DAT, EMA and CAWELON balances with saved Tran
 It includes interval-gap diagnostics, exact residuals, block summaries, reviewed JSON recovery, and CSV exports.
 See [the Japanese user guide](docs/BALANCE_RECONCILIATION_JA.md) and [the design and test notes](docs/RECONCILIATION_DESIGN.md).
 Run `npm run reconciliation:check -- saved.json --json` to inspect a backup without wallet access.
+
+
+### Resumable historical period collection (local development)
+
+The wallet can now collect balances at two explicit blocks and sequential Transfer
+windows for DAT, EMA or CAWELON through an already connected read-only card.
+Save completed steps as JSON, review an imported checkpoint, and explicitly resume
+after rechecking its block anchors. Complete evidence can be reviewed in the
+existing three-token reconciliation screen without replacing the other slots.
+
+See [the period user guide](docs/PERIOD_COLLECTION_JA.md) and
+[the design and verification notes](docs/PERIOD_COLLECTION_DESIGN.md).
+Run `npm run period:check -- saved.json --json` for an offline file inspection.
+The isolated preview at `/test/browser/period-demo/` uses synthetic data only.
+This development remains on the PC; no GitHub publication is performed here.

@@ -1,3 +1,4 @@
+import { registerPeriodUITests } from "/test/browser/period-ui-tests.js";
 import { registerReconciliationUITests } from "/test/browser/reconciliation-ui-tests.js";
 import { registerVaultUITests } from "/test/browser/transfer-vault-ui-tests.js";
 import { registerWorkspaceUITests } from "/test/browser/workspace-ui-tests.js";
@@ -1191,6 +1192,7 @@ registerTokenIdentityUITests(test);
 registerAllowanceUITests(test);
 registerAllowanceBundleUITests(test);
 registerVaultUITests(test);
+registerPeriodUITests(test);
 registerReconciliationUITests(test);
 registerTransferUITests(test);
 let passed = 0, failed = 0;

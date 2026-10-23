@@ -5,6 +5,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["period-plan", "period-draft", "period-reader", "period-file", "period-view", "period-controller", "period-recovery", "period-progress"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/period-panel.js", { file: resolve(here, "period-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/period.css", { file: resolve(here, "period.css"), mime: "text/css; charset=utf-8" }],
   ...["reconciliation-model", "reconciliation-engine", "reconciliation-file", "reconciliation-view", "reconciliation-query", "reconciliation-controller", "reconciliation-ledger"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/examples/reconciliation-panel.js", { file: resolve(here, "reconciliation-panel.js"), mime: "text/javascript; charset=utf-8" }],
@@ -55,6 +59,10 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/period-ui-tests.js", { file: resolve(here, "../test/browser/period-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/period-fixtures.js", { file: resolve(here, "../test/helpers/period-fixtures.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/period-demo/", { file: resolve(here, "../test/browser/period-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/period-demo.js", { file: resolve(here, "../test/browser/period-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/reconciliation-ui-tests.js", { file: resolve(here, "../test/browser/reconciliation-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/helpers/reconciliation-fixtures.js", { file: resolve(here, "../test/helpers/reconciliation-fixtures.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/reconciliation-demo/", { file: resolve(here, "../test/browser/reconciliation-demo.html"), mime: "text/html; charset=utf-8" });

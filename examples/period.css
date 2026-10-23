@@ -1,0 +1,70 @@
+.period-panel {
+  --period-line: #31536b;
+  --period-muted: #a9c6dc;
+  color: #ecf5ff;
+  background: #0c1c2b;
+  border: 1px solid var(--period-line);
+  border-radius: 18px;
+  padding: 26px;
+  margin: 22px 0;
+  font: 15px/1.65 system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+.period-panel * { box-sizing: border-box; }
+.period-panel h2 { font-size: 1.6rem; margin: 3px 0 12px; color: #f3f9ff; }
+.period-panel h3 { font-size: 1.1rem; margin: 0 0 12px; }
+.period-eyebrow { color: #71d8dc; letter-spacing: .12em; font-size: .72rem; margin: 0; }
+.period-intro, .period-notice, .period-files-note, .period-send-note { color: var(--period-muted); }
+.period-notice { border-left: 3px solid #7bbcb5; padding-left: 12px; }
+.period-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
+.period-panel label { display: flex; flex-direction: column; gap: 6px; font-size: .86rem; color: #c9deed; }
+.period-panel input, .period-panel select {
+  width: 100%; border: 1px solid #54758c; border-radius: 7px;
+  color: #f1f7fc; background: #081723; padding: 10px; font: inherit;
+}
+.period-panel input[type=checkbox] { width: auto; }
+.period-ack-label { flex-direction: row !important; align-items: center; margin: 12px 0; }
+.period-actions, .period-export-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.period-panel button {
+  background: #18445a; color: #f1f8ff; border: 1px solid #487e96;
+  border-radius: 7px; padding: 10px 14px; cursor: pointer; font: inherit;
+}
+.period-panel .period-start { background: #13645f; border-color: #51b5a6; }
+.period-panel button:disabled { opacity: .45; cursor: default; }
+.period-panel button:not(:disabled):hover { filter: brightness(1.2); }
+.period-panel :focus-visible { outline: 3px solid #f6d67b; outline-offset: 3px; }
+.period-status { padding: 12px; background: #132f40; border-radius: 8px; min-height: 48px; }
+.period-status[data-error=true] { background: #3b2925; color: #ffd1ac; }
+.period-review { border: 1px solid #d4ad5b; background: #292820; border-radius: 10px; padding: 18px; margin: 18px 0; }
+.period-recovery { border: 1px solid #a38353; background: #30281e; border-radius: 10px; padding: 18px; margin: 18px 0; }
+.period-recovery-text { color: #eedabb; }
+.period-panel pre { white-space: pre-wrap; font: .86rem/1.7 ui-monospace, monospace; color: #c7e0ef; overflow-wrap: anywhere; }
+.period-summary { border: 1px solid var(--period-line); border-radius: 12px; padding: 20px; margin: 20px 0; }
+.period-summary-header { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.period-badge { border-radius: 20px; padding: 3px 12px; background: #164f50; font-size: .8rem; align-self: start; }
+.period-progress { display: block; width: 100%; height: 12px; accent-color: #5cd0be; }
+.period-progress-text { margin: 9px 0; }
+.period-provenance { color: var(--period-muted); font-size: .8rem; }
+.period-amounts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
+.period-before-card, .period-after-card { padding: 16px; background: #132c40; border-radius: 10px; }
+.period-amounts span { display: block; color: var(--period-muted); font-size: .82rem; }
+.period-amounts strong { display: block; font-size: 1.4rem; margin-top: 4px; color: #9cf0d5; }
+.period-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: .87rem; }
+.period-table caption { text-align: left; color: var(--period-muted); margin-bottom: 8px; }
+.period-table th, .period-table td { text-align: left; padding: 9px; border-bottom: 1px solid var(--period-line); }
+.period-table th { color: #b7d8e8; }
+.period-details { margin: 15px 0; }
+.period-details summary { cursor: pointer; color: #b6dce9; }
+.period-files { border-top: 1px solid var(--period-line); padding-top: 20px; }
+.period-file-label { max-width: 640px; margin: 15px 0; }
+.period-saved { font-size: .8rem; color: #cddc9b; }
+.period-panel [hidden] { display: none !important; }
+@media (max-width: 800px) {
+  .period-form { grid-template-columns: 1fr 1fr; }
+  .period-panel { padding: 16px; }
+}
+@media (max-width: 480px) {
+  .period-form, .period-amounts { grid-template-columns: 1fr; }
+  .period-table th, .period-table td { padding: 6px 3px; }
+  .period-panel h2 { font-size: 1.3rem; }
+}

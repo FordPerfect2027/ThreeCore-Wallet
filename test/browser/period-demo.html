@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>ThreeCore — 期間取得と再開のプレビュー</title>
+  <link rel="stylesheet" href="/examples/period.css">
+  <link rel="stylesheet" href="/examples/reconciliation.css">
+  <style>
+    body { background:#08121d; color:#ecf5ff; font:16px/1.7 system-ui,sans-serif; margin:0; }
+    main { max-width:1500px; margin:auto; padding:24px; }
+    header p { color:#a9c6dc; }
+    .preview-banner { background:#332b19; border:1px solid #8b733f; border-radius:10px; padding:14px; color:#ffe0a1; }
+    .preview-controls { display:flex; gap:10px; flex-wrap:wrap; margin:16px 0; }
+    .preview-controls button { background:#1a4258; border:1px solid #5d90a9; border-radius:6px; padding:9px 14px; color:white; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p>THREECORE / LOCAL DEVELOPMENT</p>
+      <h1>必要な期間を読み取り、途中から再開する。</h1>
+      <div class="preview-banner">すべて模擬データです。実際の資産残高ではありません。外部通信・実ウォレット接続・署名・送金を行いません。</div>
+      <p>例の期間は30～42です。DAT・EMA・CAWELONを個別に取得し、下の照合画面へまとめられます。</p>
+      <div class="preview-controls">
+        <button id="period-example" type="button">例の期間を入力</button>
+        <button id="period-failure" type="button">次の取得で通信失敗を再現</button>
+      </div>
+      <p id="demo-notice" role="status">正常な模擬接続を用意しました。</p>
+    </header>
+    <div id="period-demo"></div>
+    <div id="period-reconciliation"></div>
+  </main>
+  <script type="module" src="/test/browser/period-demo.js"></script>
+</body>
+</html>

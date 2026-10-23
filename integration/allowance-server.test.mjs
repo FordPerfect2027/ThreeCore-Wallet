@@ -67,7 +67,8 @@ test("allowance server: all browser imports resolve locally", async () => {
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      assert(visited.size < 100, "Unexpected dependency expansion");
+      // 101 local modules currently include the period and reconciliation panels.
+      assert(visited.size <= 120, "Unexpected dependency expansion");
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();
