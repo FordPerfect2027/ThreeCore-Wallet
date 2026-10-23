@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>ThreeCore — 残高と履歴の照合プレビュー</title>
+  <link rel="stylesheet" href="/examples/reconciliation.css">
+  <style>
+    body { background:#08121d; color:#ecf5ff; font:16px/1.7 system-ui,sans-serif; margin:0; }
+    main { max-width:1500px; margin:auto; padding:24px; }
+    .preview-label { color:#ffde8b; border:1px solid #846b33; border-radius:10px; padding:15px; }
+    header p { color:#a9c6dc; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p>THREECORE / LOCAL DEVELOPMENT</p>
+      <h1>残高の変化を、履歴と確かめる。</h1>
+      <p>DAT・EMA・CAWELONを別々に照合し、差額と未取得の期間を確認できます。</p>
+      <div class="preview-label">すべて模擬データです。実際の資産残高ではありません。外部通信・ウォレット接続・送金は行いません。</div>
+      <p>「現在の記録を照合する」で、DATの計算一致・EMAの差額・CAWELONの履歴不足をご覧いただけます。</p>
+    </header>
+    <div id="reconciliation-demo"></div>
+  </main>
+  <script type="module" src="/test/browser/reconciliation-demo.js"></script>
+</body>
+</html>

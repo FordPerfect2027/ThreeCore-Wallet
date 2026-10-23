@@ -26,6 +26,7 @@
     "test:identity-server": "node --test integration/token-identity-server.test.mjs",
     "test:external-dapp": "node scripts/run-isolated-aerodrome-probe.js --mock-wallet",
     "inspect:external-dapp": "node scripts/run-isolated-aerodrome-probe.js",
-    "vault:check": "node scripts/check-transfer-vault.js"
+    "vault:check": "node scripts/check-transfer-vault.js",
+    "reconciliation:check": "node scripts/check-reconciliation.js"
   }
 }

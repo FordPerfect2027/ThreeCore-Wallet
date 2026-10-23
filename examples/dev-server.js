@@ -5,6 +5,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["reconciliation-model", "reconciliation-engine", "reconciliation-file", "reconciliation-view", "reconciliation-query", "reconciliation-controller", "reconciliation-ledger"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/reconciliation-panel.js", { file: resolve(here, "reconciliation-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/reconciliation.css", { file: resolve(here, "reconciliation.css"), mime: "text/css; charset=utf-8" }],
   ...["transfer-vault-timeline", "transfer-vault-collection", "transfer-vault-model", "transfer-vault-file", "transfer-vault-analytics", "transfer-vault-storage", "transfer-vault-controller", "transfer-vault-messages"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/examples/transfer-vault-panel.js", { file: resolve(here, "transfer-vault-panel.js"), mime: "text/javascript; charset=utf-8" }],
@@ -51,6 +55,10 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/reconciliation-ui-tests.js", { file: resolve(here, "../test/browser/reconciliation-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/reconciliation-fixtures.js", { file: resolve(here, "../test/helpers/reconciliation-fixtures.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/reconciliation-demo/", { file: resolve(here, "../test/browser/reconciliation-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/reconciliation-demo.js", { file: resolve(here, "../test/browser/reconciliation-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/transfer-vault-ui-tests.js", { file: resolve(here, "../test/browser/transfer-vault-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/helpers/vault-fixtures.js", { file: resolve(here, "../test/helpers/vault-fixtures.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/transfer-vault-demo/", { file: resolve(here, "../test/browser/transfer-vault-demo.html"), mime: "text/html; charset=utf-8" });

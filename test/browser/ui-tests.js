@@ -1,3 +1,4 @@
+import { registerReconciliationUITests } from "/test/browser/reconciliation-ui-tests.js";
 import { registerVaultUITests } from "/test/browser/transfer-vault-ui-tests.js";
 import { registerWorkspaceUITests } from "/test/browser/workspace-ui-tests.js";
 import { registerTransferUITests } from "/test/browser/transfer-ui-tests.js";
@@ -1190,6 +1191,7 @@ registerTokenIdentityUITests(test);
 registerAllowanceUITests(test);
 registerAllowanceBundleUITests(test);
 registerVaultUITests(test);
+registerReconciliationUITests(test);
 registerTransferUITests(test);
 let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");

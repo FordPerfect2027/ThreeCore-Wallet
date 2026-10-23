@@ -1,0 +1,80 @@
+.reconciliation-panel {
+  margin: 1.5rem 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid #446785;
+  border-radius: 18px;
+  background: #0e1b2a;
+  color: #e9f2fa;
+  font: 15px/1.65 system-ui, sans-serif;
+}
+.reconciliation-panel [hidden] { display: none !important; }
+.reconciliation-panel h2 { font-size: 1.65rem; margin: 0 0 1rem; }
+.reconciliation-panel h3 { margin: 1.6rem 0 .7rem; color: #82d5fb; }
+.reconciliation-panel h4 { margin: 0 0 .5rem; }
+.reconciliation-panel p { max-width: 95ch; }
+.reconciliation-panel pre {
+  font: 13px/1.7 ui-monospace, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: .5rem 0;
+  color: inherit;
+}
+.reconciliation-actions { display: flex; flex-wrap: wrap; align-items: end; gap: .7rem; }
+.reconciliation-field { display: flex; flex-direction: column; gap: .25rem; min-width: 160px; }
+.reconciliation-field span { font-size: .85rem; }
+.reconciliation-panel button,
+.reconciliation-panel select,
+.reconciliation-panel input {
+  box-sizing: border-box;
+  font: inherit;
+  max-width: 100%;
+  color: #edf7ff;
+  background: #17344b;
+  border: 1px solid #5a809c;
+  border-radius: 7px;
+  padding: .55rem .75rem;
+}
+.reconciliation-panel input[type=checkbox] { align-self: start; width: 20px; height: 20px; }
+.reconciliation-panel button { cursor: pointer; }
+.reconciliation-panel button:disabled { opacity: .45; cursor: default; }
+.reconciliation-panel :focus-visible { outline: 3px solid #ffd36e; outline-offset: 3px; }
+.reconciliation-panel button:not(:disabled):hover { background: #28516c; }
+.reconciliation-panel .reconciliation-calculate { background: #126e72; padding: .7rem 1.4rem; }
+.reconciliation-inputs, .reconciliation-results { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0; }
+.reconciliation-input, .reconciliation-result { background: #132a3c; border: 1px solid #39566e; border-radius: 9px; padding: 1rem; min-width: 0; }
+.reconciliation-verdict { font-weight: 650; min-height: 3.3em; }
+.reconciliation-amounts { display: grid; grid-template-columns: 1fr; gap: .25rem; }
+.reconciliation-amounts dt { color: #b5cddd; font-size: .85rem; }
+.reconciliation-amounts dd { margin: 0 0 .7rem; font-size: 1.35rem; font-weight: 650; overflow-wrap: anywhere; }
+.reconciliation-coverage-summary { color: #d7d6ba; font-size: .85rem; }
+.reconciliation-result[data-result-status=arithmetic-agreement] { border-top: 4px solid #56c7b6; }
+.reconciliation-result[data-result-status=unexplained-difference] { border-top: 4px solid #ffbe6f; }
+.reconciliation-result[data-result-status=incomplete-history] { border-top: 4px solid #94b6ff; }
+.reconciliation-result[data-result-status=not-comparable],
+.reconciliation-result[data-result-status=inconsistent-history] { border-top: 4px solid #e98f9a; }
+.reconciliation-result-details summary, .reconciliation-evidence-details summary { cursor: pointer; color: #9ed8f6; }
+.reconciliation-result-details { margin-top: .8rem; }
+.reconciliation-review { background: #3b301d; border: 1px solid #c4a45e; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+.reconciliation-review button { margin-top: .8rem; }
+.reconciliation-notice, .reconciliation-storage-notice { border-left: 3px solid #82d5fb; padding-left: .8rem; }
+.reconciliation-status { padding: .7rem; background: #17344b; border-radius: 7px; }
+.reconciliation-status[data-error=true] { background: #542b32; }
+.reconciliation-table-scroll { overflow-x: auto; margin-top: 1rem; }
+.reconciliation-panel table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.reconciliation-panel th, .reconciliation-panel td { text-align: left; vertical-align: top; padding: .6rem; border-bottom: 1px solid #39566e; }
+.reconciliation-panel td:last-child { overflow-wrap: anywhere; min-width: 150px; max-width: 250px; }
+.reconciliation-panel caption { text-align: left; padding-bottom: .7rem; }
+.reconciliation-pagination { display: inline-block; margin-right: 1rem; }
+.reconciliation-export-status { color: #cddcae; }
+@media (max-width: 900px) {
+  .reconciliation-inputs, .reconciliation-results { grid-template-columns: 1fr; }
+  .reconciliation-panel { padding: 1rem; }
+  .reconciliation-panel h2 { font-size: 1.4rem; }
+  .reconciliation-field { width: 100%; }
+}
+@media print {
+  .reconciliation-actions, .reconciliation-review, .reconciliation-panel button, .reconciliation-field { display: none !important; }
+  .reconciliation-panel, .reconciliation-result { color: #111; background: white; border-color: #888; }
+  .reconciliation-results { display: block; }
+  .reconciliation-result { break-inside: avoid; margin-bottom: 1rem; }
+}

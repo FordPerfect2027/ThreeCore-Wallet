@@ -1,3 +1,4 @@
+import { mountReconciliationPanel } from "./reconciliation-panel.js";
 import { mountTransferVaultPanel } from "./transfer-vault-panel.js";
 import { vaultBundle } from "../src/transfer-vault-model.js";
 import { createWalletCardController } from "../src/wallet-card-controller.js";
@@ -22,6 +23,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   const allowancePanels = [];
   const transferPanels = [];
   let transferVaultPanel;
+  let reconciliationPanel;
   const allowanceStates = new Map(AGENT_IDS.map(agent => [agent, { agent, observation: null, provenance: null }]));
   const allowanceHost = document.createElement("section");
   allowanceHost.className = "allowance-overview";
@@ -60,6 +62,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   }]));
   const renderIdentitySummary = () => {
     identitySummary.textContent = describeIdentityCards([...identityStates.values()]);
+    reconciliationPanel?.invalidateSources();
   };
   renderIdentitySummary();
   function listen(element, event, callback) {
@@ -303,11 +306,19 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     stageArchive: (agent, archive, options) => transferPanels[AGENT_IDS.indexOf(agent)].stageArchive(archive, options),
     ...(transferVaultStorage ? { storage: transferVaultStorage } : {}),
   });
+  const reconciliationHost = document.createElement("div");
+  reconciliationHost.className = "reconciliation-host";
+  grid.before(reconciliationHost);
+  reconciliationPanel = mountReconciliationPanel({ document, parent: reconciliationHost,
+    readObservation: agent => identityStates.get(agent)?.observation ?? null,
+    readArchive: agent => transferPanels[AGENT_IDS.indexOf(agent)].exportArchive(),
+  });
   // All local edits invalidate old reviews and backup preparation, never auto-save.
   for (const event of ["input", "change", "click"]) listen(grid, event, () => {
     workspacePanel.invalidate();
     checkpointPanel.invalidateDraft();
     transferVaultPanel.invalidateCards();
+    reconciliationPanel.invalidateSources();
   });
   function renderWalletProviders(wallets) {
     for (const card of cards) {
@@ -335,6 +346,8 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   renderWalletProviders(registry.list());
   return Object.freeze({
     dispose() {
+      reconciliationPanel.dispose();
+      reconciliationHost.remove();
       transferVaultPanel.dispose();
       transferVaultHost.remove();
       checkpointPanel.dispose();

@@ -436,3 +436,11 @@ are explicit; no wallet connection or transaction is initiated by the vault.
 See [transfer history vault](docs/transfer-vault.md) for the workflow, file formats,
 limits, privacy details, offline checker and isolated preview. Existing workspace
 backups remain separate. This round remains on the PC and is not pushed to GitHub.
+
+
+### Local balance/history reconciliation
+
+The wallet demo now compares saved DAT, EMA and CAWELON balances with saved Transfer histories.
+It includes interval-gap diagnostics, exact residuals, block summaries, reviewed JSON recovery, and CSV exports.
+See [the Japanese user guide](docs/BALANCE_RECONCILIATION_JA.md) and [the design and test notes](docs/RECONCILIATION_DESIGN.md).
+Run `npm run reconciliation:check -- saved.json --json` to inspect a backup without wallet access.
