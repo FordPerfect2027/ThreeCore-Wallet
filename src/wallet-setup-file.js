@@ -23,41 +23,63 @@ export function createWalletSetupFileReader({ readBytes = readSecurityFileBytes,
   onChange = () => {} } = {}) {
   let generation = 0;
   let readAbort = null;
-  function abortRead() { readAbort?.abort(); readAbort = null; }
+  let aborting = false;
+  function abortRead() {
+    const previous = readAbort;
+    readAbort = null;
+    if (!previous) return;
+    aborting = true;
+    try { previous.abort(); } finally { aborting = false; }
+  }
   let disposed = false;
+  const current = id => !disposed && id === generation;
   let state = Object.freeze({ phase: "idle", text: null, errorCode: null });
   function publish(phase, text = null, errorCode = null) {
     state = Object.freeze({ phase, text, errorCode });
-    onChange(state);
+    try { onChange(state); } catch { /* A display callback cannot reject the read. */ }
   }
   return Object.freeze({
     state: () => state,
     async load(file) {
-      if (disposed) return false;
+      if (disposed || aborting) return false;
       const id = ++generation;
       abortRead();
+      if (!current(id)) return false;
       const activeRead = new AbortController();
       readAbort = activeRead;
       publish("reading");
       try {
         if (disposed || id !== generation) return false;
-        if (!file || typeof file.name !== "string" || file.name.length > 240 ||
-            !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) fail("SETUP_FILENAME");
+        const name = file?.name;
+        if (typeof name !== "string" || name.length > 240 ||
+            !/\.json$/i.test(name) || /[\\/\u0000-\u001f\u007f]/.test(name)) fail("SETUP_FILENAME");
         const size = file.size;
         if (!Number.isSafeInteger(size) || size < 1 || size > WALLET_SETUP_FILE_LIMIT) fail("SETUP_SIZE");
+        if (!current(id)) return false;
         const bytes = await readBytes(file, { maxBytes: WALLET_SETUP_FILE_LIMIT, signal: activeRead.signal });
         if (disposed || id !== generation) return false;
         if (!(bytes instanceof Uint8Array) || bytes.byteLength !== size) fail("SETUP_SIZE");
         const text = decodeWalletSetupBytes(bytes);
         publish("ready", text);
-        return true;
+        return current(id);
       } catch (error) {
         if (disposed || id !== generation) return false;
         publish("error", null, error instanceof WalletSetupError ? error.code : "SETUP_FILE");
         return false;
       }
     },
-    cancel() { if (!disposed) { generation++; abortRead(); publish("idle"); } },
-    dispose() { generation++; abortRead(); disposed = true; },
+    cancel() {
+      if (disposed) return;
+      const id = ++generation;
+      abortRead();
+      if (current(id)) publish("idle");
+    },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      generation++;
+      state = Object.freeze({ phase: "disposed", text: null, errorCode: null });
+      abortRead();
+    },
   });
 }

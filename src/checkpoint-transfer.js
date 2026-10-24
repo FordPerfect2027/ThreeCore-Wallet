@@ -79,19 +79,30 @@ export function describeCheckpointImport(review) {
 export function createCheckpointCollectionReader({ readBytes = readSecurityFileBytes } = {}) {
   let generation = 0;
   let readAbort = null;
-  function abortRead() { readAbort?.abort(); readAbort = null; }
+  let aborting = false;
+  function abortRead() {
+    const previous = readAbort;
+    readAbort = null;
+    if (!previous) return;
+    aborting = true;
+    try { previous.abort(); } finally { aborting = false; }
+  }
   let disposed = false;
   return Object.freeze({
     async read(file) {
+      if (disposed || aborting) checkpointFail("CHECKPOINT_CANCELLED");
       const token = ++generation;
       abortRead();
+      if (disposed || token !== generation) checkpointFail("CHECKPOINT_CANCELLED");
       const activeRead = new AbortController();
       readAbort = activeRead;
       if (disposed) checkpointFail("CHECKPOINT_CANCELLED");
-      if (!file || typeof file.name !== "string" || !/\.json$/i.test(file.name) ||
-          /[\\/\u0000-\u001f]/.test(file.name)) checkpointFail("CHECKPOINT_TRANSFER_FILE");
+      const name = file?.name;
+      if (typeof name !== "string" || !/\.json$/i.test(name) ||
+          /[\\/\u0000-\u001f]/.test(name)) checkpointFail("CHECKPOINT_TRANSFER_FILE");
       const size = file.size;
       if (!Number.isSafeInteger(size) || size < 1 || size > CHECKPOINT_TRANSFER_LIMIT) checkpointFail("CHECKPOINT_TRANSFER_SIZE");
+      if (disposed || token !== generation) checkpointFail("CHECKPOINT_CANCELLED");
       let bytes;
       try { bytes = await readBytes(file, { maxBytes: CHECKPOINT_TRANSFER_LIMIT, signal: activeRead.signal }); }
       catch { checkpointFail(disposed || token !== generation ? "CHECKPOINT_CANCELLED" : "CHECKPOINT_TRANSFER_READ"); }
@@ -100,7 +111,12 @@ export function createCheckpointCollectionReader({ readBytes = readSecurityFileB
       try { return new TextDecoder("utf-8", { fatal: true }).decode(bytes); }
       catch { checkpointFail("CHECKPOINT_TRANSFER_ENCODING"); }
     },
-    cancel() { generation++; abortRead(); },
-    dispose() { generation++; abortRead(); disposed = true; },
+    cancel() { if (!disposed) { generation++; abortRead(); } },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      generation++;
+      abortRead();
+    },
   });
 }

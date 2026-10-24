@@ -54,8 +54,9 @@ export async function decodeWorkspaceFile(bytes, { subtle } = {}) {
 }
 
 function validFile(file) {
-  if (!file || typeof file.name !== "string" || file.name.length > 240 ||
-      !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) workspaceFail("WORKSPACE_FILENAME");
+  const name = file?.name;
+  if (typeof name !== "string" || name.length > 240 ||
+      !/\.json$/i.test(name) || /[\\/\u0000-\u001f\u007f]/.test(name)) workspaceFail("WORKSPACE_FILENAME");
   const size = file.size;
   if (!Number.isSafeInteger(size) || size < 1 || size > WORKSPACE_FILE_LIMIT) workspaceFail("WORKSPACE_FILE_SIZE");
   return size;
@@ -69,32 +70,42 @@ export function createWorkspaceFileReader({
 } = {}) {
   let generation = 0;
   let readAbort = null;
-  function abortRead() { readAbort?.abort(); readAbort = null; }
+  let aborting = false;
+  function abortRead() {
+    const previous = readAbort;
+    readAbort = null;
+    if (!previous) return;
+    aborting = true;
+    try { previous.abort(); } finally { aborting = false; }
+  }
   let disposed = false;
+  const current = id => !disposed && id === generation;
   let state = Object.freeze({ phase: "idle", result: null, errorCode: null });
   function publish(phase, result = null, errorCode = null) {
     state = Object.freeze({ phase, result, errorCode });
-    onChange(state);
+    try { onChange(state); } catch { /* A display callback cannot reject the read. */ }
   }
   return Object.freeze({
     state: () => state,
     async load(file) {
-      if (disposed) return false;
+      if (disposed || aborting) return false;
       const id = ++generation;
       abortRead();
+      if (!current(id)) return false;
       const activeRead = new AbortController();
       readAbort = activeRead;
       publish("reading");
       try {
         if (disposed || id !== generation) return false;
         const size = validFile(file);
+        if (!current(id)) return false;
         const bytes = await readBytes(file, { maxBytes: WORKSPACE_FILE_LIMIT, signal: activeRead.signal });
         if (disposed || id !== generation) return false;
         if (!(bytes instanceof Uint8Array) || bytes.byteLength !== size) workspaceFail("WORKSPACE_FILE_SIZE");
         const result = await decodeWorkspaceFile(bytes, { subtle });
         if (disposed || id !== generation) return false;
         publish("ready", result);
-        return true;
+        return current(id);
       } catch (error) {
         if (disposed || id !== generation) return false;
         publish("error", null, error instanceof WorkspaceError ? error.code : "WORKSPACE_FILE_READ");
@@ -103,13 +114,16 @@ export function createWorkspaceFileReader({
     },
     cancel() {
       if (disposed) return;
-      generation++; abortRead();
-      publish("cancelled");
+      const id = ++generation;
+      abortRead();
+      if (current(id)) publish("cancelled");
     },
     dispose() {
-      generation++; abortRead();
+      if (disposed) return;
       disposed = true;
+      generation++;
       state = Object.freeze({ phase: "disposed", result: null, errorCode: null });
+      abortRead();
     },
   });
 }

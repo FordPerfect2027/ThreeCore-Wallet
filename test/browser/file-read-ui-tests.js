@@ -2,6 +2,11 @@ import { createFileReadService } from "/src/file-read-service.js";
 import { mountFileReadPanel } from "/examples/file-read-panel.js";
 import { createWalletSetupFileReader, prepareWalletSetupFile } from "/src/wallet-setup-file.js";
 import { WALLET_SETUP_SCHEMA } from "/src/wallet-setup.js";
+import { mountWalletSetupPanel } from "/examples/wallet-setup-panel.js";
+import { mountWorkspacePanel } from "/examples/workspace-panel.js";
+import { prepareWorkspaceFile } from "/src/workspace-file.js";
+import { workspaceFromDraft } from "/src/workspace-format.js";
+import { createPortfolioHistory } from "/src/portfolio-history.js";
 
 const assert = (value, message = "File boundary UI assertion failed") => { if (!value) throw Error(message); };
 const bytes = text => new TextEncoder().encode(text);
@@ -42,6 +47,64 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  for (const kind of ["settings", "workspace"]) {
+    test(`file-read: ${kind} panel cancellation cannot open a file from cleanup`, async () => {
+      const parent = document.createElement("section");
+      document.body.append(parent);
+      const fields = ["DAT", "EMA", "CAWELON"].map((agent, index) => ({
+        agent, account: "0x" + String(index + 1).repeat(40), chainId: 84532,
+      }));
+      const draft = fields.map(row => ({ ...row, tokenAddress: "", tokens: "",
+        history: createPortfolioHistory().exportText() }));
+      const prepared = kind === "settings" ? prepareWalletSetupFile({ schema: WALLET_SETUP_SCHEMA, entries: fields })
+        : await prepareWorkspaceFile(workspaceFromDraft(draft));
+      const gate = deferred();
+      const signals = [];
+      let applied = 0;
+      const prefix = kind === "settings" ? "wallet-setup-" : "workspace-";
+      const field = suffix => parent.querySelector("." + prefix + suffix);
+      function choose() {
+        const transfer = new DataTransfer();
+        transfer.items.add(new File([prepared.text], "synthetic.json", { type: "application/json" }));
+        field("file").files = transfer.files;
+        field("file").dispatchEvent(new Event("change"));
+      }
+      const readBytes = (file, { signal }) => {
+        signals.push(signal);
+        if (signals.length === 1) signal.addEventListener("abort", choose, { once: true });
+        return gate.promise;
+      };
+      const panel = kind === "settings"
+        ? mountWalletSetupPanel({ document, parent, readFields: () => fields,
+          applyPlan() { applied++; }, readBytes })
+        : mountWorkspacePanel({ document, parent, readDraft: () => draft,
+          writeDraft() { applied++; }, readBytes });
+      try {
+        field("json").value = "keep this unfinished draft";
+        field("json").dispatchEvent(new Event("input"));
+        choose();
+        assert(signals.length === 1, "first file started");
+        field("cancel").click();
+        gate.resolve(bytes(prepared.text));
+        await tick(); await tick();
+        assert(signals.length === 1, "cleanup opened another file");
+        assert(signals[0].aborted, "original IO not stopped");
+        assert(field("json").value === "keep this unfinished draft", "cancelled result replaced draft");
+        assert(!field("file").disabled && field("apply").disabled, "cancelled review state incorrect");
+        assert(applied === 0, "file selection applied settings or history");
+        // A separate, later selection is still usable and requires fresh review.
+        choose();
+        const started = Date.now();
+        while (field("file").disabled && Date.now() - started < 5000) await tick();
+        assert(signals.length === 2 && !field("file").disabled, "explicit new selection could not finish");
+        assert(field("json").value !== "keep this unfinished draft", "new draft not offered");
+        assert(field("apply").disabled && applied === 0, "new file bypassed review");
+      } finally {
+        panel.dispose(); gate.resolve(bytes(prepared.text)); parent.remove();
+      }
+    });
+  }
+
   test("file-read: production screen mounts status without wallet requests", async fixture => {
     const f = fixture();
     const panel = document.querySelector(".file-read-panel");
