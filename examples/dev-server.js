@@ -6,6 +6,9 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/src/secure-backup-status.js", { file: resolve(here, "../src/secure-backup-status.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/secure-operation-panel.js", { file: resolve(here, "secure-operation-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/secure-deadline.js", { file: resolve(here, "../src/secure-deadline.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/export-policy.js", { file: resolve(here, "../src/export-policy.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/export-payload.js", { file: resolve(here, "../src/export-payload.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/export-guard.js", { file: resolve(here, "../src/export-guard.js"), mime: "text/javascript; charset=utf-8" }],
@@ -113,6 +116,12 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/secure-lifecycle-demo/", { file: resolve(here, "../test/browser/secure-lifecycle-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/secure-lifecycle-demo.js", { file: resolve(here, "../test/browser/secure-lifecycle-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/secure-lifecycle-demo.css", { file: resolve(here, "../test/browser/secure-lifecycle-demo.css"), mime: "text/css; charset=utf-8" });
+    for (const file of ["browser/secure-lifecycle-ui-tests.js", "browser/secure-lifecycle-fixture.js", "helpers/secure-lifecycle-time.js"]) {
+      paths.set("/test/" + file, { file: resolve(here, "../test/" + file), mime: "text/javascript; charset=utf-8" });
+    }
     paths.set("/test/browser/encrypted-library-ui-tests.js", { file: resolve(here, "../test/browser/encrypted-library-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/rpc-protection-demo/", { file: resolve(here, "../test/browser/rpc-protection-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/rpc-protection-demo.js", { file: resolve(here, "../test/browser/rpc-protection-demo.js"), mime: "text/javascript; charset=utf-8" });

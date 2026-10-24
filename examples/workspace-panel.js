@@ -30,8 +30,9 @@ const ERRORS = Object.freeze({
 
 /** One explicit local workflow for all three cards; no provider capability. */
 export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
-  download = offerHistoryDownload, readBytes, subtle }) {
-  const controller = createWorkspaceController({ readDraft, writeDraft });
+  download = offerHistoryDownload, readBytes, subtle, secureOptions = {} }) {
+  const controller = createWorkspaceController({ readDraft, writeDraft,
+    authorizeWrite: () => !secureStaged || securePanel.stagedReady() });
   const backup = createWorkspaceBackupTracker();
   const listeners = [];
   const section = document.createElement("section");
@@ -123,6 +124,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
   });
   const save = button("save", "3ウォレットの平文バックアップを保存", () => { void saveFile(); });
   const previewButton = button("preview", "一括復元の変更内容を確認", () => {
+    if (!stagedReady()) return;
     clearReview();
     preview = controller.preview(json.value, options());
     detail.textContent = describeWorkspacePreview(preview);
@@ -130,6 +132,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     controls();
   });
   const apply = button("apply", "確認した内容を一括復元", () => {
+    if (!stagedReady()) return;
     if (!preview || !confirmed.item.checked || (preview.removed && !removal.item.checked)) return;
     const candidate = preview;
     preview = null;
@@ -142,6 +145,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     controls();
   });
   const cancel = button("cancel", "読み込み・プレビューを取り消す", () => {
+    if (secureStaged) securePanel.protect();
     saveGeneration++;
     saving = false;
     reader.cancel();
@@ -179,6 +183,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
       clearReview();
       status.textContent = "ファイルと破損確認を読み込んでいます。まだ変更していません。";
     } else if (state.phase === "ready") {
+      secureStaged = false;
       clearReview();
       json.value = state.result.text;
       status.textContent = "ファイルの破損確認が一致しました。本人・所有・安全性の確認ではありません。変更内容をプレビューしてください。";
@@ -269,9 +274,17 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     json.value = "";
     clearReview();
   }
+  function stagedReady() {
+    if (!secureStaged) return true;
+    if (securePanel.stagedReady()) return true;
+    clearSecureStage();
+    status.textContent = "保護の期限が過ぎたため復元待ちの内容を消去しました。暗号化ファイルを開き直してください。";
+    return false;
+  }
   function stageText(text) {
     if (disposed) return false;
     decodeWorkspace(text);
+    secureStaged = false;
     saveGeneration++;
     saving = false;
     reader.cancel();
@@ -281,7 +294,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     controls();
     return true;
   }
-  securePanel = mountSecureBackupPanel({ document, parent: secureHost, readDraft, download,
+  securePanel = mountSecureBackupPanel({ ...secureOptions, document, parent: secureHost, readDraft, download,
     onStage(text) { const result = stageText(text); secureStaged = result; return result; },
     onProtect: clearSecureStage });
   updateBackup();

@@ -1,0 +1,21 @@
+:root { color-scheme: dark; font-family: system-ui, sans-serif; color: #e8f0ff; background: #0c1423; }
+body { margin: 0; padding: 28px; line-height: 1.7; }
+main, body > div { max-width: 1040px; margin: 0 auto; }
+h1 { font-size: clamp(1.5rem, 3vw, 2.3rem); line-height: 1.35; margin: 12px 0; }
+h2 { font-size: 1.15rem; }
+.eyebrow { color: #73d9d2; font-size: .8rem; letter-spacing: .12em; }
+.scope, .limit { color: #b7c7df; }
+.scenario { padding: 20px 24px; background: #142339; border: 1px solid #314b6d; border-radius: 14px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+button { font: inherit; padding: 10px 16px; cursor: pointer; border-radius: 8px; border: 1px solid #467a9c; color: #edf6ff; background: #214263; }
+button:disabled { opacity: .45; cursor: default; }
+button:focus-visible { outline: 3px solid #75e6dc; outline-offset: 3px; }
+#demo-status { color: #9bf0d2; font-weight: 650; }
+#proof { font-variant-numeric: tabular-nums; }
+.workspace-panel { margin-top: 22px; padding: 20px; border: 1px solid #314b6d; border-radius: 12px; }
+.workspace-panel textarea { width: 95%; max-height: 80px; background: #0b1524; color: #d3e7fd; }
+.workspace-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.workspace-panel label { display: block; margin: 8px 0; }
+.secure-backup-panel, .secure-operation-panel { border-color: #385a77; }
+.secure-backup-panel input { background: #0c1423; color: #edf6ff; }
+@media (max-width: 600px) { body { padding: 14px; } .scenario { padding: 14px; } button { width: 100%; } }

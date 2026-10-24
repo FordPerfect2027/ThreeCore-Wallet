@@ -1,3 +1,4 @@
+import { registerSecureLifecycleUITests } from "/test/browser/secure-lifecycle-ui-tests.js";
 import { registerExportGuardUITests } from "/test/browser/export-guard-ui-tests.js";
 import { registerFileReadUITests } from "/test/browser/file-read-ui-tests.js";
 import { registerRpcSupervisorUITests } from "/test/browser/rpc-supervisor-ui-tests.js";
@@ -1205,6 +1206,7 @@ registerHistoryReviewUITests(test);
 registerHistoryRecoveryUITests(test);
 registerWalletSetupUITests(test);
 registerWorkspaceUITests(test);
+registerSecureLifecycleUITests(test);
 registerSecureBackupUITests(test);
 registerEncryptedLibraryUITests(test);
 registerCheckpointUITests(test);

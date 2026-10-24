@@ -1,3 +1,5 @@
+import { mountSecureOperationPanel } from "./secure-operation-panel.js";
+import { createSecureDeadline } from "../src/secure-deadline.js";
 import { createSecureBackupController } from "../src/secure-backup-controller.js";
 import { mountEncryptedLibraryPanel } from "./encrypted-library-panel.js";
 import { offerHistoryDownload } from "./history-files.js";
@@ -20,6 +22,9 @@ export const SECURE_BACKUP_MESSAGES = Object.freeze({
   SECURE_DOWNLOAD: "ダウンロードを開始できませんでした。暗号化からやり直してください。",
   SECURE_READ: "ファイルを読み込めませんでした。元のファイルを選び直してください。",
   SECURE_DISPOSED: "画面を閉じたため処理を終了しました。",
+  SECURE_EXPIRED: "一定時間が経過したため、待機中の内容を消去しました。ファイルと合言葉をもう一度確認してください。",
+  SECURE_CLOCK: "経過時間を確認できないため処理を停止しました。画面を開き直してください。",
+  SECURE_TIMER: "保護用の時間管理を開始できないため処理を停止しました。画面を開き直してください。",
   SECURE_INTERNAL: "処理を完了できませんでした。最初からやり直してください。",
 });
 
@@ -27,14 +32,23 @@ export const SECURE_BACKUP_MESSAGES = Object.freeze({
 export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
   onProtect = () => {}, download = offerHistoryDownload,
   controllerOptions = {}, eventTarget = document.defaultView,
-  plaintextLifetimeMs = 120_000, libraryOptions = {},
+  plaintextLifetimeMs = 120_000, libraryOptions = {}, deadlineOptions = {},
 } = {}) {
   if (!Number.isSafeInteger(plaintextLifetimeMs) || plaintextLifetimeMs < 1 || plaintextLifetimeMs > 120_000) {
     throw new Error("SECURE_INTERNAL");
   }
   let disposed = false;
   let libraryPanel;
-  let expiryTimer = null;
+  let protecting = false;
+  let credentialArmed = false;
+  const expire = code => {
+    protect();
+    if (!disposed) status.textContent = SECURE_BACKUP_MESSAGES[code] ?? SECURE_BACKUP_MESSAGES.SECURE_EXPIRED;
+  };
+  const credentialDeadline = createSecureDeadline({ ...deadlineOptions,
+    timeoutMs: plaintextLifetimeMs, onExpire: expire });
+  const stagedDeadline = createSecureDeadline({ ...deadlineOptions,
+    timeoutMs: plaintextLifetimeMs, onExpire: expire });
   const cleanup = [];
   const section = document.createElement("section");
   section.className = "secure-backup-panel";
@@ -47,7 +61,13 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
   }
   function listen(target, event, handler) {
     if (typeof target?.addEventListener !== "function") return;
-    const action = () => { if (!disposed) handler(); };
+    const action = () => {
+      if (disposed) return;
+      try { handler(); } catch {
+        protect();
+        status.textContent = SECURE_BACKUP_MESSAGES.SECURE_INTERNAL;
+      }
+    };
     target.addEventListener(event, action);
     cleanup.push(() => target.removeEventListener(event, action));
   }
@@ -92,40 +112,59 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
   function clearPasswords() {
     first.value = second.value = restorePassword.value = "";
   }
+  function notifyProtection() {
+    try { Promise.resolve(onProtect()).catch(() => {}); } catch {}
+  }
   function protect() {
-    if (disposed) return;
-    clearTimeout(expiryTimer);
-    expiryTimer = null;
+    if (disposed || protecting) return;
+    protecting = true;
+    credentialArmed = false;
+    credentialDeadline.clear();
+    stagedDeadline.clear();
     clearPasswords();
     file.value = "";
     acknowledged.checked = false;
-    controller.cancel();
-    libraryPanel?.protect();
-    onProtect();
+    try { controller.cancel(); } finally {
+      try { libraryPanel?.protect(); } finally {
+        notifyProtection();
+        protecting = false;
+      }
+    }
   }
-  function armExpiry() {
-    clearTimeout(expiryTimer);
-    expiryTimer = setTimeout(() => {
-      protect();
-      if (!disposed) status.textContent = "一定時間が経過したため、合言葉と復元待ちの内容を消去しました。必要ならファイルを開き直してください。";
-    }, plaintextLifetimeMs);
+  function armCredentials() {
+    // Typing cannot renew a decrypted or already staged plaintext lifetime.
+    if (credentialArmed && !credentialDeadline.check()) return;
+    credentialArmed = credentialDeadline.arm();
+  }
+  function credentialsReady() {
+    if (credentialArmed) return credentialDeadline.check();
+    // A browser autofill may supply a value without an input event. Start its
+    // bounded lifetime at first explicit use; never store the value in a timer.
+    credentialArmed = credentialDeadline.arm();
+    return credentialArmed;
+  }
+  function consumeCredentials() {
+    credentialArmed = false;
+    credentialDeadline.clear();
+    clearPasswords();
   }
   const seal = button("encrypt", "暗号化ファイルを準備", () => {
-    if (!acknowledged.checked) return;
+    if (!acknowledged.checked || !credentialsReady()) return;
     const passphrase = first.value;
     const confirmation = second.value;
-    clearPasswords();
+    consumeCredentials();
     acknowledged.checked = false;
-    onProtect();
-    void controller.seal(passphrase, confirmation);
+    notifyProtection();
+    void controller.seal(passphrase, confirmation).catch(() => protect());
   });
   const save = button("download", "暗号化ファイルをダウンロード", () => {
     controller.offer(prepared => download({ document, prepared }));
   });
   const unlock = button("decrypt", "合言葉でファイルを開く", () => {
+    if (!credentialsReady()) return;
     const passphrase = restorePassword.value;
-    clearPasswords();
-    void controller.unlock(passphrase);
+    consumeCredentials();
+    void controller.unlock(passphrase).catch(() => protect());
   });
   const stage = button("stage", "復元用の入力欄へ渡す", () => { controller.stage(); });
   const cancel = button("cancel", "合言葉・読み込み内容を消去", protect);
@@ -145,9 +184,12 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
       clearPasswords();
     }
     if (state.phase !== lastPhase) {
-      clearTimeout(expiryTimer);
-      expiryTimer = null;
-      if (["decrypted", "staged"].includes(state.phase)) armExpiry();
+      stagedDeadline.clear();
+      if (["decrypted", "staged"].includes(state.phase) && !stagedDeadline.arm()) {
+        lastPhase = state.phase;
+        render(controller.state());
+        return;
+      }
     }
     lastPhase = state.phase;
     detail.textContent = state.summary
@@ -173,15 +215,16 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
       : messages[state.phase] ?? SECURE_BACKUP_MESSAGES.SECURE_INTERNAL;
   }
   const controller = createSecureBackupController({ ...controllerOptions,
-    readDraft, onStage, onChange: render });
+    resultLifetimeMs: plaintextLifetimeMs,
+    lifetimeOptions: deadlineOptions, readDraft, onStage, onChange: render });
   listen(acknowledged, "change", () => render(controller.state()));
-  for (const item of [first, second, restorePassword]) listen(item, "input", armExpiry);
+  for (const item of [first, second, restorePassword]) listen(item, "input", armCredentials);
   listen(file, "change", () => {
     const files = file.files;
     clearPasswords();
     acknowledged.checked = false;
-    onProtect();
-    if (files?.length === 1) void controller.select(files[0]);
+    notifyProtection();
+    if (files?.length === 1) void controller.select(files[0]).catch(() => protect());
     else {
       controller.cancel();
       status.textContent = "暗号化バックアップは1ファイルずつ選択してください。";
@@ -190,6 +233,7 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
   });
   listen(document, "visibilitychange", () => { if (document.hidden) protect(); });
   listen(eventTarget, "pagehide", protect);
+  listen(eventTarget, "pageshow", protect);
   section.append(title, note, scope,
     labelled("保存用の合言葉（12文字以上）", first),
     labelled("同じ合言葉をもう一度", second),
@@ -197,35 +241,47 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
     seal, save, labelled("保存済みの暗号化ファイル", file),
     labelled("保存時の合言葉", restorePassword), unlock, detail, stage, cancel, status);
   parent.append(section);
+  const operationPanel = mountSecureOperationPanel({ document, parent: section, runner: controllerOptions.runner });
   libraryPanel = mountEncryptedLibraryPanel({ document, parent: section, download,
     controllerOptions: libraryOptions, readEncrypted: controller.encryptedText,
     onOpen(text) {
       clearPasswords();
       acknowledged.checked = false;
       file.value = "";
-      onProtect();
+      notifyProtection();
       return controller.selectText(text);
     } });
   render(controller.state());
   return Object.freeze({
-    state: controller.state,
+    state() {
+      if (credentialArmed) credentialDeadline.check();
+      if (stagedDeadline.state().phase === "armed") stagedDeadline.check();
+      return controller.state();
+    },
+    stagedReady() {
+      return !disposed && controller.state().phase === "staged" && stagedDeadline.check();
+    },
     protect,
     invalidate() {
       if (disposed) return;
-      clearTimeout(expiryTimer);
-      expiryTimer = null;
+      credentialArmed = false;
+      credentialDeadline.clear();
+      stagedDeadline.clear();
       clearPasswords();
       acknowledged.checked = false;
       controller.invalidate();
       libraryPanel.protect();
-      onProtect();
+      notifyProtection();
     },
     dispose() {
       if (disposed) return;
       protect();
       disposed = true;
+      credentialDeadline.dispose();
+      stagedDeadline.dispose();
       controller.dispose();
       libraryPanel.dispose();
+      operationPanel.dispose();
       for (const stop of cleanup) stop();
       section.remove();
     },
