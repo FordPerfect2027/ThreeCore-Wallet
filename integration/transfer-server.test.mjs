@@ -55,7 +55,7 @@ test("transfer server: complete import graph resolves on localhost", async () =>
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      assert.ok(visited.size < 155, "Unexpected dependency expansion");
+      assert.ok(visited.size < 160, "Unexpected dependency expansion"); // Five tab-protection modules.
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();

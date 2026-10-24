@@ -2,7 +2,8 @@
 export const SECURITY_JOURNAL_LIMIT = 64;
 export const SECURITY_JOURNAL_EVENTS = Object.freeze([
   "ready", "manual", "idle", "hidden", "page-exit", "clock", "disposed",
-  "resumed", "idle-policy", "hidden-policy",
+  "resumed", "idle-policy", "hidden-policy", "broadcast-stop", "peer-stop",
+  "channel-error", "page-freeze", "page-restored",
 ]);
 export const SECURITY_JOURNAL_TEXT = Object.freeze({
   ready: "保護機能を開始しました",
@@ -15,6 +16,11 @@ export const SECURITY_JOURNAL_TEXT = Object.freeze({
   resumed: "接続操作を再開しました。自動接続は行いません",
   "idle-policy": "無操作時の停止時間を変更しました",
   "hidden-policy": "画面移動時の停止設定を変更しました",
+  "broadcast-stop": "同じアドレスの画面へ通知するため、この画面を停止しました",
+  "peer-stop": "他の画面からの停止通知で保護停止しました",
+  "channel-error": "停止通知の通信を確認できず保護停止しました",
+  "page-freeze": "ページの一時停止により保護停止しました",
+  "page-restored": "保存されたページの再表示により保護停止しました",
 });
 const intervals = [60_000, 300_000, 900_000];
 const fail = () => { throw new TypeError("Invalid protection journal data"); };

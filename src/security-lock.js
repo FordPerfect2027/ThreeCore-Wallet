@@ -1,6 +1,7 @@
 /** Page-local read-access lock; never a wallet password or permission revoker. */
 export const LOCK_IDLE_CHOICES = Object.freeze([60_000, 300_000, 900_000]);
-export const LOCK_REASONS = Object.freeze(["manual", "idle", "hidden", "page-exit", "clock", "disposed"]);
+export const LOCK_REASONS = Object.freeze(["manual", "idle", "hidden", "page-exit", "clock", "disposed",
+  "broadcast-stop", "peer-stop", "channel-error", "page-freeze", "page-restored"]);
 
 export function createSecurityLock({
   now = () => performance.now(),

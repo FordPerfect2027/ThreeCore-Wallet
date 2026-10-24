@@ -1,4 +1,5 @@
 import { mountSecurityPanel } from "./security-panel.js";
+import { runProtectionBatch } from "../src/protection-batch.js";
 import { mountReportSetPanel } from "./report-set-panel.js";
 import { mountReportHistoryPanel } from "./report-history-panel.js";
 import { mountPeriodReportPanel } from "./period-report-panel.js";
@@ -24,7 +25,7 @@ import { mountAllowanceBundlePanel } from "./allowance-bundle-panel.js";
 import { mountTransferPanel } from "./transfer-panel.js";
 
 /** Dependencies are explicit so browser tests never consult a real extension. */
-export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage }) {
+export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions }) {
   const grid = document.querySelector("#grid");
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
   const allowancePanels = [];
@@ -35,13 +36,14 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   let workspacePanel;
   const securityHost = document.createElement("div");
   grid.before(securityHost);
-  const securityPanel = mountSecurityPanel({ document, parent: securityHost, eventTarget,
+  const securityPanel = mountSecurityPanel({ document, parent: securityHost, eventTarget, tabGuardOptions,
     onLock() {
-      for (const controller of controllers.values()) {
-        try { controller.disconnect("保護のため接続を停止しました。再開後に接続し直してください。"); } catch {}
-      }
-      periodPanel?.invalidate();
-      workspacePanel?.protect();
+      const steps = [];
+      if (workspacePanel) steps.push({ name: "backup", run: () => workspacePanel.protect() });
+      if (periodPanel) steps.push({ name: "period", run: () => periodPanel.invalidate() });
+      for (const [card, controller] of controllers) steps.push({ name: card.dataset.agent,
+        run: () => controller.disconnect("保護のため接続を停止しました。再開後に接続し直してください。") });
+      return runProtectionBatch(steps).completed;
     },
     onChange(state) {
       for (const card of cards) {

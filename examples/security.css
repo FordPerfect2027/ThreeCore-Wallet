@@ -11,6 +11,8 @@
 .security-panel select { max-width: 22rem; }
 .security-panel input[type=checkbox] { display: inline-block; width: auto; margin-right: .6rem; }
 .security-panel button { min-height: 44px; }
+.security-panel [hidden] { display: none; }
+.security-cleanup-warning { padding: .8rem; border: 1px solid #ffc169; color: #ffe1b2; }
 .security-panel .security-status { padding: .75rem; border-left: 4px solid #70d0c7; }
 .security-panel[data-locked=true] .security-status { border-color: #ffc169; color: #ffe1b2; }
 .security-panel :focus-visible { outline: 3px solid #ffd369; outline-offset: 3px; }
@@ -25,3 +27,11 @@
 .security-journal-output { display: block; box-sizing: border-box; width: 100%; margin-top: .6rem; font: .82rem/1.5 monospace; }
 .security-journal [hidden] { display: none; }
 .security-journal button { margin: .3rem .6rem .7rem 0; }
+.tab-guard-panel { margin-top: 1.3rem; padding: 1rem; border: 1px solid #67aba8; border-radius: 10px; background: #0d2430; }
+.tab-guard-panel h3 { margin-top: 0; }
+.tab-guard-panel p { line-height: 1.7; }
+.tab-guard-stop { white-space: normal; max-width: 100%; }
+.tab-guard-status { padding-left: .8rem; border-left: 3px solid #80d6cc; }
+.tab-guard-panel[data-phase=error] .tab-guard-status { border-color: #ffc169; color: #ffe1b2; }
+.tab-guard-receipts, .tab-guard-limits { font-size: .9rem; }
+@media (max-width: 480px) { .tab-guard-panel { padding: .7rem; } }
