@@ -89,7 +89,9 @@ test("allowance server: production page styles and module remain present", async
   await served(false, async base => {
     const text = await (await fetch(base)).text();
     assert(text.includes(".allowance-panel"));
-    assert(text.includes("/examples/wallet-demo.js"));
+    assert(text.includes("/examples/wallet-entry.js"));
+    const entry = await (await fetch(base + "/examples/wallet-entry.js")).text();
+    assert(entry.includes('from "./wallet-demo.js"'));
     assert(!text.includes("allowance-demo.js"));
   });
 });

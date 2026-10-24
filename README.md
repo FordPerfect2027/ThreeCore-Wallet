@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 24, 2026 encrypted backup update (PC-local):** [Design and security limits](docs/ENCRYPTED_WORKSPACE_BACKUP.md) · [日本語の使い方](docs/ENCRYPTED_WORKSPACE_BACKUP_JA.md). Adds optional passphrase-protected workspace files, authenticated decryption, explicit restore preview, cancellation and expiry. Existing plaintext files and separate report collections are not automatically encrypted. No GitHub push or production deployment.
+
 **October 24, 2026 local security update:** [Protection controls, input boundaries and verification](docs/SECURITY_LOCAL_20261024.md). Adds a three-token stop control, idle/page-exit protection, a private page-local protection history, bounded JSON/File processing, read-only RPC enforcement and hardened local HTTP responses. This update is PC-local; GitHub publication and independent security auditing have not been performed.
 
 

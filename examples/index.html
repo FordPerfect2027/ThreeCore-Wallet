@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ThreeCore Wallet — Read-only Demo</title>
 <link rel="stylesheet" href="/examples/security.css">
+<link rel="stylesheet" href="/examples/secure-backup.css">
 <style>
 :root{font:16px/1.5 system-ui;color:#edf2ff;background:#0a1020}
 body{max-width:1060px;margin:auto;padding:28px 18px}
@@ -105,16 +106,7 @@ output{display:block;min-height:60px;word-wrap:break-word;white-space:pre-wrap;m
 </header>
 <main class="grid" id="grid"></main>
 <footer><p>各エージェントには別々のEVM公開アドレスを設定してください。接続時にWallet拡張の許可確認が必要です。残高表示は最小単位です。</p>DON'T PANIC. JUST CODE.</footer>
-<script type="module">
-import { mountWalletDemo } from "/examples/wallet-demo.js";
-const start = () => mountWalletDemo({
-  document, eventTarget: window, siteOrigin: window.location.origin,
-  getLegacyProvider: () => window.ethereum,
-});
-let app = start();
-window.addEventListener("pagehide", () => { app?.dispose(); app = null; });
-window.addEventListener("pageshow", () => { if (!app) app = start(); });
-</script>
+<script type="module" src="/examples/wallet-entry.js"></script>
 </body>
 </html>
 

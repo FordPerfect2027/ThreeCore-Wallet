@@ -38,7 +38,7 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
   const resume = node("button", "resume", "接続操作を再開する");
   stop.type = resume.type = "button";
   node("p", "scope", "再開した後は各トークンで接続し直してください。保存した履歴は残ります。Wallet拡張機能自体のロックや接続許可の取り消しは、Wallet側で行ってください。");
-  node("p", "policy", "この画面から送金・署名・トークン承認は行いません。保存ファイルは暗号化されていないため、共有先を確認してください。");
+  node("p", "policy", "この画面から送金・署名・トークン承認は行いません。通常の保存ファイルは暗号化されていないため、共有先を確認してください。一括バックアップは合言葉付き保存を選べます。");
   parent.append(section);
   const listeners = [];
   let disposed = false;

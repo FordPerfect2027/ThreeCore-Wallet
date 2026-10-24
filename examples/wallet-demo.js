@@ -32,6 +32,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   let transferVaultPanel;
   let reconciliationPanel;
   let periodPanel;
+  let workspacePanel;
   const securityHost = document.createElement("div");
   grid.before(securityHost);
   const securityPanel = mountSecurityPanel({ document, parent: securityHost, eventTarget,
@@ -40,6 +41,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         try { controller.disconnect("保護のため接続を停止しました。再開後に接続し直してください。"); } catch {}
       }
       periodPanel?.invalidate();
+      workspacePanel?.protect();
     },
     onChange(state) {
       for (const card of cards) {
@@ -68,7 +70,6 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   });
   let registry;
   let setupPanel;
-  let workspacePanel;
   let checkpointPanel;
   const setupHost = document.createElement("div");
   grid.before(setupHost);

@@ -1,0 +1,27 @@
+.secure-backup-panel {
+  border: 1px solid #598b9f;
+  border-radius: 12px;
+  background: #101e30;
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+}
+.secure-backup-panel .secure-backup-heading { margin-top: 0; color: #8ee9e0; }
+.secure-backup-panel label { display: block; margin: .85rem 0; }
+.secure-backup-panel input[type=password] {
+  display: block;
+  width: min(100%, 32rem);
+  box-sizing: border-box;
+  padding: .65rem;
+  margin-top: .4rem;
+  font: inherit;
+}
+.secure-backup-panel input[type=checkbox] { width: auto; margin-left: .5rem; }
+.secure-backup-panel button { margin: .35rem .5rem .35rem 0; }
+.secure-backup-panel .secure-backup-scope { color: #c1ccdc; font-size: .92rem; }
+.secure-backup-panel .secure-backup-status { border-left: 3px solid #8ee9e0; padding-left: .8rem; }
+.secure-backup-panel :focus-visible { outline: 3px solid #8ee9e0; outline-offset: 3px; }
+.secure-backup-panel [disabled] { opacity: .55; cursor: not-allowed; }
+@media (max-width: 600px) {
+  .secure-backup-panel { padding: .85rem; }
+  .secure-backup-panel button { display: block; width: 100%; }
+}

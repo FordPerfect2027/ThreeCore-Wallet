@@ -1,3 +1,4 @@
+import { mountSecureBackupPanel } from "./secure-backup-panel.js";
 import { createWorkspaceController } from "../src/workspace-controller.js";
 import { workspaceFromDraft, workspaceDraftKey, decodeWorkspace, WORKSPACE_TEXT_LIMIT } from "../src/workspace-format.js";
 import { prepareWorkspaceFile, createWorkspaceFileReader, createWorkspaceBackupTracker } from "../src/workspace-file.js";
@@ -41,6 +42,8 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
   let reading = false;
   let saving = false;
   let saveGeneration = 0;
+  let secureStaged = false;
+  let securePanel;
 
   function node(tag, name, value) {
     const item = document.createElement(tag);
@@ -118,7 +121,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     download({ document, prepared: { text, filename: "ThreeCore-workspace-overview.txt", mimeType: "text/plain;charset=utf-8" } });
     status.textContent = "保存状況のダウンロードを開始しました。PCで保存完了を確認してください。";
   });
-  const save = button("save", "3ウォレットのバックアップを保存", () => { void saveFile(); });
+  const save = button("save", "3ウォレットの平文バックアップを保存", () => { void saveFile(); });
   const previewButton = button("preview", "一括復元の変更内容を確認", () => {
     clearReview();
     preview = controller.preview(json.value, options());
@@ -253,29 +256,42 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     } else void reader.load(files[0]);
     file.value = "";
   });
-  section.append(heading, note, inspect, saveSummary, overview, save, backupStatus,
+  const secureHost = node("div", "secure-host");
+  section.append(heading, note, inspect, saveSummary, overview, save, backupStatus, secureHost,
     label("保存した一括バックアップを選択", file), label("読み込み用JSON（ファイル選択で入力されます）", json),
     settings.label, histories.label, replace.label, previewButton, detail,
     confirmed.label, removal.label, apply, cancel, undoPreview, undoDetail,
     undoConfirmed.label, undoApply, saveRecovery, status);
   parent.append(section);
+  function clearSecureStage() {
+    if (!secureStaged) return;
+    secureStaged = false;
+    json.value = "";
+    clearReview();
+  }
+  function stageText(text) {
+    if (disposed) return false;
+    decodeWorkspace(text);
+    saveGeneration++;
+    saving = false;
+    reader.cancel();
+    clearReview();
+    json.value = text;
+    status.textContent = "入力しました。変更内容をプレビューしてから復元してください。";
+    controls();
+    return true;
+  }
+  securePanel = mountSecureBackupPanel({ document, parent: secureHost, readDraft, download,
+    onStage(text) { const result = stageText(text); secureStaged = result; return result; },
+    onProtect: clearSecureStage });
   updateBackup();
   controls();
   return Object.freeze({
-    stageText(text) {
-      if (disposed) return false;
-      decodeWorkspace(text);
-      saveGeneration++;
-      saving = false;
-      reader.cancel();
-      clearReview();
-      json.value = text;
-      status.textContent = "ブラウザー内の控えを入力しました。変更内容をプレビューしてから復元してください。";
-      controls();
-      return true;
-    },
+    stageText,
+    protect() { securePanel.protect(); },
     invalidate() {
       if (disposed) return;
+      securePanel.invalidate();
       saveGeneration++;
       saving = false;
       reader.cancel();
@@ -285,6 +301,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     },
     dispose() {
       if (disposed) return;
+      securePanel.dispose();
       disposed = true;
       saveGeneration++;
       reader.dispose();

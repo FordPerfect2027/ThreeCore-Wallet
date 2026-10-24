@@ -6,6 +6,11 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/examples/wallet-entry.js", { file: resolve(here, "wallet-entry.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["format", "crypto", "runner", "controller"].map(name =>
+    ["/src/secure-backup-" + name + ".js", { file: resolve(here, "../src/secure-backup-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/secure-backup-panel.js", { file: resolve(here, "secure-backup-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/secure-backup.css", { file: resolve(here, "secure-backup.css"), mime: "text/css; charset=utf-8" }],
   ["/src/security-journal.js", { file: resolve(here, "../src/security-journal.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/security-journal-panel.js", { file: resolve(here, "security-journal-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/security-lock.js", { file: resolve(here, "../src/security-lock.js"), mime: "text/javascript; charset=utf-8" }],
@@ -129,6 +134,7 @@ export function createDemoServer({ uiTest = false } = {}) {
     paths.set("/test/browser/checkpoint-demo/", { file: resolve(here, "../test/browser/checkpoint-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/checkpoint-demo.js", { file: resolve(here, "../test/browser/checkpoint-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/checkpoint-ui-tests.js", { file: resolve(here, "../test/browser/checkpoint-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/secure-backup-ui-tests.js", { file: resolve(here, "../test/browser/secure-backup-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/workspace-ui-tests.js", { file: resolve(here, "../test/browser/workspace-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/wallet-setup-ui-tests.js", { file: resolve(here, "../test/browser/wallet-setup-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/history-recovery-ui-tests.js", { file: resolve(here, "../test/browser/history-recovery-ui-tests.js"), mime: "text/javascript; charset=utf-8" });

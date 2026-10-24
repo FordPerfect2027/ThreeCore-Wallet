@@ -1,3 +1,4 @@
+import { registerSecureBackupUITests } from "/test/browser/secure-backup-ui-tests.js";
 import { registerSecurityUITests } from "/test/browser/security-ui-tests.js";
 import { registerReportSetUITests } from "/test/browser/report-set-ui-tests.js";
 import { registerReportHistoryUITests } from "/test/browser/report-history-ui-tests.js";
@@ -1194,6 +1195,7 @@ registerHistoryReviewUITests(test);
 registerHistoryRecoveryUITests(test);
 registerWalletSetupUITests(test);
 registerWorkspaceUITests(test);
+registerSecureBackupUITests(test);
 registerCheckpointUITests(test);
 registerTokenIdentityUITests(test);
 registerAllowanceUITests(test);
