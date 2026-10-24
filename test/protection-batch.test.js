@@ -11,10 +11,10 @@ function fixture(overrides = {}) {
   return { calls, steps, run: () => runProtectionBatch(steps) };
 }
 
-test("protection runs backup cleanup before reports and all three wallet sessions", () => {
+test("protection cancels file reads before backup, reports and three wallet sessions", () => {
   const f = fixture();
-  assert.deepEqual(f.run(), { completed: true, attempted: 5, failed: [] });
-  assert.deepEqual(f.calls, ["backup", "period", "DAT", "EMA", "CAWELON"]);
+  assert.deepEqual(f.run(), { completed: true, attempted: 6, failed: [] });
+  assert.deepEqual(f.calls, ["file-reads", "backup", "period", "DAT", "EMA", "CAWELON"]);
 });
 
 for (const name of PROTECTION_STEPS) {
@@ -22,7 +22,7 @@ for (const name of PROTECTION_STEPS) {
     const f = fixture({ [name]() { throw Error("synthetic sensitive exception"); } });
     const result = f.run();
     assert.deepEqual(f.calls, PROTECTION_STEPS);
-    assert.deepEqual(result, { completed: false, attempted: 5, failed: [name] });
+    assert.deepEqual(result, { completed: false, attempted: 6, failed: [name] });
     assert(!JSON.stringify(result).includes("sensitive"));
   });
 
@@ -52,7 +52,7 @@ test("several failed views are all identified with fixed names", () => {
     CAWELON() { throw null; } });
   const result = f.run();
   assert.deepEqual(result.failed, ["backup", "DAT", "CAWELON"]);
-  assert.equal(result.attempted, 5);
+  assert.equal(result.attempted, 6);
   assert.deepEqual(f.calls, PROTECTION_STEPS);
 });
 

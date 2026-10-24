@@ -6,6 +6,11 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/src/file-read-policy.js", { file: resolve(here, "../src/file-read-policy.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/file-read-source.js", { file: resolve(here, "../src/file-read-source.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/file-read-service.js", { file: resolve(here, "../src/file-read-service.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/file-read-status.js", { file: resolve(here, "../src/file-read-status.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/file-read-panel.js", { file: resolve(here, "file-read-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/provider-event-gate.js", { file: resolve(here, "../src/provider-event-gate.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/provider-events.js", { file: resolve(here, "../src/provider-events.js"), mime: "text/javascript; charset=utf-8" }],
   ...["capacity", "supervisor", "status"].map(name =>
@@ -104,6 +109,9 @@ export function createDemoServer({ uiTest = false } = {}) {
     paths.set("/test/browser/encrypted-library-ui-tests.js", { file: resolve(here, "../test/browser/encrypted-library-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/rpc-protection-demo/", { file: resolve(here, "../test/browser/rpc-protection-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/rpc-protection-demo.js", { file: resolve(here, "../test/browser/rpc-protection-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/file-boundary-demo/", { file: resolve(here, "../test/browser/file-boundary-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/file-boundary-demo.js", { file: resolve(here, "../test/browser/file-boundary-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/file-read-ui-tests.js", { file: resolve(here, "../test/browser/file-read-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/rpc-supervisor-ui-tests.js", { file: resolve(here, "../test/browser/rpc-supervisor-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/tab-guard-ui-tests.js", { file: resolve(here, "../test/browser/tab-guard-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/security-demo/", { file: resolve(here, "../test/browser/security-demo.html"), mime: "text/html; charset=utf-8" });

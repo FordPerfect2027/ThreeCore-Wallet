@@ -74,8 +74,14 @@ for (const [name, prepare, decode, read, value, jsonCode] of cases) {
   });
 
   test(name + ": an unresponsive reader cannot keep the UI waiting forever", async () => {
-    const file = { name: "stalled.json", size: 4, arrayBuffer: () => new Promise(() => {}) };
+    let settle;
+    const file = { name: "stalled.json", size: 4,
+      arrayBuffer: () => new Promise(resolve => { settle = resolve; }) };
     await assert.rejects(read(file, { timeoutMs: 5 }), error => /FILE_READ$/.test(error.code));
+    // The new page budget intentionally retains timed-out native work. Finish
+    // this synthetic adapter so the next independent format has a clean scope.
+    settle(new ArrayBuffer(4));
+    await new Promise(resolve => setImmediate(resolve));
   });
 
   test(name + ": an actual-size overflow stops the stream before a checksum", async () => {

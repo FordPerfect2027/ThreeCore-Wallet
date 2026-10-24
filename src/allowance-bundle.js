@@ -1,3 +1,4 @@
+import { readFormatFileBytes } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { allowanceObject, allowanceFail } from "./allowance-targets.js";
 import { validateAllowanceObservation } from "./allowance-observation.js";
@@ -102,11 +103,7 @@ export async function decodeAllowanceBundle(bytes, { subtle = globalThis.crypto?
 export async function readAllowanceBundle(file, options) {
   if (!file || typeof file.name !== "string" || file.name.length > 240 ||
       !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) allowanceFail("ALLOWANCE_FILENAME");
-  if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > ALLOWANCE_BUNDLE_LIMIT) allowanceFail("ALLOWANCE_FILE_SIZE");
-  const size = file.size;
-  let bytes;
-  try { bytes = await file.arrayBuffer(); }
-  catch { allowanceFail("ALLOWANCE_FILE_READ"); }
-  if (!(bytes instanceof ArrayBuffer) || bytes.byteLength !== size) allowanceFail("ALLOWANCE_FILE_SIZE");
-  return decodeAllowanceBundle(new Uint8Array(bytes), options);
+  const bytes = await readFormatFileBytes(file, { maxBytes: ALLOWANCE_BUNDLE_LIMIT, fail: allowanceFail,
+    sizeCode: "ALLOWANCE_FILE_SIZE", readCode: "ALLOWANCE_FILE_READ", signal: options?.signal, timeoutMs: options?.timeoutMs });
+  return decodeAllowanceBundle(bytes, options);
 }

@@ -1,3 +1,4 @@
+import { readSecurityFileBytes } from "./security-file.js";
 import { decodeWalletSetup, encodeWalletSetup, WALLET_SETUP_LIMIT, WalletSetupError } from "./wallet-setup.js";
 
 export const WALLET_SETUP_FILE_LIMIT = WALLET_SETUP_LIMIT * 4;
@@ -18,9 +19,11 @@ export function decodeWalletSetupBytes(bytes) {
 }
 
 /** Cancel superseded file reads; no filesystem paths or wallet access here. */
-export function createWalletSetupFileReader({ readBytes = async file => new Uint8Array(await file.arrayBuffer()),
+export function createWalletSetupFileReader({ readBytes = readSecurityFileBytes,
   onChange = () => {} } = {}) {
   let generation = 0;
+  let readAbort = null;
+  function abortRead() { readAbort?.abort(); readAbort = null; }
   let disposed = false;
   let state = Object.freeze({ phase: "idle", text: null, errorCode: null });
   function publish(phase, text = null, errorCode = null) {
@@ -32,14 +35,17 @@ export function createWalletSetupFileReader({ readBytes = async file => new Uint
     async load(file) {
       if (disposed) return false;
       const id = ++generation;
+      abortRead();
+      const activeRead = new AbortController();
+      readAbort = activeRead;
       publish("reading");
       try {
         if (disposed || id !== generation) return false;
         if (!file || typeof file.name !== "string" || file.name.length > 240 ||
             !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) fail("SETUP_FILENAME");
-        if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > WALLET_SETUP_FILE_LIMIT) fail("SETUP_SIZE");
         const size = file.size;
-        const bytes = await readBytes(file);
+        if (!Number.isSafeInteger(size) || size < 1 || size > WALLET_SETUP_FILE_LIMIT) fail("SETUP_SIZE");
+        const bytes = await readBytes(file, { maxBytes: WALLET_SETUP_FILE_LIMIT, signal: activeRead.signal });
         if (disposed || id !== generation) return false;
         if (!(bytes instanceof Uint8Array) || bytes.byteLength !== size) fail("SETUP_SIZE");
         const text = decodeWalletSetupBytes(bytes);
@@ -51,7 +57,7 @@ export function createWalletSetupFileReader({ readBytes = async file => new Uint
         return false;
       }
     },
-    cancel() { if (!disposed) { generation++; publish("idle"); } },
-    dispose() { generation++; disposed = true; },
+    cancel() { if (!disposed) { generation++; abortRead(); publish("idle"); } },
+    dispose() { generation++; abortRead(); disposed = true; },
   });
 }

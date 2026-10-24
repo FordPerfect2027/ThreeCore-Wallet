@@ -1,3 +1,4 @@
+import { readFormatFileBytes } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { identityObject, identityFail } from "./token-identity-codec.js";
 import { validateTokenObservation } from "./token-identity-model.js";
@@ -84,11 +85,7 @@ export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypt
 export async function readTokenIdentityFile(file, options) {
   if (!file || typeof file.name !== "string" || !file.name.length || file.name.length > 240 ||
       !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) identityFail("IDENTITY_FILENAME");
-  const size = file.size;
-  if (!Number.isSafeInteger(size) || size < 1 || size > IDENTITY_FILE_LIMIT) identityFail("IDENTITY_FILE_SIZE");
-  let buffer;
-  try { buffer = await file.arrayBuffer(); }
-  catch { identityFail("IDENTITY_FILE_READ"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== size) identityFail("IDENTITY_FILE_SIZE");
-  return decodeTokenIdentityFile(new Uint8Array(buffer), options);
+  const bytes = await readFormatFileBytes(file, { maxBytes: IDENTITY_FILE_LIMIT, fail: identityFail,
+    sizeCode: "IDENTITY_FILE_SIZE", readCode: "IDENTITY_FILE_READ", signal: options?.signal, timeoutMs: options?.timeoutMs });
+  return decodeTokenIdentityFile(bytes, options);
 }

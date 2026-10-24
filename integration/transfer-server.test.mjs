@@ -55,7 +55,7 @@ test("transfer server: complete import graph resolves on localhost", async () =>
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      assert.ok(visited.size < 167, "Unexpected dependency expansion"); // Seven explicit response-protection and test modules added.
+      assert.ok(visited.size < 173, "Unexpected dependency expansion"); // Six explicit file-boundary runtime and test modules added.
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();

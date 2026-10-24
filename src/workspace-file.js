@@ -1,3 +1,4 @@
+import { readSecurityFileBytes } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { decodeWorkspace, encodeWorkspace, workspaceData, workspaceKeys,
   WORKSPACE_TEXT_LIMIT, workspaceFail, WorkspaceError } from "./workspace-format.js";
@@ -55,17 +56,20 @@ export async function decodeWorkspaceFile(bytes, { subtle } = {}) {
 function validFile(file) {
   if (!file || typeof file.name !== "string" || file.name.length > 240 ||
       !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) workspaceFail("WORKSPACE_FILENAME");
-  if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > WORKSPACE_FILE_LIMIT) workspaceFail("WORKSPACE_FILE_SIZE");
-  return file.size;
+  const size = file.size;
+  if (!Number.isSafeInteger(size) || size < 1 || size > WORKSPACE_FILE_LIMIT) workspaceFail("WORKSPACE_FILE_SIZE");
+  return size;
 }
 
 /** Generation checks cover both file reading and checksum computation. */
 export function createWorkspaceFileReader({
-  readBytes = async file => new Uint8Array(await file.arrayBuffer()),
+  readBytes = readSecurityFileBytes,
   subtle,
   onChange = () => {},
 } = {}) {
   let generation = 0;
+  let readAbort = null;
+  function abortRead() { readAbort?.abort(); readAbort = null; }
   let disposed = false;
   let state = Object.freeze({ phase: "idle", result: null, errorCode: null });
   function publish(phase, result = null, errorCode = null) {
@@ -77,11 +81,14 @@ export function createWorkspaceFileReader({
     async load(file) {
       if (disposed) return false;
       const id = ++generation;
+      abortRead();
+      const activeRead = new AbortController();
+      readAbort = activeRead;
       publish("reading");
       try {
         if (disposed || id !== generation) return false;
         const size = validFile(file);
-        const bytes = await readBytes(file);
+        const bytes = await readBytes(file, { maxBytes: WORKSPACE_FILE_LIMIT, signal: activeRead.signal });
         if (disposed || id !== generation) return false;
         if (!(bytes instanceof Uint8Array) || bytes.byteLength !== size) workspaceFail("WORKSPACE_FILE_SIZE");
         const result = await decodeWorkspaceFile(bytes, { subtle });
@@ -96,11 +103,11 @@ export function createWorkspaceFileReader({
     },
     cancel() {
       if (disposed) return;
-      generation++;
+      generation++; abortRead();
       publish("cancelled");
     },
     dispose() {
-      generation++;
+      generation++; abortRead();
       disposed = true;
       state = Object.freeze({ phase: "disposed", result: null, errorCode: null });
     },

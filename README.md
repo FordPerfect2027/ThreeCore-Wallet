@@ -520,3 +520,21 @@ See [the Japanese history guide](docs/REPORT_HISTORY_JA.md) and
 Run `npm run report-history:check -- backup.json --json` for offline diagnostics.
 The synthetic preview is `/test/browser/report-history-demo/` in `--ui-test` mode.
 This work remains on the PC and has not been pushed to GitHub.
+
+### Shared file import protection (local development)
+
+Wallet imports now share one page-wide admission budget: up to four unfinished
+reads and 128 MiB of declared input sizes, while each format keeps its own size
+limit. Cancellation rejects the waiting operation promptly; its reservation is
+released only when the underlying read settles. Late content is discarded.
+
+Strict UTF-8 decoding, exact byte counts, captured source methods and bounded
+deadlines protect the input boundary before existing format-specific validation.
+The main screen shows aggregate counts and can stop pending file reads without
+changing saved wallet data. It does not display filenames, paths or contents.
+
+See [the security design and verification guide](docs/FILE_IMPORT_SECURITY_2026-10-24.md).
+The synthetic walkthrough is `/test/browser/file-boundary-demo/` in `--ui-test`
+mode; the focused browser suite is `/test/browser/?suite=file-read`.
+The checks use synthetic inputs and do not constitute an independent audit.
+This work remains local and has not been pushed to GitHub.

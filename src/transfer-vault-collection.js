@@ -1,3 +1,4 @@
+import { readFormatFileText } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail } from "./transfer-codec.js";
 import { VAULT_DOCUMENT_SCHEMA, validateVaultDocument, mutateVaultDocument, vaultMetadata } from "./transfer-vault-model.js";
@@ -51,15 +52,9 @@ export async function decodeVaultCollection(text, { subtle = globalThis.crypto?.
 export async function readVaultCollection(file, options) {
   if (!file || typeof file.name !== "string" || file.name.length > 180 || !/\.json$/i.test(file.name) ||
       /[/\\\u0000-\u001f\u007f]/.test(file.name)) transferFail("TRANSFER_FILE_NAME");
-  if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > VAULT_COLLECTION_LIMIT ||
-      typeof file.arrayBuffer !== "function") transferFail("TRANSFER_VAULT_COLLECTION_SIZE");
-  let buffer;
-  try { buffer = await file.arrayBuffer(); }
-  catch { transferFail("TRANSFER_FILE_READ"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== file.size) transferFail("TRANSFER_VAULT_COLLECTION_SIZE");
-  let text;
-  try { text = new TextDecoder("utf-8", { fatal: true }).decode(buffer); }
-  catch { transferFail("TRANSFER_FILE_ENCODING"); }
+  const text = await readFormatFileText(file, { maxBytes: VAULT_COLLECTION_LIMIT, fail: transferFail,
+    sizeCode: "TRANSFER_VAULT_COLLECTION_SIZE", readCode: "TRANSFER_FILE_READ",
+    encodingCode: "TRANSFER_FILE_ENCODING", signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeVaultCollection(text, options);
 }
 

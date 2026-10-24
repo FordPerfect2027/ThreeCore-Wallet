@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ThreeCore — ファイル読み込みの保護確認</title>
+  <link rel="stylesheet" href="/examples/security.css">
+  <style>
+    :root { color-scheme: dark; font: 16px/1.65 system-ui; background: #0b1426; color: #f0f6ff; }
+    body { max-width: 1060px; margin: auto; padding: 28px 18px; }
+    h1 { font-size: clamp(26px,4vw,40px); line-height: 1.3; }
+    h2 { font-size: 22px; }
+    p { color: #c8d6eb; }
+    .eyebrow { color: #89d9ee; letter-spacing: .12em; font-size: 13px; }
+    .notice { border-left: 4px solid #edbd75; padding: 12px 18px; background: #25251f; }
+    .actions { display: grid; grid-template-columns: repeat(auto-fit,minmax(265px,1fr)); gap: 16px; }
+    .card { border: 1px solid #526b8b; border-radius: 12px; padding: 18px; background: #14243c; }
+    .card h2 { margin-top: 0; }
+    button { font: inherit; font-weight: 600; padding: 10px 14px; margin: 4px 0; border: 0; border-radius: 8px; background: #93dbea; color: #102030; cursor: pointer; }
+    button:focus-visible { outline: 3px solid #fce29c; outline-offset: 3px; }
+    button:disabled { opacity: .45; cursor: default; }
+    #outcome { min-height: 2em; color: #c8f3d6; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .trace { margin-top: 24px; border-top: 1px solid #50627c; padding-top: 14px; }
+    .steps { padding: 18px; border-radius: 12px; background: #14243c; margin-top: 24px; }
+    @media (max-width: 600px) { body { padding: 16px 12px; } button { width: 100%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="eyebrow">THREECORE · LOCAL SECURITY CHECK</p>
+    <h1>停止した読み込みを、保存内容へ戻さない</h1>
+    <p class="notice">PC内の確認専用画面です。架空の小さなデータだけを使います。実ファイル・実Wallet・外部通信・送金を使用しません。</p>
+  </header>
+  <section id="monitor"></section>
+  <p id="outcome" role="status" aria-live="polite">確認する項目を選んでください。</p>
+  <div class="actions">
+    <section class="card">
+      <h2>正常な入力</h2>
+      <p>DAT・EMA・CAWELONの文字列を含む架空のJSONを読み込み、内容を照合します。</p>
+      <button id="valid">正常なJSONを確認</button>
+      <button id="utf8">不正なUTF-8を拒否する確認</button>
+    </section>
+    <section class="card">
+      <h2>停止と遅い完了</h2>
+      <p>読込みを保留して停止した後、遅れて返る結果が取り込まれないことを確認します。</p>
+      <button id="pending">模擬読み込みを1件保留</button>
+      <button id="settle">保留した模擬処理を完了</button>
+    </section>
+    <section class="card">
+      <h2>同時読み込みの上限</h2>
+      <p>4件が未完了なら5件目を受け付けません。停止後も元の処理が終わるまで枠を保持します。</p>
+      <button id="capacity">4件保留して5件目を確認</button>
+      <button id="timeout">時間切れの確認（50ms）</button>
+    </section>
+  </div>
+  <section class="steps">
+    <h2>確認の順序</h2>
+    <ol>
+      <li>「正常なJSONを確認」を押し、正常な読み込み結果を確認します。</li>
+      <li>「模擬読み込みを1件保留」を押し、未完了件数が増えたことを確認します。</li>
+      <li>保護欄の「進行中のファイル読み込みを止める」を押します。</li>
+      <li>「保留した模擬処理を完了」を押します。完了件数は増えず、未完了だけが減ります。</li>
+    </ol>
+    <p>この確認は第三者によるセキュリティ監査ではありません。表示する入力サイズはブラウザー全体のメモリ使用量ではありません。</p>
+  </section>
+  <section class="trace">
+    <h2>この画面の確認結果</h2>
+    <p>固定した結果名と件数だけを表示します。ファイル名や入力内容は記録しません。</p>
+    <pre id="events" aria-live="polite"></pre>
+  </section>
+  <script type="module" src="/test/browser/file-boundary-demo.js"></script>
+</body>
+</html>

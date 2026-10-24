@@ -1,10 +1,11 @@
+import { readSecurityFileBytes } from "../src/security-file.js";
 import { createHistoryFileReader } from "../src/history-file-reader.js";
 import { prepareHistoryDownload, createHistoryBackupTracker } from "../src/history-file.js";
 import { exportFilteredHistory, queryPortfolioHistory } from "../src/history-query.js";
 
 /** Browser file actions are explicit and scoped to one agent card. */
 export function mountHistoryFiles({ document, parent, agent, getArchive, getRevision, onImportText, onReadStart = () => {},
-  readBytes = async file => new Uint8Array(await file.arrayBuffer()),
+  readBytes = readSecurityFileBytes,
   download = offerHistoryDownload }) {
   const cleanup = [];
   let disposed = false;

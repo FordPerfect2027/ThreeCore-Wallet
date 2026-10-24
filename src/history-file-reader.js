@@ -10,6 +10,8 @@ export function createHistoryFileReader({ agent, readBytes, onChange = () => {} 
     throw new TypeError("Explicit reader and callback functions are required");
   }
   let generation = 0;
+  let readAbort = null;
+  function abortRead() { readAbort?.abort(); readAbort = null; }
   let disposed = false;
   let current = Object.freeze({ phase: "idle", result: null, errorCode: null });
   function publish(phase, result = null, errorCode = null) {
@@ -22,18 +24,23 @@ export function createHistoryFileReader({ agent, readBytes, onChange = () => {} 
         !/\.json$/i.test(file.name) || /[\x00-\x1f\x7f]/.test(file.name)) {
       throw new HistoryFileError("FILE_NAME", "Choose a JSON file");
     }
-    if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > HISTORY_FILE_LIMIT) {
+    const size = file.size;
+    if (!Number.isSafeInteger(size) || size < 1 || size > HISTORY_FILE_LIMIT) {
       throw new HistoryFileError("FILE_SIZE", "File is empty or exceeds the size limit");
     }
-    return { size: file.size };
+    return { size };
   }
   async function load(file) {
     if (disposed) return current;
     const ticket = ++generation;
+    abortRead();
+    const activeRead = new AbortController();
+    readAbort = activeRead;
     publish("reading");
     try {
+      if (disposed || ticket !== generation) return current;
       const { size } = validFile(file);
-      const bytes = await readBytes(file);
+      const bytes = await readBytes(file, { maxBytes: HISTORY_FILE_LIMIT, signal: activeRead.signal });
       if (disposed || ticket !== generation) return current;
       if (!(bytes instanceof Uint8Array) || bytes.byteLength !== size) {
         throw new HistoryFileError("FILE_SIZE", "The file length changed during reading");
@@ -49,17 +56,17 @@ export function createHistoryFileReader({ agent, readBytes, onChange = () => {} 
   }
   function cancel() {
     if (disposed) return current;
-    generation++;
+    generation++; abortRead();
     return publish("cancelled");
   }
   function reset() {
     if (disposed) return current;
-    generation++;
+    generation++; abortRead();
     return publish("idle");
   }
   function dispose() {
     if (disposed) return;
-    generation++;
+    generation++; abortRead();
     disposed = true;
     current = Object.freeze({ phase: "disposed", result: null, errorCode: null });
   }

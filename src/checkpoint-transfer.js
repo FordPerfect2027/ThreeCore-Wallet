@@ -1,3 +1,4 @@
+import { readSecurityFileBytes } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { CHECKPOINT_SCHEMA, CHECKPOINT_TOTAL_BYTES, checkpointFail,
   validateCheckpointDocument, mutateCheckpoints, checkpointMetadata } from "./checkpoint-model.js";
@@ -75,25 +76,31 @@ export function describeCheckpointImport(review) {
 }
 
 /** Bounded file read; cancellation also suppresses a late arrayBuffer completion. */
-export function createCheckpointCollectionReader({ readBytes = async file => new Uint8Array(await file.arrayBuffer()) } = {}) {
+export function createCheckpointCollectionReader({ readBytes = readSecurityFileBytes } = {}) {
   let generation = 0;
+  let readAbort = null;
+  function abortRead() { readAbort?.abort(); readAbort = null; }
   let disposed = false;
   return Object.freeze({
     async read(file) {
       const token = ++generation;
+      abortRead();
+      const activeRead = new AbortController();
+      readAbort = activeRead;
       if (disposed) checkpointFail("CHECKPOINT_CANCELLED");
       if (!file || typeof file.name !== "string" || !/\.json$/i.test(file.name) ||
           /[\\/\u0000-\u001f]/.test(file.name)) checkpointFail("CHECKPOINT_TRANSFER_FILE");
-      if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > CHECKPOINT_TRANSFER_LIMIT) checkpointFail("CHECKPOINT_TRANSFER_SIZE");
+      const size = file.size;
+      if (!Number.isSafeInteger(size) || size < 1 || size > CHECKPOINT_TRANSFER_LIMIT) checkpointFail("CHECKPOINT_TRANSFER_SIZE");
       let bytes;
-      try { bytes = await readBytes(file); }
+      try { bytes = await readBytes(file, { maxBytes: CHECKPOINT_TRANSFER_LIMIT, signal: activeRead.signal }); }
       catch { checkpointFail(disposed || token !== generation ? "CHECKPOINT_CANCELLED" : "CHECKPOINT_TRANSFER_READ"); }
       if (disposed || token !== generation) checkpointFail("CHECKPOINT_CANCELLED");
-      if (!(bytes instanceof Uint8Array) || bytes.byteLength !== file.size) checkpointFail("CHECKPOINT_TRANSFER_SIZE");
+      if (!(bytes instanceof Uint8Array) || bytes.byteLength !== size) checkpointFail("CHECKPOINT_TRANSFER_SIZE");
       try { return new TextDecoder("utf-8", { fatal: true }).decode(bytes); }
       catch { checkpointFail("CHECKPOINT_TRANSFER_ENCODING"); }
     },
-    cancel() { generation++; },
-    dispose() { generation++; disposed = true; },
+    cancel() { generation++; abortRead(); },
+    dispose() { generation++; abortRead(); disposed = true; },
   });
 }

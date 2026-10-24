@@ -43,3 +43,13 @@
 .rpc-status-scope {font-size:13px;}
 .rpc-status-panel[data-level="limited"],.rpc-status-panel[data-level="stopped"],.rpc-status-panel[data-level="unavailable"] {border-color:#f0bb68;}
 @media(max-width:600px){.rpc-status-panel{padding:12px;}.rpc-status-counts{font-size:12px;}}
+
+.file-read-panel { border: 1px solid #526c88; border-radius: 12px; padding: 16px; margin: 0 0 24px; background: #132339; }
+.file-read-panel h3 { margin-top: 0; }
+.file-read-headline { font-weight: 700; color: #b9efff; }
+.file-read-counts { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
+.file-read-scope, .file-read-action { font-size: 13px; }
+.file-read-stop { max-width: 100%; white-space: normal; }
+.file-read-panel[data-level="limited"], .file-read-panel[data-level="stopped"],
+.file-read-panel[data-level="unavailable"] { border-color: #f0bb68; }
+@media (max-width: 600px) { .file-read-panel { padding: 12px; } .file-read-counts { font-size: 12px; } }
