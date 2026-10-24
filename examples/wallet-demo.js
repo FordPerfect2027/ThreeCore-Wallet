@@ -1,3 +1,5 @@
+import { walletRpcSupervisor } from "../src/rpc-supervisor.js";
+import { mountRpcStatusPanel } from "./rpc-status-panel.js";
 import { mountSecurityPanel } from "./security-panel.js";
 import { runProtectionBatch } from "../src/protection-batch.js";
 import { mountReportSetPanel } from "./report-set-panel.js";
@@ -25,7 +27,7 @@ import { mountAllowanceBundlePanel } from "./allowance-bundle-panel.js";
 import { mountTransferPanel } from "./transfer-panel.js";
 
 /** Dependencies are explicit so browser tests never consult a real extension. */
-export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions }) {
+export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions, rpcSupervisor = walletRpcSupervisor }) {
   const grid = document.querySelector("#grid");
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
   const allowancePanels = [];
@@ -37,6 +39,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   const securityHost = document.createElement("div");
   grid.before(securityHost);
   const securityPanel = mountSecurityPanel({ document, parent: securityHost, eventTarget, tabGuardOptions,
+    canResume: () => rpcSupervisor.state().canStart === true,
     onLock() {
       const steps = [];
       if (workspacePanel) steps.push({ name: "backup", run: () => workspacePanel.protect() });
@@ -52,6 +55,9 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       }
     },
   });
+  const rpcStatusPanel = mountRpcStatusPanel({ document, parent: securityHost, supervisor: rpcSupervisor,
+    onFault: () => securityPanel.lock("clock") });
+  cleanup.push(() => rpcStatusPanel.dispose());
   const allowanceStates = new Map(AGENT_IDS.map(agent => [agent, { agent, observation: null, provenance: null }]));
   const allowanceHost = document.createElement("section");
   allowanceHost.className = "allowance-overview";
@@ -154,7 +160,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     let allowancePanel;
     let transferPanel;
     let wasConnected = false;
-    const controller = createWalletCardController({ agent, siteOrigin, createSession,
+    const controller = createWalletCardController({ agent, siteOrigin, createSession, rpcSupervisor,
       isAccessAllowed: securityPanel.check, onChange: state => {
       render(card, state);
       if (wasConnected && !state.connection?.connected) periodPanel?.invalidate();

@@ -98,7 +98,7 @@ test("partial event registration failure leaves no connected session or live lis
     if (event === "chainChanged") throw Error("Listener registration failed");
     on(event, listener);
   };
-  await assert.rejects(wallet.connect(), /registration failed/);
+  await assert.rejects(wallet.connect(), { code: "PROVIDER_EVENT_FAILURE" });
   assert.equal(wallet.state.connected, false);
   assert.ok([...listeners.values()].every(set => set.size === 0));
 });

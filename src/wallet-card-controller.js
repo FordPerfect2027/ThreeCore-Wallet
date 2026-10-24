@@ -1,3 +1,4 @@
+import { observeWalletProvider } from "./provider-events.js";
 import { ThreeCoreWalletSession, normalizeAddress, normalizeChainId } from "./wallet-session.js";
 import { inspectDappSpender } from "./dapp-preflight.js";
 import { readPortfolioSnapshot } from "./portfolio-snapshot.js";
@@ -14,7 +15,7 @@ import { readErrorCode, readErrorMessage } from "./provider-error.js";
  * No timers, automatic reconnects, signatures or transaction requests.
  */
 export function createWalletCardController({
-  agent, siteOrigin, onChange = () => {}, isAccessAllowed = () => true,
+  agent, siteOrigin, rpcSupervisor, onChange = () => {}, isAccessAllowed = () => true,
   createSession = (options) => new ThreeCoreWalletSession(options),
 }) {
   let wallet = null;
@@ -50,12 +51,6 @@ export function createWalletCardController({
     publish("disconnected", null, message);
   }
   function watch(provider, session, account, chainId) {
-    const listeners = [];
-    unwatch = () => {
-      for (const [event, listener] of listeners) {
-        try { provider.removeListener?.(event, listener); } catch {}
-      }
-    };
     const invalidate = () => {
       if (wallet === session) disconnect("接続先が変わりました。内容を確認して再接続してください。");
     };
@@ -70,14 +65,10 @@ export function createWalletCardController({
       },
       disconnect: invalidate,
     };
-    if (typeof provider.on === "function") {
-      for (const [event, listener] of Object.entries(events)) {
-        listeners.push([event, listener]);
-        provider.on(event, listener);
-        if (wallet !== session) throw cancelled();
-      }
-    }
+    const observer = observeWalletProvider(provider, events, () => wallet === session && !disposed);
+    unwatch = observer.dispose;
   }
+
   function allowed() {
     try { return isAccessAllowed() === true; } catch { return false; }
   }
@@ -99,7 +90,7 @@ export function createWalletCardController({
       try {
         const expectedAccount = normalizeAddress(account);
         session = createSession({
-          provider, agent, siteOrigin, isAccessAllowed, approvedOrigins: [siteOrigin], expectedAccount, chainId,
+          provider, agent, siteOrigin, rpcSupervisor, isAccessAllowed, approvedOrigins: [siteOrigin], expectedAccount, chainId,
         });
         wallet = session;
         watch(provider, session, expectedAccount, chainId);

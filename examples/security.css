@@ -35,3 +35,11 @@
 .tab-guard-panel[data-phase=error] .tab-guard-status { border-color: #ffc169; color: #ffe1b2; }
 .tab-guard-receipts, .tab-guard-limits { font-size: .9rem; }
 @media (max-width: 480px) { .tab-guard-panel { padding: .7rem; } }
+
+.rpc-status-panel {border:1px solid #526c88;border-radius:12px;padding:16px;margin:0 0 24px;background:#132339;}
+.rpc-status-panel h3 {margin-top:0;}
+.rpc-status-headline {font-weight:700;color:#b9efff;}
+.rpc-status-counts {white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;}
+.rpc-status-scope {font-size:13px;}
+.rpc-status-panel[data-level="limited"],.rpc-status-panel[data-level="stopped"],.rpc-status-panel[data-level="unavailable"] {border-color:#f0bb68;}
+@media(max-width:600px){.rpc-status-panel{padding:12px;}.rpc-status-counts{font-size:12px;}}

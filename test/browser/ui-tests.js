@@ -1,3 +1,5 @@
+import { registerRpcSupervisorUITests } from "/test/browser/rpc-supervisor-ui-tests.js";
+import { createRpcSupervisor } from "/src/rpc-supervisor.js";
 import { registerEncryptedLibraryUITests } from "/test/browser/encrypted-library-ui-tests.js";
 import { registerTabGuardUITests } from "/test/browser/tab-guard-ui-tests.js";
 import { registerSecureBackupUITests } from "/test/browser/secure-backup-ui-tests.js";
@@ -44,7 +46,7 @@ async function waitFor(predicate, timeoutMs = 4000) {
     await new Promise(resolve => setTimeout(resolve, 10));
   }
 }
-function fixture(override = () => undefined, { legacy = true, announced = false, checkpointStorage, tabGuardOptions } = {}) {
+function fixture(override = () => undefined, { legacy = true, announced = false, checkpointStorage, tabGuardOptions, rpcSupervisor = createRpcSupervisor() } = {}) {
   const calls = [], listeners = new Map(), eventTarget = new EventTarget();
   const provider = {
     on(name, fn) {
@@ -76,7 +78,7 @@ function fixture(override = () => undefined, { legacy = true, announced = false,
   if (announced) eventTarget.addEventListener("eip6963:requestProvider", () => announce());
   // No reference to window.ethereum or an installed wallet is made.
   const app = mountWalletDemo({
-    document, eventTarget, siteOrigin: location.origin, getLegacyProvider: () => legacy ? provider : undefined, checkpointStorage, tabGuardOptions,
+    document, eventTarget, siteOrigin: location.origin, getLegacyProvider: () => legacy ? provider : undefined, checkpointStorage, tabGuardOptions, rpcSupervisor,
     // Short, real-clock deadlines for synthetic fixtures only. Production defaults
     // remain covered by the session unit tests and the normal demo's own factory.
     createSession: options => new ThreeCoreWalletSession({ ...options,
@@ -93,7 +95,7 @@ function fixture(override = () => undefined, { legacy = true, announced = false,
   input(".token", TOKEN);
   input(".spender", SPENDER);
   return {
-    app, calls, provider, eventTarget, card, field, input, announce,
+    app: { dispose() { app.dispose(); rpcSupervisor.dispose(); } }, rpcSupervisor, calls, provider, eventTarget, card, field, input, announce,
     output: () => field("output").textContent,
     async connect() { field(".connect").click(); await waitFor(() => !field(".read").disabled); },
   };
@@ -1190,6 +1192,7 @@ if (fault) setTimeout(() => {
   Promise.reject(Error("Synthetic harness rejection"));
 }, 0);
 
+registerRpcSupervisorUITests(test);
 registerSecurityUITests(test);
 registerTabGuardUITests(test);
 registerHistoryUITests(test);
@@ -1214,7 +1217,7 @@ registerReconciliationUITests(test);
 registerTransferUITests(test);
 let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");
-const selectedTests = ["history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard"].includes(requestedSuite)
+const selectedTests = ["history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor"].includes(requestedSuite)
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
 for (const { name, run } of selectedTests) {
   console.info("Starting synthetic UI case: " + name);

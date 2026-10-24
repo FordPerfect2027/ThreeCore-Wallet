@@ -50,7 +50,7 @@ test("period preview and browser suite import graph resolves without external pa
     const path = pending.pop();
     if (visited.has(path)) continue;
     visited.add(path);
-    assert.ok(visited.size < 166); // Five explicit tab-protection modules added.
+    assert.ok(visited.size < 173); // Seven explicit response-protection and test modules added.
     const response = await fetch(base + path);
     assert.equal(response.status, 200, path);
     const source = await response.text();

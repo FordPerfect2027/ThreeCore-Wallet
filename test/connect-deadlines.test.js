@@ -1,3 +1,4 @@
+import { createRpcSupervisor } from "../src/rpc-supervisor.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { ThreeCoreWalletSession } from "../src/wallet-session.js";
@@ -18,6 +19,7 @@ function observe(promise) {
   return result;
 }
 function fixture(config = {}) {
+  const rpcSupervisor = createRpcSupervisor({ now: () => Date.now() });
   const calls = [], listeners = new Map();
   let override = () => undefined;
   const provider = {
@@ -43,7 +45,7 @@ function fixture(config = {}) {
     },
   };
   const make = (extra = {}) => new ThreeCoreWalletSession({
-    provider, agent: "DAT", expectedAccount: ACCOUNT, chainId: 8453,
+    provider, rpcSupervisor, agent: "DAT", expectedAccount: ACCOUNT, chainId: 8453,
     siteOrigin: "https://dex.example", approvedOrigins: ["https://dex.example"], ...config, ...extra,
   });
   function hold(index) {
@@ -53,14 +55,14 @@ function fixture(config = {}) {
     };
     return { ...gate, started: entered.promise };
   }
-  return { wallet: make(), make, provider, calls, listeners, hold, setOverride: fn => { override = fn; } };
+  return { rpcSupervisor, wallet: make(), make, provider, calls, listeners, hold, setOverride: fn => { override = fn; } };
 }
 const stages = ["initial chain", "permission", "confirmed chain", "confirmed account"];
 const stageValue = index => index === 0 || index === 2 ? "0x2105" : [ACCOUNT];
 
 for (const [index, label] of stages.entries()) {
   test(`${label} has a deadline and leaves no connected session`, async t => {
-    t.mock.timers.enable({ apis: ["setTimeout"] });
+    t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
     const f = fixture({ connectTimeoutMs: 100, permissionTimeoutMs: 200 }), gate = f.hold(index);
     t.after(() => { gate.resolve(stageValue(index)); f.wallet.disconnect(); });
     const pending = observe(f.wallet.connect());
@@ -80,7 +82,7 @@ for (const [index, label] of stages.entries()) {
   });
 
   test(`${label} can be manually cancelled without a provider reply`, async t => {
-    t.mock.timers.enable({ apis: ["setTimeout"] });
+    t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
     const f = fixture(), gate = f.hold(index);
     const pending = observe(f.wallet.connect());
     await gate.started;
@@ -103,7 +105,7 @@ for (const [index, label] of stages.entries()) {
 
 for (const [index, duration] of [[0, 30_000], [1, 120_000]]) {
   test(`default ${stages[index]} deadline is ${duration}ms`, async t => {
-    t.mock.timers.enable({ apis: ["setTimeout"] });
+    t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
     const f = fixture(), gate = f.hold(index);
     t.after(() => { gate.resolve(stageValue(index)); f.wallet.disconnect(); });
     const pending = observe(f.wallet.connect());
@@ -129,7 +131,7 @@ for (const [setting, maximum] of [["connectTimeoutMs", 120_000], ["permissionTim
 for (const ending of ["timeout", "disconnect"]) {
   for (const late of ["resolve", "reject"]) {
     test(`permission ${ending} blocks duplicate prompts until its late ${late}`, async t => {
-      t.mock.timers.enable({ apis: ["setTimeout"] });
+      t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
       const f = fixture({ permissionTimeoutMs: 100 }), gate = f.hold(1);
       const connection = f.wallet.connect(), pending = observe(connection);
       await gate.started;
@@ -156,7 +158,7 @@ for (const ending of ["timeout", "disconnect"]) {
 for (const index of [0, 2, 3]) {
   for (const late of ["resolve", "reject"]) {
     test(`late ${late} from ${stages[index]} cannot damage a reconnected session`, async t => {
-      t.mock.timers.enable({ apis: ["setTimeout"] });
+      t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
       const f = fixture({ connectTimeoutMs: 100 }), gate = f.hold(index);
       const pending = observe(f.wallet.connect());
       await gate.started;
@@ -271,10 +273,10 @@ test("cancelling and immediately reconnecting cannot let an old finally erase th
 
 for (const index of [0, 1]) {
   test(`controller recovers from ${stages[index]} timeout without duplicating permission`, async t => {
-    t.mock.timers.enable({ apis: ["setTimeout"] });
+    t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
     const f = fixture(), gate = f.hold(index);
     const controller = createWalletCardController({ agent: "DAT", siteOrigin: "https://dex.example",
-      createSession: args => new ThreeCoreWalletSession({ ...args, connectTimeoutMs: 100, permissionTimeoutMs: 100 }) });
+      createSession: args => new ThreeCoreWalletSession({ ...args, rpcSupervisor: f.rpcSupervisor, connectTimeoutMs: 100, permissionTimeoutMs: 100 }) });
     t.after(() => { gate.resolve(stageValue(index)); controller.dispose(); });
     const connect = () => controller.connect({ provider: f.provider, account: ACCOUNT, chainId: 8453 });
     const pending = observe(connect());

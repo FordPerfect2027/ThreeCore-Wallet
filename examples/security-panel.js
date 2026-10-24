@@ -11,7 +11,7 @@ const reasons = Object.freeze({ manual: "操作により", idle: "一定時間�
   "page-restored": "保存されたページを再表示したため" });
 
 export function mountSecurityPanel({ document, parent, eventTarget, onLock = () => {},
-  onChange = () => {}, lockOptions = {}, tabGuardOptions = {} }) {
+  onChange = () => {}, canResume = () => true, lockOptions = {}, tabGuardOptions = {} }) {
   const section = document.createElement("section");
   section.className = "security-panel";
   section.setAttribute("aria-label", "ウォレット接続の保護");
@@ -78,12 +78,19 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
       onChange(state);
     },
   });
+  function mayResume() {
+    try {
+      const value = canResume();
+      if (value && typeof value.then === "function") Promise.resolve(value).catch(() => {});
+      return value === true;
+    } catch { return false; }
+  }
   function render(state) {
     status.textContent = state.locked
       ? (reasons[state.reason] ?? "保護のため") + "、接続を停止しました。"
       : "接続操作を受け付けています。読み取りには各トークンの接続が必要です。";
     stop.disabled = state.locked || state.disposed;
-    resume.disabled = !state.locked || state.disposed || !protectionCompleted;
+    resume.disabled = !state.locked || state.disposed || !protectionCompleted || !mayResume();
     cleanupWarning.hidden = cleanupRetry.hidden = protectionCompleted;
     cleanupRetry.disabled = state.disposed;
     cleanupWarning.textContent = protectionCompleted ? "" :
@@ -115,7 +122,7 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
   });
   let tabGuardPanel;
   listen(resume, "click", () => {
-    if (protectionCompleted && tabGuardPanel.noteResume()) lock.unlock();
+    if (protectionCompleted && mayResume() && tabGuardPanel.noteResume()) lock.unlock();
   });
   listen(idle, "change", () => {
     const next = Number(idle.value), previous = lock.state().idleMs;

@@ -6,6 +6,11 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/src/provider-event-gate.js", { file: resolve(here, "../src/provider-event-gate.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/provider-events.js", { file: resolve(here, "../src/provider-events.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["capacity", "supervisor", "status"].map(name =>
+    ["/src/rpc-" + name + ".js", { file: resolve(here, "../src/rpc-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/rpc-status-panel.js", { file: resolve(here, "rpc-status-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/protection-batch.js", { file: resolve(here, "../src/protection-batch.js"), mime: "text/javascript; charset=utf-8" }],
   ...["protocol", "transport", "controller"].map(name =>
     ["/src/tab-guard-" + name + ".js", { file: resolve(here, "../src/tab-guard-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
@@ -97,6 +102,9 @@ export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
     paths.set("/test/browser/encrypted-library-ui-tests.js", { file: resolve(here, "../test/browser/encrypted-library-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/rpc-protection-demo/", { file: resolve(here, "../test/browser/rpc-protection-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/rpc-protection-demo.js", { file: resolve(here, "../test/browser/rpc-protection-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/rpc-supervisor-ui-tests.js", { file: resolve(here, "../test/browser/rpc-supervisor-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/tab-guard-ui-tests.js", { file: resolve(here, "../test/browser/tab-guard-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/security-demo/", { file: resolve(here, "../test/browser/security-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/security-demo.js", { file: resolve(here, "../test/browser/security-demo.js"), mime: "text/javascript; charset=utf-8" });

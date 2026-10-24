@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ThreeCore — Wallet応答保護の模擬確認</title>
+  <link rel="stylesheet" href="/examples/security.css">
+  <style>
+    :root { color-scheme:dark; font:16px/1.6 system-ui; background:#0b1426; color:#eff5ff; }
+    body { max-width:1100px; padding:24px 16px; margin:auto; }
+    h1 { font-size:clamp(24px,4vw,36px); line-height:1.3; }
+    h2 { font-size:22px; }
+    p { color:#c8d6eb; }
+    .notice { padding:16px; border:1px solid #e9bc73; border-radius:12px; background:#29251f; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(265px,1fr)); gap:16px; margin:24px 0; }
+    .card { border:1px solid #526b8b; border-radius:14px; padding:18px; background:#14243c; }
+    .card:nth-child(1) { border-top:4px solid #dcb568; }
+    .card:nth-child(2) { border-top:4px solid #dd90c6; }
+    .card:nth-child(3) { border-top:4px solid #9abedb; }
+    .card h2 { margin-top:0; }
+    button { padding:10px 12px; border:0; border-radius:8px; background:#8bd7ed; color:#102030; font:inherit; font-weight:600; margin:6px 4px 6px 0; cursor:pointer; }
+    button:disabled { opacity:.45; cursor:default; }
+    button.secondary { background:#374d6b; color:#fff; }
+    button:focus-visible, select:focus-visible, input:focus-visible { outline:3px solid #ffde83; outline-offset:3px; }
+    label { display:block; margin:12px 0; font-weight:600; }
+    select { display:block; box-sizing:border-box; width:100%; padding:10px; margin-top:6px; border:1px solid #8299b7; border-radius:8px; background:#0b1426; color:#fff; font:inherit; }
+    output { display:block; min-height:90px; white-space:pre-wrap; overflow-wrap:anywhere; color:#b6e7f8; }
+    .trace { border-top:1px solid #50627c; padding-top:18px; }
+    .trace p { font-size:14px; }
+    #evidence { white-space:pre-wrap; overflow-wrap:anywhere; font-size:13px; }
+    .steps { background:#14243c; padding:20px; border-radius:12px; }
+    .steps li { margin:10px 0; }
+    @media(max-width:600px) {
+      body { padding:16px 12px; }
+      button { width:100%; margin:5px 0; }
+      .cards { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <p>THREECORE · PC内の模擬確認</p>
+    <h1>遅い応答を、次の接続に持ち込まない</h1>
+    <p class="notice">実Wallet・実資産・外部通信を使わない確認専用画面です。ここに表示する残高は架空の値です。上限は確認用にWalletごと2件・画面全体6件に小さくしています。</p>
+  </header>
+  <section id="protection"></section>
+  <section id="monitor"></section>
+  <div id="cards" class="cards"></div>
+  <section class="steps" aria-label="応答停止の確認手順">
+    <h2>確認手順</h2>
+    <ol>
+      <li>「模擬接続」を押し、「残高の応答を保留」に切り替えます。</li>
+      <li>「残高確認」を押し、保留件数が1件になったら「このカードを停止」を押します。</li>
+      <li>監視欄で、待機は終了してもWallet側の未完了件数が残ることを確認します。</li>
+      <li>「保留した応答を返す」を押します。接続や残高は自動復元されず、未完了件数だけが減ります。</li>
+      <li>通常応答に戻し、もう一度自分で接続すると新しい残高を確認できます。</li>
+    </ol>
+    <p>「全要求の応答を保留」で接続と停止を2回繰り返すと、そのWalletへの3回目の接続は上限で拒否されます。EMAやCAWELONは、それぞれの空き枠で確認できます。</p>
+  </section>
+  <section class="trace">
+    <h2>確認用の集計</h2>
+    <p>実際の住所・アドレス・残高・要求本文は記録しません。この模擬確認では署名・送金・トークン承認の処理を持たせていません。</p>
+    <pre id="evidence" aria-live="polite"></pre>
+  </section>
+  <script type="module" src="/test/browser/rpc-protection-demo.js"></script>
+</body>
+</html>

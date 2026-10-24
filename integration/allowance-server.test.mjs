@@ -68,7 +68,7 @@ test("allowance server: all browser imports resolve locally", async () => {
       if (visited.has(path)) continue;
       visited.add(path);
       // The report-history modules extend the existing local-only import graph.
-      assert(visited.size <= 160, "Unexpected dependency expansion"); // Five tab-protection modules.
+      assert(visited.size <= 167, "Unexpected dependency expansion"); // Seven explicit response-protection and test modules added.
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();

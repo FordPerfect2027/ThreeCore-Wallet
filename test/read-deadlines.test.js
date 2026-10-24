@@ -1,3 +1,4 @@
+import { createRpcSupervisor } from "../src/rpc-supervisor.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { ThreeCoreWalletSession } from "../src/wallet-session.js";
@@ -22,6 +23,7 @@ function observe(promise) {
   return result;
 }
 function fixture(config = {}) {
+  const rpcSupervisor = createRpcSupervisor({ now: () => Date.now() });
   let override = () => undefined;
   const calls = [], listeners = new Map();
   const provider = {
@@ -48,10 +50,10 @@ function fixture(config = {}) {
     },
   };
   const wallet = new ThreeCoreWalletSession({
-    provider, agent: "DAT", siteOrigin: "https://dex.example", approvedOrigins: ["https://dex.example"],
+    provider, rpcSupervisor, agent: "DAT", siteOrigin: "https://dex.example", approvedOrigins: ["https://dex.example"],
     expectedAccount: ACCOUNT, chainId: 8453, ...config,
   });
-  return { wallet, provider, calls, listeners, setOverride: fn => { override = fn; } };
+  return { rpcSupervisor, wallet, provider, calls, listeners, setOverride: fn => { override = fn; } };
 }
 
 const reads = [
@@ -65,7 +67,7 @@ const reads = [
 ];
 for (const [label, method, read] of reads) {
   test(`${label} ends at the configured deadline with no retry`, async t => {
-    t.mock.timers.enable({ apis: ["setTimeout"] });
+    t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
     const f = fixture({ readTimeoutMs: 100 }), gate = deferred(), entered = deferred();
     t.after(() => f.wallet.disconnect());
     await f.wallet.connect();
@@ -93,7 +95,7 @@ for (const [label, method, read] of reads) {
 }
 
 test("the default read deadline is 30 seconds", async t => {
-  t.mock.timers.enable({ apis: ["setTimeout"] });
+  t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
   const f = fixture(), entered = deferred();
   t.after(() => f.wallet.disconnect());
   await f.wallet.connect();
@@ -124,7 +126,7 @@ for (const [label, cancel] of [
   ["provider disconnect", f => f.provider.emit("disconnect", {})],
 ]) {
   test(`${label} settles an unresponsive read before its deadline`, async t => {
-    t.mock.timers.enable({ apis: ["setTimeout"] });
+    t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
     const f = fixture(), entered = deferred();
     await f.wallet.connect();
     f.setOverride(({ method }) => {
@@ -149,7 +151,7 @@ for (const [label, cancel] of [
 
 for (const late of ["resolve", "reject"]) {
   test(`a late ${late} after timeout cannot alter an explicit reconnection`, async t => {
-    t.mock.timers.enable({ apis: ["setTimeout"] });
+    t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
     const f = fixture({ readTimeoutMs: 100 }), gate = deferred(), entered = deferred();
     await f.wallet.connect();
     f.setOverride(({ method }) => { if (method === "eth_call") { entered.resolve(); return gate.promise; } });
@@ -171,7 +173,7 @@ for (const late of ["resolve", "reject"]) {
 }
 
 test("the first timeout settles other pending reads from the same session", async t => {
-  t.mock.timers.enable({ apis: ["setTimeout"] });
+  t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
   const f = fixture({ readTimeoutMs: 100 }), balanceStarted = deferred(), codeStarted = deferred();
   await f.wallet.connect();
   f.setOverride(({ method }) => {
@@ -193,7 +195,7 @@ test("the first timeout settles other pending reads from the same session", asyn
 });
 
 test("completed and ordinary failed reads do not leave active deadlines", async t => {
-  t.mock.timers.enable({ apis: ["setTimeout"] });
+  t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
   const f = fixture({ readTimeoutMs: 1 });
   await f.wallet.connect();
   assert.equal(await f.wallet.getNativeBalance(), 42n);
@@ -208,7 +210,7 @@ test("completed and ordinary failed reads do not leave active deadlines", async 
 });
 
 test("read deadlines do not time out or repeat a human permission prompt", async t => {
-  t.mock.timers.enable({ apis: ["setTimeout"] });
+  t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
   const f = fixture({ readTimeoutMs: 1 }), gate = deferred(), entered = deferred();
   f.setOverride(({ method }) => { if (method === "eth_requestAccounts") { entered.resolve(); return gate.promise; } });
   const connection = f.wallet.connect(), pending = observe(connection);
@@ -226,11 +228,11 @@ test("read deadlines do not time out or repeat a human permission prompt", async
 
 for (const operation of ["readBalances", "inspect"]) {
   test(`${operation} shows a timeout, clears the result and can explicitly reconnect`, async t => {
-    t.mock.timers.enable({ apis: ["setTimeout"] });
+    t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 0 });
     const f = fixture(), entered = deferred();
     const controller = createWalletCardController({
       agent: "DAT", siteOrigin: "https://dex.example",
-      createSession: config => new ThreeCoreWalletSession({ ...config, readTimeoutMs: 100 }),
+      createSession: config => new ThreeCoreWalletSession({ ...config, rpcSupervisor: f.rpcSupervisor, readTimeoutMs: 100 }),
     });
     t.after(() => controller.dispose());
     const connect = () => controller.connect({ provider: f.provider, account: ACCOUNT, chainId: 8453 });

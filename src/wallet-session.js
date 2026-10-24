@@ -1,3 +1,5 @@
+import { observeWalletProvider } from "./provider-events.js";
+import { walletRpcSupervisor, RpcSupervisorError } from "./rpc-supervisor.js";
 import { guardRpcRequest, guardRpcResponse, RpcSecurityError } from "./security-rpc.js";
 import { safeProviderFailure } from "./security-provider-error.js";
 /**
@@ -127,6 +129,7 @@ function decodeBlockHeader(value) {
 export class ThreeCoreWalletSession {
   #provider;
   #request;
+  #rpcSupervisor;
   #isAccessAllowed;
   #agent;
   #origin;
@@ -139,13 +142,13 @@ export class ThreeCoreWalletSession {
   #connectTimeoutMs;
   #permissionTimeoutMs;
   #pendingRequests = new Set();
-  #onAccountsChanged;
-  #onChainChanged;
-  #onDisconnect;
+  #providerObserver = null;
 
   constructor({ provider, agent, siteOrigin, approvedOrigins, expectedAccount, chainId,
-    isAccessAllowed = () => true, readTimeoutMs = 30_000, connectTimeoutMs = 30_000, permissionTimeoutMs = 120_000 }) {
+    rpcSupervisor = walletRpcSupervisor, isAccessAllowed = () => true, readTimeoutMs = 30_000, connectTimeoutMs = 30_000, permissionTimeoutMs = 120_000 }) {
     this.#request = validateProvider(provider);
+    if (!rpcSupervisor || typeof rpcSupervisor.start !== "function") reject("INVALID_SUPERVISOR", "Invalid request supervisor");
+    this.#rpcSupervisor = rpcSupervisor;
     if (typeof isAccessAllowed !== "function") reject("INVALID_ACCESS_GUARD", "Access guard must be a function");
     this.#isAccessAllowed = isAccessAllowed;
     if (!Number.isInteger(readTimeoutMs) || readTimeoutMs < 1 || readTimeoutMs > 120_000) {
@@ -279,33 +282,15 @@ export class ThreeCoreWalletSession {
   }
 
   #observeProvider(epoch) {
-    this.#onAccountsChanged = (next) => {
-      if (epoch !== this.#connectionEpoch) return;
-      try {
-        if (!Array.isArray(next) || !next.length ||
-            normalizeAddress(next[0]) !== this.#expectedAccount) this.disconnect();
-      } catch {
-        this.disconnect();
-      }
-    };
-    this.#onChainChanged = (next) => {
-      if (epoch !== this.#connectionEpoch) return;
-      try {
-        if (normalizeChainId(next) !== this.#chainId) this.disconnect();
-      } catch {
-        this.disconnect();
-      }
-    };
-    this.#onDisconnect = () => {
-      if (epoch === this.#connectionEpoch) this.disconnect();
-    };
-    if (typeof this.#provider.on === "function") {
-      this.#provider.on("accountsChanged", this.#onAccountsChanged);
-      this.#ensureEpoch(epoch);
-      this.#provider.on("chainChanged", this.#onChainChanged);
-      this.#ensureEpoch(epoch);
-      this.#provider.on("disconnect", this.#onDisconnect);
-    }
+    this.#providerObserver = observeWalletProvider(this.#provider, {
+      accountsChanged: next => {
+        if (!next?.length || next[0] !== this.#expectedAccount) this.disconnect();
+      },
+      chainChanged: next => {
+        if (next === null || normalizeChainId(next) !== this.#chainId) this.disconnect();
+      },
+      disconnect: () => this.disconnect(),
+    }, () => epoch === this.#connectionEpoch);
   }
   #assertReadEpoch(epoch) {
     this.#assertAccess();
@@ -318,30 +303,20 @@ export class ThreeCoreWalletSession {
     if (this.#pendingRequests.size >= 32) {
       return Promise.reject(new WalletConnectionError("RPC_INFLIGHT_LIMIT", "Too many pending Wallet reads"));
     }
-    return new Promise((resolve, rejectRequest) => {
-      let settled = false;
-      const finish = (complete, value) => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        this.#pendingRequests.delete(cancel);
-        complete(value);
-      };
-      const cancel = () => finish(rejectRequest,
-        new WalletConnectionError(cancelCode, "The Wallet session changed while waiting"));
-      const timer = setTimeout(() => finish(rejectRequest,
-        new WalletConnectionError(timeoutCode, "The Wallet did not respond before the waiting deadline")), timeoutMs);
-      this.#pendingRequests.add(cancel);
-      try {
-        // EIP-1193 has no standard request cancellation. End the local wait
-        // and consume late outcomes without publishing or retrying them.
-        Promise.resolve(start()).then(
-          value => finish(resolve, value), error => finish(rejectRequest, safeProviderFailure(error)),
-        );
-      } catch (error) {
-        finish(rejectRequest, safeProviderFailure(error));
+    const operation = this.#rpcSupervisor.start({ provider: this.#provider,
+      invoke: start, timeoutMs, timeoutCode, cancelCode });
+    this.#pendingRequests.add(operation.cancel);
+    return operation.promise.catch(error => {
+      if (error instanceof RpcSupervisorError) {
+        throw new WalletConnectionError(error.code, {
+          RPC_CAPACITY: "Wallet側に未完了の要求が残っています。完了するまでお待ちください。",
+          RPC_CLOCK: "経過時間を確認できないため要求を停止しました。",
+          RPC_TIMER: "待機時間の監視を開始できないため要求を停止しました。",
+          RPC_SUPERVISOR_CLOSED: "この画面の要求監視は終了しています。",
+        }[error.code] ?? "Walletへの要求の待機を終了しました。");
       }
-    });
+      throw error;
+    }).finally(() => this.#pendingRequests.delete(operation.cancel));
   }
 
   #guardRequest(args, allowPermission = false) {
@@ -401,7 +376,7 @@ export class ThreeCoreWalletSession {
       try { timedOut = code === "READ_TIMEOUT" && error instanceof WalletConnectionError; } catch {}
       // Inspecting provider-owned properties can itself trigger a state change.
       this.#assertReadEpoch(epoch);
-      if ([4100, 4900, 4901, "RPC_RESULT_LIMIT", "RPC_RESULT_SHAPE"].includes(code) || timedOut) this.disconnect();
+      if ([4100, 4900, 4901, "RPC_RESULT_LIMIT", "RPC_RESULT_SHAPE", "RPC_CLOCK", "RPC_TIMER", "RPC_SUPERVISOR_CLOSED"].includes(code) || timedOut) this.disconnect();
       throw error;
     }
   }
@@ -580,24 +555,9 @@ export class ThreeCoreWalletSession {
     // Settle local waits immediately even if the underlying provider never
     // resolves. Each callback also removes its deadline and itself from the set.
     for (const cancel of this.#pendingRequests) cancel();
-    const listeners = [
-      ["accountsChanged", this.#onAccountsChanged],
-      ["chainChanged", this.#onChainChanged],
-      ["disconnect", this.#onDisconnect],
-    ];
-    this.#onAccountsChanged = undefined;
-    this.#onChainChanged = undefined;
-    this.#onDisconnect = undefined;
-    let removeListener;
-    try { removeListener = this.#provider.removeListener; } catch {}
-    if (typeof removeListener === "function") {
-      for (const [event, listener] of listeners) {
-        if (!listener) continue;
-        // An extension cleanup error cannot retain local access. Stale
-        // callbacks are inert because their connection epoch no longer matches.
-        try { removeListener.call(this.#provider, event, listener); } catch {}
-      }
-    }
+    const observer = this.#providerObserver;
+    this.#providerObserver = null;
+    observer?.dispose();
   }
 }
 
