@@ -1,3 +1,4 @@
+import { registerReportSetUITests } from "/test/browser/report-set-ui-tests.js";
 import { registerReportHistoryUITests } from "/test/browser/report-history-ui-tests.js";
 import { registerPeriodReportUITests } from "/test/browser/period-report-ui-tests.js";
 import { registerPeriodLibraryUITests } from "/test/browser/period-library-ui-tests.js";
@@ -1199,6 +1200,7 @@ registerPeriodUITests(test);
 registerPeriodLibraryUITests(test);
 registerPeriodReportUITests(test);
 registerReportHistoryUITests(test);
+registerReportSetUITests(test);
 registerReconciliationUITests(test);
 registerTransferUITests(test);
 let passed = 0, failed = 0;

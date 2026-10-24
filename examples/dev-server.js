@@ -5,6 +5,11 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["model", "engine", "file", "view", "export", "controller", "diagnostics", "timeline"].map(name =>
+    ["/src/report-set-" + name + ".js", { file: resolve(here, "../src/report-set-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/report-set-panel.js", { file: resolve(here, "report-set-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/report-set-timeline-panel.js", { file: resolve(here, "report-set-timeline-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/report-set.css", { file: resolve(here, "report-set.css"), mime: "text/css; charset=utf-8" }],
   ...["model", "storage", "file", "query", "view", "controller", "sources", "continuity"].map(name =>
     ["/src/report-history-" + name + ".js", { file: resolve(here, "../src/report-history-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/examples/report-history-panel.js", { file: resolve(here, "report-history-panel.js"), mime: "text/javascript; charset=utf-8" }],
@@ -71,6 +76,10 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/report-set-demo/", { file: resolve(here, "../test/browser/report-set-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/report-set-demo.js", { file: resolve(here, "../test/browser/report-set-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/report-set-ui-tests.js", { file: resolve(here, "../test/browser/report-set-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/report-set-fixtures.js", { file: resolve(here, "../test/helpers/report-set-fixtures.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/report-history-demo/", { file: resolve(here, "../test/browser/report-history-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/report-history-demo.js", { file: resolve(here, "../test/browser/report-history-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/report-history-ui-tests.js", { file: resolve(here, "../test/browser/report-history-ui-tests.js"), mime: "text/javascript; charset=utf-8" });

@@ -31,6 +31,7 @@
     "period:check": "node scripts/check-period.js",
     "period-library:check": "node scripts/check-period-library.js",
     "period-report:check": "node scripts/check-period-report.js",
-    "report-history:check": "node scripts/check-report-history.js"
+    "report-history:check": "node scripts/check-report-history.js",
+    "report-set:check": "node scripts/check-report-set.js"
   }
 }

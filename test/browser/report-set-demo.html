@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>ThreeCore — 複数報告の期間確認</title>
+  <link rel="stylesheet" href="/examples/report-set.css">
+  <style>
+    body { margin:0; background:#06131e; color:#eaf7ff; font:16px/1.65 system-ui,sans-serif; }
+    main { max-width:1280px; margin:auto; padding:24px; }
+    header { padding:20px 0; }
+    h1 { font-size:clamp(28px,4vw,42px); line-height:1.3; }
+    header p { color:#b8d0df; }
+    .eyebrow { color:#6ee3bf; letter-spacing:.14em; font-size:12px; }
+    .preview { border:1px solid #7e7746; background:#282820; padding:15px; border-radius:12px; color:#f6e5b1; }
+    #seed { padding:12px 16px; color:white; background:#215166; border:1px solid #74a6ba; border-radius:9px; font:inherit; cursor:pointer; }
+    @media(max-width:760px) { main { padding:12px; } #seed { width:100%; } }
+  </style>
+</head>
+<body><main>
+  <header>
+    <p class="eyebrow">THREECORE / LOCAL DEVELOPMENT PREVIEW</p>
+    <h1>ひとつずつの記録を、<br>つながりまで確認する。</h1>
+    <p class="preview">すべて模擬データです。実際の資産ではありません。ウォレット接続・署名・送金は行いません。</p>
+    <p>「報告 1・2・3」は連続する期間です。ほかに、抜け・同じ証拠の再保存・ハッシュの食い違い・取得途中を含む報告を用意しています。</p>
+    <button id="seed" type="button">プレビュー用の模擬報告7件を用意</button>
+    <p id="demo-message" role="status" aria-live="polite">模擬報告は、このプレビュー専用の保存先にだけ追加します。</p>
+    <p>① 一覧を読み込む → ② 報告を選ぶ → ③ 内容を確認して表示 → ④ 必要ならPCへ保存。</p>
+  </header>
+  <div id="set-area"></div>
+</main><script type="module" src="/test/browser/report-set-demo.js"></script></body>
+</html>
