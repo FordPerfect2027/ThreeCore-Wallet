@@ -495,7 +495,7 @@ for (const chainId of [8453, 84532]) {
       await wallet.connect();
       await assert.rejects(inspectDappSpender(wallet, {
         tokenAddress: token.address, spenderAddress: spender.account.address,
-      }), (error) => error.code === "BLOCK_CHANGED" || /not found|not exist|canonical|unknown block|invalid block/i.test(error.message));
+      }), (error) => ["BLOCK_CHANGED", -32000, -32001].includes(error.code));
       const reads = requests.filter(({ method }) => ["eth_call", "eth_getCode"].includes(method));
       assert.ok(reads.length > 0);
       for (const { params } of reads) {

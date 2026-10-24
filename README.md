@@ -1,6 +1,6 @@
 # ThreeCore Wallet
 
-**October 24, 2026 source publication:** [Development, security changes and verification](docs/WALLET_SECURITY_UPDATE_2026-10-24_EN.md). Includes the accumulated transfer/report workflows, optional encrypted workspace backups, connection protection, bounded file processing and shared export cleanup. The verified local suite passed 10,373 cases. GitHub Actions results belong to the published commit; source publication does not deploy a website or contract.
+**October 24, 2026 source publication:** [Development, security changes and verification](docs/WALLET_SECURITY_UPDATE_2026-10-24_EN.md). Includes the accumulated transfer/report workflows, optional encrypted workspace backups, connection protection, bounded file processing and shared export cleanup. The verified local suite passed 10,382 cases. GitHub Actions results belong to the published commit; source publication does not deploy a website or contract.
 
 Security design: [Wallet response protection and verification scope](docs/RPC_PROTECTION_LOCAL_20261024.md).
 操作説明: [Walletの応答保護](docs/RPC_PROTECTION_JA.md)。

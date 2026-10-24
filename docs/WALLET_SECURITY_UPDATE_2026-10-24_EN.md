@@ -43,7 +43,7 @@ counts include comments and blank lines. They describe only that latest local
 iteration, not the size of this entire publication or a security-quality score.
 
 Across the complete accumulated publication, the repository's tracked `.js`,
-`.mjs` and `.html` files grew from 42,362 to **97,321 physical lines**: **54,959
+`.mjs` and `.html` files grew from 42,362 to **97,408 physical lines**: **55,046
 net additional lines** since the last public version. This includes application
 code, tests, browser fixtures and tools, plus comments and blank lines; it excludes
 prose, JSON, CSS and workflow configuration. These totals are reproducible from
@@ -51,17 +51,19 @@ the two source snapshots and are not a claim of production-only code.
 
 ## Verification evidence
 
-The exact local development snapshot at `439b008` passed:
+After the publication compatibility correction described below, the local
+publication candidate passed:
 
 | Suite | Passed |
 | --- | ---: |
-| Node unit/regression tests | 9,508 |
+| Node unit/regression tests | 9,517 |
 | Local HTTP server tests | 256 |
 | Synthetic browser UI cases | 609 |
-| Total | 10,373 |
+| Total | 10,382 |
 
 Final local runs had zero failures, cancellations, skipped cases or unexpected
-browser errors. The total increased by 659 from the preceding local snapshot.
+browser errors. The earlier `439b008` snapshot passed 10,373 cases; nine provider
+mutation regression cases were added during publication verification.
 Repeated runs and individual assertions inside seeded traces are not counted as
 additional cases.
 
@@ -69,6 +71,19 @@ Manual synthetic browser checks covered four active export leases, refusal of a
 fifth, cleanup failure retaining all reservations, explicit recovery, invalid
 filename rejection and expiry releasing a later lease. The normal application
 also displays the shared protection status and cleanup controls.
+
+### Compatibility correction found during publication
+
+The first GitHub run passed the core unit/HTTP/browser job but exposed a failure
+in the local-EVM compatibility jobs: Hardhat adds a default `from` field to an
+`eth_call` request, while the new security boundary passed a frozen object.
+The session now retains its immutable validated snapshot and sends the provider
+a separate, mutable deep copy. Provider changes cannot alter the method used for
+response validation or contaminate later reads. Nine regressions cover all read
+shapes, connection checks and attempted response-policy confusion. The chain
+rollback integration assertion now checks retained error codes, since arbitrary
+provider error prose is intentionally not exposed. These changes preserve the
+read-only method and argument restrictions.
 
 CI runs these unit/HTTP checks, two intentional browser-error detection controls
 and three fresh-profile browser runs. The regression job now has a 20-minute

@@ -2,6 +2,17 @@ import { observeWalletProvider } from "./provider-events.js";
 import { walletRpcSupervisor, RpcSupervisorError } from "./rpc-supervisor.js";
 import { guardRpcRequest, guardRpcResponse, RpcSecurityError } from "./security-rpc.js";
 import { safeProviderFailure } from "./security-provider-error.js";
+
+// Only copy the bounded plain-data snapshot returned by guardRpcRequest.
+// Providers may normalize their input in place. Keep that mutable transport
+// object separate from the immutable policy snapshot used to interpret results.
+function providerArguments(value) {
+  if (Array.isArray(value)) return value.map(providerArguments);
+  if (value !== null && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, providerArguments(item)]));
+  }
+  return value;
+}
 /**
  * ThreeCore browser-wallet connection adapter (EIP-1193).
  *
@@ -345,7 +356,7 @@ export class ThreeCoreWalletSession {
     const permission = args.method === "eth_requestAccounts";
     try {
       const result = await this.#waitForProvider(
-        () => permission ? requestPermission(this.#provider, this.#request) : this.#request.call(this.#provider, args),
+        () => permission ? requestPermission(this.#provider, this.#request) : this.#request.call(this.#provider, providerArguments(args)),
         permission ? this.#permissionTimeoutMs : this.#connectTimeoutMs,
         permission ? "PERMISSION_TIMEOUT" : "CONNECT_TIMEOUT", "SESSION_CANCELLED",
       );
@@ -361,7 +372,7 @@ export class ThreeCoreWalletSession {
     this.#assertReadEpoch(epoch);
     args = this.#guardRequest(args);
     try {
-      const result = await this.#waitForProvider(() => this.#request.call(this.#provider, args),
+      const result = await this.#waitForProvider(() => this.#request.call(this.#provider, providerArguments(args)),
         this.#readTimeoutMs, "READ_TIMEOUT", "SESSION_CHANGED");
       this.#assertReadEpoch(epoch);
       return this.#guardResponse(args.method, result);
