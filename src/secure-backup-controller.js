@@ -169,7 +169,27 @@ export function createSecureBackupController({ readDraft, onStage, onChange = ()
       return true;
     } catch (error) { return failed(generation, error, "SECURE_STAGE"); }
   }
-  return Object.freeze({ state, seal, select, unlock, offer, stage,
+  function encryptedText() {
+    if (disposed || phase !== "encrypted" || !prepared) secureFail("SECURE_NOT_READY");
+    if (currentKey() !== sourceKey) secureFail("SECURE_STALE");
+    return prepared.text;
+  }
+  function selectText(text) {
+    if (disposed) return false;
+    const id = generation + 1;
+    stop("reading");
+    if (!current(id)) return false;
+    try {
+      const result = inspectEncryptedBackup(text);
+      if (!current(id)) return false;
+      encryptedInput = text;
+      size = result.byteLength;
+      phase = "selected";
+      emit();
+      return true;
+    } catch (error) { return failed(id, error, "SECURE_READ"); }
+  }
+  return Object.freeze({ state, seal, select, selectText, encryptedText, unlock, offer, stage,
     cancel() { if (!disposed) stop("cancelled"); },
     invalidate() { if (!disposed) stop("idle"); },
     dispose() { if (!disposed) { disposed = true; stop("disposed"); } },

@@ -25,3 +25,23 @@
   .secure-backup-panel { padding: .85rem; }
   .secure-backup-panel button { display: block; width: 100%; }
 }
+.encrypted-library-panel {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  border: 1px solid #628fa9;
+  border-radius: 0.75rem;
+}
+.encrypted-library-panel h4 { margin-top: 0; }
+.encrypted-library-panel p { overflow-wrap: anywhere; }
+.encrypted-library-select { width: 100%; min-height: 7rem; }
+.encrypted-library-review:not(:empty) {
+  padding: 0.75rem;
+  border-left: 4px solid #d49e35;
+}
+.encrypted-library-acknowledgement { display: flex; gap: 0.5rem; align-items: flex-start; }
+.encrypted-library-ack { width: auto; flex: 0 0 auto; }
+.encrypted-library-panel button { margin: 0.25rem; }
+.encrypted-library-status { font-weight: 600; }
+@media (max-width: 600px) {
+  .encrypted-library-panel button { display: block; width: 100%; margin: 0.5rem 0; }
+}

@@ -1,3 +1,4 @@
+import { registerEncryptedLibraryUITests } from "/test/browser/encrypted-library-ui-tests.js";
 import { registerSecureBackupUITests } from "/test/browser/secure-backup-ui-tests.js";
 import { registerSecurityUITests } from "/test/browser/security-ui-tests.js";
 import { registerReportSetUITests } from "/test/browser/report-set-ui-tests.js";
@@ -1196,6 +1197,7 @@ registerHistoryRecoveryUITests(test);
 registerWalletSetupUITests(test);
 registerWorkspaceUITests(test);
 registerSecureBackupUITests(test);
+registerEncryptedLibraryUITests(test);
 registerCheckpointUITests(test);
 registerTokenIdentityUITests(test);
 registerAllowanceUITests(test);
@@ -1210,7 +1212,7 @@ registerReconciliationUITests(test);
 registerTransferUITests(test);
 let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");
-const selectedTests = ["history", "checkpoint", "identity", "allowance", "transfer"].includes(requestedSuite)
+const selectedTests = ["history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library"].includes(requestedSuite)
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
 for (const { name, run } of selectedTests) {
   console.info("Starting synthetic UI case: " + name);

@@ -6,6 +6,9 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["model", "storage", "controller", "archive"].map(name =>
+    ["/src/encrypted-library-" + name + ".js", { file: resolve(here, "../src/encrypted-library-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/encrypted-library-panel.js", { file: resolve(here, "encrypted-library-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/wallet-entry.js", { file: resolve(here, "wallet-entry.js"), mime: "text/javascript; charset=utf-8" }],
   ...["format", "crypto", "runner", "controller"].map(name =>
     ["/src/secure-backup-" + name + ".js", { file: resolve(here, "../src/secure-backup-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
@@ -89,6 +92,7 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/encrypted-library-ui-tests.js", { file: resolve(here, "../test/browser/encrypted-library-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/security-demo/", { file: resolve(here, "../test/browser/security-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/security-demo.js", { file: resolve(here, "../test/browser/security-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/security-ui-tests.js", { file: resolve(here, "../test/browser/security-ui-tests.js"), mime: "text/javascript; charset=utf-8" });

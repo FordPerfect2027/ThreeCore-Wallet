@@ -17,14 +17,15 @@ export function checkpointStorageError(error) {
 
 /** Lazy, origin-scoped IndexedDB. No automatic read, save, migration or eviction. */
 export function createCheckpointStorage({ indexedDB,
-  name = CHECKPOINT_DATABASE, openTimeoutMs = 8000, documentPolicy } = {}) {
+  name = CHECKPOINT_DATABASE, openTimeoutMs = 8000, transactionTimeoutMs = 30000, documentPolicy } = {}) {
   const policy = documentPolicy ?? { empty: emptyCheckpointDocument, validate: validateCheckpointDocument,
     mutate: mutateCheckpoints, mapError: checkpointStorageError };
   if (!policy || !["empty", "validate", "mutate", "mapError"].every(key => typeof policy[key] === "function")) {
     checkpointFail("CHECKPOINT_ADAPTER");
   }
   if (typeof name !== "string" || !name.length || name.length > 160 ||
-      !Number.isSafeInteger(openTimeoutMs) || openTimeoutMs < 1 || openTimeoutMs > 60000) {
+      !Number.isSafeInteger(openTimeoutMs) || openTimeoutMs < 1 || openTimeoutMs > 60000 ||
+      !Number.isSafeInteger(transactionTimeoutMs) || transactionTimeoutMs < 1 || transactionTimeoutMs > 60000) {
     checkpointFail("CHECKPOINT_ADAPTER");
   }
   let connection = null;
@@ -98,9 +99,11 @@ export function createCheckpointStorage({ indexedDB,
       let result;
       let failure;
       let settled = false;
+      let timer = null;
       function finish(error) {
         if (settled) return;
         settled = true;
+        clearTimeout(timer);
         transactions.delete(transaction);
         signal?.removeEventListener("abort", onCancel);
         if (error) reject(policy.mapError(error));
@@ -114,6 +117,7 @@ export function createCheckpointStorage({ indexedDB,
       try {
         transaction = db.transaction(STORE, operation ? "readwrite" : "readonly");
         transactions.add(transaction);
+        timer = setTimeout(() => abort(new CheckpointError("CHECKPOINT_TIMEOUT")), transactionTimeoutMs);
         signal?.addEventListener("abort", onCancel, { once: true });
         transaction.onabort = () => finish(failure || transaction.error || new CheckpointError("CHECKPOINT_ABORTED"));
         transaction.onerror = () => { failure ||= transaction.error; };
@@ -123,6 +127,8 @@ export function createCheckpointStorage({ indexedDB,
         request.onerror = () => { failure ||= request.error; };
         request.onsuccess = () => {
           try {
+            if (settled) return;
+            if (signal?.aborted) checkpointFail("CHECKPOINT_CANCELLED");
             if (disposed) checkpointFail("CHECKPOINT_CLOSED");
             const current = request.result === undefined ? policy.empty() : policy.validate(request.result);
             result = current;
@@ -145,7 +151,7 @@ export function createCheckpointStorage({ indexedDB,
   }
 
   return Object.freeze({
-    read: () => transact(),
+    read({ signal } = {}) { return transact(undefined, undefined, undefined, signal); },
     change(expectedRevision, operation, { canCommit = () => true, signal } = {}) {
       return transact(expectedRevision, operation, canCommit, signal);
     },

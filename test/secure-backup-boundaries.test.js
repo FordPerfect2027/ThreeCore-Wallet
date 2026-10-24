@@ -165,7 +165,7 @@ test("reentrant staging cannot hand plaintext off twice", async () => {
 
 test("public API exposes no provider, signing, sending, storage or password accessor", () => {
   const f = controllerFixture();
-  assert.deepEqual(Object.keys(f.controller).sort(), ["cancel", "dispose", "invalidate", "offer", "seal", "select", "stage", "state", "unlock"]);
+  assert.deepEqual(Object.keys(f.controller).sort(), ["cancel", "dispose", "encryptedText", "invalidate", "offer", "seal", "select", "selectText", "stage", "state", "unlock"]);
 });
 
 test("bad configuration is rejected before any data access", () => {

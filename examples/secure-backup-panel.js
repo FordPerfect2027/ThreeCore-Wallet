@@ -1,4 +1,5 @@
 import { createSecureBackupController } from "../src/secure-backup-controller.js";
+import { mountEncryptedLibraryPanel } from "./encrypted-library-panel.js";
 import { offerHistoryDownload } from "./history-files.js";
 
 export const SECURE_BACKUP_MESSAGES = Object.freeze({
@@ -26,12 +27,13 @@ export const SECURE_BACKUP_MESSAGES = Object.freeze({
 export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
   onProtect = () => {}, download = offerHistoryDownload,
   controllerOptions = {}, eventTarget = document.defaultView,
-  plaintextLifetimeMs = 120_000,
+  plaintextLifetimeMs = 120_000, libraryOptions = {},
 } = {}) {
   if (!Number.isSafeInteger(plaintextLifetimeMs) || plaintextLifetimeMs < 1 || plaintextLifetimeMs > 120_000) {
     throw new Error("SECURE_INTERNAL");
   }
   let disposed = false;
+  let libraryPanel;
   let expiryTimer = null;
   const cleanup = [];
   const section = document.createElement("section");
@@ -98,6 +100,7 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
     file.value = "";
     acknowledged.checked = false;
     controller.cancel();
+    libraryPanel?.protect();
     onProtect();
   }
   function armExpiry() {
@@ -137,6 +140,7 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
     unlock.disabled = !state.canDecrypt;
     restorePassword.disabled = !state.canDecrypt;
     stage.disabled = !state.canStage;
+    libraryPanel?.setReady(state.canDownload);
     if (state.phase !== lastPhase && ["error", "cancelled", "staged", "disposed"].includes(state.phase)) {
       clearPasswords();
     }
@@ -193,6 +197,15 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
     seal, save, labelled("保存済みの暗号化ファイル", file),
     labelled("保存時の合言葉", restorePassword), unlock, detail, stage, cancel, status);
   parent.append(section);
+  libraryPanel = mountEncryptedLibraryPanel({ document, parent: section, download,
+    controllerOptions: libraryOptions, readEncrypted: controller.encryptedText,
+    onOpen(text) {
+      clearPasswords();
+      acknowledged.checked = false;
+      file.value = "";
+      onProtect();
+      return controller.selectText(text);
+    } });
   render(controller.state());
   return Object.freeze({
     state: controller.state,
@@ -204,6 +217,7 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
       clearPasswords();
       acknowledged.checked = false;
       controller.invalidate();
+      libraryPanel.protect();
       onProtect();
     },
     dispose() {
@@ -211,6 +225,7 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
       protect();
       disposed = true;
       controller.dispose();
+      libraryPanel.dispose();
       for (const stop of cleanup) stop();
       section.remove();
     },
