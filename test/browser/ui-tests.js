@@ -1,5 +1,6 @@
 import { registerStorageGuardUITests } from "/test/browser/storage-guard-ui-tests.js";
 import { registerAccessLifecycleUITests } from "/test/browser/access-lifecycle-ui-tests.js";
+import { registerAcceptanceUITests } from "/test/browser/acceptance-ui-tests.js";
 import { registerSecureLifecycleUITests } from "/test/browser/secure-lifecycle-ui-tests.js";
 import { registerExportGuardUITests } from "/test/browser/export-guard-ui-tests.js";
 import { registerFileReadUITests } from "/test/browser/file-read-ui-tests.js";
@@ -1225,9 +1226,10 @@ registerReconciliationUITests(test);
 registerTransferUITests(test);
 registerStorageGuardUITests(test);
 registerAccessLifecycleUITests(test);
+registerAcceptanceUITests(test);
 let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");
-const selectedTests = ["access-lifecycle", "storage-guard", "history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
+const selectedTests = ["acceptance", "access-lifecycle", "storage-guard", "history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
 for (const { name, run } of selectedTests) {
   console.info("Starting synthetic UI case: " + name);

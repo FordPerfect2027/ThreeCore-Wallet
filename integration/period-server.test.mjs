@@ -50,7 +50,7 @@ test("period preview and browser suite import graph resolves without external pa
     const path = pending.pop();
     if (visited.has(path)) continue;
     visited.add(path);
-    assert.ok(visited.size < 189); // Read scope and its explicit browser test module added.
+    assert.ok(visited.size < 191); // Read scope and its explicit browser test module added.
     const response = await fetch(base + path);
     assert.equal(response.status, 200, path);
     const source = await response.text();

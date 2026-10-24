@@ -120,6 +120,10 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    for (const name of ['acceptance-fixture', 'acceptance-ui-tests', 'acceptance-demo']) {
+      paths.set('/test/browser/' + name + '.js', { file: resolve(here, '../test/browser/' + name + '.js'), mime: 'text/javascript; charset=utf-8' });
+    }
+    paths.set('/test/browser/acceptance-demo/', { file: resolve(here, '../test/browser/acceptance-demo.html'), mime: 'text/html; charset=utf-8' });
     paths.set("/test/browser/access-lifecycle-ui-tests.js", { file: resolve(here, "../test/browser/access-lifecycle-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/access-lifecycle-demo/", { file: resolve(here, "../test/browser/access-lifecycle-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/access-lifecycle-demo.js", { file: resolve(here, "../test/browser/access-lifecycle-demo.js"), mime: "text/javascript; charset=utf-8" });

@@ -453,6 +453,58 @@ for (const chainId of [8453, 84532]) {
       });
     }
 
+    it("stops a composite read while a real EVM block reply is delayed, then reconnects explicitly", async () => {
+      const selected = walletFor();
+      let release, began, delayed = true;
+      const gate = new Promise(resolve => { release = resolve; });
+      const started = new Promise(resolve => { began = resolve; });
+      const bridge = { async request(args) {
+        const result = await selected.provider.request(args);
+        if (delayed && args.method === "eth_getBlockByNumber") { began(); await gate; }
+        return result;
+      } };
+      const controller = createWalletCardController({ agent: spec.agent, siteOrigin: "http://localhost:4173" });
+      const before = { balance: await token.read.balanceOf([holder.account.address]),
+        supply: await token.read.totalSupply(), nonce: await client.getTransactionCount({ address: holder.account.address }) };
+      try {
+        assert.equal(await controller.connect({ provider: bridge, account: holder.account.address, chainId }), true);
+        const pending = controller.readPortfolio({ tokens: [token.address] });
+        const stopped = assert.rejects(pending);
+        await started;
+        controller.disconnect();
+        await stopped;
+        const count = selected.requests.length;
+        delayed = false; release();
+        await new Promise(resolve => setImmediate(resolve));
+        assert.equal(selected.requests.length, count, "No additional read after delayed reply");
+        assert.equal(controller.state.result, null);
+        assert.equal(controller.state.phase, "disconnected");
+        assert.equal(await controller.connect({ provider: bridge, account: holder.account.address, chainId }), true);
+        const fresh = await controller.readPortfolio({ tokens: [token.address] });
+        assert.equal(fresh.holdings[0].balanceBaseUnits, before.balance.toString());
+        assert.deepEqual({ balance: await token.read.balanceOf([holder.account.address]),
+          supply: await token.read.totalSupply(), nonce: await client.getTransactionCount({ address: holder.account.address }) }, before);
+      } finally { release(); controller.dispose(); selected.wallet.disconnect(); }
+    });
+
+    it("delivers the final stopped view after an observer stops a completed real-token balance read", async () => {
+      const selected = walletFor();
+      let view, stop = true;
+      const controller = createWalletCardController({ agent: spec.agent, siteOrigin: "http://localhost:4173",
+        onChange(state) { view = state; if (stop && state.result) { stop = false; controller.disconnect(); } },
+      });
+      try {
+        assert.equal(await controller.connect({ provider: selected.provider, account: holder.account.address, chainId }), true);
+        assert.equal(await controller.readBalances({ tokenAddress: token.address }), false);
+        assert.equal(view.phase, "disconnected");
+        assert.equal(view.result, null);
+        assert.equal(await token.read.balanceOf([holder.account.address]), spec.units * 10n ** 18n);
+        assert.equal(await controller.connect({ provider: selected.provider, account: holder.account.address, chainId }), true);
+        assert.equal(await controller.readBalances({ tokenAddress: token.address }), true);
+        assert.equal(view.result.tokenBalanceBaseUnits, (spec.units * 10n ** 18n).toString());
+      } finally { controller.dispose(); selected.wallet.disconnect(); }
+    });
+
     it("keeps the earlier balance and allowance when the local chain advances between reads", async () => {
       await token.write.approve([spender.account.address, 9n]);
       const before = await client.getBlock();

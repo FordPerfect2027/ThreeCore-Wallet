@@ -65,7 +65,18 @@ export function createWalletCardController({
     // Observers may stop/dispose, but cannot start another operation mid-transition.
     if (notifying) return;
     notifying = true;
-    try { cleanup(() => onChange(state)); } finally { notifying = false; }
+    try {
+      // A view callback may stop or clear this operation while rendering it.
+      // Deliver that restrictive state too; otherwise the internal state is
+      // stopped but the view can retain a connected label or a stale balance.
+      // Reentrant starts are blocked by boundaryDepth. Bound malicious observers.
+      for (let count = 0; count < 3 && !disposed; count++) {
+        const shown = state;
+        cleanup(() => onChange(shown));
+        if (state.phase === shown.phase && state.connection === shown.connection &&
+            state.result === shown.result && state.error === shown.error) break;
+      }
+    } finally { notifying = false; }
   }
   function release() {
     const previous = wallet;
