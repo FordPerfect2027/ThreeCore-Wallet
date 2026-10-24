@@ -1,3 +1,4 @@
+import { browserFixture } from "./helpers/export-fixtures.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mountHistoryFiles, offerHistoryDownload } from "../examples/history-files.js";
@@ -247,45 +248,22 @@ test("reset clears all filter fields and invalidates subset download", () => {
   f.panel.dispose();
 });
 
-test("browser download cleanup revokes the blob URL after a delay", () => {
-  const calls = [], timers = [];
-  const anchor = new Element("a");
-  anchor.click = () => calls.push("click");
-  const document = {
-    createElement: () => anchor,
-    body: new Element("body"),
-    defaultView: {
-      Blob: class { constructor(parts, options) { calls.push({ parts, options }); } },
-      URL: { createObjectURL() { return "blob:local-test"; }, revokeObjectURL(url) { calls.push(url); } },
-      setTimeout(callback, delay) { timers.push({ callback, delay }); },
-    },
-  };
-  offerHistoryDownload({ document, prepared: { text: "{}", filename: "history.json", mimeType: "application/json" } });
-  assert.equal(anchor.href, "blob:local-test");
-  assert.equal(anchor.download, "history.json");
-  assert.equal(document.body.children.length, 0);
-  assert.equal(timers[0].delay, 1000);
-  assert.ok(calls.includes("click"));
-  timers[0].callback();
-  assert.ok(calls.includes("blob:local-test"));
+
+test("browser history download cleanup revokes after the real deadline", () => {
+  const f = browserFixture();
+  offerHistoryDownload({ document: f.document, prepared: { text: "{}", filename: "history.json", mimeType: "application/json" } });
+  assert.equal(f.anchors[0].download, "history.json");
+  assert.equal(f.body.children.length, 0);
+  assert.equal(f.liveURLs.size, 1);
+  assert.equal(f.clock.installed[0].delay, 1000);
+  f.clock.advance(1000); f.clock.due();
+  assert.equal(f.liveURLs.size, 0);
 });
 
-test("failed download navigation still removes the anchor and revokes URL", () => {
-  let cleaned = false;
-  const timers = [];
-  const anchor = new Element("a");
-  anchor.click = () => { throw Error("navigation refused"); };
-  const document = {
-    createElement: () => anchor,
-    body: new Element("body"),
-    defaultView: {
-      Blob: class {},
-      URL: { createObjectURL: () => "blob:test", revokeObjectURL() { cleaned = true; } },
-      setTimeout: callback => timers.push(callback),
-    },
-  };
-  assert.throws(() => offerHistoryDownload({ document, prepared: { text: "{}" } }));
-  assert.equal(document.body.children.length, 0);
-  timers[0]();
-  assert.equal(cleaned, true);
+test("failed history download navigation removes the anchor and URL immediately", () => {
+  const f = browserFixture(); f.throwAt("click");
+  assert.throws(() => offerHistoryDownload({ document: f.document, prepared: { text: "{}", filename: "history.json", mimeType: "application/json" } }));
+  assert.equal(f.body.children.length, 0);
+  assert.equal(f.liveURLs.size, 0);
+  assert.equal(f.clock.timers.size, 0);
 });

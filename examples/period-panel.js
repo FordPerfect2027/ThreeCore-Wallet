@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { createPeriodController } from "../src/period-controller.js";
 import { periodPlanKey, periodWindows, periodFail } from "../src/period-plan.js";
 import { periodDraftProgress } from "../src/period-draft.js";
@@ -253,15 +254,5 @@ export function mountPeriodPanel({ document, parent, getContext, read, stageWork
 }
 
 function downloadPeriodFile(file, document) {
-  const url = URL.createObjectURL(new Blob([file.text], { type: file.mimeType }));
-  const anchor = document.createElement("a");
-  try {
-    anchor.href = url;
-    anchor.download = file.filename;
-    document.body.append(anchor);
-    anchor.click();
-  } finally {
-    anchor.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
+  return offerWalletDownload({ document, prepared: file });
 }

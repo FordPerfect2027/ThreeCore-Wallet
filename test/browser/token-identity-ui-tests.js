@@ -401,7 +401,7 @@ export function registerTokenIdentityUITests(test) {
     const revoke = URL.revokeObjectURL;
     const click = HTMLAnchorElement.prototype.click;
     const created = [], revoked = [], anchors = [];
-    URL.createObjectURL = blob => { created.push(blob); return "blob:synthetic-token-identity"; };
+    URL.createObjectURL = blob => { created.push(blob); return "blob:" + location.origin + "/synthetic-token-identity"; };
     URL.revokeObjectURL = url => { revoked.push(url); };
     HTMLAnchorElement.prototype.click = function () { anchors.push({ href: this.href, filename: this.download }); };
     try {
@@ -413,7 +413,7 @@ export function registerTokenIdentityUITests(test) {
       assert(anchors[0].filename === "ThreeCore-DAT-identity-42.json", "Wrong filename");
       assert(q(f, "status").textContent.includes("ダウンロード完了を確認"), "Claimed disk save without evidence");
       await until(() => revoked.length === 1);
-      assert(revoked[0] === "blob:synthetic-token-identity", "Object URL not revoked");
+      assert(revoked[0] === "blob:" + location.origin + "/synthetic-token-identity", "Object URL not revoked");
       assert(q(f, "panel").querySelector("a[download]") === null, "Download anchor leaked");
       assert(f.calls.length === 0, "Save contacted provider");
     } finally {

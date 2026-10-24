@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ThreeCore — 保存ファイル保護の動作確認</title>
+  <link rel="stylesheet" href="/examples/wallet-demo.css">
+  <link rel="stylesheet" href="/examples/security.css">
+</head>
+<body>
+  <main>
+    <h1>保存ファイルの保護を確認する</h1>
+    <p>合成データだけを使う確認画面です。実際の保存・Wallet接続・送金は行いません。</p>
+    <p>通常画面には状態表示と解放ボタンが組み込まれています。以下の故障ボタンはテスト画面だけのものです。</p>
+    <section aria-label="合成データによる確認">
+      <button id="offer" type="button">合成ファイルを1件用意</button>
+      <button id="four" type="button">合成ファイルを4件用意</button>
+      <button id="expire" type="button">保持時間を1秒進める</button>
+      <button id="fail" type="button">解放失敗を再現</button>
+      <button id="recover" type="button">解放機能を正常に戻す</button>
+      <button id="invalid" type="button">不正なファイル名を試す</button>
+      <button id="reset" type="button">確認をリセット</button>
+      <p id="result" role="status" aria-live="polite">確認待ちです。</p>
+      <p id="native-count">実ファイルの保存 0件 / Walletへの要求 0件</p>
+    </section>
+    <div id="export-status"></div>
+    <a href="/">通常のウォレット画面を開く</a>
+  </main>
+  <script type="module" src="/test/browser/export-guard-demo.js"></script>
+</body>
+</html>

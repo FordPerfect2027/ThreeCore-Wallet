@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { createAllowanceController } from "../src/allowance-controller.js";
 import { formatAllowanceTargets, ALLOWANCE_DRAFT_LIMIT } from "../src/allowance-targets.js";
 import { describeAllowanceTargets, describeAllowanceObservation, describeAllowanceComparison,
@@ -165,20 +166,7 @@ export function mountAllowancePanel({ document, parent, getContext, read,
   listen(compare, "click", () => { if (!disposed) controller.compare(); });
 
   function browserDownload(prepared) {
-    const win = document.defaultView;
-    if (!win?.URL?.createObjectURL || !win?.Blob) throw Error("Download unavailable");
-    const url = win.URL.createObjectURL(new win.Blob([prepared.text], { type: prepared.mimeType }));
-    const anchor = document.createElement("a");
-    try {
-      anchor.href = url;
-      anchor.download = prepared.filename;
-      anchor.hidden = true;
-      section.append(anchor);
-      anchor.click();
-    } finally {
-      anchor.remove();
-      win.setTimeout(() => win.URL.revokeObjectURL(url), 1000);
-    }
+    return offerWalletDownload({ document, prepared: prepared });
   }
   for (const [node, kind] of [[saveTargets, "targets"], [save, "observation"]]) {
     listen(node, "click", async () => {

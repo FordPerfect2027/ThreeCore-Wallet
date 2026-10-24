@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { captureAllowanceBundle, allowanceBundleKey, prepareAllowanceBundle,
   readAllowanceBundle, describeAllowanceBundle } from "../src/allowance-bundle.js";
 import { allowanceErrorMessage } from "../src/allowance-view.js";
@@ -66,20 +67,7 @@ export function mountAllowanceBundlePanel({
     return allowanceErrorMessage(error?.code);
   }
   function browserDownload(prepared) {
-    const win = document.defaultView;
-    if (!win?.URL?.createObjectURL || !win?.Blob) throw Error("Download unavailable");
-    const url = win.URL.createObjectURL(new win.Blob([prepared.text], { type: prepared.mimeType }));
-    const anchor = document.createElement("a");
-    try {
-      anchor.href = url;
-      anchor.download = prepared.filename;
-      anchor.hidden = true;
-      section.append(anchor);
-      anchor.click();
-    } finally {
-      anchor.remove();
-      win.setTimeout(() => win.URL.revokeObjectURL(url), 1000);
-    }
+    return offerWalletDownload({ document, prepared: prepared });
   }
   listen(review, "click", () => {
     if (disposed) return;

@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { captureTransferArchive } from "../src/transfer-vault-model.js";
 import { transferContextKey, transferFail } from "../src/transfer-codec.js";
 import { createTransferController } from "../src/transfer-controller.js";
@@ -285,16 +286,5 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
 }
 
 function defaultDownload(prepared, document) {
-  const blob = new Blob([prepared.text], { type: prepared.mimeType });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  try {
-    anchor.href = url;
-    anchor.download = prepared.filename;
-    document.body.append(anchor);
-    anchor.click();
-  } finally {
-    anchor.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
+  return offerWalletDownload({ document, prepared: prepared });
 }

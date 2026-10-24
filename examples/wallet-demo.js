@@ -1,3 +1,5 @@
+import { getDocumentExportGuard } from "./export-download.js";
+import { mountExportGuardPanel } from "./export-guard-panel.js";
 import { walletFileReadService } from "../src/file-read-service.js";
 import { mountFileReadPanel } from "./file-read-panel.js";
 import { walletRpcSupervisor } from "../src/rpc-supervisor.js";
@@ -29,7 +31,7 @@ import { mountAllowanceBundlePanel } from "./allowance-bundle-panel.js";
 import { mountTransferPanel } from "./transfer-panel.js";
 
 /** Dependencies are explicit so browser tests never consult a real extension. */
-export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions, rpcSupervisor = walletRpcSupervisor, fileReadService = walletFileReadService }) {
+export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions, rpcSupervisor = walletRpcSupervisor, fileReadService = walletFileReadService, exportGuard = getDocumentExportGuard(document) }) {
   const grid = document.querySelector("#grid");
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
   const allowancePanels = [];
@@ -43,7 +45,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   const securityPanel = mountSecurityPanel({ document, parent: securityHost, eventTarget, tabGuardOptions,
     canResume: () => rpcSupervisor.state().canStart === true,
     onLock() {
-      const steps = [{ name: "file-reads", run: () => fileReadService.cancelAll() }];
+      const steps = [{ name: "exports", run: () => exportGuard.clear() }, { name: "file-reads", run: () => fileReadService.cancelAll() }];
       if (workspacePanel) steps.push({ name: "backup", run: () => workspacePanel.protect() });
       if (periodPanel) steps.push({ name: "period", run: () => periodPanel.invalidate() });
       for (const [card, controller] of controllers) steps.push({ name: card.dataset.agent,
@@ -62,6 +64,8 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   cleanup.push(() => rpcStatusPanel.dispose());
   const fileReadPanel = mountFileReadPanel({ document, parent: securityHost, service: fileReadService });
   cleanup.push(() => fileReadPanel.dispose());
+  const exportPanel = mountExportGuardPanel({ document, parent: securityHost, guard: exportGuard });
+  cleanup.push(() => exportPanel.dispose());
   const allowanceStates = new Map(AGENT_IDS.map(agent => [agent, { agent, observation: null, provenance: null }]));
   const allowanceHost = document.createElement("section");
   allowanceHost.className = "allowance-overview";

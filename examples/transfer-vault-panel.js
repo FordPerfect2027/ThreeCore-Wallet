@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { vaultCollectionReviewText } from "../src/transfer-vault-collection.js";
 import { createVaultController } from "../src/transfer-vault-controller.js";
 import { createVaultStorage } from "../src/transfer-vault-storage.js";
@@ -271,15 +272,5 @@ export function mountTransferVaultPanel({ document, parent, readCards, stageArch
 }
 
 function downloadFile(file, document) {
-  const url = URL.createObjectURL(new Blob([file.text], { type: file.mimeType }));
-  const anchor = document.createElement("a");
-  try {
-    anchor.href = url;
-    anchor.download = file.filename;
-    document.body.append(anchor);
-    anchor.click();
-  } finally {
-    anchor.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
+  return offerWalletDownload({ document, prepared: file });
 }

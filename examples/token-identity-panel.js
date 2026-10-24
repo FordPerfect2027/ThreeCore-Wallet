@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { createTokenIdentityController } from "../src/token-identity-controller.js";
 import { createCatalogSelection } from "../src/token-catalog.js";
 import { describeCatalog, describeTokenObservation, describeTokenComparison,
@@ -150,21 +151,7 @@ export function mountTokenIdentityPanel({ document, parent, getContext, read,
   listen(compare, "click", () => { if (!disposed) controller.compare(); });
 
   function browserDownload(prepared) {
-    const win = document.defaultView;
-    if (!win?.URL?.createObjectURL || !win?.Blob) throw Error("Download unavailable");
-    const url = win.URL.createObjectURL(new win.Blob([prepared.text], { type: prepared.mimeType }));
-    const anchor = document.createElement("a");
-    try {
-      anchor.href = url;
-      anchor.download = prepared.filename;
-      anchor.hidden = true;
-      section.append(anchor);
-      anchor.click();
-    } finally {
-      anchor.remove();
-      // Release after navigation has consumed the URL, not synchronously.
-      win.setTimeout(() => win.URL.revokeObjectURL(url), 1000);
-    }
+    return offerWalletDownload({ document, prepared: prepared });
   }
   listen(save, "click", async () => {
     if (disposed) return;

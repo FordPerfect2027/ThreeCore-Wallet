@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { createPeriodLibraryController } from "../src/period-library-controller.js";
 import { createPeriodLibraryStorage } from "../src/period-library-storage.js";
 import { queryPeriodLibrary, summarizePeriodLibrary } from "../src/period-library-query.js";
@@ -200,8 +201,5 @@ export function mountPeriodLibraryPanel({ document, parent, getCheckpoint, stage
 }
 
 function downloadLibrary(file, document) {
-  const url = URL.createObjectURL(new Blob([file.text], { type: file.mimeType }));
-  const anchor = document.createElement("a");
-  try { anchor.href = url; anchor.download = file.filename; document.body.append(anchor); anchor.click(); }
-  finally { anchor.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  return offerWalletDownload({ document, prepared: file });
 }

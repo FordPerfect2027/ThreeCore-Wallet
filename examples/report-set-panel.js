@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { createReportHistoryStorage } from "../src/report-history-storage.js";
 import { createReportSetController } from "../src/report-set-controller.js";
 import { queryReportHistory } from "../src/report-history-query.js";
@@ -362,15 +363,5 @@ export function mountReportSetPanel({ document, parent,
 }
 
 function downloadSet(file, document) {
-  const url = URL.createObjectURL(new Blob([file.text], { type: file.mimeType }));
-  const link = document.createElement("a");
-  try {
-    link.href = url;
-    link.download = file.filename;
-    document.body.append(link);
-    link.click();
-  } finally {
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
+  return offerWalletDownload({ document, prepared: file });
 }

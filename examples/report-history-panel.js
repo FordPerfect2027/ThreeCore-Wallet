@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { createReportHistoryStorage } from "../src/report-history-storage.js";
 import { createPeriodLibraryStorage } from "../src/period-library-storage.js";
 import { reportSourcesText } from "../src/report-history-sources.js";
@@ -211,8 +212,5 @@ export function mountReportHistoryPanel({ document, parent, getReport, stageRepo
 }
 
 function downloadHistory(file, document) {
-  const url = URL.createObjectURL(new Blob([file.text], { type: file.mimeType }));
-  const link = document.createElement("a");
-  try { link.href = url; link.download = file.filename; document.body.append(link); link.click(); }
-  finally { link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  return offerWalletDownload({ document, prepared: file });
 }

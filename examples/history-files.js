@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { readSecurityFileBytes } from "../src/security-file.js";
 import { createHistoryFileReader } from "../src/history-file-reader.js";
 import { prepareHistoryDownload, createHistoryBackupTracker } from "../src/history-file.js";
@@ -199,20 +200,6 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
 
 /** Browser-owned download only: no filesystem path, network request or upload. */
 export function offerHistoryDownload({ document, prepared }) {
-  const view = document.defaultView;
-  const blob = new view.Blob([prepared.text], { type: prepared.mimeType });
-  const url = view.URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = prepared.filename;
-  anchor.hidden = true;
-  try {
-    document.body.append(anchor);
-    anchor.click();
-  } finally {
-    anchor.remove();
-    // Revocation is delayed so browsers can consume the download navigation.
-    view.setTimeout(() => view.URL.revokeObjectURL(url), 1000);
-  }
+  return offerWalletDownload({ document, prepared: prepared });
 }
 

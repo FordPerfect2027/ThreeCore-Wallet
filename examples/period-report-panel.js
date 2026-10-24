@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { periodReportComparisonText } from "../src/period-report-comparison.js";
 import { createPeriodReportController } from "../src/period-report-controller.js";
 import { createPeriodLibraryStorage } from "../src/period-library-storage.js";
@@ -224,8 +225,5 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
 }
 
 function downloadReport(file, document) {
-  const url = URL.createObjectURL(new Blob([file.text], { type: file.mimeType }));
-  const link = document.createElement("a");
-  try { link.href = url; link.download = file.filename; document.body.append(link); link.click(); }
-  finally { link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  return offerWalletDownload({ document, prepared: file });
 }

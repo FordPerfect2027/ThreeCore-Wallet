@@ -13,8 +13,8 @@ function fixture(overrides = {}) {
 
 test("protection cancels file reads before backup, reports and three wallet sessions", () => {
   const f = fixture();
-  assert.deepEqual(f.run(), { completed: true, attempted: 6, failed: [] });
-  assert.deepEqual(f.calls, ["file-reads", "backup", "period", "DAT", "EMA", "CAWELON"]);
+  assert.deepEqual(f.run(), { completed: true, attempted: 7, failed: [] });
+  assert.deepEqual(f.calls, ["exports", "file-reads", "backup", "period", "DAT", "EMA", "CAWELON"]);
 });
 
 for (const name of PROTECTION_STEPS) {
@@ -22,7 +22,7 @@ for (const name of PROTECTION_STEPS) {
     const f = fixture({ [name]() { throw Error("synthetic sensitive exception"); } });
     const result = f.run();
     assert.deepEqual(f.calls, PROTECTION_STEPS);
-    assert.deepEqual(result, { completed: false, attempted: 6, failed: [name] });
+    assert.deepEqual(result, { completed: false, attempted: 7, failed: [name] });
     assert(!JSON.stringify(result).includes("sensitive"));
   });
 
@@ -52,7 +52,7 @@ test("several failed views are all identified with fixed names", () => {
     CAWELON() { throw null; } });
   const result = f.run();
   assert.deepEqual(result.failed, ["backup", "DAT", "CAWELON"]);
-  assert.equal(result.attempted, 6);
+  assert.equal(result.attempted, 7);
   assert.deepEqual(f.calls, PROTECTION_STEPS);
 });
 
@@ -125,7 +125,7 @@ for (const invalid of [undefined, null, {}, true, 5, "DAT", new Set()]) {
 
 test("oversized cleanup collection is rejected before executing its first callback", () => {
   let count = 0;
-  const rows = Array.from({ length: 6 }, () => ({ name: "DAT", run() { count++; } }));
+  const rows = Array.from({ length: 8 }, () => ({ name: "DAT", run() { count++; } }));
   assert.throws(() => runProtectionBatch(rows), /PROTECTION_CONFIG/);
   assert.equal(count, 0);
 });

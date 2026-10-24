@@ -53,3 +53,12 @@
 .file-read-panel[data-level="limited"], .file-read-panel[data-level="stopped"],
 .file-read-panel[data-level="unavailable"] { border-color: #f0bb68; }
 @media (max-width: 600px) { .file-read-panel { padding: 12px; } .file-read-counts { font-size: 12px; } }
+
+.export-guard-panel { border: 1px solid #526c88; border-radius: 12px; padding: 16px; margin: 0 0 24px; background: #132339; }
+.export-guard-panel h3 { margin-top: 0; }
+.export-guard-title { font-weight: 700; color: #b9efff; }
+.export-guard-counts { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
+.export-guard-panel button { max-width: 100%; white-space: normal; }
+.export-guard-panel[data-phase="cleanup"], .export-guard-panel[data-phase="clock"], .export-guard-panel[data-phase="limited"] { border-color: #f0bb68; }
+.export-guard-scope, .export-guard-action { font-size: 13px; }
+@media (max-width: 600px) { .export-guard-panel { padding: 12px; } }

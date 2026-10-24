@@ -1,3 +1,4 @@
+import { offerWalletDownload } from "./export-download.js";
 import { reconciliationLedgerText, reconciliationEvidenceText } from "../src/reconciliation-ledger.js";
 import { createReconciliationController } from "../src/reconciliation-controller.js";
 import { RECONCILIATION_AGENTS } from "../src/reconciliation-model.js";
@@ -315,15 +316,5 @@ export function mountReconciliationPanel({
 }
 
 function downloadFile(file, document) {
-  const url = URL.createObjectURL(new Blob([file.text], { type: file.mimeType }));
-  const anchor = document.createElement("a");
-  try {
-    anchor.href = url;
-    anchor.download = file.filename;
-    document.body.append(anchor);
-    anchor.click();
-  } finally {
-    anchor.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
+  return offerWalletDownload({ document, prepared: file });
 }
