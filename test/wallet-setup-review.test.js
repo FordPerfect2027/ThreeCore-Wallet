@@ -170,12 +170,12 @@ test("raw field changes including whitespace require fresh review", () => {
   assert.throws(() => f.controller.apply(p.id, text), { code: "SETUP_STALE" });
 });
 
-test("apply reads destination once to prevent inconsistent successive snapshots", () => {
+test("apply verifies destination again after preparation before writing", () => {
   let reads = 0;
   const c = createWalletSetupReview({ readFields: () => { reads++; return raw(); }, applyPlan() {} });
   const p = c.preview(text);
   c.apply(p.id, text);
-  assert.equal(reads, 2);
+  assert.equal(reads, 3);
 });
 
 test("mutating the source fields after preview cannot mutate the captured before state", () => {

@@ -137,30 +137,68 @@ export function previewWalletSetup(text, current) {
 }
 
 /** Preview is single use and tied to both the JSON and all current form values. */
-export function createWalletSetupReview({ readFields, applyPlan }) {
+// Provider cleanup belongs in prepareApply, before the final destination check.
+// applyPlan must synchronously update local fields, without calling providers.
+export function createWalletSetupReview({ readFields, applyPlan, prepareApply = () => {} }) {
+  if (![readFields, applyPlan, prepareApply].every(value => typeof value === "function")) fail("SETUP_ADAPTER");
   let pending = null;
   let revision = 0;
   let disposed = false;
+  let active = false;
   function cancel() { pending = null; revision++; }
+  function available() {
+    if (disposed) fail("SETUP_DISPOSED");
+    if (active) fail("SETUP_REVIEW_REQUIRED");
+  }
+  function checkCurrent(id) {
+    if (!active || disposed || revision !== id) fail("SETUP_REVIEW_REQUIRED");
+  }
+  function syncResult(value) {
+    if (value && typeof value.then === "function") {
+      Promise.resolve(value).catch(() => {});
+      fail("SETUP_ADAPTER");
+    }
+    return value;
+  }
+  function capture(id) {
+    const result = captureWalletFields(syncResult(readFields()));
+    checkCurrent(id);
+    return result;
+  }
   return Object.freeze({
     preview(text) {
-      if (disposed) fail("SETUP_DISPOSED");
+      available();
       cancel();
-      const result = previewWalletSetup(text, readFields());
       const id = revision;
-      pending = { id, text, key: JSON.stringify(result.before), result };
-      return Object.freeze({ id, ...result });
+      active = true;
+      try {
+        const result = previewWalletSetup(text, capture(id));
+        checkCurrent(id);
+        pending = { id, text, key: JSON.stringify(result.before), result };
+        return Object.freeze({ id, ...result });
+      } finally { active = false; }
     },
     apply(id, text) {
-      if (disposed) fail("SETUP_DISPOSED");
+      available();
       const candidate = pending;
       cancel(); // Failures and reentrant callbacks cannot reuse the preview.
+      const operation = revision;
       if (!candidate || id !== candidate.id || text !== candidate.text) fail("SETUP_REVIEW_REQUIRED");
-      const current = captureWalletFields(readFields());
-      if (JSON.stringify(current) !== candidate.key) fail("SETUP_STALE");
-      const checked = previewWalletSetup(text, current);
-      applyPlan(checked.plan, checked.changes);
-      return checked;
+      active = true;
+      try {
+        const current = capture(operation);
+        if (JSON.stringify(current) !== candidate.key) fail("SETUP_STALE");
+        const checked = previewWalletSetup(text, current);
+        checkCurrent(operation);
+        syncResult(prepareApply(checked.plan, checked.changes, () => checkCurrent(operation)));
+        checkCurrent(operation);
+        // Cleanup can synchronously call application code. Neither cancellation
+        // nor an edit made there may be overwritten by the reviewed old plan.
+        if (JSON.stringify(capture(operation)) !== candidate.key) fail("SETUP_STALE");
+        syncResult(applyPlan(checked.plan, checked.changes));
+        checkCurrent(operation);
+        return checked;
+      } finally { active = false; }
     },
     cancel,
     dispose() { disposed = true; cancel(); },

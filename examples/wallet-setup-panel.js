@@ -9,19 +9,20 @@ const MESSAGES = Object.freeze({
   SETUP_CHAIN: "Base SepoliaまたはBase Mainnetを指定してください。",
   SETUP_STALE: "プレビュー後に画面の設定が変わりました。もう一度確認してください。",
   SETUP_REVIEW_REQUIRED: "設定JSONの内容をプレビューしてから適用してください。",
+  SETUP_ADAPTER: "設定の反映処理を完了できませんでした。カードの設定を確認してください。",
   SETUP_SIZE: "設定ファイルが空、または大きすぎます。",
   SETUP_ENCODING: "UTF-8形式のJSONファイルを選んでください。",
   SETUP_FILENAME: "設定を保存した.jsonファイルを選んでください。",
 });
 
 /** Explicit local configuration workflow. No wallet object is accepted here. */
-export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
+export function mountWalletSetupPanel({ document, parent, readFields, applyPlan, prepareApply,
   download = offerHistoryDownload, readBytes }) {
   const cleanup = [];
   let disposed = false;
   let preview = null;
   let busy = false;
-  const review = createWalletSetupReview({ readFields, applyPlan });
+  const review = createWalletSetupReview({ readFields, applyPlan, prepareApply });
   const section = document.createElement("section");
   section.className = "wallet-setup-panel";
   function node(tag, name, text) {
@@ -45,7 +46,11 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
     item.type = "button";
     listen(item, "click", () => {
       try { action(); }
-      catch (error) { cancelPreview(); status.textContent = MESSAGES[error?.code] ?? "設定の形式を確認してください。適用は完了していません。"; }
+      catch (error) {
+        if (disposed) return;
+        cancelPreview();
+        status.textContent = MESSAGES[error?.code] ?? "設定の形式を確認してください。適用は完了していません。";
+      }
     });
     return item;
   }

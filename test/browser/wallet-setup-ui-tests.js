@@ -34,12 +34,102 @@ async function waitFor(predicate) {
 }
 
 export function registerWalletSetupUITests(test) {
+  for (const event of ["cancel", "edit", "dispose"]) {
+    test("setup: " + event + " during provider cleanup cannot overwrite settings", async make => {
+      const f = make();
+      let armed = false, fired = false;
+      const originalRemove = f.provider.removeListener;
+      f.provider.removeListener = function (...args) {
+        originalRemove.apply(this, args);
+        if (!armed || fired) return;
+        fired = true;
+        if (event === "cancel") q("cancel").click();
+        if (event === "edit") inputs[1][".account"].value = "0xunfinished";
+        if (event === "dispose") f.app.dispose();
+      };
+      await f.connect();
+      f.input(".portfolio-tokens", TOKEN);
+      f.field(".portfolio-read").click();
+      await waitFor(() => f.field(".portfolio-status").textContent.includes("完了"));
+      f.field(".history-add-current").click();
+      f.field(".history-export").click();
+      const history = f.field(".history-json").value;
+      const inputs = AGENTS.map(agent => Object.fromEntries(
+        [".account", ".chain", ".token", ".spender", ".portfolio-tokens"].map(selector =>
+          [selector, field(agent, selector)])));
+      const before = inputs.map(row => Object.fromEntries(Object.entries(row).map(([key, node]) => [key, node.value])));
+      const status = q("status");
+      const apply = q("apply");
+      review(plan([C, B, A], [84532, 84532, 84532]));
+      confirm();
+      const calls = f.calls.length;
+      armed = true;
+      apply.click();
+      assert(fired, "provider cleanup exercised");
+      for (let index = 0; index < inputs.length; index++) {
+        for (const [selector, node] of Object.entries(inputs[index])) {
+          const expected = event === "edit" && index === 1 && selector === ".account"
+            ? "0xunfinished" : before[index][selector];
+          assert(node.value === expected, AGENTS[index] + " " + selector + " retained");
+        }
+      }
+      assert(f.calls.length === calls, "no new RPC or permissions");
+      assert(!status.textContent.includes("の設定を反映しました"), "no false success");
+      if (event !== "dispose") {
+        f.field(".history-export").click();
+        assert(f.field(".history-json").value === history, "saved history retained");
+        assert(apply.disabled, "fresh review required");
+        assert(f.field(".read").disabled, "disconnect remains effective");
+      }
+    });
+  }
+
   test("setup: missing addresses are visible without wallet requests", make => {
     const f = make();
     assert(q("readiness").textContent.includes("1 / 3"), "fixture DAT configured");
     assert(q("readiness").textContent.includes("EMA: 未設定"), "missing EMA reported");
     assert(f.calls.length === 0, "configuration did not query wallet");
     assert(q("apply").disabled, "apply requires review");
+  });
+
+  test("setup: cancellation from the second wallet leaves the first card unmodified", async make => {
+    const f = make();
+    let armed = false, fired = false;
+    const requests = [];
+    const listeners = new Map();
+    const provider = {
+      on(name, callback) { if (!listeners.has(name)) listeners.set(name, new Set()); listeners.get(name).add(callback); },
+      removeListener(name, callback) {
+        listeners.get(name)?.delete(callback);
+        if (armed && !fired) { fired = true; q("cancel").click(); }
+      },
+      request(args) {
+        requests.push(args.method);
+        if (["eth_requestAccounts", "eth_accounts"].includes(args.method)) return Promise.resolve([B]);
+        return f.provider.request(args);
+      },
+    };
+    const uuid = "22222222-2222-4222-8222-222222222222";
+    f.announce(uuid, provider, "Synthetic EMA");
+    input(field("EMA", ".account"), B);
+    input(field("EMA", ".chain"), "8453", "change");
+    input(field("EMA", ".provider"), uuid, "change");
+    await f.connect();
+    field("EMA", ".connect").click();
+    await waitFor(() => !field("EMA", ".read").disabled);
+    const snapshot = () => AGENTS.map(agent => [".account", ".chain", ".token", ".spender"]
+      .map(selector => field(agent, selector).value));
+    const before = JSON.stringify(snapshot());
+    const calls = f.calls.length + requests.length;
+    review(plan([C, A, B], [84532, 84532, 84532]));
+    confirm();
+    armed = true;
+    q("apply").click();
+    assert(fired, "second provider cleanup exercised");
+    assert(JSON.stringify(snapshot()) === before, "no partially applied first card");
+    assert(field("DAT", ".read").disabled && field("EMA", ".read").disabled, "disconnections remain effective");
+    assert(calls === f.calls.length + requests.length, "no new permissions or reads");
+    assert(q("apply").disabled, "fresh review required");
   });
 
   test("setup: three distinct settings do not claim connection", make => {

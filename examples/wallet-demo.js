@@ -276,18 +276,30 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       account: card.querySelector(".account").value,
       chainId: Number(card.querySelector(".chain").value),
     })),
-    applyPlan: (plan, changes) => {
-      // Validate the complete plan before touching any card. Application is
-      // synchronous and only changes form values; no provider is called.
+    prepareApply: (plan, changes, checkCurrent) => {
+      // Disconnect can invoke provider cleanup callbacks. Finish every such
+      // callback before changing any card's settings, then recheck the review.
       const updates = changes.filter(change => change.accountChanged || change.chainChanged);
       for (const change of updates) {
         const card = cards.find(item => item.dataset.agent === change.agent);
         const index = cards.indexOf(card);
-        controllers.get(card).disconnect("保存した設定を反映しました。再接続してください。");
-        panels[index].invalidate();
-        identityPanels[index].invalidate();
-        allowancePanels[index].invalidate();
-        transferPanels[index].invalidate();
+        checkCurrent();
+        controllers.get(card).disconnect("設定の反映を準備しています。必要なら再接続してください。");
+        checkCurrent();
+        for (const panel of [panels[index], identityPanels[index], allowancePanels[index], transferPanels[index]]) {
+          panel.invalidate();
+          checkCurrent();
+        }
+      }
+      workspacePanel?.invalidate();
+      checkCurrent();
+      checkpointPanel?.invalidateDraft();
+      checkCurrent();
+    },
+    applyPlan: (plan, changes) => {
+      // Only native form assignments remain after the final authority/read check.
+      for (const change of changes.filter(change => change.accountChanged || change.chainChanged)) {
+        const card = cards.find(item => item.dataset.agent === change.agent);
         card.querySelector(".account").value = change.after.account ?? "";
         card.querySelector(".chain").value = String(change.after.chainId);
         card.querySelector(".spender").value = "";
@@ -296,8 +308,6 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
           card.querySelector(".portfolio-tokens").value = "";
         }
       }
-      workspacePanel?.invalidate();
-      checkpointPanel?.invalidateDraft();
     },
   });
   const readWorkspaceDraft = () => cards.map((card, index) => ({
