@@ -1,11 +1,13 @@
 # ThreeCore Wallet
 
-Local security update: [Wallet response protection and verification scope](docs/RPC_PROTECTION_LOCAL_20261024.md).
+**October 24, 2026 source publication:** [Development, security changes and verification](docs/WALLET_SECURITY_UPDATE_2026-10-24_EN.md). Includes the accumulated transfer/report workflows, optional encrypted workspace backups, connection protection, bounded file processing and shared export cleanup. The verified local suite passed 10,373 cases. GitHub Actions results belong to the published commit; source publication does not deploy a website or contract.
+
+Security design: [Wallet response protection and verification scope](docs/RPC_PROTECTION_LOCAL_20261024.md).
 操作説明: [Walletの応答保護](docs/RPC_PROTECTION_JA.md)。
 
-**October 24, 2026 encrypted backup update (PC-local):** [Design and security limits](docs/ENCRYPTED_WORKSPACE_BACKUP.md) · [日本語の使い方](docs/ENCRYPTED_WORKSPACE_BACKUP_JA.md). Adds optional passphrase-protected workspace files, authenticated decryption, explicit restore preview, cancellation and expiry. Existing plaintext files and separate report collections are not automatically encrypted. No GitHub push or production deployment.
+**October 24, 2026 encrypted backup update:** [Design and security limits](docs/ENCRYPTED_WORKSPACE_BACKUP.md) · [日本語の使い方](docs/ENCRYPTED_WORKSPACE_BACKUP_JA.md). Adds optional passphrase-protected workspace files, authenticated decryption, explicit restore preview, cancellation and expiry. Existing plaintext files and separate report collections are not automatically encrypted. The linked design documents preserve the scope of the local development iteration.
 
-**October 24, 2026 local security update:** [Protection controls, input boundaries and verification](docs/SECURITY_LOCAL_20261024.md). Adds a three-token stop control, idle/page-exit protection, a private page-local protection history, bounded JSON/File processing, read-only RPC enforcement and hardened local HTTP responses. This update is PC-local; GitHub publication and independent security auditing have not been performed.
+**October 24, 2026 security update:** [Protection controls, input boundaries and verification](docs/SECURITY_LOCAL_20261024.md). Adds a three-token stop control, idle/page-exit protection, a private page-local protection history, bounded JSON/File processing, read-only RPC enforcement and hardened local HTTP responses. Independent security auditing has not been performed.
 
 
 **October 23, 2026 publication:** [Wallet history, backup, identity and allowance update](docs/WALLET_UPDATE_2026-10-23_EN.md). The source now includes reviewed history imports, three-card backup/restore, opt-in saved checkpoints, block-pinned token identity and exact balances, and read-only allowance observations. These are development features; no public website or deployed contract is changed by this source release.
