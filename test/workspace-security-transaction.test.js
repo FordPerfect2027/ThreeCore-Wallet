@@ -82,7 +82,7 @@ test("authorization callback cannot recursively apply or preview", () => {
     return true;
   });
   f.apply(review);
-  assert.equal(nested, 3);
+  assert.equal(nested, 6, "Both pre-write and post-write authorization reject reentrancy");
   assert.equal(f.writes.length, 1);
 });
 
@@ -298,6 +298,6 @@ test("successful restore and undo preserve distinct DAT EMA CAWELON records", ()
   const undo = f.controller.undoPreview();
   f.controller.undoApply(undo.id);
   assert.deepEqual(f.current, before);
-  assert.equal(f.checks, 2);
+  assert.equal(f.checks, 4, "Restore and undo each verify authority before and after writing");
   assert.equal(f.controller.state().hasUndo, false);
 });

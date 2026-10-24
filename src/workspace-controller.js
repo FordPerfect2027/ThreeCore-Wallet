@@ -38,6 +38,13 @@ export function createWorkspaceController({ readDraft, writeDraft, authorizeWrit
       workspaceFail("WORKSPACE_ADAPTER");
     }
   }
+  function requireWriteAuthority(revision) {
+    checkRevision(revision);
+    const authorized = authorizeWrite();
+    syncResult(authorized);
+    checkRevision(revision);
+    if (authorized !== true) workspaceFail("WORKSPACE_REVIEW_REQUIRED");
+  }
   function write(after, before, revision) {
     // The UI's decrypted-data lifetime may expire while validation is running.
     // Check just before the first write; rollback must remain possible afterward.
@@ -47,18 +54,22 @@ export function createWorkspaceController({ readDraft, writeDraft, authorizeWrit
       expectedKey = workspaceDraftKey(after);
       beforeKey = workspaceDraftKey(before);
       prepared = captureWorkspaceDraft(after);
-      const authorized = authorizeWrite();
-      syncResult(authorized);
-      checkRevision(revision);
-      if (authorized !== true) workspaceFail("WORKSPACE_REVIEW_REQUIRED");
-    } catch {
+      requireWriteAuthority(revision);
+      // Authorization can call application code. Preserve edits made there,
+      // rather than silently overwriting a draft captured before that callback.
+      if (workspaceDraftKey(capture(revision)) !== beforeKey) workspaceFail("WORKSPACE_STALE");
+    } catch (error) {
       writing = false;
+      if (error instanceof WorkspaceError && error.code === "WORKSPACE_STALE") workspaceFail("WORKSPACE_STALE");
       workspaceFail("WORKSPACE_REVIEW_REQUIRED");
     }
     try {
       // Copies isolate the rollback reference and expected target from adapter mutation.
       syncResult(writeDraft(prepared));
-      if (workspaceDraftKey(capture()) !== expectedKey) workspaceFail("WORKSPACE_WRITE_MISMATCH");
+      // A stop/expiry may happen during the adapter's synchronous callbacks.
+      // Rollback is still allowed after authority ends; a new commit is not.
+      requireWriteAuthority(revision);
+      if (workspaceDraftKey(capture(revision)) !== expectedKey) workspaceFail("WORKSPACE_WRITE_MISMATCH");
     } catch (error) {
       emergency = before;
       try {
@@ -94,8 +105,8 @@ export function createWorkspaceController({ readDraft, writeDraft, authorizeWrit
       const before = capture(revision);
       if (workspaceDraftKey(before) !== candidate.beforeKey) workspaceFail("WORKSPACE_STALE");
       const result = previewWorkspace(text, before, options);
-      if (!result.changed) return result;
       checkRevision(revision);
+      if (!result.changed) return result;
       write(result.after, before, revision);
       undo = { before, afterKey: workspaceDraftKey(result.after) };
       return result;

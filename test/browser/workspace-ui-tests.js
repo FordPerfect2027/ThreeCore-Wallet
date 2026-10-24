@@ -48,6 +48,60 @@ async function waitFor(predicate) {
 }
 
 export function registerWorkspaceUITests(test) {
+  for (const mode of ["restore", "undo"]) {
+    test(`workspace: ${mode} cancelled by provider cleanup rolls all three cards back`, async make => {
+      let expectedChain = "0x2105", armed = false, cancelled = false;
+      const f = make(args => args.method === "eth_chainId" ? expectedChain : undefined);
+      const originalRemove = f.provider.removeListener;
+      f.provider.removeListener = function (...args) {
+        originalRemove.apply(this, args);
+        if (armed && !cancelled) { cancelled = true; q("cancel").click(); }
+      };
+      const snapshot = () => AGENTS.map(agent => ({
+        agent, account: card(agent, ".account").value, chain: card(agent, ".chain").value,
+        token: card(agent, ".token").value, tokens: card(agent, ".portfolio-tokens").value,
+        history: card(agent, ".history-list").textContent,
+      }));
+      if (mode === "undo") { review(); apply(); expectedChain = "0x14a34"; }
+      await f.connect();
+      const before = JSON.stringify(snapshot());
+      const calls = f.calls.length;
+      if (mode === "undo") { q("undo-preview").click(); check("undo-confirmed"); }
+      else { review(); check("confirmed"); }
+      armed = true;
+      q(mode === "undo" ? "undo-apply" : "apply").click();
+      assert(cancelled, "Provider cleanup did not cancel the restore");
+      assert(q("status").textContent.includes("操作前へ戻しました"), "Cancellation reported as success");
+      assert(JSON.stringify(snapshot()) === before, "A partial or cancelled restore survived");
+      assert(f.field(".read").disabled, "Rollback must not restore connection permission");
+      assert(f.calls.length === calls, "Rollback requested wallet access");
+      assert(q("apply").disabled && q("undo-apply").disabled, "Cancelled confirmation remained usable");
+      if (mode === "undo") assert(!q("undo-preview").disabled, "Earlier undo point was lost");
+    });
+  }
+
+  test("workspace: interrupted restore with failed rollback exposes the original recovery copy", () => {
+    const parent = document.createElement("section");
+    document.querySelector("#grid").append(parent);
+    let current = draft(), writes = 0;
+    const before = JSON.stringify(current), downloads = [];
+    const panel = mountWorkspacePanel({ document, parent, readDraft: () => current,
+      writeDraft(value) {
+        if (++writes > 1) throw Error("Synthetic unavailable target");
+        current = value; q("cancel").click();
+      }, download: ({ prepared }) => downloads.push(prepared) });
+    try {
+      review(payload("20")); apply();
+      assert(q("status").textContent.includes("操作前の控え"), "Recovery instruction absent");
+      assert(q("preview").disabled && q("apply").disabled, "Unsafe retry still enabled");
+      assert(!q("recovery").disabled, "Recovery copy unavailable");
+      q("recovery").click();
+      assert(downloads.length === 1, "Expected one explicit recovery export");
+      assert(JSON.stringify(JSON.parse(downloads[0].text).entries) === before, "Original recovery data changed");
+      assert(writes === 2, "Unexpected retry after failed rollback");
+    } finally { panel.dispose(); parent.remove(); }
+  });
+
   test("workspace: initial panel does not request wallets or persist anything", make => {
     const f = make();
     assert(f.calls.length === 0, "no RPC");
