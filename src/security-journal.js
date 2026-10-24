@@ -1,7 +1,7 @@
 /** Bounded, page-local protection history. Never stores wallet or RPC payloads. */
 export const SECURITY_JOURNAL_LIMIT = 64;
 export const SECURITY_JOURNAL_EVENTS = Object.freeze([
-  "ready", "manual", "idle", "hidden", "page-exit", "clock", "disposed",
+  "ready", "manual", "idle", "hidden", "page-exit", "clock", "timer", "disposed",
   "resumed", "idle-policy", "hidden-policy", "broadcast-stop", "peer-stop",
   "channel-error", "page-freeze", "page-restored",
 ]);
@@ -12,6 +12,7 @@ export const SECURITY_JOURNAL_TEXT = Object.freeze({
   hidden: "画面を離れたため接続を停止しました",
   "page-exit": "ページを離れたため接続を停止しました",
   clock: "待機時間を確認できず接続を停止しました",
+  timer: "自動停止の監視を開始できず接続を停止しました",
   disposed: "画面終了により接続を停止しました",
   resumed: "接続操作を再開しました。自動接続は行いません",
   "idle-policy": "無操作時の停止時間を変更しました",

@@ -5,7 +5,7 @@ import { mountTabGuardPanel } from "./tab-guard-panel.js";
 
 const reasons = Object.freeze({ manual: "操作により", idle: "一定時間操作がなかったため",
   hidden: "画面を離れたため", "page-exit": "ページを離れたため",
-  clock: "待機時間を確認できなかったため", disposed: "画面を終了したため",
+  clock: "待機時間を確認できなかったため", timer: "自動停止の監視を開始できなかったため", disposed: "画面を終了したため",
   "broadcast-stop": "まとめて停止する操作により", "peer-stop": "他の画面からの停止通知により",
   "channel-error": "停止通知を確認できなかったため", "page-freeze": "ページが一時停止したため",
   "page-restored": "保存されたページを再表示したため" });
@@ -57,14 +57,26 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
   let previousLocked = false;
   let lastReportedReason = null;
   let protectionCompleted = true;
+  let protecting = false;
+  let protectionVersion = 0;
+  let checkingResume = false;
+  function isAsync(value) {
+    if (!value || !["object", "function"].includes(typeof value)) return false;
+    const then = value.then;
+    if (typeof then !== "function") return false;
+    new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
+    return true;
+  }
   function protect(state) {
+    if (protecting) return false;
+    protecting = true;
     protectionCompleted = false;
     try {
       const result = onLock(state);
-      if (result && typeof result.then === "function") {
-        Promise.resolve(result).catch(() => {});
-      } else protectionCompleted = result !== false;
+      if (!isAsync(result)) protectionCompleted = result !== false;
     } catch { /* A closed access gate does not imply every view was cleaned. */ }
+    finally { protecting = false; }
+    return protectionCompleted;
   }
   const lock = createSecurityLock({ ...lockOptions, onLock: protect,
     onChange(state) {
@@ -75,26 +87,32 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
       }
       render(state);
       journalPanel?.render();
-      onChange(state);
+      return onChange(state);
     },
   });
   function mayResume() {
+    if (checkingResume || disposed || protecting) return false;
+    checkingResume = true;
     try {
       const value = canResume();
-      if (value && typeof value.then === "function") Promise.resolve(value).catch(() => {});
-      return value === true;
+      return !isAsync(value) && value === true && !disposed;
     } catch { return false; }
+    finally { checkingResume = false; }
   }
   function render(state) {
     status.textContent = state.locked
       ? (reasons[state.reason] ?? "保護のため") + "、接続を停止しました。"
       : "接続操作を受け付けています。読み取りには各トークンの接続が必要です。";
     stop.disabled = state.locked || state.disposed;
-    resume.disabled = !state.locked || state.disposed || !protectionCompleted || !mayResume();
+    resume.disabled = !state.canResume || !protectionCompleted || !mayResume();
     cleanupWarning.hidden = cleanupRetry.hidden = protectionCompleted;
     cleanupRetry.disabled = state.disposed;
     cleanupWarning.textContent = protectionCompleted ? "" :
       "読み取りは停止していますが、一部の表示の消去を確認できません。表示の消去を再試行してください。解決しない場合はこの画面を閉じてください。";
+    if (state.fault) {
+      cleanupWarning.hidden = false;
+      cleanupWarning.textContent = "時間の監視に問題があるため、この画面では再開できません。ページを開き直してから、各トークンで接続してください。";
+    }
     idle.value = String(state.idleMs);
     section.setAttribute("data-locked", String(state.locked));
   }
@@ -104,9 +122,10 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
     listeners.push(() => target.removeEventListener(type, callback, options));
   }
   function protectAgain(reason = "manual") {
-    if (disposed) return false;
+    if (disposed || protecting) return false;
+    protectionVersion++;
     if (!lock.state().locked) return lock.lock(reason);
-    protect(lock.state());
+    lock.retryCleanup();
     // Repeat cleanup, but do not inflate history for repeated identical stops.
     if (reason !== lastReportedReason) {
       journal.record(reason);
@@ -122,7 +141,11 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
   });
   let tabGuardPanel;
   listen(resume, "click", () => {
-    if (protectionCompleted && mayResume() && tabGuardPanel.noteResume()) lock.unlock();
+    const revision = protectionVersion;
+    if (!disposed && !protecting && protectionCompleted && lock.state().canResume &&
+        mayResume() && revision === protectionVersion && !disposed && protectionCompleted &&
+        tabGuardPanel.noteResume() && revision === protectionVersion) lock.unlock();
+    if (!disposed) render(lock.state());
   });
   listen(idle, "change", () => {
     const next = Number(idle.value), previous = lock.state().idleMs;

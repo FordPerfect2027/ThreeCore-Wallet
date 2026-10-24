@@ -267,6 +267,8 @@ for (const code of [4100, 4900, 4901]) {
     assert.ok(f.controller.state.result);
     gate.reject(Object.assign(Error("Connection lost"), { code }));
     assert.equal(await pending, false);
+    // Local cancellation now settles before the extension's delayed rejection.
+    await new Promise(resolve => setImmediate(resolve));
     assert.equal(f.controller.state.phase, "disconnected");
     assert.equal(f.controller.state.result, null);
     assert.equal(f.controller.state.connection, null);
@@ -288,6 +290,7 @@ for (const code of [4100, 4900, 4901]) {
     const fresh = f.controller.state;
     gate.reject(Object.assign(Error("Obsolete connection lost"), { code }));
     assert.equal(await pending, false);
+    await new Promise(resolve => setImmediate(resolve));
     assert.equal(f.controller.state, fresh);
     f.controller.dispose();
   });
@@ -305,6 +308,7 @@ for (const action of ["clearResult", "dispose"]) {
     f.controller[action]();
     gate.reject(Object.assign(Error("Disconnected"), { code: 4900 }));
     assert.equal(await pending, false);
+    await new Promise(resolve => setImmediate(resolve));
     assert.equal(f.controller.state.phase, action === "dispose" ? "disposed" : "disconnected");
     assert.equal(f.controller.state.connection, null);
     assert.equal(f.controller.state.result, null);

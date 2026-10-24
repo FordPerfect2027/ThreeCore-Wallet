@@ -1,0 +1,29 @@
+:root { color-scheme: light; font-family: "Yu Gothic UI", system-ui, sans-serif; color: #15293c; background: #eef3f6; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 1080px; margin: auto; padding: 30px 26px 50px; }
+h1 { font-size: clamp(24px, 3vw, 35px); line-height: 1.4; margin: 8px 0; }
+h2 { font-size: 21px; margin: 0 0 14px; }
+p { line-height: 1.7; }
+.eyebrow { letter-spacing: .14em; color: #237084; font-size: 12px; font-weight: 700; }
+.lead { font-size: 17px; margin: 10px 0; }
+.notice { border-left: 4px solid #2c7b8d; background: #e0eef1; padding: 10px 16px; font-size: 14px; }
+.check-area { background: white; border: 1px solid #c9d7de; padding: 22px; border-radius: 12px; margin-top: 18px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+button { font: inherit; padding: 9px 14px; border: 1px solid #7d9ead; background: #fff; border-radius: 6px; color: #143548; cursor: pointer; }
+button:hover { background: #eaf3f5; }
+button:disabled { opacity: .5; cursor: default; }
+button:focus-visible { outline: 3px solid #127285; outline-offset: 3px; }
+#cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+.token-card { background: #f3f7fa; padding: 16px; border: 1px solid #d1dfe5; border-radius: 9px; }
+.token-card h3 { margin: 0 0 8px; color: #15566b; }
+.token-card p { margin: 5px 0; font-size: 14px; }
+#result { color: #15566b; font-weight: 700; margin-bottom: 0; }
+.security-panel { color: #e8f2f5; }
+.security-journal, .tab-guard-panel { display: none; }
+@media (max-width: 640px) {
+  main { padding: 18px 14px; }
+  #cards { grid-template-columns: 1fr; }
+  .check-area { padding: 16px; }
+  .actions button { width: 100%; }
+}

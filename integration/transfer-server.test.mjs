@@ -55,7 +55,7 @@ test("transfer server: complete import graph resolves on localhost", async () =>
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      assert.ok(visited.size < 185, "Unexpected dependency expansion"); // Four explicit storage-guard runtime modules added.
+      assert.ok(visited.size < 187, "Unexpected dependency expansion"); // Read scope and browser test module added.
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();

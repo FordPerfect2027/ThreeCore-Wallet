@@ -6,6 +6,7 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/src/wallet-read-scope.js", { file: resolve(here, "../src/wallet-read-scope.js"), mime: "text/javascript; charset=utf-8" }],
   ...["storage-guard", "storage-guard-policy", "storage-guard-status"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/examples/storage-guard-panel.js", { file: resolve(here, "storage-guard-panel.js"), mime: "text/javascript; charset=utf-8" }],
@@ -119,6 +120,10 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/access-lifecycle-ui-tests.js", { file: resolve(here, "../test/browser/access-lifecycle-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/access-lifecycle-demo/", { file: resolve(here, "../test/browser/access-lifecycle-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/access-lifecycle-demo.js", { file: resolve(here, "../test/browser/access-lifecycle-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/access-lifecycle-demo.css", { file: resolve(here, "../test/browser/access-lifecycle-demo.css"), mime: "text/css; charset=utf-8" });
     paths.set("/test/browser/storage-guard-demo/", { file: resolve(here, "../test/browser/storage-guard-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/storage-guard-demo.css", { file: resolve(here, "../test/browser/storage-guard-demo.css"), mime: "text/css; charset=utf-8" });
     for (const file of ["storage-guard-fixture.js", "storage-guard-ui-tests.js", "storage-guard-demo.js"]) {

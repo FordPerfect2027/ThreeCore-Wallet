@@ -1,4 +1,5 @@
 import { observeWalletProvider } from "./provider-events.js";
+import { createWalletReadScope } from "./wallet-read-scope.js";
 import { ThreeCoreWalletSession, normalizeAddress, normalizeChainId } from "./wallet-session.js";
 import { inspectDappSpender } from "./dapp-preflight.js";
 import { readPortfolioSnapshot } from "./portfolio-snapshot.js";
@@ -23,32 +24,66 @@ export function createWalletCardController({
   let pendingConnect = null;
   let unwatch = () => {};
   let disposed = false;
+  let boundaryDepth = 0;
+  let notifying = false;
   let activePeriodAborter = null;
+  let activeReadScope = null;
+  function boundary(fn) {
+    boundaryDepth++;
+    try { return fn(); } finally { boundaryDepth--; }
+  }
+  function consume(value) {
+    if (value === null || !["object", "function"].includes(typeof value)) return false;
+    const then = value.then;
+    if (typeof then !== "function") return false;
+    new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
+    return true;
+  }
+  function cleanup(fn) {
+    try {
+      return boundary(() => { const result = fn(); return !consume(result) && result !== false; });
+    } catch { return false; }
+  }
   function stopPeriodRead() {
-    activePeriodAborter?.abort();
+    const scope = activeReadScope;
+    activeReadScope = null;
+    scope?.cancel();
+    const previous = activePeriodAborter;
     activePeriodAborter = null;
+    return cleanup(() => previous?.abort());
   }
   let state = Object.freeze({ phase: "disconnected", connection: null, result: null, error: null });
   const cancelled = () => Object.assign(new Error("Obsolete view operation"), { code: "STALE_VIEW" });
   const current = (id, session) => !disposed && id === generation && wallet === session;
   function publish(phase, result = null, error = null) {
-    state = Object.freeze({ phase, connection: wallet?.state ?? null, result, error });
-    onChange(state);
+    if (disposed) return;
+    const revision = generation, session = wallet;
+    let connection;
+    try { connection = boundary(() => session?.state ?? null); } catch { connection = null; }
+    if (disposed || revision !== generation || session !== wallet) return;
+    state = Object.freeze({ phase, connection, result, error });
+    // Observers may stop/dispose, but cannot start another operation mid-transition.
+    if (notifying) return;
+    notifying = true;
+    try { cleanup(() => onChange(state)); } finally { notifying = false; }
   }
   function release() {
-    stopPeriodRead();
     const previous = wallet;
+    const remove = unwatch;
     wallet = null; // Stale callbacks are inert before removing listeners.
-    unwatch();
     unwatch = () => {};
-    previous?.disconnect();
+    const stopped = stopPeriodRead();
+    const removed = cleanup(remove);
+    const disconnected = cleanup(() => previous?.disconnect());
+    return stopped && removed && disconnected;
   }
   function disconnect(message = null) {
-    if (disposed) return;
+    if (disposed) return true;
     generation++;
     pendingConnect = null;
-    release();
+    const completed = release();
     publish("disconnected", null, message);
+    return completed;
   }
   function watch(provider, session, account, chainId) {
     const invalidate = () => {
@@ -66,13 +101,18 @@ export function createWalletCardController({
       disconnect: invalidate,
     };
     const observer = observeWalletProvider(provider, events, () => wallet === session && !disposed);
-    unwatch = observer.dispose;
+    if (wallet === session && !disposed) unwatch = observer.dispose;
+    else cleanup(observer.dispose);
   }
 
   function allowed() {
-    try { return isAccessAllowed() === true; } catch { return false; }
+    try { return boundary(() => {
+      const value = isAccessAllowed();
+      return !consume(value) && value === true;
+    }); } catch { return false; }
   }
   function connect({ provider, account, chainId } = {}) {
+    if (boundaryDepth || disposed) return Promise.resolve(false);
     if (!allowed()) {
       disconnect("接続操作を停止しています。保護パネルから再開してください。");
       return Promise.resolve(false);
@@ -84,21 +124,24 @@ export function createWalletCardController({
     }
     const id = ++generation;
     release();
+    if (disposed || id !== generation) return Promise.resolve(false);
     publish("connecting");
+    if (disposed || id !== generation) return Promise.resolve(false);
     const promise = (async () => {
       let session;
       try {
         const expectedAccount = normalizeAddress(account);
-        session = createSession({
+        session = boundary(() => createSession({
           provider, agent, siteOrigin, rpcSupervisor, isAccessAllowed, approvedOrigins: [siteOrigin], expectedAccount, chainId,
-        });
+        }));
+        if (disposed || id !== generation) { cleanup(() => session?.disconnect()); return false; }
         wallet = session;
-        watch(provider, session, expectedAccount, chainId);
+        boundary(() => watch(provider, session, expectedAccount, chainId));
         if (!current(id, session)) return false;
-        await session.connect();
+        await boundary(() => session.connect());
         if (!current(id, session)) return false;
         publish("connected");
-        return true;
+        return current(id, session) && allowed() && current(id, session);
       } catch (error) {
         if (disposed || id !== generation) return false;
         const code = readErrorCode(error), message = readErrorMessage(error);
@@ -122,11 +165,12 @@ export function createWalletCardController({
   }
   function clearResult() {
     if (disposed || state.phase === "connecting") return;
-    stopPeriodRead();
     generation++;
+    stopPeriodRead();
     publish(wallet?.state.connected ? "connected" : "disconnected");
   }
   async function runRead(task) {
+    if (boundaryDepth || disposed) return false;
     if (!allowed()) { disconnect("接続操作を停止しています。"); return false; }
     if (disposed) return false;
     if (!wallet?.state.connected) {
@@ -134,9 +178,21 @@ export function createWalletCardController({
       if (state.phase !== "connecting") publish("disconnected", null, "先にWalletを接続してください。");
       return false;
     }
-    stopPeriodRead();
     const session = wallet;
     const id = ++generation;
+    stopPeriodRead();
+    if (!current(id, session)) return false;
+    const scope = createWalletReadScope({ isCurrent: () =>
+      current(id, session) && allowed() && current(id, session),
+      onSettled() {
+        // A locally cancelled RPC can later reveal lost authorization. Clear
+        // that same connection, but never a replacement session's result.
+        if (!current(id, session) && !disposed && wallet === session && !session.state.connected) {
+          disconnect("接続が無効になりました。再接続してください。");
+        }
+      },
+    });
+    activeReadScope = scope;
     publish("reading");
     const read = async (fn) => {
       if (!current(id, session)) throw cancelled();
@@ -145,10 +201,11 @@ export function createWalletCardController({
       return result;
     };
     try {
-      const result = await task(session, read);
+      if (!current(id, session)) return false;
+      const result = await task(scope.bind(session), read);
       if (!current(id, session)) return false;
       publish("connected", Object.freeze(result));
-      return true;
+      return current(id, session) && allowed() && current(id, session);
     } catch (error) {
       const code = readErrorCode(error), message = readErrorMessage(error);
       // Even a superseded read can reveal loss of the shared connection.
@@ -161,6 +218,9 @@ export function createWalletCardController({
         publish("connected", null, message);
       }
       return false;
+    } finally {
+      scope.cancel();
+      if (activeReadScope === scope) activeReadScope = null;
     }
   }
   function readBalances({ tokenAddress = "", spenderAddress = "" } = {}) {
@@ -197,10 +257,11 @@ export function createWalletCardController({
   }
   function dispose() {
     if (disposed) return;
+    // Terminal state is visible before extension cleanup can call back.
+    disposed = true;
     generation++;
     pendingConnect = null;
     release();
-    disposed = true;
     state = Object.freeze({ phase: "disposed", connection: null, result: null, error: null });
   }
   return Object.freeze({

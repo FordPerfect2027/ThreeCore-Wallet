@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ThreeCore Wallet — 停止と再開の保護確認</title>
+  <link rel="stylesheet" href="/examples/security.css">
+  <link rel="stylesheet" href="/test/browser/access-lifecycle-demo.css">
+</head>
+<body>
+<main>
+  <p class="eyebrow">THREECORE / LOCAL SECURITY CHECK</p>
+  <h1>停止した読み取りを、再び動かさない。</h1>
+  <p class="lead">DAT・EMA・CAWELONの停止、中止後の応答、タイマー異常をPC内で確認します。</p>
+  <p class="notice">テスト用の接続と架空の残高です。実ウォレット・資金・保存済みの履歴にはアクセスしません。</p>
+  <div id="protection"></div>
+  <section aria-label="3トークンの検証" class="check-area">
+    <h2>3トークンの読み取り確認</h2>
+    <div class="actions">
+      <button id="connect">1. テスト用の3トークンを接続</button>
+      <button id="read">2. 応答待ちの読み取りを開始</button>
+      <button id="late">3. 遅れて届いた応答を返す</button>
+    </div>
+    <div id="cards"></div>
+    <p id="result" role="status" aria-live="polite">テスト用の接続を始められます。</p>
+  </section>
+  <section class="check-area">
+    <h2>異常時の再開防止</h2>
+    <button id="fault">タイマー異常を再現する</button>
+    <p>異常が見つかると停止し、同じ画面では再開できません。やり直す場合はページを再読み込みしてください。</p>
+  </section>
+</main>
+<script type="module" src="/test/browser/access-lifecycle-demo.js"></script>
+</body>
+</html>
