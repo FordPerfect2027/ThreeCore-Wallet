@@ -43,8 +43,11 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
   let reading = false;
   let saving = false;
   let saveGeneration = 0;
+  let inspectingBackup = false;
   let secureStaged = false;
+  let secureStaging = false;
   let securePanel;
+  const current = id => !disposed && id === saveGeneration;
 
   function node(tag, name, value) {
     const item = document.createElement(tag);
@@ -68,7 +71,9 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
   function handle(action) {
     try { action(); }
     catch (error) {
+      if (disposed) return;
       clearReview();
+      if (disposed) return;
       status.textContent = errorMessage(error);
       controls();
     }
@@ -113,13 +118,20 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
       mode: replace.item.checked ? "replace" : "merge" };
   }
   const inspect = button("inspect", "3ウォレットの保存状況を見る", () => {
-    overview.textContent = describeWorkspaceOverview(readDraft());
+    const id = saveGeneration;
+    const text = describeWorkspaceOverview(readDraft());
+    if (!current(id)) return;
+    overview.textContent = text;
     updateBackup();
+    if (!current(id)) return;
     status.textContent = "保存してある過去の記録を表示しました。残高照会は行っていません。";
   });
   const saveSummary = button("save-summary", "保存状況をテキスト保存", () => {
+    const id = saveGeneration;
     const text = describeWorkspaceOverview(readDraft());
+    if (!current(id)) return;
     download({ document, prepared: { text, filename: "ThreeCore-workspace-overview.txt", mimeType: "text/plain;charset=utf-8" } });
+    if (!current(id)) return;
     status.textContent = "保存状況のダウンロードを開始しました。PCで保存完了を確認してください。";
   });
   const save = button("save", "3ウォレットの平文バックアップを保存", () => { void saveFile(); });
@@ -145,11 +157,14 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     controls();
   });
   const cancel = button("cancel", "読み込み・プレビューを取り消す", () => {
-    if (secureStaged) securePanel.protect();
-    saveGeneration++;
+    const id = ++saveGeneration;
     saving = false;
+    if (secureStaged || secureStaging) securePanel.protect();
+    if (!current(id)) return;
     reader.cancel();
+    if (!current(id)) return;
     clearReview();
+    if (!current(id)) return;
     status.textContent = "取り消しました。設定と履歴は変更していません。";
   });
   const undoPreview = button("undo-preview", "直前の一括復元を戻す内容を確認", () => {
@@ -172,19 +187,24 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     controls();
   });
   const saveRecovery = button("recovery", "操作前の控えを保存", () => {
+    const id = saveGeneration;
     const text = controller.recoveryText();
     download({ document, prepared: { text, filename: "ThreeCore-local-recovery-draft.json", mimeType: "application/json;charset=utf-8" } });
+    if (!current(id)) return;
     status.textContent = "操作前の控えを保存します。これは確認・復旧作業用で、一括バックアップとは異なる形式です。";
   });
   const reader = createWorkspaceFileReader({ readBytes, subtle, onChange(state) {
     if (disposed) return;
+    const id = saveGeneration;
     reading = state.phase === "reading";
     if (reading) {
       clearReview();
+      if (!current(id) || state !== reader.state()) return;
       status.textContent = "ファイルと破損確認を読み込んでいます。まだ変更していません。";
     } else if (state.phase === "ready") {
       secureStaged = false;
       clearReview();
+      if (!current(id) || state !== reader.state()) return;
       json.value = state.result.text;
       status.textContent = "ファイルの破損確認が一致しました。本人・所有・安全性の確認ではありません。変更内容をプレビューしてください。";
     } else if (state.phase === "error") {
@@ -200,14 +220,22 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     controls();
   }
   function updateBackup() {
+    if (disposed || inspectingBackup) return;
+    const id = saveGeneration;
+    inspectingBackup = true;
     let phase = "changed";
     try { phase = backup.status(workspaceFromDraft(readDraft())).phase; } catch { /* Unfinished fields cannot be saved. */ }
+    finally { inspectingBackup = false; }
+    if (!current(id)) return;
     backupStatus.textContent = phase === "not-offered" ? "この画面からの一括バックアップ保存はまだ開始していません。"
       : phase === "current-offered" ? "現在の内容でダウンロードを開始済みです。PCへの保存完了を確認してください。"
         : "前回の保存開始時から内容が変わったか、入力に確認が必要です。必要な内容を再保存してください。";
   }
   function controls() {
+    if (disposed) return;
+    const id = saveGeneration;
     const state = controller.state();
+    if (!current(id)) return;
     const busy = reading || saving;
     section.setAttribute("aria-busy", String(busy));
     file.disabled = save.disabled = busy;
@@ -224,27 +252,34 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     if (saving || disposed) return;
     const id = ++saveGeneration;
     saving = true;
-    controls();
     try {
+      controls();
+      if (!current(id)) return;
       const draft = readDraft();
+      if (!current(id)) return;
       const key = workspaceDraftKey(draft);
       const workspace = workspaceFromDraft(draft);
       const prepared = await prepareWorkspaceFile(workspace, { subtle });
-      if (disposed || id !== saveGeneration) return;
-      if (workspaceDraftKey(readDraft()) !== key) {
+      if (!current(id)) return;
+      // Reading the destination can run application callbacks, including stop.
+      // Identical data is not permission to resume an interrupted export.
+      const latest = readDraft();
+      if (!current(id)) return;
+      if (workspaceDraftKey(latest) !== key) {
         status.textContent = "保存準備中に内容が変わりました。現在の内容で保存をやり直してください。";
         return;
       }
       download({ document, prepared });
+      if (!current(id)) return;
       backup.offered(workspace);
       status.textContent = "一括バックアップのダウンロードを開始しました。PCへの保存完了を確認してください。";
     } catch (error) {
-      if (!disposed && id === saveGeneration) status.textContent = errorMessage(error);
+      if (current(id)) status.textContent = errorMessage(error);
     } finally {
-      if (!disposed && id === saveGeneration) {
+      if (current(id)) {
         saving = false;
         updateBackup();
-        controls();
+        if (current(id)) controls();
       }
     }
   }
@@ -269,7 +304,10 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     undoConfirmed.label, undoApply, saveRecovery, status);
   parent.append(section);
   function clearSecureStage() {
-    if (!secureStaged) return;
+    if (!secureStaged && !secureStaging) return;
+    // Protection can arrive while decrypted text is still being handed over.
+    // Revoke that handoff before clearing, so its callback cannot refill JSON.
+    if (secureStaging) { saveGeneration++; saving = false; }
     secureStaged = false;
     json.value = "";
     clearReview();
@@ -285,17 +323,23 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     if (disposed) return false;
     decodeWorkspace(text);
     secureStaged = false;
-    saveGeneration++;
+    const id = ++saveGeneration;
     saving = false;
     reader.cancel();
+    if (!current(id)) return false;
     clearReview();
+    if (!current(id)) return false;
     json.value = text;
     status.textContent = "入力しました。変更内容をプレビューしてから復元してください。";
     controls();
-    return true;
+    return current(id);
   }
   securePanel = mountSecureBackupPanel({ ...secureOptions, document, parent: secureHost, readDraft, download,
-    onStage(text) { const result = stageText(text); secureStaged = result; return result; },
+    onStage(text) {
+      secureStaging = true;
+      try { const result = stageText(text); secureStaged = result; return result; }
+      finally { secureStaging = false; }
+    },
     onProtect: clearSecureStage });
   updateBackup();
   controls();
@@ -304,19 +348,22 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
     protect() { securePanel.protect(); },
     invalidate() {
       if (disposed) return;
-      securePanel.invalidate();
-      saveGeneration++;
+      const id = ++saveGeneration;
       saving = false;
+      securePanel.invalidate();
+      if (!current(id)) return;
       reader.cancel();
+      if (!current(id)) return;
       clearReview();
+      if (!current(id)) return;
       overview.textContent = "";
       updateBackup();
     },
     dispose() {
       if (disposed) return;
-      securePanel.dispose();
       disposed = true;
       saveGeneration++;
+      securePanel.dispose();
       reader.dispose();
       controller.dispose();
       backup.clear();

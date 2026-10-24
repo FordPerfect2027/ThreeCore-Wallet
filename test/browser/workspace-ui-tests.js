@@ -2,6 +2,7 @@ import { encodeWorkspace, workspaceFromDraft } from "/src/workspace-format.js";
 import { createPortfolioHistory } from "/src/portfolio-history.js";
 import { mountWorkspacePanel } from "/examples/workspace-panel.js";
 import { prepareWorkspaceFile } from "/src/workspace-file.js";
+import { backupHeader, prepareEncryptedEnvelope } from "/src/secure-backup-format.js";
 
 const AGENTS = ["DAT", "EMA", "CAWELON"];
 const ACCOUNTS = ["11", "22", "33"].map(pair => "0x" + pair.repeat(20));
@@ -48,6 +49,138 @@ async function waitFor(predicate) {
 }
 
 export function registerWorkspaceUITests(test) {
+  test("workspace: page protection during encrypted handoff keeps plaintext erased", async () => {
+    const parent = document.createElement("section");
+    document.querySelector("#grid").append(parent);
+    const lifecycle = new EventTarget();
+    let current = draft(), armed = false, reads = 0, protectedNow = false, writes = 0;
+    const panel = mountWorkspacePanel({ document, parent,
+      readDraft() {
+        if (armed && ++reads === 2) {
+          armed = false; lifecycle.dispatchEvent(new Event("pagehide")); protectedNow = true;
+        }
+        return current;
+      }, writeDraft(value) { writes++; current = value; },
+      download() { throw Error("Handoff must not download"); },
+      secureOptions: { eventTarget: lifecycle, controllerOptions: {
+        decrypt: async () => ({ workspace: workspaceFromDraft(draft("30")), text: payload("30") }),
+      } },
+    });
+    const secure = name => parent.querySelector(".secure-backup-" + name);
+    try {
+      review(payload("20")); apply();
+      const header = backupHeader(new Uint8Array(16).fill(7), new Uint8Array(12).fill(8));
+      const encrypted = prepareEncryptedEnvelope(header, new Uint8Array(48).fill(9));
+      const files = new DataTransfer();
+      files.items.add(new File([encrypted.text], "encrypted.json", { type: "application/json" }));
+      secure("file").files = files.files;
+      secure("file").dispatchEvent(new Event("change", { bubbles: true }));
+      await waitFor(() => !secure("decrypt").disabled);
+      input(secure("restore-password"), "synthetic only purple moons");
+      secure("decrypt").click();
+      await waitFor(() => !secure("stage").disabled);
+      armed = true;
+      secure("stage").click();
+      assert(protectedNow, "Protection did not interrupt the handoff");
+      assert(q("json").value === "", "Erased decrypted data returned to the input");
+      assert(q("apply").disabled && secure("stage").disabled, "Stopped handoff can still apply");
+      assert(writes === 1, "Protection unexpectedly restored a backup");
+    } finally { panel.dispose(); parent.remove(); }
+  });
+
+  for (const mode of ["cancel", "dispose"]) {
+    test(`workspace: ${mode} during the final export snapshot prevents a download`, async () => {
+      const parent = document.createElement("section");
+      document.querySelector("#grid").append(parent);
+      const current = draft(), downloads = [];
+      let armed = false, stopped = false;
+      const panel = mountWorkspacePanel({ document, parent,
+        readDraft() {
+          if (armed) {
+            armed = false;
+            if (mode === "cancel") q("cancel").click(); else panel.dispose();
+            stopped = true;
+          }
+          return current;
+        },
+        writeDraft() { throw Error("Export must not write"); },
+        download: ({ prepared }) => downloads.push(prepared),
+      });
+      const status = q("status");
+      try {
+        q("save").click();
+        armed = true;
+        await waitFor(() => stopped);
+        assert(downloads.length === 0, "Cancelled export reached the download adapter");
+        if (mode === "cancel") {
+          assert(status.textContent.includes("取り消しました"), "Late success replaced cancellation");
+          q("save").click();
+          await waitFor(() => !q("save").disabled);
+          assert(downloads.length === 1, "Explicit later save did not recover");
+          assert(q("backup-status").textContent.includes("PCへの保存完了を確認"), "Unverified disk completion claimed");
+        } else assert(parent.children.length === 0, "Disposed panel returned");
+      } finally { panel.dispose(); parent.remove(); }
+    });
+  }
+
+  test("workspace: cancellation inside a download adapter preserves the stop notice", async () => {
+    const parent = document.createElement("section");
+    document.querySelector("#grid").append(parent);
+    let offers = 0;
+    const panel = mountWorkspacePanel({ document, parent, readDraft: () => draft(),
+      writeDraft() { throw Error("Export must not write"); },
+      download() { offers++; q("cancel").click(); },
+    });
+    try {
+      q("save").click();
+      await waitFor(() => offers === 1);
+      assert(q("status").textContent.includes("取り消しました"), "Stop notice replaced by stale success");
+      assert(!q("backup-status").textContent.includes("開始済み"), "Interrupted export marked current");
+      assert(!q("save").disabled, "Cancelled job left controls locked");
+    } finally { panel.dispose(); parent.remove(); }
+  });
+
+  for (const source of ["stage", "file"]) {
+    test(`workspace: ${source} cancelled during undo inspection cannot revive old plaintext`, async () => {
+      const parent = document.createElement("section");
+      document.querySelector("#grid").append(parent);
+      let current = draft(), armed = false, stopped = false, writes = 0;
+      const panel = mountWorkspacePanel({ document, parent,
+        readDraft() {
+          if (armed) {
+            armed = false; q("cancel").click();
+            q("json").value = "new unfinished local input";
+            stopped = true;
+          }
+          return current;
+        },
+        writeDraft(value) { writes++; current = value; },
+        download() { throw Error("Import must not download"); },
+      });
+      try {
+        review(payload("20")); apply();
+        assert(writes === 1, "Expected an existing undo checkpoint");
+        if (source === "stage") {
+          armed = true;
+          assert(panel.stageText(payload("30")) === false, "Cancelled stage reported success");
+        } else {
+          const prepared = await prepareWorkspaceFile(workspaceFromDraft(draft("30")));
+          const files = new DataTransfer();
+          files.items.add(new File([prepared.text], "workspace.json", { type: "application/json" }));
+          q("file").files = files.files;
+          q("file").dispatchEvent(new Event("change", { bubbles: true }));
+          armed = true;
+          await waitFor(() => stopped);
+        }
+        assert(stopped, "Expected callback interruption");
+        assert(q("json").value === "new unfinished local input", "Late plaintext overwrote input");
+        assert(q("status").textContent.includes("取り消しました"), "Cancelled import reported ready");
+        assert(q("apply").disabled && !q("confirmed").checked, "Old authority remained usable");
+        assert(writes === 1, "Import performed an extra write");
+      } finally { panel.dispose(); parent.remove(); }
+    });
+  }
+
   for (const mode of ["restore", "undo"]) {
     test(`workspace: ${mode} cancelled by provider cleanup rolls all three cards back`, async make => {
       let expectedChain = "0x2105", armed = false, cancelled = false;
