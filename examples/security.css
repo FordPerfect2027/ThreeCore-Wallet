@@ -62,3 +62,14 @@
 .export-guard-panel[data-phase="cleanup"], .export-guard-panel[data-phase="clock"], .export-guard-panel[data-phase="limited"] { border-color: #f0bb68; }
 .export-guard-scope, .export-guard-action { font-size: 13px; }
 @media (max-width: 600px) { .export-guard-panel { padding: 12px; } }
+
+.storage-guard-panel { border: 1px solid #526c88; border-radius: 12px; padding: 16px; margin: 0 0 24px; background: #132339; }
+.storage-guard-panel h3 { margin-top: 0; }
+.storage-guard-heading { font-weight: 700; color: #b9efff; }
+.storage-guard-counts { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
+.storage-guard-panel button { max-width: 100%; white-space: normal; min-height: 44px; }
+.storage-guard-panel :focus-visible { outline: 3px solid #ffd369; outline-offset: 3px; }
+.storage-guard-scope, .storage-guard-action { font-size: 13px; }
+.storage-guard-panel[data-level="review"], .storage-guard-panel[data-level="limited"],
+.storage-guard-panel[data-level="stopped"], .storage-guard-panel[data-level="unavailable"] { border-color: #f0bb68; }
+@media (max-width: 600px) { .storage-guard-panel { padding: 12px; } .storage-guard-counts { font-size: 12px; } }

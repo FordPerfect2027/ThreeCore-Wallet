@@ -95,7 +95,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
   }
   async function freshSelection(token) {
     const selected = selection(), expected = document.revision;
-    const latest = validateVaultDocument(await storage.read());
+    const latest = validateVaultDocument(await storage.read({ signal: active?.aborter.signal }));
     if (!alive(token)) transferFail("TRANSFER_VAULT_CANCELLED");
     if (latest.revision !== expected) transferFail("TRANSFER_VAULT_STALE");
     const current = latest.entries.find(row => row.id === selected.id);
@@ -176,7 +176,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
   function refresh() {
     return operate("refresh", async token => {
       review = null;
-      const result = await storage.read();
+      const result = await storage.read({ signal: active?.aborter.signal });
       if (alive(token)) updateDocument(result);
     });
   }
@@ -279,7 +279,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
     let result = null;
     const completed = await operate("collectionExport", async token => {
       const expected = readyDocument().revision;
-      const current = validateVaultDocument(await storage.read());
+      const current = validateVaultDocument(await storage.read({ signal: active?.aborter.signal }));
       if (!alive(token)) return;
       if (current.revision !== expected) transferFail("TRANSFER_VAULT_STALE");
       result = await prepareVaultCollection(current, { subtle });

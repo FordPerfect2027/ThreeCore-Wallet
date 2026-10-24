@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>ThreeCore Wallet — PC内保存の保護</title>
+  <link rel="stylesheet" href="/test/browser/storage-guard-demo.css">
+  <script type="module" src="/test/browser/storage-guard-demo.js"></script>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">THREECORE WALLET · LOCAL SECURITY PREVIEW</p>
+    <h1>保存する直前にも、確かめる。</h1>
+    <p class="lead">DAT・EMA・CAWELONの保存情報を、取り消し後や期限切れの操作から守ります。</p>
+    <section class="scenario" aria-label="保存保護の検証">
+      <h2>元データが残ることを確認</h2>
+      <p>ブラウザ内のテスト専用領域に保存し、取り消し・期限切れ後に読み直します。</p>
+      <div class="actions">
+        <button id="prepare" type="button">1. テスト用の元データを保存</button>
+        <button id="cancel-write" type="button" disabled>2. 追加保存を取り消して確認</button>
+        <button id="expire-write" type="button" disabled>3. 期限切れの保存を確認</button>
+        <button id="reload" type="button" disabled>保存結果を再読み込み</button>
+      </div>
+      <p id="demo-status" role="status" aria-live="polite">元データの準備から始められます。</p>
+      <dl class="metrics">
+        <div><dt>保存済み</dt><dd id="saved">0件</dd></div>
+        <div><dt>保存の版番号</dt><dd id="revision">—</dd></div>
+        <div><dt>既存データ</dt><dd id="preserved">未確認</dd></div>
+      </dl>
+      <p id="readback">再読み込み前</p>
+      <ul id="checks" aria-label="今回の確認結果"></ul>
+    </section>
+    <div id="guard"></div>
+    <p class="scope">この画面は実際のブラウザ保存機能を使う開発用テストです。使用するのは架空データと専用の保存領域です。実ウォレットへの接続・署名・送金はありません。</p>
+    <p class="scope">期限経過だけはテスト時計で再現しています。通常画面は実際の経過時間を確認します。停止は確定済みの保存を元に戻す機能ではありません。</p>
+  </main>
+</body>
+</html>

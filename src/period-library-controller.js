@@ -89,7 +89,7 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
     try {
       if (!guard(false)) return false;
       review = null; comparison = "";
-      return await run("loading", () => storage.read(), value => { adopt(value); message = "PC内の保存一覧を読み込みました。"; });
+      return await run("loading", ({ signal }) => storage.read({ signal }), value => { adopt(value); message = "PC内の保存一覧を読み込みました。"; });
     } catch (value) { return fail(value); }
   }
   function select(id) {
@@ -138,8 +138,8 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
       if (pending.expectedRevision !== document.revision) periodFail("PERIOD_LIBRARY_STALE");
       review = null;
       if (pending.kind === "restore") {
-        return await run("restoring", async ({ same }) => {
-          const fresh = validatePeriodLibrary(await storage.read());
+        return await run("restoring", async ({ same, signal }) => {
+          const fresh = validatePeriodLibrary(await storage.read({ signal }));
           if (!same()) return null;
           const entry = fresh.entries.find(row => row.id === pending.entry.id);
           if (!entry || JSON.stringify(entry) !== JSON.stringify(pending.entry)) periodFail("PERIOD_LIBRARY_STALE");
@@ -191,8 +191,8 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
       if (!["all", "selected", "csv"].includes(kind) || typeof deliver !== "function") periodFail("PERIOD_FILE_KIND");
       const selectedKey = kind === "selected" ? selected().id : null;
       review = null;
-      return await run("exporting", async ({ same }) => {
-        const fresh = validatePeriodLibrary(await storage.read());
+      return await run("exporting", async ({ same, signal }) => {
+        const fresh = validatePeriodLibrary(await storage.read({ signal }));
         if (!same()) return null;
         let file;
         if (kind === "csv") file = periodLibraryCSV(fresh, query);

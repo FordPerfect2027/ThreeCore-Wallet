@@ -84,7 +84,7 @@ for (const uiTest of [false, true]) {
       const stop = await get("/src/protection-batch.js");
       assert(demo.body.includes("exportGuard = getDocumentExportGuard(document)"));
       assert(demo.body.includes('name: "exports", run: () => exportGuard.clear()'));
-      assert(stop.body.includes('["exports", "file-reads"'));
+      assert(stop.body.includes('["storage", "exports", "file-reads"'));
       assert(demo.body.includes("mountExportGuardPanel"));
       const css = await get("/examples/security.css");
       assert(css.body.includes(".export-guard-panel"));

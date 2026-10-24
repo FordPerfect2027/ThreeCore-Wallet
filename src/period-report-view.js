@@ -52,6 +52,9 @@ const ERRORS = Object.freeze({
   PERIOD_LIBRARY_LABEL: "報告名を1〜60文字で入力してください。",
   CHECKPOINT_UNAVAILABLE: "このブラウザーではPC内保存を利用できません。JSONから報告を開くことはできます。",
   CHECKPOINT_BLOCKED: "別の画面が保存領域を使用中です。その画面を閉じて再度お試しください。",
+  CHECKPOINT_BUSY: "未完了の保存処理が上限に達しています。終了を待ってから一覧を読み直してください。",
+  CHECKPOINT_CLOCK: "経過時間を確認できません。ページを開き直してください。",
+  CHECKPOINT_TIMER: "時間の保護を開始できません。保存結果を一覧で確認してください。",
   CHECKPOINT_TIMEOUT: "PC内保存の読込みが時間内に完了しませんでした。",
 });
 

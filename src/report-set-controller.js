@@ -16,6 +16,7 @@ export function createReportSetController({ storage, onChange = () => {},
   let document = emptyReportHistory(), loaded = false, selection = Object.freeze([]);
   let input = null, result = null, review = null, inspection = null, origin = null;
   let phase = "idle", error = null, generation = 0, disposed = false;
+  let active = null;
   let message = "保存した報告を読み込み、まとめて確認する対象を選んでください。";
   const busy = () => ["loading", "importing", "checking", "exporting", "inspecting"].includes(phase);
   const state = () => Object.freeze({ document, loaded, selection, input, result, review, inspection,
@@ -39,22 +40,25 @@ export function createReportSetController({ storage, onChange = () => {},
   }
   async function run(next, task, complete) {
     const token = ++generation;
+    const aborter = new AbortController();
+    active = aborter;
     const same = () => !disposed && generation === token;
     phase = next; error = null; emit();
     if (!same()) return false;
     try {
-      const value = await task(same);
+      const value = await task(same, aborter.signal);
       if (!same()) return false;
       phase = "ready"; error = null; complete(value); emit(); return true;
     } catch (value) {
       if (!same()) return false;
       phase = "error";
       return fail(value);
-    }
+    } finally { if (active === aborter) active = null; }
   }
   function cancel() {
     if (disposed) return;
     generation++; review = null; error = null; phase = input ? "ready" : "idle";
+    const previous = active; active = null; previous?.abort();
     message = "処理を中止しました。作成済みの確認結果と元の履歴はそのままです。";
     emit();
   }
@@ -67,7 +71,7 @@ export function createReportSetController({ storage, onChange = () => {},
     try {
       if (!guard()) return false;
       review = null; loaded = false;
-      return await run("loading", () => storage.read(), value => {
+      return await run("loading", (_same, signal) => storage.read({ signal }), value => {
         document = validateReportHistory(value); loaded = true;
         selection = Object.freeze(selection.filter(id => document.entries.some(entry => entry.id === id)));
         inspection = input ? inspectSetSources(input, document) : null;
@@ -99,7 +103,7 @@ export function createReportSetController({ storage, onChange = () => {},
     try {
       if (!guard()) return false;
       review = null;
-      return await run("importing", () => readFile(file), decoded => {
+      return await run("importing", (_same, signal) => readFile(file, { signal }), decoded => {
         const candidate = validateReportSet(decoded.input);
         review = Object.freeze({ input: candidate, result: analyzeReportSet(candidate), origin: "file",
           checksumVerified: decoded.checksumVerified === true });
@@ -113,10 +117,10 @@ export function createReportSetController({ storage, onChange = () => {},
       if (!guard()) return false;
       if (!review) periodFail("PERIOD_SET_NO_REVIEW");
       const pending = review; review = null;
-      return await run("checking", async same => {
+      return await run("checking", async (same, signal) => {
         let fresh = null;
         if (pending.origin === "history") {
-          fresh = validateReportHistory(await storage.read());
+          fresh = validateReportHistory(await storage.read({ signal }));
           if (!same()) return null;
           assertSetSourcesUnchanged(pending.input, fresh);
         }
@@ -133,7 +137,7 @@ export function createReportSetController({ storage, onChange = () => {},
       if (!guard()) return false;
       if (!input) periodFail("PERIOD_SET_NO_RESULT");
       const snapshot = input; inspection = null; review = null;
-      return await run("inspecting", async () => inspectSetSources(snapshot, await storage.read()), value => {
+      return await run("inspecting", async (_same, signal) => inspectSetSources(snapshot, await storage.read({ signal })), value => {
         inspection = value;
         message = "PC内の現在の保存一覧と照合しました。確認結果は書き換えていません。";
       });
@@ -162,6 +166,7 @@ export function createReportSetController({ storage, onChange = () => {},
   function dispose() {
     if (disposed) return;
     generation++; disposed = true; review = null; inspection = null;
+    const previous = active; active = null; previous?.abort();
     try { storage.close(); } catch { /* No writes exist in this controller. */ }
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,

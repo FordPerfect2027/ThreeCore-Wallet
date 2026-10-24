@@ -1,5 +1,5 @@
 /** Run every cleanup even when an earlier view fails. No captured error text. */
-export const PROTECTION_STEPS = Object.freeze(["exports", "file-reads", "backup", "period", "DAT", "EMA", "CAWELON"]);
+export const PROTECTION_STEPS = Object.freeze(["storage", "exports", "file-reads", "backup", "period", "DAT", "EMA", "CAWELON"]);
 export function runProtectionBatch(steps) {
   if (!Array.isArray(steps) || steps.length > PROTECTION_STEPS.length ||
       Reflect.ownKeys(steps).length !== steps.length + 1) throw TypeError("PROTECTION_CONFIG");

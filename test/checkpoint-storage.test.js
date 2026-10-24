@@ -1,3 +1,4 @@
+import { createStorageGuard } from "../src/storage-guard.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createCheckpointStorage, checkpointStorageError, CHECKPOINT_DATABASE } from "../src/checkpoint-storage.js";
@@ -17,7 +18,7 @@ function controlledOpen(options = {}) {
       return request;
     },
   };
-  const storage = createCheckpointStorage({ indexedDB: factory, ...options });
+  const storage = createCheckpointStorage({ indexedDB: factory, guard: createStorageGuard(), ...options });
   const db = {
     closes: 0, created: [], transactions: [],
     objectStoreNames: { contains: () => true },

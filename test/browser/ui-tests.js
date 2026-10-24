@@ -1,3 +1,4 @@
+import { registerStorageGuardUITests } from "/test/browser/storage-guard-ui-tests.js";
 import { registerSecureLifecycleUITests } from "/test/browser/secure-lifecycle-ui-tests.js";
 import { registerExportGuardUITests } from "/test/browser/export-guard-ui-tests.js";
 import { registerFileReadUITests } from "/test/browser/file-read-ui-tests.js";
@@ -49,7 +50,7 @@ async function waitFor(predicate, timeoutMs = 4000) {
     await new Promise(resolve => setTimeout(resolve, 10));
   }
 }
-function fixture(override = () => undefined, { legacy = true, announced = false, checkpointStorage, tabGuardOptions, rpcSupervisor = createRpcSupervisor(), fileReadService, exportGuard } = {}) {
+function fixture(override = () => undefined, { legacy = true, announced = false, checkpointStorage, tabGuardOptions, rpcSupervisor = createRpcSupervisor(), fileReadService, storageGuard, exportGuard } = {}) {
   const calls = [], listeners = new Map(), eventTarget = new EventTarget();
   const provider = {
     on(name, fn) {
@@ -81,7 +82,7 @@ function fixture(override = () => undefined, { legacy = true, announced = false,
   if (announced) eventTarget.addEventListener("eip6963:requestProvider", () => announce());
   // No reference to window.ethereum or an installed wallet is made.
   const app = mountWalletDemo({
-    document, eventTarget, siteOrigin: location.origin, getLegacyProvider: () => legacy ? provider : undefined, checkpointStorage, tabGuardOptions, rpcSupervisor, fileReadService, exportGuard,
+    document, eventTarget, siteOrigin: location.origin, getLegacyProvider: () => legacy ? provider : undefined, checkpointStorage, tabGuardOptions, rpcSupervisor, fileReadService, storageGuard, exportGuard,
     // Short, real-clock deadlines for synthetic fixtures only. Production defaults
     // remain covered by the session unit tests and the normal demo's own factory.
     createSession: options => new ThreeCoreWalletSession({ ...options,
@@ -1221,9 +1222,10 @@ registerReportHistoryUITests(test);
 registerReportSetUITests(test);
 registerReconciliationUITests(test);
 registerTransferUITests(test);
+registerStorageGuardUITests(test);
 let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");
-const selectedTests = ["history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
+const selectedTests = ["storage-guard", "history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
 for (const { name, run } of selectedTests) {
   console.info("Starting synthetic UI case: " + name);

@@ -1,3 +1,4 @@
+import { createStorageGuard } from "../src/storage-guard.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createReportHistoryStorage, REPORT_HISTORY_DATABASE } from "../src/report-history-storage.js";
@@ -8,7 +9,7 @@ import { historyDocument, historyRecord, saveHistory, code, tick } from "./helpe
 function controlled(options = {}) {
   const opens = [];
   const factory = { open(name, version) { const request = { name, version }; opens.push(request); return request; } };
-  const storage = createReportHistoryStorage({ indexedDB: factory, ...options });
+  const storage = createReportHistoryStorage({ indexedDB: factory, guard: createStorageGuard(), ...options });
   const db = { closed: 0, transactions: [], objectStoreNames: { contains: () => true },
     close() { this.closed++; },
     transaction(name, mode) {

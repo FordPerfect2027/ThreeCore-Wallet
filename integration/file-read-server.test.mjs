@@ -110,7 +110,7 @@ for (const uiTest of [false, true]) {
       const css = await get("/examples/security.css");
       assert.match(demo.body, /mountFileReadPanel/);
       assert.match(demo.body, /name: "file-reads", run: \(\) => fileReadService.cancelAll\(\)/);
-      assert.match(protection.body, /\["exports", "file-reads", "backup", "period", "DAT", "EMA", "CAWELON"\]/);
+      assert.match(protection.body, /\["storage", "exports", "file-reads", "backup", "period", "DAT", "EMA", "CAWELON"\]/);
       assert.match(css.body, /\.file-read-panel/);
       assert.match(css.body, /overflow-wrap: anywhere/);
     });

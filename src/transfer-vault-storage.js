@@ -5,8 +5,8 @@ import { emptyVaultDocument, mutateVaultDocument, validateVaultDocument } from "
 export const VAULT_DATABASE = "threecore-transfer-vault-v1";
 
 /** Same transaction/commit machinery as checkpoints, distinct database and schema. */
-export function createVaultStorage({ indexedDB, name = VAULT_DATABASE, openTimeoutMs } = {}) {
-  return createCheckpointStorage({ indexedDB, name, ...(openTimeoutMs === undefined ? {} : { openTimeoutMs }),
+export function createVaultStorage({ indexedDB, name = VAULT_DATABASE, openTimeoutMs, transactionTimeoutMs, guard, deadlineOptions, snapshotLimits } = {}) {
+  return createCheckpointStorage({ indexedDB, name, transactionTimeoutMs, guard, deadlineOptions, snapshotLimits, ...(openTimeoutMs === undefined ? {} : { openTimeoutMs }),
     documentPolicy: {
       empty: emptyVaultDocument,
       validate: validateVaultDocument,

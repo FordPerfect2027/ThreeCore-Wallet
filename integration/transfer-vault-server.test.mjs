@@ -46,7 +46,7 @@ test("vault server: complete imports stay local and resolve", async () => served
     const path = pending.pop();
     if (visited.has(path)) continue;
     visited.add(path);
-    assert.ok(visited.size < 185); // Includes the six backup-lifecycle runtime and synthetic-test modules.
+    assert.ok(visited.size < 189); // Four explicit storage-guard runtime modules added.
     const response = await fetch(base + path);
     assert.equal(response.status, 200, path);
     const source = await response.text();

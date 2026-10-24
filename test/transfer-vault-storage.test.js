@@ -1,3 +1,4 @@
+import { createStorageGuard } from "../src/storage-guard.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createVaultStorage, VAULT_DATABASE } from "../src/transfer-vault-storage.js";
@@ -9,7 +10,7 @@ import { tick, code } from "./helpers/transfer-fixtures.js";
 function controlled(options = {}) {
   const opens = [];
   const factory = { open(name, version) { const request = { name, version }; opens.push(request); return request; } };
-  const storage = createVaultStorage({ indexedDB: factory, ...options });
+  const storage = createVaultStorage({ indexedDB: factory, guard: createStorageGuard(), ...options });
   const db = {
     closed: 0, transactions: [], created: [], objectStoreNames: { contains: () => true },
     close() { this.closed++; },

@@ -87,7 +87,7 @@ export function createReportHistoryController({ storage, getReport, stageReport,
     try {
       if (!guard(false)) return false;
       review = null; comparison = null; sourceInspection = null;
-      return await run("loading", () => storage.read(), value => {
+      return await run("loading", ({ signal }) => storage.read({ signal }), value => {
         adopt(value); message = "報告履歴を読み込みました。";
       });
     } catch (value) { return fail(value); }
@@ -159,8 +159,8 @@ export function createReportHistoryController({ storage, getReport, stageReport,
       }
       review = null;
       if (pending.kind === "open") {
-        return await run("opening", async ({ same }) => {
-          const fresh = validateReportHistory(await storage.read());
+        return await run("opening", async ({ same, signal }) => {
+          const fresh = validateReportHistory(await storage.read({ signal }));
           if (!same()) return null;
           const entry = historyEntry(fresh, pending.entry.id);
           if (JSON.stringify(entry) !== JSON.stringify(pending.entry)) periodFail("PERIOD_HISTORY_STALE");
@@ -226,8 +226,8 @@ export function createReportHistoryController({ storage, getReport, stageReport,
       if (!readSources) periodFail("PERIOD_HISTORY_SOURCES_UNAVAILABLE");
       const selected = historyEntry(document, selectedId);
       sourceInspection = null; review = null;
-      return await run("inspecting", async ({ same }) => {
-        const fresh = validateReportHistory(await storage.read());
+      return await run("inspecting", async ({ same, signal }) => {
+        const fresh = validateReportHistory(await storage.read({ signal }));
         if (!same()) return null;
         const entry = historyEntry(fresh, selected.id);
         if (JSON.stringify(entry) !== JSON.stringify(selected)) periodFail("PERIOD_HISTORY_STALE");
@@ -247,8 +247,8 @@ export function createReportHistoryController({ storage, getReport, stageReport,
       if (!["backup", "selected", "csv"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_HISTORY_FORMAT");
       const selected = format === "selected" ? historyEntry(document, selectedId) : null;
       review = null;
-      return await run("exporting", async ({ same }) => {
-        const fresh = validateReportHistory(await storage.read());
+      return await run("exporting", async ({ same, signal }) => {
+        const fresh = validateReportHistory(await storage.read({ signal }));
         if (!same()) return null;
         if (selected && JSON.stringify(historyEntry(fresh, selected.id)) !== JSON.stringify(selected)) periodFail("PERIOD_HISTORY_STALE");
         const file = format === "backup" ? await prepareFile(fresh) : format === "selected" ?

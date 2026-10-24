@@ -1,3 +1,5 @@
+import { createStorageGuard } from "../src/storage-guard.js";
+import { manualTime } from "./helpers/secure-lifecycle-time.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createEncryptedLibraryStorage } from "../src/encrypted-library-storage.js";
@@ -7,9 +9,10 @@ import { controlledDatabase, library, entry, memoryStorage, code, tick, gate } f
 
 function fixture(t, options = {}) {
   const f = controlledDatabase();
-  const storage = createEncryptedLibraryStorage({ indexedDB: f.factory, ...options });
+  const clock = manualTime();
+  const storage = createEncryptedLibraryStorage({ indexedDB: f.factory, guard: createStorageGuard(), deadlineOptions: clock.options, ...options });
   t.after(() => storage.close());
-  return { ...f, storage };
+  return { ...f, storage, clock };
 }
 
 test("a queued readonly transaction has an independent deadline", async t => {
@@ -20,6 +23,7 @@ test("a queued readonly transaction has an independent deadline", async t => {
   await tick();
   const tx = f.db.transactions[0];
   assert.equal(tx.mode, "readonly");
+  f.clock.advance(15); f.clock.flush();
   await rejection;
   assert.equal(tx.aborts, 1);
 });
@@ -32,6 +36,7 @@ test("a read/write transaction that never commits does not remain pending foreve
   await tick();
   const tx = f.value(undefined);
   assert(tx.put.value);
+  f.clock.advance(15); f.clock.flush();
   await rejection;
   assert.equal(tx.aborts, 1);
 });
@@ -44,7 +49,8 @@ test("completed transactions cancel their timers instead of aborting later", asy
   const tx = f.value(undefined);
   tx.oncomplete();
   await reading;
-  await new Promise(resolve => setTimeout(resolve, 30));
+  f.clock.advance(30); f.clock.flush();
+  await tick();
   assert.equal(tx.aborts, 0);
 });
 
@@ -97,6 +103,8 @@ test("late get success after timeout cannot queue a write", async t => {
   const saving = f.storage.change(emptyEncryptedLibrary(), { kind: "add", entry: await entry() });
   const rejection = assert.rejects(saving, code("LIBRARY_TIMEOUT"));
   f.success();
+  await tick();
+  f.clock.advance(10); f.clock.flush();
   await rejection;
   const tx = f.value(undefined);
   assert.equal(tx.put.value, undefined);
@@ -107,6 +115,8 @@ test("late transaction completion cannot turn a timeout into success", async t =
   const reading = f.storage.read();
   const rejection = assert.rejects(reading, code("LIBRARY_TIMEOUT"));
   f.success();
+  await tick();
+  f.clock.advance(10); f.clock.flush();
   await rejection;
   const tx = f.value(undefined);
   tx.oncomplete();
@@ -146,6 +156,8 @@ test("a subsequent read can recover after a timed-out transaction", async t => {
   const reading = f.storage.read();
   const rejection = assert.rejects(reading, code("LIBRARY_TIMEOUT"));
   f.success();
+  await tick();
+  f.clock.advance(10); f.clock.flush();
   await rejection;
   const retry = f.storage.read();
   await tick();

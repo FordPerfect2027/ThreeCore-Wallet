@@ -6,6 +6,9 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["storage-guard", "storage-guard-policy", "storage-guard-status"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/storage-guard-panel.js", { file: resolve(here, "storage-guard-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/secure-backup-status.js", { file: resolve(here, "../src/secure-backup-status.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/secure-operation-panel.js", { file: resolve(here, "secure-operation-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/secure-deadline.js", { file: resolve(here, "../src/secure-deadline.js"), mime: "text/javascript; charset=utf-8" }],
@@ -116,6 +119,11 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/storage-guard-demo/", { file: resolve(here, "../test/browser/storage-guard-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/storage-guard-demo.css", { file: resolve(here, "../test/browser/storage-guard-demo.css"), mime: "text/css; charset=utf-8" });
+    for (const file of ["storage-guard-fixture.js", "storage-guard-ui-tests.js", "storage-guard-demo.js"]) {
+      paths.set("/test/browser/" + file, { file: resolve(here, "../test/browser/" + file), mime: "text/javascript; charset=utf-8" });
+    }
     paths.set("/test/browser/secure-lifecycle-demo/", { file: resolve(here, "../test/browser/secure-lifecycle-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/secure-lifecycle-demo.js", { file: resolve(here, "../test/browser/secure-lifecycle-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/secure-lifecycle-demo.css", { file: resolve(here, "../test/browser/secure-lifecycle-demo.css"), mime: "text/css; charset=utf-8" });

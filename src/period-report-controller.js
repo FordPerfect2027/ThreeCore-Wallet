@@ -18,6 +18,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
   let input = null, report = null, review = null, origin = null, phase = "idle", error = null;
   let message = "保存済みの控えを読み込み、報告に使う記録を選んでください。";
   let generation = 0, disposed = false;
+  let active = null;
   const busy = () => ["loading", "importing", "checking", "exporting"].includes(phase);
   const state = () => Object.freeze({ document, selection, loaded, input, report, review,
     origin, phase, error, message, busy: busy(), disposed });
@@ -41,10 +42,12 @@ export function createPeriodReportController({ storage, onChange = () => {},
   function clearResult() { input = null; report = null; origin = null; }
   async function run(next, task, success) {
     const own = ++generation, same = () => !disposed && generation === own;
+    const aborter = new AbortController();
+    active = aborter;
     phase = next; error = null; emit();
     if (!same()) return false;
     try {
-      const result = await task(same);
+      const result = await task(same, aborter.signal);
       if (!same()) return false;
       phase = "ready";
       success(result);
@@ -54,11 +57,12 @@ export function createPeriodReportController({ storage, onChange = () => {},
       if (!same()) return false;
       phase = "error";
       return fail(value);
-    }
+    } finally { if (active === aborter) active = null; }
   }
   function cancel() {
     if (disposed) return;
     generation++; review = null; error = null; phase = input ? "ready" : "idle";
+    const previous = active; active = null; previous?.abort();
     message = "処理を中止しました。保存一覧は変更していません。";
     emit();
   }
@@ -66,7 +70,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
     try {
       if (!guard()) return false;
       review = null; loaded = false; clearResult();
-      return await run("loading", () => storage.read(), value => {
+      return await run("loading", (_same, signal) => storage.read({ signal }), value => {
         document = validatePeriodLibrary(value); loaded = true;
         selection = Object.freeze(Object.fromEntries(Object.entries(selection).map(([agent, id]) =>
           [agent, document.entries.some(row => row.id === id && row.draft.plan.context.agent === agent) ? id : null])));
@@ -109,7 +113,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
     try {
       if (!guard()) return false;
       review = null;
-      return await run("importing", () => readFile(file), decoded => {
+      return await run("importing", (_same, signal) => readFile(file, { signal }), decoded => {
         const candidate = validatePeriodReportInput(decoded.input);
         review = Object.freeze({ origin: "file", input: candidate, report: analyzePeriodReport(candidate),
           checksumVerified: decoded.checksumVerified === true, authenticated: false,
@@ -135,8 +139,8 @@ export function createPeriodReportController({ storage, onChange = () => {},
       if (!guard()) return false;
       if (!review) periodFail("PERIOD_REPORT_REVIEW");
       const pending = review; review = null;
-      return await run("checking", async () => {
-        const fresh = pending.origin === "library" ? assertReportSourcesUnchanged(pending.input, await storage.read()) : null;
+      return await run("checking", async (_same, signal) => {
+        const fresh = pending.origin === "library" ? assertReportSourcesUnchanged(pending.input, await storage.read({ signal })) : null;
         return { fresh, input: pending.input, report: analyzePeriodReport(pending.input) };
       }, result => {
         if (result.fresh) { document = result.fresh; loaded = true; }
@@ -176,6 +180,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
   function dispose() {
     if (disposed) return;
     disposed = true; generation++; review = null;
+    const previous = active; active = null; previous?.abort();
     try { storage.close(); } catch { /* A closed adapter cannot change an accepted snapshot. */ }
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare,

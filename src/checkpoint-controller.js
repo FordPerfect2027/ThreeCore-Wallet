@@ -41,12 +41,14 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       canImport: !!importReview && !busy() && !disposed,
     });
   }
-  function publish() { if (!disposed) onChange(state()); }
+  function publish() {
+    if (!disposed) { try { Promise.resolve(onChange(state())).catch(() => {}); } catch {} }
+  }
   function begin(action) {
     if (disposed) checkpointFail("CHECKPOINT_CLOSED");
     if (busy()) checkpointFail("CHECKPOINT_BUSY");
     const token = ++generation;
-    active = { token, action };
+    active = { token, action, aborter: new AbortController() };
     if (!["importApply", "importReview"].includes(action)) { importReview = null; importGeneration++; }
     phase = "working";
     errorCode = null;
@@ -71,6 +73,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     let token;
     try {
       token = begin(action);
+      if (!alive(token)) return false;
       await run(token);
       if (!alive(token)) return false;
       phase = "ready";
@@ -96,7 +99,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
   async function freshSelection(token) {
     const original = selection();
     const revision = document.revision;
-    const current = await storage.read();
+    const current = await storage.read({ signal: active?.aborter.signal });
     if (!alive(token)) checkpointFail("CHECKPOINT_CANCELLED");
     if (current.revision !== revision) checkpointFail("CHECKPOINT_STALE");
     const found = validateCheckpointDocument(current).entries.find(row => row.id === original.id);
@@ -109,19 +112,19 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       const operation = kind === "purge" ? { kind, id: entry.id, confirmed } :
         kind === "rename" ? { kind, id: entry.id, label: checkpointLabel(label), time: checkpointTime(now()) } :
           { kind, id: entry.id, time: checkpointTime(now()) };
-      const result = await storage.change(document.revision, operation, { canCommit: () => alive(token) });
+      const result = await storage.change(document.revision, operation, { canCommit: () => alive(token), signal: active?.aborter.signal });
       if (alive(token)) update(result);
     });
   }
   return Object.freeze({
     state,
     refresh: () => operate("refresh", async token => {
-      const current = await storage.read();
+      const current = await storage.read({ signal: active?.aborter.signal });
       if (alive(token)) update(current);
     }),
     exportCollection: () => operate("exportCollection", async token => {
       ready();
-      const current = await storage.read();
+      const current = await storage.read({ signal: active?.aborter.signal });
       if (!alive(token)) return;
       if (current.revision !== document.revision) checkpointFail("CHECKPOINT_STALE");
       const prepared = await prepareCheckpointCollection(current, { subtle });
@@ -145,7 +148,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       ready();
       if (!proposal || proposal.text !== text) checkpointFail("CHECKPOINT_IMPORT_REVIEW");
       const result = await storage.change(proposal.revision, { kind: "import", entries: proposal.entries },
-        { canCommit: () => alive(token) && importToken === importGeneration });
+        { canCommit: () => alive(token) && importToken === importGeneration, signal: active?.aborter.signal });
       if (alive(token)) update(result);
     }),
     cancelImport() {
@@ -169,7 +172,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       };
       canCommit();
       const result = await storage.change(document.revision,
-        { kind: "save", id, label: normalizedLabel, time, fileText: prepared.text }, { canCommit });
+        { kind: "save", id, label: normalizedLabel, time, fileText: prepared.text }, { canCommit, signal: active?.aborter.signal });
       if (alive(token)) {
         update(result);
         selectedId = id;
@@ -227,6 +230,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       if (disposed) return;
       disposed = true;
       generation++;
+      active?.aborter.abort();
       active = null;
       document = inspected = null;
       importReview = null;

@@ -1,3 +1,4 @@
+import { createStorageGuard } from "../src/storage-guard.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createEncryptedLibraryStorage, ENCRYPTED_LIBRARY_DATABASE,
@@ -7,7 +8,7 @@ import { controlledDatabase, entry, library, clone, code, tick } from "./helpers
 
 function fixture(t, options = {}) {
   const f = controlledDatabase();
-  const storage = createEncryptedLibraryStorage({ indexedDB: f.factory, ...options });
+  const storage = createEncryptedLibraryStorage({ indexedDB: f.factory, guard: createStorageGuard(), ...options });
   t.after(() => storage.close());
   return { ...f, storage,
     async startRead() {
@@ -269,5 +270,9 @@ test("untrusted error getters are not evaluated", () => {
 
 test("known library errors retain their recognized code", () => {
   const original = new EncryptedLibraryError("LIBRARY_CONFLICT");
-  assert.equal(encryptedLibraryStorageError(original), original);
+  original.message = "private details must not escape";
+  const result = encryptedLibraryStorageError(original);
+  assert.equal(result.code, "LIBRARY_CONFLICT");
+  assert.equal(result.message, "LIBRARY_CONFLICT");
+  assert.notEqual(result, original);
 });
