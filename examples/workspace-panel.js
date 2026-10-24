@@ -29,9 +29,9 @@ const ERRORS = Object.freeze({
 });
 
 /** One explicit local workflow for all three cards; no provider capability. */
-export function mountWorkspacePanel({ document, parent, readDraft, writeDraft,
+export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, prepareWrite,
   download = offerHistoryDownload, readBytes, subtle, secureOptions = {} }) {
-  const controller = createWorkspaceController({ readDraft, writeDraft,
+  const controller = createWorkspaceController({ readDraft, writeDraft, prepareWrite,
     authorizeWrite: () => !secureStaged || securePanel.stagedReady() });
   const backup = createWorkspaceBackupTracker();
   const listeners = [];

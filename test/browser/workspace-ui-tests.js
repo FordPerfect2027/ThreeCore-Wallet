@@ -49,6 +49,76 @@ async function waitFor(predicate) {
 }
 
 export function registerWorkspaceUITests(test) {
+  for (const mode of ["restore", "undo"]) {
+    for (const event of ["edit", "dispose"]) {
+      test(`workspace: ${event} during ${mode} disconnect preserves every card`, async make => {
+        let chain = "0x2105", armed = false, fired = false;
+        const f = make(args => args.method === "eth_chainId" ? chain : undefined);
+        const originalRemove = f.provider.removeListener;
+        f.provider.removeListener = function (...args) {
+          originalRemove.apply(this, args);
+          if (!armed || fired) return;
+          fired = true;
+          if (event === "dispose") f.app.dispose();
+          else nodes[1][".account"].value = "unfinished newer input";
+        };
+        if (mode === "undo") { review(payload("20")); apply(); chain = "0x14a34"; }
+        await f.connect();
+        const nodes = AGENTS.map(agent => Object.fromEntries(
+          [".account", ".chain", ".token", ".portfolio-tokens", ".history-list"].map(selector =>
+            [selector, card(agent, selector)])));
+        const snapshot = () => nodes.map(row => Object.fromEntries(Object.entries(row).map(
+          ([selector, node]) => [selector, selector === ".history-list" ? node.textContent : node.value])));
+        const before = snapshot(), status = q("status"), calls = f.calls.length;
+        if (mode === "undo") { q("undo-preview").click(); check("undo-confirmed"); }
+        else { review(payload("30")); check("confirmed"); }
+        armed = true;
+        q(mode === "undo" ? "undo-apply" : "apply").click();
+        assert(fired, "Disconnect callback was not exercised");
+        if (event === "edit") before[1][".account"] = "unfinished newer input";
+        assert(JSON.stringify(snapshot()) === JSON.stringify(before), "Interrupted preparation overwrote card data");
+        assert(f.calls.length === calls, "Restore started new wallet requests");
+        assert(!status.textContent.includes("一括復元しました"), "Stopped operation reported success");
+        if (event === "dispose") assert(document.querySelector("#grid").children.length === 0, "App teardown was stranded");
+        else assert(q("apply").disabled && q("undo-apply").disabled, "A fresh review is required");
+      });
+    }
+  }
+
+  test("workspace: second-wallet cancellation occurs before any card is written", async make => {
+    const f = make();
+    let armed = false, fired = false, during;
+    const listeners = new Map(), requests = [];
+    const provider = {
+      on(name, callback) { if (!listeners.has(name)) listeners.set(name, new Set()); listeners.get(name).add(callback); },
+      removeListener(name, callback) {
+        listeners.get(name)?.delete(callback);
+        if (armed && !fired) { fired = true; during = snapshot(); q("cancel").click(); }
+      },
+      request(args) {
+        requests.push(args.method);
+        if (["eth_requestAccounts", "eth_accounts"].includes(args.method)) return Promise.resolve([ACCOUNTS[1]]);
+        return f.provider.request(args);
+      },
+    };
+    const uuid = "22222222-2222-4222-8222-222222222222";
+    f.announce(uuid, provider, "Synthetic EMA preflight");
+    input(card("EMA", ".account"), ACCOUNTS[1]);
+    input(card("EMA", ".chain"), "8453", "change");
+    input(card("EMA", ".provider"), uuid, "change");
+    await f.connect(); card("EMA", ".connect").click();
+    await waitFor(() => !card("EMA", ".read").disabled);
+    const snapshot = () => JSON.stringify(AGENTS.map(agent => [".account", ".chain", ".token", ".portfolio-tokens", ".history-list"]
+      .map(selector => selector === ".history-list" ? card(agent, selector).textContent : card(agent, selector).value)));
+    const before = snapshot(), calls = f.calls.length + requests.length;
+    review(payload("30")); check("confirmed"); armed = true; q("apply").click();
+    assert(fired, "Second wallet cleanup was not exercised");
+    assert(during === before, "First card was transiently committed before all wallets stopped");
+    assert(snapshot() === before, "Cancelled preparation changed data");
+    assert(f.calls.length + requests.length === calls, "Unexpected wallet request");
+    assert(card("DAT", ".read").disabled && card("EMA", ".read").disabled, "Stopped connections resumed");
+  });
+
   test("workspace: page protection during encrypted handoff keeps plaintext erased", async () => {
     const parent = document.createElement("section");
     document.querySelector("#grid").append(parent);
@@ -182,7 +252,7 @@ export function registerWorkspaceUITests(test) {
   }
 
   for (const mode of ["restore", "undo"]) {
-    test(`workspace: ${mode} cancelled by provider cleanup rolls all three cards back`, async make => {
+    test(`workspace: ${mode} cancelled by provider cleanup leaves all three cards untouched`, async make => {
       let expectedChain = "0x2105", armed = false, cancelled = false;
       const f = make(args => args.method === "eth_chainId" ? expectedChain : undefined);
       const originalRemove = f.provider.removeListener;
@@ -204,7 +274,7 @@ export function registerWorkspaceUITests(test) {
       armed = true;
       q(mode === "undo" ? "undo-apply" : "apply").click();
       assert(cancelled, "Provider cleanup did not cancel the restore");
-      assert(q("status").textContent.includes("操作前へ戻しました"), "Cancellation reported as success");
+      assert(q("status").textContent.includes("現在の内容をプレビュー"), "Fresh review instruction missing");
       assert(JSON.stringify(snapshot()) === before, "A partial or cancelled restore survived");
       assert(f.field(".read").disabled, "Rollback must not restore connection permission");
       assert(f.calls.length === calls, "Rollback requested wallet access");

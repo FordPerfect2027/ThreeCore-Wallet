@@ -2,8 +2,9 @@ import { captureWorkspaceDraft, workspaceDraftKey, workspaceOptions, previewWork
   workspaceFail, WorkspaceError, freezeWorkspace } from "./workspace-format.js";
 
 /** Synchronous transaction coordinator. The adapter writes local form/history data only. */
-export function createWorkspaceController({ readDraft, writeDraft, authorizeWrite = () => true }) {
+export function createWorkspaceController({ readDraft, writeDraft, authorizeWrite = () => true, prepareWrite = null }) {
   if (![readDraft, writeDraft, authorizeWrite].every(fn => typeof fn === "function")) workspaceFail("WORKSPACE_ADAPTER");
+  if (prepareWrite !== null && typeof prepareWrite !== "function") workspaceFail("WORKSPACE_ADAPTER");
   let pending = null;
   let undo = null;
   let emergency = null;
@@ -11,9 +12,10 @@ export function createWorkspaceController({ readDraft, writeDraft, authorizeWrit
   let disposed = false;
   let writing = false;
   let checking = false;
+  let preparing = false;
   function available() {
     if (disposed) workspaceFail("WORKSPACE_DISPOSED");
-    if (writing || checking) workspaceFail("WORKSPACE_BUSY");
+    if (writing || checking || preparing) workspaceFail("WORKSPACE_BUSY");
     if (emergency) workspaceFail("WORKSPACE_RECOVERY_REQUIRED");
   }
   function cancel() {
@@ -46,6 +48,23 @@ export function createWorkspaceController({ readDraft, writeDraft, authorizeWrit
     if (authorized !== true) workspaceFail("WORKSPACE_REVIEW_REQUIRED");
   }
   function write(after, before, revision) {
+    if (prepareWrite) {
+      // Disconnect/invalidation may call external observers. Complete it before
+      // the transactional writer begins, so disposal can safely stop all work.
+      preparing = true;
+      try {
+        requireWriteAuthority(revision);
+        syncResult(prepareWrite(captureWorkspaceDraft(after), captureWorkspaceDraft(before), () => {
+          if (!preparing) workspaceFail("WORKSPACE_REVIEW_REQUIRED");
+          checkRevision(revision);
+        }));
+        requireWriteAuthority(revision);
+        if (workspaceDraftKey(capture(revision)) !== workspaceDraftKey(before)) workspaceFail("WORKSPACE_STALE");
+      } catch (error) {
+        if (error instanceof WorkspaceError && error.code === "WORKSPACE_STALE") workspaceFail("WORKSPACE_STALE");
+        workspaceFail("WORKSPACE_REVIEW_REQUIRED");
+      } finally { preparing = false; }
+    }
     // The UI's decrypted-data lifetime may expire while validation is running.
     // Check just before the first write; rollback must remain possible afterward.
     writing = true;
@@ -137,7 +156,7 @@ export function createWorkspaceController({ readDraft, writeDraft, authorizeWrit
     },
     state() {
       let undoAvailable = false;
-      if (!disposed && !writing && !checking && !emergency && undo) {
+      if (!disposed && !writing && !checking && !preparing && !emergency && undo) {
         try { undoAvailable = workspaceDraftKey(capture()) === undo.afterKey; } catch { /* Invalid draft cannot authorize undo. */ }
       }
       return Object.freeze({ disposed, writing, hasUndo: !!undo, undoAvailable,

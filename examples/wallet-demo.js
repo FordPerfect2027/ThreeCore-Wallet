@@ -322,6 +322,30 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   setupHost.append(checkpointHost);
   workspacePanel = mountWorkspacePanel({ document, parent: setupHost,
     readDraft: readWorkspaceDraft,
+    prepareWrite: (next, before, checkCurrent) => {
+      // Prepare every affected card before assigning even the first one.
+      // Provider cleanup can stop the operation or close the entire app.
+      next.forEach((row, index) => {
+        checkCurrent();
+        const old = before[index];
+        const configurationChanged = ["account", "chainId", "tokenAddress", "tokens"].some(key => old[key] !== row[key]);
+        if (!configurationChanged && old.history === row.history) return;
+        if (configurationChanged) {
+          controllers.get(cards[index]).disconnect("一括復元の準備で接続を停止しました。必要なら再接続してください。");
+          checkCurrent();
+          for (const panel of [identityPanels[index], allowancePanels[index], transferPanels[index]]) {
+            panel.invalidate();
+            checkCurrent();
+          }
+        }
+        panels[index].invalidate();
+        checkCurrent();
+      });
+      setupPanel.invalidate();
+      checkCurrent();
+      checkpointPanel?.invalidateDraft();
+      checkCurrent();
+    },
     writeDraft: input => {
       const next = captureWorkspaceDraft(input);
       const before = captureWorkspaceDraft(readWorkspaceDraft());
@@ -332,13 +356,6 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         if (!configurationChanged && !historyChanged) return;
         const card = cards[index];
         if (configurationChanged) {
-          controllers.get(card).disconnect("一括復元で設定が変わりました。必要なら再接続してください。");
-          identityPanels[index].invalidate();
-          allowancePanels[index].invalidate();
-          transferPanels[index].invalidate();
-        }
-        panels[index].invalidate();
-        if (configurationChanged) {
           card.querySelector(".account").value = row.account;
           card.querySelector(".chain").value = String(row.chainId);
           card.querySelector(".token").value = row.tokenAddress;
@@ -347,8 +364,6 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         }
         if (historyChanged) panels[index].replaceHistory(row.history);
       });
-      setupPanel.invalidate();
-      checkpointPanel?.invalidateDraft();
     },
   });
   checkpointPanel = mountCheckpointPanel({ document, parent: checkpointHost,
