@@ -87,13 +87,17 @@ for (const [label, makeFailure] of failures) {
     f.controller.dispose();
   });
 
-  test(`session preserves the original ${label} rejection`, async () => {
+  test(`session safely replaces the untrusted ${label} rejection`, async () => {
     const f = fixture(), error = makeFailure();
     await f.session.connect();
     f.override(({ method }) => method === "eth_getBalance" ? Promise.reject(error) : undefined);
     await f.session.getNativeBalance().then(
       () => assert.fail("Expected rejection"),
-      actual => assert.ok(actual === error, "Original rejection identity is preserved"),
+      actual => {
+        assert.equal(actual.code, "PROVIDER_FAILURE");
+        assert.notEqual(actual, error);
+        assert.equal(Object.hasOwn(actual, "data"), false);
+      },
     );
     assert.equal(f.session.state.connected, true);
     f.session.disconnect();
@@ -139,7 +143,7 @@ test("cleanup accessor failure does not replace the connection rejection", async
   const f = fixture(), error = Error("Permission denied");
   Object.defineProperty(f.provider, "removeListener", { get() { throw Error("Cleanup failed"); } });
   f.override(({ method }) => method === "eth_requestAccounts" ? Promise.reject(error) : undefined);
-  await assert.rejects(f.session.connect(), actual => actual === error);
+  await assert.rejects(f.session.connect(), actual => actual.code === "PROVIDER_FAILURE" && actual !== error);
   assert.equal(f.session.state.connected, false);
 });
 
@@ -147,7 +151,7 @@ test("disconnect during error inspection cannot restore the read view", async ()
   const f = fixture();
   await f.connect();
   f.override(({ method }) => method === "eth_getBalance" ? Promise.reject({
-    get message() { f.controller.disconnect(); return "Old error"; },
+    get code() { f.controller.disconnect(); return 4900; },
   }) : undefined);
   assert.equal(await f.controller.readBalances(), false);
   assert.equal(f.controller.state.phase, "disconnected");

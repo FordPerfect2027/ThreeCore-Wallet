@@ -1,3 +1,4 @@
+import { registerSecurityUITests } from "/test/browser/security-ui-tests.js";
 import { registerReportSetUITests } from "/test/browser/report-set-ui-tests.js";
 import { registerReportHistoryUITests } from "/test/browser/report-history-ui-tests.js";
 import { registerPeriodReportUITests } from "/test/browser/period-report-ui-tests.js";
@@ -320,7 +321,8 @@ test("未対応の読み取りでは結果を消し、接続と手動再試行�
   });
   await f.connect();
   f.field(".inspect").click();
-  await waitFor(() => f.output().includes("Pinned read unsupported"));
+  await waitFor(() => f.output().includes("対応していません"));
+  assert(!f.output().includes("Pinned read unsupported"), "Raw provider prose reached the UI");
   assert(!f.field(".read").disabled && !f.output().includes("参照ブロック"), "Unexpected disconnect or partial report");
   unsupported = false;
   f.field(".inspect").click();
@@ -1185,6 +1187,7 @@ if (fault) setTimeout(() => {
   Promise.reject(Error("Synthetic harness rejection"));
 }, 0);
 
+registerSecurityUITests(test);
 registerHistoryUITests(test);
 registerHistoryFileUITests(test);
 registerHistoryReviewUITests(test);

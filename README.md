@@ -1,5 +1,8 @@
 # ThreeCore Wallet
 
+**October 24, 2026 local security update:** [Protection controls, input boundaries and verification](docs/SECURITY_LOCAL_20261024.md). Adds a three-token stop control, idle/page-exit protection, a private page-local protection history, bounded JSON/File processing, read-only RPC enforcement and hardened local HTTP responses. This update is PC-local; GitHub publication and independent security auditing have not been performed.
+
+
 **October 23, 2026 publication:** [Wallet history, backup, identity and allowance update](docs/WALLET_UPDATE_2026-10-23_EN.md). The source now includes reviewed history imports, three-card backup/restore, opt-in saved checkpoints, block-pinned token identity and exact balances, and read-only allowance observations. These are development features; no public website or deployed contract is changed by this source release.
 
 **[October 20–21, 2026: English development and validation report](docs/DEVELOPMENT_REPORT_2026-10-20_21_EN.md)** — Per-token line counts, implemented changes, mock-wallet experiments, verified CI results, and remaining compatibility limits. Figures are tied to the recorded development snapshot.

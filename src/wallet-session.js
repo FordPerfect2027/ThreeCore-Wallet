@@ -1,3 +1,5 @@
+import { guardRpcRequest, guardRpcResponse, RpcSecurityError } from "./security-rpc.js";
+import { safeProviderFailure } from "./security-provider-error.js";
 /**
  * ThreeCore browser-wallet connection adapter (EIP-1193).
  *
@@ -43,10 +45,12 @@ export function normalizeAddress(value) {
 }
 
 export function normalizeChainId(value) {
-  if (typeof value !== "string" || !/^0x[0-9a-fA-F]+$/.test(value)) {
+  if (typeof value !== "string" || value.length > 16 || !/^0x[0-9a-fA-F]+$/.test(value)) {
     reject("INVALID_CHAIN", "The wallet did not return a hexadecimal chain ID");
   }
-  return Number(BigInt(value));
+  const parsed = BigInt(value);
+  if (parsed > BigInt(Number.MAX_SAFE_INTEGER)) reject("INVALID_CHAIN", "Chain ID exceeds the supported integer range");
+  return Number(parsed);
 }
 
 export function validateSiteOrigin(value) {
@@ -65,9 +69,12 @@ export function validateSiteOrigin(value) {
 }
 
 function validateProvider(provider) {
-  if (!provider || typeof provider.request !== "function") {
+  let request;
+  try { request = provider?.request; } catch {}
+  if (typeof request !== "function") {
     reject("NO_PROVIDER", "An EIP-1193 wallet provider is required");
   }
+  return request;
 }
 
 const BLOCK_NUMBER = /^0x(?:0|[1-9a-fA-F][0-9a-fA-F]{0,63})$/;
@@ -76,7 +83,7 @@ const BLOCK_HASH = /^0x[0-9a-fA-F]{64}$/;
 // A local timeout cannot close a Wallet's permission dialog. Keep the guard
 // across session/controller replacement until the original provider settles.
 const pendingPermissions = new WeakMap();
-function requestPermission(provider) {
+function requestPermission(provider, request) {
   if (pendingPermissions.has(provider)) {
     reject("PERMISSION_PENDING", "The Wallet still has an outstanding permission request");
   }
@@ -86,7 +93,7 @@ function requestPermission(provider) {
     if (pendingPermissions.get(provider) === marker) pendingPermissions.delete(provider);
   };
   try {
-    return Promise.resolve(provider.request({ method: "eth_requestAccounts" })).then(
+    return Promise.resolve(request.call(provider, { method: "eth_requestAccounts" })).then(
       value => { release(); return value; },
       error => { release(); throw error; },
     );
@@ -119,6 +126,8 @@ function decodeBlockHeader(value) {
 
 export class ThreeCoreWalletSession {
   #provider;
+  #request;
+  #isAccessAllowed;
   #agent;
   #origin;
   #expectedAccount;
@@ -135,8 +144,10 @@ export class ThreeCoreWalletSession {
   #onDisconnect;
 
   constructor({ provider, agent, siteOrigin, approvedOrigins, expectedAccount, chainId,
-    readTimeoutMs = 30_000, connectTimeoutMs = 30_000, permissionTimeoutMs = 120_000 }) {
-    validateProvider(provider);
+    isAccessAllowed = () => true, readTimeoutMs = 30_000, connectTimeoutMs = 30_000, permissionTimeoutMs = 120_000 }) {
+    this.#request = validateProvider(provider);
+    if (typeof isAccessAllowed !== "function") reject("INVALID_ACCESS_GUARD", "Access guard must be a function");
+    this.#isAccessAllowed = isAccessAllowed;
     if (!Number.isInteger(readTimeoutMs) || readTimeoutMs < 1 || readTimeoutMs > 120_000) {
       reject("INVALID_READ_TIMEOUT", "Read timeout must be an integer from 1 to 120000 milliseconds");
     }
@@ -204,6 +215,7 @@ export class ThreeCoreWalletSession {
    * not an untrusted query parameter or remote API response.
    */
   connect() {
+    try { this.#assertAccess(); } catch (error) { return Promise.reject(error); }
     if (this.#connected) return Promise.resolve(this.state);
     // Share one account-permission prompt across simultaneous Connect clicks.
     if (this.#pendingConnect) return this.#pendingConnect;
@@ -220,7 +232,17 @@ export class ThreeCoreWalletSession {
     return guarded;
   }
 
+  #assertAccess() {
+    let allowed = false;
+    try { allowed = this.#isAccessAllowed() === true; } catch {}
+    if (!allowed) {
+      this.disconnect();
+      reject("ACCESS_LOCKED", "Read access is locked; explicitly reconnect after resuming");
+    }
+  }
+
   #ensureEpoch(epoch) {
+    this.#assertAccess();
     if (epoch !== this.#connectionEpoch) {
       reject("SESSION_CANCELLED", "Wallet connection was cancelled before it finished");
     }
@@ -286,12 +308,16 @@ export class ThreeCoreWalletSession {
     }
   }
   #assertReadEpoch(epoch) {
+    this.#assertAccess();
     if (!this.#connected || epoch !== this.#connectionEpoch) {
       reject("SESSION_CHANGED", "The wallet changed or disconnected during a read-only request");
     }
   }
 
   #waitForProvider(start, timeoutMs, timeoutCode, cancelCode) {
+    if (this.#pendingRequests.size >= 32) {
+      return Promise.reject(new WalletConnectionError("RPC_INFLIGHT_LIMIT", "Too many pending Wallet reads"));
+    }
     return new Promise((resolve, rejectRequest) => {
       let settled = false;
       const finish = (complete, value) => {
@@ -310,25 +336,46 @@ export class ThreeCoreWalletSession {
         // EIP-1193 has no standard request cancellation. End the local wait
         // and consume late outcomes without publishing or retrying them.
         Promise.resolve(start()).then(
-          value => finish(resolve, value), error => finish(rejectRequest, error),
+          value => finish(resolve, value), error => finish(rejectRequest, safeProviderFailure(error)),
         );
       } catch (error) {
-        finish(rejectRequest, error);
+        finish(rejectRequest, safeProviderFailure(error));
       }
     });
   }
 
+  #guardRequest(args, allowPermission = false) {
+    try {
+      return guardRpcRequest(args, { account: this.#expectedAccount,
+        tokenAddress: args.method === "eth_getLogs"
+          ? catalogToken({ agent: this.#agent, chainId: this.#chainId }).address : undefined,
+        allowPermission });
+    } catch (error) {
+      if (error instanceof RpcSecurityError) reject(error.code, "Wallet request refused by the read-only policy");
+      throw error;
+    }
+  }
+
+  #guardResponse(method, value) {
+    try { return guardRpcResponse(method, value); }
+    catch (error) {
+      if (error instanceof RpcSecurityError) reject(error.code, "Wallet response exceeded the supported data boundary");
+      throw error;
+    }
+  }
+
   async #requestConnect(epoch, args) {
     this.#ensureEpoch(epoch);
+    args = this.#guardRequest(args, true);
     const permission = args.method === "eth_requestAccounts";
     try {
       const result = await this.#waitForProvider(
-        () => permission ? requestPermission(this.#provider) : this.#provider.request(args),
+        () => permission ? requestPermission(this.#provider, this.#request) : this.#request.call(this.#provider, args),
         permission ? this.#permissionTimeoutMs : this.#connectTimeoutMs,
         permission ? "PERMISSION_TIMEOUT" : "CONNECT_TIMEOUT", "SESSION_CANCELLED",
       );
       this.#ensureEpoch(epoch);
-      return result;
+      return this.#guardResponse(args.method, result);
     } catch (error) {
       this.#ensureEpoch(epoch);
       throw error;
@@ -337,11 +384,12 @@ export class ThreeCoreWalletSession {
 
   async #requestRead(epoch, args) {
     this.#assertReadEpoch(epoch);
+    args = this.#guardRequest(args);
     try {
-      const result = await this.#waitForProvider(() => this.#provider.request(args),
+      const result = await this.#waitForProvider(() => this.#request.call(this.#provider, args),
         this.#readTimeoutMs, "READ_TIMEOUT", "SESSION_CHANGED");
       this.#assertReadEpoch(epoch);
-      return result;
+      return this.#guardResponse(args.method, result);
     } catch (error) {
       // A delayed rejection belongs to its original connection, just like a
       // delayed successful response. It must not invalidate a new connection.
@@ -353,7 +401,7 @@ export class ThreeCoreWalletSession {
       try { timedOut = code === "READ_TIMEOUT" && error instanceof WalletConnectionError; } catch {}
       // Inspecting provider-owned properties can itself trigger a state change.
       this.#assertReadEpoch(epoch);
-      if ([4100, 4900, 4901].includes(code) || timedOut) this.disconnect();
+      if ([4100, 4900, 4901, "RPC_RESULT_LIMIT", "RPC_RESULT_SHAPE"].includes(code) || timedOut) this.disconnect();
       throw error;
     }
   }

@@ -88,7 +88,8 @@ test("unsupported hash selectors fail without retrying against latest or a block
     if (isStateRead(args)) throw unsupported;
   });
   await wallet.connect();
-  await assert.rejects(inspectDappSpender(wallet, options), (error) => error === unsupported);
+  await assert.rejects(inspectDappSpender(wallet, options), error =>
+    error !== unsupported && error.code === -32602 && !error.message.includes("Hash selector"));
   assert.equal(calls.filter(isStateRead).length, 1);
   assert.deepEqual(calls.filter(isStateRead)[0].params[1], { blockHash: HASH, requireCanonical: true });
 });
@@ -100,7 +101,8 @@ test("an unavailable or noncanonical state stops preflight without a partial rep
       if (method === "eth_call" && params[0].data.startsWith("0xdd62ed3e")) throw missing;
     });
     await wallet.connect();
-    await assert.rejects(inspectDappSpender(wallet, options), (error) => error === missing);
+    await assert.rejects(inspectDappSpender(wallet, options), error =>
+      error !== missing && error.code === code && !error.message.includes("Selected state"));
     assert.equal(calls.filter(({ method }) => method === "eth_call").length, 2);
   }
 });
@@ -130,7 +132,9 @@ test("malformed header numbers and hashes fail before state reads", async () => 
   ]) {
     const { wallet, calls } = setup(({ method }) => method === "eth_getBlockByNumber" ? header : undefined);
     await wallet.connect();
-    await assert.rejects(inspectDappSpender(wallet, options), { code: "INVALID_RPC_RESULT" });
+    const boundaryCode = Array.isArray(header) ? "RPC_RESULT_SHAPE"
+      : header.number?.length > 66 || header.hash?.length > 66 ? "RPC_RESULT_LIMIT" : "INVALID_RPC_RESULT";
+    await assert.rejects(inspectDappSpender(wallet, options), { code: boundaryCode });
     assert.equal(calls.some(isStateRead), false);
   }
 });

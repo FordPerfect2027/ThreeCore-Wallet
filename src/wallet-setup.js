@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { AGENT_IDS, normalizeAddress } from "./wallet-session.js";
 
 export const WALLET_SETUP_SCHEMA = "threecore-wallet-setup-v1";
@@ -73,7 +74,7 @@ export function encodeWalletSetup(value) {
 export function decodeWalletSetup(text) {
   if (typeof text !== "string" || !text.length || text.length > WALLET_SETUP_LIMIT) fail("SETUP_SIZE");
   let value;
-  try { value = JSON.parse(text.startsWith("\ufeff") ? text.slice(1) : text); }
+  try { value = parseSecurityJson(text.startsWith("\ufeff") ? text.slice(1) : text); }
   catch { fail("SETUP_JSON"); }
   return validateWalletSetup(value);
 }

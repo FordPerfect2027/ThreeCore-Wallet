@@ -21,7 +21,9 @@ class MockProvider {
     this.results = {};
   }
 
-  async request(args) {
+  request(args) { return this.respond(args); }
+
+  async respond(args) {
     const { method } = args;
     this.calls.push(args);
     if (method in this.results) {
@@ -377,10 +379,10 @@ for (const agent of AGENT_IDS) {
 
 test("simultaneous Connect clicks share one wallet permission request", async () => {
   const provider = new MockProvider();
-  const request = provider.request.bind(provider);
+  const request = provider.respond.bind(provider);
   let release;
   const gate = new Promise((resolve) => { release = resolve; });
-  provider.request = async (args) => {
+  provider.respond = async (args) => {
     if (args.method === "eth_requestAccounts") await gate;
     return request(args);
   };
@@ -398,10 +400,10 @@ test("simultaneous Connect clicks share one wallet permission request", async ()
 
 test("disconnect during a pending wallet permission prompt cancels the session", async () => {
   const provider = new MockProvider();
-  const request = provider.request.bind(provider);
+  const request = provider.respond.bind(provider);
   let release;
   const gate = new Promise((resolve) => { release = resolve; });
-  provider.request = async (args) => {
+  provider.respond = async (args) => {
     if (args.method === "eth_requestAccounts") await gate;
     return request(args);
   };
@@ -434,12 +436,12 @@ test("a previously disconnected account cannot re-enable itself through a stale 
 
 
 function controlledRequest(provider, blockedMethod) {
-  const originalRequest = provider.request.bind(provider);
+  const originalRequest = provider.respond.bind(provider);
   let signalStart;
   let releaseRequest;
   const started = new Promise((resolve) => { signalStart = resolve; });
   const gate = new Promise((resolve) => { releaseRequest = resolve; });
-  provider.request = async (args) => {
+  provider.respond = async (args) => {
     if (args.method === blockedMethod) {
       signalStart();
       await gate;

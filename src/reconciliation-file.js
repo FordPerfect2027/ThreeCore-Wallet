@@ -1,3 +1,5 @@
+import { readFormatFileText } from "./security-file.js";
+import { parseSecurityJson } from "./security-json.js";
 import {
   RECONCILIATION_LIMIT, validateReconciliationWorkspace, reconciliationFail, reconciliationShape,
   replaceReconciliationPart, reconciliationAgent,
@@ -55,7 +57,7 @@ export async function prepareReconciliationFile(input, { subtle = globalThis.cry
 export async function decodeReconciliationFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
   boundedText(text);
   let envelope;
-  try { envelope = JSON.parse(text); }
+  try { envelope = parseSecurityJson(text); }
   catch { reconciliationFail("RECONCILIATION_FILE_JSON"); }
   reconciliationShape(envelope, ["schema", "algorithm", "digest", "workspace"]);
   if (envelope.schema !== RECONCILIATION_FILE_SCHEMA || envelope.algorithm !== "SHA-256" ||
@@ -76,13 +78,9 @@ export async function readReconciliationFile(file, options) {
   const size = file.size;
   if (!Number.isSafeInteger(size) || size < 1 || size > RECONCILIATION_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") reconciliationFail("RECONCILIATION_FILE_SIZE");
-  let buffer;
-  try { buffer = await file.arrayBuffer(); }
-  catch { reconciliationFail("RECONCILIATION_FILE_READ"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== size) reconciliationFail("RECONCILIATION_FILE_SIZE");
-  let text;
-  try { text = new TextDecoder("utf-8", { fatal: true }).decode(buffer); }
-  catch { reconciliationFail("RECONCILIATION_FILE_ENCODING"); }
+  const text = await readFormatFileText(file, { maxBytes: RECONCILIATION_FILE_LIMIT, fail: reconciliationFail,
+    sizeCode: "RECONCILIATION_FILE_SIZE", readCode: "RECONCILIATION_FILE_READ", encodingCode: "RECONCILIATION_FILE_ENCODING",
+    signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeReconciliationFile(text, options);
 }
 

@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail } from "./transfer-codec.js";
 import { VAULT_DOCUMENT_SCHEMA, validateVaultDocument, mutateVaultDocument, vaultMetadata } from "./transfer-vault-model.js";
 
@@ -36,7 +37,7 @@ export async function prepareVaultCollection(input, { subtle = globalThis.crypto
 export async function decodeVaultCollection(text, { subtle = globalThis.crypto?.subtle } = {}) {
   checkSize(text);
   let envelope;
-  try { envelope = JSON.parse(text); }
+  try { envelope = parseSecurityJson(text); }
   catch { transferFail("TRANSFER_FILE_JSON"); }
   shape(envelope, ["schema", "algorithm", "digest", "document"]);
   if (envelope.schema !== VAULT_COLLECTION_SCHEMA || envelope.algorithm !== "SHA-256" ||

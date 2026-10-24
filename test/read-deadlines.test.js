@@ -199,7 +199,7 @@ test("completed and ordinary failed reads do not leave active deadlines", async 
   assert.equal(await f.wallet.getNativeBalance(), 42n);
   const error = Object.assign(Error("Unsupported"), { code: 4200 });
   f.setOverride(({ method }) => { if (method === "eth_call") throw error; });
-  await assert.rejects(f.wallet.getTokenBalance(TOKEN), actual => actual === error);
+  await assert.rejects(f.wallet.getTokenBalance(TOKEN), actual => actual.code === 4200 && actual !== error);
   const state = f.wallet.state;
   t.mock.timers.tick(120_000);
   await flush();

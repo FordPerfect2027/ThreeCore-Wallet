@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { allowanceObject, allowanceFail } from "./allowance-targets.js";
 import { validateAllowanceObservation } from "./allowance-observation.js";
 import { prepareAllowanceFile, decodeAllowanceFile } from "./allowance-file.js";
@@ -76,7 +77,7 @@ export async function decodeAllowanceBundle(bytes, { subtle = globalThis.crypto?
   let text, wrapper;
   try { text = new TextDecoder("utf-8", { fatal: true }).decode(bytes.slice()); }
   catch { allowanceFail("ALLOWANCE_FILE_ENCODING"); }
-  try { wrapper = JSON.parse(text); }
+  try { wrapper = parseSecurityJson(text); }
   catch { allowanceFail("ALLOWANCE_FILE_JSON"); }
   allowanceObject(wrapper, ["schema", "algorithm", "digest", "files"]);
   if (wrapper.schema !== ALLOWANCE_BUNDLE_SCHEMA || wrapper.algorithm !== "SHA-256" ||

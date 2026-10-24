@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail } from "./transfer-codec.js";
 import { validateTransferArchive } from "./transfer-archive.js";
 
@@ -41,7 +42,7 @@ export async function readTransferArchive(file, { subtle = globalThis.crypto?.su
   try { text = new TextDecoder("utf-8", { fatal: true }).decode(buffer); }
   catch { transferFail("TRANSFER_FILE_ENCODING"); }
   let envelope;
-  try { envelope = JSON.parse(text); }
+  try { envelope = parseSecurityJson(text); }
   catch { transferFail("TRANSFER_FILE_JSON"); }
   shape(envelope, ["schema", "algorithm", "digest", "payload"]);
   if (envelope.schema !== FILE_SCHEMA || envelope.algorithm !== "SHA-256" ||

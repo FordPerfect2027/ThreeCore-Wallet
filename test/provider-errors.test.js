@@ -62,7 +62,7 @@ for (const code of terminalCodes) {
       const epoch = f.wallet.state.connectionEpoch;
       const error = fault(code);
       f.setOverride(args => args.method === method ? Promise.reject(error) : undefined);
-      await assert.rejects(read(f.wallet), actual => actual === error);
+      await assert.rejects(read(f.wallet), actual => actual.code === code && actual !== error && !Object.hasOwn(actual, "data"));
       assert.equal(f.wallet.state.connected, false);
       assert.equal(f.wallet.state.account, null);
       assert.equal(f.wallet.state.connectionEpoch, epoch + 1);
@@ -100,12 +100,13 @@ for (const code of terminalCodes) {
 }
 
 for (const code of [4001, 4200, -32602, -32000, "4900"]) {
-  test(`non-terminal code ${JSON.stringify(code)} preserves the session and original error`, async () => {
+  test(`non-terminal code ${JSON.stringify(code)} preserves the session with a safe error`, async () => {
     const f = fixture();
     await f.wallet.connect();
     const state = f.wallet.state, error = fault(code);
     f.setOverride(({ method }) => method === "eth_getBalance" ? Promise.reject(error) : undefined);
-    await assert.rejects(f.wallet.getNativeBalance(BLOCK.hash), actual => actual === error);
+    await assert.rejects(f.wallet.getNativeBalance(BLOCK.hash), actual =>
+      actual.code === (typeof code === "number" ? code : "PROVIDER_FAILURE") && actual !== error);
     assert.deepEqual(f.wallet.state, state);
     f.setOverride(() => undefined);
     assert.equal(await f.wallet.getNativeBalance(BLOCK.hash), 42n);
@@ -118,7 +119,7 @@ test("a synchronous provider throw also invalidates the current connection", asy
   const f = fixture(), error = fault(4900);
   await f.wallet.connect();
   f.setOverride(({ method }) => { if (method === "eth_getBalance") throw error; });
-  await assert.rejects(f.wallet.getNativeBalance(), actual => actual === error);
+  await assert.rejects(f.wallet.getNativeBalance(), actual => actual.code === 4900 && actual !== error);
   assert.equal(f.wallet.state.connected, false);
 });
 

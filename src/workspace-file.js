@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { decodeWorkspace, encodeWorkspace, workspaceData, workspaceKeys,
   WORKSPACE_TEXT_LIMIT, workspaceFail, WorkspaceError } from "./workspace-format.js";
 
@@ -34,7 +35,7 @@ export async function decodeWorkspaceFile(bytes, { subtle } = {}) {
   try { text = new TextDecoder("utf-8", { fatal: true }).decode(bytes); }
   catch { workspaceFail("WORKSPACE_FILE_ENCODING"); }
   let parsed;
-  try { parsed = workspaceData(JSON.parse(text)); }
+  try { parsed = workspaceData(parseSecurityJson(text)); }
   catch (error) {
     if (error instanceof WorkspaceError) throw error;
     workspaceFail("WORKSPACE_FILE_JSON");

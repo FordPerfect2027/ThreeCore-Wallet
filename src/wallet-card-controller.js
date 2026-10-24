@@ -14,7 +14,7 @@ import { readErrorCode, readErrorMessage } from "./provider-error.js";
  * No timers, automatic reconnects, signatures or transaction requests.
  */
 export function createWalletCardController({
-  agent, siteOrigin, onChange = () => {},
+  agent, siteOrigin, onChange = () => {}, isAccessAllowed = () => true,
   createSession = (options) => new ThreeCoreWalletSession(options),
 }) {
   let wallet = null;
@@ -78,7 +78,14 @@ export function createWalletCardController({
       }
     }
   }
+  function allowed() {
+    try { return isAccessAllowed() === true; } catch { return false; }
+  }
   function connect({ provider, account, chainId } = {}) {
+    if (!allowed()) {
+      disconnect("接続操作を停止しています。保護パネルから再開してください。");
+      return Promise.resolve(false);
+    }
     if (disposed) return Promise.resolve(false);
     if (pendingConnect && pendingConnect.provider === provider &&
         pendingConnect.account === account && pendingConnect.chainId === chainId) {
@@ -92,7 +99,7 @@ export function createWalletCardController({
       try {
         const expectedAccount = normalizeAddress(account);
         session = createSession({
-          provider, agent, siteOrigin, approvedOrigins: [siteOrigin], expectedAccount, chainId,
+          provider, agent, siteOrigin, isAccessAllowed, approvedOrigins: [siteOrigin], expectedAccount, chainId,
         });
         wallet = session;
         watch(provider, session, expectedAccount, chainId);
@@ -129,6 +136,7 @@ export function createWalletCardController({
     publish(wallet?.state.connected ? "connected" : "disconnected");
   }
   async function runRead(task) {
+    if (!allowed()) { disconnect("接続操作を停止しています。"); return false; }
     if (disposed) return false;
     if (!wallet?.state.connected) {
       // A read click must not cancel a pending permission prompt.

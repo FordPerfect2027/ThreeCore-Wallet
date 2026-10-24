@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { AGENT_IDS, normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
 
 const MAX_UINT256 = (1n << 256n) - 1n;
@@ -132,7 +133,7 @@ export function decodePortfolioReport(text) {
     invalid("Expected a bounded JSON report");
   }
   let document;
-  try { document = JSON.parse(text); }
+  try { document = parseSecurityJson(text); }
   catch { invalid("Invalid JSON"); }
   keys(document, ["schema", "historicalObservation", "snapshot"]);
   if (document.schema !== SCHEMA || document.historicalObservation !== true) {

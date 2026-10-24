@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { validatePortfolioSnapshot, encodePortfolioReport, decodePortfolioReport } from "./portfolio-report.js";
 import { comparePortfolioSnapshots } from "./portfolio-comparison.js";
 
@@ -195,7 +196,7 @@ export function createPortfolioHistory({ capacity = HISTORY_LIMIT } = {}) {
       fail("HISTORY_SIZE", "Expected a bounded history JSON document");
     }
     let document;
-    try { document = JSON.parse(text); }
+    try { document = parseSecurityJson(text); }
     catch { fail("INVALID_HISTORY", "Invalid history JSON"); }
     exactObject(document, ["schema", "historicalObservation", "reports"]);
     if (document.schema !== HISTORY_SCHEMA || document.historicalObservation !== true) {

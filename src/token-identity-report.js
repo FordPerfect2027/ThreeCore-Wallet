@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { identityObject, identityFail } from "./token-identity-codec.js";
 import { validateTokenObservation } from "./token-identity-model.js";
 
@@ -29,7 +30,7 @@ export function encodeTokenObservation(input) {
 export function decodeTokenObservation(text) {
   bytesFor(text);
   let input;
-  try { input = JSON.parse(text); }
+  try { input = parseSecurityJson(text); }
   catch { identityFail("IDENTITY_FILE_JSON"); }
   return validateTokenObservation(input);
 }
@@ -67,7 +68,7 @@ export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypt
   try { text = new TextDecoder("utf-8", { fatal: true }).decode(bytes); }
   catch { identityFail("IDENTITY_FILE_ENCODING"); }
   let document;
-  try { document = JSON.parse(text); }
+  try { document = parseSecurityJson(text); }
   catch { identityFail("IDENTITY_FILE_JSON"); }
   identityObject(document, ["schema", "algorithm", "digest", "observation"]);
   if (document.schema !== IDENTITY_FILE_SCHEMA || document.algorithm !== "SHA-256" ||

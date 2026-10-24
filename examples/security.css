@@ -1,0 +1,27 @@
+.security-panel {
+  padding: 1.25rem;
+  border: 1px solid #62c5c0;
+  border-radius: 14px;
+  background: #102c37;
+  margin: 1.5rem 0;
+  overflow-wrap: anywhere;
+}
+.security-panel h2 { margin-top: 0; }
+.security-panel label { display: block; margin: .8rem 0; }
+.security-panel select { max-width: 22rem; }
+.security-panel input[type=checkbox] { display: inline-block; width: auto; margin-right: .6rem; }
+.security-panel button { min-height: 44px; }
+.security-panel .security-status { padding: .75rem; border-left: 4px solid #70d0c7; }
+.security-panel[data-locked=true] .security-status { border-color: #ffc169; color: #ffe1b2; }
+.security-panel :focus-visible { outline: 3px solid #ffd369; outline-offset: 3px; }
+.security-panel .security-scope, .security-panel .security-policy { font-size: .9rem; }
+@media (max-width: 480px) {
+  .security-panel { padding: .8rem; }
+  .security-panel button { display: block; width: 100%; box-sizing: border-box; }
+}
+.security-journal { margin-top: 1.3rem; padding-top: 1rem; border-top: 1px solid #b6cbd9; }
+.security-journal h3 { margin: 0 0 .6rem; }
+.security-journal ol { padding-left: 1.7rem; line-height: 1.8; }
+.security-journal-output { display: block; box-sizing: border-box; width: 100%; margin-top: .6rem; font: .82rem/1.5 monospace; }
+.security-journal [hidden] { display: none; }
+.security-journal button { margin: .3rem .6rem .7rem 0; }

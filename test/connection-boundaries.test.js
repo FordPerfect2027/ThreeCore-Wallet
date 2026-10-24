@@ -14,7 +14,8 @@ function fixture(agent = "DAT") {
     accounts: [ACCOUNT],
     chain: "0x2105",
     result: WORD,
-    async request({ method }) {
+    request(args) { return this.respond(args); },
+    async respond({ method }) {
       calls.push(method);
       if (method === "eth_chainId") return this.chain;
       if (["eth_accounts", "eth_requestAccounts"].includes(method)) return [...this.accounts];
@@ -39,12 +40,12 @@ function fixture(agent = "DAT") {
 }
 
 function deferNext(provider, method) {
-  const request = provider.request.bind(provider);
+  const request = provider.respond.bind(provider);
   let started, resolve;
   const start = new Promise(r => { started = r; });
   const gate = new Promise(r => { resolve = r; });
   let held = false;
-  provider.request = async args => {
+  provider.respond = async args => {
     if (args.method === method && !held) {
       held = true;
       started();
@@ -78,9 +79,9 @@ for (const [event, payload] of [
 
 test("connection rechecks the exposed account after the permission response", async () => {
   const { wallet, provider } = fixture();
-  const request = provider.request.bind(provider);
+  const request = provider.respond.bind(provider);
   let chainReads = 0;
-  provider.request = async args => {
+  provider.respond = async args => {
     if (args.method === "eth_chainId" && ++chainReads === 2) {
       provider.accounts = [OTHER]; // No event: the preflight must still detect this.
     }

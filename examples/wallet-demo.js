@@ -1,3 +1,4 @@
+import { mountSecurityPanel } from "./security-panel.js";
 import { mountReportSetPanel } from "./report-set-panel.js";
 import { mountReportHistoryPanel } from "./report-history-panel.js";
 import { mountPeriodReportPanel } from "./period-report-panel.js";
@@ -31,6 +32,22 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   let transferVaultPanel;
   let reconciliationPanel;
   let periodPanel;
+  const securityHost = document.createElement("div");
+  grid.before(securityHost);
+  const securityPanel = mountSecurityPanel({ document, parent: securityHost, eventTarget,
+    onLock() {
+      for (const controller of controllers.values()) {
+        try { controller.disconnect("保護のため接続を停止しました。再開後に接続し直してください。"); } catch {}
+      }
+      periodPanel?.invalidate();
+    },
+    onChange(state) {
+      for (const card of cards) {
+        const current = controllers.get(card)?.state;
+        if (current) render(card, current);
+      }
+    },
+  });
   const allowanceStates = new Map(AGENT_IDS.map(agent => [agent, { agent, observation: null, provenance: null }]));
   const allowanceHost = document.createElement("section");
   allowanceHost.className = "allowance-overview";
@@ -79,7 +96,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   function render(card, state) {
     const connected = state.connection?.connected === true;
     const busy = state.phase === "connecting" || state.phase === "reading";
-    card.querySelector(".connect").disabled = state.phase === "connecting";
+    card.querySelector(".connect").disabled = state.phase === "connecting" || !securityPanel.state().canRead;
     card.querySelector(".read").disabled = busy || !connected;
     card.querySelector(".inspect").disabled = busy || !connected;
     card.querySelector(".disconnect").disabled = !connected && state.phase !== "connecting";
@@ -134,7 +151,8 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     let allowancePanel;
     let transferPanel;
     let wasConnected = false;
-    const controller = createWalletCardController({ agent, siteOrigin, createSession, onChange: state => {
+    const controller = createWalletCardController({ agent, siteOrigin, createSession,
+      isAccessAllowed: securityPanel.check, onChange: state => {
       render(card, state);
       if (wasConnected && !state.connection?.connected) periodPanel?.invalidate();
       if (wasConnected && !state.connection?.connected) panel?.invalidate();
@@ -386,6 +404,8 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   renderWalletProviders(registry.list());
   return Object.freeze({
     dispose() {
+      securityPanel.dispose();
+      securityHost.remove();
       reportSet.dispose();
       reportSetHost.remove();
       reportHistory.dispose();

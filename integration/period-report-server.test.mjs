@@ -45,7 +45,7 @@ test("report preview has a complete local import graph", () => served(true, asyn
   const queue = [...modules, ...fixtures.filter(path => path.endsWith(".js"))], seen = new Set();
   while (queue.length) {
     const path = queue.pop(); if (seen.has(path)) continue; seen.add(path);
-    assert.ok(seen.size < 140);
+    assert.ok(seen.size < 155);
     const response = await fetch(base + path); assert.equal(response.status, 200, path);
     const source = await response.text();
     for (const match of source.matchAll(/from\s+["']([^"']+)["']/g)) {

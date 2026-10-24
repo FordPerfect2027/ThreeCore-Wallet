@@ -1,3 +1,4 @@
+import { SECURITY_HEADERS, inspectLocalRequest } from "./security-http.js";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -5,6 +6,13 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/src/security-journal.js", { file: resolve(here, "../src/security-journal.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/security-journal-panel.js", { file: resolve(here, "security-journal-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/security-lock.js", { file: resolve(here, "../src/security-lock.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/security-panel.js", { file: resolve(here, "security-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/security.css", { file: resolve(here, "security.css"), mime: "text/css; charset=utf-8" }],
+  ...["json", "file", "rpc", "provider-error"].map(name =>
+    ["/src/security-" + name + ".js", { file: resolve(here, "../src/security-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ...["model", "engine", "file", "view", "export", "controller", "diagnostics", "timeline"].map(name =>
     ["/src/report-set-" + name + ".js", { file: resolve(here, "../src/report-set-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/examples/report-set-panel.js", { file: resolve(here, "report-set-panel.js"), mime: "text/javascript; charset=utf-8" }],
@@ -76,6 +84,9 @@ const publicPaths = [
 export function createDemoServer({ uiTest = false } = {}) {
   const paths = new Map(publicPaths);
   if (uiTest) {
+    paths.set("/test/browser/security-demo/", { file: resolve(here, "../test/browser/security-demo.html"), mime: "text/html; charset=utf-8" });
+    paths.set("/test/browser/security-demo.js", { file: resolve(here, "../test/browser/security-demo.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/security-ui-tests.js", { file: resolve(here, "../test/browser/security-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/report-set-demo/", { file: resolve(here, "../test/browser/report-set-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/report-set-demo.js", { file: resolve(here, "../test/browser/report-set-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/report-set-ui-tests.js", { file: resolve(here, "../test/browser/report-set-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
@@ -130,8 +141,14 @@ export function createDemoServer({ uiTest = false } = {}) {
     paths.set("/test/browser/ui-tests.js", { file: resolve(here, "../test/browser/ui-tests.js"), mime: "text/javascript; charset=utf-8" });
   }
   return createServer(async (request, response) => {
-    const url = new URL(request.url ?? "/", "http://127.0.0.1");
-    const item = paths.get(url.pathname);
+    for (const [name, value] of Object.entries(SECURITY_HEADERS)) response.setHeader(name, value);
+    const verdict = inspectLocalRequest(request);
+    if (verdict.status !== 200) {
+      response.writeHead(verdict.status, { "content-type": "text/plain; charset=utf-8" });
+      response.end(verdict.reason);
+      return;
+    }
+    const item = paths.get(verdict.pathname);
     if (request.method !== "GET" || !item) {
       response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
       response.end("Not found");

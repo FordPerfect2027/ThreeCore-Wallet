@@ -49,7 +49,7 @@ test("reconciliation import graph resolves locally, with no CDN dependency", () 
     const path = pending.pop();
     if (visited.has(path)) continue;
     visited.add(path);
-    assert.ok(visited.size < 140);
+    assert.ok(visited.size < 155);
     const response = await fetch(base + path);
     assert.equal(response.status, 200, path);
     const source = await response.text();

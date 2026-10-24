@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { AGENT_IDS, normalizeAddress } from "./wallet-session.js";
 
 const SCHEMA = "threecore-token-plan-v1";
@@ -88,7 +89,7 @@ export function decodeTokenPlan(text) {
     fail("INVALID_PLAN", "Expected a token plan JSON up to 8192 characters");
   }
   let data;
-  try { data = JSON.parse(text); }
+  try { data = parseSecurityJson(text); }
   catch { fail("INVALID_PLAN", "Token plan JSON cannot be parsed"); }
   return validateTokenPlan(data);
 }

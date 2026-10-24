@@ -1,3 +1,5 @@
+import { readFormatFileText } from "./security-file.js";
+import { parseSecurityJson } from "./security-json.js";
 import { periodShape, periodFail } from "./period-plan.js";
 import { validateReportHistory } from "./report-history-model.js";
 
@@ -36,7 +38,7 @@ export async function prepareReportHistoryFile(input, { subtle = globalThis.cryp
 export async function decodeReportHistoryFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
   bounded(text);
   let envelope;
-  try { envelope = JSON.parse(text); } catch { periodFail("PERIOD_FILE_JSON"); }
+  try { envelope = parseSecurityJson(text); } catch { periodFail("PERIOD_FILE_JSON"); }
   periodShape(envelope, ["schema", "algorithm", "digest", "document"]);
   if (envelope.schema !== REPORT_HISTORY_FILE_SCHEMA || envelope.algorithm !== "SHA-256" ||
       typeof envelope.digest !== "string" || !/^[0-9a-f]{64}$/.test(envelope.digest)) periodFail("PERIOD_HISTORY_FILE_SCHEMA");
@@ -51,11 +53,8 @@ export async function readReportHistoryFile(file, options) {
       /[/\\\u0000-\u001f\u007f]/.test(file.name)) periodFail("PERIOD_FILENAME");
   if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > REPORT_HISTORY_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") periodFail("PERIOD_HISTORY_FILE_SIZE");
-  let buffer;
-  try { buffer = await file.arrayBuffer(); } catch { periodFail("PERIOD_FILE_READ"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== file.size) periodFail("PERIOD_HISTORY_FILE_SIZE");
-  let text;
-  try { text = new TextDecoder("utf-8", { fatal: true }).decode(buffer); }
-  catch { periodFail("PERIOD_FILE_ENCODING"); }
+  const text = await readFormatFileText(file, { maxBytes: REPORT_HISTORY_FILE_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_HISTORY_FILE_SIZE", readCode: "PERIOD_FILE_READ", encodingCode: "PERIOD_FILE_ENCODING",
+    signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeReportHistoryFile(text, options);
 }

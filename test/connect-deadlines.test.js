@@ -247,7 +247,7 @@ for (const sync of [true, false]) {
         return Promise.reject(error);
       }
     });
-    await assert.rejects(f.wallet.connect(), actual => actual === error);
+    await assert.rejects(f.wallet.connect(), actual => actual.code === 4001 && actual !== error);
     f.setOverride(() => undefined);
     assert.equal((await f.wallet.connect()).connected, true);
     f.wallet.disconnect();

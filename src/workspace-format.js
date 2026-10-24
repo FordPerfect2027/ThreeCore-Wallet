@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { AGENT_IDS, normalizeAddress } from "./wallet-session.js";
 import { validateWalletSetup, WALLET_SETUP_SCHEMA } from "./wallet-setup.js";
 import { createPortfolioHistory, HISTORY_TEXT_LIMIT } from "./portfolio-history.js";
@@ -153,7 +154,7 @@ export function encodeWorkspace(value) {
 export function decodeWorkspace(text) {
   if (typeof text !== "string" || !text.length || text.length > WORKSPACE_TEXT_LIMIT) workspaceFail("WORKSPACE_SIZE");
   let parsed;
-  try { parsed = JSON.parse(text.startsWith("\ufeff") ? text.slice(1) : text); }
+  try { parsed = parseSecurityJson(text.startsWith("\ufeff") ? text.slice(1) : text); }
   catch { workspaceFail("WORKSPACE_JSON"); }
   return validateWorkspace(parsed);
 }

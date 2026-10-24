@@ -1,3 +1,4 @@
+import { parseSecurityJson } from "./security-json.js";
 import { CHECKPOINT_SCHEMA, CHECKPOINT_TOTAL_BYTES, checkpointFail,
   validateCheckpointDocument, mutateCheckpoints, checkpointMetadata } from "./checkpoint-model.js";
 import { decodeWorkspaceFile } from "./workspace-file.js";
@@ -41,7 +42,7 @@ export async function decodeCheckpointCollection(text, { subtle } = {}) {
   if (typeof text !== "string" || !text.length || text.length > CHECKPOINT_TRANSFER_LIMIT ||
       new TextEncoder().encode(text).byteLength > CHECKPOINT_TRANSFER_LIMIT) checkpointFail("CHECKPOINT_TRANSFER_SIZE");
   let value;
-  try { value = JSON.parse(text); } catch { checkpointFail("CHECKPOINT_TRANSFER_JSON"); }
+  try { value = parseSecurityJson(text); } catch { checkpointFail("CHECKPOINT_TRANSFER_JSON"); }
   if (!value || typeof value !== "object" || Array.isArray(value) ||
       Object.keys(value).length !== 4 || !["schema", "algorithm", "digest", "entries"].every(key => Object.hasOwn(value, key)) ||
       value.schema !== CHECKPOINT_TRANSFER_SCHEMA || value.algorithm !== "SHA-256" ||

@@ -1,3 +1,5 @@
+import { readFormatFileText } from "./security-file.js";
+import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail, validateTransferSnapshot } from "./transfer-codec.js";
 import { transferCsv, transferSummaryText } from "./transfer-view.js";
 
@@ -35,7 +37,7 @@ export async function encodeTransferFile(input, { subtle = globalThis.crypto?.su
 export async function decodeTransferFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
   boundedText(text);
   let raw;
-  try { raw = JSON.parse(text); }
+  try { raw = parseSecurityJson(text); }
   catch { transferFail("TRANSFER_FILE_JSON"); }
   shape(raw, ["schema", "algorithm", "digest", "payload"]);
   if (raw.schema !== TRANSFER_FILE_SCHEMA || raw.algorithm !== "SHA-256" ||
@@ -52,13 +54,9 @@ export async function readTransferFile(file, options) {
       !/\.json$/i.test(file.name) || /[/\\\u0000-\u001f\u007f]/.test(file.name)) transferFail("TRANSFER_FILE_NAME");
   if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > TRANSFER_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") transferFail("TRANSFER_FILE_SIZE");
-  let buffer;
-  try { buffer = await file.arrayBuffer(); }
-  catch { transferFail("TRANSFER_FILE_READ"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== file.size) transferFail("TRANSFER_FILE_SIZE");
-  let text;
-  try { text = new TextDecoder("utf-8", { fatal: true }).decode(buffer); }
-  catch { transferFail("TRANSFER_FILE_ENCODING"); }
+  const text = await readFormatFileText(file, { maxBytes: TRANSFER_FILE_LIMIT, fail: transferFail,
+    sizeCode: "TRANSFER_FILE_SIZE", readCode: "TRANSFER_FILE_READ", encodingCode: "TRANSFER_FILE_ENCODING",
+    signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeTransferFile(text, options);
 }
 

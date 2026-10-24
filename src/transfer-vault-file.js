@@ -1,3 +1,5 @@
+import { readFormatFileText } from "./security-file.js";
+import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail } from "./transfer-codec.js";
 import { VAULT_BUNDLE_BYTES, validateVaultBundle, vaultHasRecords } from "./transfer-vault-model.js";
 import { readTransferArchive } from "./transfer-archive-file.js";
@@ -37,7 +39,7 @@ export async function prepareVaultFile(input, { subtle = globalThis.crypto?.subt
 export async function decodeVaultFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
   bounded(text);
   let value;
-  try { value = JSON.parse(text); }
+  try { value = parseSecurityJson(text); }
   catch { transferFail("TRANSFER_FILE_JSON"); }
   shape(value, ["schema", "algorithm", "digest", "bundle"]);
   if (value.schema !== VAULT_FILE_SCHEMA || value.algorithm !== "SHA-256" ||
@@ -54,13 +56,9 @@ export async function readVaultFile(file, options) {
       !/\.json$/i.test(file.name) || /[/\\\u0000-\u001f\u007f]/.test(file.name)) transferFail("TRANSFER_FILE_NAME");
   if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > VAULT_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") transferFail("TRANSFER_VAULT_FILE_SIZE");
-  let buffer;
-  try { buffer = await file.arrayBuffer(); }
-  catch { transferFail("TRANSFER_FILE_READ"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== file.size) transferFail("TRANSFER_VAULT_FILE_SIZE");
-  let text;
-  try { text = new TextDecoder("utf-8", { fatal: true }).decode(buffer); }
-  catch { transferFail("TRANSFER_FILE_ENCODING"); }
+  const text = await readFormatFileText(file, { maxBytes: VAULT_FILE_LIMIT, fail: transferFail,
+    sizeCode: "TRANSFER_VAULT_FILE_SIZE", readCode: "TRANSFER_FILE_READ", encodingCode: "TRANSFER_FILE_ENCODING",
+    signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeVaultFile(text, options);
 }
 

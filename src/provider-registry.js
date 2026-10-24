@@ -5,6 +5,7 @@
  * any signing or transaction. Wallet metadata is self-reported and untrusted:
  * an rdns label or friendly name is NOT proof of the provider's identity.
  */
+export const MAX_DISCOVERED_WALLETS = 32;
 export const ANNOUNCE_EVENT = "eip6963:announceProvider";
 export const REQUEST_EVENT = "eip6963:requestProvider";
 
@@ -20,7 +21,7 @@ function snapshotAnnouncement(event) {
     if (!info || typeof info !== "object" || typeof provider?.request !== "function") return null;
     const { uuid, name, rdns } = info;
     if (typeof uuid !== "string" || !/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(uuid) ||
-        typeof name !== "string" || name.length === 0 || name.length > 100 ||
+        typeof name !== "string" || name.length === 0 || name.length > 100 || /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/u.test(name) ||
         typeof rdns !== "string" || rdns.length === 0 || rdns.length > 255 ||
         !/^[a-z0-9-]+(?:\.[a-z0-9-]+)*$/i.test(rdns)) return null;
     // UUID hex case is not a new identity. Do not read or render icon/extra
@@ -56,16 +57,16 @@ export function createWalletProviderRegistry({ eventTarget, onChange = () => {} 
   }
 
   function onAnnouncement(event) {
-    if (disposed) return;
+    if (disposed || found.size >= MAX_DISCOVERED_WALLETS) return;
     const entry = snapshotAnnouncement(event);
     // A getter can reenter the registry and dispose it during validation.
-    if (disposed || !entry) return;
+    if (disposed || !entry || found.size >= MAX_DISCOVERED_WALLETS) return;
     const { uuid } = entry.info;
     // The first wallet announcing a UUID wins; do not silently replace the
     // provider selected by a user when a duplicate announcement arrives.
     if (found.has(uuid)) return;
     found.set(uuid, entry);
-    onChange(list());
+    try { onChange(list()); } catch { /* A UI observer cannot corrupt discovery state. */ }
   }
 
   eventTarget.addEventListener(ANNOUNCE_EVENT, onAnnouncement);

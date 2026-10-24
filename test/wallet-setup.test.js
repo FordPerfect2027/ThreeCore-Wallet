@@ -133,7 +133,8 @@ test("UTF-8 BOM is accepted only at the start of JSON", () => {
 
 test("prototype pollution properties are rejected", () => {
   const text = encodeWalletSetup(setup()).replace('"schema":', '"__proto__":{"polluted":true},"schema":');
-  assert.throws(() => decodeWalletSetup(text), { code: "SETUP_SHAPE" });
+  // Reject the unsafe member during the new JSON preflight, before schema validation.
+  assert.throws(() => decodeWalletSetup(text), { code: "SETUP_JSON" });
   assert.equal({}.polluted, undefined);
 });
 
