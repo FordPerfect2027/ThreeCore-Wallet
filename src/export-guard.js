@@ -1,3 +1,4 @@
+import { createStateNotifier } from "./state-notifier.js";
 import { EXPORT_LIMITS, ExportSecurityError, exportFail, exportErrorCode,
   requireSyncExport, consumeExportCallback } from "./export-policy.js";
 import { inspectExportPayload } from "./export-payload.js";
@@ -9,7 +10,7 @@ export function createExportGuard({ createResource, now = () => performance.now(
   const jobs = new Set(), observers = new Set();
   const counts = { accepted: 0, offered: 0, rejected: 0, failed: 0, released: 0 };
   let reservedBytes = 0, disposed = false, clockFault = false, lastTime = null;
-  let offering = false, stopping = 0, epoch = 0, notifying = false, queued = false;
+  let offering = false, stopping = 0, epoch = 0;
   const bump = key => { counts[key] = Math.min(Number.MAX_SAFE_INTEGER, counts[key] + 1); };
   function state() {
     const pendingCleanup = [...jobs].filter(job => job.cleanupFailed).length;
@@ -19,25 +20,15 @@ export function createExportGuard({ createResource, now = () => performance.now(
       active: jobs.size, pendingCleanup, reservedBytes,
       maxActive: EXPORT_LIMITS.active, maxReservedBytes: EXPORT_LIMITS.totalBytes, ...counts });
   }
-  function notify() {
-    if (notifying) { queued = true; return; }
-    notifying = true;
-    try {
-      for (let round = 0; round < 2; round++) {
-        queued = false;
-        const snapshot = state();
-        for (const listener of [...observers]) if (observers.has(listener)) consumeExportCallback(() => listener(snapshot));
-        if (!queued) break;
-      }
-    } finally { notifying = false; queued = false; }
-  }
+  const notifications = createStateNotifier({ observers, read: state, deferred: false });
+  const notify = notifications.notify;
   function subscribe(listener) {
     if (typeof listener !== "function") exportFail("EXPORT_OPTIONS");
     if (disposed) return () => {};
     if (!observers.has(listener) && observers.size >= EXPORT_LIMITS.observers) exportFail("EXPORT_BUSY");
     observers.add(listener);
-    consumeExportCallback(() => listener(state()));
-    return () => observers.delete(listener);
+    notifications.initial(listener);
+    return () => { notifications.forget(listener); return observers.delete(listener); };
   }
   function clearTimer(job) {
     const old = job.timer;

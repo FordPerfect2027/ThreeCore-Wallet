@@ -1,3 +1,4 @@
+import { createStateNotifier } from "./state-notifier.js";
 import { createRpcCapacity } from "./rpc-capacity.js";
 import { safeProviderFailure } from "./security-provider-error.js";
 
@@ -39,7 +40,6 @@ export function createRpcSupervisor({
   let fault = null;
   let disposed = false;
   let previous = null;
-  let notification = false;
 
   function bump(name) {
     counters[name] = Math.min(RPC_COUNTER_MAX, counters[name] + 1);
@@ -48,18 +48,8 @@ export function createRpcSupervisor({
     return Object.freeze({ schema: "threecore-rpc-status-v1", ...capacity.state(),
       ...counters, fault, disposed, canStart: !fault && !disposed });
   }
-  function publish() {
-    if (notification) return;
-    notification = true;
-    queueMicrotask(() => {
-      notification = false;
-      const snapshot = state();
-      for (const observer of [...observers]) {
-        if (!observers.has(observer)) continue;
-        try { Promise.resolve(observer(snapshot)).catch(() => {}); } catch {}
-      }
-    });
-  }
+  const notifications = createStateNotifier({ observers, read: state, deferred: true });
+  const publish = notifications.notify;
   function closeForClock() {
     if (fault) return;
     fault = "RPC_CLOCK";
@@ -201,7 +191,7 @@ export function createRpcSupervisor({
       throw TypeError("Cannot subscribe to request status");
     }
     observers.add(observer);
-    return () => observers.delete(observer);
+    return () => { notifications.forget(observer); return observers.delete(observer); };
   }
   function dispose() {
     if (disposed) return;

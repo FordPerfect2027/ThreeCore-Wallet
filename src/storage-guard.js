@@ -1,3 +1,4 @@
+import { createStateNotifier } from "./state-notifier.js";
 import { STORAGE_CONCURRENCY, STORAGE_OBSERVERS, STORAGE_COUNTER_LIMIT,
   storageFail, observeStorageCleanup } from "./storage-guard-policy.js";
 
@@ -13,7 +14,6 @@ export function createStorageGuard() {
   let disposed = false;
   let clockFault = false;
   let cancelling = false;
-  let publishing = false;
   const active = new Set();
   const observers = new Set();
   const counts = { accepted: 0, completed: 0, failed: 0, cancelled: 0,
@@ -26,17 +26,8 @@ export function createStorageGuard() {
       canStart: !disposed && !clockFault && !cancelling && active.size < STORAGE_CONCURRENCY,
       active: active.size, maxActive: STORAGE_CONCURRENCY, ...byPhase, ...counts });
   }
-  function publish() {
-    if (publishing || !observers.size) return;
-    publishing = true;
-    queueMicrotask(() => {
-      publishing = false;
-      const snapshot = state();
-      for (const observer of [...observers]) {
-        if (observers.has(observer)) observeStorageCleanup(() => observer(snapshot));
-      }
-    });
-  }
+  const notifications = createStateNotifier({ observers, read: state, deferred: true });
+  const publish = notifications.notify;
   function stop(token, code) {
     if (token.finished || token.stopped) return false;
     token.stopped = true;
@@ -100,7 +91,7 @@ export function createStorageGuard() {
         storageFail("CHECKPOINT_ADAPTER");
       }
       observers.add(observer);
-      return () => observers.delete(observer);
+      return () => { notifications.forget(observer); return observers.delete(observer); };
     },
     dispose() {
       if (disposed) return;

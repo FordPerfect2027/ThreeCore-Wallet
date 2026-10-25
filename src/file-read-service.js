@@ -1,3 +1,4 @@
+import { createStateNotifier } from "./state-notifier.js";
 import { SecurityFileError, FILE_SECURITY_LIMIT, FILE_READ_TIMEOUT, FILE_CHUNK_LIMIT,
   FILE_READ_CONCURRENCY, FILE_READ_RESERVED_LIMIT, FILE_READ_OBSERVER_LIMIT,
   fileReadFail as fail, fileReadCode, consumeCleanup } from "./file-read-policy.js";
@@ -17,9 +18,8 @@ export function createFileReadService({ now = () => globalThis.performance.now()
   let disposed = false;
   let clockFault = false;
   let lastTime = null;
-  let notifying = false;
-  let notificationQueued = false;
   let cancellationEpoch = 0;
+  let cancelling = false;
   const counts = { accepted: 0, completed: 0, failed: 0, cancelled: 0, timedOut: 0, rejected: 0 };
   const bump = key => { counts[key] = Math.min(Number.MAX_SAFE_INTEGER, counts[key] + 1); };
   function state() {
@@ -30,20 +30,8 @@ export function createFileReadService({ now = () => globalThis.performance.now()
       active: jobs.size, waiting, retained: jobs.size - waiting, reservedBytes,
       maxActive: FILE_READ_CONCURRENCY, maxReservedBytes: FILE_READ_RESERVED_LIMIT, ...counts });
   }
-  function notify() {
-    if (notifying) { notificationQueued = true; return; }
-    notifying = true;
-    try {
-      for (let round = 0; round < 2; round++) {
-        notificationQueued = false;
-        const snapshot = state();
-        for (const listener of [...observers]) {
-          if (observers.has(listener)) consumeCleanup(() => listener(snapshot));
-        }
-        if (!notificationQueued) break;
-      }
-    } finally { notifying = false; notificationQueued = false; }
-  }
+  const notifications = createStateNotifier({ observers, read: state, deferred: false });
+  const notify = notifications.notify;
   function tripClock() {
     if (!clockFault) {
       clockFault = true;
@@ -66,14 +54,15 @@ export function createFileReadService({ now = () => globalThis.performance.now()
     if (disposed) return () => {};
     if (!observers.has(listener) && observers.size >= FILE_READ_OBSERVER_LIMIT) fail("FILE_BUSY");
     observers.add(listener);
-    consumeCleanup(() => listener(state()));
-    return () => observers.delete(listener);
+    notifications.initial(listener);
+    return () => { notifications.forget(listener); return observers.delete(listener); };
   }
   async function read(file, options, mode) {
     const epoch = cancellationEpoch;
     let maxBytes, timeoutMs, signal, addAbort, removeAbort, captured, start;
     try {
       if (disposed) fail("FILE_DISPOSED");
+      if (cancelling) fail("FILE_BUSY");
       if (clockFault) fail("FILE_CLOCK");
       if (!options || typeof options !== "object" || Array.isArray(options)) fail("FILE_OPTIONS");
       ({ maxBytes = FILE_SECURITY_LIMIT, timeoutMs = FILE_READ_TIMEOUT, signal } = options);
@@ -231,9 +220,12 @@ export function createFileReadService({ now = () => globalThis.performance.now()
     return result;
   }
   function cancelAll() {
+    if (cancelling) return 0;
     cancellationEpoch++;
+    cancelling = true;
     let count = 0;
-    for (const job of [...jobs]) if (job.stop("FILE_CANCELLED")) count++;
+    try { for (const job of [...jobs]) if (job.stop("FILE_CANCELLED")) count++; }
+    finally { cancelling = false; }
     return count;
   }
   function dispose() {

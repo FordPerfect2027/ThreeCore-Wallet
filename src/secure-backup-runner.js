@@ -1,3 +1,4 @@
+import { createStateNotifier } from "./state-notifier.js";
 import { SecureBackupError, secureFail } from "./secure-backup-format.js";
 import { createSecureDeadline } from "./secure-deadline.js";
 
@@ -13,21 +14,10 @@ export function createSecureBackupRunner({ timeoutMs = 60_000,
   let last = null;
   let clockFault = false;
   let entering = false;
-  let notification = false;
   const observers = new Set();
   const counters = { started: 0, completed: 0, failed: 0, cancelled: 0, timedOut: 0, late: 0, denied: 0 };
-  function publish() {
-    if (notification || !observers.size) return;
-    notification = true;
-    queueMicrotask(() => {
-      notification = false;
-      const value = state();
-      for (const observer of [...observers]) {
-        if (!observers.has(observer)) continue;
-        try { Promise.resolve(observer(value)).catch(() => {}); } catch {}
-      }
-    });
-  }
+  const notifications = createStateNotifier({ observers, read: state, deferred: true });
+  const publish = notifications.notify;
   const bump = name => { counters[name] = Math.min(1_000_000_000, counters[name] + 1); publish(); };
   function clock() {
     let value;
@@ -134,7 +124,7 @@ export function createSecureBackupRunner({ timeoutMs = 60_000,
     subscribe(observer) {
       if (disposed || typeof observer !== "function" || observers.size >= 16) secureFail("SECURE_INTERNAL");
       observers.add(observer);
-      return () => observers.delete(observer);
+      return () => { notifications.forget(observer); return observers.delete(observer); };
     },
     cancel() { return active?.stop("SECURE_CANCELLED") ?? false; },
     dispose() { disposed = true; active?.stop("SECURE_DISPOSED"); observers.clear(); },

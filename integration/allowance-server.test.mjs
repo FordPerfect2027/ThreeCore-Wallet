@@ -67,8 +67,8 @@ test("allowance server: all browser imports resolve locally", async () => {
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      // The report-history modules extend the existing local-only import graph.
-      assert(visited.size <= 185, "Unexpected dependency expansion"); // Four explicit storage-guard runtime modules added.
+      // One aggregate-state notifier joins the existing local-only module graph.
+      assert(visited.size <= 186, "Unexpected dependency expansion");
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();
@@ -80,6 +80,7 @@ test("allowance server: all browser imports resolve locally", async () => {
     }
     assert(visited.has("/src/wallet-session.js"));
     assert(visited.has("/src/allowance-reader.js"));
+    assert(visited.has("/src/state-notifier.js"));
     for (const name of ["model", "storage", "file", "query", "view", "controller", "sources", "continuity"]) {
       assert(visited.has("/src/report-history-" + name + ".js"), "Missing history dependency: " + name);
     }

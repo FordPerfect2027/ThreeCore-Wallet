@@ -4,7 +4,7 @@ import { request } from "node:http";
 import { createDemoServer } from "../examples/dev-server.js";
 
 const assets = ["/src/rpc-capacity.js", "/src/rpc-supervisor.js", "/src/rpc-status.js",
-  "/src/provider-events.js", "/src/provider-event-gate.js", "/examples/rpc-status-panel.js"];
+  "/src/provider-events.js", "/src/provider-event-gate.js", "/examples/rpc-status-panel.js", "/src/state-notifier.js"];
 
 async function serving(uiTest, action) {
   const server = createDemoServer({ uiTest });
@@ -87,7 +87,7 @@ for (const uiTest of [false, true]) {
         const path = todo.pop();
         if (visited.has(path)) continue;
         visited.add(path);
-        assert(visited.size <= 7, "Unexpected supervisor dependency expansion");
+        assert(visited.size <= assets.length + 1, "Unexpected supervisor dependency expansion");
         const response = await get(path);
         assert.equal(response.status, 200, path);
         for (const match of response.body.matchAll(/from\s+["']([^"']+)["']/g)) {

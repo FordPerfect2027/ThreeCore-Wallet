@@ -5,7 +5,7 @@ import { createDemoServer } from "../examples/dev-server.js";
 
 const assets = ["/src/export-policy.js", "/src/export-payload.js", "/src/export-guard.js",
   "/src/export-status.js", "/examples/export-resource.js", "/examples/export-download.js",
-  "/examples/export-guard-panel.js"];
+  "/examples/export-guard-panel.js", "/src/state-notifier.js"];
 
 async function serving(uiTest, action) {
   const server = createDemoServer({ uiTest });
