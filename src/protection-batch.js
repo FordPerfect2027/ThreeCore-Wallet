@@ -1,3 +1,5 @@
+import { observeCallbackResult } from "./security-callback.js";
+
 /** Run every cleanup even when an earlier view fails. No captured error text. */
 export const PROTECTION_STEPS = Object.freeze(["storage", "exports", "file-reads", "backup", "period", "DAT", "EMA", "CAWELON"]);
 export function runProtectionBatch(steps) {
@@ -24,8 +26,7 @@ export function runProtectionBatch(steps) {
   for (const step of prepared) {
     try {
       const result = step.run();
-      if (result && typeof result.then === "function") {
-        Promise.resolve(result).catch(() => {});
+      if (observeCallbackResult(result) !== "synchronous") {
         failed.push(step.name);
       } else if (result === false) failed.push(step.name);
     } catch { failed.push(step.name); }

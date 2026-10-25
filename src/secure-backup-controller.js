@@ -3,6 +3,7 @@ import { readSecurityFileText } from "./security-file.js";
 import { encryptWorkspaceBackup, decryptWorkspaceBackup } from "./secure-backup-crypto.js";
 import { secureBackupRunner } from "./secure-backup-runner.js";
 import { createSecureDeadline } from "./secure-deadline.js";
+import { observeCallbackResult } from "./security-callback.js";
 import { inspectEncryptedBackup, backupPassphraseBytes, SECURE_BACKUP_LIMIT,
   SECURE_BACKUP_FILENAME, secureFail, secureErrorCode } from "./secure-backup-format.js";
 
@@ -21,7 +22,7 @@ function preparedResult(value) {
 }
 function observe(value) {
   // A rejected async UI callback must not become an unhandled rejection.
-  try { Promise.resolve(value).catch(() => {}); } catch {}
+  observeCallbackResult(value);
 }
 
 /** Stages a validated restore; has no provider, writeDraft or storage capability. */
@@ -107,8 +108,13 @@ export function createSecureBackupController({ readDraft, onStage, onChange = ()
     return false;
   }
   function currentKey() {
-    try { return workspaceDraftKey(readDraft()); }
+    try { return workspaceDraftKey(readSynchronousDraft()); }
     catch { secureFail("SECURE_CONTENT"); }
+  }
+  function readSynchronousDraft() {
+    const value = readDraft();
+    if (observeCallbackResult(value) !== "synchronous") secureFail("SECURE_CONTENT");
+    return value;
   }
   function requireCurrent(id) {
     if (!current(id)) secureFail("SECURE_CANCELLED");
@@ -132,7 +138,7 @@ export function createSecureBackupController({ readDraft, onStage, onChange = ()
       requireCurrent(operation.id);
       if (passphrase !== confirmation) secureFail("SECURE_MISMATCH");
       backupPassphraseBytes(passphrase).fill(0);
-      const draft = readDraft();
+      const draft = readSynchronousDraft();
       requireCurrent(operation.id);
       const capturedKey = workspaceDraftKey(draft);
       const workspace = workspaceFromDraft(draft);
@@ -211,8 +217,7 @@ export function createSecureBackupController({ readDraft, onStage, onChange = ()
       if (typeof download !== "function") secureFail("SECURE_DOWNLOAD");
       offering = true;
       const result = download(prepared);
-      if (result && typeof result.then === "function") {
-        observe(result);
+      if (observeCallbackResult(result) !== "synchronous") {
         secureFail("SECURE_DOWNLOAD");
       }
       if (result === false) secureFail("SECURE_DOWNLOAD");

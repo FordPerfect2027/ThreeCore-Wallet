@@ -1,5 +1,6 @@
 import { parseSecurityJson } from "./security-json.js";
 import { AGENT_IDS, normalizeAddress } from "./wallet-session.js";
+import { observeCallbackResult } from "./security-callback.js";
 
 export const WALLET_SETUP_SCHEMA = "threecore-wallet-setup-v1";
 export const WALLET_SETUP_LIMIT = 16384;
@@ -145,17 +146,18 @@ export function createWalletSetupReview({ readFields, applyPlan, prepareApply = 
   let revision = 0;
   let disposed = false;
   let active = false;
+  let uncertainWrite = false;
   function cancel() { pending = null; revision++; }
   function available() {
     if (disposed) fail("SETUP_DISPOSED");
+    if (uncertainWrite) fail("SETUP_RECOVERY_REQUIRED");
     if (active) fail("SETUP_REVIEW_REQUIRED");
   }
   function checkCurrent(id) {
     if (!active || disposed || revision !== id) fail("SETUP_REVIEW_REQUIRED");
   }
   function syncResult(value) {
-    if (value && typeof value.then === "function") {
-      Promise.resolve(value).catch(() => {});
+    if (observeCallbackResult(value) !== "synchronous" || value === false) {
       fail("SETUP_ADAPTER");
     }
     return value;
@@ -195,8 +197,16 @@ export function createWalletSetupReview({ readFields, applyPlan, prepareApply = 
         // Cleanup can synchronously call application code. Neither cancellation
         // nor an edit made there may be overwritten by the reviewed old plan.
         if (JSON.stringify(capture(operation)) !== candidate.key) fail("SETUP_STALE");
-        syncResult(applyPlan(checked.plan, checked.changes));
+        const receipt = applyPlan(checked.plan, checked.changes);
+        uncertainWrite = observeCallbackResult(receipt) !== "synchronous";
+        if (uncertainWrite || receipt === false) fail("SETUP_ADAPTER");
         checkCurrent(operation);
+        // A receipt alone cannot prove that every card was updated. Re-read and
+        // normalize the actual fields before displaying all-card success. Do not
+        // overwrite partial/user edits with a speculative rollback here.
+        const actual = setupFromFields(capture(operation));
+        checkCurrent(operation);
+        if (JSON.stringify(actual) !== JSON.stringify(checked.plan)) fail("SETUP_WRITE_MISMATCH");
         return checked;
       } finally { active = false; }
     },

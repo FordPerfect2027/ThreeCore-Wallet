@@ -7,7 +7,7 @@ function fixture() {
   let fields = raw();
   const applied = [];
   const controller = createWalletSetupReview({ readFields: () => fields,
-    applyPlan: (plan, changes) => { applied.push({ plan, changes }); } });
+    applyPlan: (plan, changes) => { applied.push({ plan, changes }); fields = plan.entries.map(row => ({ ...row, account: row.account ?? "" })); } });
   return { controller, applied, get: () => fields, set: value => { fields = value; } };
 }
 const text = encodeWalletSetup(setup());
@@ -124,7 +124,9 @@ test("callback failure cannot leave a reusable approval", () => {
 test("reentrant apply cannot consume one confirmation twice", () => {
   let preview;
   let applied = 0;
-  const c = createWalletSetupReview({ readFields: () => raw(), applyPlan() {
+  let fields = raw();
+  const c = createWalletSetupReview({ readFields: () => fields, applyPlan(plan) {
+    fields = plan.entries.map(row => ({ ...row, account: row.account ?? "" }));
     applied++;
     assert.throws(() => c.apply(preview.id, text), { code: "SETUP_REVIEW_REQUIRED" });
   } });
@@ -172,10 +174,12 @@ test("raw field changes including whitespace require fresh review", () => {
 
 test("apply verifies destination again after preparation before writing", () => {
   let reads = 0;
-  const c = createWalletSetupReview({ readFields: () => { reads++; return raw(); }, applyPlan() {} });
+  let fields = raw();
+  const c = createWalletSetupReview({ readFields: () => { reads++; return fields; },
+    applyPlan(plan) { fields = plan.entries.map(row => ({ ...row, account: row.account ?? "" })); } });
   const p = c.preview(text);
   c.apply(p.id, text);
-  assert.equal(reads, 3);
+  assert.equal(reads, 4);
 });
 
 test("mutating the source fields after preview cannot mutate the captured before state", () => {

@@ -1,5 +1,6 @@
 import { captureWorkspaceDraft, workspaceDraftKey, workspaceOptions, previewWorkspace,
   workspaceFail, WorkspaceError, freezeWorkspace } from "./workspace-format.js";
+import { observeCallbackResult } from "./security-callback.js";
 
 /** Synchronous transaction coordinator. The adapter writes local form/history data only. */
 export function createWorkspaceController({ readDraft, writeDraft, authorizeWrite = () => true, prepareWrite = null }) {
@@ -29,14 +30,15 @@ export function createWorkspaceController({ readDraft, writeDraft, authorizeWrit
     if (checking) workspaceFail("WORKSPACE_BUSY");
     checking = true;
     try {
-      const draft = captureWorkspaceDraft(readDraft());
+      const result = readDraft();
+      syncResult(result);
+      const draft = captureWorkspaceDraft(result);
       checkRevision(id);
       return draft;
     } finally { checking = false; }
   }
   function syncResult(result) {
-    if (result && typeof result.then === "function") {
-      Promise.resolve(result).catch(() => {});
+    if (observeCallbackResult(result) !== "synchronous" || result === false) {
       workspaceFail("WORKSPACE_ADAPTER");
     }
   }
@@ -82,15 +84,21 @@ export function createWorkspaceController({ readDraft, writeDraft, authorizeWrit
       if (error instanceof WorkspaceError && error.code === "WORKSPACE_STALE") workspaceFail("WORKSPACE_STALE");
       workspaceFail("WORKSPACE_REVIEW_REQUIRED");
     }
+    let uncertainWrite = false;
     try {
       // Copies isolate the rollback reference and expected target from adapter mutation.
-      syncResult(writeDraft(prepared));
+      const receipt = writeDraft(prepared);
+      // An asynchronous writer may still mutate the destination after a rollback.
+      // Retain the recovery copy and block reuse instead of claiming restoration.
+      uncertainWrite = observeCallbackResult(receipt) !== "synchronous";
+      if (uncertainWrite || receipt === false) workspaceFail("WORKSPACE_ADAPTER");
       // A stop/expiry may happen during the adapter's synchronous callbacks.
       // Rollback is still allowed after authority ends; a new commit is not.
       requireWriteAuthority(revision);
       if (workspaceDraftKey(capture(revision)) !== expectedKey) workspaceFail("WORKSPACE_WRITE_MISMATCH");
     } catch (error) {
       emergency = before;
+      if (uncertainWrite) workspaceFail("WORKSPACE_RECOVERY_REQUIRED");
       try {
         syncResult(writeDraft(captureWorkspaceDraft(before)));
         if (workspaceDraftKey(capture()) !== beforeKey) workspaceFail("WORKSPACE_WRITE_MISMATCH");

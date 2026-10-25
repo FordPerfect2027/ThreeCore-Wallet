@@ -139,7 +139,7 @@ test("setup boundary: an asynchronous writer cannot report a synchronous success
   f.onApply(() => Promise.reject(Error("synthetic writer rejection")));
   assert.throws(() => f.review.apply(p.id, text), { code: "SETUP_ADAPTER" });
   await new Promise(resolve => setImmediate(resolve));
-  assert.throws(() => f.review.apply(p.id, text));
+  assert.throws(() => f.review.apply(p.id, text), { code: "SETUP_RECOVERY_REQUIRED" });
 });
 
 test("setup boundary: correct apply consumes confirmation and preserves all three identities", () => {
@@ -155,10 +155,10 @@ test("setup boundary: correct apply consumes confirmation and preserves all thre
 });
 
 test("setup boundary: a retained preparation check expires after completion", () => {
-  let check;
-  const c = createWalletSetupReview({ readFields: () => raw(),
+  let check, fields = raw();
+  const c = createWalletSetupReview({ readFields: () => fields,
     prepareApply(plan, changes, checkCurrent) { check = checkCurrent; check(); },
-    applyPlan() {} });
+    applyPlan(plan) { fields = plan.entries.map(row => ({ ...row, account: row.account ?? "" })); } });
   const p = c.preview(text);
   c.apply(p.id, text);
   assert.throws(() => check(), { code: "SETUP_REVIEW_REQUIRED" });

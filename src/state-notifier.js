@@ -1,3 +1,5 @@
+import { consumeCallback } from "./security-callback.js";
+
 /**
  * Deliver aggregate service status, never wallet or file payloads.
  * A listener can synchronously stop work. The next listener must see that stop,
@@ -25,7 +27,7 @@ export function createStateNotifier({ observers, read, deferred = false }) {
     const key = JSON.stringify(value);
     if (!observers.has(listener) || delivered.get(listener) === key) return;
     delivered.set(listener, key);
-    try { Promise.resolve(listener(value)).catch(() => {}); } catch {}
+    consumeCallback(() => listener(value));
   }
 
   function flush(initial = null) {

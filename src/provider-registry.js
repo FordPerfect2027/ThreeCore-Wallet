@@ -5,6 +5,8 @@
  * any signing or transaction. Wallet metadata is self-reported and untrusted:
  * an rdns label or friendly name is NOT proof of the provider's identity.
  */
+import { consumeCallback, observeCallbackResult } from "./security-callback.js";
+
 export const MAX_DISCOVERED_WALLETS = 32;
 export const ANNOUNCE_EVENT = "eip6963:announceProvider";
 export const REQUEST_EVENT = "eip6963:requestProvider";
@@ -42,9 +44,13 @@ function snapshotAnnouncement(event) {
  * @param {Function} [options.onChange] - render new wallet options
  */
 export function createWalletProviderRegistry({ eventTarget, onChange = () => {} }) {
-  if (!eventTarget || typeof eventTarget.addEventListener !== "function" ||
-      typeof eventTarget.removeEventListener !== "function" ||
-      typeof eventTarget.dispatchEvent !== "function") {
+  let add, remove, dispatch;
+  try {
+    add = eventTarget?.addEventListener;
+    remove = eventTarget?.removeEventListener;
+    dispatch = eventTarget?.dispatchEvent;
+  } catch { /* Report a bounded configuration error, never adapter details. */ }
+  if (![add, remove, dispatch].every(value => typeof value === "function")) {
     throw new TypeError("A browser-compatible event target is required");
   }
   if (typeof onChange !== "function") throw new TypeError("onChange must be a function");
@@ -66,15 +72,22 @@ export function createWalletProviderRegistry({ eventTarget, onChange = () => {} 
     // provider selected by a user when a duplicate announcement arrives.
     if (found.has(uuid)) return;
     found.set(uuid, entry);
-    try { onChange(list()); } catch { /* A UI observer cannot corrupt discovery state. */ }
+    consumeCallback(() => onChange(list()));
   }
 
-  eventTarget.addEventListener(ANNOUNCE_EVENT, onAnnouncement);
+  function detach() {
+    consumeCallback(() => Reflect.apply(remove, eventTarget, [ANNOUNCE_EVENT, onAnnouncement]));
+  }
 
   function request() {
     if (disposed) return false;
-    eventTarget.dispatchEvent(new Event(REQUEST_EVENT));
-    return true;
+    try {
+      const result = Reflect.apply(dispatch, eventTarget, [new Event(REQUEST_EVENT)]);
+      if (observeCallbackResult(result) !== "synchronous" || result === false) {
+        dispose(); return false;
+      }
+      return !disposed;
+    } catch { dispose(); return false; }
   }
 
   function getProvider(uuid) {
@@ -85,10 +98,22 @@ export function createWalletProviderRegistry({ eventTarget, onChange = () => {} 
   function dispose() {
     if (disposed) return;
     disposed = true;
-    eventTarget.removeEventListener(ANNOUNCE_EVENT, onAnnouncement);
+    // Clear retained providers before external cleanup can throw or reenter.
     found.clear();
+    detach();
   }
 
-  request();
+  try {
+    const result = Reflect.apply(add, eventTarget, [ANNOUNCE_EVENT, onAnnouncement]);
+    // A nonconforming adapter can attach after returning. Its late completion
+    // must detach again; the disposed handler also rejects late announcements.
+    if (observeCallbackResult(result, () => { if (disposed) detach(); }) !== "synchronous" || result === false) {
+      throw new TypeError("PROVIDER_DISCOVERY_UNAVAILABLE");
+    }
+    if (!request()) throw new TypeError("PROVIDER_DISCOVERY_UNAVAILABLE");
+  } catch {
+    dispose();
+    throw new TypeError("PROVIDER_DISCOVERY_UNAVAILABLE");
+  }
   return Object.freeze({ list, getProvider, request, dispose });
 }

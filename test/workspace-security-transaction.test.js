@@ -206,7 +206,7 @@ test("rollback remains permitted if authorization expires after first write", ()
   assert.deepEqual(f.current, before);
 });
 
-test("async writer failure is consumed and synchronous rollback retains previous state", async () => {
+test("async writer failure retains recovery data without racing another write", async () => {
   const f = fixture();
   const before = f.current;
   const review = f.preview();
@@ -215,9 +215,10 @@ test("async writer failure is consumed and synchronous rollback retains previous
     if (++calls === 1) return Promise.reject(Error("async write must not be used"));
     f.replace(value);
   });
-  assert.throws(() => f.apply(review), { code: "WORKSPACE_ROLLED_BACK" });
+  assert.throws(() => f.apply(review), { code: "WORKSPACE_RECOVERY_REQUIRED" });
   await tick();
-  assert.equal(calls, 2);
+  assert.equal(calls, 1);
+  assert.deepEqual(JSON.parse(f.controller.recoveryText()).entries, before);
   assert.deepEqual(f.current, before);
 });
 

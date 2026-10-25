@@ -4,6 +4,7 @@ import { workspaceFromDraft, workspaceDraftKey, decodeWorkspace, WORKSPACE_TEXT_
 import { prepareWorkspaceFile, createWorkspaceFileReader, createWorkspaceBackupTracker } from "../src/workspace-file.js";
 import { describeWorkspaceOverview, describeWorkspacePreview, describeWorkspaceUndo } from "../src/workspace-overview.js";
 import { offerHistoryDownload } from "./history-files.js";
+import { observeCallbackResult } from "../src/security-callback.js";
 
 const ERRORS = Object.freeze({
   WORKSPACE_DUPLICATE: "複数のカードに同じ公開アドレスがあります。別々のアドレスを設定してください。",
@@ -26,6 +27,7 @@ const ERRORS = Object.freeze({
   WORKSPACE_NO_UNDO: "戻せる一括復元はまだありません。",
   WORKSPACE_ROLLED_BACK: "反映できなかったため、設定と履歴を操作前へ戻しました。接続は改めて確認してください。",
   WORKSPACE_RECOVERY_REQUIRED: "反映と差し戻しを完了できませんでした。操作前の控えをダウンロードして保全してください。",
+  WORKSPACE_DOWNLOAD: "ダウンロードを開始できませんでした。操作前の控えと保存履歴は保持しています。もう一度保存を試してください。",
 });
 
 /** One explicit local workflow for all three cards; no provider capability. */
@@ -48,6 +50,19 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   let secureStaging = false;
   let securePanel;
   const current = id => !disposed && id === saveGeneration;
+
+  function readCurrentDraft() {
+    const result = readDraft();
+    if (observeCallbackResult(result) !== "synchronous") throw { code: "WORKSPACE_ADAPTER" };
+    return result;
+  }
+  function deliver(prepared, id) {
+    const receipt = download({ document, prepared });
+    const kind = observeCallbackResult(receipt);
+    if (!current(id)) return false;
+    if (kind !== "synchronous" || receipt === false) throw { code: "WORKSPACE_DOWNLOAD" };
+    return true;
+  }
 
   function node(tag, name, value) {
     const item = document.createElement(tag);
@@ -119,7 +134,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   }
   const inspect = button("inspect", "3ウォレットの保存状況を見る", () => {
     const id = saveGeneration;
-    const text = describeWorkspaceOverview(readDraft());
+    const text = describeWorkspaceOverview(readCurrentDraft());
     if (!current(id)) return;
     overview.textContent = text;
     updateBackup();
@@ -128,10 +143,9 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   });
   const saveSummary = button("save-summary", "保存状況をテキスト保存", () => {
     const id = saveGeneration;
-    const text = describeWorkspaceOverview(readDraft());
+    const text = describeWorkspaceOverview(readCurrentDraft());
     if (!current(id)) return;
-    download({ document, prepared: { text, filename: "ThreeCore-workspace-overview.txt", mimeType: "text/plain;charset=utf-8" } });
-    if (!current(id)) return;
+    if (!deliver({ text, filename: "ThreeCore-workspace-overview.txt", mimeType: "text/plain;charset=utf-8" }, id)) return;
     status.textContent = "保存状況のダウンロードを開始しました。PCで保存完了を確認してください。";
   });
   const save = button("save", "3ウォレットの平文バックアップを保存", () => { void saveFile(); });
@@ -151,7 +165,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     confirmed.item.checked = removal.item.checked = false;
     const result = controller.apply(candidate.id, json.value, options());
     detail.textContent = "";
-    overview.textContent = describeWorkspaceOverview(readDraft());
+    overview.textContent = describeWorkspaceOverview(readCurrentDraft());
     status.textContent = result.changed ? "一括復元しました。必要なカードで改めて接続してください。" : "設定と履歴に変更はありませんでした。";
     updateBackup();
     controls();
@@ -181,7 +195,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     undoConfirmed.item.checked = false;
     controller.undoApply(id);
     undoDetail.textContent = "";
-    overview.textContent = describeWorkspaceOverview(readDraft());
+    overview.textContent = describeWorkspaceOverview(readCurrentDraft());
     status.textContent = "一括復元前の設定と履歴へ戻しました。接続許可は復元していません。";
     updateBackup();
     controls();
@@ -189,8 +203,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   const saveRecovery = button("recovery", "操作前の控えを保存", () => {
     const id = saveGeneration;
     const text = controller.recoveryText();
-    download({ document, prepared: { text, filename: "ThreeCore-local-recovery-draft.json", mimeType: "application/json;charset=utf-8" } });
-    if (!current(id)) return;
+    if (!deliver({ text, filename: "ThreeCore-local-recovery-draft.json", mimeType: "application/json;charset=utf-8" }, id)) return;
     status.textContent = "操作前の控えを保存します。これは確認・復旧作業用で、一括バックアップとは異なる形式です。";
   });
   const reader = createWorkspaceFileReader({ readBytes, subtle, onChange(state) {
@@ -224,7 +237,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     const id = saveGeneration;
     inspectingBackup = true;
     let phase = "changed";
-    try { phase = backup.status(workspaceFromDraft(readDraft())).phase; } catch { /* Unfinished fields cannot be saved. */ }
+    try { phase = backup.status(workspaceFromDraft(readCurrentDraft())).phase; } catch { /* Unfinished fields cannot be saved. */ }
     finally { inspectingBackup = false; }
     if (!current(id)) return;
     backupStatus.textContent = phase === "not-offered" ? "この画面からの一括バックアップ保存はまだ開始していません。"
@@ -255,7 +268,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     try {
       controls();
       if (!current(id)) return;
-      const draft = readDraft();
+      const draft = readCurrentDraft();
       if (!current(id)) return;
       const key = workspaceDraftKey(draft);
       const workspace = workspaceFromDraft(draft);
@@ -263,14 +276,13 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
       if (!current(id)) return;
       // Reading the destination can run application callbacks, including stop.
       // Identical data is not permission to resume an interrupted export.
-      const latest = readDraft();
+      const latest = readCurrentDraft();
       if (!current(id)) return;
       if (workspaceDraftKey(latest) !== key) {
         status.textContent = "保存準備中に内容が変わりました。現在の内容で保存をやり直してください。";
         return;
       }
-      download({ document, prepared });
-      if (!current(id)) return;
+      if (!deliver(prepared, id)) return;
       backup.offered(workspace);
       status.textContent = "一括バックアップのダウンロードを開始しました。PCへの保存完了を確認してください。";
     } catch (error) {

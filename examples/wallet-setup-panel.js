@@ -2,6 +2,7 @@ import { setupFromFields, encodeWalletSetup, inspectWalletFields,
   createWalletSetupReview, describeWalletSetupReview, WALLET_SETUP_LIMIT } from "../src/wallet-setup.js";
 import { prepareWalletSetupFile, createWalletSetupFileReader } from "../src/wallet-setup-file.js";
 import { offerHistoryDownload } from "./history-files.js";
+import { observeCallbackResult } from "../src/security-callback.js";
 
 const MESSAGES = Object.freeze({
   SETUP_DUPLICATE: "同じ公開アドレスが複数のカードにあります。別々のアドレスを設定してください。",
@@ -10,6 +11,9 @@ const MESSAGES = Object.freeze({
   SETUP_STALE: "プレビュー後に画面の設定が変わりました。もう一度確認してください。",
   SETUP_REVIEW_REQUIRED: "設定JSONの内容をプレビューしてから適用してください。",
   SETUP_ADAPTER: "設定の反映処理を完了できませんでした。カードの設定を確認してください。",
+  SETUP_WRITE_MISMATCH: "3枚すべての設定反映を確認できませんでした。各カードの現在値を確認し、もう一度プレビューしてください。",
+  SETUP_RECOVERY_REQUIRED: "設定の反映状態を確認できないため、この画面での復元を停止しました。元の設定ファイルを保全してください。",
+  SETUP_DOWNLOAD: "設定ファイルのダウンロードを開始できませんでした。現在の設定は保持しています。",
   SETUP_SIZE: "設定ファイルが空、または大きすぎます。",
   SETUP_ENCODING: "UTF-8形式のJSONファイルを選んでください。",
   SETUP_FILENAME: "設定を保存した.jsonファイルを選んでください。",
@@ -22,7 +26,13 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
   let disposed = false;
   let preview = null;
   let busy = false;
-  const review = createWalletSetupReview({ readFields, applyPlan, prepareApply });
+  let generation = 0;
+  function readCurrentFields() {
+    const value = readFields();
+    if (observeCallbackResult(value) !== "synchronous") throw { code: "SETUP_ADAPTER" };
+    return value;
+  }
+  const review = createWalletSetupReview({ readFields: readCurrentFields, applyPlan, prepareApply });
   const section = document.createElement("section");
   section.className = "wallet-setup-panel";
   function node(tag, name, text) {
@@ -77,12 +87,17 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
   const exportButton = button("export", "現在の設定をJSONにする", () => {
     reader.cancel();
     cancelPreview();
-    text.value = encodeWalletSetup(setupFromFields(readFields()));
+    text.value = encodeWalletSetup(setupFromFields(readCurrentFields()));
     status.textContent = "現在の設定をJSONにしました。まだファイル保存はしていません。";
   });
   const save = button("save", "現在の設定ファイルをダウンロード", () => {
-    const prepared = prepareWalletSetupFile(setupFromFields(readFields()));
-    download({ document, prepared });
+    const id = ++generation;
+    const prepared = prepareWalletSetupFile(setupFromFields(readCurrentFields()));
+    if (disposed || generation !== id) return;
+    const result = download({ document, prepared });
+    const receipt = observeCallbackResult(result);
+    if (disposed || generation !== id) return;
+    if (receipt !== "synchronous" || result === false) throw { code: "SETUP_DOWNLOAD" };
     status.textContent = "設定ファイルのダウンロードを開始しました。PCへの保存完了を確認してください。";
   });
   const inspect = button("preview", "設定JSONの変更内容をプレビュー", () => {
@@ -100,6 +115,7 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
     confirmed.checked = false;
     controls();
     const result = review.apply(candidate.id, text.value);
+    if (disposed) return;
     details.textContent = "";
     refresh();
     status.textContent = result.changedAgents.length
@@ -138,6 +154,7 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
     section.setAttribute("aria-busy", String(busy));
   }
   function cancelPreview() {
+    generation++;
     review.cancel();
     preview = null;
     confirmed.checked = false;
@@ -146,7 +163,7 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
   }
   function refresh() {
     try {
-      const result = inspectWalletFields(readFields());
+      const result = inspectWalletFields(readCurrentFields());
       const labels = { missing: "未設定", invalid: "公開アドレスの形式が不正", duplicate: "他のカードと同じアドレス", configured: "設定済み・接続未確認" };
       readiness.textContent = "別アドレスの設定: " + result.configured + " / 3\n" +
         result.entries.map(row => row.agent + ": " + labels[row.status] + " / " +
@@ -186,6 +203,7 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
     dispose() {
       if (disposed) return;
       disposed = true;
+      generation++;
       reader.dispose();
       review.dispose();
       for (const stop of cleanup) stop();
