@@ -1,3 +1,5 @@
+import { readAbortState } from "./security-abort.js";
+import { readSynchronousClock, observeCallbackResult, consumeCallback } from "./security-callback.js";
 import { createStateNotifier } from "./state-notifier.js";
 import { SecureBackupError, secureFail } from "./secure-backup-format.js";
 import { createSecureDeadline } from "./secure-deadline.js";
@@ -21,7 +23,7 @@ export function createSecureBackupRunner({ timeoutMs = 60_000,
   const bump = name => { counters[name] = Math.min(1_000_000_000, counters[name] + 1); publish(); };
   function clock() {
     let value;
-    try { value = now(); } catch { value = NaN; }
+    try { value = readSynchronousClock(now); } catch { value = NaN; }
     if (clockFault || !Number.isFinite(value) || value < 0 || (last !== null && value < last)) {
       clockFault = true;
       return NaN;
@@ -43,9 +45,10 @@ export function createSecureBackupRunner({ timeoutMs = 60_000,
       if (signal != null) {
         add = signal.addEventListener;
         remove = signal.removeEventListener;
+        const aborted = readAbortState(signal);
         if (typeof add !== "function" || typeof remove !== "function" ||
-            typeof signal.aborted !== "boolean") secureFail("SECURE_INTERNAL");
-        if (signal.aborted) secureFail("SECURE_CANCELLED");
+            typeof aborted !== "boolean") secureFail("SECURE_INTERNAL");
+        if (aborted || readAbortState(signal) === true) secureFail("SECURE_CANCELLED");
       }
     } catch (error) {
       if (error instanceof SecureBackupError) throw error;
@@ -64,7 +67,7 @@ export function createSecureBackupRunner({ timeoutMs = 60_000,
       deadline?.dispose();
       if (attached) {
         attached = false;
-        try { remove.call(signal, "abort", onAbort); } catch {}
+        consumeCallback(() => remove.call(signal, "abort", onAbort));
       }
       signal = add = remove = null;
     }
@@ -87,7 +90,9 @@ export function createSecureBackupRunner({ timeoutMs = 60_000,
     function guard() {
       if (token.finished || disposed) return false;
       try {
-        if (signal?.aborted) { stop("SECURE_CANCELLED"); return false; }
+        const aborted = readAbortState(signal);
+        if (typeof aborted !== "boolean") { stop("SECURE_INTERNAL"); return false; }
+        if (aborted) { stop("SECURE_CANCELLED"); return false; }
       } catch { stop("SECURE_INTERNAL"); return false; }
       return deadline.check();
     }
@@ -103,9 +108,16 @@ export function createSecureBackupRunner({ timeoutMs = 60_000,
     try {
       if (signal) {
         attached = true;
-        const receiver = signal;
-        add.call(receiver, "abort", onAbort, { once: true });
-        if (!token.finished && receiver.aborted) stop("SECURE_CANCELLED");
+        const receiver = signal, detach = remove;
+        const registration = add.call(receiver, "abort", onAbort, { once: true });
+        const kind = observeCallbackResult(registration,
+          () => consumeCallback(() => detach.call(receiver, "abort", onAbort)));
+        if (kind !== "synchronous" || registration === false) stop("SECURE_INTERNAL");
+        if (!token.finished) {
+          const aborted = readAbortState(receiver);
+          if (typeof aborted !== "boolean") stop("SECURE_INTERNAL");
+          else if (aborted) stop("SECURE_CANCELLED");
+        }
       }
       if (!token.finished && !deadline.arm()) stop(deadline.state().code ?? "SECURE_INTERNAL");
     } catch { stop("SECURE_INTERNAL"); }

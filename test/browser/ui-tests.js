@@ -1,3 +1,4 @@
+import { registerAdapterBoundaryUITests } from "/test/browser/adapter-boundary-ui-tests.js";
 import { registerObserverUITests } from "/test/browser/observer-ui-tests.js";
 import { registerStorageGuardUITests } from "/test/browser/storage-guard-ui-tests.js";
 import { registerAccessLifecycleUITests } from "/test/browser/access-lifecycle-ui-tests.js";
@@ -1199,6 +1200,7 @@ if (fault) setTimeout(() => {
   Promise.reject(Error("Synthetic harness rejection"));
 }, 0);
 
+registerAdapterBoundaryUITests(test);
 registerObserverUITests(test);
 registerRpcSupervisorUITests(test);
 registerFileReadUITests(test);
@@ -1231,7 +1233,7 @@ registerAccessLifecycleUITests(test);
 registerAcceptanceUITests(test);
 let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");
-const selectedTests = ["backup timer", "backup cleanup", "observer", "setup", "workspace", "acceptance", "access-lifecycle", "storage-guard", "history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
+const selectedTests = ["adapter-boundary", "backup timer", "backup cleanup", "observer", "setup", "workspace", "acceptance", "access-lifecycle", "storage-guard", "history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
 for (const { name, run } of selectedTests) {
   console.info("Starting synthetic UI case: " + name);

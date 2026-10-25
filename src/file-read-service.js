@@ -1,3 +1,5 @@
+import { readAbortState } from "./security-abort.js";
+import { acceptTimerHandle, consumeCallback, readSynchronousClock, observeCallbackResult } from "./security-callback.js";
 import { createStateNotifier } from "./state-notifier.js";
 import { SecurityFileError, FILE_SECURITY_LIMIT, FILE_READ_TIMEOUT, FILE_CHUNK_LIMIT,
   FILE_READ_CONCURRENCY, FILE_READ_RESERVED_LIMIT, FILE_READ_OBSERVER_LIMIT,
@@ -43,7 +45,7 @@ export function createFileReadService({ now = () => globalThis.performance.now()
   function clock() {
     if (clockFault) fail("FILE_CLOCK");
     let value;
-    try { value = now(); } catch { return tripClock(); }
+    try { value = readSynchronousClock(now); } catch { return tripClock(); }
     if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > Number.MAX_SAFE_INTEGER - 120_000 ||
         (lastTime !== null && value < lastTime)) return tripClock();
     lastTime = value;
@@ -71,8 +73,9 @@ export function createFileReadService({ now = () => globalThis.performance.now()
       if (signal !== undefined && signal !== null) {
         addAbort = signal.addEventListener;
         removeAbort = signal.removeEventListener;
-        if (typeof addAbort !== "function" || typeof removeAbort !== "function" || typeof signal.aborted !== "boolean") fail("FILE_OPTIONS");
-        if (signal.aborted) fail("FILE_CANCELLED");
+        const aborted = readAbortState(signal);
+        if (typeof addAbort !== "function" || typeof removeAbort !== "function" || typeof aborted !== "boolean") fail("FILE_OPTIONS");
+        if (aborted || readAbortState(signal) === true) fail("FILE_CANCELLED");
       }
       start = clock();
       captured = captureFileSource(file, maxBytes);
@@ -129,6 +132,10 @@ export function createFileReadService({ now = () => globalThis.performance.now()
     function checkpoint() {
       if (job.ended) fail(failureCode || "FILE_CANCELLED");
       if (disposed) { stop("FILE_DISPOSED"); fail("FILE_DISPOSED"); }
+      let aborted;
+      try { aborted = readAbortState(signal); } catch { stop("FILE_READ"); fail("FILE_READ"); }
+      if (typeof aborted !== "boolean") { stop("FILE_READ"); fail("FILE_READ"); }
+      if (aborted) { stop("FILE_CANCELLED"); fail("FILE_CANCELLED"); }
       const time = clock();
       if (job.ended) fail(failureCode || "FILE_CANCELLED");
       if (time >= deadline) { stop("FILE_TIMEOUT"); fail("FILE_TIMEOUT"); }
@@ -138,14 +145,17 @@ export function createFileReadService({ now = () => globalThis.performance.now()
       const time = checkpoint();
       const version = ++timerVersion;
       let installing = true;
-      timer = schedule(() => {
+      const handle = schedule(() => {
         if (job.ended || version !== timerVersion) return;
         if (installing) { stop("FILE_READ"); return; }
         timer = null;
         try { armTimer(); } catch (error) { stop(fileReadCode(error)); }
       }, Math.max(1, Math.ceil(deadline - time)));
       installing = false;
-      if (job.ended) clearTimer();
+      const valid = acceptTimerHandle(handle, unschedule);
+      if (!valid) stop("FILE_READ");
+      else if (job.ended || version !== timerVersion) consumeCallback(() => unschedule(handle));
+      else timer = handle;
     }
     function accept(value, fallback = false) {
       checkpoint();
@@ -210,8 +220,15 @@ export function createFileReadService({ now = () => globalThis.performance.now()
       if (signal) {
         removeNeeded = true;
         const registration = addAbort.call(signal, "abort", onAbort, { once: true });
-        Promise.resolve(registration).catch(() => stop("FILE_READ"));
-        if (signal.aborted) onAbort();
+        // If a broken adapter attaches later, remove that late listener as well.
+        const kind = observeCallbackResult(registration,
+          () => consumeCleanup(() => removeAbort.call(signal, "abort", onAbort)));
+        if (kind !== "synchronous" || registration === false) stop("FILE_READ");
+        if (!job.ended) {
+          const aborted = readAbortState(signal);
+          if (typeof aborted !== "boolean") stop("FILE_READ");
+          else if (aborted) onAbort();
+        }
       }
       if (!job.ended) armTimer();
     } catch (error) { stop(fileReadCode(error)); }

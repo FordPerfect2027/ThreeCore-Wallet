@@ -1,3 +1,4 @@
+import { acceptTimerHandle, consumeCallback, readSynchronousClock } from "./security-callback.js";
 import { createStateNotifier } from "./state-notifier.js";
 import { EXPORT_LIMITS, ExportSecurityError, exportFail, exportErrorCode,
   requireSyncExport, consumeExportCallback } from "./export-policy.js";
@@ -73,7 +74,7 @@ export function createExportGuard({ createResource, now = () => performance.now(
   function clock() {
     if (clockFault) exportFail("EXPORT_CLOCK");
     let time;
-    try { time = now(); } catch { return tripClock(); }
+    try { time = readSynchronousClock(now); } catch { return tripClock(); }
     if (typeof time !== "number" || !Number.isFinite(time) || time < 0 ||
         time > Number.MAX_SAFE_INTEGER - EXPORT_LIMITS.retentionMs ||
         (lastTime !== null && time < lastTime)) return tripClock();
@@ -87,14 +88,16 @@ export function createExportGuard({ createResource, now = () => performance.now(
     if (remaining <= 0) { reclaim(job); return; }
     const version = ++job.timerVersion;
     let installing = true;
-    job.timer = requireSyncExport(schedule(() => {
+    const handle = schedule(() => {
       if (job.stopped || version !== job.timerVersion) return;
       if (installing) { reclaim(job); return; }
       job.timer = null;
       try { arm(job); } catch { reclaim(job); }
-    }, Math.max(1, Math.ceil(remaining))));
+    }, Math.max(1, Math.ceil(remaining)));
     installing = false;
-    if (job.stopped) clearTimer(job);
+    if (!acceptTimerHandle(handle, unschedule)) exportFail("EXPORT_FAILED");
+    if (job.stopped || version !== job.timerVersion) consumeCallback(() => unschedule(handle));
+    else job.timer = handle;
   }
   function offer(input) {
     let job = null, receipt, code, initialEpoch = epoch;

@@ -4,7 +4,7 @@ import { request } from "node:http";
 import { createDemoServer } from "../examples/dev-server.js";
 
 const assets = ["/src/rpc-capacity.js", "/src/rpc-supervisor.js", "/src/rpc-status.js",
-  "/src/provider-events.js", "/src/provider-event-gate.js", "/examples/rpc-status-panel.js", "/src/state-notifier.js"];
+  "/src/provider-events.js", "/src/provider-event-gate.js", "/examples/rpc-status-panel.js", "/src/state-notifier.js", "/src/security-callback.js"];
 
 async function serving(uiTest, action) {
   const server = createDemoServer({ uiTest });

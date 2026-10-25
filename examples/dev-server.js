@@ -6,6 +6,8 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/src/security-abort.js", { file: resolve(here, "../src/security-abort.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/security-callback.js", { file: resolve(here, "../src/security-callback.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/state-notifier.js", { file: resolve(here, "../src/state-notifier.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/wallet-read-scope.js", { file: resolve(here, "../src/wallet-read-scope.js"), mime: "text/javascript; charset=utf-8" }],
   ...["storage-guard", "storage-guard-policy", "storage-guard-status"].map(name =>
@@ -207,6 +209,7 @@ export function createDemoServer({ uiTest = false } = {}) {
     paths.set("/test/browser/progress-demo.js", { file: resolve(here, "../test/browser/progress-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/", { file: resolve(here, "../test/browser/index.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/observer-ui-tests.js", { file: resolve(here, "../test/browser/observer-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/adapter-boundary-ui-tests.js", { file: resolve(here, "../test/browser/adapter-boundary-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/ui-tests.js", { file: resolve(here, "../test/browser/ui-tests.js"), mime: "text/javascript; charset=utf-8" });
   }
   return createServer(async (request, response) => {

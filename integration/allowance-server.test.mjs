@@ -67,8 +67,8 @@ test("allowance server: all browser imports resolve locally", async () => {
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      // One aggregate-state notifier joins the existing local-only module graph.
-      assert(visited.size <= 186, "Unexpected dependency expansion");
+      // The two explicit security callback/abort modules join the local module graph.
+      assert(visited.size <= 188, "Unexpected dependency expansion");
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();
@@ -78,6 +78,7 @@ test("allowance server: all browser imports resolve locally", async () => {
         pending.push(url.pathname);
       }
     }
+  assert(visited.has("/src/security-callback.js") && visited.has("/src/security-abort.js"));
     assert(visited.has("/src/wallet-session.js"));
     assert(visited.has("/src/allowance-reader.js"));
     assert(visited.has("/src/state-notifier.js"));

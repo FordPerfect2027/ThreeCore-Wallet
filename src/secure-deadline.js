@@ -1,12 +1,5 @@
+import { acceptTimerHandle, readSynchronousClock, consumeCallback } from "./security-callback.js";
 import { secureFail } from "./secure-backup-format.js";
-
-// Read a callback result's `then` only once. Observe failures without granting
-// asynchronous timer adapters any authority over a protected lifetime.
-function observeThenable(value, then, onResolved = () => {}) {
-  Promise.resolve({ then(resolve, reject) {
-    Reflect.apply(then, value, [resolve, reject]);
-  } }).then(onResolved, () => {}).catch(() => {});
-}
 
 /** Check elapsed time at use, even when a background browser delays timers. */
 export function createSecureDeadline({
@@ -31,11 +24,7 @@ export function createSecureDeadline({
   let arming = false;
   function removeTimer(handle) {
     removing++;
-    try {
-      const result = unschedule(handle);
-      const then = result?.then;
-      if (typeof then === "function") observeThenable(result, then);
-    } catch { /* Invalidated callbacks cannot revive access. */ }
+    try { consumeCallback(() => unschedule(handle)); }
     finally { removing--; }
   }
   function clearTimer() {
@@ -59,7 +48,7 @@ export function createSecureDeadline({
     if (reading) { expire("SECURE_CLOCK"); return null; }
     reading = true;
     let value;
-    try { value = now(); } catch { value = NaN; }
+    try { value = readSynchronousClock(now); } catch { value = NaN; }
     finally { reading = false; }
     if (!Number.isFinite(value) || value < 0 || (last !== null && value < last)) {
       expire("SECURE_CLOCK");
@@ -97,21 +86,11 @@ export function createSecureDeadline({
       if (version === revision) expire("SECURE_TIMER");
       return false;
     }
-    let then;
-    try { then = handle?.then; }
-    catch {
-      if (phase === "armed" && version === revision) expire("SECURE_TIMER");
-      removeTimer(handle);
-      return false;
-    }
-    if (typeof then === "function") {
-      // The handle must exist now. A promise is not a cancellable registration.
-      // If it eventually yields a handle, release it without reopening access.
-      observeThenable(handle, then, late => { if (late != null) removeTimer(late); });
+    if (!acceptTimerHandle(handle, removeTimer)) {
       if (phase === "armed" && version === revision) expire("SECURE_TIMER");
       return false;
     }
-    if (phase !== "armed" || version !== revision || synchronous || handle == null) {
+    if (phase !== "armed" || version !== revision || synchronous) {
       removeTimer(handle);
       if (phase === "armed" && version === revision) expire("SECURE_TIMER");
       return false;

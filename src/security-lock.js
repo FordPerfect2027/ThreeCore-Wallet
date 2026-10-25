@@ -1,3 +1,4 @@
+import { acceptTimerHandle, consumeCallback, readSynchronousClock, observeCallbackResult } from "./security-callback.js";
 /** Page-local read-access lock; never a wallet password or permission revoker. */
 export const LOCK_IDLE_CHOICES = Object.freeze([60_000, 300_000, 900_000]);
 export const LOCK_REASONS = Object.freeze(["manual", "idle", "hidden", "page-exit", "clock", "timer", "disposed",
@@ -5,12 +6,7 @@ export const LOCK_REASONS = Object.freeze(["manual", "idle", "hidden", "page-exi
 
 // Cleanup is synchronous. A delayed result is consumed, never permission.
 function asynchronous(value) {
-  if (value === null || !["object", "function"].includes(typeof value)) return false;
-  let then;
-  try { then = value.then; } catch { return true; }
-  if (typeof then !== "function") return false;
-  new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
-  return true;
+  return observeCallbackResult(value) !== "synchronous";
 }
 
 export function createSecurityLock({
@@ -26,7 +22,7 @@ export function createSecurityLock({
   let locked = false, disposed = false, reason = null, fault = null;
   let version = 0, timerVersion = 0, boundaryDepth = 0;
   let stopVersion = 0;
-  let lastActivity = now(), lastObserved = lastActivity, timer = null;
+  let lastActivity = readSynchronousClock(now), lastObserved = lastActivity, timer = null;
   let readingClock = false, notifying = false, cleaning = false, cleanupComplete = true;
   if (!Number.isFinite(lastActivity) || lastActivity < 0 || lastActivity > Number.MAX_SAFE_INTEGER - idleMs ||
       !Number.isFinite(lastActivity + idleMs) || lastActivity + idleMs <= lastActivity) {
@@ -100,7 +96,7 @@ export function createSecurityLock({
     if (readingClock) return trip("clock");
     readingClock = true;
     let current;
-    try { current = boundary(now); } catch { current = NaN; }
+    try { current = boundary(() => readSynchronousClock(now)); } catch { current = NaN; }
     finally { readingClock = false; }
     if (!Number.isFinite(current) || current < 0 || current > Number.MAX_SAFE_INTEGER - idleMs || current < lastObserved ||
         !Number.isFinite(current + idleMs) || current + idleMs <= current) return trip("clock");
@@ -133,9 +129,10 @@ export function createSecurityLock({
       return false;
     }
     installing = false;
-    const invalidHandle = boundary(() => asynchronous(handle));
-    if (locked || disposed || ticket !== timerVersion || firedSynchronously || handle == null || invalidHandle) {
-      try { boundary(() => asynchronous(unschedule(handle))); } catch {}
+    const release = value => boundary(() => consumeCallback(() => unschedule(value)));
+    const valid = boundary(() => acceptTimerHandle(handle, release));
+    if (locked || disposed || ticket !== timerVersion || firedSynchronously || !valid) {
+      if (valid) release(handle);
       if (!locked && !disposed && ticket === timerVersion) trip("timer");
       return false;
     }

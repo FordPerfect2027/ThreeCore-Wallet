@@ -1,3 +1,4 @@
+import { observeCallbackResult } from "./security-callback.js";
 /** Fixed outward-facing codes: never retain browser exceptions or file content. */
 export const EXPORT_LIMITS = Object.freeze({
   fileBytes: 96 * 1024 * 1024,
@@ -32,14 +33,7 @@ export function consumeExportCallback(action) {
 }
 /** Resource operations must be synchronous; rejection is always consumed. */
 export function requireSyncExport(value, code = "EXPORT_FAILED") {
-  if (value && (typeof value === "object" || typeof value === "function")) {
-    let then;
-    try { then = value.then; } catch { exportFail(code); }
-    if (typeof then === "function") {
-      Promise.resolve(value).catch(() => {});
-      exportFail(code);
-    }
-  }
+  if (observeCallbackResult(value) !== "synchronous") exportFail(code);
   if (value === false) exportFail(code);
   return value;
 }

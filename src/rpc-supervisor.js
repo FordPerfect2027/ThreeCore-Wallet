@@ -1,3 +1,4 @@
+import { acceptTimerHandle, consumeCallback, readSynchronousClock } from "./security-callback.js";
 import { createStateNotifier } from "./state-notifier.js";
 import { createRpcCapacity } from "./rpc-capacity.js";
 import { safeProviderFailure } from "./security-provider-error.js";
@@ -58,7 +59,7 @@ export function createRpcSupervisor({
   }
   function clock() {
     let value;
-    try { value = now(); } catch { closeForClock(); return null; }
+    try { value = readSynchronousClock(now); } catch { closeForClock(); return null; }
     if (!Number.isFinite(value) || value < 0 ||
         (previous !== null && value < previous)) {
       closeForClock();
@@ -86,8 +87,9 @@ export function createRpcSupervisor({
     let deadline = null;
     function clearTimer() {
       timerVersion++;
-      if (timer !== null) { try { unschedule(timer); } catch {} }
+      const handle = timer;
       timer = null;
+      if (handle !== null) consumeCallback(() => unschedule(handle));
     }
     function finish(error, value, counter) {
       if (finished) return false;
@@ -128,11 +130,11 @@ export function createRpcSupervisor({
           if (!expired()) arm(Math.max(1, deadline - previous));
         }, delay);
         scheduling = false;
-        if (finished) {
-          try { unschedule(handle); } catch {}
-        } else if (synchronous || handle === undefined || handle === null) {
-          try { unschedule(handle); } catch {}
-          terminate("RPC_TIMER");
+        const valid = acceptTimerHandle(handle, unschedule);
+        if (!valid) terminate("RPC_TIMER");
+        else if (finished || version !== timerVersion || synchronous) {
+          consumeCallback(() => unschedule(handle));
+          if (!finished) terminate("RPC_TIMER");
         } else timer = handle;
       } catch { scheduling = false; terminate("RPC_TIMER"); }
     }

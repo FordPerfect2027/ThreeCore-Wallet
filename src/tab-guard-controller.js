@@ -1,3 +1,4 @@
+import { acceptTimerHandle, consumeCallback, readSynchronousClock, observeCallbackResult } from "./security-callback.js";
 import { TAB_GUARD_BUDGET, TAB_GUARD_TTL, TAB_GUARD_RECEIPTS,
   tabGuardFail, tabGuardCode, tabGuardTime, randomTabId, validateTabSignal,
   createStopSignal, createStopReceipt, tabSignalFresh, createTabReplayWindow } from "./tab-guard-protocol.js";
@@ -19,27 +20,25 @@ export function createTabGuard({ transport, onStop, onChange = () => {}, now = D
     return Object.freeze({ phase, errorCode, available, disposed, pending: !!pending,
       sent, received: accepted, ignored, receiptCount, maxReceipts: TAB_GUARD_RECEIPTS });
   }
-  function emit() { try { onChange(state()); } catch {} }
+  function emit() { consumeCallback(() => onChange(state())); }
   function clock() {
     let value;
-    try { value = tabGuardTime(now()); } catch { tabGuardFail("TAB_CLOCK"); }
+    try { value = tabGuardTime(readSynchronousClock(now)); } catch { tabGuardFail("TAB_CLOCK"); }
     if (value < lastTime) tabGuardFail("TAB_CLOCK");
     lastTime = value;
     return value;
   }
   function clearPending() {
     generation++;
-    if (timer !== null) { try { unschedule(timer); } catch {} }
+    const handle = timer;
     timer = null;
     pending = null;
+    if (handle !== null) consumeCallback(() => unschedule(handle));
   }
   function stopLocal(reason) {
     try {
       const outcome = onStop(reason);
-      if (outcome && typeof outcome.then === "function") {
-        Promise.resolve(outcome).catch(() => {});
-        return false;
-      }
+      if (observeCallbackResult(outcome) !== "synchronous") return false;
       return outcome === true;
     } catch { return false; }
   }
@@ -49,7 +48,7 @@ export function createTabGuard({ transport, onStop, onChange = () => {}, now = D
     available = false;
     clearPending();
     replay.clear();
-    try { transport.close(); } catch {}
+    consumeCallback(() => transport.close());
     errorCode = code;
     phase = "error";
     if (protect) stopLocal("channel-error");
@@ -59,10 +58,7 @@ export function createTabGuard({ transport, onStop, onChange = () => {}, now = D
   function ignore() { ignored = count(ignored); }
   function post(signal) {
     const outcome = transport.post(signal);
-    if (outcome && typeof outcome.then === "function") {
-      Promise.resolve(outcome).catch(() => {});
-      tabGuardFail("TAB_TRANSPORT");
-    }
+    if (observeCallbackResult(outcome) !== "synchronous") tabGuardFail("TAB_TRANSPORT");
     if (outcome !== true) tabGuardFail("TAB_TRANSPORT");
   }
   function armReceipt(ticket, delay) {
@@ -80,8 +76,10 @@ export function createTabGuard({ transport, onStop, onChange = () => {}, now = D
       } catch (error) { fail(tabGuardCode(error)); }
     }, delay);
     scheduling = false;
-    if (disposed || !pending || generation !== ticket) {
-      try { unschedule(handle); } catch {}
+    const valid = acceptTimerHandle(handle, unschedule);
+    if (!valid) { if (generation === ticket) fail("TAB_CONFIG"); }
+    else if (disposed || !pending || generation !== ticket) {
+      consumeCallback(() => unschedule(handle));
     } else timer = handle;
   }
   function receive(input) {
@@ -126,10 +124,7 @@ export function createTabGuard({ transport, onStop, onChange = () => {}, now = D
       // Opening a channel never sends a message or performs a wallet action.
       available = true;
       const subscribed = transport.subscribe(receive, () => fail("TAB_TRANSPORT"));
-      if (subscribed && typeof subscribed.then === "function") {
-        Promise.resolve(subscribed).catch(() => {});
-        tabGuardFail("TAB_TRANSPORT");
-      }
+      if (observeCallbackResult(subscribed) !== "synchronous") tabGuardFail("TAB_TRANSPORT");
       if (subscribed !== true) tabGuardFail("TAB_TRANSPORT");
       if (disposed || !available) return false;
       phase = "ready";
@@ -188,7 +183,7 @@ export function createTabGuard({ transport, onStop, onChange = () => {}, now = D
     clearPending();
     replay.clear();
     source = null;
-    try { transport.close(); } catch {}
+    consumeCallback(() => transport.close());
     phase = "disposed";
     errorCode = null;
     emit();
