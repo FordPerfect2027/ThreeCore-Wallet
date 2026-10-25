@@ -134,14 +134,21 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
   function armCredentials() {
     // Typing cannot renew a decrypted or already staged plaintext lifetime.
     if (credentialArmed && !credentialDeadline.check()) return;
+    startCredentials();
+  }
+  function startCredentials() {
     credentialArmed = credentialDeadline.arm();
+    // A fault remains latched after protect() clears the previous lifetime.
+    // Further typing or autofill must not leave credentials without a timer.
+    const fault = credentialDeadline.state().fault;
+    if (!credentialArmed && fault) expire(fault);
+    return credentialArmed;
   }
   function credentialsReady() {
     if (credentialArmed) return credentialDeadline.check();
     // A browser autofill may supply a value without an input event. Start its
     // bounded lifetime at first explicit use; never store the value in a timer.
-    credentialArmed = credentialDeadline.arm();
-    return credentialArmed;
+    return startCredentials();
   }
   function consumeCredentials() {
     credentialArmed = false;

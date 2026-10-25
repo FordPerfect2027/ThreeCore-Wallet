@@ -1,5 +1,13 @@
 import { secureFail } from "./secure-backup-format.js";
 
+// Read a callback result's `then` only once. Observe failures without granting
+// asynchronous timer adapters any authority over a protected lifetime.
+function observeThenable(value, then, onResolved = () => {}) {
+  Promise.resolve({ then(resolve, reject) {
+    Reflect.apply(then, value, [resolve, reject]);
+  } }).then(onResolved, () => {}).catch(() => {});
+}
+
 /** Check elapsed time at use, even when a background browser delays timers. */
 export function createSecureDeadline({
   timeoutMs = 120_000,
@@ -23,7 +31,11 @@ export function createSecureDeadline({
   let arming = false;
   function removeTimer(handle) {
     removing++;
-    try { unschedule(handle); } catch { /* Invalidated callbacks cannot revive access. */ }
+    try {
+      const result = unschedule(handle);
+      const then = result?.then;
+      if (typeof then === "function") observeThenable(result, then);
+    } catch { /* Invalidated callbacks cannot revive access. */ }
     finally { removing--; }
   }
   function clearTimer() {
@@ -83,6 +95,20 @@ export function createSecureDeadline({
     } catch {
       installing = false;
       if (version === revision) expire("SECURE_TIMER");
+      return false;
+    }
+    let then;
+    try { then = handle?.then; }
+    catch {
+      if (phase === "armed" && version === revision) expire("SECURE_TIMER");
+      removeTimer(handle);
+      return false;
+    }
+    if (typeof then === "function") {
+      // The handle must exist now. A promise is not a cancellable registration.
+      // If it eventually yields a handle, release it without reopening access.
+      observeThenable(handle, then, late => { if (late != null) removeTimer(late); });
+      if (phase === "armed" && version === revision) expire("SECURE_TIMER");
       return false;
     }
     if (phase !== "armed" || version !== revision || synchronous || handle == null) {

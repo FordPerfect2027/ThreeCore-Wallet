@@ -5,6 +5,58 @@ import { manualTime } from "/test/helpers/secure-lifecycle-time.js";
 const assert = (value, message) => { if (!value) throw Error(message); };
 
 export function registerSecureLifecycleUITests(test) {
+  test("backup timer: autofill on a faulted timer is cleared at explicit use", async () => {
+    const f = fixture({ timerResult: id => Promise.resolve(id) });
+    try {
+      // Model autofill without input events, then a second attempt after failure.
+      for (let attempt = 0; attempt < 2; attempt++) {
+        f.q("password").value = PASSWORD;
+        f.q("confirmation").value = PASSWORD;
+        f.check(f.q("acknowledged"));
+        assert(!f.q("encrypt").disabled, "Explicit use must reach its credential gate");
+        f.q("encrypt").click();
+        await until(() => !f.q("file").disabled);
+        assert(f.q("password").value === "" && f.q("confirmation").value === "", "Autofill credentials cleared");
+        assert(f.runner.state().started === 0, "No native crypto started");
+      }
+      await until(() => f.time.pending === 0);
+      assert(f.writes.length === 0 && f.downloads.length === 0, "No write or download");
+    } finally { f.dispose(); }
+  });
+
+  test("backup timer: failed registration clears credentials on every subsequent input", async () => {
+    const f = fixture({ timerResult: id => Promise.resolve(id) });
+    try {
+      f.input("password", PASSWORD);
+      assert(f.q("password").value === "", "Initial input must be cleared on timer failure");
+      f.input("confirmation", PASSWORD);
+      assert(f.q("confirmation").value === "", "Faulted deadline must clear subsequent input too");
+      f.input("restore-password", PASSWORD);
+      assert(f.q("restore-password").value === "", "Restore credential must also be cleared");
+      f.check(f.q("acknowledged"));
+      f.q("encrypt").click();
+      await until(() => f.time.pending === 0);
+      assert(f.runner.state().started === 0, "Faulted timer must never start crypto");
+      assert(f.q("status").textContent.includes("時間管理を開始できない"), "Actionable error is shown");
+      assert(f.writes.length === 0 && f.downloads.length === 0, "No write or download");
+    } finally { f.dispose(); }
+  });
+
+  test("backup timer: asynchronous registration rejects selected native File", async () => {
+    const f = fixture({ timerResult: id => Promise.resolve(id) });
+    try {
+      await f.select();
+      assert(f.q("status").textContent.includes("時間管理を開始できない"), "Timer error replaces ready state");
+      assert(f.q("decrypt").disabled && f.q("stage").disabled, "No restore access is granted");
+      assert(f.q("detail").textContent === "", "No retained candidate summary");
+      await until(() => f.time.pending === 0);
+      for (const id of f.time.allIds()) f.time.fire(id, { stale: true });
+      assert(f.q("decrypt").disabled, "Late timer cannot restore access");
+      assert(f.w("json").value === "", "No plaintext handoff");
+      assert(f.writes.length === 0 && f.downloads.length === 0, "No write or download");
+    } finally { f.dispose(); }
+  });
+
   for (const action of ["protect", "invalidate", "dispose"]) {
     test(`backup cleanup: ${action} inside timer removal cannot hand off plaintext`, async () => {
       let armed = false, reached = false;

@@ -24,7 +24,7 @@ export async function until(predicate) {
     await new Promise(resolve => setTimeout(resolve, 10));
   }
 }
-export function fixture({ onUnschedule = () => {} } = {}) {
+export function fixture({ onUnschedule = () => {}, timerResult = id => id } = {}) {
   const host = document.createElement("div");
   document.body.append(host);
   const time = manualTime();
@@ -35,6 +35,7 @@ export function fixture({ onUnschedule = () => {} } = {}) {
     readDraft: () => clone(current), writeDraft(value) { current = clone(value); writes.push(clone(value)); },
     download: value => downloads.push(value.prepared),
     secureOptions: { plaintextLifetimeMs: 100, deadlineOptions: { ...time.options,
+      schedule(fn, ms) { return timerResult(time.schedule(fn, ms)); },
       unschedule(id) { time.unschedule(id); onUnschedule(id); } },
       controllerOptions: { runner } } });
   const q = name => host.querySelector(".secure-backup-" + name);
