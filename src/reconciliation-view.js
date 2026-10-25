@@ -55,6 +55,8 @@ export function reconciliationErrorMessage(error) {
     RECONCILIATION_FILE_READ: "ファイルを読み取れませんでした。",
     RECONCILIATION_FILE_ENCODING: "UTF-8のJSONファイルを選んでください。",
     RECONCILIATION_FILE_KIND: "ファイルの種類を確認してください。",
+    RECONCILIATION_EXPORT_REFUSED: "書き出しを開始できませんでした。元の記録は保持しています。",
+    RECONCILIATION_ASYNC_DELIVERY: "書き出しの開始を確認できませんでした。元の記録は保持しています。",
   };
   if (messages[code]) return messages[code];
   if (typeof code === "string" && /^(IDENTITY|TRANSFER|RECONCILIATION)_[A-Z_]+$/.test(code)) {

@@ -52,7 +52,7 @@ for (const uiTest of [false, true]) {
       for (const path of ["/api/library", "/api/library/export", "/api/library/import", "/api/password",
         "/ThreeCore-encrypted-library.json", "/threecore-encrypted-backups-v1", "/.git/config",
         "/scripts/check-encrypted-library.js", "/test/helpers/encrypted-library-fixtures.js"]) {
-        assert.equal((await send(path)).status, 404, path);
+        assert.equal((await send(path)).status, uiTest && path === "/test/helpers/encrypted-library-fixtures.js" ? 200 : 404, path);
       }
       for (const method of ["POST", "PUT", "DELETE"]) {
         const result = await send("/", { method, body: '{"passphrase":"synthetic secret"}' });

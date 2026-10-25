@@ -58,8 +58,9 @@ for (const uiTest of [false, true]) {
         "/%2e%2e/wallet-workspace-baseline-20261023/package.json",
       ]) {
         const response = await fetch(base + route);
-        assert.equal(response.status, 404, route);
-        assert.equal(await response.text(), "Not found");
+        assert.equal(response.status, uiTest && route === "/test/helpers/workspace-fixtures.js" ? 200 : 404, route);
+        const text = await response.text();
+        if (!(uiTest && route === "/test/helpers/workspace-fixtures.js")) assert.equal(text, "Not found");
       }
       for (const method of ["POST", "PUT", "PATCH", "DELETE"]) {
         const response = await fetch(base + "/examples/workspace-panel.js", { method });

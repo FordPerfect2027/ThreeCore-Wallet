@@ -46,7 +46,8 @@ for (const uiTest of [false, true]) {
         "/.git/config",
         "/history.json",
       ]) {
-        assert.equal((await fetch(base + path)).status, 404, "not exposed: " + path);
+        assert.equal((await fetch(base + path)).status,
+          uiTest && path === "/test/helpers/history-fixtures.js" ? 200 : 404, "fixture gate: " + path);
       }
     } finally {
       server.closeAllConnections();

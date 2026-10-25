@@ -5,6 +5,8 @@ import { offerHistoryDownload } from "./history-files.js";
 import { createCheckpointCollectionReader } from "../src/checkpoint-transfer.js";
 
 const ERRORS = Object.freeze({
+  CHECKPOINT_EXPORT_REFUSED: "ダウンロードを開始できませんでした。控えは保存領域に残っています。再度操作してください。",
+  CHECKPOINT_STAGE_REFUSED: "復元の入力欄へ渡せませんでした。控えを選び直して内容を確認してください。",
   CHECKPOINT_CONFLICT: "同じIDで内容の異なる控えがあります。既存の控えは変更していません。",
   CHECKPOINT_TRANSFER_CHECKSUM: "控え一覧ファイルの破損確認が一致しません。",
   CHECKPOINT_IMPORT_REVIEW: "控え一覧ファイルを選び直し、追加内容を確認してください。",

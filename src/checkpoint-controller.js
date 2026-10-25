@@ -5,6 +5,7 @@ import { prepareWorkspaceFile, decodeWorkspaceFile } from "./workspace-file.js";
 import { describeWorkspaceOverview } from "./workspace-overview.js";
 import { prepareCheckpointCollection, decodeCheckpointCollection,
   reviewCheckpointImport, describeCheckpointImport } from "./checkpoint-transfer.js";
+import { consumeCallback, observeCallbackResult } from "./security-callback.js";
 
 /** Explicit actions only; the only restore action stages data for another preview. */
 export function createCheckpointController({ storage, readDraft, onStage, download,
@@ -42,7 +43,11 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     });
   }
   function publish() {
-    if (!disposed) { try { Promise.resolve(onChange(state())).catch(() => {}); } catch {} }
+    if (!disposed) consumeCallback(() => onChange(state()));
+  }
+  function handoff(callback, value, code) {
+    const receipt = callback(value);
+    if (observeCallbackResult(receipt) !== "synchronous" || receipt === false) checkpointFail(code);
   }
   function begin(action) {
     if (disposed) checkpointFail("CHECKPOINT_CLOSED");
@@ -128,7 +133,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       if (!alive(token)) return;
       if (current.revision !== document.revision) checkpointFail("CHECKPOINT_STALE");
       const prepared = await prepareCheckpointCollection(current, { subtle });
-      if (alive(token)) download(prepared);
+      if (alive(token)) handoff(download, prepared, "CHECKPOINT_EXPORT_REFUSED");
     }),
     reviewImport: text => operate("importReview", async token => {
       const importToken = ++importGeneration;
@@ -208,14 +213,15 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       const file = await verify(entry);
       if (!alive(token)) return;
       if (file.digest !== inspected.digest) checkpointFail("CHECKPOINT_STALE");
-      onStage(file.text); // Existing workspace panel still requires preview and confirmation.
+      // Existing workspace panel still requires preview and confirmation.
+      handoff(onStage, file.text, "CHECKPOINT_STAGE_REFUSED");
     }),
     exportFile: () => operate("export", async token => {
       const entry = await freshSelection(token);
       const file = await verify(entry);
       if (!alive(token)) return;
-      download({ text: entry.fileText, filename: "ThreeCore-checkpoint-" + entry.id + ".json",
-        mimeType: "application/json;charset=utf-8", digest: file.digest });
+      handoff(download, { text: entry.fileText, filename: "ThreeCore-checkpoint-" + entry.id + ".json",
+        mimeType: "application/json;charset=utf-8", digest: file.digest }, "CHECKPOINT_EXPORT_REFUSED");
     }),
     rename: label => metadataMutation("rename", label),
     archive: () => metadataMutation("archive"),
@@ -230,11 +236,13 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       if (disposed) return;
       disposed = true;
       generation++;
-      active?.aborter.abort();
+      phase = "disposed";
+      const aborter = active?.aborter;
       active = null;
       document = inspected = null;
       importReview = null;
-      storage.close();
+      aborter?.abort();
+      consumeCallback(() => storage.close());
     },
   });
 }

@@ -209,6 +209,12 @@ export function createDemoServer({ uiTest = false } = {}) {
     paths.set("/test/browser/progress-demo.js", { file: resolve(here, "../test/browser/progress-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/", { file: resolve(here, "../test/browser/index.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/observer-ui-tests.js", { file: resolve(here, "../test/browser/observer-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/storage-receipt-ui-tests.js", { file: resolve(here, "../test/browser/storage-receipt-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/export-receipt-fixtures.js", { file: resolve(here, "../test/helpers/export-receipt-fixtures.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/encrypted-library-fixtures.js", { file: resolve(here, "../test/helpers/encrypted-library-fixtures.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/checkpoint-fixtures.js", { file: resolve(here, "../test/helpers/checkpoint-fixtures.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/history-fixtures.js", { file: resolve(here, "../test/helpers/history-fixtures.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/helpers/workspace-fixtures.js", { file: resolve(here, "../test/helpers/workspace-fixtures.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/adapter-boundary-ui-tests.js", { file: resolve(here, "../test/browser/adapter-boundary-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/ui-tests.js", { file: resolve(here, "../test/browser/ui-tests.js"), mime: "text/javascript; charset=utf-8" });
   }

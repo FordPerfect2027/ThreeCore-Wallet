@@ -25,7 +25,7 @@ async function serving(run, uiTest = false) {
 const production = ["/src/security-callback.js", "/src/security-abort.js", "/src/secure-deadline.js", "/src/secure-backup-status.js",
   "/src/secure-backup-runner.js", "/src/secure-backup-controller.js",
   "/examples/secure-operation-panel.js", "/examples/secure-backup-panel.js", "/examples/workspace-panel.js"];
-const fixtures = ["/test/browser/adapter-boundary-ui-tests.js", "/test/browser/secure-lifecycle-fixture.js", "/test/browser/secure-lifecycle-ui-tests.js",
+const fixtures = ["/test/helpers/history-fixtures.js", "/test/browser/storage-receipt-ui-tests.js", "/test/helpers/export-receipt-fixtures.js", "/test/helpers/encrypted-library-fixtures.js", "/test/helpers/checkpoint-fixtures.js", "/test/helpers/workspace-fixtures.js", "/test/browser/adapter-boundary-ui-tests.js", "/test/browser/secure-lifecycle-fixture.js", "/test/browser/secure-lifecycle-ui-tests.js",
   "/test/helpers/secure-lifecycle-time.js", "/test/browser/secure-lifecycle-demo/",
   "/test/browser/secure-lifecycle-demo.js", "/test/browser/secure-lifecycle-demo.css"];
 

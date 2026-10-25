@@ -1,3 +1,4 @@
+import { observeCallbackResult, consumeCallback } from "./security-callback.js";
 import { periodFail } from "./period-plan.js";
 import { libraryId, libraryLabel, libraryTime } from "./period-library-model.js";
 import { validatePeriodReportInput, periodReportInputKey } from "./period-report-model.js";
@@ -255,9 +256,10 @@ export function createReportHistoryController({ storage, getReport, stageReport,
           await preparePeriodReportFile(selected.report) : reportHistoryCSV(fresh, query);
         if (!same()) return null;
         const delivery = deliver(file);
-        if (delivery && typeof delivery.then === "function") {
-          Promise.resolve(delivery).catch(() => {}); periodFail("PERIOD_ASYNC_DELIVERY");
+        if (observeCallbackResult(delivery) !== "synchronous") {
+          periodFail("PERIOD_ASYNC_DELIVERY");
         }
+        if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
         return fresh;
       }, fresh => { adopt(fresh); message = "保存処理を開始しました。ダウンロード先をご確認ください。"; });
     } catch (value) { return fail(value); }
@@ -266,7 +268,10 @@ export function createReportHistoryController({ storage, getReport, stageReport,
     importFile, setSkipConflicts, applyReview, annotate, archive, compare, inspectSources, exportFile, cancel, invalidateReview,
     dispose() {
       if (disposed) return;
-      generation++; aborter?.abort(); disposed = true; review = null; comparison = null; storage.close();
+      disposed = true; generation++; phase = "disposed"; review = null; comparison = null;
+      const previous = aborter; aborter = null;
+      previous?.abort();
+      consumeCallback(() => storage.close());
     },
   });
 }

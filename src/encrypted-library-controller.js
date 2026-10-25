@@ -1,3 +1,4 @@
+import { observeCallbackResult } from "./security-callback.js";
 import { EncryptedLibraryError, libraryFail, libraryErrorCode, libraryId,
   prepareLibraryEntry, verifyEncryptedLibrary, sameEncryptedLibrary,
   encryptedLibrarySummary, mutateEncryptedLibrary } from "./encrypted-library-model.js";
@@ -273,8 +274,7 @@ export function createEncryptedLibraryController({
     try {
       if (!prepared || typeof download !== "function") libraryFail("LIBRARY_EXPORT");
       const outcome = download(prepared);
-      if (outcome && typeof outcome.then === "function") {
-        Promise.resolve(outcome).catch(() => {});
+      if (observeCallbackResult(outcome) !== "synchronous" || outcome === false) {
         libraryFail("LIBRARY_EXPORT");
       }
       if (!current(id)) return false;

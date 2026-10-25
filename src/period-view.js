@@ -33,6 +33,7 @@ const messages = Object.freeze({
   PERIOD_CRYPTO: "ファイルの検査値を計算できませんでした。",
   PERIOD_STALE_REVIEW: "確認後に対象が変わりました。もう一度計画を確認してください。",
   PERIOD_ASYNC_DELIVERY: "保存処理を開始できませんでした。",
+  PERIOD_EXPORT_REFUSED: "書き出しを開始できませんでした。元の記録は保持しています。",
   PERIOD_DELIVERY_FAILED: "照合画面へ渡せませんでした。現在の記録は保持しています。",
   IDENTITY_TIMEOUT: "残高の応答待ちを終了しました。過去の状態を参照できる接続先か確認してください。",
   IDENTITY_BLOCK_CHANGED: "残高取得中にブロックが変わりました。新しい計画で確認してください。",

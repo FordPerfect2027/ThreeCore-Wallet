@@ -1,3 +1,4 @@
+import { observeCallbackResult, consumeCallback } from "./security-callback.js";
 import { periodFail } from "./period-plan.js";
 import { emptyReportHistory, validateReportHistory } from "./report-history-model.js";
 import { validateSetSelection, validateReportSet, createReportSet, inspectSetSources,
@@ -156,18 +157,19 @@ export function createReportSetController({ storage, onChange = () => {},
           reportSetHTML(snapshot, options) : reportSetCSV(snapshot, options);
         if (!same()) return null;
         const delivery = deliver(file);
-        if (delivery && typeof delivery.then === "function") {
-          Promise.resolve(delivery).catch(() => {}); periodFail("PERIOD_ASYNC_DELIVERY");
+        if (observeCallbackResult(delivery) !== "synchronous") {
+          periodFail("PERIOD_ASYNC_DELIVERY");
         }
+        if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
         return file;
       }, () => { message = "固定した確認セットをファイルに出力しました。ダウンロード先をご確認ください。"; });
     } catch (value) { return fail(value); }
   }
   function dispose() {
     if (disposed) return;
-    generation++; disposed = true; review = null; inspection = null;
+    generation++; disposed = true; phase = "disposed"; review = null; inspection = null;
     const previous = active; active = null; previous?.abort();
-    try { storage.close(); } catch { /* No writes exist in this controller. */ }
+    consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,
     inspectSources, exportFile, cancel, invalidateReview, dispose });

@@ -1,3 +1,4 @@
+import { observeCallbackResult, consumeCallback } from "./security-callback.js";
 import { comparePeriodReports } from "./period-report-comparison.js";
 import { periodFail } from "./period-plan.js";
 import { emptyPeriodLibrary, validatePeriodLibrary, libraryId } from "./period-library-model.js";
@@ -168,8 +169,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
         if (!same()) return null;
         const delivery = deliver(file);
         // Browser download initiation must be synchronous; late async callbacks cannot report success.
-        if (delivery && typeof delivery.then === "function") {
-          Promise.resolve(delivery).catch(() => {});
+        if (observeCallbackResult(delivery) !== "synchronous") {
           periodFail("PERIOD_REPORT_DELIVERY");
         }
         if (delivery === false) periodFail("PERIOD_REPORT_DELIVERY");
@@ -179,9 +179,9 @@ export function createPeriodReportController({ storage, onChange = () => {},
   }
   function dispose() {
     if (disposed) return;
-    disposed = true; generation++; review = null;
+    disposed = true; generation++; phase = "disposed"; review = null;
     const previous = active; active = null; previous?.abort();
-    try { storage.close(); } catch { /* A closed adapter cannot change an accepted snapshot. */ }
+    consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare,
     invalidateReview, importFile, stageHistory, applyReview, exportFile, cancel, dispose });

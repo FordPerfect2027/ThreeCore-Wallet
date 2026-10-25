@@ -1,6 +1,7 @@
 import { CheckpointError, checkpointFail, emptyCheckpointDocument,
   validateCheckpointDocument, mutateCheckpoints } from "./checkpoint-model.js";
 import { createSecureDeadline } from "./secure-deadline.js";
+import { observeCallbackResult, readSynchronousClock } from "./security-callback.js";
 import { walletStorageGuard } from "./storage-guard.js";
 import { StorageGuardError, captureStorageInput, ownStorageData,
   synchronousStorageValue, observeStorageCleanup } from "./storage-guard-policy.js";
@@ -67,7 +68,7 @@ export function createCheckpointStorage({ indexedDB, name = CHECKPOINT_DATABASE,
   const sourceClock = time.now;
   let lastClock = null;
   time.now = () => {
-    const value = sourceClock();
+    const value = readSynchronousClock(sourceClock);
     if (!Number.isFinite(value) || value < 0 || (lastClock !== null && value < lastClock)) return NaN;
     lastClock = value;
     return value;
@@ -152,6 +153,7 @@ export function createCheckpointStorage({ indexedDB, name = CHECKPOINT_DATABASE,
       if (!ctx.alive()) { endOpen(record, new CheckpointError("CHECKPOINT_CANCELLED")); return; }
       const request = open.call(factory, name, 1);
       record.request = request;
+      synchronousStorageValue(request);
       request.onblocked = () => failOpen(record, new CheckpointError("CHECKPOINT_BLOCKED"));
       request.onerror = () => {
         let error;
@@ -203,6 +205,7 @@ export function createCheckpointStorage({ indexedDB, name = CHECKPOINT_DATABASE,
       const tx = create.call(db, STORE, ctx.write ? "readwrite" : "readonly");
       ctx.transaction = tx;
       ctx.nativePending = true;
+      synchronousStorageValue(tx);
       const abort = tx.abort;
       if (typeof abort !== "function") checkpointFail("CHECKPOINT_ADAPTER");
       ctx.abortNative = () => abort.call(tx);
@@ -229,11 +232,11 @@ export function createCheckpointStorage({ indexedDB, name = CHECKPOINT_DATABASE,
       if (!ctx.alive()) { ctx.abortOnce(); return; }
       const obtainStore = tx.objectStore;
       if (!ctx.alive()) { ctx.abortOnce(); return; }
-      const store = obtainStore.call(tx, STORE);
+      const store = synchronousStorageValue(obtainStore.call(tx, STORE));
       if (!ctx.alive()) { ctx.abortOnce(); return; }
       const get = store.get;
       if (!ctx.alive()) { ctx.abortOnce(); return; }
-      const request = get.call(store, KEY);
+      const request = synchronousStorageValue(get.call(store, KEY));
       request.onerror = () => {
         let error;
         try { error = request.error; } catch {}
@@ -266,6 +269,7 @@ export function createCheckpointStorage({ indexedDB, name = CHECKPOINT_DATABASE,
               if (!ctx.alive()) return;
               const write = put.call(store, result, KEY);
               ctx.putQueued = true;
+              synchronousStorageValue(write);
               write.onerror = () => {
                 let error;
                 try { error = write.error; } catch {}
@@ -370,8 +374,13 @@ export function createCheckpointStorage({ indexedDB, name = CHECKPOINT_DATABASE,
         const add = signal.addEventListener, remove = signal.removeEventListener;
         if (typeof add !== "function" || typeof remove !== "function") checkpointFail("CHECKPOINT_ADAPTER");
         const onAbort = () => ctx.stop(new CheckpointError("CHECKPOINT_CANCELLED"));
-        ctx.removeSignal = () => remove.call(signal, "abort", onAbort);
-        add.call(signal, "abort", onAbort, { once: true });
+        const detach = () => remove.call(signal, "abort", onAbort);
+        ctx.removeSignal = detach;
+        const registered = add.call(signal, "abort", onAbort, { once: true });
+        // A refused adapter can attach later. Its completion only removes the
+        // captured listener; it never grants authority to open or write.
+        const kind = observeCallbackResult(registered, () => observeStorageCleanup(detach));
+        if (kind !== "synchronous" || registered === false) checkpointFail("CHECKPOINT_ADAPTER");
       }
       ctx.arm(openTimeoutMs);
       if (write && ctx.alive()) {

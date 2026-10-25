@@ -1,3 +1,4 @@
+import { observeCallbackResult, consumeCallback } from "./security-callback.js";
 import { periodFail, periodShape } from "./period-plan.js";
 import { validatePeriodDraft, periodDraftKey } from "./period-draft.js";
 import { emptyPeriodLibrary, validatePeriodLibrary, validateLibraryEntry, libraryId, libraryLabel,
@@ -203,16 +204,22 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
         }
         if (!same()) return null;
         const delivery = deliver(file);
-        if (delivery && typeof delivery.then === "function") {
-          Promise.resolve(delivery).catch(() => {});
+        if (observeCallbackResult(delivery) !== "synchronous") {
           periodFail("PERIOD_ASYNC_DELIVERY");
         }
+        if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
         return fresh;
       }, fresh => { adopt(fresh); message = "ダウンロードを開始しました。保存先でファイルを確認してください。"; });
     } catch (value) { return fail(value); }
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepareSave, prepareRestore,
     importFile, applyReview, edit, compare, exportFile, cancel,
-    dispose() { if (!disposed) { generation++; aborter?.abort(); disposed = true; review = null; storage.close(); } },
+    dispose() {
+      if (disposed) return;
+      disposed = true; generation++; phase = "disposed"; review = null;
+      const previous = aborter; aborter = null;
+      previous?.abort();
+      consumeCallback(() => storage.close());
+    },
   });
 }

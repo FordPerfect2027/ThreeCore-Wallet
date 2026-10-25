@@ -1,3 +1,4 @@
+import { observeCallbackResult } from "./security-callback.js";
 import { createPeriodPlan, periodPlanKey, periodContextKey, periodFail, periodShape } from "./period-plan.js";
 import { emptyPeriodDraft, validatePeriodDraft, periodDraftKey, periodDraftProgress, periodDraftWorkspace } from "./period-draft.js";
 import { periodFailureCode } from "./period-reader.js";
@@ -304,11 +305,10 @@ export function createPeriodController({
         };
       if (disposed || id !== generation) return false;
       const result = deliver(file);
-      if (result && typeof result.then === "function") {
-        // Delivery must be synchronous; drain a rejected promise before refusing it.
-        Promise.resolve(result).catch(() => {});
+      if (observeCallbackResult(result) !== "synchronous") {
         periodFail("PERIOD_ASYNC_DELIVERY");
       }
+      if (result === false) periodFail("PERIOD_EXPORT_REFUSED");
       if (disposed || id !== generation) return false;
       if (kind === "draft") savedKey = beforeKey;
       phase = "ready";
@@ -324,6 +324,12 @@ export function createPeriodController({
   }
   return Object.freeze({ get state() { return state(); }, prepare, prepareRepair, stageSaved, apply, start, cancel, invalidate,
     selectAgent, importFile, exportFile, sendToReconciliation,
-    dispose() { if (!disposed) { interrupt(); disposed = true; review = null; } },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      phase = "disposed";
+      review = null;
+      interrupt();
+    },
   });
 }

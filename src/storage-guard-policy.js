@@ -1,3 +1,5 @@
+import { consumeCallback, observeCallbackResult } from "./security-callback.js";
+
 export const STORAGE_CONCURRENCY = 4;
 export const STORAGE_OBSERVERS = 16;
 export const STORAGE_COUNTER_LIMIT = 1_000_000_000;
@@ -18,7 +20,7 @@ export class StorageGuardError extends Error {
 export function storageFail(code) { throw new StorageGuardError(code); }
 
 export function observeStorageCleanup(work) {
-  try { Promise.resolve(work()).catch(() => {}); } catch {}
+  consumeCallback(work);
 }
 
 export function ownStorageData(input, key) {
@@ -103,13 +105,6 @@ export function captureStorageInput(value, limits = STORAGE_SNAPSHOT_LIMITS) {
 
 /** Async policies cannot extend an active IndexedDB transaction's authority. */
 export function synchronousStorageValue(value) {
-  if (value && (typeof value === "object" || typeof value === "function")) {
-    let then;
-    try { then = value.then; } catch { storageFail("CHECKPOINT_ADAPTER"); }
-    if (typeof then === "function") {
-      observeStorageCleanup(() => Promise.resolve(value));
-      storageFail("CHECKPOINT_ADAPTER");
-    }
-  }
+  if (observeCallbackResult(value) !== "synchronous") storageFail("CHECKPOINT_ADAPTER");
   return value;
 }

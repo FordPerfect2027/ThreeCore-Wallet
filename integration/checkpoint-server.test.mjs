@@ -43,7 +43,7 @@ for (const uiTest of [false, true]) {
       for (const route of ["/ThreeCore-saved-checkpoints.json", "/test/helpers/checkpoint-fixtures.js",
         "/scripts/check-checkpoint-collection.js", "/.git/config", "/checkpoint-tests.log"]) {
         const response = await fetch(base + route);
-        assert.equal(response.status, 404, route);
+        assert.equal(response.status, uiTest && route === "/test/helpers/checkpoint-fixtures.js" ? 200 : 404, route);
         await response.text();
       }
       for (const method of ["POST", "PUT", "DELETE"]) {

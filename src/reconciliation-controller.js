@@ -1,3 +1,4 @@
+import { observeCallbackResult } from "./security-callback.js";
 import { reconciliationLedgerCsv, reconciliationWindowsCsv } from "./reconciliation-ledger.js";
 import {
   emptyReconciliationWorkspace, validateReconciliationWorkspace, reconciliationKey,
@@ -265,7 +266,9 @@ export function createReconciliationController({
         if (disposed || current !== operation) return false;
         // Delivery must be synchronous: a cancelled operation cannot launch a later download.
         const result = deliver(file);
-        if (result && typeof result.then === "function") reconciliationFail("RECONCILIATION_ASYNC_DELIVERY");
+        if (observeCallbackResult(result) !== "synchronous") reconciliationFail("RECONCILIATION_ASYNC_DELIVERY");
+        if (result === false) reconciliationFail("RECONCILIATION_EXPORT_REFUSED");
+        if (disposed || current !== operation) return false;
         if (kind === "json") savedKey = reconciliationKey(before);
         busy = false;
         message = "保存を開始しました。ブラウザーのダウンロード先でファイルを確認してください。";
