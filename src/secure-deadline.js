@@ -19,13 +19,19 @@ export function createSecureDeadline({
   let version = 0;
   let reading = false;
   let fault = null;
+  let removing = 0;
+  let arming = false;
+  function removeTimer(handle) {
+    removing++;
+    try { unschedule(handle); } catch { /* Invalidated callbacks cannot revive access. */ }
+    finally { removing--; }
+  }
   function clearTimer() {
-    version++;
+    const revision = ++version;
     const handle = timer;
     timer = null;
-    if (handle !== null) {
-      try { unschedule(handle); } catch { /* Invalidated callbacks cannot revive access. */ }
-    }
+    if (handle !== null) removeTimer(handle);
+    return revision;
   }
   function expire(reason) {
     if (phase !== "armed") return false;
@@ -80,7 +86,7 @@ export function createSecureDeadline({
       return false;
     }
     if (phase !== "armed" || version !== revision || synchronous || handle == null) {
-      try { unschedule(handle); } catch {}
+      removeTimer(handle);
       if (phase === "armed" && version === revision) expire("SECURE_TIMER");
       return false;
     }
@@ -88,17 +94,22 @@ export function createSecureDeadline({
     return true;
   }
   function arm() {
-    if (phase === "disposed" || fault) return false;
-    clearTimer();
-    phase = "armed";
-    code = null;
-    const revision = version;
-    const current = clock();
-    if (current === null || phase !== "armed" || version !== revision) return false;
-    expires = current + timeoutMs;
-    if (!Number.isFinite(expires) || expires <= current) return expire("SECURE_CLOCK");
-    if (!armTimer(timeoutMs)) return false;
-    return check();
+    if (phase === "disposed" || fault || removing || arming) return false;
+    arming = true;
+    try {
+      const revision = clearTimer();
+      // A cleanup callback may clear or dispose this deadline. Its decision
+      // supersedes the rearm that was already in progress.
+      if (phase === "disposed" || fault || version !== revision) return false;
+      phase = "armed";
+      code = null;
+      const current = clock();
+      if (current === null || phase !== "armed" || version !== revision) return false;
+      expires = current + timeoutMs;
+      if (!Number.isFinite(expires) || expires <= current) return expire("SECURE_CLOCK");
+      if (!armTimer(timeoutMs)) return false;
+      return check();
+    } finally { arming = false; }
   }
   function clear() {
     if (phase === "disposed") return;

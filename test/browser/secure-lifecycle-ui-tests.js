@@ -5,6 +5,35 @@ import { manualTime } from "/test/helpers/secure-lifecycle-time.js";
 const assert = (value, message) => { if (!value) throw Error(message); };
 
 export function registerSecureLifecycleUITests(test) {
+  for (const action of ["protect", "invalidate", "dispose"]) {
+    test(`backup cleanup: ${action} inside timer removal cannot hand off plaintext`, async () => {
+      let armed = false, reached = false;
+      const f = fixture({ onUnschedule() {
+        if (!armed) return;
+        armed = false; reached = true;
+        f.panel[action]();
+      } });
+      try {
+        await f.unlock();
+        const input = f.w("json"), stage = f.q("stage");
+        assert(!stage.disabled, "Authenticated candidate must be ready");
+        armed = true;
+        stage.click();
+        assert(reached, "Cleanup interruption must be reached");
+        assert(input.value === "", "Stopped plaintext reached the workspace input");
+        assert(f.writes.length === 0, "Stop must not restore stored data");
+        assert(f.downloads.length === 0, "Stop must not offer a file");
+        if (action !== "dispose") {
+          assert(f.q("stage").disabled, "Old candidate must be unavailable");
+          assert(f.q("detail").textContent === "", "Old candidate summary must be cleared");
+          await f.unlock();
+          f.q("stage").click();
+          assert(f.w("json").value.length > 0, "Fresh explicit restoration still works");
+        }
+      } finally { f.dispose(); }
+    });
+  }
+
   test("backup lifecycle: production screen exposes crypto operation status", make => {
     const f = make();
     assert(document.querySelector(".secure-operation-panel"), "protection status integrated");

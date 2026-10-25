@@ -72,20 +72,22 @@ export function createSecureBackupController({ readDraft, onStage, onChange = ()
     finally { emitting = false; }
   }
   function clear() {
-    lifetime.clear();
     encryptedInput = prepared = restoredText = sourceKey = targetKey = summary = null;
     offered = false;
     offering = false;
     size = 0;
+    // Remove candidate access before calling the timer adapter. Reentrant
+    // actions must never retrieve the old candidate during cleanup.
+    lifetime.clear();
   }
   function transition(next, createAbort = false) {
     const id = ++generation;
     const old = abort;
     abort = createAbort ? new AbortController() : null;
     const signal = abort?.signal;
-    clear();
     phase = next;
     errorCode = null;
+    clear();
     old?.abort();
     if (generation === id) emit();
     return { id, signal };
@@ -96,10 +98,12 @@ export function createSecureBackupController({ readDraft, onStage, onChange = ()
   }
   function failed(id, error, fallback) {
     if (!current(id)) return false;
-    clear();
+    const code = secureErrorCode(error, fallback);
+    if (!current(id)) return false;
     phase = "error";
-    errorCode = secureErrorCode(error, fallback);
-    emit();
+    errorCode = code;
+    clear();
+    if (current(id)) emit();
     return false;
   }
   function currentKey() {
@@ -230,8 +234,9 @@ export function createSecureBackupController({ readDraft, onStage, onChange = ()
       requireReady(id);
       if (key !== targetKey) secureFail("SECURE_STALE");
       const text = restoredText;
-      clear();
       phase = "staging";
+      clear();
+      requireCurrent(id);
       const result = onStage(text);
       if (result !== true) { observe(result); secureFail("SECURE_STAGE"); }
       requireCurrent(id);

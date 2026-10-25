@@ -24,7 +24,7 @@ export async function until(predicate) {
     await new Promise(resolve => setTimeout(resolve, 10));
   }
 }
-export function fixture() {
+export function fixture({ onUnschedule = () => {} } = {}) {
   const host = document.createElement("div");
   document.body.append(host);
   const time = manualTime();
@@ -34,7 +34,8 @@ export function fixture() {
   const panel = mountWorkspacePanel({ document, parent: host,
     readDraft: () => clone(current), writeDraft(value) { current = clone(value); writes.push(clone(value)); },
     download: value => downloads.push(value.prepared),
-    secureOptions: { plaintextLifetimeMs: 100, deadlineOptions: time.options,
+    secureOptions: { plaintextLifetimeMs: 100, deadlineOptions: { ...time.options,
+      unschedule(id) { time.unschedule(id); onUnschedule(id); } },
       controllerOptions: { runner } } });
   const q = name => host.querySelector(".secure-backup-" + name);
   const w = name => host.querySelector(".workspace-" + name);
