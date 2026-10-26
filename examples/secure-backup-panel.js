@@ -3,6 +3,7 @@ import { createSecureDeadline } from "../src/secure-deadline.js";
 import { createSecureBackupController } from "../src/secure-backup-controller.js";
 import { mountEncryptedLibraryPanel } from "./encrypted-library-panel.js";
 import { offerHistoryDownload } from "./history-files.js";
+import { consumeCallback } from "../src/security-callback.js";
 
 export const SECURE_BACKUP_MESSAGES = Object.freeze({
   SECURE_FORMAT: "対応する暗号化バックアップではありません。形式を確認してください。",
@@ -38,9 +39,12 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
     throw new Error("SECURE_INTERNAL");
   }
   let disposed = false;
+  let disposing = false;
   let libraryPanel;
   let protecting = false;
   let credentialArmed = false;
+  let actionRevision = 0;
+  let admitting = false;
   const expire = code => {
     protect();
     if (!disposed) status.textContent = SECURE_BACKUP_MESSAGES[code] ?? SECURE_BACKUP_MESSAGES.SECURE_EXPIRED;
@@ -62,7 +66,7 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
   function listen(target, event, handler) {
     if (typeof target?.addEventListener !== "function") return;
     const action = () => {
-      if (disposed) return;
+      if (disposed || disposing) return;
       try { handler(); } catch {
         protect();
         status.textContent = SECURE_BACKUP_MESSAGES.SECURE_INTERNAL;
@@ -113,25 +117,43 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
     first.value = second.value = restorePassword.value = "";
   }
   function notifyProtection() {
-    try { Promise.resolve(onProtect()).catch(() => {}); } catch {}
+    consumeCallback(onProtect);
   }
-  function protect() {
-    if (disposed || protecting) return;
+  function stop(operation) {
+    if (disposed) return;
+    actionRevision++;
+    if (protecting) return;
     protecting = true;
     credentialArmed = false;
-    credentialDeadline.clear();
-    stagedDeadline.clear();
+    // Timer adapters and parent cleanup can call back into the panel. Remove
+    // credentials and invalidate the pending action before either can run.
     clearPasswords();
     file.value = "";
     acknowledged.checked = false;
-    try { controller.cancel(); } finally {
+    try {
+      credentialDeadline.clear();
+      stagedDeadline.clear();
+      controller[operation]();
+    } finally {
       try { libraryPanel?.protect(); } finally {
         notifyProtection();
         protecting = false;
       }
     }
   }
+  function protect() { stop("cancel"); }
+  function admit(work) {
+    if (disposed || disposing || protecting || admitting) return false;
+    if (document.hidden) { protect(); return false; }
+    const revision = ++actionRevision;
+    const current = () => !disposed && !disposing && !protecting &&
+      actionRevision === revision && !document.hidden;
+    admitting = true;
+    try { return work(current); }
+    finally { admitting = false; }
+  }
   function armCredentials() {
+    if (disposing || protecting || admitting || document.hidden) { clearPasswords(); return; }
     // Typing cannot renew a decrypted or already staged plaintext lifetime.
     if (credentialArmed && !credentialDeadline.check()) return;
     startCredentials();
@@ -152,28 +174,33 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
   }
   function consumeCredentials() {
     credentialArmed = false;
-    credentialDeadline.clear();
     clearPasswords();
+    credentialDeadline.clear();
   }
-  const seal = button("encrypt", "暗号化ファイルを準備", () => {
-    if (!acknowledged.checked || !credentialsReady()) return;
+  const seal = button("encrypt", "暗号化ファイルを準備", () => admit(current => {
+    if (!acknowledged.checked || !credentialsReady() || !current()) return false;
     const passphrase = first.value;
     const confirmation = second.value;
     consumeCredentials();
     acknowledged.checked = false;
+    if (!current()) return false;
     notifyProtection();
-    void controller.seal(passphrase, confirmation).catch(() => protect());
-  });
-  const save = button("download", "暗号化ファイルをダウンロード", () => {
+    if (!current()) return false;
+    void controller.seal(passphrase, confirmation).catch(() => { if (current()) protect(); });
+    return true;
+  }));
+  const save = button("download", "暗号化ファイルをダウンロード", () => admit(() => {
     controller.offer(prepared => download({ document, prepared }));
-  });
-  const unlock = button("decrypt", "合言葉でファイルを開く", () => {
-    if (!credentialsReady()) return;
+  }));
+  const unlock = button("decrypt", "合言葉でファイルを開く", () => admit(current => {
+    if (!credentialsReady() || !current()) return false;
     const passphrase = restorePassword.value;
     consumeCredentials();
-    void controller.unlock(passphrase).catch(() => protect());
-  });
-  const stage = button("stage", "復元用の入力欄へ渡す", () => { controller.stage(); });
+    if (!current()) return false;
+    void controller.unlock(passphrase).catch(() => { if (current()) protect(); });
+    return true;
+  }));
+  const stage = button("stage", "復元用の入力欄へ渡す", () => admit(() => controller.stage()));
   const cancel = button("cancel", "合言葉・読み込み内容を消去", protect);
   function render(state) {
     if (disposed) return;
@@ -226,18 +253,22 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
     lifetimeOptions: deadlineOptions, readDraft, onStage, onChange: render });
   listen(acknowledged, "change", () => render(controller.state()));
   for (const item of [first, second, restorePassword]) listen(item, "input", armCredentials);
-  listen(file, "change", () => {
+  listen(file, "change", () => admit(current => {
     const files = file.files;
-    clearPasswords();
+    const selected = files?.length === 1 ? files[0] : null;
+    file.value = "";
     acknowledged.checked = false;
+    consumeCredentials();
+    if (!current()) return false;
     notifyProtection();
-    if (files?.length === 1) void controller.select(files[0]).catch(() => protect());
+    if (!current()) return false;
+    if (selected) void controller.select(selected).catch(() => { if (current()) protect(); });
     else {
       controller.cancel();
       status.textContent = "暗号化バックアップは1ファイルずつ選択してください。";
     }
-    file.value = "";
-  });
+    return true;
+  }));
   listen(document, "visibilitychange", () => { if (document.hidden) protect(); });
   listen(eventTarget, "pagehide", protect);
   listen(eventTarget, "pageshow", protect);
@@ -252,11 +283,14 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
   libraryPanel = mountEncryptedLibraryPanel({ document, parent: section, download,
     controllerOptions: libraryOptions, readEncrypted: controller.encryptedText,
     onOpen(text) {
-      clearPasswords();
-      acknowledged.checked = false;
-      file.value = "";
-      notifyProtection();
-      return controller.selectText(text);
+      return admit(current => {
+        acknowledged.checked = false;
+        file.value = "";
+        consumeCredentials();
+        if (!current()) return false;
+        notifyProtection();
+        return current() && controller.selectText(text);
+      });
     } });
   render(controller.state());
   return Object.freeze({
@@ -269,19 +303,10 @@ export function mountSecureBackupPanel({ document, parent, readDraft, onStage,
       return !disposed && controller.state().phase === "staged" && stagedDeadline.check();
     },
     protect,
-    invalidate() {
-      if (disposed) return;
-      credentialArmed = false;
-      credentialDeadline.clear();
-      stagedDeadline.clear();
-      clearPasswords();
-      acknowledged.checked = false;
-      controller.invalidate();
-      libraryPanel.protect();
-      notifyProtection();
-    },
+    invalidate() { stop("invalidate"); },
     dispose() {
-      if (disposed) return;
+      if (disposed || disposing) return;
+      disposing = true;
       protect();
       disposed = true;
       credentialDeadline.dispose();

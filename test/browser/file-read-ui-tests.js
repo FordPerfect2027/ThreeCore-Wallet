@@ -1,12 +1,14 @@
 import { createFileReadService } from "/src/file-read-service.js";
 import { mountFileReadPanel } from "/examples/file-read-panel.js";
 import { createWalletSetupFileReader, prepareWalletSetupFile } from "/src/wallet-setup-file.js";
-import { WALLET_SETUP_SCHEMA } from "/src/wallet-setup.js";
+import { WALLET_SETUP_SCHEMA, WalletSetupError } from "/src/wallet-setup.js";
 import { mountWalletSetupPanel } from "/examples/wallet-setup-panel.js";
 import { mountWorkspacePanel } from "/examples/workspace-panel.js";
-import { prepareWorkspaceFile } from "/src/workspace-file.js";
-import { workspaceFromDraft } from "/src/workspace-format.js";
+import { prepareWorkspaceFile, createWorkspaceFileReader } from "/src/workspace-file.js";
+import { workspaceFromDraft, WorkspaceError } from "/src/workspace-format.js";
 import { createPortfolioHistory } from "/src/portfolio-history.js";
+import { createHistoryFileReader } from "/src/history-file-reader.js";
+import { readSecurityFileBytes } from "/src/security-file.js";
 
 const assert = (value, message = "File boundary UI assertion failed") => { if (!value) throw Error(message); };
 const bytes = text => new TextEncoder().encode(text);
@@ -47,6 +49,105 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  for (const kind of ["settings", "workspace", "history"]) {
+    test(`file-read: ${kind} native import clears content before cleanup and contains rejected notifications`, async () => {
+      const fields = ["DAT", "EMA", "CAWELON"].map((agent, index) => ({
+        agent, account: "0x" + String(index + 1).repeat(40), chainId: 84532,
+      }));
+      const history = createPortfolioHistory().exportText();
+      const draft = fields.map(row => ({ ...row, tokenAddress: "", tokens: "", history }));
+      const text = kind === "settings" ? prepareWalletSetupFile({ schema: WALLET_SETUP_SCHEMA, entries: fields }).text
+        : kind === "workspace" ? (await prepareWorkspaceFile(workspaceFromDraft(draft))).text : history;
+      const file = new File([text], "synthetic.json", { type: "application/json" });
+      let reader, observed, notifications = 0;
+      const options = { agent: "DAT", onChange() {
+        notifications++;
+        return Promise.reject(Error("synthetic import observer rejection"));
+      }, readBytes(input, config) {
+        config.signal.addEventListener("abort", () => { observed = reader.state(); }, { once: true });
+        return readSecurityFileBytes(input, config);
+      } };
+      reader = kind === "settings" ? createWalletSetupFileReader(options)
+        : kind === "workspace" ? createWorkspaceFileReader(options) : createHistoryFileReader(options);
+      try {
+        await reader.load(file);
+        assert(reader.state().phase === "ready", "native file accepted");
+        reader.cancel();
+        assert(observed.phase === (kind === "settings" ? "idle" : "cancelled"), "cleanup sees stopped state");
+        assert((observed.result ?? observed.text ?? null) === null, "plaintext absent during cleanup");
+        await tick();
+        await reader.load(file);
+        assert(reader.state().phase === "ready", "fresh selection succeeds");
+        assert(notifications === 5, "bounded reading/ready/stop/reading/ready notifications");
+      } finally { reader.dispose(); }
+      await tick();
+      let nested, stopOnce = false, reads = 0;
+      const stoppedOptions = { agent: "DAT", readBytes(input, config) {
+        reads++;
+        return readSecurityFileBytes(input, config);
+      }, onChange(state) {
+        if (state.phase === "reading" && !stopOnce) { stopOnce = true; reader.cancel(); }
+        else if (state.phase === (kind === "settings" ? "idle" : "cancelled")) nested = reader.load(file);
+      } };
+      reader = kind === "settings" ? createWalletSetupFileReader(stoppedOptions)
+        : kind === "workspace" ? createWorkspaceFileReader(stoppedOptions) : createHistoryFileReader(stoppedOptions);
+      try {
+        await reader.load(file); await nested;
+        assert(reads === 0, "deferred stop delivery cannot start another native read");
+        assert((reader.state().result ?? reader.state().text ?? null) === null, "no revoked import revived");
+      } finally { reader.dispose(); }
+    });
+  }
+
+  for (const kind of ["settings", "workspace"]) {
+    test(`file-read: ${kind} inaccessible error cannot wedge the panel or overwrite its draft`, async () => {
+      const parent = document.createElement("section");
+      document.body.append(parent);
+      const fields = ["DAT", "EMA", "CAWELON"].map((agent, index) => ({
+        agent, account: "0x" + String(index + 1).repeat(40), chainId: 84532,
+      }));
+      const draft = fields.map(row => ({ ...row, tokenAddress: "", tokens: "",
+        history: createPortfolioHistory().exportText() }));
+      const prepared = kind === "settings" ? prepareWalletSetupFile({ schema: WALLET_SETUP_SCHEMA, entries: fields })
+        : await prepareWorkspaceFile(workspaceFromDraft(draft));
+      const prefix = kind === "settings" ? "wallet-setup-" : "workspace-";
+      const field = suffix => parent.querySelector("." + prefix + suffix);
+      let reads = 0, accesses = 0, writes = 0;
+      const failure = kind === "settings" ? new WalletSetupError("SETUP_SIZE") : new WorkspaceError("WORKSPACE_FILE_SIZE");
+      Object.defineProperty(failure, "code", { get() { accesses++; throw Error("synthetic private diagnostic"); } });
+      const readBytes = (input, options) => {
+        if (++reads === 1) throw failure;
+        return readSecurityFileBytes(input, options);
+      };
+      const panel = kind === "settings"
+        ? mountWalletSetupPanel({ document, parent, readFields: () => fields, applyPlan() { writes++; }, readBytes })
+        : mountWorkspacePanel({ document, parent, readDraft: () => draft, writeDraft() { writes++; }, readBytes });
+      function choose() {
+        const transfer = new DataTransfer();
+        transfer.items.add(new File([prepared.text], "synthetic.json", { type: "application/json" }));
+        field("file").files = transfer.files;
+        field("file").dispatchEvent(new Event("change"));
+      }
+      async function idle() {
+        const start = Date.now();
+        while (field("file").disabled && Date.now() - start < 5000) await tick();
+        assert(!field("file").disabled, "file input recovers after error");
+      }
+      try {
+        field("json").value = "preserved unfinished draft";
+        field("json").dispatchEvent(new Event("input"));
+        choose(); await idle();
+        assert(accesses === 0, "error accessor not invoked");
+        assert(!parent.textContent.includes("private diagnostic"), "private diagnostics absent from DOM");
+        assert(field("json").value === "preserved unfinished draft", "original edit preserved");
+        assert(field("apply").disabled && writes === 0, "error cannot authorize restore");
+        choose(); await idle();
+        assert(reads === 2 && field("json").value !== "preserved unfinished draft", "fresh valid import offered");
+        assert(field("apply").disabled && writes === 0, "new import still requires review");
+      } finally { panel.dispose(); parent.remove(); }
+    });
+  }
+
   for (const kind of ["settings", "workspace"]) {
     test(`file-read: ${kind} panel cancellation cannot open a file from cleanup`, async () => {
       const parent = document.createElement("section");

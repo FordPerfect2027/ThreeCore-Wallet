@@ -1,4 +1,5 @@
 import { mountWorkspacePanel } from "/examples/workspace-panel.js";
+import { mountSecureBackupPanel } from "/examples/secure-backup-panel.js";
 import { createSecureBackupRunner } from "/src/secure-backup-runner.js";
 import { encryptWorkspaceBackup } from "/src/secure-backup-crypto.js";
 import { workspaceFromDraft } from "/src/workspace-format.js";
@@ -24,20 +25,26 @@ export async function until(predicate) {
     await new Promise(resolve => setTimeout(resolve, 10));
   }
 }
-export function fixture({ onUnschedule = () => {}, timerResult = id => id } = {}) {
+export function fixture({ onUnschedule = () => {}, timerResult = id => id,
+  standalone = false, onProtect = () => {}, controllerOptions = {},
+} = {}) {
   const host = document.createElement("div");
   document.body.append(host);
   const time = manualTime();
   const runner = createSecureBackupRunner();
   let current = draft().map(row => ({ ...row, account: "" }));
-  const writes = [], downloads = [];
-  const panel = mountWorkspacePanel({ document, parent: host,
+  const writes = [], downloads = [], staged = [];
+  const common = { document, parent: host,
     readDraft: () => clone(current), writeDraft(value) { current = clone(value); writes.push(clone(value)); },
-    download: value => downloads.push(value.prepared),
-    secureOptions: { plaintextLifetimeMs: 100, deadlineOptions: { ...time.options,
+    download: value => downloads.push(value.prepared) };
+  const secureOptions = { plaintextLifetimeMs: 100, deadlineOptions: { ...time.options,
       schedule(fn, ms) { return timerResult(time.schedule(fn, ms)); },
       unschedule(id) { time.unschedule(id); onUnschedule(id); } },
-      controllerOptions: { runner } } });
+      controllerOptions: { runner, ...controllerOptions } };
+  const panel = standalone
+    ? mountSecureBackupPanel({ ...common, ...secureOptions, onProtect,
+      onStage(text) { staged.push(text); return true; } })
+    : mountWorkspacePanel({ ...common, secureOptions });
   const q = name => host.querySelector(".secure-backup-" + name);
   const w = name => host.querySelector(".workspace-" + name);
   function input(name, value) {
@@ -61,7 +68,7 @@ export function fixture({ onUnschedule = () => {}, timerResult = id => id } = {}
     q("decrypt").click();
     await until(() => !q("file").disabled);
   }
-  return { host, time, runner, panel, q, w, writes, downloads, input, check, select, unlock,
+  return { host, time, runner, panel, q, w, writes, downloads, staged, input, check, select, unlock,
     get current() { return clone(current); },
     dispose() { panel.dispose(); runner.dispose(); host.remove(); } };
 }

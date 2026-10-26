@@ -21,8 +21,8 @@ export function createStateNotifier({ observers, read, deferred = false }) {
 
   function send(listener) {
     if (!observers.has(listener)) return;
-    // read() belongs to the service. All current callers return flat, frozen,
-    // bounded primitive records; serialization never visits external payloads.
+    // read() belongs to the service. Callers return bounded, frozen records of
+    // primitive status fields; serialization never visits external payloads.
     const value = read();
     const key = JSON.stringify(value);
     if (!observers.has(listener) || delivered.get(listener) === key) return;

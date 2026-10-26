@@ -1,4 +1,5 @@
 import { parseSecurityJson } from "./security-json.js";
+import { captureDataRecord, captureDataArray } from "./security-data.js";
 import { AGENT_IDS, normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
 
 const MAX_UINT256 = (1n << 256n) - 1n;
@@ -62,7 +63,7 @@ const HOLDING_KEYS = ["address", "hasCode", "balanceBaseUnits", "notice"];
  */
 export function validatePortfolioSnapshot(input) {
   try {
-    keys(input, SNAPSHOT_KEYS);
+    input = captureDataRecord(input, SNAPSHOT_KEYS);
     if (!AGENT_IDS.includes(input.agent)) invalid("Unknown ThreeCore agent");
     const account = normalizeAddress(input.account);
     const siteOrigin = validateSiteOrigin(input.siteOrigin);
@@ -74,15 +75,10 @@ export function validatePortfolioSnapshot(input) {
       invalid("Expected a complete block hash");
     }
     const nativeBalanceBaseUnits = uint(input.nativeBalanceBaseUnits);
-    if (!Array.isArray(input.holdings) || input.holdings.length < 1 || input.holdings.length > 32) {
-      invalid("Expected one to 32 holdings");
-    }
+    const capturedHoldings = captureDataArray(input.holdings, 32, 1);
     const seen = new Set();
-    for (let index = 0; index < input.holdings.length; index++) {
-      if (!Object.hasOwn(input.holdings, index)) invalid("Sparse holdings are forbidden");
-    }
-    const holdings = input.holdings.map(row => {
-      keys(row, HOLDING_KEYS);
+    const holdings = capturedHoldings.map(inputRow => {
+      const row = captureDataRecord(inputRow, HOLDING_KEYS);
       const address = normalizeAddress(row.address);
       if (seen.has(address)) invalid("Duplicate token contract");
       seen.add(address);

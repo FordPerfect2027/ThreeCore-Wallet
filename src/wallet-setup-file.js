@@ -1,8 +1,13 @@
 import { readSecurityFileBytes } from "./security-file.js";
+import { createStateNotifier } from "./state-notifier.js";
+import { readOwnErrorCode } from "./provider-error.js";
 import { decodeWalletSetup, encodeWalletSetup, WALLET_SETUP_LIMIT, WalletSetupError } from "./wallet-setup.js";
 
 export const WALLET_SETUP_FILE_LIMIT = WALLET_SETUP_LIMIT * 4;
 const fail = code => { throw new WalletSetupError(code); };
+const FILE_ERRORS = new Set(["SETUP_FILENAME", "SETUP_SIZE", "SETUP_ENCODING", "SETUP_FILE",
+  "SETUP_JSON", "SETUP_SCHEMA", "SETUP_SHAPE", "SETUP_ROWS", "SETUP_AGENT", "SETUP_ADDRESS",
+  "SETUP_CHAIN", "SETUP_DUPLICATE"]);
 
 export function prepareWalletSetupFile(plan) {
   const text = encodeWalletSetup(plan);
@@ -24,6 +29,7 @@ export function createWalletSetupFileReader({ readBytes = readSecurityFileBytes,
   let generation = 0;
   let readAbort = null;
   let aborting = false;
+  let stopping = false;
   function abortRead() {
     const previous = readAbort;
     readAbort = null;
@@ -34,15 +40,26 @@ export function createWalletSetupFileReader({ readBytes = readSecurityFileBytes,
   let disposed = false;
   const current = id => !disposed && id === generation;
   let state = Object.freeze({ phase: "idle", text: null, errorCode: null });
+  // Deduplication sees only status and revision, never imported account data.
+  const notifications = createStateNotifier({
+    observers: new Set([() => {
+      if (disposed) return;
+      const previous = stopping;
+      stopping ||= state.phase === "idle";
+      try { return onChange(state); } finally { stopping = previous; }
+    }]),
+    read: () => ({ generation, phase: state.phase }),
+  });
   function publish(phase, text = null, errorCode = null) {
     state = Object.freeze({ phase, text, errorCode });
-    try { onChange(state); } catch { /* A display callback cannot reject the read. */ }
+    notifications.notify();
   }
   return Object.freeze({
     state: () => state,
     async load(file) {
-      if (disposed || aborting) return false;
+      if (disposed || aborting || stopping) return false;
       const id = ++generation;
+      state = Object.freeze({ phase: "reading", text: null, errorCode: null });
       abortRead();
       if (!current(id)) return false;
       const activeRead = new AbortController();
@@ -51,6 +68,7 @@ export function createWalletSetupFileReader({ readBytes = readSecurityFileBytes,
       try {
         if (disposed || id !== generation) return false;
         const name = file?.name;
+        if (!current(id)) return false;
         if (typeof name !== "string" || name.length > 240 ||
             !/\.json$/i.test(name) || /[\\/\u0000-\u001f\u007f]/.test(name)) fail("SETUP_FILENAME");
         const size = file.size;
@@ -64,15 +82,21 @@ export function createWalletSetupFileReader({ readBytes = readSecurityFileBytes,
         return current(id);
       } catch (error) {
         if (disposed || id !== generation) return false;
-        publish("error", null, error instanceof WalletSetupError ? error.code : "SETUP_FILE");
+        const code = readOwnErrorCode(error);
+        if (!current(id)) return false;
+        publish("error", null, FILE_ERRORS.has(code) ? code : "SETUP_FILE");
         return false;
       }
     },
     cancel() {
-      if (disposed) return;
+      if (disposed || stopping) return;
+      stopping = true;
       const id = ++generation;
-      abortRead();
-      if (current(id)) publish("idle");
+      state = Object.freeze({ phase: "idle", text: null, errorCode: null });
+      try {
+        abortRead();
+        if (current(id)) notifications.notify();
+      } finally { stopping = false; }
     },
     dispose() {
       if (disposed) return;

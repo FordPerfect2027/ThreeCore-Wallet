@@ -47,6 +47,81 @@ export function registerHistoryUITests(test) {
       assert(find(selector).disabled, selector + " disabled");
     }
   });
+  scenario("silent replacement-mode changes require a fresh review", ({ click, find, input, count }) => {
+    click(".history-add-current");
+    input(archive([snapshot("99")]));
+    find(".history-replace").checked = true;
+    click(".history-preview");
+    // A property assignment need not emit change (e.g. restored form state).
+    find(".history-replace").checked = false;
+    click(".history-apply");
+    assert(count() === 1, "original count preserved");
+    assert(find(".history-list").textContent.includes("block 42"), "reviewed replacement was not applied");
+    assert(find(".history-apply").disabled, "old review consumed");
+    click(".history-preview");
+    click(".history-apply");
+    assert(count() === 2, "explicit fresh merge succeeds");
+  });
+  scenario("custom holdings validator cannot inject a record or HTML", ({ current, click, count, find }) => {
+    click(".history-add-current");
+    const next = snapshot("99"); let touched = 0;
+    next.holdings.map = () => { touched++; return [{ address: "<img src=x>", privateKey: "fixture-only" }]; };
+    current(next); click(".history-add-current");
+    assert(touched === 0, "untrusted map was not invoked");
+    assert(count() === 1, "existing history preserved");
+    assert(!find(".history-list").querySelector("img"), "nothing interpreted as HTML");
+  });
+  scenario("holding accessors cannot clear existing history during validation", ({ current, click, count, panel }) => {
+    click(".history-add-current");
+    const before = panel.exportArchive(); const next = snapshot("99"); let calls = 0;
+    Object.defineProperty(next.holdings, "0", { get() { calls++; throw Error("fixture-accessor"); } });
+    current(next); click(".history-add-current");
+    assert(calls === 0 && count() === 1, "getter refused and history preserved");
+    assert(panel.exportArchive() === before, "byte-identical archive");
+  });
+  for (const [index, agent] of ["DAT", "EMA", "CAWELON"].entries()) {
+    test("history: " + agent + " checks the captured identity before adding a snapshot", () => {
+      const parent = document.createElement("section"); document.querySelector("#grid").append(parent);
+      const other = ["DAT", "EMA", "CAWELON"][(index + 1) % 3];
+      let reads = 0;
+      let next = new Proxy(snapshot("42", { agent: other }), { get(target, key) {
+        if (key === "agent" && reads++ === 0) return agent;
+        return Reflect.get(target, key);
+      } });
+      const panel = mountHistoryPanel({ document, parent, agent, getSnapshot: () => next, getReport: () => "" });
+      try {
+        parent.querySelector(".history-add-current").click();
+        assert(JSON.parse(panel.exportArchive()).reports.length === 0, "other token rejected");
+        assert(reads === 0, "no proxy value getter used");
+        next = snapshot("43", { agent });
+        parent.querySelector(".history-add-current").click();
+        assert(JSON.parse(panel.exportArchive()).reports[0].snapshot.agent === agent, "own token accepted");
+      } finally { panel.dispose(); parent.remove(); }
+    });
+    test("history: " + agent + " reviewed replacement and recovery preserve saved observations", () => {
+      const parent = document.createElement("section"); document.querySelector("#grid").append(parent);
+      const panel = mountHistoryPanel({ document, parent, agent,
+        getSnapshot: () => snapshot("42", { agent }), getReport: () => "" });
+      const click = name => parent.querySelector(name).click();
+      try {
+        click(".history-add-current"); const before = panel.exportArchive();
+        const json = parent.querySelector(".history-json");
+        json.value = archive([snapshot("99", { agent })]); json.dispatchEvent(new Event("input"));
+        parent.querySelector(".history-replace").checked = true;
+        click(".history-preview");
+        assert(panel.exportArchive() === before, "preview did not replace");
+        click(".history-apply");
+        const after = JSON.parse(panel.exportArchive());
+        assert(after.reports.length === 1 && after.reports[0].snapshot.blockNumber === "99", "replacement verified");
+        assert(after.reports[0].snapshot.agent === agent, "token identity retained");
+        assert(parent.querySelector(".history-apply").disabled, "single use review");
+        click(".history-recovery-preview");
+        assert(JSON.parse(panel.exportArchive()).reports[0].snapshot.blockNumber === "99", "recovery preview is read-only");
+        click(".history-recovery-apply");
+        assert(panel.exportArchive() === before, "reviewed recovery restores the exact original archive");
+      } finally { panel.dispose(); parent.remove(); }
+    });
+  }
   scenario("current snapshot is added and deduplicated", ({ click, count, find }) => {
     click(".history-add-current");
     click(".history-add-current");

@@ -1,4 +1,5 @@
 import { parseSecurityJson } from "./security-json.js";
+import { captureDataRecord, captureDataArray } from "./security-data.js";
 import { validatePortfolioSnapshot, encodePortfolioReport, decodePortfolioReport } from "./portfolio-report.js";
 import { comparePortfolioSnapshots } from "./portfolio-comparison.js";
 
@@ -39,22 +40,15 @@ function exactObject(value, names) {
 }
 
 function boundedArray(value, limit) {
-  if (!Array.isArray(value) || value.length > limit) {
+  if (!Array.isArray(value)) {
     fail("HISTORY_CAPACITY", "History exceeds its explicit capacity");
   }
-  // Index descriptors avoid invoking getters in caller supplied arrays.
-  const result = [];
-  for (let index = 0; index < value.length; index++) {
-    const descriptor = Object.getOwnPropertyDescriptor(value, String(index));
-    if (!descriptor || !("value" in descriptor)) {
-      fail("INVALID_HISTORY", "Sparse or accessor arrays are forbidden");
-    }
-    result.push(descriptor.value);
-  }
-  if (Reflect.ownKeys(value).length !== value.length + 1) {
-    fail("INVALID_HISTORY", "Extra array properties are forbidden");
-  }
-  return result;
+  let length;
+  try { length = Object.getOwnPropertyDescriptor(value, "length")?.value; }
+  catch { fail("INVALID_HISTORY", "Invalid history array"); }
+  if (length > limit) fail("HISTORY_CAPACITY", "History exceeds its explicit capacity");
+  try { return captureDataArray(value, limit); }
+  catch { fail("INVALID_HISTORY", "Expected a bounded history data array"); }
 }
 
 function identity(snapshot) {
@@ -89,6 +83,19 @@ function limitValue(value) {
   return value;
 }
 
+/** Import mode is data, not a callback. A malformed mode cannot authorize replacement. */
+export function captureHistoryImportOptions(options = {}) {
+  try {
+    if (!options || typeof options !== "object" || Array.isArray(options)) throw Error();
+    const keys = Reflect.ownKeys(options);
+    const value = captureDataRecord(options, keys.length === 0 ? [] : ["replace"]);
+    // Preserve the API's existing default for an omitted/undefined merge mode.
+    const replace = keys.length === 0 || value.replace === undefined ? false : value.replace;
+    if (typeof replace !== "boolean") throw Error();
+    return Object.freeze({ replace });
+  } catch { fail("INVALID_HISTORY", "Expected explicit import options"); }
+}
+
 /**
  * A bounded, in-memory collection of historical observations.
  * No persistence, RPC requests, wallet connection or signing happens here.
@@ -115,6 +122,7 @@ export function createPortfolioHistory({ capacity = HISTORY_LIMIT } = {}) {
   }
 
   function merge(inputs, replace = false) {
+    const expectedRevision = revision;
     if (typeof replace !== "boolean") fail("INVALID_HISTORY", "Replace must be explicit boolean");
     const incoming = boundedArray(inputs, HISTORY_LIMIT);
     const candidate = replace ? [] : [...records];
@@ -140,6 +148,9 @@ export function createPortfolioHistory({ capacity = HISTORY_LIMIT } = {}) {
       added++;
     }
     const changed = JSON.stringify(candidate) !== JSON.stringify(records);
+    // Descriptor traps can synchronously change the collection while validation
+    // runs. Preserve that newer state; an older batch must not resurrect it.
+    if (revision !== expectedRevision) fail("STALE_HISTORY", "History changed during validation");
     if (changed) {
       records = candidate;
       revision++;
@@ -190,7 +201,9 @@ export function createPortfolioHistory({ capacity = HISTORY_LIMIT } = {}) {
     return text;
   }
 
-  function importText(text, { replace = false } = {}) {
+  function importText(text, options) {
+    const expectedRevision = revision;
+    const { replace } = captureHistoryImportOptions(options);
     if (typeof replace !== "boolean") fail("INVALID_HISTORY", "Replace must be explicit boolean");
     if (typeof text !== "string" || !text.length || text.length > HISTORY_TEXT_LIMIT) {
       fail("HISTORY_SIZE", "Expected a bounded history JSON document");
@@ -205,6 +218,7 @@ export function createPortfolioHistory({ capacity = HISTORY_LIMIT } = {}) {
     const reports = boundedArray(document.reports, HISTORY_LIMIT);
     // Decode all reports before allowing merge to touch collection state.
     const snapshots = reports.map(report => decodePortfolioReport(JSON.stringify(report)).snapshot);
+    if (revision !== expectedRevision) fail("STALE_HISTORY", "History changed during validation");
     return merge(snapshots, replace);
   }
 
