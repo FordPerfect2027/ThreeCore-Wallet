@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 26, 2026 source publication:** [Backup, file import and history confirmation update](docs/WALLET_SECURITY_UPDATE_2026-10-26_EN.md). Includes four previously local development iterations: stopped backup preparation, revoked library reviews, cleared file-import state and single-use history confirmation. Real-wallet acceptance remains pending.
+
 **October 25, 2026 source publication:** [Security, cancellation and recovery update](docs/WALLET_SECURITY_UPDATE_2026-10-25_EN.md). Publishes 15 accumulated development commits. Final local validation: 12,559 tests passed, zero failures; real-wallet acceptance remains pending.
 
 **October 24, 2026 source publication:** [Development, security changes and verification](docs/WALLET_SECURITY_UPDATE_2026-10-24_EN.md). Includes the accumulated transfer/report workflows, optional encrypted workspace backups, connection protection, bounded file processing and shared export cleanup. The verified local suite passed 10,382 cases. GitHub Actions results belong to the published commit; source publication does not deploy a website or contract.

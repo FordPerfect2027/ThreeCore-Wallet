@@ -15,7 +15,7 @@ for (const uiTest of [false, true]) {
         "/src/wallet-setup.js", "/src/wallet-setup-file.js", "/examples/wallet-setup-panel.js",
         "/examples/portfolio-panel.js", "/examples/token-plan-panel.js", "/src/token-plan.js", "/examples/comparison-panel.js", "/src/portfolio-comparison.js", "/src/portfolio-snapshot.js", "/src/portfolio-progress.js",
         "/src/portfolio-controller.js", "/src/portfolio-report.js", "/src/agent-portfolios.js",
-        "/src/wallet-session.js", "/src/provider-registry.js", "/src/provider-error.js", "/src/dapp-preflight.js"]) {
+        "/src/security-data.js", "/src/wallet-session.js", "/src/provider-registry.js", "/src/provider-error.js", "/src/dapp-preflight.js"]) {
         const response = await fetch(base + path);
         assert.equal(response.status, 200, path);
         assert.equal(response.headers.get("x-content-type-options"), "nosniff");

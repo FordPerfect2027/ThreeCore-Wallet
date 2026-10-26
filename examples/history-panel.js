@@ -5,7 +5,7 @@ import { mountHistoryFiles } from "./history-files.js";
 import { createPortfolioHistory, HISTORY_TEXT_LIMIT } from "../src/portfolio-history.js";
 import { createHistoryImportController } from "../src/history-import-controller.js";
 import { describePortfolioHistory } from "../src/portfolio-history-summary.js";
-import { decodePortfolioReport } from "../src/portfolio-report.js";
+import { decodePortfolioReport, validatePortfolioSnapshot } from "../src/portfolio-report.js";
 import { describePortfolioComparison } from "../src/portfolio-comparison.js";
 
 /** Local, card-scoped history. No automatic persistence or provider access. */
@@ -65,6 +65,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     apply.disabled = true;
   }
   function checkAgent(snapshot) {
+    snapshot = validatePortfolioSnapshot(snapshot);
     if (snapshot.agent !== agent) throw Error("Different agent");
     return snapshot;
   }
@@ -89,12 +90,14 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   const previewText = element("pre", "history-preview-details");
   const addCurrent = button("history-add-current", "今回の確認結果を履歴に追加", () => {
     const snapshot = getSnapshot();
+    if (disposed) return;
     if (!snapshot) throw Error("No complete current observation");
     const result = history.add(checkAgent(snapshot));
     changed(result.duplicates ? "同じ記録は追加しませんでした。" : "確認結果を履歴に追加しました。");
   });
   const addReport = button("history-add-report", "上の確認記録JSONを履歴に追加", () => {
     const snapshot = decodePortfolioReport(getReport()).snapshot;
+    if (disposed) return;
     const result = history.add(checkAgent(snapshot));
     changed(result.duplicates ? "同じ記録は追加しませんでした。" : "過去の確認記録を履歴に追加しました。");
   });
@@ -117,7 +120,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   });
   const apply = button("history-apply", "確認した履歴を適用", () => {
     if (!review) throw Error("Preview required");
-    importer.apply(review.previewId, json.value);
+    importer.apply(review.previewId, json.value, { replace: replace.checked });
     changed("確認した履歴を適用しました。");
   });
   apply.disabled = true;
@@ -216,6 +219,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
       reviewPanel.dispose();
       recoveryPanel.dispose();
       recovery.dispose();
+      importer.dispose();
       cancelReview();
       for (const stop of cleanup) stop();
       section.remove();

@@ -1,4 +1,5 @@
-import { observeCallbackResult } from "./security-callback.js";
+import { observeCallbackResult, consumeCallback } from "./security-callback.js";
+import { createStateNotifier } from "./state-notifier.js";
 import { EncryptedLibraryError, libraryFail, libraryErrorCode, libraryId,
   prepareLibraryEntry, verifyEncryptedLibrary, sameEncryptedLibrary,
   encryptedLibrarySummary, mutateEncryptedLibrary } from "./encrypted-library-model.js";
@@ -23,7 +24,9 @@ export function createEncryptedLibraryController({
   let document = null, summary = null, review = null, selected = null, exported = null;
   let disposed = false, phase = "idle", errorCode = null, generation = 0, sequence = 0;
   let operation = null, expiry = null, result = null;
+  let stopping = false;
   const busyPhases = ["loading", "preparing", "committing", "opening", "exporting"];
+  const notifications = createStateNotifier({ observers: new Set([onChange]), read: state });
 
   function state() {
     return Object.freeze({ phase, errorCode, selected, result,
@@ -34,7 +37,7 @@ export function createEncryptedLibraryController({
         merge: review.merge ?? null }) : null,
       canExport: !!exported, disposed });
   }
-  function emit() { try { onChange(state()); } catch {} }
+  function emit() { notifications.notify(); }
   function clearReview() {
     clearTimeout(expiry);
     expiry = null;
@@ -49,24 +52,30 @@ export function createEncryptedLibraryController({
   const current = id => !disposed && generation === id;
   function clock() {
     const value = now();
-    if (!Number.isSafeInteger(value) || value < 1) libraryFail("LIBRARY_REVIEW");
+    if (observeCallbackResult(value) !== "synchronous" ||
+        !Number.isSafeInteger(value) || value < 1) libraryFail("LIBRARY_REVIEW");
     return value;
   }
   function cancel() {
-    if (disposed) return;
+    if (disposed || stopping) return;
+    stopping = true;
     generation++;
     const prior = operation;
     operation = null;
-    prior?.abort.abort();
     clearReview();
     clearDocument();
     errorCode = null;
     result = null;
     phase = "cancelled";
-    emit();
+    // Aborting can synchronously notify storage adapters. Revoke the old view
+    // first, and do not admit replacement work from those cleanup callbacks.
+    try {
+      prior?.abort.abort();
+      if (!disposed) emit();
+    } finally { stopping = false; }
   }
   async function run(next, work) {
-    if (disposed || operation) return false;
+    if (disposed || stopping || operation) return false;
     clearReview();
     errorCode = result = null;
     phase = next;
@@ -76,6 +85,7 @@ export function createEncryptedLibraryController({
     operation = active;
     let timer;
     let removeAbort;
+    let succeeded = false;
     // A synchronous observer can cancel before a storage/crypto request starts.
     emit();
     const valid = () => current(id) && !abort.signal.aborted;
@@ -92,29 +102,34 @@ export function createEncryptedLibraryController({
       });
       await Promise.race([work({ valid, signal: abort.signal }), interrupted]);
       if (!valid()) return false;
-      return true;
+      succeeded = true;
     } catch (error) {
+      if (!current(id)) return false;
+      const code = libraryErrorCode(encryptedLibraryStorageError(error));
       if (!current(id)) return false;
       clearReview();
       clearDocument();
       phase = "error";
-      errorCode = libraryErrorCode(error instanceof EncryptedLibraryError
-        ? error : encryptedLibraryStorageError(error));
-      return false;
+      errorCode = code;
     } finally {
       clearTimeout(timer);
       removeAbort?.();
       if (operation === active) operation = null;
       if (current(id)) emit();
     }
+    // Final observers may cancel, dispose or replace the result. That later
+    // state must also be reflected in the return value seen by callers.
+    return succeeded && valid();
   }
   async function read(valid) {
     const value = await storage.read({ signal: operation?.abort.signal });
     if (!valid()) libraryFail("LIBRARY_CANCELLED");
     return verifyEncryptedLibrary(value, { crypto, guard: valid });
   }
-  function setReview(value) {
+  function setReview(value, valid) {
     const createdAt = clock();
+    if (!valid()) return;
+    if (!Number.isSafeInteger(createdAt + reviewLifetimeMs)) libraryFail("LIBRARY_REVIEW");
     review = Object.freeze({ ...value, ticket: ++sequence, createdAt,
       expiresAt: createdAt + reviewLifetimeMs });
     phase = "review";
@@ -137,7 +152,8 @@ export function createEncryptedLibraryController({
     });
   }
   function select(id) {
-    if (disposed || operation) return false;
+    if (disposed || stopping || operation) return false;
+    const selectedGeneration = ++generation;
     clearReview();
     errorCode = result = null;
     try {
@@ -146,7 +162,7 @@ export function createEncryptedLibraryController({
       selected = id;
       phase = "ready";
       emit();
-      return true;
+      return current(selectedGeneration) && selected === id;
     } catch (error) {
       selected = null;
       errorCode = libraryErrorCode(error);
@@ -156,14 +172,18 @@ export function createEncryptedLibraryController({
   }
   function prepareSave(text) {
     return run("preparing", async ({ valid }) => {
-      const entry = await prepareLibraryEntry(text, { now, crypto });
+      const entry = await prepareLibraryEntry(text, { now() {
+        const time = clock();
+        if (!valid()) libraryFail("LIBRARY_CANCELLED");
+        return time;
+      }, crypto });
       if (!valid()) return;
       const value = await read(valid);
       if (!valid()) return;
       remember(value);
       const duplicate = value.entries.some(row => row.id === entry.id);
       mutateEncryptedLibrary(value, value, { kind: "add", entry });
-      setReview({ kind: "add", id: entry.id, entry, expected: value, duplicate });
+      setReview({ kind: "add", id: entry.id, entry, expected: value, duplicate }, valid);
     });
   }
   function prepareRemove() {
@@ -176,21 +196,26 @@ export function createEncryptedLibraryController({
       const entry = value.entries.find(row => row.id === id);
       if (!entry) libraryFail("LIBRARY_SELECTION");
       remember(value);
-      setReview({ kind: "remove", id, bytes: entry.bytes, expected: value });
+      setReview({ kind: "remove", id, bytes: entry.bytes, expected: value }, valid);
     });
   }
   function confirm(ticket, acknowledged) {
-    if (disposed || operation) return Promise.resolve(false);
+    if (disposed || stopping || operation) return Promise.resolve(false);
+    const id = generation;
     let captured;
     try {
       captured = review;
       const time = clock();
+      if (!current(id) || review !== captured) return Promise.resolve(false);
       if (!captured || captured.ticket !== ticket || time < captured.createdAt ||
           time >= captured.expiresAt) libraryFail("LIBRARY_REVIEW");
       if (acknowledged !== true) libraryFail("LIBRARY_CONFIRM");
     } catch (error) {
+      if (!current(id) || review !== captured) return Promise.resolve(false);
+      const code = libraryErrorCode(encryptedLibraryStorageError(error));
+      if (!current(id) || review !== captured) return Promise.resolve(false);
       clearReview();
-      errorCode = libraryErrorCode(error);
+      errorCode = code;
       phase = document ? "ready" : "idle";
       emit();
       return Promise.resolve(false);
@@ -224,11 +249,9 @@ export function createEncryptedLibraryController({
       if (!entry) libraryFail("LIBRARY_SELECTION");
       if (mode === "open") {
         const accepted = onOpen(entry.text);
-        if (accepted && typeof accepted.then === "function") {
-          Promise.resolve(accepted).catch(() => {});
+        if (observeCallbackResult(accepted) !== "synchronous" || accepted !== true) {
           libraryFail("LIBRARY_STAGE");
         }
-        if (accepted !== true) libraryFail("LIBRARY_STAGE");
         if (!valid()) return;
         result = "opened";
       } else {
@@ -251,7 +274,7 @@ export function createEncryptedLibraryController({
       mutateEncryptedLibrary(value, value, { kind: "merge", entries: incoming.entries });
       remember(value);
       setReview({ kind: "merge", id: null, bytes: merge.addedBytes, merge,
-        expected: value, entries: incoming.entries });
+        expected: value, entries: incoming.entries }, valid);
     });
   }
   function prepareArchive() {
@@ -267,7 +290,7 @@ export function createEncryptedLibraryController({
     });
   }
   function offer(download) {
-    if (disposed || operation) return false;
+    if (disposed || stopping || operation) return false;
     const prepared = exported;
     const id = generation;
     exported = null; // One user action consumes the offer, including reentrant callbacks.
@@ -280,7 +303,7 @@ export function createEncryptedLibraryController({
       if (!current(id)) return false;
       result = "export-offered";
       emit();
-      return true;
+      return current(id) && result === "export-offered";
     } catch {
       if (!current(id)) return false;
       errorCode = "LIBRARY_EXPORT";
@@ -294,13 +317,14 @@ export function createEncryptedLibraryController({
       if (disposed) return;
       disposed = true;
       generation++;
-      operation?.abort.abort();
+      const prior = operation;
       operation = null;
       clearReview();
       clearDocument();
       errorCode = result = null;
       phase = "disposed";
-      try { storage.close(); } catch {}
+      prior?.abort.abort();
+      consumeCallback(() => storage.close());
       emit();
     } });
 }

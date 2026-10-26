@@ -4,6 +4,7 @@ import { encryptWorkspaceBackup, decryptWorkspaceBackup } from "./secure-backup-
 import { secureBackupRunner } from "./secure-backup-runner.js";
 import { createSecureDeadline } from "./secure-deadline.js";
 import { observeCallbackResult } from "./security-callback.js";
+import { createStateNotifier } from "./state-notifier.js";
 import { inspectEncryptedBackup, backupPassphraseBytes, SECURE_BACKUP_LIMIT,
   SECURE_BACKUP_FILENAME, secureFail, secureErrorCode } from "./secure-backup-format.js";
 
@@ -47,7 +48,7 @@ export function createSecureBackupController({ readDraft, onStage, onChange = ()
   let offered = false;
   let offering = false;
   let size = 0;
-  let emitting = false;
+  const notifications = createStateNotifier({ observers: new Set([onChange]), read: snapshot });
   const lifetime = createSecureDeadline({ ...lifetimeOptions, timeoutMs: resultLifetimeMs,
     timeoutCode: "SECURE_EXPIRED", onExpire(code) {
       if (disposed) return;
@@ -67,10 +68,9 @@ export function createSecureBackupController({ readDraft, onStage, onChange = ()
   }
   function state() { validLifetime(); return snapshot(); }
   function emit() {
-    if (emitting) return;
-    emitting = true;
-    try { observe(onChange(snapshot())); } catch {}
-    finally { emitting = false; }
+    // A render callback can stop the operation. Deliver that final restrictive
+    // state as well, rather than leaving the UI on its earlier ready snapshot.
+    notifications.notify();
   }
   function clear() {
     encryptedInput = prepared = restoredText = sourceKey = targetKey = summary = null;

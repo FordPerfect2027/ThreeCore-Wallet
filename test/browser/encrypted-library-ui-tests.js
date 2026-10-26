@@ -114,6 +114,112 @@ function sample() {
 }
 
 export function registerEncryptedLibraryUITests(test) {
+  for (const action of ["protect", "select"]) {
+    test(`encrypted-library: ${action} during deletion clock check preserves native records and allows a fresh review`, async () => {
+      await fixture(async ({ name, controller, panel, storage }) => {
+        const seed = controller();
+        await save(seed, envelope(1));
+        await save(seed, envelope(2));
+        const original = await rawDocument(name);
+        let armed = false, f;
+        f = panel({ libraryOptions: { storage: storage(), now() {
+          if (armed) {
+            armed = false;
+            if (action === "protect") f.value.protect();
+            else {
+              f.local("select").value = f.local("select").options[1].value;
+              f.local("select").dispatchEvent(new Event("change", { bubbles: true }));
+            }
+          }
+          return Date.now();
+        } } });
+        await selectFirst(f);
+        const selected = f.local("select").value;
+        f.local("remove").click();
+        await waitFor(() => !f.local("ack").disabled);
+        check(f.local("ack"));
+        armed = true;
+        f.local("commit").click();
+        await waitFor(() => !f.local("load").disabled);
+        assert(!armed, "clock boundary exercised");
+        assert(JSON.stringify(await rawDocument(name)) === JSON.stringify(original), "all records and revision preserved");
+        assert(f.local("review").textContent === "", "revoked review cleared");
+        assert(f.local("commit").disabled, "revoked commit unavailable");
+        assert(!f.local("ack").checked, "old consent cleared");
+        await selectFirst(f);
+        assert(f.local("select").value === selected, "same first record selected again");
+        f.local("remove").click();
+        await waitFor(() => !f.local("ack").disabled);
+        assert(f.local("commit").disabled, "fresh review requires fresh consent");
+        check(f.local("ack"));
+        f.local("commit").click();
+        await waitFor(() => !f.local("load").disabled);
+        const remaining = await rawDocument(name);
+        assert(remaining.entries.length === 1, "explicit retry removed exactly one record");
+        assert(JSON.stringify(remaining.entries) === JSON.stringify(original.entries.filter(entry => entry.id !== selected)), "other ciphertext preserved exactly");
+      });
+    });
+  }
+
+  test("encrypted-library: protection while constructing a review cannot revive native deletion controls", async () => {
+    await fixture(async ({ name, controller, panel, storage }) => {
+      await save(controller());
+      const before = JSON.stringify(await rawDocument(name));
+      let armed = false, f;
+      f = panel({ libraryOptions: { storage: storage(), now() {
+        if (armed) { armed = false; f.value.protect(); }
+        return Date.now();
+      } } });
+      await selectFirst(f);
+      armed = true;
+      f.local("remove").click();
+      await waitFor(() => !f.local("load").disabled);
+      assert(!armed, "review timestamp callback reached");
+      assert(f.local("review").textContent === "", "no late review");
+      assert(f.local("commit").disabled && f.local("ack").disabled, "no revived consent controls");
+      assert(f.local("select").options.length === 0, "protected inventory remains hidden");
+      assert(JSON.stringify(await rawDocument(name)) === before, "database preserved");
+    });
+  });
+
+  test("encrypted-library: cancellation by a native read completion observer returns false", async () => {
+    await fixture(async ({ name, controller }) => {
+      await save(controller());
+      const before = JSON.stringify(await rawDocument(name));
+      let c;
+      c = controller({ onChange(state) { if (state.phase === "ready") c.cancel(); } });
+      assert(!await c.load(), "caller observes cancellation");
+      assert(c.state().phase === "cancelled" && !c.state().loaded, "inventory remains revoked");
+      assert(c.state().summary === null && c.state().selected === null, "no stale record metadata");
+      assert(JSON.stringify(await rawDocument(name)) === before, "observer cannot change stored records");
+    });
+  });
+
+  test("encrypted-library: native read abort cleanup cannot start a replacement read", async () => {
+    await fixture(async ({ name, controller, storage }) => {
+      await save(controller());
+      const before = JSON.stringify(await rawDocument(name));
+      const adapter = storage();
+      let c, calls = 0, observed, replacement;
+      c = controller({ storage: {
+        read(options) {
+          calls++;
+          const stopped = () => { observed = c.state(); replacement = c.load(); };
+          options.signal.addEventListener("abort", stopped, { once: true });
+          return adapter.read(options).finally(() => options.signal.removeEventListener("abort", stopped));
+        },
+        change: (...args) => adapter.change(...args),
+        close: () => adapter.close(),
+      } });
+      const pending = c.load();
+      c.cancel();
+      assert(!await pending && !await replacement, "both interrupted and cleanup work refused");
+      assert(calls === 1, "no replacement storage read");
+      assert(observed?.phase === "cancelled" && observed.summary === null, "abort observer sees cleared state");
+      assert(JSON.stringify(await rawDocument(name)) === before, "original database remains intact");
+    });
+  });
+
   test("encrypted-library: native archive File import reviews additions and preserves duplicate timestamps", async () => {
     await fixture(async ({ name, controller, panel }) => {
       const c = controller();

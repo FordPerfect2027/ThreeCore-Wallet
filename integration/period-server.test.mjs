@@ -50,7 +50,7 @@ test("period preview and browser suite import graph resolves without external pa
     const path = pending.pop();
     if (visited.has(path)) continue;
     visited.add(path);
-    assert.ok(visited.size < 191); // Read scope and its explicit browser test module added.
+    assert.ok(visited.size < 192); // One additional security-data module.
     const response = await fetch(base + path);
     assert.equal(response.status, 200, path);
     const source = await response.text();
@@ -61,6 +61,7 @@ test("period preview and browser suite import graph resolves without external pa
     }
   }
   assert.ok(visited.has("/src/token-identity-reader.js"));
+  assert.ok(visited.has("/src/security-data.js"));
   assert.ok(visited.has("/src/transfer-reader.js"));
   assert.ok(visited.has("/src/reconciliation-controller.js"));
 }));

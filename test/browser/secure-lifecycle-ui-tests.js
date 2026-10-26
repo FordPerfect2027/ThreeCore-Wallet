@@ -5,6 +5,85 @@ import { manualTime } from "/test/helpers/secure-lifecycle-time.js";
 const assert = (value, message) => { if (!value) throw Error(message); };
 
 export function registerSecureLifecycleUITests(test) {
+  for (const operation of ["seal", "select"]) {
+    for (const stop of ["protect", "invalidate"]) {
+      test(`backup cleanup: native ${operation} cannot restart after parent ${stop}`, async () => {
+        let f, armed = false, reads = 0;
+        f = fixture({ standalone: true, onProtect() {
+          if (!armed) return;
+          armed = false;
+          f.panel[stop]();
+        }, controllerOptions: { readText: async file => { reads++; return file.text(); } } });
+        try {
+          armed = true;
+          if (operation === "seal") {
+            f.input("password", PASSWORD);
+            f.input("confirmation", PASSWORD);
+            f.check(f.q("acknowledged"));
+            f.q("encrypt").click();
+          } else await f.select();
+          await until(() => !f.q("file").disabled);
+          assert(f.runner.state().started === 0 && reads === 0, "No crypto or file read after stop");
+          assert(f.panel.state().phase === (stop === "protect" ? "cancelled" : "idle"), "Stop remains authoritative");
+          assert(f.q("download").disabled && f.q("decrypt").disabled && f.q("stage").disabled, "No old capability remains");
+          assert(f.q("password").value === "" && f.q("confirmation").value === "", "Credentials removed");
+          assert(f.writes.length === 0 && f.downloads.length === 0 && f.staged.length === 0, "No side effects");
+          // A stopped attempt must not permanently prevent a fresh user action.
+          await f.unlock();
+          assert(!f.q("stage").disabled, "Fresh native File and WebCrypto restoration works");
+          f.q("stage").click();
+          assert(f.staged.length === 1, "Only fresh authenticated content is handed off");
+        } finally { f.dispose(); }
+      });
+    }
+  }
+
+  test("backup cleanup: stopping at native credential cleanup prevents decryption", async () => {
+    let f, armed = false, cleared = false;
+    f = fixture({ standalone: true, onUnschedule() {
+      if (!armed) return;
+      armed = false;
+      cleared = f.q("restore-password").value === "";
+      f.panel.protect();
+    } });
+    try {
+      await f.select();
+      f.input("restore-password", PASSWORD);
+      armed = true;
+      f.q("decrypt").click();
+      await until(() => !f.q("file").disabled);
+      assert(cleared, "Password removed before timer cleanup callback");
+      assert(f.runner.state().started === 0, "WebCrypto must not start after stop");
+      assert(f.q("stage").disabled && f.q("detail").textContent === "", "No old restore view");
+      assert(f.staged.length === 0 && f.writes.length === 0, "No restore");
+    } finally { f.dispose(); }
+  });
+
+  test("backup cleanup: repeated native encrypt click during protection is admitted once", async () => {
+    let f, armed = false, preparations = 0;
+    f = fixture({ standalone: true, onProtect() {
+      preparations++;
+      if (!armed) return;
+      armed = false;
+      f.input("password", PASSWORD);
+      f.input("confirmation", PASSWORD);
+      f.check(f.q("acknowledged"));
+      f.q("encrypt").click();
+    } });
+    try {
+      f.input("password", PASSWORD);
+      f.input("confirmation", PASSWORD);
+      f.check(f.q("acknowledged"));
+      armed = true;
+      f.q("encrypt").click();
+      await until(() => !f.q("file").disabled);
+      assert(preparations === 1 && f.runner.state().started === 1, "One explicit action, one encryption");
+      assert(f.panel.state().phase === "encrypted", "Outer user action completed");
+      assert(f.q("password").value === "" && f.q("confirmation").value === "", "Nested event cannot retain passwords");
+      assert(f.writes.length === 0 && f.downloads.length === 0, "No automatic save");
+    } finally { f.dispose(); }
+  });
+
   test("backup timer: autofill on a faulted timer is cleared at explicit use", async () => {
     const f = fixture({ timerResult: id => Promise.resolve(id) });
     try {
