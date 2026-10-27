@@ -433,7 +433,10 @@ export class ThreeCoreWalletSession {
   // Recheck both before returning its value; never retry or expose stale data.
   async #readOnVerifiedState(epoch, args) {
     if (this.#stateProvider) await this.#confirmStateChain(epoch);
-    const value = await this.#requestRead(epoch, args, !!this.#stateProvider);
+    // Log filters use bounded block numbers, not EIP-1898 state selectors.
+    // Keep them on the connected wallet's RPC; never retry on another source.
+    const value = await this.#requestRead(epoch, args,
+      !!this.#stateProvider && args.method !== "eth_getLogs");
     this.#assertReadEpoch(epoch);
     if (this.#stateProvider) await this.#confirmStateChain(epoch);
     await this.#confirmChain(epoch, true);

@@ -72,6 +72,12 @@ read requests to `https://mainnet.base.org`. The page discloses this destination
 the public account and read parameters are sent to Base's RPC. No credentials,
 permissions, signing or transaction calls are forwarded.
 
+Transfer logs (`eth_getLogs`) use the connected wallet's RPC with explicit,
+bounded block-number filters. These filters do not contain EIP-1898 state
+objects. This keeps public-RPC log limits separate from pinned balance reads;
+failures are not retried through another provider. Wallet authorization and both
+chain checks still surround log reads, and stale results remain invalidated.
+
 This avoids MetaMask middleware which treats EIP-1898 block objects as strings.
 The block-hash selector and `requireCanonical: true` are preserved. Both the
 state reader's chain and the wallet's authorization/network are checked around
