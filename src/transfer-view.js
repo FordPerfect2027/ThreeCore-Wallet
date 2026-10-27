@@ -127,7 +127,7 @@ export function transferSummaryText(input, provenance = "imported") {
     "口座: " + snapshot.context.account,
     "トークン: " + snapshot.tokenAddress,
     "範囲: " + snapshot.range.fromBlock + " ～ " + snapshot.range.toBlock,
-    "出所: " + (provenance === "live" ? "接続したWalletから今回読み取り" : "ファイルから読み込んだ記録（現在のチェーン状態は未確認）"),
+    "出所: " + (provenance === "live" ? "接続中のアカウントで今回読み取り" : "ファイルから読み込んだ記録（現在のチェーン状態は未確認）"),
     `${summary.events}件 / ${summary.transactions}取引 / ${summary.counterparties}相手先`,
     "受信・発行の合計: " + amount(summary.receivedBaseUnits),
     "送信・焼却の合計: " + amount(summary.sentBaseUnits),

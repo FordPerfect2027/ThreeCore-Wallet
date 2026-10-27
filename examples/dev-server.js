@@ -1,4 +1,5 @@
 import { SECURITY_HEADERS, inspectLocalRequest } from "./security-http.js";
+import { createBaseStateRpcHandler } from "./base-state-rpc.js";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -6,6 +7,8 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ...["base-state-provider", "state-rpc-http", "security-json", "security-data"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/src/security-abort.js", { file: resolve(here, "../src/security-abort.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/security-callback.js", { file: resolve(here, "../src/security-callback.js"), mime: "text/javascript; charset=utf-8" }],
   ["/src/state-notifier.js", { file: resolve(here, "../src/state-notifier.js"), mime: "text/javascript; charset=utf-8" }],
@@ -120,7 +123,8 @@ const publicPaths = [
   ["/src/dapp-preflight.js", { file: resolve(here, "../src/dapp-preflight.js"), mime: "text/javascript; charset=utf-8" }],
 ];
 
-export function createDemoServer({ uiTest = false } = {}) {
+export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch } = {}) {
+  const serveBaseStateRpc = createBaseStateRpcHandler(stateFetch);
   const paths = new Map(publicPaths);
   if (uiTest) {
     for (const name of ['acceptance-fixture', 'acceptance-ui-tests', 'acceptance-demo']) {
@@ -228,6 +232,10 @@ export function createDemoServer({ uiTest = false } = {}) {
       return;
     }
     const item = paths.get(verdict.pathname);
+    if (verdict.pathname === "/rpc/base-mainnet") {
+      await serveBaseStateRpc(request, response);
+      return;
+    }
     if (request.method !== "GET" || !item) {
       response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
       response.end("Not found");

@@ -1,5 +1,6 @@
 /** Provider-supplied prose can contain phishing instructions or private data. */
 const messages = new Map([
+  ["STATE_RPC_UNAVAILABLE", "Base本番の読み取り窓口から結果を取得できませんでした。接続を確認して再度読み取ってください。"],
   [4001, "Walletで接続操作が拒否されました。"],
   [4100, "Walletの接続許可がありません。再接続してください。"],
   [4200, "Walletがこの読み取り方法に対応していません。"],

@@ -63,6 +63,33 @@ npm run demo
 
 For the demo open `http://127.0.0.1:4173` in a browser with a compatible injected EIP-1193 wallet (e.g. MetaMask). **Never enter a seed phrase or private key.** Set a distinct expected public address for the chosen agent. The demo asks the wallet extension for account permission; any wallet prompt must be confirmed by the actual user. No transaction-signing methods are used.
 
+### Base Mainnet state reads with MetaMask
+
+The built-in demo keeps connection permission, account checks and network checks
+with the injected wallet. For Base Mainnet only, it obtains chain state through
+the same-origin `/rpc/base-mainnet` endpoint, which forwards bounded, validated
+read requests to `https://mainnet.base.org`. The page discloses this destination:
+the public account and read parameters are sent to Base's RPC. No credentials,
+permissions, signing or transaction calls are forwarded.
+
+This avoids MetaMask middleware which treats EIP-1898 block objects as strings.
+The block-hash selector and `requireCanonical: true` are preserved. Both the
+state reader's chain and the wallet's authorization/network are checked around
+reads; stop, account and network changes invalidate pending results. There is no
+automatic retry with `latest` or block-number state. A failed public RPC read is
+reported as such, rather than as a successful zero balance.
+
+The relay accepts only same-origin JSON POSTs, fixed read methods and bounded
+requests/responses, and has a deadline and concurrency limit. Its upstream URL
+cannot be supplied by the caller. Existing CSP and local-origin protections are
+unchanged. Public RPC availability/rate limits still apply.
+
+Library sessions retain the wallet-only default. An application may explicitly
+provide a `stateProvider` when constructing a Base Mainnet session; the built-in
+`wallet-entry.js` configures `createBaseStateProvider` for the local demo. A static
+deployment needs an equivalent same-origin relay before enabling this option.
+Base Sepolia continues to read through the selected wallet.
+
 ## Architecture
 
 ```text

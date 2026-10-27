@@ -140,6 +140,8 @@ function decodeBlockHeader(value) {
 export class ThreeCoreWalletSession {
   #provider;
   #request;
+  #stateProvider;
+  #stateRequest;
   #rpcSupervisor;
   #isAccessAllowed;
   #agent;
@@ -155,9 +157,14 @@ export class ThreeCoreWalletSession {
   #pendingRequests = new Set();
   #providerObserver = null;
 
-  constructor({ provider, agent, siteOrigin, approvedOrigins, expectedAccount, chainId,
+  constructor({ provider, stateProvider, agent, siteOrigin, approvedOrigins, expectedAccount, chainId,
     rpcSupervisor = walletRpcSupervisor, isAccessAllowed = () => true, readTimeoutMs = 30_000, connectTimeoutMs = 30_000, permissionTimeoutMs = 120_000 }) {
     this.#request = validateProvider(provider);
+    if (stateProvider !== undefined) {
+      if (chainId !== CHAINS.BASE_MAINNET.id) reject("UNSUPPORTED_STATE_PROVIDER", "A separate state reader is enabled only for Base Mainnet");
+      this.#stateRequest = validateProvider(stateProvider);
+      this.#stateProvider = stateProvider;
+    }
     if (!rpcSupervisor || typeof rpcSupervisor.start !== "function") reject("INVALID_SUPERVISOR", "Invalid request supervisor");
     this.#rpcSupervisor = rpcSupervisor;
     if (typeof isAccessAllowed !== "function") reject("INVALID_ACCESS_GUARD", "Access guard must be a function");
@@ -368,11 +375,16 @@ export class ThreeCoreWalletSession {
     }
   }
 
-  async #requestRead(epoch, args) {
+  async #requestRead(epoch, args, stateRead = false) {
     this.#assertReadEpoch(epoch);
     args = this.#guardRequest(args);
     try {
-      const result = await this.#waitForProvider(() => this.#request.call(this.#provider, providerArguments(args)),
+      const result = await this.#waitForProvider(() => {
+        this.#assertReadEpoch(epoch);
+        return stateRead
+          ? this.#stateRequest.call(this.#stateProvider, providerArguments(args))
+          : this.#request.call(this.#provider, providerArguments(args));
+      },
         this.#readTimeoutMs, "READ_TIMEOUT", "SESSION_CHANGED");
       this.#assertReadEpoch(epoch);
       return this.#guardResponse(args.method, result);
@@ -420,11 +432,25 @@ export class ThreeCoreWalletSession {
   // Providers may silently change chain or account during a pending RPC read.
   // Recheck both before returning its value; never retry or expose stale data.
   async #readOnVerifiedState(epoch, args) {
-    const value = await this.#requestRead(epoch, args);
+    if (this.#stateProvider) await this.#confirmStateChain(epoch);
+    const value = await this.#requestRead(epoch, args, !!this.#stateProvider);
     this.#assertReadEpoch(epoch);
+    if (this.#stateProvider) await this.#confirmStateChain(epoch);
     await this.#confirmChain(epoch, true);
     await this.#confirmReadAccount(epoch);
     return value;
+  }
+
+  async #confirmStateChain(epoch) {
+    const value = await this.#requestRead(epoch, { method: "eth_chainId" }, true);
+    this.#assertReadEpoch(epoch);
+    let actual;
+    try { actual = normalizeChainId(value); }
+    catch (error) { this.disconnect(); throw error; }
+    if (actual !== this.#chainId) {
+      this.disconnect();
+      reject("STATE_RPC_WRONG_CHAIN", "読み取り窓口のネットワークが一致しないため停止しました。再接続してください。");
+    }
   }
 
   /** Read a mined header. An explicit height is used to recheck canonicality. */
