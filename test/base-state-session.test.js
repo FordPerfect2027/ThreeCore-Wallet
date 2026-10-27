@@ -149,3 +149,51 @@ test("state failure never retries via wallet or latest", async () => {
     assert.ok(provider.calls.every(c => ["eth_accounts", "eth_requestAccounts", "eth_chainId"].includes(c.method)));
   } finally { s.disconnect(); }
 });
+
+for (const agent of ["DAT", "EMA", "CAWELON"]) test(`${agent} bounded transfer logs use wallet while pinned state stays on reader`, async () => {
+  const provider = wallet(), state = reader(), original = provider.request;
+  provider.request = async function(args) {
+    if (args.method === "eth_getLogs") { this.calls.push(args); return []; }
+    return original.call(this, args);
+  };
+  const s = session(provider, state, { agent }); await s.connect();
+  try {
+    for (const direction of ["incoming", "outgoing"]) {
+      assert.deepEqual(await s.getTransferEvents({ fromBlock: "250", toBlock: "255", direction }), []);
+    }
+    assert.equal(provider.calls.filter(c => c.method === "eth_getLogs").length, 2);
+    assert.ok(provider.calls.filter(c => c.method === "eth_getLogs").every(c =>
+      c.params[0].fromBlock === "0xfa" && c.params[0].toBlock === "0xff"));
+    assert.ok(!state.calls.some(c => c.method === "eth_getLogs"));
+    assert.equal(await s.getNativeBalance(HASH), 42n);
+    assert.ok(!provider.calls.some(c => c.method === "eth_getBalance"));
+  } finally { s.disconnect(); }
+});
+
+test("wallet log failure is not retried through the public state reader", async () => {
+  const provider = wallet(), state = reader(), s = session(provider, state);
+  await s.connect();
+  try {
+    await assert.rejects(s.getTransferEvents({ fromBlock: "250", toBlock: "255", direction: "incoming" }));
+    assert.equal(provider.calls.filter(c => c.method === "eth_getLogs").length, 1);
+    assert.ok(!state.calls.some(c => c.method === "eth_getLogs"));
+  } finally { s.disconnect(); }
+});
+
+for (const change of ["stop", "account", "chain"]) test(`wallet log response is discarded after ${change} with separate state reader`, async () => {
+  const provider = wallet(), state = reader(), original = provider.request;
+  const entered = Promise.withResolvers(), finish = Promise.withResolvers();
+  provider.request = async function(args) {
+    if (args.method === "eth_getLogs") { entered.resolve(); return finish.promise; }
+    return original.call(this, args);
+  };
+  const s = session(provider, state); await s.connect();
+  const pending = s.getTransferEvents({ fromBlock: "250", toBlock: "255", direction: "incoming" });
+  const rejection = assert.rejects(pending, { code: "SESSION_CHANGED" });
+  await entered.promise;
+  if (change === "stop") s.disconnect();
+  else if (change === "account") { provider.accounts = [B]; provider.emit("accountsChanged", [B]); }
+  else { provider.chain = "0x1"; provider.emit("chainChanged", "0x1"); }
+  finish.resolve([]); await rejection;
+  assert.equal(s.state.connected, false);
+});
