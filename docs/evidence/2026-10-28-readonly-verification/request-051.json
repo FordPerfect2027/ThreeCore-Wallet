@@ -1,0 +1,23 @@
+{
+  "url": "https://base.publicnode.com",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 51,
+    "method": "eth_call",
+    "params": [
+      {
+        "to": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+        "data": "0x70a08231000000000000000000000000cfae42798e867968c60fedf38d7ee401120072c8"
+      },
+      "0x32bc034"
+    ]
+  },
+  "requestedAtUtc": "2026-10-28T11:36:35.961Z",
+  "receivedAtUtc": "2026-10-28T11:36:36.005Z",
+  "httpStatus": 200,
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 51,
+    "result": "0x0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

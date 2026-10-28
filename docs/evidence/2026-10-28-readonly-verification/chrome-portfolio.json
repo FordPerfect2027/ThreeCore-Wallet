@@ -1,0 +1,36 @@
+{
+  "schema": "threecore-portfolio-snapshot-v1",
+  "historicalObservation": true,
+  "snapshot": {
+    "agent": "EMA",
+    "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+    "chainId": 8453,
+    "siteOrigin": "http://127.0.0.1:4230",
+    "connectionEpoch": 0,
+    "blockNumber": "53198984",
+    "blockHash": "0xf0d83bbf915eaff831e6e1afd8f382bbfd5302f454b23291202667d4c2c0e1c6",
+    "nativeBalanceBaseUnits": "0",
+    "holdings": [
+      {
+        "address": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+        "hasCode": true,
+        "balanceBaseUnits": "0",
+        "notice": null
+      },
+      {
+        "address": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+        "hasCode": true,
+        "balanceBaseUnits": "0",
+        "notice": null
+      },
+      {
+        "address": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+        "hasCode": true,
+        "balanceBaseUnits": "0",
+        "notice": null
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  }
+}

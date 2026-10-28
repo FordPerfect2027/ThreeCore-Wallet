@@ -1,0 +1,30 @@
+{
+  "schema": "threecore.transfer-file.v1",
+  "algorithm": "SHA-256",
+  "digest": "b7d494959c8486b49003e8bd3125ec97ae5f708a1a8c126916bbd88678416304",
+  "payload": {
+    "schema": "threecore.transfer-observation.v1",
+    "context": {
+      "agent": "CAWELON",
+      "chainId": 8453,
+      "account": "0xcfae42798e867968c60fedf38d7ee401120072c8"
+    },
+    "tokenAddress": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+    "metadata": {
+      "name": "CAWELON CORE",
+      "symbol": "CAWELON",
+      "decimals": 18,
+      "totalSupply": "420000000000000000000000000000000"
+    },
+    "range": {
+      "fromBlock": "51542494",
+      "toBlock": "51544493"
+    },
+    "fromBlockHash": "0xd0f60a7b5880ba2f16a620b4e3fd462b0a88188a5a5ac0bdf1a2bccf20f53b9e",
+    "toBlockHash": "0xdee2f068d6cefa72dc443b78be3edb639c2e6c356aeb9085f5d24b8a7aec814c",
+    "events": [],
+    "readOnly": true,
+    "completeHistory": false,
+    "independentVerification": false
+  }
+}

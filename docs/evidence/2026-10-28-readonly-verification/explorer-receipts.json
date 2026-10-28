@@ -1,0 +1,41 @@
+[
+  {
+    "token": "DAT",
+    "pages": [
+      {
+        "url": "https://base.blockscout.com/api/v2/addresses/0xcfae42798e867968c60fedf38d7ee401120072c8/token-transfers?type=ERC-20&filter=to&token=0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+        "itemCount": 0,
+        "nextPageParams": null,
+        "receivedAtUtc": "2026-10-28T11:34:30.8485583Z"
+      }
+    ],
+    "items": [],
+    "paginationComplete": true
+  },
+  {
+    "token": "EMA",
+    "pages": [
+      {
+        "url": "https://base.blockscout.com/api/v2/addresses/0xcfae42798e867968c60fedf38d7ee401120072c8/token-transfers?type=ERC-20&filter=to&token=0xbae0933d509b83b7bbab3aab9fed413504382a76",
+        "itemCount": 0,
+        "nextPageParams": null,
+        "receivedAtUtc": "2026-10-28T11:34:31.8321582Z"
+      }
+    ],
+    "items": [],
+    "paginationComplete": true
+  },
+  {
+    "token": "CAWELON",
+    "pages": [
+      {
+        "url": "https://base.blockscout.com/api/v2/addresses/0xcfae42798e867968c60fedf38d7ee401120072c8/token-transfers?type=ERC-20&filter=to&token=0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+        "itemCount": 0,
+        "nextPageParams": null,
+        "receivedAtUtc": "2026-10-28T11:34:32.1205972Z"
+      }
+    ],
+    "items": [],
+    "paginationComplete": true
+  }
+]

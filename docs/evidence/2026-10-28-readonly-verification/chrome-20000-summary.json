@@ -1,0 +1,690 @@
+{
+  "schema": "threecore.chrome-batch-verification.v1",
+  "verifiedAtUtc": "2026-10-28T11:21:33.820Z",
+  "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+  "chainId": 8453,
+  "method": "Chrome UI: read, JSON save, summary save; offline integrity validation",
+  "fromBlock": 53025243,
+  "toBlock": 53045242,
+  "blockCount": 20000,
+  "windowsPerToken": 10,
+  "tokens": [
+    "DAT",
+    "EMA",
+    "CAWELON"
+  ],
+  "observations": 30,
+  "savedFiles": 60,
+  "totalEvents": 0,
+  "checksumVerified": true,
+  "boundaryHashesAgreeAcrossTokens": true,
+  "readOnly": true,
+  "independentCompletenessVerified": false,
+  "nextRange": {
+    "fromBlock": 53023243,
+    "toBlock": 53025242
+  },
+  "records": [
+    {
+      "token": "DAT",
+      "fromBlock": 53043243,
+      "toBlock": 53045242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:18:51.806Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53043243-53045242.json",
+          "bytes": 934,
+          "sha256": "aea8a44b7aa93330522e4f0df2abac1977384f5cb7e81919323025ad6e5590ec",
+          "modifiedAtUtc": "2026-10-28T11:18:51.659Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53043243-53045242.txt",
+          "bytes": 684,
+          "sha256": "1f06ec0b3de04d63a0a75df92782258d986135147c782b46cc8819ddff99b55c",
+          "modifiedAtUtc": "2026-10-28T11:18:52.351Z"
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "fromBlock": 53041243,
+      "toBlock": 53043242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:19:01.174Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53041243-53043242.json",
+          "bytes": 934,
+          "sha256": "303e1130f95376a767ecc40f7011512f91e9dcaf554e2a8d1edee15a7f05b7cf",
+          "modifiedAtUtc": "2026-10-28T11:19:00.747Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53041243-53043242.txt",
+          "bytes": 684,
+          "sha256": "dd21d6e2f5ff855ccac4442692b673cbe5d5bb855462fabee92c51c85f7955ef",
+          "modifiedAtUtc": "2026-10-28T11:19:01.640Z"
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "fromBlock": 53039243,
+      "toBlock": 53041242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:19:15.400Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53039243-53041242.json",
+          "bytes": 934,
+          "sha256": "73ad4a3b9381a4170a72b455d6eb5d1f6392b0ad7d6da013ac5c24183ea304a6",
+          "modifiedAtUtc": "2026-10-28T11:19:15.254Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53039243-53041242.txt",
+          "bytes": 684,
+          "sha256": "88cb234ec6fe233a9a40f8c347e94a8fedf6235ee7e241053e3e8930177dd152",
+          "modifiedAtUtc": "2026-10-28T11:19:15.903Z"
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "fromBlock": 53037243,
+      "toBlock": 53039242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:19:24.432Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53037243-53039242.json",
+          "bytes": 934,
+          "sha256": "0203890fdf6726919246733684e6fc92682cc950b1b0d43cbf7297c180fb3548",
+          "modifiedAtUtc": "2026-10-28T11:19:24.340Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53037243-53039242.txt",
+          "bytes": 684,
+          "sha256": "18dc9009be92e5603ee9fd5b15369ad1c1256db3caa3718366ff3dd27ffdf43d",
+          "modifiedAtUtc": "2026-10-28T11:19:24.938Z"
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "fromBlock": 53035243,
+      "toBlock": 53037242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:19:52.695Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53035243-53037242.json",
+          "bytes": 934,
+          "sha256": "511303bc8e3a86d78c09fefd50bb6a00da137679729b921b0e31a5a588452c7d",
+          "modifiedAtUtc": "2026-10-28T11:19:52.523Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53035243-53037242.txt",
+          "bytes": 684,
+          "sha256": "d94c831cdc425cebdaf9e2605f96d2cbce6343c0c2c52750ca3d75b8757b6bfe",
+          "modifiedAtUtc": "2026-10-28T11:19:53.186Z"
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "fromBlock": 53033243,
+      "toBlock": 53035242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:20:01.893Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53033243-53035242.json",
+          "bytes": 934,
+          "sha256": "ae775970809c2f2d9fa043dae79a3b68ef143e0b0f27d995a43d2d774a0048bb",
+          "modifiedAtUtc": "2026-10-28T11:20:01.672Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53033243-53035242.txt",
+          "bytes": 684,
+          "sha256": "4fd32aebefe039d3361855a0085db79d89fa3b316723e55c508c5db6f7096a4c",
+          "modifiedAtUtc": "2026-10-28T11:20:02.406Z"
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "fromBlock": 53031243,
+      "toBlock": 53033242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:20:48.390Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53031243-53033242.json",
+          "bytes": 934,
+          "sha256": "7cafb76c6f231dbb8d4ea1182bf6c3af18513b772483ec3d9c41e8277974de90",
+          "modifiedAtUtc": "2026-10-28T11:20:48.334Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53031243-53033242.txt",
+          "bytes": 684,
+          "sha256": "cdd16927d49762e22b0f9afb10feb53ce0019838d759cd23365ba0771b575d25",
+          "modifiedAtUtc": "2026-10-28T11:20:48.900Z"
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "fromBlock": 53029243,
+      "toBlock": 53031242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:20:57.464Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53029243-53031242.json",
+          "bytes": 934,
+          "sha256": "5d2526d35961c9f14ff97aaf6eb224e01915b18bd170170aea9f49bf0c119da1",
+          "modifiedAtUtc": "2026-10-28T11:20:57.258Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53029243-53031242.txt",
+          "bytes": 684,
+          "sha256": "71d6c817994dd8230d2fa7db0ebd53a3b2ef0064953908c881bc95c499c0538c",
+          "modifiedAtUtc": "2026-10-28T11:20:57.936Z"
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "fromBlock": 53027243,
+      "toBlock": 53029242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:21:16.995Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53027243-53029242.json",
+          "bytes": 934,
+          "sha256": "33d28ecb7517173cf058269dbd01a796098b64c376ca9ab22e97f59f12e499a3",
+          "modifiedAtUtc": "2026-10-28T11:21:16.652Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53027243-53029242.txt",
+          "bytes": 684,
+          "sha256": "5ec58bcf6489e91b53434b02afc2008073d03b25fc448159b21594bfeefe5a3b",
+          "modifiedAtUtc": "2026-10-28T11:21:17.478Z"
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "fromBlock": 53025243,
+      "toBlock": 53027242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:21:26.760Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53025243-53027242.json",
+          "bytes": 934,
+          "sha256": "e44df1fd0c6773d30b870af34bd34eebcb1560d100e7beeef0652e544c3646dd",
+          "modifiedAtUtc": "2026-10-28T11:21:26.563Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-DAT-8453-cfae4279-transfers-53025243-53027242.txt",
+          "bytes": 684,
+          "sha256": "c80333a3190a2232998c48183936de84a2f34de632fca9e218d12f5fdef01a36",
+          "modifiedAtUtc": "2026-10-28T11:21:27.157Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53043243,
+      "toBlock": 53045242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:10:24.637Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53043243-53045242.json",
+          "bytes": 934,
+          "sha256": "baf65eb6168b2b8a074849fb292fcc258f1b4bf6feeb4c0fcf5944e09927cf1c",
+          "modifiedAtUtc": "2026-10-28T11:10:24.336Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53043243-53045242.txt",
+          "bytes": 684,
+          "sha256": "2858fe314d2e989f7e71e0346dad5e035f5e7587a66168c53c653f3e2bb0c189",
+          "modifiedAtUtc": "2026-10-28T11:10:24.501Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53041243,
+      "toBlock": 53043242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:10:33.531Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53041243-53043242.json",
+          "bytes": 934,
+          "sha256": "a48c37d671255f8d2cd9edf9a78bc33db16bbd242e605824cd6ed1bb46a3491d",
+          "modifiedAtUtc": "2026-10-28T11:10:33.362Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53041243-53043242.txt",
+          "bytes": 684,
+          "sha256": "a4318523c1019ea50bfbe0231da29c7312c9e97bbd6d55dd291efc418c03ffd4",
+          "modifiedAtUtc": "2026-10-28T11:10:34.248Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53039243,
+      "toBlock": 53041242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:10:47.331Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53039243-53041242.json",
+          "bytes": 934,
+          "sha256": "16880bd04d04dc9656539eb837252a6a8fe064b53be6b79a3b038829ae0b6c70",
+          "modifiedAtUtc": "2026-10-28T11:10:47.261Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53039243-53041242.txt",
+          "bytes": 684,
+          "sha256": "5f037d2422d87f63c4dc1d9581325cd965b9a323f2fb6c80ebb8dbf32e6ec25b",
+          "modifiedAtUtc": "2026-10-28T11:10:48.019Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53037243,
+      "toBlock": 53039242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:10:56.634Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53037243-53039242.json",
+          "bytes": 934,
+          "sha256": "492e3fc8039a72fadf9939350df6fe7af9205215fe03e38892b87ba8ed1668be",
+          "modifiedAtUtc": "2026-10-28T11:10:56.474Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53037243-53039242.txt",
+          "bytes": 684,
+          "sha256": "31f9c65c59082c33f67f65db57e4ae3221fbc891b19b4fa712184c5e146f209f",
+          "modifiedAtUtc": "2026-10-28T11:10:57.108Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53035243,
+      "toBlock": 53037242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:11:33.487Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53035243-53037242.json",
+          "bytes": 934,
+          "sha256": "533de7c6275df05e128880b89547fa2e6e2b034da3b6dde6aa14bbf07d8850f5",
+          "modifiedAtUtc": "2026-10-28T11:11:33.358Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53035243-53037242.txt",
+          "bytes": 684,
+          "sha256": "585d62b5a74bac720f8f82525e919ad1e0444482381c24d87cf70c81ec58bc1e",
+          "modifiedAtUtc": "2026-10-28T11:11:33.964Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53033243,
+      "toBlock": 53035242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:11:43.194Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53033243-53035242.json",
+          "bytes": 934,
+          "sha256": "275361d3c90eee074978f969c3871e721131cb8997eac9c83725e5047bc8f9d4",
+          "modifiedAtUtc": "2026-10-28T11:11:42.975Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53033243-53035242.txt",
+          "bytes": 684,
+          "sha256": "913c71779a7253d48bdd3bb094deb42a7fd29b56ebd7fad22b7629a2930eab4b",
+          "modifiedAtUtc": "2026-10-28T11:11:43.828Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53031243,
+      "toBlock": 53033242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:12:00.385Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53031243-53033242.json",
+          "bytes": 934,
+          "sha256": "6b1a1eb6bf9e05a86ba9f9c4b3222c251b460ec1d1023eeb61948bc97cc94b8c",
+          "modifiedAtUtc": "2026-10-28T11:11:59.657Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53031243-53033242.txt",
+          "bytes": 684,
+          "sha256": "23a89420d99a1a590e4159e19cb092614d9bc82dd133f92ea7aaffb90f191b1d",
+          "modifiedAtUtc": "2026-10-28T11:12:00.295Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53029243,
+      "toBlock": 53031242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:12:09.777Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53029243-53031242.json",
+          "bytes": 934,
+          "sha256": "d29195bdb90d06ed7f2ff3cd6ec0106783dcd55724a75386938f3585d9ba46f8",
+          "modifiedAtUtc": "2026-10-28T11:12:09.579Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53029243-53031242.txt",
+          "bytes": 684,
+          "sha256": "9a6f121d0e5a597a78910fd9b887a8a99598b3a6a100b854f60b20fbf5247871",
+          "modifiedAtUtc": "2026-10-28T11:12:10.304Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53027243,
+      "toBlock": 53029242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:12:35.758Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53027243-53029242.json",
+          "bytes": 934,
+          "sha256": "00e398a4ecf1daac43406f790d80b47d1c322f9961575fdf7eca6342710fbb60",
+          "modifiedAtUtc": "2026-10-28T11:12:35.625Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53027243-53029242.txt",
+          "bytes": 684,
+          "sha256": "7e313ea49f31f8fa840a8a494d56afe97a096821ed91b24cd4851160e3ef564e",
+          "modifiedAtUtc": "2026-10-28T11:12:36.308Z"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 53025243,
+      "toBlock": 53027242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:12:45.060Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53025243-53027242.json",
+          "bytes": 934,
+          "sha256": "5371f4a930adae716944f3e8b8b2ea38a0d84b3c3ce8ea428e712aa9185786eb",
+          "modifiedAtUtc": "2026-10-28T11:12:44.784Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-EMA-8453-cfae4279-transfers-53025243-53027242.txt",
+          "bytes": 684,
+          "sha256": "871336e5e4d4785dc18db53f13007ca8209a5f0b731ac1212a987b732d089a43",
+          "modifiedAtUtc": "2026-10-28T11:12:45.369Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53043243,
+      "toBlock": 53045242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:13:14.375Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53043243-53045242.json",
+          "bytes": 952,
+          "sha256": "488a3ad7a302f939271bb85ab4720013225c7aff3054510d22cab011e1fccff4",
+          "modifiedAtUtc": "2026-10-28T11:13:14.011Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53043243-53045242.txt",
+          "bytes": 700,
+          "sha256": "47950c1c175c0d477e85855d55c179a8540fbb639ad5ecde00b823adb091dff0",
+          "modifiedAtUtc": "2026-10-28T11:13:14.837Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53041243,
+      "toBlock": 53043242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:13:23.817Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53041243-53043242.json",
+          "bytes": 952,
+          "sha256": "65ab53d801fb85dc6e3292b14e58943915483b691865f64e4e9b83110a669aa1",
+          "modifiedAtUtc": "2026-10-28T11:13:23.689Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53041243-53043242.txt",
+          "bytes": 700,
+          "sha256": "7a0b0d761808d2df70d30c561d89b9decdfe7cf8f358d24137a900d6b4ba06f9",
+          "modifiedAtUtc": "2026-10-28T11:13:24.256Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53039243,
+      "toBlock": 53041242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:16:44.856Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53039243-53041242.json",
+          "bytes": 952,
+          "sha256": "2e8dd05526c217e30d6e2bc3a35179519032c90ad216c91893683874f9ee9caa",
+          "modifiedAtUtc": "2026-10-28T11:16:44.707Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53039243-53041242.txt",
+          "bytes": 700,
+          "sha256": "2503d942bc50881bd96b5912b0522bd9351983da6b897f2fe7d759b8481c606e",
+          "modifiedAtUtc": "2026-10-28T11:16:45.121Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53037243,
+      "toBlock": 53039242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:16:54.055Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53037243-53039242.json",
+          "bytes": 952,
+          "sha256": "927a93007def3896a1ca70264d7ff42d39a7269fbc736171f2febfcc2a79cc56",
+          "modifiedAtUtc": "2026-10-28T11:16:53.774Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53037243-53039242.txt",
+          "bytes": 700,
+          "sha256": "a5dfe46183ae0d5bf73593f91fd69d9825c1b40bf4f1519e2021d64b8c97ad33",
+          "modifiedAtUtc": "2026-10-28T11:16:54.528Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53035243,
+      "toBlock": 53037242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:17:16.590Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53035243-53037242.json",
+          "bytes": 952,
+          "sha256": "73b83fa37869272fa1de43414779183bbcba284593faa7218318fa281cb18fc2",
+          "modifiedAtUtc": "2026-10-28T11:17:16.379Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53035243-53037242.txt",
+          "bytes": 700,
+          "sha256": "a608c00634d157f5efd6f305bde978753598088bf96a7957346d163e24dc9f51",
+          "modifiedAtUtc": "2026-10-28T11:17:17.113Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53033243,
+      "toBlock": 53035242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:17:25.808Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53033243-53035242.json",
+          "bytes": 952,
+          "sha256": "24366379605b23d6a58d0bf77ff3f78f80b004d4c7a6b01d4b4c8ae455b01115",
+          "modifiedAtUtc": "2026-10-28T11:17:25.457Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53033243-53035242.txt",
+          "bytes": 700,
+          "sha256": "3e010ddcb4723612966a9e68570a0880f53de1fcb9e7e37bb61cf2783b3b20a8",
+          "modifiedAtUtc": "2026-10-28T11:17:26.320Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53031243,
+      "toBlock": 53033242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:17:44.533Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53031243-53033242.json",
+          "bytes": 952,
+          "sha256": "45960959324b62f667f85ab53f03bccd2e410471fe666060e4462ff28c4ae93c",
+          "modifiedAtUtc": "2026-10-28T11:17:43.466Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53031243-53033242.txt",
+          "bytes": 700,
+          "sha256": "4a0d345bbfbf770fd351f5544767df863627dcff4afd64d461bc7baa81433d24",
+          "modifiedAtUtc": "2026-10-28T11:17:44.515Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53029243,
+      "toBlock": 53031242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:17:53.867Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53029243-53031242.json",
+          "bytes": 952,
+          "sha256": "520081d6a4f2c64f597ae5f3801967dbf61bb20b188ec09dab53efe2df396942",
+          "modifiedAtUtc": "2026-10-28T11:17:53.664Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53029243-53031242.txt",
+          "bytes": 700,
+          "sha256": "b25420a938d9557612e0b618383e7df9acefdb921ae1a2860e660cc98581affc",
+          "modifiedAtUtc": "2026-10-28T11:17:54.283Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53027243,
+      "toBlock": 53029242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:18:14.380Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53027243-53029242.json",
+          "bytes": 952,
+          "sha256": "9cdc7ba41fcd4fdcd5bc7642c5fbff5c753965854ef07c2a8c712bf93e9b2790",
+          "modifiedAtUtc": "2026-10-28T11:18:14.124Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53027243-53029242.txt",
+          "bytes": 700,
+          "sha256": "1f735f03713e9d9f1eb3c35c76591044a0a5baaad301933d64379331628478bd",
+          "modifiedAtUtc": "2026-10-28T11:18:14.830Z"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 53025243,
+      "toBlock": 53027242,
+      "events": 0,
+      "checksumVerified": true,
+      "observedAtUtc": "2026-10-28T11:18:23.007Z",
+      "files": [
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53025243-53027242.json",
+          "bytes": 952,
+          "sha256": "e5ae71e5902e778f847d50e27ddca93a65212da8e9d85f8de4025bc61a2a4629",
+          "modifiedAtUtc": "2026-10-28T11:18:22.806Z"
+        },
+        {
+          "path": "chrome-20000/ThreeCore-CAWELON-8453-cfae4279-transfers-53025243-53027242.txt",
+          "bytes": 700,
+          "sha256": "67b558111391ac726efe3693de735f179f496b9a7c19298f72ed5f0549f2362c",
+          "modifiedAtUtc": "2026-10-28T11:18:23.394Z"
+        }
+      ]
+    }
+  ],
+  "publicationNote": "Only file paths were changed to package-relative paths. Downloaded JSON and text bytes are unchanged."
+}

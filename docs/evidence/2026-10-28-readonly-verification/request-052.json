@@ -1,0 +1,20 @@
+{
+  "url": "https://base.publicnode.com",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 52,
+    "method": "eth_getBalance",
+    "params": [
+      "0xcfae42798e867968c60fedf38d7ee401120072c8",
+      "0x32bc034"
+    ]
+  },
+  "requestedAtUtc": "2026-10-28T11:36:36.006Z",
+  "receivedAtUtc": "2026-10-28T11:36:36.044Z",
+  "httpStatus": 200,
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 52,
+    "result": "0x0"
+  }
+}
