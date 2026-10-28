@@ -1,0 +1,30 @@
+{
+  "schema": "threecore.transfer-file.v1",
+  "algorithm": "SHA-256",
+  "digest": "ea1ca24f14f142add734d418d7b67a9f0e7440a22d70e8e8cd75bdb7630a9ba9",
+  "payload": {
+    "schema": "threecore.transfer-observation.v1",
+    "context": {
+      "agent": "EMA",
+      "chainId": 8453,
+      "account": "0xcfae42798e867968c60fedf38d7ee401120072c8"
+    },
+    "tokenAddress": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+    "metadata": {
+      "name": "EMA CORE",
+      "symbol": "EMA",
+      "decimals": 18,
+      "totalSupply": "777000000000000000000000000"
+    },
+    "range": {
+      "fromBlock": "53035243",
+      "toBlock": "53037242"
+    },
+    "fromBlockHash": "0x000e983e5a0bd32bfa836af511209b7f3b8b2ab713be5348d964d9489ff64e61",
+    "toBlockHash": "0x27d36f987f762a2683e1f4a9e773c22a2757cce0cff1e38673c6f187faa8e5e3",
+    "events": [],
+    "readOnly": true,
+    "completeHistory": false,
+    "independentVerification": false
+  }
+}

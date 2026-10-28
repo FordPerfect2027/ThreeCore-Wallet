@@ -1,0 +1,30 @@
+{
+  "schema": "threecore.transfer-file.v1",
+  "algorithm": "SHA-256",
+  "digest": "a68b699c6bfd20565b9cd684899e07e200521e60cd4f6775b0e43a32d0680ac4",
+  "payload": {
+    "schema": "threecore.transfer-observation.v1",
+    "context": {
+      "agent": "DAT",
+      "chainId": 8453,
+      "account": "0xcfae42798e867968c60fedf38d7ee401120072c8"
+    },
+    "tokenAddress": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+    "metadata": {
+      "name": "DATCORE",
+      "symbol": "DAT",
+      "decimals": 18,
+      "totalSupply": "1000000000000000000000000000"
+    },
+    "range": {
+      "fromBlock": "53029243",
+      "toBlock": "53031242"
+    },
+    "fromBlockHash": "0x905e139bb28fe1c6d6f92650137faed638afbc5c11972d832a50df8e4749c95d",
+    "toBlockHash": "0xc483e78638b4409bc6ac754c019680b35477abb3428f312094b1792e97f7032d",
+    "events": [],
+    "readOnly": true,
+    "completeHistory": false,
+    "independentVerification": false
+  }
+}
