@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 30, 2026 local continuation:** [Progress and completed work](docs/DEVELOPMENT_CONTINUATION_600_2026-10-29.md) cover comparison collections, expected-result checks, record search, combined recovery and saved-report review. [Capacity findings](docs/OPERATION_CAPACITY_2026-10-30.md) include individual expectation export without deleting cases; its browser capacity check remains pending. [RPC diagnostic hardening](docs/RPC_DIAGNOSTIC_HARDENING_2026-10-30.md) adds bounded responses, deadline handling and stalled-body cleanup.
+
 **October 29, 2026 saved-report review:** [Continuation items 1–20](docs/OPERATION_REPORT_REVIEW_2026-10-29.md) recompute saved overview and comparison reports, expose altered fields, verify optional text checksums and save reproducible review receipts. Verified with 347 related tests and five exact browser/offline receipt matches. [Requested continuation status](docs/DEVELOPMENT_CONTINUATION_600_2026-10-29.md).
 
 **October 29, 2026 condition comparison:** [Twenty-item comparison update](docs/OPERATION_SCENARIO_COMPARISON_2026-10-29.md) replays the same events under hypothetical conditions without changing the source workspace. Adds exact differences, per-record reasons, changed-only filtering, separate input/report exports and offline reproduction. Verified with 309 related tests and two exact browser/offline report matches.
