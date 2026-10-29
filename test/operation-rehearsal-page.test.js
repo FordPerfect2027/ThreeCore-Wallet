@@ -7,6 +7,7 @@ import { encodeRehearsalWorkspace, decodeRehearsalWorkspace, REHEARSAL_WORKSPACE
 import { encodeRehearsal, decodeRehearsal, evaluateRehearsal, REHEARSAL_LIMIT } from "../src/operation-rehearsal.js";
 import { Element } from "./helpers/panel-dom.js";
 import { encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
+import { encodeRehearsalOverview } from "../src/operation-rehearsal-overview.js";
 
 const tick = () => new Promise(resolve => setImmediate(resolve));
 class Node extends Element {
@@ -49,6 +50,64 @@ const workspaceText = (ledgers, activeAgent = "DAT") => encodeRehearsalWorkspace
   schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent, ledgers });
 const pasteWorkspace = (f, text) => { f.change("workspace-text", text); f.field("workspace-text-review").click(); };
 const renderedText = node => [node.textContent, ...node.children.map(renderedText)].join(" ");
+
+const overviewFilter = (f, id, value) => { f.field(id).value = value; f.field(id).dispatchEvent(new Event("change")); };
+test("overview starts explicitly uncreated and disabled, not as a zero balance or successful check", () => {
+  const f=setup(); assert.match(f.field("overview-status").textContent,/未作成/);
+  assert.equal(f.field("overview-save").disabled,true); assert.equal(f.field("overview-cards").children.length,3);
+  assert.equal(f.field("overview-rows").children.length,0);
+});
+test("overview filters missing, present-empty and populated subjects separately", () => {
+  const f=setup(); pasteWorkspace(f,workspaceText([rehearsalExampleV2("DAT","pending"),rehearsalExampleV2("EMA","loss")]));
+  f.field("workspace-apply").click(); assert.equal(f.field("overview-rows").children.length,1);
+  overviewFilter(f,"overview-agent","CAWELON"); assert.match(f.field("overview-status").textContent,/未作成/);
+  overviewFilter(f,"overview-agent","EMA"); assert.match(f.field("overview-status").textContent,/該当する記録は0件/);
+  overviewFilter(f,"overview-agent","DAT"); assert.equal(f.field("overview-rows").children.length,1);
+  overviewFilter(f,"overview-kind","rejected"); assert.equal(f.field("overview-rows").children.length,0);
+  assert.equal(f.field("agent").value,"DAT"); assert.equal(f.field("rows").children.length,1);
+});
+test("unconfirmed append and restore never enter the overview; filtering preserves both reviews", () => {
+  const f=setup(); f.field("example").click(); prepareAppend(f,"reserve");
+  overviewFilter(f,"overview-kind","reservation"); assert.equal(f.field("overview-rows").children.length,0);
+  assert.equal(f.field("append-confirm").disabled,false); f.field("append-confirm").click();
+  assert.equal(f.field("overview-rows").children.length,1);
+  pasteWorkspace(f,workspaceText([rehearsalExampleV2("CAWELON","pending")],"CAWELON"));
+  overviewFilter(f,"overview-agent","all"); assert.equal(f.field("workspace-apply").disabled,false);
+  assert.equal(f.field("overview-rows").children[0].children[0].textContent,"DAT");
+  f.field("workspace-cancel").click(); assert.equal(f.field("overview-rows").children.length,1);
+});
+test("overview updates after confirm, undo, and clearing one target", () => {
+  const f=setup(); f.field("example").click(); prepareAppend(f,"reserve"); f.field("append-confirm").click();
+  assert.match(renderedText(f.field("overview-rows")),/予約額 2.8 SIM/);
+  f.field("undo").click(); assert.equal(f.field("overview-rows").children.length,0);
+  selectAgent(f,"CAWELON"); f.field("scenario").value="pending"; f.field("example").click();
+  assert.match(renderedText(f.field("overview-rows")),/元本 100 SIM/);
+  selectAgent(f,"DAT"); f.field("cancel").click();
+  assert.equal(f.field("overview-rows").children[0].children[0].textContent,"CAWELON");
+  assert.match(renderedText(f.field("overview-cards").children[0]),/未作成/);
+});
+test("overview rejected rows expose reason and source identity without crediting the requested amount", () => {
+  const f=setup(); f.field("scenario").value="limit"; f.field("example").click();
+  const text=renderedText(f.field("overview-rows")); assert.match(text,/1回の上限超過/);
+  assert.match(text,/計上なし/); assert.match(text,/1番目: open-one/);
+  assert.match(text,/記録の対象 DAT/); assert.match(text,/ネットワーク 84532/);
+  assert.match(renderedText(f.field("overview-cards")),/0x4444444444444444444444444444444444444444/);
+});
+test("overview export includes all records even under an empty filter, and ignores pending replacement", () => {
+  const f=setup(); pasteWorkspace(f,workspaceText([rehearsalExampleV2("DAT","pending"),rehearsalExampleV2("EMA","limit")]));
+  f.field("workspace-apply").click(); const before=savedWorkspace(f);
+  overviewFilter(f,"overview-agent","CAWELON"); pasteWorkspace(f,workspaceText([rehearsalExampleV2()]));
+  f.field("overview-save").click(); const file=f.downloads.at(-1);
+  assert.equal(file.filename,"ThreeCore-workspace-overview.json"); assert.equal(file.text,encodeRehearsalOverview(before));
+  assert.equal(f.field("workspace-apply").disabled,false); assert.match(f.field("overview-save-status").textContent,/全件/);
+});
+test("applied replacement refreshes overview while disposal removes its data and export handler", () => {
+  const f=setup(); f.field("example").click(); pasteWorkspace(f,workspaceText([rehearsalExampleV2("CAWELON","pending")]));
+  f.field("workspace-apply").click(); assert.equal(f.field("overview-rows").children[0].children[0].textContent,"CAWELON");
+  f.page.dispose(); assert.equal(f.field("overview-rows").children.length,0);
+  assert.equal(f.field("overview-cards").children.length,0); assert.equal(f.field("overview-save").disabled,true);
+  const count=f.downloads.length; f.field("overview-save").click(); assert.equal(f.downloads.length,count);
+});
 
 test("review exposes changed identities, assets, destinations, policy and event contents without applying", () => {
   const f=setup(); f.field("example").click();

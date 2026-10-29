@@ -27,6 +27,19 @@
     <div class="table-wrap"><table><caption>対象ごとの確定した試算</caption><thead><tr><th>対象</th><th>履歴</th><th>累計損益</th><th>予約済み還元</th><th>追加予約可能額</th></tr></thead><tbody id="workspace-rows"></tbody></table></div>
     <p class="small">ページを閉じる・再読込すると消えます。必要な履歴は一括保存してください。入力条件の変更・別の例の表示・「読み込み・表示をクリア」は選択中の対象だけを変更します。未確定の追記は切替時に取り消します。</p>
     <div class="actions"><button id="workspace-save" type="button" disabled>3トークンの履歴を一括保存</button></div>
+    <div class="overview" aria-labelledby="overview-title">
+      <h3 id="overview-title">未決済・予約・条件外の確認一覧</h3>
+      <p class="small">確定した試算履歴を対象ごとに再計算します。未決済と還元予約は現在残っているもの、条件外は見送った記録です。金額は合算しません。</p>
+      <div id="overview-cards" class="overview-cards"></div>
+      <div class="toolbar">
+        <label>一覧の対象<select id="overview-agent"><option value="all">すべての対象</option><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label>
+        <label>一覧の種類<select id="overview-kind"><option value="all">すべての種類</option><option value="position">未決済</option><option value="reservation">還元予約</option><option value="rejected">条件外</option></select></label>
+      </div>
+      <p id="overview-status" role="status" aria-live="polite"></p>
+      <div class="table-wrap"><table><caption>確定した履歴の確認対象</caption><thead><tr><th scope="col">対象</th><th scope="col">種類</th><th scope="col">ID</th><th scope="col">確認内容</th><th scope="col">元の記録</th></tr></thead><tbody id="overview-rows"></tbody></table></div>
+      <button id="overview-save" type="button" disabled>全対象の確認一覧を保存</button>
+      <p id="overview-save-status" class="small" role="status" aria-live="polite"></p>
+    </div>
     <h3>保存した3トークンの履歴を戻す</h3>
     <ol class="restore-steps"><li>保存した一括ファイルを選ぶ</li><li>変更内容を確認して復旧ボタンを押す</li><li>上の一覧で結果を確認する</li></ol>
     <p id="workspace-stage" class="restore-stage" role="status" aria-live="polite" tabindex="-1"></p>

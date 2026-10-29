@@ -6,6 +6,7 @@ import { createRehearsalWorkspace, decodeRehearsalWorkspace, encodeRehearsalWork
   reportRehearsalWorkspace, REHEARSAL_WORKSPACE_LIMIT } from "../src/operation-rehearsal-workspace.js";
 import { offerWalletDownload } from "./export-download.js";
 import { compareRehearsalWorkspaces, encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
+import { reportRehearsalOverview, filterRehearsalOverview, encodeRehearsalOverview } from "../src/operation-rehearsal-overview.js";
 
 const REASONS = Object.freeze({
   PAUSED: "新規利用の停止中", REUSED_OPERATION: "同じ操作の再利用", UNLISTED_ORIGIN: "対象外のサイト",
@@ -200,6 +201,58 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       get("workspace-rows").append(tr);
     }
     get("workspace-save").disabled = report.presentAgents === 0;
+    renderOverview();
+  }
+  function renderOverview() {
+    const report = reportRehearsalOverview(ledger.snapshot());
+    const agent = get("overview-agent").value || "all", kind = get("overview-kind").value || "all";
+    const entries = filterRehearsalOverview(report, agent, kind);
+    get("overview-cards").textContent = "";
+    get("overview-rows").textContent = "";
+    get("overview-save-status").textContent = "";
+    get("overview-save").disabled = !report.inputs.ledgers.length;
+    for (const row of report.rows) {
+      const card = document.createElement("article"); card.className = "overview-card";
+      const title = document.createElement("h3"); title.textContent = row.agent; card.append(title);
+      const status = document.createElement("p");
+      status.textContent = row.present ? "履歴 " + row.recordCount + "件 · 未決済 " + row.openPositions +
+        "件 · 還元予約 " + row.reservations + "件 · 条件外 " + row.rejectedRecords + "件" : "未作成 — 残高・件数は未確認";
+      card.append(status);
+      if (row.present) {
+        if (row.allocationShortfall !== "0") {
+          const warning = document.createElement("p"); warning.className = "blocked";
+          warning.textContent = "利益に対する予約超過: " + formatRehearsalUnits(row.allocationShortfall, row.context.asset.decimals) + " " + row.context.asset.symbol;
+          card.append(warning);
+        }
+        const details = document.createElement("details"), summary = document.createElement("summary"), context = document.createElement("p");
+        summary.textContent = row.agent + "の記録条件"; context.className = "small";
+        context.textContent = "ネットワーク " + row.context.chainId + " / 口座 " + row.context.account +
+          " / 資産 " + row.context.asset.symbol + " (" + row.context.asset.address + ") / サイト " + row.context.origin +
+          " / 利用先契約 " + row.context.spender;
+        details.append(summary, context); card.append(details);
+      }
+      get("overview-cards").append(card);
+    }
+    const labels = { position: "未決済", reservation: "還元予約", rejected: "条件外" };
+    for (const entry of entries) {
+      const tr = document.createElement("tr");
+      const money = value => formatRehearsalUnits(value, entry.context.asset.decimals) + " " + entry.context.asset.symbol;
+      const description = entry.kind === "position" ? "元本 " + money(entry.amount) + " / 確保した決済費用 " + money(entry.exitFeeReserve)
+        : entry.kind === "reservation" ? "予約額 " + money(entry.amount)
+        : entry.reasons.map(code => REASONS[code] ?? code).join("・") + "（計上なし）";
+      const source = entry.recordNumber + "番目: " + entry.recordId + " / " + KINDS[entry.eventKind] +
+        (entry.kind === "rejected" ? " / 記録の対象 " + entry.eventContext.agent + " / ネットワーク " + entry.eventContext.chainId +
+          " / 口座 " + entry.eventContext.account : "");
+      for (const value of [entry.agent, labels[entry.kind], entry.id, description, source]) {
+        const td = document.createElement("td"); td.textContent = value; tr.append(td);
+      }
+      if (entry.kind === "rejected") tr.className = "blocked";
+      get("overview-rows").append(tr);
+    }
+    const present = report.rows.filter(row => row.present && (agent === "all" || row.agent === agent));
+    get("overview-status").textContent = !present.length ? "この対象の履歴は未作成です。0件の確認結果ではありません。"
+      : entries.length ? "表示 " + entries.length + "件。確定した試算履歴から再計算しています。"
+      : "この絞り込みに該当する記録は0件です。実行許可や安全性の判定ではありません。";
   }
   function show(data, keepLedger = false) {
     const report = evaluateRehearsal(data);
@@ -387,6 +440,18 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       get("workspace-status").textContent = "3トークン分の保存を開始しました。作成済みの確定した試算履歴だけが含まれます。";
     } catch { get("workspace-status").textContent = "一括保存を開始できませんでした。"; }
   });
+  for (const name of ["overview-agent", "overview-kind"]) listen(name, "change", () => {
+    if (!disposed) renderOverview();
+  });
+  listen("overview-save", "click", () => {
+    if (disposed) return;
+    const data = ledger.snapshot(); if (!data.ledgers.length) return;
+    try {
+      download({ document, prepared: { text: encodeRehearsalOverview(data),
+        filename: "ThreeCore-workspace-overview.json", mimeType: "application/json" } });
+      get("overview-save-status").textContent = "全対象の確認一覧と元の入力記録の保存を開始しました。絞り込みに関係なく全件を含みます。復旧用ファイルは一括保存を使ってください。";
+    } catch { get("overview-save-status").textContent = "確認一覧を保存できませんでした。現在の履歴は保持しています。"; }
+  });
   listen("workspace-file", "change", async () => {
     if (disposed) return;
     const file = get("workspace-file").files?.[0];
@@ -457,6 +522,8 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     get("workspace-status").textContent = "表示を終了しました。";
     for (const name of ["workspace-receipt", "workspace-source", "workspace-stage", "workspace-file-note"]) get(name).textContent = "";
     get("workspace-text").value = ""; get("workspace-file").value = "";
+    for (const name of ["overview-cards", "overview-rows", "overview-status", "overview-save-status"]) get(name).textContent = "";
+    get("overview-save").disabled = true;
     for (const remove of listeners) remove();
   } });
 }
