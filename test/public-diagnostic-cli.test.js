@@ -53,6 +53,8 @@ test("Base and holdings CLI JSON preserves exact observations and read-only flag
   const holdings = run("inspect-aerodrome.js", [wallet], "success");
   assert.equal(holdings.status, 0); assert.equal(holdings.stderr, "");
   const h = JSON.parse(holdings.stdout);
+  assert.equal(h.blockHash, "0x" + "ab".repeat(32));
+  assert.equal(h.canonicalBlockRechecked, true);
   assert.equal(h.tokenReadings.DAT.balanceBaseUnits, "100"); assert.equal(h.tradePerformed, false);
 });
 test("pool CLI output feeds the stricter liquidity assessment without inventing unknown reserves", () => {
@@ -64,11 +66,14 @@ test("pool CLI output feeds the stricter liquidity assessment without inventing 
   const json = run("liquidity-progress.js", ["--json"], "funded");
   assert.equal(json.status, 0); assert.equal(json.stderr, "");
   const q = JSON.parse(json.stdout);
+  assert.equal(q.observedBlockHash, p.checkedBlockHash);
+  assert.equal(q.canonicalBlockRechecked, true);
   assert.equal(q.pools.DAT.progressPercent, "2.00"); assert.equal(q.verifiedPools, 1);
   assert.equal(q.pools.EMA.observedUsdc, null); assert.equal(q.aggregateObservedUsdc, null);
   const human = run("liquidity-progress.js", [], "funded");
   assert.equal(human.status, 0);
   assert.match(human.stdout, /DAT: 100.000000 USDC/);
+  assert.match(human.stdout, /Canonical block hash rechecked: 0xabab/);
   assert.match(human.stdout, /EMA: UNVERIFIED/);
   assert.match(human.stdout, /Observed aggregate: UNVERIFIED/);
 });

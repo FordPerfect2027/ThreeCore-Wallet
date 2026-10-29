@@ -27,6 +27,7 @@ try {
   } else {
     process.stdout.write("ThreeCore | read-only USDC pool reserve target\n");
     process.stdout.write("Base Mainnet observed block: " + result.observedBlockNumber + "\n");
+    process.stdout.write("Canonical block hash rechecked: " + result.observedBlockHash + "\n");
     process.stdout.write("Target: 5,000 USDC per Classic volatile pool (no funding authorized)\n\n");
     for (const [token, pool] of Object.entries(result.pools)) {
       if (pool.status === "UNVERIFIED") {

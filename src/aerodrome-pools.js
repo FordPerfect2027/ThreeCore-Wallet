@@ -81,9 +81,11 @@ export async function inspectAerodromePools({
   if (chain !== 8453n) fail("WRONG_CHAIN", "Expected Base Mainnet chain 8453");
   const block = toHexBlock(await rpc("eth_blockNumber", []));
   const blockTag = "0x" + block.toString(16);
+  const initialBlock = await rpc("eth_getBlockByNumber", [blockTag, false]);
+  const blockSelector = Object.freeze({ blockHash: initialBlock.hash, requireCanonical: true });
 
   async function call(to, data) {
-    return rpc("eth_call", [{ to, data }, blockTag]);
+    return rpc("eth_call", [{ to, data }, blockSelector]);
   }
 
   const results = {};
@@ -102,7 +104,7 @@ export async function inspectAerodromePools({
         continue;
       }
 
-      const code = await rpc("eth_getCode", [poolAddress, blockTag]);
+      const code = await rpc("eth_getCode", [poolAddress, blockSelector]);
       if (!/^0x(?:[0-9a-fA-F]{2})*$/.test(code)) {
         fail("INVALID_RPC_RESULT", "Malformed pool bytecode");
       }
@@ -134,9 +136,13 @@ export async function inspectAerodromePools({
     results[agent] = Object.freeze(poolTypes);
   }
 
+  const finalBlock = await rpc("eth_getBlockByNumber", [blockTag, false]);
+  if (finalBlock.hash !== initialBlock.hash) fail("BLOCK_CHANGED", "Canonical Base block changed during pool inspection");
   return Object.freeze({
     chainId: 8453,
     checkedBlockNumber: block.toString(),
+    checkedBlockHash: initialBlock.hash,
+    canonicalBlockRechecked: true,
     factoryAddress: AERODROME_BASE.poolFactory,
     quoteTokenAddress: BASE_NATIVE_USDC,
     pools: Object.freeze(results),

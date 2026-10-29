@@ -26,6 +26,7 @@ function reject(code, message) {
 }
 const MAX_UINT256 = (1n << 256n) - 1n;
 const ADDRESS = /^0x[0-9a-fA-F]{40}$/;
+const HASH = /^0x[0-9a-fA-F]{64}$/;
 const ZERO_ADDRESS = "0x" + "0".repeat(40);
 function decimal(value, maximum = MAX_UINT256) {
   return typeof value === "string" && value.length <= maximum.toString().length &&
@@ -66,6 +67,8 @@ export function assessLiquidityTargets(report) {
       report.walletConnected !== false ||
       !sameAddress(report.factoryAddress, AERODROME_BASE.poolFactory) ||
       !sameAddress(report.quoteTokenAddress, BASE_NATIVE_USDC) ||
+      typeof report.checkedBlockHash !== "string" || !HASH.test(report.checkedBlockHash) ||
+      report.canonicalBlockRechecked !== true ||
       !decimal(report.checkedBlockNumber)) {
     reject("INVALID_REPORT", "Expected a read-only Base Mainnet Classic factory observation");
   }
@@ -134,6 +137,8 @@ export function assessLiquidityTargets(report) {
   const remaining = verifiedGapTotal;
   return Object.freeze({
     observedBlockNumber: report.checkedBlockNumber,
+    observedBlockHash: report.checkedBlockHash.toLowerCase(),
+    canonicalBlockRechecked: true,
     chainId: 8453,
     targetUsdcPerPool: TARGET_USDC_PER_POOL.toString(),
     totalTargetUsdc: formatUsdcRaw(aggregateTarget),

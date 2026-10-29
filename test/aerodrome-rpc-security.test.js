@@ -6,6 +6,7 @@ import { STATE_RPC_RESPONSE_LIMIT } from "../src/state-rpc-http.js";
 import { RPC_SECURITY_LIMITS } from "../src/security-rpc.js";
 
 const tick = () => new Promise(resolve => setImmediate(resolve));
+const HASH = "0x" + "ab".repeat(32);
 const wallet = "0x" + "1".repeat(40), pool = "0x" + "a".repeat(40);
 const addressWord = "0x" + pool.slice(2).padStart(64, "0");
 const entries = [
@@ -23,6 +24,7 @@ for (const [name, inspect, ErrorType] of entries) {
       if (replacement !== undefined) return replacement;
       const result = request.method === "eth_chainId" ? "0x2105" :
         request.method === "eth_blockNumber" ? "0x1234" :
+        request.method === "eth_getBlockByNumber" ? { number: request.params[0], hash: HASH } :
         request.method === "eth_getCode" ? "0x6000" : "0x" + "0".repeat(64);
       return new Response(JSON.stringify({ jsonrpc: "2.0", id: request.id, result }));
     };
@@ -112,12 +114,12 @@ for (const [name, inspect, ErrorType] of entries) {
       assert.equal(r.options.credentials, "omit"); assert.equal(r.options.redirect, "error");
       assert.equal(r.options.cache, "no-store"); assert.equal(r.options.referrerPolicy, "no-referrer");
       assert.equal(r.options.signal.aborted, true);
-      if (["eth_call", "eth_getCode"].includes(r.method)) assert.equal(r.params[1], "0x1234");
+      if (["eth_call", "eth_getCode"].includes(r.method)) assert.deepEqual(r.params[1], { blockHash: HASH, requireCanonical: true });
     }
-    assert.equal(m.calls.length, name === "holdings" ? 14 : 8);
+    assert.equal(m.calls.length, name === "holdings" ? 16 : 10);
   });
   test(name + ": a failure on the last read discards earlier successful observations", async () => {
-    const finalId = name === "holdings" ? 14 : 8;
+    const finalId = name === "holdings" ? 16 : 10;
     const m = mock(r => r.id === finalId ? new Response(JSON.stringify({
       jsonrpc: "2.0", id: r.id, error: { code: -32000, message: "upstream unavailable" },
     })) : undefined);
@@ -126,5 +128,42 @@ for (const [name, inspect, ErrorType] of entries) {
       fails("INVALID_RPC_RESULT"));
     assert.equal(m.calls.length, finalId);
     assert.equal(report, undefined);
+  });
+  test(name + ": the report records its canonical hash and rechecks the same height after all state reads", async () => {
+    const m = mock();
+    const report = await inspect(m);
+    assert.equal(report.blockHash ?? report.checkedBlockHash, HASH);
+    assert.equal(report.canonicalBlockRechecked, true);
+    const headers = m.calls.filter(r => r.method === "eth_getBlockByNumber");
+    assert.equal(headers.length, 2);
+    assert.ok(headers.every(r => r.params[0] === "0x1234" && r.params[1] === false));
+    assert.equal(m.calls.at(-1), headers[1]);
+    assert.ok(m.calls.filter(r => ["eth_call", "eth_getCode"].includes(r.method))
+      .every(r => r.params[1].blockHash === HASH && r.params[1].requireCanonical === true));
+  });
+  test(name + ": a changed canonical hash discards the complete inspection", async () => {
+    let headers = 0;
+    const m = mock(r => {
+      if (r.method === "eth_getBlockByNumber") return Response.json({ jsonrpc: "2.0", id: r.id,
+        result: { number: r.params[0], hash: ++headers === 1 ? HASH : "0x" + "cd".repeat(32) } });
+    });
+    await assert.rejects(inspect(m), fails("BLOCK_CHANGED"));
+    assert.equal(headers, 2); assert.equal(m.calls.at(-1).method, "eth_getBlockByNumber");
+  });
+  test(name + ": unavailable, malformed or wrong-height headers stop before state reads", async () => {
+    for (const result of [null, { number: "0x1235", hash: HASH }, { number: "0x1234", hash: "0x12" },
+      { number: "0x01234", hash: HASH }, { number: 4660, hash: HASH }]) {
+      const m = mock(r => r.method === "eth_getBlockByNumber" ? Response.json({ jsonrpc: "2.0", id: r.id, result }) : undefined);
+      await assert.rejects(inspect(m), fails("INVALID_RPC_RESULT"));
+      assert.equal(m.calls.length, 3);
+    }
+  });
+  test(name + ": rejecting a canonical hash selector never retries latest or a block number", async () => {
+    const m = mock(r => ["eth_getCode", "eth_call"].includes(r.method) ? Response.json({
+      jsonrpc: "2.0", id: r.id, error: { code: -32602, message: "selector unsupported or block not canonical" },
+    }) : undefined);
+    await assert.rejects(inspect(m), fails("INVALID_RPC_RESULT"));
+    assert.equal(m.calls.length, 4);
+    assert.deepEqual(m.calls.at(-1).params[1], { blockHash: HASH, requireCanonical: true });
   });
 }

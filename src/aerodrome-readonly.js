@@ -95,6 +95,8 @@ export async function inspectAerodromeBase({
   }
   const block = decodeQuantity(await read("eth_blockNumber"));
   const blockTag = "0x" + BigInt(block).toString(16);
+  const initialBlock = await read("eth_getBlockByNumber", [blockTag, false]);
+  const blockSelector = Object.freeze({ blockHash: initialBlock.hash, requireCanonical: true });
 
   const contracts = Object.freeze({
     aerodromeRouter: AERODROME_BASE.router,
@@ -104,7 +106,7 @@ export async function inspectAerodromeBase({
   });
   const deployed = {};
   for (const [name, contractAddress] of Object.entries(contracts)) {
-    const bytecode = await read("eth_getCode", [contractAddress, blockTag]);
+    const bytecode = await read("eth_getCode", [contractAddress, blockSelector]);
     if (!/^0x(?:[0-9a-fA-F]{2})*$/.test(bytecode)) {
       fail("INVALID_RPC_RESULT", "Malformed contract code");
     }
@@ -118,12 +120,12 @@ export async function inspectAerodromeBase({
       const balanceHex = await read("eth_call", [{
         to: token,
         data: "0x70a08231" + encodeWord(wallet),
-      }, blockTag]);
+      }, blockSelector]);
       // allowance(owner,spender), Classic Router only. NO approve() call.
       const allowanceHex = await read("eth_call", [{
         to: token,
         data: "0xdd62ed3e" + encodeWord(wallet) + encodeWord(AERODROME_BASE.router),
-      }, blockTag]);
+      }, blockSelector]);
       account[agent] = Object.freeze({
         balanceBaseUnits: decodeUint256Word(balanceHex),
         classicRouterAllowanceBaseUnits: decodeUint256Word(allowanceHex),
@@ -131,9 +133,13 @@ export async function inspectAerodromeBase({
     }
   }
 
+  const finalBlock = await read("eth_getBlockByNumber", [blockTag, false]);
+  if (finalBlock.hash !== initialBlock.hash) fail("BLOCK_CHANGED", "Canonical Base block changed during inspection");
   return Object.freeze({
     chainId: AERODROME_BASE.chainId,
     blockNumber: block,
+    blockHash: initialBlock.hash,
+    canonicalBlockRechecked: true,
     rpcUrl: AERODROME_BASE.rpcUrl,
     contractAddresses: contracts,
     codePresent: Object.freeze(deployed),

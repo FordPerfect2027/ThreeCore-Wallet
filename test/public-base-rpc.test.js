@@ -51,3 +51,33 @@ test("only established read selectors are accepted with canonical ABI arguments"
   assert.equal(calls.length, 7);
   assert.ok(calls.every(c => c.params[1] === "0x0"));
 });
+
+test("canonical hash selectors require complete own data and cannot execute accessors", async () => {
+  let calls = 0, getterCalls = 0;
+  const read = createPublicBaseRpcReader({ rpcUrl, fetchImpl: async (_url, options) => {
+    calls++; const request = JSON.parse(options.body);
+    assert.deepEqual(request.params[1], { blockHash: "0x" + "ab".repeat(32), requireCanonical: true });
+    return Response.json({ jsonrpc: "2.0", id: request.id, result: "0x6000" });
+  } });
+  const hash = "0x" + "ab".repeat(32);
+  for (const selector of [{ blockHash: hash, requireCanonical: false },
+    { blockHash: hash }, { blockHash: "0x12", requireCanonical: true },
+    { blockHash: hash, requireCanonical: true, blockNumber: "0x1" },
+    { get blockHash() { getterCalls++; return hash; }, requireCanonical: true }])
+    await assert.rejects(read("eth_getCode", [address, selector]), rejects("INVALID_PARAMS"));
+  assert.equal(calls, 0); assert.equal(getterCalls, 0);
+  assert.equal(await read("eth_getCode", [address, { blockHash: hash, requireCanonical: true }]), "0x6000");
+  assert.equal(calls, 1);
+});
+test("header reads reject latest, full transaction requests and a mismatched returned height", async () => {
+  let calls = 0;
+  const read = createPublicBaseRpcReader({ rpcUrl, fetchImpl: async (_url, options) => {
+    calls++; const request = JSON.parse(options.body);
+    return Response.json({ jsonrpc: "2.0", id: request.id, result: { number: "0x2", hash: "0x" + "ab".repeat(32) } });
+  } });
+  for (const params of [["latest", false], ["0x1", true], ["0x01", false]])
+    await assert.rejects(read("eth_getBlockByNumber", params), rejects("INVALID_PARAMS"));
+  assert.equal(calls, 0);
+  await assert.rejects(read("eth_getBlockByNumber", ["0x1", false]), rejects("INVALID_RPC_RESPONSE"));
+  assert.equal(calls, 1);
+});

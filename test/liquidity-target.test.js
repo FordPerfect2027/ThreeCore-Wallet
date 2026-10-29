@@ -30,6 +30,8 @@ function snapshot(overrides = {}) {
     factoryAddress: AERODROME_BASE.poolFactory,
     quoteTokenAddress: BASE_NATIVE_USDC,
     checkedBlockNumber: "52852584",
+    checkedBlockHash: "0x" + "ab".repeat(32),
+    canonicalBlockRechecked: true,
     pools: {
       DAT: { volatile: pool(DAT) },
       EMA: { volatile: pool(EMA) },
@@ -232,4 +234,13 @@ test("a valid address without code remains unknown and never contributes a zero"
   assert.equal(result.pools.DAT.observedUsdc, null);
   assert.equal(result.aggregateObservedUsdc, null);
   assert.equal(result.aggregateReserveGapUsdc, null);
+});
+
+test("liquidity progress retains its canonical source hash and refuses unanchored input", () => {
+  for (const changes of [{ checkedBlockHash: undefined }, { checkedBlockHash: "0x12" },
+    { canonicalBlockRechecked: false }, { canonicalBlockRechecked: undefined }])
+    assert.throws(() => assessLiquidityTargets({ ...snapshot(), ...changes }), fail("INVALID_REPORT"));
+  const result = assessLiquidityTargets({ ...snapshot(), checkedBlockHash: "0x" + "AB".repeat(32) });
+  assert.equal(result.observedBlockHash, "0x" + "ab".repeat(32));
+  assert.equal(result.canonicalBlockRechecked, true);
 });

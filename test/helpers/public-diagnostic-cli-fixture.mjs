@@ -3,6 +3,7 @@ import { AERODROME_BASE, THREECORE_BASE_TOKENS } from "../../src/aerodrome-reado
 import { BASE_NATIVE_USDC } from "../../src/aerodrome-pools.js";
 const scenario = process.env.THREECORE_TEST_RPC_CASE;
 const pool = "0x" + "a".repeat(40);
+const HASH = "0x" + "ab".repeat(32);
 const word = value => BigInt(value).toString(16).padStart(64, "0");
 const address = value => "0x" + value.slice(2).padStart(64, "0");
 globalThis.fetch = async (url, options) => {
@@ -19,9 +20,10 @@ globalThis.fetch = async (url, options) => {
   let result;
   if (method === "eth_chainId") result = url.includes("sepolia") ? "0x14a34" : "0x2105";
   else if (method === "eth_blockNumber") result = "0x1234";
+  else if (method === "eth_getBlockByNumber") result = { number: params[0], hash: HASH };
   else if (method === "eth_getCode") result = "0x6000";
   else if (method === "eth_call") {
-    if (params[1] !== "0x1234") throw new Error("Unpinned read");
+    if (params[1]?.blockHash !== HASH || params[1]?.requireCanonical !== true) throw new Error("Unpinned read");
     const { to, data } = params[0];
     if (to === AERODROME_BASE.poolFactory) {
       const token = "0x" + data.slice(34, 74);
