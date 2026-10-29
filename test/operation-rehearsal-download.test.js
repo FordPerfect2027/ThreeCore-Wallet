@@ -51,6 +51,24 @@ async function setup(button) {
 }
 
 for(const [button,status] of FORMATS) {
+  for(const action of ["dispose","cancel"]) for(const result of [true,false]) {
+    test(button+" does not overwrite a newer view after "+action+" during delivery "+result,async t=>{
+      const f=await setup(button);t.after(()=>f.page.dispose());let afterChange,calls=0;
+      f.setDelivery(()=>{
+        calls++;
+        if(action==="dispose")f.page.dispose();
+        else if(button.startsWith("whatif-"))f.field("whatif-reset").click();
+        else if(button.startsWith("scenario-set-"))f.field("scenario-set-cancel").click();
+        else if(button.startsWith("session-"))f.field("session-cancel").click();
+        else if(button.startsWith("record-browser-"))f.field("record-browser-clear").click();
+        else if(button.startsWith("check-suite-"))f.field("check-suite-clear").click();
+        else if(button.startsWith("report-review-"))f.field("report-review-clear").click();
+        else f.field("cancel").click();
+        afterChange=f.field(status).textContent;return result;
+      });
+      f.field(button).click();assert.equal(calls,1);assert.equal(f.field(status).textContent,afterChange);
+    });
+  }
   for(const failure of ["false","throw","promise","rejection","thenable","throwing-getter","async-then-rejection"]) {
     test(button+" rejects "+failure+" without a success message or data loss",async t=>{
       const f=await setup(button);t.after(()=>f.page.dispose());const before=f.snapshot();let calls=0,reads=0;

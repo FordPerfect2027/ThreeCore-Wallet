@@ -36,6 +36,6 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";reset();try{run(text,"貼り付けた期待結果");}catch{fail();}});
   listen("text","input",()=>{if(!disposed)reset("貼り付けた期待結果を確認してください。");});
   listen("clear","click",()=>{if(disposed)return;reset();get("file").value="";get("text").value="";});
-  listen("save","click",()=>{if(disposed||!input||!report)return;try{offerDownload({document,prepared:{text:encodeRehearsalCheckReport(input),filename:"ThreeCore-expected-outcome-report.json",mimeType:"application/json"}});get("export-status").textContent="期待結果の確認資料を保存し始めました。";}catch{get("export-status").textContent="確認資料を保存できませんでした。確認結果は保持しています。";}});
+  listen("save","click",()=>{if(disposed||!input||!report)return;const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalCheckReport(input),filename:"ThreeCore-expected-outcome-report.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="期待結果の確認資料を保存し始めました。";}catch{if(disposed||own!==revision)return;get("export-status").textContent="確認資料を保存できませんでした。確認結果は保持しています。";}});
   reset();return Object.freeze({dispose(){if(disposed)return;reset("");disposed=true;get("file").value="";get("text").value="";for(const remove of listeners)remove();}});
 }

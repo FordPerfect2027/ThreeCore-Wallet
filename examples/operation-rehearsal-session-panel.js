@@ -21,9 +21,9 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
     get("apply").disabled=!comparison.changed;get("status").textContent="変更する履歴とケース集を確認してください。まだ現在の記録は変わっていません。";
   }
   function failed(){cancel("まとめた記録を確認できませんでした。2 MiB以内の保存ファイルを選んでください。現在の履歴とケース集は保持しています。");}
-  listen("save","click",()=>{if(disposed)return;try{const data=session.snapshot();if(!data.workspace.ledgers.length&&!data.cases.cases.length)return;
-    offerDownload({document,prepared:{text:encodeRehearsalSession(data),filename:"ThreeCore-rehearsal-session.json",mimeType:"application/json"}});get("export-status").textContent="3トークンの履歴と全比較ケースをまとめた保存を開始しました。";
-  }catch{get("export-status").textContent="まとめた記録を保存できませんでした。画面の履歴とケース集は保持しています。";}});
+  listen("save","click",()=>{if(disposed)return;const own=revision; try{const data=session.snapshot();if(!data.workspace.ledgers.length&&!data.cases.cases.length)return;
+    offerDownload({document,prepared:{text:encodeRehearsalSession(data),filename:"ThreeCore-rehearsal-session.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="3トークンの履歴と全比較ケースをまとめた保存を開始しました。";
+  }catch{if(disposed||own!==revision)return;get("export-status").textContent="まとめた記録を保存できませんでした。画面の履歴とケース集は保持しています。";}});
   listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file)return;cancel("まとめた記録を読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
     try{if(!Number.isSafeInteger(file.size)||file.size<1||file.size>REHEARSAL_SESSION_LIMIT)throw Error("Size");const buffer=await file.arrayBuffer();if(disposed||own!==revision)return;
       if(buffer.byteLength!==file.size||buffer.byteLength>REHEARSAL_SESSION_LIMIT)throw Error("Size changed");const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"まとめた記録";

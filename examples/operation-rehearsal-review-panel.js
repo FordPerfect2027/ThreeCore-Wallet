@@ -113,10 +113,10 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   listen("clear", "click", ()=>{if(!disposed) reset();});
   listen("save", "click", ()=>{
     if(disposed||!receipt) return;
-    try {
-      offerDownload({document,prepared:{text:encodeRehearsalReviewReceipt(receipt),filename:"ThreeCore-report-review-receipt.json",mimeType:"application/json"}});
+    const own=revision; try {
+      offerDownload({document,prepared:{text:encodeRehearsalReviewReceipt(receipt),filename:"ThreeCore-report-review-receipt.json",mimeType:"application/json"}});if(disposed||own!==revision)return;
       get("export-status").textContent="確認結果と照合値の控えを保存し始めました。元の資料はこの控えに含まれません。";
-    } catch { get("export-status").textContent="控えを保存できませんでした。確認結果は保持しています。"; }
+    } catch {if(disposed||own!==revision)return; get("export-status").textContent="控えを保存できませんでした。確認結果は保持しています。"; }
   });
   reset();
   return Object.freeze({dispose(){if(disposed)return;reset("");disposed=true;get("expected").value="";for(const remove of listeners)remove();}});

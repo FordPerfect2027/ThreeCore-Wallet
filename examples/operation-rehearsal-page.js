@@ -373,20 +373,20 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   listen("example", "click", () => { if (!disposed) show(rehearsalExampleV2(get("agent").value, get("scenario").value)); });
   listen("save", "click", () => {
     if (disposed || !current) return;
-    try {
+    const own=revision; try {
       const data = current;
       offerDownload({ document, prepared: { text: encodeRehearsal(data),
-        filename: "ThreeCore-" + data.agent + "-operation-rehearsal.json", mimeType: "application/json" } });
+        filename: "ThreeCore-" + data.agent + "-operation-rehearsal.json", mimeType: "application/json" } });if(disposed||own!==revision)return;
       get("status").textContent = "保存を開始しました。ファイルには仮の入力と記録が含まれます。";
-    } catch { get("status").textContent = "保存を開始できませんでした。もう一度お試しください。"; }
+    } catch {if(disposed||own!==revision)return; get("status").textContent = "保存を開始できませんでした。もう一度お試しください。"; }
   });
   listen("csv-save", "click", () => {
     if (disposed || !current) return;
-    try {
+    const own=revision; try {
       offerDownload({ document, prepared: { text: rehearsalCsv(current),
-        filename: "ThreeCore-" + current.agent + "-rehearsal-ledger.csv", mimeType: "text/csv" } });
+        filename: "ThreeCore-" + current.agent + "-rehearsal-ledger.csv", mimeType: "text/csv" } });if(disposed||own!==revision)return;
       get("status").textContent = "CSVの保存を開始しました。金額は最小単位です。表計算ソフトには文字列として読み込んでください。";
-    } catch { get("status").textContent = "CSVの保存を開始できませんでした。"; }
+    } catch {if(disposed||own!==revision)return; get("status").textContent = "CSVの保存を開始できませんでした。"; }
   });
   for (const name of ["append-reference", "append-amount", "append-fee", "append-exit-reserve"])
     listen(name, "input", cancelAppend);
@@ -457,11 +457,11 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   listen("workspace-save", "click", () => {
     if (disposed) return;
     const data = ledger.snapshot(); if (!data.ledgers.length) return;
-    try {
+    const own=revision; try {
       offerDownload({ document, prepared: { text: encodeRehearsalWorkspace(data),
-        filename: "ThreeCore-operation-workspace.json", mimeType: "application/json" } });
+        filename: "ThreeCore-operation-workspace.json", mimeType: "application/json" } });if(disposed||own!==revision)return;
       get("workspace-status").textContent = "3トークン分の保存を開始しました。作成済みの確定した試算履歴だけが含まれます。";
-    } catch { get("workspace-status").textContent = "一括保存を開始できませんでした。"; }
+    } catch {if(disposed||own!==revision)return; get("workspace-status").textContent = "一括保存を開始できませんでした。"; }
   });
   for (const name of ["overview-agent", "overview-kind"]) listen(name, "change", () => {
     if (!disposed) renderOverview();
@@ -469,11 +469,11 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   listen("overview-save", "click", () => {
     if (disposed) return;
     const data = ledger.snapshot(); if (!data.ledgers.length) return;
-    try {
+    const own=revision; try {
       offerDownload({ document, prepared: { text: encodeRehearsalOverview(data),
-        filename: "ThreeCore-workspace-overview.json", mimeType: "application/json" } });
+        filename: "ThreeCore-workspace-overview.json", mimeType: "application/json" } });if(disposed||own!==revision)return;
       get("overview-save-status").textContent = "全対象の確認一覧と元の入力記録の保存を開始しました。絞り込みに関係なく全件を含みます。復旧用ファイルは一括保存を使ってください。";
-    } catch { get("overview-save-status").textContent = "確認一覧を保存できませんでした。現在の履歴は保持しています。"; }
+    } catch {if(disposed||own!==revision)return; get("overview-save-status").textContent = "確認一覧を保存できませんでした。現在の履歴は保持しています。"; }
   });
   listen("workspace-file", "change", async () => {
     if (disposed) return;
@@ -494,11 +494,11 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   });
   listen("workspace-review-save", "click", () => {
     if (disposed || !workspaceReview || !workspaceComparison) return;
-    try {
+    const own=revision; try {
       offerDownload({ document, prepared: { text: encodeRehearsalComparison(workspaceComparison.inputs.before, workspaceComparison.inputs.after),
-        filename: "ThreeCore-workspace-comparison.json", mimeType: "application/json" } });
+        filename: "ThreeCore-workspace-comparison.json", mimeType: "application/json" } });if(disposed||own!==revision)return;
       get("workspace-review-status").textContent = "照合資料の保存を開始しました。復旧前と復旧後の入力記録を含みます。履歴にはまだ反映していません。";
-    } catch { get("workspace-review-status").textContent = "照合資料を保存できませんでした。復旧内容は確認待ちのままです。"; }
+    } catch {if(disposed||own!==revision)return; get("workspace-review-status").textContent = "照合資料を保存できませんでした。復旧内容は確認待ちのままです。"; }
   });
   listen("workspace-file", "cancel", () => {
     if (!disposed) get("workspace-file-note").textContent = "ファイルの選択を取り消しました。現在の履歴と確認待ちの内容は変更していません。";

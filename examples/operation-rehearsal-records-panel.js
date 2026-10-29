@@ -4,7 +4,7 @@ import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   const offerDownload = payload => requireSyncExport(download(payload));
-  const get=name=>document.getElementById("record-browser-"+name);let index=null,report=null,selected="",offset=0,disposed=false;const listeners=[];
+  const get=name=>document.getElementById("record-browser-"+name);let index=null,report=null,selected="",offset=0,disposed=false,revision=0;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
   function row(target,values){const tr=document.createElement("tr");for(const value of values){const td=document.createElement("td");td.textContent=value;tr.append(td);}get(target).append(tr);}
   const decision=item=>item.result.withinEnteredLimits?"仮の条件内":"見送り: "+item.result.reasons.map(code=>reasons[code]??code).join("・");
@@ -20,7 +20,7 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     get("related-status").textContent=item.reference?"同じ保存元・同じ"+(item.reference.kind==="operation"?"操作":"予約")+"ID「"+item.reference.id+"」を持つ他の記録 "+related.length+"件。対応付けはIDの一致で、実行の証明ではありません。":"この記録には操作ID・予約IDがありません。";
     for(const other of related)row("related",[other.recordNumber+"番目: "+other.event.id,kinds[other.event.kind],decision(other)]);
   }
-  function render(){
+  function render(){revision++;
     for(const name of["rows","select","detail","event","balances","related","related-status","export-status"])get(name).textContent="";
     get("save").disabled=true;get("prev").disabled=true;get("next").disabled=true;get("select").disabled=true;
     if(!index){get("status").textContent="履歴を作成または復旧すると、ここから記録を探せます。";get("scope").textContent="";return;}
@@ -42,8 +42,8 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   for(const [name,direction]of[["prev",-1],["next",1]])listen(name,"click",()=>{if(disposed||!report)return;offset+=direction*Number(get("size").value||"10");render();});
   listen("select","change",()=>{if(disposed)return;selected=get("select").value;detail();});
   listen("save","click",()=>{if(disposed||!index||!report||!index.inputs.ledgers.length)return;
-    try{offerDownload({document,prepared:{text:encodeRehearsalRecordReport(index.inputs,report.query),filename:"ThreeCore-record-query.json",mimeType:"application/json"}});get("export-status").textContent="検索条件・全一致記録・元入力の保存を開始しました。";}
-    catch{get("export-status").textContent="検索結果を保存できませんでした。現在の履歴は保持しています。";}
+    const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalRecordReport(index.inputs,report.query),filename:"ThreeCore-record-query.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="検索条件・全一致記録・元入力の保存を開始しました。";}
+    catch{if(disposed||own!==revision)return;get("export-status").textContent="検索結果を保存できませんでした。現在の履歴は保持しています。";}
   });
   render();return Object.freeze({refresh(input){if(disposed)return;index=input?indexRehearsalRecords(input):null;render();},dispose(){if(disposed)return;index=null;report=null;selected="";render();disposed=true;for(const remove of listeners)remove();}});
 }

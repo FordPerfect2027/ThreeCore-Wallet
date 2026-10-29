@@ -93,24 +93,24 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel();try{showReview(store.previewImport(decodeRehearsalScenarioSet(text)),"貼り付けたケース集");}catch{fail();}});
   for(const [name,reportOnly]of[["save",false],["report-save",true]])listen(name,"click",()=>{
     if(disposed||!store.state().current.cases.length)return;
-    try{offerDownload({document,prepared:{text:reportOnly?encodeRehearsalScenarioSetReport(store.state().current):encodeRehearsalScenarioSet(store.state().current),
-      filename:reportOnly?"ThreeCore-scenario-set-report.json":"ThreeCore-scenario-set.json",mimeType:"application/json"}});
+    const own=revision; try{offerDownload({document,prepared:{text:reportOnly?encodeRehearsalScenarioSetReport(store.state().current):encodeRehearsalScenarioSet(store.state().current),
+      filename:reportOnly?"ThreeCore-scenario-set-report.json":"ThreeCore-scenario-set.json",mimeType:"application/json"}});if(disposed||own!==revision)return;
       get("export-status").textContent=reportOnly?"全ケースを再計算した集計資料の保存を開始しました。":"全ケースの入力記録の保存を開始しました。";
-    }catch{get("export-status").textContent="ケース集を保存できませんでした。画面のケースは保持しています。";}
+    }catch{if(disposed||own!==revision)return;get("export-status").textContent="ケース集を保存できませんでした。画面のケースは保持しています。";}
   });
   listen("case-save","click",()=>{
     if(disposed)return;const item=store.state().current.cases.find(row=>row.id===selectedId);if(!item)return;
-    try{offerDownload({document,prepared:{text:encodeRehearsalScenario(item.before,item.after),filename:"ThreeCore-case-"+item.id+"-comparison.json",mimeType:"application/json"}});get("export-status").textContent="選択したケースの比較資料を保存し始めました。";}catch{get("export-status").textContent="比較資料を保存できませんでした。";}
+    const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalScenario(item.before,item.after),filename:"ThreeCore-case-"+item.id+"-comparison.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="選択したケースの比較資料を保存し始めました。";}catch{if(disposed||own!==revision)return;get("export-status").textContent="比較資料を保存できませんでした。";}
   });
   for(const [name,selectedOnly]of[["baseline-save",false],["case-baseline-save",true]])listen(name,"click",()=>{
     if(disposed)return;const current=store.state().current;
     const chosen=current.cases.find(row=>row.id===selectedId);
     if(!current.cases.length||(selectedOnly&&!chosen))return;
     const input=selectedOnly?{...current,cases:[chosen]}:current;
-    try{offerDownload({document,prepared:{text:encodeRehearsalCheckSuite(captureRehearsalCheckSuite(input)),
-      filename:selectedOnly?"ThreeCore-case-"+chosen.id+"-expected-outcomes.json":"ThreeCore-expected-outcomes.json",mimeType:"application/json"}});
+    const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalCheckSuite(captureRehearsalCheckSuite(input)),
+      filename:selectedOnly?"ThreeCore-case-"+chosen.id+"-expected-outcomes.json":"ThreeCore-expected-outcomes.json",mimeType:"application/json"}});if(disposed||own!==revision)return;
       get("export-status").textContent=(selectedOnly?"選択したケース "+chosen.id:"全ケース")+"の現在の計算結果を、今後の比較に使う期待結果として保存し始めました。";
-    }catch(error){get("export-status").textContent=error?.code==="FILE_TOO_LARGE"
+    }catch(error){if(disposed||own!==revision)return;get("export-status").textContent=error?.code==="FILE_TOO_LARGE"
       ?"期待結果が保存上限の1 MiBを超えました。ケースを削除せず、「選択したケースの期待結果を保存」で1件ずつ保存できます。画面のケースは保持しています。"
       :"期待結果の保存を開始できませんでした。もう一度保存してください。画面のケースは保持しています。";}
   });

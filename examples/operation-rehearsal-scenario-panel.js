@@ -16,7 +16,7 @@ const LABELS = SCENARIO_LABELS;
 export function mountRehearsalScenarioPanel(document, { download, reasons, kinds, onChange = () => {} }) {
   const offerDownload = payload => requireSyncExport(download(payload));
   const get = name => document.getElementById("whatif-" + name);
-  let source = null, comparison = null, disposed = false;
+  let source = null, comparison = null, disposed = false, revision = 0;
   const listeners = [];
   function listen(name, type, handler) {
     get(name).addEventListener(type, handler);
@@ -27,7 +27,7 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
     : field === "paused" ? (value ? "停止する想定" : "停止しない想定")
     : field === "buybackBps" ? formatRehearsalUnits(String(value), 2) + "%" : money(value);
   function invalidate(message = "比較条件が変わりました。もう一度比較してください。元の履歴は保持しています。") {
-    comparison = null;
+    revision++; comparison = null;
     for (const name of ["parameters", "metrics", "rows", "summary", "export-status", "row-status", "blockers"]) get(name).textContent = "";
     get("results").hidden = true; get("save").disabled = true; get("input-save").disabled = true;
     get("status").textContent = message;
@@ -113,14 +113,14 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
   });
   for (const [name, inputOnly] of [["save", false], ["input-save", true]]) listen(name, "click", () => {
     if (disposed || !comparison) return;
-    try {
+    const own=revision; try {
       const data = comparison;
       offerDownload({ document, prepared: { text: inputOnly ? encodeRehearsal(data.inputs.after)
         : encodeRehearsalScenario(data.inputs.before, data.inputs.after),
-      filename: "ThreeCore-" + source.agent + (inputOnly ? "-hypothetical-input.json" : "-scenario-comparison.json"), mimeType: "application/json" } });
+      filename: "ThreeCore-" + source.agent + (inputOnly ? "-hypothetical-input.json" : "-scenario-comparison.json"), mimeType: "application/json" } });if(disposed||own!==revision)return;
       get("export-status").textContent = inputOnly ? "比較条件の入力記録を別ファイルに保存し始めました。元の履歴には反映していません。"
         : "元の入力・比較条件の入力・全記録の結果を保存し始めました。表示の絞り込みに関係なく全件を含みます。";
-    } catch { get("export-status").textContent = "保存を開始できませんでした。比較結果と元の履歴は保持しています。"; }
+    } catch {if(disposed||own!==revision)return; get("export-status").textContent = "保存を開始できませんでした。比較結果と元の履歴は保持しています。"; }
   });
   refresh(null);
   return Object.freeze({ refresh, comparison: () => disposed ? null : comparison, dispose() {
