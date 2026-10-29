@@ -1,3 +1,4 @@
+import { requireSyncExport } from "../src/export-policy.js";
 import { createRehearsalScenarioSet, decodeRehearsalScenarioSet, encodeRehearsalScenarioSet,
   reportRehearsalScenarioSet, encodeRehearsalScenarioSetReport, REHEARSAL_SCENARIO_SET_LIMIT } from "../src/operation-rehearsal-scenario-set.js";
 import { encodeRehearsalScenario, compareRehearsalScenario } from "../src/operation-rehearsal-scenario.js";
@@ -6,6 +7,7 @@ import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "../src/operation-rehearsal-check-suite.js";
 
 export function mountRehearsalScenarioSetPanel(document, { download, getComparison, store=createRehearsalScenarioSet() }) {
+  const offerDownload = payload => requireSyncExport(download(payload));
   const get=name=>document.getElementById("scenario-set-"+name);
   let disposed=false, revision=0, pending=null, report=reportRehearsalScenarioSet(store.state().current), selectedId="";
   const listeners=[];
@@ -91,21 +93,21 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel();try{showReview(store.previewImport(decodeRehearsalScenarioSet(text)),"貼り付けたケース集");}catch{fail();}});
   for(const [name,reportOnly]of[["save",false],["report-save",true]])listen(name,"click",()=>{
     if(disposed||!store.state().current.cases.length)return;
-    try{download({document,prepared:{text:reportOnly?encodeRehearsalScenarioSetReport(store.state().current):encodeRehearsalScenarioSet(store.state().current),
+    try{offerDownload({document,prepared:{text:reportOnly?encodeRehearsalScenarioSetReport(store.state().current):encodeRehearsalScenarioSet(store.state().current),
       filename:reportOnly?"ThreeCore-scenario-set-report.json":"ThreeCore-scenario-set.json",mimeType:"application/json"}});
       get("export-status").textContent=reportOnly?"全ケースを再計算した集計資料の保存を開始しました。":"全ケースの入力記録の保存を開始しました。";
     }catch{get("export-status").textContent="ケース集を保存できませんでした。画面のケースは保持しています。";}
   });
   listen("case-save","click",()=>{
     if(disposed)return;const item=store.state().current.cases.find(row=>row.id===selectedId);if(!item)return;
-    try{download({document,prepared:{text:encodeRehearsalScenario(item.before,item.after),filename:"ThreeCore-case-"+item.id+"-comparison.json",mimeType:"application/json"}});get("export-status").textContent="選択したケースの比較資料を保存し始めました。";}catch{get("export-status").textContent="比較資料を保存できませんでした。";}
+    try{offerDownload({document,prepared:{text:encodeRehearsalScenario(item.before,item.after),filename:"ThreeCore-case-"+item.id+"-comparison.json",mimeType:"application/json"}});get("export-status").textContent="選択したケースの比較資料を保存し始めました。";}catch{get("export-status").textContent="比較資料を保存できませんでした。";}
   });
   for(const [name,selectedOnly]of[["baseline-save",false],["case-baseline-save",true]])listen(name,"click",()=>{
     if(disposed)return;const current=store.state().current;
     const chosen=current.cases.find(row=>row.id===selectedId);
     if(!current.cases.length||(selectedOnly&&!chosen))return;
     const input=selectedOnly?{...current,cases:[chosen]}:current;
-    try{download({document,prepared:{text:encodeRehearsalCheckSuite(captureRehearsalCheckSuite(input)),
+    try{offerDownload({document,prepared:{text:encodeRehearsalCheckSuite(captureRehearsalCheckSuite(input)),
       filename:selectedOnly?"ThreeCore-case-"+chosen.id+"-expected-outcomes.json":"ThreeCore-expected-outcomes.json",mimeType:"application/json"}});
       get("export-status").textContent=(selectedOnly?"選択したケース "+chosen.id:"全ケース")+"の現在の計算結果を、今後の比較に使う期待結果として保存し始めました。";
     }catch(error){get("export-status").textContent=error?.code==="FILE_TOO_LARGE"

@@ -1,3 +1,4 @@
+import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsal, encodeRehearsal, evaluateRehearsal, parseRehearsalUnits,
   formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
@@ -41,6 +42,7 @@ const REVIEW_ACTIONS = Object.freeze({ absent: "未作成のまま", added: "復
   unchanged: "内容は同じ", replaced: "置き換える" });
 
 export function mountOperationRehearsal(document, download = offerWalletDownload) {
+  const offerDownload = payload => requireSyncExport(download(payload));
   const get = name => document.getElementById(name);
   let current = null, candidate = null, revision = 0, disposed = false;
   const session = createRehearsalSession(get("agent").value), ledger = session.workspace;
@@ -373,7 +375,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     if (disposed || !current) return;
     try {
       const data = current;
-      download({ document, prepared: { text: encodeRehearsal(data),
+      offerDownload({ document, prepared: { text: encodeRehearsal(data),
         filename: "ThreeCore-" + data.agent + "-operation-rehearsal.json", mimeType: "application/json" } });
       get("status").textContent = "保存を開始しました。ファイルには仮の入力と記録が含まれます。";
     } catch { get("status").textContent = "保存を開始できませんでした。もう一度お試しください。"; }
@@ -381,7 +383,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   listen("csv-save", "click", () => {
     if (disposed || !current) return;
     try {
-      download({ document, prepared: { text: rehearsalCsv(current),
+      offerDownload({ document, prepared: { text: rehearsalCsv(current),
         filename: "ThreeCore-" + current.agent + "-rehearsal-ledger.csv", mimeType: "text/csv" } });
       get("status").textContent = "CSVの保存を開始しました。金額は最小単位です。表計算ソフトには文字列として読み込んでください。";
     } catch { get("status").textContent = "CSVの保存を開始できませんでした。"; }
@@ -456,7 +458,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     if (disposed) return;
     const data = ledger.snapshot(); if (!data.ledgers.length) return;
     try {
-      download({ document, prepared: { text: encodeRehearsalWorkspace(data),
+      offerDownload({ document, prepared: { text: encodeRehearsalWorkspace(data),
         filename: "ThreeCore-operation-workspace.json", mimeType: "application/json" } });
       get("workspace-status").textContent = "3トークン分の保存を開始しました。作成済みの確定した試算履歴だけが含まれます。";
     } catch { get("workspace-status").textContent = "一括保存を開始できませんでした。"; }
@@ -468,7 +470,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     if (disposed) return;
     const data = ledger.snapshot(); if (!data.ledgers.length) return;
     try {
-      download({ document, prepared: { text: encodeRehearsalOverview(data),
+      offerDownload({ document, prepared: { text: encodeRehearsalOverview(data),
         filename: "ThreeCore-workspace-overview.json", mimeType: "application/json" } });
       get("overview-save-status").textContent = "全対象の確認一覧と元の入力記録の保存を開始しました。絞り込みに関係なく全件を含みます。復旧用ファイルは一括保存を使ってください。";
     } catch { get("overview-save-status").textContent = "確認一覧を保存できませんでした。現在の履歴は保持しています。"; }
@@ -493,7 +495,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   listen("workspace-review-save", "click", () => {
     if (disposed || !workspaceReview || !workspaceComparison) return;
     try {
-      download({ document, prepared: { text: encodeRehearsalComparison(workspaceComparison.inputs.before, workspaceComparison.inputs.after),
+      offerDownload({ document, prepared: { text: encodeRehearsalComparison(workspaceComparison.inputs.before, workspaceComparison.inputs.after),
         filename: "ThreeCore-workspace-comparison.json", mimeType: "application/json" } });
       get("workspace-review-status").textContent = "照合資料の保存を開始しました。復旧前と復旧後の入力記録を含みます。履歴にはまだ反映していません。";
     } catch { get("workspace-review-status").textContent = "照合資料を保存できませんでした。復旧内容は確認待ちのままです。"; }

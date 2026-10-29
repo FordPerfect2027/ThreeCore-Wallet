@@ -1,7 +1,9 @@
+import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsalCheckSuite, runRehearsalCheckSuite, encodeRehearsalCheckReport, REHEARSAL_CHECK_SUITE_LIMIT } from "../src/operation-rehearsal-check-suite.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 export function mountRehearsalCheckPanel(document,{download,reasons={}}){
+  const offerDownload = payload => requireSyncExport(download(payload));
   const get=name=>document.getElementById("check-suite-"+name);let disposed=false,revision=0,input=null,report=null;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
   function reset(message="期待結果を記録したケース集を選んでください。現在の履歴やケース集は変更しません。"){
@@ -34,6 +36,6 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";reset();try{run(text,"貼り付けた期待結果");}catch{fail();}});
   listen("text","input",()=>{if(!disposed)reset("貼り付けた期待結果を確認してください。");});
   listen("clear","click",()=>{if(disposed)return;reset();get("file").value="";get("text").value="";});
-  listen("save","click",()=>{if(disposed||!input||!report)return;try{download({document,prepared:{text:encodeRehearsalCheckReport(input),filename:"ThreeCore-expected-outcome-report.json",mimeType:"application/json"}});get("export-status").textContent="期待結果の確認資料を保存し始めました。";}catch{get("export-status").textContent="確認資料を保存できませんでした。確認結果は保持しています。";}});
+  listen("save","click",()=>{if(disposed||!input||!report)return;try{offerDownload({document,prepared:{text:encodeRehearsalCheckReport(input),filename:"ThreeCore-expected-outcome-report.json",mimeType:"application/json"}});get("export-status").textContent="期待結果の確認資料を保存し始めました。";}catch{get("export-status").textContent="確認資料を保存できませんでした。確認結果は保持しています。";}});
   reset();return Object.freeze({dispose(){if(disposed)return;reset("");disposed=true;get("file").value="";get("text").value="";for(const remove of listeners)remove();}});
 }

@@ -1,7 +1,9 @@
+import { requireSyncExport } from "../src/export-policy.js";
 import { indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
+  const offerDownload = payload => requireSyncExport(download(payload));
   const get=name=>document.getElementById("record-browser-"+name);let index=null,report=null,selected="",offset=0,disposed=false;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
   function row(target,values){const tr=document.createElement("tr");for(const value of values){const td=document.createElement("td");td.textContent=value;tr.append(td);}get(target).append(tr);}
@@ -40,7 +42,7 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   for(const [name,direction]of[["prev",-1],["next",1]])listen(name,"click",()=>{if(disposed||!report)return;offset+=direction*Number(get("size").value||"10");render();});
   listen("select","change",()=>{if(disposed)return;selected=get("select").value;detail();});
   listen("save","click",()=>{if(disposed||!index||!report||!index.inputs.ledgers.length)return;
-    try{download({document,prepared:{text:encodeRehearsalRecordReport(index.inputs,report.query),filename:"ThreeCore-record-query.json",mimeType:"application/json"}});get("export-status").textContent="検索条件・全一致記録・元入力の保存を開始しました。";}
+    try{offerDownload({document,prepared:{text:encodeRehearsalRecordReport(index.inputs,report.query),filename:"ThreeCore-record-query.json",mimeType:"application/json"}});get("export-status").textContent="検索条件・全一致記録・元入力の保存を開始しました。";}
     catch{get("export-status").textContent="検索結果を保存できませんでした。現在の履歴は保持しています。";}
   });
   render();return Object.freeze({refresh(input){if(disposed)return;index=input?indexRehearsalRecords(input):null;render();},dispose(){if(disposed)return;index=null;report=null;selected="";render();disposed=true;for(const remove of listeners)remove();}});

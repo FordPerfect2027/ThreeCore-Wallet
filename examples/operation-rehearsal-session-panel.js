@@ -1,5 +1,7 @@
+import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsalSession,encodeRehearsalSession,REHEARSAL_SESSION_LIMIT } from "../src/operation-rehearsal-session.js";
 export function mountRehearsalSessionPanel(document,{session,download,onRestored,renderWorkspaceComparison}){
+  const offerDownload = payload => requireSyncExport(download(payload));
   const get=name=>document.getElementById("session-"+name);let pending=null,revision=0,disposed=false,source="";const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
   function reset(message){revision++;pending=null;source="";for(const name of["source","summary","cases","workspace-details","export-status"])get(name).textContent="";
@@ -20,7 +22,7 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   }
   function failed(){cancel("まとめた記録を確認できませんでした。2 MiB以内の保存ファイルを選んでください。現在の履歴とケース集は保持しています。");}
   listen("save","click",()=>{if(disposed)return;try{const data=session.snapshot();if(!data.workspace.ledgers.length&&!data.cases.cases.length)return;
-    download({document,prepared:{text:encodeRehearsalSession(data),filename:"ThreeCore-rehearsal-session.json",mimeType:"application/json"}});get("export-status").textContent="3トークンの履歴と全比較ケースをまとめた保存を開始しました。";
+    offerDownload({document,prepared:{text:encodeRehearsalSession(data),filename:"ThreeCore-rehearsal-session.json",mimeType:"application/json"}});get("export-status").textContent="3トークンの履歴と全比較ケースをまとめた保存を開始しました。";
   }catch{get("export-status").textContent="まとめた記録を保存できませんでした。画面の履歴とケース集は保持しています。";}});
   listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file)return;cancel("まとめた記録を読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
     try{if(!Number.isSafeInteger(file.size)||file.size<1||file.size>REHEARSAL_SESSION_LIMIT)throw Error("Size");const buffer=await file.arrayBuffer();if(disposed||own!==revision)return;

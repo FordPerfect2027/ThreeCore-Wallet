@@ -1,3 +1,4 @@
+import { requireSyncExport } from "../src/export-policy.js";
 import { reviewRehearsalReport, encodeRehearsalReviewReceipt, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
 import { REHEARSAL_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
@@ -25,6 +26,7 @@ function outcomeText(outcome) {
 }
 
 export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle }) {
+  const offerDownload = payload => requireSyncExport(download(payload));
   const get = name => document.getElementById("report-review-" + name);
   let revision = 0, disposed = false, sourceText = null, receipt = null;
   const listeners = [];
@@ -112,7 +114,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   listen("save", "click", ()=>{
     if(disposed||!receipt) return;
     try {
-      download({document,prepared:{text:encodeRehearsalReviewReceipt(receipt),filename:"ThreeCore-report-review-receipt.json",mimeType:"application/json"}});
+      offerDownload({document,prepared:{text:encodeRehearsalReviewReceipt(receipt),filename:"ThreeCore-report-review-receipt.json",mimeType:"application/json"}});
       get("export-status").textContent="確認結果と照合値の控えを保存し始めました。元の資料はこの控えに含まれません。";
     } catch { get("export-status").textContent="控えを保存できませんでした。確認結果は保持しています。"; }
   });

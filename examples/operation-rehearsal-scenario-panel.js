@@ -1,3 +1,4 @@
+import { requireSyncExport } from "../src/export-policy.js";
 import { buildRehearsalScenario, compareRehearsalScenario, encodeRehearsalScenario,
   rehearsalScenarioParameters, REHEARSAL_SCENARIO_FIELDS } from "../src/operation-rehearsal-scenario.js";
 import { validateRehearsal, encodeRehearsal, formatRehearsalUnits, parseRehearsalUnits, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
@@ -13,6 +14,7 @@ const LABELS = SCENARIO_LABELS;
 
 /** Owns only a hypothetical comparison draft. Never commits to the workspace. */
 export function mountRehearsalScenarioPanel(document, { download, reasons, kinds, onChange = () => {} }) {
+  const offerDownload = payload => requireSyncExport(download(payload));
   const get = name => document.getElementById("whatif-" + name);
   let source = null, comparison = null, disposed = false;
   const listeners = [];
@@ -113,7 +115,7 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
     if (disposed || !comparison) return;
     try {
       const data = comparison;
-      download({ document, prepared: { text: inputOnly ? encodeRehearsal(data.inputs.after)
+      offerDownload({ document, prepared: { text: inputOnly ? encodeRehearsal(data.inputs.after)
         : encodeRehearsalScenario(data.inputs.before, data.inputs.after),
       filename: "ThreeCore-" + source.agent + (inputOnly ? "-hypothetical-input.json" : "-scenario-comparison.json"), mimeType: "application/json" } });
       get("export-status").textContent = inputOnly ? "比較条件の入力記録を別ファイルに保存し始めました。元の履歴には反映していません。"
