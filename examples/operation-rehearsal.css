@@ -1,0 +1,20 @@
+:root{color-scheme:dark;font-family:system-ui,"Noto Sans JP",sans-serif;background:#101725;color:#eaf0f7}
+*{box-sizing:border-box}body{margin:0}main{max-width:1260px;margin:auto;padding:32px 24px 48px}
+a{color:#89dfd0}h1{font-size:36px;margin:8px 0}h2{font-size:20px;margin-top:0}p{line-height:1.8}
+.eyebrow{letter-spacing:.16em;color:#9eafc4;font-size:12px}.notice{padding:16px 20px;background:#253346;border-left:4px solid #7ee0cb;border-radius:8px}
+section{background:#182333;border:1px solid #33435c;border-radius:14px;padding:24px;margin:20px 0}
+.toolbar,.actions{display:flex;gap:14px;flex-wrap:wrap;align-items:end}.toolbar label{min-width:170px}
+.layout{display:grid;grid-template-columns:minmax(300px,1fr) minmax(420px,1.4fr);gap:20px}.layout section{margin-top:0}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0 22px}
+label{display:flex;flex-direction:column;gap:7px;font-size:13px;color:#bdcde0}
+input,select,button{font:inherit;border-radius:7px;padding:11px 12px;border:1px solid #52647f}
+input,select{background:#0e1828;color:#eef5fc;min-width:0;width:100%}
+button{background:#164e4a;color:#e8fffa;cursor:pointer;font-weight:650}
+button:hover{background:#21625c}button:disabled{opacity:.45;cursor:default}.check{flex-direction:row;align-items:center;margin-bottom:24px}
+.check input{width:auto}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{padding:16px;background:#0e192a;border-radius:10px}
+.metric span{display:block;color:#9eb2cc;font-size:12px}.metric strong{display:block;font-size:24px;overflow-wrap:anywhere;margin-top:6px}
+#status{color:#a0efdc}#allocation-note{padding:12px;background:#243247;border-radius:8px}.small,footer{font-size:12px;color:#a8b9cd;overflow-wrap:anywhere}
+.table-wrap{overflow:auto;margin:20px 0}table{border-collapse:collapse;width:100%;font-size:12px}th,td{text-align:left;padding:10px;border-bottom:1px solid #34455e}
+caption{text-align:left;margin-bottom:12px;font-weight:bold}.blocked{color:#ffd08d}.passed{color:#a0efdc}td{overflow-wrap:anywhere}
+:focus-visible{outline:3px solid #ffd369;outline-offset:3px}.file-label{max-width:350px}footer{line-height:1.8;margin-top:24px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:20px 14px}.fields{gap:12px}section{padding:18px}h1{font-size:30px}}

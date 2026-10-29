@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 29, 2026 local development:** [Offline operation rehearsal](docs/OPERATION_REHEARSAL_2026-10-29.md) adds a Japanese screen for hypothetical per-agent limits, exact single-asset P&L, and conditional own-token allocation estimates. Open `/rehearsal/` on the local demo. Chrome save/reload/import was verified with fictional SIM records. This feature does not execute, authorize, or verify real transactions; it is not a mainnet-readiness percentage.
+
 **October 26, 2026 source publication:** [Backup, file import and history confirmation update](docs/WALLET_SECURITY_UPDATE_2026-10-26_EN.md). Includes four previously local development iterations: stopped backup preparation, revoked library reviews, cleared file-import state and single-use history confirmation. Real-wallet acceptance remains pending.
 
 **October 25, 2026 source publication:** [Security, cancellation and recovery update](docs/WALLET_SECURITY_UPDATE_2026-10-25_EN.md). Publishes 15 accumulated development commits. Final local validation: 12,559 tests passed, zero failures; real-wallet acceptance remains pending.
