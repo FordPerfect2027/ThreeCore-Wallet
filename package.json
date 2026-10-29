@@ -12,6 +12,7 @@
     "test": "node --test test/*.test.js",
     "check": "npm test",
     "rehearsal:check": "node scripts/check-rehearsal.js",
+    "rehearsal:compare": "node scripts/compare-rehearsal-workspaces.js",
     "demo": "node examples/dev-server.js",
     "test:demo-server": "node --test integration/demo-server.test.mjs",
     "test:browser-ui": "node scripts/test-browser-ui.js",

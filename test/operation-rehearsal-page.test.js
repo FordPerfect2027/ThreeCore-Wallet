@@ -6,6 +6,7 @@ import { encodeRehearsalWorkspace, decodeRehearsalWorkspace, REHEARSAL_WORKSPACE
   REHEARSAL_WORKSPACE_LIMIT } from "../src/operation-rehearsal-workspace.js";
 import { encodeRehearsal, decodeRehearsal, evaluateRehearsal, REHEARSAL_LIMIT } from "../src/operation-rehearsal.js";
 import { Element } from "./helpers/panel-dom.js";
+import { encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 
 const tick = () => new Promise(resolve => setImmediate(resolve));
 class Node extends Element {
@@ -47,6 +48,53 @@ const savedWorkspace = f => { f.field("workspace-save").click(); return decodeRe
 const workspaceText = (ledgers, activeAgent = "DAT") => encodeRehearsalWorkspace({
   schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent, ledgers });
 const pasteWorkspace = (f, text) => { f.change("workspace-text", text); f.field("workspace-text-review").click(); };
+const renderedText = node => [node.textContent, ...node.children.map(renderedText)].join(" ");
+
+test("review exposes changed identities, assets, destinations, policy and event contents without applying", () => {
+  const f=setup(); f.field("example").click();
+  const changed=JSON.parse(encodeRehearsal(rehearsalExampleV2()));
+  changed.chainId=8453; changed.account="0x"+"9".repeat(40); changed.asset.address="0x"+"8".repeat(40);
+  changed.policy.origin="https://other.example"; changed.policy.spender="0x"+"7".repeat(40); changed.policy.maxPerOperation="90000000";
+  changed.events[1].grossReturn="120000000";
+  pasteWorkspace(f,workspaceText([changed]));
+  const text=renderedText(f.field("workspace-details"));
+  for (const value of ["8453",changed.account,changed.asset.address,changed.policy.origin,changed.policy.spender,"90 SIM","同じIDの内容変更 1件","条件外の記録 2件","変わる項目","合算・差し引きしていません"])
+    assert.ok(text.includes(value),value);
+  assert.equal(f.field("metrics").children[0].children[1].textContent,"1028 SIM");
+  assert.equal(f.field("workspace-review-save").disabled,false);
+});
+test("comparison download is reproducible and never applies a pending review", () => {
+  const f=setup(); f.field("example").click(); const before=savedWorkspace(f);
+  const after=JSON.parse(workspaceText([rehearsalExampleV2("EMA","loss")],"EMA"));
+  pasteWorkspace(f,JSON.stringify(after)); f.field("workspace-review-save").click();
+  const file=f.downloads.at(-1); assert.equal(file.filename,"ThreeCore-workspace-comparison.json");
+  assert.equal(file.text,encodeRehearsalComparison(before,after));
+  assert.equal(f.field("agent").value,"DAT"); assert.equal(f.field("workspace-apply").disabled,false);
+  assert.match(f.field("workspace-review-status").textContent,/まだ反映していません/);
+});
+for (const action of ["cancel","switch","edit","apply","invalid","dispose"]) test(action+" revokes comparison detail and its export",()=>{
+  const f=setup(); f.field("example").click(); pasteWorkspace(f,workspaceText([rehearsalExampleV2()]));
+  if(action==="cancel") f.field("workspace-cancel").click();
+  if(action==="switch") selectAgent(f,"EMA");
+  if(action==="edit") f.change("append-reference","changed");
+  if(action==="apply") f.field("workspace-apply").click();
+  if(action==="invalid") pasteWorkspace(f,"{");
+  if(action==="dispose") f.page.dispose();
+  assert.equal(f.field("workspace-details").children.length,0); assert.equal(f.field("workspace-review-save").disabled,true);
+  const count=f.downloads.length; f.field("workspace-review-save").click(); assert.equal(f.downloads.length,count);
+});
+test("unchanged data is labeled separately from replacement and selection-only changes",()=>{
+  const f=setup(); f.field("example").click();
+  pasteWorkspace(f,workspaceText([rehearsalExampleV2()],"EMA"));
+  assert.equal(f.field("workspace-changes").children[0].children[3].textContent,"内容は同じ");
+  assert.match(renderedText(f.field("workspace-details")),/DAT → EMA/);
+});
+test("old-version missing fee caps remain explicit, with no assumed values in the comparison",()=>{
+  const f=setup(); pasteWorkspace(f,workspaceText([rehearsalExample()])); f.field("workspace-apply").click();
+  pasteWorkspace(f,workspaceText([rehearsalExampleV2()]));
+  const text=renderedText(f.field("workspace-details")); assert.match(text,/この形式には項目なし/);
+  assert.match(text,/3 SIM/); assert.match(text,/記録の形式/);
+});
 
 test("a selected filename and next action survive native input clearing without hiding applied results", async () => {
   const f = setup(); f.field("example").click(); prepareAppend(f, "reserve"); f.field("append-confirm").click();

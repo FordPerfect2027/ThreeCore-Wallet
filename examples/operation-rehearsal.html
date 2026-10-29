@@ -35,6 +35,9 @@
     <p id="workspace-file-note" class="small" role="status" aria-live="polite"></p>
     <p id="workspace-status" role="status" aria-live="polite">自動保存は行いません。一括ファイルは暗号化されていない仮の記録です。</p>
     <div id="workspace-comparison" class="table-wrap" hidden><table><caption>復旧する前と後の履歴</caption><thead><tr><th scope="col">対象</th><th scope="col">現在</th><th scope="col">復旧後</th><th scope="col">変更内容</th></tr></thead><tbody id="workspace-changes"></tbody></table></div>
+    <div id="workspace-details"></div>
+    <button id="workspace-review-save" type="button" disabled>復旧前の照合資料を保存</button>
+    <p id="workspace-review-status" class="small" role="status" aria-live="polite"></p>
     <p id="workspace-preview" role="status" aria-live="polite"></p>
     <div class="actions"><button id="workspace-apply" type="button" aria-describedby="workspace-stage workspace-preview" disabled>確認した3トークンの履歴を復旧</button>
       <button id="workspace-cancel" type="button">一括読込を取り消す</button></div>

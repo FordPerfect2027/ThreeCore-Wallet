@@ -25,7 +25,7 @@ export function parseRehearsalCheckArgs(args) {
   if (!file) fail("CLI_ARGUMENTS");
   return { file, expectedHash, json, workspace };
 }
-export async function inspectRehearsalFile(file, expectedHash = null, workspace = false) {
+export async function readRehearsalInputFile(file, expectedHash = null, workspace = false) {
   if (typeof workspace !== "boolean" || typeof file !== "string" || !file || (expectedHash !== null &&
       (typeof expectedHash !== "string" || !/^[0-9a-f]{64}$/.test(expectedHash)))) fail("CLI_ARGUMENTS");
   const limit = workspace ? REHEARSAL_WORKSPACE_LIMIT : REHEARSAL_LIMIT;
@@ -48,9 +48,15 @@ export async function inspectRehearsalFile(file, expectedHash = null, workspace 
   if (expectedHash !== null && sha256 !== expectedHash) fail("CHECKSUM_MISMATCH");
   let text;
   try { text = new TextDecoder("utf-8", { fatal: true }).decode(bytes); } catch { fail("INVALID_UTF8"); }
-  const report = workspace ? reportRehearsalWorkspace(decodeRehearsalWorkspace(text)) : evaluateRehearsal(decodeRehearsal(text));
-  return { schema: workspace ? "threecore.offline-rehearsal-workspace-check.v1" : "threecore.offline-rehearsal-check.v1", sha256, byteLength: bytes.length,
-    expectedChecksumMatched: expectedHash === null ? null : true, authenticated: false,
+  return { sha256, byteLength: bytes.length, expectedChecksumMatched: expectedHash === null ? null : true,
+    data: workspace ? decodeRehearsalWorkspace(text) : decodeRehearsal(text) };
+}
+export async function inspectRehearsalFile(file, expectedHash = null, workspace = false) {
+  const input = await readRehearsalInputFile(file, expectedHash, workspace);
+  const report = workspace ? reportRehearsalWorkspace(input.data) : evaluateRehearsal(input.data);
+  return { schema: workspace ? "threecore.offline-rehearsal-workspace-check.v1" : "threecore.offline-rehearsal-check.v1",
+    sha256: input.sha256, byteLength: input.byteLength,
+    expectedChecksumMatched: input.expectedChecksumMatched, authenticated: false,
     simulationOnly: true, sourceVerified: false, authorizesExecution: false,
     constraintsSatisfied: workspace ? report.constraintsSatisfied : report.rows.every(row => row.withinEnteredLimits) && report.allocationShortfall === "0",
     rejectedRecords: workspace ? report.rows.filter(row => row.present).flatMap(row =>

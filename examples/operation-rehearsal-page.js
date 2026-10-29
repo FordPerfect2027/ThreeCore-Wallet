@@ -5,6 +5,7 @@ import { rehearsalCsv } from "../src/operation-rehearsal-ledger.js";
 import { createRehearsalWorkspace, decodeRehearsalWorkspace, encodeRehearsalWorkspace,
   reportRehearsalWorkspace, REHEARSAL_WORKSPACE_LIMIT } from "../src/operation-rehearsal-workspace.js";
 import { offerWalletDownload } from "./export-download.js";
+import { compareRehearsalWorkspaces, encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 
 const REASONS = Object.freeze({
   PAUSED: "新規利用の停止中", REUSED_OPERATION: "同じ操作の再利用", UNLISTED_ORIGIN: "対象外のサイト",
@@ -23,12 +24,19 @@ const REASONS = Object.freeze({
 const KINDS = { open: "投入", settle: "決済", deposit: "追加資金", withdraw: "資金引出し", reserve: "還元予約", release: "予約取消" };
 const FIELD_POLICY = { maximum: "maxPerOperation", "outstanding-limit": "maxOutstanding",
   reserve: "reserveFloor", "loss-limit": "lossLimit" };
+const REVIEW_FIELDS = Object.freeze({ chainId: "ネットワーク番号", account: "記録上の口座", assetAddress: "資産の契約アドレス",
+  symbol: "資産名", decimals: "小数桁数", origin: "記録上のサイト", spender: "記録上の利用先契約", schema: "記録の形式",
+  openingBalance: "開始時の資金", maxPerOperation: "1回の元本上限", maxOutstanding: "未決済元本の上限",
+  reserveFloor: "予備資金", lossLimit: "損失上限", buybackBps: "仮の還元割合", paused: "新しい利用の停止",
+  maxEntryFee: "開始費用の上限", maxExitFee: "決済費用の上限" });
+const REVIEW_ACTIONS = Object.freeze({ absent: "未作成のまま", added: "復旧する", removed: "履歴を消去する",
+  unchanged: "内容は同じ", replaced: "置き換える" });
 
 export function mountOperationRehearsal(document, download = offerWalletDownload) {
   const get = name => document.getElementById(name);
   let current = null, candidate = null, revision = 0, disposed = false;
   const ledger = createRehearsalWorkspace(get("agent").value);
-  let appendReview = null, workspaceReview = null;
+  let appendReview = null, workspaceReview = null, workspaceComparison = null;
   let workspacePhase = "idle", workspaceSource = "";
   const listeners = [];
   const listen = (name, type, handler) => {
@@ -37,6 +45,8 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   };
   function cancelAppend() {
     revision++; workspaceReview = null; get("workspace-apply").disabled = true;
+    workspaceComparison = null; get("workspace-review-save").disabled = true;
+    get("workspace-review-status").textContent = ""; get("workspace-details").textContent = "";
     get("workspace-preview").textContent = "";
     get("workspace-changes").textContent = ""; get("workspace-comparison").hidden = true;
     get("workspace-source").textContent = ""; workspaceSource = "";
@@ -67,13 +77,13 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     const data = decodeRehearsalWorkspace(text);
     if (data.ledgers.some(item => item.asset.symbol !== "SIM" || item.asset.decimals !== 6))
       throw Object.assign(new Error("SIM required"), { code: "SIM_REQUIRED" });
+    workspaceComparison = compareRehearsalWorkspaces(ledger.snapshot(), data);
     workspaceReview = ledger.previewRestore(data);
     get("workspace-changes").textContent = "";
     const count = row => row.present ? row.recordCount + "件" : "未作成";
     for (let i = 0; i < workspaceReview.after.rows.length; i++) {
       const before = workspaceReview.before.rows[i], after = workspaceReview.after.rows[i];
-      const action = after.present ? (before.present ? "置き換える" : "復旧する")
-        : (before.present ? "履歴を消去する" : "未作成のまま");
+      const action = REVIEW_ACTIONS[workspaceComparison.rows[i].action];
       const tr = document.createElement("tr");
       for (const value of [after.agent, count(before), count(after), action]) {
         const td = document.createElement("td"); td.textContent = value; tr.append(td);
@@ -81,11 +91,80 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       get("workspace-changes").append(tr);
     }
     get("workspace-comparison").hidden = false;
+    renderComparisonDetails(workspaceComparison);
+    get("workspace-review-save").disabled = false;
     get("workspace-preview").textContent = workspaceReview.after.rows.map(row => row.agent + ": " +
       (row.present ? row.recordCount + "件に置換" : "未作成に戻す")).join(" / ") +
       "。表示対象: " + data.activeAgent + "。復旧すると3トークンの現在の履歴をまとめて置き換え、取り消し履歴は消えます。まだ反映していません。";
     get("workspace-apply").disabled = false;
     setWorkspaceStage("review", "上の一覧は現在の履歴です。下の変更内容を確認し、「確認した3トークンの履歴を復旧」を押してください。必要なら現在の履歴を先に一括保存できます。");
+  }
+  function renderComparisonDetails(comparison) {
+    const root = get("workspace-details"); root.textContent = "";
+    const note = document.createElement("p"); note.className = "small";
+    note.textContent = "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。" +
+      (comparison.selectedAgentChanged ? " 復旧後の表示対象: " + comparison.inputs.before.activeAgent + " → " + comparison.inputs.after.activeAgent + "。" : "");
+    root.append(note);
+    for (const row of comparison.rows) {
+      if (!row.before && !row.after) continue;
+      const details = document.createElement("details"); details.className = "review-detail";
+      const heading = document.createElement("summary");
+      heading.textContent = row.agent + "の照合詳細 — " + REVIEW_ACTIONS[row.action]; details.append(heading);
+      const intro = document.createElement("p"); intro.className = "small";
+      intro.textContent = "記録の追加 " + row.eventChanges.added.length + "件 / 削除 " + row.eventChanges.removed.length +
+        "件 / 同じIDの内容変更 " + row.eventChanges.modified.length + "件 / 共通する記録の順序変更: " +
+        (row.eventChanges.orderChanged ? "あり" : "なし") + "。";
+      details.append(intro);
+      if (row.before && row.after && row.contextChanges.length) {
+        const changed = document.createElement("p"); changed.className = "comparison-note";
+        changed.textContent = "変わる項目: " + row.contextChanges.map(item => REVIEW_FIELDS[item.field]).join("・") + "。";
+        details.append(changed);
+      }
+      if (row.before && row.after && !row.sameAccountingContext) {
+        const different = document.createElement("p"); different.className = "comparison-note";
+        different.textContent = "口座・ネットワーク・資産のいずれかが異なります。異なる対象の金額を合算・差し引きしていません。";
+        details.append(different);
+      }
+      function table(caption, entries) {
+        const wrap = document.createElement("div"); wrap.className = "table-wrap";
+        const table = document.createElement("table"), title = document.createElement("caption"); title.textContent = caption; table.append(title);
+        const head = document.createElement("tr");
+        for (const label of ["確認する項目", "現在", "復旧後"]) { const cell = document.createElement("th"); cell.setAttribute("scope", "col"); cell.textContent = label; head.append(cell); }
+        table.append(head);
+        for (const entry of entries) {
+          const tr = document.createElement("tr");
+          for (const value of entry) { const cell = document.createElement("td"); cell.textContent = value; tr.append(cell); }
+          table.append(tr);
+        }
+        wrap.append(table); details.append(wrap);
+      }
+      const contextValue = (summary, key) => summary ? String(summary.context[key]) : "未作成";
+      table("口座・ネットワーク・資産・利用先", ["chainId", "account", "assetAddress", "symbol", "decimals", "origin", "spender", "schema"]
+        .map(key => [REVIEW_FIELDS[key], contextValue(row.before, key), contextValue(row.after, key)]));
+      const policyValue = (value, key, summary) => {
+        if (!summary) return "未作成";
+        if (value === null) return "この形式には項目なし";
+        if (key === "paused") return value ? "停止" : "停止していない";
+        if (key === "buybackBps") return formatRehearsalUnits(String(value), 2) + "%";
+        return formatRehearsalUnits(value, summary.context.decimals) + " " + summary.context.symbol;
+      };
+      if (row.policyChanges.length) table("変わる利用条件", row.policyChanges.map(change => [REVIEW_FIELDS[change.field],
+        policyValue(change.before, change.field, row.before), policyValue(change.after, change.field, row.after)]));
+      else { const unchanged = document.createElement("p"); unchanged.textContent = "利用条件の変更はありません。"; details.append(unchanged); }
+      if (row.after) {
+        const findings = document.createElement("p"); findings.className = "small";
+        findings.textContent = "復旧後の試算: 条件外の記録 " + row.after.rejectedRecords + "件、未決済 " + row.after.openPositions +
+          "件、利益を超える予約: " + (row.after.allocationOvercommitted ? "あり" : "なし") + "。実行の許可を示すものではありません。";
+        details.append(findings);
+      }
+      for (const [key, label] of [["added", "追加する記録ID"], ["removed", "削除する記録ID"], ["modified", "内容が変わる記録ID"]]) {
+        const ids = row.eventChanges[key]; if (!ids.length) continue;
+        const p = document.createElement("p"); p.className = "small";
+        p.textContent = label + ": " + ids.slice(0, 8).join(", ") + (ids.length > 8 ? " ほか" + (ids.length - 8) + "件（全件は照合資料に含まれます）" : "");
+        details.append(p);
+      }
+      root.append(details);
+    }
   }
   function workspaceReadFailed(error) {
     const reason = {
@@ -166,7 +245,8 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       ? "追加で予約できる自トークン買戻し額: 0 — " + report.allocationBlockers.map(code => REASONS[code]).join("・")
       : "追加で予約できる自トークン買戻し額: " + formatted(report.proposedOwnTokenBuybackBudget) + "（実行されません）";
     get("context").textContent = data.agent + " / チェーン " + data.chainId + " / 仮の口座 " + data.account +
-      " / 入力された対象: " + data.policy.origin + " / " + data.policy.spender;
+      " / 入力された対象: " + data.policy.origin + " / " + data.policy.spender +
+      " / 記録上の資産: " + data.asset.symbol + " / " + data.asset.address;
     get("status").textContent = report.rows.some(row => !row.withinEnteredLimits)
       ? "条件に合わない記録を見送り、その理由を表示しました。見送った記録は資金・損益に加えていません。"
       : "試算が完了しました。元本・費用・損益の計算は整合しています。すべて入力に基づく仮の結果です。";
@@ -323,6 +403,14 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       if (disposed || own !== revision) return;
       workspaceReadFailed(error);
     }
+  });
+  listen("workspace-review-save", "click", () => {
+    if (disposed || !workspaceReview || !workspaceComparison) return;
+    try {
+      download({ document, prepared: { text: encodeRehearsalComparison(workspaceComparison.inputs.before, workspaceComparison.inputs.after),
+        filename: "ThreeCore-workspace-comparison.json", mimeType: "application/json" } });
+      get("workspace-review-status").textContent = "照合資料の保存を開始しました。復旧前と復旧後の入力記録を含みます。履歴にはまだ反映していません。";
+    } catch { get("workspace-review-status").textContent = "照合資料を保存できませんでした。復旧内容は確認待ちのままです。"; }
   });
   listen("workspace-file", "cancel", () => {
     if (!disposed) get("workspace-file-note").textContent = "ファイルの選択を取り消しました。現在の履歴と確認待ちの内容は変更していません。";
