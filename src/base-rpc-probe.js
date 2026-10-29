@@ -6,6 +6,8 @@
  * Public Base endpoints are development-only and rate limited.
  * Chain ID alone is NOT proof of site safety or a trusted RPC provider.
  */
+import { readStateRpcJson } from "./state-rpc-http.js";
+import { RPC_SECURITY_LIMITS } from "./security-rpc.js";
 export const BASE_NETWORKS = Object.freeze({
   mainnet: Object.freeze({
     chainId: 8453,
@@ -37,7 +39,7 @@ function address(value) {
 }
 
 function rpcUint(value) {
-  if (typeof value !== "string" || !/^0x[0-9a-fA-F]+$/.test(value)) {
+  if (typeof value !== "string" || !/^0x(?:0|[1-9a-fA-F][0-9a-fA-F]{0,63})$/.test(value)) {
     fail("INVALID_RPC_RESPONSE", "Expected a hexadecimal EVM quantity");
   }
   return BigInt(value);
@@ -49,8 +51,9 @@ export async function probeBaseRpc({
   fetchImpl = globalThis.fetch,
   timeoutMs = 10000,
 } = {}) {
+  if (typeof network !== "string" || !Object.hasOwn(BASE_NETWORKS, network))
+    fail("UNSUPPORTED_NETWORK", "Only Base and Base Sepolia are supported");
   const target = BASE_NETWORKS[network];
-  if (!target) fail("UNSUPPORTED_NETWORK", "Only Base and Base Sepolia are supported");
   // Validate user input locally before any network call.
   const contract = contractAddress == null ? null : address(contractAddress);
   if (typeof fetchImpl !== "function") fail("INVALID_TRANSPORT", "Fetch transport is missing");
@@ -63,19 +66,40 @@ export async function probeBaseRpc({
     if (!["eth_chainId", "eth_blockNumber", "eth_getCode"].includes(method)) {
       fail("METHOD_BLOCKED", "Only read-only RPC methods are permitted");
     }
-    const response = await fetchImpl(target.rpcUrl, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ jsonrpc: "2.0", id: ++id, method, params }),
-      signal: AbortSignal.timeout(timeoutMs),
+    const requestId = ++id, controller = new AbortController();
+    let timedOut = false, timer;
+    const deadline = new Promise((_, reject) => {
+      timer = setTimeout(() => {
+        timedOut = true; controller.abort();
+        reject(new BaseRpcProbeError("RPC_TIMEOUT", "Base RPC did not finish within the per-request time limit"));
+      }, timeoutMs);
     });
-    if (!response?.ok) fail("HTTP_ERROR", "Base RPC returned a non-2xx HTTP status");
-    const json = await response.json();
-    if (!json || json.jsonrpc !== "2.0" || json.id !== id ||
-        typeof json.result !== "string" || json.error) {
-      fail("INVALID_RPC_RESPONSE", "Unexpected or failed Base JSON-RPC response");
-    }
-    return json.result;
+    const work = (async () => {
+      const response = await fetchImpl(target.rpcUrl, {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", id: requestId, method, params }),
+        credentials: "omit", redirect: "error", cache: "no-store", referrerPolicy: "no-referrer",
+        signal: controller.signal,
+      });
+      if (timedOut || !response?.ok || response.redirected) {
+        try { Promise.resolve(response?.body?.cancel()).catch(() => {}); } catch {}
+        fail(timedOut ? "RPC_TIMEOUT" : "HTTP_ERROR", "Base RPC did not return an accepted HTTP response");
+      }
+      let json;
+      try { json = await readStateRpcJson(response, { signal: controller.signal }); }
+      catch { fail("INVALID_RPC_RESPONSE", "Base RPC returned an invalid or oversized response"); }
+      if (!json || json.jsonrpc !== "2.0" || json.id !== requestId ||
+          typeof json.result !== "string" || Object.hasOwn(json, "error")) {
+        fail("INVALID_RPC_RESPONSE", "Unexpected or failed Base JSON-RPC response");
+      }
+      return json.result;
+    })();
+    try { return await Promise.race([work, deadline]); }
+    catch (error) {
+      if (timedOut) fail("RPC_TIMEOUT", "Base RPC did not finish within the per-request time limit");
+      if (error instanceof BaseRpcProbeError) throw error;
+      fail("RPC_TRANSPORT", "Base RPC transport failed");
+    } finally { clearTimeout(timer); controller.abort(); }
   }
 
   const chain = rpcUint(await request("eth_chainId"));
@@ -93,11 +117,12 @@ export async function probeBaseRpc({
     externalDappIntegrated: false,
   };
   if (contract) {
-    const code = await request("eth_getCode", [contract, "latest"]);
-    if (!/^0x(?:[0-9a-fA-F]{2})*$/.test(code)) {
+    const code = await request("eth_getCode", [contract, "0x" + block.toString(16)]);
+    if (code.length > RPC_SECURITY_LIMITS.contractCodeCharacters || !/^0x(?:[0-9a-fA-F]{2})*$/.test(code)) {
       fail("INVALID_RPC_RESPONSE", "Invalid contract-code RPC result");
     }
     result.contractAddress = contract;
+    result.contractCodeBlockNumber = block.toString();
     result.contractCodePresent = code !== "0x";
   }
   return Object.freeze(result);

@@ -120,3 +120,26 @@ test("closing the client aborts outstanding upstream work", async () => {
     const next = await post(base, envelope(rpc)); assert.equal(next.status, 200); await next.text();
   });
 });
+test("closing clients cancels stalled upstream bodies and releases all twelve relay slots",async()=>{
+  const entered=Promise.withResolvers(),cancelled=Promise.withResolvers();let calls=0,cancellations=0;
+  await withServer(async()=>{
+    if(++calls>12)return Response.json({jsonrpc:"2.0",id:1,result:"0x2a"});
+    return new Response(new ReadableStream({
+      start(){if(calls===12)entered.resolve();},
+      pull(){return new Promise(()=>{});},
+      cancel(){if(++cancellations===12)cancelled.resolve();return new Promise(()=>{});}
+    }));
+  },async base=>{
+    const aborters=Array.from({length:12},()=>new AbortController());
+    const pending=aborters.map(aborter=>fetch(base+"/rpc/base-mainnet",{method:"POST",signal:aborter.signal,
+      headers:{origin:base,"content-type":"application/json"},body:JSON.stringify(envelope(rpc))}));
+    const rejected=Promise.all(pending.map(p=>assert.rejects(p)));
+    await entered.promise;
+    try{assert.equal((await post(base,envelope(rpc))).status,429);}
+    finally{aborters.forEach(a=>a.abort());}
+    await rejected;await cancelled.promise;
+    const next=await Promise.all(Array.from({length:12},()=>post(base,envelope(rpc))));
+    for(const response of next){assert.equal(response.status,200);assert.deepEqual(await response.json(),{result:"0x2a"});}
+    assert.equal(cancellations,12);assert.equal(calls,24);
+  });
+});

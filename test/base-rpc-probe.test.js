@@ -18,11 +18,11 @@ function transport({
     assert.equal(args.method, "POST");
     assert.equal(args.headers["content-type"], "application/json");
     assert.ok(args.signal);
+    assert.equal(args.credentials,"omit");assert.equal(args.redirect,"error");
+    assert.equal(args.cache,"no-store");assert.equal(args.referrerPolicy,"no-referrer");
     const body = JSON.parse(args.body);
     calls.push({ url, ...body });
-    return {
-      ok: httpOk,
-      async json() {
+    const json = (() => {
         if (invalidResponse) return { jsonrpc: "2.0", id: body.id + 1, result: "0x1" };
         if (error) return { jsonrpc: "2.0", id: body.id, error };
         const result = {
@@ -32,8 +32,8 @@ function transport({
         }[body.method];
         if (result == null) throw new Error("Unallowed RPC method: " + body.method);
         return { jsonrpc: "2.0", id: body.id, result };
-      },
-    };
+      })();
+    return new Response(JSON.stringify(json),{status:httpOk?200:500,headers:{"content-type":"application/json"}});
   };
   return { calls, fetchImpl };
 }
@@ -79,7 +79,8 @@ test("optionally checks deployed contract code by public address", async () => {
   const result = await probeBaseRpc({ fetchImpl, contractAddress: CONTRACT.toUpperCase().replace("0X", "0x") });
   assert.equal(result.contractAddress, CONTRACT);
   assert.equal(result.contractCodePresent, true);
-  assert.deepEqual(calls[2].params, [CONTRACT, "latest"]);
+  assert.deepEqual(calls[2].params, [CONTRACT, "0x1234"]);
+  assert.equal(result.contractCodeBlockNumber,"4660");
   assert.deepEqual(calls.map((x) => x.method), ["eth_chainId", "eth_blockNumber", "eth_getCode"]);
 });
 

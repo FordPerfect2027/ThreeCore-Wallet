@@ -25,8 +25,8 @@ export function createBaseStateProvider({ agent, account, siteOrigin, fetchImpl 
           body: JSON.stringify({ agent, account, request }), credentials: "omit",
           redirect: "error", cache: "no-store", referrerPolicy: "no-referrer", signal: aborter.signal,
         });
-        if (!response.ok) { try { await response.body?.cancel(); } catch {} throw new StateRpcError(); }
-        const body = await readStateRpcJson(response);
+        if (!response.ok) { try { Promise.resolve(response.body?.cancel()).catch(() => {}); } catch {} throw new StateRpcError(); }
+        const body = await readStateRpcJson(response, { signal: aborter.signal });
         if (!body || Object.keys(body).length !== 1 || !Object.hasOwn(body, "result")) throw new StateRpcError();
         return guardRpcResponse(request.method, body.result);
       } catch { throw new StateRpcError(); }

@@ -55,15 +55,15 @@ export function createBaseStateRpcHandler(fetchImpl = globalThis.fetch) {
         body: JSON.stringify({ jsonrpc: "2.0", id: 1, ...rpc }),
         credentials: "omit", redirect: "error", cache: "no-store", signal: aborter.signal,
       });
-      if (!upstream.ok) { try { await upstream.body?.cancel(); } catch {} throw Error(); }
-      const body = await readStateRpcJson(upstream);
+      if (!upstream.ok) { try { Promise.resolve(upstream.body?.cancel()).catch(() => {}); } catch {} throw Error(); }
+      const body = await readStateRpcJson(upstream, { signal: aborter.signal });
       if (!body || body.id !== 1 || body.jsonrpc !== "2.0" || Object.hasOwn(body, "error") ||
           !Object.hasOwn(body, "result")) throw Error();
       if (rpc.method === "eth_getLogs" && (!Array.isArray(body.result) || body.result.length > RPC_SECURITY_LIMITS.logEntries)) throw Error();
       const result = guardRpcResponse(rpc.method, body.result);
       if (!aborter.signal.aborted) send(200, { result });
       else send(504, { error: "STATE_RPC_UNAVAILABLE" });
-    } catch { send(502, { error: "STATE_RPC_UNAVAILABLE" }); }
+    } catch { send(aborter.signal.aborted ? 504 : 502, { error: "STATE_RPC_UNAVAILABLE" }); }
     finally {
       active--; clearTimeout(timer); response.removeListener("close", close); aborter.abort();
     }

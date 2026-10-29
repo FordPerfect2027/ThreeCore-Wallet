@@ -10,19 +10,32 @@ export class StateRpcError extends Error {
 }
 
 /** Bound bytes before JSON parsing; never buffer an unbounded RPC response. */
-export async function readStateRpcJson(response) {
+export async function readStateRpcJson(response, { signal } = {}) {
+  if (signal !== undefined && !(signal instanceof AbortSignal)) throw new StateRpcError();
+  if (signal?.aborted) {
+    try { Promise.resolve(response.body?.cancel()).catch(() => {}); } catch {}
+    throw new StateRpcError();
+  }
   const declared = response.headers.get("content-length");
   if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > STATE_RPC_RESPONSE_LIMIT)) {
-    await response.body?.cancel();
+    try { Promise.resolve(response.body?.cancel()).catch(() => {}); } catch {}
     throw new StateRpcError();
   }
   const reader = response.body?.getReader();
   if (!reader) throw new StateRpcError();
   const decoder = new TextDecoder("utf-8", { fatal: true });
   let size = 0, text = "";
-  try {
+  let stopReading;
+  const interrupted = new Promise((_, reject) => { stopReading = reject; });
+  function abort() {
+    try { Promise.resolve(reader.cancel()).catch(() => {}); } catch {}
+    stopReading(new StateRpcError());
+  }
+  signal?.addEventListener("abort", abort, { once: true });
+  async function consume() {
     while (true) {
       const { done, value } = await reader.read();
+      if (signal?.aborted) throw new StateRpcError();
       if (done) break;
       size += value.byteLength;
       if (size > STATE_RPC_RESPONSE_LIMIT) throw new StateRpcError();
@@ -31,8 +44,15 @@ export async function readStateRpcJson(response) {
     text += decoder.decode();
     return parseSecurityJson(text, { bytes: STATE_RPC_RESPONSE_LIMIT, depth: 24,
       nodes: 50_000, stringCharacters: 300_000 });
+  }
+  try {
+    if (signal?.aborted) abort();
+    return await Promise.race([consume(), interrupted]);
   } catch {
-    try { await reader.cancel(); } catch {}
+    try { Promise.resolve(reader.cancel()).catch(() => {}); } catch {}
     throw new StateRpcError();
-  } finally { reader.releaseLock(); }
+  } finally {
+    signal?.removeEventListener("abort", abort);
+    try { reader.releaseLock(); } catch {}
+  }
 }
