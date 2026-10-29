@@ -1,8 +1,27 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateFileReadStatus, describeFileReadStatus } from "../src/file-read-status.js";
+import { validateFileReadStatus, describeFileReadStatus, describeFileReadError } from "../src/file-read-status.js";
 import { FILE_READ_RESERVED_LIMIT } from "../src/file-read-policy.js";
 import { fixture, fakeClock, stalledFile, fallbackFile, outcome, tick } from "./helpers/file-boundary-fixtures.js";
+
+test("read failure guidance distinguishes a timeout, capacity, encoding and cancellation", () => {
+  for (const [code, expected] of [["FILE_TIMEOUT", /30秒.*手元/], ["FILE_BUSY", /ほかのファイル.*自動/],
+    ["FILE_ENCODING", /UTF-8/], ["FILE_CANCELLED", /取り消しました/], ["FILE_SIZE", /2 MiB/],
+    ["FILE_CLOCK", /記録を保存してから/], ["FILE_DISPOSED", /記録を保存してから/]]) {
+    const message = describeFileReadError({code, message:"synthetic private path"}, "2 MiB");
+    assert.match(message, expected); assert.doesNotMatch(message, /private/);
+  }
+});
+
+test("failure guidance never executes exception getters or treats unknown codes as messages", () => {
+  let calls=0;
+  const error={get code(){calls++;throw Error("private");}};
+  for(const value of [null,undefined,error,{code:"toString"},{code:"arbitrary private path"},
+    new Proxy({}, {getOwnPropertyDescriptor(){throw Error("private");}})]) {
+    assert.equal(describeFileReadError(value,"1 MiB"),null);
+  }
+  assert.equal(calls,0);
+});
 
 const valid = changes => ({ schema: "threecore-file-read-status-v1", disposed: false, clockFault: false,
   canStart: true, active: 0, waiting: 0, retained: 0, reservedBytes: 0,

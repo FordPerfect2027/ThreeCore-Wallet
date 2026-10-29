@@ -1,4 +1,5 @@
 import { createFileReadScope } from "../src/security-file.js";
+import { describeFileReadError } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { reviewRehearsalReport, encodeRehearsalReviewReceipt, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
@@ -96,7 +97,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_REPORT_REVIEW_LIMIT }); if(disposed||own!==revision) return;
       sourceText=text; get("run").disabled=false;
       await run();
-    } catch { if(!disposed&&own===revision) reset("ファイルを読み込めませんでした。2 MiB以内のUTF-8の資料を選んでください。現在の履歴は保持しています。"); }
+    } catch(error) { if(!disposed&&own===revision) reset((describeFileReadError(error,"2 MiB")??"ファイルを読み込めませんでした。2 MiB以内のUTF-8の資料を選んでください。")+" 現在の履歴は保持しています。"); }
   });
   listen("paste", "click", async()=>{
     if(disposed) return;

@@ -4,6 +4,23 @@ const counters = ["active", "waiting", "retained", "reservedBytes", "maxActive",
   "accepted", "completed", "failed", "cancelled", "timedOut", "rejected"];
 const keys = ["schema", "disposed", "clockFault", "canStart", ...counters];
 
+/** Explain a known failure without exposing an exception's message or path. */
+export function describeFileReadError(error, limitLabel) {
+  let code;
+  try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; } catch { return null; }
+  const messages = {
+    FILE_TIMEOUT: "30秒以内に読み込めませんでした。ファイルを手元のフォルダーに保存して、もう一度選んでください。",
+    FILE_BUSY: "ほかのファイルの読み込みが終わるまでお待ちください。終わったら、もう一度ファイルを選んでください。自動での再読み込みはしません。",
+    FILE_ENCODING: "文字を正しく読み取れません。UTF-8形式の元の保存ファイルを選んでください。",
+    FILE_SIZE: "ファイルが空、容量超過、または読み取った容量と一致しません。" + limitLabel + "以内の保存が完了した元のファイルを選び直してください。",
+    FILE_READ: "ファイルを読み取れませんでした。手元のフォルダーに保存が完了していることを確認して、元のファイルを選び直してください。",
+    FILE_CANCELLED: "ファイルの読み込みを取り消しました。読み込む場合は、もう一度ファイルを選んでください。",
+    FILE_CLOCK: "読み込みの待ち時間を確認できないため停止しました。現在の記録を保存してから、このページを開き直してください。",
+    FILE_DISPOSED: "この画面の読み込み処理は終了しています。現在の記録を保存してから、このページを開き直してください。",
+  };
+  return typeof code === "string" && Object.hasOwn(messages, code) ? messages[code] : null;
+}
+
 /** The UI only accepts the exact aggregate schema; no untrusted prose is shown. */
 export function validateFileReadStatus(input) {
   try {

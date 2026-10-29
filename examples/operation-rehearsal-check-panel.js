@@ -1,4 +1,5 @@
 import { createFileReadScope } from "../src/security-file.js";
+import { describeFileReadError } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsalCheckSuite, runRehearsalCheckSuite, encodeRehearsalCheckReport, REHEARSAL_CHECK_SUITE_LIMIT } from "../src/operation-rehearsal-check-suite.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
@@ -27,14 +28,14 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
       for(const diff of item.differences)row("differences",[item.id+" / "+(diff.side==="before"?"元の条件":"比較条件")+(diff.recordId?" / 記録 "+diff.recordId:""),labels[diff.field],display(diff.expected,diff.field,item.asset),display(diff.actual,diff.field,item.asset)]);
     }
   }
-  const fail=()=>reset("期待結果を確認できませんでした。1 MiB以内の期待結果ファイルを選んでください。元の履歴とケース集は保持しています。");
+  const fail=error=>reset((describeFileReadError(error,"1 MiB")??"期待結果を確認できませんでした。1 MiB以内の期待結果ファイルを選んでください。")+" 元の履歴とケース集は保持しています。");
   listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file)return;
     reset("期待結果のファイルを読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
     try{
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_CHECK_SUITE_LIMIT });if(disposed||own!==revision)return;
       const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"期待結果ファイル";
       run(text,name);
-    }catch{if(!disposed&&own===revision)fail();}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
+    }catch(error){if(!disposed&&own===revision)fail(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";reset();try{run(text,"貼り付けた期待結果");}catch{fail();}});
   listen("text","input",()=>{if(!disposed)reset("貼り付けた期待結果を確認してください。");});

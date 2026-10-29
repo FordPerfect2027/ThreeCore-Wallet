@@ -1,4 +1,5 @@
 import { createFileReadScope } from "../src/security-file.js";
+import { describeFileReadError } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { createRehearsalScenarioSet, decodeRehearsalScenarioSet, encodeRehearsalScenarioSet,
   reportRehearsalScenarioSet, encodeRehearsalScenarioSetReport, REHEARSAL_SCENARIO_SET_LIMIT } from "../src/operation-rehearsal-scenario-set.js";
@@ -38,7 +39,7 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
       (review.changed?"まだ反映していません。変更する対象を確認して確定してください。":"内容は同じです。変更は不要です。");
     get("source").textContent="確認元: "+source;get("status").textContent="変更内容を確認してください。元の試算履歴は変更しません。";
   }
-  function fail(){cancel("ケースを確認できませんでした。IDの重複、名前、資料形式、最大12件・1 MiBの制限を確認してください。確定済みのケースは保持しています。");}
+  function fail(error){cancel((describeFileReadError(error,"1 MiB")??"ケースを確認できませんでした。IDの重複、名前、資料形式、最大12件・1 MiBの制限を確認してください。")+" 確定済みのケースは保持しています。");}
   function detail(){
     get("metrics").textContent="";const entry=report.rows.find(item=>item.id===selectedId);
     get("case-save").disabled=!entry;get("case-baseline-save").disabled=!entry;
@@ -88,7 +89,7 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
       const data=decodeRehearsalScenarioSet(text);
       const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"ケース集ファイル";
       showReview(store.previewImport(data),name);
-    }catch{if(!disposed&&own===revision)fail();}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
+    }catch(error){if(!disposed&&own===revision)fail(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
   listen("text","input",()=>{if(!disposed)cancel("貼り付けたケース集を確認してください。");});
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel();try{showReview(store.previewImport(decodeRehearsalScenarioSet(text)),"貼り付けたケース集");}catch{fail();}});

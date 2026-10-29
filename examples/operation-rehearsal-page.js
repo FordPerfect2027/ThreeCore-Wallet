@@ -1,4 +1,5 @@
 import { createFileReadScope } from "../src/security-file.js";
+import { describeFileReadError } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsal, encodeRehearsal, evaluateRehearsal, parseRehearsalUnits,
   formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
@@ -191,11 +192,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     }
   }
   function workspaceReadFailed(error) {
-    const reason = {
-      FILE_TIMEOUT: "30秒以内に読み込めませんでした。ファイルを手元のフォルダーに保存して、もう一度選んでください。",
-      FILE_BUSY: "別のファイルを確認中です。読み込みが終わってから、もう一度選んでください。",
-      FILE_ENCODING: "文字を正しく読み取れません。UTF-8形式の元の保存ファイルを選んでください。",
-      FILE_SIZE: "ファイルの容量が一致しません。保存を完了した元のファイルを選び直してください。",
+    const reason = describeFileReadError(error, "512 KiB") ?? {
       FILE_TOO_LARGE: "記録が大きすぎます。一括ファイルは512 KiB以内、各トークンの記録は128 KiB以内です。",
       EMPTY_INPUT: "記録が空です。保存した一括JSONの全文を指定してください。",
       INVALID_JSON: "JSONの内容を読み取れません。一括保存したファイルの全文を指定してください。",
@@ -437,11 +434,11 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   listen("file", "change", async () => {
     if (disposed) return;
     const file = get("file").files?.[0];
+    if (!file) return;
     get("file").value = "";
     clear("ファイルを確認しています（最大30秒）。", true); const own = revision;
     get("file").setAttribute("aria-busy", "true");
     try {
-      if (!file || file.size > REHEARSAL_LIMIT || file.size < 1) throw new Error("File size");
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_LIMIT });
       if (disposed || own !== revision) return;
       const data = decodeRehearsal(text); const report = evaluateRehearsal(data);
@@ -452,9 +449,9 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       get("preview").textContent = data.agent + " / " + data.asset.symbol + " / " + report.rows.length +
         "件の仮の記録。表示する場合は「確認した記録を表示」を押してください。";
       get("status").textContent = "読み込み内容を確認してください。まだ表示に反映していません。";
-    } catch {
+    } catch (error) {
       if (disposed || own !== revision) return;
-      clear("ファイルを確認できませんでした。この画面で保存した128 KiB以内の試算JSONを選んでください。", true);
+      clear((describeFileReadError(error, "128 KiB") ?? "ファイルを確認できませんでした。この画面で保存した128 KiB以内の試算JSONを選んでください。") + " 現在の履歴は保持しています。", true);
     } finally { if (!disposed && own === revision) get("file").setAttribute("aria-busy", "false"); }
   });
   listen("apply", "click", () => {

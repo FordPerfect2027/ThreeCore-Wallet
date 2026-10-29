@@ -62,7 +62,8 @@ test("a new source wins over a late file read",async()=>{
 test("oversized files are rejected before reading and invalid UTF-8 cannot yield a misleading digest",async()=>{
   const f=setup();let read=false;f.file(text,{size:REHEARSAL_REPORT_REVIEW_LIMIT+1,arrayBuffer:()=>{read=true;}});await tick();
   assert.equal(read,false);assert.equal(f.field("save").disabled,true);
-  f.file(text,{size:1,arrayBuffer:async()=>new Uint8Array([255]).buffer});await tick();assert.match(f.field("status").textContent,/読み込めません/);
+  f.file(text,{size:1,arrayBuffer:async()=>new Uint8Array([255]).buffer});await tick();assert.match(f.field("status").textContent,/文字を正しく読み取れません.*UTF-8/);
+  assert.equal(f.field("save").disabled,true);assert.equal(f.field("digest").textContent,"");
 });
 test("file chooser cancel and empty change preserve the reviewed receipt",async()=>{
   const f=setup();f.file(text);await finished(f);f.field("file").files=[];f.field("file").dispatchEvent(new Event("change"));

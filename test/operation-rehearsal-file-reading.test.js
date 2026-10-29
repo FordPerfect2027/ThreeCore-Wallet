@@ -55,17 +55,22 @@ for(const [id,cancel,ready,status,text] of FORMATS) {
     await finish(f.field,status);assert.equal(f.field(ready).disabled,false);
     assert.equal(f.snapshot(),before);assert.equal(walletFileReadService.state().active,0);
   });
-  for(const fault of ["invalid-utf8","bom","wrong-byte-count","fake-buffer","oversized"]) {
+  for(const fault of ["invalid-utf8","bom","wrong-byte-count","fake-buffer","oversized","empty","read-failure"]) {
     test(id+" rejects "+fault+" without changing the applied history",async t=>{
       const f=setup(t),before=f.snapshot();let buffer=bytes(text).buffer;
       if(fault==="invalid-utf8") buffer=new Uint8Array([255,...bytes(text)]).buffer;
       if(fault==="bom") buffer=bytes("\ufeff"+text).buffer;
-      const size=fault==="oversized"?3*1024*1024:fault==="wrong-byte-count"?buffer.byteLength+1:buffer.byteLength;
+      const size=fault==="empty"?0:fault==="oversized"?3*1024*1024:fault==="wrong-byte-count"?buffer.byteLength+1:buffer.byteLength;
       let called=false;
-      f.file(id,{size,name:"rehearsal.json",arrayBuffer:async()=>{called=true;return fault==="fake-buffer"?new Uint8Array(buffer):buffer;}});
+      f.file(id,{size,name:"rehearsal.json",arrayBuffer:async()=>{called=true;if(fault==="read-failure")throw Error("synthetic private path");return fault==="fake-buffer"?new Uint8Array(buffer):buffer;}});
       await finish(f.field,status);assert.equal(f.field(ready).disabled,true);
       assert.equal(f.snapshot(),before);assert.equal(walletFileReadService.state().active,0);
-      if(fault==="oversized")assert.equal(called,false);
+      const message=f.field(status).textContent;
+      assert.doesNotMatch(message,/synthetic private path/);
+      if(fault==="invalid-utf8")assert.match(message,/文字.*UTF-8/);
+      if(fault==="wrong-byte-count")assert.match(message,/容量.*一致しません/);
+      if(fault==="read-failure")assert.match(message,/手元のフォルダー/);
+      if(fault==="oversized"||fault==="empty")assert.equal(called,false);
     });
   }
   for(const action of ["cancel","dispose"]) test(id+" ends its pending waiter on "+action+" before late bytes settle",async t=>{
@@ -85,7 +90,40 @@ for(const [id,cancel,ready,status,text] of FORMATS) {
     f.file(id,{size:1,arrayBuffer:()=>{opened=true;return new ArrayBuffer(1);}});
     f.field(cancel).click();await tick();assert.equal(opened,false);assert.equal(walletFileReadService.state().active,0);
   });
+  test(id+" cancelled file choice preserves the reviewed result",async t=>{
+    const f=setup(t),before=f.snapshot();
+    f.file(id,new File([text],"rehearsal.json"));await finish(f.field,status);
+    assert.equal(f.field(ready).disabled,false);
+    const message=f.field(status).textContent;
+    f.field(id).dispatchEvent(new Event("cancel"));
+    f.field(id).files=[];f.field(id).dispatchEvent(new Event("change"));
+    assert.equal(f.field(ready).disabled,false);
+    assert.equal(f.field(status).textContent,message);
+    assert.equal(f.snapshot(),before);
+  });
 }
+
+test("every file input explains shared capacity and recovers after workers actually settle",async t=>{
+  const f=setup(t),scopes=[],releases=[],outcomes=[],before=f.snapshot();
+  for(let index=0;index<4;index++){
+    const scope=createFileReadScope();scopes.push(scope);
+    outcomes.push(scope.readText({size:1,arrayBuffer:()=>new Promise(resolve=>releases.push(resolve))},{maxBytes:1}).catch(error=>error.code));
+  }
+  await tick();assert.equal(walletFileReadService.state().active,4);
+  for(const [id,,ready,status,text] of FORMATS){
+    f.file(id,new File([text],"rehearsal.json"));await tick();
+    assert.equal(f.field(ready).disabled,true);
+    assert.match(f.field(status).textContent,/ほかのファイル.*自動での再読み込みはしません/);
+    assert.notEqual(f.field(status).getAttribute("aria-busy"),"true");
+    assert.equal(f.snapshot(),before);
+  }
+  scopes.forEach(scope=>scope.cancel());releases.forEach(release=>release(bytes("x").buffer));
+  await Promise.all(outcomes);await tick();assert.equal(walletFileReadService.state().active,0);
+  for(const [id,,ready,status,text] of FORMATS){
+    f.file(id,new File([text],"rehearsal.json"));await finish(f.field,status);
+    assert.equal(f.field(ready).disabled,false);assert.equal(f.snapshot(),before);
+  }
+});
 
 test("a read deadline releases the caller but keeps the real worker budget until settlement",async()=>{
   const scope=createFileReadScope();let release;

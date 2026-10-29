@@ -1,4 +1,5 @@
 import { createFileReadScope } from "../src/security-file.js";
+import { describeFileReadError } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsalSession,encodeRehearsalSession,REHEARSAL_SESSION_LIMIT } from "../src/operation-rehearsal-session.js";
 export function mountRehearsalSessionPanel(document,{session,download,onRestored,renderWorkspaceComparison}){
@@ -22,7 +23,7 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
       for(const value of[item.id,action,describe(item.before),describe(item.after),[item.originalInputChanged?"元入力が変わる":"",item.hypotheticalInputChanged?"比較条件の入力が変わる":""].filter(Boolean).join(" / ")||"—"]){const td=document.createElement("td");td.textContent=value;tr.append(td);}get("cases").append(tr);}
     get("apply").disabled=!comparison.changed;get("status").textContent="変更する履歴とケース集を確認してください。まだ現在の記録は変わっていません。";
   }
-  function failed(){cancel("まとめた記録を確認できませんでした。2 MiB以内の保存ファイルを選んでください。現在の履歴とケース集は保持しています。");}
+  function failed(error){cancel((describeFileReadError(error,"2 MiB")??"まとめた記録を確認できませんでした。2 MiB以内の保存ファイルを選んでください。")+" 現在の履歴とケース集は保持しています。");}
   listen("save","click",()=>{if(disposed)return;const own=revision; try{const data=session.snapshot();if(!data.workspace.ledgers.length&&!data.cases.cases.length)return;
     offerDownload({document,prepared:{text:encodeRehearsalSession(data),filename:"ThreeCore-rehearsal-session.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="3トークンの履歴と全比較ケースをまとめた保存を開始しました。";
   }catch{if(disposed||own!==revision)return;get("export-status").textContent="まとめた記録を保存できませんでした。画面の履歴とケース集は保持しています。";}});
@@ -30,7 +31,7 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
     try{const text = await fileReader.readText(file, { maxBytes: REHEARSAL_SESSION_LIMIT });if(disposed||own!==revision)return;
       const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"まとめた記録";
       review(text,name);
-    }catch{if(!disposed&&own===revision)failed();}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
+    }catch(error){if(!disposed&&own===revision)failed(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel("貼り付けた記録を確認しています。");try{review(text,"貼り付けたまとめ記録");}catch{failed();}});
   listen("text","input",()=>{if(!disposed)cancel("貼り付けたまとめ記録を確認してください。");});
