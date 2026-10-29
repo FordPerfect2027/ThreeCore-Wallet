@@ -1,7 +1,7 @@
 import { normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
 import { catalogToken } from "./token-catalog.js";
 import { guardRpcRequest, guardRpcResponse } from "./security-rpc.js";
-import { readStateRpcJson, StateRpcError, STATE_RPC_TIMEOUT_MS } from "./state-rpc-http.js";
+import { fetchStateRpcResponse, readStateRpcJson, StateRpcError, STATE_RPC_TIMEOUT_MS } from "./state-rpc-http.js";
 
 export const BASE_STATE_METHODS = Object.freeze([
   "eth_chainId", "eth_getBlockByNumber", "eth_getBalance", "eth_getCode", "eth_call", "eth_getLogs",
@@ -20,12 +20,11 @@ export function createBaseStateProvider({ agent, account, siteOrigin, fetchImpl 
       const aborter = new AbortController();
       const timer = setTimeout(() => aborter.abort(), STATE_RPC_TIMEOUT_MS);
       try {
-        const response = await fetchImpl(origin + "/rpc/base-mainnet", {
+        const response = await fetchStateRpcResponse(fetchImpl, origin + "/rpc/base-mainnet", {
           method: "POST", headers: { "content-type": "application/json" },
           body: JSON.stringify({ agent, account, request }), credentials: "omit",
           redirect: "error", cache: "no-store", referrerPolicy: "no-referrer", signal: aborter.signal,
         });
-        if (!response.ok) { try { Promise.resolve(response.body?.cancel()).catch(() => {}); } catch {} throw new StateRpcError(); }
         const body = await readStateRpcJson(response, { signal: aborter.signal });
         if (!body || Object.keys(body).length !== 1 || !Object.hasOwn(body, "result")) throw new StateRpcError();
         return guardRpcResponse(request.method, body.result);

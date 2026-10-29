@@ -63,3 +63,22 @@ test("failed HTTP response cannot stall state-provider error reporting during ca
     {code:"STATE_RPC_UNAVAILABLE"});
   assert.equal(cancelled,true);
 });
+
+test("state-provider deadline includes fetch headers even when cancellation is ignored", async t => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  let resolve, signal, cancelled = false;
+  const pending = provider((_url, options) => {
+    signal = options.signal; return new Promise(r => { resolve = r; });
+  }).request(request);
+  const rejected = assert.rejects(pending, { code: "STATE_RPC_UNAVAILABLE" });
+  t.mock.timers.tick(STATE_RPC_TIMEOUT_MS); await rejected;
+  assert.equal(signal.aborted, true);
+  resolve({ ok: true, body: { cancel() { cancelled = true; return new Promise(() => {}); } } });
+  await new Promise(r => setImmediate(r)); assert.equal(cancelled, true);
+});
+test("state provider rejects redirected success without parsing it", async () => {
+  let cancelled = false;
+  await assert.rejects(provider(async () => ({ ok: true, redirected: true,
+    body: { cancel() { cancelled = true; } } })).request(request), { code: "STATE_RPC_UNAVAILABLE" });
+  assert.equal(cancelled, true);
+});

@@ -23,6 +23,7 @@ test("RPC relay targets only official Base and preserves the canonical hash sele
     assert.equal(result.status, 200); assert.deepEqual(await result.json(), { result: "0x2a" });
     assert.equal(seen.url, "https://mainnet.base.org");
     assert.equal(seen.options.redirect, "error"); assert.equal(seen.options.credentials, "omit");
+    assert.equal(seen.options.referrerPolicy, "no-referrer");
     assert.deepEqual(JSON.parse(seen.options.body), { jsonrpc: "2.0", id: 1, ...rpc });
   });
 });
@@ -142,4 +143,46 @@ test("closing clients cancels stalled upstream bodies and releases all twelve re
     for(const response of next){assert.equal(response.status,200);assert.deepEqual(await response.json(),{result:"0x2a"});}
     assert.equal(cancellations,12);assert.equal(calls,24);
   });
+});
+
+test("client closure frees all slots while initial fetch ignores abort, and late replies are discarded", async () => {
+  const entered = Promise.withResolvers(), aborted = Promise.withResolvers();
+  let calls = 0, aborts = 0, cancellations = 0;
+  const late = [];
+  await withServer(async (_url, options) => {
+    if (++calls > 12) return Response.json({ jsonrpc: "2.0", id: 1, result: "0x2a" });
+    options.signal.addEventListener("abort", () => { if (++aborts === 12) aborted.resolve(); }, { once: true });
+    const pending = new Promise(resolve => late.push(resolve));
+    if (calls === 12) entered.resolve();
+    return pending;
+  }, async base => {
+    const controllers = Array.from({ length: 12 }, () => new AbortController());
+    const pending = controllers.map(controller => fetch(base + "/rpc/base-mainnet", { method: "POST",
+      signal: controller.signal, headers: { origin: base, "content-type": "application/json" },
+      body: JSON.stringify(envelope(rpc)) }));
+    const rejected = Promise.all(pending.map(p => assert.rejects(p)));
+    await entered.promise;
+    try { assert.equal((await post(base, envelope(rpc))).status, 429); }
+    finally { controllers.forEach(controller => controller.abort()); }
+    await rejected; await aborted.promise;
+    const next = await Promise.all(Array.from({ length: 12 }, () => post(base, envelope(rpc))));
+    for (const response of next) { assert.equal(response.status, 200); await response.text(); }
+    late.forEach(resolve => resolve({ ok: true, body: {
+      cancel() { cancellations++; return new Promise(() => {}); },
+    } }));
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(cancellations, 12); assert.equal(calls, 24);
+  });
+});
+
+test("relay refuses a redirected upstream success and retains generic local error text", async () => {
+  let cancelled = false;
+  await withServer(async () => ({ ok: true, redirected: true,
+    body: { cancel() { cancelled = true; return new Promise(() => {}); } },
+  }), async base => {
+    const response = await post(base, envelope(rpc));
+    assert.equal(response.status, 502);
+    assert.deepEqual(await response.json(), { error: "STATE_RPC_UNAVAILABLE" });
+  });
+  assert.equal(cancelled, true);
 });
