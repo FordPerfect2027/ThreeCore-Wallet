@@ -47,7 +47,8 @@ export async function readRehearsalInputFile(file, expectedHash = null, workspac
   const sha256 = createHash("sha256").update(bytes).digest("hex");
   if (expectedHash !== null && sha256 !== expectedHash) fail("CHECKSUM_MISMATCH");
   let text;
-  try { text = new TextDecoder("utf-8", { fatal: true }).decode(bytes); } catch { fail("INVALID_UTF8"); }
+  // Keep a BOM visible to the strict JSON parser, exactly as the browser does.
+  try { text = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes); } catch { fail("INVALID_UTF8"); }
   return { sha256, byteLength: bytes.length, expectedChecksumMatched: expectedHash === null ? null : true,
     data: workspace ? decodeRehearsalWorkspace(text) : decodeRehearsal(text) };
 }
