@@ -24,6 +24,6 @@ node scripts/check-rehearsal.js docs/evidence/2026-10-29-operation-ledger/chrome
 
 Expected: exit 0, three accepted records, cash `1028000000`, realized P&L `28000000`, fees `2000000`, reserved allocation `2800000`, available cash `1025200000` and remaining allocation `0`, all in six-decimal SIM base units. `sourceVerified` and `authorizesExecution` remain false. A hash match confirms byte equality, not provenance or authenticity.
 
-The actual JSON download is 1,581 bytes; the CSV is 786 bytes. The restored screen shows cash 1,028 SIM, realized P&L 28 SIM, reserved allocation 2.8 SIM and available cash 1,025.2 SIM. Reload/import preserves applied records and recomputes the result; in-memory undo history intentionally does not survive reload.
+The actual JSON download is 1,581 bytes; the CSV is 786 bytes. Evidence files retain their exact bytes through Git checkout, including the CSV's original CRLF line endings. The restored screen shows cash 1,028 SIM, realized P&L 28 SIM, reserved allocation 2.8 SIM and available cash 1,025.2 SIM. Reload/import preserves applied records and recomputes the result; in-memory undo history intentionally does not survive reload.
 
 The final focused automated suite passed 130 tests. The full unit rerun passed 11,707 tests and the integration suite passed 406. These counts overlap; see the batch report for the two late-added reentrancy tests, the initial timing-sensitive failure and its successful reruns, and the excluded token-contract compatibility suite.
