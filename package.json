@@ -10,6 +10,7 @@
   },
   "scripts": {
     "test": "node --test test/*.test.js",
+    "test:wallet": "node --test --test-concurrency=2 test/*.test.js integration/*-server.test.mjs integration/local-navigation-help.test.mjs",
     "check": "npm test",
     "rehearsal:check": "node scripts/check-rehearsal.js",
     "rehearsal:compare": "node scripts/compare-rehearsal-workspaces.js",

@@ -1,0 +1,6 @@
+{
+  "sourceRevision": "96abefd4879c8b4642e3fcf10b328bbcec4d46aa",
+  "testFiles": 390,
+  "excludedTokenHarness": "integration/token-compatibility.test.mjs requires a separately compiled token checkout",
+  "concurrency": 2
+}
