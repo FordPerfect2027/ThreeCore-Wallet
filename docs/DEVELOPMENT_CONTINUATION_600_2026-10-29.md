@@ -4,7 +4,7 @@ The user explicitly clarified that the next continuation is **20 × 30 = 600 ite
 
 Only completed, evidenced work counts. Repeated executions of the same check, renamed copies of a feature and individual test assertions do not create additional development items. Batch records will link source commits, relevant validation and artifacts; running totals must follow those records.
 
-Current continuation: **80 / 600 complete**. [Items 1–20: saved-report verification](OPERATION_REPORT_REVIEW_2026-10-29.md), [items 21–40: named comparison collections](OPERATION_SCENARIO_SET_2026-10-29.md), [items 41–60: expected-outcome checks](OPERATION_EXPECTED_OUTCOMES_2026-10-30.md), and [items 61–80: record navigation](OPERATION_RECORD_NAVIGATION_2026-10-30.md) are complete. The latest source is `5174cb4941e138d49716b8bc7f2cb7b507679d67`, with 445 related passing tests, exact browser/offline query outputs, and unchanged original records and case inputs. Remaining work will follow concrete product gaps and broader integration findings.
+Current continuation: **100 / 600 complete**. [Items 1–20: saved-report verification](OPERATION_REPORT_REVIEW_2026-10-29.md), [items 21–40: named comparison collections](OPERATION_SCENARIO_SET_2026-10-29.md), [items 41–60: expected-outcome checks](OPERATION_EXPECTED_OUTCOMES_2026-10-30.md), [items 61–80: record navigation](OPERATION_RECORD_NAVIGATION_2026-10-30.md), and [items 81–100: combined recovery](OPERATION_COMBINED_RECOVERY_2026-10-30.md) are complete. Latest source: `44a5144`, with 481 related tests; the broader 12,022-test wallet run was at the preceding `ff3b6a2` revision. Remaining work follows concrete product gaps and integration findings.
 
 ## Completed first group: saved-report verification (items 1–20)
 

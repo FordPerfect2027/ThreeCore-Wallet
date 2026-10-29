@@ -1,0 +1,121 @@
+{
+  "schema": "threecore.operation-rehearsal-session-inspection.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "byteLength": 17387,
+  "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c",
+  "activeAgent": "DAT",
+  "workspace": [
+    {
+      "agent": "DAT",
+      "present": true,
+      "recordCount": 3,
+      "rejectedRecords": 0
+    },
+    {
+      "agent": "EMA",
+      "present": true,
+      "recordCount": 2,
+      "rejectedRecords": 0
+    },
+    {
+      "agent": "CAWELON",
+      "present": true,
+      "recordCount": 1,
+      "rejectedRecords": 0
+    }
+  ],
+  "cases": [
+    {
+      "id": "dat-limit-50",
+      "label": "DAT 1回の上限を50に",
+      "agent": "DAT",
+      "chainId": 84532,
+      "account": "0x1111111111111111111111111111111111111111",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "beforeRecords": 3,
+      "afterRecords": 3,
+      "summary": {
+        "changedParameters": 1,
+        "changedRecords": 3,
+        "newlyRejected": 3,
+        "newlyAccepted": 0,
+        "changedReasons": 3,
+        "beforeOpenPositions": 0,
+        "afterOpenPositions": 0,
+        "beforeRejected": 0,
+        "afterRejected": 3,
+        "beforeAllocationBlockers": [],
+        "afterAllocationBlockers": [
+          "REJECTED_RECORDS",
+          "NO_NET_PROFIT"
+        ]
+      }
+    },
+    {
+      "id": "dat-quota-5",
+      "label": "DAT 還元割合を5%に",
+      "agent": "DAT",
+      "chainId": 84532,
+      "account": "0x1111111111111111111111111111111111111111",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "beforeRecords": 3,
+      "afterRecords": 3,
+      "summary": {
+        "changedParameters": 1,
+        "changedRecords": 1,
+        "newlyRejected": 1,
+        "newlyAccepted": 0,
+        "changedReasons": 1,
+        "beforeOpenPositions": 0,
+        "afterOpenPositions": 0,
+        "beforeRejected": 0,
+        "afterRejected": 1,
+        "beforeAllocationBlockers": [],
+        "afterAllocationBlockers": [
+          "REJECTED_RECORDS"
+        ]
+      }
+    },
+    {
+      "id": "ema-opening-1001",
+      "label": "EMA 開始資金を1001に",
+      "agent": "EMA",
+      "chainId": 84532,
+      "account": "0x2222222222222222222222222222222222222222",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "beforeRecords": 2,
+      "afterRecords": 2,
+      "summary": {
+        "changedParameters": 1,
+        "changedRecords": 2,
+        "newlyRejected": 0,
+        "newlyAccepted": 0,
+        "changedReasons": 0,
+        "beforeOpenPositions": 0,
+        "afterOpenPositions": 0,
+        "beforeRejected": 0,
+        "afterRejected": 0,
+        "beforeAllocationBlockers": [
+          "NO_NET_PROFIT"
+        ],
+        "afterAllocationBlockers": [
+          "NO_NET_PROFIT"
+        ]
+      }
+    }
+  ]
+}

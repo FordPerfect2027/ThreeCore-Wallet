@@ -1,0 +1,82 @@
+[
+  {
+    "step": "combined-preview-does-not-apply",
+    "scenario-set-count": "表示 0件 / 保存中 0件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-rows": "",
+    "session-cases": "dat-limit-50\t追加\tなし\tDAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\t—\ndat-quota-5\t追加\tなし\tDAT 還元割合を5%に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\t—\nema-opening-1001\t追加\tなし\tEMA 開始資金を1001に / EMA / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 2件\t—",
+    "session-receipt": "",
+    "session-status": "変更する履歴とケース集を確認してください。まだ現在の記録は変わっていません。",
+    "session-summary": "作成済みの履歴 0 → 3対象 / 比較ケース 0 → 3件。まだ反映していません。履歴とケース集の両方を置き換え、両方の取り消し履歴をクリアします。",
+    "workspace-rows": "DAT\t未作成\t—\t—\t—\nEMA\t未作成\t—\t—\t—\nCAWELON\t未作成\t—\t—\t—"
+  },
+  {
+    "step": "cancel-preserves-empty-new-page",
+    "scenario-set-count": "表示 0件 / 保存中 0件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-rows": "",
+    "session-cases": "",
+    "session-receipt": "",
+    "session-status": "まとめ復旧の確認を取り消しました。現在の履歴とケース集は保持しています。",
+    "session-summary": "",
+    "workspace-rows": "DAT\t未作成\t—\t—\t—\nEMA\t未作成\t—\t—\t—\nCAWELON\t未作成\t—\t—\t—"
+  },
+  {
+    "step": "one-confirmation-restores-six-records-and-three-cases",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "session-cases": "",
+    "session-receipt": "直前のまとめ復旧: 貼り付けたまとめ記録 / DAT 3件 / EMA 2件 / CAWELON 1件 / 比較ケース 3件。",
+    "session-status": "履歴とケース集をまとめて復旧しました。両方の取り消し履歴は新しく開始します。",
+    "session-summary": "",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "invalid-case-refuses-entire-bundle",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "session-cases": "",
+    "session-receipt": "直前のまとめ復旧: 貼り付けたまとめ記録 / DAT 3件 / EMA 2件 / CAWELON 1件 / 比較ケース 3件。",
+    "session-status": "まとめた記録を確認できませんでした。2 MiB以内の保存ファイルを選んでください。現在の履歴とケース集は保持しています。",
+    "session-summary": "",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "case-change-preview-remains-unapplied",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "session-cases": "dat-limit-50\t変更\tDAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\t未確定の名前変更 / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\t—\ndat-quota-5\t同じ\tDAT 還元割合を5%に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\tDAT 還元割合を5%に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\t—\nema-opening-1001\t同じ\tEMA 開始資金を1001に / EMA / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 2件\tEMA 開始資金を1001に / EMA / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 2件\t—",
+    "session-receipt": "直前のまとめ復旧: 貼り付けたまとめ記録 / DAT 3件 / EMA 2件 / CAWELON 1件 / 比較ケース 3件。",
+    "session-status": "変更する履歴とケース集を確認してください。まだ現在の記録は変わっていません。",
+    "session-summary": "作成済みの履歴 3 → 3対象 / 比較ケース 3 → 3件。まだ反映していません。履歴とケース集の両方を置き換え、両方の取り消し履歴をクリアします。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "new-hypothetical-edit-revokes-combined-review",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "session-cases": "",
+    "session-receipt": "直前のまとめ復旧: 貼り付けたまとめ記録 / DAT 3件 / EMA 2件 / CAWELON 1件 / 比較ケース 3件。",
+    "session-status": "履歴またはケースの操作がありました。まとめて復旧する場合は保存したファイルをもう一度確認してください。",
+    "session-summary": "",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "identical-bundle-does-not-need-restore",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "session-cases": "dat-limit-50\t同じ\tDAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\tDAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\t—\ndat-quota-5\t同じ\tDAT 還元割合を5%に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\tDAT 還元割合を5%に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 3件\t—\nema-opening-1001\t同じ\tEMA 開始資金を1001に / EMA / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 2件\tEMA 開始資金を1001に / EMA / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / 元記録 2件\t—",
+    "session-receipt": "直前のまとめ復旧: 貼り付けたまとめ記録 / DAT 3件 / EMA 2件 / CAWELON 1件 / 比較ケース 3件。",
+    "session-status": "変更する履歴とケース集を確認してください。まだ現在の記録は変わっていません。",
+    "session-summary": "作成済みの履歴 3 → 3対象 / 比較ケース 3 → 3件。入力内容は同じです。置き換えは不要です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "final-original-records-and-case-collection",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "session-cases": "",
+    "session-receipt": "直前のまとめ復旧: 貼り付けたまとめ記録 / DAT 3件 / EMA 2件 / CAWELON 1件 / 比較ケース 3件。",
+    "session-status": "まとめ復旧の確認を取り消しました。現在の履歴とケース集は保持しています。",
+    "session-summary": "",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  }
+]
