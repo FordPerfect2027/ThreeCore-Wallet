@@ -1,0 +1,9 @@
+{
+  "sourceRevision": "809378aff5a73c305b067712bebb8db2d9775782",
+  "command": "node --test --test-concurrency=2 test/*.test.js integration/*-server.test.mjs integration/local-navigation-help.test.mjs",
+  "fileCount": 391,
+  "excluded": [
+    "integration/token-compatibility.test.mjs"
+  ],
+  "sourceFrozenDuringRun": true
+}
