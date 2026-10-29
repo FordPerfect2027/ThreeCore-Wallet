@@ -1,0 +1,10 @@
+{
+  "documentWidth": 756,
+  "entry": "http://127.0.0.1:62110/rehearsal/",
+  "heading": "このタブで開き直してください",
+  "readOnly": true,
+  "scriptElements": 0,
+  "steps": "このタブを選んだまま、Ctrl＋Lでアドレスバー全体を選択します。\n上のURLを入力し、Enterを押します。\n「運用リハーサル」が表示されたことを確認します。",
+  "title": "開き方の確認 — ThreeCore Wallet",
+  "viewportWidth": 756
+}
