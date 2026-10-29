@@ -52,6 +52,17 @@ const workspaceText = (ledgers, activeAgent = "DAT") => encodeRehearsalWorkspace
 const pasteWorkspace = (f, text) => { f.change("workspace-text", text); f.field("workspace-text-review").click(); };
 const renderedText = node => [node.textContent, ...node.children.map(renderedText)].join(" ");
 
+test("read-only saved-report review preserves workspace, undo and pending restore",async()=>{
+  const f=setup();f.field("example").click();prepareAppend(f,"reserve");f.field("append-confirm").click();
+  const before=savedWorkspace(f);const report=encodeRehearsalOverview(before);
+  pasteWorkspace(f,workspaceText([rehearsalExampleV2("EMA")],"EMA"));
+  f.change("report-review-text",report);f.field("report-review-paste").click();
+  for(let i=0;i<100&&f.field("report-review-status").getAttribute("aria-busy")==="true";i++)await new Promise(resolve=>setTimeout(resolve,1));
+  assert.equal(f.field("report-review-save").disabled,false);assert.equal(f.field("undo").disabled,false);
+  assert.equal(f.field("workspace-apply").disabled,false);assert.deepEqual(savedWorkspace(f),before);
+  f.field("workspace-cancel").click();f.field("undo").click();assert.equal(f.field("rows").children.length,2);
+});
+
 test("scenario panel remains disabled until there is a displayed source",()=>{
   const f=setup(); for(const id of ["compare","reset","save","input-save","openingBalance"])
     assert.equal(f.field("whatif-"+id).disabled,true,id);
