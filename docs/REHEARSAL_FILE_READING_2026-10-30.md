@@ -29,4 +29,8 @@ Work continued through the page's existing paste/review/apply controls. The orig
 
 ![Latest rehearsal with restored history and a completed actual download checked separately](evidence/2026-10-30-rehearsal-file-reading/browser-save.png)
 
-These are local changes and fictional data. No signature, transaction, token approval, secret retrieval, production deployment or public publication occurred. The browser connection is working; automated file selection has a separate unresolved permission prerequisite. Test counts do not represent development percentages or mainnet readiness.
+These are local changes and fictional data. No signature, transaction, token approval, secret retrieval, production deployment or public publication occurred. The original browser verification above used paste and left native file selection unverified. After the user enabled file-URL access and selected the rehearsal tab, [native file import, restoration and exact-byte re-export were subsequently verified](NATIVE_FILE_IMPORT_2026-10-30.md). Test counts do not represent development percentages or mainnet readiness.
+
+## Follow-up: native file import is now verified
+
+The historical limitation described above was resolved in the subsequent [native Edge file verification](NATIVE_FILE_IMPORT_2026-10-30.md). The actual saved file was selected, reviewed and restored, then downloaded again with identical bytes. No additional development item is counted for completing this previously pending browser acceptance check.
