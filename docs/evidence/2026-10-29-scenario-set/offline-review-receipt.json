@@ -1,0 +1,35 @@
+{
+  "schema": "threecore.operation-rehearsal-report-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "inputSchema": "threecore.operation-rehearsal-scenario-set-report.v1",
+  "byteLength": 18665,
+  "sha256": "631ed3233adda88ca3baeed8383448f2ff6ce19704d72b8d1b169f1173321014",
+  "expectedSha256": null,
+  "checksumMatches": null,
+  "matchesRecomputation": true,
+  "differenceCount": 0,
+  "differences": [],
+  "differencesTruncated": false,
+  "scope": [
+    {
+      "agent": "DAT",
+      "caseId": "dat-limit-50",
+      "beforeRecords": 3,
+      "afterRecords": 3
+    },
+    {
+      "agent": "DAT",
+      "caseId": "dat-quota-5",
+      "beforeRecords": 3,
+      "afterRecords": 3
+    },
+    {
+      "agent": "EMA",
+      "caseId": "ema-opening-1001",
+      "beforeRecords": 2,
+      "afterRecords": 2
+    }
+  ]
+}

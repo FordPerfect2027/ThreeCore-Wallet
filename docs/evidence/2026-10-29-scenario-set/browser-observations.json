@@ -1,0 +1,156 @@
+[
+  {
+    "step": "first-case-confirmed",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 1件 / 保存中 1件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件",
+    "scenario-set-status": "ケース集の変更を確定しました。元の試算履歴は保持しています。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 3件 / 新たな見送り 3件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "duplicate-id-refused",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 1件 / 保存中 1件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件",
+    "scenario-set-status": "ケースを確認できませんでした。IDの重複、名前、資料形式、最大12件・1 MiBの制限を確認してください。確定済みのケースは保持しています。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 3件 / 新たな見送り 3件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "second-case-confirmed",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 2件 / 保存中 2件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件",
+    "scenario-set-status": "ケース集の変更を確定しました。元の試算履歴は保持しています。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 1件 / 新たな見送り 1件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "rejected-filter-two-of-three",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 2件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件",
+    "scenario-set-status": "ケース集の変更を確定しました。元の試算履歴は保持しています。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 2件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "filtered-full-and-selected-downloads",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 2件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-quota-5 — DAT 還元割合を5%に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 1件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件",
+    "scenario-set-status": "ケースの詳細を表示しています。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 2件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "rename-confirmed",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-quota-5 — DAT 還元割合5%・見直し / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 1件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合5%・見直し\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "scenario-set-status": "ケース集の変更を確定しました。元の試算履歴は保持しています。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 2件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "delete-confirmed",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 2件 / 保存中 2件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "scenario-set-status": "ケース集の変更を確定しました。元の試算履歴は保持しています。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 2件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "deleted-case-restored-by-undo",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合5%・見直し\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "scenario-set-status": "ケース集の直前の変更を取り消しました。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 2件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "import-preview-no-auto-apply",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "ケース数 3 → 3。まだ反映していません。変更する対象を確認して確定してください。",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合5%・見直し\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "scenario-set-status": "変更内容を確認してください。元の試算履歴は変更しません。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 2件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "import-cancel-keeps-renamed-case",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合5%・見直し\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "scenario-set-status": "確認中の変更を取り消しました。確定したケースは保持しています。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 2件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "import-confirmed-original-names",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "scenario-set-status": "ケース集の変更を確定しました。元の試算履歴は保持しています。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 2件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "import-undo-restores-renamed-case",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合5%・見直し\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "scenario-set-status": "ケース集の直前の変更を取り消しました。",
+    "whatif-summary": "変更した条件 1項目 / 結果が変わる記録 2件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "final-original-workspace-and-three-cases",
+    "report-review-status": "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "scenario-set-status": "上の比較が変わりました。保存中のケースは保持しています。",
+    "whatif-summary": "",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "collection-report-recomputed-in-browser",
+    "report-review-status": "資料の計算結果は再計算と一致しました。入力の出所や実際の残高を証明するものではありません。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "scenario-set-detail": "dat-limit-50 — DAT 1回の上限を50に / DAT / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。変更条件 1項目、結果が変わる記録 3件。保存時の入力に基づく比較です。",
+    "scenario-set-preview": "",
+    "scenario-set-rows": "dat-limit-50\tDAT 1回の上限を50に\tDAT\t1項目\t3件\t3件\ndat-quota-5\tDAT 還元割合を5%に\tDAT\t1項目\t1件\t1件\nema-opening-1001\tEMA 開始資金を1001に\tEMA\t1項目\t2件\t0件",
+    "scenario-set-status": "上の比較が変わりました。保存中のケースは保持しています。",
+    "whatif-summary": "",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  }
+]
