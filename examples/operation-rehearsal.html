@@ -14,7 +14,19 @@
     <p>資金を動かす前に、利用上限と損益の計算を試します。</p>
     <p class="notice"><strong>すべて仮の記録による試算です。</strong> Wallet接続・署名・送金・外部サービスへの通信は行いません。例の数値は運用方針ではありません。</p>
   </header>
-  <nav class="actions" aria-label="リハーサルの各機能"><a href="#workspace-title">履歴の保存・復旧</a><a href="#whatif-title">条件の比較</a><a href="#scenario-set-title">比較ケース</a><a href="#record-browser-title">記録を探す</a><a href="#ledger-title">記録を追記</a><a href="#check-suite-title">期待結果の確認</a><a href="#report-review-title">資料の再確認</a></nav>
+  <nav class="actions" aria-label="リハーサルの各機能"><a href="#session-title">まとめて保存・復旧</a><a href="#workspace-title">履歴の保存・復旧</a><a href="#whatif-title">条件の比較</a><a href="#scenario-set-title">比較ケース</a><a href="#record-browser-title">記録を探す</a><a href="#ledger-title">記録を追記</a><a href="#check-suite-title">期待結果の確認</a><a href="#report-review-title">資料の再確認</a></nav>
+  <section aria-labelledby="session-title">
+    <h2 id="session-title">履歴と比較ケースをまとめて保存・復旧</h2>
+    <p>3トークンの試算履歴と全比較ケースを、一つのファイルで保存できます。個別の保存ファイルも引き続き使えます。</p>
+    <div class="actions"><button id="session-save" type="button" disabled>履歴とケース集をまとめて保存</button><label class="file-label">まとめた記録を選ぶ<input id="session-file" type="file" accept=".json,application/json"></label><button id="session-cancel" type="button">まとめ復旧の確認を取り消す</button></div>
+    <p id="session-export-status" role="status" aria-live="polite" class="small"></p><p id="session-status" role="status" aria-live="polite"></p><p id="session-source" class="small"></p>
+    <div id="session-review" hidden><p id="session-summary"></p><div id="session-workspace-details"></div>
+      <div class="table-wrap"><table><caption>比較ケース集の置き換え内容</caption><thead><tr><th>ID</th><th>操作</th><th>現在</th><th>復旧後</th><th>入力の変更</th></tr></thead><tbody id="session-cases"></tbody></table></div>
+    </div>
+    <button id="session-apply" type="button" disabled>確認した履歴とケース集をまとめて復旧</button><p id="session-receipt" class="small"></p>
+    <details><summary>まとめた記録を選べない場合</summary><p class="small">2 MiB以内のまとめ記録JSONを貼り付けられます。先に履歴とケースの変更内容を確認し、復旧を確定してください。</p><label>まとめた記録の内容<textarea id="session-text" rows="7" maxlength="2097153" spellcheck="false"></textarea></label><button id="session-paste" type="button">貼り付けたまとめ記録を確認</button></details>
+    <p class="small">復旧では履歴とケース集の両方を置き換え、取り消し履歴をクリアします。未確定の入力、検索条件、保存済み資料・期待結果の確認表示は含みません。ページを閉じる前に保存してください。</p>
+  </section>
   <section class="toolbar" aria-label="サンプル">
     <label>対象<select id="agent"><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label>
     <label>試すケース<select id="scenario">

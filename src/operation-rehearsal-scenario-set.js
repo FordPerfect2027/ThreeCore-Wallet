@@ -57,8 +57,8 @@ export function encodeRehearsalScenarioSetReport(input) {
 }
 
 /** Every edit is previewed against the same current immutable set and can be undone. */
-export function createRehearsalScenarioSet() {
-  let current=validateRehearsalScenarioSet({schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[]});
+export function createRehearsalScenarioSet(initial={schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[]}) {
+  let current=validateRehearsalScenarioSet(initial);
   let pending=null, revision=0, disposed=false, history=[];
   const active=()=>{if(disposed)fail("SCENARIO_SET_DISPOSED");};
   const cancel=()=>{revision++;pending=null;};

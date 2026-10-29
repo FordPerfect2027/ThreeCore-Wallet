@@ -54,6 +54,20 @@ const workspaceText = (ledgers, activeAgent = "DAT") => encodeRehearsalWorkspace
 const pasteWorkspace = (f, text) => { f.change("workspace-text", text); f.field("workspace-text-review").click(); };
 const renderedText = node => [node.textContent, ...node.children.map(renderedText)].join(" ");
 
+test("combined restore replaces workspace and case collection together and clears their undo histories",()=>{
+  const f=setup();f.field("example").click();prepareAppend(f,"reserve");f.field("append-confirm").click();f.field("whatif-compare").click();
+  f.change("scenario-set-id","dat");f.change("scenario-set-label","DATのケース");f.field("scenario-set-add").click();f.field("scenario-set-apply").click();f.field("session-save").click();const original=f.downloads.at(-1).text;
+  selectAgent(f,"EMA");f.field("example").click();f.field("whatif-compare").click();f.change("scenario-set-id","ema");f.change("scenario-set-label","EMAのケース");f.field("scenario-set-add").click();f.field("scenario-set-apply").click();
+  f.change("session-text",original);f.field("session-paste").click();assert.equal(f.field("scenario-set-rows").children.length,2);assert.match(renderedText(f.field("session-workspace-details")),/履歴を消去/);
+  f.field("session-apply").click();assert.equal(f.field("agent").value,"DAT");assert.equal(f.field("rows").children.length,3);assert.equal(f.field("scenario-set-rows").children.length,1);assert.equal(f.field("undo").disabled,true);assert.equal(f.field("scenario-set-undo").disabled,true);
+  f.field("session-save").click();assert.equal(f.downloads.at(-1).text,original);assert.match(f.field("session-receipt").textContent,/DAT 3件.*比較ケース 1件/);
+});
+test("read-only search retains combined review while a hypothetical draft edit revokes it",()=>{
+  const f=setup();f.field("example").click();f.field("session-save").click();const text=f.downloads.at(-1).text;selectAgent(f,"EMA");f.field("example").click();
+  f.change("session-text",text);f.field("session-paste").click();f.change("record-browser-search","one");assert.equal(f.field("session-apply").disabled,false);
+  f.change("whatif-openingBalance","1001");assert.equal(f.field("session-apply").disabled,true);f.field("session-save").click();assert.equal(JSON.parse(f.downloads.at(-1).text).workspace.ledgers.length,2);
+});
+
 test("record queries preserve pending append and restore and expose only committed inputs",()=>{
   const f=setup();f.field("example").click();prepareAppend(f,"reserve");const before=savedWorkspace(f);
   assert.equal(f.field("record-browser-rows").children.length,2);f.change("record-browser-search","settle");

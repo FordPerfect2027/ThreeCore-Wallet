@@ -5,8 +5,8 @@ import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "../src/operation-rehearsal-check-suite.js";
 
-export function mountRehearsalScenarioSetPanel(document, { download, getComparison }) {
-  const get=name=>document.getElementById("scenario-set-"+name), store=createRehearsalScenarioSet();
+export function mountRehearsalScenarioSetPanel(document, { download, getComparison, store=createRehearsalScenarioSet() }) {
+  const get=name=>document.getElementById("scenario-set-"+name);
   let disposed=false, revision=0, pending=null, report=reportRehearsalScenarioSet(store.state().current), selectedId="";
   const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
@@ -108,7 +108,8 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
   });
   function sourceChanged(){if(disposed)return;cancel("上の比較が変わりました。保存中のケースは保持しています。");const available=Boolean(getComparison());get("add").disabled=!available;get("replace").disabled=!available;}
   render();sourceChanged();
-  return Object.freeze({sourceChanged,dispose(){if(disposed)return;cancel("");disposed=true;store.dispose();report=null;selectedId="";
+  return Object.freeze({sourceChanged,refresh(){if(disposed)return;cancel("保存済みのケース集を表示しています。");selectedId="";render();
+    const chosen=report.rows.find(row=>row.id===selectedId);get("id").value=chosen?.id??"";get("label").value=chosen?.label??"";sourceChanged();},dispose(){if(disposed)return;cancel("");disposed=true;store.dispose();report=null;selectedId="";
     for(const name of ["rows","select","metrics","detail","count","export-status","source"])get(name).textContent="";
     for(const name of ["add","replace","apply","save","report-save","case-save","baseline-save","undo"])get(name).disabled=true;
     for(const name of ["id","label","text","file"])get(name).value="";for(const remove of listeners)remove();}});

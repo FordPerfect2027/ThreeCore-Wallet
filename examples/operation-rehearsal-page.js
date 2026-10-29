@@ -2,7 +2,7 @@ import { decodeRehearsal, encodeRehearsal, evaluateRehearsal, parseRehearsalUnit
   formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { rehearsalCsv } from "../src/operation-rehearsal-ledger.js";
-import { createRehearsalWorkspace, decodeRehearsalWorkspace, encodeRehearsalWorkspace,
+import { decodeRehearsalWorkspace, encodeRehearsalWorkspace,
   reportRehearsalWorkspace, REHEARSAL_WORKSPACE_LIMIT } from "../src/operation-rehearsal-workspace.js";
 import { offerWalletDownload } from "./export-download.js";
 import { compareRehearsalWorkspaces, encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
@@ -12,6 +12,8 @@ import { mountRehearsalReviewPanel } from "./operation-rehearsal-review-panel.js
 import { mountRehearsalScenarioSetPanel } from "./operation-rehearsal-scenario-set-panel.js";
 import { mountRehearsalCheckPanel } from "./operation-rehearsal-check-panel.js";
 import { mountRehearsalRecordsPanel } from "./operation-rehearsal-records-panel.js";
+import { createRehearsalSession } from "../src/operation-rehearsal-session.js";
+import { mountRehearsalSessionPanel } from "./operation-rehearsal-session-panel.js";
 
 const REASONS = Object.freeze({
   PAUSED: "新規利用の停止中", REUSED_OPERATION: "同じ操作の再利用", UNLISTED_ORIGIN: "対象外のサイト",
@@ -41,14 +43,18 @@ const REVIEW_ACTIONS = Object.freeze({ absent: "未作成のまま", added: "復
 export function mountOperationRehearsal(document, download = offerWalletDownload) {
   const get = name => document.getElementById(name);
   let current = null, candidate = null, revision = 0, disposed = false;
-  const ledger = createRehearsalWorkspace(get("agent").value);
+  const session = createRehearsalSession(get("agent").value), ledger = session.workspace;
   let scenarioSetPanel = null;
   const scenarioPanel = mountRehearsalScenarioPanel(document, { download, reasons: REASONS, kinds: KINDS,
     onChange: () => scenarioSetPanel?.sourceChanged() });
-  scenarioSetPanel = mountRehearsalScenarioSetPanel(document, { download, getComparison: () => scenarioPanel.comparison() });
+  scenarioSetPanel = mountRehearsalScenarioSetPanel(document, { download, store: session.cases, getComparison: () => scenarioPanel.comparison() });
   const reportReviewPanel = mountRehearsalReviewPanel(document, { download });
   const checkPanel = mountRehearsalCheckPanel(document, { download, reasons: REASONS });
   const recordsPanel = mountRehearsalRecordsPanel(document, { download, reasons: REASONS, kinds: KINDS });
+  const sessionPanel = mountRehearsalSessionPanel(document, { session, download,
+    renderWorkspaceComparison: comparison => renderComparisonDetails(comparison, get("session-workspace-details")),
+    onRestored: () => {get("agent").value=ledger.state().activeAgent;const input=ledger.state().current;
+      if(input)show(input,true);else clear("選択中の対象は未作成です。",true);scenarioSetPanel.refresh();} });
   let appendReview = null, workspaceReview = null, workspaceComparison = null;
   let workspacePhase = "idle", workspaceSource = "";
   const listeners = [];
@@ -112,8 +118,8 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     get("workspace-apply").disabled = false;
     setWorkspaceStage("review", "上の一覧は現在の履歴です。下の変更内容を確認し、「確認した3トークンの履歴を復旧」を押してください。必要なら現在の履歴を先に一括保存できます。");
   }
-  function renderComparisonDetails(comparison) {
-    const root = get("workspace-details"); root.textContent = "";
+  function renderComparisonDetails(comparison, root = get("workspace-details")) {
+    root.textContent = "";
     const note = document.createElement("p"); note.className = "small";
     note.textContent = "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。" +
       (comparison.selectedAgentChanged ? " 復旧後の表示対象: " + comparison.inputs.before.activeAgent + " → " + comparison.inputs.after.activeAgent + "。" : "");
@@ -532,12 +538,13 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   renderWorkspace();
   setWorkspaceStage("idle", "保存した記録を選ぶと、復旧前に変更内容を確認できます。自動保存は行いません。");
   return Object.freeze({ dispose() {
-    if (disposed) return; disposed = true; clear("表示を終了しました。"); ledger.dispose();
+    if (disposed) return; disposed = true; sessionPanel.dispose(); clear("表示を終了しました。"); ledger.dispose();
     scenarioPanel.dispose();
     scenarioSetPanel.dispose();
     reportReviewPanel.dispose();
     checkPanel.dispose();
     recordsPanel.dispose();
+    session.dispose();
     get("workspace-rows").textContent = ""; get("workspace-save").disabled = true;
     get("workspace-status").textContent = "表示を終了しました。";
     for (const name of ["workspace-receipt", "workspace-source", "workspace-stage", "workspace-file-note"]) get(name).textContent = "";
