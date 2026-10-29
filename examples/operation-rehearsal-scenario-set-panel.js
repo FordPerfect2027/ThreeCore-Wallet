@@ -36,7 +36,7 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
   function fail(){cancel("ケースを確認できませんでした。IDの重複、名前、資料形式、最大12件・1 MiBの制限を確認してください。確定済みのケースは保持しています。");}
   function detail(){
     get("metrics").textContent="";const entry=report.rows.find(item=>item.id===selectedId);
-    get("case-save").disabled=!entry;
+    get("case-save").disabled=!entry;get("case-baseline-save").disabled=!entry;
     if(!entry){get("detail").textContent="表示するケースがありません。";return;}
     get("detail").textContent=entry.id+" — "+entry.label+" / "+entry.agent+" / ネットワーク "+entry.chainId+" / 口座 "+entry.account+
       " / 資産 "+entry.asset.symbol+" ("+entry.asset.address+")。変更条件 "+entry.summary.changedParameters+"項目、結果が変わる記録 "+
@@ -100,17 +100,23 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
     if(disposed)return;const item=store.state().current.cases.find(row=>row.id===selectedId);if(!item)return;
     try{download({document,prepared:{text:encodeRehearsalScenario(item.before,item.after),filename:"ThreeCore-case-"+item.id+"-comparison.json",mimeType:"application/json"}});get("export-status").textContent="選択したケースの比較資料を保存し始めました。";}catch{get("export-status").textContent="比較資料を保存できませんでした。";}
   });
-  listen("baseline-save","click",()=>{
-    if(disposed||!store.state().current.cases.length)return;
-    try{download({document,prepared:{text:encodeRehearsalCheckSuite(captureRehearsalCheckSuite(store.state().current)),filename:"ThreeCore-expected-outcomes.json",mimeType:"application/json"}});
-      get("export-status").textContent="全ケースの現在の計算結果を、今後の比較に使う期待結果として保存し始めました。";
-    }catch{get("export-status").textContent="期待結果を保存できませんでした。ケース数や記録数を減らして1 MiB以内にしてください。画面のケースは保持しています。";}
+  for(const [name,selectedOnly]of[["baseline-save",false],["case-baseline-save",true]])listen(name,"click",()=>{
+    if(disposed)return;const current=store.state().current;
+    const chosen=current.cases.find(row=>row.id===selectedId);
+    if(!current.cases.length||(selectedOnly&&!chosen))return;
+    const input=selectedOnly?{...current,cases:[chosen]}:current;
+    try{download({document,prepared:{text:encodeRehearsalCheckSuite(captureRehearsalCheckSuite(input)),
+      filename:selectedOnly?"ThreeCore-case-"+chosen.id+"-expected-outcomes.json":"ThreeCore-expected-outcomes.json",mimeType:"application/json"}});
+      get("export-status").textContent=(selectedOnly?"選択したケース "+chosen.id:"全ケース")+"の現在の計算結果を、今後の比較に使う期待結果として保存し始めました。";
+    }catch(error){get("export-status").textContent=error?.code==="FILE_TOO_LARGE"
+      ?"期待結果が保存上限の1 MiBを超えました。ケースを削除せず、「選択したケースの期待結果を保存」で1件ずつ保存できます。画面のケースは保持しています。"
+      :"期待結果の保存を開始できませんでした。もう一度保存してください。画面のケースは保持しています。";}
   });
   function sourceChanged(){if(disposed)return;cancel("上の比較が変わりました。保存中のケースは保持しています。");const available=Boolean(getComparison());get("add").disabled=!available;get("replace").disabled=!available;}
   render();sourceChanged();
   return Object.freeze({sourceChanged,refresh(){if(disposed)return;cancel("保存済みのケース集を表示しています。");selectedId="";render();
     const chosen=report.rows.find(row=>row.id===selectedId);get("id").value=chosen?.id??"";get("label").value=chosen?.label??"";sourceChanged();},dispose(){if(disposed)return;cancel("");disposed=true;store.dispose();report=null;selectedId="";
     for(const name of ["rows","select","metrics","detail","count","export-status","source"])get(name).textContent="";
-    for(const name of ["add","replace","apply","save","report-save","case-save","baseline-save","undo"])get(name).disabled=true;
+    for(const name of ["add","replace","apply","save","report-save","case-save","baseline-save","case-baseline-save","undo"])get(name).disabled=true;
     for(const name of ["id","label","text","file"])get(name).value="";for(const remove of listeners)remove();}});
 }

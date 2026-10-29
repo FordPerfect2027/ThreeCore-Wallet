@@ -6,6 +6,7 @@ import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { compareRehearsalScenario, buildRehearsalScenario, rehearsalScenarioParameters, encodeRehearsalScenario } from "../src/operation-rehearsal-scenario.js";
 import { REHEARSAL_SCENARIO_SET_SCHEMA, REHEARSAL_SCENARIO_SET_LIMIT, encodeRehearsalScenarioSet, encodeRehearsalScenarioSetReport } from "../src/operation-rehearsal-scenario-set.js";
 import { runRehearsalCheckSuite } from "../src/operation-rehearsal-check-suite.js";
+import { capacityCases } from "./helpers/rehearsal-capacity-fixtures.js";
 class Node extends Element {set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
 const rendered=n=>[n.textContent,...n.children.map(rendered)].join(" ");
 const comparison=(agent="DAT",amount="50000000")=>{const before=rehearsalExampleV2(agent);return compareRehearsalScenario(before,buildRehearsalScenario(before,{...rehearsalScenarioParameters(before),maxPerOperation:amount}));};
@@ -88,4 +89,30 @@ for(const action of ["cancel","paste","dispose"])test(action+" supersedes a late
 test("download failure leaves cases and undo available, disposal removes listeners",()=>{
   const f=setup();f.add();f.failDownload();f.field("save").click();assert.match(f.field("export-status").textContent,/保存できません/);
   assert.equal(f.field("rows").children.length,1);f.panel.dispose();f.field("apply").click();assert.equal(f.field("rows").children.length,0);assert.equal(f.field("undo").disabled,true);
+});
+test("selected-case baseline uses the visible selected case and preserves the whole collection and undo",()=>{
+  const f=setup();assert.equal(f.field("case-baseline-save").disabled,true);
+  f.add("dat");f.add("ema","EMA");f.change("select","ema","change");const before=f.saved();
+  f.field("case-baseline-save").click();const file=f.downloads.at(-1),suite=JSON.parse(file.text);
+  assert.equal(file.filename,"ThreeCore-case-ema-expected-outcomes.json");
+  assert.deepEqual(suite.inputs.cases,[before.cases.find(c=>c.id==="ema")]);
+  assert.equal(runRehearsalCheckSuite(suite).summary.allMatched,true);assert.deepEqual(f.saved(),before);
+  assert.equal(f.field("select").value,"ema");assert.equal(f.field("undo").disabled,false);
+  f.change("agent","CAWELON","change");assert.equal(f.field("case-baseline-save").disabled,true);
+  const count=f.downloads.length;f.field("case-baseline-save").click();assert.equal(f.downloads.length,count);
+});
+test("oversized all-case baseline suggests individual export without deleting any saved case",()=>{
+  const f=setup(),text=encodeRehearsalScenarioSet(capacityCases(140));
+  f.paste(text);f.field("apply").click();f.field("baseline-save").click();
+  assert.equal(f.downloads.length,0);assert.match(f.field("export-status").textContent,/削除せず/);
+  assert.match(f.field("export-status").textContent,/1 MiB/);assert.equal(f.field("rows").children.length,12);
+  f.field("case-baseline-save").click();const suite=JSON.parse(f.downloads[0].text);
+  assert.equal(suite.inputs.cases.length,1);assert.equal(suite.inputs.cases[0].before.events.length,140);
+  assert.equal(encodeRehearsalScenarioSet(f.saved()),text);assert.equal(f.field("undo").disabled,false);
+});
+test("baseline download failure does not incorrectly ask the user to reduce their records",()=>{
+  const f=setup();f.add();f.failDownload();f.field("baseline-save").click();
+  assert.match(f.field("export-status").textContent,/もう一度保存/);assert.doesNotMatch(f.field("export-status").textContent,/1 MiB|減らして/);
+  f.field("case-baseline-save").click();assert.match(f.field("export-status").textContent,/保持しています/);
+  f.panel.dispose();assert.equal(f.field("case-baseline-save").disabled,true);
 });
