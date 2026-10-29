@@ -1,4 +1,5 @@
 import { SECURITY_HEADERS, inspectLocalRequest } from "./security-http.js";
+import { renderLocalNavigationHelp } from "./local-navigation-help.js";
 import { createBaseStateRpcHandler } from "./base-state-rpc.js";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -238,8 +239,9 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
     for (const [name, value] of Object.entries(SECURITY_HEADERS)) response.setHeader(name, value);
     const verdict = inspectLocalRequest(request);
     if (verdict.status !== 200) {
-      response.writeHead(verdict.status, { "content-type": "text/plain; charset=utf-8" });
-      response.end(verdict.reason);
+      const help = renderLocalNavigationHelp(request, verdict);
+      response.writeHead(verdict.status, { "content-type": help ? "text/html; charset=utf-8" : "text/plain; charset=utf-8" });
+      response.end(help ?? verdict.reason);
       return;
     }
     const item = paths.get(verdict.pathname);
