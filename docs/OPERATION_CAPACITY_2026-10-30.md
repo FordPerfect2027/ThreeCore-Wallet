@@ -39,3 +39,11 @@ These byte sizes describe these fixtures, not a promise that every document with
 During large-file input, the original Edge connection became unavailable. The same profile reconnected with a new browser ID, but the old tab remained unattached. A new tab is connected; automatic navigation is refused by the app's existing cross-site protection. The user has been asked to open the local rehearsal URL directly in that tab. No origin protections were disabled, and no successful large-file browser import or native file selection is claimed.
 
 The original six-record / three-case session remains saved in the prior [combined recovery evidence](evidence/2026-10-30-combined-recovery/edge-session-before.json). No signatures, transfers, approvals, private-key retrieval, publishing or deployment occurred.
+
+### Subsequent connection attempts
+
+The user opened a fresh rehearsal tab, and an empty rehearsal screen was successfully inspected through the browser control. Attempting to fill the 1,040,656-byte capacity document then timed out and the connection changed again, reproducing the earlier interruption. This does not establish an application import failure: the import confirmation was not reached.
+
+A compact JSON representation with the same data is prepared at 557,583 bytes. It has not yet been entered successfully in a browser. The next connected Edge tab (148649582, “ThreeCore 容量確認”) still displays the cross-origin refusal, including after ordinary reload. Direct address-bar entry has been requested; existing origin protections have not been changed.
+
+Item 120 remains incomplete. Separate development continued through item 161, with the ledger excluding item 120. No browser capacity result is inferred from unit tests or from the user's ability to see a different tab.
