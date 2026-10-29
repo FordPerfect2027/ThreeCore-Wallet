@@ -1,0 +1,62 @@
+[
+  {
+    "step": "recorded-baseline-three-cases-match",
+    "check-suite-differences": "",
+    "check-suite-origin": "資料上の期待結果: 保存時の計算結果。変更の検出用で、計算の正しさを独立に証明するものではありません。",
+    "check-suite-rows": "dat-limit-50 — DAT 1回の上限を50に\tDAT / 84532 / 0x1111111111111111111111111111111111111111 / SIM (0x4444444444444444444444444444444444444444)\t一致\t0箇所\ndat-quota-5 — DAT 還元割合を5%に\tDAT / 84532 / 0x1111111111111111111111111111111111111111 / SIM (0x4444444444444444444444444444444444444444)\t一致\t0箇所\nema-opening-1001 — EMA 開始資金を1001に\tEMA / 84532 / 0x2222222222222222222222222222222222222222 / SIM (0x4444444444444444444444444444444444444444)\t一致\t0箇所",
+    "check-suite-status": "保存された期待結果と一致しました。実行の許可を示すものではありません。",
+    "check-suite-summary": "全 3ケース / 一致 3ケース / 相違 0ケース。",
+    "scenario-set-count": "表示 1件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "controlled-expectation-changes-detected",
+    "check-suite-differences": "dat-limit-50 / 比較条件\t手元資金\t999 SIM\t1000 SIM\ndat-limit-50 / 比較条件 / 記録 open-one\t記録の条件判定\t仮の条件内\t見送り\ndat-limit-50 / 比較条件 / 記録 open-one\t記録の見送り理由\t該当なし\tPER_OPERATION_LIMIT\nema-opening-1001 / 元の条件\t累計実現損益\t0 SIM\t-42 SIM",
+    "check-suite-origin": "資料上の期待結果: 手動で指定。指定者や根拠はこの画面では確認していません。",
+    "check-suite-rows": "dat-limit-50 — DAT 1回の上限を50に\tDAT / 84532 / 0x1111111111111111111111111111111111111111 / SIM (0x4444444444444444444444444444444444444444)\t相違あり\t3箇所\ndat-quota-5 — DAT 還元割合を5%に\tDAT / 84532 / 0x1111111111111111111111111111111111111111 / SIM (0x4444444444444444444444444444444444444444)\t一致\t0箇所\nema-opening-1001 — EMA 開始資金を1001に\tEMA / 84532 / 0x2222222222222222222222222222222222222222 / SIM (0x4444444444444444444444444444444444444444)\t相違あり\t1箇所",
+    "check-suite-status": "期待結果と異なるケースがあります。下の具体的な相違を確認してください。",
+    "check-suite-summary": "全 3ケース / 一致 1ケース / 相違 2ケース。",
+    "scenario-set-count": "表示 1件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "readable-reasons-with-same-four-differences",
+    "check-suite-differences": "dat-limit-50 / 比較条件\t手元資金\t999 SIM\t1000 SIM\ndat-limit-50 / 比較条件 / 記録 open-one\t記録の条件判定\t仮の条件内\t見送り\ndat-limit-50 / 比較条件 / 記録 open-one\t記録の見送り理由\t該当なし\t1回の上限超過\nema-opening-1001 / 元の条件\t累計実現損益\t0 SIM\t-42 SIM",
+    "check-suite-origin": "資料上の期待結果: 手動で指定。指定者や根拠はこの画面では確認していません。",
+    "check-suite-rows": "dat-limit-50 — DAT 1回の上限を50に\tDAT / 84532 / 0x1111111111111111111111111111111111111111 / SIM (0x4444444444444444444444444444444444444444)\t相違あり\t3箇所\ndat-quota-5 — DAT 還元割合を5%に\tDAT / 84532 / 0x1111111111111111111111111111111111111111 / SIM (0x4444444444444444444444444444444444444444)\t一致\t0箇所\nema-opening-1001 — EMA 開始資金を1001に\tEMA / 84532 / 0x2222222222222222222222222222222222222222 / SIM (0x4444444444444444444444444444444444444444)\t相違あり\t1箇所",
+    "check-suite-status": "期待結果と異なるケースがあります。下の具体的な相違を確認してください。",
+    "check-suite-summary": "全 3ケース / 一致 1ケース / 相違 2ケース。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "edit-invalidates-old-check",
+    "check-suite-differences": "",
+    "check-suite-origin": "",
+    "check-suite-rows": "",
+    "check-suite-status": "貼り付けた期待結果を確認してください。",
+    "check-suite-summary": "",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "malformed-input-refused",
+    "check-suite-differences": "",
+    "check-suite-origin": "",
+    "check-suite-rows": "",
+    "check-suite-status": "期待結果を確認できませんでした。1 MiB以内の期待結果ファイルを選んでください。元の履歴とケース集は保持しています。",
+    "check-suite-summary": "",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "original-baseline-matches-again",
+    "check-suite-differences": "",
+    "check-suite-origin": "資料上の期待結果: 保存時の計算結果。変更の検出用で、計算の正しさを独立に証明するものではありません。",
+    "check-suite-rows": "dat-limit-50 — DAT 1回の上限を50に\tDAT / 84532 / 0x1111111111111111111111111111111111111111 / SIM (0x4444444444444444444444444444444444444444)\t一致\t0箇所\ndat-quota-5 — DAT 還元割合を5%に\tDAT / 84532 / 0x1111111111111111111111111111111111111111 / SIM (0x4444444444444444444444444444444444444444)\t一致\t0箇所\nema-opening-1001 — EMA 開始資金を1001に\tEMA / 84532 / 0x2222222222222222222222222222222222222222 / SIM (0x4444444444444444444444444444444444444444)\t一致\t0箇所",
+    "check-suite-status": "保存された期待結果と一致しました。実行の許可を示すものではありません。",
+    "check-suite-summary": "全 3ケース / 一致 3ケース / 相違 0ケース。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  }
+]
