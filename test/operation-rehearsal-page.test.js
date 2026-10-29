@@ -8,6 +8,7 @@ import { encodeRehearsal, decodeRehearsal, evaluateRehearsal, REHEARSAL_LIMIT } 
 import { Element } from "./helpers/panel-dom.js";
 import { encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 import { encodeRehearsalOverview } from "../src/operation-rehearsal-overview.js";
+import { encodeRehearsalScenario } from "../src/operation-rehearsal-scenario.js";
 
 const tick = () => new Promise(resolve => setImmediate(resolve));
 class Node extends Element {
@@ -50,6 +51,103 @@ const workspaceText = (ledgers, activeAgent = "DAT") => encodeRehearsalWorkspace
   schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent, ledgers });
 const pasteWorkspace = (f, text) => { f.change("workspace-text", text); f.field("workspace-text-review").click(); };
 const renderedText = node => [node.textContent, ...node.children.map(renderedText)].join(" ");
+
+test("scenario panel remains disabled until there is a displayed source",()=>{
+  const f=setup(); for(const id of ["compare","reset","save","input-save","openingBalance"])
+    assert.equal(f.field("whatif-"+id).disabled,true,id);
+  assert.match(f.field("whatif-status").textContent,/先に例を表示/);
+});
+test("scenario panel copies recorded conditions and context without replacing the ledger",()=>{
+  const f=setup(); f.field("example").click(); const before=savedWorkspace(f);
+  assert.equal(f.field("whatif-openingBalance").value,"1000"); assert.equal(f.field("whatif-buybackBps").value,"10");
+  assert.match(f.field("whatif-context").textContent,/0x1111111111111111111111111111111111111111/);
+  f.field("whatif-compare").click(); assert.equal(f.field("whatif-metrics").children.length,9);
+  assert.match(f.field("whatif-summary").textContent,/変更した条件 0項目/);
+  assert.deepEqual(savedWorkspace(f),before);
+});
+test("hypothetical limits show cascading rejections and preserve existing reservations and undo",()=>{
+  const f=setup(); f.field("example").click(); prepareAppend(f,"reserve"); f.field("append-confirm").click();
+  const before=savedWorkspace(f); f.change("whatif-maxPerOperation","50"); f.field("whatif-compare").click();
+  assert.match(f.field("whatif-summary").textContent,/新たな見送り 3件/);
+  assert.match(renderedText(f.field("whatif-rows")),/対応する未決済記録がない/);
+  assert.equal(f.field("undo").disabled,false); assert.deepEqual(savedWorkspace(f),before);
+  assert.equal(f.field("metrics").children[0].children[1].textContent,"1028 SIM");
+});
+test("editing a hypothetical condition revokes its results and both downloads immediately",()=>{
+  const f=setup(); f.field("example").click(); f.field("whatif-compare").click();
+  f.change("whatif-reserveFloor","300"); assert.equal(f.field("whatif-results").hidden,true);
+  assert.equal(f.field("whatif-rows").children.length,0); assert.equal(f.field("whatif-save").disabled,true);
+  assert.equal(f.field("whatif-input-save").disabled,true); assert.equal(f.field("save").disabled,false);
+  const count=f.downloads.length; f.field("whatif-save").click(); assert.equal(f.downloads.length,count);
+});
+test("changed-only record filter includes accounting changes and exports the complete replay",()=>{
+  const f=setup(); f.field("example").click(); f.change("whatif-openingBalance","1001"); f.field("whatif-compare").click();
+  f.field("whatif-filter").value="changed"; f.field("whatif-filter").dispatchEvent(new Event("change"));
+  assert.equal(f.field("whatif-rows").children.length,2); assert.match(renderedText(f.field("whatif-rows")),/手元資金/);
+  f.field("whatif-reset").click(); f.field("whatif-compare").click(); assert.equal(f.field("whatif-rows").children.length,0);
+  f.field("whatif-save").click(); const report=JSON.parse(f.downloads.at(-1).text); assert.equal(report.rows.length,2);
+  assert.match(f.field("whatif-row-status").textContent,/表示 0件 \/ 全 2件/);
+});
+test("comparison and separate candidate input exports agree and never change source",()=>{
+  const f=setup(); f.field("example").click(); const before=savedWorkspace(f);
+  f.change("whatif-buybackBps","5.25"); f.field("whatif-compare").click(); f.field("whatif-save").click();
+  const reportFile=f.downloads.at(-1), report=JSON.parse(reportFile.text);
+  assert.equal(reportFile.filename,"ThreeCore-DAT-scenario-comparison.json");
+  assert.equal(reportFile.text,encodeRehearsalScenario(report.inputs.before,report.inputs.after));
+  f.field("whatif-input-save").click(); const inputFile=f.downloads.at(-1);
+  assert.equal(inputFile.filename,"ThreeCore-DAT-hypothetical-input.json");
+  assert.deepEqual(decodeRehearsal(inputFile.text),report.inputs.after);
+  assert.equal(report.inputs.after.policy.buybackBps,525); assert.deepEqual(savedWorkspace(f),before);
+});
+for(const value of ["-1","0.0000001","1e2",""]) test("scenario amount rejects "+JSON.stringify(value)+" without discarding source",()=>{
+  const f=setup(); f.field("example").click(); f.change("whatif-openingBalance",value); f.field("whatif-compare").click();
+  assert.match(f.field("whatif-status").textContent,/比較条件を確認/); assert.equal(f.field("whatif-save").disabled,true);
+  assert.equal(f.field("rows").children.length,2); assert.equal(f.field("save").disabled,false);
+});
+test("percentage bounds and pause are checked independently of the source policy",()=>{
+  const f=setup(); f.field("example").click(); f.change("whatif-buybackBps","100.01"); f.field("whatif-compare").click();
+  assert.equal(f.field("whatif-save").disabled,true); f.field("whatif-reset").click();
+  f.field("whatif-paused").checked=true; f.field("whatif-paused").dispatchEvent(new Event("change"));
+  f.field("whatif-compare").click(); assert.match(renderedText(f.field("whatif-rows")),/新規利用の停止中/);
+  assert.equal(f.field("paused").checked,false);
+});
+test("reset restores recorded parameters and clears only comparison results",()=>{
+  const f=setup(); f.field("example").click(); f.change("whatif-openingBalance","1"); f.field("whatif-compare").click();
+  f.field("whatif-reset").click(); assert.equal(f.field("whatif-openingBalance").value,"1000");
+  assert.equal(f.field("whatif-results").hidden,true); assert.equal(f.field("rows").children.length,2);
+});
+test("switching targets and clearing revokes hypothetical exports",()=>{
+  const f=setup(); f.field("example").click(); f.field("whatif-compare").click(); selectAgent(f,"EMA");
+  assert.equal(f.field("whatif-compare").disabled,true); assert.equal(f.field("whatif-save").disabled,true);
+  f.field("example").click(); assert.match(f.field("whatif-context").textContent,/EMA/);
+  f.field("whatif-compare").click(); f.field("cancel").click(); assert.equal(f.field("whatif-context").textContent,"");
+});
+test("restore previews keep the current scenario source; applying replaces it",()=>{
+  const f=setup(); f.field("example").click(); f.field("whatif-compare").click();
+  pasteWorkspace(f,workspaceText([rehearsalExampleV2("EMA","loss")],"EMA"));
+  f.field("whatif-save").click(); assert.equal(JSON.parse(f.downloads.at(-1).text).inputs.before.agent,"DAT");
+  assert.equal(f.field("workspace-apply").disabled,false); f.field("workspace-apply").click();
+  assert.equal(f.field("whatif-save").disabled,true); assert.match(f.field("whatif-context").textContent,/EMA/);
+});
+test("confirmed append and undo refresh source while a pending append does not",()=>{
+  const f=setup(); f.field("example").click(); f.field("whatif-compare").click(); prepareAppend(f,"reserve");
+  assert.equal(f.field("whatif-save").disabled,false); f.field("append-confirm").click();
+  assert.equal(f.field("whatif-save").disabled,true); assert.match(f.field("whatif-context").textContent,/3件の同じ記録/);
+  f.field("whatif-compare").click(); f.field("undo").click();
+  assert.equal(f.field("whatif-save").disabled,true); assert.match(f.field("whatif-context").textContent,/2件の同じ記録/);
+});
+test("old-format scenario has disabled fee caps and preserves the old schema in candidate export",()=>{
+  const f=setup(); pasteWorkspace(f,workspaceText([rehearsalExample()])); f.field("workspace-apply").click();
+  assert.equal(f.field("whatif-maxEntryFee").disabled,true); assert.equal(f.field("whatif-maxExitFee").value,"");
+  assert.match(f.field("whatif-version").textContent,/旧形式/); f.field("whatif-compare").click(); f.field("whatif-input-save").click();
+  assert.equal(decodeRehearsal(f.downloads.at(-1).text).schema,rehearsalExample().schema);
+});
+test("disposing clears scenario source, results and download handlers",()=>{
+  const f=setup(); f.field("example").click(); f.field("whatif-compare").click(); f.page.dispose();
+  assert.equal(f.field("whatif-context").textContent,""); assert.equal(f.field("whatif-metrics").children.length,0);
+  assert.equal(f.field("whatif-compare").disabled,true); const count=f.downloads.length;
+  f.field("whatif-input-save").click(); assert.equal(f.downloads.length,count);
+});
 
 const overviewFilter = (f, id, value) => { f.field(id).value = value; f.field(id).dispatchEvent(new Event("change")); };
 test("overview starts explicitly uncreated and disabled, not as a zero balance or successful check", () => {

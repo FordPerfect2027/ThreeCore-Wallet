@@ -62,6 +62,36 @@
     </details>
   </section>
   <div class="layout">
+    <section class="scenario-panel" aria-labelledby="whatif-title">
+      <h2 id="whatif-title">履歴を残して別の条件と比較</h2>
+      <p>同じ記録を最初から別の条件で再計算します。途中からの方針変更や将来の予測ではありません。元の履歴を残したまま比較できます。</p>
+      <p id="whatif-context" class="small"></p><p id="whatif-version" class="small"></p>
+      <div class="fields">
+        <label>比較：開始時の資金<input id="whatif-openingBalance" inputmode="decimal" maxlength="100" disabled></label>
+        <label>比較：1回の元本上限<input id="whatif-maxPerOperation" inputmode="decimal" maxlength="100" disabled></label>
+        <label>比較：未決済元本の上限<input id="whatif-maxOutstanding" inputmode="decimal" maxlength="100" disabled></label>
+        <label>比較：予備資金<input id="whatif-reserveFloor" inputmode="decimal" maxlength="100" disabled></label>
+        <label>比較：損失上限<input id="whatif-lossLimit" inputmode="decimal" maxlength="100" disabled></label>
+        <label>比較：還元割合（%）<input id="whatif-buybackBps" inputmode="decimal" maxlength="6" disabled></label>
+        <label>比較：開始費用上限<input id="whatif-maxEntryFee" inputmode="decimal" maxlength="100" disabled></label>
+        <label>比較：決済費用上限<input id="whatif-maxExitFee" inputmode="decimal" maxlength="100" disabled></label>
+      </div>
+      <label class="check"><input id="whatif-paused" type="checkbox" disabled>比較：新しい利用を停止する想定</label>
+      <div class="actions"><button id="whatif-compare" type="button" disabled>元の履歴と比較</button><button id="whatif-reset" type="button" disabled>比較条件を元に戻す</button></div>
+      <p id="whatif-status" role="status" aria-live="polite"></p>
+      <div id="whatif-results" hidden>
+        <p id="whatif-summary"></p>
+        <div class="table-wrap"><table><caption>変更した仮の条件</caption><thead><tr><th>項目</th><th>元の条件</th><th>比較条件</th></tr></thead><tbody id="whatif-parameters"></tbody></table></div>
+        <div class="table-wrap"><table><caption>全記録を再計算した結果</caption><thead><tr><th>項目</th><th>元の条件</th><th>比較条件</th><th>差（比較 − 元）</th></tr></thead><tbody id="whatif-metrics"></tbody></table></div>
+        <p id="whatif-blockers" class="small"></p>
+        <label>比較する記録の表示<select id="whatif-filter"><option value="all">すべての記録</option><option value="changed">変化のある記録だけ</option></select></label>
+        <p id="whatif-row-status" role="status" aria-live="polite"></p>
+        <div class="table-wrap"><table class="scenario-records"><caption>同じ記録の条件判定と金額の変化</caption><thead><tr><th>元の記録</th><th>元の条件での判定</th><th>比較条件での判定</th><th>金額の変化</th></tr></thead><tbody id="whatif-rows"></tbody></table></div>
+      </div>
+      <div class="actions"><button id="whatif-save" type="button" disabled>条件比較の資料を保存</button><button id="whatif-input-save" type="button" disabled>比較条件の入力だけを別保存</button></div>
+      <p id="whatif-export-status" class="small" role="status" aria-live="polite"></p>
+      <p class="small">比較資料には元と比較後の入力を含みます。別保存した入力を使う場合は、単体の記録として読み込み・確認してください。金額の増減は安全性や実行の許可を示しません。</p>
+    </section>
     <section aria-labelledby="conditions-title"><h2 id="conditions-title">仮の利用条件</h2>
       <p>単位は練習用のSIMです。すべての金額・費用を同じ単位で入力します。異なる通貨の換算や合算は行いません。</p>
       <div class="fields">

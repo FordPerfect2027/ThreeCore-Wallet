@@ -7,6 +7,7 @@ import { createRehearsalWorkspace, decodeRehearsalWorkspace, encodeRehearsalWork
 import { offerWalletDownload } from "./export-download.js";
 import { compareRehearsalWorkspaces, encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 import { reportRehearsalOverview, filterRehearsalOverview, encodeRehearsalOverview } from "../src/operation-rehearsal-overview.js";
+import { mountRehearsalScenarioPanel } from "./operation-rehearsal-scenario-panel.js";
 
 const REASONS = Object.freeze({
   PAUSED: "新規利用の停止中", REUSED_OPERATION: "同じ操作の再利用", UNLISTED_ORIGIN: "対象外のサイト",
@@ -37,6 +38,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   const get = name => document.getElementById(name);
   let current = null, candidate = null, revision = 0, disposed = false;
   const ledger = createRehearsalWorkspace(get("agent").value);
+  const scenarioPanel = mountRehearsalScenarioPanel(document, { download, reasons: REASONS, kinds: KINDS });
   let appendReview = null, workspaceReview = null, workspaceComparison = null;
   let workspacePhase = "idle", workspaceSource = "";
   const listeners = [];
@@ -181,6 +183,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   }
   function clear(message = "入力が変わりました。もう一度試算してください。", keepLedger = false) {
     revision++; current = null; candidate = null;
+    scenarioPanel.refresh(null);
     cancelAppend(); if (!keepLedger) ledger.clear();
     get("save").disabled = true; get("apply").disabled = true;
     for (const name of ["csv-save", "append-preview", "undo"]) get(name).disabled = true;
@@ -261,6 +264,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     clear(undefined, true);
     if (!keepLedger) data = ledger.reset(data);
     current = data;
+    scenarioPanel.refresh(data);
     get("agent").value = data.agent;
     get("opening").value = formatRehearsalUnits(data.openingBalance, data.asset.decimals);
     for (const [field, key] of Object.entries(FIELD_POLICY))
@@ -518,6 +522,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   setWorkspaceStage("idle", "保存した記録を選ぶと、復旧前に変更内容を確認できます。自動保存は行いません。");
   return Object.freeze({ dispose() {
     if (disposed) return; disposed = true; clear("表示を終了しました。"); ledger.dispose();
+    scenarioPanel.dispose();
     get("workspace-rows").textContent = ""; get("workspace-save").disabled = true;
     get("workspace-status").textContent = "表示を終了しました。";
     for (const name of ["workspace-receipt", "workspace-source", "workspace-stage", "workspace-file-note"]) get(name).textContent = "";
