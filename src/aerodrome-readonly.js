@@ -5,6 +5,7 @@
  *
  * NEVER signs, grants approvals, sends transactions, or handles private keys.
  */
+import { createPublicBaseRpcReader, PublicBaseRpcError } from "./public-base-rpc.js";
 export const AERODROME_BASE = Object.freeze({
   chainId: 8453,
   rpcUrl: "https://mainnet.base.org",
@@ -77,25 +78,15 @@ export async function inspectAerodromeBase({
     fail("INVALID_TIMEOUT", "Timeout must be between 100 and 30000 milliseconds");
   }
 
-  let id = 0;
+  const reader = createPublicBaseRpcReader({ rpcUrl: AERODROME_BASE.rpcUrl, fetchImpl, timeoutMs });
   async function read(method, params = []) {
-    if (!["eth_chainId", "eth_blockNumber", "eth_getCode", "eth_call"].includes(method)) {
-      fail("FORBIDDEN_METHOD", "Only read-only JSON-RPC requests are permitted");
+    try { return await reader(method, params); }
+    catch (error) {
+      if (!(error instanceof PublicBaseRpcError)) throw error;
+      const code = error.code === "INVALID_RPC_RESPONSE" ? "INVALID_RPC_RESULT" :
+        error.code === "METHOD_BLOCKED" ? "FORBIDDEN_METHOD" : error.code;
+      throw new AerodromeReadError(code, error.message);
     }
-    const currentId = ++id;
-    const response = await fetchImpl(AERODROME_BASE.rpcUrl, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ jsonrpc: "2.0", id: currentId, method, params }),
-      signal: AbortSignal.timeout(timeoutMs),
-    });
-    if (!response?.ok) fail("HTTP_ERROR", "Base RPC rejected the request");
-    const value = await response.json();
-    if (!value || value.jsonrpc !== "2.0" || value.id !== currentId ||
-        value.error || typeof value.result !== "string") {
-      fail("INVALID_RPC_RESULT", "Unexpected JSON-RPC response");
-    }
-    return value.result;
   }
 
   const actualChain = BigInt(decodeQuantity(await read("eth_chainId")));

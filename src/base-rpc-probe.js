@@ -6,7 +6,7 @@
  * Public Base endpoints are development-only and rate limited.
  * Chain ID alone is NOT proof of site safety or a trusted RPC provider.
  */
-import { readStateRpcJson } from "./state-rpc-http.js";
+import { createPublicBaseRpcReader, PublicBaseRpcError } from "./public-base-rpc.js";
 import { RPC_SECURITY_LIMITS } from "./security-rpc.js";
 export const BASE_NETWORKS = Object.freeze({
   mainnet: Object.freeze({
@@ -61,45 +61,14 @@ export async function probeBaseRpc({
     fail("INVALID_TIMEOUT", "Timeout must be 100–30000 milliseconds");
   }
 
-  let id = 0;
+  const reader = createPublicBaseRpcReader({ rpcUrl: target.rpcUrl, fetchImpl, timeoutMs });
   async function request(method, params = []) {
-    if (!["eth_chainId", "eth_blockNumber", "eth_getCode"].includes(method)) {
-      fail("METHOD_BLOCKED", "Only read-only RPC methods are permitted");
-    }
-    const requestId = ++id, controller = new AbortController();
-    let timedOut = false, timer;
-    const deadline = new Promise((_, reject) => {
-      timer = setTimeout(() => {
-        timedOut = true; controller.abort();
-        reject(new BaseRpcProbeError("RPC_TIMEOUT", "Base RPC did not finish within the per-request time limit"));
-      }, timeoutMs);
-    });
-    const work = (async () => {
-      const response = await fetchImpl(target.rpcUrl, {
-        method: "POST", headers: { "content-type": "application/json" },
-        body: JSON.stringify({ jsonrpc: "2.0", id: requestId, method, params }),
-        credentials: "omit", redirect: "error", cache: "no-store", referrerPolicy: "no-referrer",
-        signal: controller.signal,
-      });
-      if (timedOut || !response?.ok || response.redirected) {
-        try { Promise.resolve(response?.body?.cancel()).catch(() => {}); } catch {}
-        fail(timedOut ? "RPC_TIMEOUT" : "HTTP_ERROR", "Base RPC did not return an accepted HTTP response");
-      }
-      let json;
-      try { json = await readStateRpcJson(response, { signal: controller.signal }); }
-      catch { fail("INVALID_RPC_RESPONSE", "Base RPC returned an invalid or oversized response"); }
-      if (!json || json.jsonrpc !== "2.0" || json.id !== requestId ||
-          typeof json.result !== "string" || Object.hasOwn(json, "error")) {
-        fail("INVALID_RPC_RESPONSE", "Unexpected or failed Base JSON-RPC response");
-      }
-      return json.result;
-    })();
-    try { return await Promise.race([work, deadline]); }
+    try { return await reader(method, params); }
     catch (error) {
-      if (timedOut) fail("RPC_TIMEOUT", "Base RPC did not finish within the per-request time limit");
-      if (error instanceof BaseRpcProbeError) throw error;
-      fail("RPC_TRANSPORT", "Base RPC transport failed");
-    } finally { clearTimeout(timer); controller.abort(); }
+      if (!(error instanceof PublicBaseRpcError)) throw error;
+      const code = error.code;
+      throw new BaseRpcProbeError(code, error.message);
+    }
   }
 
   const chain = rpcUint(await request("eth_chainId"));

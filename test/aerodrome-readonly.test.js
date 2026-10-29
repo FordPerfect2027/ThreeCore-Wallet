@@ -33,16 +33,11 @@ function mockTransport({
         break;
       default: throw Error("Forbidden RPC method " + input.method);
     }
-    return {
-      ok: httpOk,
-      async json() {
-        return rpcError ? {
-          jsonrpc: "2.0", id: input.id, error: { code: -32000 },
-        } : {
-          jsonrpc: "2.0", id: input.id + (corruptId ? 1 : 0), result,
-        };
-      },
-    };
+    return new Response(JSON.stringify(rpcError ? {
+      jsonrpc: "2.0", id: input.id, error: { code: -32000 },
+    } : {
+      jsonrpc: "2.0", id: input.id + (corruptId ? 1 : 0), result,
+    }), { status: httpOk ? 200 : 503 });
   };
   return { calls, fetchImpl };
 }

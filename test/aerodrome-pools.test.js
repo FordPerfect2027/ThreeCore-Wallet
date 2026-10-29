@@ -48,16 +48,11 @@ function mock({
         else throw Error("Forbidden pool selector " + data);
       } else throw Error("Unexpected eth_call contract " + to);
     } else throw Error("Forbidden RPC method " + input.method);
-    return {
-      ok: true,
-      async json() {
-        return {
-          jsonrpc: "2.0",
-          id: corruptId ? input.id + 1 : input.id,
-          result,
-        };
-      },
-    };
+    return new Response(JSON.stringify({
+      jsonrpc: "2.0",
+      id: corruptId ? input.id + 1 : input.id,
+      result,
+    }));
   };
   return { calls, fetchImpl };
 }

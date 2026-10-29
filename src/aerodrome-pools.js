@@ -7,6 +7,7 @@
  * (concentrated liquidity), other factories and third-party DEXes are excluded.
  */
 import { AERODROME_BASE, THREECORE_BASE_TOKENS } from "./aerodrome-readonly.js";
+import { createPublicBaseRpcReader, PublicBaseRpcError } from "./public-base-rpc.js";
 
 export const BASE_NATIVE_USDC = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913";
 export const USDC_SOURCE = "https://www.circle.com/blog/usdc-now-available-natively-on-base";
@@ -65,26 +66,17 @@ export async function inspectAerodromePools({
     fail("INVALID_TIMEOUT", "Timeout must be between 100 and 30000 milliseconds");
   }
 
-  let nextId = 0;
-  async function rpc(method, params) {
-    if (!["eth_chainId", "eth_blockNumber", "eth_call", "eth_getCode"].includes(method)) {
-      fail("FORBIDDEN_METHOD", "Only read-only RPC methods are enabled");
+  const reader = createPublicBaseRpcReader({ rpcUrl: AERODROME_BASE.rpcUrl, fetchImpl, timeoutMs });
+  async function rpc(method, params = []) {
+    try { return await reader(method, params); }
+    catch (error) {
+      if (!(error instanceof PublicBaseRpcError)) throw error;
+      const code = error.code === "INVALID_RPC_RESPONSE" ? "INVALID_RPC_RESULT" :
+        error.code === "METHOD_BLOCKED" ? "FORBIDDEN_METHOD" : error.code;
+      throw new AerodromePoolReadError(code, error.message);
     }
-    const id = ++nextId;
-    const response = await fetchImpl(AERODROME_BASE.rpcUrl, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ jsonrpc: "2.0", id, method, params }),
-      signal: AbortSignal.timeout(timeoutMs),
-    });
-    if (!response?.ok) fail("HTTP_ERROR", "Base RPC rejected the request");
-    const json = await response.json();
-    if (!json || json.jsonrpc !== "2.0" || json.id !== id || json.error ||
-        typeof json.result !== "string") {
-      fail("INVALID_RPC_RESULT", "Malformed JSON-RPC response");
-    }
-    return json.result;
   }
+
   const chain = toHexBlock(await rpc("eth_chainId", []));
   if (chain !== 8453n) fail("WRONG_CHAIN", "Expected Base Mainnet chain 8453");
   const block = toHexBlock(await rpc("eth_blockNumber", []));
