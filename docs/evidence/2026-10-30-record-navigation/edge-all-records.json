@@ -1,0 +1,659 @@
+{
+  "schema": "threecore.operation-rehearsal-record-query.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "inputs": {
+    "schema": "threecore.operation-rehearsal-workspace.v1",
+    "simulationOnly": true,
+    "activeAgent": "DAT",
+    "ledgers": [
+      {
+        "schema": "threecore.operation-rehearsal.v2",
+        "simulationOnly": true,
+        "agent": "DAT",
+        "chainId": 84532,
+        "account": "0x1111111111111111111111111111111111111111",
+        "asset": {
+          "address": "0x4444444444444444444444444444444444444444",
+          "symbol": "SIM",
+          "decimals": 6
+        },
+        "openingBalance": "1000000000",
+        "policy": {
+          "origin": "https://training.example",
+          "spender": "0x5555555555555555555555555555555555555555",
+          "maxPerOperation": "100000000",
+          "maxOutstanding": "200000000",
+          "reserveFloor": "200000000",
+          "lossLimit": "250000000",
+          "buybackBps": 1000,
+          "paused": false,
+          "maxEntryFee": "3000000",
+          "maxExitFee": "5000000"
+        },
+        "events": [
+          {
+            "id": "open-one",
+            "kind": "open",
+            "agent": "DAT",
+            "chainId": 84532,
+            "account": "0x1111111111111111111111111111111111111111",
+            "operationId": "one",
+            "origin": "https://training.example",
+            "spender": "0x5555555555555555555555555555555555555555",
+            "principal": "100000000",
+            "fee": "1000000",
+            "exitFeeReserve": "2000000"
+          },
+          {
+            "id": "settle-one",
+            "kind": "settle",
+            "agent": "DAT",
+            "chainId": 84532,
+            "account": "0x1111111111111111111111111111111111111111",
+            "operationId": "one",
+            "grossReturn": "130000000",
+            "fee": "1000000"
+          },
+          {
+            "id": "step-3",
+            "kind": "reserve",
+            "agent": "DAT",
+            "chainId": 84532,
+            "account": "0x1111111111111111111111111111111111111111",
+            "reservationId": "dat-reserve",
+            "amount": "2800000"
+          }
+        ]
+      },
+      {
+        "schema": "threecore.operation-rehearsal.v2",
+        "simulationOnly": true,
+        "agent": "EMA",
+        "chainId": 84532,
+        "account": "0x2222222222222222222222222222222222222222",
+        "asset": {
+          "address": "0x4444444444444444444444444444444444444444",
+          "symbol": "SIM",
+          "decimals": 6
+        },
+        "openingBalance": "1000000000",
+        "policy": {
+          "origin": "https://training.example",
+          "spender": "0x5555555555555555555555555555555555555555",
+          "maxPerOperation": "100000000",
+          "maxOutstanding": "200000000",
+          "reserveFloor": "200000000",
+          "lossLimit": "250000000",
+          "buybackBps": 1000,
+          "paused": false,
+          "maxEntryFee": "3000000",
+          "maxExitFee": "5000000"
+        },
+        "events": [
+          {
+            "id": "open-one",
+            "kind": "open",
+            "agent": "EMA",
+            "chainId": 84532,
+            "account": "0x2222222222222222222222222222222222222222",
+            "operationId": "one",
+            "origin": "https://training.example",
+            "spender": "0x5555555555555555555555555555555555555555",
+            "principal": "100000000",
+            "fee": "1000000",
+            "exitFeeReserve": "2000000"
+          },
+          {
+            "id": "settle-one",
+            "kind": "settle",
+            "agent": "EMA",
+            "chainId": 84532,
+            "account": "0x2222222222222222222222222222222222222222",
+            "operationId": "one",
+            "grossReturn": "60000000",
+            "fee": "1000000"
+          }
+        ]
+      },
+      {
+        "schema": "threecore.operation-rehearsal.v2",
+        "simulationOnly": true,
+        "agent": "CAWELON",
+        "chainId": 84532,
+        "account": "0x3333333333333333333333333333333333333333",
+        "asset": {
+          "address": "0x4444444444444444444444444444444444444444",
+          "symbol": "SIM",
+          "decimals": 6
+        },
+        "openingBalance": "1000000000",
+        "policy": {
+          "origin": "https://training.example",
+          "spender": "0x5555555555555555555555555555555555555555",
+          "maxPerOperation": "100000000",
+          "maxOutstanding": "200000000",
+          "reserveFloor": "200000000",
+          "lossLimit": "250000000",
+          "buybackBps": 1000,
+          "paused": false,
+          "maxEntryFee": "3000000",
+          "maxExitFee": "5000000"
+        },
+        "events": [
+          {
+            "id": "open-one",
+            "kind": "open",
+            "agent": "CAWELON",
+            "chainId": 84532,
+            "account": "0x3333333333333333333333333333333333333333",
+            "operationId": "one",
+            "origin": "https://training.example",
+            "spender": "0x5555555555555555555555555555555555555555",
+            "principal": "100000000",
+            "fee": "1000000",
+            "exitFeeReserve": "2000000"
+          }
+        ]
+      }
+    ]
+  },
+  "query": {
+    "agent": "all",
+    "kind": "all",
+    "decision": "all",
+    "search": ""
+  },
+  "subjects": [
+    {
+      "agent": "DAT",
+      "present": true,
+      "recordCount": 3
+    },
+    {
+      "agent": "EMA",
+      "present": true,
+      "recordCount": 2
+    },
+    {
+      "agent": "CAWELON",
+      "present": true,
+      "recordCount": 1
+    }
+  ],
+  "totalRecords": 6,
+  "matchedRecords": 6,
+  "rows": [
+    {
+      "key": "DAT:open-one",
+      "agent": "DAT",
+      "chainId": 84532,
+      "account": "0x1111111111111111111111111111111111111111",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "recordNumber": 1,
+      "event": {
+        "id": "open-one",
+        "kind": "open",
+        "agent": "DAT",
+        "chainId": 84532,
+        "account": "0x1111111111111111111111111111111111111111",
+        "operationId": "one",
+        "origin": "https://training.example",
+        "spender": "0x5555555555555555555555555555555555555555",
+        "principal": "100000000",
+        "fee": "1000000",
+        "exitFeeReserve": "2000000"
+      },
+      "reference": {
+        "kind": "operation",
+        "id": "one"
+      },
+      "result": {
+        "id": "open-one",
+        "kind": "open",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "899000000",
+        "outstanding": "100000000",
+        "realizedPnl": "-1000000",
+        "pnlChange": "-1000000",
+        "reservedExitFees": "2000000",
+        "reservedAllocations": "0",
+        "availableCash": "897000000"
+      },
+      "changes": [
+        {
+          "field": "cash",
+          "before": "1000000000",
+          "after": "899000000",
+          "delta": "-101000000"
+        },
+        {
+          "field": "outstanding",
+          "before": "0",
+          "after": "100000000",
+          "delta": "100000000"
+        },
+        {
+          "field": "realizedPnl",
+          "before": "0",
+          "after": "-1000000",
+          "delta": "-1000000"
+        },
+        {
+          "field": "reservedExitFees",
+          "before": "0",
+          "after": "2000000",
+          "delta": "2000000"
+        },
+        {
+          "field": "reservedAllocations",
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        },
+        {
+          "field": "availableCash",
+          "before": "1000000000",
+          "after": "897000000",
+          "delta": "-103000000"
+        }
+      ]
+    },
+    {
+      "key": "DAT:settle-one",
+      "agent": "DAT",
+      "chainId": 84532,
+      "account": "0x1111111111111111111111111111111111111111",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "recordNumber": 2,
+      "event": {
+        "id": "settle-one",
+        "kind": "settle",
+        "agent": "DAT",
+        "chainId": 84532,
+        "account": "0x1111111111111111111111111111111111111111",
+        "operationId": "one",
+        "grossReturn": "130000000",
+        "fee": "1000000"
+      },
+      "reference": {
+        "kind": "operation",
+        "id": "one"
+      },
+      "result": {
+        "id": "settle-one",
+        "kind": "settle",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "1028000000",
+        "outstanding": "0",
+        "realizedPnl": "28000000",
+        "pnlChange": "29000000",
+        "reservedExitFees": "0",
+        "reservedAllocations": "0",
+        "availableCash": "1028000000"
+      },
+      "changes": [
+        {
+          "field": "cash",
+          "before": "899000000",
+          "after": "1028000000",
+          "delta": "129000000"
+        },
+        {
+          "field": "outstanding",
+          "before": "100000000",
+          "after": "0",
+          "delta": "-100000000"
+        },
+        {
+          "field": "realizedPnl",
+          "before": "-1000000",
+          "after": "28000000",
+          "delta": "29000000"
+        },
+        {
+          "field": "reservedExitFees",
+          "before": "2000000",
+          "after": "0",
+          "delta": "-2000000"
+        },
+        {
+          "field": "reservedAllocations",
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        },
+        {
+          "field": "availableCash",
+          "before": "897000000",
+          "after": "1028000000",
+          "delta": "131000000"
+        }
+      ]
+    },
+    {
+      "key": "DAT:step-3",
+      "agent": "DAT",
+      "chainId": 84532,
+      "account": "0x1111111111111111111111111111111111111111",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "recordNumber": 3,
+      "event": {
+        "id": "step-3",
+        "kind": "reserve",
+        "agent": "DAT",
+        "chainId": 84532,
+        "account": "0x1111111111111111111111111111111111111111",
+        "reservationId": "dat-reserve",
+        "amount": "2800000"
+      },
+      "reference": {
+        "kind": "reservation",
+        "id": "dat-reserve"
+      },
+      "result": {
+        "id": "step-3",
+        "kind": "reserve",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "1028000000",
+        "outstanding": "0",
+        "realizedPnl": "28000000",
+        "pnlChange": "0",
+        "reservedExitFees": "0",
+        "reservedAllocations": "2800000",
+        "availableCash": "1025200000"
+      },
+      "changes": [
+        {
+          "field": "cash",
+          "before": "1028000000",
+          "after": "1028000000",
+          "delta": "0"
+        },
+        {
+          "field": "outstanding",
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        },
+        {
+          "field": "realizedPnl",
+          "before": "28000000",
+          "after": "28000000",
+          "delta": "0"
+        },
+        {
+          "field": "reservedExitFees",
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        },
+        {
+          "field": "reservedAllocations",
+          "before": "0",
+          "after": "2800000",
+          "delta": "2800000"
+        },
+        {
+          "field": "availableCash",
+          "before": "1028000000",
+          "after": "1025200000",
+          "delta": "-2800000"
+        }
+      ]
+    },
+    {
+      "key": "EMA:open-one",
+      "agent": "EMA",
+      "chainId": 84532,
+      "account": "0x2222222222222222222222222222222222222222",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "recordNumber": 1,
+      "event": {
+        "id": "open-one",
+        "kind": "open",
+        "agent": "EMA",
+        "chainId": 84532,
+        "account": "0x2222222222222222222222222222222222222222",
+        "operationId": "one",
+        "origin": "https://training.example",
+        "spender": "0x5555555555555555555555555555555555555555",
+        "principal": "100000000",
+        "fee": "1000000",
+        "exitFeeReserve": "2000000"
+      },
+      "reference": {
+        "kind": "operation",
+        "id": "one"
+      },
+      "result": {
+        "id": "open-one",
+        "kind": "open",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "899000000",
+        "outstanding": "100000000",
+        "realizedPnl": "-1000000",
+        "pnlChange": "-1000000",
+        "reservedExitFees": "2000000",
+        "reservedAllocations": "0",
+        "availableCash": "897000000"
+      },
+      "changes": [
+        {
+          "field": "cash",
+          "before": "1000000000",
+          "after": "899000000",
+          "delta": "-101000000"
+        },
+        {
+          "field": "outstanding",
+          "before": "0",
+          "after": "100000000",
+          "delta": "100000000"
+        },
+        {
+          "field": "realizedPnl",
+          "before": "0",
+          "after": "-1000000",
+          "delta": "-1000000"
+        },
+        {
+          "field": "reservedExitFees",
+          "before": "0",
+          "after": "2000000",
+          "delta": "2000000"
+        },
+        {
+          "field": "reservedAllocations",
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        },
+        {
+          "field": "availableCash",
+          "before": "1000000000",
+          "after": "897000000",
+          "delta": "-103000000"
+        }
+      ]
+    },
+    {
+      "key": "EMA:settle-one",
+      "agent": "EMA",
+      "chainId": 84532,
+      "account": "0x2222222222222222222222222222222222222222",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "recordNumber": 2,
+      "event": {
+        "id": "settle-one",
+        "kind": "settle",
+        "agent": "EMA",
+        "chainId": 84532,
+        "account": "0x2222222222222222222222222222222222222222",
+        "operationId": "one",
+        "grossReturn": "60000000",
+        "fee": "1000000"
+      },
+      "reference": {
+        "kind": "operation",
+        "id": "one"
+      },
+      "result": {
+        "id": "settle-one",
+        "kind": "settle",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "958000000",
+        "outstanding": "0",
+        "realizedPnl": "-42000000",
+        "pnlChange": "-41000000",
+        "reservedExitFees": "0",
+        "reservedAllocations": "0",
+        "availableCash": "958000000"
+      },
+      "changes": [
+        {
+          "field": "cash",
+          "before": "899000000",
+          "after": "958000000",
+          "delta": "59000000"
+        },
+        {
+          "field": "outstanding",
+          "before": "100000000",
+          "after": "0",
+          "delta": "-100000000"
+        },
+        {
+          "field": "realizedPnl",
+          "before": "-1000000",
+          "after": "-42000000",
+          "delta": "-41000000"
+        },
+        {
+          "field": "reservedExitFees",
+          "before": "2000000",
+          "after": "0",
+          "delta": "-2000000"
+        },
+        {
+          "field": "reservedAllocations",
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        },
+        {
+          "field": "availableCash",
+          "before": "897000000",
+          "after": "958000000",
+          "delta": "61000000"
+        }
+      ]
+    },
+    {
+      "key": "CAWELON:open-one",
+      "agent": "CAWELON",
+      "chainId": 84532,
+      "account": "0x3333333333333333333333333333333333333333",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "recordNumber": 1,
+      "event": {
+        "id": "open-one",
+        "kind": "open",
+        "agent": "CAWELON",
+        "chainId": 84532,
+        "account": "0x3333333333333333333333333333333333333333",
+        "operationId": "one",
+        "origin": "https://training.example",
+        "spender": "0x5555555555555555555555555555555555555555",
+        "principal": "100000000",
+        "fee": "1000000",
+        "exitFeeReserve": "2000000"
+      },
+      "reference": {
+        "kind": "operation",
+        "id": "one"
+      },
+      "result": {
+        "id": "open-one",
+        "kind": "open",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "899000000",
+        "outstanding": "100000000",
+        "realizedPnl": "-1000000",
+        "pnlChange": "-1000000",
+        "reservedExitFees": "2000000",
+        "reservedAllocations": "0",
+        "availableCash": "897000000"
+      },
+      "changes": [
+        {
+          "field": "cash",
+          "before": "1000000000",
+          "after": "899000000",
+          "delta": "-101000000"
+        },
+        {
+          "field": "outstanding",
+          "before": "0",
+          "after": "100000000",
+          "delta": "100000000"
+        },
+        {
+          "field": "realizedPnl",
+          "before": "0",
+          "after": "-1000000",
+          "delta": "-1000000"
+        },
+        {
+          "field": "reservedExitFees",
+          "before": "0",
+          "after": "2000000",
+          "delta": "2000000"
+        },
+        {
+          "field": "reservedAllocations",
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        },
+        {
+          "field": "availableCash",
+          "before": "1000000000",
+          "after": "897000000",
+          "delta": "-103000000"
+        }
+      ]
+    }
+  ]
+}
