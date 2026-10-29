@@ -1,5 +1,7 @@
 # Three-agent rehearsal workspace — October 29, 2026
 
+Follow-up: [Recovery usability and the next ten-item batch](OPERATION_RESTORE_USABILITY_2026-10-29.md) addresses confusion between choosing a file and confirming its restoration. The original implementation and validation are recorded below.
+
 This ten-item continuation lets DAT, EMA and CAWELON retain separate rehearsal histories while switching between them, and export/restore them as one reviewed file. It extends the [previous ledger iteration](OPERATION_LEDGER_2026-10-29.md). All records remain fictional, single-asset simulations. This change adds no wallet connection, signature, transfer, approval, trading, custody or private-key handling. It is local development, not a production release or a mainnet completion percentage.
 
 ## Ten work items

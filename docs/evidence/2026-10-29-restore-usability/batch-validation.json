@@ -1,0 +1,86 @@
+{
+  "schema": "threecore.restore-usability-checkpoint.v1",
+  "dateJst": "2026-10-29",
+  "completed": true,
+  "itemsCompleted": 10,
+  "totalItems": 10,
+  "sourceCommit": "1325e8ab325da5e20108a12085728fb381433dc0",
+  "scope": "Fictional operation rehearsal only",
+  "workItems": [
+    "Three-step recovery guide",
+    "Retained bounded input label",
+    "Before-and-after replacement comparison",
+    "Visible current records during review and errors",
+    "Picker cancellation preservation",
+    "Specific bounded-input error guidance",
+    "Reviewed local paste recovery",
+    "Stale-review and lifecycle protection",
+    "Completion receipt and accessible focus",
+    "Automated tests and actual browser save/restore evidence"
+  ],
+  "tests": {
+    "command": "node --test --test-concurrency=2 test/operation-rehearsal*.test.js integration/operation-rehearsal-server.test.mjs",
+    "passed": 187,
+    "failed": 0,
+    "pageTestsIncluded": 51,
+    "newPageTests": 19,
+    "fullWalletRegressionRerun": false
+  },
+  "browser": {
+    "name": "Microsoft Edge",
+    "url": "http://127.0.0.1:4231/rehearsal/",
+    "observationCount": 11,
+    "inputMethod": "Ordinary page textarea containing the existing saved workspace",
+    "nativeFileUploadVerifiedThisIteration": false,
+    "focusTarget": "workspace-stage",
+    "finalCounts": {
+      "DAT": 3,
+      "EMA": 2,
+      "CAWELON": 1
+    }
+  },
+  "download": {
+    "filename": "ThreeCore-operation-workspace (2).json",
+    "bytes": 4771,
+    "originalBytesMatch": true,
+    "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302",
+    "offlineCheckerExit": 0
+  },
+  "files": [
+    {
+      "name": "original-workspace.json",
+      "bytes": 4771,
+      "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+    },
+    {
+      "name": "edge-restored-workspace.json",
+      "bytes": 4771,
+      "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+    },
+    {
+      "name": "edge-final-ui-observations.json",
+      "bytes": 10371,
+      "sha256": "306ed06aaa7ac4c9e5bcdf797e938c712e32012741250bd6072135367f66e218"
+    },
+    {
+      "name": "edge-restore-preview.png",
+      "bytes": 134427,
+      "sha256": "a8b4af325d1d77e4869fb07e92282a2d0394b84285171dab0aa58cf3a86b5d73"
+    },
+    {
+      "name": "edge-restore-complete.png",
+      "bytes": 84352,
+      "sha256": "42ad4e467043c47e7cd29aeade47fa2d8b86a6ca499d69c3daf055b6f99de054"
+    },
+    {
+      "name": "rehearsal-tests.log",
+      "bytes": 14550,
+      "sha256": "32d751fce7e35ed5bfc24a05b8d308cf5ce3333d2a2728b6d872c34d59b0a44a"
+    },
+    {
+      "name": "offline-workspace-check.json",
+      "bytes": 7130,
+      "sha256": "2654828408f26bad1a8ff562f51cf68c28c99a298cddaebfb9269d53afacfa50"
+    }
+  ]
+}

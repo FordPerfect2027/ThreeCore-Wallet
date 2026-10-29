@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 29, 2026 recovery usability:** [Ten-item recovery update](docs/OPERATION_RESTORE_USABILITY_2026-10-29.md) adds a three-step guide, a retained source label, before/after comparison, preserved current results during review, specific error guidance and a reviewed paste option for saved rehearsal records. Verified in Edge with the existing six-record workspace and an identical downloaded export.
+
 **October 29, 2026 workspace continuation:** [Three-agent rehearsal workspace](docs/OPERATION_WORKSPACE_2026-10-29.md) preserves separate DAT/EMA/CAWELON histories and undo while switching, adds a per-agent overview, reviewed combined export/restore and an offline workspace checker. Page-local fictional records only; no transaction execution.
 
 **October 29, 2026 continuation:** [Ten-part offline operation ledger](docs/OPERATION_LEDGER_2026-10-29.md) adds fee reservations, allocation reservation/release, reviewed sequential records, undo, CSV and an offline file checker. Existing V1 rehearsal files keep their original policy semantics. No transaction execution is added.
