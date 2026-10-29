@@ -244,3 +244,57 @@ test("liquidity progress retains its canonical source hash and refuses unanchore
   assert.equal(result.observedBlockHash, "0x" + "ab".repeat(32));
   assert.equal(result.canonicalBlockRechecked, true);
 });
+
+test("liquidity calculation rejects getters at every consumed object layer without invoking them", () => {
+  for (const target of ["root", "pools", "agent", "volatile", "amount", "hash"]) {
+    const input = snapshot(); let reads = 0;
+    const [object, field] = target === "root" ? [input, "chainId"] :
+      target === "pools" ? [input, "pools"] : target === "agent" ? [input.pools, "DAT"] :
+      target === "volatile" ? [input.pools.DAT, "volatile"] :
+      target === "hash" ? [input, "checkedBlockHash"] : [input.pools.DAT.volatile, "usdcReserveBaseUnits"];
+    Object.defineProperty(object, field, { get() { reads++; throw new Error("PRIVATE_GETTER"); } });
+    assert.throws(() => assessLiquidityTargets(input), error => {
+      assert.ok(fail("INVALID_REPORT")(error)); assert.doesNotMatch(error.message, /PRIVATE_GETTER/); return true;
+    });
+    assert.equal(reads, 0, target);
+  }
+});
+test("liquidity calculation ignores unused properties and stable-pool accessors", () => {
+  const input = snapshot(); let reads = 0;
+  Object.defineProperty(input, "unused", { get() { reads++; throw new Error("not part of observation"); } });
+  Object.defineProperty(input.pools.DAT, "stable", { get() { reads++; throw new Error("not a volatile target"); } });
+  assert.equal(assessLiquidityTargets(input).aggregateObservedUsdc, "300.000000");
+  assert.equal(reads, 0);
+});
+test("captured values cannot change between validation and result formatting through property reads", () => {
+  const raw = snapshot(); let propertyReads = 0;
+  const input = new Proxy(raw, { get() { propertyReads++; throw new Error("ordinary property access"); } });
+  const result = assessLiquidityTargets(input);
+  assert.equal(result.observedBlockNumber, "52852584");
+  assert.equal(result.aggregateObservedUsdc, "300.000000");
+  assert.equal(propertyReads, 0);
+});
+test("inherited fields and unusual object prototypes are not observations", () => {
+  const inherited = Object.create(snapshot());
+  assert.throws(() => assessLiquidityTargets(inherited), fail("INVALID_REPORT"));
+  for (const value of [[], new Date(), new Map(), Object.create({ chainId: 8453 })]) {
+    assert.throws(() => assessLiquidityTargets(value), fail("INVALID_REPORT"));
+  }
+  const input = snapshot(); input.pools.DAT.volatile = Object.create(pool(DAT));
+  assert.throws(() => assessLiquidityTargets(input), fail("INVALID_REPORT"));
+});
+test("null-prototype JSON-like records remain accepted and source records stay unchanged", () => {
+  function nullRecords(value) {
+    if (!value || typeof value !== "object") return value;
+    return Object.assign(Object.create(null), Object.fromEntries(Object.entries(value).map(([key, item]) => [key, nullRecords(item)])));
+  }
+  const input = nullRecords(snapshot()), before = JSON.stringify(input);
+  assert.equal(assessLiquidityTargets(input).verifiedPools, 3);
+  assert.equal(JSON.stringify(input), before);
+});
+test("throwing reflection traps become a bounded local error", () => {
+  const input = new Proxy(snapshot(), { getOwnPropertyDescriptor() { throw new Error("PRIVATE_REFLECTION"); } });
+  assert.throws(() => assessLiquidityTargets(input), error => {
+    assert.ok(fail("INVALID_REPORT")(error)); assert.doesNotMatch(error.message, /PRIVATE_REFLECTION/); return true;
+  });
+});

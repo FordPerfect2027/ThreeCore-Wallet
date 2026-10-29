@@ -57,11 +57,40 @@ function percent2(reserveRaw) {
     (basisPoints % 100n).toString().padStart(2, "0");
 }
 
+// Copy only the fields this calculation uses, through own data descriptors.
+// Unused fields (including stable pools) are not evaluated or traversed.
+function captureFields(input, names) {
+  try {
+    if (!input || typeof input !== "object" || Array.isArray(input) ||
+        ![Object.prototype, null].includes(Object.getPrototypeOf(input))) throw Error();
+    const result = Object.create(null);
+    for (const name of names) {
+      const descriptor = Object.getOwnPropertyDescriptor(input, name);
+      if (descriptor && !Object.hasOwn(descriptor, "value")) throw Error();
+      result[name] = descriptor?.value;
+    }
+    return Object.freeze(result);
+  } catch { reject("INVALID_REPORT", "Liquidity input must contain plain own data fields"); }
+}
+function captureObservation(input) {
+  const root = captureFields(input, ["chainId", "classicFactoryOnly", "readOnly", "transactionsExecuted",
+    "walletConnected", "factoryAddress", "quoteTokenAddress", "checkedBlockNumber", "checkedBlockHash",
+    "canonicalBlockRechecked", "pools"]);
+  const sourcePools = captureFields(root.pools, TRACKED_TOKENS), pools = Object.create(null);
+  for (const agent of TRACKED_TOKENS) {
+    const item = captureFields(sourcePools[agent], ["volatile"]);
+    pools[agent] = captureFields(item.volatile, ["poolAddress", "contractCodePresent",
+      "usdcReserveBaseUnits", "tokenReserveBaseUnits", "reserveTimestamp"]);
+  }
+  return Object.freeze({ ...root, pools: Object.freeze(pools) });
+}
+
 /**
  * Convert inspectAerodromePools() output into exact-integer target progress.
  * No ERC-20 decimal assumption is made for each project's token reserve.
  */
 export function assessLiquidityTargets(report) {
+  report = captureObservation(report);
   if (!report || report.chainId !== 8453 || report.classicFactoryOnly !== true ||
       report.readOnly !== true || report.transactionsExecuted !== false ||
       report.walletConnected !== false ||
@@ -78,7 +107,7 @@ export function assessLiquidityTargets(report) {
   let verifiedCount = 0;
   const seenPools = new Set();
   for (const agent of TRACKED_TOKENS) {
-    const pool = report.pools?.[agent]?.volatile;
+    const pool = report.pools[agent];
     if (!pool || typeof pool !== "object" || Array.isArray(pool))
       reject("INVALID_REPORT", "Missing Classic volatile pool entry for " + agent);
     const validAddress = typeof pool.poolAddress === "string" && ADDRESS.test(pool.poolAddress) &&
