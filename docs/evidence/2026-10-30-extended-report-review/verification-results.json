@@ -1,0 +1,26 @@
+[
+  {
+    "browserMatches": true,
+    "sha256": "ace3f46da70aa2262e19537423825d27c0f55bc0445cf25e55862a66008658bb",
+    "case": "expectation-difference",
+    "exitCode": 0
+  },
+  {
+    "browserMatches": true,
+    "sha256": "99d7d23f96d075ed1ae2e9c160e7324d842ddf376df98b012d004d64c2e1b91f",
+    "case": "expectation-match",
+    "exitCode": 0
+  },
+  {
+    "browserMatches": true,
+    "sha256": "e649541f9909e9b5a0e0209ec71858e02c8cf3feb917dc588e8eddd0d52e345e",
+    "case": "zero-match",
+    "exitCode": 0
+  },
+  {
+    "browserMatches": true,
+    "sha256": "a793f023b5b919ccca11e7ec53a7d95da840d847cc9fe17de6797ffe2aad7330",
+    "case": "tampered-query",
+    "exitCode": 2
+  }
+]
