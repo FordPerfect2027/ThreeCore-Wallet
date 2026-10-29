@@ -54,6 +54,16 @@ const workspaceText = (ledgers, activeAgent = "DAT") => encodeRehearsalWorkspace
 const pasteWorkspace = (f, text) => { f.change("workspace-text", text); f.field("workspace-text-review").click(); };
 const renderedText = node => [node.textContent, ...node.children.map(renderedText)].join(" ");
 
+test("record queries preserve pending append and restore and expose only committed inputs",()=>{
+  const f=setup();f.field("example").click();prepareAppend(f,"reserve");const before=savedWorkspace(f);
+  assert.equal(f.field("record-browser-rows").children.length,2);f.change("record-browser-search","settle");
+  assert.equal(f.field("record-browser-rows").children.length,1);assert.equal(f.field("append-confirm").disabled,false);
+  f.field("record-browser-save").click();assert.equal(JSON.parse(f.downloads.at(-1).text).matchedRecords,1);assert.deepEqual(savedWorkspace(f),before);
+  f.field("append-confirm").click();f.field("record-browser-clear").click();assert.equal(f.field("record-browser-rows").children.length,3);
+  pasteWorkspace(f,workspaceText([rehearsalExampleV2("EMA")]));f.change("record-browser-search","reserve");assert.equal(f.field("workspace-apply").disabled,false);
+  f.field("workspace-apply").click();f.field("record-browser-clear").click();assert.match(f.field("record-browser-scope").textContent,/DAT: 未作成 \/ EMA: 2件/);
+});
+
 test("expected-outcome checking leaves ledger, undo and unconfirmed collection change intact",()=>{
   const f=setup();f.field("example").click();prepareAppend(f,"reserve");f.field("append-confirm").click();const before=savedWorkspace(f);
   f.field("whatif-compare").click();f.change("scenario-set-id","one");f.change("scenario-set-label","変更なし");f.field("scenario-set-add").click();
