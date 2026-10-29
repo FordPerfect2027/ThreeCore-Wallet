@@ -1,7 +1,7 @@
 import { decodeRehearsalCheckSuite, runRehearsalCheckSuite, encodeRehearsalCheckReport, REHEARSAL_CHECK_SUITE_LIMIT } from "../src/operation-rehearsal-check-suite.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
-export function mountRehearsalCheckPanel(document,{download}){
+export function mountRehearsalCheckPanel(document,{download,reasons={}}){
   const get=name=>document.getElementById("check-suite-"+name);let disposed=false,revision=0,input=null,report=null;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
   function reset(message="期待結果を記録したケース集を選んでください。現在の履歴やケース集は変更しません。"){
@@ -10,7 +10,7 @@ export function mountRehearsalCheckPanel(document,{download}){
   }
   function row(target,values){const tr=document.createElement("tr");for(const value of values){const td=document.createElement("td");td.textContent=value;tr.append(td);}get(target).append(tr);}
   const labels={...SCENARIO_LABELS,openPositions:"未決済件数",allocationBlockers:"追加予約を止める理由",withinEnteredLimits:"記録の条件判定",reasons:"記録の見送り理由"};
-  function display(value,field,asset){if(Array.isArray(value))return value.join("・")||"該当なし";if(typeof value==="boolean")return value?"仮の条件内":"見送り";
+  function display(value,field,asset){if(Array.isArray(value))return value.map(code=>Object.hasOwn(reasons,code)?reasons[code]:code).join("・")||"該当なし";if(typeof value==="boolean")return value?"仮の条件内":"見送り";
     if(Object.hasOwn(SCENARIO_LABELS,field))return formatRehearsalUnits(value,asset.decimals)+" "+asset.symbol;return String(value);}
   function run(text,source){input=decodeRehearsalCheckSuite(text);report=runRehearsalCheckSuite(input);get("results").hidden=false;get("save").disabled=false;
     get("source").textContent="確認元: "+source;get("origin").textContent=input.expectationOrigin==="recorded-calculation"?

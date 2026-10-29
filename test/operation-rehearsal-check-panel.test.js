@@ -13,7 +13,7 @@ const rendered=n=>[n.textContent,...n.children.map(rendered)].join(" ");
 function setup(){const elements=new Map(),downloads=[];let throwDownload=false;
   const document={getElementById(id){if(!elements.has(id))elements.set(id,new Node("div"));return elements.get(id);},createElement:tag=>new Node(tag)};
   const field=id=>document.getElementById("check-suite-"+id);
-  const panel=mountRehearsalCheckPanel(document,{download:({prepared})=>{if(throwDownload)throw Error("Download");downloads.push(prepared);}});
+  const panel=mountRehearsalCheckPanel(document,{reasons:{PAUSED:"新規利用の停止中"},download:({prepared})=>{if(throwDownload)throw Error("Download");downloads.push(prepared);}});
   const change=value=>{field("text").value=value;field("text").dispatchEvent(new Event("input"));};
   const paste=value=>{change(value);field("paste").click();};
   const file=(value,extras={})=>{const bytes=new TextEncoder().encode(value);field("file").files=[{name:"expected.json",size:bytes.length,arrayBuffer:async()=>bytes.buffer,...extras}];field("file").dispatchEvent(new Event("change"));};
@@ -30,6 +30,10 @@ test("manual expectation mismatch displays concrete values and remains savable",
 });
 test("editing input immediately removes old results and cannot save them",()=>{
   const f=setup();f.paste(text);f.change("{");assert.equal(f.field("save").disabled,true);assert.equal(f.field("rows").children.length,0);f.field("save").click();assert.equal(f.downloads.length,0);
+});
+test("known reasons use user-readable text and unknown reasons remain visible",()=>{
+  const f=setup(),changed=JSON.parse(text);changed.expected[0].before.allocationBlockers=["PAUSED","FUTURE_REASON"];f.paste(JSON.stringify(changed));
+  assert.match(rendered(f.field("differences")),/新規利用の停止中・FUTURE_REASON/);
 });
 test("file reading preserves source name and chooser cancellation keeps result",async()=>{
   const f=setup();f.file(text);await tick();assert.match(f.field("source").textContent,/expected.json/);f.field("file").files=[];f.field("file").dispatchEvent(new Event("change"));assert.equal(f.field("save").disabled,false);

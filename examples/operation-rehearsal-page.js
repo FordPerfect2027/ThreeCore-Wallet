@@ -46,7 +46,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     onChange: () => scenarioSetPanel?.sourceChanged() });
   scenarioSetPanel = mountRehearsalScenarioSetPanel(document, { download, getComparison: () => scenarioPanel.comparison() });
   const reportReviewPanel = mountRehearsalReviewPanel(document, { download });
-  const checkPanel = mountRehearsalCheckPanel(document, { download });
+  const checkPanel = mountRehearsalCheckPanel(document, { download, reasons: REASONS });
   let appendReview = null, workspaceReview = null, workspaceComparison = null;
   let workspacePhase = "idle", workspaceSource = "";
   const listeners = [];
