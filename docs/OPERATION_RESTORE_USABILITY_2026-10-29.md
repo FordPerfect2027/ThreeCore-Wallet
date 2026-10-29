@@ -1,5 +1,7 @@
 # Rehearsal recovery usability — October 29, 2026
 
+Follow-up: [Recorded identity, policy and event comparison](OPERATION_RESTORE_COMPARISON_2026-10-29.md) adds the next ten completed work items. The usability iteration below remains a historical record.
+
 A successful file selection previously cleared the native filename control and hid the current detail view. The user could therefore mistake a pending restore review for a failed selection. This update keeps current applied records visible, names the reviewed input separately and explains the next action. Source commit: `1325e8ab325da5e20108a12085728fb381433dc0`.
 
 ## Ten completed work items
