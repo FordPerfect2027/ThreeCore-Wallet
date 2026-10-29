@@ -1,0 +1,26 @@
+{
+  "schema": "threecore.development-batch-validation.v1",
+  "date": "2026-10-29",
+  "sourceCommit": "5acd2b62e65dcb8c030726c5d480f1dd522ee54e",
+  "continuationTarget": 600,
+  "completedContinuationItems": 20,
+  "batchItems": 20,
+  "relatedTestsPassed": 347,
+  "relatedTestsFailed": 0,
+  "addedTests": 38,
+  "actualBrowser": "Edge",
+  "uiObservations": 10,
+  "actualReviewInputMethod": "paste",
+  "nativeChooserTestedOnlyInUnitTests": true,
+  "exactBrowserOfflineReceiptMatches": 5,
+  "originalAndFinalWorkspaceSha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302",
+  "finalRecordCounts": {
+    "DAT": 3,
+    "CAWELON": 1,
+    "EMA": 2
+  },
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "published": false
+}

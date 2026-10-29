@@ -1,0 +1,37 @@
+[
+  {
+    "case": "scenario",
+    "exitCode": 0,
+    "receiptBytes": 641,
+    "receiptSha256": "5f2ce21f32853734de0d8e97f2b7e5e1b726e703f4f27e89c9b8b85c201c78fa",
+    "exactMatch": true
+  },
+  {
+    "case": "wrong-checksum",
+    "exitCode": 2,
+    "receiptBytes": 642,
+    "receiptSha256": "feede1f6d664c12e200f3a219fd6016a7b1957a9700f5c95a1c6e51b81029473",
+    "exactMatch": true
+  },
+  {
+    "case": "tampered",
+    "exitCode": 2,
+    "receiptBytes": 719,
+    "receiptSha256": "4671142b2009143b2977f61da6c3d61980877b6ff79aaa8686477da0c75ce174",
+    "exactMatch": true
+  },
+  {
+    "case": "overview",
+    "exitCode": 0,
+    "receiptBytes": 762,
+    "receiptSha256": "d73f31b0c15be72aeb9b85196c09e1b3200c3533a1e8e688a179fd443bc0f9f5",
+    "exactMatch": true
+  },
+  {
+    "case": "restore",
+    "exitCode": 0,
+    "receiptBytes": 759,
+    "receiptSha256": "7c6a0af2559172614b0234095e3eb15fa074195f23fd9249a6328a65e3842573",
+    "exactMatch": true
+  }
+]
