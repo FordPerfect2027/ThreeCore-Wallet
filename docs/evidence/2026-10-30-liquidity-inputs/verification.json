@@ -1,0 +1,16 @@
+{
+  "recordType": "agent-transcribed-test-result",
+  "date": "2026-10-30",
+  "sourceRevision": "029d6a4",
+  "command": "node --test --test-concurrency=2 test/liquidity-target.test.js test/public-diagnostic-cli.test.js",
+  "exitCode": 0,
+  "tests": 32,
+  "passed": 32,
+  "failed": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "todo": 0,
+  "durationMs": 2771.378,
+  "liveRpcUsed": false,
+  "rawLog": false
+}
