@@ -8,7 +8,13 @@
  * No wallet is connected. No signatures, swaps or funds are moved.
  */
 import { inspectAerodromePools } from "../src/aerodrome-pools.js";
+import { parsePublicDiagnosticArgs } from "./public-diagnostic-options.js";
 
+const parsed = parsePublicDiagnosticArgs("pools", process.argv.slice(2));
+if (!parsed.ok || parsed.help) {
+  (parsed.ok ? process.stdout : process.stderr).write(parsed.usage + "\n");
+  process.exit(parsed.ok ? 0 : 2);
+}
 try {
   const report = await inspectAerodromePools();
   process.stdout.write(JSON.stringify(report, null, 2) + "\n");

@@ -9,10 +9,15 @@
  *   node scripts/probe-base.js mainnet 0x1111111111111111111111111111111111111111
  */
 import { probeBaseRpc } from "../src/base-rpc-probe.js";
+import { parsePublicDiagnosticArgs } from "./public-diagnostic-options.js";
 
-const [network = "sepolia", contractAddress] = process.argv.slice(2);
+const parsed = parsePublicDiagnosticArgs("base", process.argv.slice(2));
+if (!parsed.ok || parsed.help) {
+  (parsed.ok ? process.stdout : process.stderr).write(parsed.usage + "\n");
+  process.exit(parsed.ok ? 0 : 2);
+}
 try {
-  const result = await probeBaseRpc({ network, contractAddress });
+  const result = await probeBaseRpc(parsed.options);
   process.stdout.write(JSON.stringify(result, null, 2) + "\n");
 } catch (error) {
   process.stderr.write(

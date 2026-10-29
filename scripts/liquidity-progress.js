@@ -10,18 +10,19 @@
  */
 import { inspectAerodromePools } from "../src/aerodrome-pools.js";
 import { assessLiquidityTargets } from "../src/liquidity-target.js";
+import { parsePublicDiagnosticArgs } from "./public-diagnostic-options.js";
 
-const args = process.argv.slice(2);
-if (args.some((arg) => arg !== "--json")) {
-  process.stderr.write("Usage: npm run liquidity:progress -- [--json]\n");
-  process.exit(2);
+const parsed = parsePublicDiagnosticArgs("liquidity", process.argv.slice(2));
+if (!parsed.ok || parsed.help) {
+  (parsed.ok ? process.stdout : process.stderr).write(parsed.usage + "\n");
+  process.exit(parsed.ok ? 0 : 2);
 }
 
 try {
   // Exactly one live snapshot; the target is a governance/planning metric.
   const observation = await inspectAerodromePools();
   const result = assessLiquidityTargets(observation);
-  if (args.includes("--json")) {
+  if (parsed.options.json) {
     process.stdout.write(JSON.stringify(result, null, 2) + "\n");
   } else {
     process.stdout.write("ThreeCore | read-only USDC pool reserve target\n");
