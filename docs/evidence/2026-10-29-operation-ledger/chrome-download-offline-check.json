@@ -1,0 +1,100 @@
+{
+  "origin": "Actual Chrome downloads from local rehearsal UI; 2026-10-29 JST",
+  "sourceJson": "C:/Users/aseet/Downloads/ThreeCore-DAT-operation-rehearsal (1).json",
+  "sourceCsv": "C:/Users/aseet/Downloads/ThreeCore-DAT-rehearsal-ledger.csv",
+  "jsonSha256": "7d719172ede0bb3c54812d8c29850798177a821b25e773bdd98b91717848f1c9",
+  "csvSha256": "66156b636f6326fe49db923ae79446b485d479e9c193dd63cc987ba71cb2637d",
+  "jsonBytes": 1581,
+  "csvBytes": 786,
+  "csvMatchesRecalculatedRows": true,
+  "checksumMeaning": "Byte identity with the copied Chrome export; not authenticity or on-chain evidence.",
+  "offlineCheck": {
+    "schema": "threecore.offline-rehearsal-check.v1",
+    "sha256": "7d719172ede0bb3c54812d8c29850798177a821b25e773bdd98b91717848f1c9",
+    "byteLength": 1581,
+    "expectedChecksumMatched": true,
+    "authenticated": false,
+    "simulationOnly": true,
+    "sourceVerified": false,
+    "authorizesExecution": false,
+    "constraintsSatisfied": true,
+    "rejectedRecords": [],
+    "networkRequests": 0,
+    "walletRequests": 0,
+    "filesModified": 0,
+    "report": {
+      "schema": "threecore.operation-rehearsal-report.v2",
+      "simulationOnly": true,
+      "sourceVerified": false,
+      "authorizesExecution": false,
+      "agent": "DAT",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "rows": [
+        {
+          "id": "open-one",
+          "kind": "open",
+          "withinEnteredLimits": true,
+          "reasons": [],
+          "cash": "899000000",
+          "outstanding": "100000000",
+          "realizedPnl": "-1000000",
+          "pnlChange": "-1000000",
+          "reservedExitFees": "2000000",
+          "reservedAllocations": "0",
+          "availableCash": "897000000"
+        },
+        {
+          "id": "step-2",
+          "kind": "settle",
+          "withinEnteredLimits": true,
+          "reasons": [],
+          "cash": "1028000000",
+          "outstanding": "0",
+          "realizedPnl": "28000000",
+          "pnlChange": "29000000",
+          "reservedExitFees": "0",
+          "reservedAllocations": "0",
+          "availableCash": "1028000000"
+        },
+        {
+          "id": "step-3",
+          "kind": "reserve",
+          "withinEnteredLimits": true,
+          "reasons": [],
+          "cash": "1028000000",
+          "outstanding": "0",
+          "realizedPnl": "28000000",
+          "pnlChange": "0",
+          "reservedExitFees": "0",
+          "reservedAllocations": "2800000",
+          "availableCash": "1025200000"
+        }
+      ],
+      "cash": "1028000000",
+      "outstanding": "0",
+      "realizedPnl": "28000000",
+      "deposits": "0",
+      "withdrawals": "0",
+      "fees": "2000000",
+      "openPositions": 0,
+      "proposedOwnTokenBuybackBudget": "0",
+      "reservedExitFees": "0",
+      "reservedAllocations": "2800000",
+      "availableCash": "1025200000",
+      "allocationShortfall": "0",
+      "positions": [],
+      "reservations": [
+        {
+          "reservationId": "reward-one",
+          "amount": "2800000"
+        }
+      ],
+      "allocationBlockers": [],
+      "accountingInvariant": true
+    }
+  }
+}
