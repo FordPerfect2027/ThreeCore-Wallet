@@ -1,0 +1,366 @@
+{
+  "schema": "threecore.operation-rehearsal-scenario.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "hypotheticalReplay": true,
+  "inputs": {
+    "before": {
+      "schema": "threecore.operation-rehearsal.v2",
+      "simulationOnly": true,
+      "agent": "DAT",
+      "chainId": 84532,
+      "account": "0x1111111111111111111111111111111111111111",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "openingBalance": "1000000000",
+      "policy": {
+        "origin": "https://training.example",
+        "spender": "0x5555555555555555555555555555555555555555",
+        "maxPerOperation": "100000000",
+        "maxOutstanding": "200000000",
+        "reserveFloor": "200000000",
+        "lossLimit": "250000000",
+        "buybackBps": 1000,
+        "paused": false,
+        "maxEntryFee": "3000000",
+        "maxExitFee": "5000000"
+      },
+      "events": [
+        {
+          "id": "open-one",
+          "kind": "open",
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111",
+          "operationId": "one",
+          "origin": "https://training.example",
+          "spender": "0x5555555555555555555555555555555555555555",
+          "principal": "100000000",
+          "fee": "1000000",
+          "exitFeeReserve": "2000000"
+        },
+        {
+          "id": "settle-one",
+          "kind": "settle",
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111",
+          "operationId": "one",
+          "grossReturn": "130000000",
+          "fee": "1000000"
+        },
+        {
+          "id": "step-3",
+          "kind": "reserve",
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111",
+          "reservationId": "dat-reserve",
+          "amount": "2800000"
+        }
+      ]
+    },
+    "after": {
+      "schema": "threecore.operation-rehearsal.v2",
+      "simulationOnly": true,
+      "agent": "DAT",
+      "chainId": 84532,
+      "account": "0x1111111111111111111111111111111111111111",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "openingBalance": "1000000000",
+      "policy": {
+        "origin": "https://training.example",
+        "spender": "0x5555555555555555555555555555555555555555",
+        "maxPerOperation": "50000000",
+        "maxOutstanding": "200000000",
+        "reserveFloor": "200000000",
+        "lossLimit": "250000000",
+        "buybackBps": 1000,
+        "paused": false,
+        "maxEntryFee": "3000000",
+        "maxExitFee": "5000000"
+      },
+      "events": [
+        {
+          "id": "open-one",
+          "kind": "open",
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111",
+          "operationId": "one",
+          "origin": "https://training.example",
+          "spender": "0x5555555555555555555555555555555555555555",
+          "principal": "100000000",
+          "fee": "1000000",
+          "exitFeeReserve": "2000000"
+        },
+        {
+          "id": "settle-one",
+          "kind": "settle",
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111",
+          "operationId": "one",
+          "grossReturn": "130000000",
+          "fee": "1000000"
+        },
+        {
+          "id": "step-3",
+          "kind": "reserve",
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111",
+          "reservationId": "dat-reserve",
+          "amount": "2800000"
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "field": "openingBalance",
+      "before": "1000000000",
+      "after": "1000000000",
+      "changed": false
+    },
+    {
+      "field": "maxPerOperation",
+      "before": "100000000",
+      "after": "50000000",
+      "changed": true
+    },
+    {
+      "field": "maxOutstanding",
+      "before": "200000000",
+      "after": "200000000",
+      "changed": false
+    },
+    {
+      "field": "reserveFloor",
+      "before": "200000000",
+      "after": "200000000",
+      "changed": false
+    },
+    {
+      "field": "lossLimit",
+      "before": "250000000",
+      "after": "250000000",
+      "changed": false
+    },
+    {
+      "field": "buybackBps",
+      "before": 1000,
+      "after": 1000,
+      "changed": false
+    },
+    {
+      "field": "paused",
+      "before": false,
+      "after": false,
+      "changed": false
+    },
+    {
+      "field": "maxEntryFee",
+      "before": "3000000",
+      "after": "3000000",
+      "changed": false
+    },
+    {
+      "field": "maxExitFee",
+      "before": "5000000",
+      "after": "5000000",
+      "changed": false
+    }
+  ],
+  "metrics": [
+    {
+      "field": "cash",
+      "before": "1028000000",
+      "after": "1000000000",
+      "delta": "-28000000"
+    },
+    {
+      "field": "outstanding",
+      "before": "0",
+      "after": "0",
+      "delta": "0"
+    },
+    {
+      "field": "realizedPnl",
+      "before": "28000000",
+      "after": "0",
+      "delta": "-28000000"
+    },
+    {
+      "field": "fees",
+      "before": "2000000",
+      "after": "0",
+      "delta": "-2000000"
+    },
+    {
+      "field": "reservedExitFees",
+      "before": "0",
+      "after": "0",
+      "delta": "0"
+    },
+    {
+      "field": "reservedAllocations",
+      "before": "2800000",
+      "after": "0",
+      "delta": "-2800000"
+    },
+    {
+      "field": "availableCash",
+      "before": "1025200000",
+      "after": "1000000000",
+      "delta": "-25200000"
+    },
+    {
+      "field": "allocationShortfall",
+      "before": "0",
+      "after": "0",
+      "delta": "0"
+    },
+    {
+      "field": "proposedOwnTokenBuybackBudget",
+      "before": "0",
+      "after": "0",
+      "delta": "0"
+    }
+  ],
+  "rows": [
+    {
+      "recordNumber": 1,
+      "id": "open-one",
+      "kind": "open",
+      "before": {
+        "id": "open-one",
+        "kind": "open",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "899000000",
+        "outstanding": "100000000",
+        "realizedPnl": "-1000000",
+        "pnlChange": "-1000000",
+        "reservedExitFees": "2000000",
+        "reservedAllocations": "0",
+        "availableCash": "897000000"
+      },
+      "after": {
+        "id": "open-one",
+        "kind": "open",
+        "withinEnteredLimits": false,
+        "reasons": [
+          "PER_OPERATION_LIMIT"
+        ],
+        "cash": "1000000000",
+        "outstanding": "0",
+        "realizedPnl": "0",
+        "pnlChange": "0",
+        "reservedExitFees": "0",
+        "reservedAllocations": "0",
+        "availableCash": "1000000000"
+      },
+      "decisionChanged": true,
+      "accountingChanged": true,
+      "changed": true
+    },
+    {
+      "recordNumber": 2,
+      "id": "settle-one",
+      "kind": "settle",
+      "before": {
+        "id": "settle-one",
+        "kind": "settle",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "1028000000",
+        "outstanding": "0",
+        "realizedPnl": "28000000",
+        "pnlChange": "29000000",
+        "reservedExitFees": "0",
+        "reservedAllocations": "0",
+        "availableCash": "1028000000"
+      },
+      "after": {
+        "id": "settle-one",
+        "kind": "settle",
+        "withinEnteredLimits": false,
+        "reasons": [
+          "NO_OPEN_POSITION"
+        ],
+        "cash": "1000000000",
+        "outstanding": "0",
+        "realizedPnl": "0",
+        "pnlChange": "0",
+        "reservedExitFees": "0",
+        "reservedAllocations": "0",
+        "availableCash": "1000000000"
+      },
+      "decisionChanged": true,
+      "accountingChanged": true,
+      "changed": true
+    },
+    {
+      "recordNumber": 3,
+      "id": "step-3",
+      "kind": "reserve",
+      "before": {
+        "id": "step-3",
+        "kind": "reserve",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "1028000000",
+        "outstanding": "0",
+        "realizedPnl": "28000000",
+        "pnlChange": "0",
+        "reservedExitFees": "0",
+        "reservedAllocations": "2800000",
+        "availableCash": "1025200000"
+      },
+      "after": {
+        "id": "step-3",
+        "kind": "reserve",
+        "withinEnteredLimits": false,
+        "reasons": [
+          "REJECTED_RECORDS",
+          "ALLOCATION_LIMIT"
+        ],
+        "cash": "1000000000",
+        "outstanding": "0",
+        "realizedPnl": "0",
+        "pnlChange": "0",
+        "reservedExitFees": "0",
+        "reservedAllocations": "0",
+        "availableCash": "1000000000"
+      },
+      "decisionChanged": true,
+      "accountingChanged": true,
+      "changed": true
+    }
+  ],
+  "summary": {
+    "changedParameters": 1,
+    "changedRecords": 3,
+    "newlyRejected": 3,
+    "newlyAccepted": 0,
+    "changedReasons": 3,
+    "beforeOpenPositions": 0,
+    "afterOpenPositions": 0,
+    "beforeRejected": 0,
+    "afterRejected": 3,
+    "beforeAllocationBlockers": [],
+    "afterAllocationBlockers": [
+      "REJECTED_RECORDS",
+      "NO_NET_PROFIT"
+    ]
+  }
+}

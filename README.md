@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 29, 2026 condition comparison:** [Twenty-item comparison update](docs/OPERATION_SCENARIO_COMPARISON_2026-10-29.md) replays the same events under hypothetical conditions without changing the source workspace. Adds exact differences, per-record reasons, changed-only filtering, separate input/report exports and offline reproduction. Verified with 309 related tests and two exact browser/offline report matches.
+
 **October 29, 2026 confirmation overview:** [Ten-item overview update](docs/OPERATION_WORKSPACE_OVERVIEW_2026-10-29.md) shows current unsettled positions, allocation reservations and rejected rehearsal records for each agent, with source context, filters, complete report downloads and offline reproduction. Verified with 255 related tests and byte-identical Edge/offline reports; the original six fictional records are preserved.
 
 **October 29, 2026 restore comparison:** [Ten-item comparison update](docs/OPERATION_RESTORE_COMPARISON_2026-10-29.md) compares recorded accounts, networks, assets, destinations, policy and event changes before applying a rehearsal workspace. A downloadable comparison can be independently regenerated with the new offline command. Verified with 230 related tests and actual Edge downloads.
