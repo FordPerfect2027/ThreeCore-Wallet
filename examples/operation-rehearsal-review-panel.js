@@ -13,7 +13,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     get("status").textContent = message; get("status").className = "";
     get("status").setAttribute("aria-busy", "false");
   }
-  function reset(message = "保存した確認一覧・復旧前の照合資料・条件比較資料を選んでください。現在の履歴には反映しません。") {
+  function reset(message = "保存した確認一覧・復旧比較・条件比較・ケース集の集計資料を選んでください。現在の履歴には反映しません。") {
     sourceText = null; invalidate(message); get("run").disabled = true;
     get("source").textContent = ""; get("file").value = ""; get("text").value = "";
   }
@@ -40,14 +40,14 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       get("summary").textContent = "形式: " + result.inputSchema + " / 不一致箇所 " + result.differenceCount + "件 / 照合値: " +
         (result.checksumMatches === null ? "指定なし" : result.checksumMatches ? "一致" : "不一致") +
         (result.differencesTruncated ? "。差分は先頭40箇所を表示しています。" : "");
-      for(const scope of result.scope) row("scope", [scope.agent, scope.beforeRecords === null ? "未作成" : scope.beforeRecords + "件",
+      for(const scope of result.scope) row("scope", [scope.agent + (scope.caseId ? " / " + scope.caseId : ""), scope.beforeRecords === null ? "未作成" : scope.beforeRecords + "件",
         result.inputSchema === REHEARSAL_OVERVIEW_SCHEMA ? "比較なし" : scope.afterRecords === null ? "未作成" : scope.afterRecords + "件"]);
       const labels = {missing:"項目が不足",unexpected:"余分な項目",type:"値の種類が異なる",value:"値が異なる","array-length":"件数が異なる"};
       for(const diff of result.differences) row("differences",[diff.path,labels[diff.kind]]);
     } catch(error) {
       if(disposed || own !== revision) return;
       const reason = {INVALID_EXPECTED_CHECKSUM:"照合値はSHA-256の64桁の英数字で入力してください。",
-        UNSUPPORTED_REVIEW_REPORT:"この形式は確認一覧・復旧比較・条件比較の資料ではありません。",
+        UNSUPPORTED_REVIEW_REPORT:"この形式は確認一覧・復旧比較・条件比較・ケース集の集計資料ではありません。",
         REVIEW_HASH_UNAVAILABLE:"照合値を計算できませんでした。もう一度確認してください。",
         SCENARIO_CONTEXT_OR_EVENTS_CHANGED:"比較資料の口座・資産・元の記録が一致しないため、同じ履歴として比較できません。"}[error?.code]
         ?? "資料の形式や含まれる入力記録を確認できませんでした。2 MiB以内の保存済み資料を選んでください。";

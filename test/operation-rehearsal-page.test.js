@@ -52,6 +52,19 @@ const workspaceText = (ledgers, activeAgent = "DAT") => encodeRehearsalWorkspace
 const pasteWorkspace = (f, text) => { f.change("workspace-text", text); f.field("workspace-text-review").click(); };
 const renderedText = node => [node.textContent, ...node.children.map(renderedText)].join(" ");
 
+test("named comparison snapshots preserve all ledger inputs and undo across source changes",()=>{
+  const f=setup();f.field("example").click();prepareAppend(f,"reserve");f.field("append-confirm").click();const before=savedWorkspace(f);
+  f.change("whatif-maxPerOperation","50");f.field("whatif-compare").click();
+  assert.equal(f.field("scenario-set-add").disabled,false);f.change("scenario-set-id","dat-limit");f.change("scenario-set-label","上限50");
+  f.field("scenario-set-add").click();f.field("scenario-set-apply").click();
+  f.field("scenario-set-save").click();const saved=f.downloads.at(-1).text;assert.equal(JSON.parse(saved).cases[0].before.events.length,3);
+  assert.deepEqual(savedWorkspace(f),before);assert.equal(f.field("undo").disabled,false);
+  f.change("whatif-maxPerOperation","70");assert.equal(f.field("scenario-set-add").disabled,true);
+  f.field("scenario-set-save").click();assert.equal(f.downloads.at(-1).text,saved);
+  selectAgent(f,"EMA");assert.equal(f.field("scenario-set-rows").children.length,1);
+  selectAgent(f,"DAT");assert.deepEqual(savedWorkspace(f),before);f.field("undo").click();assert.equal(f.field("rows").children.length,2);
+});
+
 test("read-only saved-report review preserves workspace, undo and pending restore",async()=>{
   const f=setup();f.field("example").click();prepareAppend(f,"reserve");f.field("append-confirm").click();
   const before=savedWorkspace(f);const report=encodeRehearsalOverview(before);

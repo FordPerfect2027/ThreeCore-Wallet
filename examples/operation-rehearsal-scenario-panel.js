@@ -2,16 +2,17 @@ import { buildRehearsalScenario, compareRehearsalScenario, encodeRehearsalScenar
   rehearsalScenarioParameters, REHEARSAL_SCENARIO_FIELDS } from "../src/operation-rehearsal-scenario.js";
 import { validateRehearsal, encodeRehearsal, formatRehearsalUnits, parseRehearsalUnits, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
 
-const LABELS = Object.freeze({ openingBalance: "開始時の資金", maxPerOperation: "1回の元本上限",
+export const SCENARIO_LABELS = Object.freeze({ openingBalance: "開始時の資金", maxPerOperation: "1回の元本上限",
   maxOutstanding: "未決済元本の上限", reserveFloor: "予備資金", lossLimit: "損失上限",
   buybackBps: "還元割合", paused: "新しい利用の停止", maxEntryFee: "開始費用上限", maxExitFee: "決済費用上限",
   cash: "手元資金", outstanding: "未決済元本", realizedPnl: "累計実現損益", fees: "費用合計",
   reservedExitFees: "確保した決済費用", reservedAllocations: "予約済み還元", availableCash: "予約を除く手元資金",
   allocationShortfall: "利益を超える予約額", proposedOwnTokenBuybackBudget: "追加予約可能額", pnlChange: "その記録の損益" });
 const ROW_AMOUNTS = ["cash", "outstanding", "realizedPnl", "pnlChange", "reservedExitFees", "reservedAllocations", "availableCash"];
+const LABELS = SCENARIO_LABELS;
 
 /** Owns only a hypothetical comparison draft. Never commits to the workspace. */
-export function mountRehearsalScenarioPanel(document, { download, reasons, kinds }) {
+export function mountRehearsalScenarioPanel(document, { download, reasons, kinds, onChange = () => {} }) {
   const get = name => document.getElementById("whatif-" + name);
   let source = null, comparison = null, disposed = false;
   const listeners = [];
@@ -28,6 +29,7 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
     for (const name of ["parameters", "metrics", "rows", "summary", "export-status", "row-status", "blockers"]) get(name).textContent = "";
     get("results").hidden = true; get("save").disabled = true; get("input-save").disabled = true;
     get("status").textContent = message;
+    onChange();
   }
   function refresh(input) {
     if (disposed) return;
@@ -81,7 +83,7 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
     const blockers = codes => codes.length ? codes.map(code => reasons[code] ?? code).join("・") : "該当なし";
     get("blockers").textContent = "追加予約を止める理由 — 元の条件: " + blockers(summary.beforeAllocationBlockers) +
       " / 比較条件: " + blockers(summary.afterAllocationBlockers);
-    renderRows(); get("save").disabled = false; get("input-save").disabled = false;
+    renderRows(); get("save").disabled = false; get("input-save").disabled = false; onChange();
   }
   for (const field of REHEARSAL_SCENARIO_FIELDS) listen(field, field === "paused" ? "change" : "input", () => {
     if (!disposed && source) invalidate();
@@ -119,7 +121,7 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
     } catch { get("export-status").textContent = "保存を開始できませんでした。比較結果と元の履歴は保持しています。"; }
   });
   refresh(null);
-  return Object.freeze({ refresh, dispose() {
+  return Object.freeze({ refresh, comparison: () => disposed ? null : comparison, dispose() {
     if (disposed) return; refresh(null); disposed = true; source = null; comparison = null;
     for (const name of ["status", "row-status", "blockers", "context", "version"]) get(name).textContent = "";
     for (const remove of listeners) remove();

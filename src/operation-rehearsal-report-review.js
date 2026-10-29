@@ -3,6 +3,7 @@ import { RehearsalError } from "./operation-rehearsal.js";
 import { reportRehearsalOverview, REHEARSAL_OVERVIEW_SCHEMA } from "./operation-rehearsal-overview.js";
 import { compareRehearsalWorkspaces, REHEARSAL_COMPARISON_SCHEMA } from "./operation-rehearsal-comparison.js";
 import { compareRehearsalScenario, REHEARSAL_SCENARIO_SCHEMA } from "./operation-rehearsal-scenario.js";
+import { reportRehearsalScenarioSet, REHEARSAL_SCENARIO_SET_REPORT_SCHEMA } from "./operation-rehearsal-scenario-set.js";
 
 export const REHEARSAL_REPORT_REVIEW_SCHEMA = "threecore.operation-rehearsal-report-review.v1";
 export const REHEARSAL_REPORT_REVIEW_LIMIT = 2097152;
@@ -57,6 +58,10 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
     recomputed = compareRehearsalScenario(parsed.inputs?.before, parsed.inputs?.after);
     scope = [{ agent: recomputed.inputs.before.agent, beforeRecords: recomputed.inputs.before.events.length,
       afterRecords: recomputed.inputs.after.events.length }];
+  } else if (parsed?.schema === REHEARSAL_SCENARIO_SET_REPORT_SCHEMA) {
+    recomputed = reportRehearsalScenarioSet(parsed.inputs);
+    scope = recomputed.rows.map(row => ({ agent: row.agent, caseId: row.id,
+      beforeRecords: row.beforeRecords, afterRecords: row.afterRecords }));
   } else fail("UNSUPPORTED_REVIEW_REPORT");
   const comparison = compareValues(recomputed, parsed);
   if (!subtle || typeof subtle.digest !== "function") fail("REVIEW_HASH_UNAVAILABLE");

@@ -127,6 +127,29 @@
       <p class="small">追加資金・引き出しは損益に含めません。未決済元本の損益は確定させず、開始時の費用だけを計上します。還元額は損失を差し引いた累計利益と利用可能な資金から試算します。</p>
     </section>
   </div>
+  <section aria-labelledby="scenario-set-title">
+    <h2 id="scenario-set-title">比較ケースを名前付きで残す</h2>
+    <p>上で確認した条件比較を、最大12件・合計1 MiBのケース集にまとめられます。元の履歴と比較条件の両方を保持します。ページを閉じる前に保存してください。</p>
+    <div class="fields">
+      <label>ケースID<input id="scenario-set-id" maxlength="64" spellcheck="false" placeholder="dat-limit-50"></label>
+      <label>ケースの名前<input id="scenario-set-label" maxlength="80" placeholder="1回の上限を50にした場合"></label>
+    </div>
+    <p class="small">IDは英数字で始め、英数字・ハイフン・アンダースコアを使えます。同じIDへの上書きは「置き換える前に確認」を選びます。</p>
+    <div class="actions"><button id="scenario-set-add" type="button" disabled>比較ケースの追加前に確認</button><button id="scenario-set-replace" type="button" disabled>比較ケースを置き換える前に確認</button><button id="scenario-set-rename" type="button">ケースの名前変更を確認</button><button id="scenario-set-remove" type="button">ケースの削除を確認</button></div>
+    <p id="scenario-set-status" role="status" aria-live="polite"></p><p id="scenario-set-source" class="small"></p>
+    <div id="scenario-set-review" hidden><p id="scenario-set-preview"></p><div class="table-wrap"><table><caption>確定前のケース集の変更</caption><thead><tr><th>ID</th><th>現在</th><th>変更後</th></tr></thead><tbody id="scenario-set-changes"></tbody></table></div></div>
+    <div class="actions"><button id="scenario-set-apply" type="button" disabled>確認したケース集の変更を確定</button><button id="scenario-set-cancel" type="button">ケース集の変更確認を取り消す</button><button id="scenario-set-undo" type="button" disabled>ケース集の直前の変更を取り消す</button></div>
+    <p class="small">ケース集だけの変更は最大10回取り消せます。現在の試算履歴を変更したり、実際の操作を実行したりする機能ではありません。</p>
+    <div class="fields"><label>ケース一覧の対象<select id="scenario-set-agent"><option value="all">すべて</option><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label><label>ケース一覧の結果<select id="scenario-set-outcome"><option value="all">すべて</option><option value="changed">記録の結果が変わる</option><option value="rejected">新たに見送る記録がある</option></select></label></div>
+    <p id="scenario-set-count" role="status"></p>
+    <div class="table-wrap"><table><caption>保存中の比較ケース</caption><thead><tr><th>ID</th><th>名前</th><th>対象</th><th>変更条件</th><th>変わる記録</th><th>新たな見送り</th></tr></thead><tbody id="scenario-set-rows"></tbody></table></div>
+    <label>詳細を見るケース<select id="scenario-set-select" disabled></select></label><p id="scenario-set-detail"></p>
+    <div class="table-wrap"><table><caption>選択したケースの金額比較</caption><thead><tr><th>項目</th><th>元の条件</th><th>比較条件</th><th>差額</th></tr></thead><tbody id="scenario-set-metrics"></tbody></table></div>
+    <div class="actions"><button id="scenario-set-save" type="button" disabled>全ケースの入力を保存</button><button id="scenario-set-report-save" type="button" disabled>全ケースの集計資料を保存</button><button id="scenario-set-case-save" type="button" disabled>選択したケースの比較資料を保存</button></div>
+    <p id="scenario-set-export-status" class="small" role="status" aria-live="polite"></p>
+    <label class="file-label">保存したケース集を選ぶ<input id="scenario-set-file" type="file" accept=".json,application/json"></label>
+    <details><summary>ケース集ファイルを選べない場合</summary><p class="small">1 MiB以内のケース集JSONを貼り付けて、置き換わる内容を確認できます。外部へ送信しません。</p><label>ケース集の内容<textarea id="scenario-set-text" rows="7" maxlength="1048577" spellcheck="false"></textarea></label><button id="scenario-set-paste" type="button">貼り付けたケース集を確認</button></details>
+  </section>
   <section aria-labelledby="ledger-title"><h2 id="ledger-title">いまの履歴に1件追記</h2>
     <p>新形式の試算に、仮の記録を順番に追加できます。条件外の記録は見送りとして残ります。予約は資金を動かさず、他の用途に重ねて計上しないための仮の確保です。</p>
     <p id="ledger-details" class="small"></p>
@@ -153,7 +176,7 @@
   </section>
   <section aria-labelledby="report-review-title">
     <h2 id="report-review-title">保存した資料を再計算して確認</h2>
-    <p>確認一覧・復旧前の照合資料・条件比較資料を読み取り専用で確認します。含まれる入力から再計算し、資料内の結果と照合します。現在の履歴には反映しません。</p>
+    <p>確認一覧・復旧前の照合資料・条件比較資料・ケース集の集計資料を読み取り専用で確認します。含まれる入力から再計算し、資料内の結果と照合します。現在の履歴には反映しません。</p>
     <label class="file-label">確認する資料ファイル<input id="report-review-file" type="file" accept=".json,application/json"></label>
     <p id="report-review-source" class="small"></p>
     <label>照合するSHA-256（任意）<input id="report-review-expected" maxlength="64" spellcheck="false" placeholder="元の資料の照合値がある場合だけ入力"></label>
