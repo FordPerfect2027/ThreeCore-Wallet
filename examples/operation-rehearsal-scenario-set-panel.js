@@ -1,3 +1,4 @@
+import { createFileReadScope } from "../src/security-file.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { createRehearsalScenarioSet, decodeRehearsalScenarioSet, encodeRehearsalScenarioSet,
   reportRehearsalScenarioSet, encodeRehearsalScenarioSetReport, REHEARSAL_SCENARIO_SET_LIMIT } from "../src/operation-rehearsal-scenario-set.js";
@@ -8,11 +9,13 @@ import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "../src/op
 
 export function mountRehearsalScenarioSetPanel(document, { download, getComparison, store=createRehearsalScenarioSet() }) {
   const offerDownload = payload => requireSyncExport(download(payload));
+  const fileReader = createFileReadScope();
   const get=name=>document.getElementById("scenario-set-"+name);
   let disposed=false, revision=0, pending=null, report=reportRehearsalScenarioSet(store.state().current), selectedId="";
   const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
   function cancel(message="確認中の変更を取り消しました。確定したケースは保持しています。"){
+    fileReader.cancel(); get("status").setAttribute("aria-busy", "false");
     revision++;pending=null;store.cancel();get("apply").disabled=true;get("preview").textContent="";get("changes").textContent="";
     get("review").hidden=true;get("status").textContent=message;get("source").textContent="";
   }
@@ -79,15 +82,13 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
   });
   listen("file","change",async()=>{
     if(disposed)return;const file=get("file").files?.[0];if(!file)return;
-    cancel("ケース集のファイルを確認しています。");get("file").value="";get("text").value="";const own=revision;
+    cancel("ケース集のファイルを確認しています（最大30秒）。");get("status").setAttribute("aria-busy", "true");get("file").value="";get("text").value="";const own=revision;
     try{
-      if(!Number.isSafeInteger(file.size)||file.size<1||file.size>REHEARSAL_SCENARIO_SET_LIMIT)throw new Error("Size");
-      const buffer=await file.arrayBuffer();if(disposed||own!==revision)return;
-      if(buffer.byteLength!==file.size||buffer.byteLength>REHEARSAL_SCENARIO_SET_LIMIT)throw new Error("Size changed");
-      const data=decodeRehearsalScenarioSet(new TextDecoder("utf-8",{fatal:true,ignoreBOM:true}).decode(buffer));
+      const text = await fileReader.readText(file, { maxBytes: REHEARSAL_SCENARIO_SET_LIMIT });if(disposed||own!==revision)return;
+      const data=decodeRehearsalScenarioSet(text);
       const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"ケース集ファイル";
       showReview(store.previewImport(data),name);
-    }catch{if(!disposed&&own===revision)fail();}
+    }catch{if(!disposed&&own===revision)fail();}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
   listen("text","input",()=>{if(!disposed)cancel("貼り付けたケース集を確認してください。");});
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel();try{showReview(store.previewImport(decodeRehearsalScenarioSet(text)),"貼り付けたケース集");}catch{fail();}});

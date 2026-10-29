@@ -1,10 +1,12 @@
+import { createFileReadScope } from "../src/security-file.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsalSession,encodeRehearsalSession,REHEARSAL_SESSION_LIMIT } from "../src/operation-rehearsal-session.js";
 export function mountRehearsalSessionPanel(document,{session,download,onRestored,renderWorkspaceComparison}){
   const offerDownload = payload => requireSyncExport(download(payload));
+  const fileReader = createFileReadScope();
   const get=name=>document.getElementById("session-"+name);let pending=null,revision=0,disposed=false,source="";const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
-  function reset(message){revision++;pending=null;source="";for(const name of["source","summary","cases","workspace-details","export-status"])get(name).textContent="";
+  function reset(message){fileReader.cancel();revision++;pending=null;source="";for(const name of["source","summary","cases","workspace-details","export-status"])get(name).textContent="";
     get("review").hidden=true;get("apply").disabled=true;get("status").textContent=message;get("status").setAttribute("aria-busy","false");}
   function available(){get("save").disabled=!session.cases.state().current.cases.length&&!session.workspace.snapshot().ledgers.length;}
   const unsubscribe=session.subscribe(()=>{if(disposed)return;reset("履歴またはケースの操作がありました。まとめて復旧する場合は保存したファイルをもう一度確認してください。");available();});
@@ -25,9 +27,9 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
     offerDownload({document,prepared:{text:encodeRehearsalSession(data),filename:"ThreeCore-rehearsal-session.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="3トークンの履歴と全比較ケースをまとめた保存を開始しました。";
   }catch{if(disposed||own!==revision)return;get("export-status").textContent="まとめた記録を保存できませんでした。画面の履歴とケース集は保持しています。";}});
   listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file)return;cancel("まとめた記録を読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
-    try{if(!Number.isSafeInteger(file.size)||file.size<1||file.size>REHEARSAL_SESSION_LIMIT)throw Error("Size");const buffer=await file.arrayBuffer();if(disposed||own!==revision)return;
-      if(buffer.byteLength!==file.size||buffer.byteLength>REHEARSAL_SESSION_LIMIT)throw Error("Size changed");const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"まとめた記録";
-      review(new TextDecoder("utf-8",{fatal:true,ignoreBOM:true}).decode(buffer),name);
+    try{const text = await fileReader.readText(file, { maxBytes: REHEARSAL_SESSION_LIMIT });if(disposed||own!==revision)return;
+      const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"まとめた記録";
+      review(text,name);
     }catch{if(!disposed&&own===revision)failed();}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel("貼り付けた記録を確認しています。");try{review(text,"貼り付けたまとめ記録");}catch{failed();}});

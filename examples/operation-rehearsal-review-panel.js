@@ -1,3 +1,4 @@
+import { createFileReadScope } from "../src/security-file.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { reviewRehearsalReport, encodeRehearsalReviewReceipt, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
@@ -27,11 +28,13 @@ function outcomeText(outcome) {
 
 export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle }) {
   const offerDownload = payload => requireSyncExport(download(payload));
+  const fileReader = createFileReadScope();
   const get = name => document.getElementById("report-review-" + name);
   let revision = 0, disposed = false, sourceText = null, receipt = null;
   const listeners = [];
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
   function invalidate(message) {
+    fileReader.cancel();
     revision++; receipt = null;
     for(const name of ["scope", "differences", "digest", "summary", "outcome", "export-status"]) get(name).textContent = "";
     get("save").disabled = true; get("results").hidden = true;
@@ -90,10 +93,8 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"選択した資料";
     get("source").textContent="確認するファイル: "+(name||"選択した資料");
     try {
-      if(!Number.isSafeInteger(file.size)||file.size<1||file.size>REHEARSAL_REPORT_REVIEW_LIMIT) throw new Error("Size");
-      const buffer=await file.arrayBuffer(); if(disposed||own!==revision) return;
-      if(buffer.byteLength!==file.size||buffer.byteLength>REHEARSAL_REPORT_REVIEW_LIMIT) throw new Error("Size changed");
-      sourceText=new TextDecoder("utf-8",{fatal:true,ignoreBOM:true}).decode(buffer); get("run").disabled=false;
+      const text = await fileReader.readText(file, { maxBytes: REHEARSAL_REPORT_REVIEW_LIMIT }); if(disposed||own!==revision) return;
+      sourceText=text; get("run").disabled=false;
       await run();
     } catch { if(!disposed&&own===revision) reset("ファイルを読み込めませんでした。2 MiB以内のUTF-8の資料を選んでください。現在の履歴は保持しています。"); }
   });

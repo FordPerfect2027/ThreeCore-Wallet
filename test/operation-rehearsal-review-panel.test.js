@@ -55,7 +55,7 @@ for(const action of ["clear","edit","dispose"])test(action+" prevents an older h
   assert.equal(f.field("save").disabled,true);assert.equal(f.field("scope").children.length,0);
 });
 test("a new source wins over a late file read",async()=>{
-  let release;const f=setup();f.file(text,{arrayBuffer:()=>new Promise(resolve=>{release=resolve;})});
+  let release;const f=setup();f.file(text,{arrayBuffer:()=>new Promise(resolve=>{release=resolve;})}); await tick();
   f.paste(text);await finished(f);release(new TextEncoder().encode("{").buffer);await tick();
   assert.match(f.field("source").textContent,/貼り付けた文字列/);assert.equal(f.field("save").disabled,false);
 });

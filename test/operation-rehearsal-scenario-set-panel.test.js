@@ -80,7 +80,7 @@ test("bounded file import uses actual UTF-8 bytes and handles cancelled selectio
   f.file(text,{size:1,arrayBuffer:async()=>new Uint8Array([255]).buffer});await tick();assert.equal(f.field("apply").disabled,true);assert.equal(f.saved().cases.length,1);
 });
 for(const action of ["cancel","paste","dispose"])test(action+" supersedes a late file read",async()=>{
-  const f=setup();let release;f.file("x",{arrayBuffer:()=>new Promise(resolve=>{release=resolve;})});
+  const f=setup();let release;f.file("x",{arrayBuffer:()=>new Promise(resolve=>{release=resolve;})}); await tick();
   if(action==="cancel")f.field("cancel").click();if(action==="dispose")f.panel.dispose();if(action==="paste")f.paste(encodeRehearsalScenarioSet(pack(item("newer"))));
   release(new TextEncoder().encode("x").buffer);await tick();
   if(action==="paste"){assert.equal(f.field("apply").disabled,false);f.field("apply").click();assert.equal(f.saved().cases[0].id,"newer");}

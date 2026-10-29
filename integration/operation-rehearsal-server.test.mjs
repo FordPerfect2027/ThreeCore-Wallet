@@ -23,7 +23,7 @@ test("all module imports resolve from the explicit allowlist with safe content t
   const pending = ["/examples/operation-rehearsal-page.js"], visited = new Set();
   while (pending.length) {
     const path = pending.pop(); if (visited.has(path)) continue; visited.add(path);
-    assert.ok(visited.size < 30);
+    assert.ok(visited.size < 45);
     const response = await fetch(base + path); assert.equal(response.status, 200, path);
     assert.match(response.headers.get("content-type"), /text\/javascript/);
     assert.equal(response.headers.get("x-content-type-options"), "nosniff");

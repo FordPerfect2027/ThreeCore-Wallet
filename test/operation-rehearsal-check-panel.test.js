@@ -43,7 +43,7 @@ test("oversize and invalid UTF-8 files are refused without partial results",asyn
   f.file(text,{size:1,arrayBuffer:async()=>new Uint8Array([255]).buffer});await tick();assert.equal(f.field("save").disabled,true);assert.equal(f.field("status").getAttribute("aria-busy"),"false");
 });
 for(const action of["clear","edit","dispose","paste"])test(action+" supersedes a late file read",async()=>{
-  const f=setup();let release;f.file(text,{arrayBuffer:()=>new Promise(resolve=>{release=resolve;})});
+  const f=setup();let release;f.file(text,{arrayBuffer:()=>new Promise(resolve=>{release=resolve;})}); await tick();
   if(action==="clear")f.field("clear").click();if(action==="edit")f.change("{");if(action==="dispose")f.panel.dispose();if(action==="paste")f.paste(text);
   release(new TextEncoder().encode(text).buffer);await tick();assert.equal(f.field("save").disabled,action!=="paste");
   if(action==="paste")assert.match(f.field("source").textContent,/貼り付け/);else assert.equal(f.field("rows").children.length,0);

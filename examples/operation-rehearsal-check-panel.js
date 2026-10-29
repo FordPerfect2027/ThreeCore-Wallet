@@ -1,12 +1,15 @@
+import { createFileReadScope } from "../src/security-file.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsalCheckSuite, runRehearsalCheckSuite, encodeRehearsalCheckReport, REHEARSAL_CHECK_SUITE_LIMIT } from "../src/operation-rehearsal-check-suite.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 export function mountRehearsalCheckPanel(document,{download,reasons={}}){
   const offerDownload = payload => requireSyncExport(download(payload));
+  const fileReader = createFileReadScope();
   const get=name=>document.getElementById("check-suite-"+name);let disposed=false,revision=0,input=null,report=null;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
   function reset(message="期待結果を記録したケース集を選んでください。現在の履歴やケース集は変更しません。"){
+    fileReader.cancel();
     revision++;input=null;report=null;for(const name of["rows","differences","summary","source","origin","export-status"])get(name).textContent="";
     get("save").disabled=true;get("results").hidden=true;get("status").textContent=message;get("status").className="";get("status").setAttribute("aria-busy","false");
   }
@@ -27,10 +30,10 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
   const fail=()=>reset("期待結果を確認できませんでした。1 MiB以内の期待結果ファイルを選んでください。元の履歴とケース集は保持しています。");
   listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file)return;
     reset("期待結果のファイルを読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
-    try{if(!Number.isSafeInteger(file.size)||file.size<1||file.size>REHEARSAL_CHECK_SUITE_LIMIT)throw Error("Size");
-      const bytes=await file.arrayBuffer();if(disposed||own!==revision)return;if(bytes.byteLength!==file.size||bytes.byteLength>REHEARSAL_CHECK_SUITE_LIMIT)throw Error("Size changed");
+    try{
+      const text = await fileReader.readText(file, { maxBytes: REHEARSAL_CHECK_SUITE_LIMIT });if(disposed||own!==revision)return;
       const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"期待結果ファイル";
-      run(new TextDecoder("utf-8",{fatal:true,ignoreBOM:true}).decode(bytes),name);
+      run(text,name);
     }catch{if(!disposed&&own===revision)fail();}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";reset();try{run(text,"貼り付けた期待結果");}catch{fail();}});

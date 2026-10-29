@@ -39,7 +39,7 @@ test("file review uses bounded bytes and chooser cancellation preserves preview"
   f.file(text,{size:1,arrayBuffer:async()=>new Uint8Array([255]).buffer});await tick();assert.equal(f.field("apply").disabled,true);
 });
 for(const action of["cancel","edit","source","dispose","paste"])test(action+" supersedes a late combined-file read",async()=>{
-  const f=setup();let release;f.file(text,{arrayBuffer:()=>new Promise(resolve=>{release=resolve;})});
+  const f=setup();let release;f.file(text,{arrayBuffer:()=>new Promise(resolve=>{release=resolve;})}); await tick();
   if(action==="cancel")f.field("cancel").click();if(action==="edit")f.change("{");if(action==="source")f.session.workspace.select("EMA");if(action==="dispose")f.panel.dispose();if(action==="paste")f.paste(text);
   release(new TextEncoder().encode(text).buffer);await tick();assert.equal(f.field("apply").disabled,action!=="paste");assert.equal(f.session.cases.state().current.cases[0].id,"dat");
 });

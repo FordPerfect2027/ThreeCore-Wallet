@@ -12,6 +12,8 @@ import { encodeRehearsalScenario } from "../src/operation-rehearsal-scenario.js"
 import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "../src/operation-rehearsal-check-suite.js";
 import { REHEARSAL_SCENARIO_SET_SCHEMA } from "../src/operation-rehearsal-scenario-set.js";
 
+const bytesOf = text => new TextEncoder().encode(text);
+const selectedFile = (text, extras) => ({size: bytesOf(text).length, arrayBuffer: async () => bytesOf(await (extras.text ? extras.text() : text)).buffer, ...extras});
 const tick = () => new Promise(resolve => setImmediate(resolve));
 class Node extends Element {
   set textContent(value) { this.text = value; this.children = []; }
@@ -29,7 +31,7 @@ function setup() {
   const page = mountOperationRehearsal(document, ({ prepared }) => downloads.push(prepared));
   const change = (id, value) => { field(id).value = value; field(id).dispatchEvent(new Event("input")); };
   const file = (text, extras = {}) => {
-    field("file").files = [{ size: text.length, text: async () => text, ...extras }];
+    field("file").files = [selectedFile(text, extras)];
     field("file").dispatchEvent(new Event("change"));
   };
   return { field, page, change, downloads, file };
@@ -44,7 +46,7 @@ function prepareAppend(f, kind, amount = "2.8", reference = "reward-one") {
 }
 const workspaceFile = (f, ledgers, activeAgent = "DAT", extras = {}) => {
   const text = encodeRehearsalWorkspace({ schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent, ledgers });
-  f.field("workspace-file").files = [{ size: text.length, text: async () => text, ...extras }];
+  f.field("workspace-file").files = [selectedFile(text, extras)];
   f.field("workspace-file").dispatchEvent(new Event("change"));
 };
 const selectAgent = (f, name) => { f.field("agent").value = name; f.field("agent").dispatchEvent(new Event("change")); };
@@ -315,7 +317,7 @@ test("old-version missing fee caps remain explicit, with no assumed values in th
 test("a selected filename and next action survive native input clearing without hiding applied results", async () => {
   const f = setup(); f.field("example").click(); prepareAppend(f, "reserve"); f.field("append-confirm").click();
   let resolve;
-  workspaceFile(f, [], "DAT", { name: "saved-workspace.json", text: () => new Promise(done => { resolve = done; }) });
+  workspaceFile(f, [rehearsalExampleV2("EMA", "loss")], "EMA", { name: "saved-workspace.json", text: () => new Promise(done => { resolve = done; }) }); await tick();
   assert.equal(f.field("workspace-file").value, "");
   assert.match(f.field("workspace-source").textContent, /saved-workspace.json/);
   assert.match(f.field("workspace-stage").textContent, /確認中/);
@@ -418,7 +420,7 @@ test("a file read error preserves the displayed ledger and its exports", async (
 
 test("an older file cannot replace a newer pasted review or its source label", async () => {
   const f = setup(); let resolve;
-  workspaceFile(f, [], "DAT", { name: "old.json", text: () => new Promise(done => { resolve = done; }) });
+  workspaceFile(f, [], "DAT", { name: "old.json", text: () => new Promise(done => { resolve = done; }) }); await tick();
   pasteWorkspace(f, workspaceText([rehearsalExampleV2("CAWELON")], "CAWELON"));
   resolve(workspaceText([])); await tick();
   assert.match(f.field("workspace-source").textContent, /貼り付けた/);
@@ -427,7 +429,7 @@ test("an older file cannot replace a newer pasted review or its source label", a
 
 test("an older file rejection cannot overwrite a newer completed restore", async () => {
   const f = setup(); let reject;
-  workspaceFile(f, [], "DAT", { text: () => new Promise((_, fail) => { reject = fail; }) });
+  workspaceFile(f, [], "DAT", { text: () => new Promise((_, fail) => { reject = fail; }) }); await tick();
   pasteWorkspace(f, workspaceText([rehearsalExampleV2("EMA")], "EMA")); f.field("workspace-apply").click();
   reject(new Error("late failure")); await tick();
   assert.match(f.field("workspace-stage").textContent, /3 \/ 3/); assert.equal(f.field("agent").value, "EMA");
@@ -511,7 +513,7 @@ test("workspace with one unsupported asset is rejected without replacing any cur
 });
 for (const action of ["cancel", "switch", "edit", "dispose"]) test(action + " prevents a late workspace read from reviving a review", async () => {
   const f = setup(); f.field("example").click(); let resolve;
-  workspaceFile(f, [rehearsalExampleV2("EMA")], "EMA", { text: () => new Promise(done => { resolve = done; }) });
+  workspaceFile(f, [rehearsalExampleV2("EMA")], "EMA", { text: () => new Promise(done => { resolve = done; }) }); await tick();
   if (action === "cancel") f.field("workspace-cancel").click();
   else if (action === "switch") selectAgent(f, "CAWELON");
   else if (action === "edit") f.change("append-reference", "changed");
@@ -523,7 +525,7 @@ for (const action of ["cancel", "switch", "edit", "dispose"]) test(action + " pr
 });
 test("a newer workspace file wins over a late older read", async () => {
   const f = setup(); f.field("example").click(); let resolve;
-  workspaceFile(f, [], "DAT", { text: () => new Promise(done => { resolve = done; }) });
+  workspaceFile(f, [], "DAT", { text: () => new Promise(done => { resolve = done; }) }); await tick();
   workspaceFile(f, [rehearsalExampleV2("CAWELON")], "CAWELON"); await tick();
   resolve(encodeRehearsalWorkspace({ schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent: "DAT", ledgers: [] }));
   await tick(); f.field("workspace-apply").click();
@@ -634,7 +636,7 @@ test("import needs a distinct apply action and cannot apply twice", async () => 
 });
 test("cancelled file read cannot restore a candidate or old report", async () => {
   const f = setup(); let resolve;
-  f.file("x", { text: () => new Promise(done => { resolve = done; }) });
+  f.file("x", { text: () => new Promise(done => { resolve = done; }) }); await tick();
   f.field("cancel").click();
   resolve(encodeRehearsal(rehearsalExample()));
   await tick();
@@ -644,7 +646,7 @@ test("cancelled file read cannot restore a candidate or old report", async () =>
 });
 test("a newer file wins even if an older read finishes later", async () => {
   const f = setup(); let resolve;
-  f.file("x", { text: () => new Promise(done => { resolve = done; }) });
+  f.file("x", { text: () => new Promise(done => { resolve = done; }) }); await tick();
   f.file(encodeRehearsal(rehearsalExample("CAWELON")));
   await tick(); resolve(encodeRehearsal(rehearsalExample("DAT"))); await tick();
   assert.match(f.field("preview").textContent, /CAWELON/);
@@ -673,7 +675,7 @@ test("unsupported percentages and excess monetary precision are refused", () => 
 });
 test("dispose prevents a pending file or stale handler from bringing back results", async () => {
   const f = setup(); let resolve;
-  f.file("x", { text: () => new Promise(done => { resolve = done; }) });
+  f.file("x", { text: () => new Promise(done => { resolve = done; }) }); await tick();
   f.page.dispose(); resolve(encodeRehearsal(rehearsalExample())); await tick();
   f.field("example").click();
   assert.equal(f.field("save").disabled, true);

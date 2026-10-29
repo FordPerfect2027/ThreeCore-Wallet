@@ -1,3 +1,4 @@
+import { createFileReadScope } from "../src/security-file.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsal, encodeRehearsal, evaluateRehearsal, parseRehearsalUnits,
   formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
@@ -43,6 +44,7 @@ const REVIEW_ACTIONS = Object.freeze({ absent: "未作成のまま", added: "復
 
 export function mountOperationRehearsal(document, download = offerWalletDownload) {
   const offerDownload = payload => requireSyncExport(download(payload));
+  const fileReader = createFileReadScope();
   const get = name => document.getElementById(name);
   let current = null, candidate = null, revision = 0, disposed = false;
   const session = createRehearsalSession(get("agent").value), ledger = session.workspace;
@@ -65,6 +67,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     listeners.push(() => get(name).removeEventListener(type, handler));
   };
   function cancelAppend() {
+    fileReader.cancel(); get("file").setAttribute("aria-busy", "false");
     revision++; workspaceReview = null; get("workspace-apply").disabled = true;
     workspaceComparison = null; get("workspace-review-save").disabled = true;
     get("workspace-review-status").textContent = ""; get("workspace-details").textContent = "";
@@ -189,6 +192,10 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   }
   function workspaceReadFailed(error) {
     const reason = {
+      FILE_TIMEOUT: "30秒以内に読み込めませんでした。ファイルを手元のフォルダーに保存して、もう一度選んでください。",
+      FILE_BUSY: "別のファイルを確認中です。読み込みが終わってから、もう一度選んでください。",
+      FILE_ENCODING: "文字を正しく読み取れません。UTF-8形式の元の保存ファイルを選んでください。",
+      FILE_SIZE: "ファイルの容量が一致しません。保存を完了した元のファイルを選び直してください。",
       FILE_TOO_LARGE: "記録が大きすぎます。一括ファイルは512 KiB以内、各トークンの記録は128 KiB以内です。",
       EMPTY_INPUT: "記録が空です。保存した一括JSONの全文を指定してください。",
       INVALID_JSON: "JSONの内容を読み取れません。一括保存したファイルの全文を指定してください。",
@@ -431,10 +438,11 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     if (disposed) return;
     const file = get("file").files?.[0];
     get("file").value = "";
-    clear("ファイルを確認しています。", true); const own = revision;
+    clear("ファイルを確認しています（最大30秒）。", true); const own = revision;
+    get("file").setAttribute("aria-busy", "true");
     try {
       if (!file || file.size > REHEARSAL_LIMIT || file.size < 1) throw new Error("File size");
-      const text = await file.text();
+      const text = await fileReader.readText(file, { maxBytes: REHEARSAL_LIMIT });
       if (disposed || own !== revision) return;
       const data = decodeRehearsal(text); const report = evaluateRehearsal(data);
       if (data.asset.symbol !== "SIM" || data.asset.decimals !== 6)
@@ -447,7 +455,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     } catch {
       if (disposed || own !== revision) return;
       clear("ファイルを確認できませんでした。この画面で保存した128 KiB以内の試算JSONを選んでください。", true);
-    }
+    } finally { if (!disposed && own === revision) get("file").setAttribute("aria-busy", "false"); }
   });
   listen("apply", "click", () => {
     if (disposed || !candidate) return;
@@ -485,7 +493,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     try {
       if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > REHEARSAL_WORKSPACE_LIMIT)
         throw Object.assign(new Error("File size"), { code: file.size === 0 ? "EMPTY_INPUT" : "FILE_TOO_LARGE" });
-      const text = await file.text(); if (disposed || own !== revision) return;
+      const text = await fileReader.readText(file, { maxBytes: REHEARSAL_WORKSPACE_LIMIT }); if (disposed || own !== revision) return;
       reviewWorkspaceText(text);
     } catch (error) {
       if (disposed || own !== revision) return;
