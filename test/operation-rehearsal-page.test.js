@@ -1,7 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mountOperationRehearsal } from "../examples/operation-rehearsal-page.js";
-import { rehearsalExample } from "../src/operation-rehearsal-examples.js";
+import { rehearsalExample, rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
+import { encodeRehearsalWorkspace, decodeRehearsalWorkspace, REHEARSAL_WORKSPACE_SCHEMA,
+  REHEARSAL_WORKSPACE_LIMIT } from "../src/operation-rehearsal-workspace.js";
 import { encodeRehearsal, decodeRehearsal, evaluateRehearsal, REHEARSAL_LIMIT } from "../src/operation-rehearsal.js";
 import { Element } from "./helpers/panel-dom.js";
 
@@ -35,6 +37,98 @@ function prepareAppend(f, kind, amount = "2.8", reference = "reward-one") {
   f.change("append-fee", "1"); f.change("append-exit-reserve", "2");
   f.field("append-preview").click();
 }
+const workspaceFile = (f, ledgers, activeAgent = "DAT", extras = {}) => {
+  const text = encodeRehearsalWorkspace({ schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent, ledgers });
+  f.field("workspace-file").files = [{ size: text.length, text: async () => text, ...extras }];
+  f.field("workspace-file").dispatchEvent(new Event("change"));
+};
+const selectAgent = (f, name) => { f.field("agent").value = name; f.field("agent").dispatchEvent(new Event("change")); };
+const savedWorkspace = f => { f.field("workspace-save").click(); return decodeRehearsalWorkspace(f.downloads.at(-1).text); };
+
+test("workspace overview labels missing agents and disables an empty export", () => {
+  const f = setup(); assert.equal(f.field("workspace-save").disabled, true);
+  assert.equal(f.field("workspace-rows").children.length, 3);
+  assert.equal(f.field("workspace-rows").children[1].children[1].textContent, "未作成");
+  f.field("example").click(); assert.equal(f.field("workspace-save").disabled, false);
+});
+test("three-agent switching preserves records, allocation and agent-specific undo", () => {
+  const f = setup(); f.field("example").click(); prepareAppend(f, "reserve"); f.field("append-confirm").click();
+  selectAgent(f, "EMA"); f.field("scenario").value = "loss"; f.field("example").click();
+  selectAgent(f, "CAWELON"); f.field("scenario").value = "pending"; f.field("example").click();
+  selectAgent(f, "DAT"); assert.equal(f.field("rows").children.length, 3);
+  assert.equal(f.field("metrics").children[5].children[1].textContent, "2.8 SIM");
+  f.field("undo").click(); assert.equal(f.field("rows").children.length, 2);
+  selectAgent(f, "EMA"); assert.equal(f.field("metrics").children[2].children[1].textContent, "-42 SIM");
+  assert.equal(f.field("undo").disabled, true);
+  const saved = savedWorkspace(f); assert.equal(saved.ledgers.length, 3); assert.equal(saved.activeAgent, "EMA");
+});
+test("editing one agent removes only that result; other records remain exportable", () => {
+  const f = setup(); f.field("example").click(); selectAgent(f, "EMA"); f.field("example").click();
+  f.change("opening", "900"); const data = savedWorkspace(f);
+  assert.deepEqual(data.ledgers.map(x => x.agent), ["DAT"]); assert.equal(data.activeAgent, "EMA");
+  selectAgent(f, "DAT"); assert.equal(f.field("save").disabled, false);
+});
+test("single-agent import never discards another agent's applied ledger", async () => {
+  const f = setup(); f.field("example").click();
+  f.file(encodeRehearsal(rehearsalExampleV2("EMA", "loss"))); await tick(); f.field("apply").click();
+  const data = savedWorkspace(f); assert.deepEqual(data.ledgers.map(x => x.agent), ["DAT", "EMA"]);
+  assert.equal(data.activeAgent, "EMA");
+});
+test("workspace review leaves the old export intact; cancel restores its displayed result", async () => {
+  const f = setup(); f.field("example").click(); const before = encodeRehearsalWorkspace(savedWorkspace(f));
+  workspaceFile(f, [rehearsalExampleV2("EMA", "loss")], "EMA"); await tick();
+  assert.equal(f.field("workspace-apply").disabled, false);
+  assert.match(f.field("workspace-preview").textContent, /DAT: 未作成に戻す/);
+  assert.match(f.field("workspace-preview").textContent, /まだ反映していません/);
+  assert.equal(encodeRehearsalWorkspace(savedWorkspace(f)), before);
+  f.field("workspace-cancel").click(); f.field("workspace-apply").click();
+  assert.equal(f.field("agent").value, "DAT"); assert.equal(f.field("rows").children.length, 2);
+  assert.equal(encodeRehearsalWorkspace(savedWorkspace(f)), before);
+});
+test("confirmed workspace replaces all three histories exactly once, clearing undo", async () => {
+  const f = setup(); f.field("example").click(); prepareAppend(f, "reserve"); f.field("append-confirm").click();
+  workspaceFile(f, [rehearsalExample("DAT"), rehearsalExampleV2("EMA", "loss"), rehearsalExampleV2("CAWELON", "pending")], "EMA");
+  await tick(); f.field("workspace-apply").click(); f.field("workspace-apply").click();
+  assert.equal(f.field("agent").value, "EMA"); assert.equal(f.field("undo").disabled, true);
+  assert.equal(f.field("metrics").children[2].children[1].textContent, "-42 SIM");
+  selectAgent(f, "DAT"); assert.equal(f.field("append-preview").disabled, true);
+  assert.equal(f.field("undo").disabled, true); assert.equal(savedWorkspace(f).ledgers.length, 3);
+});
+test("workspace with one unsupported asset is rejected without replacing any current history", async () => {
+  const f = setup(); f.field("example").click();
+  const wrong = { ...rehearsalExampleV2("EMA"), asset: { ...rehearsalExampleV2().asset, decimals: 18 } };
+  workspaceFile(f, [rehearsalExampleV2("CAWELON"), wrong]); await tick();
+  assert.equal(f.field("workspace-apply").disabled, true);
+  assert.deepEqual(savedWorkspace(f).ledgers.map(x => x.agent), ["DAT"]);
+});
+for (const action of ["cancel", "switch", "edit", "dispose"]) test(action + " prevents a late workspace read from reviving a review", async () => {
+  const f = setup(); f.field("example").click(); let resolve;
+  workspaceFile(f, [rehearsalExampleV2("EMA")], "EMA", { text: () => new Promise(done => { resolve = done; }) });
+  if (action === "cancel") f.field("workspace-cancel").click();
+  else if (action === "switch") selectAgent(f, "CAWELON");
+  else if (action === "edit") f.change("append-reference", "changed");
+  else f.page.dispose();
+  resolve(encodeRehearsalWorkspace({ schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent: "EMA", ledgers: [rehearsalExampleV2("EMA")] }));
+  await tick(); assert.equal(f.field("workspace-apply").disabled, true);
+  assert.equal(f.field("workspace-preview").textContent, "");
+  if (action === "dispose") assert.equal(f.field("workspace-rows").children.length, 0);
+});
+test("a newer workspace file wins over a late older read", async () => {
+  const f = setup(); f.field("example").click(); let resolve;
+  workspaceFile(f, [], "DAT", { text: () => new Promise(done => { resolve = done; }) });
+  workspaceFile(f, [rehearsalExampleV2("CAWELON")], "CAWELON"); await tick();
+  resolve(encodeRehearsalWorkspace({ schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent: "DAT", ledgers: [] }));
+  await tick(); f.field("workspace-apply").click();
+  assert.equal(f.field("agent").value, "CAWELON"); assert.equal(savedWorkspace(f).ledgers[0].agent, "CAWELON");
+});
+test("oversized workspace is not read and an empty restore requires explicit confirmation", async () => {
+  const f = setup(); f.field("example").click(); let called = false;
+  workspaceFile(f, [], "DAT", { size: REHEARSAL_WORKSPACE_LIMIT + 1, text: async () => { called = true; return ""; } });
+  await tick(); assert.equal(called, false); assert.equal(savedWorkspace(f).ledgers.length, 1);
+  workspaceFile(f, [], "CAWELON"); await tick(); assert.equal(savedWorkspace(f).ledgers.length, 1);
+  f.field("workspace-apply").click(); assert.equal(f.field("agent").value, "CAWELON");
+  assert.equal(f.field("workspace-save").disabled, true); assert.equal(f.field("save").disabled, true);
+});
 
 test("append preview is explicit and cancellation never changes saved inputs", () => {
   const f = setup(); f.field("example").click();

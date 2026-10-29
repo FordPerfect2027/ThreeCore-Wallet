@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 29, 2026 workspace continuation:** [Three-agent rehearsal workspace](docs/OPERATION_WORKSPACE_2026-10-29.md) preserves separate DAT/EMA/CAWELON histories and undo while switching, adds a per-agent overview, reviewed combined export/restore and an offline workspace checker. Page-local fictional records only; no transaction execution.
+
 **October 29, 2026 continuation:** [Ten-part offline operation ledger](docs/OPERATION_LEDGER_2026-10-29.md) adds fee reservations, allocation reservation/release, reviewed sequential records, undo, CSV and an offline file checker. Existing V1 rehearsal files keep their original policy semantics. No transaction execution is added.
 
 **October 29, 2026 local development:** [Offline operation rehearsal](docs/OPERATION_REHEARSAL_2026-10-29.md) adds a Japanese screen for hypothetical per-agent limits, exact single-asset P&L, and conditional own-token allocation estimates. Open `/rehearsal/` on the local demo. Chrome save/reload/import was verified with fictional SIM records. This feature does not execute, authorize, or verify real transactions; it is not a mainnet-readiness percentage.

@@ -1,7 +1,9 @@
 import { decodeRehearsal, encodeRehearsal, evaluateRehearsal, parseRehearsalUnits,
   formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
-import { createRehearsalLedger, rehearsalCsv } from "../src/operation-rehearsal-ledger.js";
+import { rehearsalCsv } from "../src/operation-rehearsal-ledger.js";
+import { createRehearsalWorkspace, decodeRehearsalWorkspace, encodeRehearsalWorkspace,
+  reportRehearsalWorkspace, REHEARSAL_WORKSPACE_LIMIT } from "../src/operation-rehearsal-workspace.js";
 import { offerWalletDownload } from "./export-download.js";
 
 const REASONS = Object.freeze({
@@ -25,14 +27,16 @@ const FIELD_POLICY = { maximum: "maxPerOperation", "outstanding-limit": "maxOuts
 export function mountOperationRehearsal(document, download = offerWalletDownload) {
   const get = name => document.getElementById(name);
   let current = null, candidate = null, revision = 0, disposed = false;
-  const ledger = createRehearsalLedger();
-  let appendReview = null;
+  const ledger = createRehearsalWorkspace(get("agent").value);
+  let appendReview = null, workspaceReview = null;
   const listeners = [];
   const listen = (name, type, handler) => {
     get(name).addEventListener(type, handler);
     listeners.push(() => get(name).removeEventListener(type, handler));
   };
   function cancelAppend() {
+    revision++; workspaceReview = null; get("workspace-apply").disabled = true;
+    get("workspace-preview").textContent = "";
     appendReview = null; ledger.cancel(); get("append-confirm").disabled = true;
     get("append-summary").textContent = "";
   }
@@ -43,12 +47,27 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     for (const name of ["csv-save", "append-preview", "undo"]) get(name).disabled = true;
     for (const name of ["metrics", "rows", "allocation-note", "context", "preview", "ledger-details"]) get(name).textContent = "";
     get("status").textContent = message;
+    renderWorkspace();
+  }
+  function renderWorkspace() {
+    const report = reportRehearsalWorkspace(ledger.snapshot());
+    get("workspace-rows").textContent = "";
+    for (const row of report.rows) {
+      const tr = document.createElement("tr");
+      const money = value => formatRehearsalUnits(value, row.report.asset.decimals) + " " + row.report.asset.symbol;
+      const cells = row.present ? [row.agent, row.recordCount + "件", money(row.report.realizedPnl),
+        money(row.report.reservedAllocations), money(row.report.proposedOwnTokenBuybackBudget)]
+        : [row.agent, "未作成", "—", "—", "—"];
+      for (const value of cells) { const td = document.createElement("td"); td.textContent = value; tr.append(td); }
+      get("workspace-rows").append(tr);
+    }
+    get("workspace-save").disabled = report.presentAgents === 0;
   }
   function show(data, keepLedger = false) {
     const report = evaluateRehearsal(data);
     encodeRehearsal(data);
     const formatted = value => formatRehearsalUnits(value, data.asset.decimals) + " " + data.asset.symbol;
-    clear(undefined, keepLedger);
+    clear(undefined, true);
     if (!keepLedger) data = ledger.reset(data);
     current = data;
     get("agent").value = data.agent;
@@ -100,6 +119,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       data.events.length + "件。未決済ID: " + (report.positions.map(item => item.operationId).join(", ") || "なし") +
       "。予約ID: " + (report.reservations.map(item => item.reservationId + "=" + formatted(item.amount)).join(", ") || "なし") +
       "。取り消せる追記: " + ledger.state().undoCount + "件。";
+    renderWorkspace();
   }
   function fromFields(pending) {
     // Editable forms always create a fresh fictional six-decimal SIM scenario.
@@ -124,7 +144,15 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   for (const name of ["opening", ...Object.keys(FIELD_POLICY), "allocation", "principal", "entry-fee", "returned", "exit-fee",
     "entry-limit", "exit-limit", "exit-reserve"])
     listen(name, "input", () => clear());
-  for (const name of ["paused", "agent", "scenario"]) listen(name, "change", () => clear());
+  for (const name of ["paused", "scenario"]) listen(name, "change", () => clear());
+  listen("agent", "change", () => {
+    if (disposed) return;
+    const name = get("agent").value;
+    clear("この対象にはまだ履歴がありません。例を表示するか、記録を読み込んでください。", true);
+    const data = ledger.select(name);
+    if (data) show(data, true);
+    renderWorkspace();
+  });
   listen("calculate", "click", () => calculate(false));
   listen("pending", "click", () => calculate(true));
   listen("example", "click", () => { if (!disposed) show(rehearsalExampleV2(get("agent").value, get("scenario").value)); });
@@ -188,7 +216,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     if (disposed) return;
     const file = get("file").files?.[0];
     get("file").value = "";
-    clear("ファイルを確認しています。"); const own = revision;
+    clear("ファイルを確認しています。", true); const own = revision;
     try {
       if (!file || file.size > REHEARSAL_LIMIT || file.size < 1) throw new Error("File size");
       const text = await file.text();
@@ -203,7 +231,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       get("status").textContent = "読み込み内容を確認してください。まだ表示に反映していません。";
     } catch {
       if (disposed || own !== revision) return;
-      clear("ファイルを確認できませんでした。この画面で保存した128 KiB以内の試算JSONを選んでください。");
+      clear("ファイルを確認できませんでした。この画面で保存した128 KiB以内の試算JSONを選んでください。", true);
     }
   });
   listen("apply", "click", () => {
@@ -211,7 +239,60 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     const data = candidate; candidate = null; show(data);
   });
   listen("cancel", "click", () => { clear("読み込み・表示をクリアしました。"); get("file").value = ""; });
-  return Object.freeze({ dispose() { if (disposed) return; disposed = true; clear("表示を終了しました。"); ledger.dispose(); for (const remove of listeners) remove(); } });
+  listen("workspace-save", "click", () => {
+    if (disposed) return;
+    const data = ledger.snapshot(); if (!data.ledgers.length) return;
+    try {
+      download({ document, prepared: { text: encodeRehearsalWorkspace(data),
+        filename: "ThreeCore-operation-workspace.json", mimeType: "application/json" } });
+      get("workspace-status").textContent = "3トークン分の保存を開始しました。作成済みの確定した試算履歴だけが含まれます。";
+    } catch { get("workspace-status").textContent = "一括保存を開始できませんでした。"; }
+  });
+  listen("workspace-file", "change", async () => {
+    if (disposed) return;
+    const file = get("workspace-file").files?.[0]; get("workspace-file").value = "";
+    clear("一括ファイルを確認しています。現在の履歴は保持しています。", true);
+    const own = revision;
+    try {
+      if (!file || file.size < 1 || file.size > REHEARSAL_WORKSPACE_LIMIT) throw new Error("File size");
+      const text = await file.text(); if (disposed || own !== revision) return;
+      const data = decodeRehearsalWorkspace(text);
+      if (data.ledgers.some(item => item.asset.symbol !== "SIM" || item.asset.decimals !== 6)) throw new Error("SIM required");
+      if (disposed || own !== revision) return;
+      workspaceReview = ledger.previewRestore(data);
+      get("workspace-preview").textContent = workspaceReview.after.rows.map(row => row.agent + ": " +
+        (row.present ? row.recordCount + "件に置換" : "未作成に戻す")).join(" / ") +
+        "。表示対象: " + data.activeAgent + "。復旧すると3トークンの現在の履歴をまとめて置き換え、取り消し履歴は消えます。まだ反映していません。";
+      get("workspace-apply").disabled = false;
+      get("workspace-status").textContent = "一括復旧する内容を確認してください。必要なら現在の履歴を先に一括保存できます。";
+    } catch {
+      if (disposed || own !== revision) return;
+      clear("一括ファイルを確認できませんでした。現在の履歴は保持しています。", true);
+      get("workspace-status").textContent = "512 KiB以内の一括試算JSONを選んでください。履歴は変更していません。";
+    }
+  });
+  listen("workspace-apply", "click", () => {
+    if (disposed || !workspaceReview) return;
+    try {
+      const data = ledger.restore(workspaceReview);
+      get("agent").value = ledger.state().activeAgent;
+      if (data) show(data, true); else clear("選択中の対象は未作成です。", true);
+      get("workspace-status").textContent = "一括復旧して全記録を再計算しました。取り消し履歴は新しく開始します。";
+    } catch { cancelAppend(); get("workspace-status").textContent = "一括ファイルを再度選んで確認してください。"; }
+  });
+  listen("workspace-cancel", "click", () => {
+    if (disposed) return;
+    clear("一括読込を取り消しました。", true);
+    const data = ledger.state().current; if (data) show(data, true);
+    get("workspace-status").textContent = "一括読込を取り消しました。現在の履歴は保持しています。";
+  });
+  renderWorkspace();
+  return Object.freeze({ dispose() {
+    if (disposed) return; disposed = true; clear("表示を終了しました。"); ledger.dispose();
+    get("workspace-rows").textContent = ""; get("workspace-save").disabled = true;
+    get("workspace-status").textContent = "表示を終了しました。";
+    for (const remove of listeners) remove();
+  } });
 }
 
 if (typeof document !== "undefined" && document.getElementById("calculate")) {

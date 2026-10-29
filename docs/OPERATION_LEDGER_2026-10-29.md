@@ -1,5 +1,7 @@
 # Ten-part operation-ledger development batch — October 29, 2026
 
+This is the preceding iteration's record. The later [three-agent workspace continuation](OPERATION_WORKSPACE_2026-10-29.md) adds per-agent history retention and combined restore; historical test counts and observations below are preserved.
+
 This batch extends the offline rehearsal into a sequential, reviewable ledger. It remains a fictional single-asset exercise: it does not connect a wallet, sign, transfer funds, submit token approvals, buy back tokens or burn tokens. The changes are local development, not a public release or evidence of 50% mainnet readiness.
 
 ## Ten work items

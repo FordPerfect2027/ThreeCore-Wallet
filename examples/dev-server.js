@@ -8,7 +8,7 @@ import { dirname, resolve } from "node:path";
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
   ["/rehearsal/", { file: resolve(here, "operation-rehearsal.html"), mime: "text/html; charset=utf-8" }],
-  ...["operation-rehearsal", "operation-rehearsal-examples", "operation-rehearsal-ledger"].map(name =>
+  ...["operation-rehearsal", "operation-rehearsal-examples", "operation-rehearsal-ledger", "operation-rehearsal-workspace"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/examples/operation-rehearsal-page.js", { file: resolve(here, "operation-rehearsal-page.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/operation-rehearsal.css", { file: resolve(here, "operation-rehearsal.css"), mime: "text/css; charset=utf-8" }],

@@ -22,6 +22,17 @@
       <option value="pending">まだ決済していない例</option><option value="deposit">追加資金だけの例</option>
     </select></label><button id="example" type="button">この例を表示</button>
   </section>
+  <section aria-labelledby="workspace-title"><h2 id="workspace-title">3トークンの試算履歴</h2>
+    <p>対象を切り替えても、それぞれの履歴と取り消し履歴をこのページ内で保持します。数値は対象ごとに表示し、合算しません。未作成は残高0を意味しません。</p>
+    <div class="table-wrap"><table><caption>対象ごとの確定した試算</caption><thead><tr><th>対象</th><th>履歴</th><th>累計損益</th><th>予約済み還元</th><th>追加予約可能額</th></tr></thead><tbody id="workspace-rows"></tbody></table></div>
+    <p class="small">ページを閉じる・再読込すると消えます。必要な履歴は一括保存してください。入力条件の変更・別の例の表示・「読み込み・表示をクリア」は選択中の対象だけを変更します。未確定の追記は切替時に取り消します。</p>
+    <div class="actions"><button id="workspace-save" type="button" disabled>3トークンの履歴を一括保存</button>
+      <label class="file-label">一括ファイルを選ぶ<input id="workspace-file" type="file" accept=".json,application/json"></label>
+      <button id="workspace-apply" type="button" disabled>確認した3トークンの履歴を復旧</button>
+      <button id="workspace-cancel" type="button">一括読込を取り消す</button></div>
+    <p id="workspace-status" role="status" aria-live="polite">自動保存は行いません。一括ファイルは暗号化されていない仮の記録です。</p>
+    <p id="workspace-preview" role="status" aria-live="polite"></p>
+  </section>
   <div class="layout">
     <section aria-labelledby="conditions-title"><h2 id="conditions-title">仮の利用条件</h2>
       <p>単位は練習用のSIMです。すべての金額・費用を同じ単位で入力します。異なる通貨の換算や合算は行いません。</p>
@@ -71,7 +82,7 @@
     <p class="small">金額は、投入時は元本、決済時は元本を含む戻り額、予約時は予約額です。費用は投入・決済だけ、決済費用の確保は投入だけに使います。決済・取消には、上に表示された未決済ID・予約IDを指定してください。</p>
     <div class="actions"><button id="append-preview" type="button" disabled>追記前に確認</button><button id="append-confirm" type="button" disabled>確認した記録を追記</button><button id="append-cancel" type="button">追記確認を取り消す</button><button id="undo" type="button" disabled>直前の追記を取り消す</button></div>
     <p id="append-summary" role="status" aria-live="polite"></p>
-    <p class="small">追記の取り消しは最大10件です。別の例の表示、単発の再試算、ファイルの読み込み、入力条件の変更、ページを閉じる操作で取り消し履歴は消えます。必要な記録は先に保存してください。旧形式のファイルは表示・保存でき、追記のために自動変換されません。</p>
+    <p class="small">追記の取り消しは対象ごとに最大10件です。対象の切替では保持します。別の例の表示、単発の再試算、ファイル読込の確定、入力条件の変更で選択中の対象の取り消し履歴は消えます。一括復旧・ページを閉じる操作ではすべて消えます。旧形式は表示・保存でき、追記のために自動変換されません。</p>
   </section>
   <section><h2>記録を保存・再確認</h2>
     <p>入力条件と仮の記録をJSONファイルで保存できます。読み込み後に再計算するため、保存済みの結果をそのまま信用しません。</p>
