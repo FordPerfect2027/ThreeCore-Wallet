@@ -147,6 +147,8 @@
     <div class="table-wrap"><table><caption>選択したケースの金額比較</caption><thead><tr><th>項目</th><th>元の条件</th><th>比較条件</th><th>差額</th></tr></thead><tbody id="scenario-set-metrics"></tbody></table></div>
     <div class="actions"><button id="scenario-set-save" type="button" disabled>全ケースの入力を保存</button><button id="scenario-set-report-save" type="button" disabled>全ケースの集計資料を保存</button><button id="scenario-set-case-save" type="button" disabled>選択したケースの比較資料を保存</button></div>
     <p id="scenario-set-export-status" class="small" role="status" aria-live="polite"></p>
+    <button id="scenario-set-baseline-save" type="button" disabled>全ケースの期待結果を保存</button>
+    <p class="small">いまの計算結果を比較用の基準として残します。将来の変更で結果が変わったことを検出できますが、この計算自体の正しさを独立に証明するものではありません。</p>
     <label class="file-label">保存したケース集を選ぶ<input id="scenario-set-file" type="file" accept=".json,application/json"></label>
     <details><summary>ケース集ファイルを選べない場合</summary><p class="small">1 MiB以内のケース集JSONを貼り付けて、置き換わる内容を確認できます。外部へ送信しません。</p><label>ケース集の内容<textarea id="scenario-set-text" rows="7" maxlength="1048577" spellcheck="false"></textarea></label><button id="scenario-set-paste" type="button">貼り付けたケース集を確認</button></details>
   </section>
@@ -173,6 +175,20 @@
       <button id="apply" type="button" disabled>確認した記録を表示</button>
       <button id="cancel" type="button">読み込み・表示をクリア</button></div>
     <p id="preview" role="status" aria-live="polite"></p>
+  </section>
+  <section aria-labelledby="check-suite-title">
+    <h2 id="check-suite-title">保存した期待結果との比較</h2>
+    <p>ケース集から保存した期待結果を再計算して照合します。元の条件・比較条件それぞれの最終金額9項目、未決済件数、予約を止める理由、各記録の判定と理由を確認します。</p>
+    <label class="file-label">期待結果のファイル<input id="check-suite-file" type="file" accept=".json,application/json"></label>
+    <button id="check-suite-clear" type="button">期待結果の確認をクリア</button>
+    <p id="check-suite-status" role="status" aria-live="polite"></p><p id="check-suite-source" class="small"></p>
+    <div id="check-suite-results" hidden><p id="check-suite-origin"></p><p id="check-suite-summary"></p>
+      <div class="table-wrap"><table><caption>期待結果との一致状況</caption><thead><tr><th>ケース</th><th>対象と口座</th><th>結果</th><th>相違数</th></tr></thead><tbody id="check-suite-rows"></tbody></table></div>
+      <div class="table-wrap"><table><caption>期待結果との相違（ケースごとに最大40箇所）</caption><thead><tr><th>対象のケース・記録</th><th>項目</th><th>期待結果</th><th>今回の結果</th></tr></thead><tbody id="check-suite-differences"></tbody></table></div>
+    </div>
+    <button id="check-suite-save" type="button" disabled>期待結果の確認資料を保存</button><p id="check-suite-export-status" role="status" aria-live="polite" class="small"></p>
+    <details><summary>期待結果ファイルを選べない場合</summary><p class="small">1 MiB以内の期待結果JSONを貼り付けて確認できます。元の履歴やケース集は置き換わりません。</p><label>期待結果の内容<textarea id="check-suite-text" rows="7" maxlength="1048577" spellcheck="false"></textarea></label><button id="check-suite-paste" type="button">貼り付けた期待結果を確認</button></details>
+    <p class="small">一致は期待結果の指定が正しいことや実際の残高、安全性を証明しません。相違がある場合も、原因を確認するための資料を保存できます。</p>
   </section>
   <section aria-labelledby="report-review-title">
     <h2 id="report-review-title">保存した資料を再計算して確認</h2>

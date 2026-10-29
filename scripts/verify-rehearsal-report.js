@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { open } from "node:fs/promises";
+import { readBoundedRehearsalText } from "./read-bounded-rehearsal-file.js";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { webcrypto } from "node:crypto";
@@ -7,16 +7,7 @@ import { RehearsalError } from "../src/operation-rehearsal.js";
 import { reviewRehearsalReport, encodeRehearsalReviewReceipt, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 const fail=code=>{throw new RehearsalError(code);};
 export async function readRehearsalReportFile(file) {
-  const handle=await open(resolve(file),"r");
-  try {
-    const stat=await handle.stat();
-    if(!stat.isFile()||stat.size<1||stat.size>REHEARSAL_REPORT_REVIEW_LIMIT) fail("FILE_TOO_LARGE");
-    const bytes=new Uint8Array(REHEARSAL_REPORT_REVIEW_LIMIT+1); let total=0;
-    while(total<bytes.length) { const {bytesRead}=await handle.read(bytes,total,bytes.length-total,total); if(!bytesRead)break;total+=bytesRead; }
-    if(total!==stat.size||total>REHEARSAL_REPORT_REVIEW_LIMIT) fail("FILE_CHANGED_OR_TOO_LARGE");
-    try { return new TextDecoder("utf-8",{fatal:true,ignoreBOM:true}).decode(bytes.subarray(0,total)); }
-    catch { fail("INVALID_UTF8"); }
-  } finally {await handle.close();}
+  return readBoundedRehearsalText(file,REHEARSAL_REPORT_REVIEW_LIMIT);
 }
 export async function runRehearsalReportReview(args, output=process.stdout, errors=process.stderr) {
   try {

@@ -9,6 +9,8 @@ import { Element } from "./helpers/panel-dom.js";
 import { encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 import { encodeRehearsalOverview } from "../src/operation-rehearsal-overview.js";
 import { encodeRehearsalScenario } from "../src/operation-rehearsal-scenario.js";
+import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "../src/operation-rehearsal-check-suite.js";
+import { REHEARSAL_SCENARIO_SET_SCHEMA } from "../src/operation-rehearsal-scenario-set.js";
 
 const tick = () => new Promise(resolve => setImmediate(resolve));
 class Node extends Element {
@@ -51,6 +53,15 @@ const workspaceText = (ledgers, activeAgent = "DAT") => encodeRehearsalWorkspace
   schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent, ledgers });
 const pasteWorkspace = (f, text) => { f.change("workspace-text", text); f.field("workspace-text-review").click(); };
 const renderedText = node => [node.textContent, ...node.children.map(renderedText)].join(" ");
+
+test("expected-outcome checking leaves ledger, undo and unconfirmed collection change intact",()=>{
+  const f=setup();f.field("example").click();prepareAppend(f,"reserve");f.field("append-confirm").click();const before=savedWorkspace(f);
+  f.field("whatif-compare").click();f.change("scenario-set-id","one");f.change("scenario-set-label","変更なし");f.field("scenario-set-add").click();
+  const source=before.ledgers[0],suite=captureRehearsalCheckSuite({schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:"check",label:"別の確認",before:source,after:source}]});
+  f.change("check-suite-text",encodeRehearsalCheckSuite(suite));f.field("check-suite-paste").click();assert.equal(f.field("check-suite-save").disabled,false);
+  assert.equal(f.field("scenario-set-apply").disabled,false);assert.equal(f.field("undo").disabled,false);assert.deepEqual(savedWorkspace(f),before);
+  f.field("scenario-set-apply").click();assert.equal(f.field("scenario-set-rows").children.length,1);f.page.dispose();assert.equal(f.field("check-suite-rows").children.length,0);
+});
 
 test("named comparison snapshots preserve all ledger inputs and undo across source changes",()=>{
   const f=setup();f.field("example").click();prepareAppend(f,"reserve");f.field("append-confirm").click();const before=savedWorkspace(f);

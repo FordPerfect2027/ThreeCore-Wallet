@@ -10,6 +10,7 @@ import { reportRehearsalOverview, filterRehearsalOverview, encodeRehearsalOvervi
 import { mountRehearsalScenarioPanel } from "./operation-rehearsal-scenario-panel.js";
 import { mountRehearsalReviewPanel } from "./operation-rehearsal-review-panel.js";
 import { mountRehearsalScenarioSetPanel } from "./operation-rehearsal-scenario-set-panel.js";
+import { mountRehearsalCheckPanel } from "./operation-rehearsal-check-panel.js";
 
 const REASONS = Object.freeze({
   PAUSED: "新規利用の停止中", REUSED_OPERATION: "同じ操作の再利用", UNLISTED_ORIGIN: "対象外のサイト",
@@ -45,6 +46,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     onChange: () => scenarioSetPanel?.sourceChanged() });
   scenarioSetPanel = mountRehearsalScenarioSetPanel(document, { download, getComparison: () => scenarioPanel.comparison() });
   const reportReviewPanel = mountRehearsalReviewPanel(document, { download });
+  const checkPanel = mountRehearsalCheckPanel(document, { download });
   let appendReview = null, workspaceReview = null, workspaceComparison = null;
   let workspacePhase = "idle", workspaceSource = "";
   const listeners = [];
@@ -531,6 +533,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     scenarioPanel.dispose();
     scenarioSetPanel.dispose();
     reportReviewPanel.dispose();
+    checkPanel.dispose();
     get("workspace-rows").textContent = ""; get("workspace-save").disabled = true;
     get("workspace-status").textContent = "表示を終了しました。";
     for (const name of ["workspace-receipt", "workspace-source", "workspace-stage", "workspace-file-note"]) get(name).textContent = "";

@@ -8,12 +8,13 @@ import { dirname, resolve } from "node:path";
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
   ["/rehearsal/", { file: resolve(here, "operation-rehearsal.html"), mime: "text/html; charset=utf-8" }],
-  ...["operation-rehearsal", "operation-rehearsal-examples", "operation-rehearsal-ledger", "operation-rehearsal-workspace", "operation-rehearsal-comparison", "operation-rehearsal-overview", "operation-rehearsal-scenario", "operation-rehearsal-report-review", "operation-rehearsal-scenario-set"].map(name =>
+  ...["operation-rehearsal", "operation-rehearsal-examples", "operation-rehearsal-ledger", "operation-rehearsal-workspace", "operation-rehearsal-comparison", "operation-rehearsal-overview", "operation-rehearsal-scenario", "operation-rehearsal-report-review", "operation-rehearsal-scenario-set", "operation-rehearsal-check-suite"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/examples/operation-rehearsal-page.js", { file: resolve(here, "operation-rehearsal-page.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/operation-rehearsal-scenario-panel.js", { file: resolve(here, "operation-rehearsal-scenario-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/operation-rehearsal-review-panel.js", { file: resolve(here, "operation-rehearsal-review-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/operation-rehearsal-scenario-set-panel.js", { file: resolve(here, "operation-rehearsal-scenario-set-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-rehearsal-check-panel.js", { file: resolve(here, "operation-rehearsal-check-panel.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/operation-rehearsal.css", { file: resolve(here, "operation-rehearsal.css"), mime: "text/css; charset=utf-8" }],
   ...["base-state-provider", "state-rpc-http", "security-json", "security-data"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),

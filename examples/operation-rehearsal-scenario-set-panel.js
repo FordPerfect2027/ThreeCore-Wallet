@@ -3,6 +3,7 @@ import { createRehearsalScenarioSet, decodeRehearsalScenarioSet, encodeRehearsal
 import { encodeRehearsalScenario, compareRehearsalScenario } from "../src/operation-rehearsal-scenario.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
+import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "../src/operation-rehearsal-check-suite.js";
 
 export function mountRehearsalScenarioSetPanel(document, { download, getComparison }) {
   const get=name=>document.getElementById("scenario-set-"+name), store=createRehearsalScenarioSet();
@@ -54,7 +55,7 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
     if(!shown.some(row=>row.id===selectedId))selectedId=shown[0]?.id??"";
     get("select").value=selectedId;get("select").disabled=!shown.length;
     get("count").textContent="表示 "+shown.length+"件 / 保存中 "+report.rows.length+"件（最大12件）。絞り込み中もケース集の保存は全件が対象です。";
-    get("save").disabled=!report.rows.length;get("report-save").disabled=!report.rows.length;get("undo").disabled=!store.state().canUndo;
+    get("save").disabled=!report.rows.length;get("report-save").disabled=!report.rows.length;get("baseline-save").disabled=!report.rows.length;get("undo").disabled=!store.state().canUndo;
     get("export-status").textContent="";detail();
   }
   function put(replace){
@@ -99,10 +100,16 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
     if(disposed)return;const item=store.state().current.cases.find(row=>row.id===selectedId);if(!item)return;
     try{download({document,prepared:{text:encodeRehearsalScenario(item.before,item.after),filename:"ThreeCore-case-"+item.id+"-comparison.json",mimeType:"application/json"}});get("export-status").textContent="選択したケースの比較資料を保存し始めました。";}catch{get("export-status").textContent="比較資料を保存できませんでした。";}
   });
+  listen("baseline-save","click",()=>{
+    if(disposed||!store.state().current.cases.length)return;
+    try{download({document,prepared:{text:encodeRehearsalCheckSuite(captureRehearsalCheckSuite(store.state().current)),filename:"ThreeCore-expected-outcomes.json",mimeType:"application/json"}});
+      get("export-status").textContent="全ケースの現在の計算結果を、今後の比較に使う期待結果として保存し始めました。";
+    }catch{get("export-status").textContent="期待結果を保存できませんでした。ケース数や記録数を減らして1 MiB以内にしてください。画面のケースは保持しています。";}
+  });
   function sourceChanged(){if(disposed)return;cancel("上の比較が変わりました。保存中のケースは保持しています。");const available=Boolean(getComparison());get("add").disabled=!available;get("replace").disabled=!available;}
   render();sourceChanged();
   return Object.freeze({sourceChanged,dispose(){if(disposed)return;cancel("");disposed=true;store.dispose();report=null;selectedId="";
     for(const name of ["rows","select","metrics","detail","count","export-status","source"])get(name).textContent="";
-    for(const name of ["add","replace","apply","save","report-save","case-save","undo"])get(name).disabled=true;
+    for(const name of ["add","replace","apply","save","report-save","case-save","baseline-save","undo"])get(name).disabled=true;
     for(const name of ["id","label","text","file"])get(name).value="";for(const remove of listeners)remove();}});
 }

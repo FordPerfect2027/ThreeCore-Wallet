@@ -5,6 +5,7 @@ import { mountRehearsalScenarioSetPanel } from "../examples/operation-rehearsal-
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { compareRehearsalScenario, buildRehearsalScenario, rehearsalScenarioParameters, encodeRehearsalScenario } from "../src/operation-rehearsal-scenario.js";
 import { REHEARSAL_SCENARIO_SET_SCHEMA, REHEARSAL_SCENARIO_SET_LIMIT, encodeRehearsalScenarioSet, encodeRehearsalScenarioSetReport } from "../src/operation-rehearsal-scenario-set.js";
+import { runRehearsalCheckSuite } from "../src/operation-rehearsal-check-suite.js";
 class Node extends Element {set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
 const rendered=n=>[n.textContent,...n.children.map(rendered)].join(" ");
 const comparison=(agent="DAT",amount="50000000")=>{const before=rehearsalExampleV2(agent);return compareRehearsalScenario(before,buildRehearsalScenario(before,{...rehearsalScenarioParameters(before),maxPerOperation:amount}));};
@@ -55,6 +56,11 @@ test("newly rejected filter excludes unchanged cases and preserves selected cont
 test("source edits preserve saved snapshots and undo but revoke an outstanding capture",()=>{
   const f=setup();f.add();const before=f.saved();f.change("id","two");f.field("add").click();f.source(null);
   assert.equal(f.field("apply").disabled,true);assert.equal(f.field("add").disabled,true);assert.deepEqual(f.saved(),before);assert.equal(f.field("undo").disabled,false);
+});
+test("expected-outcome export includes every committed case regardless of the visible filter",()=>{
+  const f=setup();assert.equal(f.field("baseline-save").disabled,true);f.add("dat");f.add("ema","EMA");f.change("agent","CAWELON","change");
+  f.field("baseline-save").click();const suite=JSON.parse(f.downloads.at(-1).text);assert.equal(suite.inputs.cases.length,2);
+  assert.equal(runRehearsalCheckSuite(suite).summary.allMatched,true);f.panel.dispose();assert.equal(f.field("baseline-save").disabled,true);
 });
 test("paste import replaces the case set only after review and is undoable",()=>{
   const f=setup();f.add();const before=f.saved();f.paste(encodeRehearsalScenarioSet(pack(item("ema","EMA"))));
