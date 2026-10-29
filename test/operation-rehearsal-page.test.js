@@ -27,6 +27,73 @@ function setup() {
   };
   return { field, page, change, downloads, file };
 }
+
+function prepareAppend(f, kind, amount = "2.8", reference = "reward-one") {
+  f.field("append-kind").value = kind;
+  f.field("append-kind").dispatchEvent(new Event("change"));
+  f.change("append-reference", reference); f.change("append-amount", amount);
+  f.change("append-fee", "1"); f.change("append-exit-reserve", "2");
+  f.field("append-preview").click();
+}
+
+test("append preview is explicit and cancellation never changes saved inputs", () => {
+  const f = setup(); f.field("example").click();
+  prepareAppend(f, "reserve");
+  assert.equal(f.field("rows").children.length, 2); assert.equal(f.field("append-confirm").disabled, false);
+  assert.match(f.field("append-summary").textContent, /まだ履歴には反映/);
+  f.field("append-cancel").click(); f.field("append-confirm").click();
+  f.field("save").click(); assert.equal(decodeRehearsal(f.downloads[0].text).events.length, 2);
+});
+test("append confirm reserves once; undo restores amount and cancels a newer preview", () => {
+  const f = setup(); f.field("example").click(); prepareAppend(f, "reserve");
+  f.field("append-confirm").click(); f.field("append-confirm").click();
+  assert.equal(f.field("rows").children.length, 3);
+  assert.equal(f.field("metrics").children[5].children[1].textContent, "2.8 SIM");
+  assert.equal(f.field("undo").disabled, false);
+  prepareAppend(f, "release"); f.field("undo").click();
+  assert.equal(f.field("append-confirm").disabled, true);
+  assert.equal(f.field("rows").children.length, 2);
+  assert.equal(f.field("metrics").children[5].children[1].textContent, "0 SIM");
+  assert.match(f.field("allocation-note").textContent, /2\.8 SIM/);
+});
+test("edited append fields revoke confirmation while retaining the applied ledger", () => {
+  const f = setup(); f.field("example").click(); prepareAppend(f, "reserve");
+  f.change("append-amount", "3"); assert.equal(f.field("append-confirm").disabled, true);
+  assert.equal(f.field("save").disabled, false); assert.equal(f.field("rows").children.length, 2);
+  f.field("append-confirm").click(); assert.equal(f.field("rows").children.length, 2);
+});
+test("a rejected reservation is explained before adding it; undo removes its blocker", () => {
+  const f = setup(); f.field("example").click(); prepareAppend(f, "reserve", "3");
+  assert.match(f.field("append-summary").textContent, /見送り/);
+  f.field("append-confirm").click(); assert.match(f.field("allocation-note").textContent, /条件に合わない記録/);
+  f.field("undo").click(); assert.match(f.field("allocation-note").textContent, /2\.8 SIM/);
+});
+test("CSV exports the applied ledger, never an unconfirmed preview", () => {
+  const f = setup(); f.field("example").click(); prepareAppend(f, "reserve");
+  f.field("csv-save").click(); assert.match(f.downloads[0].filename, /\.csv$/);
+  assert.doesNotMatch(f.downloads[0].text, /"step-3"/);
+  f.field("append-confirm").click(); f.field("csv-save").click();
+  assert.match(f.downloads[1].text, /"step-3","reserve"/);
+});
+test("v1 import is preserved with append disabled instead of inventing fee limits", async () => {
+  const f = setup(); f.file(encodeRehearsal(rehearsalExample())); await tick(); f.field("apply").click();
+  assert.equal(f.field("append-preview").disabled, true); assert.match(f.field("ledger-details").textContent, /旧形式/);
+  f.field("save").click(); assert.equal(decodeRehearsal(f.downloads[0].text).schema, "threecore.operation-rehearsal.v1");
+});
+test("switching agents and clearing revokes a ledger preview and undo", () => {
+  const f = setup(); f.field("example").click(); prepareAppend(f, "reserve"); f.field("append-confirm").click();
+  prepareAppend(f, "release"); f.field("agent").value = "EMA"; f.field("agent").dispatchEvent(new Event("change"));
+  assert.equal(f.field("append-confirm").disabled, true); assert.equal(f.field("undo").disabled, true);
+  f.field("example").click(); f.field("save").click(); assert.equal(decodeRehearsal(f.downloads[0].text).agent, "EMA");
+  assert.equal(f.field("rows").children.length, 2);
+});
+test("pending fee reserve and settlement append use the original operation id", () => {
+  const f = setup(); f.field("scenario").value = "pending"; f.field("example").click();
+  assert.equal(f.field("metrics").children[4].children[1].textContent, "2 SIM");
+  prepareAppend(f, "settle", "130", "one"); f.field("append-confirm").click();
+  assert.equal(f.field("metrics").children[4].children[1].textContent, "0 SIM");
+  assert.equal(f.field("metrics").children[2].children[1].textContent, "28 SIM");
+});
 test("explicit sample action is required; calculations never request a provider", () => {
   const f = setup();
   assert.equal(f.downloads.length, 0); assert.equal(f.field("save").disabled, true);

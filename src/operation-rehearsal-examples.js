@@ -1,4 +1,4 @@
-import { REHEARSAL_SCHEMA, validateRehearsal } from "./operation-rehearsal.js";
+import { REHEARSAL_SCHEMA, REHEARSAL_SCHEMA_V2, validateRehearsal } from "./operation-rehearsal.js";
 
 /** Fictional units, accounts and destinations. These are not production policy defaults. */
 export function rehearsalExample(agent = "DAT", scenario = "profit") {
@@ -23,4 +23,11 @@ export function rehearsalExample(agent = "DAT", scenario = "profit") {
   return validateRehearsal({ schema: REHEARSAL_SCHEMA, simulationOnly: true, ...identity,
     asset: { address: "0x" + "4".repeat(40), symbol: "SIM", decimals: 6 },
     openingBalance: "1000000000", policy, events });
+}
+
+export function rehearsalExampleV2(agent = "DAT", scenario = "profit") {
+  const data = rehearsalExample(agent, scenario);
+  return validateRehearsal({ ...data, schema: REHEARSAL_SCHEMA_V2,
+    policy: { ...data.policy, maxEntryFee: "3000000", maxExitFee: "5000000" },
+    events: data.events.map(event => event.kind === "open" ? { ...event, exitFeeReserve: "2000000" } : event) });
 }

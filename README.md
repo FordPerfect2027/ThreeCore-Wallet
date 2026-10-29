@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 29, 2026 continuation:** [Ten-part offline operation ledger](docs/OPERATION_LEDGER_2026-10-29.md) adds fee reservations, allocation reservation/release, reviewed sequential records, undo, CSV and an offline file checker. Existing V1 rehearsal files keep their original policy semantics. No transaction execution is added.
+
 **October 29, 2026 local development:** [Offline operation rehearsal](docs/OPERATION_REHEARSAL_2026-10-29.md) adds a Japanese screen for hypothetical per-agent limits, exact single-asset P&L, and conditional own-token allocation estimates. Open `/rehearsal/` on the local demo. Chrome save/reload/import was verified with fictional SIM records. This feature does not execute, authorize, or verify real transactions; it is not a mainnet-readiness percentage.
 
 **October 26, 2026 source publication:** [Backup, file import and history confirmation update](docs/WALLET_SECURITY_UPDATE_2026-10-26_EN.md). Includes four previously local development iterations: stopped backup preparation, revoked library reviews, cleared file-import state and single-use history confirmation. Real-wallet acceptance remains pending.

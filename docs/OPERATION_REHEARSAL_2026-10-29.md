@@ -1,5 +1,7 @@
 # Offline operation rehearsal — October 29, 2026
 
+This records the first rehearsal iteration. See the subsequent [ten-part operation-ledger batch](OPERATION_LEDGER_2026-10-29.md) for V2 fee/allocation reservations, sequential appends, undo and offline checking. The original V1 scope and validation counts below are retained as a historical record.
+
 The wallet now has a separate Japanese rehearsal screen at `/rehearsal/`. It helps inspect the intended DAT, EMA and CAWELON operation model before any execution integration: enter hypothetical limits, distinguish principal from profit, and see when a hypothetical own-token allocation must remain zero.
 
 All examples use fictional SIM units, accounts and a fictional target. No example parameter is an approved operating policy. The screen does not connect to a wallet, request a signature, submit a transaction, grant an allowance, buy back tokens or burn tokens. Its content policy prohibits network connections. The server continues to enforce its existing origin and embedding boundaries.

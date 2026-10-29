@@ -32,6 +32,8 @@
         <label>手元に残す予備資金<input id="reserve" inputmode="decimal" value="200" maxlength="100"></label>
         <label>損失の上限<input id="loss-limit" inputmode="decimal" value="250" maxlength="100"></label>
         <label>利益からの還元割合（%・仮設定）<input id="allocation" inputmode="decimal" value="10" maxlength="6"></label>
+        <label>開始費用の上限<input id="entry-limit" inputmode="decimal" value="3" maxlength="100"></label>
+        <label>決済費用の上限<input id="exit-limit" inputmode="decimal" value="5" maxlength="100"></label>
       </div>
       <label class="check"><input id="paused" type="checkbox">新しい利用を停止する想定</label>
       <h2>1回分の入力</h2>
@@ -41,6 +43,7 @@
         <label>開始時の費用<input id="entry-fee" inputmode="decimal" value="1" maxlength="100"></label>
         <label>戻ってくる金額（元本を含む）<input id="returned" inputmode="decimal" value="130" maxlength="100"></label>
         <label>決済時の費用<input id="exit-fee" inputmode="decimal" value="1" maxlength="100"></label>
+        <label>先に確保する決済費用<input id="exit-reserve" inputmode="decimal" value="2" maxlength="100"></label>
       </div>
       <div class="actions"><button id="pending" type="button">未決済として試算</button><button id="calculate" type="button">決済結果まで試算</button></div>
     </section>
@@ -49,15 +52,31 @@
       <div id="metrics" class="metrics"></div>
       <p id="allocation-note"></p><p id="context" class="small"></p>
       <div class="table-wrap"><table><caption>仮の記録と計算の流れ</caption>
-        <thead><tr><th>記録</th><th>条件確認</th><th>手元資金</th><th>未決済元本</th><th>累計実現損益</th></tr></thead>
+        <thead><tr><th>記録</th><th>条件確認</th><th>手元資金</th><th>未決済元本</th><th>累計実現損益</th><th>確保した決済費用</th><th>予約済み還元</th></tr></thead>
         <tbody id="rows"></tbody>
       </table></div>
       <p class="small">追加資金・引き出しは損益に含めません。未決済元本の損益は確定させず、開始時の費用だけを計上します。還元額は損失を差し引いた累計利益と利用可能な資金から試算します。</p>
     </section>
   </div>
+  <section aria-labelledby="ledger-title"><h2 id="ledger-title">いまの履歴に1件追記</h2>
+    <p>新形式の試算に、仮の記録を順番に追加できます。条件外の記録は見送りとして残ります。予約は資金を動かさず、他の用途に重ねて計上しないための仮の確保です。</p>
+    <p id="ledger-details" class="small"></p>
+    <div class="fields">
+      <label>追記する記録<select id="append-kind"><option value="open">元本を投入する想定</option><option value="settle">決済する想定</option><option value="deposit">資金を追加する想定</option><option value="withdraw">資金を引き出す想定</option><option value="reserve">還元額を予約する想定</option><option value="release">還元予約を取り消す想定</option></select></label>
+      <label>操作または予約のID<input id="append-reference" value="two" maxlength="64"></label>
+      <label>追記する金額（SIM）<input id="append-amount" value="100" inputmode="decimal" maxlength="100"></label>
+      <label>追記する費用（SIM）<input id="append-fee" value="1" inputmode="decimal" maxlength="100"></label>
+      <label>追記時に確保する決済費用（SIM）<input id="append-exit-reserve" value="2" inputmode="decimal" maxlength="100"></label>
+    </div>
+    <p class="small">金額は、投入時は元本、決済時は元本を含む戻り額、予約時は予約額です。費用は投入・決済だけ、決済費用の確保は投入だけに使います。決済・取消には、上に表示された未決済ID・予約IDを指定してください。</p>
+    <div class="actions"><button id="append-preview" type="button" disabled>追記前に確認</button><button id="append-confirm" type="button" disabled>確認した記録を追記</button><button id="append-cancel" type="button">追記確認を取り消す</button><button id="undo" type="button" disabled>直前の追記を取り消す</button></div>
+    <p id="append-summary" role="status" aria-live="polite"></p>
+    <p class="small">追記の取り消しは最大10件です。別の例の表示、単発の再試算、ファイルの読み込み、入力条件の変更、ページを閉じる操作で取り消し履歴は消えます。必要な記録は先に保存してください。旧形式のファイルは表示・保存でき、追記のために自動変換されません。</p>
+  </section>
   <section><h2>記録を保存・再確認</h2>
     <p>入力条件と仮の記録をJSONファイルで保存できます。読み込み後に再計算するため、保存済みの結果をそのまま信用しません。</p>
     <div class="actions"><button id="save" type="button" disabled>この試算の入力記録を保存</button>
+      <button id="csv-save" type="button" disabled>計算の流れをCSV保存</button>
       <label class="file-label">保存した記録を選ぶ<input id="file" type="file" accept=".json,application/json"></label>
       <button id="apply" type="button" disabled>確認した記録を表示</button>
       <button id="cancel" type="button">読み込み・表示をクリア</button></div>
