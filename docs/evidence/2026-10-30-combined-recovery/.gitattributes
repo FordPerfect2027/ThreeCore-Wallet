@@ -2,3 +2,4 @@
 *.log -text whitespace=trailing-space,space-before-tab,cr-at-eol
 *.png -text
 SHA256SUMS.txt text eol=lf
+full-wallet-tests.log -whitespace

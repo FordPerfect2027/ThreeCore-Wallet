@@ -4,6 +4,7 @@ import { mkdtemp, writeFile, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve, dirname, basename } from "node:path";
 import { createHash, webcrypto } from "node:crypto";
+import { newReportFixtures } from "./helpers/rehearsal-report-fixtures.js";
 import { runRehearsalReportReview } from "../scripts/verify-rehearsal-report.js";
 import { reportRehearsalOverview } from "../src/operation-rehearsal-overview.js";
 import { REHEARSAL_WORKSPACE_SCHEMA } from "../src/operation-rehearsal-workspace.js";
@@ -45,4 +46,22 @@ test("different line endings retain byte-specific checksum while recomputation s
   const crlf=text.replace(/\n/g,"\r\n");await writeFile(file,crlf);
   const result=await run([file]);assert.equal(result.code,0);const receipt=JSON.parse(result.output);
   assert.equal(receipt.sha256,createHash("sha256").update(crlf).digest("hex"));assert.notEqual(receipt.sha256,hash);
+}));
+test("a faithful expectation discrepancy exits zero for report fidelity and preserves the failed outcome",()=>fixture(async({file})=>{
+  const text=JSON.stringify(newReportFixtures().differing,null,2)+"\n";await writeFile(file,text);
+  const result=await run([file]);assert.equal(result.code,0);assert.equal(result.errors,"");
+  assert.equal(JSON.parse(result.output).reportOutcome.allMatched,false);
+  assert.equal(result.output,encodeRehearsalReviewReceipt(await reviewRehearsalReport(text,{subtle:webcrypto.subtle})));
+}));
+test("filtered query receipt is exact and does not modify the source file",()=>fixture(async({file})=>{
+  const text=JSON.stringify(newReportFixtures().filtered,null,2)+"\n";await writeFile(file,text);
+  const result=await run([file]);assert.equal(result.code,0);
+  assert.equal(result.output,encodeRehearsalReviewReceipt(await reviewRehearsalReport(text,{subtle:webcrypto.subtle})));
+  assert.equal(await readFile(file,"utf8"),text);
+}));
+test("query output tampering yields two while invalid source conditions yield one without receipt",()=>fixture(async({file})=>{
+  const report=JSON.parse(JSON.stringify(newReportFixtures().filtered));report.matchedRecords=0;
+  await writeFile(file,JSON.stringify(report));assert.equal((await run([file])).code,2);
+  delete report.query;await writeFile(file,JSON.stringify(report));const result=await run([file]);
+  assert.equal(result.code,1);assert.equal(result.output,"");
 }));

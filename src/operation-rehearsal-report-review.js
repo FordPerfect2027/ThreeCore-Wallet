@@ -4,6 +4,8 @@ import { reportRehearsalOverview, REHEARSAL_OVERVIEW_SCHEMA } from "./operation-
 import { compareRehearsalWorkspaces, REHEARSAL_COMPARISON_SCHEMA } from "./operation-rehearsal-comparison.js";
 import { compareRehearsalScenario, REHEARSAL_SCENARIO_SCHEMA } from "./operation-rehearsal-scenario.js";
 import { reportRehearsalScenarioSet, REHEARSAL_SCENARIO_SET_REPORT_SCHEMA } from "./operation-rehearsal-scenario-set.js";
+import { runRehearsalCheckSuite, REHEARSAL_CHECK_REPORT_SCHEMA } from "./operation-rehearsal-check-suite.js";
+import { indexRehearsalRecords, queryRehearsalRecords, validateRehearsalRecordQuery, REHEARSAL_RECORD_REPORT_SCHEMA } from "./operation-rehearsal-records.js";
 
 export const REHEARSAL_REPORT_REVIEW_SCHEMA = "threecore.operation-rehearsal-report-review.v1";
 export const REHEARSAL_REPORT_REVIEW_LIMIT = 2097152;
@@ -46,7 +48,7 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
   } catch { fail("INVALID_REVIEW_REPORT"); }
   if (expectedSha256 !== null && (typeof expectedSha256 !== "string" || !/^[a-fA-F0-9]{64}$/.test(expectedSha256)))
     fail("INVALID_EXPECTED_CHECKSUM");
-  let recomputed, scope;
+  let recomputed, scope, reportOutcome;
   if (parsed?.schema === REHEARSAL_OVERVIEW_SCHEMA) {
     recomputed = reportRehearsalOverview(parsed.inputs);
     scope = recomputed.rows.map(row => ({ agent: row.agent, beforeRecords: row.recordCount, afterRecords: null }));
@@ -62,6 +64,17 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
     recomputed = reportRehearsalScenarioSet(parsed.inputs);
     scope = recomputed.rows.map(row => ({ agent: row.agent, caseId: row.id,
       beforeRecords: row.beforeRecords, afterRecords: row.afterRecords }));
+  } else if (parsed?.schema === REHEARSAL_CHECK_REPORT_SCHEMA) {
+    recomputed = runRehearsalCheckSuite(parsed.inputs);
+    scope = recomputed.rows.map(row => ({ agent: row.agent, caseId: row.id,
+      beforeRecords: row.beforeRecords, afterRecords: row.afterRecords }));
+    reportOutcome = Object.freeze({ kind: "expected-outcomes", expectationOrigin: recomputed.inputs.expectationOrigin,
+      ...recomputed.summary });
+  } else if (parsed?.schema === REHEARSAL_RECORD_REPORT_SCHEMA) {
+    recomputed = queryRehearsalRecords(indexRehearsalRecords(parsed.inputs), validateRehearsalRecordQuery(parsed.query));
+    scope = recomputed.subjects.map(row => ({ agent: row.agent, beforeRecords: row.recordCount, afterRecords: null }));
+    reportOutcome = Object.freeze({ kind: "record-query", query: recomputed.query,
+      totalRecords: recomputed.totalRecords, matchedRecords: recomputed.matchedRecords });
   } else fail("UNSUPPORTED_REVIEW_REPORT");
   const comparison = compareValues(recomputed, parsed);
   if (!subtle || typeof subtle.digest !== "function") fail("REVIEW_HASH_UNAVAILABLE");
@@ -75,7 +88,7 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
     sourceVerified: false, authorizesExecution: false, inputSchema: parsed.schema, byteLength, sha256,
     expectedSha256: expectedHash, checksumMatches: expectedHash === null ? null : expectedHash === sha256,
     matchesRecomputation: comparison.differenceCount === 0, ...comparison,
-    scope: Object.freeze(scope.map(row => Object.freeze(row))) });
+    scope: Object.freeze(scope.map(row => Object.freeze(row))), ...(reportOutcome ? { reportOutcome } : {}) });
 }
 
 export function encodeRehearsalReviewReceipt(receipt) {

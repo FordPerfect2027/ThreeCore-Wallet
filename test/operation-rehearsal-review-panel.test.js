@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { webcrypto, createHash } from "node:crypto";
+import { newReportFixtures } from "./helpers/rehearsal-report-fixtures.js";
 import { Element } from "./helpers/panel-dom.js";
 import { mountRehearsalReviewPanel } from "../examples/operation-rehearsal-review-panel.js";
 import { reportRehearsalOverview } from "../src/operation-rehearsal-overview.js";
@@ -70,4 +71,32 @@ test("file chooser cancel and empty change preserve the reviewed receipt",async(
 test("invalid expected hash and malformed report never enable receipt export",async()=>{
   const f=setup();f.change("expected","bad");f.paste(text);await finished(f);assert.match(f.field("status").textContent,/64桁/);
   f.change("expected","");f.paste("{");await finished(f);assert.equal(f.field("save").disabled,true);
+});
+test("a faithful failing expectation report is visibly distinguished from a fully matching baseline",async()=>{
+  const f=setup(),reports=newReportFixtures();f.paste(JSON.stringify(reports.differing));await finished(f);
+  assert.match(f.field("status").textContent,/期待結果との差/);assert.equal(f.field("status").className,"blocked");
+  assert.match(f.field("outcome").textContent,/差あり 1件/);assert.match(f.field("outcome").textContent,/手動で指定/);
+  assert.equal(f.field("save").disabled,false);f.field("save").click();
+  assert.equal(JSON.parse(f.downloads[0].text).matchesRecomputation,true);
+  f.paste(JSON.stringify(reports.matching));await finished(f);assert.equal(f.field("status").className,"passed");
+  assert.match(f.field("outcome").textContent,/計算結果から記録/);assert.doesNotMatch(f.field("outcome").textContent,/手動で指定/);
+});
+test("query scope shows source counts, conditions and no false comparison or on-chain zero claim",async()=>{
+  const f=setup();f.paste(JSON.stringify(newReportFixtures().empty));await finished(f);
+  assert.match(f.field("summary").textContent,/記録の検索資料/);
+  assert.match(f.field("outcome").textContent,/全記録 5件 \/ 条件に一致 0件/);
+  assert.match(f.field("outcome").textContent,/検索語: missing/);
+  assert.equal(f.field("scope").children[0].children[2].textContent,"比較なし");
+  f.change("text","{");assert.equal(f.field("outcome").textContent,"");
+});
+test("query text is rendered as text rather than markup",async()=>{
+  const f=setup(),report=JSON.parse(JSON.stringify(newReportFixtures().empty));
+  report.query.search="<img src=x>";f.paste(JSON.stringify(report));await finished(f);
+  assert.match(f.field("outcome").textContent,/<img src=x>/);assert.equal(f.field("outcome").children.length,0);
+});
+test("checksum disagreement takes priority over expectation summary while retaining its true outcome",async()=>{
+  const f=setup();f.change("expected","0".repeat(64));f.paste(JSON.stringify(newReportFixtures().differing));await finished(f);
+  assert.match(f.field("status").textContent,/指定された照合値と一致しません/);
+  assert.match(f.field("outcome").textContent,/差あり 1件/);
+  f.field("clear").click();assert.equal(f.field("outcome").textContent,"");
 });

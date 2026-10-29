@@ -225,7 +225,7 @@
   </section>
   <section aria-labelledby="report-review-title">
     <h2 id="report-review-title">保存した資料を再計算して確認</h2>
-    <p>確認一覧・復旧前の照合資料・条件比較資料・ケース集の集計資料を読み取り専用で確認します。含まれる入力から再計算し、資料内の結果と照合します。現在の履歴には反映しません。</p>
+    <p>確認一覧・復旧前の照合資料・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を読み取り専用で確認します。含まれる入力から再計算し、資料内の結果と照合します。現在の履歴には反映しません。</p>
     <label class="file-label">確認する資料ファイル<input id="report-review-file" type="file" accept=".json,application/json"></label>
     <p id="report-review-source" class="small"></p>
     <label>照合するSHA-256（任意）<input id="report-review-expected" maxlength="64" spellcheck="false" placeholder="元の資料の照合値がある場合だけ入力"></label>
@@ -233,6 +233,7 @@
     <p id="report-review-status" role="status" aria-live="polite"></p>
     <div id="report-review-results" hidden>
       <p id="report-review-summary"></p><p id="report-review-digest" class="small"></p>
+      <p id="report-review-outcome"></p>
       <div class="table-wrap"><table><caption>資料に含まれる入力の範囲</caption><thead><tr><th>対象</th><th>元入力の件数</th><th>比較後の件数</th></tr></thead><tbody id="report-review-scope"></tbody></table></div>
       <div class="table-wrap"><table><caption>再計算と異なる項目（最大40箇所）</caption><thead><tr><th>資料内の場所</th><th>違い</th></tr></thead><tbody id="report-review-differences"></tbody></table></div>
     </div>

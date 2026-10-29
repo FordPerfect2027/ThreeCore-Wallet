@@ -68,4 +68,3 @@ The combined file is 17,387 UTF-8 bytes. Its offline inspection reports DAT 3, E
 The file contains committed fictional input only, not unconfirmed drafts, undo history, search filters, report-review results or expected-result review displays. No automatic persistence is implied. Browser proof used the ordinary paste fallback; native file selection remains unverified in this connected browser. The inspector does not authenticate source data or authorize execution.
 
 No signing, transfers, approvals, private-key retrieval, publication or deployment occurred.
-

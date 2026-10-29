@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash, webcrypto } from "node:crypto";
+import { newReportFixtures } from "./helpers/rehearsal-report-fixtures.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { REHEARSAL_WORKSPACE_SCHEMA } from "../src/operation-rehearsal-workspace.js";
 import { reportRehearsalOverview } from "../src/operation-rehearsal-overview.js";
@@ -85,4 +86,64 @@ test("hash failure produces no success receipt",async()=>{
 test("uncreated ledgers remain null counts in review scope",async()=>{
   const result=await review(JSON.stringify(reportRehearsalOverview(pack())));
   assert.equal(result.matchesRecomputation,true); assert.equal(result.scope[0].beforeRecords,null);
+});
+
+test("expected-result review separates report fidelity from a recorded baseline's outcome",async()=>{
+  const result=await review(JSON.stringify(newReportFixtures().matching));
+  assert.equal(result.matchesRecomputation,true);
+  assert.deepEqual(result.reportOutcome,{kind:"expected-outcomes",expectationOrigin:"recorded-calculation",
+    cases:1,matched:1,differing:0,allMatched:true});
+  assert.deepEqual(result.scope,[{agent:"DAT",caseId:"dat-example",beforeRecords:2,afterRecords:2}]);
+});
+test("a faithfully reported manual expectation failure still matches recomputation",async()=>{
+  const result=await review(JSON.stringify(newReportFixtures().differing));
+  assert.equal(result.matchesRecomputation,true);assert.equal(result.reportOutcome.allMatched,false);
+  assert.equal(result.reportOutcome.expectationOrigin,"manually-specified");assert.equal(result.reportOutcome.differing,1);
+  assert.equal(result.sourceVerified,false);assert.ok(Object.isFrozen(result.reportOutcome));
+});
+test("altered expected-result summary and omitted difference cannot conceal the outcome",async()=>{
+  const changed=JSON.parse(JSON.stringify(newReportFixtures().differing));
+  changed.summary.allMatched=true;changed.rows[0].differences=[];
+  const result=await review(JSON.stringify(changed));
+  assert.equal(result.matchesRecomputation,false);assert.equal(result.reportOutcome.allMatched,false);
+  assert.deepEqual(result.differences.map(d=>d.path),["/summary/allMatched","/rows/0/differences"]);
+});
+test("expected-result inputs must retain complete case and record coverage",async()=>{
+  const changed=JSON.parse(JSON.stringify(newReportFixtures().matching));changed.inputs.expected[0].after.records=[];
+  await assert.rejects(review(JSON.stringify(changed)),{code:"EXPECTED_RECORD_SCOPE_MISMATCH"});
+});
+test("filtered search is recomputed from all included inputs with original ledger scope",async()=>{
+  const result=await review(JSON.stringify(newReportFixtures().filtered));
+  assert.equal(result.matchesRecomputation,true);assert.deepEqual(result.scope.map(s=>s.beforeRecords),[2,2,1]);
+  assert.deepEqual(result.reportOutcome,{kind:"record-query",query:{agent:"EMA",kind:"settle",decision:"all",search:""},
+    totalRecords:5,matchedRecords:1});assert.ok(Object.isFrozen(result.reportOutcome.query));
+});
+test("zero search matches retains total source count",async()=>{
+  const result=await review(JSON.stringify(newReportFixtures().empty));
+  assert.equal(result.matchesRecomputation,true);assert.equal(result.reportOutcome.matchedRecords,0);
+  assert.equal(result.reportOutcome.totalRecords,5);
+});
+test("search result omissions, changed balances and hidden total counts are detected",async()=>{
+  const changed=JSON.parse(JSON.stringify(newReportFixtures().all));
+  changed.rows.pop();changed.rows[0].changes[0].delta="0";changed.totalRecords=4;
+  const result=await review(JSON.stringify(changed));assert.equal(result.matchesRecomputation,false);
+  assert.equal(result.reportOutcome.matchedRecords,5);assert.equal(result.reportOutcome.totalRecords,5);
+  assert.ok(result.differences.some(d=>d.path==="/rows/0/changes/0/delta"));
+  assert.ok(result.differences.some(d=>d.path==="/rows"&&d.kind==="array-length"));
+});
+test("missing and invalid search conditions are not silently replaced by defaults",async()=>{
+  for(const query of [undefined,{agent:"DAT"},{agent:"all",kind:"send",decision:"all",search:""}]){
+    const changed=JSON.parse(JSON.stringify(newReportFixtures().all));changed.query=query;
+    await assert.rejects(review(JSON.stringify(changed)),{code:"INVALID_RECORD_QUERY"});
+  }
+});
+test("query search strings stay literal and reordered result rows remain significant",async()=>{
+  const changed=JSON.parse(JSON.stringify(newReportFixtures().all));changed.rows.reverse();
+  assert.equal((await review(JSON.stringify(changed))).matchesRecomputation,false);
+  changed.query.search="<img src=x>";changed.rows=[];changed.matchedRecords=0;
+  const result=await review(JSON.stringify(changed));assert.equal(result.matchesRecomputation,true);
+  assert.equal(result.reportOutcome.query.search,"<img src=x>");
+});
+test("existing schemas retain their receipt shape and do not add a fabricated report outcome",async()=>{
+  const result=await review(JSON.stringify(reports[0]));assert.equal(Object.hasOwn(result,"reportOutcome"),false);
 });
