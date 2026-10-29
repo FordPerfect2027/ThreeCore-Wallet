@@ -44,6 +44,150 @@ const workspaceFile = (f, ledgers, activeAgent = "DAT", extras = {}) => {
 };
 const selectAgent = (f, name) => { f.field("agent").value = name; f.field("agent").dispatchEvent(new Event("change")); };
 const savedWorkspace = f => { f.field("workspace-save").click(); return decodeRehearsalWorkspace(f.downloads.at(-1).text); };
+const workspaceText = (ledgers, activeAgent = "DAT") => encodeRehearsalWorkspace({
+  schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent, ledgers });
+const pasteWorkspace = (f, text) => { f.change("workspace-text", text); f.field("workspace-text-review").click(); };
+
+test("a selected filename and next action survive native input clearing without hiding applied results", async () => {
+  const f = setup(); f.field("example").click(); prepareAppend(f, "reserve"); f.field("append-confirm").click();
+  let resolve;
+  workspaceFile(f, [], "DAT", { name: "saved-workspace.json", text: () => new Promise(done => { resolve = done; }) });
+  assert.equal(f.field("workspace-file").value, "");
+  assert.match(f.field("workspace-source").textContent, /saved-workspace.json/);
+  assert.match(f.field("workspace-stage").textContent, /確認中/);
+  assert.equal(f.field("workspace-file").getAttribute("aria-busy"), "true");
+  assert.equal(f.field("rows").children.length, 3); assert.equal(f.field("save").disabled, false);
+  assert.equal(f.field("undo").disabled, false);
+  resolve(workspaceText([rehearsalExampleV2("EMA", "loss")], "EMA")); await tick();
+  assert.match(f.field("workspace-stage").textContent, /選択できています/);
+  assert.equal(f.field("workspace-file").getAttribute("aria-busy"), "false");
+  assert.equal(f.field("rows").children.length, 3);
+  assert.match(f.field("workspace-source").textContent, /saved-workspace.json/);
+  const rows = f.field("workspace-changes").children.map(row => row.children.map(cell => cell.textContent));
+  assert.deepEqual(rows, [["DAT", "3件", "未作成", "履歴を消去する"], ["EMA", "未作成", "2件", "復旧する"],
+    ["CAWELON", "未作成", "未作成", "未作成のまま"]]);
+  assert.equal(f.field("workspace-comparison").hidden, false);
+});
+
+test("file chooser cancellation or no selection preserves the prior review and current records", async () => {
+  const f = setup(); f.field("example").click();
+  workspaceFile(f, [rehearsalExampleV2("EMA")], "EMA", { name: "original.json" }); await tick();
+  f.field("workspace-file").dispatchEvent(new Event("cancel"));
+  f.field("workspace-file").files = []; f.field("workspace-file").dispatchEvent(new Event("change"));
+  assert.match(f.field("workspace-file-note").textContent, /変更していません/);
+  assert.match(f.field("workspace-source").textContent, /original.json/);
+  assert.equal(f.field("rows").children.length, 2);
+  assert.equal(f.field("workspace-apply").disabled, false);
+  f.field("workspace-apply").click(); assert.equal(f.field("agent").value, "EMA");
+});
+
+test("successful restoration has a receipt naming the source and each restored count", async () => {
+  const f = setup();
+  workspaceFile(f, [rehearsalExampleV2("DAT"), rehearsalExampleV2("CAWELON", "pending")], "DAT", { name: "backup.json" });
+  await tick(); f.field("workspace-apply").click();
+  assert.match(f.field("workspace-stage").textContent, /3 \/ 3/);
+  assert.match(f.field("workspace-receipt").textContent, /backup.json — DAT: 2件 \/ EMA: 未作成 \/ CAWELON: 1件/);
+  assert.equal(f.field("workspace-comparison").hidden, true);
+  assert.equal(f.field("workspace-changes").children.length, 0);
+  assert.equal(f.field("workspace-apply").disabled, true);
+  f.change("append-reference", "next");
+  assert.doesNotMatch(f.field("workspace-stage").textContent, /復旧が完了/);
+  assert.match(f.field("workspace-receipt").textContent, /直前の復旧/);
+});
+
+test("zero-record ledgers are distinct from missing ledgers in the replacement preview", async () => {
+  const f = setup(); f.field("example").click();
+  const empty = { ...rehearsalExampleV2("DAT"), events: [] };
+  workspaceFile(f, [empty]); await tick();
+  assert.deepEqual(f.field("workspace-changes").children[0].children.map(x => x.textContent),
+    ["DAT", "2件", "0件", "置き換える"]);
+  f.field("workspace-apply").click(); assert.equal(savedWorkspace(f).ledgers.length, 1);
+});
+
+test("filenames are bounded plain text with directional and control characters removed", async () => {
+  const f = setup();
+  workspaceFile(f, [], "DAT", { name: "<script>\u202e\n" + "x".repeat(300) }); await tick();
+  const source = f.field("workspace-source");
+  assert.equal(source.children.length, 0); assert.match(source.textContent, /<script>/);
+  assert.doesNotMatch(source.textContent, /[\u202e\n]/); assert.ok(source.textContent.length < 180);
+});
+
+test("pasted workspace is reviewed, bounded, cleared and applied once using the same replacement rules", () => {
+  const f = setup(); f.field("example").click();
+  const text = workspaceText([rehearsalExampleV2("EMA", "loss")], "EMA");
+  pasteWorkspace(f, text);
+  assert.equal(f.field("workspace-text").value, "");
+  assert.match(f.field("workspace-source").textContent, /貼り付けた一括記録/);
+  assert.equal(savedWorkspace(f).activeAgent, "DAT");
+  f.field("workspace-apply").click(); f.field("workspace-apply").click();
+  assert.equal(encodeRehearsalWorkspace(savedWorkspace(f)), text);
+  assert.equal(f.field("undo").disabled, true);
+});
+
+for (const [name, text, message] of [
+  ["empty", " \n ", /空です/],
+  ["malformed", "{", /JSONの内容/],
+  ["duplicate-agent", JSON.stringify({ schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true,
+    activeAgent: "DAT", ledgers: [rehearsalExampleV2(), rehearsalExampleV2()] }), /重複/],
+  ["duplicate-key", '{"schema":"a","schema":"b"}', /JSONの内容/],
+  ["oversized", " ".repeat(REHEARSAL_WORKSPACE_LIMIT) + "{}", /大きすぎ/],
+  ["multibyte-oversized", JSON.stringify({ padding: "あ".repeat(175000) }), /大きすぎ/],
+  ["single-ledger", encodeRehearsal(rehearsalExampleV2()), /一括試算/],
+  ["foreign-asset", workspaceText([{ ...rehearsalExampleV2(), asset: { ...rehearsalExampleV2().asset, symbol: "OTHER" } }]), /練習用SIM/],
+]) test(name + " pasted input explains failure and preserves applied records and undo", () => {
+  const f = setup(); f.field("example").click(); prepareAppend(f, "reserve"); f.field("append-confirm").click();
+  const before = encodeRehearsalWorkspace(savedWorkspace(f));
+  pasteWorkspace(f, text); assert.match(f.field("workspace-status").textContent, message);
+  assert.equal(f.field("rows").children.length, 3); assert.equal(f.field("undo").disabled, false);
+  assert.equal(f.field("workspace-apply").disabled, true);
+  assert.equal(f.field("workspace-comparison").hidden, true);
+  assert.equal(f.field("workspace-source").textContent, "");
+  assert.equal(encodeRehearsalWorkspace(savedWorkspace(f)), before);
+});
+
+test("a file read error preserves the displayed ledger and its exports", async () => {
+  const f = setup(); f.field("example").click();
+  workspaceFile(f, [], "DAT", { text: async () => { throw new Error("read failed"); } }); await tick();
+  assert.equal(f.field("rows").children.length, 2); assert.equal(f.field("save").disabled, false);
+  assert.match(f.field("workspace-stage").textContent, /変更していません/);
+});
+
+test("an older file cannot replace a newer pasted review or its source label", async () => {
+  const f = setup(); let resolve;
+  workspaceFile(f, [], "DAT", { name: "old.json", text: () => new Promise(done => { resolve = done; }) });
+  pasteWorkspace(f, workspaceText([rehearsalExampleV2("CAWELON")], "CAWELON"));
+  resolve(workspaceText([])); await tick();
+  assert.match(f.field("workspace-source").textContent, /貼り付けた/);
+  f.field("workspace-apply").click(); assert.equal(savedWorkspace(f).activeAgent, "CAWELON");
+});
+
+test("an older file rejection cannot overwrite a newer completed restore", async () => {
+  const f = setup(); let reject;
+  workspaceFile(f, [], "DAT", { text: () => new Promise((_, fail) => { reject = fail; }) });
+  pasteWorkspace(f, workspaceText([rehearsalExampleV2("EMA")], "EMA")); f.field("workspace-apply").click();
+  reject(new Error("late failure")); await tick();
+  assert.match(f.field("workspace-stage").textContent, /3 \/ 3/); assert.equal(f.field("agent").value, "EMA");
+});
+
+test("editing pasted input cancels both workspace and single-ledger pending reviews", async () => {
+  const f = setup(); f.file(encodeRehearsal(rehearsalExample())); await tick();
+  f.change("workspace-text", "{"); assert.equal(f.field("apply").disabled, true);
+  pasteWorkspace(f, workspaceText([rehearsalExampleV2()]));
+  f.change("workspace-text", "changed"); assert.equal(f.field("workspace-apply").disabled, true);
+  assert.equal(f.field("workspace-changes").children.length, 0);
+  assert.equal(f.field("workspace-source").textContent, "");
+});
+
+test("cancel and dispose clear pasted text and file names without retaining import content", () => {
+  const f = setup(); f.field("example").click(); f.change("workspace-text", "draft");
+  f.field("workspace-cancel").click(); assert.equal(f.field("workspace-text").value, "");
+  assert.equal(f.field("rows").children.length, 2);
+  pasteWorkspace(f, workspaceText([rehearsalExampleV2()])); f.field("workspace-apply").click();
+  f.change("workspace-text", "private draft"); f.page.dispose();
+  for (const id of ["workspace-receipt", "workspace-source", "workspace-stage"])
+    assert.equal(f.field(id).textContent, "");
+  assert.equal(f.field("workspace-text").value, "");
+});
 
 test("workspace overview labels missing agents and disables an empty export", () => {
   const f = setup(); assert.equal(f.field("workspace-save").disabled, true);

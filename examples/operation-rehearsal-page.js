@@ -29,6 +29,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   let current = null, candidate = null, revision = 0, disposed = false;
   const ledger = createRehearsalWorkspace(get("agent").value);
   let appendReview = null, workspaceReview = null;
+  let workspacePhase = "idle", workspaceSource = "";
   const listeners = [];
   const listen = (name, type, handler) => {
     get(name).addEventListener(type, handler);
@@ -37,8 +38,66 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   function cancelAppend() {
     revision++; workspaceReview = null; get("workspace-apply").disabled = true;
     get("workspace-preview").textContent = "";
+    get("workspace-changes").textContent = ""; get("workspace-comparison").hidden = true;
+    get("workspace-source").textContent = ""; workspaceSource = "";
+    if (workspacePhase !== "idle") setWorkspaceStage("idle",
+      "入力・表示が変わりました。復旧する場合は保存した記録をもう一度選んでください。");
     appendReview = null; ledger.cancel(); get("append-confirm").disabled = true;
     get("append-summary").textContent = "";
+  }
+  function setWorkspaceStage(phase, message) {
+    workspacePhase = phase;
+    const captions = { idle: "1 / 3 — 保存した記録を選ぶ", reading: "1 / 3 — 記録を確認中",
+      review: "2 / 3 — 選択できています。次は復旧ボタンを押してください", complete: "3 / 3 — 復旧が完了しました",
+      error: "読み込めませんでした — 現在の履歴は変更していません" };
+    get("workspace-stage").textContent = captions[phase];
+    get("workspace-stage").setAttribute("data-stage", phase);
+    get("workspace-status").textContent = message;
+    get("workspace-file").setAttribute("aria-busy", String(phase === "reading"));
+    if (["review", "complete", "error"].includes(phase)) get("workspace-stage").focus?.();
+  }
+  function beginWorkspaceRead(source) {
+    cancelAppend(); candidate = null; get("apply").disabled = true; get("preview").textContent = "";
+    workspaceSource = source; get("workspace-source").textContent = "確認する記録: " + source;
+    get("workspace-file-note").textContent = "";
+    setWorkspaceStage("reading", "現在の履歴を表示したまま確認しています。まだ置き換えていません。");
+    return revision;
+  }
+  function reviewWorkspaceText(text) {
+    const data = decodeRehearsalWorkspace(text);
+    if (data.ledgers.some(item => item.asset.symbol !== "SIM" || item.asset.decimals !== 6))
+      throw Object.assign(new Error("SIM required"), { code: "SIM_REQUIRED" });
+    workspaceReview = ledger.previewRestore(data);
+    get("workspace-changes").textContent = "";
+    const count = row => row.present ? row.recordCount + "件" : "未作成";
+    for (let i = 0; i < workspaceReview.after.rows.length; i++) {
+      const before = workspaceReview.before.rows[i], after = workspaceReview.after.rows[i];
+      const action = after.present ? (before.present ? "置き換える" : "復旧する")
+        : (before.present ? "履歴を消去する" : "未作成のまま");
+      const tr = document.createElement("tr");
+      for (const value of [after.agent, count(before), count(after), action]) {
+        const td = document.createElement("td"); td.textContent = value; tr.append(td);
+      }
+      get("workspace-changes").append(tr);
+    }
+    get("workspace-comparison").hidden = false;
+    get("workspace-preview").textContent = workspaceReview.after.rows.map(row => row.agent + ": " +
+      (row.present ? row.recordCount + "件に置換" : "未作成に戻す")).join(" / ") +
+      "。表示対象: " + data.activeAgent + "。復旧すると3トークンの現在の履歴をまとめて置き換え、取り消し履歴は消えます。まだ反映していません。";
+    get("workspace-apply").disabled = false;
+    setWorkspaceStage("review", "上の一覧は現在の履歴です。下の変更内容を確認し、「確認した3トークンの履歴を復旧」を押してください。必要なら現在の履歴を先に一括保存できます。");
+  }
+  function workspaceReadFailed(error) {
+    const reason = {
+      FILE_TOO_LARGE: "記録が大きすぎます。一括ファイルは512 KiB以内、各トークンの記録は128 KiB以内です。",
+      EMPTY_INPUT: "記録が空です。保存した一括JSONの全文を指定してください。",
+      INVALID_JSON: "JSONの内容を読み取れません。一括保存したファイルの全文を指定してください。",
+      DUPLICATE_AGENT: "同じトークンの記録が重複しています。一括保存した元のファイルを選び直してください。",
+      SIM_REQUIRED: "この画面で扱えるのは小数6桁の練習用SIMの記録です。",
+      SIMULATION_REQUIRED: "一括試算の形式ではありません。単体の記録は下の「保存した記録を選ぶ」から読み込んでください。",
+    }[error?.code] ?? "この一括試算の記録を確認できませんでした。一括保存した元のファイルを選び直してください。";
+    cancelAppend();
+    setWorkspaceStage("error", reason + " 現在の履歴は保持しています。");
   }
   function clear(message = "入力が変わりました。もう一度試算してください。", keepLedger = false) {
     revision++; current = null; candidate = null;
@@ -250,47 +309,66 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   });
   listen("workspace-file", "change", async () => {
     if (disposed) return;
-    const file = get("workspace-file").files?.[0]; get("workspace-file").value = "";
-    clear("一括ファイルを確認しています。現在の履歴は保持しています。", true);
-    const own = revision;
+    const file = get("workspace-file").files?.[0];
+    if (!file) return;
+    get("workspace-file").value = ""; get("workspace-text").value = "";
+    const name = typeof file.name === "string" ? file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g, "").slice(0, 160) : "一括ファイル";
+    const own = beginWorkspaceRead(name || "一括ファイル");
     try {
-      if (!file || file.size < 1 || file.size > REHEARSAL_WORKSPACE_LIMIT) throw new Error("File size");
+      if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > REHEARSAL_WORKSPACE_LIMIT)
+        throw Object.assign(new Error("File size"), { code: file.size === 0 ? "EMPTY_INPUT" : "FILE_TOO_LARGE" });
       const text = await file.text(); if (disposed || own !== revision) return;
-      const data = decodeRehearsalWorkspace(text);
-      if (data.ledgers.some(item => item.asset.symbol !== "SIM" || item.asset.decimals !== 6)) throw new Error("SIM required");
+      reviewWorkspaceText(text);
+    } catch (error) {
       if (disposed || own !== revision) return;
-      workspaceReview = ledger.previewRestore(data);
-      get("workspace-preview").textContent = workspaceReview.after.rows.map(row => row.agent + ": " +
-        (row.present ? row.recordCount + "件に置換" : "未作成に戻す")).join(" / ") +
-        "。表示対象: " + data.activeAgent + "。復旧すると3トークンの現在の履歴をまとめて置き換え、取り消し履歴は消えます。まだ反映していません。";
-      get("workspace-apply").disabled = false;
-      get("workspace-status").textContent = "一括復旧する内容を確認してください。必要なら現在の履歴を先に一括保存できます。";
-    } catch {
-      if (disposed || own !== revision) return;
-      clear("一括ファイルを確認できませんでした。現在の履歴は保持しています。", true);
-      get("workspace-status").textContent = "512 KiB以内の一括試算JSONを選んでください。履歴は変更していません。";
+      workspaceReadFailed(error);
     }
+  });
+  listen("workspace-file", "cancel", () => {
+    if (!disposed) get("workspace-file-note").textContent = "ファイルの選択を取り消しました。現在の履歴と確認待ちの内容は変更していません。";
+  });
+  listen("workspace-text", "input", () => {
+    if (disposed) return;
+    cancelAppend(); candidate = null; get("apply").disabled = true; get("preview").textContent = "";
+  });
+  listen("workspace-text-review", "click", () => {
+    if (disposed) return;
+    const text = get("workspace-text").value;
+    get("workspace-text").value = ""; get("workspace-file").value = "";
+    beginWorkspaceRead("貼り付けた一括記録");
+    try {
+      if (!text.trim()) throw Object.assign(new Error("Empty input"), { code: "EMPTY_INPUT" });
+      reviewWorkspaceText(text);
+    } catch (error) { workspaceReadFailed(error); }
   });
   listen("workspace-apply", "click", () => {
     if (disposed || !workspaceReview) return;
     try {
+      const source = workspaceSource;
+      const counts = workspaceReview.after.rows.map(row => row.agent + ": " + (row.present ? row.recordCount + "件" : "未作成")).join(" / ");
       const data = ledger.restore(workspaceReview);
       get("agent").value = ledger.state().activeAgent;
       if (data) show(data, true); else clear("選択中の対象は未作成です。", true);
-      get("workspace-status").textContent = "一括復旧して全記録を再計算しました。取り消し履歴は新しく開始します。";
+      get("workspace-text").value = "";
+      get("workspace-receipt").textContent = "直前の復旧: " + source + " — " + counts + "。全記録を再計算しました。";
+      setWorkspaceStage("complete", "上の一覧に復旧済みの履歴を表示しています。取り消し履歴は新しく開始します。必要な履歴は一括保存してください。");
     } catch { cancelAppend(); get("workspace-status").textContent = "一括ファイルを再度選んで確認してください。"; }
   });
   listen("workspace-cancel", "click", () => {
     if (disposed) return;
     clear("一括読込を取り消しました。", true);
     const data = ledger.state().current; if (data) show(data, true);
-    get("workspace-status").textContent = "一括読込を取り消しました。現在の履歴は保持しています。";
+    get("workspace-text").value = ""; get("workspace-file").value = "";
+    setWorkspaceStage("idle", "一括読込を取り消しました。現在の履歴は保持しています。");
   });
   renderWorkspace();
+  setWorkspaceStage("idle", "保存した記録を選ぶと、復旧前に変更内容を確認できます。自動保存は行いません。");
   return Object.freeze({ dispose() {
     if (disposed) return; disposed = true; clear("表示を終了しました。"); ledger.dispose();
     get("workspace-rows").textContent = ""; get("workspace-save").disabled = true;
     get("workspace-status").textContent = "表示を終了しました。";
+    for (const name of ["workspace-receipt", "workspace-source", "workspace-stage", "workspace-file-note"]) get(name).textContent = "";
+    get("workspace-text").value = ""; get("workspace-file").value = "";
     for (const remove of listeners) remove();
   } });
 }
