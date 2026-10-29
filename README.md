@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**October 29, 2026 confirmation overview:** [Ten-item overview update](docs/OPERATION_WORKSPACE_OVERVIEW_2026-10-29.md) shows current unsettled positions, allocation reservations and rejected rehearsal records for each agent, with source context, filters, complete report downloads and offline reproduction. Verified with 255 related tests and byte-identical Edge/offline reports; the original six fictional records are preserved.
+
 **October 29, 2026 restore comparison:** [Ten-item comparison update](docs/OPERATION_RESTORE_COMPARISON_2026-10-29.md) compares recorded accounts, networks, assets, destinations, policy and event changes before applying a rehearsal workspace. A downloadable comparison can be independently regenerated with the new offline command. Verified with 230 related tests and actual Edge downloads.
 
 **October 29, 2026 recovery usability:** [Ten-item recovery update](docs/OPERATION_RESTORE_USABILITY_2026-10-29.md) adds a three-step guide, a retained source label, before/after comparison, preserved current results during review, specific error guidance and a reviewed paste option for saved rehearsal records. Verified in Edge with the existing six-record workspace and an identical downloaded export.
