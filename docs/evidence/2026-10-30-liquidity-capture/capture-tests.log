@@ -1,0 +1,47 @@
+✔ the ThreeCore target is 5,000 USDC per pool using six USDC decimals (5.4865ms)
+✔ all three pools at 100 USDC show 2% progress and 4,900 USDC individual gap (2.4489ms)
+✔ exactly 5,000 USDC counts as target met with no further shortfall (2.6078ms)
+✔ one pool's excess reserves must not compensate for another pool's shortfall (2.566ms)
+✔ zero USDC reserve is not enough to calculate a proportional token estimate (1.2591ms)
+✔ missing or unverified pools must never be counted as zero reserve (0.959ms)
+✔ rounding never hides a tiny reserve deficit (0.6382ms)
+✔ token-side illustration uses raw ratio without assuming ERC-20 decimals (0.9349ms)
+✔ invalid quantities, including negative and floating-point reserve inputs, fail closed (2.5965ms)
+✔ invalid reports do not generate a target progress claim (3.9163ms)
+✔ foreign factory, foreign quote token and missing provenance cannot produce USDC percentages (1.8554ms)
+✔ block numbers must be canonical bounded decimal strings without coercion (4.1516ms)
+✔ reserves and timestamps reject uint256 overflow and excessive text before conversion (3.7631ms)
+✔ three maximum reserves aggregate exactly even when their sum exceeds uint256 (1.0689ms)
+✔ duplicate pool addresses cannot double-count observed liquidity (1.352ms)
+✔ invalid or contradictory pool identity cannot be downgraded to an unknown successful entry (1.5081ms)
+✔ a valid address without code remains unknown and never contributes a zero (0.5138ms)
+✔ liquidity progress retains its canonical source hash and refuses unanchored input (0.9525ms)
+✔ liquidity calculation rejects getters at every consumed object layer without invoking them (1.2355ms)
+✔ liquidity calculation ignores unused properties and stable-pool accessors (0.6552ms)
+✔ captured values cannot change between validation and result formatting through property reads (1.0495ms)
+✔ inherited fields and unusual object prototypes are not observations (0.9684ms)
+✔ null-prototype JSON-like records remain accepted and source records stay unchanged (1.0366ms)
+✔ throwing reflection traps become a bounded local error (0.6876ms)
+✔ option parsing keeps supported invocations and rejects extra or ambiguous arguments (7.7526ms)
+✔ probe-base.js: help exits successfully without RPC (168.1874ms)
+✔ probe-base.js: invalid usage exits 2 without RPC or echoing the argument (130.8156ms)
+✔ probe-base.js: transport failure exits 1 with no successful JSON or private error text (153.0041ms)
+✔ inspect-aerodrome.js: help exits successfully without RPC (156.9235ms)
+✔ inspect-aerodrome.js: invalid usage exits 2 without RPC or echoing the argument (132.9263ms)
+✔ inspect-aerodrome.js: transport failure exits 1 with no successful JSON or private error text (151.2165ms)
+✔ inspect-aerodrome-pools.js: help exits successfully without RPC (193.6096ms)
+✔ inspect-aerodrome-pools.js: invalid usage exits 2 without RPC or echoing the argument (240.6503ms)
+✔ inspect-aerodrome-pools.js: transport failure exits 1 with no successful JSON or private error text (124.7864ms)
+✔ liquidity-progress.js: help exits successfully without RPC (129.5268ms)
+✔ liquidity-progress.js: invalid usage exits 2 without RPC or echoing the argument (119.8905ms)
+✔ liquidity-progress.js: transport failure exits 1 with no successful JSON or private error text (126.3321ms)
+✔ Base and holdings CLI JSON preserves exact observations and read-only flags (374.9647ms)
+✔ pool CLI output feeds the stricter liquidity assessment without inventing unknown reserves (567.8151ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3034.2668
