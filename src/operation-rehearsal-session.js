@@ -4,6 +4,7 @@ import { RehearsalError } from "./operation-rehearsal.js";
 import { createRehearsalWorkspace,validateRehearsalWorkspace } from "./operation-rehearsal-workspace.js";
 import { createRehearsalScenarioSet,validateRehearsalScenarioSet } from "./operation-rehearsal-scenario-set.js";
 import { compareRehearsalWorkspaces } from "./operation-rehearsal-comparison.js";
+import { createStateNotifier } from "./state-notifier.js";
 export const REHEARSAL_SESSION_SCHEMA="threecore.operation-rehearsal-session.v1";
 export const REHEARSAL_SESSION_LIMIT=2097152;
 const fail=code=>{throw new RehearsalError(code);};
@@ -32,7 +33,10 @@ export function createRehearsalSession(initialAgent="DAT"){
   const listeners=new Set();const active=()=>{if(disposed)fail("SESSION_DISPOSED");};
   const disposePair=pair=>{pair.workspace.dispose();pair.cases.dispose();};
   const invalidate=()=>{revision++;if(pending){disposePair(pending.next);pending=null;}};
-  const notify=()=>{for(const listener of [...listeners]){try{listener();}catch{/* A view failure must not roll back a committed state. */}}};
+  // Views observe the revision, never a payload retained by the notifier. Shared
+  // delivery bounds reentrant edits and consumes rejected observer promises.
+  const notifier=createStateNotifier({observers:listeners,read:()=>Object.freeze({revision})});
+  const notify=()=>notifier.notify();
   const proxies=Object.fromEntries(["workspace","cases"].map(kind=>[kind,Object.freeze(Object.fromEntries(Object.keys(current[kind]).map(name=>[name,(...args)=>{
     active();const mutation=!["state","snapshot"].includes(name);if(mutation)invalidate();
     try{return current[kind][name](...args);}finally{if(mutation)notify();}
@@ -50,9 +54,14 @@ export function createRehearsalSession(initialAgent="DAT"){
   }
   return Object.freeze({...proxies,snapshot,preview,
     commit(review){active();if(!pending||pending.review!==review||pending.base!==current)fail("STALE_REVIEW");
-      const previous=current;current=pending.next;pending=null;revision++;disposePair(previous);notify();return snapshot();},
+      const previous=current;current=pending.next;pending=null;revision++;disposePair(previous);
+      // A view may perform another edit or dispose the session during delivery.
+      // Preserve this commit's receipt before calling external observers.
+      const restored=snapshot();notify();return restored;},
     cancel(){active();invalidate();notify();},
-    subscribe(listener){active();if(typeof listener!=="function")fail("INVALID_SESSION_LISTENER");listeners.add(listener);return()=>listeners.delete(listener);},
+    subscribe(listener){active();if(typeof listener!=="function")fail("INVALID_SESSION_LISTENER");
+      if(!listeners.has(listener)&&listeners.size>=64)fail("SESSION_LISTENER_LIMIT");
+      listeners.add(listener);return()=>{notifier.forget(listener);return listeners.delete(listener);};},
     dispose(){if(disposed)return;invalidate();disposePair(current);disposed=true;listeners.clear();}
   });
 }
