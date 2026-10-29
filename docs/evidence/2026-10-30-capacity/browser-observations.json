@@ -1,0 +1,86 @@
+[
+  {
+    "step": "imported-large-session",
+    "state": {
+      "record-browser-scope": "DAT: 200件 / EMA: 200件 / CAWELON: 200件",
+      "record-browser-status": "一致 600件 / 全 600件。1～10件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "scenario-set-export-status": "",
+      "scenario-set-status": "上の比較が変わりました。保存中のケースは保持しています。",
+      "session-status": "履歴とケース集をまとめて復旧しました。両方の取り消し履歴は新しく開始します。",
+      "session-summary": "",
+      "workspace-rows": "DAT\t200件\t0 SIM\t0 SIM\t0 SIM\nEMA\t200件\t0 SIM\t0 SIM\t0 SIM\nCAWELON\t200件\t0 SIM\t0 SIM\t0 SIM"
+    }
+  },
+  {
+    "step": "second-page-50-rows",
+    "state": {
+      "record-browser-scope": "DAT: 200件 / EMA: 200件 / CAWELON: 200件",
+      "record-browser-status": "一致 600件 / 全 600件。51～100件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "scenario-set-export-status": "",
+      "scenario-set-status": "上の比較が変わりました。保存中のケースは保持しています。",
+      "session-status": "履歴とケース集をまとめて復旧しました。両方の取り消し履歴は新しく開始します。",
+      "session-summary": "",
+      "workspace-rows": "DAT\t200件\t0 SIM\t0 SIM\t0 SIM\nEMA\t200件\t0 SIM\t0 SIM\t0 SIM\nCAWELON\t200件\t0 SIM\t0 SIM\t0 SIM"
+    }
+  },
+  {
+    "step": "whole-baseline-size-refusal",
+    "state": {
+      "record-browser-scope": "DAT: 200件 / EMA: 200件 / CAWELON: 200件",
+      "record-browser-status": "一致 600件 / 全 600件。51～100件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "scenario-set-export-status": "期待結果が保存上限の1 MiBを超えました。ケースを削除せず、「選択したケースの期待結果を保存」で1件ずつ保存できます。画面のケースは保持しています。",
+      "scenario-set-status": "上の比較が変わりました。保存中のケースは保持しています。",
+      "session-status": "履歴とケース集をまとめて復旧しました。両方の取り消し履歴は新しく開始します。",
+      "session-summary": "",
+      "workspace-rows": "DAT\t200件\t0 SIM\t0 SIM\t0 SIM\nEMA\t200件\t0 SIM\t0 SIM\t0 SIM\nCAWELON\t200件\t0 SIM\t0 SIM\t0 SIM"
+    }
+  },
+  {
+    "step": "selected-case-baseline-saved",
+    "state": {
+      "record-browser-scope": "DAT: 200件 / EMA: 200件 / CAWELON: 200件",
+      "record-browser-status": "一致 600件 / 全 600件。51～100件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "scenario-set-export-status": "選択したケース capacity-11の現在の計算結果を、今後の比較に使う期待結果として保存し始めました。",
+      "scenario-set-status": "ケースの詳細を表示しています。",
+      "session-status": "履歴またはケースの操作がありました。まとめて復旧する場合は保存したファイルをもう一度確認してください。",
+      "session-summary": "",
+      "workspace-rows": "DAT\t200件\t0 SIM\t0 SIM\t0 SIM\nEMA\t200件\t0 SIM\t0 SIM\t0 SIM\nCAWELON\t200件\t0 SIM\t0 SIM\t0 SIM"
+    }
+  },
+  {
+    "step": "last-record-found",
+    "state": {
+      "record-browser-scope": "DAT: 200件 / EMA: 200件 / CAWELON: 200件",
+      "record-browser-status": "一致 1件 / 全 600件。1～1件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "scenario-set-export-status": "選択したケース capacity-11の現在の計算結果を、今後の比較に使う期待結果として保存し始めました。",
+      "scenario-set-status": "ケースの詳細を表示しています。",
+      "session-status": "履歴またはケースの操作がありました。まとめて復旧する場合は保存したファイルをもう一度確認してください。",
+      "session-summary": "",
+      "workspace-rows": "DAT\t200件\t0 SIM\t0 SIM\t0 SIM\nEMA\t200件\t0 SIM\t0 SIM\t0 SIM\nCAWELON\t200件\t0 SIM\t0 SIM\t0 SIM"
+    }
+  },
+  {
+    "step": "restored-original-session",
+    "state": {
+      "record-browser-scope": "DAT: 3件 / EMA: 2件 / CAWELON: 1件",
+      "record-browser-status": "一致 0件 / 全 6件。一致する記録はありません。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "scenario-set-export-status": "",
+      "scenario-set-status": "上の比較が変わりました。保存中のケースは保持しています。",
+      "session-status": "履歴とケース集をまとめて復旧しました。両方の取り消し履歴は新しく開始します。",
+      "session-summary": "",
+      "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+    }
+  },
+  {
+    "step": "original-record-search-reset",
+    "state": {
+      "record-browser-scope": "DAT: 3件 / EMA: 2件 / CAWELON: 1件",
+      "record-browser-status": "一致 6件 / 全 6件。1～6件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "scenario-set-export-status": "",
+      "scenario-set-status": "上の比較が変わりました。保存中のケースは保持しています。",
+      "session-status": "履歴とケース集をまとめて復旧しました。両方の取り消し履歴は新しく開始します。",
+      "session-summary": "",
+      "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+    }
+  }
+]

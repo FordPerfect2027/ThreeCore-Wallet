@@ -1,0 +1,3752 @@
+{
+  "schema": "threecore.operation-rehearsal-check-suite.v1",
+  "simulationOnly": true,
+  "expectationOrigin": "recorded-calculation",
+  "inputs": {
+    "schema": "threecore.operation-rehearsal-scenario-set.v1",
+    "simulationOnly": true,
+    "cases": [
+      {
+        "id": "capacity-11",
+        "label": "容量確認 11",
+        "before": {
+          "schema": "threecore.operation-rehearsal.v2",
+          "simulationOnly": true,
+          "agent": "CAWELON",
+          "chainId": 84532,
+          "account": "0x3333333333333333333333333333333333333333",
+          "asset": {
+            "address": "0x4444444444444444444444444444444444444444",
+            "symbol": "SIM",
+            "decimals": 6
+          },
+          "openingBalance": "1000000000",
+          "policy": {
+            "origin": "https://training.example",
+            "spender": "0x5555555555555555555555555555555555555555",
+            "maxPerOperation": "100000000",
+            "maxOutstanding": "200000000",
+            "reserveFloor": "200000000",
+            "lossLimit": "250000000",
+            "buybackBps": 1000,
+            "paused": false,
+            "maxEntryFee": "3000000",
+            "maxExitFee": "5000000"
+          },
+          "events": [
+            {
+              "id": "deposit-0",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-1",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-2",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-3",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-4",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-5",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-6",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-7",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-8",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-9",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-10",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-11",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-12",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-13",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-14",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-15",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-16",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-17",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-18",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-19",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-20",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-21",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-22",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-23",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-24",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-25",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-26",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-27",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-28",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-29",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-30",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-31",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-32",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-33",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-34",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-35",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-36",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-37",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-38",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-39",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-40",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-41",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-42",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-43",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-44",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-45",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-46",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-47",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-48",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-49",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-50",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-51",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-52",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-53",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-54",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-55",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-56",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-57",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-58",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-59",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-60",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-61",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-62",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-63",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-64",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-65",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-66",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-67",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-68",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-69",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-70",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-71",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-72",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-73",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-74",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-75",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-76",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-77",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-78",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-79",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-80",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-81",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-82",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-83",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-84",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-85",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-86",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-87",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-88",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-89",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-90",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-91",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-92",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-93",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-94",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-95",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-96",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-97",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-98",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-99",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-100",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-101",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-102",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-103",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-104",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-105",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-106",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-107",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-108",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-109",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-110",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-111",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-112",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-113",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-114",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-115",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-116",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-117",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-118",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-119",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-120",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-121",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-122",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-123",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-124",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-125",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-126",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-127",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-128",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-129",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-130",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-131",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-132",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-133",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-134",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-135",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-136",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-137",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-138",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-139",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            }
+          ]
+        },
+        "after": {
+          "schema": "threecore.operation-rehearsal.v2",
+          "simulationOnly": true,
+          "agent": "CAWELON",
+          "chainId": 84532,
+          "account": "0x3333333333333333333333333333333333333333",
+          "asset": {
+            "address": "0x4444444444444444444444444444444444444444",
+            "symbol": "SIM",
+            "decimals": 6
+          },
+          "openingBalance": "1000000001",
+          "policy": {
+            "origin": "https://training.example",
+            "spender": "0x5555555555555555555555555555555555555555",
+            "maxPerOperation": "100000000",
+            "maxOutstanding": "200000000",
+            "reserveFloor": "200000000",
+            "lossLimit": "250000000",
+            "buybackBps": 1000,
+            "paused": false,
+            "maxEntryFee": "3000000",
+            "maxExitFee": "5000000"
+          },
+          "events": [
+            {
+              "id": "deposit-0",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-1",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-2",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-3",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-4",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-5",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-6",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-7",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-8",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-9",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-10",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-11",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-12",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-13",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-14",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-15",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-16",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-17",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-18",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-19",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-20",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-21",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-22",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-23",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-24",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-25",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-26",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-27",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-28",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-29",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-30",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-31",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-32",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-33",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-34",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-35",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-36",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-37",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-38",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-39",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-40",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-41",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-42",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-43",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-44",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-45",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-46",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-47",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-48",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-49",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-50",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-51",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-52",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-53",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-54",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-55",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-56",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-57",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-58",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-59",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-60",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-61",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-62",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-63",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-64",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-65",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-66",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-67",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-68",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-69",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-70",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-71",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-72",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-73",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-74",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-75",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-76",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-77",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-78",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-79",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-80",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-81",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-82",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-83",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-84",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-85",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-86",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-87",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-88",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-89",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-90",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-91",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-92",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-93",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-94",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-95",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-96",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-97",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-98",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-99",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-100",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-101",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-102",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-103",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-104",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-105",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-106",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-107",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-108",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-109",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-110",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-111",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-112",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-113",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-114",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-115",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-116",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-117",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-118",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-119",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-120",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-121",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-122",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-123",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-124",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-125",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-126",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-127",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-128",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-129",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-130",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-131",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-132",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-133",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-134",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-135",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-136",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-137",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-138",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            },
+            {
+              "id": "deposit-139",
+              "kind": "deposit",
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "account": "0x3333333333333333333333333333333333333333",
+              "amount": "1"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "expected": [
+    {
+      "id": "capacity-11",
+      "before": {
+        "metrics": {
+          "cash": "1000000140",
+          "outstanding": "0",
+          "realizedPnl": "0",
+          "fees": "0",
+          "reservedExitFees": "0",
+          "reservedAllocations": "0",
+          "availableCash": "1000000140",
+          "allocationShortfall": "0",
+          "proposedOwnTokenBuybackBudget": "0"
+        },
+        "openPositions": 0,
+        "allocationBlockers": [
+          "NO_NET_PROFIT"
+        ],
+        "records": [
+          {
+            "id": "deposit-0",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-1",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-2",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-3",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-4",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-5",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-6",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-7",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-8",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-9",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-10",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-11",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-12",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-13",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-14",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-15",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-16",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-17",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-18",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-19",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-20",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-21",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-22",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-23",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-24",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-25",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-26",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-27",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-28",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-29",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-30",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-31",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-32",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-33",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-34",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-35",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-36",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-37",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-38",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-39",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-40",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-41",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-42",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-43",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-44",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-45",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-46",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-47",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-48",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-49",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-50",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-51",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-52",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-53",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-54",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-55",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-56",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-57",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-58",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-59",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-60",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-61",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-62",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-63",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-64",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-65",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-66",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-67",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-68",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-69",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-70",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-71",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-72",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-73",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-74",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-75",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-76",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-77",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-78",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-79",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-80",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-81",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-82",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-83",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-84",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-85",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-86",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-87",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-88",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-89",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-90",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-91",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-92",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-93",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-94",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-95",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-96",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-97",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-98",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-99",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-100",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-101",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-102",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-103",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-104",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-105",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-106",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-107",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-108",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-109",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-110",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-111",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-112",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-113",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-114",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-115",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-116",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-117",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-118",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-119",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-120",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-121",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-122",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-123",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-124",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-125",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-126",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-127",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-128",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-129",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-130",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-131",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-132",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-133",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-134",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-135",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-136",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-137",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-138",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-139",
+            "withinEnteredLimits": true,
+            "reasons": []
+          }
+        ]
+      },
+      "after": {
+        "metrics": {
+          "cash": "1000000141",
+          "outstanding": "0",
+          "realizedPnl": "0",
+          "fees": "0",
+          "reservedExitFees": "0",
+          "reservedAllocations": "0",
+          "availableCash": "1000000141",
+          "allocationShortfall": "0",
+          "proposedOwnTokenBuybackBudget": "0"
+        },
+        "openPositions": 0,
+        "allocationBlockers": [
+          "NO_NET_PROFIT"
+        ],
+        "records": [
+          {
+            "id": "deposit-0",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-1",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-2",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-3",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-4",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-5",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-6",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-7",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-8",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-9",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-10",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-11",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-12",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-13",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-14",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-15",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-16",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-17",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-18",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-19",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-20",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-21",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-22",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-23",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-24",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-25",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-26",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-27",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-28",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-29",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-30",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-31",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-32",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-33",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-34",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-35",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-36",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-37",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-38",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-39",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-40",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-41",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-42",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-43",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-44",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-45",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-46",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-47",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-48",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-49",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-50",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-51",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-52",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-53",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-54",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-55",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-56",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-57",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-58",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-59",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-60",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-61",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-62",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-63",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-64",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-65",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-66",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-67",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-68",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-69",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-70",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-71",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-72",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-73",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-74",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-75",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-76",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-77",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-78",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-79",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-80",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-81",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-82",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-83",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-84",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-85",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-86",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-87",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-88",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-89",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-90",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-91",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-92",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-93",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-94",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-95",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-96",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-97",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-98",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-99",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-100",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-101",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-102",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-103",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-104",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-105",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-106",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-107",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-108",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-109",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-110",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-111",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-112",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-113",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-114",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-115",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-116",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-117",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-118",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-119",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-120",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-121",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-122",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-123",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-124",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-125",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-126",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-127",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-128",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-129",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-130",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-131",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-132",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-133",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-134",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-135",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-136",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-137",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-138",
+            "withinEnteredLimits": true,
+            "reasons": []
+          },
+          {
+            "id": "deposit-139",
+            "withinEnteredLimits": true,
+            "reasons": []
+          }
+        ]
+      }
+    }
+  ]
+}

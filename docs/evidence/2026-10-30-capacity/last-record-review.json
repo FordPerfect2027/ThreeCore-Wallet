@@ -1,0 +1,43 @@
+{
+  "schema": "threecore.operation-rehearsal-report-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "inputSchema": "threecore.operation-rehearsal-record-query.v1",
+  "byteLength": 150792,
+  "sha256": "c331bc41fb3ea0fe203fac48ff444a8341c74842d474983cdea3293d2516c73a",
+  "expectedSha256": null,
+  "checksumMatches": null,
+  "matchesRecomputation": true,
+  "differenceCount": 0,
+  "differences": [],
+  "differencesTruncated": false,
+  "scope": [
+    {
+      "agent": "DAT",
+      "beforeRecords": 200,
+      "afterRecords": null
+    },
+    {
+      "agent": "EMA",
+      "beforeRecords": 200,
+      "afterRecords": null
+    },
+    {
+      "agent": "CAWELON",
+      "beforeRecords": 200,
+      "afterRecords": null
+    }
+  ],
+  "reportOutcome": {
+    "kind": "record-query",
+    "query": {
+      "agent": "CAWELON",
+      "kind": "all",
+      "decision": "all",
+      "search": "deposit-199"
+    },
+    "totalRecords": 600,
+    "matchedRecords": 1
+  }
+}
