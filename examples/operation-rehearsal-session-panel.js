@@ -1,3 +1,4 @@
+import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
 import { observeCallbackResult } from "../src/security-callback.js";
@@ -9,7 +10,10 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   const checkpoint = createRehearsalSaveCheckpoint();
   const get=name=>document.getElementById("session-"+name);let pending=null,revision=0,disposed=false,source="",sourceKind=null;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
-  function reset(message){fileReader.cancel();revision++;pending=null;source="";sourceKind=null;for(const name of["source","summary","cases","workspace-details","export-status"])get(name).textContent="";
+  const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
+  listeners.push(() => fileNotice.dispose());
+  function reset(message){
+    fileNotice.clear();fileReader.cancel();revision++;pending=null;source="";sourceKind=null;for(const name of["source","summary","cases","workspace-details","export-status"])get(name).textContent="";
     get("review").hidden=true;get("apply").disabled=true;get("status").textContent=message;get("status").setAttribute("aria-busy","false");}
   function available(){
     const state=checkpoint.inspect(session.snapshot());get("save").disabled=state.state==="empty";
@@ -45,7 +49,7 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   listen("save","click",()=>{if(disposed)return;const own=revision; try{const data=session.snapshot();if(!data.workspace.ledgers.length&&!data.cases.cases.length)return;
     offerDownload({document,prepared:{text:encodeRehearsalSession(data),filename:"ThreeCore-rehearsal-session.json",mimeType:"application/json"}});if(disposed||own!==revision)return;checkpoint.record(data,"download");available();get("export-status").textContent="3トークンの履歴と全比較ケースをまとめた保存を開始しました。";
   }catch{if(disposed||own!==revision)return;get("export-status").textContent="まとめた記録を保存できませんでした。画面の履歴とケース集は保持しています。";}});
-  listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file)return;cancel("まとめた記録を読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
+  listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file){fileNotice.noSelection();return;}cancel("まとめた記録を読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
     try{const text = await fileReader.readText(file, { maxBytes: REHEARSAL_SESSION_LIMIT });if(disposed||own!==revision)return;
       const name = displayFileName(file, "まとめた記録");
       if (disposed || own !== revision) return;

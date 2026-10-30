@@ -71,3 +71,21 @@ export function mountFileReadPanel({ document, parent, service = walletFileReadS
     section.remove();
   } });
 }
+
+/** Picker dismissal is a notice, not cancellation of an already running read. */
+export function createFileSelectionNotice(input, note) {
+  let disposed = false;
+  function noSelection() {
+    if (!disposed) note.textContent = "新しいファイルは選ばれていません。進行中の読み込みや現在の確認内容は変更していません。";
+  }
+  function clear() { if (!disposed) note.textContent = ""; }
+  input.addEventListener("cancel", noSelection);
+  return Object.freeze({
+    noSelection, clear,
+    dispose() {
+      if (disposed) return;
+      clear(); disposed = true;
+      input.removeEventListener("cancel", noSelection);
+    },
+  });
+}

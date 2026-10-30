@@ -1,3 +1,4 @@
+import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
@@ -67,7 +68,10 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     get(name).addEventListener(type, handler);
     listeners.push(() => get(name).removeEventListener(type, handler));
   };
+  const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
+  listeners.push(() => fileNotice.dispose());
   function cancelAppend() {
+    fileNotice.clear();
     fileReader.cancel(); get("file").setAttribute("aria-busy", "false");
     revision++; workspaceReview = null; get("workspace-apply").disabled = true;
     workspaceComparison = null; get("workspace-review-save").disabled = true;
@@ -434,7 +438,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   listen("file", "change", async () => {
     if (disposed) return;
     const file = get("file").files?.[0];
-    if (!file) return;
+    if (!file) { fileNotice.noSelection(); return; }
     get("file").value = "";
     clear("ファイルを確認しています（最大30秒）。", true); const own = revision;
     get("file").setAttribute("aria-busy", "true");

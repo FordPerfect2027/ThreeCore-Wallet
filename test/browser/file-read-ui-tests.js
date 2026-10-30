@@ -1,3 +1,5 @@
+import { mountOperationRehearsal } from "/examples/operation-rehearsal-page.js";
+import { rehearsalExampleV2 } from "/src/operation-rehearsal-examples.js";
 import { createFileReadService } from "/src/file-read-service.js";
 import { mountFileReadPanel } from "/examples/file-read-panel.js";
 import { createWalletSetupFileReader, prepareWalletSetupFile } from "/src/wallet-setup-file.js";
@@ -49,6 +51,39 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: rehearsal picker guidance is linked and preserves real DOM selection state", async () => {
+    const response = await fetch("/rehearsal/");
+    assert(response.ok, "Rehearsal template must be served");
+    const pageDocument = new DOMParser().parseFromString(await response.text(), "text/html");
+    const page = mountOperationRehearsal(pageDocument, () => {});
+    const q = id => pageDocument.getElementById(id);
+    try {
+      q("example").click();
+      for (const id of ["file","workspace-file","session-file","scenario-set-file","check-suite-file","report-review-file"]) {
+        const picker=q(id),note=q(id+"-note");
+        assert(picker instanceof HTMLInputElement, id+" is a native picker");
+        assert(note?.getAttribute("role")==="status",id+" has an accessible notice");
+        assert(picker.getAttribute("aria-describedby").split(/\s+/).includes(id+"-note"),id+" links its notice");
+        picker.dispatchEvent(new Event("cancel"));
+        assert(note.textContent.includes("変更していません"),id+" explains unchanged records");
+      }
+      const picker=q("file"),transfer=new DataTransfer();
+      transfer.items.add(new File([JSON.stringify(rehearsalExampleV2("EMA"))],"ema.json",{type:"application/json"}));
+      picker.files=transfer.files;
+      picker.dispatchEvent(new Event("change",{bubbles:true}));
+      assert(q("file-note").textContent==="","New selection clears dismissal");
+      for(let i=0;i<200&&q("apply").disabled;i++)await new Promise(resolve=>setTimeout(resolve,10));
+      assert(!q("apply").disabled,"Valid File reaches preview");
+      assert(picker.files.length===0,"Native FileList was cleared only after capture");
+      const preview=q("preview").textContent,status=q("status").textContent;
+      picker.dispatchEvent(new Event("cancel"));
+      assert(q("preview").textContent===preview&&q("status").textContent===status&&!q("apply").disabled,"Picker dismissal preserves preview authority");
+      page.dispose();
+      picker.dispatchEvent(new Event("cancel"));
+      assert(q("file-note").textContent==="","Disposed notices cannot revive");
+    } finally {page.dispose();}
+  });
+
   for (const kind of ["settings", "workspace", "history"]) {
     test(`file-read: ${kind} native import clears content before cleanup and contains rejected notifications`, async () => {
       const fields = ["DAT", "EMA", "CAWELON"].map((agent, index) => ({

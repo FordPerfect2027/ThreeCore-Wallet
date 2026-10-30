@@ -1,3 +1,4 @@
+import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
@@ -9,7 +10,10 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
   const fileReader = createFileReadScope();
   const get=name=>document.getElementById("check-suite-"+name);let disposed=false,revision=0,input=null,report=null;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
+  const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
+  listeners.push(() => fileNotice.dispose());
   function reset(message="期待結果を記録したケース集を選んでください。現在の履歴やケース集は変更しません。"){
+    fileNotice.clear();
     fileReader.cancel();
     revision++;input=null;report=null;for(const name of["rows","differences","summary","source","origin","export-status"])get(name).textContent="";
     get("save").disabled=true;get("results").hidden=true;get("status").textContent=message;get("status").className="";get("status").setAttribute("aria-busy","false");
@@ -29,7 +33,7 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
     }
   }
   const fail=error=>reset((describeFileReadError(error,"1 MiB")??"期待結果を確認できませんでした。1 MiB以内の期待結果ファイルを選んでください。")+" 元の履歴とケース集は保持しています。");
-  listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file)return;
+  listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file){fileNotice.noSelection();return;}
     reset("期待結果のファイルを読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
     try{
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_CHECK_SUITE_LIMIT });if(disposed||own!==revision)return;

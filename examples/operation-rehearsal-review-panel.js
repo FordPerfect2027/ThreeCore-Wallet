@@ -1,3 +1,4 @@
+import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
@@ -35,7 +36,10 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   let hashAbort = null;
   const listeners = [];
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
+  const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
+  listeners.push(() => fileNotice.dispose());
   function invalidate(message) {
+    fileNotice.clear();
     revision++; receipt = null;
     const previous = hashAbort; hashAbort = null; previous?.abort();
     fileReader.cancel();
@@ -94,7 +98,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   }
   listen("file", "change", async()=>{
     if(disposed) return;
-    const file=get("file").files?.[0]; if(!file) return;
+    const file=get("file").files?.[0]; if(!file) { fileNotice.noSelection(); return; }
     reset("選択した資料を読み込んでいます。"); const own=revision;
     get("status").setAttribute("aria-busy", "true");
     const name = displayFileName(file, "選択した資料");

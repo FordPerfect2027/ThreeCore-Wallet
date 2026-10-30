@@ -1,3 +1,4 @@
+import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
@@ -15,7 +16,10 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
   let disposed=false, revision=0, pending=null, report=reportRehearsalScenarioSet(store.state().current), selectedId="";
   const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
+  const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
+  listeners.push(() => fileNotice.dispose());
   function cancel(message="確認中の変更を取り消しました。確定したケースは保持しています。"){
+    fileNotice.clear();
     fileReader.cancel(); get("status").setAttribute("aria-busy", "false");
     revision++;pending=null;store.cancel();get("apply").disabled=true;get("preview").textContent="";get("changes").textContent="";
     get("review").hidden=true;get("status").textContent=message;get("source").textContent="";
@@ -82,7 +86,7 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
     const entry=report.rows.find(row=>row.id===selectedId);if(entry){get("id").value=entry.id;get("label").value=entry.label;}
   });
   listen("file","change",async()=>{
-    if(disposed)return;const file=get("file").files?.[0];if(!file)return;
+    if(disposed)return;const file=get("file").files?.[0];if(!file){fileNotice.noSelection();return;}
     cancel("ケース集のファイルを確認しています（最大30秒）。");get("status").setAttribute("aria-busy", "true");get("file").value="";get("text").value="";const own=revision;
     try{
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_SCENARIO_SET_LIMIT });if(disposed||own!==revision)return;
