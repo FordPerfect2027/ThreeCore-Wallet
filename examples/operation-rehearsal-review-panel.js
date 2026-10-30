@@ -32,11 +32,13 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   const fileReader = createFileReadScope();
   const get = name => document.getElementById("report-review-" + name);
   let revision = 0, disposed = false, sourceText = null, receipt = null;
+  let hashAbort = null;
   const listeners = [];
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
   function invalidate(message) {
-    fileReader.cancel();
     revision++; receipt = null;
+    const previous = hashAbort; hashAbort = null; previous?.abort();
+    fileReader.cancel();
     for(const name of ["scope", "differences", "digest", "summary", "outcome", "export-status"]) get(name).textContent = "";
     get("save").disabled = true; get("results").hidden = true;
     get("status").textContent = message; get("status").className = "";
@@ -55,9 +57,10 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     if(disposed || sourceText === null) return;
     invalidate("資料を再計算しています。現在の履歴は保持しています。");
     const own = revision, text = sourceText, expectedSha256 = get("expected").value.trim() || null;
+    const ownHash = new AbortController(); hashAbort = ownHash;
     get("status").setAttribute("aria-busy", "true");
     try {
-      const result = await reviewRehearsalReport(text, { expectedSha256, subtle });
+      const result = await reviewRehearsalReport(text, { expectedSha256, subtle, signal: ownHash.signal });
       if(disposed || own !== revision) return;
       receipt = result; get("results").hidden = false; get("save").disabled = false;
       const matches = result.matchesRecomputation && result.checksumMatches !== false;
@@ -84,7 +87,10 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
         SCENARIO_CONTEXT_OR_EVENTS_CHANGED:"比較資料の口座・資産・元の記録が一致しないため、同じ履歴として比較できません。"}[error?.code]
         ?? "資料の形式や含まれる入力記録を確認できませんでした。2 MiB以内の保存済み資料を選んでください。";
       invalidate(reason + " 現在の履歴は保持しています。");
-    } finally { if(!disposed && own === revision) get("status").setAttribute("aria-busy", "false"); }
+    } finally {
+      if(hashAbort === ownHash) hashAbort = null;
+      if(!disposed && own === revision) get("status").setAttribute("aria-busy", "false");
+    }
   }
   listen("file", "change", async()=>{
     if(disposed) return;
