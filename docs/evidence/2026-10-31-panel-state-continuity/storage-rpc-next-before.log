@@ -1,0 +1,327 @@
+✖ storage captured observation retires after dispose (10.9532ms)
+✖ storage captured observation retires after nested (1.1007ms)
+✖ rpc captured observation retires after dispose (2.5624ms)
+✖ rpc captured observation retires after nested (0.9286ms)
+✖ storage asynchronous initial source failure is consumed (51.3588ms)
+✖ rpc asynchronous initial source failure is consumed (2.9798ms)
+✖ storage asynchronous subscription is retired with late cleanup (3.9703ms)
+✖ rpc asynchronous subscription is retired with late cleanup (4.6936ms)
+✖ RPC unsubscribe rejection cannot escape disposal (4.0209ms)
+✖ storage stop callback cannot revive removed controls, failure=false (1.6003ms)
+✖ storage stop callback cannot revive removed controls, failure=true (1.2224ms)
+✖ storage stop rejection is consumed and never reports a confirmed count (8.792ms)
+✖ storage nested stop keeps the newer count (2.3824ms)
+✖ RPC label and clock-fault notification share one captured snapshot (2.4866ms)
+✖ RPC fault capture that disposes the panel cannot issue a new owner notification (3.342ms)
+✖ RPC malformed async fault observer is consumed and remains one-shot (9.665ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 0
+ℹ fail 16
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 428.6739
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:18:76
+✖ storage captured observation retires after dispose (10.9532ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'このページの保存操作を停止しました'
+  - 'PC内の保存領域を確認しています'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:21:238)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'このページの保存操作を停止しました',
+    expected: 'PC内の保存領域を確認しています',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:18:76
+✖ storage captured observation retires after nested (1.1007ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'このページの保存操作を停止しました'
+  - 'PC内保存の状態を確認できません'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:21:238)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'このページの保存操作を停止しました',
+    expected: 'PC内保存の状態を確認できません',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:18:76
+✖ rpc captured observation retires after dispose (2.5624ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '応答の監視を停止しました'
+  - '応答待ちの要求はありません'
+       ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:21:238)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '応答の監視を停止しました',
+    expected: '応答待ちの要求はありません',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:18:76
+✖ rpc captured observation retires after nested (0.9286ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '応答の監視を停止しました'
+  - '応答状況を取得できません'
+       ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:21:238)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '応答の監視を停止しました',
+    expected: '応答状況を取得できません',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:24:37
+✖ storage asynchronous initial source failure is consumed (51.3588ms)
+  Error: source unavailable
+      at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:25:50)
+      at mountStorageGuardPanel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/storage-guard-panel.js:51:18)
+      at fixture (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:14:32)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:25:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:24:37
+✖ rpc asynchronous initial source failure is consumed (2.9798ms)
+  Error: source unavailable
+      at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:25:50)
+      at mountRpcStatusPanel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/rpc-status-panel.js:41:23)
+      at fixture (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:14:88)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:25:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:28:37
+✖ storage asynchronous subscription is retired with late cleanup (3.9703ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:30:27)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:28:37
+✖ rpc asynchronous subscription is retired with late cleanup (4.6936ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:30:27)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:32:1
+✖ RPC unsubscribe rejection cannot escape disposal (4.0209ms)
+  Error: late cleanup
+      at file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:33:59
+      at Object.dispose (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/rpc-status-panel.js:49:13)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:33:92)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:35:32
+✖ storage stop callback cannot revive removed controls, failure=false (1.6003ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '1件に停止を依頼しました。保存結果は対象の一覧を再読み込みして確認できます。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:38:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件に停止を依頼しました。保存結果は対象の一覧を再読み込みして確認できます。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:35:32
+✖ storage stop callback cannot revive removed controls, failure=true (1.2224ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '停止の結果を確認できませんでした。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:38:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '停止の結果を確認できませんでした。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:40:1
+✖ storage stop rejection is consumed and never reports a confirmed count (8.792ms)
+  Error: stop
+      at Object.cancelAll (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:41:59)
+      at Element.cancel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/storage-guard-panel.js:42:27)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)
+      at Element.dispatchEvent (node:internal/event_target:789:26)
+      at Element.click (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/helpers/panel-dom.js:29:38)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:41:92)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:43:1
+✖ storage nested stop keeps the newer count (2.3824ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /2件/. Input:
+  
+  '1件に停止を依頼しました。保存結果は対象の一覧を再読み込みして確認できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:44:155)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件に停止を依頼しました。保存結果は対象の一覧を再読み込みして確認できます。',
+    expected: /2件/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:46:1
+✖ RPC label and clock-fault notification share one captured snapshot (2.4866ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:49:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:52:1
+✖ RPC fault capture that disposes the panel cannot issue a new owner notification (3.342ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:54:206)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-storage-rpc-next.test.mjs:56:1
+✖ RPC malformed async fault observer is consumed and remains one-shot (9.665ms)
+  Error: observer then failure
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-storage-rpc-next.test.mjs:57:81)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)

@@ -1,0 +1,397 @@
+✖ portfolio result: clear during capture cannot restore stale UI (26.9332ms)
+✖ portfolio progress: clear during capture cannot restore stale UI (4.1195ms)
+✖ portfolio diagnostic: clear during capture cannot restore stale UI (2.4217ms)
+✖ portfolio result: invalidate during capture cannot restore stale UI (4.2847ms)
+✖ portfolio progress: invalidate during capture cannot restore stale UI (2.3671ms)
+✖ portfolio diagnostic: invalidate during capture cannot restore stale UI (1.8268ms)
+✖ portfolio result: dispose during capture cannot restore stale UI (2.5968ms)
+✖ portfolio progress: dispose during capture cannot restore stale UI (3.4793ms)
+✖ portfolio diagnostic: dispose during capture cannot restore stale UI (1.6639ms)
+✖ portfolio progress remains bound to requested tokens after reader mutates its input (4.3453ms)
+✖ portfolio abort callback cannot clear a newer read or its busy controls (50.3919ms)
+✖ portfolio cancellation observer throw is contained (1.487ms)
+✖ portfolio cancellation observer reject is contained (4.641ms)
+✔ portfolio cancellation observer then-getter is contained (2.5654ms)
+✖ portfolio retained edit handler and public invalidation cannot change removed UI (1.0244ms)
+✖ portfolio duplicate retained read callback cannot start overlapping reads (1.6918ms)
+✖ progress captures event descriptors without reading proxy values (3.7517ms)
+✖ progress captures each event field once even if direct reads disagree (0.6091ms)
+✖ progress captures plan length without direct array reads (0.465ms)
+✖ progress rejects augmented arrays instead of ignoring extra plan fields (2.3745ms)
+✖ progress reentrant event capture cannot advance a stale outer event (1.956ms)
+✔ progress rejection does not consume the next valid event (2.586ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 2
+ℹ fail 20
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 577.3094
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:23:1
+✖ portfolio result: clear during capture cannot restore stale UI (26.9332ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '確認が完了しました' !== '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:31:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '確認が完了しました',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:23:1
+✖ portfolio progress: clear during capture cannot restore stale UI (4.1195ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '0/1件確認済み。参照ブロックを取得しています。'
+  - '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:31:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '0/1件確認済み。参照ブロックを取得しています。',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:23:1
+✖ portfolio diagnostic: clear during capture cannot restore stale UI (2.4217ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '確認できませんでした。先にWalletを明示的に接続してください。'
+  - '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:31:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '確認できませんでした。先にWalletを明示的に接続してください。',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:23:1
+✖ portfolio result: invalidate during capture cannot restore stale UI (4.2847ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '確認が完了しました' !== '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:31:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '確認が完了しました',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:23:1
+✖ portfolio progress: invalidate during capture cannot restore stale UI (2.3671ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '0/1件確認済み。参照ブロックを取得しています。'
+  - '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:31:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '0/1件確認済み。参照ブロックを取得しています。',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:23:1
+✖ portfolio diagnostic: invalidate during capture cannot restore stale UI (1.8268ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '確認できませんでした。先にWalletを明示的に接続してください。'
+  - '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:31:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '確認できませんでした。先にWalletを明示的に接続してください。',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:23:1
+✖ portfolio result: dispose during capture cannot restore stale UI (2.5968ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '確認が完了しました' !== '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:31:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '確認が完了しました',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:23:1
+✖ portfolio progress: dispose during capture cannot restore stale UI (3.4793ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '0/1件確認済み。参照ブロックを取得しています。'
+  - '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:31:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '0/1件確認済み。参照ブロックを取得しています。',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:23:1
+✖ portfolio diagnostic: dispose during capture cannot restore stale UI (1.6639ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '確認できませんでした。先にWalletを明示的に接続してください。'
+  - '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:31:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '確認できませんでした。先にWalletを明示的に接続してください。',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:34:1
+✖ portfolio progress remains bound to requested tokens after reader mutates its input (4.3453ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /0\/2/. Input:
+  
+  '0/2件確認済み。参照ブロックを取得しています。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:37:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '0/2件確認済み。参照ブロックを取得しています。',
+    expected: /0\/2/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:39:1
+✖ portfolio abort callback cannot clear a newer read or its busy controls (50.3919ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'false' !== 'true'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:44:43)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'false',
+    expected: 'true',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:49:55
+✖ portfolio cancellation observer throw is contained (1.487ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "observer"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:51:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: observer
+        at onCancel (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:50:58)
+        at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/portfolio-panel.js:163:58
+        at TestElement.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:10:53)
+        at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:19:48)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:51:33
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:51:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:49:55
+✖ portfolio cancellation observer reject is contained (4.641ms)
+  Error: observer
+      at onCancel (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:50:120)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/portfolio-panel.js:163:58
+      at TestElement.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:10:53)
+      at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:19:48)
+      at file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:51:33
+      at getActual (node:assert:611:5)
+      at strict.doesNotThrow (node:assert:779:32)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:51:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:54:1
+✖ portfolio retained edit handler and public invalidation cannot change removed UI (1.0244ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'late' !== '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:56:97)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'late',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-panel-next.test.mjs:58:1
+✖ portfolio duplicate retained read callback cannot start overlapping reads (1.6918ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-panel-next.test.mjs:60:52)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-progress-next.test.mjs:6:1
+✖ progress captures event descriptors without reading proxy values (3.7517ms)
+  Error [PortfolioProgressError]: Unexpected portfolio progress event
+      at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-progress.js:40:28)
+      at Object.accept (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-progress.js:98:44)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-progress-next.test.mjs:8:52)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    code: 'INVALID_PORTFOLIO_PROGRESS'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-progress-next.test.mjs:11:1
+✖ progress captures each event field once even if direct reads disagree (0.6091ms)
+  Error [PortfolioProgressError]: Unexpected portfolio progress event
+      at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-progress.js:40:28)
+      at Object.accept (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-progress.js:98:44)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-progress-next.test.mjs:13:52)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    code: 'INVALID_PORTFOLIO_PROGRESS'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-progress-next.test.mjs:16:1
+✖ progress captures plan length without direct array reads (0.465ms)
+  Error: array trap
+      at Object.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-progress-next.test.mjs:17:62)
+      at createPortfolioProgressTracker (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-progress.js:84:50)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-progress-next.test.mjs:18:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-progress-next.test.mjs:21:1
+✖ progress rejects augmented arrays instead of ignoring extra plan fields (2.3745ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-progress-next.test.mjs:23:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_PORTFOLIO_PROGRESS' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-progress-next.test.mjs:25:1
+✖ progress reentrant event capture cannot advance a stale outer event (1.956ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-progress-next.test.mjs:30:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_PORTFOLIO_PROGRESS' },
+    operator: 'throws',
+    diff: 'simple'
+  }

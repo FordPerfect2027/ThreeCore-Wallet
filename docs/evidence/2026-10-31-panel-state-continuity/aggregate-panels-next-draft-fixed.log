@@ -1,0 +1,47 @@
+✔ file status capture cannot revive a disposed panel (20.2136ms)
+✔ export status capture cannot revive a disposed panel (5.8594ms)
+✔ file nested status notification wins over its outer capture (1.1416ms)
+✔ export nested status notification wins over its outer capture (5.9768ms)
+✔ file stop completion after disposal cannot update UI, throw=false (1.1641ms)
+✔ file stop completion after disposal cannot update UI, throw=true (0.6355ms)
+✔ export stop completion after disposal cannot update UI, throw=false (1.1294ms)
+✔ export stop completion after disposal cannot update UI, throw=true (1.03ms)
+✔ file asynchronous stop failure is consumed without claiming success (55.8389ms)
+✔ export asynchronous stop failure is consumed without claiming success (2.9241ms)
+✔ file asynchronous subscription is retired and its late cleanup runs (1.672ms)
+✔ export asynchronous subscription is retired and its late cleanup runs (10.6652ms)
+✔ file unsubscribe rejection is consumed (5.1041ms)
+✔ export unsubscribe rejection is consumed (1.6818ms)
+✔ export controls and labels use one captured status (1.5233ms)
+✔ export missing initial status disables actions and explains unavailability (0.7473ms)
+✔ file asynchronous initial state rejection is consumed (2.7622ms)
+✔ file nested explicit action owns the final status (0.8092ms)
+✔ export nested explicit action owns the final status (0.573ms)
+✔ file synchronous stop receipt remains visible (0.592ms)
+✔ export synchronous stop receipt remains visible (0.4446ms)
+✔ export panel begins ready with accessible fixed labels (8.0093ms)
+✔ export panel updates counts without rendering file contents or names (4.3691ms)
+✔ export panel clear button releases all leases and explains saved files remain (22.8232ms)
+✔ export panel retry button is enabled only for unconfirmed cleanup (3.7332ms)
+✔ export panel disposal unsubscribes without destroying shared document guard (1.0969ms)
+✔ export panel subscription failure is fixed text and disables controls (0.8249ms)
+✔ export panel refuses forged state without evaluating an accessor (0.7383ms)
+✔ export panel cleanup exception shows no thrown string (1.0102ms)
+✔ export panel remains safe if unsubscribe itself throws (1.129ms)
+✔ deterministic export lifecycle trace preserves quotas, seed 1 (58.6969ms)
+✔ deterministic export lifecycle trace preserves quotas, seed 19 (37.6154ms)
+✔ deterministic export lifecycle trace preserves quotas, seed 83 (45.0059ms)
+✔ deterministic export lifecycle trace preserves quotas, seed 127 (47.3724ms)
+✔ deterministic export lifecycle trace preserves quotas, seed 1069 (30.4887ms)
+✔ deterministic export lifecycle trace preserves quotas, seed 20261024 (32.2122ms)
+✔ full count budget rejects before inspecting an expensive hostile payload (1.9164ms)
+✔ later cleanup failure cannot leave an earlier success message on the panel (6.7573ms)
+✔ disposed guard still describes retained cleanup failure before closed status (1.396ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 729.5369
