@@ -1,5 +1,5 @@
 import { createFileReadScope } from "../src/security-file.js";
-import { describeFileReadError } from "../src/file-read-status.js";
+import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsal, encodeRehearsal, evaluateRehearsal, parseRehearsalUnits,
   formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
@@ -485,8 +485,10 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     const file = get("workspace-file").files?.[0];
     if (!file) return;
     get("workspace-file").value = ""; get("workspace-text").value = "";
-    const name = typeof file.name === "string" ? file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g, "").slice(0, 160) : "一括ファイル";
-    const own = beginWorkspaceRead(name || "一括ファイル");
+    const own = beginWorkspaceRead("一括ファイル");
+    const name = displayFileName(file, "一括ファイル");
+    if (disposed || own !== revision) return;
+    workspaceSource = name; get("workspace-source").textContent = "確認する記録: " + name;
     try {
       if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > REHEARSAL_WORKSPACE_LIMIT)
         throw Object.assign(new Error("File size"), { code: file.size === 0 ? "EMPTY_INPUT" : "FILE_TOO_LARGE" });

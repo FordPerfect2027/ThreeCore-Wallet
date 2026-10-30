@@ -1,5 +1,5 @@
 import { createFileReadScope } from "../src/security-file.js";
-import { describeFileReadError } from "../src/file-read-status.js";
+import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { createRehearsalScenarioSet, decodeRehearsalScenarioSet, encodeRehearsalScenarioSet,
   reportRehearsalScenarioSet, encodeRehearsalScenarioSetReport, REHEARSAL_SCENARIO_SET_LIMIT } from "../src/operation-rehearsal-scenario-set.js";
@@ -87,7 +87,8 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
     try{
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_SCENARIO_SET_LIMIT });if(disposed||own!==revision)return;
       const data=decodeRehearsalScenarioSet(text);
-      const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"ケース集ファイル";
+      const name = displayFileName(file, "ケース集ファイル");
+      if (disposed || own !== revision) return;
       showReview(store.previewImport(data),name);
     }catch(error){if(!disposed&&own===revision)fail(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });

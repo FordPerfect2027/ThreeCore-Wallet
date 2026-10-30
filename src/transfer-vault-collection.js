@@ -1,5 +1,5 @@
 import { sha256Hex } from "./security-data.js";
-import { readFormatFileText } from "./security-file.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail } from "./transfer-codec.js";
 import { VAULT_DOCUMENT_SCHEMA, validateVaultDocument, mutateVaultDocument, vaultMetadata } from "./transfer-vault-model.js";
@@ -47,8 +47,7 @@ export async function decodeVaultCollection(text, { subtle = globalThis.crypto?.
 }
 
 export async function readVaultCollection(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 180 || !/\.json$/i.test(file.name) ||
-      /[/\\\u0000-\u001f\u007f]/.test(file.name)) transferFail("TRANSFER_FILE_NAME");
+  readFormatFileName(file, { maxLength: 180, fail: transferFail, code: "TRANSFER_FILE_NAME" });
   const text = await readFormatFileText(file, { maxBytes: VAULT_COLLECTION_LIMIT, fail: transferFail,
     sizeCode: "TRANSFER_VAULT_COLLECTION_SIZE", readCode: "TRANSFER_FILE_READ",
     encodingCode: "TRANSFER_FILE_ENCODING", signal: options?.signal, timeoutMs: options?.timeoutMs });

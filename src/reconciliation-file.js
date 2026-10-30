@@ -1,5 +1,5 @@
 import { sha256Hex } from "./security-data.js";
-import { readFormatFileText } from "./security-file.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import {
   RECONCILIATION_LIMIT, validateReconciliationWorkspace, reconciliationFail, reconciliationShape,
@@ -68,10 +68,7 @@ export async function decodeReconciliationFile(text, { subtle = globalThis.crypt
 }
 
 export async function readReconciliationFile(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 180 ||
-      !/\.json$/i.test(file.name) || /[/\\\u0000-\u001f\u007f]/.test(file.name)) {
-    reconciliationFail("RECONCILIATION_FILENAME");
-  }
+  readFormatFileName(file, { maxLength: 180, fail: reconciliationFail, code: "RECONCILIATION_FILENAME" });
   const size = file.size;
   if (!Number.isSafeInteger(size) || size < 1 || size > RECONCILIATION_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") reconciliationFail("RECONCILIATION_FILE_SIZE");

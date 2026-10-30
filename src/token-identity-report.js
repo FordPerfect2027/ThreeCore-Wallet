@@ -1,5 +1,5 @@
 import { sha256Hex } from "./security-data.js";
-import { readFormatFileBytes } from "./security-file.js";
+import { readFormatFileBytes, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { identityObject, identityFail } from "./token-identity-codec.js";
 import { validateTokenObservation } from "./token-identity-model.js";
@@ -80,8 +80,7 @@ export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypt
 }
 
 export async function readTokenIdentityFile(file, options) {
-  if (!file || typeof file.name !== "string" || !file.name.length || file.name.length > 240 ||
-      !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) identityFail("IDENTITY_FILENAME");
+  readFormatFileName(file, { maxLength: 240, fail: identityFail, code: "IDENTITY_FILENAME" });
   const bytes = await readFormatFileBytes(file, { maxBytes: IDENTITY_FILE_LIMIT, fail: identityFail,
     sizeCode: "IDENTITY_FILE_SIZE", readCode: "IDENTITY_FILE_READ", signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeTokenIdentityFile(bytes, options);

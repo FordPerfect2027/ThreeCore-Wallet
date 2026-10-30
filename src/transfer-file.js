@@ -1,5 +1,5 @@
 import { sha256Hex } from "./security-data.js";
-import { readFormatFileText } from "./security-file.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail, validateTransferSnapshot } from "./transfer-codec.js";
 import { transferCsv, transferSummaryText } from "./transfer-view.js";
@@ -47,8 +47,7 @@ export async function decodeTransferFile(text, { subtle = globalThis.crypto?.sub
 }
 
 export async function readTransferFile(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 180 ||
-      !/\.json$/i.test(file.name) || /[/\\\u0000-\u001f\u007f]/.test(file.name)) transferFail("TRANSFER_FILE_NAME");
+  readFormatFileName(file, { maxLength: 180, fail: transferFail, code: "TRANSFER_FILE_NAME" });
   if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > TRANSFER_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") transferFail("TRANSFER_FILE_SIZE");
   const text = await readFormatFileText(file, { maxBytes: TRANSFER_FILE_LIMIT, fail: transferFail,

@@ -1,5 +1,5 @@
 import { sha256Hex } from "./security-data.js";
-import { readFormatFileText } from "./security-file.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { periodFail, periodShape } from "./period-plan.js";
 import { validatePeriodDraft, PERIOD_DRAFT_LIMIT } from "./period-draft.js";
@@ -46,8 +46,7 @@ export async function decodePeriodFile(text, { subtle = globalThis.crypto?.subtl
 }
 
 export async function readPeriodFile(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 180 ||
-      !/\.json$/i.test(file.name) || /[/\\\u0000-\u001f\u007f]/.test(file.name)) periodFail("PERIOD_FILENAME");
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
   const size = file.size;
   if (!Number.isSafeInteger(size) || size < 1 || size > PERIOD_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") periodFail("PERIOD_FILE_SIZE");

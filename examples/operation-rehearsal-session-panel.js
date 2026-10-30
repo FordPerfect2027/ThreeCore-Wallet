@@ -1,5 +1,5 @@
 import { createFileReadScope } from "../src/security-file.js";
-import { describeFileReadError } from "../src/file-read-status.js";
+import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsalSession,encodeRehearsalSession,createRehearsalSaveCheckpoint,REHEARSAL_SESSION_LIMIT } from "../src/operation-rehearsal-session.js";
@@ -47,7 +47,8 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   }catch{if(disposed||own!==revision)return;get("export-status").textContent="まとめた記録を保存できませんでした。画面の履歴とケース集は保持しています。";}});
   listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file)return;cancel("まとめた記録を読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
     try{const text = await fileReader.readText(file, { maxBytes: REHEARSAL_SESSION_LIMIT });if(disposed||own!==revision)return;
-      const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"まとめた記録";
+      const name = displayFileName(file, "まとめた記録");
+      if (disposed || own !== revision) return;
       review(text,name,"file");
     }catch(error){if(!disposed&&own===revision)failed(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });

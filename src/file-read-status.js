@@ -1,3 +1,4 @@
+import { observeCallbackResult } from "./security-callback.js";
 import { FILE_READ_CONCURRENCY, FILE_READ_RESERVED_LIMIT } from "./file-read-policy.js";
 
 const counters = ["active", "waiting", "retained", "reservedBytes", "maxActive", "maxReservedBytes",
@@ -83,4 +84,12 @@ export function describeFileReadStatus(input) {
     `読み込み失敗 ${state.failed}件 / 受付できなかった入力 ${state.rejected}件`,
   ].join("\n");
   return Object.freeze({ level, heading, detail, counts });
+}
+
+/** Optional display metadata cannot prevent a valid local document review. */
+export function displayFileName(file, fallback) {
+  let name;
+  try { name = file?.name; } catch { return fallback; }
+  if (typeof name !== "string") { observeCallbackResult(name); return fallback; }
+  return name.slice(0, 160).replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g, "") || fallback;
 }

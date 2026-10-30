@@ -1,5 +1,5 @@
 import { createFileReadScope } from "../src/security-file.js";
-import { describeFileReadError } from "../src/file-read-status.js";
+import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { reviewRehearsalReport, encodeRehearsalReviewReceipt, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
@@ -97,7 +97,8 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     const file=get("file").files?.[0]; if(!file) return;
     reset("選択した資料を読み込んでいます。"); const own=revision;
     get("status").setAttribute("aria-busy", "true");
-    const name=typeof file.name==="string"?file.name.replace(/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,160):"選択した資料";
+    const name = displayFileName(file, "選択した資料");
+    if (disposed || own !== revision) return;
     get("source").textContent="確認するファイル: "+(name||"選択した資料");
     try {
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_REPORT_REVIEW_LIMIT }); if(disposed||own!==revision) return;

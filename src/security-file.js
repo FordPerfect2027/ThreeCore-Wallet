@@ -1,3 +1,4 @@
+import { observeCallbackResult } from "./security-callback.js";
 import { walletFileReadService } from "./file-read-service.js";
 import { fileReadCode, SecurityFileError } from "./file-read-policy.js";
 export { SecurityFileError, FILE_SECURITY_LIMIT, FILE_READ_TIMEOUT, FILE_CHUNK_LIMIT } from "./file-read-policy.js";
@@ -45,3 +46,16 @@ async function readFormat(file, { maxBytes, fail: formatFail, sizeCode,
 }
 export const readFormatFileText = (file, options) => readFormat(file, options, false);
 export const readFormatFileBytes = (file, options) => readFormat(file, options, true);
+
+/** Capture File metadata once. Native File getters remain supported. */
+export function readFormatFileName(file, { maxLength, fail, code }) {
+  let name;
+  try { name = file?.name; } catch { return fail(code); }
+  if (typeof name !== "string") {
+    observeCallbackResult(name);
+    return fail(code);
+  }
+  if (!name.length || name.length > maxLength || !/\.json$/i.test(name) ||
+      /[/\\\u0000-\u001f\u007f]/.test(name)) return fail(code);
+  return name;
+}

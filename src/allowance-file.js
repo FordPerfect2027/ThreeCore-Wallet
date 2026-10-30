@@ -1,5 +1,5 @@
 import { sha256Hex } from "./security-data.js";
-import { readFormatFileBytes } from "./security-file.js";
+import { readFormatFileBytes, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { allowanceObject, allowanceFail, validateAllowanceTargets } from "./allowance-targets.js";
 import { validateAllowanceObservation } from "./allowance-observation.js";
@@ -56,8 +56,7 @@ export async function decodeAllowanceFile(input, { subtle = globalThis.crypto?.s
   return Object.freeze({ kind: record.kind, payload, digest: checksum, checksumVerified: true, authenticated: false });
 }
 export async function readAllowanceFile(file, options) {
-  if (!file || typeof file.name !== "string" || !file.name.length || file.name.length > 240 ||
-      !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) allowanceFail("ALLOWANCE_FILENAME");
+  readFormatFileName(file, { maxLength: 240, fail: allowanceFail, code: "ALLOWANCE_FILENAME" });
   const bytes = await readFormatFileBytes(file, { maxBytes: ALLOWANCE_FILE_LIMIT, fail: allowanceFail,
     sizeCode: "ALLOWANCE_FILE_SIZE", readCode: "ALLOWANCE_FILE_READ", signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeAllowanceFile(bytes, options);

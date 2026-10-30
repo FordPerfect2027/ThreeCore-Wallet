@@ -1,5 +1,5 @@
 import { sha256Hex } from "./security-data.js";
-import { readFormatFileText } from "./security-file.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { periodShape, periodFail } from "./period-plan.js";
 import { validateReportSet } from "./report-set-model.js";
@@ -40,8 +40,7 @@ export async function decodeReportSetFile(text, { subtle = globalThis.crypto?.su
 }
 
 export async function readReportSetFile(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 180 || !/\.json$/i.test(file.name) ||
-      /[/\\\u0000-\u001f\u007f]/.test(file.name)) periodFail("PERIOD_FILENAME");
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
   if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > REPORT_SET_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") periodFail("PERIOD_SET_FILE_SIZE");
   const text = await readFormatFileText(file, { maxBytes: REPORT_SET_FILE_LIMIT, fail: periodFail,
