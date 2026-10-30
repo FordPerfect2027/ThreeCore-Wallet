@@ -1,6 +1,8 @@
 import { transferContextKey, transferFail } from "./transfer-codec.js";
 import { addTransferArchiveRecord, removeTransferArchiveRecord, validateTransferArchive } from "./transfer-archive.js";
 import { prepareTransferArchive, readTransferArchive } from "./transfer-archive-file.js";
+import { readOwnErrorCode } from "./provider-error.js";
+import { createStateNotifier } from "./state-notifier.js";
 
 /** Small in-memory shelf. Persistence always requires an explicit file download. */
 export function createTransferArchiveController({ getContext, onChange = () => {}, subtle }) {
@@ -9,10 +11,15 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   let contextKey = null;
   let disposed = false;
   let state = Object.freeze({ phase: "empty", archive: null, preview: null, error: null });
+  let notification = 0;
+  const observers = new Set([() => onChange(state)]);
+  const notifier = createStateNotifier({ observers, read: () => Object.freeze({ notification }) });
+  const owns = id => !disposed && id === revision;
   function publish(patch) {
     if (disposed) return;
     state = Object.freeze({ ...state, ...patch });
-    try { Promise.resolve(onChange(state)).catch(() => {}); } catch { /* View observers do not authorize persistence. */ }
+    notification++;
+    notifier.notify();
   }
   function invalidate() {
     if (disposed) return;
@@ -20,21 +27,26 @@ export function createTransferArchiveController({ getContext, onChange = () => {
     contextKey = null;
     publish({ phase: "empty", archive: null, preview: null, error: null });
   }
-  function context() {
+  function context(id, acceptChange = false) {
+    if (!owns(id)) return null;
     const key = transferContextKey(getContext());
-    if (contextKey !== null && contextKey !== key) invalidate();
+    if (!owns(id)) return null;
+    if (contextKey !== null && contextKey !== key) {
+      if (!acceptChange) { invalidate(); return null; }
+      state = Object.freeze({ phase: "empty", archive: null, preview: null, error: null });
+    }
     contextKey = key;
     return key;
   }
   function current(id, key) {
-    if (disposed || revision !== id) return false;
-    try { return context() === key && revision === id; }
-    catch { invalidate(); return false; }
+    if (!owns(id)) return false;
+    try { return context(id) === key && owns(id); }
+    catch { if (owns(id)) invalidate(); return false; }
   }
-  function fail(error) {
-    if (disposed) return false;
-    let code;
-    try { code = error?.code; } catch { code = null; }
+  function fail(id, error) {
+    if (!owns(id)) return false;
+    const code = readOwnErrorCode(error);
+    if (!owns(id)) return false;
     publish({ phase: state.archive ? "ready" : "empty", preview: null,
       error: typeof code === "string" && /^TRANSFER_[A-Z_]+$/.test(code) ? code : "TRANSFER_OPERATION_FAILED" });
     return false;
@@ -44,97 +56,113 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   }
   function add(record) {
     if (disposed) return false;
-    revision++;
+    const id = ++revision;
     try {
-      const key = context();
+      const key = context(id, true);
+      if (!owns(id)) return false;
       const archive = addTransferArchiveRecord(state.archive, record);
+      if (!current(id, key)) return false;
       assertContext(archive, key);
       publish({ phase: "ready", archive, preview: null, error: null });
-      return true;
-    } catch (error) { return fail(error); }
+      return owns(id);
+    } catch (error) { return fail(id, error); }
   }
   function remove(index) {
     if (disposed) return false;
-    revision++;
+    const id = ++revision;
     try {
-      context();
+      const key = context(id, true);
+      if (!owns(id)) return false;
       const archive = removeTransferArchiveRecord(state.archive, index);
+      if (!current(id, key)) return false;
       publish({ phase: archive ? "ready" : "empty", archive, preview: null, error: null });
-      return true;
-    } catch (error) { return fail(error); }
+      return owns(id);
+    } catch (error) { return fail(id, error); }
   }
   function select(index) {
     if (disposed) return null;
+    const id = revision;
     try {
-      context();
+      context(id);
+      if (!owns(id)) return null;
       if (!state.archive || !Number.isInteger(index) || index < 0 || index >= state.archive.records.length) {
         transferFail("TRANSFER_ARCHIVE_INDEX");
       }
       return state.archive.records[index];
-    } catch (error) { fail(error); return null; }
+    } catch (error) { fail(id, error); return null; }
   }
   async function stage(file) {
     if (disposed) return false;
-    let id, key;
+    const id = ++revision;
+    let key;
     try {
-      key = context();
-      id = ++revision;
+      key = context(id, true);
+      if (!owns(id)) return false;
       publish({ phase: "loading", preview: null, error: null });
+      if (!current(id, key)) return false;
       const { archive, digest } = await readTransferArchive(file, { subtle });
       if (!current(id, key)) return false;
       assertContext(archive, key);
       publish({ phase: "preview", preview: Object.freeze({ id, archive, digest, authenticated: false }) });
-      return true;
+      return owns(id);
     } catch (error) {
-      if (!disposed && (id === undefined || current(id, key))) return fail(error);
+      if (owns(id) && (key === undefined || current(id, key))) return fail(id, error);
       return false;
     }
   }
-  function apply(id) {
+  function apply(reviewId) {
     if (disposed) return false;
+    const id = revision, pending = state.preview;
     try {
-      const key = context();
-      if (!state.preview || state.preview.id !== id || revision !== id) transferFail("TRANSFER_REVIEW_REQUIRED");
-      const archive = validateTransferArchive(state.preview.archive);
+      const key = context(id);
+      if (!owns(id)) return false;
+      if (!pending || pending !== state.preview || pending.id !== reviewId || id !== reviewId) transferFail("TRANSFER_REVIEW_REQUIRED");
+      const archive = validateTransferArchive(pending.archive);
+      if (!current(id, key) || pending !== state.preview) return false;
       assertContext(archive, key);
-      revision++;
+      const applied = ++revision;
       publish({ phase: "ready", archive, preview: null, error: null });
-      return true;
-    } catch (error) { return fail(error); }
+      return owns(applied);
+    } catch (error) { return fail(id, error); }
   }
   async function prepare() {
     if (disposed) return null;
-    let id, key;
+    const id = ++revision;
+    let key;
     try {
-      key = context();
-      if (!state.archive) transferFail("TRANSFER_ARCHIVE_REQUIRED");
-      id = ++revision;
+      key = context(id, true);
+      if (!owns(id)) return null;
+      const archive = state.archive;
+      if (!archive) transferFail("TRANSFER_ARCHIVE_REQUIRED");
       publish({ phase: "preparing", preview: null, error: null });
-      const download = await prepareTransferArchive(state.archive, { subtle });
+      if (!current(id, key)) return null;
+      const download = await prepareTransferArchive(archive, { subtle });
       if (!current(id, key)) return null;
       publish({ phase: "ready" });
       return current(id, key) ? download : null;
     } catch (error) {
-      if (id === undefined || current(id, key)) fail(error);
+      if (owns(id) && (key === undefined || current(id, key))) fail(id, error);
       return null;
     }
   }
   function capture() {
-    if (disposed) return null;
-    if (!state.archive) return null;
-    context();
-    return state.archive;
+    if (disposed || !state.archive) return null;
+    const id = revision;
+    context(id);
+    return owns(id) ? state.archive : null;
   }
   function reviewArchive(input) {
     if (disposed) return false;
-    revision++;
+    const id = ++revision;
     try {
-      const key = context();
+      const key = context(id, true);
+      if (!owns(id)) return false;
       const archive = validateTransferArchive(input);
+      if (!current(id, key)) return false;
       assertContext(archive, key);
-      publish({ phase: "preview", preview: Object.freeze({ id: revision, archive, digest: null, authenticated: false }), error: null });
-      return true;
-    } catch (error) { return fail(error); }
+      publish({ phase: "preview", preview: Object.freeze({ id, archive, digest: null, authenticated: false }), error: null });
+      return owns(id);
+    } catch (error) { return fail(id, error); }
   }
   function cancel() {
     if (disposed) return;
@@ -142,9 +170,12 @@ export function createTransferArchiveController({ getContext, onChange = () => {
     publish({ phase: state.archive ? "ready" : "empty", preview: null, error: null });
   }
   function dispose() {
-    invalidate();
+    if (disposed) return;
     disposed = true;
-    state = Object.freeze({ ...state, phase: "disposed" });
+    revision++;
+    contextKey = null;
+    observers.clear();
+    state = Object.freeze({ phase: "disposed", archive: null, preview: null, error: null });
   }
   return Object.freeze({ get state() { return state; }, add, remove, select, stage, apply, prepare, capture, reviewArchive, cancel, invalidate, dispose });
 }
