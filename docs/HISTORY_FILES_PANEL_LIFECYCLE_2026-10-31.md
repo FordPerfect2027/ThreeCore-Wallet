@@ -21,3 +21,9 @@ Continuation items 330–334. Source revision `6c4530d`.
 - Evidence and SHA-256 manifest: `evidence/2026-10-31-history-files-panel-lifecycle/`.
 
 Only synthetic local histories were used. No wallet signatures, transfers, approvals, secrets, publication or server restart. Download acceptance is not disk-save verification; status continues to say to check the browser. Latest full-suite checkpoint before this batch remains source `23eb408` through item 300 (13,597 passed).
+
+## Full-suite finding and correction
+
+The full wallet run at fixed source `6c4530d` completed 13,913 cases: **13,912 passed and 1 failed**, with no skips or cancellations (602,772.7056 ms). The failing export HTTP test had not added the existing, already-served `provider-error.js` module to its expected dependency inventory after export diagnostic capture began importing it. This is not recorded as a successful full-suite checkpoint.
+
+Commit `1da360b` updates that inventory and reports an unexpected dependency by its path. All 30 export HTTP tests then passed, including dependency traversal, protected headers and foreign-request rejection. No server protection was relaxed. This is a correction to prior validation, not an additional development item. Evidence: `full-wallet.log` and `http-dependency-fixed.log` in the batch evidence directory. A later full run must independently establish success for its own fixed revision.
