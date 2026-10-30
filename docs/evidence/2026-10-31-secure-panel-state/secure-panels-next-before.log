@@ -1,0 +1,246 @@
+✖ secure operation: dispose retires a captured status (7.5795ms)
+✖ secure operation: nested retires a captured status (0.9599ms)
+✖ secure operation labels and counts use one captured source (24.6696ms)
+✖ secure operation async state failure is consumed (17.3552ms)
+✖ secure operation async subscription is retired and late cleanup runs (3.9248ms)
+✖ secure operation async unsubscribe rejection is consumed (2.3767ms)
+✖ encrypted library: protect during source read cannot start a new review (28.2991ms)
+✖ encrypted library: cancel during source read cannot start a new review (5.7624ms)
+✖ encrypted library: unready during source read cannot start a new review (5.1786ms)
+✔ encrypted library: dispose during source read cannot start a new review (1.5907ms)
+✖ encrypted library: asynchronous rejected source is consumed without preparing storage (3.7708ms)
+✖ encrypted library: late source failure cannot overwrite disposed status (1.123ms)
+✖ encrypted library: replacement file value survives an import callback (5.8916ms)
+✔ encrypted library: accepted current ciphertext reaches review without writing (5.544ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 2
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 558.9085
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:21:40
+✖ secure operation: dispose retires a captured status (7.5795ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'この画面の暗号処理は終了しています。'
+  - '暗号処理の待機はありません。保存や復元は各ボタンから明示的に行ってください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:23:275)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'この画面の暗号処理は終了しています。',
+    expected: '暗号処理の待機はありません。保存や復元は各ボタンから明示的に行ってください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:21:40
+✖ secure operation: nested retires a captured status (0.9599ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'この画面の暗号処理は終了しています。'
+  - '暗号処理の状態を確認できません。合言葉やファイルの内容は表示しません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:23:275)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'この画面の暗号処理は終了しています。',
+    expected: '暗号処理の状態を確認できません。合言葉やファイルの内容は表示しません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:26:1
+✖ secure operation labels and counts use one captured source (24.6696ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok([...seen.values()].every(n=>n===1))
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:27:211)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:29:1
+✖ secure operation async state failure is consumed (17.3552ms)
+  Error: state
+      at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:30:54)
+      at mountSecureOperationPanel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/secure-operation-panel.js:29:19)
+      at operationFixture (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:18:15)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:30:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:32:1
+✖ secure operation async subscription is retired and late cleanup runs (3.9248ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:34:84)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:36:1
+✖ secure operation async unsubscribe rejection is consumed (2.3767ms)
+  Error: cleanup
+      at file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:37:62
+      at Object.dispose (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/secure-operation-panel.js:36:26)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:37:90)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:44:60
+✖ encrypted library: protect during source read cannot start a new review (28.2991ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:46:100)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:44:60
+✖ encrypted library: cancel during source read cannot start a new review (5.7624ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:46:100)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:44:60
+✖ encrypted library: unready during source read cannot start a new review (5.1786ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:46:100)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:49:1
+✖ encrypted library: asynchronous rejected source is consumed without preparing storage (3.7708ms)
+  Error: source
+      at readEncrypted (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:50:60)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/encrypted-library-panel.js:59:39
+      at action (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/encrypted-library-panel.js:43:43)
+      at TestElement.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:12:53)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:51:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:54:1
+✖ encrypted library: late source failure cannot overwrite disposed status (1.123ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '現在の設定で暗号化ファイルを準備し直してください。'
+  - '保管は自動では行いません。まず暗号化ファイルを準備してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:56:51)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '現在の設定で暗号化ファイルを準備し直してください。',
+    expected: '保管は自動では行いません。まず暗号化ファイルを準備してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-secure-panels-next.test.mjs:58:1
+✖ encrypted library: replacement file value survives an import callback (5.8916ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + ''
+  - 'new-selection'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-secure-panels-next.test.mjs:60:127)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: 'new-selection',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
