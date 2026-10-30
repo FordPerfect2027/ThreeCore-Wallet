@@ -1,5 +1,6 @@
 import { reconcileWorkspace, formatReconciliationAmount } from "./reconciliation-engine.js";
 import { describeReconciliationPart } from "./reconciliation-model.js";
+import { readOwnErrorCode } from "./provider-error.js";
 
 export const RECONCILIATION_STATUS = Object.freeze({
   "missing-input": "残高の記録待ち",
@@ -35,11 +36,11 @@ export const RECONCILIATION_NOTICE = "保存した残高とTransfer履歴の計�
 export const RECONCILIATION_STORAGE_NOTICE = "この作業は画面内にあります。閉じる前に「照合データを保存」でJSONを保存してください。再開時はJSONを選び、内容を確認して適用します。";
 
 export function reconciliationReason(code) {
-  return REASONS[code] ?? "記録を確認してください。";
+  return typeof code === "string" && Object.hasOwn(REASONS, code) ? REASONS[code] : "記録を確認してください。";
 }
 
 export function reconciliationErrorMessage(error) {
-  const code = error?.code;
+  const code = readOwnErrorCode(error);
   const messages = {
     RECONCILIATION_NO_SOURCE: "選んだカードに保存済みの記録がありません。先に残高や履歴を読み取るか、保存ファイルを選んでください。",
     RECONCILIATION_SLOT_AGENT: "選択したトークンとは異なる記録です。トークンの選択を確認してください。",
@@ -58,7 +59,7 @@ export function reconciliationErrorMessage(error) {
     RECONCILIATION_EXPORT_REFUSED: "書き出しを開始できませんでした。元の記録は保持しています。",
     RECONCILIATION_ASYNC_DELIVERY: "書き出しの開始を確認できませんでした。元の記録は保持しています。",
   };
-  if (messages[code]) return messages[code];
+  if (typeof code === "string" && Object.hasOwn(messages, code)) return messages[code];
   if (typeof code === "string" && /^(IDENTITY|TRANSFER|RECONCILIATION)_[A-Z_]+$/.test(code)) {
     return "記録の形式や内容を確認できませんでした。現在のデータは変更していません。（" + code + "）";
   }

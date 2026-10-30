@@ -1,4 +1,5 @@
 import { observeCallbackResult } from "./security-callback.js";
+import { createStateNotifier } from "./state-notifier.js";
 import { reconciliationLedgerCsv, reconciliationWindowsCsv } from "./reconciliation-ledger.js";
 import {
   emptyReconciliationWorkspace, validateReconciliationWorkspace, reconciliationKey,
@@ -49,15 +50,20 @@ export function createReconciliationController({
     });
   }
 
+  let notification = 0;
+  const observers = new Set([() => onStateChange(state())]);
+  const notifier = createStateNotifier({ observers, read: () => Object.freeze({ notification }) });
+  const owns = current => !disposed && current === operation;
   function emit() {
-    if (!disposed) {
-      try { onStateChange(state()); }
-      catch { /* A presentation callback cannot alter operation ownership or evidence. */ }
-    }
+    if (disposed) return;
+    notification++;
+    notifier.notify();
   }
 
-  function fail(errorValue) {
-    error = reconciliationErrorMessage(errorValue);
+  function fail(errorValue, current = operation) {
+    const text = reconciliationErrorMessage(errorValue);
+    if (!owns(current)) return false;
+    error = text;
     message = error;
     emit();
     return false;
@@ -81,25 +87,30 @@ export function createReconciliationController({
     return kept;
   }
 
-  function changed(next, nextMessage) {
-    workspace = validateReconciliationWorkspace(next);
+  function changed(next, nextMessage, current = operation) {
+    const value = validateReconciliationWorkspace(next);
+    if (!owns(current)) return false;
+    workspace = value;
     revision++;
-    operation++;
+    const nextOperation = ++operation;
     busy = false;
     review = null;
     report = null;
     error = null;
     message = nextMessage;
     emit();
+    return owns(nextOperation);
   }
 
-  function stage(next, source = "memory") {
+  function stage(next, source = "memory", current = operation, sourceVersion = sourceEpoch) {
     const replacement = reviewReconciliationReplacement(workspace, next);
-    review = Object.freeze({ ...replacement, revision, sourceEpoch, source });
+    if (!owns(current) || (source === "card" && sourceVersion !== sourceEpoch)) return false;
+    const pending = Object.freeze({ ...replacement, revision, sourceEpoch, source });
+    review = pending;
     message = replacement.changes.length ? "変更内容を確認してから適用してください。" : "現在と同じ内容です。";
     error = null;
     emit();
-    return true;
+    return owns(current) && review === pending;
   }
 
   function selectAgent(next) {
@@ -119,37 +130,46 @@ export function createReconciliationController({
   }
 
   function capture(part) {
+    let current = operation;
     try {
       if (!available()) return false;
+      current = ++operation;
+      const sourceVersion = sourceEpoch, selected = agent;
       review = null;
       reconciliationPart(part);
-      const value = part === "archive" ? readArchive(agent) : readObservation(agent);
+      const value = part === "archive" ? readArchive(selected) : readObservation(selected);
+      if (!owns(current) || sourceVersion !== sourceEpoch) return false;
       if (value === null || value === undefined) reconciliationFail("RECONCILIATION_NO_SOURCE");
-      return stage(replaceReconciliationPart(workspace, agent, part, value), "card");
-    } catch (value) { return fail(value); }
+      return stage(replaceReconciliationPart(workspace, selected, part, value), "card", current, sourceVersion);
+    } catch (value) { return fail(value, current); }
   }
 
   function propose(next) {
+    let current = operation;
     try {
       if (!available()) return false;
+      current = ++operation;
       review = null;
-      return stage(next);
-    } catch (value) { return fail(value); }
+      return stage(next, "memory", current);
+    } catch (value) { return fail(value, current); }
   }
 
   function remove(part = "all") {
+    let current = operation;
     try {
       if (!available()) return false;
+      current = ++operation;
       review = null;
       return stage(part === "all" ? clearReconciliationSlot(workspace, agent)
-        : replaceReconciliationPart(workspace, agent, part, null));
-    } catch (value) { return fail(value); }
+        : replaceReconciliationPart(workspace, agent, part, null), "memory", current);
+    } catch (value) { return fail(value, current); }
   }
 
   async function importFile(file, kind) {
+    let current = operation;
     try {
       if (!available()) return false;
-      const current = ++operation;
+      current = ++operation;
       const before = workspace;
       const selected = agent;
       busy = true;
@@ -157,18 +177,19 @@ export function createReconciliationController({
       error = null;
       message = "ファイルを検査しています。";
       emit();
+      if (!owns(current)) return false;
       let next;
       try { next = await readFile(file, kind, selected, before); }
       catch (value) {
         if (disposed || current !== operation) return false;
         busy = false;
-        return fail(value);
+        return fail(value, current);
       }
       if (disposed || current !== operation) return false;
       busy = false;
       if (workspace !== before || agent !== selected) reconciliationFail("RECONCILIATION_STALE");
-      return stage(next, "file");
-    } catch (value) { return fail(value); }
+      return stage(next, "file", current);
+    } catch (value) { return fail(value, current); }
   }
 
   function apply(acknowledged = false) {
@@ -186,8 +207,7 @@ export function createReconciliationController({
       }
       undo = retain(undo, workspace);
       redo = [];
-      changed(review.after, "画面内に適用しました。照合してから、必要に応じてJSONを保存してください。");
-      return true;
+      return changed(review.after, "画面内に適用しました。照合してから、必要に応じてJSONを保存してください。");
     } catch (value) { return fail(value); }
   }
 
@@ -237,24 +257,25 @@ export function createReconciliationController({
         redo = redo.slice(0, -1);
         undo = retain(undo, workspace);
       }
-      changed(next, "画面内の記録を" + (direction === "undo" ? "元に戻しました。" : "やり直しました。"));
-      return true;
+      return changed(next, "画面内の記録を" + (direction === "undo" ? "元に戻しました。" : "やり直しました。"));
     } catch (value) { return fail(value); }
   }
 
   async function exportFile(kind, deliver) {
+    let current = operation;
     try {
       if (!available()) return false;
       if (!["json", "summary", "events", "text", "ledger", "windows"].includes(kind) || typeof deliver !== "function") {
         reconciliationFail("RECONCILIATION_FILE_KIND");
       }
       if (kind !== "json" && !report) reconciliationFail("RECONCILIATION_NO_REPORT");
-      const current = ++operation;
+      current = ++operation;
       const before = workspace;
       busy = true;
       error = null;
       message = "保存ファイルを準備しています。";
       emit();
+      if (!owns(current)) return false;
       try {
         const file = kind === "json" ? await prepareFile(before) : Object.freeze({
           text: kind === "ledger" ? reconciliationLedgerCsv(before) : kind === "windows" ? reconciliationWindowsCsv(before) :
@@ -273,13 +294,13 @@ export function createReconciliationController({
         busy = false;
         message = "保存を開始しました。ブラウザーのダウンロード先でファイルを確認してください。";
         emit();
-        return true;
+        return owns(current);
       } catch (value) {
         if (disposed || current !== operation) return false;
         busy = false;
-        return fail(value);
+        return fail(value, current);
       }
-    } catch (value) { return fail(value); }
+    } catch (value) { return fail(value, current); }
   }
 
   return Object.freeze({
@@ -289,6 +310,7 @@ export function createReconciliationController({
     dispose() {
       if (disposed) return;
       disposed = true;
+      observers.clear();
       operation++;
       busy = false;
       review = null;
