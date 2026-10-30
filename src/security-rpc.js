@@ -1,4 +1,5 @@
 /** A second, explicit capability boundary before any provider request. */
+import { captureDataArray } from "./security-data.js";
 export class RpcSecurityError extends Error {
   constructor(code) {
     super(code);
@@ -48,20 +49,9 @@ function object(value, fields, optional = []) {
 }
 
 function array(value, count, code = "RPC_REQUEST_SHAPE") {
-  try {
-    if (!Array.isArray(value) || value.length > count ||
-        Reflect.ownKeys(value).length !== value.length + 1) fail(code);
-    const copied = [];
-    for (let i = 0; i < value.length; i++) {
-      const descriptor = Object.getOwnPropertyDescriptor(value, String(i));
-      if (!descriptor || !("value" in descriptor)) fail(code);
-      copied.push(descriptor.value);
-    }
-    return copied;
-  } catch (error) {
-    if (error instanceof RpcSecurityError) throw error;
-    fail(code);
-  }
+  // Request normalization edits its own transport array, never the input.
+  try { return [...captureDataArray(value, count)]; }
+  catch { fail(code); }
 }
 
 function blockSelector(value) {
@@ -159,7 +149,8 @@ export function guardRpcResponse(method, value) {
   if (method === "eth_getCode") return boundedString(value, RPC_SECURITY_LIMITS.contractCodeCharacters);
   if (method === "eth_call") return boundedString(value, RPC_SECURITY_LIMITS.callCharacters);
   if (method === "eth_accounts" || method === "eth_requestAccounts") {
-    if (!Array.isArray(value)) return null;
+    try { if (!Array.isArray(value)) return null; }
+    catch { fail("RPC_RESULT_LIMIT"); }
     return Object.freeze(array(value, RPC_SECURITY_LIMITS.accounts, "RPC_RESULT_LIMIT")
       .map(item => boundedString(item, 42)));
   }
@@ -168,7 +159,12 @@ export function guardRpcResponse(method, value) {
   }
   if (method === "eth_getLogs") {
     // Keep TRANSFER_EVENT_LIMIT as the public limit error from the session.
-    if (!Array.isArray(value) || value.length > RPC_SECURITY_LIMITS.logEntries) return value;
+    // Inspect the own length descriptor; a provider's live length read can vary.
+    try {
+      if (!Array.isArray(value)) return value;
+      const descriptor = Object.getOwnPropertyDescriptor(value, "length");
+      if (descriptor && Object.hasOwn(descriptor, "value") && descriptor.value > RPC_SECURITY_LIMITS.logEntries) return value;
+    } catch { fail("RPC_RESULT_LIMIT"); }
     return Object.freeze(array(value, RPC_SECURITY_LIMITS.logEntries, "RPC_RESULT_LIMIT").map(log =>
       responseObject(log, [["address", 42], ["topics", "topics"], ["data", 66],
         ["blockNumber", 66], ["blockHash", 66], ["transactionHash", 66],
