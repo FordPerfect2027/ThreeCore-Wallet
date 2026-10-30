@@ -1,0 +1,138 @@
+✖ HTTP byte accounting uses intrinsic length instead of a throw accessor (5.2684ms)
+✖ HTTP byte accounting uses intrinsic length instead of a oversized accessor (0.83ms)
+✖ HTTP byte accounting uses intrinsic length instead of a changing accessor (1.4092ms)
+✖ oversized actual chunk is rejected without invoking an understated length getter (6.0649ms)
+✖ HTTP stream packet done accessor is rejected without evaluating it (1.8296ms)
+✖ HTTP stream packet value accessor is rejected without evaluating it (0.923ms)
+✖ non-byte stream chunks cannot be silently reinterpreted as a JSON body (1.5297ms)
+✔ split multibyte UTF-8 retains its exact JSON value (3.5397ms)
+✖ abort during packet descriptor capture prevents another read and discards the body (1.4445ms)
+✔ HTTP chunk budget bounds zero-byte streams: 99999 empty chunks (878.723ms)
+✖ HTTP chunk budget bounds zero-byte streams: 100000 empty chunks (994.0681ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 2
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2265.1888
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-http-bytes-next.test.mjs:6:52
+✖ HTTP byte accounting uses intrinsic length instead of a throw accessor (5.2684ms)
+  Error: Base本番の読み取り窓口から結果を取得できませんでした。接続を確認して再度読み取ってください。
+      at readStateRpcJson (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:76:11)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-http-bytes-next.test.mjs:8:64)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    code: 'STATE_RPC_UNAVAILABLE'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-http-bytes-next.test.mjs:6:52
+✖ HTTP byte accounting uses intrinsic length instead of a oversized accessor (0.83ms)
+  Error: Base本番の読み取り窓口から結果を取得できませんでした。接続を確認して再度読み取ってください。
+      at readStateRpcJson (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:76:11)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-http-bytes-next.test.mjs:8:64)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    code: 'STATE_RPC_UNAVAILABLE'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-http-bytes-next.test.mjs:6:52
+✖ HTTP byte accounting uses intrinsic length instead of a changing accessor (1.4092ms)
+  Error: Base本番の読み取り窓口から結果を取得できませんでした。接続を確認して再度読み取ってください。
+      at readStateRpcJson (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:76:11)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-http-bytes-next.test.mjs:8:64)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    code: 'STATE_RPC_UNAVAILABLE'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-http-bytes-next.test.mjs:10:1
+✖ oversized actual chunk is rejected without invoking an understated length getter (6.0649ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-http-bytes-next.test.mjs:12:133)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-http-bytes-next.test.mjs:14:35
+✖ HTTP stream packet done accessor is rejected without evaluating it (1.8296ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-http-bytes-next.test.mjs:16:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-http-bytes-next.test.mjs:14:35
+✖ HTTP stream packet value accessor is rejected without evaluating it (0.923ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-http-bytes-next.test.mjs:16:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-http-bytes-next.test.mjs:18:1
+✖ non-byte stream chunks cannot be silently reinterpreted as a JSON body (1.5297ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-http-bytes-next.test.mjs:19:63)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-http-bytes-next.test.mjs:25:1
+✖ abort during packet descriptor capture prevents another read and discards the body (1.4445ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-http-bytes-next.test.mjs:27:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-http-bytes-next.test.mjs:29:41
+✖ HTTP chunk budget bounds zero-byte streams: 100000 empty chunks (994.0681ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-http-bytes-next.test.mjs:32:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
