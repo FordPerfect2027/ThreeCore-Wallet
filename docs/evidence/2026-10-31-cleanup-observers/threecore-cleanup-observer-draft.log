@@ -1,0 +1,21 @@
+✔ file cleanup consumes rejected asynchronous adapter results: native (10.8976ms)
+✔ file cleanup consumes rejected asynchronous adapter results: malformed (2.7779ms)
+✔ secure expiry consumes malformed asynchronous notification and remains expired (3.5415ms)
+✔ read-scope eligibility rejection is consumed without invoking a wallet method (4.5591ms)
+✔ read completion observer failure cannot escape or replace the method result (2.7129ms)
+✔ wallet card view notification failure is consumed after disconnect (2.946ms)
+✔ wallet card asynchronous access result cannot create a wallet session (2.0228ms)
+✔ discarded HTTP headers consume malformed body-cancellation failures (2.2973ms)
+✔ pre-aborted body reads consume cancellation failures without reading (2.3277ms)
+✔ oversized declared responses consume body-cancellation failures before opening a reader (3.0739ms)
+✔ HTTP reader cancel failure cannot escape a rejected response (2.0316ms)
+✔ HTTP reader releaseLock failure cannot escape a rejected response (3.4034ms)
+✔ public RPC response cleanup cannot escape its transport error (3.3477ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 462.0821
