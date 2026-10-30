@@ -119,10 +119,12 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
   async function freshSelection(token) {
     const original = selection();
     const revision = document.revision;
-    const current = await storage.read({ signal: active?.aborter.signal });
+    const supplied = await storage.read({ signal: active?.aborter.signal });
+    if (!alive(token)) checkpointFail("CHECKPOINT_CANCELLED");
+    const current = validateCheckpointDocument(supplied);
     if (!alive(token)) checkpointFail("CHECKPOINT_CANCELLED");
     if (current.revision !== revision) checkpointFail("CHECKPOINT_STALE");
-    const found = validateCheckpointDocument(current).entries.find(row => row.id === original.id);
+    const found = current.entries.find(row => row.id === original.id);
     if (!found || found.fileText !== original.fileText) checkpointFail("CHECKPOINT_STALE");
     return found;
   }
@@ -145,7 +147,9 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     }),
     exportCollection: () => operate("exportCollection", async token => {
       ready();
-      const current = await storage.read({ signal: active?.aborter.signal });
+      const supplied = await storage.read({ signal: active?.aborter.signal });
+      if (!alive(token)) return;
+      const current = validateCheckpointDocument(supplied);
       if (!alive(token)) return;
       if (current.revision !== document.revision) checkpointFail("CHECKPOINT_STALE");
       const prepared = await prepareCheckpointCollection(current, { subtle, signal: active.aborter.signal });

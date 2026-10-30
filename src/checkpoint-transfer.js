@@ -54,6 +54,7 @@ export async function decodeCheckpointCollection(text, { subtle, signal, timeout
 
 export function reviewCheckpointImport(current, incoming) {
   const before = validateCheckpointDocument(current);
+  incoming = validateCheckpointDocument({ schema: CHECKPOINT_SCHEMA, revision: 0, entries: incoming }).entries;
   const after = mutateCheckpoints(before, before.revision, { kind: "import", entries: incoming });
   const original = new Set(before.entries.map(entry => entry.id));
   const added = after.entries.filter(entry => !original.has(entry.id));
