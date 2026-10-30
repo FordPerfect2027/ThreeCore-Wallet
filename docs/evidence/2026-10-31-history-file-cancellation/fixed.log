@@ -1,0 +1,32 @@
+✔ transfer: cancel settles the import before an underlying file promise resolves (30.389ms)
+✔ transfer: dispose settles the import before an underlying file promise resolves (13.6155ms)
+✔ transfer: cancellation during filename validation prevents file IO (2.9549ms)
+✔ archive: cancel settles the import before an underlying file promise resolves (43.1396ms)
+✔ archive: dispose settles the import before an underlying file promise resolves (14.1406ms)
+✔ archive: cancellation during filename validation prevents file IO (2.0208ms)
+✔ vault: cancel settles the import before an underlying file promise resolves (44.6406ms)
+✔ vault: dispose settles the import before an underlying file promise resolves (31.0741ms)
+✔ vault: cancellation during filename validation prevents file IO (6.4766ms)
+✔ vault-legacy-archive: cancel settles the import before an underlying file promise resolves (40.7689ms)
+✔ vault-legacy-archive: dispose settles the import before an underlying file promise resolves (31.0692ms)
+✔ vault-legacy-archive: cancellation during filename validation prevents file IO (6.0723ms)
+✔ vault-legacy-snapshot: cancel settles the import before an underlying file promise resolves (11.2181ms)
+✔ vault-legacy-snapshot: dispose settles the import before an underlying file promise resolves (31.2771ms)
+✔ vault-legacy-snapshot: cancellation during filename validation prevents file IO (6.5381ms)
+✔ vault-collection: cancel settles the import before an underlying file promise resolves (23.5097ms)
+✔ vault-collection: dispose settles the import before an underlying file promise resolves (31.3448ms)
+✔ vault-collection: cancellation during filename validation prevents file IO (6.6483ms)
+✔ reconciliation: cancel settles the import before an underlying file promise resolves (26.0483ms)
+✔ reconciliation: dispose settles the import before an underlying file promise resolves (13.9654ms)
+✔ reconciliation: cancellation during filename validation prevents file IO (5.2252ms)
+✔ period: cancel settles the import before an underlying file promise resolves (23.8469ms)
+✔ period: dispose settles the import before an underlying file promise resolves (31.4929ms)
+✔ period: cancellation during filename validation prevents file IO (2.015ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1067.5436
