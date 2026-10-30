@@ -151,7 +151,7 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
       if (!guard()) return false;
       review = null;
       const before = document;
-      return await run("importing", () => readFile(file), (value, same) => {
+      return await run("importing", ({ signal }) => readFile(file, { signal }), (value, same) => {
         const plan = reviewPeriodLibraryImport(before, value.document);
         if (!same()) return;
         review = Object.freeze({ kind: "import", expectedRevision: before.revision, plan });

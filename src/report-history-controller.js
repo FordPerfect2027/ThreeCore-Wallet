@@ -162,7 +162,7 @@ export function createReportHistoryController({ storage, getReport, stageReport,
       if (!guard()) return false;
       review = null;
       const before = document;
-      return await run("importing", () => readFile(file), (decoded, same) => {
+      return await run("importing", ({ signal }) => readFile(file, { signal }), (decoded, same) => {
         const incoming = validateReportHistory(decoded.document), plan = planHistoryMerge(before, incoming);
         const checksumVerified = decoded.checksumVerified === true;
         if (!same()) return;
