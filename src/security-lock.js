@@ -74,7 +74,18 @@ export function createSecurityLock({
   }
   function lock(nextReason = "manual") {
     stopVersion++;
-    if (disposed || locked) return false;
+    if (disposed) return false;
+    if (locked) {
+      // A later terminal fault must still revoke resume after an ordinary stop.
+      // Escalation changes the gate, not cleanup ownership or completed work.
+      if (!fault && (nextReason === "clock" || nextReason === "timer")) {
+        fault = reason = nextReason;
+        version++;
+        stopTimer();
+        publish();
+      }
+      return false;
+    }
     if (!LOCK_REASONS.includes(nextReason)) throw TypeError("Unknown lock reason");
     // Gate closes before cancellation, cleanup and observers can reenter.
     locked = true;
