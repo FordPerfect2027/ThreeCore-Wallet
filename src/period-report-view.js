@@ -66,15 +66,15 @@ export function reportErrorCode(error) {
 }
 
 export function reportErrorText(code) {
-  return Object.hasOwn(ERRORS, code) ? ERRORS[code] : "処理を完了できませんでした。元の記録は変更されていません。";
+  return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code] : "処理を完了できませんでした。元の記録は変更されていません。";
 }
 
 export function reportStatusText(status) {
-  return Object.hasOwn(REPORT_STATUS_TEXT, status) ? REPORT_STATUS_TEXT[status] : "未確認";
+  return typeof status === "string" && Object.hasOwn(REPORT_STATUS_TEXT, status) ? REPORT_STATUS_TEXT[status] : "未確認";
 }
 
 export function reportIssueText(code) {
-  return Object.hasOwn(REPORT_ISSUE_TEXT, code) ? REPORT_ISSUE_TEXT[code] : "記録の追加確認が必要です。";
+  return typeof code === "string" && Object.hasOwn(REPORT_ISSUE_TEXT, code) ? REPORT_ISSUE_TEXT[code] : "記録の追加確認が必要です。";
 }
 
 export function reportAmount(value, decimals = 18) {

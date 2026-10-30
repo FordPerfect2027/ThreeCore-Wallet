@@ -42,7 +42,7 @@ export function libraryErrorCode(value) {
   } catch { return "PERIOD_LIBRARY_FAILED"; }
 }
 export function libraryErrorText(code) {
-  return (Object.hasOwn(MESSAGES, code) ? MESSAGES[code] : undefined) ?? (typeof code === "string" && code.startsWith("PERIOD_") && !code.startsWith("PERIOD_LIBRARY_")
+  return (typeof code === "string" && Object.hasOwn(MESSAGES, code) ? MESSAGES[code] : undefined) ?? (typeof code === "string" && code.startsWith("PERIOD_") && !code.startsWith("PERIOD_LIBRARY_")
     ? periodMessage(code) : "保存内容を扱えませんでした。既存の記録を消さず、JSONと保存先を確認してください。");
 }
 

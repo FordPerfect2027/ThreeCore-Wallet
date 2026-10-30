@@ -137,5 +137,5 @@ export function tokenIdentityErrorMessage(code) {
     IDENTITY_OBSERVATION_CONFLICT: "同じブロックの観測内容が一致しません。",
     IDENTITY_DOWNLOAD: "ファイル保存を開始できませんでした。",
   };
-  return messages[code] ?? "照合を完了できませんでした。接続と入力を確認してください。";
+  return typeof code === "string" && Object.hasOwn(messages, code) ? messages[code] : "照合を完了できませんでした。接続と入力を確認してください。";
 }

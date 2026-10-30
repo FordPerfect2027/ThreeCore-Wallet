@@ -122,7 +122,7 @@ export function allowanceErrorMessage(code) {
     ALLOWANCE_CRYPTO: "破損チェックを利用できません。localhostまたはHTTPSで開いてください。",
     ALLOWANCE_DOWNLOAD: "ダウンロードを開始できませんでした。",
   };
-  if (Object.hasOwn(errors, code)) return errors[code];
+  if (typeof code === "string" && Object.hasOwn(errors, code)) return errors[code];
   if (typeof code === "string" && code.startsWith("IDENTITY_")) return tokenIdentityErrorMessage(code);
   return "確認を完了できませんでした。接続・入力・ファイルを確認してください。";
 }

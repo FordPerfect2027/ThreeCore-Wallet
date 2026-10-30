@@ -38,7 +38,7 @@ export function historyErrorCode(error) {
 }
 
 export function historyErrorText(code) {
-  return Object.hasOwn(ERRORS, code) ? ERRORS[code] : reportErrorText(code);
+  return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code] : reportErrorText(code);
 }
 
 export function historyReportText(input) {

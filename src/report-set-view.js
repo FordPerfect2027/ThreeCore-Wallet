@@ -42,14 +42,14 @@ export function setErrorCode(value) {
   const code = historyErrorCode(value);
   return code === "PERIOD_HISTORY_FAILED" ? "PERIOD_SET_FAILED" : code;
 }
-export function setErrorText(code) { return ERRORS[code] ?? historyErrorText(code); }
+export function setErrorText(code) { return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code] : historyErrorText(code); }
 export function shortSetAddress(value, shorten = true) {
   return !value ? "—" : shorten ? value.slice(0, 8) + "…" + value.slice(-6) : value;
 }
 export function setStatusText(result) {
   return result.allContinuous ? "選択した証拠は3トークンとも期間境界で一致" : "確認が必要な箇所があります";
 }
-export function setIssueText(code) { return SET_ISSUES[code] ?? "確認が必要です。"; }
+export function setIssueText(code) { return typeof code === "string" && Object.hasOwn(SET_ISSUES, code) ? SET_ISSUES[code] : "確認が必要です。"; }
 
 export function setSummaryText(result) {
   if (!result) return "";

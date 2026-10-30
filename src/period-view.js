@@ -43,7 +43,7 @@ const messages = Object.freeze({
   TRANSFER_FUTURE_BLOCK: "終了ブロックが接続先の最新ブロックより先にあります。",
 });
 
-export function periodMessage(code) { return messages[code] ?? "入力または保存記録を確認できませんでした。元のデータは保持しています。"; }
+export function periodMessage(code) { return typeof code === "string" && Object.hasOwn(messages, code) ? messages[code] : "入力または保存記録を確認できませんでした。元のデータは保持しています。"; }
 
 export function periodPlanText(input) {
   const plan = describePeriodPlan(input);
