@@ -1,3 +1,4 @@
+import { readSynchronousClock } from "./security-callback.js";
 /** Bound repeated provider notifications before inspecting their payloads. */
 export const PROVIDER_EVENT_LIMITS = Object.freeze({ count: 256, windowMs: 1000 });
 
@@ -12,6 +13,7 @@ export function createProviderEventGate({ now = () => performance.now(),
   let count = 0;
   let blocked = false;
   let reason = null;
+  let readingClock = false;
   function stop(next) {
     if (blocked) return false;
     blocked = true;
@@ -20,8 +22,13 @@ export function createProviderEventGate({ now = () => performance.now(),
   }
   function accept() {
     if (blocked) return false;
+    if (readingClock) return stop("clock");
     let time;
-    try { time = now(); } catch { return stop("clock"); }
+    readingClock = true;
+    try { time = readSynchronousClock(now); }
+    catch { return stop("clock"); }
+    finally { readingClock = false; }
+    if (blocked) return false;
     if (!Number.isFinite(time) || time < 0 || (previous !== null && time < previous)) return stop("clock");
     previous = time;
     if (windowStart === null || time - windowStart >= windowMs) {

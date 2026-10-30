@@ -1,4 +1,5 @@
 import { createProviderEventGate } from "./provider-event-gate.js";
+import { observeCallbackResult } from "./security-callback.js";
 /** Provider events are untrusted observations, never permission to reconnect. */
 export const WALLET_EVENT_NAMES = Object.freeze(["accountsChanged", "chainChanged", "disconnect"]);
 export class WalletEventError extends Error {
@@ -37,16 +38,8 @@ export function snapshotWalletChain(input) {
 function asynchronousResult(value, provider) {
   // EIP-1193 listener methods use synchronous EventEmitter semantics. Never
   // await an adapter's Promise to establish whether listeners were installed.
-  if (value === provider || value === null ||
-      !["object", "function"].includes(typeof value)) return false;
-  let then;
-  try { then = value.then; } catch { return true; }
-  if (typeof then !== "function") return false;
-  // Capture then once. Consume rejection without adopting its result as success.
-  new Promise((resolve, reject) => {
-    then.call(value, resolve, reject);
-  }).catch(() => {});
-  return true;
+  if (value === provider) return false;
+  return observeCallbackResult(value) !== "synchronous";
 }
 
 /**
@@ -68,7 +61,12 @@ export function observeWalletProvider(provider, handlers, isCurrent = () => true
   let disposed = false;
   const registrations = [];
   const current = () => {
-    try { return !disposed && isCurrent() === true; } catch { return false; }
+    if (disposed) return false;
+    try {
+      const value = isCurrent();
+      const kind = observeCallbackResult(value);
+      return !disposed && kind === "synchronous" && value === true;
+    } catch { return false; }
   };
   function dispose() {
     if (disposed) return;
