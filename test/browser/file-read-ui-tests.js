@@ -51,6 +51,35 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: rehearsal related navigation restores its search and focuses the detail chooser", async () => {
+    const response=await fetch("/rehearsal/");
+    assert(response.ok,"Rehearsal template must be served");
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html");
+    const host=document.importNode(parsed.querySelector("main"),true);
+    document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    try{
+      for(const link of host.querySelectorAll(".file-format-guide a")){
+        const href=link.getAttribute("href");
+        assert(href.startsWith("#")&&q(href.slice(1)),"Guide links to an existing local section");
+      }
+      q("example").click();
+      q("record-browser-search").value="open-one";
+      q("record-browser-search").dispatchEvent(new Event("input"));
+      const before=q("rows").innerHTML;
+      const button=q("record-browser-related").querySelector("button");
+      assert(button?.getAttribute("aria-label").includes("settle-one"),"Related action identifies its destination");
+      button.click();
+      assert(q("record-browser-select").value==="DAT:settle-one","Related settlement is selected");
+      assert(document.activeElement===q("record-browser-select"),"Keyboard focus follows the opened record");
+      assert(q("record-browser-search").value===""&&!q("record-browser-back").disabled,"Expanded query exposes a return action");
+      q("record-browser-back").click();
+      assert(q("record-browser-search").value==="open-one"&&q("record-browser-select").value==="DAT:open-one","Return restores search and selected record");
+      assert(q("record-browser-back").disabled&&q("rows").innerHTML===before,"Navigation leaves the source ledger unchanged");
+    }finally{page.dispose();host.remove();}
+  });
+
   test("file-read: rehearsal picker guidance is linked and preserves real DOM selection state", async () => {
     const response = await fetch("/rehearsal/");
     assert(response.ok, "Rehearsal template must be served");

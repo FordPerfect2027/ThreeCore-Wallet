@@ -4,13 +4,13 @@ import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   const offerDownload = payload => requireSyncExport(download(payload));
-  const get=name=>document.getElementById("record-browser-"+name);let index=null,report=null,selected="",offset=0,disposed=false,revision=0;const listeners=[];
+  const get=name=>document.getElementById("record-browser-"+name);let index=null,report=null,selected="",offset=0,disposed=false,revision=0,detailRevision=0,backView=null;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
-  function row(target,values){const tr=document.createElement("tr");for(const value of values){const td=document.createElement("td");td.textContent=value;tr.append(td);}get(target).append(tr);}
+  function row(target,values){const tr=document.createElement("tr");for(const value of values){const td=document.createElement("td");td.textContent=value;tr.append(td);}get(target).append(tr);return tr;}
   const decision=item=>item.result.withinEnteredLimits?"仮の条件内":"見送り: "+item.result.reasons.map(code=>reasons[code]??code).join("・");
   const eventLabels={id:"記録ID",kind:"種類",agent:"記録上の対象",chainId:"記録上のネットワーク",account:"記録上の口座",operationId:"操作ID",reservationId:"予約ID",origin:"記録上のサイト",spender:"記録上の利用先契約",principal:"元本",fee:"費用",grossReturn:"元本を含む戻り額",amount:"金額",exitFeeReserve:"確保する決済費用"};
   const moneyFields=new Set(["principal","fee","grossReturn","amount","exitFeeReserve"]);
-  function detail(){for(const name of["detail","event","balances","related","related-status"])get(name).textContent="";
+  function detail(){const detailOwn=++detailRevision;for(const name of["detail","event","balances","related","related-status"])get(name).textContent="";
     const item=report?.rows.find(row=>row.key===selected);if(!item)return;
     get("detail").textContent="保存元 "+item.agent+" の "+item.recordNumber+"番目 / ID "+item.event.id+" / ネットワーク "+item.chainId+" / 口座 "+item.account+" / 資産 "+item.asset.symbol+" ("+item.asset.address+")。"+decision(item);
     const money=value=>formatRehearsalUnits(value,item.asset.decimals)+" "+item.asset.symbol;
@@ -18,10 +18,32 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     for(const change of item.changes)row("balances",[SCENARIO_LABELS[change.field],money(change.before),money(change.after),(BigInt(change.delta)>0n?"+":"")+money(change.delta)]);
     const related=relatedRehearsalRecords(index,selected);
     get("related-status").textContent=item.reference?"同じ保存元・同じ"+(item.reference.kind==="operation"?"操作":"予約")+"ID「"+item.reference.id+"」を持つ他の記録 "+related.length+"件。対応付けはIDの一致で、実行の証明ではありません。":"この記録には操作ID・予約IDがありません。";
-    for(const other of related)row("related",[other.recordNumber+"番目: "+other.event.id,kinds[other.event.kind],decision(other)]);
+    if(related.length)get("related-status").textContent+="「詳しく見る」を押すと、この保存元の全記録表示に切り替わります。";
+    const own=revision,sourceIndex=index;
+    for(const other of related){
+      const tr=row("related",[other.recordNumber+"番目: "+other.event.id,kinds[other.event.kind],decision(other)]);
+      const td=document.createElement("td"),button=document.createElement("button");
+      button.type="button";button.textContent="詳しく見る";
+      button.setAttribute("aria-label",other.agent+" の "+other.recordNumber+"番目、"+other.event.id+" を詳しく見る");
+      button.addEventListener("click",()=>{
+        if(disposed||own!==revision||detailOwn!==detailRevision||sourceIndex!==index)return;
+        const size=Number(get("size").value||"10");
+        if(![10,25,50].includes(size))return;
+        const rows=sourceIndex.rows.filter(entry=>entry.agent===other.agent);
+        const position=rows.findIndex(entry=>entry.key===other.key);
+        if(position<0)return;
+        const query=Object.fromEntries(Object.keys(REHEARSAL_RECORD_QUERY).map(name=>[name,get(name).value]));
+        backView={index:sourceIndex,query,selected,offset,size};
+        get("agent").value=other.agent;get("kind").value="all";get("decision").value="all";get("search").value="";
+        selected=other.key;offset=Math.floor(position/size)*size;render();
+        get("select").focus?.();
+      });
+      td.append(button);tr.append(td);
+    }
   }
   function render(){revision++;
     for(const name of["rows","select","detail","event","balances","related","related-status","export-status"])get(name).textContent="";
+    get("back").disabled=!backView||backView.index!==index;
     get("save").disabled=true;get("prev").disabled=true;get("next").disabled=true;get("select").disabled=true;
     if(!index){get("status").textContent="履歴を作成または復旧すると、ここから記録を探せます。";get("scope").textContent="";return;}
     try{report=queryRehearsalRecords(index,Object.fromEntries(Object.keys(REHEARSAL_RECORD_QUERY).map(key=>[key,get(key).value||REHEARSAL_RECORD_QUERY[key]])));}
@@ -36,10 +58,17 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     get("save").disabled=!index.inputs.ledgers.length;
     get("status").textContent="一致 "+report.matchedRecords+"件 / 全 "+report.totalRecords+"件。"+(shown.length?(offset+1)+"～"+(offset+shown.length)+"件目を表示。":"一致する記録はありません。")+"保存はページをまたぐ全一致記録と元入力が対象です。";detail();
   }
-  for(const name of["agent","kind","decision","size"])listen(name,"change",()=>{if(disposed)return;offset=0;render();});
-  listen("search","input",()=>{if(disposed)return;offset=0;render();});
-  listen("clear","click",()=>{if(disposed)return;for(const [name,value]of Object.entries(REHEARSAL_RECORD_QUERY))get(name).value=value;offset=0;render();});
+  for(const name of["agent","kind","decision","size"])listen(name,"change",()=>{if(disposed)return;backView=null;offset=0;render();});
+  listen("search","input",()=>{if(disposed)return;backView=null;offset=0;render();});
+  listen("clear","click",()=>{if(disposed)return;backView=null;for(const [name,value]of Object.entries(REHEARSAL_RECORD_QUERY))get(name).value=value;offset=0;render();});
   for(const [name,direction]of[["prev",-1],["next",1]])listen(name,"click",()=>{if(disposed||!report)return;offset+=direction*Number(get("size").value||"10");render();});
+  listen("back","click",()=>{
+    if(disposed||!backView||backView.index!==index)return;
+    const previous=backView;backView=null;
+    for(const [name,value]of Object.entries(previous.query))get(name).value=value;
+    get("size").value=String(previous.size);selected=previous.selected;offset=previous.offset;render();
+    get("select").focus?.();
+  });
   listen("select","change",()=>{if(disposed)return;selected=get("select").value;detail();});
   listen("save","click",()=>{if(disposed||!index||!report||!index.inputs.ledgers.length)return;
     const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalRecordReport(index.inputs,report.query),filename:"ThreeCore-record-query.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="検索条件・全一致記録・元入力の保存を開始しました。";}
@@ -52,13 +81,13 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     try {next=input?indexRehearsalRecords(input):null;}
     catch(error){if(disposed||own!==revision)return;throw error;}
     if(disposed||own!==revision)return;
-    index=next;report=null;
+    index=next;report=null;backView=null;
     if(!next){selected="";offset=0;}
     render();
   }
   render();return Object.freeze({refresh,dispose(){
     if(disposed)return;
-    disposed=true;revision++;index=null;report=null;selected="";render();
+    disposed=true;revision++;index=null;report=null;backView=null;selected="";render();
     for(const remove of listeners)remove();
   }});
 }
