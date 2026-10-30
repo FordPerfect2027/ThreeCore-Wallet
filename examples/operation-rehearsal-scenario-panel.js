@@ -1,3 +1,4 @@
+import { consumeCallback } from "../src/security-callback.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { buildRehearsalScenario, compareRehearsalScenario, encodeRehearsalScenario,
   rehearsalScenarioParameters, REHEARSAL_SCENARIO_FIELDS } from "../src/operation-rehearsal-scenario.js";
@@ -26,18 +27,29 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
   const displayParameter = (field, value) => value === null ? "旧形式には項目なし"
     : field === "paused" ? (value ? "停止する想定" : "停止しない想定")
     : field === "buybackBps" ? formatRehearsalUnits(String(value), 2) + "%" : money(value);
-  function invalidate(message = "比較条件が変わりました。もう一度比較してください。元の履歴は保持しています。") {
-    revision++; comparison = null;
-    for (const name of ["parameters", "metrics", "rows", "summary", "export-status", "row-status", "blockers"]) get(name).textContent = "";
-    get("results").hidden = true; get("save").disabled = true; get("input-save").disabled = true;
-    get("status").textContent = message;
-    onChange();
+  function notifyChanged(){consumeCallback(()=>onChange());}
+  function invalidate(message = "比較条件が変わりました。もう一度比較してください。元の履歴は保持しています。", notify = true) {
+    const own=++revision;comparison=null;
+    for(const name of ["parameters","metrics","rows","summary","export-status","row-status","blockers"])get(name).textContent="";
+    get("results").hidden=true;get("save").disabled=true;get("input-save").disabled=true;
+    get("status").textContent=message;
+    if(notify)notifyChanged();
+    return own;
   }
   function refresh(input) {
-    if (disposed) return;
-    source = input ? validateRehearsal(input) : null;
-    invalidate(source ? "表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。"
-      : "先に例を表示するか、保存した履歴を復旧してください。");
+    if(disposed)return;
+    const own=++revision;
+    let next;
+    try{next=input?validateRehearsal(input):null;}
+    catch(error){if(disposed||own!==revision)return;throw error;}
+    if(disposed||own!==revision)return;
+    source=next;
+    const rendered=invalidate(source?"表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。"
+      :"先に例を表示するか、保存した履歴を復旧してください。");
+    if(disposed||rendered!==revision)return;
+    renderSource();
+  }
+  function renderSource() {
     get("compare").disabled = !source; get("reset").disabled = !source;
     const parameters = source ? rehearsalScenarioParameters(source) : null;
     for (const field of REHEARSAL_SCENARIO_FIELDS) {
@@ -85,7 +97,7 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
     const blockers = codes => codes.length ? codes.map(code => reasons[code] ?? code).join("・") : "該当なし";
     get("blockers").textContent = "追加予約を止める理由 — 元の条件: " + blockers(summary.beforeAllocationBlockers) +
       " / 比較条件: " + blockers(summary.afterAllocationBlockers);
-    renderRows(); get("save").disabled = false; get("input-save").disabled = false; onChange();
+    renderRows(); get("save").disabled = false; get("input-save").disabled = false; notifyChanged();
   }
   for (const field of REHEARSAL_SCENARIO_FIELDS) listen(field, field === "paused" ? "change" : "input", () => {
     if (!disposed && source) invalidate();
@@ -93,23 +105,30 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
   listen("filter", "change", () => { if (!disposed) renderRows(); });
   listen("reset", "click", () => { if (!disposed) refresh(source); });
   listen("compare", "click", () => {
-    if (disposed || !source) return;
-    invalidate();
-    try {
-      const values = {};
-      for (const field of REHEARSAL_SCENARIO_FIELDS) {
-        if (field === "paused") values[field] = get(field).checked;
-        else if (source.schema !== REHEARSAL_SCHEMA_V2 && ["maxEntryFee", "maxExitFee"].includes(field)) values[field] = null;
-        else {
-          const value = parseRehearsalUnits(get(field).value, field === "buybackBps" ? 2 : source.asset.decimals);
-          if (field === "buybackBps" && BigInt(value) > 10000n) throw new Error("Percentage");
-          values[field] = field === "buybackBps" ? Number(value) : value;
+    if(disposed||!source)return;
+    const own=invalidate();
+    if(disposed||own!==revision||!source)return;
+    const base=source;
+    try{
+      const values={};
+      for(const field of REHEARSAL_SCENARIO_FIELDS){
+        if(field==="paused")values[field]=get(field).checked;
+        else if(base.schema!==REHEARSAL_SCHEMA_V2&&["maxEntryFee","maxExitFee"].includes(field))values[field]=null;
+        else{
+          const value=parseRehearsalUnits(get(field).value,field==="buybackBps"?2:base.asset.decimals);
+          if(field==="buybackBps"&&BigInt(value)>10000n)throw new Error("Percentage");
+          values[field]=field==="buybackBps"?Number(value):value;
         }
       }
-      const candidate = buildRehearsalScenario(source, values);
-      comparison = compareRehearsalScenario(source, candidate); render();
-      get("status").textContent = "比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。";
-    } catch { invalidate("比較条件を確認してください。金額は0以上・この資産の小数桁数まで、還元割合は0〜100%です。元の履歴は保持しています。"); }
+      if(disposed||own!==revision||source!==base)return;
+      const candidate=buildRehearsalScenario(base,values);
+      comparison=compareRehearsalScenario(base,candidate);render();
+      if(disposed||own!==revision||source!==base)return;
+      get("status").textContent="比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。";
+    }catch{
+      if(disposed||own!==revision||source!==base)return;
+      invalidate("比較条件を確認してください。金額は0以上・この資産の小数桁数まで、還元割合は0〜100%です。元の履歴は保持しています。");
+    }
   });
   for (const [name, inputOnly] of [["save", false], ["input-save", true]]) listen(name, "click", () => {
     if (disposed || !comparison) return;
@@ -124,8 +143,10 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
   });
   refresh(null);
   return Object.freeze({ refresh, comparison: () => disposed ? null : comparison, dispose() {
-    if (disposed) return; refresh(null); disposed = true; source = null; comparison = null;
+    if (disposed) return; disposed = true; source = null;
+    invalidate("", false); renderSource();
     for (const name of ["status", "row-status", "blockers", "context", "version"]) get(name).textContent = "";
     for (const remove of listeners) remove();
+    notifyChanged();
   } });
 }

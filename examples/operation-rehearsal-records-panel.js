@@ -45,5 +45,20 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalRecordReport(index.inputs,report.query),filename:"ThreeCore-record-query.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="検索条件・全一致記録・元入力の保存を開始しました。";}
     catch{if(disposed||own!==revision)return;get("export-status").textContent="検索結果を保存できませんでした。現在の履歴は保持しています。";}
   });
-  render();return Object.freeze({refresh(input){if(disposed)return;index=input?indexRehearsalRecords(input):null;render();},dispose(){if(disposed)return;index=null;report=null;selected="";render();disposed=true;for(const remove of listeners)remove();}});
+  function refresh(input) {
+    if(disposed)return;
+    const own=++revision;
+    let next;
+    try {next=input?indexRehearsalRecords(input):null;}
+    catch(error){if(disposed||own!==revision)return;throw error;}
+    if(disposed||own!==revision)return;
+    index=next;report=null;
+    if(!next){selected="";offset=0;}
+    render();
+  }
+  render();return Object.freeze({refresh,dispose(){
+    if(disposed)return;
+    disposed=true;revision++;index=null;report=null;selected="";render();
+    for(const remove of listeners)remove();
+  }});
 }

@@ -21,7 +21,7 @@ export function decodeRehearsalSession(text){let input;try{input=parseSecurityJs
  * The currently selected agent is a view choice, not a changed ledger.
  */
 export function createRehearsalSaveCheckpoint(){
-  let baseline=null,source=null;
+  let baseline=null,source=null,revision=0;
   const capture=input=>{
     const data=validateRehearsalSession(input);
     return {data,key:JSON.stringify({...data,workspace:{...data.workspace,activeAgent:"DAT"}})};
@@ -29,7 +29,12 @@ export function createRehearsalSaveCheckpoint(){
   return Object.freeze({
     record(input,kind){
       if(!["download","file"].includes(kind))fail("INVALID_SAVE_CHECKPOINT");
-      const next=capture(input);baseline=next.key;source=kind;
+      const own=++revision;
+      let next;
+      try{next=capture(input);}
+      catch(error){if(own!==revision)return;throw error;}
+      if(own!==revision)return;
+      baseline=next.key;source=kind;
     },
     inspect(input){
       const {data,key}=capture(input),ledgers=data.workspace.ledgers.length,cases=data.cases.cases.length;
@@ -37,7 +42,7 @@ export function createRehearsalSaveCheckpoint(){
       return Object.freeze({state,hasChanges:state==="unrecorded"||state==="changed",source,
         ledgers,records:data.workspace.ledgers.reduce((count,item)=>count+item.events.length,0),cases});
     },
-    clear(){baseline=null;source=null;}
+    clear(){revision++;baseline=null;source=null;}
   });
 }
 export function compareRehearsalSessions(beforeInput,afterInput){const before=validateRehearsalSession(beforeInput),after=validateRehearsalSession(afterInput);
