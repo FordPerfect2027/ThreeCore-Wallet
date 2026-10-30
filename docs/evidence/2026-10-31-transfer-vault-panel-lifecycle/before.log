@@ -1,0 +1,392 @@
+✖ vault export-json false receipt is refused (198.9757ms)
+✖ vault export-json resolved receipt is refused (108.6767ms)
+✔ vault export-json rejected receipt is refused (56.1981ms)
+✖ vault export-csv false receipt is refused (50.4884ms)
+✖ vault export-csv resolved receipt is refused (45.7132ms)
+✔ vault export-csv rejected receipt is refused (41.3056ms)
+✖ vault export-txt false receipt is refused (44.9639ms)
+✖ vault export-txt resolved receipt is refused (44.0086ms)
+✔ vault export-txt rejected receipt is refused (44.6544ms)
+✖ vault filtered-export false receipt is refused (53.965ms)
+✖ vault filtered-export resolved receipt is refused (48.4927ms)
+✔ vault filtered-export rejected receipt is refused (55.5275ms)
+✖ vault stored-export false receipt is refused (71.2287ms)
+✖ vault stored-export resolved receipt is refused (49.979ms)
+✔ vault stored-export rejected receipt is refused (50.6558ms)
+✖ vault collection-export false receipt is refused (53.5002ms)
+✖ vault collection-export resolved receipt is refused (54.8686ms)
+✔ vault collection-export rejected receipt is refused (56.922ms)
+✖ vault export-json asynchronous receipt does not hold the handler open (83.835ms)
+✖ vault collection-export asynchronous receipt does not hold the handler open (77.9608ms)
+✔ vault export-json dispose ignores late adapter failures (50.5662ms)
+✖ vault export-json invalidateCards ignores late adapter failures (53.7303ms)
+✖ vault export-json cancel ignores late adapter failures (49.8284ms)
+✔ vault collection-export dispose ignores late adapter failures (58.5308ms)
+✖ vault collection-export invalidateCards ignores late adapter failures (52.1772ms)
+✖ vault collection-export cancel ignores late adapter failures (52.406ms)
+✖ vault filter changes while preparing prevent delivery of an outdated filtered CSV (45.3833ms)
+✔ vault unrelated paging does not revoke an unfiltered JSON export (61.5686ms)
+✖ vault retained file and filter handlers are inert after disposal (2.0957ms)
+✔ vault ordinary accepted downloads cover every explicit export path (174.6578ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 10
+ℹ fail 20
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2340.5031
+
+✖ failing tests:
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault export-json false receipt is refused (198.9757ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault export-json resolved receipt is refused (108.6767ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault export-csv false receipt is refused (50.4884ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault export-csv resolved receipt is refused (45.7132ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault export-txt false receipt is refused (44.9639ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault export-txt resolved receipt is refused (44.0086ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault filtered-export false receipt is refused (53.965ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault filtered-export resolved receipt is refused (48.4927ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault stored-export false receipt is refused (71.2287ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault stored-export resolved receipt is refused (49.979ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault collection-export false receipt is refused (53.5002ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:23:82
+✖ vault collection-export resolved receipt is refused (54.8686ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません|書き出せません/. Input:
+  
+  '作業用コピーがあります。保存ボタンで保管できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:25:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '作業用コピーがあります。保存ボタンで保管できます。',
+    expected: /保存できません|書き出せません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:27:57
+✖ vault export-json asynchronous receipt does not hold the handler open (83.835ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:31:63)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:27:57
+✖ vault collection-export asynchronous receipt does not hold the handler open (77.9608ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:31:63)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:34:116
+✖ vault export-json invalidateCards ignores late adapter failures (53.7303ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ファイルを保存できませんでした。ダウンロード先を確認してください。'
+  - '作業用コピーがあります。保存ボタンで保管できます。 カードの状態が変わっています。作業用コピーは過去の記録として保持しています。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:36:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ファイルを保存できませんでした。ダウンロード先を確認してください。',
+    expected: '作業用コピーがあります。保存ボタンで保管できます。 カードの状態が変わっています。作業用コピーは過去の記録として保持しています。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:34:116
+✖ vault export-json cancel ignores late adapter failures (49.8284ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ファイルを保存できませんでした。ダウンロード先を確認してください。'
+  - '処理を中止しました。保存中だった場合は一覧を再読み込みして結果を確認できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:36:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ファイルを保存できませんでした。ダウンロード先を確認してください。',
+    expected: '処理を中止しました。保存中だった場合は一覧を再読み込みして結果を確認できます。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:34:116
+✖ vault collection-export invalidateCards ignores late adapter failures (52.1772ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '保存一覧を書き出せませんでした。保存先を確認してください。'
+  - '作業用コピーがあります。保存ボタンで保管できます。 カードの状態が変わっています。作業用コピーは過去の記録として保持しています。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:36:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '保存一覧を書き出せませんでした。保存先を確認してください。',
+    expected: '作業用コピーがあります。保存ボタンで保管できます。 カードの状態が変わっています。作業用コピーは過去の記録として保持しています。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:34:116
+✖ vault collection-export cancel ignores late adapter failures (52.406ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '保存一覧を書き出せませんでした。保存先を確認してください。'
+  - '処理を中止しました。保存中だった場合は一覧を再読み込みして結果を確認できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:36:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '保存一覧を書き出せませんでした。保存先を確認してください。',
+    expected: '処理を中止しました。保存中だった場合は一覧を再読み込みして結果を確認できます。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:38:1
+✖ vault filter changes while preparing prevent delivery of an outdated filtered CSV (45.3833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:41:54)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-vault-panel-lifecycle.test.js:50:1
+✖ vault retained file and filter handlers are inert after disposal (2.0957ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-vault-panel-lifecycle.test.js:53:29)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
