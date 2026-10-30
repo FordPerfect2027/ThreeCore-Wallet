@@ -2,9 +2,22 @@ import { allowanceFail, AllowanceError, allowanceAddress, allowanceContext, pars
   assertAllowanceContext, allowanceTargetsKey } from "./allowance-targets.js";
 import { validateAllowanceObservation, compareAllowances } from "./allowance-observation.js";
 import { readAllowanceFile, prepareAllowanceFile } from "./allowance-file.js";
-import { readErrorCode } from "./provider-error.js";
+import { readOwnErrorCode } from "./provider-error.js";
+import { captureDataRecord } from "./security-data.js";
+import { createStateNotifier } from "./state-notifier.js";
 
 function context(input) {
+  const captured = {};
+  try {
+    if (!input || typeof input !== "object" || Array.isArray(input)) allowanceFail("ALLOWANCE_CONTEXT");
+    for (const key of ["agent", "chainId", "account", "tokenAddress"]) {
+      const descriptor = Object.getOwnPropertyDescriptor(input, key);
+      if (!descriptor && ["account", "tokenAddress"].includes(key)) continue;
+      if (!descriptor || !Object.hasOwn(descriptor, "value")) allowanceFail("ALLOWANCE_CONTEXT");
+      captured[key] = descriptor.value;
+    }
+  } catch { allowanceFail("ALLOWANCE_CONTEXT"); }
+  input = captured;
   return Object.freeze({ ...allowanceContext(input),
     account: input.account ? allowanceAddress(input.account) : null });
 }
@@ -22,43 +35,63 @@ export function createAllowanceController({ getContext, read, onChange = () => {
     phase: "idle", plan: null, preview: null, observation: null, provenance: null,
     baseline: null, comparison: null, progress: null, file: null, errorCode: null,
   });
+  let revision = 0;
+  const observers = new Set([() => onChange(state)]);
+  const notifier = createStateNotifier({ observers, read: () => Object.freeze({ revision }) });
+  const owns = operation => !disposed && operation.id === generation;
   const notify = patch => {
-    state = Object.freeze({ ...state, ...patch, baseline });
-    try { Promise.resolve(onChange(state)).catch(() => {}); } catch {}
-  };
-  function interrupt() { generation++; active?.abort(); active = null; }
-  function reset(phase = "idle", keepBaseline = false) {
     if (disposed) return;
-    interrupt();
+    state = Object.freeze({ ...state, ...patch, baseline });
+    revision++;
+    notifier.notify();
+  };
+  function interrupt(operation) {
+    const id = ++generation;
+    if (operation) operation.id = id;
+    const abort = active;
+    active = null;
+    abort?.abort();
+    return id;
+  }
+  function reset(phase = "idle", keepBaseline = false, errorCode = null) {
+    if (disposed) return;
+    const id = interrupt();
+    if (disposed || generation !== id) return;
     if (!keepBaseline) baseline = null;
     notify({ phase, plan: null, preview: null, observation: null, provenance: null,
-      comparison: null, progress: null, file: null, errorCode: null });
+      comparison: null, progress: null, file: null, errorCode });
   }
-  function begin(phase, changes = {}) {
+  function begin(operation, phase, changes = {}) {
     if (disposed) allowanceFail("ALLOWANCE_DISPOSED");
-    interrupt();
+    interrupt(operation);
+    if (!owns(operation)) return false;
     const identity = context(getContext());
-    const operation = { id: generation, identity, key: JSON.stringify(identity) };
+    if (!owns(operation)) return false;
+    Object.assign(operation, { identity, key: JSON.stringify(identity) });
     notify({ phase, progress: null, file: null, errorCode: null, comparison: null, ...changes });
-    return operation;
+    return owns(operation);
   }
   function current(operation) {
-    if (disposed || operation.id !== generation) return false;
+    if (!owns(operation)) return false;
     let key;
     try { key = JSON.stringify(context(getContext())); } catch {}
+    if (!owns(operation)) return false;
     if (key !== operation.key) {
-      reset();
-      notify({ phase: "error", errorCode: "ALLOWANCE_CONTEXT_CHANGED" });
+      reset("error", false, "ALLOWANCE_CONTEXT_CHANGED");
       return false;
     }
     return true;
   }
   function failure(operation, error) {
-    if (disposed || (operation && !current(operation))) return false;
-    interrupt();
+    if (disposed || (operation && (!owns(operation) || (operation.key !== null && !current(operation))))) return false;
+    const previous = generation;
+    const errorCode = readOwnErrorCode(error) ?? "ALLOWANCE_UNAVAILABLE";
+    if (disposed || generation !== previous) return false;
+    const id = interrupt();
+    if (disposed || generation !== id) return false;
     notify({ phase: "error", observation: null, provenance: null, preview: null,
       progress: null, comparison: null, file: null,
-      errorCode: readErrorCode(error) ?? "ALLOWANCE_UNAVAILABLE" });
+      errorCode });
     return false;
   }
   return Object.freeze({
@@ -67,37 +100,42 @@ export function createAllowanceController({ getContext, read, onChange = () => {
     editTargets() { reset("idle", true); },
     cancel() { reset("cancelled"); },
     preview(text) {
-      let operation;
+      const operation = { id: generation, key: null };
       try {
-        operation = begin("previewing", { plan: null, preview: null, observation: null, provenance: null });
+        if (!begin(operation, "previewing", { plan: null, preview: null, observation: null, provenance: null })) return false;
         if (!current(operation)) return false;
         const plan = parseAllowanceTargets(text, operation.identity);
         notify({ phase: "preview", preview: Object.freeze({ id: operation.id, key: operation.key, plan }) });
-        return true;
+        return owns(operation);
       } catch (error) { return failure(operation, error); }
     },
     apply() {
       if (disposed) return false;
+      const operation = { id: generation, key: null };
       try {
         const preview = state.preview;
         if (!preview || state.phase !== "preview") allowanceFail("ALLOWANCE_REVIEW_REQUIRED");
-        if (preview.id !== generation || preview.key !== JSON.stringify(context(getContext()))) {
-          reset();
-          allowanceFail("ALLOWANCE_CONTEXT_CHANGED");
+        const identity = context(getContext());
+        if (!owns(operation) || state.preview !== preview) return false;
+        if (preview.id !== generation || preview.key !== JSON.stringify(identity)) {
+          reset("error", false, "ALLOWANCE_CONTEXT_CHANGED");
+          return false;
         }
-        const plan = assertAllowanceContext(preview.plan, getContext());
-        interrupt();
+        const plan = assertAllowanceContext(preview.plan, identity);
+        if (!owns(operation) || state.preview !== preview) return false;
+        interrupt(operation);
+        if (!owns(operation)) return false;
         notify({ phase: "configured", plan, preview: null, observation: null, provenance: null,
           file: null, progress: null, errorCode: null });
-        return true;
-      } catch (error) { return failure(null, error); }
+        return owns(operation);
+      } catch (error) { return failure(operation, error); }
     },
     async inspect() {
-      let operation;
+      const operation = { id: generation, key: null };
       try {
         const plan = state.plan;
         if (!plan) allowanceFail("ALLOWANCE_REVIEW_REQUIRED");
-        operation = begin("reading", { preview: null, observation: null, provenance: null });
+        if (!begin(operation, "reading", { preview: null, observation: null, provenance: null })) return false;
         if (!current(operation)) return false;
         assertAllowanceContext(plan, operation.identity);
         if (!operation.identity.account) allowanceFail("ALLOWANCE_NOT_CONNECTED");
@@ -106,7 +144,9 @@ export function createAllowanceController({ getContext, read, onChange = () => {
         let lastCompleted = -1;
         const allowedStages = ["token", "spender-code", "allowance", "row-complete", "canonical", "complete"];
         const onProgress = value => {
-          if (!current(operation) || state.phase !== "reading" || !value ||
+          if (!current(operation) || state.phase !== "reading") return;
+          try { value = captureDataRecord(value, ["agent", "stage", "completed", "total", "spenderAddress"]); } catch { return; }
+          if (!owns(operation) || state.phase !== "reading" ||
               value.agent !== plan.agent || !allowedStages.includes(value.stage) ||
               value.total !== plan.targets.length || !Number.isInteger(value.completed) ||
               value.completed < 0 || value.completed > value.total || value.completed < lastCompleted) return;
@@ -121,15 +161,16 @@ export function createAllowanceController({ getContext, read, onChange = () => {
         if (["agent", "chainId", "tokenAddress", "account"].some(key =>
           observation.identity[key] !== operation.identity[key]) ||
           allowanceTargetsKey(observation.targets) !== allowanceTargetsKey(plan)) allowanceFail("ALLOWANCE_RESULT_CONTEXT");
+        if (!current(operation)) return false;
         active = null;
         notify({ phase: "ready", observation, provenance: "read", progress: null });
-        return true;
+        return owns(operation);
       } catch (error) { return failure(operation, error); }
     },
     async load(file) {
-      let operation;
+      const operation = { id: generation, key: null };
       try {
-        operation = begin("loading", { preview: null, observation: null, provenance: null });
+        if (!begin(operation, "loading", { preview: null, observation: null, provenance: null })) return false;
         if (!current(operation)) return false;
         const result = await readAllowanceFile(file, { subtle });
         if (!current(operation)) return false;
@@ -141,20 +182,20 @@ export function createAllowanceController({ getContext, read, onChange = () => {
           if (result.payload.identity.agent !== operation.identity.agent) allowanceFail("ALLOWANCE_IMPORT_AGENT");
           notify({ phase: "ready", observation: result.payload, provenance: "imported" });
         }
-        return true;
+        return owns(operation);
       } catch (error) { return failure(operation, error); }
     },
     async prepare(kind) {
-      let operation;
+      const operation = { id: generation, key: null };
       try {
         const payload = kind === "targets" ? state.plan : kind === "observation" ? state.observation : null;
         if (!payload) allowanceFail("ALLOWANCE_NO_RESULT");
-        operation = begin("preparing");
+        if (!begin(operation, "preparing")) return false;
         if (!current(operation)) return false;
         const file = await prepareAllowanceFile(kind, payload, { subtle });
         if (!current(operation)) return false;
         notify({ phase: state.observation ? "ready" : "configured", file });
-        return true;
+        return owns(operation);
       } catch (error) { return failure(operation, error); }
     },
     useAsBaseline() {
@@ -166,21 +207,29 @@ export function createAllowanceController({ getContext, read, onChange = () => {
     },
     compare() {
       if (disposed) return false;
+      const id = generation;
       try {
         if (state.phase !== "ready" || !baseline || !state.observation) allowanceFail("ALLOWANCE_NO_RESULT");
         const comparison = compareAllowances(baseline, state.observation);
         notify({ comparison, errorCode: null });
         return true;
       } catch (error) {
-        notify({ comparison: null, errorCode: readErrorCode(error) ?? "ALLOWANCE_UNAVAILABLE" });
+        const code = readOwnErrorCode(error) ?? "ALLOWANCE_UNAVAILABLE";
+        if (!disposed && generation === id) notify({ comparison: null, errorCode: code });
         return false;
       }
     },
     dispose() {
       if (disposed) return;
-      reset();
       disposed = true;
-      state = Object.freeze({ ...state, phase: "disposed" });
+      observers.clear();
+      generation++;
+      const abort = active;
+      active = null;
+      baseline = null;
+      state = Object.freeze({ phase: "disposed", plan: null, preview: null, observation: null, provenance: null,
+        baseline: null, comparison: null, progress: null, file: null, errorCode: null });
+      abort?.abort();
     },
   });
 }

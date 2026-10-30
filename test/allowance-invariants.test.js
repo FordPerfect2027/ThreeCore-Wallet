@@ -167,12 +167,29 @@ test("allowance reader lifecycle: stalled final canonical lookup can be cancelle
   gate.resolve();
   await tick();
 });
-test("allowance reader lifecycle: response getter cannot silently change account", async () => {
+test("allowance reader lifecycle: response getter is rejected without changing account", async () => {
+  const f = fakeReader();
+  const original = f.session.getContractCode;
+  let getters = 0;
+  f.session.getContractCode = async (address, hash) => {
+    if (address !== S1) return original(address, hash);
+    return { address, get deployed() { getters++; f.state.account = OTHER; return true; } };
+  };
+  const result = await readAllowanceSnapshot(f.session, targets());
+  assert.equal(getters, 0);
+  assert.equal(f.state.account, result.identity.account);
+  assert.equal(result.rows[0].hasCode, null);
+  assert.equal(result.rows[0].codeError, "INVALID_RESPONSE");
+});
+test("allowance reader lifecycle: reflection changing account still aborts observation", async () => {
   const f = fakeReader();
   const original = f.session.getContractCode;
   f.session.getContractCode = async (address, hash) => {
     if (address !== S1) return original(address, hash);
-    return { address, get deployed() { f.state.account = OTHER; return true; } };
+    return new Proxy({ address, deployed: true }, { getOwnPropertyDescriptor(target, key) {
+      f.state.account = OTHER;
+      return Reflect.getOwnPropertyDescriptor(target, key);
+    } });
   };
   await assert.rejects(readAllowanceSnapshot(f.session, targets()), code("ALLOWANCE_SESSION_CHANGED"));
 });
