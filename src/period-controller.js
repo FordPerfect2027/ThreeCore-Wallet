@@ -64,9 +64,11 @@ export function createPeriodController({
     return false;
   }
   function context(selected = agent) { return getContext(selected); }
-  function stage(value, source, requiresNewPlan = false) {
+  const same = id => !disposed && generation === id;
+  function stage(value, source, requiresNewPlan = false, id = generation) {
     const candidate = validatePeriodDraft(value);
     if (requiresNewPlan && periodDraftProgress(candidate).completed === 0) periodFail("PERIOD_LIBRARY_ENTRY");
+    if (!same(id)) return false;
     review = Object.freeze({ candidate, source, revision, sourceEpoch, requiresNewPlan,
       beforeKey: draftKey,
       requiresReplacement: draft !== null && draftKey !== periodDraftKey(candidate) &&
@@ -75,35 +77,49 @@ export function createPeriodController({
     error = null;
     message = "内容を確認して控えに反映してください。";
     emit();
-    return true;
+    return same(id);
   }
   function prepare(input) {
+    let id;
     try {
       if (!available()) return false;
       review = null;
+      id = ++generation;
+      const epoch = sourceEpoch;
+      input = periodShape(input, ["earlierBlock", "laterBlock", "windowSize"]);
       const plan = createPeriodPlan({ ...input, context: context() });
-      return stage(emptyPeriodDraft(plan), "plan");
-    } catch (value) { return fail(value); }
+      if (!same(id)) return false;
+      if (epoch !== sourceEpoch) periodFail("PERIOD_STALE_REVIEW");
+      return stage(emptyPeriodDraft(plan), "plan", false, id);
+    } catch (value) { return id !== undefined && !same(id) ? false : fail(value); }
   }
   function apply(acknowledged = false) {
+    let id;
     try {
       if (!available()) return false;
       if (!review) periodFail("PERIOD_REVIEW_REQUIRED");
-      if (review.revision !== revision || review.beforeKey !== draftKey) {
+      id = generation;
+      const pending = review;
+      if (pending.revision !== revision || pending.beforeKey !== draftKey) {
         periodFail("PERIOD_STALE_REVIEW");
       }
-      if (review.source === "plan" && (review.sourceEpoch !== sourceEpoch ||
-          periodContextKey(context()) !== periodContextKey(review.candidate.plan.context))) {
-        periodFail("PERIOD_STALE_REVIEW");
+      if (pending.requiresReplacement && acknowledged !== true) periodFail("PERIOD_REPLACE_ACK");
+      if (pending.source === "plan") {
+        const currentContext = periodContextKey(context());
+        if (!same(id) || review !== pending) return false;
+        if (pending.sourceEpoch !== sourceEpoch || currentContext !== periodContextKey(pending.candidate.plan.context)) {
+          periodFail("PERIOD_STALE_REVIEW");
+        }
       }
-      if (review.requiresReplacement && acknowledged !== true) periodFail("PERIOD_REPLACE_ACK");
       interrupt();
-      draft = review.candidate;
+      id = generation;
+      if (!same(id) || review !== pending) return false;
+      draft = pending.candidate;
       draftKey = periodDraftKey(draft);
-      origin = review.source === "plan" ? "new" : "imported";
+      origin = pending.source === "plan" ? "new" : "imported";
       agent = draft.plan.context.agent;
       checkedThisSession = false;
-      requiresNewPlan = review.requiresNewPlan || draftKey === rejectedDraftKey;
+      requiresNewPlan = pending.requiresNewPlan || draftKey === rejectedDraftKey;
       if (requiresNewPlan) rejectedDraftKey = draftKey;
       revision++;
       review = null;
@@ -113,27 +129,31 @@ export function createPeriodController({
       message = "控えに反映しました。読み取りの開始は別の操作です。";
       emit();
       return true;
-    } catch (value) { return fail(value); }
+    } catch (value) { return id !== undefined && !same(id) ? false : fail(value); }
   }
   function stageSaved(value, options = {}) {
+    let id;
     try {
       if (!available()) return false;
       review = null;
-      periodShape(options, ["requiresNewPlan"]);
+      id = ++generation;
+      options = periodShape(options, ["requiresNewPlan"]);
       if (typeof options.requiresNewPlan !== "boolean") periodFail("PERIOD_LIBRARY_ENTRY");
-      return stage(value, "library", options.requiresNewPlan);
-    } catch (value) { return fail(value); }
+      return stage(value, "library", options.requiresNewPlan, id);
+    } catch (value) { return id !== undefined && !same(id) ? false : fail(value); }
   }
   function prepareRepair() {
+    let id;
     try {
       if (!available()) return false;
       review = null;
+      id = ++generation;
       if (!draft) periodFail("PERIOD_NO_DRAFT");
       const repair = periodRecovery(draft, error ?? (requiresNewPlan ? "PERIOD_NEW_PLAN_REQUIRED" : null));
       if (!repair.proposedPlan) periodFail("PERIOD_REPAIR_UNAVAILABLE");
       if (periodContextKey(context()) !== periodContextKey(draft.plan.context)) periodFail("PERIOD_CONTEXT_MISMATCH");
-      return stage(emptyPeriodDraft(repair.proposedPlan), "plan");
-    } catch (value) { return fail(value); }
+      return stage(emptyPeriodDraft(repair.proposedPlan), "plan", false, id);
+    } catch (value) { return id !== undefined && !same(id) ? false : fail(value); }
   }
   function cancel() {
     if (disposed) return;
@@ -263,7 +283,7 @@ export function createPeriodController({
       if (disposed || id !== generation) return false;
       const value = await readFile(file);
       if (disposed || id !== generation) return false;
-      return stage(value.draft, "file");
+      return stage(value.draft, "file", false, id);
     } catch (value) {
       if (id !== undefined && (disposed || id !== generation)) return false;
       if (id === undefined) return fail(value);
