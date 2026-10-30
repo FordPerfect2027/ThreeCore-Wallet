@@ -1,0 +1,297 @@
+✖ period start cancelled inside context return never starts reader (19.0868ms)
+✖ period start cancelled inside context throw never starts reader (1.3633ms)
+✖ period cancelled checkpoint reflection cannot advance saved draft (9.8379ms)
+✖ period cancellation during final draft capture prevents complete status (15.8758ms)
+✖ period cancellation inside final context check prevents complete status (12.5161ms)
+✖ period progress accessors are rejected without executing (1.2528ms)
+✖ period progress reflection cannot publish after cancellation (1.8067ms)
+✖ period outer abort retains a newer start and its signal (2.0552ms)
+✖ period recursive observer cancellation is bounded (1.2066ms)
+✖ period reconciliation callback cancellation cannot report delivery success (14.1954ms)
+✖ period observer rejected asynchronous callback is contained (348.9132ms)
+✖ period reconciliation rejected asynchronous callback is contained (449.2544ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 0
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1298.7768
+
+✖ failing tests:
+
+test at test\period-read-lifecycle.test.js:16:3
+✖ period start cancelled inside context return never starts reader (19.0868ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:22:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:16:3
+✖ period start cancelled inside context throw never starts reader (1.3633ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'error' !== 'ready'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:23:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'error',
+    expected: 'ready',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:28:1
+✖ period cancelled checkpoint reflection cannot advance saved draft (9.8379ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   account: '0x1111111111111111111111111111111111111111',
+  +   agent: 'DAT',
+  +   balanceBaseUnits: '100000000000000000000',
+  +   blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +   blockNumber: '30',
+  +   catalogVersion: 'threecore-erc20-2026-10-23',
+  +   chainId: 8453,
+  +   connectionEpoch: 1,
+  +   hasCode: true,
+  +   metadata: {
+  +     decimals: 18,
+  +     name: 'DATCORE',
+  +     symbol: 'DAT',
+  +     totalSupply: '1000000000000000000000000000'
+  +   },
+  +   nativeBalanceBaseUnits: '1000000000000000000',
+  +   readOnly: true,
+  +   schema: 'threecore-token-observation-v1',
+  +   securityAudit: false,
+  +   siteOrigin: 'http://127.0.0.1:4192',
+  +   tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  + }
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:37:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 8453, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', hasCode: true, metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, balanceBaseUnits: '100000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:42:1
+✖ period cancellation during final draft capture prevents complete status (15.8758ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:51:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:56:1
+✖ period cancellation inside final context check prevents complete status (12.5161ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:61:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:66:1
+✖ period progress accessors are rejected without executing (1.2528ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:68:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:72:1
+✖ period progress reflection cannot publish after cancellation (1.8067ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'reading' !== 'ready'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:80:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'reading',
+    expected: 'ready',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:84:1
+✖ period outer abort retains a newer start and its signal (2.0552ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'ready' !== 'reading'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:93:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ready',
+    expected: 'reading',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:99:1
+✖ period recursive observer cancellation is bounded (1.2066ms)
+  AssertionError [ERR_ASSERTION]: received 16 notifications
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:102:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:105:1
+✖ period reconciliation callback cancellation cannot report delivery success (14.1954ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:109:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:114:3
+✖ period observer rejected asynchronous callback is contained (348.9132ms)
+  AssertionError [ERR_ASSERTION]: file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:6
+          onChange:()=>({async then(){throw Error('synthetic observer');}}),
+                                            ^
+  
+  Error: synthetic observer
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:6:43)
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:128:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-read-lifecycle.test.js:114:3
+✖ period reconciliation rejected asynchronous callback is contained (449.2544ms)
+  AssertionError [ERR_ASSERTION]: file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:7
+          stageWorkspace:()=>Promise.reject(Error('synthetic delivery'))});
+                                            ^
+  
+  Error: synthetic delivery
+      at stageWorkspace (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:7:43)
+      at Object.sendToReconciliation (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-controller.js:300:11)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:9:21
+      at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+      at async node:internal/modules/esm/loader:224:26
+      at async ModuleLoader.executeModuleJob (node:internal/modules/esm/loader:221:20)
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-read-lifecycle.test.js:128:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
