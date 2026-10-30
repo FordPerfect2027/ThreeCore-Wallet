@@ -1,6 +1,7 @@
 /** Strict codecs for bounded ERC-20 Transfer observations. No provider access. */
 import { identityObject, identityUnits, validateTokenMetadata } from "./token-identity-codec.js";
 import { catalogToken } from "./token-catalog.js";
+import { captureDataArray } from "./security-data.js";
 
 export const TRANSFER_TOPIC = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 export const ZERO_ADDRESS = "0x" + "0".repeat(40);
@@ -22,9 +23,13 @@ export function transferFail(code) {
 }
 
 export function shape(value, fields) {
-  try { identityObject(value, fields); }
+  try { return identityObject(value, fields); }
   catch { transferFail("TRANSFER_SHAPE"); }
-  return value;
+}
+
+export function captureTransferEvents(value, maximum = MAX_TRANSFER_EVENTS) {
+  try { return captureDataArray(value, maximum); }
+  catch { transferFail("TRANSFER_EVENT_LIMIT"); }
 }
 
 export function transferAddress(value, allowZero = false) {
@@ -71,7 +76,7 @@ function topicAddress(value) {
 }
 
 export function validateTransferContext(value) {
-  shape(value, ["agent", "chainId", "account"]);
+  value = shape(value, ["agent", "chainId", "account"]);
   let token;
   try { token = catalogToken({ agent: value.agent, chainId: value.chainId }); }
   catch { transferFail("TRANSFER_CONTEXT"); }
@@ -87,7 +92,7 @@ export function transferContextKey(value) {
 }
 
 export function validateTransferRequest(value = { fromBlock: null, toBlock: null, lookback: 250 }) {
-  shape(value, ["fromBlock", "toBlock", "lookback"]);
+  value = shape(value, ["fromBlock", "toBlock", "lookback"]);
   const fromBlock = value.fromBlock === null ? null : transferUnits(value.fromBlock);
   const toBlock = value.toBlock === null ? null : transferUnits(value.toBlock);
   if (!Number.isInteger(value.lookback) || value.lookback < 1 || value.lookback > MAX_TRANSFER_BLOCKS) {
@@ -131,7 +136,7 @@ export function transferEventKey(event) {
 }
 
 export function validateTransferEvent(value, context, range) {
-  shape(value, ["blockNumber", "blockHash", "transactionHash", "transactionIndex", "logIndex", "from", "to", "amountBaseUnits"]);
+  value = shape(value, ["blockNumber", "blockHash", "transactionHash", "transactionIndex", "logIndex", "from", "to", "amountBaseUnits"]);
   const event = {
     blockNumber: transferUnits(value.blockNumber),
     blockHash: transferHash(value.blockHash),
@@ -150,16 +155,19 @@ export function validateTransferEvent(value, context, range) {
 }
 
 export function decodeTransferLog(value, context, range, direction) {
-  shape(value, ["address", "topics", "data", "blockNumber", "blockHash", "transactionHash", "transactionIndex", "logIndex", "removed"]);
+  value = shape(value, ["address", "topics", "data", "blockNumber", "blockHash", "transactionHash", "transactionIndex", "logIndex", "removed"]);
   const token = catalogToken({ agent: context.agent, chainId: context.chainId });
   if (transferAddress(value.address) !== token.address) transferFail("TRANSFER_WRONG_TOKEN");
   if (value.removed !== false) transferFail("TRANSFER_REMOVED_LOG");
-  if (!Array.isArray(value.topics) || value.topics.length !== 3 || typeof value.topics[0] !== "string" || value.topics[0].toLowerCase() !== TRANSFER_TOPIC) {
+  let topics;
+  try { topics = captureDataArray(value.topics, 3, 3); }
+  catch { transferFail("TRANSFER_EVENT_TOPIC"); }
+  if (typeof topics[0] !== "string" || topics[0].toLowerCase() !== TRANSFER_TOPIC) {
     transferFail("TRANSFER_EVENT_TOPIC");
   }
   if (typeof value.data !== "string" || !/^0x[\da-f]{64}$/i.test(value.data)) transferFail("TRANSFER_EVENT_DATA");
-  const from = topicAddress(value.topics[1]);
-  const to = topicAddress(value.topics[2]);
+  const from = topicAddress(topics[1]);
+  const to = topicAddress(topics[2]);
   if ((direction === "outgoing" && from !== context.account) ||
       (direction === "incoming" && to !== context.account) ||
       !["incoming", "outgoing"].includes(direction)) transferFail("TRANSFER_FILTER_MISMATCH");
@@ -185,7 +193,7 @@ export function compareTransferOrder(left, right) {
 
 /** Identical self-transfer copies from the two account filters collapse once. */
 export function normalizeTransferEvents(values, context, range) {
-  if (!Array.isArray(values) || values.length > MAX_TRANSFER_EVENTS * 2) transferFail("TRANSFER_EVENT_LIMIT");
+  values = captureTransferEvents(values, MAX_TRANSFER_EVENTS * 2);
   const keys = new Map();
   const positions = new Map();
   const blocks = new Map();
@@ -227,7 +235,7 @@ export function normalizeTransferEvents(values, context, range) {
 }
 
 export function validateTransferSnapshot(value) {
-  shape(value, ["schema", "context", "tokenAddress", "metadata", "range", "fromBlockHash", "toBlockHash", "events",
+  value = shape(value, ["schema", "context", "tokenAddress", "metadata", "range", "fromBlockHash", "toBlockHash", "events",
     "readOnly", "completeHistory", "independentVerification"]);
   if (value.schema !== TRANSFER_SCHEMA || value.readOnly !== true || value.completeHistory !== false ||
       value.independentVerification !== false) transferFail("TRANSFER_SCHEMA");
@@ -240,13 +248,14 @@ export function validateTransferSnapshot(value) {
   if (metadata.symbol !== token.symbol || metadata.name !== token.name || metadata.decimals !== token.decimals) {
     transferFail("TRANSFER_METADATA_MISMATCH");
   }
-  shape(value.range, ["fromBlock", "toBlock"]);
-  const range = validateTransferRange(value.range.fromBlock, value.range.toBlock);
+  const capturedRange = shape(value.range, ["fromBlock", "toBlock"]);
+  const range = validateTransferRange(capturedRange.fromBlock, capturedRange.toBlock);
   const fromBlockHash = transferHash(value.fromBlockHash);
   const toBlockHash = transferHash(value.toBlockHash);
   if (range.fromBlock === range.toBlock && fromBlockHash !== toBlockHash) transferFail("TRANSFER_BLOCK_CHANGED");
-  const events = normalizeTransferEvents(value.events, context, range);
-  if (events.length !== value.events.length) transferFail("TRANSFER_DUPLICATE_FILE_EVENT");
+  const capturedEvents = captureTransferEvents(value.events, MAX_TRANSFER_EVENTS * 2);
+  const events = normalizeTransferEvents(capturedEvents, context, range);
+  if (events.length !== capturedEvents.length) transferFail("TRANSFER_DUPLICATE_FILE_EVENT");
   for (const event of events) {
     if ((event.blockNumber === range.fromBlock && event.blockHash !== fromBlockHash) ||
         (event.blockNumber === range.toBlock && event.blockHash !== toBlockHash)) transferFail("TRANSFER_BLOCK_CHANGED");

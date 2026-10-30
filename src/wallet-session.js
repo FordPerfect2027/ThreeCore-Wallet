@@ -28,7 +28,7 @@ import { readErrorCode } from "./provider-error.js";
 import { METADATA_FIELDS, decodeMetadataField, identityAddress, identityFail,
   validateTokenMetadata } from "./token-identity-codec.js";
 import { catalogToken } from "./token-catalog.js";
-import { TRANSFER_TOPIC, MAX_TRANSFER_EVENTS, addressTopic, decodeTransferLog,
+import { TRANSFER_TOPIC, captureTransferEvents, addressTopic, decodeTransferLog,
   hexQuantity, shape, transferFail, validateTransferRange } from "./transfer-codec.js";
 
 export const AGENT_IDS = Object.freeze(["DAT", "EMA", "CAWELON"]);
@@ -477,7 +477,7 @@ export class ThreeCoreWalletSession {
 
   /** Fixed Transfer topic, registered token and assigned account; no arbitrary log query. */
   async getTransferEvents(options) {
-    shape(options, ["fromBlock", "toBlock", "direction"]);
+    options = shape(options, ["fromBlock", "toBlock", "direction"]);
     const range = validateTransferRange(options.fromBlock, options.toBlock);
     const direction = options.direction;
     if (!["incoming", "outgoing"].includes(direction)) transferFail("TRANSFER_FILTER_MISMATCH");
@@ -495,15 +495,18 @@ export class ThreeCoreWalletSession {
       }],
     });
     this.#assertReadEpoch(epoch);
-    if (!Array.isArray(result) || result.length > MAX_TRANSFER_EVENTS) transferFail("TRANSFER_EVENT_LIMIT");
+    const rows = captureTransferEvents(result);
+    this.#assertReadEpoch(epoch);
     const keys = new Set();
-    return Object.freeze(result.map(value => {
+    const events = rows.map(value => {
       const event = decodeTransferLog(value, context, range, direction);
       const key = event.transactionHash + ":" + event.logIndex;
       if (keys.has(key)) transferFail("TRANSFER_DUPLICATE_RESPONSE");
       keys.add(key);
       return event;
-    }));
+    });
+    this.#assertReadEpoch(epoch);
+    return Object.freeze(events);
   }
 
   async getNativeBalance(blockHash) {

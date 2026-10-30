@@ -1,8 +1,8 @@
 import { catalogToken } from "./token-catalog.js";
 import {
-  MAX_TRANSFER_EVENTS, TRANSFER_SCHEMA, TransferError, hexQuantity,
+  captureTransferEvents, TRANSFER_SCHEMA, TransferError, hexQuantity,
   normalizeTransferEvents, quantity, resolveTransferRange, transferFail,
-  transferHash, validateTransferContext, validateTransferRequest, validateTransferSnapshot,
+  transferHash, validateTransferContext, validateTransferEvent, validateTransferRequest, validateTransferSnapshot,
 } from "./transfer-codec.js";
 
 function binding(session) {
@@ -98,21 +98,23 @@ export async function readTransferSnapshot(session, input, options = {}) {
     progress("token");
     const code = await read(() => session.getContractCode(token.address, end.hash));
     if (!code || code.address !== token.address || code.deployed !== true) transferFail("TRANSFER_TOKEN_UNAVAILABLE");
-    const metadata = await read(() => session.getTokenMetadata(token.address, end.hash));
+    const rawMetadata = await read(() => session.getTokenMetadata(token.address, end.hash));
     // Reject a mismatched token before asking the provider for any events.
-    validateTransferSnapshot({
-      schema: TRANSFER_SCHEMA, context, tokenAddress: token.address, metadata, range,
+    const { metadata } = validateTransferSnapshot({
+      schema: TRANSFER_SCHEMA, context, tokenAddress: token.address, metadata: rawMetadata, range,
       fromBlockHash: start.hash, toBlockHash: end.hash, events: [],
       readOnly: true, completeHistory: false, independentVerification: false,
     });
     const observed = [];
     for (const direction of ["outgoing", "incoming"]) {
       progress(direction);
-      const rows = await read(() => session.getTransferEvents({ ...range, direction }));
-      if (!Array.isArray(rows) || rows.length > MAX_TRANSFER_EVENTS) transferFail("TRANSFER_EVENT_LIMIT");
+      const rows = captureTransferEvents(await read(() => session.getTransferEvents({ ...range, direction })));
+      guard();
       const keys = new Set();
-      for (const row of rows) {
-        if (row?.[direction === "outgoing" ? "from" : "to"] !== context.account) transferFail("TRANSFER_FILTER_MISMATCH");
+      for (const input of rows) {
+        const row = validateTransferEvent(input, context, range);
+        guard();
+        if (row[direction === "outgoing" ? "from" : "to"] !== context.account) transferFail("TRANSFER_FILTER_MISMATCH");
         const key = row.transactionHash + ":" + row.logIndex;
         if (keys.has(key)) transferFail("TRANSFER_DUPLICATE_RESPONSE");
         keys.add(key);
