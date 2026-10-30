@@ -1,0 +1,527 @@
+✖ allowance save: false receipt cannot report success (59.4424ms)
+✖ allowance save: resolved receipt cannot report success (12.5881ms)
+✔ allowance save: rejected receipt cannot report success (8.243ms)
+✖ allowance save-targets: false receipt cannot report success (8.458ms)
+✖ allowance save-targets: resolved receipt cannot report success (4.4883ms)
+✔ allowance save-targets: rejected receipt cannot report success (5.0009ms)
+✖ allowance save: an asynchronous receipt cannot hold the click handler open (34.4557ms)
+✖ allowance save-targets: an asynchronous receipt cannot hold the click handler open (44.6197ms)
+✖ allowance summary disposal prevents later rendering (8.2136ms)
+✖ allowance asynchronous summary rejection is consumed (4.0563ms)
+✔ allowance both ordinary synchronous file handoffs remain available (11.1943ms)
+✖ identity catalog uses captured context values without property gets (8.4028ms)
+✖ identity catalog context accessors are rejected without invocation (1.8407ms)
+✖ identity catalog capture dispose cannot restore a preview (5.3156ms)
+✖ identity catalog capture invalidate cannot restore a preview (2.0088ms)
+✖ identity apply false handoff cannot report success (24.8172ms)
+✖ identity apply resolved handoff cannot report success (3.2793ms)
+✖ identity apply rejected handoff cannot report success (3.1766ms)
+✖ identity save false handoff cannot report success (27.0367ms)
+✖ identity save resolved handoff cannot report success (7.9913ms)
+✖ identity save rejected handoff cannot report success (4.4753ms)
+✖ identity apply callback dispose cannot restore success (1.983ms)
+✖ identity apply callback invalidate cannot restore success (0.8914ms)
+✖ identity save callback dispose cannot restore success (7.7031ms)
+✖ identity save callback invalidate cannot restore success (5.7919ms)
+✖ identity summary observer disposal prevents later rendering (1.4906ms)
+✖ identity asynchronous summary observer failure is consumed (4.011ms)
+✖ identity catalog diagnostic accessors are not invoked (0.7983ms)
+✔ identity normal local address and file handoffs remain available (17.1044ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 4
+ℹ fail 25
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 599.9397
+
+✖ failing tests:
+
+test at test\allowance-panel-lifecycle.test.js:21:100
+✖ allowance save: false receipt cannot report success (59.4424ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-panel-lifecycle.test.js:23:56)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-panel-lifecycle.test.js:21:100
+✖ allowance save: resolved receipt cannot report success (12.5881ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-panel-lifecycle.test.js:23:56)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-panel-lifecycle.test.js:21:100
+✖ allowance save-targets: false receipt cannot report success (8.458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-panel-lifecycle.test.js:23:56)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-panel-lifecycle.test.js:21:100
+✖ allowance save-targets: resolved receipt cannot report success (4.4883ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-panel-lifecycle.test.js:23:56)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-panel-lifecycle.test.js:25:46
+✖ allowance save: an asynchronous receipt cannot hold the click handler open (34.4557ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-panel-lifecycle.test.js:29:63)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-panel-lifecycle.test.js:25:46
+✖ allowance save-targets: an asynchronous receipt cannot hold the click handler open (44.6197ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-panel-lifecycle.test.js:29:63)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-panel-lifecycle.test.js:32:1
+✖ allowance summary disposal prevents later rendering (8.2136ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   '同じブロックで承認額を読み取っています…',
+  +   'true'
+  -   '確認先を設定しました。読取りはまだ行っていません。',
+  -   'false'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-panel-lifecycle.test.js:35:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '同じブロックで承認額を読み取っています…', 'true' ],
+    expected: [ '確認先を設定しました。読取りはまだ行っていません。', 'false' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-panel-lifecycle.test.js:37:1
+✖ allowance asynchronous summary rejection is consumed (4.0563ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-panel-lifecycle.test.js:39:27)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:22:1
+✖ identity catalog uses captured context values without property gets (8.4028ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:24:71)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:26:1
+✖ identity catalog context accessors are rejected without invocation (1.8407ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:28:71)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:30:47
+✖ identity catalog capture dispose cannot restore a preview (5.3156ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      '未照合',
+  +   'DAT / Base Mainnet\n' +
+  +     '正式名称: DATCORE\n' +
+  +     '契約アドレス: 0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5\n' +
+  +     '小数桁: 18\n' +
+  +     'コードと技術資料: https://github.com/FordPerfect2027/DAT\n' +
+  +     '入力されたアドレスは登録情報と一致しています。\n' +
+  +     'この一覧表示だけでは、チェーン上の状態を確認したことにはなりません。',
+  +   false
+  -   '',
+  -   true
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:34:65)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '未照合', 'DAT / Base Mainnet\n正式名称: DATCORE\n契約アドレス: 0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5\n小数桁: 18\nコードと技術資料: https://github.com/FordPerfect2027/DAT\n入力されたアドレスは登録情報と一致しています。\nこの一覧表示だけでは、チェーン上の状態を確認したことにはなりません。', false ],
+    expected: [ '未照合', '', true ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:30:47
+✖ identity catalog capture invalidate cannot restore a preview (2.0088ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      '未照合',
+  +   'DAT / Base Mainnet\n' +
+  +     '正式名称: DATCORE\n' +
+  +     '契約アドレス: 0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5\n' +
+  +     '小数桁: 18\n' +
+  +     'コードと技術資料: https://github.com/FordPerfect2027/DAT\n' +
+  +     '入力されたアドレスは登録情報と一致しています。\n' +
+  +     'この一覧表示だけでは、チェーン上の状態を確認したことにはなりません。',
+  +   false
+  -   '',
+  -   true
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:34:65)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '未照合', 'DAT / Base Mainnet\n正式名称: DATCORE\n契約アドレス: 0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5\n小数桁: 18\nコードと技術資料: https://github.com/FordPerfect2027/DAT\n入力されたアドレスは登録情報と一致しています。\nこの一覧表示だけでは、チェーン上の状態を確認したことにはなりません。', false ],
+    expected: [ '未照合', '', true ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:36:93
+✖ identity apply false handoff cannot report success (24.8172ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:40:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:36:93
+✖ identity apply resolved handoff cannot report success (3.2793ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:40:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:36:93
+✖ identity apply rejected handoff cannot report success (3.1766ms)
+  Error: synthetic rejected handoff
+      at callback (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:37:104)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/token-identity-panel.js:131:7
+      at TestElement.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:11:53)
+      at Object.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:19:62)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:39:72)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at test\token-identity-panel-lifecycle.test.js:36:93
+✖ identity save false handoff cannot report success (27.0367ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:40:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:36:93
+✖ identity save resolved handoff cannot report success (7.9913ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:40:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:36:93
+✖ identity save rejected handoff cannot report success (4.4753ms)
+  Error: synthetic rejected handoff
+      at callback (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:37:104)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/token-identity-panel.js:162:40
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:39:64)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\token-identity-panel-lifecycle.test.js:43:85
+✖ identity apply callback dispose cannot restore success (1.983ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '公式アドレスを入力しました。接続後に照合してください。'
+  - '未照合'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:46:91)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '公式アドレスを入力しました。接続後に照合してください。',
+    expected: '未照合',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:43:85
+✖ identity apply callback invalidate cannot restore success (0.8914ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '公式アドレスを入力しました。接続後に照合してください。'
+  - '未照合'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:46:91)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '公式アドレスを入力しました。接続後に照合してください。',
+    expected: '未照合',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:43:85
+✖ identity save callback dispose cannot restore success (7.7031ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '保存ファイルを用意しました。ブラウザーのダウンロード完了を確認してください。'
+  - '照合結果を表示しています。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:46:91)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '保存ファイルを用意しました。ブラウザーのダウンロード完了を確認してください。',
+    expected: '照合結果を表示しています。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:43:85
+✖ identity save callback invalidate cannot restore success (5.7919ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '保存ファイルを用意しました。ブラウザーのダウンロード完了を確認してください。'
+  - '未照合'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:46:91)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '保存ファイルを用意しました。ブラウザーのダウンロード完了を確認してください。',
+    expected: '未照合',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:48:1
+✖ identity summary observer disposal prevents later rendering (1.4906ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   '同じブロックで契約情報と残高を読み取っています…',
+  +   'true'
+  -   '未照合',
+  -   'false'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:51:27)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '同じブロックで契約情報と残高を読み取っています…', 'true' ],
+    expected: [ '未照合', 'false' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:53:1
+✖ identity asynchronous summary observer failure is consumed (4.011ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:55:27)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\token-identity-panel-lifecycle.test.js:57:1
+✖ identity catalog diagnostic accessors are not invoked (0.7983ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/token-identity-panel-lifecycle.test.js:59:77)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
