@@ -44,7 +44,11 @@ function setup(t) {
   return {field,page,file,snapshot};
 }
 async function finish(field,status) {
-  for(let i=0;i<100 && (field(status).getAttribute("aria-busy")==="true" || walletFileReadService.state().waiting>0);i++)await tick();
+  const deadline=performance.now()+5000;
+  while(field(status).getAttribute("aria-busy")==="true"||walletFileReadService.state().waiting>0){
+    assert.ok(performance.now()<deadline,"Rehearsal file verification did not settle within five seconds");
+    await new Promise(resolve=>setTimeout(resolve,5));
+  }
   await tick();
 }
 
@@ -68,3 +72,15 @@ for(const [id,cancel,ready,status,text] of FORMATS.filter(row=>row[0]!=='workspa
   f.file(id,new File([text],'next.json'));assert.equal(f.field(id+'-note').textContent,'');await finish(f.field,status);assert.equal(f.field(ready).disabled,false);
  });
 }
+test('report picker waits for an asynchronous digest before asserting review readiness',async t=>{
+ const original=crypto.subtle.digest;
+ t.mock.method(crypto.subtle,'digest',async function(...args){
+  await new Promise(resolve=>setTimeout(resolve,40));
+  return Reflect.apply(original,this,args);
+ });
+ const f=setup(t),[id,,,status,text]=FORMATS.find(row=>row[0]==='report-review-file');
+ f.file(id,new File([text],'delayed-report.json'));
+ await finish(f.field,status);
+ assert.equal(f.field('report-review-save').disabled,false);
+ assert.match(f.field('report-review-status').textContent,/再計算と一致/);
+});

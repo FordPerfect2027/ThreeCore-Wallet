@@ -44,7 +44,11 @@ function setup(t) {
   return {field,page,file,snapshot};
 }
 async function finish(field,status) {
-  for(let i=0;i<100 && (field(status).getAttribute("aria-busy")==="true" || walletFileReadService.state().waiting>0);i++)await tick();
+  const deadline=performance.now()+5000;
+  while(field(status).getAttribute("aria-busy")==="true"||walletFileReadService.state().waiting>0){
+    assert.ok(performance.now()<deadline,"Rehearsal file verification did not settle within five seconds");
+    await new Promise(resolve=>setTimeout(resolve,5));
+  }
   await tick();
 }
 
