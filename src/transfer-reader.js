@@ -1,7 +1,7 @@
 import { catalogToken } from "./token-catalog.js";
 import {
   captureTransferEvents, TRANSFER_SCHEMA, TransferError, hexQuantity,
-  normalizeTransferEvents, quantity, resolveTransferRange, transferFail,
+  normalizeTransferEvents, quantity, resolveTransferRange, shape, transferFail,
   transferHash, validateTransferContext, validateTransferEvent, validateTransferRequest, validateTransferSnapshot,
 } from "./transfer-codec.js";
 
@@ -23,7 +23,8 @@ function binding(session) {
 }
 
 function header(value, expected = null) {
-  if (!value || typeof value !== "object") transferFail("TRANSFER_BLOCK_HEADER");
+  try { value = shape(value, ["number", "hash"]); }
+  catch { transferFail("TRANSFER_BLOCK_HEADER"); }
   const number = quantity(value.number);
   const hash = transferHash(value.hash);
   if (expected !== null && number !== expected) transferFail("TRANSFER_BLOCK_HEADER");

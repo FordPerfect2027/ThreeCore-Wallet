@@ -21,6 +21,8 @@ function sessionIdentity(session) {
 }
 
 function header(value) {
+  try { value = identityObject(value, ["number", "hash"]); }
+  catch { identityFail("IDENTITY_BLOCK"); }
   if (!value || typeof value.number !== "string" ||
       !/^0x(?:0|[1-9a-fA-F][0-9a-fA-F]{0,63})$/.test(value.number) ||
       typeof value.hash !== "string" || !/^0x[0-9a-fA-F]{64}$/.test(value.hash)) identityFail("IDENTITY_BLOCK");

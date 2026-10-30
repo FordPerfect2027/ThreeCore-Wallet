@@ -1,6 +1,6 @@
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { identityUnits } from "./token-identity-codec.js";
-import { allowanceFail, AllowanceError, validateAllowanceTargets, assertAllowanceContext } from "./allowance-targets.js";
+import { allowanceFail, allowanceObject, AllowanceError, validateAllowanceTargets, assertAllowanceContext } from "./allowance-targets.js";
 import { ALLOWANCE_OBSERVATION_SCHEMA, validateAllowanceObservation } from "./allowance-observation.js";
 
 function sessionKey(session) {
@@ -82,6 +82,7 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
     for (const target of targets.targets) {
       progress("spender-code", rows.length, target.address);
       const code = await partial(() => session.getContractCode(target.address, identity.blockHash), result => {
+        result = allowanceObject(result, ["address", "deployed"]);
         if (!result || result.address !== target.address || typeof result.deployed !== "boolean") throw Error();
         return result.deployed;
       });
@@ -99,8 +100,11 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
       progress("row-complete", rows.length, target.address);
     }
     progress("canonical", rows.length);
-    const final = await session.getBlockSnapshot("0x" + BigInt(identity.blockNumber).toString(16));
+    const rawFinal = await session.getBlockSnapshot("0x" + BigInt(identity.blockNumber).toString(16));
     guard();
+    let final;
+    try { final = allowanceObject(rawFinal, ["number", "hash"]); }
+    catch { allowanceFail("ALLOWANCE_BLOCK_CHANGED"); }
     if (!final || typeof final.number !== "string" || !/^0x[0-9a-fA-F]{1,64}$/.test(final.number) ||
         BigInt(final.number).toString() !== identity.blockNumber ||
         typeof final.hash !== "string" || final.hash.toLowerCase() !== identity.blockHash) {

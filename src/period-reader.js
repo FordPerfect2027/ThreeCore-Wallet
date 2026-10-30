@@ -1,7 +1,7 @@
 import { validateSiteOrigin } from "./wallet-session.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { readTransferSnapshot } from "./transfer-reader.js";
-import { periodFail, PeriodError, validatePeriodPlan, periodPlanKey, periodContextKey, periodWindows } from "./period-plan.js";
+import { periodFail, PeriodError, periodShape, validatePeriodPlan, periodPlanKey, periodContextKey, periodWindows } from "./period-plan.js";
 import { emptyPeriodDraft, validatePeriodDraft, periodDraftAnchors, periodDraftProgress,
   appendPeriodObservation, appendPeriodRecord } from "./period-draft.js";
 
@@ -24,6 +24,8 @@ function binding(session, plan) {
 }
 
 function validateHeader(value, expected) {
+  try { value = periodShape(value, ["number", "hash"]); }
+  catch { periodFail("PERIOD_HEADER"); }
   if (!value || typeof value.number !== "string" || !/^0x(?:0|[1-9a-fA-F][0-9a-fA-F]{0,63})$/.test(value.number) ||
       BigInt(value.number).toString() !== expected || typeof value.hash !== "string" ||
       !/^0x[0-9a-fA-F]{64}$/.test(value.hash)) periodFail("PERIOD_HEADER");
