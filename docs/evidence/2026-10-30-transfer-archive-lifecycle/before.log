@@ -1,0 +1,438 @@
+✖ archive observer cancellation is bounded (11.7165ms)
+✖ archive disposal closes observers before clearing data (2.8111ms)
+✖ archive malformed asynchronous observer rejection is contained (559.4812ms)
+✖ archive cancel during initial context prevents addition (1.5943ms)
+✖ archive dispose during initial context prevents addition (1.1662ms)
+✖ archive cancellation during add capture prevents publication (1.7144ms)
+✖ archive cancellation during reviewArchive capture prevents publication (1.6652ms)
+✖ archive loading cancellation prevents file reads (148.4384ms)
+✖ archive preparing cancellation prevents hashing (7.0309ms)
+✖ archive apply cancellation does not publish a stale error (2.3967ms)
+✖ archive capture cancelled by its context callback returns no record (40.8246ms)
+✖ archive select cancelled by its context callback returns no record (1.5371ms)
+✖ archive an older apply preserves a newer review (2.0686ms)
+✖ archive diagnostic accessor is never executed (0.6517ms)
+✖ archive diagnostic reflection cancellation does not publish failure (0.5525ms)
+✖ archive cancelled preview notification returns false (19.3486ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 0
+ℹ fail 16
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1422.958
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:10:1
+✖ archive observer cancellation is bounded (11.7165ms)
+  AssertionError [ERR_ASSERTION]: received 16 notifications
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:14:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:16:1
+✖ archive disposal closes observers before clearing data (2.8111ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:20:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:22:1
+✖ archive malformed asynchronous observer rejection is contained (559.4812ms)
+  AssertionError [ERR_ASSERTION]: file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:4
+      const controller=createTransferArchiveController({getContext:context,onChange:()=>({async then(){throw Error('synthetic');}})});
+                                                                                                             ^
+  
+  Error: synthetic
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:4:108)
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:32:46)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:35:3
+✖ archive cancel during initial context prevents addition (1.5943ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:38:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:35:3
+✖ archive dispose during initial context prevents addition (1.1662ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:38:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:42:3
+✖ archive cancellation during add capture prevents publication (1.7144ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:48:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:42:3
+✖ archive cancellation during reviewArchive capture prevents publication (1.6652ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:48:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:52:1
+✖ archive loading cancellation prevents file reads (148.4384ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:57:59)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:59:1
+✖ archive preparing cancellation prevents hashing (7.0309ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:63:83)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:65:1
+✖ archive apply cancellation does not publish a stale error (2.3967ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'TRANSFER_REVIEW_REQUIRED'
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:69:51)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'TRANSFER_REVIEW_REQUIRED',
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:72:3
+✖ archive capture cancelled by its context callback returns no record (40.8246ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   completeHistory: false,
+  +   readOnly: true,
+  +   records: [
+  +     {
+  +       completeHistory: false,
+  +       context: {
+  +         account: '0x1111111111111111111111111111111111111111',
+  +         agent: 'DAT',
+  +         chainId: 8453
+  +       },
+  +       events: [
+  +         {
+  +           amountBaseUnits: '1234567890123456789',
+  +           blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +           blockNumber: '40',
+  +           from: '0x2222222222222222222222222222222222222222',
+  +           logIndex: '0',
+  +           to: '0x1111111111111111111111111111111111111111',
+  +           transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044c',
+  +           transactionIndex: '0'
+  +         }
+  +       ],
+  +       fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +       independentVerification: false,
+  +       metadata: {
+  +         decimals: 18,
+  +         name: 'DATCORE',
+  +         symbol: 'DAT',
+  +         totalSupply: '1000000000000000000000000000'
+  +       },
+  +       range: {
+  +         fromBlock: '30',
+  +         toBlock: '42'
+  +       },
+  +       readOnly: true,
+  +       schema: 'threecore.transfer-observation.v1',
+  +       toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +       tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  +     }
+  +   ],
+  +   schema: 'threecore.transfer-archive.v1'
+  + }
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:76:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.transfer-archive.v1', records: [ [Object] ], readOnly: true, completeHistory: false },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:72:3
+✖ archive select cancelled by its context callback returns no record (1.5371ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   completeHistory: false,
+  +   context: {
+  +     account: '0x1111111111111111111111111111111111111111',
+  +     agent: 'DAT',
+  +     chainId: 8453
+  +   },
+  +   events: [
+  +     {
+  +       amountBaseUnits: '1234567890123456789',
+  +       blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +       blockNumber: '40',
+  +       from: '0x2222222222222222222222222222222222222222',
+  +       logIndex: '0',
+  +       to: '0x1111111111111111111111111111111111111111',
+  +       transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044c',
+  +       transactionIndex: '0'
+  +     }
+  +   ],
+  +   fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +   independentVerification: false,
+  +   metadata: {
+  +     decimals: 18,
+  +     name: 'DATCORE',
+  +     symbol: 'DAT',
+  +     totalSupply: '1000000000000000000000000000'
+  +   },
+  +   range: {
+  +     fromBlock: '30',
+  +     toBlock: '42'
+  +   },
+  +   readOnly: true,
+  +   schema: 'threecore.transfer-observation.v1',
+  +   toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +   tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  + }
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:76:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.transfer-observation.v1', context: { agent: 'DAT', chainId: 8453, account: '0x1111111111111111111111111111111111111111' }, tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, range: { fromBlock: '30', toBlock: '42' }, fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412', events: [ [Object] ], readOnly: true, completeHistory: false, independentVerification: false },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:79:1
+✖ archive an older apply preserves a newer review (2.0686ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'empty' !== 'preview'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:84:51)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'empty',
+    expected: 'preview',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:87:1
+✖ archive diagnostic accessor is never executed (0.6517ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:90:57)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:92:1
+✖ archive diagnostic reflection cancellation does not publish failure (0.5525ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'TRANSFER_ARCHIVE_CONTEXT'
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:96:57)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'TRANSFER_ARCHIVE_CONTEXT',
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-archive-lifecycle-20261030\before.test.js:98:1
+✖ archive cancelled preview notification returns false (19.3486ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-archive-lifecycle-20261030/before.test.js:102:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
