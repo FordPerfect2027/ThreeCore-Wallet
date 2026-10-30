@@ -5,6 +5,7 @@ import { prepareWorkspaceFile, createWorkspaceFileReader, createWorkspaceBackupT
 import { describeWorkspaceOverview, describeWorkspacePreview, describeWorkspaceUndo } from "../src/workspace-overview.js";
 import { offerHistoryDownload } from "./history-files.js";
 import { observeCallbackResult } from "../src/security-callback.js";
+import { readOwnErrorCode } from "../src/provider-error.js";
 
 const ERRORS = Object.freeze({
   WORKSPACE_DUPLICATE: "複数のカードに同じ公開アドレスがあります。別々のアドレスを設定してください。",
@@ -45,11 +46,20 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   let reading = false;
   let saving = false;
   let saveGeneration = 0;
+  let saveAbort = null;
   let inspectingBackup = false;
   let secureStaged = false;
   let secureStaging = false;
   let securePanel;
   const current = id => !disposed && id === saveGeneration;
+  function retireSave() {
+    const id = ++saveGeneration;
+    const previous = saveAbort;
+    saveAbort = null;
+    saving = false;
+    previous?.abort();
+    return id;
+  }
 
   function readCurrentDraft() {
     const result = readDraft();
@@ -71,7 +81,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     return item;
   }
   function listen(item, event, action) {
-    const listener = () => { if (!disposed) action(); };
+    const listener = () => { if (!disposed) return action(); };
     item.addEventListener(event, listener);
     listeners.push(() => item.removeEventListener(event, listener));
   }
@@ -81,15 +91,20 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     return wrapper;
   }
   function errorMessage(error) {
-    return ERRORS[error?.code] ?? "バックアップの形式や入力を確認してください。操作は完了していません。";
+    const code = readOwnErrorCode(error);
+    return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code]
+      : "バックアップの形式や入力を確認してください。操作は完了していません。";
   }
   function handle(action) {
-    try { action(); }
+    const id = saveGeneration;
+    try { return action(); }
     catch (error) {
-      if (disposed) return;
+      if (!current(id)) return;
+      const message = errorMessage(error);
+      if (!current(id)) return;
       clearReview();
-      if (disposed) return;
-      status.textContent = errorMessage(error);
+      if (!current(id)) return;
+      status.textContent = message;
       controls();
     }
   }
@@ -148,7 +163,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     if (!deliver({ text, filename: "ThreeCore-workspace-overview.txt", mimeType: "text/plain;charset=utf-8" }, id)) return;
     status.textContent = "保存状況のダウンロードを開始しました。PCで保存完了を確認してください。";
   });
-  const save = button("save", "3ウォレットの平文バックアップを保存", () => { void saveFile(); });
+  const save = button("save", "3ウォレットの平文バックアップを保存", saveFile);
   const previewButton = button("preview", "一括復元の変更内容を確認", () => {
     if (!stagedReady()) return;
     clearReview();
@@ -171,8 +186,8 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     controls();
   });
   const cancel = button("cancel", "読み込み・プレビューを取り消す", () => {
-    const id = ++saveGeneration;
-    saving = false;
+    const id = retireSave();
+    if (!current(id)) return;
     if (secureStaged || secureStaging) securePanel.protect();
     if (!current(id)) return;
     reader.cancel();
@@ -264,6 +279,8 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   async function saveFile() {
     if (saving || disposed) return;
     const id = ++saveGeneration;
+    const own = new AbortController();
+    saveAbort = own;
     saving = true;
     try {
       controls();
@@ -272,7 +289,8 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
       if (!current(id)) return;
       const key = workspaceDraftKey(draft);
       const workspace = workspaceFromDraft(draft);
-      const prepared = await prepareWorkspaceFile(workspace, { subtle });
+      if (!current(id)) return;
+      const prepared = await prepareWorkspaceFile(workspace, { subtle, signal: own.signal });
       if (!current(id)) return;
       // Reading the destination can run application callbacks, including stop.
       // Identical data is not permission to resume an interrupted export.
@@ -286,8 +304,11 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
       backup.offered(workspace);
       status.textContent = "一括バックアップのダウンロードを開始しました。PCへの保存完了を確認してください。";
     } catch (error) {
-      if (current(id)) status.textContent = errorMessage(error);
+      if (!current(id)) return;
+      const message = errorMessage(error);
+      if (current(id)) status.textContent = message;
     } finally {
+      if (saveAbort === own) saveAbort = null;
       if (current(id)) {
         saving = false;
         updateBackup();
@@ -319,7 +340,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     if (!secureStaged && !secureStaging) return;
     // Protection can arrive while decrypted text is still being handed over.
     // Revoke that handoff before clearing, so its callback cannot refill JSON.
-    if (secureStaging) { saveGeneration++; saving = false; }
+    if (secureStaging && !current(retireSave())) return;
     secureStaged = false;
     json.value = "";
     clearReview();
@@ -335,8 +356,8 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     if (disposed) return false;
     decodeWorkspace(text);
     secureStaged = false;
-    const id = ++saveGeneration;
-    saving = false;
+    const id = retireSave();
+    if (!current(id)) return false;
     reader.cancel();
     if (!current(id)) return false;
     clearReview();
@@ -360,8 +381,8 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     protect() { securePanel.protect(); },
     invalidate() {
       if (disposed) return;
-      const id = ++saveGeneration;
-      saving = false;
+      const id = retireSave();
+      if (!current(id)) return;
       securePanel.invalidate();
       if (!current(id)) return;
       reader.cancel();
@@ -374,7 +395,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     dispose() {
       if (disposed) return;
       disposed = true;
-      saveGeneration++;
+      retireSave();
       securePanel.dispose();
       reader.dispose();
       controller.dispose();
