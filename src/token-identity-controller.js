@@ -3,6 +3,7 @@ import { identityAddress, identityFail, TokenIdentityError } from "./token-ident
 import { validateTokenObservation, assessTokenObservation, compareTokenObservations } from "./token-identity-model.js";
 import { prepareTokenIdentityFile, readTokenIdentityFile } from "./token-identity-report.js";
 import { readErrorCode } from "./provider-error.js";
+import { createStateNotifier } from "./state-notifier.js";
 
 function context(input) {
   const token = catalogToken({ agent: input.agent, chainId: input.chainId });
@@ -22,10 +23,15 @@ export function createTokenIdentityController({ getContext, read, onChange = () 
   let baseline = null;
   let state = Object.freeze({ phase: "idle", observation: null, provenance: null,
     assessment: null, baseline: null, comparison: null, file: null, errorCode: null, progress: null });
+  let revision = 0;
+  const observers = new Set([() => onChange(state)]);
+  const notifier = createStateNotifier({ observers, read: () => Object.freeze({ revision }) });
 
   function publish(patch) {
+    if (disposed) return;
     state = Object.freeze({ ...state, ...patch, baseline });
-    try { onChange(state); } catch { /* A display callback cannot change results. */ }
+    revision++;
+    notifier.notify();
   }
   function invalidate(phase = "idle") {
     if (disposed) return;
@@ -151,9 +157,15 @@ export function createTokenIdentityController({ getContext, read, onChange = () 
     },
     dispose() {
       if (disposed) return;
-      invalidate();
       disposed = true;
-      state = Object.freeze({ ...state, phase: "disposed" });
+      generation++;
+      observers.clear();
+      const abort = active;
+      active = null;
+      baseline = null;
+      state = Object.freeze({ phase: "disposed", observation: null, provenance: null,
+        assessment: null, baseline: null, comparison: null, file: null, errorCode: null, progress: null });
+      abort?.abort();
     },
   });
 }
