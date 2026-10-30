@@ -3,6 +3,8 @@ import { mountComparisonPanel } from "./comparison-panel.js";
 import { mountTokenPlanPanel } from "./token-plan-panel.js";
 import { createPortfolioProgressTracker, portfolioFailureStatus } from "../src/portfolio-progress.js";
 import { encodePortfolioReport, decodePortfolioReport } from "../src/portfolio-report.js";
+import { consumeCallback } from "../src/security-callback.js";
+import { readOwnErrorCode } from "../src/provider-error.js";
 
 const STATUS = Object.freeze({
   idle: "未確認",
@@ -24,6 +26,7 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
   let comparison;
   let tokenPlan;
   let historyPanel;
+  const alive = id => !disposed && id === revision;
 
 
   function element(tag, className, text) {
@@ -38,8 +41,9 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
     return item;
   }
   function listen(target, event, fn) {
-    target.addEventListener(event, fn);
-    listeners.push(() => target.removeEventListener(event, fn));
+    const listener = (...args) => { if (!disposed) return fn(...args); };
+    target.addEventListener(event, listener);
+    listeners.push(() => target.removeEventListener(event, listener));
   }
   const heading = element("h3", "", "複数トークンの残高確認");
   const label = element("label", "", "契約アドレスを1行に1つ入力（最大32件）");
@@ -99,11 +103,14 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
     }
     details.textContent = lines.join("\n");
   }
-  function invalidate(message = STATUS.idle) {
-    revision++;
-    active?.abort();
+  function invalidate(message = STATUS.idle, preserveTokenPlan = false) {
+    if (disposed) return null;
+    const id = ++revision;
+    const previous = active;
     active = null;
     current = null;
+    previous?.abort();
+    if (!alive(id)) return id;
     progress.value = 0;
     progress.max = 1;
 
@@ -111,17 +118,21 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
     report.value = "";
     status.textContent = message;
     comparison?.clearTarget();
-    tokenPlan?.invalidate();
+    if (!alive(id)) return id;
+    if (!preserveTokenPlan) tokenPlan?.invalidate();
+    if (!alive(id)) return id;
     historyPanel?.invalidate();
-    controls();
+    if (alive(id)) controls();
+    return id;
   }
   async function refresh() {
-    if (disposed) return;
-    invalidate();
-    const id = revision;
+    if (disposed || active) return;
+    const id = invalidate();
+    if (!alive(id)) return;
     const abort = new AbortController();
     active = abort;
     const tokens = input.value.split(/\r?\n/).map(value => value.trim()).filter(Boolean);
+    const plannedTokens = tokens.slice();
     status.textContent = STATUS.loading;
     controls(true);
     try {
@@ -129,8 +140,9 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
       const snapshot = await read({ tokens, signal: abort.signal, onProgress(event) {
         if (disposed || id !== revision || abort.signal.aborted || active !== abort) return;
         try {
-          tracker ??= createPortfolioProgressTracker(tokens);
+          tracker ??= createPortfolioProgressTracker(plannedTokens);
           const update = tracker.accept(event);
+          if (!alive(id) || abort.signal.aborted || active !== abort) return;
           progress.max = update.totalTokens;
           progress.value = update.completedTokens;
           status.textContent = update.label;
@@ -139,32 +151,33 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
       if (disposed || id !== revision || abort.signal.aborted) return;
       // Validate the complete shape before any provider-controlled data renders.
       const checked = decodePortfolioReport(encodePortfolioReport(snapshot)).snapshot;
+      if (!alive(id) || abort.signal.aborted || active !== abort) return;
       current = checked;
       show(checked, false);
       status.textContent = STATUS.ready;
     } catch (error) {
-      if (disposed || id !== revision) return;
+      if (!alive(id) || active !== abort) return;
+      const message = abort.signal.aborted ? STATUS.cancelled : portfolioFailureStatus({ code: readOwnErrorCode(error) }).message;
+      if (!alive(id) || active !== abort) return;
       current = null;
       details.textContent = "";
       report.value = "";
-      status.textContent = abort.signal.aborted ? STATUS.cancelled : portfolioFailureStatus(error).message;
+      status.textContent = message;
     } finally {
-      if (!disposed && id === revision) {
+      if (alive(id) && active === abort) {
         active = null;
         controls();
       }
     }
   }
+  function cancelRead(message, preserveTokenPlan = false) {
+    const id = invalidate(message, preserveTokenPlan);
+    if (alive(id)) consumeCallback(() => onCancel?.());
+  }
   listen(inspect, "click", refresh);
-  listen(cancel, "click", () => {
-    invalidate(STATUS.cancelled);
-    onCancel?.();
-  });
-  listen(clear, "click", () => { invalidate(); onCancel?.(); });
-  listen(input, "input", () => {
-    invalidate("入力が変わりました。もう一度確認してください。");
-    onCancel?.();
-  });
+  listen(cancel, "click", () => cancelRead(STATUS.cancelled));
+  listen(clear, "click", () => cancelRead());
+  listen(input, "input", () => cancelRead("入力が変わりました。もう一度確認してください。"));
   listen(exportButton, "click", () => {
     if (!current || active || disposed) return;
     report.value = encodePortfolioReport(current);
@@ -173,7 +186,8 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
   listen(importButton, "click", () => {
     if (disposed || active) return;
     const text = report.value;
-    invalidate();
+    const id = invalidate();
+    if (!alive(id)) return;
     try {
       const imported = decodePortfolioReport(text);
       show(imported.snapshot, true);
@@ -186,9 +200,9 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
   tokenPlan = mountTokenPlanPanel({ document, parent: section, getContext,
     readLines: () => input.value,
     applyLines: value => {
+      if (disposed) return false;
       input.value = value;
-      invalidate("入力リストを変更しました。必要な場合は改めて残高を確認してください。");
-      onCancel?.();
+      cancelRead("入力リストを変更しました。必要な場合は改めて残高を確認してください。", true);
     },
   });
   historyPanel = mountHistoryPanel({ document, parent: section, agent: card.dataset?.agent ?? getContext()?.agent,
@@ -197,11 +211,15 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
   return Object.freeze({
     exportHistory: () => historyPanel.exportArchive(),
     replaceHistory: text => historyPanel.replaceArchive(text),
-    invalidate,
+    invalidate: message => invalidate(message),
     dispose() {
       if (disposed) return;
       disposed = true;
-      invalidate();
+      revision++;
+      const previous = active;
+      active = null;
+      current = null;
+      previous?.abort();
       comparison.dispose();
       tokenPlan.dispose();
       historyPanel.dispose();
