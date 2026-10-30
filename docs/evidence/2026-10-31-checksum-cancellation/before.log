@@ -1,0 +1,325 @@
+✖ pre-cancelled digest does not invoke the crypto adapter (9.7397ms)
+✖ cancel releases the local digest wait before late resolve (21.8682ms)
+✖ cancel releases the local digest wait before late reject (4.8158ms)
+✖ cancel from a digest getter prevents dispatch (1.815ms)
+✖ native aborted state cannot be shadowed by an instance field (14.3817ms)
+✖ timeout ends a stalled digest wait (25.9399ms)
+✖ late completion checks elapsed time even before a delayed timer runs (18.9061ms)
+✖ cancelled native work retains bounded admission until it settles (5.2979ms)
+✖ input-byte admission remains occupied by cancelled crypto work (11.2268ms)
+✔ one cancelled digest does not cancel another (2.1911ms)
+✖ digest option accessors are not executed (1.6636ms)
+✖ invalid digest deadline is rejected: 0 (1.3098ms)
+✖ invalid digest deadline is rejected: -1 (0.5085ms)
+✖ invalid digest deadline is rejected: 30001 (0.4769ms)
+✖ invalid digest deadline is rejected: Infinity (0.4578ms)
+✖ invalid digest deadline is rejected: 5 (0.6051ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 1
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 394.0476
+
+✖ failing tests:
+
+test at test\checksum-cancellation.test.js:10:1
+✖ pre-cancelled digest does not invoke the crypto adapter (9.7397ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: '0000000000000000000000000000000000000000000000000000000000000000'
+  -   code: 'CHECKSUM_CANCELLED'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:12:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: '0000000000000000000000000000000000000000000000000000000000000000' },
+    expected: { code: 'CHECKSUM_CANCELLED' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:17:3
+✖ cancel releases the local digest wait before late resolve (21.8682ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:22:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:17:3
+✖ cancel releases the local digest wait before late reject (4.8158ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:22:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:28:1
+✖ cancel from a digest getter prevents dispatch (1.815ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: '0000000000000000000000000000000000000000000000000000000000000000'
+  -   code: 'CHECKSUM_CANCELLED'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:31:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: '0000000000000000000000000000000000000000000000000000000000000000' },
+    expected: { code: 'CHECKSUM_CANCELLED' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:35:1
+✖ native aborted state cannot be shadowed by an instance field (14.3817ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
+  -   code: 'CHECKSUM_CANCELLED'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:38:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad' },
+    expected: { code: 'CHECKSUM_CANCELLED' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:41:1
+✖ timeout ends a stalled digest wait (25.9399ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:44:33)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:48:1
+✖ late completion checks elapsed time even before a delayed timer runs (18.9061ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: '0000000000000000000000000000000000000000000000000000000000000000'
+  -   code: 'CHECKSUM_TIMEOUT'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:53:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: '0000000000000000000000000000000000000000000000000000000000000000' },
+    expected: { code: 'CHECKSUM_TIMEOUT' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:56:1
+✖ cancelled native work retains bounded admission until it settles (5.2979ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:66:26)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:73:1
+✖ input-byte admission remains occupied by cancelled crypto work (11.2268ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: '0000000000000000000000000000000000000000000000000000000000000000'
+  -   code: 'CHECKSUM_BUSY'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:77:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: '0000000000000000000000000000000000000000000000000000000000000000' },
+    expected: { code: 'CHECKSUM_BUSY' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:91:1
+✖ digest option accessors are not executed (1.6636ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
+  -   code: 'CHECKSUM_OPTIONS'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:93:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad' },
+    expected: { code: 'CHECKSUM_OPTIONS' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:98:3
+✖ invalid digest deadline is rejected: 0 (1.3098ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: '0000000000000000000000000000000000000000000000000000000000000000'
+  -   code: 'CHECKSUM_OPTIONS'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:100:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: '0000000000000000000000000000000000000000000000000000000000000000' },
+    expected: { code: 'CHECKSUM_OPTIONS' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:98:3
+✖ invalid digest deadline is rejected: -1 (0.5085ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: '0000000000000000000000000000000000000000000000000000000000000000'
+  -   code: 'CHECKSUM_OPTIONS'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:100:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: '0000000000000000000000000000000000000000000000000000000000000000' },
+    expected: { code: 'CHECKSUM_OPTIONS' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:98:3
+✖ invalid digest deadline is rejected: 30001 (0.4769ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: '0000000000000000000000000000000000000000000000000000000000000000'
+  -   code: 'CHECKSUM_OPTIONS'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:100:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: '0000000000000000000000000000000000000000000000000000000000000000' },
+    expected: { code: 'CHECKSUM_OPTIONS' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:98:3
+✖ invalid digest deadline is rejected: Infinity (0.4578ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: '0000000000000000000000000000000000000000000000000000000000000000'
+  -   code: 'CHECKSUM_OPTIONS'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:100:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: '0000000000000000000000000000000000000000000000000000000000000000' },
+    expected: { code: 'CHECKSUM_OPTIONS' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\checksum-cancellation.test.js:98:3
+✖ invalid digest deadline is rejected: 5 (0.6051ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   value: '0000000000000000000000000000000000000000000000000000000000000000'
+  -   code: 'CHECKSUM_OPTIONS'
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checksum-cancellation.test.js:100:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { value: '0000000000000000000000000000000000000000000000000000000000000000' },
+    expected: { code: 'CHECKSUM_OPTIONS' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
