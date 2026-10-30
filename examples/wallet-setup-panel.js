@@ -3,6 +3,7 @@ import { setupFromFields, encodeWalletSetup, inspectWalletFields,
 import { prepareWalletSetupFile, createWalletSetupFileReader } from "../src/wallet-setup-file.js";
 import { offerHistoryDownload } from "./history-files.js";
 import { observeCallbackResult } from "../src/security-callback.js";
+import { readOwnErrorCode } from "../src/provider-error.js";
 
 const MESSAGES = Object.freeze({
   SETUP_DUPLICATE: "同じ公開アドレスが複数のカードにあります。別々のアドレスを設定してください。",
@@ -27,6 +28,9 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
   let preview = null;
   let busy = false;
   let generation = 0;
+  let refreshing = false;
+  const current = id => !disposed && generation === id;
+  const diagnostic = (code, fallback) => typeof code === "string" && Object.hasOwn(MESSAGES, code) ? MESSAGES[code] : fallback;
   function readCurrentFields() {
     const value = readFields();
     if (observeCallbackResult(value) !== "synchronous") throw { code: "SETUP_ADAPTER" };
@@ -55,11 +59,15 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
     const item = node("button", "wallet-setup-" + name, text);
     item.type = "button";
     listen(item, "click", () => {
-      try { action(); }
+      const id = ++generation;
+      try { action(id); }
       catch (error) {
-        if (disposed) return;
-        cancelPreview();
-        status.textContent = MESSAGES[error?.code] ?? "設定の形式を確認してください。適用は完了していません。";
+        if (!current(id)) return;
+        const code = readOwnErrorCode(error);
+        if (!current(id)) return;
+        cancelPreview(false);
+        if (!current(id)) return;
+        status.textContent = diagnostic(code, "設定の形式を確認してください。適用は完了していません。");
       }
     });
     return item;
@@ -80,18 +88,19 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
   confirmed.type = "checkbox";
   confirmed.checked = false;
   const checkLabel = label("変更対象の切断・残高表示の消去を確認しました（保存履歴は残ります）", confirmed);
-  const refreshButton = button("refresh", "カードの設定状況を確認", () => {
-    refresh();
-    status.textContent = "設定状況を確認しました。実ウォレットの所有・接続は別途確認してください。";
+  const refreshButton = button("refresh", "カードの設定状況を確認", id => {
+    if (refresh(id) && current(id)) status.textContent = "設定状況を確認しました。実ウォレットの所有・接続は別途確認してください。";
   });
-  const exportButton = button("export", "現在の設定をJSONにする", () => {
+  const exportButton = button("export", "現在の設定をJSONにする", id => {
     reader.cancel();
-    cancelPreview();
-    text.value = encodeWalletSetup(setupFromFields(readCurrentFields()));
+    if (!current(id)) return;
+    cancelPreview(false);
+    const prepared = encodeWalletSetup(setupFromFields(readCurrentFields()));
+    if (!current(id)) return;
+    text.value = prepared;
     status.textContent = "現在の設定をJSONにしました。まだファイル保存はしていません。";
   });
-  const save = button("save", "現在の設定ファイルをダウンロード", () => {
-    const id = ++generation;
+  const save = button("save", "現在の設定ファイルをダウンロード", id => {
     const prepared = prepareWalletSetupFile(setupFromFields(readCurrentFields()));
     if (disposed || generation !== id) return;
     const result = download({ document, prepared });
@@ -100,14 +109,16 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
     if (receipt !== "synchronous" || result === false) throw { code: "SETUP_DOWNLOAD" };
     status.textContent = "設定ファイルのダウンロードを開始しました。PCへの保存完了を確認してください。";
   });
-  const inspect = button("preview", "設定JSONの変更内容をプレビュー", () => {
-    cancelPreview();
-    preview = review.preview(text.value);
+  const inspect = button("preview", "設定JSONの変更内容をプレビュー", id => {
+    cancelPreview(false);
+    const candidate = review.preview(text.value);
+    if (!current(id)) return;
+    preview = candidate;
     details.textContent = describeWalletSetupReview(preview);
     status.textContent = "まだ設定は変更していません。変更内容を確認してください。";
     controls();
   });
-  const apply = button("apply", "確認した設定をカードへ反映", () => {
+  const apply = button("apply", "確認した設定をカードへ反映", id => {
     if (!confirmed.checked || !preview) throw Error("Confirmation required");
     const candidate = preview;
     // Clear UI authorization before entering the application callback.
@@ -115,16 +126,17 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
     confirmed.checked = false;
     controls();
     const result = review.apply(candidate.id, text.value);
-    if (disposed) return;
+    if (!current(id)) return;
     details.textContent = "";
-    refresh();
+    if (!refresh(id) || !current(id)) return;
     status.textContent = result.changedAgents.length
       ? result.changedAgents.join("・") + "の設定を反映しました。必要なカードで改めてWalletを選び、接続してください。"
       : "設定の変更はありませんでした。既存の接続と履歴は維持しています。";
   });
-  const cancel = button("cancel", "プレビューを取り消す", () => {
+  const cancel = button("cancel", "プレビューを取り消す", id => {
     reader.cancel();
-    cancelPreview();
+    if (!current(id)) return;
+    cancelPreview(false);
     status.textContent = "プレビューを取り消しました。カード設定と保存履歴は変更していません。";
   });
   const file = node("input", "wallet-setup-file");
@@ -143,32 +155,43 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
       text.value = state.text;
       status.textContent = "設定JSONを読み込みました。プレビューしてから適用してください。";
     } else if (state.phase === "error") {
-      status.textContent = MESSAGES[state.errorCode] ?? "設定ファイルを読み込めませんでした。カード設定は保持しています。";
+      status.textContent = diagnostic(state.errorCode, "設定ファイルを読み込めませんでした。カード設定は保持しています。");
     }
   } });
   function controls() {
+    if (disposed) return;
     file.disabled = busy;
     inspect.disabled = busy;
     apply.disabled = busy || !preview || !confirmed.checked;
     confirmed.disabled = busy || !preview;
     section.setAttribute("aria-busy", String(busy));
   }
-  function cancelPreview() {
-    generation++;
+  function cancelPreview(advance = true) {
+    if (advance) generation++;
     review.cancel();
     preview = null;
     confirmed.checked = false;
     details.textContent = "";
     controls();
   }
-  function refresh() {
+  function refresh(id = generation) {
+    if (!current(id) || refreshing) return false;
+    refreshing = true;
     try {
       const result = inspectWalletFields(readCurrentFields());
+      if (!current(id)) return false;
       const labels = { missing: "未設定", invalid: "公開アドレスの形式が不正", duplicate: "他のカードと同じアドレス", configured: "設定済み・接続未確認" };
       readiness.textContent = "別アドレスの設定: " + result.configured + " / 3\n" +
         result.entries.map(row => row.agent + ": " + labels[row.status] + " / " +
           (row.chainId === 84532 ? "Base Sepolia" : "Base Mainnet")).join("\n");
-    } catch { readiness.textContent = "カード設定を確認できませんでした。入力を確認してください。"; }
+      return true;
+    } catch {
+      if (current(id)) {
+        readiness.textContent = "カード設定を確認できませんでした。入力を確認してください。";
+        status.textContent = "設定状況を確認できませんでした。各カードの入力を確認してください。";
+      }
+      return false;
+    } finally { refreshing = false; }
   }
   listen(confirmed, "change", controls);
   listen(text, "input", () => {
@@ -195,9 +218,12 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
   return Object.freeze({
     invalidate() {
       if (disposed) return;
+      const id = ++generation;
       reader.cancel();
-      cancelPreview();
-      refresh();
+      if (!current(id)) return;
+      cancelPreview(false);
+      refresh(id);
+      if (!current(id)) return;
       status.textContent = "カード設定が変わりました。必要な場合はプレビューをやり直してください。";
     },
     dispose() {
