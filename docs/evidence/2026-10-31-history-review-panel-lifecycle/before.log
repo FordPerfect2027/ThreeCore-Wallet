@@ -1,0 +1,538 @@
+✖ history review getArchive dispose prevents a stale proposal (32.6707ms)
+✖ history review getArchive invalidate prevents a stale proposal (8.4661ms)
+✖ history review getRevision dispose prevents a stale proposal (5.9918ms)
+✖ history review getRevision invalidate prevents a stale proposal (7.0962ms)
+✖ history review getIncoming dispose prevents a stale proposal (6.9564ms)
+✖ history review getIncoming invalidate prevents a stale proposal (4.9123ms)
+✖ history review getReplace dispose prevents a stale proposal (6.2269ms)
+✖ history review getReplace invalidate prevents a stale proposal (4.8438ms)
+✖ history review getArchive consumes unsupported async sources (41.0706ms)
+✖ history review getRevision consumes unsupported async sources (10.7418ms)
+✖ history review getIncoming consumes unsupported async sources (3.1165ms)
+✖ history review getReplace consumes unsupported async sources (2.5741ms)
+✖ history review save false download receipt is refused (7.1024ms)
+✖ history review save resolved download receipt is refused (3.3933ms)
+✖ history review save rejected download receipt is refused (4.3501ms)
+✖ history review save-text false download receipt is refused (5.2762ms)
+✖ history review save-text resolved download receipt is refused (3.958ms)
+✖ history review save-text rejected download receipt is refused (3.514ms)
+✖ history review save dispose cannot report late download success (2.2891ms)
+✖ history review save invalidate cannot report late download success (2.1692ms)
+✖ history review save-text dispose cannot report late download success (1.913ms)
+✖ history review save-text invalidate cannot report late download success (1.2635ms)
+✖ history review detects a changed archive during source capture (1.7904ms)
+✔ history review keeps both ordinary accepted export formats (0.9887ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 1
+ℹ fail 23
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 522.6726
+
+✖ failing tests:
+
+test at test\history-review-panel-lifecycle.test.js:19:97
+✖ history review getArchive dispose prevents a stale proposal (32.6707ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴読み込みの変更予定（まだ適用していません）\n' +
+  +   '方式: 既存履歴へ追加\n' +
+  +   '現在 1件 → 適用後 2件\n' +
+  +   '新規 1件 / 除外 0件 / 同じ位置の変更 0件\n' +
+  +   '追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n' +
+  +   '適用する場合は、別のプレビューと適用ボタンで内容を確認してください。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:22:67)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴読み込みの変更予定（まだ適用していません）\n方式: 既存履歴へ追加\n現在 1件 → 適用後 2件\n新規 1件 / 除外 0件 / 同じ位置の変更 0件\n追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n適用する場合は、別のプレビューと適用ボタンで内容を確認してください。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:19:97
+✖ history review getArchive invalidate prevents a stale proposal (8.4661ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴読み込みの変更予定（まだ適用していません）\n' +
+  +   '方式: 既存履歴へ追加\n' +
+  +   '現在 1件 → 適用後 2件\n' +
+  +   '新規 1件 / 除外 0件 / 同じ位置の変更 0件\n' +
+  +   '追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n' +
+  +   '適用する場合は、別のプレビューと適用ボタンで内容を確認してください。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:22:67)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴読み込みの変更予定（まだ適用していません）\n方式: 既存履歴へ追加\n現在 1件 → 適用後 2件\n新規 1件 / 除外 0件 / 同じ位置の変更 0件\n追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n適用する場合は、別のプレビューと適用ボタンで内容を確認してください。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:19:97
+✖ history review getRevision dispose prevents a stale proposal (5.9918ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴読み込みの変更予定（まだ適用していません）\n' +
+  +   '方式: 既存履歴へ追加\n' +
+  +   '現在 1件 → 適用後 2件\n' +
+  +   '新規 1件 / 除外 0件 / 同じ位置の変更 0件\n' +
+  +   '追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n' +
+  +   '適用する場合は、別のプレビューと適用ボタンで内容を確認してください。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:22:67)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴読み込みの変更予定（まだ適用していません）\n方式: 既存履歴へ追加\n現在 1件 → 適用後 2件\n新規 1件 / 除外 0件 / 同じ位置の変更 0件\n追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n適用する場合は、別のプレビューと適用ボタンで内容を確認してください。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:19:97
+✖ history review getRevision invalidate prevents a stale proposal (7.0962ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴読み込みの変更予定（まだ適用していません）\n' +
+  +   '方式: 既存履歴へ追加\n' +
+  +   '現在 1件 → 適用後 2件\n' +
+  +   '新規 1件 / 除外 0件 / 同じ位置の変更 0件\n' +
+  +   '追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n' +
+  +   '適用する場合は、別のプレビューと適用ボタンで内容を確認してください。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:22:67)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴読み込みの変更予定（まだ適用していません）\n方式: 既存履歴へ追加\n現在 1件 → 適用後 2件\n新規 1件 / 除外 0件 / 同じ位置の変更 0件\n追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n適用する場合は、別のプレビューと適用ボタンで内容を確認してください。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:19:97
+✖ history review getIncoming dispose prevents a stale proposal (6.9564ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴読み込みの変更予定（まだ適用していません）\n' +
+  +   '方式: 既存履歴へ追加\n' +
+  +   '現在 1件 → 適用後 2件\n' +
+  +   '新規 1件 / 除外 0件 / 同じ位置の変更 0件\n' +
+  +   '追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n' +
+  +   '適用する場合は、別のプレビューと適用ボタンで内容を確認してください。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:22:67)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴読み込みの変更予定（まだ適用していません）\n方式: 既存履歴へ追加\n現在 1件 → 適用後 2件\n新規 1件 / 除外 0件 / 同じ位置の変更 0件\n追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n適用する場合は、別のプレビューと適用ボタンで内容を確認してください。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:19:97
+✖ history review getIncoming invalidate prevents a stale proposal (4.9123ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴読み込みの変更予定（まだ適用していません）\n' +
+  +   '方式: 既存履歴へ追加\n' +
+  +   '現在 1件 → 適用後 2件\n' +
+  +   '新規 1件 / 除外 0件 / 同じ位置の変更 0件\n' +
+  +   '追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n' +
+  +   '適用する場合は、別のプレビューと適用ボタンで内容を確認してください。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:22:67)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴読み込みの変更予定（まだ適用していません）\n方式: 既存履歴へ追加\n現在 1件 → 適用後 2件\n新規 1件 / 除外 0件 / 同じ位置の変更 0件\n追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n適用する場合は、別のプレビューと適用ボタンで内容を確認してください。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:19:97
+✖ history review getReplace dispose prevents a stale proposal (6.2269ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴読み込みの変更予定（まだ適用していません）\n' +
+  +   '方式: 既存履歴へ追加\n' +
+  +   '現在 1件 → 適用後 2件\n' +
+  +   '新規 1件 / 除外 0件 / 同じ位置の変更 0件\n' +
+  +   '追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n' +
+  +   '適用する場合は、別のプレビューと適用ボタンで内容を確認してください。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:22:67)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴読み込みの変更予定（まだ適用していません）\n方式: 既存履歴へ追加\n現在 1件 → 適用後 2件\n新規 1件 / 除外 0件 / 同じ位置の変更 0件\n追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n適用する場合は、別のプレビューと適用ボタンで内容を確認してください。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:19:97
+✖ history review getReplace invalidate prevents a stale proposal (4.8438ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴読み込みの変更予定（まだ適用していません）\n' +
+  +   '方式: 既存履歴へ追加\n' +
+  +   '現在 1件 → 適用後 2件\n' +
+  +   '新規 1件 / 除外 0件 / 同じ位置の変更 0件\n' +
+  +   '追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n' +
+  +   '適用する場合は、別のプレビューと適用ボタンで内容を確認してください。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:22:67)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴読み込みの変更予定（まだ適用していません）\n方式: 既存履歴へ追加\n現在 1件 → 適用後 2件\n新規 1件 / 除外 0件 / 同じ位置の変更 0件\n追加予定: DAT / 0x1111111111111111111111111111111111111111 / chain 84532 / block 43\n適用する場合は、別のプレビューと適用ボタンで内容を確認してください。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:25:42
+✖ history review getArchive consumes unsupported async sources (41.0706ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:27:80)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:25:42
+✖ history review getRevision consumes unsupported async sources (10.7418ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:27:80)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:25:42
+✖ history review getIncoming consumes unsupported async sources (3.1165ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:27:80)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:25:42
+✖ history review getReplace consumes unsupported async sources (2.5741ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:27:80)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:29:93
+✖ history review save false download receipt is refused (7.1024ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始/. Input:
+  
+  '内容確認レポートのダウンロードを開始しました。これは復元用の履歴ファイルではありません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:31:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '内容確認レポートのダウンロードを開始しました。これは復元用の履歴ファイルではありません。',
+    expected: /ダウンロードを開始/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:29:93
+✖ history review save resolved download receipt is refused (3.3933ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始/. Input:
+  
+  '内容確認レポートのダウンロードを開始しました。これは復元用の履歴ファイルではありません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:31:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '内容確認レポートのダウンロードを開始しました。これは復元用の履歴ファイルではありません。',
+    expected: /ダウンロードを開始/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:29:93
+✖ history review save rejected download receipt is refused (4.3501ms)
+  Error: synthetic refusal
+      at download (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:30:115)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-review-panel.js:82:5
+      at action (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-review-panel.js:25:13)
+      at TestElement.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:9:44)
+      at Object.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:16:97)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:31:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at test\history-review-panel-lifecycle.test.js:29:93
+✖ history review save-text false download receipt is refused (5.2762ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始/. Input:
+  
+  '読みやすい確認内容のダウンロードを開始しました。復元用JSONとは別の説明ファイルです。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:31:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読みやすい確認内容のダウンロードを開始しました。復元用JSONとは別の説明ファイルです。',
+    expected: /ダウンロードを開始/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:29:93
+✖ history review save-text resolved download receipt is refused (3.958ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始/. Input:
+  
+  '読みやすい確認内容のダウンロードを開始しました。復元用JSONとは別の説明ファイルです。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:31:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読みやすい確認内容のダウンロードを開始しました。復元用JSONとは別の説明ファイルです。',
+    expected: /ダウンロードを開始/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:29:93
+✖ history review save-text rejected download receipt is refused (3.514ms)
+  Error: synthetic refusal
+      at download (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:30:115)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-review-panel.js:93:5
+      at action (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-review-panel.js:25:13)
+      at TestElement.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:9:44)
+      at Object.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:16:97)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:31:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at test\history-review-panel-lifecycle.test.js:33:85
+✖ history review save dispose cannot report late download success (2.2891ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '内容確認レポートのダウンロードを開始しました。これは復元用の履歴ファイルではありません。'
+  - '保存済みの記録内容を確認しました。履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:35:43)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '内容確認レポートのダウンロードを開始しました。これは復元用の履歴ファイルではありません。',
+    expected: '保存済みの記録内容を確認しました。履歴は変更していません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:33:85
+✖ history review save invalidate cannot report late download success (2.1692ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '内容確認レポートのダウンロードを開始しました。これは復元用の履歴ファイルではありません。'
+  - '保存済みの記録内容を確認しました。履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:35:43)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '内容確認レポートのダウンロードを開始しました。これは復元用の履歴ファイルではありません。',
+    expected: '保存済みの記録内容を確認しました。履歴は変更していません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:33:85
+✖ history review save-text dispose cannot report late download success (1.913ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '読みやすい確認内容のダウンロードを開始しました。復元用JSONとは別の説明ファイルです。'
+  - '保存済みの記録内容を確認しました。履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:35:43)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読みやすい確認内容のダウンロードを開始しました。復元用JSONとは別の説明ファイルです。',
+    expected: '保存済みの記録内容を確認しました。履歴は変更していません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:33:85
+✖ history review save-text invalidate cannot report late download success (1.2635ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '読みやすい確認内容のダウンロードを開始しました。復元用JSONとは別の説明ファイルです。'
+  - '保存済みの記録内容を確認しました。履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:35:43)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読みやすい確認内容のダウンロードを開始しました。復元用JSONとは別の説明ファイルです。',
+    expected: '保存済みの記録内容を確認しました。履歴は変更していません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-review-panel-lifecycle.test.js:37:1
+✖ history review detects a changed archive during source capture (1.7904ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-review-panel-lifecycle.test.js:39:42)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
