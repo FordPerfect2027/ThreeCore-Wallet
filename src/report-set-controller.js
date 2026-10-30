@@ -178,8 +178,8 @@ export function createReportSetController({ storage, onChange = () => {},
       const snapshot = input, options = validateSetExportOptions(optionsValue);
       if (!sameGeneration(token)) return false;
       review = null;
-      return await run("exporting", async same => {
-        const file = format === "json" ? await prepareFile(snapshot) : format === "html" ?
+      return await run("exporting", async (same, signal) => {
+        const file = format === "json" ? await prepareFile(snapshot, { signal }) : format === "html" ?
           reportSetHTML(snapshot, options) : reportSetCSV(snapshot, options);
         if (!same()) return null;
         const delivery = deliver(file);

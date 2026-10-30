@@ -140,7 +140,7 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   async function prepare() {
     if (disposed) return null;
     const id = interrupt();
-    let key;
+    let key, localAborter;
     try {
       key = context(id, true);
       if (!owns(id)) return null;
@@ -148,7 +148,8 @@ export function createTransferArchiveController({ getContext, onChange = () => {
       if (!archive) transferFail("TRANSFER_ARCHIVE_REQUIRED");
       publish({ phase: "preparing", preview: null, error: null });
       if (!current(id, key)) return null;
-      const download = await prepareTransferArchive(archive, { subtle });
+      localAborter = new AbortController(); aborter = localAborter;
+      const download = await prepareTransferArchive(archive, { subtle, signal: localAborter.signal });
       if (!current(id, key)) return null;
       publish({ phase: "ready" });
       return current(id, key) ? download : null;
@@ -156,6 +157,7 @@ export function createTransferArchiveController({ getContext, onChange = () => {
       if (owns(id) && (key === undefined || current(id, key))) fail(id, error);
       return null;
     }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
   function capture() {
     if (disposed || !state.archive) return null;

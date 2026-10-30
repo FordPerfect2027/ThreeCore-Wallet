@@ -339,6 +339,7 @@ export function createPeriodController({
   }
   async function exportFile(kind, deliver) {
     let id;
+    let localAborter;
     try {
       if (!available()) return false;
       if (!draft) periodFail("PERIOD_NO_DRAFT");
@@ -352,8 +353,9 @@ export function createPeriodController({
       if (disposed || id !== generation) return false;
       const before = draft;
       const beforeKey = draftKey;
-      const file = kind === "draft" ? await prepareFile(before) : kind === "reconciliation"
-        ? await prepareReconciliationFile(periodDraftWorkspace(before)) : {
+      localAborter = new AbortController(); aborter = localAborter;
+      const file = kind === "draft" ? await prepareFile(before, { signal: localAborter.signal }) : kind === "reconciliation"
+        ? await prepareReconciliationFile(periodDraftWorkspace(before), { signal: localAborter.signal }) : {
           text: periodReportText(before), filename: "ThreeCore-period-summary.txt", mimeType: "text/plain;charset=utf-8",
         };
       if (disposed || id !== generation) return false;
@@ -374,6 +376,7 @@ export function createPeriodController({
       phase = "error";
       return fail(value);
     }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
   return Object.freeze({ get state() { return state(); }, prepare, prepareRepair, stageSaved, apply, start, cancel, invalidate,
     selectAgent, importFile, exportFile, sendToReconciliation,

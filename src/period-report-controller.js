@@ -189,8 +189,8 @@ export function createPeriodReportController({ storage, onChange = () => {},
       if (!["json", "csv", "html"].includes(format)) periodFail("PERIOD_REPORT_FORMAT");
       if (typeof deliver !== "function") periodFail("PERIOD_REPORT_DELIVERY");
       const source = input; review = null;
-      return await run("exporting", async same => {
-        const file = format === "json" ? await prepareFile(source) :
+      return await run("exporting", async (same, signal) => {
+        const file = format === "json" ? await prepareFile(source, { signal }) :
           format === "csv" ? periodReportCSV(source) : periodReportHTML(source);
         if (!same()) return null;
         const delivery = deliver(file);

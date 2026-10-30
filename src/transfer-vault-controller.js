@@ -266,7 +266,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
       const source = stored ? (await freshSelection(token)).bundle : working;
       if (!alive(token)) return;
       if (!vaultHasRecords(source)) transferFail("TRANSFER_VAULT_EMPTY");
-      if (kind === "json") result = await prepareVaultFile(source, { subtle });
+      if (kind === "json") result = await prepareVaultFile(source, { subtle, signal: active.aborter.signal });
       else if (kind === "filtered-csv") {
         if (stored) transferFail("TRANSFER_VAULT_FILE_KIND");
         const report = vaultFilteredActivityCsv(source, query);
@@ -313,7 +313,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
       const current = validateVaultDocument(await storage.read({ signal: active?.aborter.signal }));
       if (!alive(token)) return;
       if (current.revision !== expected) transferFail("TRANSFER_VAULT_STALE");
-      result = await prepareVaultCollection(current, { subtle });
+      result = await prepareVaultCollection(current, { subtle, signal: active.aborter.signal });
       if (!alive(token)) result = null;
     });
     return completed && !disposed ? result : null;

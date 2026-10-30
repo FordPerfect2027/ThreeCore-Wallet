@@ -237,7 +237,7 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
         else {
           const entries = kind === "all" ? fresh.entries : fresh.entries.filter(row => row.id === selectedKey);
           if (kind === "selected" && !entries.length) periodFail("PERIOD_LIBRARY_NOT_FOUND");
-          file = await prepareFile({ ...fresh, entries });
+          file = await prepareFile({ ...fresh, entries }, { signal });
         }
         if (!same()) return null;
         const delivery = deliver(file);

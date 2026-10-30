@@ -196,12 +196,14 @@ export function createTransferController({ getContext, read, onChange = () => {}
   }
   async function prepare(kind = "json") {
     const operation = { id: generation, key: null };
+    let localAborter;
     try {
       if (!context(operation)) return null;
       if (!state.snapshot || state.phase !== "ready") transferFail("TRANSFER_SNAPSHOT_REQUIRED");
       const snapshot = state.snapshot;
       if (!begin(operation, "preparing") || !current(operation)) return null;
-      const download = await prepareTransferDownload(snapshot, kind, { subtle });
+      localAborter = new AbortController(); aborter = localAborter;
+      const download = await prepareTransferDownload(snapshot, kind, { subtle, signal: localAborter.signal });
       if (!current(operation)) return null;
       publish({ phase: "ready" });
       return current(operation) ? download : null;
@@ -209,6 +211,7 @@ export function createTransferController({ getContext, read, onChange = () => {}
       fail(operation, error);
       return null;
     }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
   function dispose() {
     if (disposed) return;

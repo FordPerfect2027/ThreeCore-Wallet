@@ -301,8 +301,8 @@ export function createReportHistoryController({ storage, getReport, stageReport,
         const fresh = validateReportHistory(await storage.read({ signal }));
         if (!same()) return null;
         if (selected && JSON.stringify(historyEntry(fresh, selected.id)) !== JSON.stringify(selected)) periodFail("PERIOD_HISTORY_STALE");
-        const file = format === "backup" ? await prepareFile(fresh) : format === "selected" ?
-          await preparePeriodReportFile(selected.report) : reportHistoryCSV(fresh, query);
+        const file = format === "backup" ? await prepareFile(fresh, { signal }) : format === "selected" ?
+          await preparePeriodReportFile(selected.report, { signal }) : reportHistoryCSV(fresh, query);
         if (!same()) return null;
         const delivery = deliver(file);
         if (observeCallbackResult(delivery) !== "synchronous") {

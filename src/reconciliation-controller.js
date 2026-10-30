@@ -276,6 +276,7 @@ export function createReconciliationController({
 
   async function exportFile(kind, deliver) {
     let current = operation;
+    let localAborter;
     try {
       if (!available()) return false;
       if (!["json", "summary", "events", "text", "ledger", "windows"].includes(kind) || typeof deliver !== "function") {
@@ -289,8 +290,9 @@ export function createReconciliationController({
       message = "保存ファイルを準備しています。";
       emit();
       if (!owns(current)) return false;
+      localAborter = new AbortController(); aborter = localAborter;
       try {
-        const file = kind === "json" ? await prepareFile(before) : Object.freeze({
+        const file = kind === "json" ? await prepareFile(before, { signal: localAborter.signal }) : Object.freeze({
           text: kind === "ledger" ? reconciliationLedgerCsv(before) : kind === "windows" ? reconciliationWindowsCsv(before) :
             kind === "text" ? reconciliationText(before) : kind === "summary"
             ? reconciliationSummaryCsv(before) : reconciliationEventsCsv(before),
@@ -314,6 +316,7 @@ export function createReconciliationController({
         return fail(value, current);
       }
     } catch (value) { return fail(value, current); }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
 
   return Object.freeze({
