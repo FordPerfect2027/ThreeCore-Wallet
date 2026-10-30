@@ -1,0 +1,135 @@
+
+> @threecore/wallet-connector@0.1.0 test:browser-ui
+> node scripts/test-browser-ui.js
+
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:38
+    catch (error) { throw Error(error.message + "\nRecent browser diagnostics:\n" + errors); }
+                          ^
+
+Error: Browser did not report a completed suite
+Recent browser diagnostics:
+)
+
+[9196:20588:1031/055421.744:INFO:CONSOLE:1260] "PASS — period: collect and export CAWELON through the visible form", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055421.744:INFO:CONSOLE:1243] "Starting synthetic UI case: period: partial provider failure is visible and resumable", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055421.852:INFO:CONSOLE:1260] "PASS — period: partial provider failure is visible and resumable", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055421.852:INFO:CONSOLE:1243] "Starting synthetic UI case: period: native File restore on a fresh panel retains checkpoint and does not read", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055421.930:INFO:CONSOLE:1260] "PASS — period: native File restore on a fresh panel retains checkpoint and does not read", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055421.930:INFO:CONSOLE:1243] "Starting synthetic UI case: period: corrupt native file leaves original evidence unchanged", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.018:INFO:CONSOLE:1260] "PASS — period: corrupt native file leaves original evidence unchanged", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.018:INFO:CONSOLE:1243] "Starting synthetic UI case: period: replacing a collected checkpoint requires a fresh checkbox each time", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.058:INFO:CONSOLE:1260] "PASS — period: replacing a collected checkpoint requires a fresh checkbox each time", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.058:INFO:CONSOLE:1243] "Starting synthetic UI case: period: editing a plan after preview removes the stale confirmation", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.060:INFO:CONSOLE:1260] "PASS — period: editing a plan after preview removes the stale confirmation", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.060:INFO:CONSOLE:1243] "Starting synthetic UI case: period: cancellation disables late checkpoint writes", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.102:INFO:CONSOLE:1260] "PASS — period: cancellation disables late checkpoint writes", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.102:INFO:CONSOLE:1243] "Starting synthetic UI case: period: invalid block and window limits display errors without provider calls", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.104:INFO:CONSOLE:1260] "PASS — period: invalid block and window limits display errors without provider calls", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.104:INFO:CONSOLE:1243] "Starting synthetic UI case: period: actual reconciliation bridge stages one token and preserves the other two", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.297:INFO:CONSOLE:1260] "PASS — period: actual reconciliation bridge stages one token and preserves the other two", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.297:INFO:CONSOLE:1243] "Starting synthetic UI case: period: complete file export can be opened by the existing reconciliation importer", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.361:INFO:CONSOLE:1260] "PASS — period: complete file export can be opened by the existing reconciliation importer", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.361:INFO:CONSOLE:1243] "Starting synthetic UI case: period: complete main wallet routes three distinct connected cards into one reconciliation workspace", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.519:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:61798/test/browser/?ci-report=3af6b534-23cc-4c98-984e-e0c68fd2de66 (0)
+
+[9196:20588:1031/055422.519:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:61798/test/browser/?ci-report=3af6b534-23cc-4c98-984e-e0c68fd2de66 (0)
+
+[9196:20588:1031/055422.519:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:61798/test/browser/?ci-report=3af6b534-23cc-4c98-984e-e0c68fd2de66 (0)
+
+[9196:20588:1031/055422.842:INFO:CONSOLE:1260] "PASS — period: complete main wallet routes three distinct connected cards into one reconciliation workspace", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.842:INFO:CONSOLE:1243] "Starting synthetic UI case: period: known block change disables resumption and offers reviewed restart", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.937:INFO:CONSOLE:1260] "PASS — period: known block change disables resumption and offers reviewed restart", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.937:INFO:CONSOLE:1243] "Starting synthetic UI case: period: log overflow offers a narrower plan without issuing another RPC", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.984:INFO:CONSOLE:1260] "PASS — period: log overflow offers a narrower plan without issuing another RPC", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.984:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: IndexedDB remains unopened until explicit read", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055422.997:INFO:CONSOLE:1260] "PASS — period library: IndexedDB remains unopened until explicit read", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055422.997:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: native persistence survives a closed and reopened adapter", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.018:INFO:CONSOLE:1260] "PASS — period library: native persistence survives a closed and reopened adapter", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.018:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: native transaction isolation rejects a stale simultaneous writer", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.044:INFO:CONSOLE:1260] "PASS — period library: native transaction isolation rejects a stale simultaneous writer", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.045:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: malformed native storage is preserved for recovery", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.057:INFO:CONSOLE:1260] "PASS — period library: malformed native storage is preserved for recovery", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.057:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: aborted native write leaves previous records unchanged", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.082:INFO:CONSOLE:1260] "PASS — period library: aborted native write leaves previous records unchanged", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.082:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: native import conflict is atomic", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.114:INFO:CONSOLE:1260] "PASS — period library: native import conflict is atomic", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.115:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: archive and quarantine survive native reopen", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.164:INFO:CONSOLE:1260] "PASS — period library: archive and quarantine survive native reopen", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.164:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: UI mounts without reading storage or connecting a wallet", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.168:INFO:CONSOLE:1260] "PASS — period library: UI mounts without reading storage or connecting a wallet", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.169:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: visible native save and remount for DAT", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.335:INFO:CONSOLE:1260] "PASS — period library: visible native save and remount for DAT", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.335:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: visible native save and remount for EMA", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.470:INFO:CONSOLE:1260] "PASS — period library: visible native save and remount for EMA", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.470:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: visible native save and remount for CAWELON", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.586:INFO:CONSOLE:1260] "PASS — period library: visible native save and remount for CAWELON", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.586:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: editing a reviewed name cancels the pending save", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.603:INFO:CONSOLE:1260] "PASS — period library: editing a reviewed name cancels the pending save", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.603:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: DOM filtering distinguishes token, archive and blocked status", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.676:INFO:CONSOLE:1260] "PASS — period library: DOM filtering distinguishes token, archive and blocked status", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.676:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: stored markup is rendered as text without executable elements", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.700:INFO:CONSOLE:1260] "PASS — period library: stored markup is rendered as text without executable elements", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.700:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: full JSON backup and reimport retain all four saved states", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+[9196:20588:1031/055423.861:INFO:CONSOLE:1260] "PASS — period library: full JSON backup and reimport retain all four saved states", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1260)
+
+[9196:20588:1031/055423.861:INFO:CONSOLE:1243] "Starting synthetic UI case: period library: selecting and exporting one record retains its restriction marker", source: http://127.0.0.1:61798/test/browser/ui-tests.js (1243)
+
+
+    at runBrowserPage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:38:27)
+    at async file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:80:30
+
+Node.js v24.19.0

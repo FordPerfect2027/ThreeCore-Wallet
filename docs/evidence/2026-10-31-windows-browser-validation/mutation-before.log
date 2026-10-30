@@ -1,0 +1,121 @@
+✖ workspace mutation: cancelled restore requests a fresh review and preserves data (138.5486ms)
+✖ workspace mutation: cancelled undo requests a fresh review and preserves data (129.8647ms)
+✖ workspace mutation: cancellation during writing reports the completed rollback (67.0711ms)
+✖ workspace mutation: failed rollback exposes recovery even after replacement=false (79.9789ms)
+✖ workspace mutation: failed rollback exposes recovery even after replacement=true (94.4418ms)
+✔ workspace mutation: cancellation does not overwrite subsequent stage (52.8646ms)
+✔ workspace mutation: cancellation does not overwrite subsequent input (43.8408ms)
+✔ workspace mutation: cancellation does not overwrite subsequent dispose (41.2481ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 3
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1116.9685
+
+✖ failing tests:
+
+test at test\workspace-mutation-guidance.test.js:22:41
+✖ workspace mutation: cancelled restore requests a fresh review and preserves data (138.5486ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /現在の内容をプレビュー/. Input:
+  
+  '取り消しました。設定と履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-mutation-guidance.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '取り消しました。設定と履歴は変更していません。',
+    expected: /現在の内容をプレビュー/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\workspace-mutation-guidance.test.js:22:41
+✖ workspace mutation: cancelled undo requests a fresh review and preserves data (129.8647ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /現在の内容をプレビュー/. Input:
+  
+  '取り消しました。設定と履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-mutation-guidance.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '取り消しました。設定と履歴は変更していません。',
+    expected: /現在の内容をプレビュー/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\workspace-mutation-guidance.test.js:37:1
+✖ workspace mutation: cancellation during writing reports the completed rollback (67.0711ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /変更していません/. Input:
+  
+  '取り消しました。設定と履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-mutation-guidance.test.js:44:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '取り消しました。設定と履歴は変更していません。',
+    expected: /変更していません/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\workspace-mutation-guidance.test.js:50:42
+✖ workspace mutation: failed rollback exposes recovery even after replacement=false (79.9789ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /操作前の控え/. Input:
+  
+  '取り消しました。設定と履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-mutation-guidance.test.js:60:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '取り消しました。設定と履歴は変更していません。',
+    expected: /操作前の控え/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\workspace-mutation-guidance.test.js:50:42
+✖ workspace mutation: failed rollback exposes recovery even after replacement=true (94.4418ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /操作前の控え/. Input:
+  
+  '入力しました。変更内容をプレビューしてから復元してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-mutation-guidance.test.js:60:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力しました。変更内容をプレビューしてから復元してください。',
+    expected: /操作前の控え/,
+    operator: 'match',
+    diff: 'simple'
+  }

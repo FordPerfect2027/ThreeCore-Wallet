@@ -1,0 +1,9 @@
+Harness correctly rejected synthetic unhandledrejection despite 836 passing UI cases.
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:84
+  if (failures.length) throw Error(failures.join("\n"));
+                             ^
+
+Error: Browser test did not finish cleanly; preserved temporary files must be checked
+    at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:84:30
+
+Node.js v24.19.0

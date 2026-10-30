@@ -1,0 +1,18 @@
+
+> @threecore/wallet-connector@0.1.0 test:browser-ui
+> node scripts/test-browser-ui.js
+
+Browser completion summary: {"suite-status":"failed","tests-count":"836","tests-passed":"833","tests-failed":"3","unexpected-errors":"0","error-kinds":"","injected-fault":""}
+FAIL — workspace: restore cancelled by provider cleanup leaves all three cards untouched: Fresh review instruction missing
+FAIL — workspace: undo cancelled by provider cleanup leaves all three cards untouched: Fresh review instruction missing
+FAIL — workspace: interrupted restore with failed rollback exposes the original recovery copy: Recovery instruction absent
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-result.js:48
+  if (failed !== 0 || passed !== total) throw Error("Browser test cases failed");
+                                              ^
+
+Error: Browser test cases failed
+    at checkBrowserResult (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-result.js:48:47)
+    at checkResult (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:64:16)
+    at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:87:18
+
+Node.js v24.19.0
