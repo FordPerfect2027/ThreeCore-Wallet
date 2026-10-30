@@ -1,0 +1,194 @@
+✖ transfer context and request use captured own fields (7.0978ms)
+✖ transfer event fields are captured before validation (1.2951ms)
+✖ raw log and topic array are captured without live property reads (1.7286ms)
+✖ topic accessors cannot run during log decoding (3.853ms)
+✖ event-array custom iterator cannot turn a real row into empty history (1.9356ms)
+✖ event normalization takes bounded own array entries (1.3278ms)
+✖ snapshot root, range and event array use one captured version (1.1912ms)
+✖ reader does not invoke a response-array iterator that hides rows (9.0576ms)
+✖ reader checks direction on captured data rather than a transient field read (7.9495ms)
+✖ later RPC replies cannot rewrite an event already accepted by the reader (6.3374ms)
+✖ metadata is captured at its accepted read, before the event queries (4.2508ms)
+✖ wallet adapter captures the requested range and direction before any RPC (14.1566ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 0
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 390.308
+
+✖ failing tests:
+
+test at test\transfer-data-capture.test.js:14:1
+✖ transfer context and request use captured own fields (7.0978ms)
+  Error [TransferError]: TRANSFER_CONTEXT
+      at transferFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:21:9)
+      at validateTransferContext (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:77:11)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:15:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    code: 'TRANSFER_CONTEXT'
+  }
+
+test at test\transfer-data-capture.test.js:19:1
+✖ transfer event fields are captured before validation (1.2951ms)
+  Error: Unexpected live read: blockNumber
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:10:9)
+      at validateTransferEvent (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:136:38)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:20:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at test\transfer-data-capture.test.js:23:1
+✖ raw log and topic array are captured without live property reads (1.7286ms)
+  Error: Unexpected live read: address
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:10:9)
+      at decodeTransferLog (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:155:29)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:25:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\transfer-data-capture.test.js:28:1
+✖ topic accessors cannot run during log decoding (3.853ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:31:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'TRANSFER_EVENT_TOPIC' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\transfer-data-capture.test.js:35:1
+✖ event-array custom iterator cannot turn a real row into empty history (1.9356ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:38:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'TRANSFER_EVENT_LIMIT' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\transfer-data-capture.test.js:42:1
+✖ event normalization takes bounded own array entries (1.3278ms)
+  Error: Unexpected live read: length
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:10:9)
+      at normalizeTransferEvents (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:188:40)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:43:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\transfer-data-capture.test.js:46:1
+✖ snapshot root, range and event array use one captured version (1.1912ms)
+  Error: Unexpected live read: schema
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:10:9)
+      at validateTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:232:13)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:49:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\transfer-data-capture.test.js:52:1
+✖ reader does not invoke a response-array iterator that hides rows (9.0576ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:57:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'TRANSFER_EVENT_LIMIT' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\transfer-data-capture.test.js:61:1
+✖ reader checks direction on captured data rather than a transient field read (7.9495ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:67:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'TRANSFER_FILTER_MISMATCH' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\transfer-data-capture.test.js:70:1
+✖ later RPC replies cannot rewrite an event already accepted by the reader (6.3374ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '2' !== '1'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:77:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '2',
+    expected: '1',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-data-capture.test.js:80:1
+✖ metadata is captured at its accepted read, before the event queries (4.2508ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '200' !== '100'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:86:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '200',
+    expected: '100',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-data-capture.test.js:89:1
+✖ wallet adapter captures the requested range and direction before any RPC (14.1566ms)
+  Error: Unexpected live read: fromBlock
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:10:9)
+      at ThreeCoreWalletSession.getTransferEvents (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-session.js:481:49)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-data-capture.test.js:93:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
