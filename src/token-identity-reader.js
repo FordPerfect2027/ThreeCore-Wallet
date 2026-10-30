@@ -3,6 +3,7 @@ import { catalogToken, TOKEN_CATALOG_VERSION, reviewCatalogAddress } from "./tok
 import { identityAddress, identityFail, identityObject, identityUnits, validateTokenMetadata, TokenIdentityError } from "./token-identity-codec.js";
 import { TOKEN_IDENTITY_SCHEMA, validateTokenObservation } from "./token-identity-model.js";
 import { consumeCallback } from "./security-callback.js";
+import { captureOptionalDataFields } from "./security-data.js";
 
 function sessionIdentity(session) {
   const state = session?.state;
@@ -41,6 +42,8 @@ function rawUnits(value) {
  * Aborting ends our wait; it cannot recall the provider's existing request.
  */
 export async function readTokenIdentity(session, options = {}) {
+  try { options = captureOptionalDataFields(options, ["tokenAddress", "timeoutMs", "signal", "onProgress", "blockNumber"]); }
+  catch { identityFail("IDENTITY_OPTIONS"); }
   const initial = sessionIdentity(session);
   const selected = catalogToken({ agent: initial.agent, chainId: initial.chainId });
   const tokenAddress = options.tokenAddress ?? selected.address;

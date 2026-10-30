@@ -1,5 +1,6 @@
 import { catalogToken } from "./token-catalog.js";
 import { consumeCallback } from "./security-callback.js";
+import { captureOptionalDataFields } from "./security-data.js";
 import {
   captureTransferEvents, TRANSFER_SCHEMA, TransferError, hexQuantity,
   normalizeTransferEvents, quantity, resolveTransferRange, shape, transferFail,
@@ -39,6 +40,8 @@ function header(value, expected = null) {
  * and prevents subsequent requests; it does not claim to stop an RPC already sent.
  */
 export async function readTransferSnapshot(session, input, options = {}) {
+  try { options = captureOptionalDataFields(options, ["timeoutMs", "signal", "onProgress"]); }
+  catch { transferFail("TRANSFER_OPTIONS"); }
   const request = validateTransferRequest(input);
   const initial = binding(session);
   const context = initial.context;

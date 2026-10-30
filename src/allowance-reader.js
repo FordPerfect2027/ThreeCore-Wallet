@@ -1,5 +1,6 @@
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { consumeCallback } from "./security-callback.js";
+import { captureOptionalDataFields } from "./security-data.js";
 import { identityUnits } from "./token-identity-codec.js";
 import { allowanceFail, allowanceObject, AllowanceError, validateAllowanceTargets, assertAllowanceContext } from "./allowance-targets.js";
 import { ALLOWANCE_OBSERVATION_SCHEMA, validateAllowanceObservation } from "./allowance-observation.js";
@@ -17,6 +18,8 @@ function sessionKey(session) {
 
 /** Only requested spenders are observed; there is no discovery or approval API. */
 export async function readAllowanceSnapshot(session, input, options = {}) {
+  try { options = captureOptionalDataFields(options, ["timeoutMs", "signal", "onProgress"]); }
+  catch { allowanceFail("ALLOWANCE_OPTIONS"); }
   const targets = validateAllowanceTargets(input);
   const key = sessionKey(session);
   assertAllowanceContext(targets, session.state);

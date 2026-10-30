@@ -1,5 +1,6 @@
 import { validateSiteOrigin } from "./wallet-session.js";
 import { consumeCallback } from "./security-callback.js";
+import { captureOptionalDataFields } from "./security-data.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { readTransferSnapshot } from "./transfer-reader.js";
 import { periodFail, PeriodError, periodShape, validatePeriodPlan, periodPlanKey, periodContextKey, periodWindows } from "./period-plan.js";
@@ -49,6 +50,8 @@ export function periodFailureCode(error) {
  * supplied by that provider; resumption does not authenticate imported records.
  */
 export async function collectPeriod(session, planInput, options = {}) {
+  try { options = captureOptionalDataFields(options, ["draft", "timeoutMs", "stepTimeoutMs", "signal", "onProgress", "onCheckpoint"]); }
+  catch { periodFail("PERIOD_OPTIONS"); }
   const plan = validatePeriodPlan(planInput);
   let draft = options.draft === undefined ? emptyPeriodDraft(plan) : validatePeriodDraft(options.draft);
   let draftProgress = periodDraftProgress(draft);

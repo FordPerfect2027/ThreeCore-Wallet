@@ -26,6 +26,23 @@ export function captureDataRecord(input, names) {
   } catch { fail(); }
 }
 
+/** Capture known optional adapter options once; unrelated properties are ignored. */
+export function captureOptionalDataFields(input, names) {
+  try {
+    if (!input || typeof input !== "object" || Array.isArray(input)) fail();
+    const prototype = Object.getPrototypeOf(input);
+    if (prototype !== null && prototype !== Object.prototype) fail();
+    const result = Object.create(null);
+    for (const key of names) {
+      const descriptor = Object.getOwnPropertyDescriptor(input, key);
+      if (!descriptor) continue;
+      if (!Object.hasOwn(descriptor, "value")) fail();
+      result[key] = descriptor.value;
+    }
+    return Object.freeze(result);
+  } catch { fail(); }
+}
+
 export function captureDataArray(input, maximum, minimum = 0) {
   try {
     if (!Number.isSafeInteger(maximum) || maximum < minimum || minimum < 0 || !Array.isArray(input)) fail();
