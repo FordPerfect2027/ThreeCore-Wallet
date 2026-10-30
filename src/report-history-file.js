@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readFormatFileText } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { periodShape, periodFail } from "./period-plan.js";
@@ -19,12 +20,8 @@ function bounded(text) {
 }
 
 async function digest(document, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") periodFail("PERIOD_CRYPTO");
-  let buffer;
-  try { buffer = await subtle.digest("SHA-256", encoder.encode(JSON.stringify(document))); }
+  try { return await sha256Hex(encoder.encode(JSON.stringify(document)), subtle); }
   catch { periodFail("PERIOD_CRYPTO"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== 32) periodFail("PERIOD_CRYPTO");
-  return Array.from(new Uint8Array(buffer), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
 export async function prepareReportHistoryFile(input, { subtle = globalThis.crypto?.subtle } = {}) {

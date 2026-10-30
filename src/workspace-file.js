@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readSecurityFileBytes } from "./security-file.js";
 import { createStateNotifier } from "./state-notifier.js";
 import { readOwnErrorCode } from "./provider-error.js";
@@ -13,14 +14,9 @@ const FILE_ERRORS = new Set(["WORKSPACE_FILE_SIZE", "WORKSPACE_FILENAME", "WORKS
   "WORKSPACE_AGENT", "WORKSPACE_ADDRESS", "WORKSPACE_CHAIN", "WORKSPACE_TOKENS", "WORKSPACE_HISTORY",
   "WORKSPACE_CONFLICT", "WORKSPACE_DUPLICATE", "WORKSPACE_ENTRIES", "WORKSPACE_SCHEMA"]);
 
-async function digestText(text, subtle = globalThis.crypto?.subtle) {
-  if (!subtle || typeof subtle.digest !== "function") workspaceFail("WORKSPACE_CRYPTO");
-  const bytes = new TextEncoder().encode(text);
-  let result;
-  try { result = new Uint8Array(await subtle.digest("SHA-256", bytes)); }
+async function digestText(text, subtle) {
+  try { return await sha256Hex(new TextEncoder().encode(text), subtle); }
   catch { workspaceFail("WORKSPACE_CRYPTO"); }
-  if (result.length !== 32) workspaceFail("WORKSPACE_CRYPTO");
-  return [...result].map(value => value.toString(16).padStart(2, "0")).join("");
 }
 
 /** A checksum detects corruption, not ownership, authorship or authenticity. */

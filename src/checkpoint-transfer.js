@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readSecurityFileBytes } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { CHECKPOINT_SCHEMA, CHECKPOINT_TOTAL_BYTES, checkpointFail,
@@ -12,13 +13,9 @@ function canonical(entries) {
     entries: validateCheckpointDocument({ schema: CHECKPOINT_SCHEMA, revision: 0, entries }).entries });
 }
 
-async function digest(text, subtle = globalThis.crypto?.subtle) {
-  if (!subtle || typeof subtle.digest !== "function") checkpointFail("CHECKPOINT_CRYPTO");
-  try {
-    const bytes = new Uint8Array(await subtle.digest("SHA-256", new TextEncoder().encode(text)));
-    if (bytes.length !== 32) checkpointFail("CHECKPOINT_CRYPTO");
-    return [...bytes].map(value => value.toString(16).padStart(2, "0")).join("");
-  } catch { checkpointFail("CHECKPOINT_CRYPTO"); }
+async function digest(text, subtle) {
+  try { return await sha256Hex(new TextEncoder().encode(text), subtle); }
+  catch { checkpointFail("CHECKPOINT_CRYPTO"); }
 }
 
 async function verifyEntries(entries, subtle) {

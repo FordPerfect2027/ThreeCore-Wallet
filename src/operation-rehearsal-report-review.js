@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { RehearsalError } from "./operation-rehearsal.js";
 import { reportRehearsalOverview, REHEARSAL_OVERVIEW_SCHEMA } from "./operation-rehearsal-overview.js";
@@ -77,12 +78,9 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
       totalRecords: recomputed.totalRecords, matchedRecords: recomputed.matchedRecords });
   } else fail("UNSUPPORTED_REVIEW_REPORT");
   const comparison = compareValues(recomputed, parsed);
-  if (!subtle || typeof subtle.digest !== "function") fail("REVIEW_HASH_UNAVAILABLE");
-  let bytes;
-  try { bytes = new Uint8Array(await subtle.digest("SHA-256", new TextEncoder().encode(text))); }
+  let sha256;
+  try { sha256 = await sha256Hex(new TextEncoder().encode(text), subtle); }
   catch { fail("REVIEW_HASH_UNAVAILABLE"); }
-  if (bytes.length !== 32) fail("REVIEW_HASH_UNAVAILABLE");
-  const sha256 = Array.from(bytes, byte => byte.toString(16).padStart(2, "0")).join("");
   const expectedHash = expectedSha256?.toLowerCase() ?? null;
   return Object.freeze({ schema: REHEARSAL_REPORT_REVIEW_SCHEMA, simulationOnly: true,
     sourceVerified: false, authorizesExecution: false, inputSchema: parsed.schema, byteLength, sha256,

@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readFormatFileText } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail } from "./transfer-codec.js";
@@ -17,14 +18,10 @@ function bounded(text) {
 }
 
 async function checksum(bundle, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") transferFail("TRANSFER_CRYPTO_UNAVAILABLE");
   const canonical = encoder.encode(JSON.stringify(bundle));
   if (canonical.byteLength > VAULT_BUNDLE_BYTES) transferFail("TRANSFER_VAULT_SIZE");
-  let digest;
-  try { digest = await subtle.digest("SHA-256", canonical); }
-  catch { transferFail("TRANSFER_CRYPTO_FAILED"); }
-  if (!(digest instanceof ArrayBuffer) || digest.byteLength !== 32) transferFail("TRANSFER_CRYPTO_FAILED");
-  return [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+  try { return await sha256Hex(canonical, subtle); }
+  catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
 export async function prepareVaultFile(input, { subtle = globalThis.crypto?.subtle } = {}) {

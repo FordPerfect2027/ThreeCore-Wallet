@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readFormatFileBytes } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { identityObject, identityFail } from "./token-identity-codec.js";
@@ -16,12 +17,8 @@ function bytesFor(text) {
 }
 
 async function checksum(text, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") identityFail("IDENTITY_CRYPTO");
-  let value;
-  try { value = await subtle.digest("SHA-256", bytesFor(text)); }
+  try { return await sha256Hex(bytesFor(text), subtle); }
   catch { identityFail("IDENTITY_CRYPTO"); }
-  if (!(value instanceof ArrayBuffer) || value.byteLength !== 32) identityFail("IDENTITY_CRYPTO");
-  return [...new Uint8Array(value)].map(byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
 export function encodeTokenObservation(input) {

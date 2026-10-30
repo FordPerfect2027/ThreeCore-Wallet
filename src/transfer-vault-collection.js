@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readFormatFileText } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail } from "./transfer-codec.js";
@@ -16,12 +17,8 @@ function checkSize(text) {
       encoder.encode(text).byteLength > VAULT_COLLECTION_LIMIT) transferFail("TRANSFER_VAULT_COLLECTION_SIZE");
 }
 async function checksum(document, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") transferFail("TRANSFER_CRYPTO_UNAVAILABLE");
-  let result;
-  try { result = await subtle.digest("SHA-256", encoder.encode(JSON.stringify(document))); }
-  catch { transferFail("TRANSFER_CRYPTO_FAILED"); }
-  if (!(result instanceof ArrayBuffer) || result.byteLength !== 32) transferFail("TRANSFER_CRYPTO_FAILED");
-  return [...new Uint8Array(result)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+  try { return await sha256Hex(encoder.encode(JSON.stringify(document)), subtle); }
+  catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
 /** Includes archived records. Browser revision is intentionally not portable. */

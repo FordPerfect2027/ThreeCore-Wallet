@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readFormatFileBytes } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { allowanceObject, allowanceFail, validateAllowanceTargets } from "./allowance-targets.js";
@@ -18,12 +19,8 @@ function encode(text) {
   return bytes;
 }
 async function digest(text, subtle) {
-  if (typeof subtle?.digest !== "function") allowanceFail("ALLOWANCE_CRYPTO");
-  let result;
-  try { result = await subtle.digest("SHA-256", encode(text)); }
+  try { return await sha256Hex(encode(text), subtle); }
   catch { allowanceFail("ALLOWANCE_CRYPTO"); }
-  if (!(result instanceof ArrayBuffer) || result.byteLength !== 32) allowanceFail("ALLOWANCE_CRYPTO");
-  return [...new Uint8Array(result)].map(byte => byte.toString(16).padStart(2, "0")).join("");
 }
 const canonical = (kind, payload) => JSON.stringify({ kind, payload }, null, 2);
 

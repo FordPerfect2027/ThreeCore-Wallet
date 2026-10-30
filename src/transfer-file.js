@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readFormatFileText } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail, validateTransferSnapshot } from "./transfer-codec.js";
@@ -8,12 +9,8 @@ export const TRANSFER_FILE_LIMIT = 524288;
 const encoder = new TextEncoder();
 
 async function checksum(text, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") transferFail("TRANSFER_CRYPTO_UNAVAILABLE");
-  let buffer;
-  try { buffer = await subtle.digest("SHA-256", encoder.encode(text)); }
-  catch { transferFail("TRANSFER_CRYPTO_FAILED"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== 32) transferFail("TRANSFER_CRYPTO_FAILED");
-  return [...new Uint8Array(buffer)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+  try { return await sha256Hex(encoder.encode(text), subtle); }
+  catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
 function boundedText(text) {

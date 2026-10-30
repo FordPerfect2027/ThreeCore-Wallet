@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readFormatFileBytes } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { allowanceObject, allowanceFail } from "./allowance-targets.js";
@@ -43,12 +44,8 @@ export function describeAllowanceBundle(input) {
     "\n読込みは表示だけです。接続設定や現在のカードの記録を置き換えません。";
 }
 async function sha256(text, subtle) {
-  if (typeof subtle?.digest !== "function") allowanceFail("ALLOWANCE_CRYPTO");
-  let digest;
-  try { digest = await subtle.digest("SHA-256", new TextEncoder().encode(text)); }
+  try { return await sha256Hex(new TextEncoder().encode(text), subtle); }
   catch { allowanceFail("ALLOWANCE_CRYPTO"); }
-  if (!(digest instanceof ArrayBuffer) || digest.byteLength !== 32) allowanceFail("ALLOWANCE_CRYPTO");
-  return [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, "0")).join("");
 }
 const signature = files => JSON.stringify({ schema: ALLOWANCE_BUNDLE_SCHEMA, files }, null, 2);
 export async function prepareAllowanceBundle(input, { subtle = globalThis.crypto?.subtle } = {}) {

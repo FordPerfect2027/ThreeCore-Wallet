@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readFormatFileText } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import {
@@ -24,14 +25,10 @@ function boundedText(text) {
 }
 
 async function checksum(workspace, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") reconciliationFail("RECONCILIATION_CRYPTO");
   const bytes = encoder.encode(JSON.stringify(workspace));
   if (bytes.byteLength > RECONCILIATION_LIMIT) reconciliationFail("RECONCILIATION_SIZE");
-  let buffer;
-  try { buffer = await subtle.digest("SHA-256", bytes); }
+  try { return await sha256Hex(bytes, subtle); }
   catch { reconciliationFail("RECONCILIATION_CRYPTO"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== 32) reconciliationFail("RECONCILIATION_CRYPTO");
-  return [...new Uint8Array(buffer)].map(value => value.toString(16).padStart(2, "0")).join("");
 }
 
 export async function prepareReconciliationFile(input, { subtle = globalThis.crypto?.subtle } = {}) {

@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readFormatFileText } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { periodShape, periodFail } from "./period-plan.js";
@@ -8,12 +9,8 @@ export const REPORT_SET_FILE_LIMIT = 96 * 1024 * 1024;
 const encoder = new TextEncoder();
 
 async function checksum(input, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") periodFail("PERIOD_CRYPTO");
-  let result;
-  try { result = await subtle.digest("SHA-256", encoder.encode(JSON.stringify(input))); }
+  try { return await sha256Hex(encoder.encode(JSON.stringify(input)), subtle); }
   catch { periodFail("PERIOD_CRYPTO"); }
-  if (!(result instanceof ArrayBuffer) || result.byteLength !== 32) periodFail("PERIOD_CRYPTO");
-  return Array.from(new Uint8Array(result), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
 function boundedText(text) {

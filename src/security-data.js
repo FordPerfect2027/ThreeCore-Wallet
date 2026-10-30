@@ -65,3 +65,26 @@ export function captureDataArray(input, maximum, minimum = 0) {
     return Object.freeze(result);
   } catch { fail(); }
 }
+
+// WebCrypto digest results must be genuine, exactly 32-byte ArrayBuffers.
+// Read their intrinsic size: an own byteLength property is not authoritative.
+const bufferLength = Object.getOwnPropertyDescriptor(ArrayBuffer.prototype, "byteLength").get;
+
+export class ChecksumError extends Error {
+  constructor(code) { super(code); this.name = "ChecksumError"; this.code = code; }
+}
+
+export async function sha256Hex(bytes, subtle = globalThis.crypto?.subtle) {
+  let digest;
+  try { digest = subtle?.digest; }
+  catch { throw new ChecksumError("CHECKSUM_UNAVAILABLE"); }
+  if (typeof digest !== "function") throw new ChecksumError("CHECKSUM_UNAVAILABLE");
+  try {
+    const result = await Reflect.apply(digest, subtle, ["SHA-256", bytes]);
+    if (Reflect.apply(bufferLength, result, []) !== 32) throw new Error();
+    const view = new Uint8Array(result, 0, 32);
+    let hex = "";
+    for (let index = 0; index < 32; index++) hex += view[index].toString(16).padStart(2, "0");
+    return hex;
+  } catch { throw new ChecksumError("CHECKSUM_FAILED"); }
+}
