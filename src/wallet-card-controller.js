@@ -1,3 +1,4 @@
+import { observeCallbackResult } from "./security-callback.js";
 import { observeWalletProvider } from "./provider-events.js";
 import { createWalletReadScope } from "./wallet-read-scope.js";
 import { ThreeCoreWalletSession, normalizeAddress, normalizeChainId } from "./wallet-session.js";
@@ -32,13 +33,8 @@ export function createWalletCardController({
     boundaryDepth++;
     try { return fn(); } finally { boundaryDepth--; }
   }
-  function consume(value) {
-    if (value === null || !["object", "function"].includes(typeof value)) return false;
-    const then = value.then;
-    if (typeof then !== "function") return false;
-    new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
-    return true;
-  }
+  function consume(value) { return observeCallbackResult(value) !== "synchronous"; }
+
   function cleanup(fn) {
     try {
       return boundary(() => { const result = fn(); return !consume(result) && result !== false; });

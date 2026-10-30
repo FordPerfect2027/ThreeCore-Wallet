@@ -1,3 +1,4 @@
+import { consumeCallback } from "./security-callback.js";
 import { readStateRpcJson } from "./state-rpc-http.js";
 import { RPC_SECURITY_LIMITS } from "./security-rpc.js";
 import { captureDataRecord, captureDataArray } from "./security-data.js";
@@ -17,7 +18,7 @@ export class PublicBaseRpcError extends Error {
 }
 function fail(code, message) { throw new PublicBaseRpcError(code, message); }
 function cancel(body) {
-  try { Promise.resolve(body?.cancel()).catch(() => {}); } catch {}
+  consumeCallback(() => body?.cancel());
 }
 
 // This diagnostic reader accepts only the selectors used by the existing

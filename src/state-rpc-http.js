@@ -1,3 +1,4 @@
+import { consumeCallback } from "./security-callback.js";
 import { parseSecurityJson } from "./security-json.js";
 
 export const STATE_RPC_RESPONSE_LIMIT = 2 * 1024 * 1024;
@@ -21,7 +22,7 @@ export async function fetchStateRpcResponse(fetchImpl, url, options) {
   const work = (async () => {
     const response = await fetchImpl(url, options);
     if (signal.aborted || !response?.ok || response.redirected) {
-      try { Promise.resolve(response?.body?.cancel()).catch(() => {}); } catch {}
+      consumeCallback(() => response?.body?.cancel());
       throw new StateRpcError();
     }
     return response;
@@ -35,12 +36,12 @@ export async function fetchStateRpcResponse(fetchImpl, url, options) {
 export async function readStateRpcJson(response, { signal } = {}) {
   if (signal !== undefined && !(signal instanceof AbortSignal)) throw new StateRpcError();
   if (signal?.aborted) {
-    try { Promise.resolve(response.body?.cancel()).catch(() => {}); } catch {}
+    consumeCallback(() => response.body?.cancel());
     throw new StateRpcError();
   }
   const declared = response.headers.get("content-length");
   if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > STATE_RPC_RESPONSE_LIMIT)) {
-    try { Promise.resolve(response.body?.cancel()).catch(() => {}); } catch {}
+    consumeCallback(() => response.body?.cancel());
     throw new StateRpcError();
   }
   const reader = response.body?.getReader();
@@ -50,7 +51,7 @@ export async function readStateRpcJson(response, { signal } = {}) {
   let stopReading;
   const interrupted = new Promise((_, reject) => { stopReading = reject; });
   function abort() {
-    try { Promise.resolve(reader.cancel()).catch(() => {}); } catch {}
+    consumeCallback(() => reader.cancel());
     stopReading(new StateRpcError());
   }
   signal?.addEventListener("abort", abort, { once: true });
@@ -71,10 +72,10 @@ export async function readStateRpcJson(response, { signal } = {}) {
     if (signal?.aborted) abort();
     return await Promise.race([consume(), interrupted]);
   } catch {
-    try { Promise.resolve(reader.cancel()).catch(() => {}); } catch {}
+    consumeCallback(() => reader.cancel());
     throw new StateRpcError();
   } finally {
     signal?.removeEventListener("abort", abort);
-    try { reader.releaseLock(); } catch {}
+    consumeCallback(() => reader.releaseLock());
   }
 }

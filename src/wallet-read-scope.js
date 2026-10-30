@@ -1,3 +1,4 @@
+import { observeCallbackResult, consumeCallback } from "./security-callback.js";
 /**
  * One visible read operation. Cancellation ends local waiting and prevents its
  * next subread. It cannot cancel an RPC already accepted by a wallet extension.
@@ -16,7 +17,7 @@ export function createWalletReadScope({ isCurrent, onSettled = () => {} }) {
   let inspecting = false;
   const pending = new Set();
   function notifySettled() {
-    try { Promise.resolve(onSettled()).catch(() => {}); } catch {}
+    consumeCallback(onSettled);
   }
   function cancel() {
     if (closed) return false;
@@ -33,12 +34,7 @@ export function createWalletReadScope({ isCurrent, onSettled = () => {} }) {
     let accepted = false;
     try {
       const value = isCurrent();
-      if (value && ["object", "function"].includes(typeof value)) {
-        const then = value.then;
-        if (typeof then === "function") {
-          new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
-        }
-      }
+      observeCallbackResult(value);
       accepted = value === true;
     } catch {}
     finally { inspecting = false; }

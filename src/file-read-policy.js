@@ -1,3 +1,4 @@
+import { consumeCallback } from "./security-callback.js";
 /** Limits measure input bytes, not total JavaScript heap usage. */
 export const FILE_SECURITY_LIMIT = 96 * 1024 * 1024;
 export const FILE_READ_TIMEOUT = 30_000;
@@ -26,5 +27,5 @@ export function fileReadCode(error) {
   return "FILE_READ";
 }
 export function consumeCleanup(action) {
-  try { Promise.resolve(action()).catch(() => {}); } catch { /* Best effort. */ }
+  consumeCallback(action);
 }
