@@ -1,4 +1,6 @@
-import { checkpointFail, CheckpointError, checkpointLabel, checkpointId, checkpointTime,
+import { createStateNotifier } from "./state-notifier.js";
+import { readOwnErrorCode } from "./provider-error.js";
+import { checkpointFail, checkpointLabel, checkpointId, checkpointTime,
   checkpointMetadata, validateCheckpointDocument } from "./checkpoint-model.js";
 import { workspaceDraftKey, workspaceFromDraft, workspaceToDraft } from "./workspace-format.js";
 import { prepareWorkspaceFile, decodeWorkspaceFile } from "./workspace-file.js";
@@ -42,8 +44,13 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       canImport: !!importReview && !busy() && !disposed,
     });
   }
+  let notificationRevision = 0;
+  const observers = new Set([() => onChange(state())]);
+  const notifier = createStateNotifier({ observers, read: () => ({ revision: notificationRevision }) });
   function publish() {
-    if (!disposed) consumeCallback(() => onChange(state()));
+    if (disposed) return;
+    notificationRevision++;
+    notifier.notify();
   }
   function handoff(callback, value, code) {
     const receipt = callback(value);
@@ -62,10 +69,13 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     return token;
   }
   function alive(token) { return !disposed && active?.token === token; }
-  function update(value) {
-    document = validateCheckpointDocument(value);
+  function update(value, token) {
+    const captured = validateCheckpointDocument(value);
+    if (!alive(token)) return false;
+    document = captured;
     if (!document.entries.some(entry => entry.id === selectedId)) selectedId = null;
     inspected = null;
+    return true;
   }
   function ready() { if (!document) checkpointFail("CHECKPOINT_REFRESH_REQUIRED"); }
   function selection() {
@@ -83,12 +93,15 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       if (!alive(token)) return false;
       phase = "ready";
       lastAction = action;
-      return true;
+      active = null;
+      publish();
+      return !disposed && generation === token;
     } catch (error) {
       if (token === undefined || !alive(token)) return false;
+      const code = readOwnErrorCode(error);
+      if (!alive(token)) return false;
       phase = "error";
-      errorCode = error instanceof CheckpointError || typeof error?.code === "string"
-        ? error.code : "CHECKPOINT_ACTION";
+      errorCode = typeof code === "string" ? code : "CHECKPOINT_ACTION";
       inspected = null;
       importReview = null;
       // A stale document must be reloaded before any further mutation.
@@ -119,15 +132,16 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       const operation = kind === "purge" ? { kind, id: entry.id, confirmed } :
         kind === "rename" ? { kind, id: entry.id, label: checkpointLabel(label), time: checkpointTime(now()) } :
           { kind, id: entry.id, time: checkpointTime(now()) };
+      if (!alive(token)) return;
       const result = await storage.change(document.revision, operation, { canCommit: () => alive(token), signal: active?.aborter.signal });
-      if (alive(token)) update(result);
+      if (alive(token)) update(result, token);
     });
   }
   return Object.freeze({
     state,
     refresh: () => operate("refresh", async token => {
       const current = await storage.read({ signal: active?.aborter.signal });
-      if (alive(token)) update(current);
+      if (alive(token)) update(current, token);
     }),
     exportCollection: () => operate("exportCollection", async token => {
       ready();
@@ -156,7 +170,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       if (!proposal || proposal.text !== text) checkpointFail("CHECKPOINT_IMPORT_REVIEW");
       const result = await storage.change(proposal.revision, { kind: "import", entries: proposal.entries },
         { canCommit: () => alive(token) && importToken === importGeneration, signal: active?.aborter.signal });
-      if (alive(token)) update(result);
+      if (alive(token)) update(result, token);
     }),
     cancelImport() {
       if (disposed) return;
@@ -182,19 +196,24 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       const prepared = await prepareWorkspaceFile(workspaceFromDraft(draft), { subtle, signal });
       if (!alive(token)) return;
       const id = checkpointId(createId());
+      if (!alive(token)) return;
       const time = checkpointTime(now());
+      if (!alive(token)) return;
       const canCommit = () => {
         if (!alive(token)) return false;
-        if (workspaceDraftKey(readDraft()) !== key) checkpointFail("CHECKPOINT_DRAFT_CHANGED");
+        const currentKey = workspaceDraftKey(readDraft());
+        if (!alive(token)) return false;
+        if (currentKey !== key) checkpointFail("CHECKPOINT_DRAFT_CHANGED");
         return true;
       };
-      canCommit();
+      if (!canCommit()) return;
       const result = await storage.change(document.revision,
         { kind: "save", id, label: normalizedLabel, time, fileText: prepared.text }, { canCommit, signal: active?.aborter.signal });
       if (alive(token)) {
-        update(result);
+        if (!update(result, token)) return;
         selectedId = id;
-        changedDuringSave = workspaceDraftKey(readDraft()) !== key;
+        const changed = workspaceDraftKey(readDraft()) !== key;
+        if (alive(token)) changedDuringSave = changed;
       }
     }),
     select(id) {
@@ -248,6 +267,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     dispose() {
       if (disposed) return;
       disposed = true;
+      observers.clear();
       generation++;
       phase = "disposed";
       const aborter = active?.aborter;
