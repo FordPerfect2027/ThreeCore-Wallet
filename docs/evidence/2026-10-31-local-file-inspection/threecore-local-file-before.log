@@ -1,0 +1,474 @@
+✖ offline bounded read rejects a changed mtimeMs after reading (13.8944ms)
+✖ offline bounded read rejects a changed ctimeMs after reading (1.4652ms)
+✖ offline bounded read rejects a changed ino after reading (4.6534ms)
+✖ offline bounded read rejects a changed dev after reading (1.2576ms)
+✖ offline bounded read rejects a changed size after reading (2.2687ms)
+✖ offline bounded read rejects invalid limit before opening: Infinity (1.593ms)
+✖ offline bounded read rejects invalid limit before opening: NaN (2.2592ms)
+✖ offline bounded read rejects invalid limit before opening: 0 (3.3142ms)
+✖ offline bounded read rejects invalid limit before opening: -1 (6.1441ms)
+✖ offline bounded read rejects invalid limit before opening: 1.5 (1.9149ms)
+✖ offline bounded read rejects invalid limit before opening: 10 (1.1217ms)
+✖ offline bounded read rejects invalid limit before opening: 100663297 (1.0064ms)
+✔ stable offline file retains exact text and closes its handle (4.1355ms)
+✔ offline growth is rejected before returning a truncated success (1.0936ms)
+✔ offline read failure still closes its handle (1.4826ms)
+✖ identity: changed file is rejected before interpreting its contents (13.1045ms)
+✖ allowance: changed file is rejected before interpreting its contents (2.3082ms)
+✖ transfer: changed file is rejected before interpreting its contents (7.0614ms)
+✖ transfer archive: changed file is rejected before interpreting its contents (2.2628ms)
+✖ rehearsal input: changed file is rejected before interpreting its contents (3.5506ms)
+✖ rehearsal workspace: changed file is rejected before interpreting its contents (2.7183ms)
+✖ rehearsal text: changed file is rejected before interpreting its contents (1.3891ms)
+✖ native file changed between reads is rejected without modifying it again (59.3033ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 3
+ℹ fail 20
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 602.2041
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:21:61
+✖ offline bounded read rejects a changed mtimeMs after reading (13.8944ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:22:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /VAULT_CLI_FILE_CHANGED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:21:61
+✖ offline bounded read rejects a changed ctimeMs after reading (1.4652ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:22:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /VAULT_CLI_FILE_CHANGED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:21:61
+✖ offline bounded read rejects a changed ino after reading (4.6534ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:22:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /VAULT_CLI_FILE_CHANGED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:21:61
+✖ offline bounded read rejects a changed dev after reading (1.2576ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:22:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /VAULT_CLI_FILE_CHANGED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:21:61
+✖ offline bounded read rejects a changed size after reading (2.2687ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:22:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /VAULT_CLI_FILE_CHANGED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:24:64
+✖ offline bounded read rejects invalid limit before opening: Infinity (1.593ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /VAULT_CLI_FILE_LIMIT/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:24:64
+✖ offline bounded read rejects invalid limit before opening: NaN (2.2592ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /VAULT_CLI_FILE_LIMIT/. Input:
+  
+  'Error: VAULT_CLI_FILE_CHANGED'
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: VAULT_CLI_FILE_CHANGED
+        at readBoundedVaultPath (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-transfer-vault.js:43:36)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: /VAULT_CLI_FILE_LIMIT/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:24:64
+✖ offline bounded read rejects invalid limit before opening: 0 (3.3142ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /VAULT_CLI_FILE_LIMIT/. Input:
+  
+  'Error: VAULT_CLI_FILE_SIZE'
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: VAULT_CLI_FILE_SIZE
+        at readBoundedVaultPath (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-transfer-vault.js:32:69)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: /VAULT_CLI_FILE_LIMIT/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:24:64
+✖ offline bounded read rejects invalid limit before opening: -1 (6.1441ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /VAULT_CLI_FILE_LIMIT/. Input:
+  
+  'Error: VAULT_CLI_FILE_SIZE'
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: VAULT_CLI_FILE_SIZE
+        at readBoundedVaultPath (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-transfer-vault.js:32:69)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: /VAULT_CLI_FILE_LIMIT/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:24:64
+✖ offline bounded read rejects invalid limit before opening: 1.5 (1.9149ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /VAULT_CLI_FILE_LIMIT/. Input:
+  
+  'Error: VAULT_CLI_FILE_SIZE'
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: VAULT_CLI_FILE_SIZE
+        at readBoundedVaultPath (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-transfer-vault.js:32:69)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: /VAULT_CLI_FILE_LIMIT/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:24:64
+✖ offline bounded read rejects invalid limit before opening: 10 (1.1217ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /VAULT_CLI_FILE_LIMIT/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:24:64
+✖ offline bounded read rejects invalid limit before opening: 100663297 (1.0064ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:25:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /VAULT_CLI_FILE_LIMIT/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:44:3
+✖ identity: changed file is rejected before interpreting its contents (13.1045ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'IDENTITY_SHAPE'
+  -   code: 'IDENTITY_FILE_SIZE'
+    }
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TokenIdentityError: IDENTITY_SHAPE
+        at identityFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-codec.js:12:9)
+        at identityObject (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-codec.js:26:11)
+        at decodeTokenIdentityFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-report.js:71:14)
+        at load (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-token-identity.js:47:18)
+        at async inspectIdentityFiles (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-token-identity.js:52:19)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+        at async Test.run (node:internal/test_runner/test:1389:7),
+    expected: { code: 'IDENTITY_FILE_SIZE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:44:3
+✖ allowance: changed file is rejected before interpreting its contents (2.3082ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'ALLOWANCE_SHAPE'
+  -   code: 'ALLOWANCE_FILE_SIZE'
+    }
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: AllowanceError: ALLOWANCE_SHAPE
+        at allowanceFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-targets.js:16:45)
+        at allowanceObject (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-targets.js:20:11)
+        at decodeAllowanceFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-file.js:50:3)
+        at load (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-allowance-file.js:43:18)
+        at async inspectAllowanceFiles (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-allowance-file.js:47:19)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+        at async Test.run (node:internal/test_runner/test:1389:7),
+    expected: { code: 'ALLOWANCE_FILE_SIZE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:44:3
+✖ transfer: changed file is rejected before interpreting its contents (7.0614ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'TRANSFER_SHAPE'
+  -   code: 'TRANSFER_FILE_SIZE'
+    }
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TransferError: TRANSFER_SHAPE
+        at transferFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:22:9)
+        at shape (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:27:11)
+        at decodeTransferFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-file.js:39:3)
+        at readTransferFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-file.js:56:10)
+        at async loadFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-transfer-file.js:46:56)
+        at async inspectTransferFiles (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-transfer-file.js:51:19)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182),
+    expected: { code: 'TRANSFER_FILE_SIZE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:44:3
+✖ transfer archive: changed file is rejected before interpreting its contents (2.2628ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'TRANSFER_SHAPE'
+  -   code: 'TRANSFER_FILE_SIZE'
+    }
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TransferError: TRANSFER_SHAPE
+        at transferFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:22:9)
+        at shape (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:27:11)
+        at readTransferArchive (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-archive-file.js:38:3)
+        at async loadFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-transfer-file.js:46:22)
+        at async inspectTransferFiles (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-transfer-file.js:51:19)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+        at async Test.run (node:internal/test_runner/test:1389:7),
+    expected: { code: 'TRANSFER_FILE_SIZE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:44:3
+✖ rehearsal input: changed file is rejected before interpreting its contents (3.5506ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_STRUCTURE'
+  -   code: 'FILE_CHANGED_OR_TOO_LARGE'
+    }
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_STRUCTURE
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:27:30)
+        at record (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:56:60)
+        at validateRehearsal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:71:16)
+        at decodeRehearsal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:237:10)
+        at readRehearsalInputFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-rehearsal.js:53:56)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+        at async Test.run (node:internal/test_runner/test:1389:7),
+    expected: { code: 'FILE_CHANGED_OR_TOO_LARGE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:44:3
+✖ rehearsal workspace: changed file is rejected before interpreting its contents (2.7183ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_WORKSPACE'
+  -   code: 'FILE_CHANGED_OR_TOO_LARGE'
+    }
+  
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_WORKSPACE
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-workspace.js:9:30)
+        at validateRehearsalWorkspace (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-workspace.js:17:13)
+        at decodeRehearsalWorkspace (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-workspace.js:40:10)
+        at readRehearsalInputFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/check-rehearsal.js:53:23)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+        at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'FILE_CHANGED_OR_TOO_LARGE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:44:3
+✖ rehearsal text: changed file is rejected before interpreting its contents (1.3891ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:45:2
+      at async withFile (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:20:182)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'FILE_CHANGED_OR_TOO_LARGE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-local-file-next.test.mjs:47:1
+✖ native file changed between reads is rejected without modifying it again (59.3033ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-local-file-next.test.mjs:54:6)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /VAULT_CLI_FILE_CHANGED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
