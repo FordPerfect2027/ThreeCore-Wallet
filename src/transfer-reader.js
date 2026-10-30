@@ -99,7 +99,11 @@ export async function readTransferSnapshot(session, input, options = {}) {
     const start = range.fromBlock === end.number ? end :
       header(await read(() => session.getBlockSnapshot(hexQuantity(range.fromBlock))), range.fromBlock);
     progress("token");
-    const code = await read(() => session.getContractCode(token.address, end.hash));
+    const rawCode = await read(() => session.getContractCode(token.address, end.hash));
+    let code;
+    try { code = shape(rawCode, ["address", "deployed"]); }
+    catch { guard(); transferFail("TRANSFER_TOKEN_UNAVAILABLE"); }
+    guard();
     if (!code || code.address !== token.address || code.deployed !== true) transferFail("TRANSFER_TOKEN_UNAVAILABLE");
     const rawMetadata = await read(() => session.getTokenMetadata(token.address, end.hash));
     // Reject a mismatched token before asking the provider for any events.

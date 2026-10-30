@@ -1,3 +1,4 @@
+import { readOwnErrorCode } from "./provider-error.js";
 import { periodPlanText, periodMessage } from "./period-view.js";
 import { periodDraftProgress } from "./period-draft.js";
 import { validateLibraryEntry } from "./period-library-model.js";
@@ -35,7 +36,7 @@ const MESSAGES = {
 
 export function libraryErrorCode(value) {
   try {
-    const code = value?.code;
+    const code = readOwnErrorCode(value);
     return typeof code === "string" && /^(PERIOD|CHECKPOINT|TRANSFER|IDENTITY)_[A-Z_]+$/.test(code)
       ? code : "PERIOD_LIBRARY_FAILED";
   } catch { return "PERIOD_LIBRARY_FAILED"; }

@@ -1,3 +1,4 @@
+import { readOwnErrorCode } from "./provider-error.js";
 import { validateSiteOrigin } from "./wallet-session.js";
 import { consumeCallback } from "./security-callback.js";
 import { captureOptionalDataFields } from "./security-data.js";
@@ -36,7 +37,7 @@ function validateHeader(value, expected) {
 
 export function periodFailureCode(error) {
   try {
-    const code = error?.code;
+    const code = readOwnErrorCode(error);
     return typeof code === "string" && /^(PERIOD|IDENTITY|TRANSFER)_[A-Z_]+$/.test(code)
       ? code : "PERIOD_READ_FAILED";
   } catch { return "PERIOD_READ_FAILED"; }

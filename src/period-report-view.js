@@ -1,3 +1,4 @@
+import { readOwnErrorCode } from "./provider-error.js";
 import { formatReconciliationAmount } from "./reconciliation-engine.js";
 
 export const REPORT_STATUS_TEXT = Object.freeze({
@@ -59,7 +60,7 @@ const ERRORS = Object.freeze({
 });
 
 export function reportErrorCode(error) {
-  const value = error?.code;
+  const value = readOwnErrorCode(error);
   return typeof value === "string" && /^(PERIOD|CHECKPOINT|IDENTITY|TRANSFER|RECONCILIATION)_[A-Z_]+$/.test(value)
     ? value : "PERIOD_REPORT_FAILED";
 }

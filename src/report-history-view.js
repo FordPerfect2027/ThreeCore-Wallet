@@ -1,3 +1,4 @@
+import { readOwnErrorCode } from "./provider-error.js";
 import { reportStatusText, reportIssueText, reportErrorText, REPORT_LIMITATION } from "./period-report-view.js";
 import { analyzePeriodReport } from "./period-report-engine.js";
 export { REPORT_LIMITATION };
@@ -31,8 +32,7 @@ const ERRORS = Object.freeze({
 });
 
 export function historyErrorCode(error) {
-  let code;
-  try { code = error?.code; } catch { return "PERIOD_HISTORY_FAILED"; }
+  const code = readOwnErrorCode(error);
   return typeof code === "string" && /^(PERIOD|CHECKPOINT|IDENTITY|TRANSFER|RECONCILIATION)_[A-Z_]+$/.test(code)
     ? code : "PERIOD_HISTORY_FAILED";
 }
