@@ -1,0 +1,126 @@
+✖ checkpoint: disposal during document capture cannot retain late metadata (5.7656ms)
+✖ checkpoint: diagnostic getters are not executed or exposed (1.0346ms)
+✖ checkpoint: diagnostic capture cannot revive disposed status (1.2052ms)
+✖ checkpoint: terminal observer disposal revokes successful refresh (0.8888ms)
+✖ checkpoint: notification callbacks cannot recurse indefinitely (1.1281ms)
+✖ checkpoint: ID callback disposal prevents the later clock callback (68.3723ms)
+✔ checkpoint: metadata clock disposal prevents a storage call (15.3128ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 1
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 352.6995
+
+✖ failing tests:
+
+test at test\checkpoint-lifecycle.test.js:11:1
+✖ checkpoint: disposal during document capture cannot retain late metadata (5.7656ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   count: 0,
+  +   entries: [],
+  +   remaining: 5,
+  +   revision: 0,
+  +   totalBytes: 0
+  + }
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checkpoint-lifecycle.test.js:15:86)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { revision: 0, count: 0, remaining: 5, totalBytes: 0, entries: [] },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\checkpoint-lifecycle.test.js:17:1
+✖ checkpoint: diagnostic getters are not executed or exposed (1.0346ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checkpoint-lifecycle.test.js:21:52)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\checkpoint-lifecycle.test.js:23:1
+✖ checkpoint: diagnostic capture cannot revive disposed status (1.2052ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'CHECKPOINT_STALE'
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checkpoint-lifecycle.test.js:27:89)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'CHECKPOINT_STALE',
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\checkpoint-lifecycle.test.js:29:1
+✖ checkpoint: terminal observer disposal revokes successful refresh (0.8888ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checkpoint-lifecycle.test.js:32:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\checkpoint-lifecycle.test.js:34:1
+✖ checkpoint: notification callbacks cannot recurse indefinitely (1.1281ms)
+  AssertionError [ERR_ASSERTION]: received 20 nested callbacks
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checkpoint-lifecycle.test.js:37:32)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\checkpoint-lifecycle.test.js:39:1
+✖ checkpoint: ID callback disposal prevents the later clock callback (68.3723ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checkpoint-lifecycle.test.js:42:74)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

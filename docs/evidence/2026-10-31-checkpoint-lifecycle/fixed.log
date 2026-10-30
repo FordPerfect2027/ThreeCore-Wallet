@@ -1,0 +1,23 @@
+✔ checkpoint: disposal ends save checksum wait (69.3723ms)
+✔ checkpoint: disposal ends exportCollection checksum wait (31.2901ms)
+✔ checkpoint: disposal ends reviewImport checksum wait (16.1706ms)
+✔ checkpoint: disposal ends inspect checksum wait (16.9457ms)
+✔ checkpoint: disposal ends stage checksum wait (21.4415ms)
+✔ checkpoint: disposal ends exportFile checksum wait (9.6567ms)
+✔ cancelImport ends the checksum wait and releases the panel's busy state (8.3023ms)
+✔ cancelled import apply invalidates cached metadata and cannot retire a newer refresh (12.6235ms)
+✔ checkpoint: disposal during document capture cannot retain late metadata (6.8824ms)
+✔ checkpoint: diagnostic getters are not executed or exposed (1.2685ms)
+✔ checkpoint: diagnostic capture cannot revive disposed status (1.0189ms)
+✔ checkpoint: terminal observer disposal revokes successful refresh (1.2857ms)
+✔ checkpoint: notification callbacks cannot recurse indefinitely (2.3038ms)
+✔ checkpoint: ID callback disposal prevents the later clock callback (48.0878ms)
+✔ checkpoint: metadata clock disposal prevents a storage call (22.9442ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 532.3735
