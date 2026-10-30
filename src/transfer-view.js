@@ -50,7 +50,7 @@ export function summarizeTransfers(input) {
 }
 
 export function validateTransferQuery(value = { direction: "all", search: "", order: "newest", page: 0, pageSize: 10 }) {
-  shape(value, ["direction", "search", "order", "page", "pageSize"]);
+  value = shape(value, ["direction", "search", "order", "page", "pageSize"]);
   if (!TRANSFER_DIRECTIONS.includes(value.direction)) transferFail("TRANSFER_QUERY_DIRECTION");
   if (!["newest", "oldest"].includes(value.order)) transferFail("TRANSFER_QUERY_ORDER");
   if (typeof value.search !== "string" || value.search.length > 100 || /[\u0000-\u001f\u007f]/.test(value.search)) {

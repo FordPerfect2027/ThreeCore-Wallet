@@ -1,6 +1,7 @@
 import {
   shape, transferContextKey, transferEventKey, transferFail, validateTransferSnapshot,
 } from "./transfer-codec.js";
+import { captureDataArray } from "./security-data.js";
 
 export const TRANSFER_ARCHIVE_SCHEMA = "threecore.transfer-archive.v1";
 export const MAX_TRANSFER_ARCHIVE_RECORDS = 12;
@@ -33,14 +34,14 @@ function assertCompatible(left, right) {
  * Overlap inconsistencies fail the whole addition/import; existing data stays put.
  */
 export function validateTransferArchive(input) {
-  shape(input, ["schema", "records", "readOnly", "completeHistory"]);
+  input = shape(input, ["schema", "records", "readOnly", "completeHistory"]);
   if (input.schema !== TRANSFER_ARCHIVE_SCHEMA || input.readOnly !== true || input.completeHistory !== false) {
     transferFail("TRANSFER_ARCHIVE_SCHEMA");
   }
-  if (!Array.isArray(input.records) || input.records.length < 1 || input.records.length > MAX_TRANSFER_ARCHIVE_RECORDS) {
-    transferFail("TRANSFER_ARCHIVE_LIMIT");
-  }
-  const records = input.records.map(validateTransferSnapshot).sort(rangeOrder);
+  let captured;
+  try { captured = captureDataArray(input.records, MAX_TRANSFER_ARCHIVE_RECORDS, 1); }
+  catch { transferFail("TRANSFER_ARCHIVE_LIMIT"); }
+  const records = captured.map(validateTransferSnapshot).sort(rangeOrder);
   const selected = transferContextKey(records[0].context);
   const keys = new Set();
   const headers = new Map();

@@ -1,6 +1,7 @@
 import { shape, transferFail, transferContextKey, validateTransferSnapshot } from "./transfer-codec.js";
 import { addTransferArchiveRecord, describeTransferArchive, validateTransferArchive } from "./transfer-archive.js";
 import { checkpointId, checkpointLabel, checkpointTime } from "./checkpoint-model.js";
+import { captureDataArray } from "./security-data.js";
 
 export const VAULT_AGENTS = Object.freeze(["DAT", "EMA", "CAWELON"]);
 export const VAULT_BUNDLE_SCHEMA = "threecore.transfer-vault-bundle.v1";
@@ -11,14 +12,8 @@ export const VAULT_STORAGE_BYTES = 24 * 1024 * 1024;
 const encoder = new TextEncoder();
 
 export function vaultArray(value, maximum) {
-  if (!Array.isArray(value) || value.length > maximum || Reflect.ownKeys(value).length !== value.length + 1) {
-    transferFail("TRANSFER_VAULT_ARRAY");
-  }
-  for (let i = 0; i < value.length; i++) {
-    const descriptor = Object.getOwnPropertyDescriptor(value, String(i));
-    if (!descriptor || !("value" in descriptor)) transferFail("TRANSFER_VAULT_ARRAY");
-  }
-  return value;
+  try { return captureDataArray(value, maximum); }
+  catch { transferFail("TRANSFER_VAULT_ARRAY"); }
 }
 
 export function vaultLabel(value) {
@@ -44,15 +39,14 @@ function sizeOf(value, maximum) {
 
 /** The bundle is historical data. It contains no wallet configuration or authority. */
 export function validateVaultBundle(input) {
-  shape(input, ["schema", "slots", "readOnly", "completeHistory"]);
+  input = shape(input, ["schema", "slots", "readOnly", "completeHistory"]);
   if (input.schema !== VAULT_BUNDLE_SCHEMA || input.readOnly !== true || input.completeHistory !== false) {
     transferFail("TRANSFER_VAULT_SCHEMA");
   }
-  vaultArray(input.slots, 3);
-  if (input.slots.length !== 3) transferFail("TRANSFER_VAULT_SLOTS");
+  const capturedSlots = vaultArray(input.slots, 3);
+  if (capturedSlots.length !== 3) transferFail("TRANSFER_VAULT_SLOTS");
   const slots = VAULT_AGENTS.map((agent, index) => {
-    const slot = input.slots[index];
-    shape(slot, ["agent", "archive"]);
+    const slot = shape(capturedSlots[index], ["agent", "archive"]);
     if (slot.agent !== agent) transferFail("TRANSFER_VAULT_SLOTS");
     const archive = slot.archive === null ? null : validateTransferArchive(slot.archive);
     if (archive && archive.records[0].context.agent !== agent) transferFail("TRANSFER_VAULT_CONTEXT");
@@ -64,7 +58,7 @@ export function validateVaultBundle(input) {
 }
 
 export function vaultBundle(archives = [null, null, null]) {
-  vaultArray(archives, 3);
+  archives = vaultArray(archives, 3);
   if (archives.length !== 3) transferFail("TRANSFER_VAULT_SLOTS");
   return validateVaultBundle({ schema: VAULT_BUNDLE_SCHEMA,
     slots: VAULT_AGENTS.map((agent, index) => ({ agent, archive: archives[index] })),
@@ -137,14 +131,14 @@ export function mergeVaultBundles(before, incoming) {
 }
 
 export function validateVaultDocument(input) {
-  shape(input, ["schema", "revision", "entries"]);
+  input = shape(input, ["schema", "revision", "entries"]);
   if (input.schema !== VAULT_DOCUMENT_SCHEMA || !Number.isSafeInteger(input.revision) || input.revision < 0) {
     transferFail("TRANSFER_VAULT_DOCUMENT");
   }
-  vaultArray(input.entries, VAULT_ENTRY_LIMIT);
+  const capturedEntries = vaultArray(input.entries, VAULT_ENTRY_LIMIT);
   const ids = new Set();
-  const entries = input.entries.map(row => {
-    shape(row, ["id", "label", "createdAt", "updatedAt", "archived", "bundle"]);
+  const entries = capturedEntries.map(row => {
+    row = shape(row, ["id", "label", "createdAt", "updatedAt", "archived", "bundle"]);
     const id = vaultId(row.id), label = vaultLabel(row.label);
     const createdAt = vaultTime(row.createdAt), updatedAt = vaultTime(row.updatedAt);
     if (ids.has(id)) transferFail("TRANSFER_VAULT_DUPLICATE");
@@ -176,11 +170,20 @@ export function vaultMetadata(input) {
 export function mutateVaultDocument(input, expectedRevision, operation) {
   const document = validateVaultDocument(input);
   if (!Number.isSafeInteger(expectedRevision) || expectedRevision !== document.revision) transferFail("TRANSFER_VAULT_STALE");
-  const descriptor = operation && Object.getOwnPropertyDescriptor(operation, "kind");
-  if (!descriptor || !("value" in descriptor)) transferFail("TRANSFER_VAULT_OPERATION");
+  let kind;
+  try {
+    const descriptor = operation && Object.getOwnPropertyDescriptor(operation, "kind");
+    if (!descriptor || !Object.hasOwn(descriptor, "value")) transferFail("TRANSFER_VAULT_OPERATION");
+    kind = descriptor.value;
+  } catch { transferFail("TRANSFER_VAULT_OPERATION"); }
+  if (!["import", "save", "rename", "archive", "unarchive", "purge"].includes(kind)) transferFail("TRANSFER_VAULT_OPERATION");
+  operation = shape(operation, kind === "import" ? ["kind", "entries"] :
+    kind === "save" ? ["kind", "id", "label", "time", "bundle"] :
+    kind === "rename" ? ["kind", "id", "label", "time"] :
+    kind === "purge" ? ["kind", "id", "confirmed"] : ["kind", "id", "time"]);
+  if (operation.kind !== kind) transferFail("TRANSFER_VAULT_OPERATION");
   let entries = [...document.entries], changed = true;
-  if (descriptor.value === "import") {
-    shape(operation, ["kind", "entries"]);
+  if (kind === "import") {
     const imported = validateVaultDocument({ schema: VAULT_DOCUMENT_SCHEMA, revision: 0, entries: operation.entries });
     let additions = 0;
     for (const row of imported.entries) {
@@ -193,17 +196,12 @@ export function mutateVaultDocument(input, expectedRevision, operation) {
       }
     }
     changed = additions > 0;
-  } else if (descriptor.value === "save") {
-    shape(operation, ["kind", "id", "label", "time", "bundle"]);
+  } else if (kind === "save") {
     if (entries.length >= VAULT_ENTRY_LIMIT) transferFail("TRANSFER_VAULT_CAPACITY");
     const id = vaultId(operation.id), label = vaultLabel(operation.label), time = vaultTime(operation.time);
     if (entries.some(row => row.id === id)) transferFail("TRANSFER_VAULT_DUPLICATE");
     entries.push({ id, label, createdAt: time, updatedAt: time, archived: false, bundle: operation.bundle });
   } else {
-    const kind = descriptor.value;
-    if (!["rename", "archive", "unarchive", "purge"].includes(kind)) transferFail("TRANSFER_VAULT_OPERATION");
-    shape(operation, kind === "rename" ? ["kind", "id", "label", "time"] :
-      kind === "purge" ? ["kind", "id", "confirmed"] : ["kind", "id", "time"]);
     const id = vaultId(operation.id);
     const index = entries.findIndex(row => row.id === id);
     if (index < 0) transferFail("TRANSFER_VAULT_MISSING");
