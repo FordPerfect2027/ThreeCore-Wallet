@@ -1,5 +1,6 @@
 import { decodePortfolioReport, validatePortfolioSnapshot } from "../src/portfolio-report.js";
 import { describePortfolioComparison } from "../src/portfolio-comparison.js";
+import { readOwnErrorCode } from "../src/provider-error.js";
 
 const ERRORS = Object.freeze({
   IDENTITY_MISMATCH: "同じエージェント・公開アドレス・チェーン・サイトの記録を選んでください。",
@@ -44,6 +45,7 @@ export function mountComparisonPanel({ document, parent }) {
   parent.append(section);
   let target = null;
   let disposed = false;
+  let generation = 0;
 
   function reset(message = "比較する結果を先に表示してください。") {
     details.textContent = "";
@@ -52,6 +54,7 @@ export function mountComparisonPanel({ document, parent }) {
     compare.disabled = !target;
   }
   function changed() {
+    if (disposed) return;
     reset(target ? "比較元の入力が変わりました。もう一度比較してください。" : undefined);
   }
   function run() {
@@ -74,13 +77,14 @@ export function mountComparisonPanel({ document, parent }) {
       baseline.setAttribute("aria-invalid", "true");
       let message;
       try {
-        const code = error?.code;
-        if (Object.hasOwn(ERRORS, code)) message = ERRORS[code];
+        const code = readOwnErrorCode(error);
+        if (typeof code === "string" && Object.hasOwn(ERRORS, code)) message = ERRORS[code];
       } catch { /* Do not trust error accessors. */ }
       status.textContent = message ?? "比較元の記録を読み取れませんでした。JSONの内容を確認してください。";
     }
   }
   function clearInput() {
+    if (disposed) return;
     baseline.value = "";
     reset(target ? "比較を消去しました。" : undefined);
   }
@@ -91,20 +95,25 @@ export function mountComparisonPanel({ document, parent }) {
   return Object.freeze({
     setTarget(snapshot) {
       if (disposed) return;
+      const id = ++generation;
       // Clear first so malformed replacements cannot preserve an old target.
       target = null;
       reset();
-      if (snapshot !== null) target = validatePortfolioSnapshot(snapshot);
+      const captured = snapshot === null ? null : validatePortfolioSnapshot(snapshot);
+      if (disposed || generation !== id) return;
+      target = captured;
       reset(target ? "比較元の保存記録を入力して比較してください。" : undefined);
     },
     clearTarget() {
       if (disposed) return;
+      generation++;
       target = null;
       baseline.value = "";
       reset();
     },
     dispose() {
       if (disposed) return;
+      generation++;
       target = null;
       clearInput();
       disposed = true;

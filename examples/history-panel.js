@@ -7,6 +7,8 @@ import { createHistoryImportController } from "../src/history-import-controller.
 import { describePortfolioHistory } from "../src/portfolio-history-summary.js";
 import { decodePortfolioReport, validatePortfolioSnapshot } from "../src/portfolio-report.js";
 import { describePortfolioComparison } from "../src/portfolio-comparison.js";
+import { readOwnErrorCode } from "../src/provider-error.js";
+import { observeCallbackResult } from "../src/security-callback.js";
 
 /** Local, card-scoped history. No automatic persistence or provider access. */
 export function mountHistoryPanel({ document, parent, agent, getSnapshot, getReport }) {
@@ -19,6 +21,8 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   });
   const cleanup = [];
   let disposed = false;
+  let generation = 0;
+  const current = id => !disposed && generation === id;
   let review = null;
   let filesPanel;
   let reviewPanel;
@@ -37,10 +41,15 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     node.type = "button";
     listen(node, "click", () => {
       if (disposed) return;
-      try { action(); }
+      const id = ++generation;
+      try { action(id); }
       catch (error) {
+        if (!current(id)) return;
+        const code = readOwnErrorCode(error);
+        if (!current(id)) return;
         cancelReview();
-        status.textContent = error?.code === "OBSERVATION_CONFLICT"
+        if (!current(id)) return;
+        status.textContent = code === "OBSERVATION_CONFLICT"
           ? "同じブロックの記録が矛盾しています。履歴は変更していません。"
           : "操作できませんでした。入力・選択・記録上限を確認してください。履歴は保持しています。";
       }
@@ -88,17 +97,23 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   const replace = element("input", "history-replace");
   replace.type = "checkbox";
   const previewText = element("pre", "history-preview-details");
-  const addCurrent = button("history-add-current", "今回の確認結果を履歴に追加", () => {
+  const addCurrent = button("history-add-current", "今回の確認結果を履歴に追加", id => {
     const snapshot = getSnapshot();
-    if (disposed) return;
+    if (observeCallbackResult(snapshot) !== "synchronous") throw Error("Synchronous observation required");
+    if (!current(id)) return;
     if (!snapshot) throw Error("No complete current observation");
-    const result = history.add(checkAgent(snapshot));
+    const captured = checkAgent(snapshot);
+    if (!current(id)) return;
+    const result = history.add(captured);
     changed(result.duplicates ? "同じ記録は追加しませんでした。" : "確認結果を履歴に追加しました。");
   });
-  const addReport = button("history-add-report", "上の確認記録JSONを履歴に追加", () => {
-    const snapshot = decodePortfolioReport(getReport()).snapshot;
-    if (disposed) return;
-    const result = history.add(checkAgent(snapshot));
+  const addReport = button("history-add-report", "上の確認記録JSONを履歴に追加", id => {
+    const text = getReport();
+    if (observeCallbackResult(text) !== "synchronous") throw Error("Synchronous report required");
+    if (!current(id)) return;
+    const snapshot = checkAgent(decodePortfolioReport(text).snapshot);
+    if (!current(id)) return;
+    const result = history.add(snapshot);
     changed(result.duplicates ? "同じ記録は追加しませんでした。" : "過去の確認記録を履歴に追加しました。");
   });
   const exportButton = button("history-export", "履歴全体をJSONにする", () => {
@@ -211,10 +226,11 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
       history.importText(candidate.exportText(), { replace: true });
       changed("一括復元から履歴を反映しました。");
     },
-    invalidate() { if (!disposed) { cancelReview(); filesPanel.invalidate(); } },
+    invalidate() { if (!disposed) { generation++; cancelReview(); filesPanel.invalidate(); } },
     dispose() {
       if (disposed) return;
       disposed = true;
+      generation++;
       filesPanel.dispose();
       reviewPanel.dispose();
       recoveryPanel.dispose();
