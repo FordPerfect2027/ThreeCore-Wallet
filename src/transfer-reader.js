@@ -1,4 +1,5 @@
 import { catalogToken } from "./token-catalog.js";
+import { consumeCallback } from "./security-callback.js";
 import {
   captureTransferEvents, TRANSFER_SCHEMA, TransferError, hexQuantity,
   normalizeTransferEvents, quantity, resolveTransferRange, shape, transferFail,
@@ -67,9 +68,7 @@ export async function readTransferSnapshot(session, input, options = {}) {
   function progress(stage, completed = 0, total = 0) {
     guard();
     if (options.onProgress) {
-      try {
-        Promise.resolve(options.onProgress(Object.freeze({ stage, completed, total }))).catch(() => {});
-      } catch { /* Presentation callbacks cannot alter success or failure. */ }
+      consumeCallback(() => options.onProgress(Object.freeze({ stage, completed, total })));
     }
     guard();
   }

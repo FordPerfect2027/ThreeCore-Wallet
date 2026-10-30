@@ -2,6 +2,7 @@ import { validateSiteOrigin } from "./wallet-session.js";
 import { catalogToken, TOKEN_CATALOG_VERSION, reviewCatalogAddress } from "./token-catalog.js";
 import { identityAddress, identityFail, identityObject, identityUnits, validateTokenMetadata, TokenIdentityError } from "./token-identity-codec.js";
 import { TOKEN_IDENTITY_SCHEMA, validateTokenObservation } from "./token-identity-model.js";
+import { consumeCallback } from "./security-callback.js";
 
 function sessionIdentity(session) {
   const state = session?.state;
@@ -67,8 +68,7 @@ export async function readTokenIdentity(session, options = {}) {
   function progress(stage) {
     guard();
     if (observer) {
-      try { Promise.resolve(observer(Object.freeze({ stage, agent: initial.agent }))).catch(() => {}); }
-      catch { /* Display callbacks cannot alter the observed data. */ }
+      consumeCallback(() => observer(Object.freeze({ stage, agent: initial.agent })));
     }
     guard();
   }

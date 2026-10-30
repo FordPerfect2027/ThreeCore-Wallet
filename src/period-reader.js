@@ -1,4 +1,5 @@
 import { validateSiteOrigin } from "./wallet-session.js";
+import { consumeCallback } from "./security-callback.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { readTransferSnapshot } from "./transfer-reader.js";
 import { periodFail, PeriodError, periodShape, validatePeriodPlan, periodPlanKey, periodContextKey, periodWindows } from "./period-plan.js";
@@ -83,8 +84,7 @@ export async function collectPeriod(session, planInput, options = {}) {
   function notify(callback, value) {
     guard();
     if (callback) {
-      try { Promise.resolve(callback(value)).catch(() => {}); }
-      catch { /* Display/save callbacks cannot replace or authorize evidence. */ }
+      consumeCallback(() => callback(value));
     }
     guard();
   }

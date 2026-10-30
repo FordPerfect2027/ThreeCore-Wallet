@@ -1,4 +1,5 @@
 import { readTokenIdentity } from "./token-identity-reader.js";
+import { consumeCallback } from "./security-callback.js";
 import { identityUnits } from "./token-identity-codec.js";
 import { allowanceFail, allowanceObject, AllowanceError, validateAllowanceTargets, assertAllowanceContext } from "./allowance-targets.js";
 import { ALLOWANCE_OBSERVATION_SCHEMA, validateAllowanceObservation } from "./allowance-observation.js";
@@ -48,9 +49,9 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
   function progress(stage, completed, spenderAddress = null) {
     guard();
     if (observer) {
-      try { Promise.resolve(observer(Object.freeze({
+      consumeCallback(() => observer(Object.freeze({
         agent: targets.agent, stage, completed, total: targets.targets.length, spenderAddress,
-      }))).catch(() => {}); } catch { /* Observers do not control read results. */ }
+      })));
     }
     guard();
   }
