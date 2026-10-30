@@ -8,6 +8,7 @@ import { analyzePeriodReport } from "./period-report-engine.js";
 import { preparePeriodReportFile, readPeriodReportFile } from "./period-report-file.js";
 import { periodReportCSV, periodReportHTML } from "./period-report-export.js";
 import { reportErrorCode } from "./period-report-view.js";
+import { createStateNotifier } from "./state-notifier.js";
 
 /** Read-only consumer of the period library. There is intentionally no storage.change call. */
 export function createPeriodReportController({ storage, onChange = () => {},
@@ -23,9 +24,14 @@ export function createPeriodReportController({ storage, onChange = () => {},
   const busy = () => ["loading", "importing", "checking", "exporting"].includes(phase);
   const state = () => Object.freeze({ document, selection, loaded, input, report, review,
     origin, phase, error, message, busy: busy(), disposed });
+  let notificationRevision = 0;
+  const observers = new Set([() => onChange(state())]);
+  const notifier = createStateNotifier({ observers, read: () => Object.freeze({ revision: notificationRevision }) });
+  const sameGeneration = id => !disposed && generation === id;
   function emit() {
     if (disposed) return;
-    try { Promise.resolve(onChange(state())).catch(() => {}); } catch { /* Observer errors have no data effects. */ }
+    notificationRevision++;
+    notifier.notify();
   }
   function guard(needsLibrary = false) {
     if (disposed) return false;
@@ -33,9 +39,11 @@ export function createPeriodReportController({ storage, onChange = () => {},
     if (needsLibrary && !loaded) periodFail("PERIOD_REPORT_NOT_LOADED");
     return true;
   }
-  function fail(value) {
-    if (disposed) return false;
-    error = reportErrorCode(value);
+  function fail(value, id = generation) {
+    if (!sameGeneration(id)) return false;
+    const code = reportErrorCode(value);
+    if (!sameGeneration(id)) return false;
+    error = code;
     if (!busy()) phase = "error";
     emit();
     return false;
@@ -51,19 +59,22 @@ export function createPeriodReportController({ storage, onChange = () => {},
       const result = await task(same, aborter.signal);
       if (!same()) return false;
       phase = "ready";
-      success(result);
+      success(result, same);
+      if (!same()) return false;
       emit();
-      return true;
+      return same();
     } catch (value) {
       if (!same()) return false;
       phase = "error";
-      return fail(value);
+      return fail(value, own);
     } finally { if (active === aborter) active = null; }
   }
   function cancel() {
     if (disposed) return;
-    generation++; review = null; error = null; phase = input ? "ready" : "idle";
+    const id = ++generation;
+    review = null; error = null; phase = input ? "ready" : "idle";
     const previous = active; active = null; previous?.abort();
+    if (!sameGeneration(id)) return;
     message = "処理を中止しました。保存一覧は変更していません。";
     emit();
   }
@@ -71,8 +82,10 @@ export function createPeriodReportController({ storage, onChange = () => {},
     try {
       if (!guard()) return false;
       review = null; loaded = false; clearResult();
-      return await run("loading", (_same, signal) => storage.read({ signal }), value => {
-        document = validatePeriodLibrary(value); loaded = true;
+      return await run("loading", (_same, signal) => storage.read({ signal }), (value, same) => {
+        const captured = validatePeriodLibrary(value);
+        if (!same()) return;
+        document = captured; loaded = true;
         selection = Object.freeze(Object.fromEntries(Object.entries(selection).map(([agent, id]) =>
           [agent, document.entries.some(row => row.id === id && row.draft.plan.context.agent === agent) ? id : null])));
         message = "保存一覧を読み込みました。各トークンの控えを選んでください。";
@@ -80,6 +93,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
     } catch (value) { return fail(value); }
   }
   function select(agent, id) {
+    let token = generation;
     try {
       if (!guard(true)) return false;
       reportAgent(agent);
@@ -89,51 +103,63 @@ export function createPeriodReportController({ storage, onChange = () => {},
         if (!entry) periodFail("PERIOD_REPORT_SOURCE_MISSING");
         if (entry.draft.plan.context.agent !== agent) periodFail("PERIOD_REPORT_AGENT");
       }
+      token = ++generation;
       selection = Object.freeze({ ...selection, [agent]: id });
       review = null; clearResult(); error = null; phase = "ready";
       message = "選択を変更しました。報告内容をもう一度確認してください。";
-      emit(); return true;
-    } catch (value) { return fail(value); }
+      emit(); return sameGeneration(token);
+    } catch (value) { return fail(value, token); }
   }
   function invalidateReview() {
     if (disposed || busy()) return;
+    generation++;
     review = null; error = null; phase = input ? "ready" : "idle"; emit();
   }
   function prepare(title) {
+    let id = generation;
     try {
       if (!guard(true)) return false;
+      id = ++generation;
       review = null;
-      const candidate = createPeriodReportInput(document, selection, title, now());
+      const createdAt = now();
+      if (!sameGeneration(id)) return false;
+      const candidate = createPeriodReportInput(document, selection, title, createdAt);
       review = Object.freeze({ origin: "library", input: candidate, report: analyzePeriodReport(candidate),
         checksumVerified: false, authenticated: false, comparison: input ? comparePeriodReports(input, candidate) : null });
       phase = "review"; error = null; message = "対象・期間・取得状態を確認してから報告を作成してください。";
-      emit(); return true;
-    } catch (value) { return fail(value); }
+      emit(); return sameGeneration(id);
+    } catch (value) { return fail(value, id); }
   }
   async function importFile(file) {
     try {
       if (!guard()) return false;
       review = null;
-      return await run("importing", (_same, signal) => readFile(file, { signal }), decoded => {
+      return await run("importing", (_same, signal) => readFile(file, { signal }), (decoded, same) => {
         const candidate = validatePeriodReportInput(decoded.input);
-        review = Object.freeze({ origin: "file", input: candidate, report: analyzePeriodReport(candidate),
-          checksumVerified: decoded.checksumVerified === true, authenticated: false,
-          comparison: input ? comparePeriodReports(input, candidate) : null });
+        const analysis = analyzePeriodReport(candidate), checksumVerified = decoded.checksumVerified === true;
+        const comparison = input ? comparePeriodReports(input, candidate) : null;
+        if (!same()) return;
+        review = Object.freeze({ origin: "file", input: candidate, report: analysis,
+          checksumVerified, authenticated: false, comparison });
         phase = "review"; message = "ファイルから再計算しました。報告を開く前に内容を確認してください。保存一覧への追加は行いません。";
       });
     } catch (value) { return fail(value); }
   }
   function stageHistory(inputValue) {
+    let id = generation;
     try {
       if (!guard()) return false;
+      id = ++generation;
+      review = null;
       const candidate = validatePeriodReportInput(inputValue);
+      if (!sameGeneration(id)) return false;
       review = Object.freeze({ origin: "history", input: candidate, report: analyzePeriodReport(candidate),
         checksumVerified: false, authenticated: false,
         comparison: input ? comparePeriodReports(input, candidate) : null });
       phase = "review"; error = null;
       message = "PC内の報告履歴から再計算しました。確認後に表示してください。";
-      emit(); return true;
-    } catch (value) { return fail(value); }
+      emit(); return sameGeneration(id);
+    } catch (value) { return fail(value, id); }
   }
   async function applyReview() {
     try {
@@ -180,6 +206,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
   function dispose() {
     if (disposed) return;
     disposed = true; generation++; phase = "disposed"; review = null;
+    observers.clear();
     const previous = active; active = null; previous?.abort();
     consumeCallback(() => storage.close());
   }
