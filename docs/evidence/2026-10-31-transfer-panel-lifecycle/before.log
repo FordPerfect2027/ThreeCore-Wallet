@@ -1,0 +1,430 @@
+✖ transfer onCancel consumes asynchronous observer failures (22.9305ms)
+✖ transfer onStateChange consumes asynchronous observer failures (6.2364ms)
+✖ transfer cancellation survives a throwing notification (2.02ms)
+✖ transfer window callback dispose cannot write late status (22.626ms)
+✖ transfer window callback invalidate cannot write late status (6.7696ms)
+✖ transfer json false download receipt is refused (21.2165ms)
+✖ transfer json resolved download receipt is refused (7.3517ms)
+✔ transfer json rejected download receipt is refused (6.9753ms)
+✖ transfer csv false download receipt is refused (5.4659ms)
+✖ transfer csv resolved download receipt is refused (7.596ms)
+✔ transfer csv rejected download receipt is refused (6.1328ms)
+✖ transfer txt false download receipt is refused (7.5416ms)
+✖ transfer txt resolved download receipt is refused (4.881ms)
+✔ transfer txt rejected download receipt is refused (4.6987ms)
+✖ transfer asynchronous receipt does not hold the handler open (32.6964ms)
+✖ transfer queued cancellation after preparation prevents delivery (4.4337ms)
+✖ transfer archive capture dispose cannot return stale evidence (6.1581ms)
+✖ transfer archive capture invalidate cannot return stale evidence (5.1326ms)
+✖ transfer stage permission cannot open a disposed archive (0.7654ms)
+✖ transfer asynchronous stage permission failure is consumed (2.6703ms)
+✔ transfer ordinary synchronous downloads preserve all three formats (5.502ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 4
+ℹ fail 17
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 504.3617
+
+✖ failing tests:
+
+test at test\transfer-panel-lifecycle.test.js:20:53
+✖ transfer onCancel consumes asynchronous observer failures (22.9305ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:22:68)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:20:53
+✖ transfer onStateChange consumes asynchronous observer failures (6.2364ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:22:68)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:24:1
+✖ transfer cancellation survives a throwing notification (2.02ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "synthetic notification"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:26:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic notification
+        at onCancel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:25:37)
+        at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/transfer-panel.js:225:56
+        at TestElement.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:10:53)
+        at Object.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:16:98)
+        at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:26:33
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:26:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:28:47
+✖ transfer window callback dispose cannot write late status (22.626ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '入力欄の期間を変更しました。新しい履歴は「送受信履歴を取得」を押すと確認できます。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:30:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力欄の期間を変更しました。新しい履歴は「送受信履歴を取得」を押すと確認できます。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:28:47
+✖ transfer window callback invalidate cannot write late status (6.7696ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '入力欄の期間を変更しました。新しい履歴は「送受信履歴を取得」を押すと確認できます。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:30:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力欄の期間を変更しました。新しい履歴は「送受信履歴を取得」を押すと確認できます。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:32:97
+✖ transfer json false download receipt is refused (21.2165ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません/. Input:
+  
+  '履歴の読み取りが完了しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:34:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴の読み取りが完了しました。',
+    expected: /保存できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:32:97
+✖ transfer json resolved download receipt is refused (7.3517ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません/. Input:
+  
+  '履歴の読み取りが完了しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:34:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴の読み取りが完了しました。',
+    expected: /保存できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:32:97
+✖ transfer csv false download receipt is refused (5.4659ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません/. Input:
+  
+  '履歴の読み取りが完了しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:34:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴の読み取りが完了しました。',
+    expected: /保存できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:32:97
+✖ transfer csv resolved download receipt is refused (7.596ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません/. Input:
+  
+  '履歴の読み取りが完了しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:34:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴の読み取りが完了しました。',
+    expected: /保存できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:32:97
+✖ transfer txt false download receipt is refused (7.5416ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません/. Input:
+  
+  '履歴の読み取りが完了しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:34:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴の読み取りが完了しました。',
+    expected: /保存できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:32:97
+✖ transfer txt resolved download receipt is refused (4.881ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません/. Input:
+  
+  '履歴の読み取りが完了しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:34:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴の読み取りが完了しました。',
+    expected: /保存できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:36:1
+✖ transfer asynchronous receipt does not hold the handler open (32.6964ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:39:160)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:42:1
+✖ transfer queued cancellation after preparation prevents delivery (4.4337ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:45:80)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:47:47
+✖ transfer archive capture dispose cannot return stale evidence (6.1581ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   completeHistory: false,
+  +   readOnly: true,
+  +   records: [
+  +     {
+  +       completeHistory: false,
+  +       context: {
+  +         account: '0x1111111111111111111111111111111111111111',
+  +         agent: 'DAT',
+  +         chainId: 8453
+  +       },
+  +       events: [
+  +         {
+  +           amountBaseUnits: '1234567890123456789',
+  +           blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +           blockNumber: '40',
+  +           from: '0x2222222222222222222222222222222222222222',
+  +           logIndex: '0',
+  +           to: '0x1111111111111111111111111111111111111111',
+  +           transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044c',
+  +           transactionIndex: '0'
+  +         }
+  +       ],
+  +       fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +       independentVerification: false,
+  +       metadata: {
+  +         decimals: 18,
+  +         name: 'DATCORE',
+  +         symbol: 'DAT',
+  +         totalSupply: '1000000000000000000000000000'
+  +       },
+  +       range: {
+  +         fromBlock: '30',
+  +         toBlock: '42'
+  +       },
+  +       readOnly: true,
+  +       schema: 'threecore.transfer-observation.v1',
+  +       toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +       tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  +     }
+  +   ],
+  +   schema: 'threecore.transfer-archive.v1'
+  + }
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:49:40)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.transfer-archive.v1', records: [ [Object] ], readOnly: true, completeHistory: false },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:47:47
+✖ transfer archive capture invalidate cannot return stale evidence (5.1326ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   completeHistory: false,
+  +   readOnly: true,
+  +   records: [
+  +     {
+  +       completeHistory: false,
+  +       context: {
+  +         account: '0x1111111111111111111111111111111111111111',
+  +         agent: 'DAT',
+  +         chainId: 8453
+  +       },
+  +       events: [
+  +         {
+  +           amountBaseUnits: '1234567890123456789',
+  +           blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +           blockNumber: '40',
+  +           from: '0x2222222222222222222222222222222222222222',
+  +           logIndex: '0',
+  +           to: '0x1111111111111111111111111111111111111111',
+  +           transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044c',
+  +           transactionIndex: '0'
+  +         }
+  +       ],
+  +       fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +       independentVerification: false,
+  +       metadata: {
+  +         decimals: 18,
+  +         name: 'DATCORE',
+  +         symbol: 'DAT',
+  +         totalSupply: '1000000000000000000000000000'
+  +       },
+  +       range: {
+  +         fromBlock: '30',
+  +         toBlock: '42'
+  +       },
+  +       readOnly: true,
+  +       schema: 'threecore.transfer-observation.v1',
+  +       toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +       tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  +     }
+  +   ],
+  +   schema: 'threecore.transfer-archive.v1'
+  + }
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:49:40)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.transfer-archive.v1', records: [ [Object] ], readOnly: true, completeHistory: false },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:51:1
+✖ transfer stage permission cannot open a disposed archive (0.7654ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + true
+  - undefined
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:54:37)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-panel-lifecycle.test.js:56:1
+✖ transfer asynchronous stage permission failure is consumed (2.6703ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-panel-lifecycle.test.js:58:166)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
