@@ -9,3 +9,5 @@ The pre-fix run had **four failures and one passing newer-review control**. The 
 Evidence: [before](evidence/2026-10-31-rehearsal-hash-cancellation/before.log), [related](evidence/2026-10-31-rehearsal-hash-cancellation/related.log), [SHA-256](evidence/2026-10-31-rehearsal-hash-cancellation/SHA256SUMS.txt).
 
 The user's saved rehearsal session is unchanged. No signatures, transfers, approvals, private-key retrieval, publication, deployment or server restart occurred.
+
+Full-wallet validation subsequently passed **13,494 tests**, zero failures, cancellations or skips, in 521502.2926 ms, with source frozen at `4905dda` (documentation HEAD `efdd322`). This covers continuation items 1–280. [Full log](evidence/2026-10-31-rehearsal-hash-cancellation/full-wallet.log).
