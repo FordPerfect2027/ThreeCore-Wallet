@@ -1,6 +1,6 @@
 import { validateSiteOrigin } from "./wallet-session.js";
 import { catalogToken, TOKEN_CATALOG_VERSION, reviewCatalogAddress } from "./token-catalog.js";
-import { identityAddress, identityFail, identityUnits, TokenIdentityError } from "./token-identity-codec.js";
+import { identityAddress, identityFail, identityObject, identityUnits, validateTokenMetadata, TokenIdentityError } from "./token-identity-codec.js";
 import { TOKEN_IDENTITY_SCHEMA, validateTokenObservation } from "./token-identity-model.js";
 
 function sessionIdentity(session) {
@@ -96,11 +96,15 @@ export async function readTokenIdentity(session, options = {}) {
     if (requestedBlock !== undefined && BigInt(block.number).toString() !== requestedBlock) {
       identityFail("IDENTITY_BLOCK");
     }
-    const code = await read("code", () => session.getContractCode(selected.address, block.hash));
-    if (!code || code.address !== selected.address || typeof code.deployed !== "boolean") identityFail("IDENTITY_CODE");
+    const rawCode = await read("code", () => session.getContractCode(selected.address, block.hash));
+    let code;
+    try { code = identityObject(rawCode, ["address", "deployed"]); }
+    catch { identityFail("IDENTITY_CODE"); }
+    if (code.address !== selected.address || typeof code.deployed !== "boolean") identityFail("IDENTITY_CODE");
     const native = rawUnits(await read("native", () => session.getNativeBalance(block.hash)));
     const metadata = code.deployed
-      ? await read("metadata", () => session.getTokenMetadata(selected.address, block.hash)) : null;
+      ? validateTokenMetadata(await read("metadata", () => session.getTokenMetadata(selected.address, block.hash))) : null;
+    guard();
     const balance = code.deployed
       ? rawUnits(await read("balance", () => session.getTokenBalance(selected.address, block.hash))) : null;
     const final = header(await read("canonical", () => session.getBlockSnapshot(block.number)));
