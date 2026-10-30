@@ -1,6 +1,7 @@
 import { checkpointId, checkpointLabel, checkpointTime } from "./checkpoint-model.js";
 import { periodShape, periodFail, periodPlanKey } from "./period-plan.js";
 import { validatePeriodDraft, periodDraftKey, periodDraftProgress } from "./period-draft.js";
+import { captureDataArray } from "./security-data.js";
 
 export const PERIOD_LIBRARY_SCHEMA = "threecore.period-library.v1";
 export const PERIOD_LIBRARY_ENTRIES = 12;
@@ -16,17 +17,19 @@ export const libraryLabel = value => checked(checkpointLabel, value, "PERIOD_LIB
 export const libraryTime = value => checked(checkpointTime, value, "PERIOD_LIBRARY_TIME");
 
 export function libraryArray(value) {
-  if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype || value.length > PERIOD_LIBRARY_ENTRIES ||
-      Reflect.ownKeys(value).length !== value.length + 1) periodFail("PERIOD_LIBRARY_CAPACITY");
-  for (let index = 0; index < value.length; index++) {
-    const field = Object.getOwnPropertyDescriptor(value, String(index));
-    if (!field || !("value" in field)) periodFail("PERIOD_SHAPE");
-  }
-  return value;
+  // Preserve the existing capacity/shape distinction without reading live length.
+  try {
+    if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) periodFail("PERIOD_LIBRARY_CAPACITY");
+    const length = Object.getOwnPropertyDescriptor(value, "length")?.value;
+    if (!Number.isSafeInteger(length) || length < 0 || length > PERIOD_LIBRARY_ENTRIES ||
+        Reflect.ownKeys(value).length !== length + 1) periodFail("PERIOD_LIBRARY_CAPACITY");
+  } catch { periodFail("PERIOD_LIBRARY_CAPACITY"); }
+  try { return captureDataArray(value, PERIOD_LIBRARY_ENTRIES); }
+  catch { periodFail("PERIOD_SHAPE"); }
 }
 
 export function validateLibraryEntry(input) {
-  periodShape(input, ENTRY_FIELDS);
+  input = periodShape(input, ENTRY_FIELDS);
   const id = libraryId(input.id);
   const label = libraryLabel(input.label);
   const createdAt = libraryTime(input.createdAt);
@@ -40,7 +43,7 @@ export function validateLibraryEntry(input) {
 }
 
 export function validatePeriodLibrary(input) {
-  periodShape(input, ["schema", "revision", "entries"]);
+  input = periodShape(input, ["schema", "revision", "entries"]);
   if (input.schema !== PERIOD_LIBRARY_SCHEMA || !Number.isSafeInteger(input.revision) || input.revision < 0) {
     periodFail("PERIOD_LIBRARY_SCHEMA");
   }
@@ -85,11 +88,19 @@ export function libraryMetadata(input) {
 export function mutatePeriodLibrary(input, expectedRevision, operation) {
   const document = validatePeriodLibrary(input);
   if (!Number.isSafeInteger(expectedRevision) || expectedRevision !== document.revision) periodFail("PERIOD_LIBRARY_STALE");
-  const kind = operation && Object.getOwnPropertyDescriptor(operation, "kind");
-  if (!kind || !("value" in kind)) periodFail("PERIOD_LIBRARY_OPERATION");
+  let kind;
+  try {
+    const descriptor = operation && Object.getOwnPropertyDescriptor(operation, "kind");
+    if (!descriptor || !Object.hasOwn(descriptor, "value")) periodFail("PERIOD_LIBRARY_OPERATION");
+    kind = descriptor.value;
+  } catch { periodFail("PERIOD_LIBRARY_OPERATION"); }
+  if (!["save", "import", "rename", "archive", "purge"].includes(kind)) periodFail("PERIOD_LIBRARY_OPERATION");
+  operation = periodShape(operation, kind === "save" ? ["kind", "id", "label", "time", "draft", "requiresNewPlan"] :
+    kind === "import" ? ["kind", "entries"] : kind === "rename" ? ["kind", "id", "label", "time"] :
+    kind === "archive" ? ["kind", "id", "archived", "time"] : ["kind", "id", "acknowledged"]);
+  if (operation.kind !== kind) periodFail("PERIOD_LIBRARY_OPERATION");
   let entries = [...document.entries];
-  if (kind.value === "save") {
-    periodShape(operation, ["kind", "id", "label", "time", "draft", "requiresNewPlan"]);
+  if (kind === "save") {
     const entry = validateLibraryEntry({ id: operation.id, label: libraryLabel(operation.label),
       createdAt: operation.time, updatedAt: operation.time, archived: false,
       requiresNewPlan: operation.requiresNewPlan, draft: operation.draft });
@@ -97,8 +108,7 @@ export function mutatePeriodLibrary(input, expectedRevision, operation) {
     if (entries.some(row => row.requiresNewPlan === entry.requiresNewPlan &&
         periodDraftKey(row.draft) === periodDraftKey(entry.draft))) periodFail("PERIOD_LIBRARY_DUPLICATE_DRAFT");
     entries.push(entry);
-  } else if (kind.value === "import") {
-    periodShape(operation, ["kind", "entries"]);
+  } else if (kind === "import") {
     const incoming = validatePeriodLibrary({ schema: PERIOD_LIBRARY_SCHEMA, revision: 0, entries: operation.entries });
     for (const entry of incoming.entries) {
       const sameId = entries.find(row => row.id === entry.id);
@@ -106,21 +116,17 @@ export function mutatePeriodLibrary(input, expectedRevision, operation) {
       if (!sameId) entries.push(entry);
     }
   } else {
-    if (!["rename", "archive", "purge"].includes(kind.value)) periodFail("PERIOD_LIBRARY_OPERATION");
-    const fields = { rename: ["label", "time"], archive: ["archived", "time"], purge: ["acknowledged"] }[kind.value];
-    if (!fields) periodFail("PERIOD_LIBRARY_OPERATION");
-    periodShape(operation, ["kind", "id", ...fields]);
     const id = libraryId(operation.id);
     const index = entries.findIndex(row => row.id === id);
     if (index < 0) periodFail("PERIOD_LIBRARY_NOT_FOUND");
     const entry = entries[index];
-    if (kind.value === "purge") {
+    if (kind === "purge") {
       if (!entry.archived || operation.acknowledged !== true) periodFail("PERIOD_LIBRARY_PURGE_ACK");
       entries.splice(index, 1);
     } else {
       const time = libraryTime(operation.time);
       if (time < entry.updatedAt) periodFail("PERIOD_LIBRARY_TIME_ORDER");
-      if (kind.value === "rename") {
+      if (kind === "rename") {
         const label = libraryLabel(operation.label);
         if (label !== entry.label) entries[index] = Object.freeze({ ...entry, label, updatedAt: time });
       } else {

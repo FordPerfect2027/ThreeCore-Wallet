@@ -3,7 +3,8 @@ import { libraryMetadata } from "./period-library-model.js";
 
 export function libraryQuery(input = {}) {
   if (!input || typeof input !== "object") periodFail("PERIOD_LIBRARY_QUERY");
-  periodShape(input, Object.keys(input));
+  try { input = periodShape(input, Object.keys(input)); }
+  catch { periodFail("PERIOD_SHAPE"); }
   const query = { agent: "all", archive: "active", status: "all", search: "", order: "newest", ...input };
   periodShape(query, ["agent", "archive", "status", "search", "order"]);
   if (!["all", "DAT", "EMA", "CAWELON"].includes(query.agent) ||
