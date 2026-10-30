@@ -9,19 +9,27 @@ export const readSecurityFileBytes = (file, options) => walletFileReadService.re
 
 /** One view owns cancellation; admission and deadlines remain page-wide. */
 export function createFileReadScope() {
-  let controller = null;
-  function cancel() {
+  let controller = null, revision = 0;
+  function stopPrevious() {
+    const id = ++revision;
     const previous = controller;
     controller = null;
     previous?.abort();
+    return id;
   }
-  async function readText(file, { maxBytes, timeoutMs } = {}) {
-    cancel();
+  function cancel() { stopPrevious(); }
+  async function readText(file, options = {}) {
+    const id = stopPrevious();
+    // Cleanup may synchronously cancel or replace this request.
+    if (id !== revision) throw new SecurityFileError("FILE_CANCELLED");
     const own = new AbortController();
     controller = own;
     try {
+      // Capture options only after this request owns cancellation.
+      const { maxBytes, timeoutMs } = options;
+      if (own.signal.aborted || id !== revision) throw new SecurityFileError("FILE_CANCELLED");
       const bytes = await readSecurityFileBytes(file, { maxBytes, timeoutMs, signal: own.signal });
-      if (own.signal.aborted) throw new SecurityFileError("FILE_CANCELLED");
+      if (own.signal.aborted || id !== revision) throw new SecurityFileError("FILE_CANCELLED");
       // Preserve a BOM so each format parser can enforce its existing policy.
       try { return new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes); }
       catch { throw new SecurityFileError("FILE_ENCODING"); }
