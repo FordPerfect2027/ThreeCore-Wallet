@@ -1,0 +1,122 @@
+✖ export error code accessors are not executed (8.7791ms)
+✖ export code cannot change between allowlist check and returned text (1.2681ms)
+✖ export errors require their own data code (0.9363ms)
+✖ export diagnostic reflection failure becomes the fixed fallback (1.0529ms)
+✖ export observer consumes an async then method rejection (23.8379ms)
+✖ export observer consumes a native rejection returned separately by then (4.2866ms)
+✔ export observer does not recursively invoke a non-native returned thenable (5.0367ms)
+✔ export ordinary own diagnostics and native rejected callbacks remain contained (3.4184ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 2
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 292.0451
+
+✖ failing tests:
+
+test at test\export-policy-capture.test.js:5:1
+✖ export error code accessors are not executed (8.7791ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'EXPORT_BUSY'
+  - 'EXPORT_FAILED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/export-policy-capture.test.js:8:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'EXPORT_BUSY',
+    expected: 'EXPORT_FAILED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\export-policy-capture.test.js:10:1
+✖ export code cannot change between allowlist check and returned text (1.2681ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'SYNTHETIC_UNLISTED_DETAIL'
+  - 'EXPORT_BUSY'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/export-policy-capture.test.js:14:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'SYNTHETIC_UNLISTED_DETAIL',
+    expected: 'EXPORT_BUSY',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\export-policy-capture.test.js:16:1
+✖ export errors require their own data code (0.9363ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'EXPORT_BUSY'
+  - 'EXPORT_FAILED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/export-policy-capture.test.js:17:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'EXPORT_BUSY',
+    expected: 'EXPORT_FAILED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\export-policy-capture.test.js:19:1
+✖ export diagnostic reflection failure becomes the fixed fallback (1.0529ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'EXPORT_BUSY'
+  - 'EXPORT_FAILED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/export-policy-capture.test.js:21:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'EXPORT_BUSY',
+    expected: 'EXPORT_FAILED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\export-policy-capture.test.js:23:1
+✖ export observer consumes an async then method rejection (23.8379ms)
+  Error: synthetic async method failure
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/export-policy-capture.test.js:25:59)
+
+test at test\export-policy-capture.test.js:28:1
+✖ export observer consumes a native rejection returned separately by then (4.2866ms)
+  Error: synthetic returned failure
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/export-policy-capture.test.js:30:86)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
