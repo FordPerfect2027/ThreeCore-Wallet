@@ -1,0 +1,37 @@
+✔ bundle save: cancel settles before the underlying operation (90.7587ms)
+✔ bundle save: clear settles before the underlying operation (58.9749ms)
+✔ bundle save: dispose settles before the underlying operation (47.0324ms)
+✔ bundle load-hash: cancel settles before the underlying operation (61.8954ms)
+✔ bundle load-hash: clear settles before the underlying operation (31.1454ms)
+✔ bundle load-hash: dispose settles before the underlying operation (31.3555ms)
+✔ bundle load-bytes: cancel settles before the underlying operation (31.4581ms)
+✔ bundle load-bytes: clear settles before the underlying operation (30.9858ms)
+✔ bundle load-bytes: dispose settles before the underlying operation (30.7124ms)
+✔ bundle review: a source callback cannot continue after disposal (1.6412ms)
+✔ bundle save-start: a source callback cannot continue after disposal (5.179ms)
+✔ bundle save-finish: a source callback cannot continue after disposal (11.3363ms)
+✔ bundle diagnostic accessors are never evaluated (0.6951ms)
+✔ bundle diagnostic capture cannot write into a disposed panel (0.4496ms)
+✔ bundle download false receipt cannot report success (10.538ms)
+✔ bundle download resolved receipt cannot report success (9.1381ms)
+✔ bundle download rejected receipt cannot report success (7.2226ms)
+✔ allowance bundle panel: capture requires explicit review (25.5691ms)
+✔ allowance bundle panel: missing card reports missing record and cannot save (2.0812ms)
+✔ allowance bundle panel: saving captures exactly reviewed three records (58.2436ms)
+✔ allowance bundle panel: changed card before click prevents download (23.7255ms)
+✔ allowance bundle panel: changed card during hashing also prevents download (20.1654ms)
+✔ allowance bundle panel: cancellation while preparing retires download (9.1101ms)
+✔ allowance bundle panel: import never reads or replaces wallet cards (16.0389ms)
+✔ allowance bundle panel: corrupted file clears old display (20.7694ms)
+✔ allowance bundle panel: cancelled import ignores late file response (6.2393ms)
+✔ allowance bundle panel: failed async download does not claim success (10.0823ms)
+✔ allowance bundle panel: dispose removes nodes and prevents delayed download (7.3402ms)
+✔ allowance bundle panel: source rows survive preview, save and clear unchanged (23.2396ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 861.7591
