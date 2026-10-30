@@ -55,7 +55,7 @@ async function runBrowserPage(fault) {
     }
   }
   if (cleanupFailures.length) throw new AggregateError([...(failure ? [failure] : []), ...cleanupFailures],
-    "Browser test did not finish cleanly; preserved temporary files must be checked");
+    "Browser test did not finish cleanly; check isolated profile: " + (profile ?? "not created"));
   if (failure) throw failure;
   return result;
 }
@@ -79,9 +79,9 @@ if (options[0] === "--verify-error-detection") {
     try {
       const result = checkResult(await runBrowserPage(fault), fault);
       console.log("Harness correctly rejected synthetic " + fault + " despite " + result.passed + " passing UI cases.");
-    } catch (error) { failures.push(error.message); }
+    } catch (error) { failures.push(error); }
   }
-  if (failures.length) throw Error(failures.join("\n"));
+  if (failures.length) throw new AggregateError(failures, "Browser error-detection controls did not all pass");
   console.log("2 browser error-detection controls passed.");
 } else {
   const result = checkResult(await runBrowserPage());
