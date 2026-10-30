@@ -8,8 +8,15 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
   let disposed = false;
   let generation = 0;
   let refreshing = false;
+  let selectionAbort = null;
   let state;
   const current = id => !disposed && id === generation;
+  function advance() {
+    const id = ++generation, previous = selectionAbort;
+    selectionAbort = null;
+    previous?.abort();
+    return id;
+  }
   function element(tag, name, text = "") {
     const value = document.createElement(tag);
     value.className = "transfer-archive-" + name;
@@ -24,7 +31,8 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
   function listen(target, event, action) {
     const handler = () => {
       if (disposed) return;
-      return action(++generation);
+      const id = advance();
+      if (current(id)) return action(id);
     };
     target.addEventListener(event, handler);
     cleanup.push(() => target.removeEventListener(event, handler));
@@ -55,7 +63,7 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
   parent.append(host);
   function refresh() {
     if (!state || disposed) return;
-    const busy = ["loading", "preparing"].includes(state.phase);
+    const busy = !!selectionAbort || ["loading", "preparing"].includes(state.phase);
     host.setAttribute("aria-busy", String(busy));
     add.disabled = true;
     save.disabled = busy || !state.archive;
@@ -109,8 +117,22 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
   listen(select, "click", async id => {
     const selected = controller.select(Number(choice.value));
     if (!selected || !current(id)) return;
-    try { await onSelect(selected); }
+    const own = new AbortController();
+    selectionAbort = own;
+    status.textContent = "選択した記録を準備しています。";
+    refresh();
+    try {
+      const shown = await onSelect(selected, { signal: own.signal });
+      if (current(id)) status.textContent = shown === false ? "選択した記録の準備を中止しました。" :
+        "選択した記録を確認画面へ渡しました。内容を確認してから反映してください。";
+    }
     catch { if (current(id)) status.textContent = "選択した記録を表示できませんでした。"; }
+    finally {
+      if (selectionAbort === own) {
+        selectionAbort = null;
+        if (current(id)) refresh();
+      }
+    }
   });
   listen(file, "change", () => {
     const selected = file.files?.[0];
@@ -134,15 +156,16 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
     getArchive: () => controller.capture(),
     stageArchive(input) {
       if (disposed) return false;
-      generation++;
+      const id = advance();
+      if (!current(id)) return false;
       host.open = true;
       return controller.reviewArchive(input);
     },
-    invalidate() { if (!disposed) { generation++; controller.invalidate(); } },
+    invalidate() { if (!disposed) { const id = advance(); if (current(id)) controller.invalidate(); } },
     dispose() {
       if (disposed) return;
       disposed = true;
-      generation++;
+      advance();
       for (const stop of cleanup) stop();
       controller.dispose();
       host.remove();

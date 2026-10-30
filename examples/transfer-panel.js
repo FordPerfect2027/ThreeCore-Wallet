@@ -16,7 +16,15 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
   const cleanup = [];
   let disposed = false;
   let generation = 0;
+  let selectionOperation = null;
   const current = id => !disposed && generation === id;
+  function advance() {
+    const id = ++generation, previous = selectionOperation;
+    selectionOperation = null;
+    previous?.aborter.abort();
+    if (previous?.staging && current(id)) controller.cancel();
+    return id;
+  }
   let previewId = null;
   let page = 0;
   let lastSnapshot = null;
@@ -32,6 +40,12 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
     const handler = (...args) => { if (!disposed) return callback(...args); };
     element.addEventListener(event, handler);
     cleanup.push(() => element.removeEventListener(event, handler));
+  }
+  function action(element, event, callback) {
+    listen(element, event, (...args) => {
+      const id = advance();
+      if (current(id)) return callback(id, ...args);
+    });
   }
   function button(suffix, text) {
     const element = node("button", suffix, text);
@@ -213,27 +227,43 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
   const controller = createTransferController({ getContext, read, onChange: render, subtle });
   archivePanel = mountTransferArchivePanel({ document, parent: host, getContext, download, subtle,
     getSnapshot: () => controller.state.phase === "ready" ? controller.state.snapshot : null,
-    onSelect: async snapshot => {
-      const id = ++generation;
+    onSelect: async (snapshot, { signal }) => {
+      const id = advance();
+      if (!current(id) || signal.aborted) return false;
       const selectedState = controller.state;
-      const text = await encodeTransferFile(snapshot, { subtle });
-      if (!current(id) || controller.state !== selectedState) return;
-      const bytes = new TextEncoder().encode(text);
-      await controller.stageFile({ name: "saved-transfer-record.json", size: bytes.byteLength,
-        arrayBuffer: async () => bytes.slice().buffer });
+      const own = { aborter: new AbortController(), staging: false };
+      selectionOperation = own;
+      const abort = () => {
+        own.aborter.abort();
+        if (selectionOperation === own && current(id) && own.staging) controller.cancel();
+      };
+      signal.addEventListener("abort", abort, { once: true });
+      try {
+        const text = await encodeTransferFile(snapshot, { subtle, signal: own.aborter.signal });
+        if (!current(id) || own.aborter.signal.aborted || controller.state !== selectedState) return false;
+        const bytes = new TextEncoder().encode(text);
+        own.staging = true;
+        return await controller.stageFile({ name: "saved-transfer-record.json", size: bytes.byteLength,
+          arrayBuffer: async () => bytes.slice().buffer });
+      } catch (error) {
+        if (own.aborter.signal.aborted || !current(id)) return false;
+        throw error;
+      } finally {
+        signal.removeEventListener("abort", abort);
+        if (selectionOperation === own) selectionOperation = null;
+      }
     },
   });
-  listen(inspect, "click", () => { generation++; return controller.inspect({
+  action(inspect, "click", () => { return controller.inspect({
     fromBlock: start.element.value.trim() || null,
     toBlock: end.element.value.trim() || null,
     lookback: Number(lookback.element.value),
   }); });
-  listen(cancel, "click", () => { generation++; controller.cancel(); consumeCallback(onCancel); });
-  listen(clear, "click", () => { generation++; controller.invalidate(); consumeCallback(onCancel); });
-  for (const { action, element } of windowButtons) listen(element, "click", () => {
-    const id = ++generation;
+  action(cancel, "click", () => { controller.cancel(); consumeCallback(onCancel); });
+  action(clear, "click", () => { controller.invalidate(); consumeCallback(onCancel); });
+  for (const { action: windowAction, element } of windowButtons) action(element, "click", id => {
     try {
-      const request = planTransferWindow(controller.state.snapshot, action);
+      const request = planTransferWindow(controller.state.snapshot, windowAction);
       start.element.value = request.fromBlock ?? "";
       end.element.value = request.toBlock ?? "";
       lookback.element.value = String(request.lookback);
@@ -248,25 +278,23 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
     }
   });
   for (const field of [start.element, end.element, lookback.element]) {
-    listen(field, "input", () => { generation++; controller.cancel(); consumeCallback(onCancel); });
+    action(field, "input", () => { controller.cancel(); consumeCallback(onCancel); });
   }
   for (const field of [direction, search.element, order]) {
     listen(field, field === search.element ? "input" : "change", () => { page = 0; renderRows(currentState); });
   }
   listen(previous, "click", () => { page--; renderRows(currentState); });
   listen(next, "click", () => { page++; renderRows(currentState); });
-  listen(file.element, "change", () => {
-    generation++;
+  action(file.element, "change", () => {
     const selected = file.element.files?.[0];
     file.element.value = "";
     if (selected) controller.stageFile(selected, importTarget.value);
   });
-  listen(importTarget, "change", () => { generation++; controller.cancel(); });
-  listen(apply, "click", () => { generation++; return controller.applyImport(previewId); });
-  listen(baseline, "click", () => { generation++; return controller.keepBaseline(); });
-  listen(compare, "click", () => { generation++; return controller.compare(); });
-  for (const { kind, element } of exports) listen(element, "click", async () => {
-    const id = ++generation;
+  action(importTarget, "change", () => { controller.cancel(); });
+  action(apply, "click", () => controller.applyImport(previewId));
+  action(baseline, "click", () => controller.keepBaseline());
+  action(compare, "click", () => controller.compare());
+  for (const { kind, element } of exports) action(element, "click", async id => {
     const prepared = await controller.prepare(kind);
     if (!prepared || !current(id)) return;
     try {
@@ -300,11 +328,17 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
       } catch { return false; }
       return archivePanel.stageArchive(input);
     },
-    invalidate() { if (disposed) return; generation++; controller.invalidate(); archivePanel.invalidate(); },
+    invalidate() {
+      if (disposed) return;
+      const id = advance();
+      if (!current(id)) return;
+      controller.invalidate();
+      if (current(id)) archivePanel.invalidate();
+    },
     dispose() {
       if (disposed) return;
       disposed = true;
-      generation++;
+      advance();
       for (const stop of cleanup) stop();
       controller.dispose();
       archivePanel.dispose();
