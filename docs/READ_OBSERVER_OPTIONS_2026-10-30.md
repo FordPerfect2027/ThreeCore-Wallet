@@ -15,3 +15,5 @@ These are synthetic adapter checks. They do not add real-chain scan coverage or 
 ## Existing Edge rehearsal session
 
 A read-only check of the existing Microsoft Edge tab confirmed the session save status still shows 6 committed fictional records and 3 comparison cases, matching the last download-start snapshot. [The visible page](evidence/2026-10-30-read-observers/rehearsal-connected.png) was captured without reloading or changing those records. This is a connection/preservation check, not an additional counted item or a browser execution of the modified wallet readers.
+
+The existing 17,387-byte downloaded session file was also present and retained SHA-256 `22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c`, matching the previous save-checkpoint evidence.
