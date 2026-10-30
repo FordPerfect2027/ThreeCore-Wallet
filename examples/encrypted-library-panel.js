@@ -1,5 +1,6 @@
 import { createEncryptedLibraryController } from "../src/encrypted-library-controller.js";
 import { offerHistoryDownload } from "./history-files.js";
+import { observeCallbackResult } from "../src/security-callback.js";
 
 export const LIBRARY_MESSAGES = Object.freeze({
   LIBRARY_FORMAT: "対応する暗号化データではありません。元のファイルを保全してください。",
@@ -31,6 +32,8 @@ export function mountEncryptedLibraryPanel({ document, parent, readEncrypted, on
   section.setAttribute("aria-label", "暗号化バックアップのPC内保管");
   let disposed = false, ready = false, controller;
   let priorTicket = null, lastState;
+  let generation = 0;
+  const current = id => !disposed && id === generation;
   const cleanup = [];
   function node(tag, name, text, host = section) {
     const element = document.createElement(tag);
@@ -40,7 +43,7 @@ export function mountEncryptedLibraryPanel({ document, parent, readEncrypted, on
     return element;
   }
   function listen(item, type, handler) {
-    const action = () => { if (!disposed) handler(); };
+    const action = () => { if (!disposed) { generation++; return handler(); } };
     item.addEventListener(type, action);
     cleanup.push(() => item.removeEventListener(type, action));
   }
@@ -56,8 +59,14 @@ export function mountEncryptedLibraryPanel({ document, parent, readEncrypted, on
   const load = button("load", "保管一覧を読み直す", () => { void controller.load(); });
   const save = button("save", "準備した暗号化ファイルの保管を確認", () => {
     if (!ready) return;
-    try { void controller.prepareSave(readEncrypted()); }
-    catch { status.textContent = "現在の設定で暗号化ファイルを準備し直してください。"; }
+    const id = generation;
+    try {
+      const encrypted = readEncrypted();
+      const kind = observeCallbackResult(encrypted);
+      if (!current(id) || !ready) return;
+      if (kind !== "synchronous") throw Error("Unconfirmed encrypted source");
+      return controller.prepareSave(encrypted);
+    } catch { if (current(id)) status.textContent = "現在の設定で暗号化ファイルを準備し直してください。"; }
   });
   const capacity = node("p", "capacity");
   const label = node("label", "label", "保管したバックアップ");
@@ -155,18 +164,23 @@ export function mountEncryptedLibraryPanel({ document, parent, readEncrypted, on
   listen(checkbox, "change", () => render(controller.state()));
   listen(file, "change", () => {
     const files = file.files;
-    if (files?.length === 1) void controller.prepareImport(files[0]);
-    else { controller.cancel(); status.textContent = "保管箱ファイルは1件ずつ選択してください。"; }
     file.value = "";
+    if (files?.length === 1) void controller.prepareImport(files[0]);
+    else {
+      const id = generation;
+      controller.cancel();
+      if (current(id)) status.textContent = "保管箱ファイルは1件ずつ選択してください。";
+    }
   });
   parent.append(section);
   render(controller.state());
   return Object.freeze({ state: controller.state,
-    setReady(value) { ready = value === true; render(lastState); },
-    protect() { if (!disposed) { ready = false; file.value = ""; checkbox.checked = false; controller.cancel(); } },
+    setReady(value) { if (!disposed) { generation++; ready = value === true; render(lastState); } },
+    protect() { if (!disposed) { generation++; ready = false; file.value = ""; checkbox.checked = false; controller.cancel(); } },
     dispose() {
       if (disposed) return;
       disposed = true;
+      generation++;
       controller.dispose();
       for (const removeListener of cleanup) removeListener();
       section.remove();
