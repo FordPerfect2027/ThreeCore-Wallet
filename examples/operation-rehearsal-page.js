@@ -1,6 +1,6 @@
 import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
-import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
+import { describeFileReadError, displayFileName, decodeRehearsalForPanel } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsal, encodeRehearsal, evaluateRehearsal, parseRehearsalUnits,
   formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
@@ -103,7 +103,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     return revision;
   }
   function reviewWorkspaceText(text) {
-    const data = decodeRehearsalWorkspace(text);
+    const data = decodeRehearsalForPanel(text, "workspace", decodeRehearsalWorkspace);
     if (data.ledgers.some(item => item.asset.symbol !== "SIM" || item.asset.decimals !== 6))
       throw Object.assign(new Error("SIM required"), { code: "SIM_REQUIRED" });
     workspaceComparison = compareRehearsalWorkspaces(ledger.snapshot(), data);
@@ -445,7 +445,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     try {
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_LIMIT });
       if (disposed || own !== revision) return;
-      const data = decodeRehearsal(text); const report = evaluateRehearsal(data);
+      const data = decodeRehearsalForPanel(text, "record", decodeRehearsal); const report = evaluateRehearsal(data);
       if (data.asset.symbol !== "SIM" || data.asset.decimals !== 6)
         throw new Error("This page uses fictional SIM units with six decimals");
       if (disposed || own !== revision) return;

@@ -1,6 +1,6 @@
 import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
-import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
+import { describeFileReadError, displayFileName, decodeRehearsalForPanel } from "../src/file-read-status.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsalSession,encodeRehearsalSession,createRehearsalSaveCheckpoint,REHEARSAL_SESSION_LIMIT } from "../src/operation-rehearsal-session.js";
@@ -34,7 +34,7 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   const unsubscribe=session.subscribe(()=>{if(disposed)return;reset("履歴またはケースの操作がありました。まとめて復旧する場合は保存したファイルをもう一度確認してください。");available();});
   function cancel(message){session.cancel();reset(message);}
   const describe=item=>item?item.label+" / "+item.before.agent+" / ネットワーク "+item.before.chainId+" / 口座 "+item.before.account+" / 資産 "+item.before.asset.symbol+" ("+item.before.asset.address+") / 元記録 "+item.before.events.length+"件":"なし";
-  function review(text,name,kind="paste"){const data=decodeRehearsalSession(text);
+  function review(text,name,kind="paste"){const data=decodeRehearsalForPanel(text, "session", decodeRehearsalSession);
     if(data.workspace.ledgers.some(item=>item.asset.symbol!=="SIM"||item.asset.decimals!==6))throw Error("SIM required");
     pending=session.preview(data);source=name;sourceKind=kind;get("source").textContent="確認元: "+name;get("review").hidden=false;
     const comparison=pending.comparison;get("summary").textContent="作成済みの履歴 "+comparison.before.workspace.ledgers.length+" → "+comparison.after.workspace.ledgers.length+"対象 / 比較ケース "+comparison.before.cases.cases.length+" → "+comparison.after.cases.cases.length+"件。"+
@@ -56,7 +56,7 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
       review(text,name,"file");
     }catch(error){if(!disposed&&own===revision)failed(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
-  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel("貼り付けた記録を確認しています。");try{review(text,"貼り付けたまとめ記録");}catch{failed();}});
+  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel("貼り付けた記録を確認しています。");try{review(text,"貼り付けたまとめ記録");}catch(error){failed(error);}});
   listen("text","input",()=>{if(!disposed)cancel("貼り付けたまとめ記録を確認してください。");});
   listen("apply","click",()=>{if(disposed||!pending)return;const reviewed=pending,name=source,kind=sourceKind;
     let restored;try{restored=session.commit(reviewed);}catch{failed();return;}

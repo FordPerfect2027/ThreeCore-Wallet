@@ -398,7 +398,7 @@ for (const [name, text, message] of [
   ["duplicate-key", '{"schema":"a","schema":"b"}', /JSONの内容/],
   ["oversized", " ".repeat(REHEARSAL_WORKSPACE_LIMIT) + "{}", /大きすぎ/],
   ["multibyte-oversized", JSON.stringify({ padding: "あ".repeat(175000) }), /大きすぎ/],
-  ["single-ledger", encodeRehearsal(rehearsalExampleV2()), /一括試算/],
+  ["single-ledger", encodeRehearsal(rehearsalExampleV2()), /記録を保存・再確認/],
   ["foreign-asset", workspaceText([{ ...rehearsalExampleV2(), asset: { ...rehearsalExampleV2().asset, symbol: "OTHER" } }]), /練習用SIM/],
 ]) test(name + " pasted input explains failure and preserves applied records and undo", () => {
   const f = setup(); f.field("example").click(); prepareAppend(f, "reserve"); f.field("append-confirm").click();

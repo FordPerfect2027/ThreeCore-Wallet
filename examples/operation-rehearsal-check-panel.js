@@ -1,6 +1,6 @@
 import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
-import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
+import { describeFileReadError, displayFileName, decodeRehearsalForPanel } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsalCheckSuite, runRehearsalCheckSuite, encodeRehearsalCheckReport, REHEARSAL_CHECK_SUITE_LIMIT } from "../src/operation-rehearsal-check-suite.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
@@ -22,7 +22,7 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
   const labels={...SCENARIO_LABELS,openPositions:"未決済件数",allocationBlockers:"追加予約を止める理由",withinEnteredLimits:"記録の条件判定",reasons:"記録の見送り理由"};
   function display(value,field,asset){if(Array.isArray(value))return value.map(code=>Object.hasOwn(reasons,code)?reasons[code]:code).join("・")||"該当なし";if(typeof value==="boolean")return value?"仮の条件内":"見送り";
     if(Object.hasOwn(SCENARIO_LABELS,field))return formatRehearsalUnits(value,asset.decimals)+" "+asset.symbol;return String(value);}
-  function run(text,source){input=decodeRehearsalCheckSuite(text);report=runRehearsalCheckSuite(input);get("results").hidden=false;get("save").disabled=false;
+  function run(text,source){input=decodeRehearsalForPanel(text, "expectations", decodeRehearsalCheckSuite);report=runRehearsalCheckSuite(input);get("results").hidden=false;get("save").disabled=false;
     get("source").textContent="確認元: "+source;get("origin").textContent=input.expectationOrigin==="recorded-calculation"?
       "資料上の期待結果: 保存時の計算結果。変更の検出用で、計算の正しさを独立に証明するものではありません。":"資料上の期待結果: 手動で指定。指定者や根拠はこの画面では確認していません。";
     get("summary").textContent="全 "+report.summary.cases+"ケース / 一致 "+report.summary.matched+"ケース / 相違 "+report.summary.differing+"ケース。";
@@ -42,7 +42,7 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
       run(text,name);
     }catch(error){if(!disposed&&own===revision)fail(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
-  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";reset();try{run(text,"貼り付けた期待結果");}catch{fail();}});
+  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";reset();try{run(text,"貼り付けた期待結果");}catch(error){fail(error);}});
   listen("text","input",()=>{if(!disposed)reset("貼り付けた期待結果を確認してください。");});
   listen("clear","click",()=>{if(disposed)return;reset();get("file").value="";get("text").value="";});
   listen("save","click",()=>{if(disposed||!input||!report)return;const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalCheckReport(input),filename:"ThreeCore-expected-outcome-report.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="期待結果の確認資料を保存し始めました。";}catch{if(disposed||own!==revision)return;get("export-status").textContent="確認資料を保存できませんでした。確認結果は保持しています。";}});

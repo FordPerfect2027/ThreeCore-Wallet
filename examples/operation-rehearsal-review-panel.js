@@ -1,6 +1,6 @@
 import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
-import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
+import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { reviewRehearsalReport, encodeRehearsalReviewReceipt, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
@@ -85,7 +85,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       for(const diff of result.differences) row("differences",[diff.path,labels[diff.kind]]);
     } catch(error) {
       if(disposed || own !== revision) return;
-      const reason = {INVALID_EXPECTED_CHECKSUM:"照合値はSHA-256の64桁の英数字で入力してください。",
+      const reason = describeRehearsalFileTarget(text, "report") ?? {INVALID_EXPECTED_CHECKSUM:"照合値はSHA-256の64桁の英数字で入力してください。",
         UNSUPPORTED_REVIEW_REPORT:"この形式には対応していません。確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を選んでください。",
         REVIEW_HASH_UNAVAILABLE:"照合値を計算できませんでした。もう一度確認してください。",
         SCENARIO_CONTEXT_OR_EVENTS_CHANGED:"比較資料の口座・資産・元の記録が一致しないため、同じ履歴として比較できません。"}[error?.code]

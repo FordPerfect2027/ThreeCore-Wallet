@@ -78,6 +78,12 @@ export function registerFileReadUITests(test) {
       const preview=q("preview").textContent,status=q("status").textContent;
       picker.dispatchEvent(new Event("cancel"));
       assert(q("preview").textContent===preview&&q("status").textContent===status&&!q("apply").disabled,"Picker dismissal preserves preview authority");
+      const currentRows=q("rows").innerHTML;
+      q("session-text").value=JSON.stringify(rehearsalExampleV2("EMA"));
+      q("session-text").dispatchEvent(new Event("input"));
+      q("session-paste").click();
+      assert(q("session-status").textContent.includes("記録を保存・再確認"),"Wrong format names the correct section");
+      assert(q("session-apply").disabled&&q("rows").innerHTML===currentRows,"Format guidance does not restore data");
       page.dispose();
       picker.dispatchEvent(new Event("cancel"));
       assert(q("file-note").textContent==="","Disposed notices cannot revive");

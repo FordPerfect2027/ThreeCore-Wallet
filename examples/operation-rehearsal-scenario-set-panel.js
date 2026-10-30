@@ -1,6 +1,6 @@
 import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
-import { describeFileReadError, displayFileName } from "../src/file-read-status.js";
+import { describeFileReadError, displayFileName, decodeRehearsalForPanel } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { createRehearsalScenarioSet, decodeRehearsalScenarioSet, encodeRehearsalScenarioSet,
   reportRehearsalScenarioSet, encodeRehearsalScenarioSetReport, REHEARSAL_SCENARIO_SET_LIMIT } from "../src/operation-rehearsal-scenario-set.js";
@@ -90,14 +90,14 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
     cancel("ケース集のファイルを確認しています（最大30秒）。");get("status").setAttribute("aria-busy", "true");get("file").value="";get("text").value="";const own=revision;
     try{
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_SCENARIO_SET_LIMIT });if(disposed||own!==revision)return;
-      const data=decodeRehearsalScenarioSet(text);
+      const data=decodeRehearsalForPanel(text, "cases", decodeRehearsalScenarioSet);
       const name = displayFileName(file, "ケース集ファイル");
       if (disposed || own !== revision) return;
       showReview(store.previewImport(data),name);
     }catch(error){if(!disposed&&own===revision)fail(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
   listen("text","input",()=>{if(!disposed)cancel("貼り付けたケース集を確認してください。");});
-  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel();try{showReview(store.previewImport(decodeRehearsalScenarioSet(text)),"貼り付けたケース集");}catch{fail();}});
+  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel();try{showReview(store.previewImport(decodeRehearsalForPanel(text, "cases", decodeRehearsalScenarioSet)),"貼り付けたケース集");}catch(error){fail(error);}});
   for(const [name,reportOnly]of[["save",false],["report-save",true]])listen(name,"click",()=>{
     if(disposed||!store.state().current.cases.length)return;
     const own=revision; try{offerDownload({document,prepared:{text:reportOnly?encodeRehearsalScenarioSetReport(store.state().current):encodeRehearsalScenarioSet(store.state().current),
