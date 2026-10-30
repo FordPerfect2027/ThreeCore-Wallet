@@ -48,6 +48,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   let saveGeneration = 0;
   let saveAbort = null;
   let inspectingBackup = false;
+  let writeAttempt = null;
   let secureStaged = false;
   let secureStaging = false;
   let securePanel;
@@ -107,6 +108,28 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
       status.textContent = message;
       controls();
     }
+  }
+  function mutate(action) {
+    const attempt = { cancelledAt: null };
+    writeAttempt = attempt;
+    try { return action(); }
+    catch (error) {
+      // Cancellation retires exports immediately, but a synchronous restore
+      // must finish rollback before its final guidance and controls are known.
+      const id = saveGeneration;
+      if (!current(id)) throw error;
+      const state = controller.state();
+      if (!current(id)) throw error;
+      if (state.recoveryRequired || (attempt.cancelledAt === id && !state.pending && !reading && !saving)) {
+        const message = state.recoveryRequired ? ERRORS.WORKSPACE_RECOVERY_REQUIRED : errorMessage(error);
+        if (!current(id)) throw error;
+        clearReview();
+        if (!current(id)) throw error;
+        status.textContent = message;
+        controls();
+      }
+      throw error;
+    } finally { if (writeAttempt === attempt) writeAttempt = null; }
   }
   function button(name, value, action) {
     const item = node("button", name, value);
@@ -178,7 +201,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     const candidate = preview;
     preview = null;
     confirmed.item.checked = removal.item.checked = false;
-    const result = controller.apply(candidate.id, json.value, options());
+    const result = mutate(() => controller.apply(candidate.id, json.value, options()));
     detail.textContent = "";
     overview.textContent = describeWorkspaceOverview(readCurrentDraft());
     status.textContent = result.changed ? "一括復元しました。必要なカードで改めて接続してください。" : "設定と履歴に変更はありませんでした。";
@@ -194,7 +217,10 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     if (!current(id)) return;
     clearReview();
     if (!current(id)) return;
-    status.textContent = "取り消しました。設定と履歴は変更していません。";
+    if (writeAttempt) {
+      writeAttempt.cancelledAt = id;
+      status.textContent = "取り消しを受け付けました。復元処理の結果を確認しています。";
+    } else status.textContent = "取り消しました。設定と履歴は変更していません。";
   });
   const undoPreview = button("undo-preview", "直前の一括復元を戻す内容を確認", () => {
     clearReview();
@@ -208,7 +234,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     const id = undoReview.id;
     undoReview = null;
     undoConfirmed.item.checked = false;
-    controller.undoApply(id);
+    mutate(() => controller.undoApply(id));
     undoDetail.textContent = "";
     overview.textContent = describeWorkspaceOverview(readCurrentDraft());
     status.textContent = "一括復元前の設定と履歴へ戻しました。接続許可は復元していません。";
@@ -241,6 +267,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     controls();
   } });
   function clearReview() {
+    if (writeAttempt) writeAttempt.cancelledAt = null;
     controller.cancel();
     preview = undoReview = null;
     confirmed.item.checked = removal.item.checked = undoConfirmed.item.checked = false;

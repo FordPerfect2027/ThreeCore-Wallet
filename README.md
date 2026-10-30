@@ -309,7 +309,7 @@ Each card now owns its connection and visible operation through `createWalletCar
 
 [Phase 5 validation and reproduction](docs/VALIDATION_PHASE5_2026-10-21.md) records 196 offline tests and 24 local EVM cases per token (72 total). CI additionally runs two HTTP route tests and eight real DOM interaction tests in headless Chrome, using an isolated profile and a synthetic provider. The browser tests never use an installed Wallet or external RPC; they do not certify Wallet extension compatibility.
 
-Run `npm run test:demo-server` for HTTP routes and `npm run test:browser-ui` on Linux with `google-chrome` installed. For manual reproduction, `npm run demo -- --ui-test` exposes `/test/browser/` on the displayed local address. Normal demo mode does not serve test fixtures. The automated browser suite starts its own temporary loopback server and removes its temporary Chrome profile when finished.
+Run `npm run test:demo-server` for HTTP routes and `npm run test:browser-ui` on Windows with Chrome or Microsoft Edge installed in a standard location, or on Linux with `google-chrome` installed. For manual reproduction, `npm run demo -- --ui-test` exposes `/test/browser/` on the displayed local address. Normal demo mode does not serve test fixtures. The automated browser suite uses its own temporary loopback server and browser profile with extensions disabled. It stops only its own browser process before removing that profile; if shutdown cannot be confirmed, it preserves the profile and reports the cleanup failure. `node scripts/test-browser-ui.js --verify-error-detection` also checks that browser errors and unhandled rejections make validation fail.
 
 ### Token history response validation
 
