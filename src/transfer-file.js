@@ -8,8 +8,8 @@ export const TRANSFER_FILE_SCHEMA = "threecore.transfer-file.v1";
 export const TRANSFER_FILE_LIMIT = 524288;
 const encoder = new TextEncoder();
 
-async function checksum(text, subtle) {
-  try { return await sha256Hex(encoder.encode(text), subtle); }
+async function checksum(text, subtle, options) {
+  try { return await sha256Hex(encoder.encode(text), subtle, options); }
   catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
@@ -19,9 +19,9 @@ function boundedText(text) {
   return text;
 }
 
-export async function encodeTransferFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function encodeTransferFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const snapshot = validateTransferSnapshot(input);
-  const digest = await checksum(JSON.stringify(snapshot), subtle);
+  const digest = await checksum(JSON.stringify(snapshot), subtle, { signal, timeoutMs });
   const envelope = {
     schema: TRANSFER_FILE_SCHEMA,
     algorithm: "SHA-256",
@@ -31,7 +31,7 @@ export async function encodeTransferFile(input, { subtle = globalThis.crypto?.su
   return boundedText(JSON.stringify(envelope, null, 2) + "\n");
 }
 
-export async function decodeTransferFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeTransferFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   boundedText(text);
   let raw;
   try { raw = parseSecurityJson(text); }
@@ -40,7 +40,7 @@ export async function decodeTransferFile(text, { subtle = globalThis.crypto?.sub
   if (raw.schema !== TRANSFER_FILE_SCHEMA || raw.algorithm !== "SHA-256" ||
       typeof raw.digest !== "string" || !/^[\da-f]{64}$/.test(raw.digest)) transferFail("TRANSFER_FILE_SCHEMA");
   const snapshot = validateTransferSnapshot(raw.payload);
-  const digest = await checksum(JSON.stringify(snapshot), subtle);
+  const digest = await checksum(JSON.stringify(snapshot), subtle, { signal, timeoutMs });
   if (digest !== raw.digest) transferFail("TRANSFER_CHECKSUM_MISMATCH");
   // A checksum detects accidental changes. Anyone can recompute it.
   return Object.freeze({ snapshot, digest, authenticated: false });

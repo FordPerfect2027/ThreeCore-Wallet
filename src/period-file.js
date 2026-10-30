@@ -14,16 +14,16 @@ function bounded(text) {
   return text;
 }
 
-async function checksum(draft, subtle) {
+async function checksum(draft, subtle, options) {
   const bytes = encoder.encode(JSON.stringify(draft));
   if (bytes.byteLength > PERIOD_DRAFT_LIMIT) periodFail("PERIOD_DRAFT_SIZE");
-  try { return await sha256Hex(bytes, subtle); }
+  try { return await sha256Hex(bytes, subtle, options); }
   catch { periodFail("PERIOD_CRYPTO"); }
 }
 
-export async function preparePeriodFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function preparePeriodFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const draft = validatePeriodDraft(input);
-  const digest = await checksum(draft, subtle);
+  const digest = await checksum(draft, subtle, { signal, timeoutMs });
   const text = bounded(JSON.stringify({ schema: PERIOD_FILE_SCHEMA,
     algorithm: "SHA-256", digest, draft }, null, 2) + "\n");
   return Object.freeze({ text, digest, byteLength: encoder.encode(text).byteLength,
@@ -31,7 +31,7 @@ export async function preparePeriodFile(input, { subtle = globalThis.crypto?.sub
     mimeType: "application/json;charset=utf-8", containsPublicAccounts: true, authenticated: false });
 }
 
-export async function decodePeriodFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodePeriodFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   bounded(text);
   let envelope;
   try { envelope = parseSecurityJson(text); }
@@ -40,7 +40,7 @@ export async function decodePeriodFile(text, { subtle = globalThis.crypto?.subtl
   if (envelope.schema !== PERIOD_FILE_SCHEMA || envelope.algorithm !== "SHA-256" ||
       typeof envelope.digest !== "string" || !/^[0-9a-f]{64}$/.test(envelope.digest)) periodFail("PERIOD_FILE_SCHEMA");
   const draft = validatePeriodDraft(envelope.draft);
-  const digest = await checksum(draft, subtle);
+  const digest = await checksum(draft, subtle, { signal, timeoutMs });
   if (digest !== envelope.digest) periodFail("PERIOD_CHECKSUM");
   return Object.freeze({ draft, digest, checksumVerified: true, authenticated: false });
 }

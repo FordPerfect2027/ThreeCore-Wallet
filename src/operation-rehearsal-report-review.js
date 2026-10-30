@@ -40,7 +40,7 @@ function compareValues(expected, actual) {
 }
 
 /** Review untrusted derived data by recomputation. Does not import its inputs into live state. */
-export async function reviewRehearsalReport(text, { expectedSha256 = null, subtle = globalThis.crypto?.subtle } = {}) {
+export async function reviewRehearsalReport(text, { expectedSha256 = null, subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   let byteLength, parsed;
   try {
     byteLength = boundedUtf8Length(text, REHEARSAL_REPORT_REVIEW_LIMIT);
@@ -79,7 +79,7 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
   } else fail("UNSUPPORTED_REVIEW_REPORT");
   const comparison = compareValues(recomputed, parsed);
   let sha256;
-  try { sha256 = await sha256Hex(new TextEncoder().encode(text), subtle); }
+  try { sha256 = await sha256Hex(new TextEncoder().encode(text), subtle, { signal, timeoutMs }); }
   catch { fail("REVIEW_HASH_UNAVAILABLE"); }
   const expectedHash = expectedSha256?.toLowerCase() ?? null;
   return Object.freeze({ schema: REHEARSAL_REPORT_REVIEW_SCHEMA, simulationOnly: true,

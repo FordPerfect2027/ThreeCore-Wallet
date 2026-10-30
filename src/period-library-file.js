@@ -17,22 +17,22 @@ function bounded(text) {
       encoder.encode(text).byteLength > PERIOD_LIBRARY_FILE_LIMIT) periodFail("PERIOD_LIBRARY_FILE_SIZE");
   return text;
 }
-async function checksum(document, subtle) {
-  try { return await sha256Hex(encoder.encode(JSON.stringify(document)), subtle); }
+async function checksum(document, subtle, options) {
+  try { return await sha256Hex(encoder.encode(JSON.stringify(document)), subtle, options); }
   catch { periodFail("PERIOD_CRYPTO"); }
 }
 
 /** Include archived entries and conflict markers; local storage revision is not portable. */
-export async function preparePeriodLibraryFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function preparePeriodLibraryFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const document = portable(input);
-  const digest = await checksum(document, subtle);
+  const digest = await checksum(document, subtle, { signal, timeoutMs });
   // Compact JSON avoids multiplying the size of large, already bounded event arrays.
   const text = bounded(JSON.stringify({ schema: PERIOD_LIBRARY_FILE_SCHEMA, algorithm: "SHA-256", digest, document }) + "\n");
   return Object.freeze({ text, digest, filename: "ThreeCore-period-library.json", mimeType: "application/json;charset=utf-8",
     byteLength: encoder.encode(text).byteLength, authenticated: false, encrypted: false });
 }
 
-export async function decodePeriodLibraryFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodePeriodLibraryFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   bounded(text);
   let envelope;
   try { envelope = parseSecurityJson(text); } catch { periodFail("PERIOD_FILE_JSON"); }
@@ -41,7 +41,7 @@ export async function decodePeriodLibraryFile(text, { subtle = globalThis.crypto
       typeof envelope.digest !== "string" || !/^[0-9a-f]{64}$/.test(envelope.digest)) periodFail("PERIOD_LIBRARY_FILE_SCHEMA");
   const document = portable(envelope.document);
   if (envelope.document.revision !== 0) periodFail("PERIOD_LIBRARY_FILE_SCHEMA");
-  if (await checksum(document, subtle) !== envelope.digest) periodFail("PERIOD_CHECKSUM");
+  if (await checksum(document, subtle, { signal, timeoutMs }) !== envelope.digest) periodFail("PERIOD_CHECKSUM");
   return Object.freeze({ document, digest: envelope.digest, checksumVerified: true, authenticated: false });
 }
 

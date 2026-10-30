@@ -8,14 +8,14 @@ export const TRANSFER_ARCHIVE_FILE_LIMIT = 6 * 1024 * 1024;
 const FILE_SCHEMA = "threecore.transfer-archive-file.v1";
 const encoder = new TextEncoder();
 
-async function digestArchive(payload, subtle) {
-  try { return await sha256Hex(encoder.encode(JSON.stringify(payload)), subtle); }
+async function digestArchive(payload, subtle, options) {
+  try { return await sha256Hex(encoder.encode(JSON.stringify(payload)), subtle, options); }
   catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
-export async function prepareTransferArchive(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareTransferArchive(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const payload = validateTransferArchive(input);
-  const digest = await digestArchive(payload, subtle);
+  const digest = await digestArchive(payload, subtle, { signal, timeoutMs });
   const text = JSON.stringify({ schema: FILE_SCHEMA, algorithm: "SHA-256", digest, payload }, null, 2) + "\n";
   const byteLength = encoder.encode(text).length;
   if (byteLength > TRANSFER_ARCHIVE_FILE_LIMIT) transferFail("TRANSFER_ARCHIVE_FILE_SIZE");
@@ -40,7 +40,7 @@ export async function readTransferArchive(file, { subtle = globalThis.crypto?.su
   if (envelope.schema !== FILE_SCHEMA || envelope.algorithm !== "SHA-256" ||
       typeof envelope.digest !== "string" || !/^[\da-f]{64}$/.test(envelope.digest)) transferFail("TRANSFER_ARCHIVE_SCHEMA");
   const archive = validateTransferArchive(envelope.payload);
-  const digest = await digestArchive(archive, subtle);
+  const digest = await digestArchive(archive, subtle, { signal, timeoutMs });
   if (digest !== envelope.digest) transferFail("TRANSFER_CHECKSUM_MISMATCH");
   return Object.freeze({ archive, digest, authenticated: false });
 }

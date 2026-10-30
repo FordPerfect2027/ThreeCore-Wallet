@@ -43,19 +43,19 @@ export function describeAllowanceBundle(input) {
     "\n\n3件は別々の時点の観測です。同時刻・同一ブロックの資産一覧ではありません。" +
     "\n読込みは表示だけです。接続設定や現在のカードの記録を置き換えません。";
 }
-async function sha256(text, subtle) {
-  try { return await sha256Hex(new TextEncoder().encode(text), subtle); }
+async function sha256(text, subtle, options) {
+  try { return await sha256Hex(new TextEncoder().encode(text), subtle, options); }
   catch { allowanceFail("ALLOWANCE_CRYPTO"); }
 }
 const signature = files => JSON.stringify({ schema: ALLOWANCE_BUNDLE_SCHEMA, files }, null, 2);
-export async function prepareAllowanceBundle(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareAllowanceBundle(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const bundle = validateAllowanceBundle(input);
   const files = [];
   for (const record of bundle.records) {
-    const prepared = await prepareAllowanceFile("observation", record, { subtle });
+    const prepared = await prepareAllowanceFile("observation", record, { subtle, signal, timeoutMs });
     files.push(JSON.parse(prepared.text));
   }
-  const digest = await sha256(signature(files), subtle);
+  const digest = await sha256(signature(files), subtle, { signal, timeoutMs });
   const text = JSON.stringify({
     schema: ALLOWANCE_BUNDLE_SCHEMA, algorithm: "SHA-256", digest, files,
   }, null, 2);
@@ -67,7 +67,7 @@ export async function prepareAllowanceBundle(input, { subtle = globalThis.crypto
     mimeType: "application/json;charset=utf-8",
   });
 }
-export async function decodeAllowanceBundle(bytes, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeAllowanceBundle(bytes, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   if (!(bytes instanceof Uint8Array) || bytes.length < 1 || bytes.length > ALLOWANCE_BUNDLE_LIMIT) allowanceFail("ALLOWANCE_FILE_SIZE");
   let text, wrapper;
   try { text = new TextDecoder("utf-8", { fatal: true }).decode(bytes.slice()); }
@@ -81,13 +81,13 @@ export async function decodeAllowanceBundle(bytes, { subtle = globalThis.crypto?
   const records = [];
   const canonicalFiles = [];
   for (const file of wrapper.files) {
-    const decoded = await decodeAllowanceFile(new TextEncoder().encode(JSON.stringify(file)), { subtle });
+    const decoded = await decodeAllowanceFile(new TextEncoder().encode(JSON.stringify(file)), { subtle, signal, timeoutMs });
     if (decoded.kind !== "observation") allowanceFail("ALLOWANCE_BUNDLE_RECORDS");
     records.push(decoded.payload);
     canonicalFiles.push({ schema: file.schema, kind: decoded.kind, algorithm: "SHA-256",
       digest: decoded.digest, payload: decoded.payload });
   }
-  const digest = await sha256(signature(canonicalFiles), subtle);
+  const digest = await sha256(signature(canonicalFiles), subtle, { signal, timeoutMs });
   if (digest !== wrapper.digest) allowanceFail("ALLOWANCE_CHECKSUM");
   return Object.freeze({
     bundle: captureAllowanceBundle(records), digest,

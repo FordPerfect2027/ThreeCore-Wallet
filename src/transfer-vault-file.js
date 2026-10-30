@@ -17,23 +17,23 @@ function bounded(text) {
   return text;
 }
 
-async function checksum(bundle, subtle) {
+async function checksum(bundle, subtle, options) {
   const canonical = encoder.encode(JSON.stringify(bundle));
   if (canonical.byteLength > VAULT_BUNDLE_BYTES) transferFail("TRANSFER_VAULT_SIZE");
-  try { return await sha256Hex(canonical, subtle); }
+  try { return await sha256Hex(canonical, subtle, options); }
   catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
-export async function prepareVaultFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareVaultFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const bundle = validateVaultBundle(input);
   if (!vaultHasRecords(bundle)) transferFail("TRANSFER_VAULT_EMPTY");
-  const digest = await checksum(bundle, subtle);
+  const digest = await checksum(bundle, subtle, { signal, timeoutMs });
   const text = bounded(JSON.stringify({ schema: VAULT_FILE_SCHEMA, algorithm: "SHA-256", digest, bundle }, null, 2) + "\n");
   return Object.freeze({ text, digest, byteLength: encoder.encode(text).byteLength,
     filename: "ThreeCore-transfer-vault.json", mimeType: "application/json;charset=utf-8", authenticated: false });
 }
 
-export async function decodeVaultFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeVaultFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   bounded(text);
   let value;
   try { value = parseSecurityJson(text); }
@@ -43,7 +43,7 @@ export async function decodeVaultFile(text, { subtle = globalThis.crypto?.subtle
       typeof value.digest !== "string" || !/^[\da-f]{64}$/.test(value.digest)) transferFail("TRANSFER_VAULT_FILE_SCHEMA");
   const bundle = validateVaultBundle(value.bundle);
   if (!vaultHasRecords(bundle)) transferFail("TRANSFER_VAULT_EMPTY");
-  const digest = await checksum(bundle, subtle);
+  const digest = await checksum(bundle, subtle, { signal, timeoutMs });
   if (digest !== value.digest) transferFail("TRANSFER_CHECKSUM_MISMATCH");
   return Object.freeze({ bundle, digest, authenticated: false });
 }

@@ -19,20 +19,20 @@ function bounded(text) {
   return text;
 }
 
-async function digest(document, subtle) {
-  try { return await sha256Hex(encoder.encode(JSON.stringify(document)), subtle); }
+async function digest(document, subtle, options) {
+  try { return await sha256Hex(encoder.encode(JSON.stringify(document)), subtle, options); }
   catch { periodFail("PERIOD_CRYPTO"); }
 }
 
-export async function prepareReportHistoryFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
-  const document = portable(input), hash = await digest(document, subtle);
+export async function prepareReportHistoryFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
+  const document = portable(input), hash = await digest(document, subtle, { signal, timeoutMs });
   const text = bounded(JSON.stringify({ schema: REPORT_HISTORY_FILE_SCHEMA, algorithm: "SHA-256", digest: hash, document }) + "\n");
   return Object.freeze({ text, digest: hash, byteLength: encoder.encode(text).byteLength,
     filename: "ThreeCore-report-history.json", mimeType: "application/json;charset=utf-8",
     encrypted: false, authenticated: false });
 }
 
-export async function decodeReportHistoryFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeReportHistoryFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   bounded(text);
   let envelope;
   try { envelope = parseSecurityJson(text); } catch { periodFail("PERIOD_FILE_JSON"); }
@@ -41,7 +41,7 @@ export async function decodeReportHistoryFile(text, { subtle = globalThis.crypto
       typeof envelope.digest !== "string" || !/^[0-9a-f]{64}$/.test(envelope.digest)) periodFail("PERIOD_HISTORY_FILE_SCHEMA");
   const document = portable(envelope.document);
   if (envelope.document.revision !== 0) periodFail("PERIOD_HISTORY_FILE_SCHEMA");
-  if (await digest(document, subtle) !== envelope.digest) periodFail("PERIOD_CHECKSUM");
+  if (await digest(document, subtle, { signal, timeoutMs }) !== envelope.digest) periodFail("PERIOD_CHECKSUM");
   return Object.freeze({ document, digest: envelope.digest, checksumVerified: true, authenticated: false });
 }
 

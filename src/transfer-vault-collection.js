@@ -16,23 +16,23 @@ function checkSize(text) {
   if (typeof text !== "string" || !text.length || text.length > VAULT_COLLECTION_LIMIT ||
       encoder.encode(text).byteLength > VAULT_COLLECTION_LIMIT) transferFail("TRANSFER_VAULT_COLLECTION_SIZE");
 }
-async function checksum(document, subtle) {
-  try { return await sha256Hex(encoder.encode(JSON.stringify(document)), subtle); }
+async function checksum(document, subtle, options) {
+  try { return await sha256Hex(encoder.encode(JSON.stringify(document)), subtle, options); }
   catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
 /** Includes archived records. Browser revision is intentionally not portable. */
-export async function prepareVaultCollection(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareVaultCollection(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const document = portable(input);
   if (!document.entries.length) transferFail("TRANSFER_VAULT_EMPTY");
-  const digest = await checksum(document, subtle);
+  const digest = await checksum(document, subtle, { signal, timeoutMs });
   const text = JSON.stringify({ schema: VAULT_COLLECTION_SCHEMA, algorithm: "SHA-256", digest, document }, null, 2) + "\n";
   checkSize(text);
   return Object.freeze({ text, digest, byteLength: encoder.encode(text).byteLength, authenticated: false,
     filename: "ThreeCore-transfer-vault-collection.json", mimeType: "application/json;charset=utf-8" });
 }
 
-export async function decodeVaultCollection(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeVaultCollection(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   checkSize(text);
   let envelope;
   try { envelope = parseSecurityJson(text); }
@@ -42,7 +42,7 @@ export async function decodeVaultCollection(text, { subtle = globalThis.crypto?.
       typeof envelope.digest !== "string" || !/^[a-f0-9]{64}$/.test(envelope.digest)) transferFail("TRANSFER_VAULT_COLLECTION_SCHEMA");
   const document = portable(envelope.document);
   if (envelope.document.revision !== 0 || !document.entries.length) transferFail("TRANSFER_VAULT_COLLECTION_SCHEMA");
-  if (await checksum(document, subtle) !== envelope.digest) transferFail("TRANSFER_CHECKSUM_MISMATCH");
+  if (await checksum(document, subtle, { signal, timeoutMs }) !== envelope.digest) transferFail("TRANSFER_CHECKSUM_MISMATCH");
   return Object.freeze({ document, digest: envelope.digest, authenticated: false });
 }
 

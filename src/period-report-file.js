@@ -14,21 +14,21 @@ function bounded(text) {
   return text;
 }
 
-async function digest(input, subtle) {
-  try { return await sha256Hex(encoder.encode(JSON.stringify(input)), subtle); }
+async function digest(input, subtle, options) {
+  try { return await sha256Hex(encoder.encode(JSON.stringify(input)), subtle, options); }
   catch { periodFail("PERIOD_CRYPTO"); }
 }
 
 /** Conclusions are deliberately absent. Reopening recalculates them from source entries. */
-export async function preparePeriodReportFile(inputValue, { subtle = globalThis.crypto?.subtle } = {}) {
-  const input = validatePeriodReportInput(inputValue), checksum = await digest(input, subtle);
+export async function preparePeriodReportFile(inputValue, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
+  const input = validatePeriodReportInput(inputValue), checksum = await digest(input, subtle, { signal, timeoutMs });
   const text = bounded(JSON.stringify({ schema: PERIOD_REPORT_FILE_SCHEMA,
     algorithm: "SHA-256", digest: checksum, input }) + "\n");
   return Object.freeze({ filename: "ThreeCore-period-report.json", mimeType: "application/json;charset=utf-8",
     text, byteLength: encoder.encode(text).byteLength, digest: checksum, authenticated: false, encrypted: false });
 }
 
-export async function decodePeriodReportFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodePeriodReportFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   bounded(text);
   let value;
   try { value = parseSecurityJson(text); } catch { periodFail("PERIOD_FILE_JSON"); }
@@ -36,7 +36,7 @@ export async function decodePeriodReportFile(text, { subtle = globalThis.crypto?
   if (value.schema !== PERIOD_REPORT_FILE_SCHEMA || value.algorithm !== "SHA-256" ||
       typeof value.digest !== "string" || !/^[0-9a-f]{64}$/.test(value.digest)) periodFail("PERIOD_REPORT_FILE_SCHEMA");
   const input = validatePeriodReportInput(value.input);
-  if (await digest(input, subtle) !== value.digest) periodFail("PERIOD_CHECKSUM");
+  if (await digest(input, subtle, { signal, timeoutMs }) !== value.digest) periodFail("PERIOD_CHECKSUM");
   return Object.freeze({ input, digest: value.digest, checksumVerified: true, authenticated: false });
 }
 

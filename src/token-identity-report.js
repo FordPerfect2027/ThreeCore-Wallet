@@ -16,8 +16,8 @@ function bytesFor(text) {
   return bytes;
 }
 
-async function checksum(text, subtle) {
-  try { return await sha256Hex(bytesFor(text), subtle); }
+async function checksum(text, subtle, options) {
+  try { return await sha256Hex(bytesFor(text), subtle, options); }
   catch { identityFail("IDENTITY_CRYPTO"); }
 }
 
@@ -34,10 +34,10 @@ export function decodeTokenObservation(text) {
 }
 
 /** A checksum proves local consistency, never authorship or chain provenance. */
-export async function prepareTokenIdentityFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareTokenIdentityFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const observation = validateTokenObservation(input);
   const canonical = encodeTokenObservation(observation);
-  const digest = await checksum(canonical, subtle);
+  const digest = await checksum(canonical, subtle, { signal, timeoutMs });
   const text = JSON.stringify({
     schema: IDENTITY_FILE_SCHEMA,
     algorithm: "SHA-256",
@@ -56,7 +56,7 @@ export async function prepareTokenIdentityFile(input, { subtle = globalThis.cryp
   });
 }
 
-export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   if (!(input instanceof Uint8Array) || !input.byteLength || input.byteLength > IDENTITY_FILE_LIMIT) {
     identityFail("IDENTITY_FILE_SIZE");
   }
@@ -74,7 +74,7 @@ export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypt
     identityFail("IDENTITY_FILE_SCHEMA");
   }
   const observation = validateTokenObservation(document.observation);
-  const actual = await checksum(encodeTokenObservation(observation), subtle);
+  const actual = await checksum(encodeTokenObservation(observation), subtle, { signal, timeoutMs });
   if (actual !== document.digest) identityFail("IDENTITY_CHECKSUM");
   return Object.freeze({ observation, digest: actual, checksumVerified: true, authenticated: false });
 }
