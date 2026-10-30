@@ -1,0 +1,158 @@
+✖ selected archive digest 1 settles promptly on archive cancel (73.5049ms)
+✖ selected archive digest 1 settles promptly on archive clear (50.8961ms)
+✖ selected archive digest 1 settles promptly on parent cancel (40.8137ms)
+✖ selected archive digest 1 settles promptly on parent invalidate (46.4458ms)
+✖ selected archive digest 1 settles promptly on dispose (46.895ms)
+✖ selected archive digest 2 settles promptly on archive cancel (11.3051ms)
+✖ selected archive digest 2 settles promptly on archive clear (50.6983ms)
+✔ selected archive digest 2 settles promptly on parent cancel (45.0849ms)
+✔ selected archive digest 2 settles promptly on parent invalidate (46.5813ms)
+✔ selected archive digest 2 settles promptly on dispose (45.0309ms)
+✖ archive cancellation prevents a later encoded record from being staged (8.0898ms)
+✔ ordinary archive selection still previews and requires explicit apply (12.3031ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 4
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 886.2817
+
+✖ failing tests:
+
+test at test\transfer-selection-cancellation.test.js:29:3
+✖ selected archive digest 1 settles promptly on archive cancel (73.5049ms)
+  AssertionError [ERR_ASSERTION]: selection must expose cancellation
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-selection-cancellation.test.js:34:43)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-selection-cancellation.test.js:29:3
+✖ selected archive digest 1 settles promptly on archive clear (50.8961ms)
+  AssertionError [ERR_ASSERTION]: cancelled selection still waits for provider hashing
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-selection-cancellation.test.js:36:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-selection-cancellation.test.js:29:3
+✖ selected archive digest 1 settles promptly on parent cancel (40.8137ms)
+  AssertionError [ERR_ASSERTION]: cancelled selection still waits for provider hashing
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-selection-cancellation.test.js:36:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-selection-cancellation.test.js:29:3
+✖ selected archive digest 1 settles promptly on parent invalidate (46.4458ms)
+  AssertionError [ERR_ASSERTION]: cancelled selection still waits for provider hashing
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-selection-cancellation.test.js:36:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-selection-cancellation.test.js:29:3
+✖ selected archive digest 1 settles promptly on dispose (46.895ms)
+  AssertionError [ERR_ASSERTION]: cancelled selection still waits for provider hashing
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-selection-cancellation.test.js:36:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-selection-cancellation.test.js:29:3
+✖ selected archive digest 2 settles promptly on archive cancel (11.3051ms)
+  AssertionError [ERR_ASSERTION]: selection must expose cancellation
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-selection-cancellation.test.js:34:43)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-selection-cancellation.test.js:29:3
+✖ selected archive digest 2 settles promptly on archive clear (50.6983ms)
+  AssertionError [ERR_ASSERTION]: cancelled selection still waits for provider hashing
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-selection-cancellation.test.js:36:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-selection-cancellation.test.js:41:1
+✖ archive cancellation prevents a later encoded record from being staged (8.0898ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-selection-cancellation.test.js:44:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
