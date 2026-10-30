@@ -1,0 +1,16 @@
+✔ scope replacement cannot overtake a newer stop raised by stream cleanup (20.1667ms)
+✔ scope replacement cannot overtake a newer replace raised by stream cleanup (8.4101ms)
+✔ scope maxBytes capture retains a newer stop (3.7033ms)
+✔ scope maxBytes capture retains a newer replace (2.9155ms)
+✔ scope timeoutMs capture retains a newer stop (1.3669ms)
+✔ scope timeoutMs capture retains a newer replace (2.7414ms)
+✔ scope invalid options release ownership and allow a later native File (12.631ms)
+✔ ordinary scope replacement still preserves a newer read after old worker settlement (3.0388ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 340.5839
