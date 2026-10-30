@@ -13,7 +13,7 @@ export const TOKEN_OBSERVATION_FIELDS = Object.freeze([
 
 /** A recorded observation is not an authenticated statement from a blockchain. */
 export function validateTokenObservation(input) {
-  identityObject(input, TOKEN_OBSERVATION_FIELDS);
+  input = identityObject(input, TOKEN_OBSERVATION_FIELDS);
   if (input.schema !== TOKEN_IDENTITY_SCHEMA || input.catalogVersion !== TOKEN_CATALOG_VERSION ||
       input.readOnly !== true || input.securityAudit !== false) identityFail("IDENTITY_SCHEMA");
   const expected = catalogToken({ agent: input.agent, chainId: input.chainId });

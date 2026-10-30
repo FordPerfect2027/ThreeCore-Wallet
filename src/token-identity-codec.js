@@ -1,4 +1,5 @@
 /** Bounded ERC-20 metadata decoding. No provider or wallet access. */
+import { captureDataRecord } from "./security-data.js";
 export class TokenIdentityError extends Error {
   constructor(code, message = code) {
     super(message);
@@ -21,19 +22,8 @@ export const METADATA_FIELDS = Object.freeze({
 });
 
 export function identityObject(value, fields) {
-  if (!value || typeof value !== "object" || Array.isArray(value) ||
-      ![Object.prototype, null].includes(Object.getPrototypeOf(value))) {
-    identityFail("IDENTITY_SHAPE");
-  }
-  const keys = Reflect.ownKeys(value);
-  if (keys.length !== fields.length || keys.some(key => !fields.includes(key))) {
-    identityFail("IDENTITY_SHAPE");
-  }
-  for (const key of keys) {
-    const descriptor = Object.getOwnPropertyDescriptor(value, key);
-    if (!descriptor || !("value" in descriptor)) identityFail("IDENTITY_SHAPE");
-  }
-  return value;
+  try { return captureDataRecord(value, fields); }
+  catch { identityFail("IDENTITY_SHAPE"); }
 }
 
 export function identityUnits(value) {
@@ -110,7 +100,7 @@ export function decodeMetadataField(field, value) {
 }
 
 export function validateTokenMetadata(value) {
-  identityObject(value, ["name", "symbol", "decimals", "totalSupply"]);
+  value = identityObject(value, ["name", "symbol", "decimals", "totalSupply"]);
   return Object.freeze({
     name: metadataText(value.name),
     symbol: metadataText(value.symbol),

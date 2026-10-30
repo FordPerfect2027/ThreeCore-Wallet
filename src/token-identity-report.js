@@ -71,7 +71,7 @@ export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypt
   let document;
   try { document = parseSecurityJson(text); }
   catch { identityFail("IDENTITY_FILE_JSON"); }
-  identityObject(document, ["schema", "algorithm", "digest", "observation"]);
+  document = identityObject(document, ["schema", "algorithm", "digest", "observation"]);
   if (document.schema !== IDENTITY_FILE_SCHEMA || document.algorithm !== "SHA-256" ||
       typeof document.digest !== "string" || !/^[0-9a-f]{64}$/.test(document.digest)) {
     identityFail("IDENTITY_FILE_SCHEMA");
