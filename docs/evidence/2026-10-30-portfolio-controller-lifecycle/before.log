@@ -1,0 +1,238 @@
+✖ portfolio controller observer cancellation is bounded (6.6818ms)
+✔ portfolio controller malformed async observer rejection is contained (304.5284ms)
+✖ portfolio removed observer is not delivered from a stale listener list (2.1739ms)
+✖ portfolio disposing observer prevents delivery to later observers (1.4691ms)
+✖ portfolio option accessor is rejected before observer or reader calls (1.5843ms)
+✖ portfolio controller captures option data without property traps (0.8815ms)
+✖ portfolio controller does not execute token slot accessors (1.1949ms)
+✖ portfolio cancel during option capture prevents a new read (1.2212ms)
+✖ portfolio dispose during option capture prevents a new read (0.8037ms)
+✖ portfolio result accessors are rejected without execution (1.1704ms)
+✖ portfolio result capture cancellation cannot restore a ready state (1.8278ms)
+✖ portfolio error accessor is not executed (1.0954ms)
+✖ portfolio cancelled diagnostic reflection cannot publish an old error (0.9043ms)
+✖ portfolio abort callback owns the newer refresh and its stop handle (1.4576ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 1
+ℹ fail 13
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 657.1063
+
+✖ failing tests:
+
+test at test\portfolio-controller-lifecycle.test.js:8:1
+✖ portfolio controller observer cancellation is bounded (6.6818ms)
+  AssertionError [ERR_ASSERTION]: received 16 notifications
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:11:92)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:24:1
+✖ portfolio removed observer is not delivered from a stale listener list (2.1739ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:27:69)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:29:1
+✖ portfolio disposing observer prevents delivery to later observers (1.4691ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:32:70)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:34:1
+✖ portfolio option accessor is rejected before observer or reader calls (1.5843ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection (TypeError).
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:37:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:40:1
+✖ portfolio controller captures option data without property traps (0.8815ms)
+  Error: live options
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:42:70)
+      at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-controller.js:54:18)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:43:34)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\portfolio-controller-lifecycle.test.js:45:1
+✖ portfolio controller does not execute token slot accessors (1.1949ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection (TypeError).
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:48:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:51:3
+✖ portfolio cancel during option capture prevents a new read (1.2212ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:54:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:51:3
+✖ portfolio dispose during option capture prevents a new read (0.8037ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:54:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:57:1
+✖ portfolio result accessors are rejected without execution (1.1704ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:60:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:62:1
+✖ portfolio result capture cancellation cannot restore a ready state (1.8278ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ready'
+  - 'cancelled'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:65:70)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ready',
+    expected: 'cancelled',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:67:1
+✖ portfolio error accessor is not executed (1.0954ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:69:70)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:71:1
+✖ portfolio cancelled diagnostic reflection cannot publish an old error (0.9043ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'error'
+  - 'cancelled'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:75:70)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'error',
+    expected: 'cancelled',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\portfolio-controller-lifecycle.test.js:77:1
+✖ portfolio abort callback owns the newer refresh and its stop handle (1.4576ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/portfolio-controller-lifecycle.test.js:81:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
