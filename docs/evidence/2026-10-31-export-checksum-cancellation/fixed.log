@@ -1,0 +1,28 @@
+✔ transfer: cancel ends output preparation before crypto settles (35.9138ms)
+✔ transfer: dispose ends output preparation before crypto settles (4.4625ms)
+✔ archive: cancel ends output preparation before crypto settles (14.4866ms)
+✔ archive: dispose ends output preparation before crypto settles (3.6881ms)
+✔ vault: cancel ends output preparation before crypto settles (22.2472ms)
+✔ vault: dispose ends output preparation before crypto settles (15.4799ms)
+✔ vault collection: cancel ends output preparation before crypto settles (32.7935ms)
+✔ vault collection: dispose ends output preparation before crypto settles (19.8077ms)
+✔ reconciliation: cancel ends output preparation before crypto settles (4.605ms)
+✔ reconciliation: dispose ends output preparation before crypto settles (1.858ms)
+✔ period: cancel ends output preparation before crypto settles (15.6194ms)
+✔ period: dispose ends output preparation before crypto settles (11.0527ms)
+✔ library: cancel ends output preparation before crypto settles (3.8087ms)
+✔ library: dispose ends output preparation before crypto settles (1.0859ms)
+✔ report history: cancel ends output preparation before crypto settles (3.394ms)
+✔ report history: dispose ends output preparation before crypto settles (1.1464ms)
+✔ period report: cancel ends output preparation before crypto settles (89.5729ms)
+✔ period report: dispose ends output preparation before crypto settles (98.2881ms)
+✔ report set: cancel ends output preparation before crypto settles (1351.4477ms)
+✔ report set: dispose ends output preparation before crypto settles (985.7072ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3282.1901
