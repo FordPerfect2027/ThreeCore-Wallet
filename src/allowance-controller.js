@@ -169,10 +169,12 @@ export function createAllowanceController({ getContext, read, onChange = () => {
     },
     async load(file) {
       const operation = { id: generation, key: null };
+      let abort;
       try {
         if (!begin(operation, "loading", { preview: null, observation: null, provenance: null })) return false;
         if (!current(operation)) return false;
-        const result = await readAllowanceFile(file, { subtle });
+        abort = new AbortController(); active = abort;
+        const result = await readAllowanceFile(file, { subtle, signal: abort.signal });
         if (!current(operation)) return false;
         if (result.kind === "targets") {
           const plan = assertAllowanceContext(result.payload, operation.identity);
@@ -184,19 +186,23 @@ export function createAllowanceController({ getContext, read, onChange = () => {
         }
         return owns(operation);
       } catch (error) { return failure(operation, error); }
+      finally { if (active === abort) active = null; }
     },
     async prepare(kind) {
       const operation = { id: generation, key: null };
+      let abort;
       try {
         const payload = kind === "targets" ? state.plan : kind === "observation" ? state.observation : null;
         if (!payload) allowanceFail("ALLOWANCE_NO_RESULT");
         if (!begin(operation, "preparing")) return false;
         if (!current(operation)) return false;
-        const file = await prepareAllowanceFile(kind, payload, { subtle });
+        abort = new AbortController(); active = abort;
+        const file = await prepareAllowanceFile(kind, payload, { subtle, signal: abort.signal });
         if (!current(operation)) return false;
         notify({ phase: state.observation ? "ready" : "configured", file });
         return owns(operation);
       } catch (error) { return failure(operation, error); }
+      finally { if (active === abort) active = null; }
     },
     useAsBaseline() {
       if (disposed) return false;

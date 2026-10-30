@@ -134,29 +134,35 @@ export function createTokenIdentityController({ getContext, read, onChange = () 
     },
     async load(file) {
       const operation = { id: generation, key: null };
+      let abort;
       try {
         if (!start("loading", operation)) return false;
         if (!current(operation)) return false;
-        const loaded = await readTokenIdentityFile(file, { subtle });
+        abort = new AbortController(); active = abort;
+        const loaded = await readTokenIdentityFile(file, { subtle, signal: abort.signal });
         if (!current(operation)) return false;
         if (loaded.observation.agent !== operation.identity.agent) identityFail("IDENTITY_IMPORT_AGENT");
         publish({ phase: "ready", observation: loaded.observation,
           assessment: assessTokenObservation(loaded.observation), provenance: "imported" });
         return owns(operation);
       } catch (error) { return failure(operation, error); }
+      finally { if (active === abort) active = null; }
     },
     async prepareFile() {
       const operation = { id: generation, key: null };
+      let abort;
       try {
         if (!state.observation) identityFail("IDENTITY_NO_RESULT");
         const observation = state.observation;
         if (!start("preparing", operation)) return false;
         if (!current(operation)) return false;
-        const file = await prepareTokenIdentityFile(observation, { subtle });
+        abort = new AbortController(); active = abort;
+        const file = await prepareTokenIdentityFile(observation, { subtle, signal: abort.signal });
         if (!current(operation)) return false;
         publish({ phase: "ready", file });
         return owns(operation);
       } catch (error) { return failure(operation, error); }
+      finally { if (active === abort) active = null; }
     },
     useAsBaseline() {
       if (disposed) return false;
