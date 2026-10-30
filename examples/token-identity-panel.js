@@ -3,6 +3,9 @@ import { createTokenIdentityController } from "../src/token-identity-controller.
 import { createCatalogSelection } from "../src/token-catalog.js";
 import { describeCatalog, describeTokenObservation, describeTokenComparison,
   tokenIdentityErrorMessage, tokenIdentityProgressMessage } from "../src/token-identity-view.js";
+import { captureOptionalDataFields } from "../src/security-data.js";
+import { readOwnErrorCode } from "../src/provider-error.js";
+import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
 
 /** Text-only UI with explicit reads and explicit file downloads. */
 export function mountTokenIdentityPanel({ document, parent, getContext, read,
@@ -12,6 +15,14 @@ export function mountTokenIdentityPanel({ document, parent, getContext, read,
   let disposed = false;
   let preview = null;
   let controller;
+  let generation = 0;
+  const current = id => !disposed && id === generation;
+  function catalogContext() {
+    const supplied = getContext();
+    if (observeCallbackResult(supplied) !== "synchronous") throw { code: "IDENTITY_ADAPTER" };
+    try { return captureOptionalDataFields(supplied, ["agent", "chainId", "tokenAddress"]); }
+    catch { throw { code: "IDENTITY_SHAPE" }; }
+  }
   const section = document.createElement("section");
   section.className = "identity-panel";
   const create = (tag, name, text) => {
@@ -64,7 +75,9 @@ export function mountTokenIdentityPanel({ document, parent, getContext, read,
 
   function render(state) {
     if (disposed) return;
-    try { onStateChange(state); } catch { /* Summary is an independent display. */ }
+    const id = generation;
+    consumeCallback(() => onStateChange(state));
+    if (!current(id) || controller.state() !== state) return;
     const busy = ["reading", "loading", "preparing"].includes(state.phase);
     section.setAttribute("aria-busy", String(busy));
     inspect.disabled = busy;
@@ -97,71 +110,97 @@ export function mountTokenIdentityPanel({ document, parent, getContext, read,
   }
   controller = createTokenIdentityController({ getContext, read, onChange: render, subtle });
   function invalidate() {
+    if (disposed) return;
+    generation++;
     preview = null;
     selection.cancel();
     catalog.textContent = "";
     file.value = "";
     controller.invalidate();
   }
-  function reportError(error) {
-    status.textContent = tokenIdentityErrorMessage(error?.code);
+  function reportError(error, id) {
+    if (!current(id)) return;
+    const code = readOwnErrorCode(error);
+    if (current(id)) status.textContent = tokenIdentityErrorMessage(code);
   }
   listen(showCatalog, "click", () => {
     if (disposed) return;
+    const id = ++generation;
+    preview = null;
+    selection.cancel();
+    apply.disabled = true;
     try {
-      const value = getContext();
+      const value = catalogContext();
+      if (!current(id)) return;
       const context = { agent: value.agent, chainId: value.chainId };
-      preview = selection.preview(context, value.tokenAddress ?? "");
-      catalog.textContent = describeCatalog(context, value.tokenAddress ?? "");
+      const candidate = selection.preview(context, value.tokenAddress ?? "");
+      const description = describeCatalog(context, value.tokenAddress ?? "");
+      if (!current(id)) return;
+      preview = candidate;
+      catalog.textContent = description;
       apply.disabled = false;
     } catch (error) {
+      if (!current(id)) return;
       preview = null;
       selection.cancel();
       apply.disabled = true;
-      reportError(error);
+      reportError(error, id);
     }
   });
   listen(apply, "click", () => {
     if (disposed) return;
+    const id = ++generation;
     try {
-      const value = getContext();
+      const value = catalogContext();
+      if (!current(id)) return;
       const selected = selection.apply(preview?.id,
         { agent: value.agent, chainId: value.chainId }, value.tokenAddress ?? "");
       preview = null;
-      applyAddress(selected);
+      apply.disabled = true;
+      const receipt = applyAddress(selected);
+      const kind = observeCallbackResult(receipt);
+      if (!current(id)) return;
+      if (kind !== "synchronous" || receipt === false) throw { code: "IDENTITY_ADAPTER" };
       controller.invalidate();
+      if (!current(id)) return;
       apply.disabled = true;
       status.textContent = "公式アドレスを入力しました。接続後に照合してください。";
     } catch (error) {
+      if (!current(id)) return;
       preview = null;
       apply.disabled = true;
-      reportError(error);
+      reportError(error, id);
     }
   });
-  listen(inspect, "click", () => { if (!disposed) void controller.inspect(); });
-  listen(cancel, "click", () => { if (!disposed) controller.cancel(); });
+  listen(inspect, "click", () => { if (!disposed) { generation++; void controller.inspect(); } });
+  listen(cancel, "click", () => { if (!disposed) { generation++; controller.cancel(); } });
   listen(clear, "click", () => { if (!disposed) invalidate(); });
   listen(file, "change", () => {
     if (disposed) return;
+    generation++;
     const selected = file.files?.[0];
     file.value = "";
     if (selected) void controller.load(selected);
   });
-  listen(setBaseline, "click", () => { if (!disposed) controller.useAsBaseline(); });
-  listen(compare, "click", () => { if (!disposed) controller.compare(); });
+  listen(setBaseline, "click", () => { if (!disposed) { generation++; controller.useAsBaseline(); } });
+  listen(compare, "click", () => { if (!disposed) { generation++; controller.compare(); } });
 
   function browserDownload(prepared) {
     return offerWalletDownload({ document, prepared: prepared });
   }
   listen(save, "click", async () => {
     if (disposed) return;
-    if (!await controller.prepareFile() || disposed) return;
+    const id = ++generation;
+    if (!await controller.prepareFile() || !current(id)) return;
     const prepared = controller.state().file;
     if (!prepared) return;
     try {
-      (downloadFile ?? browserDownload)(prepared);
+      const receipt = (downloadFile ?? browserDownload)(prepared);
+      const kind = observeCallbackResult(receipt);
+      if (!current(id) || controller.state().file !== prepared) return;
+      if (kind !== "synchronous" || receipt === false) throw { code: "IDENTITY_DOWNLOAD" };
       status.textContent = "保存ファイルを用意しました。ブラウザーのダウンロード完了を確認してください。";
-    } catch { status.textContent = tokenIdentityErrorMessage("IDENTITY_DOWNLOAD"); }
+    } catch { if (current(id)) status.textContent = tokenIdentityErrorMessage("IDENTITY_DOWNLOAD"); }
   });
   render(controller.state());
   return Object.freeze({
@@ -169,6 +208,7 @@ export function mountTokenIdentityPanel({ document, parent, getContext, read,
     dispose() {
       if (disposed) return;
       disposed = true;
+      generation++;
       controller.dispose();
       selection.cancel();
       for (const stop of listeners) stop();

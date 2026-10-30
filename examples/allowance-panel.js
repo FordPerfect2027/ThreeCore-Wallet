@@ -1,4 +1,6 @@
 import { offerWalletDownload } from "./export-download.js";
+import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
+import { readOwnErrorCode } from "../src/provider-error.js";
 import { createAllowanceController } from "../src/allowance-controller.js";
 import { formatAllowanceTargets, ALLOWANCE_DRAFT_LIMIT } from "../src/allowance-targets.js";
 import { describeAllowanceTargets, describeAllowanceObservation, describeAllowanceComparison,
@@ -95,7 +97,8 @@ export function mountAllowancePanel({ document, parent, getContext, read,
   }
   function render(state) {
     if (disposed) return;
-    try { onStateChange(state); } catch {}
+    consumeCallback(() => onStateChange(state));
+    if (disposed || controller.state() !== state) return;
     const busy = ["reading", "loading", "preparing"].includes(state.phase);
     section.setAttribute("aria-busy", String(busy));
     draft.disabled = busy;
@@ -153,7 +156,10 @@ export function mountAllowancePanel({ document, parent, getContext, read,
     listen(node, event, () => {
       if (disposed) return;
       try { renderDetails(controller.state()); }
-      catch (error) { status.textContent = allowanceErrorMessage(error?.code); }
+      catch (error) {
+        const code = readOwnErrorCode(error);
+        if (!disposed) status.textContent = allowanceErrorMessage(code);
+      }
     });
   }
   listen(file, "change", () => {
@@ -174,7 +180,9 @@ export function mountAllowancePanel({ document, parent, getContext, read,
       const prepared = controller.state().file;
       if (!prepared) return;
       try {
-        await (downloadFile ?? browserDownload)(prepared);
+        const receipt = (downloadFile ?? browserDownload)(prepared);
+        const kind = observeCallbackResult(receipt);
+        if (kind !== "synchronous" || receipt === false) throw Error("Download refused");
         if (!disposed && controller.state().file === prepared) {
           status.textContent = "保存ファイルを用意しました。ブラウザーのダウンロード完了を確認してください。";
         }
