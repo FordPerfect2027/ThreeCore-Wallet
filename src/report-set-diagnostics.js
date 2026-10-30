@@ -170,7 +170,8 @@ export function reportSetDiagnostics(value) {
 
 export function diagnosticQuery(value = {}) {
   if (!value || typeof value !== "object") periodFail("PERIOD_SET_DIAGNOSTIC_QUERY");
-  periodShape(value, Object.keys(value));
+  try { value = periodShape(value, Object.keys(value)); }
+  catch { periodFail("PERIOD_SHAPE"); }
   const result = { agent: "all", severity: "all", search: "", ...value };
   periodShape(result, ["agent", "severity", "search"]);
   if (!["all", ...REPORT_SET_AGENTS].includes(result.agent) ||

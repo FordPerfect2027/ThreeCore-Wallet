@@ -28,11 +28,12 @@ export function historyTags(value) {
 
 /** Report evidence is immutable; organization fields belong to the local record. */
 export function validateHistoryEntry(input) {
-  periodShape(input, ["id", "label", "note", "tags", "savedAt", "updatedAt", "archived", "report"]);
+  input = periodShape(input, ["id", "label", "note", "tags", "savedAt", "updatedAt", "archived", "report"]);
   const id = libraryId(input.id), label = libraryLabel(input.label);
-  const note = historyNote(input.note), tags = historyTags(input.tags);
+  const sourceTags = libraryArray(input.tags);
+  const note = historyNote(input.note), tags = historyTags(sourceTags);
   const savedAt = libraryTime(input.savedAt), updatedAt = libraryTime(input.updatedAt);
-  if (label !== input.label || note !== input.note || JSON.stringify(tags) !== JSON.stringify(input.tags) ||
+  if (label !== input.label || note !== input.note || JSON.stringify(tags) !== JSON.stringify(sourceTags) ||
       updatedAt < savedAt || typeof input.archived !== "boolean") periodFail("PERIOD_HISTORY_ENTRY");
   const report = validatePeriodReportInput(input.report);
   // Creation time inside imported evidence is not used as a trusted local clock.
@@ -40,7 +41,7 @@ export function validateHistoryEntry(input) {
 }
 
 export function validateReportHistory(input) {
-  periodShape(input, ["schema", "revision", "entries"]);
+  input = periodShape(input, ["schema", "revision", "entries"]);
   if (input.schema !== REPORT_HISTORY_SCHEMA || !Number.isSafeInteger(input.revision) || input.revision < 0) {
     periodFail("PERIOD_HISTORY_SCHEMA");
   }
@@ -98,11 +99,14 @@ export function planHistoryMerge(currentInput, incomingInput) {
 export function mutateReportHistory(input, expectedRevision, operation) {
   const document = validateReportHistory(input);
   if (!Number.isSafeInteger(expectedRevision) || expectedRevision !== document.revision) periodFail("PERIOD_HISTORY_STALE");
-  const kind = operation && Object.getOwnPropertyDescriptor(operation, "kind");
+  let kind;
+  try { kind = operation && Object.getOwnPropertyDescriptor(operation, "kind"); }
+  catch { periodFail("PERIOD_HISTORY_OPERATION"); }
   if (!kind || !("value" in kind)) periodFail("PERIOD_HISTORY_OPERATION");
   let entries = [...document.entries];
   if (kind.value === "save") {
-    periodShape(operation, ["kind", "entry"]);
+    operation = periodShape(operation, ["kind", "entry"]);
+    if (operation.kind !== kind.value) periodFail("PERIOD_HISTORY_OPERATION");
     const entry = validateHistoryEntry(operation.entry);
     if (entries.some(row => row.id === entry.id)) periodFail("PERIOD_HISTORY_DUPLICATE_ID");
     if (entries.some(row => periodReportInputKey(row.report) === periodReportInputKey(entry.report))) {
@@ -110,15 +114,17 @@ export function mutateReportHistory(input, expectedRevision, operation) {
     }
     entries.push(entry);
   } else if (kind.value === "merge") {
-    periodShape(operation, ["kind", "document", "skipConflicts"]);
+    operation = periodShape(operation, ["kind", "document", "skipConflicts"]);
+    if (operation.kind !== kind.value) periodFail("PERIOD_HISTORY_OPERATION");
     if (typeof operation.skipConflicts !== "boolean") periodFail("PERIOD_HISTORY_OPERATION");
     const plan = planHistoryMerge(document, operation.document);
     if (plan.conflicts.length && !operation.skipConflicts) periodFail("PERIOD_HISTORY_CONFLICT");
     if (plan.capacityExceeded) periodFail("PERIOD_HISTORY_CAPACITY");
     entries.push(...plan.additions);
   } else if (["annotate", "archive"].includes(kind.value)) {
-    periodShape(operation, kind.value === "annotate" ? ["kind", "id", "label", "note", "tags", "time"] :
+    operation = periodShape(operation, kind.value === "annotate" ? ["kind", "id", "label", "note", "tags", "time"] :
       ["kind", "id", "archived", "time"]);
+    if (operation.kind !== kind.value) periodFail("PERIOD_HISTORY_OPERATION");
     const entry = historyEntry(document, operation.id), time = libraryTime(operation.time);
     if (time < entry.updatedAt) periodFail("PERIOD_HISTORY_TIME_ORDER");
     const fields = kind.value === "annotate" ? { label: libraryLabel(operation.label),

@@ -24,7 +24,7 @@ export function validateSetSelection(value, { allowEmpty = true } = {}) {
 
 /** Input stores original evidence only. Imported conclusions are not accepted. */
 export function validateReportSet(value) {
-  periodShape(value, ["schema", "title", "createdAt", "sourceRevision", "entries", "historicalOnly"]);
+  value = periodShape(value, ["schema", "title", "createdAt", "sourceRevision", "entries", "historicalOnly"]);
   if (value.schema !== REPORT_SET_SCHEMA || value.historicalOnly !== true ||
       !Number.isSafeInteger(value.sourceRevision) || value.sourceRevision < 0) {
     periodFail("PERIOD_SET_SCHEMA");
@@ -74,7 +74,8 @@ export function assertSetSourcesUnchanged(input, history) {
 }
 
 export function validateSetExportOptions(value = {}) {
-  periodShape(value, Object.keys(value));
+  try { value = periodShape(value, Object.keys(value)); }
+  catch { periodFail("PERIOD_SHAPE"); }
   const options = { includeNotes: false, shortAddresses: true, ...value };
   periodShape(options, ["includeNotes", "shortAddresses"]);
   if (typeof options.includeNotes !== "boolean" || typeof options.shortAddresses !== "boolean") {

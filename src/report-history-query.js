@@ -4,7 +4,8 @@ import { analyzePeriodReport } from "./period-report-engine.js";
 
 export function historyQuery(input = {}) {
   if (!input || typeof input !== "object") periodFail("PERIOD_HISTORY_QUERY");
-  periodShape(input, Object.keys(input));
+  try { input = periodShape(input, Object.keys(input)); }
+  catch { periodFail("PERIOD_SHAPE"); }
   const query = { archive: "active", status: "all", agent: "all", search: "", tag: "", order: "newest", ...input };
   periodShape(query, ["archive", "status", "agent", "search", "tag", "order"]);
   if (!["active", "archived", "all"].includes(query.archive) ||
