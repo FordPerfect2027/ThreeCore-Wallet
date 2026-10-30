@@ -1,0 +1,508 @@
+✖ history files file-save false does not claim a download (32.4587ms)
+✖ history files file-save resolved does not claim a download (9.9031ms)
+✖ history files file-save rejected does not claim a download (8.9195ms)
+✖ history files file-save-subset false does not claim a download (10.8ms)
+✖ history files file-save-subset resolved does not claim a download (6.0107ms)
+✖ history files file-save-subset rejected does not claim a download (7.3167ms)
+✖ history files getArchive invalidate does not admit stale source data (5.1691ms)
+✖ history files getArchive dispose does not admit stale source data (4.6867ms)
+✖ history files getRevision invalidate does not admit stale source data (2.2703ms)
+✖ history files getRevision dispose does not admit stale source data (3.0267ms)
+✖ history file onReadStart invalidate leaves current status intact (11.0386ms)
+✖ history file onReadStart dispose leaves current status intact (3.2737ms)
+✖ history file onImportText invalidate leaves current status intact (5.5151ms)
+✖ history file onImportText dispose leaves current status intact (6.8243ms)
+✖ history read-start observer rejection is consumed (5.346ms)
+✖ history file false import receipt cannot claim input success (4.6751ms)
+✖ history file resolved import receipt cannot claim input success (3.8564ms)
+✖ history file rejected import receipt cannot claim input success (3.5214ms)
+✖ history file-save invalidate download callback cannot write late success (2.4957ms)
+✖ history file-save dispose download callback cannot write late success (2.3735ms)
+✖ history file-save-subset invalidate download callback cannot write late success (3.3235ms)
+✖ history file-save-subset dispose download callback cannot write late success (4.1754ms)
+✖ history filtered export rechecks the archive even if the source revision is unchanged (4.687ms)
+✖ history backup refresh bounds source reentrancy (4.7721ms)
+✔ history ordinary whole and filtered saves preserve separate backup meanings (4.4634ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 1
+ℹ fail 24
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 535.9769
+
+✖ failing tests:
+
+test at test\history-files-panel-lifecycle.test.js:21:105
+✖ history files file-save false does not claim a download (32.4587ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始|ダウンロード開始/. Input:
+  
+  'ThreeCore-DAT-history-r1.json のダウンロードを開始しました。保存先を確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:23:86)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ThreeCore-DAT-history-r1.json のダウンロードを開始しました。保存先を確認してください。',
+    expected: /ダウンロードを開始|ダウンロード開始/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:21:105
+✖ history files file-save resolved does not claim a download (9.9031ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始|ダウンロード開始/. Input:
+  
+  'ThreeCore-DAT-history-r1.json のダウンロードを開始しました。保存先を確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:23:86)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ThreeCore-DAT-history-r1.json のダウンロードを開始しました。保存先を確認してください。',
+    expected: /ダウンロードを開始|ダウンロード開始/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:21:105
+✖ history files file-save rejected does not claim a download (8.9195ms)
+  Error: synthetic download
+      at download (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:22:115)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:99:5
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:32:13
+      at TestElement.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:10:53)
+      at Object.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:17:113)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:23:56)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at test\history-files-panel-lifecycle.test.js:21:105
+✖ history files file-save-subset false does not claim a download (10.8ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始|ダウンロード開始/. Input:
+  
+  '1件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:23:86)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。',
+    expected: /ダウンロードを開始|ダウンロード開始/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:21:105
+✖ history files file-save-subset resolved does not claim a download (6.0107ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始|ダウンロード開始/. Input:
+  
+  '1件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:23:86)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。',
+    expected: /ダウンロードを開始|ダウンロード開始/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:21:105
+✖ history files file-save-subset rejected does not claim a download (7.3167ms)
+  Error: synthetic download
+      at download (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:22:115)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:163:5
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:32:13
+      at TestElement.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:10:53)
+      at Object.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:17:113)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:23:56)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at test\history-files-panel-lifecycle.test.js:26:95
+✖ history files getArchive invalidate does not admit stale source data (5.1691ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:28:44)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:26:95
+✖ history files getArchive dispose does not admit stale source data (4.6867ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:28:44)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:26:95
+✖ history files getRevision invalidate does not admit stale source data (2.2703ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:28:44)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:26:95
+✖ history files getRevision dispose does not admit stale source data (3.0267ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:28:44)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:30:99
+✖ history file onReadStart invalidate leaves current status intact (11.0386ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴ファイルを確認しています。まだ履歴は変更していません。'
+  - 'ファイル操作はまだ行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:32:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴ファイルを確認しています。まだ履歴は変更していません。',
+    expected: 'ファイル操作はまだ行っていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:30:99
+✖ history file onReadStart dispose leaves current status intact (3.2737ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '履歴ファイルを確認しています。まだ履歴は変更していません。'
+  - 'ファイル操作はまだ行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:32:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴ファイルを確認しています。まだ履歴は変更していません。',
+    expected: 'ファイル操作はまだ行っていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:30:99
+✖ history file onImportText invalidate leaves current status intact (5.5151ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '1件の履歴JSONを入力欄へ読み込みました。下のプレビューで確認してから適用してください。まだ履歴は変更していません。'
+  - '履歴ファイルを確認しています。まだ履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:32:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件の履歴JSONを入力欄へ読み込みました。下のプレビューで確認してから適用してください。まだ履歴は変更していません。',
+    expected: '履歴ファイルを確認しています。まだ履歴は変更していません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:30:99
+✖ history file onImportText dispose leaves current status intact (6.8243ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '1件の履歴JSONを入力欄へ読み込みました。下のプレビューで確認してから適用してください。まだ履歴は変更していません。'
+  - '履歴ファイルを確認しています。まだ履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:32:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件の履歴JSONを入力欄へ読み込みました。下のプレビューで確認してから適用してください。まだ履歴は変更していません。',
+    expected: '履歴ファイルを確認しています。まだ履歴は変更していません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:34:1
+✖ history read-start observer rejection is consumed (5.346ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:36:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:38:54
+✖ history file false import receipt cannot claim input success (4.6751ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /入力欄へ読み込みました/. Input:
+  
+  '1件の履歴JSONを入力欄へ読み込みました。下のプレビューで確認してから適用してください。まだ履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:40:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件の履歴JSONを入力欄へ読み込みました。下のプレビューで確認してから適用してください。まだ履歴は変更していません。',
+    expected: /入力欄へ読み込みました/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:38:54
+✖ history file resolved import receipt cannot claim input success (3.8564ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /入力欄へ読み込みました/. Input:
+  
+  '1件の履歴JSONを入力欄へ読み込みました。下のプレビューで確認してから適用してください。まだ履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:40:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件の履歴JSONを入力欄へ読み込みました。下のプレビューで確認してから適用してください。まだ履歴は変更していません。',
+    expected: /入力欄へ読み込みました/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:38:54
+✖ history file rejected import receipt cannot claim input success (3.5214ms)
+  Error: synthetic import
+      at onImportText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:39:119)
+      at onChange (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:67:7)
+      at createStateNotifier.observers (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/history-file-reader.js:34:20)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-notifier.js:30:27
+      at consumeCallback (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-callback.js:26:31)
+      at send (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-notifier.js:30:5)
+      at flush (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-notifier.js:40:39)
+      at Object.notify (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-notifier.js:49:22)
+      at publish (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/history-file-reader.js:40:19)
+      at Object.load (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/history-file-reader.js:76:14)
+
+test at test\history-files-panel-lifecycle.test.js:42:97
+✖ history file-save invalidate download callback cannot write late success (2.4957ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ThreeCore-DAT-history-r1.json のダウンロードを開始しました。保存先を確認してください。'
+  - 'ファイル操作はまだ行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:44:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ThreeCore-DAT-history-r1.json のダウンロードを開始しました。保存先を確認してください。',
+    expected: 'ファイル操作はまだ行っていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:42:97
+✖ history file-save dispose download callback cannot write late success (2.3735ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ThreeCore-DAT-history-r1.json のダウンロードを開始しました。保存先を確認してください。'
+  - 'ファイル操作はまだ行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:44:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ThreeCore-DAT-history-r1.json のダウンロードを開始しました。保存先を確認してください。',
+    expected: 'ファイル操作はまだ行っていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:42:97
+✖ history file-save-subset invalidate download callback cannot write late success (3.3235ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '1件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。'
+  - 'ファイル操作はまだ行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:44:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。',
+    expected: 'ファイル操作はまだ行っていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:42:97
+✖ history file-save-subset dispose download callback cannot write late success (4.1754ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '1件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。'
+  - 'ファイル操作はまだ行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:44:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。',
+    expected: 'ファイル操作はまだ行っていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:46:1
+✖ history filtered export rechecks the archive even if the source revision is unchanged (4.687ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:48:94)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-files-panel-lifecycle.test.js:50:1
+✖ history backup refresh bounds source reentrancy (4.7721ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "unbounded backup refresh"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:52:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: unbounded backup refresh
+        at getRevision (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:51:90)
+        at updateBackup (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:91:32)
+        at Object.invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:189:7)
+        at getRevision (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:51:132)
+        at updateBackup (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:91:32)
+        at Object.invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:189:7)
+        at getRevision (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:51:132)
+        at updateBackup (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:91:32)
+        at Object.invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-files.js:189:7)
+        at getRevision (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-files-panel-lifecycle.test.js:51:132),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
