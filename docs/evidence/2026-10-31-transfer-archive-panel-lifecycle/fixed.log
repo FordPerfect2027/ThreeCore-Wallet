@@ -1,0 +1,21 @@
+✔ archive source dispose prevents an old record being added (9.6716ms)
+✔ archive source invalidate prevents an old record being added (1.8085ms)
+✔ archive source asynchronous failures are consumed (14.9767ms)
+✔ archive refresh cannot rewrite controls after source disposal (7.3195ms)
+✔ archive false download receipt reports refusal (17.9236ms)
+✔ archive resolved download receipt reports refusal (5.5773ms)
+✔ archive rejected download receipt reports refusal (3.7126ms)
+✔ archive asynchronous download receipt cannot hold the handler open (39.01ms)
+✔ archive cancellation queued after preparation prevents delivery (9.463ms)
+✔ archive download dispose cannot overwrite newer status (5.6427ms)
+✔ archive download invalidate cannot overwrite newer status (3.6742ms)
+✔ archive cancelled selection ignores a late display failure (2.8757ms)
+✔ archive ordinary add, select and download remain explicit (5.4113ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 472.7936
