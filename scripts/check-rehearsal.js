@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /** Bounded offline verification of an explicitly supplied rehearsal file. */
-import { open } from "node:fs/promises";
+import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
@@ -29,21 +29,9 @@ export async function readRehearsalInputFile(file, expectedHash = null, workspac
   if (typeof workspace !== "boolean" || typeof file !== "string" || !file || (expectedHash !== null &&
       (typeof expectedHash !== "string" || !/^[0-9a-f]{64}$/.test(expectedHash)))) fail("CLI_ARGUMENTS");
   const limit = workspace ? REHEARSAL_WORKSPACE_LIMIT : REHEARSAL_LIMIT;
-  const handle = await open(resolve(file), "r");
-  let bytes;
-  try {
-    const stat = await handle.stat();
-    if (!stat.isFile() || stat.size < 1 || stat.size > limit) fail("FILE_TOO_LARGE");
-    const buffer = new Uint8Array(limit + 1);
-    let total = 0;
-    while (total < buffer.length) {
-      const { bytesRead } = await handle.read(buffer, total, buffer.length - total, total);
-      if (!bytesRead) break;
-      total += bytesRead;
-    }
-    if (total !== stat.size || total > limit) fail("FILE_CHANGED_OR_TOO_LARGE");
-    bytes = buffer.slice(0, total);
-  } finally { await handle.close(); }
+  const bytes = await readBoundedLocalBytes(resolve(file), limit, {
+    fail, sizeCode: "FILE_TOO_LARGE", changedCode: "FILE_CHANGED_OR_TOO_LARGE",
+  });
   const sha256 = createHash("sha256").update(bytes).digest("hex");
   if (expectedHash !== null && sha256 !== expectedHash) fail("CHECKSUM_MISMATCH");
   let text;

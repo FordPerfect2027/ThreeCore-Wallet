@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /** Offline file inspection. No Wallet discovery, provider, writes or network. */
-import { open } from "node:fs/promises";
+import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { basename, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { transferFail } from "../src/transfer-codec.js";
@@ -27,24 +27,12 @@ export function parseTransferCheckOptions(args) {
 }
 
 async function loadFile(path, archive) {
-  const handle = await open(resolve(path), "r");
   const limit = archive ? TRANSFER_ARCHIVE_FILE_LIMIT : TRANSFER_FILE_LIMIT;
-  try {
-    const stat = await handle.stat();
-    if (!stat.isFile() || stat.size < 1 || stat.size > limit) transferFail("TRANSFER_FILE_SIZE");
-    // A growing file cannot cause an unbounded read after the initial stat.
-    const bytes = new Uint8Array(limit + 1);
-    let total = 0;
-    while (total < bytes.length) {
-      const { bytesRead } = await handle.read(bytes, total, bytes.length - total, total);
-      if (!bytesRead) break;
-      total += bytesRead;
-    }
-    if (total !== stat.size || total > limit) transferFail("TRANSFER_FILE_SIZE");
-    const selected = bytes.slice(0, total);
-    const file = { name: basename(path), size: total, arrayBuffer: async () => selected.slice().buffer };
-    return archive ? await readTransferArchive(file) : await readTransferFile(file);
-  } finally { await handle.close(); }
+  const selected = await readBoundedLocalBytes(resolve(path), limit, {
+    fail: transferFail, sizeCode: "TRANSFER_FILE_SIZE",
+  });
+  const file = { name: basename(path), size: selected.byteLength, arrayBuffer: async () => selected.slice().buffer };
+  return archive ? readTransferArchive(file) : readTransferFile(file);
 }
 
 export async function inspectTransferFiles(options) {

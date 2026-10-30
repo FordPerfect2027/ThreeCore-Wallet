@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /** Inspect downloaded records locally. No wallet, RPC or network dependencies. */
-import { open } from "node:fs/promises";
+import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { decodeTokenIdentityFile, IDENTITY_FILE_LIMIT } from "../src/token-identity-report.js";
@@ -31,21 +31,10 @@ export function parseIdentityCheckOptions(args) {
 }
 
 async function load(path) {
-  const handle = await open(resolve(path), "r");
-  try {
-    const stat = await handle.stat();
-    if (!stat.isFile() || stat.size < 1 || stat.size > IDENTITY_FILE_LIMIT) identityFail("IDENTITY_FILE_SIZE");
-    // Read at most the limit plus one byte, even if another process grows it.
-    const buffer = new Uint8Array(IDENTITY_FILE_LIMIT + 1);
-    let total = 0;
-    while (total < buffer.length) {
-      const result = await handle.read(buffer, total, buffer.length - total, total);
-      if (result.bytesRead === 0) break;
-      total += result.bytesRead;
-    }
-    if (total !== stat.size || total > IDENTITY_FILE_LIMIT) identityFail("IDENTITY_FILE_SIZE");
-    return await decodeTokenIdentityFile(buffer.slice(0, total));
-  } finally { await handle.close(); }
+  const bytes = await readBoundedLocalBytes(resolve(path), IDENTITY_FILE_LIMIT, {
+    fail: identityFail, sizeCode: "IDENTITY_FILE_SIZE",
+  });
+  return decodeTokenIdentityFile(bytes);
 }
 
 export async function inspectIdentityFiles(options) {

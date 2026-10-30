@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { open } from "node:fs/promises";
+import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { resolve } from "node:path";
 import { decodeVaultFile, VAULT_FILE_LIMIT } from "../src/transfer-vault-file.js";
@@ -26,23 +26,11 @@ export function parseVaultArgs(args) {
 
 /** Fixed upper bound even if a file grows after stat; does not write or use RPC. */
 export async function readBoundedVaultPath(path, limit) {
-  const handle = await open(path, "r");
-  try {
-    const stat = await handle.stat();
-    if (!stat.isFile() || stat.size < 1 || stat.size > limit) throw Error("VAULT_CLI_FILE_SIZE");
-    const chunks = [];
-    let total = 0;
-    while (total <= limit) {
-      const buffer = Buffer.alloc(Math.min(64 * 1024, limit + 1 - total));
-      const { bytesRead } = await handle.read(buffer, 0, buffer.byteLength, null);
-      if (!bytesRead) break;
-      chunks.push(buffer.subarray(0, bytesRead));
-      total += bytesRead;
-      if (total > limit) throw Error("VAULT_CLI_FILE_SIZE");
-    }
-    if (total !== stat.size) throw Error("VAULT_CLI_FILE_CHANGED");
-    return new TextDecoder("utf-8", { fatal: true }).decode(Buffer.concat(chunks, total));
-  } finally { await handle.close(); }
+  const bytes = await readBoundedLocalBytes(path, limit, {
+    fail: code => { throw Error(code); }, sizeCode: "VAULT_CLI_FILE_SIZE",
+    changedCode: "VAULT_CLI_FILE_CHANGED", limitCode: "VAULT_CLI_FILE_LIMIT",
+  });
+  return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
 }
 
 export async function inspectVaultPath(options) {

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /** Offline inspection: no provider discovery, network access or file writes. */
-import { open } from "node:fs/promises";
+import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { decodeAllowanceFile, ALLOWANCE_FILE_LIMIT } from "../src/allowance-file.js";
@@ -28,20 +28,10 @@ export function parseAllowanceCheckOptions(args) {
   return Object.freeze({ file, baseline, json });
 }
 async function load(path) {
-  const handle = await open(resolve(path), "r");
-  try {
-    const stat = await handle.stat();
-    if (!stat.isFile() || stat.size < 1 || stat.size > ALLOWANCE_FILE_LIMIT) allowanceFail("ALLOWANCE_FILE_SIZE");
-    const buffer = new Uint8Array(ALLOWANCE_FILE_LIMIT + 1);
-    let total = 0;
-    while (total < buffer.length) {
-      const result = await handle.read(buffer, total, buffer.length - total, total);
-      if (result.bytesRead === 0) break;
-      total += result.bytesRead;
-    }
-    if (total !== stat.size || total > ALLOWANCE_FILE_LIMIT) allowanceFail("ALLOWANCE_FILE_SIZE");
-    return await decodeAllowanceFile(buffer.slice(0, total));
-  } finally { await handle.close(); }
+  const bytes = await readBoundedLocalBytes(resolve(path), ALLOWANCE_FILE_LIMIT, {
+    fail: allowanceFail, sizeCode: "ALLOWANCE_FILE_SIZE",
+  });
+  return decodeAllowanceFile(bytes);
 }
 export async function inspectAllowanceFiles(options) {
   const current = await load(options.file);
