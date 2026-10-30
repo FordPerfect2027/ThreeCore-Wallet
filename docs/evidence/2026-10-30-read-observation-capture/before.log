@@ -1,0 +1,90 @@
+✖ identity reader keeps the metadata received before a later balance read (14.0306ms)
+✖ identity reader does not revise a code-absent result after its native balance read (3.7079ms)
+✖ identity reader accepts own code fields without live getters (1.6227ms)
+✖ code accessors are rejected without execution or later subreads (2.0943ms)
+✖ metadata capture cancellation stops before requesting the token balance (2.8279ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 264.0935
+
+✖ failing tests:
+
+test at test\identity-read-capture.test.js:10:1
+✖ identity reader keeps the metadata received before a later balance read (14.0306ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '200' !== '100'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/identity-read-capture.test.js:16:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '200',
+    expected: '100',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\identity-read-capture.test.js:18:1
+✖ identity reader does not revise a code-absent result after its native balance read (3.7079ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/identity-read-capture.test.js:25:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\identity-read-capture.test.js:28:1
+✖ identity reader accepts own code fields without live getters (1.6227ms)
+  Error: Unexpected live observation read
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/identity-read-capture.test.js:7:9)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:100:23)
+      at async readTokenIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:125:16)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/identity-read-capture.test.js:31:17)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\identity-read-capture.test.js:33:1
+✖ code accessors are rejected without execution or later subreads (2.0943ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/identity-read-capture.test.js:36:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'IDENTITY_CODE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\identity-read-capture.test.js:40:1
+✖ metadata capture cancellation stops before requesting the token balance (2.8279ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/identity-read-capture.test.js:46:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

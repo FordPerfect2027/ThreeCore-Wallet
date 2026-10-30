@@ -1,0 +1,106 @@
+✖ identity headers read captured number and hash fields (4.0373ms)
+✖ transfer boundary and event headers accept own data without live reads (2.7924ms)
+✖ allowance canonical recheck reads captured header values (6.4411ms)
+✖ resumed period anchors read captured header fields (25.6672ms)
+✖ a code-result accessor cannot invent a successful spender observation (4.9888ms)
+✖ identity header accessors fail before native and token reads (2.4693ms)
+✖ cancelling in a resumed period header prevents the next anchor request (23.7808ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 0
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 420.3889
+
+✖ failing tests:
+
+test at test\read-header-capture.test.js:16:1
+✖ identity headers read captured number and hash fields (4.0373ms)
+  Error: Unexpected live header read
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:13:9)
+      at header (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:24:30)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:94:19)
+      at async readTokenIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:129:16)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:19:17)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at test\read-header-capture.test.js:21:1
+✖ transfer boundary and event headers accept own data without live reads (2.7924ms)
+  Error: Unexpected live header read
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:13:9)
+      at header (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:27:33)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:92:20)
+      at async readTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:148:16)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:24:17)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-header-capture.test.js:26:1
+✖ allowance canonical recheck reads captured header values (6.4411ms)
+  Error: Unexpected live header read
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:13:9)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:104:32)
+      at async readAllowanceSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:116:16)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:32:17)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-header-capture.test.js:34:1
+✖ resumed period anchors read captured header fields (25.6672ms)
+  Error: Unexpected live header read
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:13:9)
+      at validateHeader (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:27:30)
+      at recheck (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:119:11)
+      at async collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:126:5)
+      at async collectPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:153:16)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:37:20)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-header-capture.test.js:39:1
+✖ a code-result accessor cannot invent a successful spender observation (4.9888ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:44:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-header-capture.test.js:48:1
+✖ identity header accessors fail before native and token reads (2.4693ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:51:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'IDENTITY_BLOCK' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-header-capture.test.js:54:1
+✖ cancelling in a resumed period header prevents the next anchor request (23.7808ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-header-capture.test.js:61:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_CANCELLED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
