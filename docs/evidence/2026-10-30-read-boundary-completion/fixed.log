@@ -1,0 +1,33 @@
+✔ transfer code response accessor is rejected without executing it (25.0554ms)
+✔ transfer code response uses its captured own values (8.8831ms)
+✔ transfer code reflection cancel prevents metadata and events (7.3498ms)
+✔ transfer code reflection account prevents metadata and events (1.5175ms)
+✔ transfer inaccessible code result uses a bounded public error (2.5266ms)
+✔ period diagnostic accessor is never executed (0.6036ms)
+✔ period diagnostic uses own data without a live property trap (0.6327ms)
+✔ period diagnostic handles inaccessible records (0.7165ms)
+✔ period diagnostic retains ordinary own error codes (0.6449ms)
+✔ library diagnostic accessor is never executed (0.6605ms)
+✔ library diagnostic uses own data without a live property trap (0.4178ms)
+✔ library diagnostic handles inaccessible records (0.2247ms)
+✔ library diagnostic retains ordinary own error codes (0.3017ms)
+✔ report diagnostic accessor is never executed (0.377ms)
+✔ report diagnostic uses own data without a live property trap (0.4076ms)
+✔ report diagnostic handles inaccessible records (0.2473ms)
+✔ report diagnostic retains ordinary own error codes (0.5177ms)
+✔ history diagnostic accessor is never executed (0.3951ms)
+✔ history diagnostic uses own data without a live property trap (0.2818ms)
+✔ history diagnostic handles inaccessible records (0.2544ms)
+✔ history diagnostic retains ordinary own error codes (0.2023ms)
+✔ set diagnostic accessor is never executed (0.2767ms)
+✔ set diagnostic uses own data without a live property trap (0.1922ms)
+✔ set diagnostic handles inaccessible records (0.1773ms)
+✔ set diagnostic retains ordinary own error codes (0.1974ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 518.2635

@@ -1,0 +1,328 @@
+✖ transfer code response accessor is rejected without executing it (21.7642ms)
+✖ transfer code response uses its captured own values (2.573ms)
+✖ transfer code reflection cancel prevents metadata and events (5.0055ms)
+✖ transfer code reflection account prevents metadata and events (3.6204ms)
+✔ transfer inaccessible code result uses a bounded public error (2.7964ms)
+✖ period diagnostic accessor is never executed (2.7051ms)
+✖ period diagnostic uses own data without a live property trap (1.151ms)
+✔ period diagnostic handles inaccessible records (0.5389ms)
+✔ period diagnostic retains ordinary own error codes (0.5867ms)
+✖ library diagnostic accessor is never executed (0.961ms)
+✖ library diagnostic uses own data without a live property trap (0.9367ms)
+✔ library diagnostic handles inaccessible records (0.3212ms)
+✔ library diagnostic retains ordinary own error codes (0.4645ms)
+✖ report diagnostic accessor is never executed (1.4206ms)
+✖ report diagnostic uses own data without a live property trap (0.3022ms)
+✖ report diagnostic handles inaccessible records (0.2978ms)
+✔ report diagnostic retains ordinary own error codes (0.356ms)
+✖ history diagnostic accessor is never executed (0.8317ms)
+✖ history diagnostic uses own data without a live property trap (0.5723ms)
+✔ history diagnostic handles inaccessible records (0.226ms)
+✔ history diagnostic retains ordinary own error codes (0.2773ms)
+✖ set diagnostic accessor is never executed (0.6073ms)
+✖ set diagnostic uses own data without a live property trap (0.5514ms)
+✔ set diagnostic handles inaccessible records (1.7659ms)
+✔ set diagnostic retains ordinary own error codes (0.2765ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 10
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 500.7237
+
+✖ failing tests:
+
+test at test\read-boundary-completion.test.js:11:1
+✖ transfer code response accessor is rejected without executing it (21.7642ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:14:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:18:1
+✖ transfer code response uses its captured own values (2.573ms)
+  Error [TransferError]: TRANSFER_RPC_FAILED
+      at transferFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:22:9)
+      at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:85:7)
+      at async collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:102:18)
+      at async readTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:151:16)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:21:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    code: 'TRANSFER_RPC_FAILED'
+  }
+
+test at test\read-boundary-completion.test.js:25:3
+✖ transfer code reflection cancel prevents metadata and events (5.0055ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:31:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:25:3
+✖ transfer code reflection account prevents metadata and events (3.6204ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:31:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:52:3
+✖ period diagnostic accessor is never executed (2.7051ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PERIOD_SYNTHETIC'
+  - 'PERIOD_READ_FAILED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:54:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PERIOD_SYNTHETIC',
+    expected: 'PERIOD_READ_FAILED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:57:3
+✖ period diagnostic uses own data without a live property trap (1.151ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PERIOD_READ_FAILED'
+  - 'PERIOD_SYNTHETIC'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:59:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PERIOD_READ_FAILED',
+    expected: 'PERIOD_SYNTHETIC',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:52:3
+✖ library diagnostic accessor is never executed (0.961ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PERIOD_SYNTHETIC'
+  - 'PERIOD_LIBRARY_FAILED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:54:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PERIOD_SYNTHETIC',
+    expected: 'PERIOD_LIBRARY_FAILED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:57:3
+✖ library diagnostic uses own data without a live property trap (0.9367ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PERIOD_LIBRARY_FAILED'
+  - 'PERIOD_SYNTHETIC'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:59:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PERIOD_LIBRARY_FAILED',
+    expected: 'PERIOD_SYNTHETIC',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:52:3
+✖ report diagnostic accessor is never executed (1.4206ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PERIOD_SYNTHETIC'
+  - 'PERIOD_REPORT_FAILED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:54:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PERIOD_SYNTHETIC',
+    expected: 'PERIOD_REPORT_FAILED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:57:3
+✖ report diagnostic uses own data without a live property trap (0.3022ms)
+  Error: live diagnostic read
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:58:66)
+      at reportErrorCode (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-view.js:62:22)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:59:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-boundary-completion.test.js:61:3
+✖ report diagnostic handles inaccessible records (0.2978ms)
+  TypeError: Cannot perform 'get' on a proxy that has been revoked
+      at reportErrorCode (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-view.js:62:22)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:63:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-boundary-completion.test.js:52:3
+✖ history diagnostic accessor is never executed (0.8317ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PERIOD_SYNTHETIC'
+  - 'PERIOD_HISTORY_FAILED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:54:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PERIOD_SYNTHETIC',
+    expected: 'PERIOD_HISTORY_FAILED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:57:3
+✖ history diagnostic uses own data without a live property trap (0.5723ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PERIOD_HISTORY_FAILED'
+  - 'PERIOD_SYNTHETIC'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:59:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PERIOD_HISTORY_FAILED',
+    expected: 'PERIOD_SYNTHETIC',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:52:3
+✖ set diagnostic accessor is never executed (0.6073ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PERIOD_SYNTHETIC'
+  - 'PERIOD_SET_FAILED'
+             ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:54:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PERIOD_SYNTHETIC',
+    expected: 'PERIOD_SET_FAILED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-boundary-completion.test.js:57:3
+✖ set diagnostic uses own data without a live property trap (0.5514ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'PERIOD_SET_FAILED'
+  - 'PERIOD_SYNTHETIC'
+             ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-boundary-completion.test.js:59:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PERIOD_SET_FAILED',
+    expected: 'PERIOD_SYNTHETIC',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
