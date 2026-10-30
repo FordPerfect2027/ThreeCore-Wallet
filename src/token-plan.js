@@ -1,4 +1,5 @@
 import { parseSecurityJson } from "./security-json.js";
+import { captureDataRecord, captureDataArray } from "./security-data.js";
 import { AGENT_IDS, normalizeAddress } from "./wallet-session.js";
 
 const SCHEMA = "threecore-token-plan-v1";
@@ -15,23 +16,12 @@ export class TokenPlanError extends Error {
 function fail(code, message) { throw new TokenPlanError(code, message); }
 
 function fields(value, names) {
-  if (!value || typeof value !== "object" || Array.isArray(value) ||
-      ![Object.prototype, null].includes(Object.getPrototypeOf(value))) {
-    fail("INVALID_PLAN", "Expected plain token plan data");
-  }
-  const keys = Reflect.ownKeys(value);
-  if (keys.length !== names.length || keys.some(key => !names.includes(key))) {
-    fail("INVALID_PLAN", "Unexpected or missing token plan fields");
-  }
-  for (const key of keys) {
-    if (!("value" in Object.getOwnPropertyDescriptor(value, key))) {
-      fail("INVALID_PLAN", "Token plan fields cannot be accessors");
-    }
-  }
+  try { return captureDataRecord(value, names); }
+  catch { fail("INVALID_PLAN", "Expected explicit token plan data fields"); }
 }
 
 function context(value) {
-  fields(value, ["agent", "chainId"]);
+  value = fields(value, ["agent", "chainId"]);
   if (!AGENT_IDS.includes(value.agent) || !CHAINS.includes(value.chainId)) {
     fail("INVALID_CONTEXT", "Choose a ThreeCore agent and supported Base chain");
   }
@@ -39,16 +29,14 @@ function context(value) {
 }
 
 function contracts(input) {
-  if (!Array.isArray(input) || input.length < 1 || input.length > 32) {
-    fail("INVALID_TOKENS", "Choose one to 32 distinct token contracts");
-  }
+  let entries;
+  try { entries = captureDataArray(input, 32, 1); }
+  catch { fail("INVALID_TOKENS", "Choose one to 32 explicit token contracts"); }
   const seen = new Set();
   const tokens = [];
-  for (let index = 0; index < input.length; index++) {
-    const item = Object.getOwnPropertyDescriptor(input, String(index));
-    if (!item || !("value" in item)) fail("INVALID_TOKENS", "Sparse or accessor token plans are forbidden");
+  for (const entry of entries) {
     let address;
-    try { address = normalizeAddress(item.value); }
+    try { address = normalizeAddress(entry); }
     catch { fail("INVALID_TOKENS", "Expected complete token contract addresses"); }
     if (seen.has(address)) fail("DUPLICATE_TOKEN", "Token contracts must be unique");
     seen.add(address);
@@ -60,7 +48,7 @@ function contracts(input) {
 /** Configuration only; no account, balance, authorization or provider data. */
 export function validateTokenPlan(input) {
   try {
-    fields(input, ["schema", "agent", "chainId", "tokens"]);
+    input = fields(input, ["schema", "agent", "chainId", "tokens"]);
     if (input.schema !== SCHEMA) fail("INVALID_PLAN", "Unknown token plan schema");
     const identity = context({ agent: input.agent, chainId: input.chainId });
     return Object.freeze({ schema: SCHEMA, ...identity, tokens: contracts(input.tokens) });
