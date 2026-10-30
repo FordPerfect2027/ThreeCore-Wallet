@@ -1,11 +1,22 @@
 import { catalogToken } from "./token-catalog.js";
-import { identityAddress, identityFail, TokenIdentityError } from "./token-identity-codec.js";
+import { identityAddress, identityFail, identityObject, TokenIdentityError } from "./token-identity-codec.js";
 import { validateTokenObservation, assessTokenObservation, compareTokenObservations } from "./token-identity-model.js";
 import { prepareTokenIdentityFile, readTokenIdentityFile } from "./token-identity-report.js";
-import { readErrorCode } from "./provider-error.js";
+import { readOwnErrorCode } from "./provider-error.js";
 import { createStateNotifier } from "./state-notifier.js";
 
 function context(input) {
+  const captured = {};
+  try {
+    if (!input || typeof input !== "object" || Array.isArray(input)) identityFail("IDENTITY_SHAPE");
+    for (const key of ["agent", "chainId", "account", "tokenAddress"]) {
+      const descriptor = Object.getOwnPropertyDescriptor(input, key);
+      if (!descriptor && ["account", "tokenAddress"].includes(key)) continue;
+      if (!descriptor || !Object.hasOwn(descriptor, "value")) identityFail("IDENTITY_SHAPE");
+      captured[key] = descriptor.value;
+    }
+  } catch { identityFail("IDENTITY_SHAPE"); }
+  input = captured;
   const token = catalogToken({ agent: input.agent, chainId: input.chainId });
   const account = input.account ? identityAddress(input.account) : null;
   const tokenAddress = input.tokenAddress ? identityAddress(input.tokenAddress) : token.address;
@@ -33,42 +44,51 @@ export function createTokenIdentityController({ getContext, read, onChange = () 
     revision++;
     notifier.notify();
   }
-  function invalidate(phase = "idle") {
+  const owns = operation => !disposed && operation.id === generation;
+  function invalidate(phase = "idle", errorCode = null) {
     if (disposed) return;
-    generation++;
-    active?.abort();
+    const id = ++generation;
+    const abort = active;
     active = null;
+    abort?.abort();
+    if (disposed || generation !== id) return;
     baseline = null;
     publish({ phase, observation: null, provenance: null, assessment: null,
-      comparison: null, file: null, errorCode: null, progress: null });
+      comparison: null, file: null, errorCode, progress: null });
   }
-  function start(phase) {
+  function start(phase, operation) {
     if (disposed) identityFail("IDENTITY_DISPOSED");
-    generation++;
-    active?.abort();
+    operation.id = ++generation;
+    const abort = active;
     active = null;
+    abort?.abort();
+    if (!owns(operation)) return false;
     const identity = context(getContext());
-    const operation = { id: generation, identity, key: JSON.stringify(identity) };
+    if (!owns(operation)) return false;
+    Object.assign(operation, { identity, key: JSON.stringify(identity) });
     const clear = phase === "reading" || phase === "loading"
       ? { observation: null, provenance: null, assessment: null } : {};
     publish({ phase, file: null, errorCode: null, comparison: null, progress: null, ...clear });
-    return operation;
+    return owns(operation);
   }
   function current(operation) {
-    if (disposed || generation !== operation.id) return false;
+    if (!owns(operation)) return false;
     let same;
     try { same = JSON.stringify(context(getContext())) === operation.key; }
     catch { same = false; }
+    if (!owns(operation)) return false;
     if (!same) {
-      invalidate();
-      publish({ phase: "error", errorCode: "IDENTITY_STALE" });
+      invalidate("error", "IDENTITY_STALE");
     }
     return same;
   }
   function failure(operation, error) {
-    if (operation && !current(operation)) return false;
+    if (operation && (!owns(operation) || (operation.key !== null && !current(operation)))) return false;
     if (disposed) return false;
-    const code = readErrorCode(error);
+    const id = generation;
+    const code = readOwnErrorCode(error);
+    if (disposed || generation !== id) return false;
+    active = null;
     publish({ phase: "error", observation: null, provenance: null,
       assessment: null, file: null, comparison: null, progress: null,
       errorCode: typeof code === "string" ? code : "IDENTITY_UNAVAILABLE" });
@@ -79,9 +99,9 @@ export function createTokenIdentityController({ getContext, read, onChange = () 
     invalidate,
     cancel() { invalidate("cancelled"); },
     async inspect() {
-      let operation;
+      const operation = { id: generation, key: null };
       try {
-        operation = start("reading");
+        if (!start("reading", operation)) return false;
         if (!current(operation)) return false;
         if (!operation.identity.account) identityFail("IDENTITY_NOT_CONNECTED");
         if (operation.identity.tokenAddress !== catalogToken({
@@ -92,7 +112,9 @@ export function createTokenIdentityController({ getContext, read, onChange = () 
         const stages = ["block", "code", "native", "metadata", "balance", "canonical", "complete"];
         let lastStage = -1;
         const onProgress = update => {
-          if (!current(operation) || state.phase !== "reading" || !update ||
+          if (!current(operation) || state.phase !== "reading") return;
+          try { update = identityObject(update, ["agent", "stage"]); } catch { return; }
+          if (!owns(operation) || state.phase !== "reading" ||
               update.agent !== operation.identity.agent) return;
           const index = stages.indexOf(update.stage);
           if (index < 0 || index <= lastStage) return;
@@ -104,35 +126,36 @@ export function createTokenIdentityController({ getContext, read, onChange = () 
         const observation = validateTokenObservation(result);
         if (["agent", "account", "chainId", "tokenAddress"].some(key =>
           observation[key] !== operation.identity[key])) identityFail("IDENTITY_SESSION_CHANGED");
+        if (!current(operation)) return false;
         active = null;
         publish({ phase: "ready", observation, assessment: assessTokenObservation(observation), provenance: "read", progress: null });
-        return true;
+        return owns(operation);
       } catch (error) { return failure(operation, error); }
     },
     async load(file) {
-      let operation;
+      const operation = { id: generation, key: null };
       try {
-        operation = start("loading");
+        if (!start("loading", operation)) return false;
         if (!current(operation)) return false;
         const loaded = await readTokenIdentityFile(file, { subtle });
         if (!current(operation)) return false;
         if (loaded.observation.agent !== operation.identity.agent) identityFail("IDENTITY_IMPORT_AGENT");
         publish({ phase: "ready", observation: loaded.observation,
           assessment: assessTokenObservation(loaded.observation), provenance: "imported" });
-        return true;
+        return owns(operation);
       } catch (error) { return failure(operation, error); }
     },
     async prepareFile() {
-      let operation;
+      const operation = { id: generation, key: null };
       try {
         if (!state.observation) identityFail("IDENTITY_NO_RESULT");
         const observation = state.observation;
-        operation = start("preparing");
+        if (!start("preparing", operation)) return false;
         if (!current(operation)) return false;
         const file = await prepareTokenIdentityFile(observation, { subtle });
         if (!current(operation)) return false;
         publish({ phase: "ready", file });
-        return true;
+        return owns(operation);
       } catch (error) { return failure(operation, error); }
     },
     useAsBaseline() {
@@ -144,6 +167,7 @@ export function createTokenIdentityController({ getContext, read, onChange = () 
     },
     compare() {
       if (disposed) return false;
+      const id = generation;
       try {
         if (state.phase !== "ready" || !baseline || !state.observation) identityFail("IDENTITY_NO_RESULT");
         const comparison = compareTokenObservations(baseline, state.observation);
@@ -151,7 +175,8 @@ export function createTokenIdentityController({ getContext, read, onChange = () 
         return true;
       } catch (error) {
         // A failed comparison should not discard either inspected record.
-        publish({ comparison: null, errorCode: readErrorCode(error) ?? "IDENTITY_UNAVAILABLE" });
+        const code = readOwnErrorCode(error) ?? "IDENTITY_UNAVAILABLE";
+        if (!disposed && generation === id) publish({ comparison: null, errorCode: code });
         return false;
       }
     },
