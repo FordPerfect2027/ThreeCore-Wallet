@@ -277,9 +277,11 @@ test("cancelled checksum calculation cannot deliver a file", async () => {
 });
 
 test("late rejected file reads do not overwrite cancelled or newer reviews", async () => {
-  const pending = deferred();
+  const pending = deferred(), started = deferred();
   const f = controllerFixture();
-  const loading = f.controller.load({ name: "file.json", size: 1, arrayBuffer: () => pending.promise });
+  const loading = f.controller.load({ name: "file.json", size: 1, arrayBuffer() { started.resolve(); return pending.promise; } });
+  // Exercise an actually started read: cancellation now prevents queued IO.
+  await started.promise;
   f.controller.cancel();
   f.controller.capture();
   const reviewId = f.controller.state.review.id;

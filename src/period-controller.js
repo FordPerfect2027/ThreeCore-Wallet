@@ -297,6 +297,7 @@ export function createPeriodController({
   }
   async function importFile(file) {
     let id;
+    let localAborter;
     try {
       if (!available()) return false;
       id = interrupt();
@@ -306,7 +307,9 @@ export function createPeriodController({
       error = null;
       emit();
       if (disposed || id !== generation) return false;
-      const value = await readFile(file);
+      localAborter = new AbortController();
+      aborter = localAborter;
+      const value = await readFile(file, { signal: localAborter.signal });
       if (disposed || id !== generation) return false;
       return stage(value.draft, "file", false, id);
     } catch (value) {
@@ -315,6 +318,7 @@ export function createPeriodController({
       phase = "error";
       return fail(value);
     }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
   function sendToReconciliation() {
     const id = generation;

@@ -30,6 +30,7 @@ export function createReconciliationController({
   let sourceEpoch = 0;
   let operation = 0;
   let busy = false;
+  let aborter = null;
   let disposed = false;
   let review = null;
   let report = null;
@@ -54,6 +55,12 @@ export function createReconciliationController({
   const observers = new Set([() => onStateChange(state())]);
   const notifier = createStateNotifier({ observers, read: () => Object.freeze({ notification }) });
   const owns = current => !disposed && current === operation;
+  function interrupt() {
+    const current = ++operation, previous = aborter;
+    aborter = null;
+    previous?.abort();
+    return current;
+  }
   function emit() {
     if (disposed) return;
     notification++;
@@ -119,8 +126,9 @@ export function createReconciliationController({
       reconciliationAgent(next);
       if (next === agent) return true;
       agent = next;
-      operation++;
       busy = false;
+      const current = interrupt();
+      if (!owns(current)) return false;
       review = null;
       error = null;
       message = next + "を選びました。";
@@ -167,6 +175,7 @@ export function createReconciliationController({
 
   async function importFile(file, kind) {
     let current = operation;
+    let localAborter;
     try {
       if (!available()) return false;
       current = ++operation;
@@ -178,8 +187,10 @@ export function createReconciliationController({
       message = "ファイルを検査しています。";
       emit();
       if (!owns(current)) return false;
+      localAborter = new AbortController();
+      aborter = localAborter;
       let next;
-      try { next = await readFile(file, kind, selected, before); }
+      try { next = await readFile(file, kind, selected, before, { signal: localAborter.signal }); }
       catch (value) {
         if (disposed || current !== operation) return false;
         busy = false;
@@ -190,6 +201,7 @@ export function createReconciliationController({
       if (workspace !== before || agent !== selected) reconciliationFail("RECONCILIATION_STALE");
       return stage(next, "file", current);
     } catch (value) { return fail(value, current); }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
 
   function apply(acknowledged = false) {
@@ -213,8 +225,9 @@ export function createReconciliationController({
 
   function cancel() {
     if (disposed) return false;
-    operation++;
     busy = false;
+    const current = interrupt();
+    if (!owns(current)) return false;
     review = null;
     error = null;
     message = "確認中の操作を取り消しました。現在の記録は維持しています。";
@@ -311,7 +324,7 @@ export function createReconciliationController({
       if (disposed) return;
       disposed = true;
       observers.clear();
-      operation++;
+      interrupt();
       busy = false;
       review = null;
       undo = [];

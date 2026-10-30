@@ -10,6 +10,7 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   let revision = 0;
   let contextKey = null;
   let disposed = false;
+  let aborter = null;
   let state = Object.freeze({ phase: "empty", archive: null, preview: null, error: null });
   let notification = 0;
   const observers = new Set([() => onChange(state)]);
@@ -23,9 +24,16 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   }
   function invalidate() {
     if (disposed) return;
-    revision++;
+    const id = interrupt();
+    if (!owns(id)) return;
     contextKey = null;
     publish({ phase: "empty", archive: null, preview: null, error: null });
+  }
+  function interrupt() {
+    const id = ++revision, previous = aborter;
+    aborter = null;
+    previous?.abort();
+    return id;
   }
   function context(id, acceptChange = false) {
     if (!owns(id)) return null;
@@ -56,7 +64,7 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   }
   function add(record) {
     if (disposed) return false;
-    const id = ++revision;
+    const id = interrupt();
     try {
       const key = context(id, true);
       if (!owns(id)) return false;
@@ -69,7 +77,7 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   }
   function remove(index) {
     if (disposed) return false;
-    const id = ++revision;
+    const id = interrupt();
     try {
       const key = context(id, true);
       if (!owns(id)) return false;
@@ -93,14 +101,16 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   }
   async function stage(file) {
     if (disposed) return false;
-    const id = ++revision;
-    let key;
+    const id = interrupt();
+    let key, localAborter;
     try {
       key = context(id, true);
       if (!owns(id)) return false;
       publish({ phase: "loading", preview: null, error: null });
       if (!current(id, key)) return false;
-      const { archive, digest } = await readTransferArchive(file, { subtle });
+      localAborter = new AbortController();
+      aborter = localAborter;
+      const { archive, digest } = await readTransferArchive(file, { subtle, signal: localAborter.signal });
       if (!current(id, key)) return false;
       assertContext(archive, key);
       publish({ phase: "preview", preview: Object.freeze({ id, archive, digest, authenticated: false }) });
@@ -109,6 +119,7 @@ export function createTransferArchiveController({ getContext, onChange = () => {
       if (owns(id) && (key === undefined || current(id, key))) return fail(id, error);
       return false;
     }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
   function apply(reviewId) {
     if (disposed) return false;
@@ -120,14 +131,15 @@ export function createTransferArchiveController({ getContext, onChange = () => {
       const archive = validateTransferArchive(pending.archive);
       if (!current(id, key) || pending !== state.preview) return false;
       assertContext(archive, key);
-      const applied = ++revision;
+      const applied = interrupt();
+      if (!owns(applied)) return false;
       publish({ phase: "ready", archive, preview: null, error: null });
       return owns(applied);
     } catch (error) { return fail(id, error); }
   }
   async function prepare() {
     if (disposed) return null;
-    const id = ++revision;
+    const id = interrupt();
     let key;
     try {
       key = context(id, true);
@@ -153,7 +165,7 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   }
   function reviewArchive(input) {
     if (disposed) return false;
-    const id = ++revision;
+    const id = interrupt();
     try {
       const key = context(id, true);
       if (!owns(id)) return false;
@@ -166,13 +178,14 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   }
   function cancel() {
     if (disposed) return;
-    revision++;
+    const id = interrupt();
+    if (!owns(id)) return;
     publish({ phase: state.archive ? "ready" : "empty", preview: null, error: null });
   }
   function dispose() {
     if (disposed) return;
     disposed = true;
-    revision++;
+    interrupt();
     contextKey = null;
     observers.clear();
     state = Object.freeze({ phase: "disposed", archive: null, preview: null, error: null });

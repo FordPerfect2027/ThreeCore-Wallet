@@ -132,10 +132,13 @@ export function createTransferController({ getContext, read, onChange = () => {}
   }
   async function stageFile(file, target = "snapshot") {
     const operation = { id: generation, key: null };
+    let localAborter;
     try {
       if (!["snapshot", "baseline"].includes(target)) transferFail("TRANSFER_IMPORT_TARGET");
       if (!begin(operation, "loading") || !current(operation)) return false;
-      const decoded = await readTransferFile(file, { subtle });
+      localAborter = new AbortController();
+      aborter = localAborter;
+      const decoded = await readTransferFile(file, { subtle, signal: localAborter.signal });
       if (!current(operation)) return false;
       assertContext(decoded.snapshot, operation.selected);
       const preview = Object.freeze({ id: operation.id, target, snapshot: decoded.snapshot,
@@ -143,6 +146,7 @@ export function createTransferController({ getContext, read, onChange = () => {}
       publish({ phase: "preview", preview });
       return owns(operation);
     } catch (error) { return fail(operation, error); }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
   function applyImport(id) {
     if (disposed) return false;

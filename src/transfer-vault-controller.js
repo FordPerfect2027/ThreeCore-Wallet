@@ -135,7 +135,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
   function load(file, merge = false) {
     return operate("fileReview", async token => {
       review = null;
-      const result = await readVaultFile(file, { subtle });
+      const result = await readVaultFile(file, { subtle, signal: active.aborter.signal });
       if (alive(token)) stage(result.bundle, "file", merge, { digest: result.digest }, () => alive(token));
     });
   }
@@ -143,7 +143,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
     return operate("legacyReview", async token => {
       review = null;
       if (!VAULT_AGENTS.includes(agent)) transferFail("TRANSFER_VAULT_CONTEXT");
-      const archive = await readLegacyVaultInput(file, kind, { subtle });
+      const archive = await readLegacyVaultInput(file, kind, { subtle, signal: active.aborter.signal });
       if (!alive(token)) return;
       if (archive.records[0].context.agent !== agent) transferFail("TRANSFER_VAULT_CONTEXT");
       const archives = working.slots.map(slot => slot.agent === agent ? archive : slot.archive);
@@ -287,7 +287,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
     return operate("collectionReview", async token => {
       review = null;
       const before = readyDocument();
-      const result = await readVaultCollection(file, { subtle });
+      const result = await readVaultCollection(file, { subtle, signal: active.aborter.signal });
       if (!alive(token)) return;
       const proposed = reviewVaultCollection(before, result.document);
       if (alive(token)) collectionReview = Object.freeze({ id: ++sequence, ...proposed });
