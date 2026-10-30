@@ -1,4 +1,7 @@
 import { readPortfolioSnapshot } from "./portfolio-snapshot.js";
+import { createStateNotifier } from "./state-notifier.js";
+import { captureDataArray, captureOptionalDataFields } from "./security-data.js";
+import { readOwnErrorCode } from "./provider-error.js";
 
 /**
  * Local-only operation controller. Connecting remains a separate explicit UI
@@ -12,21 +15,20 @@ export function createPortfolioController({ reader = readPortfolioSnapshot } = {
   let disposed = false;
   let state = Object.freeze({ status: "idle", result: null, errorCode: null, revision: 0 });
   const subscribers = new Set();
+  const listeners = new Map();
+  const notifier = createStateNotifier({ observers: subscribers, read: () => Object.freeze({ revision: state.revision }) });
 
   function emit(next) {
     state = Object.freeze({ ...next, revision: state.revision + 1 });
-    // UI subscribers cannot prevent invalidation or corrupt operation state.
-    for (const listener of [...subscribers]) {
-      try { listener(state); }
-      catch { /* Observer failures are isolated from wallet state. */ }
-    }
+    notifier.notify();
   }
 
   function invalidate() {
-    epoch++;
+    const current = ++epoch;
     const old = active;
     active = null;
     old?.abort();
+    return current;
   }
 
   function requireActive() {
@@ -35,31 +37,35 @@ export function createPortfolioController({ reader = readPortfolioSnapshot } = {
 
   function cancel() {
     requireActive();
-    invalidate();
+    const current = invalidate();
+    if (disposed || epoch !== current) return;
     emit({ status: "cancelled", result: null, errorCode: null });
   }
 
   function clear() {
     requireActive();
-    invalidate();
+    const current = invalidate();
+    if (disposed || epoch !== current) return;
     emit({ status: "idle", result: null, errorCode: null });
   }
 
   async function refresh(session, options = {}) {
     requireActive();
-    if (!options || typeof options !== "object" || Array.isArray(options)) {
-      throw TypeError("Expected snapshot options");
+    const initialEpoch = epoch;
+    let plan;
+    try {
+      const captured = captureOptionalDataFields(options, ["tokens", "timeoutMs", "signal", "onProgress"]);
+      plan = { ...captured, tokens: captured.tokens === undefined ? undefined : captureDataArray(captured.tokens, 32) };
+    } catch { throw TypeError("Expected own-data snapshot options and token slots"); }
+    if (disposed || epoch !== initialEpoch) {
+      return Object.freeze({ accepted: false, result: null });
     }
-    // Capture caller input before notifying potentially reentrant observers.
-    const plan = { ...options,
-      tokens: Array.isArray(options.tokens) ? [...options.tokens] : options.tokens,
-    };
     const external = plan.signal;
     if (external !== undefined && !(external instanceof AbortSignal)) {
       throw TypeError("Expected an AbortSignal");
     }
-    invalidate();
-    const current = epoch;
+    const current = invalidate();
+    if (disposed || epoch !== current) return Object.freeze({ accepted: false, result: null });
     const controller = new AbortController();
     active = controller;
     const forwardAbort = () => controller.abort();
@@ -78,10 +84,15 @@ export function createPortfolioController({ reader = readPortfolioSnapshot } = {
       }
       // Readers are trusted application dependencies. This guard prevents an
       // accidentally substituted non-snapshot object from appearing as ready.
-      if (!result || result.readOnly !== true || result.securityAudit !== false ||
-          !Array.isArray(result.holdings) || !Object.isFrozen(result)) {
+      let fields;
+      try { fields = captureOptionalDataFields(result, ["readOnly", "securityAudit", "holdings"]); }
+      catch { throw Object.assign(Error("Invalid snapshot result"), { code: "INVALID_SNAPSHOT" }); }
+      if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
+      if (fields.readOnly !== true || fields.securityAudit !== false ||
+          !Array.isArray(fields.holdings) || !Object.isFrozen(result)) {
         throw Object.assign(Error("Invalid snapshot result"), { code: "INVALID_SNAPSHOT" });
       }
+      if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
       emit({ status: "ready", result, errorCode: null });
       if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
       return Object.freeze({ accepted: true, result });
@@ -92,10 +103,9 @@ export function createPortfolioController({ reader = readPortfolioSnapshot } = {
       } else {
         // Avoid leaking provider payloads, arbitrary messages, or stack traces
         // into a display/export. Known string codes are enough for a UI label.
-        let code = "SNAPSHOT_FAILED";
-        try {
-          if (typeof error?.code === "string" && /^[A-Z_]{1,64}$/.test(error.code)) code = error.code;
-        } catch { /* A hostile getter must not break cleanup. */ }
+        const rawCode = readOwnErrorCode(error);
+        if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
+        const code = typeof rawCode === "string" && /^[A-Z_]{1,64}$/.test(rawCode) ? rawCode : "SNAPSHOT_FAILED";
         emit({ status: "error", result: null, errorCode: code });
       }
       return Object.freeze({ accepted: false, result: null });
@@ -113,15 +123,26 @@ export function createPortfolioController({ reader = readPortfolioSnapshot } = {
     subscribe(listener) {
       requireActive();
       if (typeof listener !== "function") throw TypeError("Expected listener");
-      subscribers.add(listener);
-      return () => subscribers.delete(listener);
+      let observer = listeners.get(listener);
+      if (!observer) {
+        observer = () => listener(state);
+        listeners.set(listener, observer);
+        subscribers.add(observer);
+      }
+      return () => {
+        if (listeners.get(listener) !== observer) return false;
+        listeners.delete(listener);
+        notifier.forget(observer);
+        return subscribers.delete(observer);
+      };
     },
     dispose() {
       if (disposed) return;
       disposed = true;
+      subscribers.clear();
+      listeners.clear();
       invalidate();
       emit({ status: "disposed", result: null, errorCode: null });
-      subscribers.clear();
     },
   });
 }
