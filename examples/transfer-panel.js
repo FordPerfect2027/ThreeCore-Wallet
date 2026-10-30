@@ -7,12 +7,16 @@ import { transferErrorText, transferProgressText } from "../src/transfer-message
 import { mountTransferArchivePanel } from "./transfer-archive-panel.js";
 import { encodeTransferFile } from "../src/transfer-file.js";
 import { planTransferWindow } from "../src/transfer-window.js";
+import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
+import { readOwnErrorCode } from "../src/provider-error.js";
 
 /** DOM rendering uses text nodes exclusively, including all file/provider values. */
 export function mountTransferPanel({ document, parent, getContext, read, onCancel = () => {}, onStateChange = () => {},
   download = defaultDownload, subtle }) {
   const cleanup = [];
   let disposed = false;
+  let generation = 0;
+  const current = id => !disposed && generation === id;
   let previewId = null;
   let page = 0;
   let lastSnapshot = null;
@@ -25,8 +29,9 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
     return element;
   }
   function listen(element, event, callback) {
-    element.addEventListener(event, callback);
-    cleanup.push(() => element.removeEventListener(event, callback));
+    const handler = (...args) => { if (!disposed) return callback(...args); };
+    element.addEventListener(event, handler);
+    cleanup.push(() => element.removeEventListener(event, handler));
   }
   function button(suffix, text) {
     const element = node("button", suffix, text);
@@ -203,40 +208,47 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
       state.baseline ? "比較元: " + state.baseline.range.fromBlock + " ～ " + state.baseline.range.toBlock : "";
     renderRows(state);
     archivePanel?.refresh();
-    onStateChange(state);
+    consumeCallback(() => onStateChange(state));
   }
   const controller = createTransferController({ getContext, read, onChange: render, subtle });
   archivePanel = mountTransferArchivePanel({ document, parent: host, getContext, download, subtle,
     getSnapshot: () => controller.state.phase === "ready" ? controller.state.snapshot : null,
     onSelect: async snapshot => {
+      const id = ++generation;
       const selectedState = controller.state;
       const text = await encodeTransferFile(snapshot, { subtle });
-      if (disposed || controller.state !== selectedState) return;
+      if (!current(id) || controller.state !== selectedState) return;
       const bytes = new TextEncoder().encode(text);
       await controller.stageFile({ name: "saved-transfer-record.json", size: bytes.byteLength,
         arrayBuffer: async () => bytes.slice().buffer });
     },
   });
-  listen(inspect, "click", () => controller.inspect({
+  listen(inspect, "click", () => { generation++; return controller.inspect({
     fromBlock: start.element.value.trim() || null,
     toBlock: end.element.value.trim() || null,
     lookback: Number(lookback.element.value),
-  }));
-  listen(cancel, "click", () => { controller.cancel(); onCancel(); });
-  listen(clear, "click", () => { controller.invalidate(); onCancel(); });
+  }); });
+  listen(cancel, "click", () => { generation++; controller.cancel(); consumeCallback(onCancel); });
+  listen(clear, "click", () => { generation++; controller.invalidate(); consumeCallback(onCancel); });
   for (const { action, element } of windowButtons) listen(element, "click", () => {
+    const id = ++generation;
     try {
       const request = planTransferWindow(controller.state.snapshot, action);
       start.element.value = request.fromBlock ?? "";
       end.element.value = request.toBlock ?? "";
       lookback.element.value = String(request.lookback);
       controller.cancel();
-      onCancel();
+      consumeCallback(onCancel);
+      if (!current(id)) return;
       windowStatus.textContent = "入力欄の期間を変更しました。新しい履歴は「送受信履歴を取得」を押すと確認できます。";
-    } catch (error) { windowStatus.textContent = transferErrorText(error?.code); }
+    } catch (error) {
+      if (!current(id)) return;
+      const code = readOwnErrorCode(error);
+      if (current(id)) windowStatus.textContent = transferErrorText(code);
+    }
   });
   for (const field of [start.element, end.element, lookback.element]) {
-    listen(field, "input", () => { controller.cancel(); onCancel(); });
+    listen(field, "input", () => { generation++; controller.cancel(); consumeCallback(onCancel); });
   }
   for (const field of [direction, search.element, order]) {
     listen(field, field === search.element ? "input" : "change", () => { page = 0; renderRows(currentState); });
@@ -244,39 +256,55 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
   listen(previous, "click", () => { page--; renderRows(currentState); });
   listen(next, "click", () => { page++; renderRows(currentState); });
   listen(file.element, "change", () => {
+    generation++;
     const selected = file.element.files?.[0];
     file.element.value = "";
     if (selected) controller.stageFile(selected, importTarget.value);
   });
-  listen(importTarget, "change", () => controller.cancel());
-  listen(apply, "click", () => controller.applyImport(previewId));
-  listen(baseline, "click", () => controller.keepBaseline());
-  listen(compare, "click", () => controller.compare());
+  listen(importTarget, "change", () => { generation++; controller.cancel(); });
+  listen(apply, "click", () => { generation++; return controller.applyImport(previewId); });
+  listen(baseline, "click", () => { generation++; return controller.keepBaseline(); });
+  listen(compare, "click", () => { generation++; return controller.compare(); });
   for (const { kind, element } of exports) listen(element, "click", async () => {
+    const id = ++generation;
     const prepared = await controller.prepare(kind);
-    if (!prepared || disposed) return;
-    try { await download(prepared, document); }
-    catch { if (!disposed) status.textContent = "ファイルを保存できませんでした。保存先の設定を確認してください。"; }
+    if (!prepared || !current(id)) return;
+    try {
+      const receipt = download(prepared, document);
+      const kind = observeCallbackResult(receipt);
+      if (!current(id)) return;
+      if (kind !== "synchronous" || receipt === false) throw Error("Download refused");
+    }
+    catch { if (current(id)) status.textContent = "ファイルを保存できませんでした。保存先の設定を確認してください。"; }
   });
   render(controller.state);
   return Object.freeze({
     exportArchive() {
       if (disposed) return null;
+      const id = generation;
       const archive = archivePanel.getArchive();
+      if (!current(id)) return null;
       const snapshot = currentState?.snapshot ?? null;
       if (!archive && !snapshot) return null;
       const key = transferContextKey(getContext());
+      if (!current(id)) return null;
       if (snapshot && transferContextKey(snapshot.context) !== key) transferFail("TRANSFER_VAULT_CONTEXT");
       return captureTransferArchive(archive, snapshot);
     },
     stageArchive(input, { current = () => true } = {}) {
-      if (disposed || current() !== true) return false;
+      if (disposed) return false;
+      const id = generation;
+      try {
+        const receipt = current();
+        if (observeCallbackResult(receipt) !== "synchronous" || receipt !== true || disposed || generation !== id) return false;
+      } catch { return false; }
       return archivePanel.stageArchive(input);
     },
-    invalidate() { controller.invalidate(); archivePanel.invalidate(); },
+    invalidate() { if (disposed) return; generation++; controller.invalidate(); archivePanel.invalidate(); },
     dispose() {
       if (disposed) return;
       disposed = true;
+      generation++;
       for (const stop of cleanup) stop();
       controller.dispose();
       archivePanel.dispose();
