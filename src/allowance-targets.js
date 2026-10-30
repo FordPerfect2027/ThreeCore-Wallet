@@ -1,5 +1,6 @@
 import { catalogToken } from "./token-catalog.js";
 import { identityObject, identityAddress, metadataText } from "./token-identity-codec.js";
+import { captureDataArray } from "./security-data.js";
 
 export const ALLOWANCE_TARGET_LIMIT = 20;
 export const ALLOWANCE_DRAFT_LIMIT = 8192;
@@ -32,31 +33,34 @@ export function allowanceLabel(value) {
 }
 export function allowanceContext(input) {
   let token;
-  try { token = catalogToken({ agent: input?.agent, chainId: input?.chainId }); }
+  const captured = {};
+  try {
+    if (!input || typeof input !== "object" || Array.isArray(input)) allowanceFail("ALLOWANCE_CONTEXT");
+    for (const key of ["agent", "chainId", "tokenAddress"]) {
+      const descriptor = Object.getOwnPropertyDescriptor(input, key);
+      if (!descriptor && key === "tokenAddress") continue;
+      if (!descriptor || !Object.hasOwn(descriptor, "value")) allowanceFail("ALLOWANCE_CONTEXT");
+      captured[key] = descriptor.value;
+    }
+    token = catalogToken({ agent: captured.agent, chainId: captured.chainId });
+  }
   catch { allowanceFail("ALLOWANCE_CONTEXT"); }
-  const address = input.tokenAddress ? allowanceAddress(input.tokenAddress) : token.address;
+  const address = captured.tokenAddress ? allowanceAddress(captured.tokenAddress) : token.address;
   if (address !== token.address) allowanceFail("ALLOWANCE_TOKEN");
   return Object.freeze({ agent: token.agent, chainId: token.chainId, tokenAddress: token.address });
 }
 export function allowanceArray(input, { allowEmpty = false } = {}) {
-  if (!Array.isArray(input) || input.length > ALLOWANCE_TARGET_LIMIT ||
-      (!allowEmpty && input.length === 0) || Reflect.ownKeys(input).length !== input.length + 1) {
-    allowanceFail("ALLOWANCE_TARGETS");
-  }
-  for (let i = 0; i < input.length; i++) {
-    const property = Object.getOwnPropertyDescriptor(input, String(i));
-    if (!property || !("value" in property)) allowanceFail("ALLOWANCE_TARGETS");
-  }
-  return input;
+  try { return captureDataArray(input, ALLOWANCE_TARGET_LIMIT, allowEmpty ? 0 : 1); }
+  catch { allowanceFail("ALLOWANCE_TARGETS"); }
 }
 
 export function validateAllowanceTargets(input) {
-  allowanceObject(input, ["schema", "agent", "chainId", "tokenAddress", "targets"]);
+  input = allowanceObject(input, ["schema", "agent", "chainId", "tokenAddress", "targets"]);
   if (input.schema !== ALLOWANCE_TARGET_SCHEMA) allowanceFail("ALLOWANCE_SCHEMA");
   const context = allowanceContext(input);
   const seen = new Set();
   const targets = allowanceArray(input.targets).map(value => {
-    allowanceObject(value, ["address", "label"]);
+    value = allowanceObject(value, ["address", "label"]);
     const address = allowanceAddress(value.address);
     if (seen.has(address)) allowanceFail("ALLOWANCE_DUPLICATE");
     seen.add(address);

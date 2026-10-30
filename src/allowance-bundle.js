@@ -4,23 +4,20 @@ import { allowanceObject, allowanceFail } from "./allowance-targets.js";
 import { validateAllowanceObservation } from "./allowance-observation.js";
 import { prepareAllowanceFile, decodeAllowanceFile } from "./allowance-file.js";
 import { describeAllowanceOverview } from "./allowance-overview.js";
+import { captureDataArray } from "./security-data.js";
 
 export const ALLOWANCE_BUNDLE_SCHEMA = "threecore-allowance-bundle-v1";
 export const ALLOWANCE_BUNDLE_LIMIT = 196608;
 const agents = ["DAT", "EMA", "CAWELON"];
 export function validateAllowanceBundle(input) {
-  allowanceObject(input, ["schema", "records", "readOnly", "atomicSnapshot"]);
+  input = allowanceObject(input, ["schema", "records", "readOnly", "atomicSnapshot"]);
   if (input.schema !== ALLOWANCE_BUNDLE_SCHEMA || input.readOnly !== true || input.atomicSnapshot !== false) {
     allowanceFail("ALLOWANCE_BUNDLE_SCHEMA");
   }
-  if (!Array.isArray(input.records) || input.records.length !== 3 || Reflect.ownKeys(input.records).length !== 4) {
-    allowanceFail("ALLOWANCE_BUNDLE_RECORDS");
-  }
-  for (let i = 0; i < 3; i++) {
-    const descriptor = Object.getOwnPropertyDescriptor(input.records, String(i));
-    if (!descriptor || !("value" in descriptor)) allowanceFail("ALLOWANCE_BUNDLE_RECORDS");
-  }
-  const records = input.records.map(validateAllowanceObservation);
+  let captured;
+  try { captured = captureDataArray(input.records, 3, 3); }
+  catch { allowanceFail("ALLOWANCE_BUNDLE_RECORDS"); }
+  const records = captured.map(validateAllowanceObservation);
   if (new Set(records.map(record => record.identity.agent)).size !== 3) allowanceFail("ALLOWANCE_BUNDLE_RECORDS");
   records.sort((a, b) => agents.indexOf(a.identity.agent) - agents.indexOf(b.identity.agent));
   return Object.freeze({
