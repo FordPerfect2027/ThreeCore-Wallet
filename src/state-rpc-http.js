@@ -1,7 +1,9 @@
+import { inspectReadPacket, snapshotFileChunk } from "./file-read-source.js";
 import { consumeCallback } from "./security-callback.js";
 import { parseSecurityJson } from "./security-json.js";
 
 export const STATE_RPC_RESPONSE_LIMIT = 2 * 1024 * 1024;
+const STATE_RPC_CHUNK_LIMIT = 100_000;
 export const STATE_RPC_TIMEOUT_MS = 15_000;
 export class StateRpcError extends Error {
   constructor() {
@@ -47,7 +49,7 @@ export async function readStateRpcJson(response, { signal } = {}) {
   const reader = response.body?.getReader();
   if (!reader) throw new StateRpcError();
   const decoder = new TextDecoder("utf-8", { fatal: true });
-  let size = 0, text = "";
+  let size = 0, text = "", chunks = 0;
   let stopReading;
   const interrupted = new Promise((_, reject) => { stopReading = reject; });
   function abort() {
@@ -57,12 +59,16 @@ export async function readStateRpcJson(response, { signal } = {}) {
   signal?.addEventListener("abort", abort, { once: true });
   async function consume() {
     while (true) {
-      const { done, value } = await reader.read();
+      const packet = await reader.read();
+      if (signal?.aborted) throw new StateRpcError();
+      const { done, value } = inspectReadPacket(packet);
       if (signal?.aborted) throw new StateRpcError();
       if (done) break;
-      size += value.byteLength;
-      if (size > STATE_RPC_RESPONSE_LIMIT) throw new StateRpcError();
-      text += decoder.decode(value, { stream: true });
+      if (++chunks > STATE_RPC_CHUNK_LIMIT) throw new StateRpcError();
+      const bytes = snapshotFileChunk(value, STATE_RPC_RESPONSE_LIMIT - size);
+      if (signal?.aborted) throw new StateRpcError();
+      size += bytes.byteLength;
+      text += decoder.decode(bytes, { stream: true });
     }
     text += decoder.decode();
     return parseSecurityJson(text, { bytes: STATE_RPC_RESPONSE_LIMIT, depth: 24,
