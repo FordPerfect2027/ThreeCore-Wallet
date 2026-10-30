@@ -1,4 +1,5 @@
-import { observeCallbackResult } from "./security-callback.js";
+import { consumeCallback, observeCallbackResult } from "./security-callback.js";
+import { readOwnErrorCode } from "./provider-error.js";
 /** Fixed outward-facing codes: never retain browser exceptions or file content. */
 export const EXPORT_LIMITS = Object.freeze({
   fileBytes: 96 * 1024 * 1024,
@@ -24,12 +25,15 @@ export class ExportSecurityError extends Error {
 export function exportFail(code) { throw new ExportSecurityError(code); }
 export function exportErrorCode(error) {
   try {
-    if (error instanceof ExportSecurityError && EXPORT_CODES.includes(error.code)) return error.code;
+    if (error instanceof ExportSecurityError) {
+      const code = readOwnErrorCode(error);
+      if (EXPORT_CODES.includes(code)) return code;
+    }
   } catch {}
   return "EXPORT_FAILED";
 }
 export function consumeExportCallback(action) {
-  try { Promise.resolve(action()).catch(() => {}); } catch {}
+  consumeCallback(action);
 }
 /** Resource operations must be synchronous; rejection is always consumed. */
 export function requireSyncExport(value, code = "EXPORT_FAILED") {
