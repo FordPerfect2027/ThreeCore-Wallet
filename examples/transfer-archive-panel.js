@@ -1,11 +1,15 @@
 import { createTransferArchiveController } from "../src/transfer-archive-controller.js";
 import { transferArchiveText } from "../src/transfer-archive.js";
 import { transferErrorText } from "../src/transfer-messages.js";
+import { observeCallbackResult } from "../src/security-callback.js";
 
 export function mountTransferArchivePanel({ document, parent, getContext, getSnapshot, onSelect, download, subtle }) {
   const cleanup = [];
   let disposed = false;
+  let generation = 0;
+  let refreshing = false;
   let state;
+  const current = id => !disposed && id === generation;
   function element(tag, name, text = "") {
     const value = document.createElement(tag);
     value.className = "transfer-archive-" + name;
@@ -18,8 +22,12 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
     return value;
   }
   function listen(target, event, action) {
-    target.addEventListener(event, action);
-    cleanup.push(() => target.removeEventListener(event, action));
+    const handler = () => {
+      if (disposed) return;
+      return action(++generation);
+    };
+    target.addEventListener(event, handler);
+    cleanup.push(() => target.removeEventListener(event, handler));
   }
   const host = element("details", "panel");
   host.append(element("summary", "title", "期間ごとの記録をまとめる（最大12件）"));
@@ -49,15 +57,25 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
     if (!state || disposed) return;
     const busy = ["loading", "preparing"].includes(state.phase);
     host.setAttribute("aria-busy", String(busy));
-    add.disabled = busy || !getSnapshot();
+    add.disabled = true;
     save.disabled = busy || !state.archive;
     select.disabled = busy || !state.archive;
     remove.disabled = busy || !state.archive;
     file.disabled = busy;
     apply.disabled = !state.preview;
     cancel.disabled = !busy && !state.preview;
+    if (busy || refreshing) return;
+    const id = generation, before = state;
+    refreshing = true;
+    try {
+      const snapshot = getSnapshot();
+      const kind = observeCallbackResult(snapshot);
+      if (current(id) && state === before) add.disabled = kind !== "synchronous" || !snapshot;
+    } catch { /* An unavailable source keeps the add action disabled. */ }
+    finally { refreshing = false; }
   }
   function render(next) {
+    if (disposed) return;
     state = next;
     const previous = choice.value;
     choice.replaceChildren();
@@ -77,17 +95,22 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
     refresh();
   }
   const controller = createTransferArchiveController({ getContext, onChange: render, subtle });
-  listen(add, "click", () => {
-    const snapshot = getSnapshot();
-    if (snapshot) controller.add(snapshot);
+  listen(add, "click", id => {
+    try {
+      const snapshot = getSnapshot();
+      const kind = observeCallbackResult(snapshot);
+      if (current(id) && kind === "synchronous" && snapshot) controller.add(snapshot);
+    } catch {
+      if (current(id)) status.textContent = "現在の履歴を取得できませんでした。";
+    }
   });
   listen(clear, "click", () => controller.invalidate());
   listen(remove, "click", () => controller.remove(Number(choice.value)));
-  listen(select, "click", async () => {
+  listen(select, "click", async id => {
     const selected = controller.select(Number(choice.value));
-    if (!selected) return;
+    if (!selected || !current(id)) return;
     try { await onSelect(selected); }
-    catch { if (!disposed) status.textContent = "選択した記録を表示できませんでした。"; }
+    catch { if (current(id)) status.textContent = "選択した記録を表示できませんでした。"; }
   });
   listen(file, "change", () => {
     const selected = file.files?.[0];
@@ -96,21 +119,30 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
   });
   listen(apply, "click", () => controller.apply(state.preview?.id));
   listen(cancel, "click", () => controller.cancel());
-  listen(save, "click", async () => {
+  listen(save, "click", async id => {
     const prepared = await controller.prepare();
-    if (!prepared || disposed) return;
-    try { await download(prepared, document); }
-    catch { if (!disposed) status.textContent = "まとめファイルを保存できませんでした。"; }
+    if (!prepared || !current(id)) return;
+    try {
+      const receipt = download(prepared, document);
+      if (observeCallbackResult(receipt) !== "synchronous" || receipt === false) throw Error("Download refused");
+    }
+    catch { if (current(id)) status.textContent = "まとめファイルを保存できませんでした。"; }
   });
   render(controller.state);
   return Object.freeze({
     refresh,
     getArchive: () => controller.capture(),
-    stageArchive(input) { host.open = true; return controller.reviewArchive(input); },
-    invalidate() { controller.invalidate(); },
+    stageArchive(input) {
+      if (disposed) return false;
+      generation++;
+      host.open = true;
+      return controller.reviewArchive(input);
+    },
+    invalidate() { if (!disposed) { generation++; controller.invalidate(); } },
     dispose() {
       if (disposed) return;
       disposed = true;
+      generation++;
       for (const stop of cleanup) stop();
       controller.dispose();
       host.remove();
