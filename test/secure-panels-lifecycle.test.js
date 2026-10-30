@@ -63,3 +63,10 @@ test('encrypted library: replacement file value survives an import callback',asy
 test('encrypted library: accepted current ciphertext reaches review without writing',async()=>{
   const f=libraryFixture();try{f.panel.setReady(true);await f.q('save').run();await until(()=>!f.panel.state().busy);assert.equal(f.panel.state().phase,'review');assert.equal(f.storage.calls.writes,0);}finally{f.panel.dispose();}
 });
+test('encrypted library: clearing a live FileList preserves the selected File handoff',async()=>{
+  const hold=gate();let selected=null;const f=libraryFixture({controllerOptions:{readText(file){selected=file;return hold.promise;}}});
+  try{const file=f.q('file'),original={name:'synthetic.json',size:2},live=[original];file.files=live;
+    Object.defineProperty(file,'value',{configurable:true,get:()=>'',set(value){if(value==='')live.length=0;}});
+    file.run('change');assert.equal(live.length,0);assert.equal(selected,original);assert.equal(f.storage.calls.writes,0);
+  }finally{f.panel.protect();hold.resolve('{}');await tick();f.panel.dispose();}
+});

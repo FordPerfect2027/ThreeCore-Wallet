@@ -164,8 +164,10 @@ export function mountEncryptedLibraryPanel({ document, parent, readEncrypted, on
   listen(checkbox, "change", () => render(controller.state()));
   listen(file, "change", () => {
     const files = file.files;
+    // A native FileList is live: clearing the picker can empty the same list.
+    const selected = files?.length === 1 ? files[0] : null;
     file.value = "";
-    if (files?.length === 1) void controller.prepareImport(files[0]);
+    if (selected) void controller.prepareImport(selected);
     else {
       const id = generation;
       controller.cancel();
