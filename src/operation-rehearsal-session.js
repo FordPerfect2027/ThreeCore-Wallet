@@ -15,6 +15,31 @@ export function validateRehearsalSession(input){let root;try{root=captureDataRec
 }
 export function encodeRehearsalSession(input){return JSON.stringify(validateRehearsalSession(input),null,2)+"\n";}
 export function decodeRehearsalSession(text){let input;try{input=parseSecurityJson(text,{bytes:REHEARSAL_SESSION_LIMIT,depth:24,nodes:150000});}catch{fail("INVALID_SESSION_JSON");}return validateRehearsalSession(input);}
+
+/** Page-local comparison with the last offered download or restored local file.
+ * This does not prove that the browser completed a download or wrote a file.
+ * The currently selected agent is a view choice, not a changed ledger.
+ */
+export function createRehearsalSaveCheckpoint(){
+  let baseline=null,source=null;
+  const capture=input=>{
+    const data=validateRehearsalSession(input);
+    return {data,key:JSON.stringify({...data,workspace:{...data.workspace,activeAgent:"DAT"}})};
+  };
+  return Object.freeze({
+    record(input,kind){
+      if(!["download","file"].includes(kind))fail("INVALID_SAVE_CHECKPOINT");
+      const next=capture(input);baseline=next.key;source=kind;
+    },
+    inspect(input){
+      const {data,key}=capture(input),ledgers=data.workspace.ledgers.length,cases=data.cases.cases.length;
+      const state=!ledgers&&!cases?"empty":baseline===null?"unrecorded":key===baseline?"matched":"changed";
+      return Object.freeze({state,hasChanges:state==="unrecorded"||state==="changed",source,
+        ledgers,records:data.workspace.ledgers.reduce((count,item)=>count+item.events.length,0),cases});
+    },
+    clear(){baseline=null;source=null;}
+  });
+}
 export function compareRehearsalSessions(beforeInput,afterInput){const before=validateRehearsalSession(beforeInput),after=validateRehearsalSession(afterInput);
   const ids=[...new Set([...before.cases.cases,...after.cases.cases].map(item=>item.id))];
   const cases=ids.map(id=>{const old=before.cases.cases.find(row=>row.id===id)??null,next=after.cases.cases.find(row=>row.id===id)??null;

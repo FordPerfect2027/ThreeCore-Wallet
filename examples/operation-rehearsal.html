@@ -18,6 +18,7 @@
   <section aria-labelledby="session-title">
     <h2 id="session-title">履歴と比較ケースをまとめて保存・復旧</h2>
     <p>3トークンの試算履歴と全比較ケースを、一つのファイルで保存できます。個別の保存ファイルも引き続き使えます。</p>
+    <p id="session-save-state" role="status" aria-live="polite" class="notice"></p>
     <div class="actions"><button id="session-save" type="button" disabled>履歴とケース集をまとめて保存</button><label class="file-label">まとめた記録を選ぶ<input id="session-file" type="file" accept=".json,application/json"></label><button id="session-cancel" type="button">まとめ復旧の確認を取り消す</button></div>
     <p id="session-export-status" role="status" aria-live="polite" class="small"></p><p id="session-status" role="status" aria-live="polite"></p><p id="session-source" class="small"></p>
     <div id="session-review" hidden><p id="session-summary"></p><div id="session-workspace-details"></div>

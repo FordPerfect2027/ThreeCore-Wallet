@@ -20,6 +20,7 @@ export class Element extends EventTarget {
     this.append(...children);
   }
   setAttribute(name, value) { this.attributes.set(name, value); }
+  removeAttribute(name) { this.attributes.delete(name); }
   getAttribute(name) { return this.attributes.get(name); }
   remove() {
     if (this.parent) this.parent.children = this.parent.children.filter(child => child !== this);
