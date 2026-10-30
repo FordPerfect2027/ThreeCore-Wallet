@@ -1,0 +1,157 @@
+✖ malformed asynchronous registration result is consumed after listeners close (25.4934ms)
+✖ malformed asynchronous removal result is consumed after listeners close (14.7427ms)
+✖ asynchronous owner guard cannot register listeners: native (7.0478ms)
+✖ asynchronous owner guard blocks event delivery: native (6.9354ms)
+✔ asynchronous owner guard cannot register listeners: malformed (4.2153ms)
+✔ asynchronous owner guard blocks event delivery: malformed (2.0557ms)
+✖ guard that disposes its observer cannot authorize payload inspection (4.7998ms)
+✖ then accessor that closes observer cannot authorize payload inspection (1.2143ms)
+✔ provider identity returned from listener methods is never inspected as a promise (2.7917ms)
+✖ asynchronous event clock closes gate without leaking rejection: native (10.7034ms)
+✔ asynchronous event clock closes gate without leaking rejection: malformed (2.6925ms)
+✖ reentrant event clock closes both nested and outer ingress permanently (1.4633ms)
+✔ clock-result inspection cannot reopen a gate stopped during reentry (0.6206ms)
+✔ ordinary event clock still renews the bounded window (0.5574ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 6
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 375.163
+
+✖ failing tests:
+
+test at test\provider-observer-boundaries.test.js:14:47
+✖ malformed asynchronous registration result is consumed after listeners close (25.4934ms)
+  Error: private adapter failure
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:7:42)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:47:10
+      at new Promise (<anonymous>)
+      at asynchronousResult (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:46:3)
+      at observeWalletProvider (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:102:11)
+      at assert.throws.code (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:17:46)
+      at getActual (node:assert:611:5)
+      at strict.throws (node:assert:759:24)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:17:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+
+test at test\provider-observer-boundaries.test.js:14:47
+✖ malformed asynchronous removal result is consumed after listeners close (14.7427ms)
+  Error: private adapter failure
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:7:42)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:47:10
+      at new Promise (<anonymous>)
+      at asynchronousResult (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:46:3)
+      at Object.dispose (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:79:15)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:18:52)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at test\provider-observer-boundaries.test.js:23:2
+✖ asynchronous owner guard cannot register listeners: native (7.0478ms)
+  Error: private currentness rejection
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:22:56
+      at current (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:71:31)
+      at observeWalletProvider (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:83:8)
+      at assert.throws.code (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:24:39)
+      at getActual (node:assert:611:5)
+      at strict.throws (node:assert:759:24)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:24:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+
+test at test\provider-observer-boundaries.test.js:27:2
+✖ asynchronous owner guard blocks event delivery: native (6.9354ms)
+  Error: private currentness rejection
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:22:56
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:28:114
+      at current (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:71:31)
+      at listener (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-events.js:89:14)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:29:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at test\provider-observer-boundaries.test.js:32:1
+✖ guard that disposes its observer cannot authorize payload inspection (4.7998ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:36:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\provider-observer-boundaries.test.js:38:1
+✖ then accessor that closes observer cannot authorize payload inspection (1.2143ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:43:31)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\provider-observer-boundaries.test.js:50:106
+✖ asynchronous event clock closes gate without leaking rejection: native (10.7034ms)
+  Error: clock failure
+      at calls (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:50:56)
+      at now (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:51:71)
+      at Object.accept (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/provider-event-gate.js:24:18)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:52:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\provider-observer-boundaries.test.js:54:1
+✖ reentrant event clock closes both nested and outer ingress permanently (1.4633ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/provider-observer-boundaries.test.js:57:125)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
