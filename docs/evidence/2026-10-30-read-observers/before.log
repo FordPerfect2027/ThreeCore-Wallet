@@ -1,0 +1,158 @@
+✖ read observer identity-progress contains a rejecting asynchronous then method (302.757ms)
+✖ read observer transfer-progress contains a rejecting asynchronous then method (276.956ms)
+✖ read observer allowance-progress contains a rejecting asynchronous then method (292.2857ms)
+✖ read observer period-progress contains a rejecting asynchronous then method (387.5619ms)
+✖ read observer period-checkpoint contains a rejecting asynchronous then method (378.8254ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1907.7535
+
+✖ failing tests:
+
+test at test\read-observer-rejections.test.js:13:3
+✖ read observer identity-progress contains a rejecting asynchronous then method (302.757ms)
+  AssertionError [ERR_ASSERTION]: file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5
+        const observer=()=>{callbacks++;return {async then(){throw Error('synthetic observer');}};};
+                                                                   ^
+  
+  Error: synthetic observer
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5:66)
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-observer-rejections.test.js:28:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-observer-rejections.test.js:13:3
+✖ read observer transfer-progress contains a rejecting asynchronous then method (276.956ms)
+  AssertionError [ERR_ASSERTION]: file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5
+        const observer=()=>{callbacks++;return {async then(){throw Error('synthetic observer');}};};
+                                                                   ^
+  
+  Error: synthetic observer
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5:66)
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-observer-rejections.test.js:28:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-observer-rejections.test.js:13:3
+✖ read observer allowance-progress contains a rejecting asynchronous then method (292.2857ms)
+  AssertionError [ERR_ASSERTION]: file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5
+        const observer=()=>{callbacks++;return {async then(){throw Error('synthetic observer');}};};
+                                                                   ^
+  
+  Error: synthetic observer
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5:66)
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-observer-rejections.test.js:28:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-observer-rejections.test.js:13:3
+✖ read observer period-progress contains a rejecting asynchronous then method (387.5619ms)
+  AssertionError [ERR_ASSERTION]: file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5
+        const observer=()=>{callbacks++;return {async then(){throw Error('synthetic observer');}};};
+                                                                   ^
+  
+  Error: synthetic observer
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5:66)
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-observer-rejections.test.js:28:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-observer-rejections.test.js:13:3
+✖ read observer period-checkpoint contains a rejecting asynchronous then method (378.8254ms)
+  AssertionError [ERR_ASSERTION]: file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5
+        const observer=()=>{callbacks++;return {async then(){throw Error('synthetic observer');}};};
+                                                                   ^
+  
+  Error: synthetic observer
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5:66)
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-observer-rejections.test.js:28:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
