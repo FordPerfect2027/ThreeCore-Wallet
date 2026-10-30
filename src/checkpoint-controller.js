@@ -98,8 +98,10 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       if (token !== undefined && alive(token)) { active = null; publish(); }
     }
   }
-  async function verify(entry) {
-    return decodeWorkspaceFile(new TextEncoder().encode(entry.fileText), { subtle });
+  async function verify(entry, token) {
+    if (!alive(token)) checkpointFail("CHECKPOINT_CANCELLED");
+    const signal = active.aborter.signal;
+    return decodeWorkspaceFile(new TextEncoder().encode(entry.fileText), { subtle, signal });
   }
   async function freshSelection(token) {
     const original = selection();
@@ -132,14 +134,14 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       const current = await storage.read({ signal: active?.aborter.signal });
       if (!alive(token)) return;
       if (current.revision !== document.revision) checkpointFail("CHECKPOINT_STALE");
-      const prepared = await prepareCheckpointCollection(current, { subtle });
+      const prepared = await prepareCheckpointCollection(current, { subtle, signal: active.aborter.signal });
       if (alive(token)) handoff(download, prepared, "CHECKPOINT_EXPORT_REFUSED");
     }),
     reviewImport: text => operate("importReview", async token => {
       const importToken = ++importGeneration;
       importReview = null;
       ready();
-      const decoded = await decodeCheckpointCollection(text, { subtle });
+      const decoded = await decodeCheckpointCollection(text, { subtle, signal: active.aborter.signal });
       if (!alive(token)) return;
       if (importToken !== importGeneration) checkpointFail("CHECKPOINT_CANCELLED");
       const review = reviewCheckpointImport(document, decoded.entries);
@@ -157,8 +159,17 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       if (alive(token)) update(result);
     }),
     cancelImport() {
+      if (disposed) return;
       importGeneration++;
       importReview = null;
+      if (active && ["importReview", "importApply"].includes(active.action)) {
+        const previous = active, id = ++generation;
+        active = null;
+        if (previous.action === "importApply") { document = null; selectedId = null; inspected = null; }
+        previous.aborter.abort();
+        if (disposed || generation !== id) return;
+        phase = "idle"; errorCode = "CHECKPOINT_CANCELLED"; lastAction = null;
+      }
       publish();
     },
     save: label => operate("save", async token => {
@@ -166,7 +177,9 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
       const normalizedLabel = checkpointLabel(label);
       const draft = readDraft();
       const key = workspaceDraftKey(draft);
-      const prepared = await prepareWorkspaceFile(workspaceFromDraft(draft), { subtle });
+      if (!alive(token)) return;
+      const signal = active.aborter.signal;
+      const prepared = await prepareWorkspaceFile(workspaceFromDraft(draft), { subtle, signal });
       if (!alive(token)) return;
       const id = checkpointId(createId());
       const time = checkpointTime(now());
@@ -201,7 +214,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     },
     inspect: () => operate("inspect", async token => {
       const entry = await freshSelection(token);
-      const file = await verify(entry);
+      const file = await verify(entry, token);
       if (!alive(token)) return;
       inspected = { id: entry.id, digest: file.digest,
         text: "控え: " + entry.label + "\n保存日時（このPCの時刻）: " + entry.createdAt +
@@ -210,7 +223,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     stage: () => operate("stage", async token => {
       const entry = await freshSelection(token);
       if (!inspected || inspected.id !== entry.id || entry.archived) checkpointFail("CHECKPOINT_INSPECTION_REQUIRED");
-      const file = await verify(entry);
+      const file = await verify(entry, token);
       if (!alive(token)) return;
       if (file.digest !== inspected.digest) checkpointFail("CHECKPOINT_STALE");
       // Existing workspace panel still requires preview and confirmation.
@@ -218,7 +231,7 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     }),
     exportFile: () => operate("export", async token => {
       const entry = await freshSelection(token);
-      const file = await verify(entry);
+      const file = await verify(entry, token);
       if (!alive(token)) return;
       handoff(download, { text: entry.fileText, filename: "ThreeCore-checkpoint-" + entry.id + ".json",
         mimeType: "application/json;charset=utf-8", digest: file.digest }, "CHECKPOINT_EXPORT_REFUSED");
