@@ -5,7 +5,7 @@ export const RECONCILIATION_PAGE_SIZE = 25;
 export const RECONCILIATION_DIRECTIONS = Object.freeze(["all", "incoming", "outgoing", "self", "mint", "burn"]);
 
 export function validateReconciliationQuery(input) {
-  reconciliationShape(input, ["agent", "direction", "search", "page"]);
+  input = reconciliationShape(input, ["agent", "direction", "search", "page"]);
   if (input.agent !== "all") reconciliationAgent(input.agent);
   if (!RECONCILIATION_DIRECTIONS.includes(input.direction)) reconciliationFail("RECONCILIATION_QUERY");
   if (typeof input.search !== "string" || input.search.length > 160 || /[\u0000-\u001f\u007f]/.test(input.search) ||

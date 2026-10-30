@@ -6,7 +6,7 @@ export const REPORT_PAGE_SIZE = 25;
 export const REPORT_DIRECTIONS = Object.freeze(["all", "incoming", "outgoing", "self"]);
 
 export function validateReportEventQuery(input) {
-  periodShape(input, ["agent", "direction", "search", "page"]);
+  input = periodShape(input, ["agent", "direction", "search", "page"]);
   const agent = reportAgent(input.agent);
   if (!REPORT_DIRECTIONS.includes(input.direction)) periodFail("PERIOD_REPORT_DIRECTION");
   if (typeof input.search !== "string" || input.search.length > 100 ||

@@ -16,23 +16,23 @@ export function emptyReportSelection() {
 }
 
 export function validateReportSelection(input) {
-  periodShape(input, PERIOD_REPORT_AGENTS);
+  input = periodShape(input, PERIOD_REPORT_AGENTS);
   return Object.freeze(Object.fromEntries(PERIOD_REPORT_AGENTS.map(agent =>
     [agent, input[agent] === null ? null : libraryId(input[agent])])));
 }
 
 /** The portable input holds original evidence, never a trusted imported conclusion. */
 export function validatePeriodReportInput(input) {
-  periodShape(input, ["schema", "title", "createdAt", "slots", "historicalOnly", "independentlyVerified"]);
+  input = periodShape(input, ["schema", "title", "createdAt", "slots", "historicalOnly", "independentlyVerified"]);
   if (input.schema !== PERIOD_REPORT_SCHEMA || input.historicalOnly !== true ||
       input.independentlyVerified !== false) periodFail("PERIOD_REPORT_SCHEMA");
   const title = libraryLabel(input.title), createdAt = libraryTime(input.createdAt);
   if (title !== input.title) periodFail("PERIOD_REPORT_TITLE");
-  if (libraryArray(input.slots).length !== 3) periodFail("PERIOD_REPORT_SLOTS");
+  const capturedSlots = libraryArray(input.slots);
+  if (capturedSlots.length !== 3) periodFail("PERIOD_REPORT_SLOTS");
   const ids = new Set();
   const slots = PERIOD_REPORT_AGENTS.map((agent, index) => {
-    const slot = input.slots[index];
-    periodShape(slot, ["agent", "entry"]);
+    const slot = periodShape(capturedSlots[index], ["agent", "entry"]);
     if (slot.agent !== agent) periodFail("PERIOD_REPORT_SLOTS");
     const entry = slot.entry === null ? null : validateLibraryEntry(slot.entry);
     if (entry) {
