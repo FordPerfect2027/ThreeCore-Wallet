@@ -1,0 +1,7 @@
+# Keep period reviews attached to the intended operation
+
+Continuation item **205** prevents an interrupted or superseded review from reappearing. Plan and saved-checkpoint staging now capture their operands and bind completion to the initiating generation. Cancellation, disposal, a newer review or an imported draft accessor cannot publish an older result or overwrite the newer result's status. Applying a plan holds the original candidate across the context callback; it cannot apply a replacement candidate that was introduced during that callback. Missing replacement acknowledgement still retains the same review for explicit confirmation.
+
+**11 of 12 new regressions failed before** the fix. **111 targeted tests** and **231 related controller, panel, progress, recovery and library-workflow tests** pass at source `964f5da`, with no failures, skips or cancellations. [Before](evidence/2026-10-30-period-review-lifecycle/before.log), [targeted](evidence/2026-10-30-period-review-lifecycle/related.log), [integration](evidence/2026-10-30-period-review-lifecycle/integration.log), [checksums](evidence/2026-10-30-period-review-lifecycle/SHA256SUMS.txt).
+
+This is a local lifecycle regression test using synthetic callbacks. It does not assert that the user encountered those callbacks in the actual browser. No real-wallet read, signature, transfer, approval, private-key access or user-record deletion was performed. The 12,960-test full-wallet run predates this change.
