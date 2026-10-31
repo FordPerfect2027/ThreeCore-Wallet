@@ -107,7 +107,8 @@ export function mountReportSetPanel({ document, parent,
   select("check-agent", "確認箇所のトークン", [["all", "すべて"], ["DAT", "DAT"], ["EMA", "EMA"], ["CAWELON", "CAWELON"]], checkFilters);
   select("check-severity", "確認箇所の種類", [["all", "すべて"], ["conflict", "証拠の食い違い"],
     ["missing", "不足している記録"], ["review", "内容の確認"], ["information", "補足"]], checkFilters);
-  field("check-search", "確認箇所を保存名・ブロック番号で探す", "search", checkFilters).maxLength = 100;
+  field("check-search", "確認番号・保存名・資料ID・ブロック番号・ハッシュ・保存値で探す", "search", checkFilters).maxLength = 100;
+  make("p", "check-search-help", "一部の文字列でも検索できます。check-番号は、この確認セット内で使う番号です。ハッシュ・保存値は確認箇所に添えられた観測値を探します。", checks);
   make("p", "check-count", "", checks);
   const checkList = make("div", "check-list", undefined, checks);
   const detail = make("details", "details", undefined, result);
@@ -174,8 +175,9 @@ export function mountReportSetPanel({ document, parent,
         const detail = document.createElement("details");
         detail.className = "report-set-check-item";
         detail.setAttribute("data-severity", item.severity);
+        detail.setAttribute("data-check-id", item.id);
         const summary = document.createElement("summary");
-        summary.textContent = item.title + (item.agents.length ? " / " + item.agents.join("・") : "");
+        summary.textContent = item.id + " / " + item.title + (item.agents.length ? " / " + item.agents.join("・") : "");
         const body = document.createElement("pre");
         body.textContent = diagnosticText(item);
         detail.append(summary, body);

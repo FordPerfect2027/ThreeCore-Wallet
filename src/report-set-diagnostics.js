@@ -188,8 +188,9 @@ export function querySetDiagnostics(value, queryValue) {
   const items = source.items.filter(item => {
     if (query.agent !== "all" && !item.agents.includes(query.agent)) return false;
     if (query.severity !== "all" && item.severity !== query.severity) return false;
-    const search = [item.title, item.action, item.kind, ...item.reportLabels,
-      ...item.agents, item.chainId, item.account, item.fromBlock, item.toBlock]
+    const search = [item.id, item.title, item.action, item.kind, ...item.reportLabels, ...item.reportIds,
+      ...item.agents, item.chainId, item.account, item.fromBlock, item.toBlock,
+      ...item.observations.flatMap(row => [row.hash, row.value])]
       .filter(value => value !== null).join(" ").toLowerCase();
     return !query.search || search.includes(query.search);
   });

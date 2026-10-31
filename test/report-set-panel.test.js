@@ -287,3 +287,20 @@ test("filtered checklist CSV preserves source summary on zero matches and respec
     const button=f.q("checks-csv");f.dispose();button.click();assert.equal(f.files.length,2);
   }finally{f.dispose();}
 });
+
+test("visible check references can be searched and exported without changing source conclusions", async () => {
+  const f = fixture(sequenceHistory([0n, 24n]));
+  try {
+    await f.accept(); const original = f.mounted.getState().input;
+    const id = f.q("check-list").children[0].getAttribute("data-check-id");
+    assert.match(id, /^check-\d+$/); assert.match(f.q("check-search-help").textContent, /確認セット内/);
+    f.set("check-search", id.toUpperCase(), "input");
+    assert.equal(f.q("check-list").children.length, 1);
+    assert.ok(f.q("check-list").children[0].children[0].textContent.startsWith(id + " / "));
+    f.check("ack"); f.click("checks-csv"); await f.settled();
+    assert.equal(f.files[0].matched, 1); assert.equal(f.files[0].total, 3);
+    assert.equal(f.files[0].query.search, id); assert.equal(f.mounted.getState().input, original);
+    assert.equal(f.mounted.getState().result.allContinuous, false);
+    f.set("check-search", "", "input"); assert.equal(f.q("check-list").children.length, 3);
+  } finally { f.dispose(); }
+});

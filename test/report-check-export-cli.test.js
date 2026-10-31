@@ -38,6 +38,13 @@ test("help needs no file and explains unfiltered summary and privacy scope", asy
   const result = await run(["--help"]); assert.equal(result.exitCode, 0); assert.equal(result.errors, "");
   assert.match(result.output, /unfiltered summary/); assert.match(result.output, /names\/search may still contain addresses/);
 });
+
+test("an exported check reference can be located again through the offline command", async t => {
+  const file = await sourceFile(t), result = await run([file.path, "--search", "CHECK-8", "--format", "json"]);
+  assert.equal(result.exitCode, 0); const data = JSON.parse(result.output);
+  assert.equal(data.matched, 1); assert.equal(data.total, 15); assert.equal(data.query.search, "check-8");
+  assert.match(data.csv, /"check-8"/); assert.equal(data.summary.allContinuous, false);
+});
 test("standalone command reproduces all matching browser CSV bytes without changing source", async t => {
   const file = await sourceFile(t), args = [file.path, "--agent", "EMA", "--severity", "conflict"];
   const expected = reportSetDiagnosticsCSV(file.source, { agent: "EMA", severity: "conflict" }).text;

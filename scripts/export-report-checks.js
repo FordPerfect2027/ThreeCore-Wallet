@@ -10,6 +10,7 @@ import { analyzeReportSet } from "../src/report-set-engine.js";
 
 const USAGE = "Usage: node scripts/export-report-checks.js file.json [--agent all|DAT|EMA|CAWELON] [--severity all|conflict|missing|review|information] [--search text] [--format csv|json] [--include-notes] [--full-addresses] [--require-continuous]\n" +
   "Exports all matching checks plus an unfiltered summary, including on zero matches. No network or input-file writes.\n" +
+  "Literal search includes check/report IDs, recorded hashes and exact stored integer values. Check IDs are local to the selected set.\n" +
   "Unencrypted viewing output, not a restorable backup. Notes are omitted and structured addresses shortened by default; names/search may still contain addresses.\n";
 const fail = () => { throw Error("REPORT_CHECKS_CLI_ARGUMENTS"); };
 export function parseReportCheckArgs(args) {

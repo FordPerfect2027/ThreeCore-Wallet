@@ -383,4 +383,21 @@ export function registerReportSetUITests(test) {
       assert(f.q("choices").children.length === 0);
     } finally { f.dispose(); }
   });
+
+  test("report set: check references remain searchable and exportable in the native screen", async () => {
+    const f = fixture({ initial: sequenceHistory([0n, 24n]) });
+    try {
+      await f.accept(); const original = f.mounted.getState().input;
+      const id = f.q("check-list").children[0].getAttribute("data-check-id");
+      assert(/^check-\d+$/.test(id));
+      f.set("check-search", id.toUpperCase(), "input");
+      assert(f.q("check-list").children.length === 1);
+      assert(f.q("check-list").children[0].querySelector("summary").textContent.startsWith(id + " / "));
+      f.check("ack"); f.click("checks-csv"); await f.settled();
+      assert(f.files[0].matched === 1 && f.files[0].total === 3);
+      assert(f.files[0].query.search === id && f.mounted.getState().input === original);
+      assert(!f.mounted.getState().result.allContinuous);
+      f.set("check-search", "", "input"); assert(f.q("check-list").children.length === 3);
+    } finally { f.dispose(); }
+  });
 }
