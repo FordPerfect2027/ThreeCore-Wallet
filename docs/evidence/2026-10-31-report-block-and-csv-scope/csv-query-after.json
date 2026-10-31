@@ -1,0 +1,27 @@
+{
+  "source": "8e8061e010ccd50a7bf8c3879eff9ecb2f7f6334",
+  "synthetic": true,
+  "providerReads": 0,
+  "rows": [
+    {
+      "kind": "history",
+      "requestedArchive": "active",
+      "archiveAfterObserver": "all",
+      "ok": true,
+      "expectedRows": 3,
+      "deliveredRows": 3,
+      "sourceUnchanged": true,
+      "writes": 0
+    },
+    {
+      "kind": "library",
+      "requestedArchive": "active",
+      "archiveAfterObserver": "all",
+      "ok": true,
+      "expectedRows": 3,
+      "deliveredRows": 3,
+      "sourceUnchanged": true,
+      "writes": 0
+    }
+  ]
+}
