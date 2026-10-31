@@ -15,3 +15,7 @@ The standalone command `node scripts/extract-period-report-entry.js report.json 
 [Four reproducible captures](evidence/2026-10-31-original-period-entry-extraction/) retain complete DAT, partial EMA, empty CAWELON and restricted archived DAT sources and extracted files. Standalone CLI bytes exactly match the shared exporter. Each extracted entry matches its original field for field and the source stays unchanged. Synthetic library import/restore proves no storage write before import confirmation, no handoff before restore confirmation and the original requires-new-plan flag in the handoff. This development test changes only its isolated in-memory fixture.
 
 Latest full checkpoint remains 15,227 tests at 5cc20fe (item 479). No real signatures, transfers, approvals, secrets, publication, deployment or restart of the existing server occurred.
+
+## Evidence collection checkpoint
+
+At committed record feb7ad9, all 143 tracked manifests and all 1069 referenced files matched their SHA-256 checksums (64,959,806 bytes). The read-only audit is retained as `prior-evidence-audit.log`. That observation predates adding this audit log itself and regenerating this folder’s manifest; it does not authenticate authorship or current chain state. This record-only update adds no development item.
