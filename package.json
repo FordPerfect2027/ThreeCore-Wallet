@@ -58,6 +58,7 @@
     "report-set:verify-evidence": "node scripts/verify-report-set-evidence.js",
     "report-set:verify-comparison": "node scripts/verify-report-set-comparison.js",
     "report-set:compare": "node scripts/compare-report-sets.js",
-    "rehearsal:reference": "node scripts/inspect-rehearsal-reference.js"
+    "rehearsal:reference": "node scripts/inspect-rehearsal-reference.js",
+    "rehearsal:recover-workspace": "node scripts/recover-rehearsal-workspace.js"
   }
 }

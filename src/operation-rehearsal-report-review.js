@@ -1,6 +1,7 @@
 import { captureDataRecord, sha256Hex } from "./security-data.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { RehearsalError } from "./operation-rehearsal.js";
+import { encodeRehearsalWorkspace } from "./operation-rehearsal-workspace.js";
 import { reportRehearsalOverview, REHEARSAL_OVERVIEW_SCHEMA } from "./operation-rehearsal-overview.js";
 import { compareRehearsalWorkspaces, REHEARSAL_COMPARISON_SCHEMA } from "./operation-rehearsal-comparison.js";
 import { compareRehearsalScenario, REHEARSAL_SCENARIO_SCHEMA } from "./operation-rehearsal-scenario.js";
@@ -116,6 +117,21 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
 export function encodeRehearsalReviewReceipt(receipt) {
   // Receipts come only from reviewRehearsalReport; this is not an untrusted-receipt importer.
   return JSON.stringify(receipt, null, 2) + "\n";
+}
+
+const workspaceSourceSchemas = new Set([REHEARSAL_OVERVIEW_SCHEMA,REHEARSAL_RECORD_REPORT_SCHEMA,
+  REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA,REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_REFERENCE_REPORT_SCHEMA]);
+
+/** Only a fresh successful review with one unambiguous workspace can export inputs. */
+export function canExportReviewedRehearsalWorkspace(receipt) {
+  return reviewSources.has(receipt)&&receipt.matchesRecomputation===true&&receipt.checksumMatches!==false&&workspaceSourceSchemas.has(receipt.inputSchema);
+}
+
+/** Reconstruct canonical workspace JSON; do not claim original file-byte recovery. */
+export function exportReviewedRehearsalWorkspace(receipt) {
+  if(!canExportReviewedRehearsalWorkspace(receipt))fail("REVIEW_WORKSPACE_UNAVAILABLE");
+  const {recomputed}=prepareRehearsalReview(reviewSources.get(receipt),receipt.expectedSha256);
+  return encodeRehearsalWorkspace(recomputed.inputs);
 }
 
 export const REHEARSAL_REVIEW_EVIDENCE_SCHEMA = "threecore.operation-rehearsal-review-evidence.v1";

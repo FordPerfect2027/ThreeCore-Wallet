@@ -3,7 +3,7 @@ import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
-import { encodeRehearsalDifferenceQuery, encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
+import {canExportReviewedRehearsalWorkspace,exportReviewedRehearsalWorkspace, encodeRehearsalDifferenceQuery, encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
 import { REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_RECORD_REASON_LABELS, REHEARSAL_REFERENCE_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 
@@ -106,13 +106,13 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     get("checksum-file-status").textContent="";get("checksum-file-status").setAttribute("aria-busy","false");
     fileNotice.clear();get("previous").disabled=true;get("next").disabled=true;get("difference-status").textContent="";
     for(const name of ["scope", "differences", "digest", "summary", "outcome", "export-status"])get(name).textContent="";
-    for(const name of ["save","source-save","checksum-save","evidence-save"])get(name).disabled=true;
+    for(const name of ["save","source-save","checksum-save","evidence-save","workspace-save"])get(name).disabled=true;get("workspace-save").hidden=true;
     get("results").hidden=true;get("status").textContent=message;get("status").className="";get("status").setAttribute("aria-busy","false");
     previous?.abort();if(own!==revision)return null;
     checksumReader.cancel();if(own!==revision)return null;
     fileReader.cancel();return disposed||own!==revision?null:own;
   }
-  function reset(message = "保存した確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を選んでください。現在の履歴には反映しません。") {
+  function reset(message = "保存した確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録検索・操作別の資料を選んでください。現在の履歴には反映しません。") {
     sourceText = null; get("run").disabled = true;
     get("source").textContent = ""; get("file").value = ""; get("text").value = "";return invalidate(message);
   }
@@ -146,6 +146,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       const result = await reviewRehearsalReport(text, { expectedSha256, subtle, signal: ownHash.signal });
       if(disposed || own !== revision) return;
       receipt = result;setDifferenceFilters(get,true); get("results").hidden = false; for(const name of ["save","source-save","checksum-save","evidence-save"])get(name).disabled=false;
+      const recoverable=canExportReviewedRehearsalWorkspace(result);get("workspace-save").disabled=!recoverable;get("workspace-save").hidden=!recoverable;
       const matches = result.matchesRecomputation && result.checksumMatches !== false;
       const expectedDifferences = result.reportOutcome?.kind === "expected-outcomes" && !result.reportOutcome.allMatched;
       get("status").className = matches && !expectedDifferences ? "passed" : "blocked";
@@ -164,7 +165,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     } catch(error) {
       if(disposed || own !== revision) return;
       const reason = describeRehearsalFileTarget(text, "report") ?? {INVALID_EXPECTED_CHECKSUM:"照合値はSHA-256の64桁で入力してください。使える文字は0〜9とa〜fです。",
-        UNSUPPORTED_REVIEW_REPORT:"この形式には対応していません。確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を選んでください。",
+        UNSUPPORTED_REVIEW_REPORT:"この形式には対応していません。確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録検索・操作別の資料を選んでください。",
         REVIEW_HASH_UNAVAILABLE:"照合値を計算できませんでした。もう一度確認してください。",
         SCENARIO_CONTEXT_OR_EVENTS_CHANGED:"比較資料の口座・資産・元の記録が一致しないため、同じ履歴として比較できません。"}[error?.code]
         ?? "資料の形式や含まれる入力記録を確認できませんでした。2 MiB以内の保存済み資料を選んでください。";
@@ -229,6 +230,15 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       offerDownload({document,prepared:{text:encodeRehearsalReviewReceipt(receipt),filename:"ThreeCore-report-review-receipt.json",mimeType:"application/json"}});if(disposed||own!==revision)return;
       get("export-status").textContent="確認結果と照合値の控えを保存し始めました。元の資料はこの控えに含まれません。";
     } catch {if(disposed||own!==revision)return; get("export-status").textContent="控えを保存できませんでした。確認結果は保持しています。"; }
+  });
+  listen("workspace-save","click",()=>{
+    if(disposed||!receipt||get("workspace-save").disabled)return;
+    const own=revision,reviewed=receipt;
+    try{const text=exportReviewedRehearsalWorkspace(reviewed);
+      requireSyncExport(download({document,prepared:{text,filename:"ThreeCore-recovered-workspace.json",mimeType:"application/json"}}));
+      if(disposed||own!==revision||receipt!==reviewed)return;
+      get("export-status").textContent="資料に含まれる全トークンの元入力を、一括履歴JSONとして保存し始めました。現在の履歴には反映していません。読み込む場合は「保存した3トークンの履歴を戻す」で確認してください。";
+    }catch{if(!disposed&&own===revision&&receipt===reviewed)get("export-status").textContent="元入力を履歴ファイルとして保存できませんでした。元資料と現在の履歴は保持しています。";}
   });
   for(const [name,original]of [["source-save",true],["checksum-save",false]])listen(name,"click",()=>{
     if(disposed||!receipt||sourceText===null)return;

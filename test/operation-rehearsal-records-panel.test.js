@@ -149,6 +149,15 @@ test("reference exports handle a refused delivery without changing source record
   f.panel.dispose();assert.equal(f.field("reference-summary").textContent,"");assert.equal(f.field("reference-save").disabled,true);
 });
 
+test("reference CSV exports hidden related rows and is retired with an empty or closed view",()=>{
+ const f=setup();try{f.panel.refresh(workspace(rehearsalExampleV2()));f.change("search","open-one");
+  f.field("reference-csv-save").click();const file=f.downloads.pop();assert.equal(file.mimeType,"text/csv;charset=utf-8");assert.equal(file.text.trim().split("\r\n").length,3);
+  assert.match(file.text,/"settle-one"/);assert.match(f.field("export-status").textContent,/CSVは閲覧用/);
+  f.failDownload();f.field("reference-csv-save").click();assert.match(f.field("export-status").textContent,/保存できません/);
+  f.change("search","absent");assert.equal(f.field("reference-csv-save").disabled,true);
+ }finally{f.panel.dispose();assert.equal(f.field("reference-csv-save").disabled,true);}
+});
+
 test("exact reason selection differs from text search, preserves decision and exports all matches",()=>{
   const f=setup(),source=rehearsalExampleV2(),events=Array.from({length:27},(_,i)=>({...source.events[0],id:"wrong-"+i,account:"0x"+"9".repeat(40)}));
   try{f.panel.refresh(workspace({...source,events}));f.change("reason","WRONG_ACCOUNT");

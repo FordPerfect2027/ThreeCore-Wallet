@@ -89,6 +89,26 @@ function recordReportCsv(report){
   try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
 }
 
+/** Viewing-only lifecycle rows with exact repeated summary values and no implicit import. */
+export function rehearsalReferenceCsv(input,key){
+  const report=reportRehearsalReference(indexRehearsalRecords(input),key),summary=report.summary;
+  const metrics=["principalUnits","pendingPrincipalUnits","grossReturnUnits","entryFeeUnits","exitFeeUnits","totalFeeUnits","realizedPnlUnits","reservedAmountUnits","releasedAmountUnits","pendingReservedAmountUnits"];
+  const headers=["simulationOnly","sourceVerified","authorizesExecution","selectedKey","agent","chainId","account","assetAddress","assetSymbol","assetDecimals",
+    "referenceKind","referenceId","phase","openingRecordId","closingRecordId","relatedRecords","acceptedRecords","rejectedRecords",...metrics,
+    "recordNumber","recordId","eventKind","withinEnteredLimits","reasons","eventAgent","eventChainId","eventAccount","eventOrigin","eventSpender",
+    "recordPrincipalUnits","recordFeeUnits","recordGrossReturnUnits","recordAmountUnits","recordExitFeeReserveUnits",
+    ...REHEARSAL_RECORD_BALANCES.flatMap(field=>[field+"BeforeUnits",field+"AfterUnits",field+"ChangeUnits"])];
+  const lines=[headers];
+  for(const row of report.rows)lines.push([true,false,false,report.selectedKey,report.agent,report.context.chainId,report.context.account,
+    report.context.asset.address,report.context.asset.symbol,report.context.asset.decimals,report.reference.kind,report.reference.id,summary.phase,
+    summary.openingRecordId??"",summary.closingRecordId??"",report.recordCount,summary.acceptedRecords,summary.rejectedRecords,...metrics.map(name=>summary[name]??""),
+    row.recordNumber,row.event.id,row.event.kind,row.result.withinEnteredLimits,row.result.reasons.join("|"),row.event.agent,row.event.chainId,row.event.account,row.event.origin??"",row.event.spender??"",
+    ...["principal","fee","grossReturn","amount","exitFeeReserve"].map(name=>row.event[name]??""),...row.changes.flatMap(change=>[change.before,change.after,change.delta])]);
+  const cell=value=>{let text=String(value);if(/^\s*[=+@-]/u.test(text)&&!/^-[0-9]+$/.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';};
+  const text="\uFEFF"+lines.map(line=>line.map(cell).join(",")).join("\r\n")+"\r\n";
+  try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
+}
+
 export const REHEARSAL_REFERENCE_REPORT_SCHEMA = "threecore.operation-rehearsal-reference.v1";
 
 /** Recalculate one operation/reservation's accepted lifecycle in its own stored agent. */

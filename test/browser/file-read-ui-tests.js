@@ -57,6 +57,36 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("rehearsal reference CSV: includes hidden settlement and retires when the selected reference disappears",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("record-browser-search").value="open-one";q("record-browser-search").dispatchEvent(new Event("input"));
+      assert(q("record-browser-rows").children.length===1);q("record-browser-reference-csv-save").click();const file=downloads.pop();
+      assert(file.mimeType==="text/csv;charset=utf-8"&&file.text.startsWith("\uFEFF"));
+      const rows=file.text.slice(1,-2).split("\r\n").map(line=>JSON.parse("["+line+"]"));assert(rows.length===3);
+      assert(rows[2][rows[0].indexOf("recordId")]==="settle-one");assert(rows[1][rows[0].indexOf("realizedPnlUnits")]==="28000000");
+      q("record-browser-search").value="absent";q("record-browser-search").dispatchEvent(new Event("input"));assert(q("record-browser-reference-csv-save").disabled);
+      q("session-save").click();assert(downloads.pop().text===before);
+    }finally{page.dispose();host.remove();}
+  });
+  test("rehearsal reviewed workspace: extracts all original inputs without applying them to the newer live session",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const agent=value=>{q("agent").value=value;q("agent").dispatchEvent(new Event("change"));};
+    async function review(text){q("report-review-text").value=text;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();
+      const end=Date.now()+10000;while(q("report-review-status").getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q("report-review-status").getAttribute("aria-busy")==="false");}
+    try{q("example").click();agent("EMA");q("scenario").value="pending";q("example").click();
+      q("record-browser-agent").value="DAT";q("record-browser-agent").dispatchEvent(new Event("change"));q("record-browser-save").click();const report=downloads.pop().text;
+      agent("CAWELON");q("scenario").value="loss";q("example").click();q("session-save").click();const current=downloads.pop().text;
+      await review(report);assert(!q("report-review-workspace-save").disabled&&!q("report-review-workspace-save").hidden);
+      q("report-review-workspace-save").click();const recovered=JSON.parse(downloads.pop().text);assert(recovered.ledgers.length===2&&recovered.activeAgent==="EMA");
+      q("session-save").click();assert(downloads.pop().text===current,"Extracting an older workspace must not restore it automatically");
+      const altered=JSON.parse(report);altered.matchedRecords=999;await review(JSON.stringify(altered));assert(q("report-review-workspace-save").disabled&&q("report-review-workspace-save").hidden);
+    }finally{page.dispose();host.remove();}
+  });
   test("rehearsal exact reason: structured reason filters, navigation Back and independent report review preserve the original session",async()=>{
     const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
     const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];

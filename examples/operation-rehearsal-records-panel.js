@@ -1,5 +1,5 @@
 import { requireSyncExport } from "../src/export-policy.js";
-import { REHEARSAL_RECORD_REASON_LABELS,queryRehearsalReasonRecords,encodeRehearsalReasonRecordReport,rehearsalReasonRecordCsv,reportRehearsalReference,encodeRehearsalReferenceReport,indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,rehearsalRecordCsv,queryRehearsalContextRecords,encodeRehearsalContextRecordReport,rehearsalContextRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
+import { REHEARSAL_RECORD_REASON_LABELS,queryRehearsalReasonRecords,encodeRehearsalReasonRecordReport,rehearsalReasonRecordCsv,reportRehearsalReference,encodeRehearsalReferenceReport,rehearsalReferenceCsv,indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,rehearsalRecordCsv,queryRehearsalContextRecords,encodeRehearsalContextRecordReport,rehearsalContextRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
@@ -18,7 +18,7 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   const eventLabels={id:"記録ID",kind:"種類",agent:"記録上の対象",chainId:"記録上のネットワーク",account:"記録上の口座",operationId:"操作ID",reservationId:"予約ID",origin:"記録上のサイト",spender:"記録上の利用先契約",principal:"元本",fee:"費用",grossReturn:"元本を含む戻り額",amount:"金額",exitFeeReserve:"確保する決済費用"};
   const moneyFields=new Set(["principal","fee","grossReturn","amount","exitFeeReserve"]);
   function referenceDetail(item) {
-    get("reference-summary").textContent="";get("reference-summary").hidden=true;get("reference-save").disabled=true;
+    get("reference-summary").textContent="";get("reference-summary").hidden=true;get("reference-save").disabled=true;get("reference-csv-save").disabled=true;
     if(!item?.reference)return;
     const report=reportRehearsalReference(index,item.key),summary=report.summary,operation=report.reference.kind==="operation";
     const money=value=>value===null?"記録なし":formatRehearsalUnits(value,item.asset.decimals)+" "+item.asset.symbol;
@@ -31,7 +31,7 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
       "この操作の累計実現損益: "+money(summary.realizedPnlUnits)+"。未決済の評価損益は含みません。");
     else lines.push("予約した額: "+money(summary.reservedAmountUnits)+" / 取り消した額: "+money(summary.releasedAmountUnits)+" / 予約中: "+money(summary.pendingReservedAmountUnits),"予約と取消の記録です。送金や買戻しを実行した記録ではありません。");
     lines.push("同じ保存元・同じIDの全記録から再計算しています。現在の検索条件や選択した記録の時点で切り取った結果ではありません。見送られた試行を金額に計上しません。");
-    get("reference-summary").textContent=lines.join("\n");get("reference-summary").hidden=false;get("reference-save").disabled=false;
+    get("reference-summary").textContent=lines.join("\n");get("reference-summary").hidden=false;get("reference-save").disabled=false;get("reference-csv-save").disabled=false;
   }
   function detail(){const detailOwn=++detailRevision;for(const name of["detail","event","balances","related","related-status"])get(name).textContent="";
     const item=report?.rows.find(row=>row.key===selected);referenceDetail(item);if(!item)return;
@@ -66,7 +66,7 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   }
   function render(){revision++;
     for(const name of["rows","select","detail","event","balances","related","related-status","export-status"])get(name).textContent="";
-    get("reference-summary").textContent="";get("reference-summary").hidden=true;get("reference-save").disabled=true;
+    get("reference-summary").textContent="";get("reference-summary").hidden=true;get("reference-save").disabled=true;get("reference-csv-save").disabled=true;
     get("back").disabled=!backView||backView.index!==index;
     get("save").disabled=true;get("csv-save").disabled=true;get("prev").disabled=true;get("next").disabled=true;get("select").disabled=true;
     if(!index){get("status").textContent="履歴を作成または復旧すると、ここから記録を探せます。";get("scope").textContent="";return;}
@@ -124,14 +124,14 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     get("search").value="";get("search-scope").value="stored";get("reason").value="all";selected=key;offset=Math.floor(position/size)*size;
     render();if(disposed||index!==sourceIndex)return false;get("select").focus?.();return true;
   }
-  listen("reference-save","click",()=>{
-    if(disposed||!index||!report||get("reference-save").disabled)return;
+  for(const [name,format]of [["reference-save","json"],["reference-csv-save","csv"]])listen(name,"click",()=>{
+    if(disposed||!index||!report||get(name).disabled)return;
     const item=report.rows.find(row=>row.key===selected);if(!item?.reference)return;
     const own=revision,detailOwn=detailRevision,source=index;
-    try{const text=encodeRehearsalReferenceReport(source.inputs,item.key);
-      offerDownload({document,prepared:{text,filename:"ThreeCore-reference-lifecycle.json",mimeType:"application/json"}});
+    try{const text=(format==="csv"?rehearsalReferenceCsv:encodeRehearsalReferenceReport)(source.inputs,item.key);
+      offerDownload({document,prepared:{text,filename:"ThreeCore-reference-lifecycle."+format,mimeType:format==="csv"?"text/csv;charset=utf-8":"application/json"}});
       if(disposed||own!==revision||detailOwn!==detailRevision||source!==index)return;
-      get("export-status").textContent="この操作・予約の全関連記録と、再計算に必要な元入力の保存を開始しました。資料の再確認欄で確認できます。";
+      get("export-status").textContent=format==="csv"?"この操作・予約の全関連記録と集計のCSV保存を開始しました。CSVは閲覧用です。元入力を再計算する資料にはJSONを使ってください。":"この操作・予約の全関連記録と、再計算に必要な元入力の保存を開始しました。資料の再確認欄で確認できます。";
     }catch{if(!disposed&&own===revision&&detailOwn===detailRevision&&source===index)get("export-status").textContent="関連記録の資料を保存できませんでした。元の履歴と表示は保持しています。";}
   });
   function refresh(input) {

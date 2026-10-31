@@ -13,6 +13,22 @@ function setup(options={}){const elements=new Map(),downloads=[];let action=()=>
  return{q,panel,edit,downloads,document,downloadAction:fn=>{action=fn;},paste:text=>{edit('text',text);q('paste').click();}};
 }
 async function finished(f){const end=Date.now()+5000;while(f.q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await new Promise(resolve=>setTimeout(resolve,5));assert.equal(f.q('status').getAttribute('aria-busy'),'false');}
+
+test('reviewed workspace export reconstructs full inputs while preserving original report export',async()=>{
+ const f=setup();try{f.paste(source);await finished(f);assert.equal(f.q('workspace-save').disabled,false);assert.equal(f.q('workspace-save').hidden,false);
+  f.q('workspace-save').click();assert.equal(f.downloads[0].filename,'ThreeCore-recovered-workspace.json');assert.deepEqual(JSON.parse(f.downloads[0].text),JSON.parse(source).inputs);
+  assert.match(f.q('export-status').textContent,/現在の履歴には反映していません/);f.q('source-save').click();assert.equal(f.downloads[1].text,source);
+  f.edit('expected','0'.repeat(64));assert.equal(f.q('workspace-save').disabled,true);f.q('run').click();await finished(f);
+  assert.equal(f.q('workspace-save').disabled,true);assert.equal(f.q('workspace-save').hidden,true);f.q('workspace-save').dispatchEvent(new Event('click'));assert.equal(f.downloads.length,2);
+ }finally{f.panel.dispose();}
+});
+
+test('workspace export handles a refused save and cannot overwrite a newly cleared view',async()=>{
+ const f=setup();try{f.paste(source);await finished(f);f.downloadAction(()=>false);f.q('workspace-save').click();
+  assert.match(f.q('export-status').textContent,/保存できません/);assert.equal(f.q('workspace-save').disabled,false);
+  f.downloadAction(()=>f.q('clear').click());f.q('workspace-save').click();assert.equal(f.q('export-status').textContent,'');assert.equal(f.q('workspace-save').disabled,true);
+ }finally{f.panel.dispose();}
+});
 test('source, checksum and receipt downloads describe exactly the reviewed text including whitespace',async()=>{const f=setup();try{f.paste(source);await finished(f);f.q('source-save').click();f.q('checksum-save').click();f.q('save').click();const [original,digest,receipt]=f.downloads;
  assert.equal(original.text,source);assert.equal(original.filename,'ThreeCore-reviewed-report.json');assert.equal(original.mimeType,'application/json');assert.equal(digest.text,hash(source)+'\n');assert.equal(digest.mimeType,'text/plain');const data=JSON.parse(receipt.text);assert.equal(data.sha256,hash(original.text));assert.equal(data.byteLength,Buffer.byteLength(original.text));assert.equal(data.matchesRecomputation,true);
  }finally{f.panel.dispose();}});

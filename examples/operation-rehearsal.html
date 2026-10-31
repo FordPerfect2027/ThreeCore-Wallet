@@ -27,12 +27,14 @@
         <tr><td>1トークンの入力記録<br>ThreeCore-DAT-operation-rehearsal.json</td><td>保存した対象の試算を表示。EMA・CAWELONも同じ欄です。</td><td><a href="#record-save-title" data-rehearsal-target="record-save-title">記録を保存・再確認</a></td></tr>
         <tr><td>比較ケース集<br>ThreeCore-scenario-set.json</td><td>名前付きの比較ケースを復旧</td><td><a href="#scenario-set-title" data-rehearsal-target="scenario-set-title">比較ケース</a></td></tr>
         <tr><td>期待結果<br>ThreeCore-expected-outcomes.json</td><td>保存時の期待結果と再計算を比較</td><td><a href="#check-suite-title" data-rehearsal-target="check-suite-title">期待結果の確認</a></td></tr>
-        <tr><td>確認一覧・比較・検索の資料<br>例：ThreeCore-workspace-overview.json</td><td>資料を再計算して確認。履歴の復旧には使いません。</td><td><a href="#report-review-title" data-rehearsal-target="report-review-title">資料の再確認</a></td></tr>
+        <tr><td>確認一覧・比較・検索・操作別の資料<br>例：ThreeCore-workspace-overview.json</td><td>資料を再計算して確認。対応資料からは、元入力を別の履歴JSONとして取り出せます。</td><td><a href="#report-review-title" data-rehearsal-target="report-review-title">資料の再確認</a></td></tr>
+        <tr><td>確認済み資料から取り出した一括履歴<br>ThreeCore-recovered-workspace.json</td><td>資料に含まれていた全トークンの元入力です。読み込む内容と現在の履歴との差を確認してから復旧します。</td><td><a href="#workspace-title" data-rehearsal-target="workspace-title">履歴の保存・復旧</a></td></tr>
         <tr><td>資料の確認結果の控え<br>ThreeCore-report-review-receipt.json</td><td>確認結果を保管。再確認には控えと一緒に保存した元の資料を使います。</td><td>元の資料は<a href="#report-review-title" data-rehearsal-target="report-review-title">資料の再確認</a>へ</td></tr>
         <tr><td>元資料と確認結果をまとめた証拠<br>ThreeCore-review-evidence.json</td><td>元資料と控えを再計算して確認。現在の履歴には反映しません。</td><td><a href="#report-evidence-title" data-rehearsal-target="report-evidence-title">証拠の再確認</a></td></tr>
         <tr><td>証拠の再確認結果<br>ThreeCore-evidence-verification.json</td><td>今回の再確認結果を保管。再確認には元の証拠ファイルを使います。</td><td>元の証拠は<a href="#report-evidence-title" data-rehearsal-target="report-evidence-title">証拠の再確認</a>へ</td></tr>
         <tr><td>計算の流れのCSV<br>ThreeCore-DAT-rehearsal-ledger.csv</td><td>表計算ソフトなどで読むための資料。復旧にはJSONファイルを使います。</td><td>この画面への読み込み対象外</td></tr>
         <tr><td>検索に一致する全記録のCSV<br>ThreeCore-record-query.csv</td><td>表計算ソフトで閲覧。元入力や未作成対象の情報を含む資料には検索結果JSONを使います。</td><td>この画面への読み込み対象外</td></tr>
+        <tr><td>選んだ操作・予約の全関連記録のCSV<br>ThreeCore-reference-lifecycle.csv</td><td>全関連記録と費用・損益などの集計を表計算ソフトで閲覧。再計算には同じ操作のJSON資料を使います。</td><td>この画面への読み込み対象外</td></tr>
       </tbody>
     </table></div>
   </details>
@@ -211,7 +213,7 @@
     <label>詳しく見る記録<select id="record-browser-select" disabled></select></label><p id="record-browser-detail" class="small"></p>
     <div class="table-wrap"><table><caption>選択した記録に含まれる入力</caption><thead><tr><th>項目</th><th>記録された値</th></tr></thead><tbody id="record-browser-event"></tbody></table></div>
     <div class="table-wrap"><table><caption>この記録を評価した前後の金額</caption><thead><tr><th>項目</th><th>直前</th><th>評価後</th><th>差額</th></tr></thead><tbody id="record-browser-balances"></tbody></table></div>
-    <pre id="record-browser-reference-summary" class="rehearsal-difference-detail small" tabindex="0" aria-label="選んだ操作・予約の全関連記録の集計" hidden></pre><button id="record-browser-reference-save" type="button" disabled>この操作・予約の資料を保存</button>
+    <pre id="record-browser-reference-summary" class="rehearsal-difference-detail small" tabindex="0" aria-label="選んだ操作・予約の全関連記録の集計" hidden></pre><button id="record-browser-reference-save" type="button" disabled>この操作・予約の資料を保存</button> <button id="record-browser-reference-csv-save" type="button" disabled aria-describedby="record-browser-csv-note">この操作・予約の全記録をCSV保存</button>
     <p id="record-browser-related-status" class="small"></p><div class="table-wrap"><table><caption>同じ保存元の関連する記録</caption><thead><tr><th>順番・ID</th><th>種類</th><th>条件判定</th><th>詳細への移動</th></tr></thead><tbody id="record-browser-related"></tbody></table></div>
     <button id="record-browser-save" type="button" disabled>検索結果と元入力を保存</button> <button id="record-browser-csv-save" type="button" disabled aria-describedby="record-browser-csv-note">全一致記録をCSV保存</button><p id="record-browser-csv-note" class="small">CSVは表計算ソフトで読むための資料です。金額は最小単位の文字列です。桁数を保つには、表計算ソフトへの取り込みで全列を文字列に指定してください。履歴の復旧や資料の再確認にはJSONを使います。</p><p id="record-browser-export-status" class="small" role="status" aria-live="polite"></p>
   </section>
@@ -293,6 +295,8 @@
       <button id="report-review-difference-save" type="button" disabled>選んだ相違の値を省略せず保存</button>
     </div>
     <div class="actions"><button id="report-review-save" type="button" disabled>資料の確認結果を保存</button>
+    <button id="report-review-workspace-save" type="button" disabled hidden>資料内の元入力を一括履歴JSONとして取り出す</button>
+    <p class="small">再計算が一致した確認一覧・記録検索・操作の資料から、その資料に含まれる全トークンの元入力を保存できます。元ファイルの書式を再現する機能ではなく、現在の履歴への取り込みも行いません。</p>
     <button id="report-review-source-save" type="button" disabled>確認した元資料を保存</button>
     <button id="report-review-checksum-save" type="button" disabled>照合値をテキスト保存</button>
     <button id="report-review-evidence-save" type="button" disabled>元資料と確認結果をまとめて保存</button></div>
