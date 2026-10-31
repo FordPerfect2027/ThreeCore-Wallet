@@ -195,7 +195,9 @@ const walletSavedTargets = Object.freeze({
   "threecore.wallet-saved-browser-batch.v4": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-batch-inspection.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.saved-file-comparison-bundle.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_ONLY"],
+  "threecore.saved-file-comparison-bundle.v2": [null, "PERIOD_FILE_SAVED_BUNDLE_ONLY"],
   "threecore.saved-file-comparison-bundle-review.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY"],
+  "threecore.saved-file-comparison-bundle-review.v2": [null, "PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY"],
   "threecore.saved-file-comparison-review.v1": [null, "PERIOD_FILE_SAVED_REVIEW_ONLY"],
   "threecore.saved-file-comparison-review.v2": [null, "PERIOD_FILE_SAVED_REVIEW_ONLY"],
   "threecore.saved-file-comparison.v1": [null, "PERIOD_FILE_SAVED_COMPARISON_ONLY"],
@@ -747,6 +749,7 @@ export function walletSavedComparisonReviewText(value) {
 export const WALLET_SAVED_BUNDLE_SOURCE_LIMIT = 24 * 1024 * 1024;
 export const WALLET_SAVED_BUNDLE_LIMIT = 48 * 1024 * 1024;
 const savedBundleSources = new WeakMap();
+const savedBundleReviews = new WeakSet();
 function savedBundleOptions(value) {
   try { return captureOptionalDataFields(value, ["subtle", "signal", "timeoutMs"]); }
   catch { savedInspectionFail("FILE_BUNDLE_OPTIONS"); }
@@ -766,18 +769,29 @@ function checkSavedBundleAbort(options) {
 
 /** Keep exact original UTF-8 text, including formatting, with a reproducible comparison. */
 export async function prepareWalletSavedBundle(beforeText, afterText, fileOptions = {}) {
+  return prepareSavedBundleSources(beforeText, afterText, fileOptions, false);
+}
+
+/** Also preserve validated plain sources without claiming internal-checksum verification. */
+export async function prepareWalletSavedSourceBundle(beforeText, afterText, fileOptions = {}) {
+  return prepareSavedBundleSources(beforeText, afterText, fileOptions, true);
+}
+
+async function prepareSavedBundleSources(beforeText, afterText, fileOptions, allowPlain) {
   const options = savedBundleOptions(fileOptions); checkSavedBundleAbort(options); boundedSavedPair(beforeText, afterText);
   const before = await inspectWalletSavedText(beforeText, options); checkSavedBundleAbort(options);
   const after = await inspectWalletSavedText(afterText, options); checkSavedBundleAbort(options);
-  if (before.validation !== "validated-original" || after.validation !== "validated-original") savedInspectionFail("FILE_BUNDLE_ORIGINALS_REQUIRED");
-  const comparison = compareWalletSavedInspections(before, after);
-  const text = JSON.stringify({ schema: "threecore.saved-file-comparison-bundle.v1", beforeFileText: beforeText,
+  const originals = before.validation === "validated-original" && after.validation === "validated-original";
+  if (!originals && (!allowPlain || ![before, after].every(value => ["validated-original", "validated-structure"].includes(value.validation)))) savedInspectionFail("FILE_BUNDLE_ORIGINALS_REQUIRED");
+  const comparison = originals ? compareWalletSavedInspections(before, after) : compareWalletSavedTextInspections(before, after);
+  const text = JSON.stringify({ schema: originals ? "threecore.saved-file-comparison-bundle.v1" : "threecore.saved-file-comparison-bundle.v2", beforeFileText: beforeText,
     afterFileText: afterText, comparisonText: JSON.stringify(comparison, null, 2) + "\n",
     authenticated: false, encrypted: false, authorizesExecution: false }) + "\n";
   try { boundedUtf8Length(text, WALLET_SAVED_BUNDLE_LIMIT); } catch { savedInspectionFail("FILE_BUNDLE_SIZE"); }
   checkSavedBundleAbort(options);
   return Object.freeze({ text, filename: "ThreeCore-saved-file-comparison-bundle.json", mimeType: "application/json;charset=utf-8",
-    comparison, sourceTextPreserved: true, containsOriginalEvidence: true, authenticated: false, encrypted: false, authorizesExecution: false });
+    comparison, sourceTextPreserved: true, containsOriginalEvidence: true, authenticated: false, encrypted: false, authorizesExecution: false,
+    ...(!originals ? { sourcePairValidated: true, originalPairValidated: false } : {}) });
 }
 
 /** Validate both originals and compare the supplied result with a fresh computation. */
@@ -788,22 +802,34 @@ export async function reviewWalletSavedBundle(text, fileOptions = {}) {
   catch { savedInspectionFail("FILE_BUNDLE_JSON"); }
   if (!bundle || typeof bundle !== "object" || Array.isArray(bundle) ||
       Object.keys(bundle).sort().join(",") !== "afterFileText,authenticated,authorizesExecution,beforeFileText,comparisonText,encrypted,schema" ||
-      bundle.schema !== "threecore.saved-file-comparison-bundle.v1" || bundle.authenticated !== false || bundle.encrypted !== false || bundle.authorizesExecution !== false) savedInspectionFail("FILE_BUNDLE_SCHEMA");
+      !["threecore.saved-file-comparison-bundle.v1", "threecore.saved-file-comparison-bundle.v2"].includes(bundle.schema) || bundle.authenticated !== false || bundle.encrypted !== false || bundle.authorizesExecution !== false) savedInspectionFail("FILE_BUNDLE_SCHEMA");
   boundedSavedPair(bundle.beforeFileText, bundle.afterFileText);
   const before = await inspectWalletSavedText(bundle.beforeFileText, options); checkSavedBundleAbort(options);
   const after = await inspectWalletSavedText(bundle.afterFileText, options); checkSavedBundleAbort(options);
-  if (before.validation !== "validated-original" || after.validation !== "validated-original") savedInspectionFail("FILE_BUNDLE_ORIGINALS_REQUIRED");
-  const comparison = compareWalletSavedInspections(before, after);
+  const originals = before.validation === "validated-original" && after.validation === "validated-original", plainBundle = bundle.schema === "threecore.saved-file-comparison-bundle.v2";
+  if (!originals && (!plainBundle || ![before, after].every(value => ["validated-original", "validated-structure"].includes(value.validation)))) savedInspectionFail("FILE_BUNDLE_ORIGINALS_REQUIRED");
+  if (plainBundle && originals) savedInspectionFail("FILE_BUNDLE_SCHEMA");
+  const comparison = originals ? compareWalletSavedInspections(before, after) : compareWalletSavedTextInspections(before, after);
   const comparisonReview = await reviewWalletSavedComparison(before, after, bundle.comparisonText, options);
+  const comparisonVersionMatches = plainBundle ? comparisonReview.sourceTextComparisonReviewed === true : comparisonReview.sourceTextComparisonReviewed !== true;
+  const matches = comparisonVersionMatches && comparisonReview.matchesRecomputation;
   const bundleTextDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, options); checkSavedBundleAbort(options);
-  const result = Object.freeze({ schema: "threecore.saved-file-comparison-bundle-review.v1", bundleTextDigest,
-    before, after, comparison, comparisonReview, originalsValidated: true,
-    comparisonMatchesRecomputation: comparisonReview.matchesRecomputation,
-    originalsAvailable: comparisonReview.matchesRecomputation,
+  const result = Object.freeze({ schema: plainBundle ? "threecore.saved-file-comparison-bundle-review.v2" : "threecore.saved-file-comparison-bundle-review.v1", bundleTextDigest,
+    before, after, comparison, comparisonReview, originalsValidated: originals,
+    comparisonMatchesRecomputation: matches,
+    originalsAvailable: originals && matches,
+    ...(plainBundle ? { sourcePairValidated: true, originalPairValidated: false, sourceFilesAvailable: matches, comparisonVersionMatches } : {}),
     containsOriginalEvidence: false, restorable: false, automaticallyImported: false,
     liveChainRechecked: false, authenticated: false, authorizesExecution: false });
-  if (result.originalsAvailable) savedBundleSources.set(result, Object.freeze({ before: bundle.beforeFileText, after: bundle.afterFileText }));
+  if (result.originalsAvailable || result.sourceFilesAvailable) savedBundleSources.set(result, Object.freeze({ before: bundle.beforeFileText, after: bundle.afterFileText }));
+  savedBundleReviews.add(result);
   return result;
+}
+
+/** A verification receipt excludes the embedded original file text. */
+export function encodeWalletSavedBundleReview(receipt) {
+  if (!savedBundleReviews.has(receipt)) savedInspectionFail("FILE_BUNDLE_REVIEW_RESULT");
+  return JSON.stringify(receipt, null, 2) + "\n";
 }
 
 /** Only a completed faithful review owned by this module can yield embedded source text. */
@@ -811,13 +837,16 @@ export function walletSavedBundleSourceFile(receipt, role) {
   if (!["before", "after"].includes(role) || !savedBundleSources.has(receipt)) savedInspectionFail("FILE_BUNDLE_SOURCE");
   return Object.freeze({ text: savedBundleSources.get(receipt)[role], filename: "ThreeCore-comparison-" + role + "-original.json",
     mimeType: "application/json;charset=utf-8", containsOriginalEvidence: true, sourceTextPreserved: true,
-    authenticated: false, encrypted: false, automaticallyImported: false, authorizesExecution: false });
+    authenticated: false, encrypted: false, automaticallyImported: false, authorizesExecution: false,
+    ...(receipt.schema === "threecore.saved-file-comparison-bundle-review.v2" ? { validation: receipt[role].validation,
+      internalChecksumVerified: receipt[role].checksumVerified, simulationOnly: receipt[role].simulationOnly === true } : {}) });
 }
 
 export function walletSavedBundleReviewText(value) {
   if (!value) return "";
   return ["まとめた資料の比較元: " + value.before.title + " / 比較先: " + value.after.title,
-    "両方の元記録の形式とチェックサムを確認しました。",
+    value.originalsValidated ? "両方の元記録の形式とチェックサムを確認しました。" : "両方の元ファイルの形式を確認しました。内部チェックサムのない設定・残高記録・練習用記録を含みます。元JSONの文字列の照合値を使い、出所を認証する確認ではありません。",
+    value.comparisonVersionMatches === false ? "保存された比較結果の版が、この資料に必要な版と一致しません。" : "",
     value.comparisonMatchesRecomputation ? "保存された比較結果は再計算と一致しています。元記録を取り出せます。" :
       "保存された比較結果に不一致があるため、この資料から元記録を取り出す操作はできません。",
     walletSavedComparisonText(value.comparison), walletSavedComparisonReviewText(value.comparisonReview),

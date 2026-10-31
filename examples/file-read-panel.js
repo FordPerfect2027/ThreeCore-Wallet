@@ -1,12 +1,13 @@
 import { offerWalletDownload } from "./export-download.js";
 import { readSecurityFileBytes, readFormatFileName } from "../src/security-file.js";
-import { prepareWalletSavedBundle, reviewWalletSavedBundle, walletSavedBundleSourceFile, walletSavedBundleReviewText, WALLET_SAVED_BUNDLE_LIMIT, WALLET_SAVED_BUNDLE_SOURCE_LIMIT, inspectWalletSavedText, walletSavedComparisonText, reviewWalletSavedComparison, walletSavedComparisonReviewText, WALLET_SAVED_COMPARISON_REVIEW_LIMIT, walletSavedInspectionText, walletSavedInspectionErrorText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
+import { prepareWalletSavedSourceBundle, reviewWalletSavedBundle, walletSavedBundleSourceFile, walletSavedBundleReviewText, WALLET_SAVED_BUNDLE_LIMIT, WALLET_SAVED_BUNDLE_SOURCE_LIMIT, inspectWalletSavedText, walletSavedComparisonText, reviewWalletSavedComparison, walletSavedComparisonReviewText, WALLET_SAVED_COMPARISON_REVIEW_LIMIT, walletSavedInspectionText, walletSavedInspectionErrorText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
 import { walletFileReadService } from "../src/file-read-service.js";
 import { describeFileReadStatus, describeFileReadError } from "../src/file-read-status.js";
 import { compareWalletSavedTextInspections } from "../src/file-read-status.js";
 import { inspectWalletSavedTextDifferences, encodeWalletSavedTextDifferences, WALLET_SAVED_DIFFERENCE_SOURCE_LIMIT } from "../src/file-read-status.js";
 import { reviewWalletSavedTextDifferences, encodeWalletSavedTextDifferenceReview, walletSavedTextDifferenceReviewText, WALLET_SAVED_DIFFERENCE_REVIEW_LIMIT } from "../src/file-read-status.js";
 import { queryWalletSavedTextDifferences, walletSavedTextDifferencePageText, encodeWalletSavedTextDifferencePage } from "../src/file-read-status.js";
+import { encodeWalletSavedBundleReview } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -720,29 +721,34 @@ export function mountSavedComparisonBundlePanel({ document, parent, getPair = ()
   function checkbox(name, text) { const label = node("label", name + "-label", text), field = node("input", name, undefined, label); field.type = "checkbox"; return field; }
   function button(name, text) { const value = node("button", name, text); value.type = "button"; return value; }
   node("summary", "heading", "比較と両方の元資料を、一つのJSONで保全する");
-  node("p", "intro", "上で比較した両方の元のJSONを、そのままの文字列でまとめます。元資料の合計は24 MiBまでです。大きい場合は2つの元ファイルを別々に保全してください。補助資料だけの比較はまとめられません。");
+  node("p", "intro", "上で比較した両方の元のJSONを、そのままの文字列でまとめます。形式を確認した設定・残高記録・練習用記録にも対応します。内部チェックサムの有無は区別して記録します。元資料の合計は24 MiBまで。大きい場合は2つを別々に保全してください。補助資料だけの比較はまとめられません。");
   const exportAck = checkbox("export-ack", "両方の元資料のアドレス・残高・履歴・メモを、暗号化せず一つのJSONに保存します");
   const exportButton = button("export", "比較と両方の元資料をまとめてJSON保存");
   node("h4", "open-heading", "まとめた資料を読み取り専用で確認する");
   const fileLabel = node("label", "file-label", "まとめた比較資料のJSON（最大48 MiB）"), file = node("input", "file", undefined, fileLabel); file.type = "file"; file.accept = ".json,application/json";
   const stop = button("stop", "まとめた資料の処理を中止"), status = node("p", "status", "元資料の取込みや接続は行いません。"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const notice = node("p", "notice"), output = node("pre", "output", ""), selectionNotice = createFileSelectionNotice(file, notice);
+  const reviewAck = checkbox("review-ack", "元ファイルの内容を含まない照合結果と照合値を、暗号化せずPCに保存します");
+  const reviewSave = button("review-save", "照合結果だけをJSON保存");
+  node("p", "review-scope", "この控えに元ファイルのアドレス・残高・メモ本文は含まれません。形式・件数・照合値・不一致の判定を記録します。再確認には、元のまとめた資料を別に保管してください。");
   const sourceAck = checkbox("source-ack", "確認済み資料から、元のアドレス・残高・履歴・メモを含むファイルを暗号化せず取り出します");
   const before = button("before", "比較元の元ファイルを取り出す"), after = button("after", "比較先の元ファイルを取り出す");
   node("p", "limits", "再計算と一致する資料だけから取り出せます。元ファイルの形式・制限を保ち、ウォレットへの接続や復元は自動で行いません。");
   const current = () => { try { return getPair(); } catch { return null; } };
-  const usable = pair => Boolean(pair?.comparison?.before?.validation === "validated-original" && pair?.comparison?.after?.validation === "validated-original" && pair.beforeFile && pair.afterFile);
+  const usable = pair => Boolean(["validated-original", "validated-structure"].includes(pair?.comparison?.before?.validation) && ["validated-original", "validated-structure"].includes(pair?.comparison?.after?.validation) && pair.beforeFile && pair.afterFile);
+  const sourcesAvailable = value => Boolean(value?.sourceFilesAvailable ?? value?.originalsAvailable);
   function render() {
     if (disposed) return;
     const pair = current(); host.setAttribute("aria-busy", String(busy));
     exportAck.disabled = busy || !usable(pair); exportButton.disabled = busy || !usable(pair) || !exportAck.checked;
-    file.disabled = busy; stop.disabled = !busy; sourceAck.disabled = busy || !receipt?.originalsAvailable;
-    before.disabled = after.disabled = busy || !receipt?.originalsAvailable || !sourceAck.checked;
+    file.disabled = busy; stop.disabled = !busy; sourceAck.disabled = busy || !sourcesAvailable(receipt);
+    before.disabled = after.disabled = busy || !sourcesAvailable(receipt) || !sourceAck.checked;
+    reviewAck.disabled = busy || !receipt; reviewSave.disabled = busy || !receipt || !reviewAck.checked;
     output.textContent = walletSavedBundleReviewText(receipt);
   }
   function cancel() {
     if (disposed) return;
-    const own = ++generation, previous = aborter; aborter = null; busy = false; workKind = null; exportAck.checked = false; sourceAck.checked = false;
+    const own = ++generation, previous = aborter; aborter = null; busy = false; workKind = null; exportAck.checked = false; sourceAck.checked = false; reviewAck.checked = false;
     previous?.abort(); if (disposed || generation !== own) return;
     status.textContent = "処理を中止しました。元のファイルは変更していません。"; render();
   }
@@ -768,7 +774,7 @@ export function mountSavedComparisonBundlePanel({ document, parent, getPair = ()
       if (sizes.some(size => !Number.isSafeInteger(size) || size < 1) || sizes[0] + sizes[1] > WALLET_SAVED_BUNDLE_SOURCE_LIMIT) failCode("FILE_BUNDLE_SIZE");
       const beforeText = await readText(captured.beforeFile, { maxBytes: WALLET_SAVED_BUNDLE_SOURCE_LIMIT, signal: local.signal }); if (!unchanged()) return;
       const afterText = await readText(captured.afterFile, { maxBytes: WALLET_SAVED_BUNDLE_SOURCE_LIMIT, signal: local.signal }); if (!unchanged()) return;
-      const prepared = await prepareWalletSavedBundle(beforeText, afterText, { signal: local.signal }); if (!unchanged()) return;
+      const prepared = await prepareWalletSavedSourceBundle(beforeText, afterText, { signal: local.signal }); if (!unchanged()) return;
       if (prepared.comparison.before.textDigest !== captured.comparison.before.textDigest || prepared.comparison.after.textDigest !== captured.comparison.after.textDigest) failCode("FILE_BUNDLE_SOURCE_CHANGED");
       const delivery = download(prepared), kind = observeCallbackResult(delivery); if (!unchanged()) return;
       status.textContent = kind === "synchronous" && delivery !== false ? "両方の元資料を含むJSONの保存処理を開始しました。ダウンロード先をご確認ください。" : "まとめた資料の保存を確認できませんでした。";
@@ -778,19 +784,19 @@ export function mountSavedComparisonBundlePanel({ document, parent, getPair = ()
   async function openBundle() {
     if (disposed || busy) return;
     const chosen = file.files?.[0]; file.value = ""; if (!chosen) { selectionNotice.noSelection(); return; }
-    const own = ++generation, local = new AbortController(); aborter = local; busy = true; workKind = "review"; receipt = null; sourceAck.checked = false; selectionNotice.clear();
+    const own = ++generation, local = new AbortController(); aborter = local; busy = true; workKind = "review"; receipt = null; sourceAck.checked = false; reviewAck.checked = false; selectionNotice.clear();
     status.textContent = "まとめた資料の両方の元記録と比較結果を確認しています。"; render();
     try {
       named(chosen); if (!same(own)) return;
       const text = await readText(chosen, { maxBytes: WALLET_SAVED_BUNDLE_LIMIT, signal: local.signal }); if (!same(own)) return;
       const checked = await reviewWalletSavedBundle(text, { signal: local.signal }); if (!same(own)) return;
       receipt = checked;
-      status.textContent = checked.originalsAvailable ? "両方の元記録と比較結果を確認しました。内容を確認してから元ファイルを取り出せます。" : "元記録は検証できましたが、比較結果に不一致があります。取り出しは行っていません。";
+      status.textContent = sourcesAvailable(checked) ? "両方の元ファイルの形式と比較結果を確認しました。内部チェックサムの有無を下の表示で確認してから取り出せます。" : "元ファイルの形式は確認できましたが、比較結果に不一致があります。取り出しは行っていません。";
     } catch (error) { if (same(own)) status.textContent = walletSavedInspectionErrorText(error); }
     finally { if (same(own)) { aborter = null; busy = false; workKind = null; render(); } }
   }
   function extract(role) {
-    if (disposed || busy || !receipt?.originalsAvailable || !sourceAck.checked) return;
+    if (disposed || busy || !sourcesAvailable(receipt) || !sourceAck.checked) return;
     const own = ++generation, captured = receipt; sourceAck.checked = false; render();
     try {
       const prepared = walletSavedBundleSourceFile(captured, role), delivery = download(prepared), kind = observeCallbackResult(delivery);
@@ -798,9 +804,19 @@ export function mountSavedComparisonBundlePanel({ document, parent, getPair = ()
       status.textContent = kind === "synchronous" && delivery !== false ? "元のJSONの保存処理を開始しました。各形式の読込み欄で確認してください。" : "元ファイルの取り出しを確認できませんでした。";
     } catch (error) { if (same(own)) status.textContent = walletSavedInspectionErrorText(error); }
   }
+  function saveReview() {
+    if (disposed || busy || !receipt || !reviewAck.checked) return;
+    const own = generation, captured = receipt; reviewAck.checked = false; render();
+    try { const prepared = Object.freeze({ text: encodeWalletSavedBundleReview(captured), filename: "ThreeCore-saved-file-comparison-bundle-review.json",
+      mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false, authenticated: false, encrypted: false }), delivery = download(prepared), kind = observeCallbackResult(delivery);
+      if (!same(own) || receipt !== captured) return;
+      status.textContent = kind === "synchronous" && delivery !== false ? "元ファイルの内容を含まない照合結果の保存処理を開始しました。ダウンロード先をご確認ください。" : "照合結果の保存を確認できませんでした。";
+    } catch { if (same(own) && receipt === captured) status.textContent = "照合結果の保存を確認できませんでした。"; }
+  }
   function listen(element, event, action) { element.addEventListener(event, action); cleanup.push(() => element.removeEventListener(event, action)); }
   listen(exportAck, "change", render); listen(exportButton, "click", () => { void exportPair(); });
   listen(file, "change", () => { void openBundle(); }); listen(stop, "click", cancel); listen(sourceAck, "change", render);
+  listen(reviewAck, "change", render); listen(reviewSave, "click", saveReview);
   listen(before, "click", () => extract("before")); listen(after, "click", () => extract("after")); updatePair();
   return Object.freeze({ updatePair, getState: () => Object.freeze({ busy, receipt, disposed }), dispose() {
     if (disposed) return; disposed = true; generation++; const previous = aborter; aborter = null; busy = false; receipt = null;
