@@ -1,0 +1,13 @@
+# Preserve completed batch checks across unreadable and stalled files
+
+Item 525. Source: `fed0bee`.
+
+The batch panel now finishes reading and inspecting each file before starting the next, instead of loading every raw text first. A read or UTF-8 failure creates an explicit source-unavailable row and does not discard the other original results. Stop or the overall 120-second deadline releases the visible wait even when a reader does not settle. Completed rows remain available; unstarted and unfinished rows remain pending. Late reader completion cannot restore cleared or cancelled work. The overall deadline now includes file reading. Input limits remain 20 files, 16 MiB each and 64 MiB in total.
+
+V3 receipts distinguish an unread file's reported size from its unknown actual text bytes. Unknown bytes, hashes and comparisons remain null; CSV leaves them blank. Total known text bytes exclude unread inputs. A completed attempt does not mean that all originals were validated. JSON and CSV preserve failures and pending rows; checksum-manifest export is refused while any exact content hash is missing. Complete known-file V1/V2 JSON and CSV remain byte-identical to the text API, including optional prior checksum comparisons. File failures and incomplete rows cannot use validated-original navigation shortcuts.
+
+106 focused checks passed (5414.0296 ms); 1,210 related checks passed (43043.914 ms), with zero failures, skips or cancellations. Native Chrome passed 941 cases across two reconciled isolated profiles with cleanup. Added native coverage exercises invalid UTF-8 between two valid originals, saved JSON/CSV and refused incomplete checksums; cancellation during a stalled second reader preserves the first result before that reader settles.
+
+[Evidence](evidence/2026-11-01-wallet-file-batch/) includes actual shared-panel captures with real File objects, valid original bytes, the invalid UTF-8 fixture, cancelled/timed-out receipts, JSON/CSV exports and exact V1/V2 compatibility comparisons. Node shared-panel/API captures and isolated native checks are distinguished. They do not prove control of the user's existing tab or the operating-system picker. Original bytes and committed evidence checksums are checked unchanged.
+
+This completed per-file processing workflow counts as one item. Tests, metadata fields, compatibility handling and documentation add no extra items. Last full-wallet checkpoint remains d253e8d (15,720 tests). No signatures, transfers, approvals, keys, external RPC, publication, deployment or existing-server restart occurred. Counts do not measure mainnet readiness.

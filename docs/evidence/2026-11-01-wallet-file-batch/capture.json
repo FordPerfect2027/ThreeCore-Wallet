@@ -1,0 +1,45 @@
+{
+  "source": "fed0bee",
+  "provenance": {
+    "path": "docs/evidence/2026-11-01-wallet-saved-batch/period-source.json",
+    "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce"
+  },
+  "mixedRead": {
+    "selected": 3,
+    "validatedOriginals": 2,
+    "sourceUnavailable": 1,
+    "unreadActualBytes": null,
+    "unreadReportedBytes": 1,
+    "allOriginalsValidated": false,
+    "manifestExportRefused": true
+  },
+  "cancelled": {
+    "checked": 1,
+    "pending": 2,
+    "readerCalls": 2,
+    "settledBeforeUnderlyingReader": true
+  },
+  "timedOut": {
+    "checked": 0,
+    "pending": 1
+  },
+  "compatibility": [
+    {
+      "schema": "threecore.wallet-saved-browser-batch.v1",
+      "jsonByteIdentical": true,
+      "csvByteIdentical": true,
+      "sha256": "66dab0d6b233dcde4510d7995f988e1108835f85513f92aba625d32412115597"
+    },
+    {
+      "schema": "threecore.wallet-saved-browser-batch.v2",
+      "jsonByteIdentical": true,
+      "csvByteIdentical": true,
+      "sha256": "c219c8ce21ff92d1ba5781165c3b3bc0c9743403a94e4b2ce612ed3843360427"
+    }
+  ],
+  "originalsUnchanged": true,
+  "captureMethod": "shared panel and reader API in Node, with real File objects and captured downloads; isolated native Chrome checked separately",
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}
