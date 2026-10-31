@@ -1,3 +1,4 @@
+import { createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
 import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
@@ -32,6 +33,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   const offerDownload = payload => requireSyncExport(download(payload));
   const fileReader = createFileReadScope();
   const get = name => document.getElementById("report-review-" + name);
+  const feedback=createRehearsalFieldFeedback(document,"report-review-status");
   let revision = 0, disposed = false, sourceText = null, receipt = null;
   let hashAbort = null;
   const listeners = [];
@@ -39,12 +41,13 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
   listeners.push(() => fileNotice.dispose());
   function invalidate(message) {
+    feedback.clear();
     fileNotice.clear();
     revision++; receipt = null;
     const previous = hashAbort; hashAbort = null; previous?.abort();
     fileReader.cancel();
     for(const name of ["scope", "differences", "digest", "summary", "outcome", "export-status"]) get(name).textContent = "";
-    get("save").disabled = true; get("results").hidden = true;
+    for(const name of ["save","source-save","checksum-save"])get(name).disabled=true; get("results").hidden = true;
     get("status").textContent = message; get("status").className = "";
     get("status").setAttribute("aria-busy", "false");
   }
@@ -66,7 +69,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     try {
       const result = await reviewRehearsalReport(text, { expectedSha256, subtle, signal: ownHash.signal });
       if(disposed || own !== revision) return;
-      receipt = result; get("results").hidden = false; get("save").disabled = false;
+      receipt = result; get("results").hidden = false; for(const name of ["save","source-save","checksum-save"])get(name).disabled=false;
       const matches = result.matchesRecomputation && result.checksumMatches !== false;
       const expectedDifferences = result.reportOutcome?.kind === "expected-outcomes" && !result.reportOutcome.allMatched;
       get("status").className = matches && !expectedDifferences ? "passed" : "blocked";
@@ -85,12 +88,14 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       for(const diff of result.differences) row("differences",[diff.path,labels[diff.kind]]);
     } catch(error) {
       if(disposed || own !== revision) return;
-      const reason = describeRehearsalFileTarget(text, "report") ?? {INVALID_EXPECTED_CHECKSUM:"照合値はSHA-256の64桁の英数字で入力してください。",
+      const reason = describeRehearsalFileTarget(text, "report") ?? {INVALID_EXPECTED_CHECKSUM:"照合値はSHA-256の64桁で入力してください。使える文字は0〜9とa〜fです。",
         UNSUPPORTED_REVIEW_REPORT:"この形式には対応していません。確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を選んでください。",
         REVIEW_HASH_UNAVAILABLE:"照合値を計算できませんでした。もう一度確認してください。",
         SCENARIO_CONTEXT_OR_EVENTS_CHANGED:"比較資料の口座・資産・元の記録が一致しないため、同じ履歴として比較できません。"}[error?.code]
         ?? "資料の形式や含まれる入力記録を確認できませんでした。2 MiB以内の保存済み資料を選んでください。";
       invalidate(reason + " 現在の履歴は保持しています。");
+      if(!disposed&&Object.getOwnPropertyDescriptor(error,"code")?.value==="INVALID_EXPECTED_CHECKSUM")
+        feedback.field("report-review-expected","照合するSHA-256","64桁で入力してください。使える文字は0〜9とa〜fです。照合値がない場合は空欄にできます。");
     } finally {
       if(hashAbort === ownHash) hashAbort = null;
       if(!disposed && own === revision) get("status").setAttribute("aria-busy", "false");
@@ -130,6 +135,17 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       offerDownload({document,prepared:{text:encodeRehearsalReviewReceipt(receipt),filename:"ThreeCore-report-review-receipt.json",mimeType:"application/json"}});if(disposed||own!==revision)return;
       get("export-status").textContent="確認結果と照合値の控えを保存し始めました。元の資料はこの控えに含まれません。";
     } catch {if(disposed||own!==revision)return; get("export-status").textContent="控えを保存できませんでした。確認結果は保持しています。"; }
+  });
+  for(const [name,original]of [["source-save",true],["checksum-save",false]])listen(name,"click",()=>{
+    if(disposed||!receipt||sourceText===null)return;
+    const own=revision,data=receipt,text=sourceText;
+    try{
+      offerDownload({document,prepared:original?{text,filename:"ThreeCore-reviewed-report.json",mimeType:"application/json"}:
+        {text:data.sha256+"\n",filename:"ThreeCore-reviewed-report-sha256.txt",mimeType:"text/plain"}});
+      if(disposed||own!==revision)return;
+      get("export-status").textContent=original?"確認した元資料の保存を開始しました。確認に使った文字列をそのまま含みます。一致・不一致の結果は別の控えに保存してください。":
+        "確認した文字列のSHA-256を保存し始めました。元資料と確認結果の控えも一緒に保管してください。";
+    }catch{if(disposed||own!==revision)return;get("export-status").textContent=original?"元資料の保存を開始できませんでした。確認結果は保持しています。":"照合値の保存を開始できませんでした。確認結果は保持しています。";}
   });
   reset();
   return Object.freeze({dispose(){if(disposed)return;reset("");disposed=true;get("expected").value="";for(const remove of listeners)remove();}});

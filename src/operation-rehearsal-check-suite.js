@@ -58,27 +58,45 @@ export function captureRehearsalCheckSuite(input){const inputs=validateRehearsal
 }
 export function encodeRehearsalCheckSuite(input){return JSON.stringify(validateRehearsalCheckSuite(input),null,2)+"\n";}
 export function decodeRehearsalCheckSuite(text){let input;try{input=parseSecurityJson(text,{bytes:REHEARSAL_CHECK_SUITE_LIMIT,depth:24,nodes:100000});}catch{fail("INVALID_CHECK_SUITE_JSON");}return validateRehearsalCheckSuite(input);}
+function caseDifferences(item,expectedCase,offset=0){
+  let differenceCount=0;const differences=[];
+  const compare=(side,field,expected,actual,recordId=null)=>{if(JSON.stringify(expected)===JSON.stringify(actual))return;
+    const position=differenceCount++;
+    if(position>=offset&&differences.length<REHEARSAL_CHECK_DIFFERENCES)differences.push(Object.freeze({side,field,recordId,expected,actual}));};
+  for(const side of ["before","after"]){const actual=checkpoint(item[side]),expected=expectedCase[side];
+    for(const field of REHEARSAL_SCENARIO_METRICS)compare(side,field,expected.metrics[field],actual.metrics[field]);
+    compare(side,"openPositions",expected.openPositions,actual.openPositions);
+    compare(side,"allocationBlockers",expected.allocationBlockers,actual.allocationBlockers);
+    for(let i=0;i<actual.records.length;i++){
+      compare(side,"withinEnteredLimits",expected.records[i].withinEnteredLimits,actual.records[i].withinEnteredLimits,actual.records[i].id);
+      compare(side,"reasons",expected.records[i].reasons,actual.records[i].reasons,actual.records[i].id);
+    }
+  }
+  return{differenceCount,differences:Object.freeze(differences)};
+}
 export function runRehearsalCheckSuite(input){const inputs=validateRehearsalCheckSuite(input);
   const rows=inputs.inputs.cases.map((item,index)=>{
-    let differenceCount=0;const differences=[];
-    const compare=(side,field,expected,actual,recordId=null)=>{if(JSON.stringify(expected)===JSON.stringify(actual))return;
-      differenceCount++;if(differences.length<REHEARSAL_CHECK_DIFFERENCES)differences.push(Object.freeze({side,field,recordId,expected,actual}));};
-    for(const side of ["before","after"]){const actual=checkpoint(item[side]),expected=inputs.expected[index][side];
-      for(const field of REHEARSAL_SCENARIO_METRICS)compare(side,field,expected.metrics[field],actual.metrics[field]);
-      compare(side,"openPositions",expected.openPositions,actual.openPositions);
-      compare(side,"allocationBlockers",expected.allocationBlockers,actual.allocationBlockers);
-      for(let i=0;i<actual.records.length;i++){
-        compare(side,"withinEnteredLimits",expected.records[i].withinEnteredLimits,actual.records[i].withinEnteredLimits,actual.records[i].id);
-        compare(side,"reasons",expected.records[i].reasons,actual.records[i].reasons,actual.records[i].id);
-      }
-    }
+    const {differenceCount,differences}=caseDifferences(item,inputs.expected[index]);
     return Object.freeze({id:item.id,label:item.label,agent:item.before.agent,chainId:item.before.chainId,account:item.before.account,asset:item.before.asset,
       beforeRecords:item.before.events.length,afterRecords:item.after.events.length,matchesExpected:differenceCount===0,
-      differenceCount,differences:Object.freeze(differences),differencesTruncated:differenceCount>differences.length});
+      differenceCount,differences,differencesTruncated:differenceCount>differences.length});
   });
   const matched=rows.filter(row=>row.matchesExpected).length;
   return Object.freeze({schema:REHEARSAL_CHECK_REPORT_SCHEMA,simulationOnly:true,sourceVerified:false,authorizesExecution:false,
     inputs,summary:Object.freeze({cases:rows.length,matched,differing:rows.length-matched,allMatched:matched===rows.length}),rows:Object.freeze(rows)});
+}
+/** Recompute a bounded window from validated source; exported reports keep their original 40-row cap. */
+export function pageRehearsalCheckDifferences(input,caseId,offset=0){
+  if(typeof caseId!=="string"||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(caseId)||!Number.isSafeInteger(offset)||offset<0)fail("INVALID_DIFFERENCE_PAGE");
+  const source=validateRehearsalCheckSuite(input),index=source.inputs.cases.findIndex(item=>item.id===caseId);
+  if(index<0)fail("SCENARIO_NOT_FOUND");
+  const item=source.inputs.cases[index];let result=caseDifferences(item,source.expected[index],offset);
+  const last=Math.max(0,Math.floor((result.differenceCount-1)/REHEARSAL_CHECK_DIFFERENCES)*REHEARSAL_CHECK_DIFFERENCES);
+  const start=Math.min(Math.floor(offset/REHEARSAL_CHECK_DIFFERENCES)*REHEARSAL_CHECK_DIFFERENCES,last);
+  if(start!==offset)result=caseDifferences(item,source.expected[index],start);
+  return Object.freeze({caseId,offset:start,limit:REHEARSAL_CHECK_DIFFERENCES,totalDifferences:result.differenceCount,rows:result.differences,
+    previousOffset:start?Math.max(0,start-REHEARSAL_CHECK_DIFFERENCES):null,
+    nextOffset:start+REHEARSAL_CHECK_DIFFERENCES<result.differenceCount?start+REHEARSAL_CHECK_DIFFERENCES:null});
 }
 export function encodeRehearsalCheckReport(input){const text=JSON.stringify(runRehearsalCheckSuite(input),null,2)+"\n";
   try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;

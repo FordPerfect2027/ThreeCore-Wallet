@@ -1,4 +1,7 @@
 import { mountOperationRehearsal } from "/examples/operation-rehearsal-page.js";
+import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "/src/operation-rehearsal-check-suite.js";
+import { rehearsalExampleV2 } from "/src/operation-rehearsal-examples.js";
+import { REHEARSAL_SCENARIO_SET_SCHEMA } from "/src/operation-rehearsal-scenario-set.js";
 import { rehearsalExampleV2 } from "/src/operation-rehearsal-examples.js";
 import { createFileReadService } from "/src/file-read-service.js";
 import { mountFileReadPanel } from "/examples/file-read-panel.js";
@@ -51,6 +54,39 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: expected-result filters expose later differences in a native browser", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    try{
+      const source=rehearsalExampleV2(),many={...source,events:Array.from({length:25},(_,i)=>({id:"deposit-"+i,kind:"deposit",agent:source.agent,chainId:source.chainId,account:source.account,amount:"1"}))};
+      const suite=JSON.parse(JSON.stringify(captureRehearsalCheckSuite({schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:"all",label:"相違のあるケース",before:many,after:many}]})));
+      for(const side of ["before","after"])for(const row of suite.expected[0][side].records){row.withinEnteredLimits=false;row.reasons=["EXPECTED_ONLY"];}
+      q("check-suite-text").value=encodeRehearsalCheckSuite(suite);q("check-suite-text").dispatchEvent(new Event("input"));q("check-suite-paste").click();
+      q("check-suite-rows").querySelector("button").click();assert(document.activeElement===q("check-suite-case"));assert(q("check-suite-case").value==="all");
+      assert(q("check-suite-differences").children.length===40);q("check-suite-next").click();q("check-suite-next").click();
+      assert(q("check-suite-differences").children.length===20&&q("check-suite-next").disabled);assert(q("check-suite-difference-status").textContent.includes("81〜100"));
+      q("check-suite-filter").value="matched";q("check-suite-filter").dispatchEvent(new Event("change"));assert(q("check-suite-rows").children.length===0);assert(q("check-suite-difference-status").textContent.includes("該当するケースはありません"));assert(!q("check-suite-save").disabled);
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: reviewed source and checksum exports match the real digest and invalid checksum focus", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const finish=async()=>{const end=Date.now()+10000;while(q("report-review-status").getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q("report-review-status").getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("overview-save").click();const source=downloads.pop().text;
+      q("report-review-expected").value="invalid";q("report-review-expected").dispatchEvent(new Event("input"));
+      q("report-review-text").value=source;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();await finish();
+      assert(document.activeElement===q("report-review-expected"));assert(q("report-review-expected").getAttribute("aria-invalid")==="true");
+      q("report-review-expected").value="";q("report-review-expected").dispatchEvent(new Event("input"));q("report-review-run").click();await finish();
+      q("report-review-source-save").click();q("report-review-checksum-save").click();q("report-review-save").click();
+      assert(downloads.length===3);assert(downloads[0].text===source);const receipt=JSON.parse(downloads[2].text);assert(downloads[1].text===receipt.sha256+"\n");assert(receipt.matchesRecomputation);
+      q("report-review-clear").click();assert(q("report-review-source-save").disabled&&q("report-review-checksum-save").disabled);
+    }finally{page.dispose();host.remove();}
+  });
   test("file-read: append kinds and recorded ID choices guide the native form", async () => {
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html");
