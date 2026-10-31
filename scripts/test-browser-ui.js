@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Disposable Chrome/Edge profile: no extensions, real wallets or external RPC.
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
+import { readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -11,6 +13,14 @@ import { browserExecutable, browserArguments, stopTestBrowser, removeTestProfile
 
 const options = process.argv.slice(2);
 if (options.length > 1 || options.some(value => value !== "--verify-error-detection")) throw Error("Unknown browser test option");
+// A parse failure in a statically imported test module prevents the browser
+// harness from reporting anything. Fail before launching its five-minute run.
+const testRoot = new URL("../test/browser/", import.meta.url);
+for (const entry of readdirSync(testRoot, { withFileTypes: true }).filter(item => item.isFile() && item.name.endsWith(".js"))) {
+  const checked = spawnSync(process.execPath, ["--check", fileURLToPath(new URL(entry.name, testRoot))],
+    { encoding: "utf8", windowsHide: true, timeout: 10000, maxBuffer: 65536 });
+  if (checked.status !== 0) throw Error("Browser test syntax failed: " + entry.name + "\n" + (checked.stderr || checked.error?.message || "Check did not complete"));
+}
 const executable = browserExecutable();
 
 async function runBrowserPage(fault) {

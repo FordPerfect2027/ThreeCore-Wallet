@@ -1,6 +1,5 @@
 import { mountOperationRehearsal } from "/examples/operation-rehearsal-page.js";
 import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "/src/operation-rehearsal-check-suite.js";
-import { rehearsalExampleV2 } from "/src/operation-rehearsal-examples.js";
 import { REHEARSAL_SCENARIO_SET_SCHEMA } from "/src/operation-rehearsal-scenario-set.js";
 import { rehearsalExampleV2 } from "/src/operation-rehearsal-examples.js";
 import { createFileReadService } from "/src/file-read-service.js";
