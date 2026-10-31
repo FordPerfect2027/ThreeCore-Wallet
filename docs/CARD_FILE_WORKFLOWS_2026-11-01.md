@@ -1,0 +1,13 @@
+# Direct files for token lists and individual balance observations
+
+Items 573–574. Source: 431dcfd.
+
+573. Token input lists now have direct JSON download and bounded UTF-8 file loading (8 KiB). Download validates the currently entered list and rechecks its agent/network. Loading stages the original JSON only after validation and a fresh context check; explicit preview and apply are still required. File selection cancellation preserves an existing candidate. Reading, edits, clearing, context invalidation and disposal retire older file operations. No connection or balance read is initiated.
+
+574. The portfolio panel now saves the current completed observation directly and loads a standalone saved observation into the report field (64 KiB). Loading alone preserves the current result and history; the existing historical-display action remains explicit. Historical display cannot make the report a current observation or enable the current-result download. Exact uint256 values and missing-code/unknown-balance states survive the file workflow. Failures and cancellation preserve existing results, and late file completions cannot overwrite edited or invalidated text. No file is automatically added to history.
+
+Both use the existing shared bounded file reader and document download guard. Download messages indicate a request started, not confirmed disk completion. Invalid UTF-8, over-limit input and malformed formats are rejected; rejected/async download callbacks and reentrant clearing cannot claim success. No file format or wallet request method was added.
+
+201 related tests passed (1847.9391 ms). The first full browser run passed 979 of 980 cases; an older detail-file test assumed that one timer tick completed File.text(). Its check now waits for the actual callback with a bounded deadline. The failed log is retained, and this test maintenance adds no item. All 980 native browser UI cases passed on the final run, covering these new native File/DataTransfer paths together with existing wallet/rehearsal interactions. [Evidence](evidence/2026-11-01-card-file-workflows/) includes exact UI/API files and captured staging/application outcomes. Inputs are fictional; OS picker interaction and a real wallet were not exercised. The last full-wallet checkpoint remains d253e8d (15,720 tests), while the full-browser checkpoint advances to 431dcfd (980 cases).
+
+No existing-server restart, external RPC, signature, transfer, approval, private-key retrieval, publication or deployment occurred. Each complete file workflow is counted once, not separately for download, load, cancellation or individual tests.

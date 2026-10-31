@@ -1,0 +1,32 @@
+{
+  "source": "431dcfd",
+  "captures": [
+    {
+      "kind": "plan",
+      "filename": "ThreeCore-DAT-token-plan-84532.json",
+      "stagedStatus": "入力リストを読み込みました。「JSONの内容を確認する」で確認してから反映してください。",
+      "finalStatus": "入力欄へ反映しました。残高照会はまだ行っていません。",
+      "exactUiApi": true,
+      "automaticApplications": 0,
+      "explicitApplications": 1,
+      "syntheticReadCalls": 0,
+      "historyUnchanged": null
+    },
+    {
+      "kind": "portfolio",
+      "filename": "ThreeCore-DAT-portfolio-42.json",
+      "stagedStatus": "確認記録JSONを読み込みました。「過去の記録を表示」で内容を確認できます。履歴への追加は別の操作です。",
+      "finalStatus": "過去の記録を表示しています。現在の接続や残高ではありません。",
+      "exactUiApi": true,
+      "automaticApplications": 0,
+      "explicitApplications": 0,
+      "syntheticReadCalls": 1,
+      "historyUnchanged": true
+    }
+  ],
+  "synthetic": true,
+  "fullNativeBrowserCases": 980,
+  "osPickerVerified": false,
+  "userWalletConnectionVerified": false,
+  "externalRpcCalls": 0
+}
