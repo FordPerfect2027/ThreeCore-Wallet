@@ -1,0 +1,30 @@
+✔ native File decoding failure retains the other originals and saves an honest unavailable row (322.7706ms)
+✔ Stop during a stalled second source returns the first checked file without waiting for that source (71.6376ms)
+✔ clear during a stalled source releases visible ownership immediately and old work cannot restore it (15.9399ms)
+✔ sequential file reads preserve exact existing V1/V2 receipt bytes false (286.5045ms)
+✔ sequential file reads preserve exact existing V1/V2 receipt bytes true (30.6358ms)
+✔ unreadable middle source preserves both other originals and distinguishes known text bytes from reported metadata (15.2322ms)
+✔ failed reads never claim expected-hash comparisons even when all sources are unavailable (3.3109ms)
+✔ cancellation during an uncooperative second read returns completed results before the underlying promise settles (30.8228ms)
+✔ overall deadline includes file reading and late reader rejection remains observed (30.9665ms)
+✔ native pre-abort is authoritative and artificial events cannot consume future cancellation (1.9124ms)
+✔ selection and options are captured before progress while invalid arguments never invoke the reader (12.1199ms)
+✔ wrong-sized, non-text and malformed thenable results remain read failures and cannot block following files (33.6231ms)
+✔ read-failure error accessors cannot leak private values or run arbitrary getters (2.9778ms)
+✔ rejected asynchronous failure values are observed while remaining ordinary read failures (3.9004ms)
+✔ explicit retry preserves successful files, clears save acknowledgement and exports linked outcomes (65.4667ms)
+✔ stop and selection replacement cannot turn a late retry into a new result (20.9043ms)
+✔ retry failure retains its prior receipt and remains available for another attempt (17.2057ms)
+✔ retry reads only noncontiguous failures and binds the previous exact receipt and original reference (48.2522ms)
+✔ hash failures are retried while invalid documents and mismatching checksums stay untouched (14.4186ms)
+✔ stopping a retry preserves unattempted old failures and a later retry only reads remaining failures (20.8243ms)
+✔ pre-abort, deadline and lineage hashing failure never consume or alter previous results (37.1893ms)
+✔ only current captured file selections allow retry; copied, text-only and pending receipts cannot (4.3823ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1755.312
