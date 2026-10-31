@@ -1,0 +1,82 @@
+{
+  "schema": "threecore.report-set-history-coverage-review.v1",
+  "matchesRecomputation": false,
+  "sourcePayloadDigest": "5e5801a1c73c337830866f71666256f0c99d4d3036fdb519464b2edc3d5f8f4b",
+  "sourceDigestMatches": true,
+  "coverageTextSha256": "9e2c0c514b1a8c85b0a121363aa392c5b68ca1be0f0cc2def3e9c848c9207228",
+  "options": {
+    "shortAddresses": true
+  },
+  "differences": [
+    "groups"
+  ],
+  "unexpectedFields": 0,
+  "summary": {
+    "reportCount": 2,
+    "allContinuous": false,
+    "issues": [
+      "GAPS",
+      "INCOMPLETE_EVIDENCE",
+      "REPORTS_NEED_REVIEW"
+    ],
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "missingAgents": [],
+  "groupCount": 3,
+  "groups": [
+    {
+      "id": "DAT-1",
+      "agent": "DAT",
+      "chainId": 84532,
+      "fromBlock": "31",
+      "toBlock": "66",
+      "plannedUniqueBlocks": "24",
+      "recordedUniqueBlocks": "10",
+      "pendingPlannedBlocks": "14",
+      "unplannedBlocks": "12",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "10",
+      "savedQueryRecords": 2
+    },
+    {
+      "id": "EMA-1",
+      "agent": "EMA",
+      "chainId": 84532,
+      "fromBlock": "31",
+      "toBlock": "66",
+      "plannedUniqueBlocks": "24",
+      "recordedUniqueBlocks": "24",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "12",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "0",
+      "savedQueryRecords": 6
+    },
+    {
+      "id": "CAWELON-1",
+      "agent": "CAWELON",
+      "chainId": 84532,
+      "fromBlock": "31",
+      "toBlock": "66",
+      "plannedUniqueBlocks": "24",
+      "recordedUniqueBlocks": "24",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "12",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "0",
+      "savedQueryRecords": 6
+    }
+  ],
+  "blockCountsCombinedAcrossGroups": false,
+  "savedQueryPresenceOnly": true,
+  "completeHistory": false,
+  "readOnly": true,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false,
+  "containsOriginalEvidence": false,
+  "authorizesExecution": false,
+  "sourceChecksumVerified": true
+}

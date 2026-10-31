@@ -1,0 +1,581 @@
+{
+  "schema": "threecore.report-set-history-coverage.v1",
+  "sourcePayloadDigest": "5e5801a1c73c337830866f71666256f0c99d4d3036fdb519464b2edc3d5f8f4b",
+  "digestAlgorithm": "SHA-256",
+  "options": {
+    "shortAddresses": true
+  },
+  "groupCount": 3,
+  "summary": {
+    "reportCount": 2,
+    "allContinuous": false,
+    "issues": [
+      "GAPS",
+      "INCOMPLETE_EVIDENCE",
+      "REPORTS_NEED_REVIEW"
+    ],
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "missingAgents": [],
+  "missingReportsByAgent": [
+    {
+      "agent": "DAT",
+      "reportIds": []
+    },
+    {
+      "agent": "EMA",
+      "reportIds": []
+    },
+    {
+      "agent": "CAWELON",
+      "reportIds": []
+    }
+  ],
+  "groups": [
+    {
+      "id": "DAT-1",
+      "context": {
+        "agent": "DAT",
+        "chainId": 84532,
+        "account": "0x111111…111111"
+      },
+      "tokenAddress": "0x2474a0…4743d4",
+      "fromBlock": "31",
+      "toBlock": "66",
+      "spanBlocks": "36",
+      "plannedUniqueBlocks": "24",
+      "recordedUniqueBlocks": "10",
+      "pendingPlannedBlocks": "14",
+      "unplannedBlocks": "12",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "10",
+      "savedQueryRecords": 2,
+      "cells": [
+        {
+          "number": 1,
+          "fromBlock": "31",
+          "toBlock": "34",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": true,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000101"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000101",
+              "label": "報告 1",
+              "recordIndex": 0,
+              "fromBlock": "31",
+              "toBlock": "35",
+              "sourceStatus": "partial",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 2,
+          "fromBlock": "36",
+          "toBlock": "42",
+          "blocks": "7",
+          "kind": "pending",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000101"
+          ],
+          "records": [],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 3,
+          "fromBlock": "43",
+          "toBlock": "54",
+          "blocks": "12",
+          "kind": "unplanned",
+          "needsReview": false,
+          "plannedReportIds": [],
+          "records": [],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 4,
+          "fromBlock": "55",
+          "toBlock": "59",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": true,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000102"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000102",
+              "label": "報告 2",
+              "recordIndex": 0,
+              "fromBlock": "55",
+              "toBlock": "59",
+              "sourceStatus": "partial",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 5,
+          "fromBlock": "60",
+          "toBlock": "66",
+          "blocks": "7",
+          "kind": "pending",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000102"
+          ],
+          "records": [],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        }
+      ],
+      "rangeNotation": "inclusive",
+      "completeHistory": false,
+      "liveChainRechecked": false
+    },
+    {
+      "id": "EMA-1",
+      "context": {
+        "agent": "EMA",
+        "chainId": 84532,
+        "account": "0x222222…222222"
+      },
+      "tokenAddress": "0x20c3bb…59185e",
+      "fromBlock": "31",
+      "toBlock": "66",
+      "spanBlocks": "36",
+      "plannedUniqueBlocks": "24",
+      "recordedUniqueBlocks": "24",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "12",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "0",
+      "savedQueryRecords": 6,
+      "cells": [
+        {
+          "number": 1,
+          "fromBlock": "31",
+          "toBlock": "35",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000101"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000101",
+              "label": "報告 1",
+              "recordIndex": 0,
+              "fromBlock": "31",
+              "toBlock": "35",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 2,
+          "fromBlock": "36",
+          "toBlock": "40",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000101"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000101",
+              "label": "報告 1",
+              "recordIndex": 1,
+              "fromBlock": "36",
+              "toBlock": "40",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 3,
+          "fromBlock": "41",
+          "toBlock": "42",
+          "blocks": "2",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000101"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000101",
+              "label": "報告 1",
+              "recordIndex": 2,
+              "fromBlock": "41",
+              "toBlock": "42",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 0
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 4,
+          "fromBlock": "43",
+          "toBlock": "54",
+          "blocks": "12",
+          "kind": "unplanned",
+          "needsReview": false,
+          "plannedReportIds": [],
+          "records": [],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 5,
+          "fromBlock": "55",
+          "toBlock": "59",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000102"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000102",
+              "label": "報告 2",
+              "recordIndex": 0,
+              "fromBlock": "55",
+              "toBlock": "59",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 6,
+          "fromBlock": "60",
+          "toBlock": "64",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000102"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000102",
+              "label": "報告 2",
+              "recordIndex": 1,
+              "fromBlock": "60",
+              "toBlock": "64",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 7,
+          "fromBlock": "65",
+          "toBlock": "66",
+          "blocks": "2",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000102"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000102",
+              "label": "報告 2",
+              "recordIndex": 2,
+              "fromBlock": "65",
+              "toBlock": "66",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 0
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        }
+      ],
+      "rangeNotation": "inclusive",
+      "completeHistory": false,
+      "liveChainRechecked": false
+    },
+    {
+      "id": "CAWELON-1",
+      "context": {
+        "agent": "CAWELON",
+        "chainId": 84532,
+        "account": "0x333333…333333"
+      },
+      "tokenAddress": "0x9c2aeb…ed280f",
+      "fromBlock": "31",
+      "toBlock": "66",
+      "spanBlocks": "36",
+      "plannedUniqueBlocks": "24",
+      "recordedUniqueBlocks": "24",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "12",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "0",
+      "savedQueryRecords": 6,
+      "cells": [
+        {
+          "number": 1,
+          "fromBlock": "31",
+          "toBlock": "35",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000101"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000101",
+              "label": "報告 1",
+              "recordIndex": 0,
+              "fromBlock": "31",
+              "toBlock": "35",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 2,
+          "fromBlock": "36",
+          "toBlock": "40",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000101"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000101",
+              "label": "報告 1",
+              "recordIndex": 1,
+              "fromBlock": "36",
+              "toBlock": "40",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 3,
+          "fromBlock": "41",
+          "toBlock": "42",
+          "blocks": "2",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000101"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000101",
+              "label": "報告 1",
+              "recordIndex": 2,
+              "fromBlock": "41",
+              "toBlock": "42",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 0
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 4,
+          "fromBlock": "43",
+          "toBlock": "54",
+          "blocks": "12",
+          "kind": "unplanned",
+          "needsReview": false,
+          "plannedReportIds": [],
+          "records": [],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 5,
+          "fromBlock": "55",
+          "toBlock": "59",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000102"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000102",
+              "label": "報告 2",
+              "recordIndex": 0,
+              "fromBlock": "55",
+              "toBlock": "59",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 6,
+          "fromBlock": "60",
+          "toBlock": "64",
+          "blocks": "5",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000102"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000102",
+              "label": "報告 2",
+              "recordIndex": 1,
+              "fromBlock": "60",
+              "toBlock": "64",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 1
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        },
+        {
+          "number": 7,
+          "fromBlock": "65",
+          "toBlock": "66",
+          "blocks": "2",
+          "kind": "recorded",
+          "needsReview": false,
+          "plannedReportIds": [
+            "12345678-1234-4234-8234-000000000102"
+          ],
+          "records": [
+            {
+              "reportId": "12345678-1234-4234-8234-000000000102",
+              "label": "報告 2",
+              "recordIndex": 2,
+              "fromBlock": "65",
+              "toBlock": "66",
+              "sourceStatus": "arithmetic-agreement",
+              "requiresNewPlan": false,
+              "archivedReport": false,
+              "archivedSource": false,
+              "eventsInOriginalWindow": 0
+            }
+          ],
+          "hashConflictBlocks": [],
+          "balanceConflictBlocks": [],
+          "internalConflict": false
+        }
+      ],
+      "rangeNotation": "inclusive",
+      "completeHistory": false,
+      "liveChainRechecked": false
+    }
+  ],
+  "rangeNotation": "inclusive",
+  "recordIndexBase": 0,
+  "eventCountScope": "original-query-window-not-split-cell",
+  "blockCountsCombinedAcrossGroups": false,
+  "savedQueryPresenceOnly": true,
+  "historicalOnly": true,
+  "completeHistory": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false,
+  "containsOriginalEvidence": false
+}
