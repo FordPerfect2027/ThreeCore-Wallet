@@ -6,6 +6,8 @@ Only completed, evidenced work counts. Repeated executions of the same check, re
 
 Current continuation: **553 / 600 complete**.
 
+Shared local-reader follow-up at `d1fc0d8` extends item 552 without incrementing the total: 156 focused/related and 142 additional CLI checks passed; all 14 item-553 evidence files reverified. [Details](REHEARSAL_FILTER_AND_EXACT_FILE_IDENTITY_2026-11-01.md#shared-local-reader-follow-up-no-additional-item).
+
 [Item 553: save and independently reopen complete rehearsal batch source evidence](REHEARSAL_BATCH_EVIDENCE_2026-11-01.md) is complete with 130 selected checks, 115 scoped native browser cases and four actual offline CLI/API captures at `7edd434`.
 
 [Items 551–552: filter rehearsal results and preserve exact local file identities](REHEARSAL_FILTER_AND_EXACT_FILE_IDENTITY_2026-11-01.md) are complete with 57 filter checks, 84 related checks, 48 exact-identity/batch checks, 114 scoped native browser cases and actual offline CLI captures at `5234986`.
