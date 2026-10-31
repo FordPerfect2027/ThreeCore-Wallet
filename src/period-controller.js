@@ -122,7 +122,7 @@ export function createPeriodController({
       if (!same(id) || review !== pending) return false;
       draft = pending.candidate;
       draftKey = periodDraftKey(draft);
-      origin = pending.source === "plan" ? "new" : "imported";
+      origin = ["plan", "proposal"].includes(pending.source) ? "new" : "imported";
       agent = draft.plan.context.agent;
       checkedThisSession = false;
       requiresNewPlan = pending.requiresNewPlan || draftKey === rejectedDraftKey;
@@ -148,6 +148,19 @@ export function createPeriodController({
       return stage(value, "library", options.requiresNewPlan, id);
     } catch (value) { return id !== undefined && !same(id) ? false : fail(value); }
   }
+
+  function stageProposed(value) {
+    let id;
+    try {
+      if (!available()) return false;
+      id = ++generation;
+      const candidate = validatePeriodDraft(value);
+      if (!same(id)) return false;
+      if (periodDraftProgress(candidate).completed !== 0) periodFail("PERIOD_PROPOSAL_NOT_EMPTY");
+      return stage(candidate, "proposal", false, id);
+    } catch (value) { return id !== undefined && !same(id) ? false : fail(value); }
+  }
+
   function prepareRepair() {
     let id;
     try {
@@ -378,7 +391,7 @@ export function createPeriodController({
     }
     finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
-  return Object.freeze({ get state() { return state(); }, prepare, prepareRepair, stageSaved, apply, start, cancel, invalidate,
+  return Object.freeze({ get state() { return state(); }, prepare, prepareRepair, stageSaved, stageProposed, apply, start, cancel, invalidate,
     selectAgent, importFile, exportFile, sendToReconciliation,
     dispose() {
       if (disposed) return;

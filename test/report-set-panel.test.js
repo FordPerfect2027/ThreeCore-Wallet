@@ -1,3 +1,5 @@
+import { mountPeriodPanel } from "../examples/period-panel.js";
+import { checkpoint as proposalCheckpoint } from "./helpers/period-fixtures.js";
 import { manyEventsInput } from "./helpers/period-report-fixtures.js";
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -547,4 +549,38 @@ test("event recheck selection previews an unread range and resets when the side,
     assert.equal(f.q("event-recheck-choice").value, "");
     const control = f.q("event-recheck-json"); f.dispose(); control.disabled = false; control.click(); assert.equal(f.files.length, 1);
   } finally { f.dispose(); }
+});
+
+test("direct discrepancy handoff opens an explicit period review and preserves the collected destination until acknowledged", async () => {
+  let destination, reads = 0, contexts = 0;
+  const initial = sequenceHistory([0n, 0n], (report, index) => { if (index === 1) report.slots[0].entry.draft.records[0].events[0].amountBaseUnits = "1"; });
+  const f = fixture(initial, { panel: { stagePeriodProposal: draft => destination.stageProposed(draft) } });
+  const target = new Element("div"), q = name => target.find("period-" + name);
+  destination = mountPeriodPanel({ document: f.document, parent: target, getContext() { contexts++; throw Error("NO_CONNECTION"); }, read() { reads++; throw Error("NO_READ"); } });
+  try {
+    destination.stageSaved(proposalCheckpoint(3), { requiresNewPlan: false }); q("apply").click(); const oldDraft = destination.getDraft();
+    await f.accept(); const accepted = f.mounted.getState().input;
+    f.set("event-before", id(101)); f.set("event-after", id(102)); f.click("event-compare"); f.set("event-recheck-choice", "e:1");
+    assert.equal(f.q("event-recheck-ack").checked, false); f.click("event-recheck-send"); await f.settled();
+    assert.match(q("review-text").textContent, /新しい未取得/); assert.doesNotMatch(q("review-text").textContent, /保存一覧に保管した/);
+    assert.equal(destination.getDraft(), oldDraft); assert.equal(q("start").disabled, true); assert.equal(q("apply").disabled, true);
+    q("ack").checked = true; q("ack").dispatchEvent(new Event("change")); q("apply").click();
+    assert.equal(destination.getDraft().plan.earlierBlock, "34"); assert.equal(destination.getDraft().records.length, 0);
+    assert.equal(f.mounted.getState().input, accepted); assert.equal(f.files.length, 0); assert.equal(reads, 0); assert.equal(contexts, 0);
+    f.set("event-agent", "EMA"); assert.equal(f.q("event-recheck-send").disabled, true);
+  } finally { f.dispose(); destination.dispose(); }
+});
+
+test("missing-range handoff shares the selected empty draft and standalone panels explain file fallback", async () => {
+  const initial = sequenceHistory([0n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+  const delivered = [], f = fixture(initial, { panel: { stagePeriodProposal: draft => { delivered.push(draft); return true; } } });
+  try {
+    await f.accept(); f.click("history-queue-show"); f.set("history-queue-window", "1"); f.click("history-queue-choose");
+    f.click("queue-window-send"); await f.settled(); assert.equal(delivered.length, 1);
+    assert.equal(delivered[0].plan.earlierBlock, "35"); assert.equal(delivered[0].plan.laterBlock, "42"); assert.equal(delivered[0].records.length, 0);
+    assert.equal(f.files.length, 0); f.set("history-queue-size", "3", "input"); assert.equal(f.q("queue-window-send").disabled, true);
+  } finally { f.dispose(); }
+  const single = fixture(initial);
+  try { assert.equal(single.q("queue-window-send").disabled, true); assert.match(single.q("proposal-help").textContent, /JSON保存/); }
+  finally { single.dispose(); }
 });

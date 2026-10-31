@@ -5,6 +5,7 @@ import { reconcileWorkspace } from "./reconciliation-engine.js";
 import { formatTokenUnits } from "./token-identity-codec.js";
 
 const messages = Object.freeze({
+  PERIOD_PROPOSAL_NOT_EMPTY: "新しい読み取り予定として渡せるのは、残高・履歴をまだ取得していない控えだけです。元の記録は保持しています。",
   PERIOD_BLOCK: "ブロック番号は0以上の整数を半角数字で入力してください。",
   PERIOD_ORDER: "終了ブロックは開始ブロックより大きくしてください。",
   PERIOD_WINDOW_SIZE: "1回の履歴取得は1～2,000ブロックにしてください。",

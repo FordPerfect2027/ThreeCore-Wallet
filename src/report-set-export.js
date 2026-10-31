@@ -206,21 +206,26 @@ export async function prepareReportSetSourceFile(value, idValue, fileOptions = {
 }
 
 /** A new empty draft for a proposed window or contiguous page. No original evidence is copied. */
-export async function prepareMissingHistoryDraftFile(value, query, number, fileOptions = {}) {
+export function buildMissingHistoryDraft(value, query, number) {
   const queue = reportSetMissingHistoryQueue(value, query);
   if (typeof number !== "string") periodFail("PERIOD_SET_QUEUE_WINDOW");
   const window = number === "page" ? missingHistoryPageRange(queue) : queue.items.find(row => row.number === number);
   if (number === "page" && queue.items.length && !window) periodFail("PERIOD_SET_QUEUE_DISJOINT");
   if (!window) periodFail("PERIOD_SET_QUEUE_WINDOW");
-  let options;
-  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
-  catch { periodFail("PERIOD_SET_OPTIONS"); }
   const draft = emptyPeriodDraft(createPeriodPlan({ context: queue.context,
     earlierBlock: (BigInt(window.fromBlock) - 1n).toString(), laterBlock: window.toBlock,
     windowSize: number === "page" ? queue.query.windowSize : Number(window.blocks) }));
-  const file = await preparePeriodFile(draft, options);
-  return Object.freeze({ ...file, filename: "ThreeCore-unread-period-" + queue.context.agent + ".json",
-    encrypted: false, containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: window });
+  return Object.freeze({ draft, selectedRange: window });
+}
+
+export async function prepareMissingHistoryDraftFile(value, query, number, fileOptions = {}) {
+  const prepared = buildMissingHistoryDraft(value, query, number);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const file = await preparePeriodFile(prepared.draft, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-unread-period-" + prepared.draft.plan.context.agent + ".json",
+    encrypted: false, containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: prepared.selectedRange });
 }
 
 /** A reproducible comparison receipt; both original evidence files remain separate. */
@@ -444,14 +449,19 @@ export async function prepareReportSetEventComparisonFile(value, query, fileOpti
     sourcePayloadDigest: source.digest, containsOriginalEvidence: true });
 }
 
-export async function prepareReportSetEventRecheckFile(value, query, selection, fileOptions = {}) {
+export function buildEventRecheckDraft(value, query, selection) {
   const range = reportSetEventRecheckRange(value, query, selection);
+  const draft = emptyPeriodDraft(createPeriodPlan({ context: range.context,
+    earlierBlock: (BigInt(range.fromBlock) - 1n).toString(), laterBlock: range.toBlock, windowSize: range.windowSize }));
+  return Object.freeze({ draft, selectedRange: range });
+}
+
+export async function prepareReportSetEventRecheckFile(value, query, selection, fileOptions = {}) {
+  const prepared = buildEventRecheckDraft(value, query, selection);
   let options;
   try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
   catch { periodFail("PERIOD_SET_OPTIONS"); }
-  const draft = emptyPeriodDraft(createPeriodPlan({ context: range.context,
-    earlierBlock: (BigInt(range.fromBlock) - 1n).toString(), laterBlock: range.toBlock, windowSize: range.windowSize }));
-  const file = await preparePeriodFile(draft, options);
-  return Object.freeze({ ...file, filename: "ThreeCore-unread-event-recheck-" + range.context.agent + ".json",
-    containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: range, executed: false });
+  const file = await preparePeriodFile(prepared.draft, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-unread-event-recheck-" + prepared.draft.plan.context.agent + ".json",
+    containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: prepared.selectedRange, executed: false });
 }

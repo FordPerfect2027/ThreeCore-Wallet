@@ -9,7 +9,7 @@ import { diagnosticQuery } from "./report-set-diagnostics.js";
 import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile,
   readReportSetChecksText, reviewReportSetChecksFile, prepareReportSetSourceFile, prepareMissingHistoryDraftFile,
   prepareReportSetComparisonFile, prepareReportSetCoverageFile, readReportSetComparisonText, reviewReportSetComparisonFile, prepareReportSetComparisonEvidenceFile,
-  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence, prepareComparisonEvidenceSourceFile, prepareReportSetEventComparisonFile, prepareReportSetEventRecheckFile } from "./report-set-export.js";
+  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence, prepareComparisonEvidenceSourceFile, prepareReportSetEventComparisonFile, prepareReportSetEventRecheckFile, buildMissingHistoryDraft, buildEventRecheckDraft } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -443,6 +443,28 @@ export function createReportSetController({ storage, onChange = () => {},
     } catch (value) { return fail(value, token); }
   }
 
+
+  async function stagePeriodProposal(kind, query, selection, deliver) {
+    let token = generation;
+    try {
+      if (!guard()) return false;
+      token = ++generation;
+      if (!input) periodFail("PERIOD_SET_NO_RESULT");
+      if (typeof deliver !== "function") periodFail("PERIOD_SET_PROPOSAL_UNAVAILABLE");
+      if (!["missing", "discrepancy"].includes(kind)) periodFail("PERIOD_SET_FORMAT");
+      const prepared = kind === "missing" ? buildMissingHistoryDraft(input, query, selection) : buildEventRecheckDraft(input, query, selection);
+      if (!sameGeneration(token)) return false;
+      return await run("exporting", async same => {
+        if (!same()) return null;
+        const result = deliver(prepared.draft);
+        if (observeCallbackResult(result) !== "synchronous") periodFail("PERIOD_ASYNC_DELIVERY");
+        if (result !== true) periodFail("PERIOD_SET_PROPOSAL_REFUSED");
+        return prepared;
+      }, () => { phase = review ? "review" : "ready";
+        message = "期間読み取り画面の確認欄へ、新しい未取得の控えを渡しました。現在の控えへの反映と読み取り開始は、そちらで確認してから行います。"; });
+    } catch (value) { return fail(value, token); }
+  }
+
   function dispose() {
     if (disposed) return;
     generation++; disposed = true; phase = "disposed"; review = null; comparisonReview = null; inspection = null; checkReview = null; evidenceReview = null;
@@ -451,5 +473,5 @@ export function createReportSetController({ storage, onChange = () => {},
     consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,
-    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, exportEvidenceSource, exportEventComparison, exportEventRecheck, cancel, invalidateReview, dispose });
+    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, exportEvidenceSource, exportEventComparison, exportEventRecheck, stagePeriodProposal, cancel, invalidateReview, dispose });
 }

@@ -1,3 +1,5 @@
+import { mountPeriodPanel } from "/examples/period-panel.js";
+import { checkpoint as proposalCheckpoint } from "/test/helpers/period-fixtures.js";
 import { manyEventsInput } from "/test/helpers/period-report-fixtures.js";
 import { mountReportSetPanel } from "/examples/report-set-panel.js";
 import { createReportHistoryStorage } from "/src/report-history-storage.js";
@@ -669,6 +671,26 @@ export function registerReportSetUITests(test) {
       f.set("event-agent", "EMA"); assert(f.q("event-recheck-choice").value === "" && !f.q("event-recheck-ack").checked);
       assert(f.q("event-recheck-json").disabled && f.files.length === 1);
     } finally { f.dispose(); }
+  });
+
+  test("report set: native direct proposal handoff retains old period evidence until a separate apply", async () => {
+    let destination, reads = 0, contexts = 0;
+    const initial = sequenceHistory([0n, 0n], (report, index) => { if (index === 1) report.slots[0].entry.draft.records[0].events[0].amountBaseUnits = "1"; });
+    const f = fixture({ initial, panel: { stagePeriodProposal: draft => destination.stageProposed(draft) } });
+    const target = document.createElement("div"); document.body.append(target);
+    const q = name => target.querySelector(".period-" + name);
+    destination = mountPeriodPanel({ document, parent: target, getContext() { contexts++; throw Error("NO_CONNECTION"); }, read() { reads++; throw Error("NO_READ"); } });
+    try {
+      destination.stageSaved(proposalCheckpoint(3), { requiresNewPlan: false }); q("apply").click(); const old = destination.getDraft();
+      await f.accept(); const accepted = f.mounted.getState().input;
+      f.set("event-before", id(101)); f.set("event-after", id(102)); f.click("event-compare"); f.set("event-recheck-choice", "e:1");
+      f.click("event-recheck-send"); await f.settled();
+      assert(q("review-text").textContent.includes("新しい未取得") && destination.getDraft() === old && q("apply").disabled && q("start").disabled);
+      q("ack").click(); q("apply").click();
+      assert(destination.getDraft().plan.earlierBlock === "34" && destination.getDraft().records.length === 0);
+      assert(f.mounted.getState().input === accepted && f.files.length === 0 && reads === 0 && contexts === 0);
+      f.set("event-agent", "EMA"); assert(f.q("event-recheck-send").disabled);
+    } finally { f.dispose(); destination.dispose(); target.remove(); }
   });
 
 }

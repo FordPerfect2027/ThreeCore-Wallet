@@ -1,3 +1,4 @@
+import { consumeCallback } from "../src/security-callback.js";
 import { walletStorageGuard } from "../src/storage-guard.js";
 import { mountStorageGuardPanel } from "./storage-guard-panel.js";
 import { getDocumentExportGuard } from "./export-download.js";
@@ -431,7 +432,12 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     getReport: periodReport.getInput, stageReport: periodReport.stageHistory });
   const reportSetHost = document.createElement("div");
   reconciliationHost.before(reportSetHost);
-  const reportSet = mountReportSetPanel({ document, parent: reportSetHost });
+  const reportSet = mountReportSetPanel({ document, parent: reportSetHost,
+    stagePeriodProposal: draft => {
+      const accepted = periodPanel.stageProposed(draft);
+      if (accepted) consumeCallback(() => { periodHost.focus?.({ preventScroll: true }); periodHost.scrollIntoView?.({ block: "start", behavior: "auto" }); });
+      return accepted;
+    } });
   const navigation=mountWalletNavigation(document,[
     ["accounts","接続・残高",grid],["setup","口座の設定・保存",setupHost],["identity","3トークンの照合",identityHost],
     ["allowances","承認額の確認",allowanceHost],["history","保存した送受信履歴",transferVaultHost],["period","過去の期間を読む",periodHost],

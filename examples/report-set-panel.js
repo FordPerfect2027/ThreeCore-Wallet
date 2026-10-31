@@ -9,7 +9,7 @@ import { SET_LIMITATION, SET_SEGMENTS, setErrorText, setSummaryText,
   setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText, setEventComparisonText } from "../src/report-set-view.js";
 
 export function mountReportSetPanel({ document, parent,
-  storage = createReportHistoryStorage(), now,
+  storage = createReportHistoryStorage(), now, stagePeriodProposal = null,
   download = file => downloadSet(file, document) } = {}) {
   const nodes = {}, listeners = [], choices = new Map();
   let controller, state, disposed = false, lastDocument = null, lastResult = null;
@@ -129,6 +129,7 @@ export function mountReportSetPanel({ document, parent,
   make("pre", "event-recheck-range", "", eventSection);
   field("event-recheck-ack", "選んだ範囲とアカウントの全アドレスを、新しい未取得の控えとして保存することを確認しました", "checkbox", eventSection);
   button("event-recheck-json", "この範囲を確認し直す未取得の控えを保存", eventSection);
+  button("event-recheck-send", "読み取り画面でこの再確認予定を確認", eventSection);
   make("p", "event-recheck-help", "新しい控えに元の残高・履歴・比較の根拠は含めません。比較JSONも保管してください。期間読み取り画面で開き、対象を確認してから読み取りを開始できます。ここでは読み取りや元資料の修正を実行しません。", eventSection);
   const checks = make("section", "checks", undefined, result);
   make("h4", "checks-heading", "次に確認する箇所", checks);
@@ -171,6 +172,8 @@ export function mountReportSetPanel({ document, parent,
   make("p", "source-report-help", "元レポートJSONは期間レポート画面で再読込みできます。レポート内の全アドレス・履歴・メモを含み、上のメモ・短縮設定は適用されません。確認セットや保存一覧の付随情報は含めません。", exports);
   make("p", "queue-window-selection", "", exports);
   button("queue-window-json", "選んだ範囲を未取得の期間控えとして保存", exports);
+  button("queue-window-send", "読み取り画面でこの予定を確認", exports);
+  make("p", "proposal-help", typeof stagePeriodProposal === "function" ? "選んだ予定は、読み取り画面の確認欄へ直接渡せます。現在の控えへの反映・読み取り開始は、その画面で確認してから行います。" : "この単独画面では直接受け渡しを利用できません。未取得の控えをJSON保存し、期間読み取り画面で開いてください。", exports);
   make("p", "queue-window-help", "予定の1区間、または連続したページ全体を保存対象に選べます。ファイルにはアカウントの全アドレスと期間が入り、残高・履歴は未取得です。期間読み取り画面で開くための新しい控えで、元の証拠は含みません。", exports);
   make("p", "queue-window-order", "期間読み取り画面では、開始・終了の残高を確認してから、古いブロックから順に履歴を読みます。ページ全体をまとめる場合、先頭から指定ブロック数ずつ区切り直すため、上の予定とは並び順や区切りが変わることがあります。読み取り開始は別の操作です。", exports);
 
@@ -318,6 +321,7 @@ export function mountReportSetPanel({ document, parent,
     nodes["event-recheck-choice"].disabled = !!state?.busy || !eventComparison || !eventComparison.differences.length && !eventComparison.anchorDifferences.length;
     nodes["event-recheck-ack"].disabled = !!state?.busy || !eventRecheck;
     nodes["event-recheck-json"].disabled = !!state?.busy || !eventRecheck || !nodes["event-recheck-ack"].checked;
+    nodes["event-recheck-send"].disabled = !!state?.busy || !eventRecheck || typeof stagePeriodProposal !== "function";
     nodes["event-recheck-range"].textContent = eventRecheck ? eventRecheck.context.agent + " / Chain " + eventRecheck.context.chainId + " / " + eventRecheck.context.account +
       "\n再確認する範囲: " + eventRecheck.fromBlock + " ～ " + eventRecheck.toBlock + "（両端を含む " + eventRecheck.blocks + "ブロック）" +
       "\n1回 " + eventRecheck.windowSize + "ブロック。残高・履歴は未取得です。" +
@@ -425,6 +429,7 @@ export function mountReportSetPanel({ document, parent,
     nodes["evidence-source-ack"].disabled = value.busy || !value.evidenceReview || !["before", "after"].includes(nodes["evidence-source-role"].value);
     nodes["evidence-source-json"].disabled = value.busy || !value.evidenceReview || !["before", "after"].includes(nodes["evidence-source-role"].value) || !nodes["evidence-source-ack"].checked;
     renderEventComparison();
+    nodes["queue-window-send"].disabled = value.busy || !queueSelection || typeof stagePeriodProposal !== "function";
     nodes["comparison-evidence-file"].disabled = value.busy;
     nodes["comparison-evidence-output"].textContent = setComparisonEvidenceReviewText(value.evidenceReview);
     nodes["comparison-evidence-review-ack"].disabled = value.busy || !value.evidenceReview;
@@ -529,6 +534,8 @@ export function mountReportSetPanel({ document, parent,
   });
   listen(nodes["event-recheck-ack"], "change", renderEventRecheck);
   listen(nodes["event-recheck-json"], "click", () => { if (eventRecheck) void controller.exportEventRecheck(eventRecheck.query, eventRecheck.selection, nodes["event-recheck-ack"].checked, download); });
+  listen(nodes["event-recheck-send"], "click", () => { if (eventRecheck) void controller.stagePeriodProposal("discrepancy", eventRecheck.query, eventRecheck.selection, stagePeriodProposal); });
+  listen(nodes["queue-window-send"], "click", () => { if (queueSelection) void controller.stagePeriodProposal("missing", queueSelection.query, queueSelection.window.number, stagePeriodProposal); });
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });
