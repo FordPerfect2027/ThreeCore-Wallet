@@ -1,4 +1,4 @@
-import { compareReportSetEvents } from "../src/report-set-engine.js";
+import { compareReportSetEvents, reportSetEventRecheckRange } from "../src/report-set-engine.js";
 import { offerWalletDownload } from "./export-download.js";
 import { createReportHistoryStorage } from "../src/report-history-storage.js";
 import { createReportSetController } from "../src/report-set-controller.js";
@@ -18,6 +18,7 @@ export function mountReportSetPanel({ document, parent,
   let timelinePanel = null;
   let queueSelection = null;
   let eventComparison = null, eventPage = 0;
+  let eventRecheck = null, recheckModel = null, recheckPage = null;
   let lastReview = null, lastEvidenceReview = null;
   const host = document.createElement("section");
   host.className = "report-set-panel";
@@ -124,6 +125,11 @@ export function mountReportSetPanel({ document, parent,
   field("event-ack", "比較の全アドレス・イベントの値・ハッシュが暗号化されずに保存されることを確認しました", "checkbox", eventSection);
   button("event-json", "履歴の比較を全件JSON保存", eventSection);
   make("p", "event-help", "資料A・Bは選んだ順序です。新旧や信頼性の順ではありません。両方に保存した範囲だけを比較し、取得していない範囲を取引なしとは扱いません。保存メモ本文は含めません。下のアドレス短縮設定は使いません。", eventSection);
+  select("event-recheck-choice", "確認し直す食い違い", [["", "比較結果から選んでください"]], eventSection);
+  make("pre", "event-recheck-range", "", eventSection);
+  field("event-recheck-ack", "選んだ範囲とアカウントの全アドレスを、新しい未取得の控えとして保存することを確認しました", "checkbox", eventSection);
+  button("event-recheck-json", "この範囲を確認し直す未取得の控えを保存", eventSection);
+  make("p", "event-recheck-help", "新しい控えに元の残高・履歴・比較の根拠は含めません。比較JSONも保管してください。期間読み取り画面で開き、対象を確認してから読み取りを開始できます。ここでは読み取りや元資料の修正を実行しません。", eventSection);
   const checks = make("section", "checks", undefined, result);
   make("h4", "checks-heading", "次に確認する箇所", checks);
   make("p", "checks-help", "どの報告の、どの範囲を調べるかを表示します。元の証拠を自動修正する操作はありません。", checks);
@@ -295,7 +301,30 @@ export function mountReportSetPanel({ document, parent,
       choices.set(entry.id, { label, checkbox });
     }
   }
+  function renderEventRecheck() {
+    if (recheckModel !== eventComparison || recheckPage !== eventPage) {
+      recheckModel = eventComparison; recheckPage = eventPage; eventRecheck = null; nodes["event-recheck-ack"].checked = false;
+      nodes["event-recheck-choice"].replaceChildren();
+      const options = [["", "比較結果から選んでください"]];
+      if (eventComparison) {
+        eventComparison.differences.slice(eventPage * 50, (eventPage + 1) * 50).forEach((row, index) => {
+          options.push(["e:" + (eventPage * 50 + index + 1), "イベント " + (eventPage * 50 + index + 1) + " / " + row.transactionHash.slice(0, 12) + "… / log " + row.logIndex]);
+        });
+        eventComparison.anchorDifferences.forEach((row, index) => options.push(["b:" + (index + 1), "ブロックハッシュの食い違い / Block " + row.blockNumber]));
+      }
+      for (const [id, label] of options) { const option = document.createElement("option"); option.value = id; option.textContent = label; nodes["event-recheck-choice"].append(option); }
+      nodes["event-recheck-choice"].value = "";
+    }
+    nodes["event-recheck-choice"].disabled = !!state?.busy || !eventComparison || !eventComparison.differences.length && !eventComparison.anchorDifferences.length;
+    nodes["event-recheck-ack"].disabled = !!state?.busy || !eventRecheck;
+    nodes["event-recheck-json"].disabled = !!state?.busy || !eventRecheck || !nodes["event-recheck-ack"].checked;
+    nodes["event-recheck-range"].textContent = eventRecheck ? eventRecheck.context.agent + " / Chain " + eventRecheck.context.chainId + " / " + eventRecheck.context.account +
+      "\n再確認する範囲: " + eventRecheck.fromBlock + " ～ " + eventRecheck.toBlock + "（両端を含む " + eventRecheck.blocks + "ブロック）" +
+      "\n1回 " + eventRecheck.windowSize + "ブロック。残高・履歴は未取得です。" +
+      (eventRecheck.includesInterveningBlocks ? "\n2つの観測位置の間にあるブロックも含みます。" : "") : "比較結果から1つ選ぶと、再確認する範囲を表示します。";
+  }
   function renderEventComparison() {
+    renderEventRecheck();
     for (const name of ["event-before", "event-after", "event-agent"]) nodes[name].disabled = !!state?.busy || !state?.input;
     nodes["event-compare"].disabled = !!state?.busy || !state?.input || !nodes["event-before"].value || !nodes["event-after"].value || nodes["event-before"].value === nodes["event-after"].value;
     nodes["event-previous"].disabled = !!state?.busy || !eventComparison || eventPage === 0;
@@ -489,6 +518,17 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes["event-next"], "click", () => { if (disposed || state.busy || !eventComparison || (eventPage + 1) * 50 >= eventComparison.differences.length) return; eventPage++; renderEventComparison(); });
   listen(nodes["event-ack"], "change", renderEventComparison);
   listen(nodes["event-json"], "click", () => { if (eventComparison) void controller.exportEventComparison(eventComparison.query, nodes["event-ack"].checked, download); });
+  listen(nodes["event-recheck-choice"], "change", () => {
+    if (disposed || state.busy) return;
+    eventRecheck = null; nodes["event-recheck-ack"].checked = false;
+    if (eventComparison && nodes["event-recheck-choice"].value) {
+      try { eventRecheck = reportSetEventRecheckRange(state.input, eventComparison.query, nodes["event-recheck-choice"].value); }
+      catch { /* Selection stays disabled until a valid saved discrepancy is chosen. */ }
+    }
+    renderEventRecheck();
+  });
+  listen(nodes["event-recheck-ack"], "change", renderEventRecheck);
+  listen(nodes["event-recheck-json"], "click", () => { if (eventRecheck) void controller.exportEventRecheck(eventRecheck.query, eventRecheck.selection, nodes["event-recheck-ack"].checked, download); });
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });

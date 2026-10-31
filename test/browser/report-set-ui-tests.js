@@ -654,4 +654,21 @@ export function registerReportSetUITests(test) {
     } finally { f.dispose(); }
   });
 
+  test("report set: native discrepancy selection creates a new unread scope without applying evidence", async () => {
+    const initial = sequenceHistory([0n, 0n], (report, index) => { if (index === 1) report.slots[0].entry.draft.records[0].events[0].amountBaseUnits = "1"; });
+    const f = fixture({ initial });
+    try {
+      await f.accept(); const accepted = f.mounted.getState().input;
+      f.set("event-before", id(101)); f.set("event-after", id(102)); f.click("event-compare");
+      f.set("event-recheck-choice", "e:1"); assert(f.q("event-recheck-range").textContent.includes("35 ～ 35"));
+      f.check("event-ack"); assert(f.q("event-recheck-json").disabled);
+      f.check("event-recheck-ack"); f.click("event-recheck-json"); await f.settled();
+      const decoded = await decodePeriodFile(f.files[0].text);
+      assert(decoded.draft.plan.earlierBlock === "34" && decoded.draft.plan.laterBlock === "35");
+      assert(decoded.draft.earlier === null && decoded.draft.records.length === 0 && f.mounted.getState().input === accepted);
+      f.set("event-agent", "EMA"); assert(f.q("event-recheck-choice").value === "" && !f.q("event-recheck-ack").checked);
+      assert(f.q("event-recheck-json").disabled && f.files.length === 1);
+    } finally { f.dispose(); }
+  });
+
 }

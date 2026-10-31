@@ -528,3 +528,23 @@ test("saved-event comparison pages differences but saves all of them and invalid
     const old = f.q("event-compare"); f.dispose(); old.disabled = false; old.click(); assert.equal(f.files.length, 1);
   } finally { f.dispose(); }
 });
+
+test("event recheck selection previews an unread range and resets when the side, page or source changes", async () => {
+  const report = manyEventsInput(57), changed = clone(report);
+  for (const row of changed.slots[0].entry.draft.records[0].events) row.amountBaseUnits = "2";
+  const f = fixture(historyDocument([historyRecord(1, { report }), historyRecord(2, { report: changed })]));
+  try {
+    await f.accept(); const accepted = f.mounted.getState().input;
+    f.set("event-before", id(101)); f.set("event-after", id(102)); f.click("event-compare");
+    assert.equal(f.q("event-recheck-json").disabled, true); f.set("event-recheck-choice", "e:1");
+    assert.match(f.q("event-recheck-range").textContent, /35 ～ 35/); f.check("event-ack"); assert.equal(f.q("event-recheck-json").disabled, true);
+    f.check("event-recheck-ack"); f.click("event-recheck-json"); await f.settled();
+    const decoded = await decodePeriodFile(f.files[0].text); assert.equal(decoded.draft.plan.earlierBlock, "34"); assert.equal(decoded.draft.records.length, 0);
+    assert.equal(f.mounted.getState().input, accepted); f.set("event-recheck-choice", "e:2"); assert.equal(f.q("event-recheck-ack").checked, false);
+    f.check("event-recheck-ack"); f.click("event-next"); assert.equal(f.q("event-recheck-choice").value, ""); assert.equal(f.q("event-recheck-ack").checked, false);
+    assert.ok(f.q("event-recheck-choice").children.some(option => option.value === "e:51"));
+    f.set("event-recheck-choice", "e:51"); f.check("event-recheck-ack"); f.set("event-agent", "EMA"); assert.equal(f.q("event-recheck-json").disabled, true);
+    assert.equal(f.q("event-recheck-choice").value, "");
+    const control = f.q("event-recheck-json"); f.dispose(); control.disabled = false; control.click(); assert.equal(f.files.length, 1);
+  } finally { f.dispose(); }
+});

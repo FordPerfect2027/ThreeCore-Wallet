@@ -9,7 +9,7 @@ import { preparePeriodReportFile } from "./period-report-file.js";
 import { preparePeriodFile } from "./period-file.js";
 import { emptyPeriodDraft } from "./period-draft.js";
 import { reportSetTimeline, reportSetMissingHistoryQueue, missingHistoryPageRange } from "./report-set-timeline.js";
-import { analyzeReportSet, compareReportSets, compareReportSetEvents } from "./report-set-engine.js";
+import { analyzeReportSet, compareReportSets, compareReportSetEvents, reportSetEventRecheckRange } from "./report-set-engine.js";
 import { reportSetDiagnostics, querySetDiagnostics, diagnosticQuery, diagnosticText } from "./report-set-diagnostics.js";
 import { escapeReportHTML } from "./period-report-export.js";
 import { reportStatusText } from "./period-report-view.js";
@@ -442,4 +442,16 @@ export async function prepareReportSetEventComparisonFile(value, query, fileOpti
   try { boundedUtf8Length(text, 24 * 1024 * 1024); } catch { periodFail("PERIOD_SET_EVENT_SIZE"); }
   return Object.freeze({ ...resultFile(text, "json", "application/json"), filename: "ThreeCore-saved-event-comparison.json",
     sourcePayloadDigest: source.digest, containsOriginalEvidence: true });
+}
+
+export async function prepareReportSetEventRecheckFile(value, query, selection, fileOptions = {}) {
+  const range = reportSetEventRecheckRange(value, query, selection);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const draft = emptyPeriodDraft(createPeriodPlan({ context: range.context,
+    earlierBlock: (BigInt(range.fromBlock) - 1n).toString(), laterBlock: range.toBlock, windowSize: range.windowSize }));
+  const file = await preparePeriodFile(draft, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-unread-event-recheck-" + range.context.agent + ".json",
+    containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: range, executed: false });
 }

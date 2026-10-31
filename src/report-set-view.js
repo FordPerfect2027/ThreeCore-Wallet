@@ -34,6 +34,8 @@ const ERRORS = Object.freeze({
   PERIOD_SET_EVIDENCE_CONTENT: "一式に含まれる元資料または比較結果が、必要なファイル形式と異なります。別の欄へこの一式を移す操作はせず、保存した元の証拠一式を選び直してください。",
   PERIOD_SET_EVIDENCE_READ: "比較の証拠一式を読み取れませんでした。",
   PERIOD_SET_EVIDENCE_ENCODING: "比較の証拠一式はUTF-8で保存されたJSONを選んでください。",
+  PERIOD_SET_EVENT_RECHECK_SELECTION: "比較結果から、確認し直すイベントまたはブロックの食い違いを選んでください。",
+  PERIOD_SET_EVENT_RECHECK_RANGE: "選んだ観測位置を1つの期間控えに収められません。元の比較範囲を確認してください。",
   PERIOD_SET_EVENT_QUERY: "異なる2つの報告と、比較するトークンを選んでください。",
   PERIOD_SET_EVENT_SOURCE: "選んだ報告が現在の確認セットにありません。選び直してください。",
   PERIOD_SET_EVENT_SLOT: "選んだ報告の片方に、このトークンの期間控えがありません。",

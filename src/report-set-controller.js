@@ -3,13 +3,13 @@ import { periodFail } from "./period-plan.js";
 import { emptyReportHistory, validateReportHistory } from "./report-history-model.js";
 import { validateSetSelection, validateReportSet, createReportSet, inspectSetSources,
   assertSetSourcesUnchanged, validateSetExportOptions } from "./report-set-model.js";
-import { analyzeReportSet, compareReportSets, compareReportSetEvents } from "./report-set-engine.js";
+import { analyzeReportSet, compareReportSets, compareReportSetEvents, reportSetEventRecheckRange } from "./report-set-engine.js";
 import { prepareReportSetFile, readReportSetFile } from "./report-set-file.js";
 import { diagnosticQuery } from "./report-set-diagnostics.js";
 import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile,
   readReportSetChecksText, reviewReportSetChecksFile, prepareReportSetSourceFile, prepareMissingHistoryDraftFile,
   prepareReportSetComparisonFile, prepareReportSetCoverageFile, readReportSetComparisonText, reviewReportSetComparisonFile, prepareReportSetComparisonEvidenceFile,
-  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence, prepareComparisonEvidenceSourceFile, prepareReportSetEventComparisonFile } from "./report-set-export.js";
+  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence, prepareComparisonEvidenceSourceFile, prepareReportSetEventComparisonFile, prepareReportSetEventRecheckFile } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -421,6 +421,28 @@ export function createReportSetController({ storage, onChange = () => {},
     } catch (value) { return fail(value, token); }
   }
 
+
+  async function exportEventRecheck(query, selection, acknowledged, deliver) {
+    let token = generation;
+    try {
+      if (!guard()) return false;
+      token = ++generation;
+      if (!input) periodFail("PERIOD_SET_NO_RESULT");
+      if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
+      if (typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      const snapshot = input, range = reportSetEventRecheckRange(snapshot, query, selection);
+      if (!sameGeneration(token)) return false;
+      return await run("exporting", async (same, signal) => {
+        const file = await prepareReportSetEventRecheckFile(snapshot, range.query, range.selection, { signal });
+        if (!same()) return null;
+        const delivery = deliver(file);
+        if (observeCallbackResult(delivery) !== "synchronous") periodFail("PERIOD_ASYNC_DELIVERY");
+        if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
+        return file;
+      }, () => { phase = review ? "review" : "ready"; message = "食い違いを確認し直すための未取得の控えを保存しました。読み取りはまだ実行していません。"; });
+    } catch (value) { return fail(value, token); }
+  }
+
   function dispose() {
     if (disposed) return;
     generation++; disposed = true; phase = "disposed"; review = null; comparisonReview = null; inspection = null; checkReview = null; evidenceReview = null;
@@ -429,5 +451,5 @@ export function createReportSetController({ storage, onChange = () => {},
     consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,
-    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, exportEvidenceSource, exportEventComparison, cancel, invalidateReview, dispose });
+    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, exportEvidenceSource, exportEventComparison, exportEventRecheck, cancel, invalidateReview, dispose });
 }

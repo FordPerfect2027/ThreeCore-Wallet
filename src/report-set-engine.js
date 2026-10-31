@@ -271,3 +271,22 @@ export function compareReportSetEvents(value, queryValue) {
     rangeNotation: "inclusive", eventsCombined: false, absenceProvesNoTransfer: false,
     historicalOnly: true, liveChainRechecked: false, authenticated: false, authorizesExecution: false });
 }
+
+/** A proposed scope for an explicit saved discrepancy; never evidence that a reread happened. */
+export function reportSetEventRecheckRange(value, query, selection) {
+  const comparison = compareReportSetEvents(value, query);
+  if (typeof selection !== "string" || selection.trim() !== selection || !/^[eb]:[1-9][0-9]{0,4}$/.test(selection)) periodFail("PERIOD_SET_EVENT_RECHECK_SELECTION");
+  const [kind, indexText] = selection.split(":"), index = Number(indexText) - 1;
+  const selected = kind === "e" ? comparison.differences[index] : comparison.anchorDifferences[index];
+  if (!selected) periodFail("PERIOD_SET_EVENT_RECHECK_SELECTION");
+  const blocks = kind === "e" ? [selected.before?.event.blockNumber, selected.after?.event.blockNumber].filter(Boolean) : [selected.blockNumber];
+  blocks.sort(compareBlocks);
+  const fromBlock = blocks[0], toBlock = blocks.at(-1), width = BigInt(toBlock) - BigInt(fromBlock) + 1n;
+  if (BigInt(fromBlock) < 1n || width > 24000n) periodFail("PERIOD_SET_EVENT_RECHECK_RANGE");
+  return freezeSet({ selection, query: comparison.query, context: comparison.context,
+    fromBlock, toBlock, blocks: width.toString(), windowSize: Number(width > 2000n ? 2000n : width),
+    reason: kind === "e" ? selected.kind : "block-hash-disagreement",
+    transactionHash: kind === "e" ? selected.transactionHash : null, logIndex: kind === "e" ? selected.logIndex : null,
+    includesInterveningBlocks: BigInt(toBlock) > BigInt(fromBlock) + 1n,
+    historicalOnly: true, executed: false, originalEvidenceCopied: false });
+}
