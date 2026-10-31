@@ -1,0 +1,32 @@
+{
+  "source": "5b34eec",
+  "synthetic": true,
+  "capture": {
+    "filteredVisibleRows": 3,
+    "completeExportRows": 5,
+    "summary": "両方に選択3件／比較元だけ1件／今回だけ1件。照合値の変化1件／同じ照合値で判定が変化0件／比較できない0件。今回の再計算の相違0件／期待結果との差がある資料0件。 今回の内容・形式・照合値・読み込みの問題2件／未確認0件。表示で隠れた行も含む全体の件数です。",
+    "evidenceStatus": "保存内容と二組の再計算・比較が一致しました。 比較元4件／比較先4件／照合値の変化1件。 元資料自体に再計算の相違・形式・照合値の問題があります。照合結果の内訳をご確認ください。 現在の一覧・比較元・履歴は置き換えていません。 照合結果の保存を開始しました。",
+    "baselinePreserved": true,
+    "currentPreserved": true,
+    "apiAndUiBundleExact": true,
+    "negativeSourceScopePreserved": true
+  },
+  "actualOfflineCommands": [
+    {
+      "label": "matching",
+      "exitCode": 0,
+      "matchesRecomputation": true,
+      "allSourceReportsMatch": false
+    },
+    {
+      "label": "altered",
+      "exitCode": 2,
+      "matchesRecomputation": false,
+      "allSourceReportsMatch": false
+    }
+  ],
+  "fullBrowserCases": 968,
+  "realFilePickerVerified": false,
+  "userTabConnectionVerified": false,
+  "externalRpcCalls": 0
+}
