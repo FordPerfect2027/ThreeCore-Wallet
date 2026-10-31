@@ -106,7 +106,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   const get = id => document.getElementById("report-batch-" + id);
   const referenceReader = createFileReadScope(), listeners = [];
   let revision = 0, disposed = false, selection = null, active = null, result = null, sourceRows = [];
-  let referenceText, referenceValid = true, referenceBusy = false;
+  let referenceText, referenceValid = true, referenceBusy = false, viewRevision = 0;
   const current = id => !disposed && id === revision;
   function listen(id, event, callback) {
     const node = get(id); node.addEventListener(event, callback);
@@ -121,6 +121,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   }
   function buttons() {
     const referenceMatches = referenceReady();
+    for (const name of ["filter-name", "filter-status", "filter-clear"]) get(name).disabled = disposed || Boolean(active) || !result;
     get("run").disabled = disposed || !selection || Boolean(active) || !referenceMatches;
     get("resume").disabled = disposed || Boolean(active) || !canResumeRehearsalReportFileBatch(result);
     get("retry").disabled = disposed || Boolean(active) || !canRetryRehearsalReportFileBatch(result);
@@ -150,8 +151,28 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     }
     referenceBusy = false;
     get("rows").replaceChildren(); get("summary").textContent = "";
+    get("filter-name").value = ""; get("filter-status").value = "all";
+    get("filter-name").removeAttribute("aria-invalid"); get("filter-status").removeAttribute("aria-invalid");
+    get("filter-summary").textContent = ""; ++viewRevision;
     get("export-status").textContent = ""; get("results").hidden = true;
     get("status").textContent = ""; buttons(); return id;
+  }
+  function applyView() {
+    ++viewRevision; get("export-status").textContent = "";
+    const name = get("filter-name").value, status = get("filter-status").value;
+    const validName = typeof name === "string" && name.length <= 80 && !/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(name);
+    const validStatus = ["all", "matched", "different", "invalid", "unsupported", "hash-unavailable", "pending", "checksum-mismatch", "source-unavailable", "expected-differences"].includes(status);
+    get("filter-name").setAttribute("aria-invalid", String(!validName));
+    get("filter-status").setAttribute("aria-invalid", String(!validStatus));
+    let shown = 0;
+    Array.from(get("rows").children).forEach((tr, index) => {
+      const row = result?.files[index];
+      const visible = Boolean(row && validName && validStatus && row.name.toLowerCase().includes(name.toLowerCase()) &&
+        (status === "all" || (status === "expected-differences" ? row.expectedOutcomes?.differing > 0 : row.status === status)));
+      tr.hidden = !visible; if (visible) shown++;
+    });
+    get("filter-summary").textContent = !validName || !validStatus ? "絞り込み条件を確認してください。ファイル名は80文字以内です。全体の結果は保持しています。" :
+      result ? `表示 ${shown}件 ／ 全 ${result.files.length}件。絞り込みは一覧の表示だけに適用します。保存する控え・CSV・照合値一覧には全選択資料が含まれます。` : "";
   }
   function render(receipt, id, sources) {
     const labels = { matched: "再計算と一致", different: "再計算と相違あり", invalid: "資料の内容を確認できません",
@@ -168,18 +189,20 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
       button.setAttribute("aria-label", row.name + "を個別に再確認");
       button.disabled = typeof inspectSource !== "function" || row.sha256 === null;
       button.addEventListener("click", () => {
-        if (!current(id) || result !== receipt || active || button.disabled) return;
+        if (!current(id) || result !== receipt || active || button.disabled || tr.hidden) return;
+        const ownView = viewRevision;
         try {
           requireSyncExport(inspectSource(Object.freeze({ name: row.name, text: sources[index].text,
             expectedSha256: row.expectedSha256 ?? null })));
-          if (current(id) && result === receipt) get("export-status").textContent = "個別の確認欄に同じ資料を渡しました。再確認の結果はそちらに表示します。一括確認の結果は保持しています。";
-        } catch { if (current(id) && result === receipt) get("export-status").textContent = "個別の確認欄に渡せませんでした。一括確認の結果は保持しています。"; }
+          if (current(id) && result === receipt && ownView === viewRevision) get("export-status").textContent = "個別の確認欄に同じ資料を渡しました。再確認の結果はそちらに表示します。一括確認の結果は保持しています。";
+        } catch { if (current(id) && result === receipt && ownView === viewRevision) get("export-status").textContent = "個別の確認欄に渡せませんでした。一括確認の結果は保持しています。"; }
       });
       cell.append(button); tr.append(cell);
       return tr;
     });
     if (!current(id)) return;
     result = receipt; sourceRows = sources; get("rows").replaceChildren(...nodes);
+    applyView();
     if (!current(id)) return;
     const s = receipt.summary;
     get("summary").textContent = `${s.selected}件中、確認済み ${s.reviewed}件／未確認 ${s.pending}件。再計算の一致 ${s.matching}件、相違 ${s.differing}件、形式・照合値の問題 ${s.invalid + s.unsupported + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。期待結果との差が残る資料 ${s.reportsWithFailedExpectations}件。` +
@@ -275,6 +298,14 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
       if (current(id)) { active = null; buttons(); }
     }
   }
+  get("filter-name").value = ""; get("filter-status").value = "all";
+  for (const [name, event] of [["name", "input"], ["status", "change"]]) listen("filter-" + name, event, () => {
+    if (!disposed && !active && result) applyView();
+  });
+  listen("filter-clear", "click", () => {
+    if (disposed || active || !result) return;
+    get("filter-name").value = ""; get("filter-status").value = "all"; applyView();
+  });
   listen("run", "click", () => { void run(); });
   listen("resume", "click", () => { if (!get("resume").disabled) void run(result); });
   listen("retry", "click", () => { if (!get("retry").disabled) void run(result, true); });

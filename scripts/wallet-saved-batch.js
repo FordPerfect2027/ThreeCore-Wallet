@@ -10,7 +10,7 @@ import {isDeepStrictEqual} from 'node:util';
 export const WALLET_SAVED_BATCH_LIMITS=Object.freeze({maxFiles:50,maxFileBytes:16*1024*1024,maxTotalBytes:64*1024*1024});
 export class WalletSavedBatchError extends Error{constructor(code){super(code);this.name='WalletSavedBatchError';this.code=code;}}
 const fail=code=>{throw new WalletSavedBatchError(code);},receipts=new WeakSet(),hash=bytes=>createHash('sha256').update(bytes).digest('hex');
-const same=(left,right)=>right.isFile()&&['size','mtimeMs','ctimeMs','ino','dev'].every(key=>left[key]===right[key]);
+const same=(left,right)=>right.isFile()&&['size','mtimeNs','ctimeNs','ino','dev'].every(key=>left[key]===right[key]);
 const contained=(root,path)=>{const name=relative(root,path);return Boolean(name)&&name!=='..'&&!name.startsWith('..'+sep)&&!isAbsolute(name);};
 function limitsFrom(options){
  if(!options||typeof options!=='object'||Array.isArray(options)||![Object.prototype,null].includes(Object.getPrototypeOf(options)))fail('INVALID_BATCH_LIMITS');
@@ -26,9 +26,9 @@ export function walletSavedBatchErrorCode(error){
 }
 async function stableBytes(path,info,limit){
  const handle=await open(path,'r');try{
-  const before=await handle.stat();if(!same(info,before))fail('FILE_CHANGED');if(!Number.isSafeInteger(before.size)||before.size<1||before.size>limit)fail('FILE_SIZE_LIMIT');
-  const bytes=new Uint8Array(before.size);let offset=0;while(offset<bytes.length){const length=Math.min(65536,bytes.length-offset),result=await handle.read(bytes,offset,length,offset);if(!Number.isSafeInteger(result.bytesRead)||result.bytesRead<1||result.bytesRead>length)fail('FILE_CHANGED');offset+=result.bytesRead;}
-  const extra=await handle.read(new Uint8Array(1),0,1,bytes.length);if(extra.bytesRead!==0||!same(before,await handle.stat()))fail('FILE_CHANGED');return bytes;
+  const before=await handle.stat({bigint:true});if(!same(info,before))fail('FILE_CHANGED');if(typeof before.size!=='bigint'||before.size<1n||before.size>BigInt(limit))fail('FILE_SIZE_LIMIT');
+  const bytes=new Uint8Array(Number(before.size));let offset=0;while(offset<bytes.length){const length=Math.min(65536,bytes.length-offset),result=await handle.read(bytes,offset,length,offset);if(!Number.isSafeInteger(result.bytesRead)||result.bytesRead<1||result.bytesRead>length)fail('FILE_CHANGED');offset+=result.bytesRead;}
+  const extra=await handle.read(new Uint8Array(1),0,1,bytes.length);if(extra.bytesRead!==0||!same(before,await handle.stat({bigint:true})))fail('FILE_CHANGED');return bytes;
  }finally{await handle.close();}
 }
 const decode=bytes=>{try{return new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);}catch{fail('INVALID_UTF8');}};
@@ -36,9 +36,9 @@ const decode=bytes=>{try{return new TextDecoder('utf-8',{fatal:true,ignoreBOM:tr
 /** Explicit local inventory: validate each original independently, never restore or sum holdings. */
 export async function inspectWalletSavedBatch(path,options={}){
  const limits=limitsFrom(options);if(typeof path!=='string'||!path||path.includes('\0'))fail('INVALID_MANIFEST_PATH');
- const requested=resolve(path),manifestInfo=await lstat(requested);if(!manifestInfo.isFile())fail('MANIFEST_NOT_REGULAR');
+ const requested=resolve(path),manifestInfo=await lstat(requested,{bigint:true});if(!manifestInfo.isFile())fail('MANIFEST_NOT_REGULAR');
  const manifest=await realpath(requested),root=dirname(manifest),manifestBytes=await stableBytes(manifest,manifestInfo,EVIDENCE_MANIFEST_LIMIT);
- const unchanged=async()=>{if(await realpath(requested)!==manifest||!same(manifestInfo,await lstat(manifest)))fail('MANIFEST_CHANGED');};
+ const unchanged=async()=>{if(await realpath(requested)!==manifest||!same(manifestInfo,await lstat(manifest,{bigint:true})))fail('MANIFEST_CHANGED');};
  await unchanged();const entries=parseEvidenceManifest(decode(manifestBytes));if(entries.length>limits.maxFiles)fail('BATCH_ENTRY_LIMIT');if(entries.some(row=>!row.path.toLowerCase().endsWith('.json')))fail('JSON_FILES_REQUIRED');
  const paths=new Set(),inodes=new Set(),files=[];let admittedBytes=0,readBytes=0;
  for(const entry of entries){
@@ -46,13 +46,13 @@ export async function inspectWalletSavedBatch(path,options={}){
   try{
    const candidate=resolve(root,...entry.path.split('/')),actual=await realpath(candidate);if(!contained(root,actual))fail('OUTSIDE_EVIDENCE_DIRECTORY');if(actual===manifest)fail('MANIFEST_SELF_REFERENCE');
    const identity=process.platform==='win32'?actual.toLowerCase():actual;if(paths.has(identity))fail('FILE_ALIAS_DUPLICATE');paths.add(identity);
-   const info=await lstat(actual);if(!info.isFile())fail('FILE_NOT_REGULAR');const physical=info.ino?info.dev+':'+info.ino:null;if(physical&&inodes.has(physical))fail('FILE_ALIAS_DUPLICATE');if(physical)inodes.add(physical);
-   if(!Number.isSafeInteger(info.size)||info.size<1||info.size>limits.maxFileBytes)fail('FILE_SIZE_LIMIT');if(info.size>limits.maxTotalBytes-admittedBytes)fail('TOTAL_SIZE_LIMIT');admittedBytes+=info.size;
-   const bytes=await stableBytes(actual,info,limits.maxFileBytes);byteLength=bytes.length;readBytes+=byteLength;if(await realpath(candidate)!==actual||!same(info,await lstat(actual)))fail('FILE_CHANGED');actualSha256=hash(bytes);
+   const info=await lstat(actual,{bigint:true});if(!info.isFile())fail('FILE_NOT_REGULAR');const physical=info.ino?info.dev+':'+info.ino:null;if(physical&&inodes.has(physical))fail('FILE_ALIAS_DUPLICATE');if(physical)inodes.add(physical);
+   if(typeof info.size!=='bigint'||info.size<1n||info.size>BigInt(limits.maxFileBytes))fail('FILE_SIZE_LIMIT');if(info.size>BigInt(limits.maxTotalBytes-admittedBytes))fail('TOTAL_SIZE_LIMIT');admittedBytes+=Number(info.size);
+   const bytes=await stableBytes(actual,info,limits.maxFileBytes);byteLength=bytes.length;readBytes+=byteLength;if(await realpath(candidate)!==actual||!same(info,await lstat(actual,{bigint:true})))fail('FILE_CHANGED');actualSha256=hash(bytes);
    if(actualSha256!==entry.expectedSha256){files.push(Object.freeze({...entry,actualSha256,byteLength,status:'checksum-mismatch',inspection:null}));continue;}
    const inspection=await inspectWalletSavedText(decode(bytes));
    if(inspection.validation==='validated-original'&&(inspection.textDigest!==actualSha256||inspection.checksumVerified!==true))fail('INSPECTION_HASH_INCONSISTENT');
-   if(await realpath(candidate)!==actual||!same(info,await lstat(actual)))fail('FILE_CHANGED');
+   if(await realpath(candidate)!==actual||!same(info,await lstat(actual,{bigint:true})))fail('FILE_CHANGED');
    files.push(Object.freeze({...entry,actualSha256,byteLength,status:inspection.validation,inspection}));
   }catch(error){files.push(Object.freeze({...entry,actualSha256,byteLength,status:'unreadable',code:walletSavedBatchErrorCode(error),inspection:null}));}
  }
@@ -93,8 +93,8 @@ export function encodeWalletSavedLocalBatchComparison(result,format='json'){
 /** Read the supplied comparison as untrusted data, then recompute from both local manifests. */
 export async function reviewWalletSavedLocalBatchComparison(beforeManifest,afterManifest,comparisonPath){
  if(typeof comparisonPath!=='string'||!comparisonPath||comparisonPath.includes('\0'))fail('INVALID_BATCH_COMPARISON_PATH');
- const requested=resolve(comparisonPath),info=await lstat(requested);if(!info.isFile())fail('BATCH_COMPARISON_NOT_REGULAR');const actual=await realpath(requested);
- const unchanged=async()=>{if(await realpath(requested)!==actual||!same(info,await lstat(actual)))fail('BATCH_COMPARISON_CHANGED');};
+ const requested=resolve(comparisonPath),info=await lstat(requested,{bigint:true});if(!info.isFile())fail('BATCH_COMPARISON_NOT_REGULAR');const actual=await realpath(requested);
+ const unchanged=async()=>{if(await realpath(requested)!==actual||!same(info,await lstat(actual,{bigint:true})))fail('BATCH_COMPARISON_CHANGED');};
  const bytes=await readBoundedLocalBytes(actual,WALLET_LOCAL_BATCH_REVIEW_LIMIT,{fail,sizeCode:'BATCH_COMPARISON_SIZE',changedCode:'BATCH_COMPARISON_CHANGED'});await unchanged();let supplied;
  try{supplied=parseSecurityJson(decode(bytes),{bytes:WALLET_LOCAL_BATCH_REVIEW_LIMIT});}catch{fail('BATCH_COMPARISON_JSON');}
  if(!supplied||typeof supplied!=='object'||Array.isArray(supplied)||supplied.schema!==WALLET_LOCAL_BATCH_COMPARISON_SCHEMA)fail('BATCH_COMPARISON_SCHEMA');

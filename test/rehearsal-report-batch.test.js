@@ -79,8 +79,8 @@ test('a changing manifest suppresses the entire batch output',t=>fixture(async({
  try{const result=await run([manifest]);assert.equal(result.code,1);assert.equal(result.output,'');assert.match(result.errors,/MANIFEST_CHANGED/);}finally{mock.mock.restore();}
 }));
 for(const fault of ['replaced-before-read','changed-after-read','growth','invalid-read-count','read-error'])test('opened report '+fault+' is refused and its owned handle is closed',t=>fixture(async({manifest,save})=>{
- const path=await save('report.json',source);await fs.writeFile(manifest,line('report.json',source));const info=await fs.lstat(path),original=fs.open.bind(fs),bytes=Buffer.from(source);let stats=0,reads=0,closed=0;
- const handle={async stat(){stats++;return{...info,isFile:()=>true,mtimeMs:info.mtimeMs+((fault==='replaced-before-read'||fault==='changed-after-read'&&stats>1)?1:0)};},
+ const path=await save('report.json',source);await fs.writeFile(manifest,line('report.json',source));const info=await fs.lstat(path,{bigint:true}),original=fs.open.bind(fs),bytes=Buffer.from(source);let stats=0,reads=0,closed=0;
+ const handle={async stat(){stats++;return{...info,isFile:()=>true,mtimeNs:info.mtimeNs+((fault==='replaced-before-read'||fault==='changed-after-read'&&stats>1)?1n:0n)};},
   async read(target,offset,length,position){reads++;if(fault==='read-error')throw Error('private raw details');if(fault==='invalid-read-count')return{bytesRead:length+1};if(position===bytes.length)return{bytesRead:fault==='growth'?1:0};const size=Math.min(length,bytes.length-position);target.set(bytes.subarray(position,position+size),offset);return{bytesRead:size};},async close(){closed++;}};
  const mock=t.mock.method(fs,'open',async(file,...args)=>resolve(file)===resolve(path)?handle:original(file,...args));syncBuiltinESMExports();
  try{const result=await reviewRehearsalReportBatch(manifest);assert.equal(result.files[0].status,'unreadable');assert.equal(closed,1);if(fault==='replaced-before-read')assert.equal(reads,0);assert.ok(!JSON.stringify(result).includes('private raw details'));}

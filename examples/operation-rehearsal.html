@@ -333,6 +333,8 @@
       <p id="report-batch-status" role="status" aria-live="polite"></p>
       <div id="report-batch-results" hidden>
         <p id="report-batch-summary"></p>
+        <div class="fields"><label>一覧のファイル名で探す<input id="report-batch-filter-name" maxlength="80" spellcheck="false" disabled></label><label>一覧に表示する結果<select id="report-batch-filter-status" disabled><option value="all">すべて</option><option value="matched">再計算と一致</option><option value="different">再計算と相違あり</option><option value="expected-differences">期待結果との差が残る資料</option><option value="invalid">資料の内容を確認できない</option><option value="unsupported">対象外の形式</option><option value="hash-unavailable">照合値を計算できない</option><option value="pending">未確認</option><option value="checksum-mismatch">以前の照合値と不一致</option><option value="source-unavailable">ファイルを読み込めない</option></select></label></div>
+        <button id="report-batch-filter-clear" type="button" disabled>一覧の絞り込みを解除</button><p id="report-batch-filter-summary" class="small" role="status" aria-live="polite"></p>
         <div class="table-wrap"><table><caption>選択した資料ごとの確認結果</caption><thead><tr><th scope="col">ファイル名</th><th scope="col">再計算</th><th scope="col">相違の数</th><th scope="col">選択した内容のSHA-256</th><th scope="col">詳細</th></tr></thead><tbody id="report-batch-rows"></tbody></table></div>
         <p id="report-batch-reference-note" class="small"></p>
       </div>

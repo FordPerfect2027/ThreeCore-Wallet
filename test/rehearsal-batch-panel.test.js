@@ -6,6 +6,8 @@ import { mountRehearsalBatchReviewPanel } from "../examples/operation-rehearsal-
 import { reportRehearsalOverview } from "../src/operation-rehearsal-overview.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { REHEARSAL_WORKSPACE_SCHEMA } from "../src/operation-rehearsal-workspace.js";
+import { captureRehearsalCheckSuite, encodeRehearsalCheckReport } from "../src/operation-rehearsal-check-suite.js";
+import { REHEARSAL_SCENARIO_SET_SCHEMA } from "../src/operation-rehearsal-scenario-set.js";
 const source=JSON.stringify(reportRehearsalOverview({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:"DAT",ledgers:[rehearsalExampleV2()]}));
 const fast={digest:async(_,bytes)=>Uint8Array.from(createHash("sha256").update(bytes).digest()).buffer};
 function setup(subtle=fast,inspectSource=null){const nodes=new Map(),downloads=[];let action=()=>{};
@@ -20,6 +22,27 @@ const done=f=>wait(()=>f.q("status").getAttribute("aria-busy")==="false");
 const manifest=(name="a.json",text=source)=>createHash("sha256").update(text).digest("hex")+"  "+name+"\n";
 const paste=(f,text)=>{f.q("reference-text").value=text;f.q("reference-text").dispatchEvent(new Event("input"));};
 const details=(f,index=0)=>f.q("rows").children[index].children.at(-1).children[0];
+
+const filter=(f,name,value)=>{f.q('filter-'+name).value=value;f.q('filter-'+name).dispatchEvent(new Event(name==='name'?'input':'change'));};
+const visible=f=>f.q('rows').children.filter(row=>!row.hidden).map(row=>row.children[0].textContent);
+test('batch filters separate failed expectations from faithful recomputation and retain complete exports',async()=>{
+ const input=rehearsalExampleV2(),suite=structuredClone(captureRehearsalCheckSuite({schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:'case',label:'Expected comparison',before:input,after:input}]}));suite.expected[0].after.metrics.cash='1';
+ const negative=encodeRehearsalCheckReport(suite),opened=[],f=setup(fast,row=>opened.push(row));
+ try{f.choose([file('FIRST.json'),file('negative.json',negative),file('invalid.json','{}')]);f.q('run').click();await done(f);const original={};for(const id of ['save','csv','manifest']){f.q(id).click();original[id]=f.downloads.at(-1).text;}
+  assert.equal(JSON.parse(original.save).files[1].status,'matched');filter(f,'status','matched');assert.deepEqual(visible(f),['FIRST.json','negative.json']);filter(f,'status','expected-differences');assert.deepEqual(visible(f),['negative.json']);details(f,0).click();assert.equal(opened.length,0);details(f,1).click();assert.equal(opened[0].text,negative);
+  filter(f,'name','NEGATIVE');assert.deepEqual(visible(f),['negative.json']);filter(f,'name','absent');assert.deepEqual(visible(f),[]);assert.match(f.q('filter-summary').textContent,/表示 0件 ／ 全 3件/);for(const id of ['save','csv','manifest']){f.q(id).click();assert.equal(f.downloads.at(-1).text,original[id]);}f.q('filter-clear').click();assert.equal(visible(f).length,3);
+ }finally{f.panel.dispose();}
+});
+test('batch filters reject invalid conditions, reset on new references and suppress obsolete detail feedback',async()=>{
+ let f;f=setup(fast,()=>{filter(f,'name','absent');return true;});try{f.choose([file()]);f.q('run').click();await done(f);details(f).click();assert.equal(f.q('export-status').textContent,'');
+  for(const name of ['x'.repeat(81),'a\u202eb']){filter(f,'name',name);assert.equal(f.q('filter-name').getAttribute('aria-invalid'),'true');assert.deepEqual(visible(f),[]);assert(!f.q('save').disabled);}f.q('filter-clear').click();filter(f,'status','invented');assert.equal(f.q('filter-status').getAttribute('aria-invalid'),'true');assert.deepEqual(visible(f),[]);
+  paste(f,manifest());assert.equal(f.q('filter-name').value,'');assert.equal(f.q('filter-status').value,'all');assert(f.q('filter-status').disabled);f.q('run').click();await done(f);assert.deepEqual(visible(f),['a.json']);filter(f,'name','missing');f.choose([file('b.json')]);assert.equal(f.q('filter-name').value,'');f.panel.dispose();filter(f,'name','late');assert.equal(f.q('filter-summary').textContent,'');
+ }finally{f.panel.dispose();}
+});
+test('batch retry refreshes the current failure filter without rereading a successful file',async()=>{
+ const reads=[],f=setup();let recovered=false;const item=(name,index)=>({name,size:Buffer.byteLength(source),arrayBuffer(){reads.push(index);return index===1&&!recovered?Promise.reject(Error('temporary')):Promise.resolve(new TextEncoder().encode(source).buffer);}});
+ try{f.choose([item('a.json',0),item('b.json',1)]);f.q('run').click();await done(f);filter(f,'status','source-unavailable');assert.deepEqual(visible(f),['b.json']);recovered=true;f.q('retry').click();assert(f.q('filter-status').disabled);await done(f);assert.equal(f.q('filter-status').value,'source-unavailable');assert.deepEqual(visible(f),[]);assert.deepEqual(reads,[0,1,1]);filter(f,'status','matched');assert.deepEqual(visible(f),['a.json','b.json']);}finally{f.panel.dispose();}
+});
 
 test('failed-file retry reads only the failure and retains successful detail sources',async()=>{
  const reads=[],opened=[],f=setup(fast,value=>opened.push(value));let recovered=false;const item=(name,index)=>({name,size:Buffer.byteLength(source),arrayBuffer(){reads.push(index);return index===1&&!recovered?Promise.reject(Error('temporary')):Promise.resolve(new TextEncoder().encode(source).buffer);}});
