@@ -1,7 +1,11 @@
 import { createPortfolioHistory, HISTORY_TEXT_LIMIT } from "./portfolio-history.js";
 import { AGENT_IDS } from "./wallet-session.js";
+import { decodePortfolioReport } from "./portfolio-report.js";
+import { captureDataArray } from "./security-data.js";
 
 export const HISTORY_FILE_LIMIT = HISTORY_TEXT_LIMIT * 4;
+export const HISTORY_REPORT_FILE_LIMIT = 65536;
+export const HISTORY_REPORT_BATCH_LIMIT = 1048576;
 export class HistoryFileError extends Error {
   constructor(code, message) {
     super(message);
@@ -15,6 +19,23 @@ function fail(code, message) {
 function agentName(agent) {
   if (!AGENT_IDS.includes(agent)) fail("INVALID_AGENT", "Select a ThreeCore agent");
   return agent;
+}
+
+/** Build a separate candidate; one invalid/conflicting report rejects the whole batch. */
+export function preparePortfolioReportsHistory(inputs, agent) {
+  agentName(agent);
+  let sources; try { sources = captureDataArray(inputs, 64, 1); } catch { fail("INVALID_FILE", "Choose one to 64 portfolio reports"); }
+  let total = 0;
+  const snapshots = sources.map(text => {
+    if (typeof text !== "string" || !text.length || text.length > HISTORY_REPORT_FILE_LIMIT) fail("FILE_SIZE", "Report too large");
+    const size = new TextEncoder().encode(text).byteLength; total += size;
+    if (size > HISTORY_REPORT_FILE_LIMIT || total > HISTORY_REPORT_BATCH_LIMIT) fail("FILE_SIZE", "Report batch too large");
+    const snapshot = decodePortfolioReport(text).snapshot;
+    if (snapshot.agent !== agent) fail("AGENT_MISMATCH", "This report belongs to another card");
+    return snapshot;
+  });
+  const history = createPortfolioHistory(), merged = history.merge(snapshots);
+  return Object.freeze({ ...validateHistoryFileText(history.exportText(), agent), sourceCount: sources.length, duplicateCount: merged.duplicates });
 }
 
 /** Validate a history archive and return a canonical, bounded copy. */
