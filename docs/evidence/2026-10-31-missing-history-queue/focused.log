@@ -1,0 +1,44 @@
+✔ saved prefixes distinguish empty plans, partial history and complete record presence (89.9637ms)
+✔ adjacent completed reports count each block once with exact inclusive query boundaries (219.1213ms)
+✔ overlapping windows and identical saved reports never double count acquired ranges (407.9381ms)
+✔ large unplanned gaps remain exact without allocating a row per block (103.3083ms)
+✔ archived and restricted source records remain explicit review evidence (463.4876ms)
+✔ shared-chain hash disagreements remain visible despite full saved range coverage (212.8454ms)
+✔ separate chains and missing tokens never acquire coverage from another group (99.1933ms)
+✔ coverage is immutable, independent of selection order and does not alter evidence (187.5706ms)
+✔ coverage panel selects pending and recorded intervals and removes retained handlers (38.1785ms)
+✔ a 24,000-block missing range is proposed as 2,000 by 10 then the remaining two windows (112.3131ms)
+✔ partial saved prefixes are skipped and small final windows retain exact inclusive endpoints (47.9067ms)
+✔ planning gaps require an explicit mode and huge offsets do not enumerate earlier pages (166.838ms)
+✔ adjacent missing cells merge across plan boundaries without scheduling saved windows (81.2184ms)
+✔ complete but conflicting evidence is not silently proposed as missing or verified (404.3212ms)
+✔ unknown groups, malformed options and out-of-range pages fail without invoking getters (35.0587ms)
+✔ missing queues remain attached to the selected token and do not sum different contexts (30.6017ms)
+✔ queue panel advances ten windows at a time and invalidates stale plans after editing (51.1761ms)
+✔ mounted queue uses captured evidence and retained buttons cannot act after disposal (38.9163ms)
+✔ timeline has distinct chronological groups for all three tokens (221.9058ms)
+✔ timeline order is independent of the order in which checkboxes were selected (166.031ms)
+✔ gap cell explains exact boundaries and adjacent report names (85.7738ms)
+✔ tiny intervals stay visible beside a gap larger than safe floating-point integers (75.2733ms)
+✔ overlap cell identifies every covering report without repeating an interval (66.3531ms)
+✔ same-evidence repetitions use review wording instead of duplicate value totals (266.884ms)
+✔ a conflicting boundary is disclosed on both neighboring cells (81.2246ms)
+✔ shared chain hash disagreements are visible on each affected token group (166.9869ms)
+✔ missing agent has a named notice instead of an invented empty period (95.0852ms)
+✔ partial archived evidence is visibly marked and never receives recorded tone (179.5534ms)
+✔ restricted source record retains the reacquisition instruction (108.9955ms)
+✔ all cells have unique stable identifiers and immutable nested report references (359.4856ms)
+✔ timeline panel announces selected report details without modifying source input (110.1615ms)
+✔ selection is exclusive within one token group and independent across groups (121.9345ms)
+✔ arrow keys and Home/End move focus without silently selecting a different interval (97.6091ms)
+✔ timeline renders hostile labels as plain text when a cell is selected (123.8916ms)
+✔ unmounting removes handlers from retained controls (100.2058ms)
+✔ all missing-token notices remain explicit in the visual panel (70.8636ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4453.0846
