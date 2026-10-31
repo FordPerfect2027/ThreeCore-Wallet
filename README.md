@@ -525,6 +525,8 @@ The same [check-detail comparison is available on screen](docs/REPORT_CHECK_SCRE
 
 A displayed set can also [export one original period report](docs/REPORT_SET_SOURCE_EXPORT_2026-10-31.md) in the existing reloadable report format, preserving its full evidence while leaving the set and saved history unchanged.
 
+The timeline separately displays [saved Transfer-query coverage and missing ranges](docs/REPORT_HISTORY_COVERAGE_2026-10-31.md), without counting duplicate windows twice or treating planned ranges as acquired evidence.
+
 
 ### Resumable historical period collection (local development)
 
