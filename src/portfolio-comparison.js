@@ -1,4 +1,37 @@
 import { validatePortfolioSnapshot } from "./portfolio-report.js";
+import { parseSecurityJson } from "./security-json.js";
+import { captureDataRecord } from "./security-data.js";
+
+export const PORTFOLIO_COMPARISON_REPORT_LIMIT = 131072;
+const REPORT_JSON_LIMITS = Object.freeze({ bytes: PORTFOLIO_COMPARISON_REPORT_LIMIT, depth: 12, nodes: 10000, keyCharacters: 96, stringCharacters: 65536 });
+const REPORT_FLAGS = Object.freeze({ schema: "threecore-portfolio-comparison-v1", historicalObservation: true, readOnly: true,
+  authenticated: false, securityAudit: false, provesTransfers: false, provesProfit: false, canAuthorizeConnection: false, canAuthorizeTransaction: false });
+function comparisonDocument(earlier, later) {
+  const before = validatePortfolioSnapshot(earlier), after = validatePortfolioSnapshot(later);
+  return Object.freeze({ ...REPORT_FLAGS, earlier: before, later: after, comparison: comparePortfolioSnapshots(before, after) });
+}
+/** Preserve normalized observations and reproducible arithmetic, not original file formatting or provenance. */
+export function encodePortfolioComparisonReport(earlier, later) {
+  const text = JSON.stringify(comparisonDocument(earlier, later), null, 2) + "\n";
+  try { parseSecurityJson(text, REPORT_JSON_LIMITS); } catch { fail("COMPARISON_REPORT_SIZE", "Comparison report exceeds its bound"); }
+  return text;
+}
+function sameComparisonJSON(a, b) {
+  if (a === b) return true;
+  if (!a || !b || typeof a !== "object" || typeof b !== "object" || Array.isArray(a) !== Array.isArray(b)) return false;
+  const keys = Object.keys(a), other = Object.keys(b);
+  return keys.length === other.length && keys.every(key => Object.hasOwn(b, key) && sameComparisonJSON(a[key], b[key]));
+}
+/** Reject altered arithmetic or authority claims; recomputation does not authenticate the input observations. */
+export function decodePortfolioComparisonReport(text) {
+  let document;
+  try { document = captureDataRecord(parseSecurityJson(text, REPORT_JSON_LIMITS), [...Object.keys(REPORT_FLAGS), "earlier", "later", "comparison"]); }
+  catch { fail("COMPARISON_REPORT_INVALID", "Expected a bounded comparison report"); }
+  if (Object.keys(REPORT_FLAGS).some(key => document[key] !== REPORT_FLAGS[key])) fail("COMPARISON_REPORT_INVALID", "Unexpected comparison report flags");
+  const expected = comparisonDocument(document.earlier, document.later);
+  if (!sameComparisonJSON(expected.comparison, document.comparison)) fail("COMPARISON_REPORT_MISMATCH", "Saved comparison differs from recomputation");
+  return expected;
+}
 
 export class PortfolioComparisonError extends Error {
   constructor(code, message) {

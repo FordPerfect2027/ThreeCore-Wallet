@@ -6,6 +6,7 @@ import { inspectWalletSavedText, walletSavedInspectionText, WALLET_SAVED_INSPECT
 const USAGE = "Usage: node scripts/inspect-wallet-saved-file.js source.json [--json]\n" +
   "Validates checksummed period/report originals, transfer snapshots/archives/vaults, identity/balance observations, allowance targets/observations and reconciliation sources.\n" +
   "Checksummed workspace backups are validated; plain portfolio reports/history, token input lists and public wallet setup receive separate structure-only validation.\n" +
+  "Portable portfolio comparisons recompute saved arithmetic from both included observations; source authenticity remains unverified.\n" +
   "Rehearsal ledgers, workspaces, sessions and scenario sets receive structure-only validation and recalculated practice-record counts; they are not on-chain evidence.\n" +
   "Known auxiliary files receive declared-format guidance only; their contents and conclusions are not verified.\n" +
   "Output contains guidance and counts, not original addresses, balances or note values. It is not a restorable backup.\n" +

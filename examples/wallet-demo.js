@@ -85,7 +85,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   const storagePanel = mountStorageGuardPanel({ document, parent: securityHost, guard: storageGuard });
   cleanup.push(() => storagePanel.dispose());
   const savedFileDestinations = Object.freeze(Object.fromEntries(Object.entries({ setup: "setup", workspace: "workspace",
-    "token-plan": "accounts", portfolio: "accounts", "portfolio-history": "accounts",
+    "token-plan": "accounts", portfolio: "accounts", "portfolio-history": "accounts", "portfolio-comparison": "accounts",
     "transfer-vault": "history", period: "period", library: "period-library", report: "period-report",
     history: "report-history", set: "report-set", reconciliation: "reconciliation" })
     .map(([target, key]) => [target, () => navigation.goTo(key)])));

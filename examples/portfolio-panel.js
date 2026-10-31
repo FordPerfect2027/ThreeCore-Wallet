@@ -229,7 +229,7 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
       status.textContent = "記録の形式が正しくありません。";
     }
   });
-  comparison = mountComparisonPanel({ document, parent: section });
+  comparison = mountComparisonPanel({ document, parent: section, download });
   tokenPlan = mountTokenPlanPanel({ document, parent: section, getContext, download,
     readLines: () => input.value,
     applyLines: value => {

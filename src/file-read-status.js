@@ -178,6 +178,7 @@ const walletSavedTargets = Object.freeze({
   "threecore-portfolio-history-v1": ["portfolio-history", "FILE_USE_PORTFOLIO_HISTORY"],
   "threecore-wallet-setup-v1": ["setup", "FILE_USE_SETUP"],
   "threecore-token-plan-v1": ["token-plan", "FILE_USE_TOKEN_PLAN"],
+  "threecore-portfolio-comparison-v1": ["portfolio-comparison", "FILE_USE_PORTFOLIO_COMPARISON"],
   "threecore.saved-file-inspection.v3": [null, "PERIOD_FILE_INSPECTION_ONLY"],
   "threecore.transfer-file.v1": ["transfer", "FILE_USE_TRANSFER"],
   "threecore.transfer-archive-file.v1": ["transfer-archive", "FILE_USE_TRANSFER_ARCHIVE"],
@@ -256,6 +257,7 @@ const walletSavedMessages = Object.freeze({
   FILE_USE_PORTFOLIO: "過去の複数トークン残高の記録です。「複数トークンの残高確認」の「過去の記録を表示」で元のJSONを確認してください。この形式には内部チェックサムがありません。",
   FILE_USE_PORTFOLIO_HISTORY: "過去の複数トークン残高の保存履歴です。「保存記録の履歴管理」で元のJSONを確認してください。この形式には内部チェックサムがありません。",
   FILE_USE_TOKEN_PLAN: "トークンの契約アドレス入力リストです。対象のカードの「トークン入力リストの保存・再利用」でファイルを読み込み、対象とチェーンを確認してから反映してください。内部チェックサム・アカウント・残高は含みません。",
+  FILE_USE_PORTFOLIO_COMPARISON: "前後の残高記録と比較結果です。対象のカードの「前に保存した記録と比較」にある「保存した比較資料を再確認」で開けます。保存値は再計算しますが、出所・現在の残高・送金・利益を証明しません。内部チェックサムはありません。",
   FILE_USE_SETUP: "3ウォレットの公開アドレスとネットワークの設定です。「3ウォレットの設定を保存・復元」で元のJSONを確認してください。この形式には内部チェックサムがなく、接続許可や所有権を証明しません。",
   FILE_USE_TRANSFER: "受信・送信履歴の保存JSONです。該当トークンの履歴画面で、元のJSONを選んで確認してください。現在のチェーンへの再照会は行いません。",
   FILE_USE_TRANSFER_ARCHIVE: "複数区間の履歴をまとめたJSONです。履歴の保管画面で元のJSONを確認してください。取得済み区間の記録であり、全履歴を取得した証明ではありません。",
@@ -332,7 +334,7 @@ export const WALLET_SAVED_REHEARSAL_SCOPE_FIELDS = Object.freeze(["rehearsalLedg
 const rehearsalScopeLabels = Object.freeze({ rehearsalLedgerReferences: "練習用の履歴の参照", rehearsalRecordReferences: "練習用の記録の参照", rehearsalRejectedRecordReferences: "入力された仮想条件に合わない記録の参照", rehearsalScenarioReferences: "仮想条件の比較ケース" });
 const rehearsalSavedTypes = Object.freeze({ "threecore.operation-rehearsal.v1": "運用リハーサルの旧形式の記録", "threecore.operation-rehearsal.v2": "運用リハーサルの記録", "threecore.operation-rehearsal-workspace.v1": "運用リハーサルの3トークン履歴", "threecore.operation-rehearsal-session.v1": "運用リハーサルの履歴と比較ケース", "threecore.operation-rehearsal-scenario-set.v1": "運用リハーサルの比較ケース集" });
 const observationScopeLabels = Object.freeze({ archiveReferences: "履歴まとめの参照", transferRecordReferences: "取得区間の記録の参照", eventReferences: "履歴イベントの参照", identityObservationReferences: "トークン・残高観測の参照", allowanceTargetReferences: "利用許可の確認対象の参照", allowanceObservationReferences: "利用許可の観測行の参照", configurationReferences: "ウォレット設定の行", configuredAccountReferences: "設定済み公開アドレスの参照", configuredTokenReferences: "設定済みトークン契約の参照", portfolioObservationReferences: "複数トークン残高記録の参照", holdingReferences: "トークン残高の行の参照", unknownHoldingReferences: "残高が不明な行の参照" });
-const legacySavedTypes = Object.freeze({ "threecore-portfolio-snapshot-v1": "過去の複数トークン残高記録", "threecore-portfolio-history-v1": "複数トークン残高の保存履歴", "threecore-wallet-setup-v1": "3ウォレットの公開設定", "threecore-token-plan-v1": "トークンの契約アドレス入力リスト" });
+const legacySavedTypes = Object.freeze({ "threecore-portfolio-snapshot-v1": "過去の複数トークン残高記録", "threecore-portfolio-history-v1": "複数トークン残高の保存履歴", "threecore-wallet-setup-v1": "3ウォレットの公開設定", "threecore-token-plan-v1": "トークンの契約アドレス入力リスト", "threecore-portfolio-comparison-v1": "前後の残高記録と再計算できる比較結果" });
 function savedPortfolioScope(observations, configuration) {
   const holdings = observations?.flatMap(row => row.holdings) ?? null;
   return { configurationReferences: configuration?.length ?? null, configuredAccountReferences: configuration?.filter(row => row.account !== null).length ?? null,
@@ -364,6 +366,7 @@ async function inspectLegacySaved(text, schema, byteLength, options, checkpoint,
   if (schema === "threecore-portfolio-snapshot-v1") observations = [(await import("./portfolio-report.js")).decodePortfolioReport(text).snapshot];
   else if (schema === "threecore-portfolio-history-v1") { const history = (await import("./portfolio-history.js")).createPortfolioHistory(); history.importText(text); observations = history.state().snapshots; }
   else if (schema === "threecore-token-plan-v1") tokenPlan = (await import("./token-plan.js")).decodeTokenPlan(text);
+  else if (schema === "threecore-portfolio-comparison-v1") { const comparison = (await import("./portfolio-comparison.js")).decodePortfolioComparisonReport(text); observations = [comparison.earlier, comparison.later]; }
   else configuration = (await import("./wallet-setup.js")).decodeWalletSetup(text).entries;
   checkpoint();
   const scope = Object.freeze(tokenPlan ? { ...emptySavedPeriodScope([tokenPlan.agent]), configurationReferences: 1, configuredAccountReferences: 0,
