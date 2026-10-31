@@ -1,0 +1,283 @@
+✖ state RPC headers ignores instance aborted (79.8554ms)
+✖ state RPC headers ignores instance addEventListener (2.2727ms)
+✖ state RPC headers ignores instance removeEventListener (2.9275ms)
+✖ state RPC headers uses native pre-cancellation before I/O (3.0597ms)
+✖ state RPC headers ignores artificial events but genuine abort releases a pending read (31.1275ms)
+✖ state RPC headers invalid native signal gives a bounded diagnostic (4.7912ms)
+✖ state RPC headers options accessor is not executed (1.0636ms)
+✖ state RPC body ignores instance aborted (0.8973ms)
+✖ state RPC body ignores instance addEventListener (1.9555ms)
+✖ state RPC body ignores instance removeEventListener (4.453ms)
+✖ state RPC body uses native pre-cancellation before I/O (1.4699ms)
+✖ state RPC body ignores artificial events but genuine abort releases a pending read (18.1674ms)
+✖ state RPC body invalid native signal gives a bounded diagnostic (1.7743ms)
+✖ state RPC body options accessor is not executed (1.2777ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 0
+ℹ fail 14
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 516.0304
+
+✖ failing tests:
+
+test at test\state-rpc-native-signal.test.js:5:74
+✖ state RPC headers ignores instance aborted (79.8554ms)
+  Error: private override
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:6:109)
+      at fetchStateRpcResponse (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:18:85)
+      at call (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:3:84)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:7:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at test\state-rpc-native-signal.test.js:5:74
+✖ state RPC headers ignores instance addEventListener (2.2727ms)
+  Error: private override
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:6:109)
+      at fetchStateRpcResponse (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:23:10)
+      at call (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:3:84)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:7:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at test\state-rpc-native-signal.test.js:5:74
+✖ state RPC headers ignores instance removeEventListener (2.9275ms)
+  Error: private override
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:6:109)
+      at fetchStateRpcResponse (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:34:20)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:7:15)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\state-rpc-native-signal.test.js:9:2
+✖ state RPC headers uses native pre-cancellation before I/O (3.0597ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:13:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\state-rpc-native-signal.test.js:15:2
+✖ state RPC headers ignores artificial events but genuine abort releases a pending read (31.1275ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:20:99)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\state-rpc-native-signal.test.js:22:2
+✖ state RPC headers invalid native signal gives a bounded diagnostic (4.7912ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'ERR_INVALID_THIS'
+  -   code: 'STATE_RPC_UNAVAILABLE'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:22:88)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError [ERR_INVALID_THIS]: Value of "this" must be of type AbortSignal
+        at validateThisAbortSignal (node:internal/abort_controller:137:11)
+        at get aborted (node:internal/abort_controller:256:5)
+        at fetchStateRpcResponse (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:18:85)
+        at call (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:3:84)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:22:109)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\state-rpc-native-signal.test.js:23:2
+✖ state RPC headers options accessor is not executed (1.0636ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'STATE_RPC_UNAVAILABLE'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:25:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private getter
+        at get signal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:24:55)
+        at fetchStateRpcResponse (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:17:25)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:25:42)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\state-rpc-native-signal.test.js:5:74
+✖ state RPC body ignores instance aborted (0.8973ms)
+  Error: private override
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:6:109)
+      at readStateRpcJson (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:40:13)
+      at call (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:3:160)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:7:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\state-rpc-native-signal.test.js:5:74
+✖ state RPC body ignores instance addEventListener (1.9555ms)
+  Error: private override
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:6:109)
+      at readStateRpcJson (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:59:9)
+      at call (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:3:160)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:7:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\state-rpc-native-signal.test.js:5:74
+✖ state RPC body ignores instance removeEventListener (4.453ms)
+  Error: private override
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:6:109)
+      at readStateRpcJson (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:84:11)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:7:15)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\state-rpc-native-signal.test.js:9:2
+✖ state RPC body uses native pre-cancellation before I/O (1.4699ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:13:71)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\state-rpc-native-signal.test.js:15:2
+✖ state RPC body ignores artificial events but genuine abort releases a pending read (18.1674ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:20:99)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\state-rpc-native-signal.test.js:22:2
+✖ state RPC body invalid native signal gives a bounded diagnostic (1.7743ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'ERR_INVALID_THIS'
+  -   code: 'STATE_RPC_UNAVAILABLE'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:22:88)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError [ERR_INVALID_THIS]: Value of "this" must be of type AbortSignal
+        at validateThisAbortSignal (node:internal/abort_controller:137:11)
+        at get aborted (node:internal/abort_controller:256:5)
+        at readStateRpcJson (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:40:13)
+        at call (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:3:160)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:22:109)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\state-rpc-native-signal.test.js:23:2
+✖ state RPC body options accessor is not executed (1.2777ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'STATE_RPC_UNAVAILABLE'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:25:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private getter
+        at get signal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:24:55)
+        at readStateRpcJson (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:38:52)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/state-rpc-native-signal.test.js:25:126)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'STATE_RPC_UNAVAILABLE' },
+    operator: 'rejects',
+    diff: 'simple'
+  }

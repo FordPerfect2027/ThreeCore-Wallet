@@ -1,0 +1,32 @@
+{
+  "source": "d253e8d",
+  "beforeSource": "2d9481b",
+  "cases": [
+    {
+      "phase": "headers",
+      "code": "STATE_RPC_UNAVAILABLE",
+      "instanceOverridesInvoked": 0,
+      "bodyCancellationCalls": 1,
+      "readerReleaseCalls": 0,
+      "remainingAbortListeners": 0,
+      "externalRequests": 0
+    },
+    {
+      "phase": "body",
+      "code": "STATE_RPC_UNAVAILABLE",
+      "instanceOverridesInvoked": 0,
+      "bodyCancellationCalls": 1,
+      "readerReleaseCalls": 1,
+      "remainingAbortListeners": 0,
+      "externalRequests": 0
+    }
+  ],
+  "readerAcquisition": {
+    "code": "STATE_RPC_UNAVAILABLE",
+    "bodyCancelled": true,
+    "lockReleased": true,
+    "remainingAbortListeners": 0
+  },
+  "realProviderCalls": 0,
+  "existingServerRestarted": false
+}

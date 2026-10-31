@@ -334,3 +334,7 @@ Persistent boundaries: local development and fictional/read-only operations; no 
 [Export scope stability repair](EXPORT_SCOPE_STABILITY_REPAIR_2026-10-31.md) retains missing-history and activity export queries across callbacks. 1634 related checks passed at `6bb6fb8`; before/after reproductions are saved. This repair adds zero items; completed count remains 478 / 600.
 
 [Library file guidance repair](LIBRARY_FILE_GUIDANCE_REPAIR_2026-10-31.md) improves destination guidance for existing workflows without adding an item. 15249 full tests and 892 native Chrome cases passed at `3069815`; the count remains 481.
+
+## November 1 maintenance follow-up
+
+[State RPC cancellation repair](STATE_RPC_SIGNAL_REPAIR_2026-11-01.md) closes native-signal and stream-ownership cleanup gaps in the existing HTTP read path at `d253e8d`. It passed 97 related checks and 15,720 full-wallet tests and adds zero items; the count remains 515 / 600.
