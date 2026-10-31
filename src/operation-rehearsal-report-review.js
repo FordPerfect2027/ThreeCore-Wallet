@@ -473,6 +473,16 @@ export function openReviewedRehearsalBatchEvidence(review) {
   if (!batchEvidenceReviews.has(review) || !review.matchesRecomputation) fail("UNVERIFIED_BATCH_EVIDENCE");
   return batchEvidenceReviews.get(review);
 }
+/** Extract exact original text, including faithful negative evidence, without restoring its inputs. */
+export function extractRehearsalBatchEvidenceSource(review, name) {
+  const { result, files } = openReviewedRehearsalBatchEvidence(review);
+  if (typeof name !== "string") fail("REVIEW_BATCH_EVIDENCE_SOURCE_NAME");
+  const index = files.findIndex(row => row.name === name);
+  if (index < 0) fail("REVIEW_BATCH_EVIDENCE_SOURCE_NAME");
+  return Object.freeze({ filename: files[index].name, text: files[index].text, mimeType: "application/json;charset=utf-8",
+    sourceTextDigest: result.files[index].sha256, sourceStatus: result.files[index].status,
+    containsOriginalEvidence: true, simulationOnly: true, sourceVerified: false, authorizesExecution: false, automaticallyImported: false });
+}
 
 /** Hashes identify selected bytes, including differing/unsupported reports. */
 export function encodeRehearsalBatchManifest(result) {

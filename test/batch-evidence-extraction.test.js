@@ -1,0 +1,22 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import {mkdtemp,writeFile,readFile,readdir,rm,realpath} from 'node:fs/promises';import {join,resolve,dirname} from 'node:path';import {tmpdir} from 'node:os';import {spawnSync} from 'node:child_process';import {createHash} from 'node:crypto';
+import {inspectWalletSavedTextBatch,prepareWalletSavedBatchEvidence,reviewWalletSavedBatchEvidence,extractWalletSavedBatchEvidenceSource} from '../src/file-read-status.js';
+import {reviewRehearsalReportBatch,prepareRehearsalBatchEvidence,reviewRehearsalBatchEvidence,extractRehearsalBatchEvidenceSource} from '../src/operation-rehearsal-report-review.js';
+const hash=value=>createHash('sha256').update(value).digest('hex');
+const domains=[['wallet',inspectWalletSavedTextBatch,prepareWalletSavedBatchEvidence,reviewWalletSavedBatchEvidence,extractWalletSavedBatchEvidenceSource,'2026-11-01-wallet-batch-evidence/original-bundle.json'],['rehearsal',reviewRehearsalReportBatch,prepareRehearsalBatchEvidence,reviewRehearsalBatchEvidence,extractRehearsalBatchEvidenceSource,'2026-11-01-rehearsal-batch-evidence/matching-bundle.json']];
+for(const[kind,inspect,prepare,review,extract,fixture]of domains){
+ const good=JSON.parse(readFileSync(new URL('../docs/evidence/'+fixture,import.meta.url),'utf8')).files[0].text,negative='\uFEFF{broken 日本語\r\n';
+ test(kind+' extraction returns only the requested exact source and retains negative inspection status',async()=>{
+  const prepared=await prepare(await inspect([{name:'Good.json',text:good},{name:'日本語.json',text:negative}])),checked=await review(prepared.text);
+  for(const[name,text]of[['Good.json',good],['日本語.json',negative]]){const output=extract(checked,name);assert.equal(output.filename,name);assert.equal(output.text,text);assert.equal(output.sourceTextDigest,hash(text));assert.equal(output.authorizesExecution,false);assert.equal(output.automaticallyImported,false);assert(Object.isFrozen(output));if(name==='日本語.json'){assert.equal(output.sourceStatus,'invalid');if(kind==='wallet')assert.equal(output.internalChecksumVerified,false);}}
+  for(const name of ['good.json','absent.json','../Good.json','Good.json\n',0,null,{toString(){throw Error('PRIVATE');}}])assert.throws(()=>extract(checked,name));assert.throws(()=>extract({...checked},'Good.json'));
+  const changed=JSON.parse(prepared.text);changed.receipt.summary.selected=99;const rejected=await review(JSON.stringify(changed));assert.equal(rejected.matchesRecomputation,false);assert.throws(()=>extract(rejected,'Good.json'));
+ });
+ test(kind+' extraction command emits exact bytes only after verification and never writes destination files',async()=>{
+  const parent=await realpath(tmpdir()),dir=await mkdtemp(join(parent,'threecore-extract-evidence-')),path=join(dir,'bundle.json'),prepared=await prepare(await inspect([{name:'Good.json',text:good},{name:'日本語.json',text:negative}]));
+  try{await writeFile(path,prepared.text);const run=(...args)=>spawnSync(process.execPath,['scripts/verify-'+kind+'-batch-evidence.js',...args],{cwd:new URL('../',import.meta.url),timeout:20000,maxBuffer:32*1024*1024});for(const[name,text]of[['Good.json',good],['日本語.json',negative]]){const output=run('extract',path,name);assert.equal(output.status,0,output.stderr.toString());assert(output.stdout.equals(Buffer.from(text)));assert.equal(output.stderr.length,0);}
+   for(const name of ['good.json','../Good.json','missing.json']){const output=run('extract',path,name);assert.equal(output.status,1);assert.equal(output.stdout.length,0);}assert.equal(await readFile(path,'utf8'),prepared.text);assert.deepEqual(await readdir(dir),['bundle.json']);
+   const altered=JSON.parse(prepared.text);altered.receipt.complete=false;const changed=JSON.stringify(altered);await writeFile(path,changed);const rejected=run('extract',path,'Good.json');assert.equal(rejected.status,2);assert.equal(rejected.stdout.length,0);assert.equal(await readFile(path,'utf8'),changed);assert.deepEqual(await readdir(dir),['bundle.json']);
+   const extra=run('extract',path,'Good.json','destination.json');assert.equal(extra.status,1);assert.equal(extra.stdout.length,0);assert.match(run('--help').stdout.toString(),/no destination paths/);
+  }finally{assert.equal(dirname(resolve(dir)),parent);assert.equal(await realpath(dir),resolve(dir));await rm(dir,{recursive:true,force:true});}
+ });
+}

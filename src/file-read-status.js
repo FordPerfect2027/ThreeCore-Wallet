@@ -1196,6 +1196,18 @@ export function openReviewedWalletSavedBatchEvidence(review) {
   if (!savedBatchEvidenceReviews.has(review) || !review.matchesRecomputation) savedInspectionFail("FILE_BATCH_EVIDENCE_UNVERIFIED");
   return savedBatchEvidenceReviews.get(review);
 }
+/** Return one exact embedded source after a faithful owned review; never write a caller-supplied path. */
+export function extractWalletSavedBatchEvidenceSource(review, name) {
+  const { result, files } = openReviewedWalletSavedBatchEvidence(review);
+  if (typeof name !== "string") savedInspectionFail("FILE_BATCH_EVIDENCE_SOURCE_NAME");
+  const index = files.findIndex(row => row.name === name);
+  if (index < 0) savedInspectionFail("FILE_BATCH_EVIDENCE_SOURCE_NAME");
+  const row = result.files[index];
+  return Object.freeze({ filename: files[index].name, text: files[index].text, mimeType: "application/json;charset=utf-8",
+    sourceTextDigest: row.sha256, sourceStatus: row.status, internalChecksumVerified: row.inspection?.checksumVerified === true,
+    containsOriginalEvidence: true, authenticated: false, authorizesExecution: false, automaticallyImported: false,
+    liveChainRechecked: false, restorable: false });
+}
 export function walletSavedTextBatchManifest(result) {
   if (!browserSavedBatchReceipts.has(result)) savedInspectionFail("FILE_BATCH_RESULT");
   if (!result.complete || result.files.some(row => row.sha256 === null)) savedInspectionFail("FILE_BATCH_HASHES_INCOMPLETE");
