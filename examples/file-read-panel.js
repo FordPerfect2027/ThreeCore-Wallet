@@ -7,11 +7,11 @@ import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
 import { sha256Hex } from "../src/security-data.js";
-import { validateWalletSavedBatchSelection, inspectWalletSavedTextBatch, encodeWalletSavedTextBatch,
+import { validateWalletSavedBatchSelection, encodeWalletSavedTextBatch,
   walletSavedTextBatchManifest, WALLET_SAVED_BROWSER_BATCH_LIMITS, matchWalletSavedBatchManifest,
   WALLET_SAVED_BATCH_MANIFEST_LIMIT, encodeWalletSavedTextBatchCsv, compareWalletSavedTextBatches,
   encodeWalletSavedBatchComparison, walletSavedBatchComparisonText, reviewWalletSavedBatchComparison,
-  encodeWalletSavedBatchComparisonReview, WALLET_SAVED_BATCH_COMPARISON_REVIEW_LIMIT } from "../src/file-read-status.js";
+  encodeWalletSavedBatchComparisonReview, WALLET_SAVED_BATCH_COMPARISON_REVIEW_LIMIT, inspectWalletSavedFileBatch } from "../src/file-read-status.js";
 
 /** Aggregate file-read protection and a separate, read-only saved-file guide. */
 export function mountFileReadPanel({ document, parent, service = walletFileReadService }) {
@@ -320,7 +320,7 @@ async function readSavedGuideText(file, options) {
 
 /** Separate file-only inventory. No restore, account or storage callbacks exist. */
 export function mountSavedFileBatchPanel({ document, parent, readText = readSavedGuideText,
-  inspect = inspectWalletSavedTextBatch, subtle = globalThis.crypto?.subtle,
+  inspectFiles = inspectWalletSavedFileBatch, subtle = globalThis.crypto?.subtle,
   inspectOriginal = null, compareOriginal = null,
   download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-file-batch"; parent.append(host);
@@ -334,7 +334,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   const current = id => !disposed && id === generation;
   const errorText = error => describeFileReadError(error, "1件16 MiB、合計64 MiB") ?? walletSavedInspectionErrorText(error);
   make("summary", "heading", "複数の保存ファイルをまとめて確認する");
-  make("p", "intro", "期間・保存一覧・報告・報告履歴・確認セットのJSONを1〜20個選び、確認を開始します。1件16 MiB、合計64 MiBまでです。元記録の形式と内部のチェックサムを調べます。履歴への追加や復元は行いません。");
+  make("p", "intro", "期間・保存一覧・報告・報告履歴・確認セットのJSONを1〜20個選び、確認を開始します。1件ずつ読み込みと確認を行い、読めないファイルがあっても、ほかの結果を残します。1件16 MiB、合計64 MiB、開始後120秒までです。履歴への追加や復元は行いません。");
   const label = make("label", "file-label", "まとめて確認する元のJSON"), file = make("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json"; file.multiple = true;
   const referenceBox = make("details", "reference"); make("summary", "reference-heading", "以前の照合値一覧と比較する（任意）", referenceBox);
   make("p", "reference-intro", "以前保存したSHA256SUMS一覧を選ぶか、その全文を貼り付けてください。16 KiB・20行までです。一覧にある全ファイルを、同じ名前で選んで確認します。比較しない場合は『以前の一覧を外す』を押してください。", referenceBox);
@@ -404,7 +404,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     } catch { if (current(id)) status.textContent = "名前が重複しないJSONを1〜20個選んでください。1件16 MiB、合計64 MiBまでです。ファイル名に特殊な記号がある場合は名前を変えて選び直してください。"; }
   });
   function render(receipt, id) {
-    const labels = { "validated-original": "元記録の形式・内部チェックサムを確認", "declared-only": "補助資料の形式指定だけ", invalid: "元記録を確認できません", "hash-unavailable": "照合値を計算できません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
+    const labels = { "validated-original": "元記録の形式・内部チェックサムを確認", "declared-only": "補助資料の形式指定だけ", invalid: "元記録を確認できません", "hash-unavailable": "照合値を計算できません", "source-unavailable": "ファイルを読み込めません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
     const sourceSelection = selection;
     const elements = receipt.files.map((row, index) => {
       const tr = document.createElement("tr"), scope = row.inspection?.scope;
@@ -428,25 +428,19 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     });
     if (!current(id)) return; result = receipt; rows.replaceChildren(...elements);
     const s = receipt.summary; summary.textContent = `${s.selected}件中、確認済み ${s.checked}件／未確認 ${s.pending}件。元記録 ${s.validatedOriginals}件、補助資料 ${s.declaredOnly}件、形式・照合値の問題 ${s.invalid + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。`;
+    if (s.sourceUnavailable) summary.textContent += ` ファイルを読み込めなかったもの ${s.sourceUnavailable}件。ほかのファイルの確認結果は残しています。`;
     if (receipt.referenceProvided) summary.textContent += ` 以前の照合値との一致 ${s.checksumsMatching}件／不一致 ${s.checksumMismatches}件／未比較 ${s.selected - s.checksumsCompared}件。`;
-    status.textContent = receipt.complete ? "一括確認を終えました。各ファイルの結果をご確認ください。" : "一括確認を止めました。確認できた分の控えを保存できます。未確認の行も含みます。";
+    status.textContent = receipt.complete ? s.sourceUnavailable ? "読み込めないファイルがありました。ほかのファイルの確認結果は残しています。各行をご確認ください。" : "一括確認を終えました。各ファイルの結果をご確認ください。" : receipt.phase === "timed-out" ? "待ち時間の上限で止めました。確認できた分と未確認の行を含む控えを保存できます。" : "一括確認を止めました。確認できた分の控えを保存できます。未確認の行も含みます。";
   }
   listen(start, "click", async () => {
     if (disposed || active || !selection || start.disabled) return;
     const id = ++generation, chosen = selection, manifestText = referenceText, local = new AbortController(); active = local; result = null; ack.checked = false; rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; buttons();
     try {
       if (manifestText !== undefined) matchWalletSavedBatchManifest(chosen.map(({ name, byteLength }) => ({ name, byteLength })), manifestText);
-      const texts = []; let totalBytes = 0;
-      for (const entry of chosen) {
-        if (!current(id) || local.signal.aborted) return;
-        status.textContent = `ファイルを読み込んでいます（${texts.length + 1} / ${chosen.length}）：${entry.name}`;
-        const remaining = WALLET_SAVED_BROWSER_BATCH_LIMITS.totalBytes - totalBytes; if (remaining < 1) throw Error();
-        const text = await readText(entry.file, { signal: local.signal, maxBytes: Math.min(remaining, WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes) });
-        if (!current(id) || local.signal.aborted) return;
-        totalBytes += boundedUtf8Length(text, WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes); if (totalBytes > WALLET_SAVED_BROWSER_BATCH_LIMITS.totalBytes) throw Error();
-        texts.push({ name: entry.name, text });
-      }
-      const receipt = await inspect(texts, { signal: local.signal, subtle, manifestText, onProgress: p => { if (current(id)) status.textContent = `元記録を確認しています（${p.checked} / ${p.selected}件）。`; } });
+      const receipt = await inspectFiles(chosen.map(({ name, byteLength }) => ({ name, byteLength })), (index, options) => {
+        if (current(id)) status.textContent = `ファイルを読み込んでいます（${index + 1} / ${chosen.length}）：${chosen[index].name}`;
+        return readText(chosen[index].file, options);
+      }, { signal: local.signal, subtle, manifestText, onProgress: p => { if (current(id)) status.textContent = `元記録を確認しています（${p.checked} / ${p.selected}件）。`; } });
       if (current(id)) render(receipt, id);
     } catch (error) { if (current(id)) status.textContent = local.signal.aborted ? "ファイルの読み込みを中止しました。確認結果はまだありません。" : "まとめて読み込めませんでした。" + errorText(error); }
     finally { local.abort(); if (current(id)) { active = null; if (!result && local.signal.aborted && status.textContent.startsWith("中止しています")) status.textContent = "ファイルの読み込みを中止しました。確認結果はまだありません。"; buttons(); } }
@@ -502,7 +496,7 @@ export function mountSavedBatchComparisonPanel({ document, parent,
   const reviewSave = make("button", "review-save", "比較JSONの照合結果を保存", reviewBox); reviewSave.type = "button";
   const reviewSaveStatus = make("p", "review-save-status", "", reviewBox); reviewSaveStatus.setAttribute("role", "status");
   const labels = { identical: "同じ元記録・同じ書式", "format-only": "書式だけの違い", "changed-original": "元記録が変化", "different-format": "異なる形式", unverified: "元記録を比較できません", "only-before": "比較元だけに選択", "only-after": "今回だけに選択" };
-  const statusLabels = { "validated-original": "元記録を確認", "declared-only": "補助資料の形式だけ", invalid: "形式・内部照合の問題", "hash-unavailable": "照合値を計算できません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
+  const statusLabels = { "validated-original": "元記録を確認", "declared-only": "補助資料の形式だけ", invalid: "形式・内部照合の問題", "hash-unavailable": "照合値を計算できません", "source-unavailable": "ファイルを読み込めません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
   function controls() {
     hold.disabled = disposed || !current || Boolean(reviewActive); clear.disabled = disposed || !baseline; ack.disabled = disposed || !comparison; json.disabled = csv.disabled = ack.disabled || !ack.checked;
     reviewBox.setAttribute("aria-busy", reviewActive ? "true" : "false"); reviewFile.disabled = disposed || !comparison || Boolean(reviewActive); reviewStop.disabled = disposed || !reviewActive;

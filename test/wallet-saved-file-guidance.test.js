@@ -19,6 +19,7 @@ import { sequenceSet, demoSetHistory } from "./helpers/report-set-fixtures.js";
 
 const source = sequenceSet(), after = sequenceSet(demoSetHistory());
 const routes = [
+  ["threecore.wallet-saved-browser-batch.v3",null,"PERIOD_FILE_SAVED_BATCH_ONLY","複数の保存ファイル"],
   ["threecore.wallet-saved-local-batch-comparison.v1",null,"PERIOD_FILE_LOCAL_BATCH_COMPARISON_ONLY","コマンドで二組"],
   ["threecore.wallet-saved-local-batch-comparison-review.v1",null,"PERIOD_FILE_LOCAL_BATCH_COMPARISON_ONLY","コマンドで二組"],
   ["threecore.wallet-saved-batch-comparison-review.v1",null,"PERIOD_FILE_SAVED_BATCH_COMPARISON_REVIEW_ONLY","二組の一括比較"],
