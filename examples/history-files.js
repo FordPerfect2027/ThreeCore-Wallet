@@ -4,7 +4,7 @@ import { createHistoryFileReader } from "../src/history-file-reader.js";
 import { prepareHistoryDownload, createHistoryBackupTracker, preparePortfolioReportsHistory, prepareHistoryArchives, HISTORY_REPORT_FILE_LIMIT, HISTORY_REPORT_BATCH_LIMIT, HISTORY_ARCHIVE_FILE_LIMIT, HISTORY_ARCHIVE_BATCH_LIMIT } from "../src/history-file.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { validatePortfolioSnapshot } from "../src/portfolio-report.js";
-import { exportFilteredHistory, queryPortfolioHistory, prepareHistoryPrune, portfolioHistoryCSV } from "../src/history-query.js";
+import { exportFilteredHistory, queryPortfolioHistory, prepareHistoryPrune, portfolioHistoryCSV, encodeHistoryQueryFile, decodeHistoryQueryFile, HISTORY_QUERY_FILE_LIMIT } from "../src/history-query.js";
 import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
 
 /** Browser file actions are explicit and scoped to one agent card. */
@@ -16,7 +16,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   let disposed = false;
   let view = null, pruneProposal = null;
   let generation = 0, updatingBackup = false;
-  let reportBatch = null;
+  let reportBatch = null, queryRead = null;
   const current = id => !disposed && generation === id;
   function source(read, id) {
     if (!current(id)) throw Error("File action retired");
@@ -58,6 +58,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     listen(value, "click", () => {
       if (disposed) return;
       stopReportBatch();
+      stopQueryRead();
       if (name !== "history-prune-preview" && name !== "history-prune-apply") invalidatePrune();
       const id = ++generation;
       try { return action(id); }
@@ -140,7 +141,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   }); reportCancel.disabled = true;
   function batchPicker(input, { countLimit, fileLimit, totalLimit, prepare, kind, limits }) { listen(input, "change", () => {
     const files = input.files, count = files?.length; observeCallbackResult(count); if (!files || count === 0) return;
-    stopReportBatch(); const id = ++generation; reader.reset(); if (!current(id)) return;
+    stopReportBatch(); stopQueryRead(); const id = ++generation; reader.reset(); if (!current(id)) return;
     invalidatePrune();
     let selected = [];
     try {
@@ -187,6 +188,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   listen(file, "change", () => {
     if (disposed) return;
     stopReportBatch();
+    stopQueryRead();
     const id = ++generation;
     const files = file.files;
     if (!current(id)) return;
@@ -299,6 +301,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     };
   }
   function invalidateView() {
+    stopQueryRead();
     invalidatePrune();
     clearRows();
     view = null;
@@ -375,6 +378,46 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     tokenStatus.value = "any";
     invalidateView();
   });
+  const queryDraft = node("textarea", "history-query-json"); queryDraft.rows = 3; queryDraft.maxLength = HISTORY_QUERY_FILE_LIMIT; queryDraft.spellcheck = false;
+  queryDraft.setAttribute("aria-label", "保存した検索条件JSON（履歴データではありません）");
+  const queryFile = node("input", "history-query-file"); queryFile.type = "file"; queryFile.accept = ".json,application/json";
+  const queryStop = button("history-query-stop", "検索条件の読み込みを中止", () => { status.textContent = "検索条件の読み込みを中止しました。条件と履歴は保持しています。"; }); queryStop.disabled = true;
+  function stopQueryRead() { const old = queryRead; if (!old) return; queryRead = null; old.abort(); queryFile.disabled = false; queryStop.disabled = true; }
+  const querySave = button("history-query-save", "現在の検索条件をファイル保存", id => {
+    const criteria = query(), text = encodeHistoryQueryFile(criteria); queryDraft.value = text;
+    if (JSON.stringify(criteria) !== JSON.stringify(query()) || !deliver({ text, filename: "ThreeCore-history-query.json", mimeType: "application/json;charset=utf-8" }, id)) return;
+    status.textContent = "検索条件の保存を開始しました。公開アドレスを含む場合があります。履歴や残高のバックアップではありません。";
+  });
+  const queryUse = button("history-query-use", "確認した検索条件を使って検索", id => {
+    const criteria = decodeHistoryQueryFile(queryDraft.value);
+    if (!current(id)) return;
+    account.value = criteria.account; chain.value = criteria.chainId === "" ? "" : String(criteria.chainId); origin.value = criteria.siteOrigin;
+    minimum.value = criteria.minimumBlock ?? ""; maximum.value = criteria.maximumBlock ?? ""; order.value = criteria.order;
+    tokenAddress.value = criteria.tokenAddress; tokenStatus.value = criteria.tokenStatus;
+    searchHistory(id); if (!current(id)) return;
+    status.textContent = "保存した条件で現在の履歴を検索しました。元ファイル作成時と同じ結果であることは保証しません。履歴は変更していません。";
+    try { results.focus?.(); } catch {}
+  });
+  listen(queryDraft, "input", () => { stopQueryRead(); generation++; });
+  listen(queryFile, "change", () => {
+    const files = queryFile.files; if (!files || files.length === 0) return;
+    stopQueryRead(); stopReportBatch(); const id = ++generation; reader.reset(); if (!current(id)) return; invalidatePrune();
+    if (files.length !== 1) { status.textContent = "検索条件JSONは一度に1ファイル選んでください。"; return; }
+    const chosen = files[0]; queryFile.value = "";
+    const local = new AbortController(); queryRead = local; queryFile.disabled = true; queryStop.disabled = false;
+    status.textContent = "検索条件ファイルを確認しています。現在の条件と履歴は変更しません。";
+    void (async () => { try {
+      readFormatFileName(chosen, { maxLength: 255, fail: () => { throw Error("Name"); }, code: "FILE_NAME" });
+      if (!current(id) || queryRead !== local || local.signal.aborted) return;
+      const bytes = await readBytes(chosen, { maxBytes: HISTORY_QUERY_FILE_LIMIT, signal: local.signal, timeoutMs: 30000 });
+      if (!current(id) || queryRead !== local || local.signal.aborted) return;
+      const text = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes), criteria = decodeHistoryQueryFile(text);
+      if (!current(id) || queryRead !== local) return;
+      queryDraft.value = encodeHistoryQueryFile(criteria);
+      status.textContent = "検索条件を確認欄へ読み込みました。「確認した検索条件を使って検索」で反映してください。履歴は変更していません。";
+    } catch { if (current(id) && queryRead === local) status.textContent = "検索条件を読み込めませんでした。64 KiB以内の検索条件JSONを確認してください。元の入力と履歴は保持しています。"; }
+    finally { if (queryRead === local) stopQueryRead(); } })();
+  });
   const changedFilter = () => { stopReportBatch(); generation++; invalidateView(); };
   for (const input of [account, chain, minimum, maximum, tokenAddress, origin]) listen(input, "input", changedFilter);
   listen(order, "change", changedFilter);
@@ -391,7 +434,9 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     labelled("最小ブロック（空欄なら制限なし）", minimum),
     labelled("最大ブロック（空欄なら制限なし）", maximum),
     labelled("表示順", order), search, resetFilters, results, rowActions, saveSubset, saveBalances,
-    node("p", "notice", "残高CSVは最小単位の文字列です。桁を保つため数値の先頭に ' を付けています。不明な残高は空欄とcode-missingで示し、0に置き換えません。復元にはJSONを使ってください。"), pruneSection);
+    node("p", "notice", "残高CSVは最小単位の文字列です。桁を保つため数値の先頭に ' を付けています。不明な残高は空欄とcode-missingで示し、0に置き換えません。復元にはJSONを使ってください。"),
+    querySave, labelled("保存した検索条件ファイル（JSON・64 KiB）", queryFile), queryStop,
+    labelled("読み込んだ検索条件の確認・貼り付け", queryDraft), queryUse, pruneSection);
   parent.append(section);
   updateBackup();
   return Object.freeze({
@@ -421,6 +466,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
       if (disposed) return;
       disposed = true;
       generation++;
+      stopQueryRead();
       stopReportBatch();
       reader.dispose();
       invalidatePrune();

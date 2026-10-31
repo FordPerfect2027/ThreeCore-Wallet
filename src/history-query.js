@@ -2,6 +2,22 @@ import { captureDataRecord } from "./security-data.js";
 import { createPortfolioHistory } from "./portfolio-history.js";
 import { normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
 import { exportTextBytes } from "./export-payload.js";
+import { parseSecurityJson } from "./security-json.js";
+
+export const HISTORY_QUERY_FILE_LIMIT = 65536;
+export function encodeHistoryQueryFile(input) {
+  const query = validateHistoryQuery(input), text = JSON.stringify({ schema: "threecore-history-query-v1", query,
+    configurationOnly: true, canAuthorizeConnection: false, canAuthorizeTransaction: false }, null, 2) + "\n";
+  exportTextBytes(text, HISTORY_QUERY_FILE_LIMIT); return text;
+}
+export function decodeHistoryQueryFile(text) {
+  try {
+    const value = captureDataRecord(parseSecurityJson(text, { bytes: HISTORY_QUERY_FILE_LIMIT, depth: 4, nodes: 40 }),
+      ["schema", "query", "configurationOnly", "canAuthorizeConnection", "canAuthorizeTransaction"]);
+    if (value.schema !== "threecore-history-query-v1" || value.configurationOnly !== true || value.canAuthorizeConnection !== false || value.canAuthorizeTransaction !== false) fail();
+    return validateHistoryQuery(value.query);
+  } catch { fail(); }
+}
 
 export class HistoryQueryError extends Error {
   constructor(message) {
