@@ -6,7 +6,7 @@ import { reviewRehearsalReport, reviewRehearsalEvidence, encodeRehearsalReviewEv
   inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference } from "../src/operation-rehearsal-report-review.js";
 const options={subtle:webcrypto.subtle}, original=newReportFixtures().filtered;
 import { describeRehearsalFileTarget } from "../src/file-read-status.js";
-for(const schema of ["threecore.operation-rehearsal-difference-page.v1","threecore.operation-rehearsal-difference-detail.v1","threecore.operation-rehearsal-difference-values.v1","threecore.operation-rehearsal-difference-query.v1"])
+for(const schema of ["threecore.operation-rehearsal-difference-page.v1","threecore.operation-rehearsal-difference-detail.v1","threecore.operation-rehearsal-difference-values.v1","threecore.operation-rehearsal-difference-query.v1","threecore.operation-rehearsal-difference-query-all.v1"])
   test(schema+" is labelled as inspection output rather than a restore input",()=>{
     for(const target of ["record","workspace","session","cases","expectations","report","evidence"])
       assert.match(describeRehearsalFileTarget(JSON.stringify({schema,simulationOnly:true}),target),/確認用.*元の資料.*復元できません/);
@@ -274,4 +274,39 @@ for(const target of ["review","evidence"])test(target+" invalid filters retain t
     f.field("clear",target).click();assert.equal(f.field("difference-search",target).disabled,true);
     assert.equal(f.field("difference-type",target).disabled,true);assert.equal(f.field("difference-filter-clear",target).disabled,true);
   }finally{f.panel.dispose();}
+});
+
+for(const target of ["review","evidence"])test(target+" exports all matching rows independently of displayed page and detail selection",async()=>{
+ const f=panelFixture();let input=JSON.stringify(many);
+ if(target==="evidence")input=encodeRehearsalReviewEvidence(await reviewRehearsalReport(input,options));
+ try{
+ assert.equal(f.field("difference-query-save",target).disabled,true);await f.load(input,target);
+ f.field("next",target).click();f.field("difference-query-save",target).click();let saved=JSON.parse(f.downloads.at(-1).text);
+ assert.equal(saved.differences.length,83);assert.equal(saved.totalDifferences,83);assert.equal(saved.differences[82].index,82);assert.equal(saved.allMatchingDifferencesIncluded,true);
+ f.edit("difference-search","extra08",target);f.field("difference-query-save",target).click();saved=JSON.parse(f.downloads.at(-1).text);
+ assert.deepEqual(saved.differences.map(row=>row.index),[80,81,82]);assert.equal(saved.query.path,"extra08");
+ f.edit("difference-search","nothing",target);assert.equal(f.field("difference-query-save",target).disabled,false);f.field("difference-query-save",target).click();saved=JSON.parse(f.downloads.at(-1).text);
+ assert.equal(saved.matchedDifferences,0);assert.equal(saved.totalDifferences,83);assert.equal(saved.summary.matchesRecomputation,false);
+ f.edit("difference-search","x".repeat(129),target);assert.equal(f.field("difference-query-save",target).disabled,true);
+ f.field("difference-filter-clear",target).click();assert.equal(f.field("difference-query-save",target).disabled,false);
+ f.field("clear",target).click();assert.equal(f.field("difference-query-save",target).disabled,true);
+ }finally{f.panel.dispose();}
+});
+for(const target of ["review","evidence"])for(const failure of ["false","throw","promise","rejection","thenable"])test(target+" complete query export remains retryable after "+failure,async()=>{
+ const f=panelFixture();let text=JSON.stringify(many);if(target==="evidence")text=encodeRehearsalReviewEvidence(await reviewRehearsalReport(text,options));
+ try{
+ await f.load(text,target);f.edit("difference-search","extra08",target);const before=f.field("difference-status",target).textContent;
+ f.setDelivery(()=>{if(failure==="false")return false;if(failure==="throw")throw Error("private");if(failure==="promise")return Promise.resolve(true);if(failure==="rejection")return Promise.reject(Error("private"));return{then(resolve){resolve(true);}};});
+ f.field("difference-query-save",target).click();await new Promise(setImmediate);assert.match(f.field("export-status",target).textContent,/できません/);assert.doesNotMatch(f.field("export-status",target).textContent,/private/);
+ assert.equal(f.field("difference-status",target).textContent,before);assert.equal(f.field("difference-query-save",target).disabled,false);
+ f.setDelivery(()=>true);f.field("difference-query-save",target).click();assert.match(f.field("export-status",target).textContent,/保存し始め/);
+ }finally{f.panel.dispose();}
+});
+for(const target of ["review","evidence"])for(const action of ["filter","clear","dispose","next"])test(target+" complete query export does not overwrite a newer "+action,async()=>{
+ const f=panelFixture();let text=JSON.stringify(many);if(target==="evidence")text=encodeRehearsalReviewEvidence(await reviewRehearsalReport(text,options));
+ try{
+ await f.load(text,target);let after;
+ f.setDelivery(()=>{if(action==="dispose")f.panel.dispose();else if(action==="filter")f.edit("difference-search","extra08",target);else f.field(action,target).click();after=f.field("export-status",target).textContent;return true;});
+ f.field("difference-query-save",target).click();assert.equal(f.field("export-status",target).textContent,after);
+ }finally{f.panel.dispose();}
 });

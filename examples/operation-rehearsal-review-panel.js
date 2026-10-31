@@ -3,7 +3,7 @@ import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
-import { encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
+import { encodeRehearsalDifferenceQuery, encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
 import { REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 
@@ -32,7 +32,19 @@ function addDifferenceDetailButton(document, row, index, inspect, current, outpu
   cell.append(button);row.append(cell);
 }
 
+function mountDifferenceQuerySave(document,get,listen,context,download) {
+  listen("difference-query-save","click",()=>{
+    const own=context();if(own.disposed||!own.review||get("difference-query-save").disabled)return;
+    const current=()=>{const now=context();return !now.disposed&&now.review===own.review&&now.revision===own.revision&&now.view===own.view&&now.target===own.target;};
+    try{
+      const text=encodeRehearsalDifferenceQuery(own.review,{path:get("difference-search").value,kind:get("difference-type").value},own.target);
+      requireSyncExport(download({document,prepared:{text,filename:"ThreeCore-"+own.target+"-matching-differences.json",mimeType:"application/json"}}));
+      if(current())get("export-status").textContent="絞り込みに一致したすべての相違と、資料全体の確認結果を保存し始めました。元資料も一緒に保管してください。";
+    }catch{if(current())get("export-status").textContent="相違一覧を保存できませんでした。表示と元資料は保持しています。一覧が大きい場合は絞り込み条件を狭めてください。";}
+  });
+}
 function setDifferenceFilters(get, enabled, reset = false) {
+  if(!enabled)get("difference-query-save").disabled=true;
   for(const name of ["difference-search","difference-type","difference-filter-clear"])get(name).disabled=!enabled;
   if(reset){get("difference-search").value="";get("difference-type").value="all";}
   get("difference-search").removeAttribute("aria-invalid");get("difference-type").removeAttribute("aria-invalid");
@@ -79,6 +91,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   let hashAbort = null;
   const listeners = [];
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
+  mountDifferenceQuerySave(document,get,listen,()=>({review:receipt,target:"report",revision,view:differenceView,disposed}),download);
   const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
   listeners.push(() => fileNotice.dispose());
   const checksumNotice=createFileSelectionNotice(get("checksum-file"),get("checksum-file-note"));
@@ -106,7 +119,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     get(target).append(tr); return tr;
   }
   function renderDifferencePage() {
-    get("differences").textContent="";
+    get("differences").textContent="";get("difference-query-save").disabled=true;
     const view=++differenceView, owner=revision, reviewed=receipt;selectedDifference=null;get("difference-save").disabled=true;
     get("difference-detail").hidden=true;get("difference-detail").textContent="";
     if(!receipt)return;
@@ -117,7 +130,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       addDifferenceDetailButton(document,tr,diff.index,()=>inspectReviewedRehearsalDifference(reviewed,diff.index),
         ()=>!disposed&&revision===owner&&differenceView===view&&receipt===reviewed,get("difference-detail"),"保存資料",()=>{selectedDifference=diff.index;get("difference-save").disabled=false;});
     }
-    get("difference-status").textContent=differencePageText(page);
+    get("difference-query-save").disabled=false;get("difference-status").textContent=differencePageText(page);
     get("previous").disabled=!page.hasPrevious;get("next").disabled=!page.hasNext;
   }
   async function run() {
@@ -254,6 +267,7 @@ export function mountRehearsalEvidencePanel(document, { download, subtle = globa
   const listeners = []; let revision = 0, disposed = false, hashAbort = null, result = null, sourceText = null, differenceOffset = 0, differenceView = 0, selectedDifference = null;
   const notice = createFileSelectionNotice(get("file"), get("file-note"));
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(() => get(name).removeEventListener(event, fn)); }
+  mountDifferenceQuerySave(document,get,listen,()=>({review:result,target:get("difference-kind").value==="source"?"evidence-source":"evidence-receipt",revision,view:differenceView,disposed}),download);
   function reset(message) {
     const own=++revision; result=null; sourceText=null; differenceOffset=0;differenceView++;setDifferenceFilters(get,false,true);selectedDifference=null;get("difference-save").disabled=true;get("difference-detail").hidden=true;get("difference-detail").textContent="";get("previous").disabled=true;get("next").disabled=true;get("difference-kind").disabled=true;get("difference-status").textContent="";
     const previous=hashAbort; hashAbort=null; previous?.abort();
@@ -275,7 +289,7 @@ export function mountRehearsalEvidencePanel(document, { download, subtle = globa
     reset(reason + " 現在の履歴や別欄の確認結果は変更していません。");
   }
   function renderDifferencePage() {
-    get("differences").textContent="";
+    get("differences").textContent="";get("difference-query-save").disabled=true;
     const view=++differenceView,owner=revision,reviewed=result;selectedDifference=null;get("difference-save").disabled=true;
     get("difference-detail").hidden=true;get("difference-detail").textContent="";if(!result)return;
     const source=get("difference-kind").value==="source";
@@ -287,7 +301,7 @@ export function mountRehearsalEvidencePanel(document, { download, subtle = globa
       addDifferenceDetailButton(document,row,diff.index,()=>source?inspectReviewedRehearsalDifference(reviewed.reportReview,diff.index):inspectRehearsalEvidenceReceiptDifference(reviewed,diff.index),
         ()=>!disposed&&revision===owner&&differenceView===view&&result===reviewed,get("difference-detail"),source?"元資料":"保存された確認結果の控え",()=>{selectedDifference=diff.index;get("difference-save").disabled=false;});
     }
-    get("difference-status").textContent=differencePageText(page,label);
+    get("difference-query-save").disabled=false;get("difference-status").textContent=differencePageText(page,label);
     get("previous").disabled=!page.hasPrevious;get("next").disabled=!page.hasNext;
   }
   async function inspect(text, own) {

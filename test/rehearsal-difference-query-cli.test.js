@@ -53,3 +53,22 @@ test("a consistent failed expectation remains visible under an empty difference 
  const result=await run([file,"--kind","value"]);assert.equal(result.code,0);const value=JSON.parse(result.output);
  assert.equal(value.totalDifferences,0);assert.equal(value.matchedDifferences,0);assert.equal(value.summary.reportOutcome.allMatched,false);
 }));
+
+import {encodeRehearsalDifferenceQuery,reviewRehearsalEvidence} from "../src/operation-rehearsal-report-review.js";
+test("offline all mode saves byte-identical complete core output for every target without changing inputs",()=>fixture(async({file,evidenceFile,text,evidenceText,dir})=>{
+ const before=await readdir(dir),report=await reviewRehearsalReport(text,{subtle:webcrypto.subtle}),evidence=await reviewRehearsalEvidence(evidenceText,{subtle:webcrypto.subtle});
+ for(const [path,review,target,flags]of [[file,report,"report",[]],[evidenceFile,evidence,"evidence-receipt",["--evidence","receipt"]],[evidenceFile,evidence,"evidence-source",["--evidence","source"]]]){
+ const result=await run([path,"--all","--kind","unexpected","--path","extra",...flags]);assert.equal(result.code,2);assert.equal(result.errors,"");
+ assert.equal(result.output,encodeRehearsalDifferenceQuery(review,{path:"extra",kind:"unexpected"},target));
+ }
+ assert.equal(await readFile(file,"utf8"),text);assert.equal(await readFile(evidenceFile,"utf8"),evidenceText);assert.deepEqual(await readdir(dir),before);
+}));
+test("all mode rejects duplicate, partial, or conflicting flags without partial output",()=>fixture(async({file})=>{
+ for(const args of [[file,"--all","--all"],[file,"--all","--page","1"],[file,"--page","1","--all"],[file,"--all","--path"],[file,"--all","false"],[file,"--all","--unknown"]]){
+ const result=await run(args);assert.equal(result.code,1);assert.equal(result.output,"");assert.notEqual(result.errors,"");
+ }
+ const result=await run([file,"--path","absent","--all"]);assert.equal(result.code,2);const value=JSON.parse(result.output);
+ assert.equal(value.totalDifferences,104);assert.equal(value.matchedDifferences,0);assert.equal(value.allMatchingDifferencesIncluded,true);
+ await writeFile(file,JSON.stringify(newReportFixtures().differing));const failed=await run([file,"--all"]);
+ assert.equal(failed.code,0);assert.equal(JSON.parse(failed.output).summary.reportOutcome.allMatched,false);
+}));

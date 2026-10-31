@@ -313,3 +313,46 @@ export function queryRehearsalEvidenceReceiptDifferences(review, query = REHEARS
   if (recorded === undefined) fail("UNRECOGNIZED_EVIDENCE_REVIEW");
   return queryDifferencePage(review.reportReview, recorded, query, offset);
 }
+export const REHEARSAL_DIFFERENCE_QUERY_ALL_SCHEMA = "threecore.operation-rehearsal-difference-query-all.v1";
+/** Collect every matching path in a bounded artifact, independently of screen paging. */
+export function encodeRehearsalDifferenceQuery(review, input = REHEARSAL_DIFFERENCE_QUERY, target = "report") {
+  if (!["report", "evidence-source", "evidence-receipt"].includes(target)) fail("INVALID_REVIEW_DIFFERENCE_TARGET");
+  let expected, actual, report, matchesReceipt = null;
+  if (target === "report") {
+    const text = reviewSources.get(review);
+    if (text === undefined) fail("UNRECOGNIZED_REVIEW_RECEIPT");
+    report = review;
+    ({ recomputed: expected, parsed: actual } = prepareRehearsalReview(text, report.expectedSha256));
+  } else {
+    const recorded = evidenceReceipts.get(review);
+    if (recorded === undefined) fail("UNRECOGNIZED_EVIDENCE_REVIEW");
+    report = review.reportReview; matchesReceipt = review.matchesReceipt;
+    if (target === "evidence-receipt") { expected = report; actual = recorded; }
+    else {
+      const text = reviewSources.get(report);
+      if (text === undefined) fail("UNRECOGNIZED_REVIEW_RECEIPT");
+      ({ recomputed: expected, parsed: actual } = prepareRehearsalReview(text, report.expectedSha256));
+    }
+  }
+  const query = validateRehearsalDifferenceQuery(input), rows = [];
+  const visible = text => text.replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g,
+    character => "\\u" + character.charCodeAt(0).toString(16).padStart(4, "0"));
+  let bytes = 0;
+  const result = compareValues(expected, actual, 0, (index, difference) => {
+    if ((query.kind !== "all" && query.kind !== difference.kind) || !difference.path.includes(query.path)) return;
+    const row = "    " + visible(JSON.stringify({ index, ...difference }));
+    try { bytes += boundedUtf8Length(row, REHEARSAL_REVIEW_EVIDENCE_LIMIT - bytes) + (rows.length ? 2 : 0); }
+    catch { fail("DIFFERENCE_QUERY_TOO_LARGE"); }
+    if (bytes > REHEARSAL_REVIEW_EVIDENCE_LIMIT) fail("DIFFERENCE_QUERY_TOO_LARGE");
+    rows.push(row);
+  });
+  const metadata = { schema: REHEARSAL_DIFFERENCE_QUERY_ALL_SCHEMA, simulationOnly: true,
+    sourceVerified: false, authorizesExecution: false, target, sourceSha256: report.sha256,
+    summary: { matchesReceipt, matchesRecomputation: report.matchesRecomputation, checksumMatches: report.checksumMatches,
+      reportOutcome: report.reportOutcome ?? null }, query, totalDifferences: result.differenceCount,
+    matchedDifferences: rows.length, allMatchingDifferencesIncluded: true };
+  const text = visible(JSON.stringify(metadata, null, 2)).slice(0, -2) + ',\n  "differences": [\n' + rows.join(",\n") + '\n  ]\n}\n';
+  try { boundedUtf8Length(text, REHEARSAL_REVIEW_EVIDENCE_LIMIT); }
+  catch { fail("DIFFERENCE_QUERY_TOO_LARGE"); }
+  return text;
+}

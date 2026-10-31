@@ -53,3 +53,34 @@ test("zero-difference source keeps one empty page and foreign review identities 
  assert.equal(page.totalDifferences,0);assert.equal(page.matchedDifferences,0);assert.equal(page.totalPages,1);
  for(const copy of [null,{},JSON.parse(JSON.stringify(receipt))])assert.throws(()=>queryReviewedRehearsalDifferences(copy),{code:"UNRECOGNIZED_REVIEW_RECEIPT"});
 });
+
+import {encodeRehearsalDifferenceQuery} from "../src/operation-rehearsal-report-review.js";
+test("all matching differences are saved once with original indices, exact query and global status",()=>{
+ const before=encodeRehearsalReviewReceipt(receipt),query={kind:"unexpected",path:"extra"},text=encodeRehearsalDifferenceQuery(receipt,query),saved=JSON.parse(text);
+ const rows=[0,40,80].flatMap(offset=>queryReviewedRehearsalDifferences(receipt,query,offset).differences);
+ assert.deepEqual(saved.differences,rows);assert.equal(saved.matchedDifferences,103);assert.equal(saved.totalDifferences,105);
+ assert.equal(saved.allMatchingDifferencesIncluded,true);assert.equal(saved.summary.matchesRecomputation,false);
+ assert.equal(saved.sourceSha256,receipt.sha256);assert.equal(saved.authorizesExecution,false);assert.equal(saved.sourceVerified,false);
+ assert.equal(saved.simulationOnly,true);assert.deepEqual(saved.query,query);assert.equal(encodeRehearsalReviewReceipt(receipt),before);
+});
+test("empty complete query exports preserve mismatch and authentic receipt provenance",async()=>{
+ const saved=JSON.parse(encodeRehearsalDifferenceQuery(receipt,{path:"nothing",kind:"all"}));
+ assert.equal(saved.totalDifferences,105);assert.equal(saved.matchedDifferences,0);assert.deepEqual(saved.differences,[]);assert.equal(saved.summary.matchesRecomputation,false);
+ const evidence=JSON.parse(encodeRehearsalReviewEvidence(receipt));evidence.receipt.extra=true;
+ const checked=await reviewRehearsalEvidence(JSON.stringify(evidence),{subtle:webcrypto.subtle});
+ for(const [target,total]of [["evidence-receipt",1],["evidence-source",105]]){
+ const value=JSON.parse(encodeRehearsalDifferenceQuery(checked,undefined,target));
+ assert.equal(value.target,target);assert.equal(value.totalDifferences,total);assert.equal(value.summary.matchesReceipt,false);assert.equal(value.summary.matchesRecomputation,false);
+ }
+ for(const value of [null,{},JSON.parse(JSON.stringify(receipt))])assert.throws(()=>encodeRehearsalDifferenceQuery(value),{code:"UNRECOGNIZED_REVIEW_RECEIPT"});
+ assert.throws(()=>encodeRehearsalDifferenceQuery(checked,undefined,"unknown"),{code:"INVALID_REVIEW_DIFFERENCE_TARGET"});
+ assert.throws(()=>encodeRehearsalDifferenceQuery(receipt,{path:"",kind:"bad"}),{code:"INVALID_REVIEW_DIFFERENCE_QUERY"});
+ assert.throws(()=>encodeRehearsalDifferenceQuery(receipt,undefined,"evidence-source"),{code:"UNRECOGNIZED_EVIDENCE_REVIEW"});
+});
+test("complete query keeps special path characters recoverable and failed expectations explicit",async()=>{
+ const source=structuredClone(original);source["a/\"~\u202e🚀"]=true;
+ const checked=await reviewRehearsalReport(JSON.stringify(source),{subtle:webcrypto.subtle}),text=encodeRehearsalDifferenceQuery(checked);
+ assert.doesNotMatch(text,/\u202e/);assert.match(text,/\\u202e/);assert.equal(JSON.parse(text).differences[0].path,"/a~1\"~0\u202e🚀");
+ const failed=await reviewRehearsalReport(JSON.stringify(newReportFixtures().differing),{subtle:webcrypto.subtle});
+ const value=JSON.parse(encodeRehearsalDifferenceQuery(failed));assert.equal(value.totalDifferences,0);assert.equal(value.summary.reportOutcome.allMatched,false);
+});

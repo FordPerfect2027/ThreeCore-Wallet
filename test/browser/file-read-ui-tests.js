@@ -69,19 +69,25 @@ export function registerFileReadUITests(test) {
       edit("report-review-text",JSON.stringify(source));q("report-review-paste").click();await finish("report-review-status");
       edit("report-review-difference-search","extra08");edit("report-review-difference-type","unexpected","change");
       assert(q("report-review-differences").children.length===3);
+      q("report-review-difference-query-save").click();const allFiltered=JSON.parse(downloads.pop().text);
+      assert(allFiltered.allMatchingDifferencesIncluded&&allFiltered.matchedDifferences===3&&allFiltered.totalDifferences===84&&allFiltered.differences[2].index===83);
       q("report-review-differences").querySelectorAll("button")[2].click();q("report-review-difference-save").click();
       const selected=JSON.parse(downloads.pop().text);assert(selected.actual.value===82&&selected.index===83&&selected.totalDifferences===84);
       edit("report-review-difference-type","value","change");
       assert(q("report-review-differences").children.length===0&&q("report-review-difference-status").textContent.includes("相違は84箇所"));
       assert(q("report-review-status").className==="blocked"&&q("report-review-difference-save").disabled);
       q("report-review-save").click();assert(JSON.parse(downloads.pop().text).differenceCount===84);
+      q("report-review-difference-query-save").click();const empty=JSON.parse(downloads.pop().text);assert(empty.matchedDifferences===0&&empty.totalDifferences===84&&!empty.summary.matchesRecomputation);
       q("report-review-difference-filter-clear").click();assert(q("report-review-differences").children.length===40);
+      q("report-review-next").click();q("report-review-difference-query-save").click();assert(JSON.parse(downloads.pop().text).differences.length===84);
       q("report-review-evidence-save").click();const evidence=JSON.parse(downloads.pop().text);evidence.receipt.differenceCount=9;evidence.receipt.extra="receipt";
       edit("report-evidence-text",JSON.stringify(evidence));q("report-evidence-paste").click();await finish("report-evidence-status");
       edit("report-evidence-difference-search","/differenceCount");edit("report-evidence-difference-type","value","change");
       assert(q("report-evidence-differences").children.length===1);q("report-evidence-differences").querySelector("button").click();q("report-evidence-difference-save").click();
       const saved=JSON.parse(downloads.pop().text);assert(saved.actual.value===9&&saved.totalDifferences===2);
+      q("report-evidence-difference-query-save").click();const allReceipt=JSON.parse(downloads.pop().text);assert(allReceipt.target==="evidence-receipt"&&allReceipt.matchedDifferences===1&&allReceipt.totalDifferences===2&&!allReceipt.summary.matchesReceipt);
       edit("report-evidence-difference-kind","source","change");assert(q("report-evidence-difference-search").value===""&&q("report-evidence-differences").children.length===40);
+      q("report-evidence-difference-query-save").click();const allSource=JSON.parse(downloads.pop().text);assert(allSource.target==="evidence-source"&&allSource.differences.length===84&&!allSource.summary.matchesReceipt);
       q("session-save").click();assert(downloads.pop().text===before,"Filtered inspection preserves rehearsal data");
     }finally{page.dispose();host.remove();}
   });
