@@ -1,0 +1,36 @@
+✔ reconciliation exports every match independently of page without changing evidence or conclusions (51.9223ms)
+✔ reconciliation filters direction and literal search across all pages (20.3789ms)
+✔ reconciliation zero matches produce only a header and never invent a zero-valued event (12.6702ms)
+✔ reconciliation rejects accessor and invalid queries without invoking getters (12.1962ms)
+✔ period report exports every match independently of page without changing evidence or conclusions (252.7768ms)
+✔ period report filters direction and literal search across all pages (154.2885ms)
+✔ period report zero matches produce only a header and never invent a zero-valued event (112.196ms)
+✔ period report rejects accessor and invalid queries without invoking getters (161.7043ms)
+✔ reconciliation CSV preserves large integer units and protects signed deltas (14.2071ms)
+✖ period CSV keeps source restrictions and quotes source labels as inert text (65.3032ms)
+✔ reconciliation export handles delivery refusal and preserves source while permitting retry (35.6208ms)
+✔ reconciliation query capture cannot revive an export cancelled during reflection (15.9939ms)
+✔ period export handles delivery refusal and preserves source while permitting retry (183.3467ms)
+✔ period query capture cannot revive an export cancelled during reflection (106.6809ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 13
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1591.6776
+
+✖ failing tests:
+
+test at test\filtered-event-export.test.js:83:1
+✖ period CSV keeps source restrictions and quotes source labels as inert text (65.3032ms)
+  TypeError: text.replace is not a function
+      at csvObjects (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/filtered-event-export.test.js:22:21)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/filtered-event-export.test.js:87:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

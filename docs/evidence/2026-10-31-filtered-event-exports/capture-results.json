@@ -1,0 +1,102 @@
+{
+  "synthetic": true,
+  "externalRpc": false,
+  "results": [
+    {
+      "kind": "reconciliation",
+      "label": "all",
+      "query": {
+        "agent": "DAT",
+        "direction": "all",
+        "search": "",
+        "page": 2
+      },
+      "total": 61,
+      "matched": 61,
+      "byteLength": 28468,
+      "sha256": "bc6b318057d8aa23cf7ea967044e12d33c4dfed54875e10da49082754007c111",
+      "sameAsFirstPage": true,
+      "sourceUnchanged": true
+    },
+    {
+      "kind": "reconciliation",
+      "label": "incoming",
+      "query": {
+        "agent": "DAT",
+        "direction": "incoming",
+        "search": "",
+        "page": 2
+      },
+      "total": 61,
+      "matched": 31,
+      "byteLength": 15043,
+      "sha256": "b5414bcc1f9c2d2b50f5711ff32130edb3e22be343ff840d9244869aa3e31dd0",
+      "sameAsFirstPage": true,
+      "sourceUnchanged": true
+    },
+    {
+      "kind": "reconciliation",
+      "label": "empty",
+      "query": {
+        "agent": "DAT",
+        "direction": "all",
+        "search": "no matching transaction",
+        "page": 2
+      },
+      "total": 61,
+      "matched": 0,
+      "byteLength": 359,
+      "sha256": "ac3175e7b76d599954e4198fa00f077eedcc26a630cf7e8d3d9d5cf5efac2819",
+      "sameAsFirstPage": true,
+      "sourceUnchanged": true
+    },
+    {
+      "kind": "period",
+      "label": "all",
+      "query": {
+        "agent": "DAT",
+        "direction": "all",
+        "search": "",
+        "page": 2
+      },
+      "total": 57,
+      "matched": 57,
+      "byteLength": 31361,
+      "sha256": "e4799f9d20f16c43171023076d2e86807b6122202d2c5af2b2bd4c0efd6b429d",
+      "sameAsFirstPage": true,
+      "sourceUnchanged": true
+    },
+    {
+      "kind": "period",
+      "label": "incoming",
+      "query": {
+        "agent": "DAT",
+        "direction": "incoming",
+        "search": "",
+        "page": 2
+      },
+      "total": 57,
+      "matched": 57,
+      "byteLength": 31646,
+      "sha256": "7d845fe1f01d4b5ec25d4b0796dbde4d960dacf6108ff74abb790ae830c0f78e",
+      "sameAsFirstPage": true,
+      "sourceUnchanged": true
+    },
+    {
+      "kind": "period",
+      "label": "empty",
+      "query": {
+        "agent": "DAT",
+        "direction": "all",
+        "search": "no matching transaction",
+        "page": 2
+      },
+      "total": 57,
+      "matched": 0,
+      "byteLength": 439,
+      "sha256": "c49b69f309084f97f5574160b3c5b30da5837dc51249fab9bbb5478f151acc53",
+      "sameAsFirstPage": true,
+      "sourceUnchanged": true
+    }
+  ]
+}

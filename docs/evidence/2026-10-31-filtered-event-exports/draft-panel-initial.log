@@ -1,0 +1,70 @@
+✔ reconciliation exports every match independently of page without changing evidence or conclusions (66.9075ms)
+✔ reconciliation filters direction and literal search across all pages (22.534ms)
+✔ reconciliation zero matches produce only a header and never invent a zero-valued event (15.19ms)
+✔ reconciliation rejects accessor and invalid queries without invoking getters (16.3623ms)
+✔ period report exports every match independently of page without changing evidence or conclusions (350.9852ms)
+✔ period report filters direction and literal search across all pages (242.7454ms)
+✔ period report zero matches produce only a header and never invent a zero-valued event (129.1116ms)
+✔ period report rejects accessor and invalid queries without invoking getters (141.4985ms)
+✔ reconciliation CSV preserves large integer units and protects signed deltas (12.9122ms)
+✔ period CSV keeps source restrictions and quotes source labels as inert text (79.8447ms)
+✔ reconciliation export handles delivery refusal and preserves source while permitting retry (46.0649ms)
+✔ reconciliation query capture cannot revive an export cancelled during reflection (18.915ms)
+✔ period export handles delivery refusal and preserves source while permitting retry (240.958ms)
+✔ period query capture cannot revive an export cancelled during reflection (134.5221ms)
+✔ panel starts without reading local storage and uses an accessible status region (135.5636ms)
+✔ read selectors show only each token and preserve no-selection option (119.7459ms)
+✔ review displays accounts and range before accepting the report (295.0604ms)
+✔ incomplete, archived and quarantined records are visible choices (181.1622ms)
+✔ text fields never become HTML elements (220.2983ms)
+✔ changing a token selector clears stale report and export acknowledgement (196.1171ms)
+✔ editing report name invalidates pending review (97.9462ms)
+✔ file import clears chooser and stages a review before display (187.8755ms)
+✔ import parse failure retains accepted report and shows a safe status (179.7364ms)
+✔ export button json follows acknowledgement and produces the requested file (236.1585ms)
+✔ export button csv follows acknowledgement and produces the requested file (242.3677ms)
+✔ export button html follows acknowledgement and produces the requested file (247.0917ms)
+✔ pagination and filters do not change cards or the full report (346.6541ms)
+✔ cancelled refresh does not leave selection controls enabled with stale data (54.9168ms)
+✔ dispose removes host and event handlers and closes storage exactly once (31.5531ms)
+✔ selected source changes are explained without constructing a stale report (88.0784ms)
+✖ filtered event CSV saves every matching page under the existing acknowledgement (160.8232ms)
+✔ panel labels every input and starts with a non-destructive empty state (12.8095ms)
+✔ changing selected token updates all three source descriptions (34.5464ms)
+✔ all source removals require acknowledgement before applying (39.0687ms)
+✔ source invalidation removes actionable stale capture preview (2.8602ms)
+✔ import disables mutation controls and cancel immediately releases them (16.1463ms)
+✔ file-selection cancellation does not clear current records (8.2349ms)
+✔ import kind changes dismiss review without touching working evidence (19.8543ms)
+✔ calculation shows per-token state and enables exports only for current report (58.3859ms)
+✔ paged result table bounds rendered rows and responds to search (52.4989ms)
+✔ downloads are independent output artifacts and do not overwrite source state (159.9025ms)
+✔ dispose removes listeners and host, and can be called twice (2.0513ms)
+✔ filtered event CSV saves all pages and empty results while keeping JSON backup state unchanged (149.1131ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 42
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3537.0608
+
+✖ failing tests:
+
+test at test\period-report-panel.test.js:196:1
+✖ filtered event CSV saves every matching page under the existing acknowledgement (160.8232ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-panel.test.js:200:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
