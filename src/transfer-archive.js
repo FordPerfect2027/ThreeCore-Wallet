@@ -33,7 +33,10 @@ function assertCompatible(left, right) {
  * A covered interval means it was requested, not independently verified complete.
  * Overlap inconsistencies fail the whole addition/import; existing data stays put.
  */
+// Only immutable snapshots produced by this validator receive the fast path.
+const validatedTransferArchives = new WeakSet();
 export function validateTransferArchive(input) {
+  if (validatedTransferArchives.has(input)) return input;
   input = shape(input, ["schema", "records", "readOnly", "completeHistory"]);
   if (input.schema !== TRANSFER_ARCHIVE_SCHEMA || input.readOnly !== true || input.completeHistory !== false) {
     transferFail("TRANSFER_ARCHIVE_SCHEMA");
@@ -70,7 +73,9 @@ export function validateTransferArchive(input) {
   for (let left = 0; left < records.length; left++) {
     for (let right = left + 1; right < records.length; right++) assertCompatible(records[left], records[right]);
   }
-  return Object.freeze({ schema: TRANSFER_ARCHIVE_SCHEMA, records: Object.freeze(records), readOnly: true, completeHistory: false });
+  const result = Object.freeze({ schema: TRANSFER_ARCHIVE_SCHEMA, records: Object.freeze(records), readOnly: true, completeHistory: false });
+  validatedTransferArchives.add(result);
+  return result;
 }
 
 export function addTransferArchiveRecord(input, record) {

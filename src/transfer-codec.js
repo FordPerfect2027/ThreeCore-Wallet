@@ -234,7 +234,10 @@ export function normalizeTransferEvents(values, context, range) {
   return Object.freeze(ordered);
 }
 
+// Only immutable snapshots produced by this validator receive the fast path.
+const validatedTransferSnapshots = new WeakSet();
 export function validateTransferSnapshot(value) {
+  if (validatedTransferSnapshots.has(value)) return value;
   value = shape(value, ["schema", "context", "tokenAddress", "metadata", "range", "fromBlockHash", "toBlockHash", "events",
     "readOnly", "completeHistory", "independentVerification"]);
   if (value.schema !== TRANSFER_SCHEMA || value.readOnly !== true || value.completeHistory !== false ||
@@ -260,7 +263,7 @@ export function validateTransferSnapshot(value) {
     if ((event.blockNumber === range.fromBlock && event.blockHash !== fromBlockHash) ||
         (event.blockNumber === range.toBlock && event.blockHash !== toBlockHash)) transferFail("TRANSFER_BLOCK_CHANGED");
   }
-  return Object.freeze({
+  const result = Object.freeze({
     schema: TRANSFER_SCHEMA,
     context,
     tokenAddress: token.address,
@@ -273,4 +276,6 @@ export function validateTransferSnapshot(value) {
     completeHistory: false,
     independentVerification: false,
   });
+  validatedTransferSnapshots.add(result);
+  return result;
 }

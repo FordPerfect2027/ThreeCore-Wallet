@@ -53,7 +53,10 @@ function validatePart(agent, part, input) {
 }
 
 /** Partial and conflicting evidence is retained for review; it is never corrected silently. */
+// Only immutable snapshots produced here are reused; caller data is always captured.
+const validatedWorkspaces = new WeakSet();
 export function validateReconciliationWorkspace(input) {
+  if (validatedWorkspaces.has(input)) return input;
   input = reconciliationShape(input, ["schema", "slots", "readOnly", "independentlyVerified"]);
   if (input.schema !== RECONCILIATION_SCHEMA || input.readOnly !== true || input.independentlyVerified !== false) {
     reconciliationFail("RECONCILIATION_SCHEMA");
@@ -80,6 +83,7 @@ export function validateReconciliationWorkspace(input) {
   if (new TextEncoder().encode(JSON.stringify(value)).byteLength > RECONCILIATION_LIMIT) {
     reconciliationFail("RECONCILIATION_SIZE");
   }
+  validatedWorkspaces.add(value);
   return value;
 }
 
