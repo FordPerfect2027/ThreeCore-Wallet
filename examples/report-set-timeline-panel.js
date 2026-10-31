@@ -1,5 +1,5 @@
 import { reportSetTimeline, timelineCellLabel, timelineCellText,
-  TIMELINE_NOTICE } from "../src/report-set-timeline.js";
+  TIMELINE_NOTICE, historyCoverageSummaryText, historyCoverageCellText } from "../src/report-set-timeline.js";
 import { shortSetAddress } from "../src/report-set-view.js";
 
 /** Owns only its rendered nodes. Selecting a cell has no storage/provider effects. */
@@ -79,6 +79,43 @@ export function mountReportSetTimeline({ document, parent, input }) {
       row.append(button);
     });
     section.append(title, row, detail);
+    const coverage = document.createElement("details");
+    coverage.className = "report-set-history-coverage";
+    const coverageTitle = document.createElement("summary");
+    coverageTitle.textContent = "保存済み履歴範囲と、記録がない区間を確認";
+    const coverageSummary = document.createElement("p");
+    coverageSummary.className = "report-set-history-coverage-summary";
+    coverageSummary.textContent = historyCoverageSummaryText(group.historyCoverage);
+    const coverageNotice = document.createElement("p");
+    coverageNotice.textContent = "下の範囲は両端を含みます。保存された問い合わせ記録の範囲を数えます。取得元による省略や、記録の前後の履歴は未確認です。";
+    const coverageRow = document.createElement("div");
+    coverageRow.className = "report-set-timeline-row";
+    coverageRow.setAttribute("role", "group");
+    coverageRow.setAttribute("aria-label", title.textContent + " の保存済み履歴範囲");
+    const coverageDetail = document.createElement("pre");
+    coverageDetail.className = "report-set-history-coverage-detail";
+    coverageDetail.setAttribute("role", "status"); coverageDetail.setAttribute("aria-live", "polite");
+    coverageDetail.textContent = "区間を選ぶと、元の保存記録と確認点を表示します。";
+    const coverageButtons = [];
+    for (const cell of group.historyCoverage.cells) {
+      const button = document.createElement("button"); button.type = "button";
+      button.className = "report-set-history-coverage-cell";
+      button.setAttribute("aria-pressed", "false");
+      button.setAttribute("data-kind", cell.kind);
+      button.setAttribute("data-review", String(cell.needsReview));
+      button.textContent = cell.fromBlock + " ～ " + cell.toBlock + " / " +
+        ({ recorded: "履歴記録あり", pending: "履歴記録なし", unplanned: "計画なし" }[cell.kind]) + (cell.needsReview ? " / 要確認" : "");
+      const choose = () => {
+        if (disposed) return;
+        coverageButtons.forEach(element => element.setAttribute("aria-pressed", String(element === button)));
+        coverageDetail.textContent = historyCoverageCellText(cell);
+      };
+      button.addEventListener("click", choose);
+      listeners.push(() => button.removeEventListener("click", choose));
+      coverageButtons.push(button); coverageRow.append(button);
+    }
+    coverage.append(coverageTitle, coverageSummary, coverageNotice, coverageRow, coverageDetail);
+    section.append(coverage);
     host.append(section);
   }
   parent.append(host);

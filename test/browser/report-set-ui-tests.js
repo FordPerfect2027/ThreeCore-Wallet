@@ -84,6 +84,23 @@ async function withDatabase(run) {
 }
 
 export function registerReportSetUITests(test) {
+  test("report set: saved history coverage distinguishes a partial record from its plan", async () => {
+    const f = fixture({ initial: demoSetHistory() });
+    try {
+      await f.file((await prepareReportSetFile(sequenceSet(demoSetHistory()))).text);
+      f.click("apply"); await f.settled(); const before = f.mounted.getState().input;
+      const groups = [...f.parent.querySelectorAll(".report-set-history-coverage")];
+      assert(groups.length === 3); const caw = groups[2]; caw.querySelector("summary").click();
+      assert(caw.open); assert(caw.querySelector(".report-set-history-coverage-summary").textContent.includes("履歴記録なし 7"));
+      const pending = caw.querySelector('[data-kind="pending"]'); pending.click();
+      assert(pending.getAttribute("aria-pressed") === "true");
+      assert(caw.querySelector(".report-set-history-coverage-detail").textContent.includes("計画はあるが履歴記録なし"));
+      const recorded = caw.querySelector('[data-kind="recorded"]'); recorded.click();
+      assert(pending.getAttribute("aria-pressed") === "false");
+      assert(caw.querySelector(".report-set-history-coverage-detail").textContent.includes("保存区間"));
+      assert(f.mounted.getState().input === before && f.files.length === 0);
+    } finally { f.dispose(); }
+  });
   test("report set: checklist CSV keeps global findings after filtering to zero",async()=>{
     const f=fixture({initial:demoSetHistory()});
     try{

@@ -10,6 +10,68 @@ function inside(block, start, end) {
   return value >= BigInt(start) && value <= BigInt(end);
 }
 
+/** Sweep saved query windows, not every block. Record presence is not chain verification. */
+function historyCoverage(group, agent, reports, analysis) {
+  const records = group.rows.flatMap(row => {
+    const entry = reports.get(row.reportId), source = entry.report.slots.find(slot => slot.agent === agent).entry;
+    return source.draft.records.map((record, recordIndex) => ({
+      reportId: row.reportId, label: row.reportLabel, recordIndex,
+      start: (BigInt(record.range.fromBlock) - 1n).toString(), end: record.range.toBlock,
+      sourceStatus: row.status, restricted: source.requiresNewPlan,
+      archivedReport: entry.archived, archivedSource: source.archived, eventCount: record.events.length,
+    }));
+  });
+  const edges = [...new Set([...group.rows, ...records].flatMap(row => [row.start, row.end]))]
+    .sort((a, b) => BigInt(a) < BigInt(b) ? -1 : BigInt(a) > BigInt(b) ? 1 : 0);
+  const covers = (row, start, end) => BigInt(row.start) <= BigInt(start) && BigInt(row.end) >= BigInt(end);
+  const cells = edges.slice(0, -1).map((start, index) => {
+    const end = edges[index + 1], planned = group.rows.filter(row => covers(row, start, end));
+    const present = records.filter(row => covers(row, start, end));
+    const hashConflictBlocks = analysis.anchors.conflicts.filter(row => row.chainId === group.context.chainId && inside(row.block, start, end)).map(row => row.block);
+    const balanceConflictBlocks = group.balanceConflicts.filter(row => inside(row.block, start, end)).map(row => row.block);
+    const internalConflict = planned.some(row => analysis.anchors.invalid.some(item => item.reportId === row.reportId && item.agent === agent));
+    const needsReview = present.length > 0 && (present.length > 1 || present.some(row => row.restricted || row.sourceStatus !== "arithmetic-agreement") ||
+      hashConflictBlocks.length > 0 || balanceConflictBlocks.length > 0 || internalConflict);
+    return { number: index + 1, fromBlock: (BigInt(start) + 1n).toString(), toBlock: end,
+      blocks: (BigInt(end) - BigInt(start)).toString(),
+      kind: present.length ? "recorded" : planned.length ? "pending" : "unplanned",
+      needsReview, plannedReportIds: planned.map(row => row.reportId), records: present,
+      hashConflictBlocks, balanceConflictBlocks, internalConflict };
+  });
+  const sum = predicate => cells.filter(predicate).reduce((total, cell) => total + BigInt(cell.blocks), 0n).toString();
+  return { fromBlock: (BigInt(group.start) + 1n).toString(), toBlock: group.end,
+    spanBlocks: (BigInt(group.end) - BigInt(group.start)).toString(),
+    plannedUniqueBlocks: group.plannedUniqueBlocks, recordedUniqueBlocks: sum(cell => cell.kind === "recorded"),
+    pendingPlannedBlocks: sum(cell => cell.kind === "pending"), unplannedBlocks: sum(cell => cell.kind === "unplanned"),
+    multipleRecordBlocks: sum(cell => cell.records.length > 1), reviewRecordedBlocks: sum(cell => cell.needsReview),
+    savedQueryRecords: records.length, cells, rangeNotation: "inclusive", completeHistory: false, liveChainRechecked: false };
+}
+
+export function historyCoverageSummaryText(value) {
+  return "計画内 " + value.plannedUniqueBlocks + " / 保存済み履歴範囲 " + value.recordedUniqueBlocks +
+    " / 計画内で履歴記録なし " + value.pendingPlannedBlocks + " / 計画外の間隔 " + value.unplannedBlocks +
+    " ブロック（重複する保存範囲は1回だけ計上）。保存済みのうち要確認 " + value.reviewRecordedBlocks + " ブロック。";
+}
+
+export function historyCoverageCellText(cell) {
+  const labels = { recorded: "履歴記録あり", pending: "計画はあるが履歴記録なし", unplanned: "この区間を含む計画なし" };
+  const lines = [cell.fromBlock + " ～ " + cell.toBlock + "（両端を含む " + cell.blocks + "ブロック）",
+    labels[cell.kind], "計画に含めた報告ID: " + (cell.plannedReportIds.join(", ") || "なし")];
+  for (const row of cell.records) {
+    lines.push(row.label + " / " + row.reportId + " / 保存区間 " + (row.recordIndex + 1),
+      "  元の範囲 " + (BigInt(row.start) + 1n) + " ～ " + row.end + " / 元区間全体のイベント " + row.eventCount + "件 / " + reportStatusText(row.sourceStatus));
+    if (row.restricted) lines.push("  再取得が必要という印があります。");
+    if (row.archivedReport || row.archivedSource) lines.push("  非表示保管の記録を含みます。");
+  }
+  if (cell.records.length > 1) lines.push("複数の保存記録が重なっています。イベントや金額は結合していません。");
+  if (cell.hashConflictBlocks.length) lines.push("範囲または直前境界のハッシュ不一致: " + cell.hashConflictBlocks.join(", "));
+  if (cell.balanceConflictBlocks.length) lines.push("範囲または直前境界の残高不一致: " + cell.balanceConflictBlocks.join(", "));
+  if (cell.internalConflict) lines.push("元資料内にブロック情報の矛盾があります。");
+  if (cell.needsReview) lines.push("保存記録はありますが、重複・未完了・食い違いなどの確認が必要です。");
+  lines.push("記録がない区間に取引がなかったとは判断できません。保存範囲の存在は、全履歴の取得や現在のチェーンとの一致を証明しません。");
+  return lines.join("\n");
+}
+
 /** Discrete ordered cells avoid losing tiny intervals beside very large gaps. */
 export function reportSetTimeline(value) {
   const input = validateReportSet(value);
@@ -76,6 +138,7 @@ export function reportSetTimeline(value) {
         start: group.start,
         end: group.end,
         cells,
+        historyCoverage: historyCoverage(group, token.agent, reports, analysis),
       });
     });
   }
