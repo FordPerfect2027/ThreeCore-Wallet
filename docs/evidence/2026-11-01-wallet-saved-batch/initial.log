@@ -1,0 +1,41 @@
+✔ five saved-original formats validate without importing, exposing contents or summing repeated references (641.7067ms)
+✔ mixed inventory separates auxiliary claims, external mismatch, internal checksum failure and missing files (271.2312ms)
+✖ auxiliary-only list can match its bytes without becoming validated originals (16.9282ms)
+✔ limits cannot be widened and option accessors never execute (4.9058ms)
+✔ byte budgets retain earlier originals and never read files that exceed admission (198.1628ms)
+✔ unsafe manifest paths, extra entry counts and non-JSON inputs fail before producing output (38.972ms)
+✔ outside junctions and duplicate path or physical aliases are refused (239.373ms)
+✔ directories, empty and malformed files and manifest self-reference cannot validate (40.7171ms)
+✔ JSON and formula-safe CSV CLI outputs match owned receipts; forged receipts and arguments fail (600.6209ms)
+✔ file change during checksum inspection cannot leave a matching aggregate (188.0724ms)
+✔ manifest changes suppress the complete result (184.9268ms)
+✔ opened source replacement closes its owned handle (172.6149ms)
+✔ opened source growth closes its owned handle (166.9995ms)
+✔ opened source invalid-read closes its owned handle (157.663ms)
+✔ opened source read-error closes its owned handle (175.4177ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4364.8365
+
+✖ failing tests:
+
+test at test\wallet-saved-batch.test.js:21:1
+✖ auxiliary-only list can match its bytes without becoming validated originals (16.9282ms)
+  Error [EvidenceManifestError]: MANIFEST_PATH
+      at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/evidence-manifest.js:12:38)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/evidence-manifest.js:29:70
+      at Array.map (<anonymous>)
+      at parseEvidenceManifest (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/evidence-manifest.js:22:30)
+      at inspectWalletSavedBatch (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/wallet-saved-batch.js:39:34)
+      at async file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-batch.test.js:22:173
+      at async fixture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-batch.test.js:8:177)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    code: 'MANIFEST_PATH',
+    line: 1
+  }
