@@ -1,7 +1,7 @@
 import { offerWalletDownload } from "./export-download.js";
 import { readSecurityFileBytes, readFormatFileName } from "../src/security-file.js";
 import { createHistoryFileReader } from "../src/history-file-reader.js";
-import { prepareHistoryDownload, createHistoryBackupTracker, preparePortfolioReportsHistory, HISTORY_REPORT_FILE_LIMIT, HISTORY_REPORT_BATCH_LIMIT } from "../src/history-file.js";
+import { prepareHistoryDownload, createHistoryBackupTracker, preparePortfolioReportsHistory, prepareHistoryArchives, HISTORY_REPORT_FILE_LIMIT, HISTORY_REPORT_BATCH_LIMIT, HISTORY_ARCHIVE_FILE_LIMIT, HISTORY_ARCHIVE_BATCH_LIMIT } from "../src/history-file.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { validatePortfolioSnapshot } from "../src/portfolio-report.js";
 import { exportFilteredHistory, queryPortfolioHistory, prepareHistoryPrune } from "../src/history-query.js";
@@ -82,15 +82,19 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   file.setAttribute("aria-label", "読み込む履歴JSONファイル");
   const reportFiles = node("input", "history-report-files"); reportFiles.type = "file"; reportFiles.accept = ".json,application/json"; reportFiles.multiple = true;
   reportFiles.setAttribute("aria-label", "履歴候補にまとめる確認記録JSONファイル（最大64件）");
+  const archiveFiles = node("input", "history-archive-files"); archiveFiles.type = "file"; archiveFiles.accept = ".json,application/json"; archiveFiles.multiple = true;
+  archiveFiles.setAttribute("aria-label", "まとめる履歴JSONファイル（最大16件）");
   function reportControls() {
     const busy = Boolean(reportBatch); reportFiles.disabled = busy || reader.state().phase === "reading";
+    archiveFiles.disabled = reportFiles.disabled;
     reportCancel.disabled = !busy; file.disabled = busy || reader.state().phase === "reading";
     reportFiles.setAttribute("aria-busy", String(busy));
+    archiveFiles.setAttribute("aria-busy", String(busy));
   }
   function stopReportBatch() {
     const previous = reportBatch; if (!previous) return;
     reportBatch = null; const id = ++generation; previous.abort(); reportControls();
-    if (current(id) && !reportBatch) status.textContent = "確認記録のまとめ読みを中止しました。履歴は変更していません。";
+    if (current(id) && !reportBatch) status.textContent = "ファイルのまとめ読みを中止しました。履歴は変更していません。";
   }
   const FILE_ERRORS = Object.freeze({
     FILE_SIZE: "空のファイル、または大きすぎるファイルです。",
@@ -106,6 +110,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     const owns = () => current(id) && reader.state() === state;
     file.disabled = state.phase === "reading" || Boolean(reportBatch);
     reportFiles.disabled = state.phase === "reading" || Boolean(reportBatch);
+    archiveFiles.disabled = reportFiles.disabled;
     cancel.disabled = state.phase !== "reading";
     if (state.phase === "reading") consumeCallback(onReadStart);
     if (!owns()) return;
@@ -130,24 +135,25 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     if (current(id)) file.value = "";
   });
   cancel.disabled = true;
-  const reportCancel = button("history-report-cancel", "確認記録のまとめ読みを中止", () => {
-    status.textContent = "確認記録のまとめ読みを中止しました。入力欄と履歴は保持しています。";
+  const reportCancel = button("history-report-cancel", "ファイルのまとめ読みを中止", () => {
+    status.textContent = "ファイルのまとめ読みを中止しました。入力欄と履歴は保持しています。";
   }); reportCancel.disabled = true;
-  listen(reportFiles, "change", () => {
-    const files = reportFiles.files, count = files?.length; observeCallbackResult(count); if (!files || count === 0) return;
+  function batchPicker(input, { countLimit, fileLimit, totalLimit, prepare, kind, limits }) { listen(input, "change", () => {
+    const files = input.files, count = files?.length; observeCallbackResult(count); if (!files || count === 0) return;
     stopReportBatch(); const id = ++generation; reader.reset(); if (!current(id)) return;
+    invalidatePrune();
     let selected = [];
     try {
-      if (!Number.isSafeInteger(count) || count < 1 || count > 64) throw Error("Batch size");
+      if (!Number.isSafeInteger(count) || count < 1 || count > countLimit) throw Error("Batch size");
       let total = 0;
       for (let index = 0; index < count; index++) {
         const chosen = files[index]; readFormatFileName(chosen, { maxLength: 255, fail: () => { throw Error("File name"); }, code: "FILE_NAME" });
         if (!current(id)) return; const size = chosen.size; observeCallbackResult(size); if (!current(id)) return;
-        if (!Number.isSafeInteger(size) || size < 1 || size > HISTORY_REPORT_FILE_LIMIT || (total += size) > HISTORY_REPORT_BATCH_LIMIT) throw Error("Batch size");
+        if (!Number.isSafeInteger(size) || size < 1 || size > fileLimit || (total += size) > totalLimit) throw Error("Batch size");
         selected.push({ file: chosen, size });
       }
-    } catch { if (current(id)) status.textContent = "確認記録JSONを1〜64件、各64 KiB・合計1 MiB以内で選んでください。履歴は変更していません。"; reportFiles.value = ""; return; }
-    if (!current(id)) return; reportFiles.value = "";
+    } catch { if (current(id)) status.textContent = kind + "JSONを" + limits + "以内で選んでください。履歴は変更していません。"; input.value = ""; return; }
+    if (!current(id)) return; input.value = "";
     const local = new AbortController(); reportBatch = local; reportControls();
     const owns = () => current(id) && reportBatch === local && !local.signal.aborted;
     let completed = 0, handedOff = false; const started = performance.now();
@@ -156,26 +162,28 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
       const texts = [];
       for (const selectedFile of selected) {
         const remaining = Math.floor(30000 - (performance.now() - started)); if (remaining < 1) throw Error("Batch timeout");
-        status.textContent = `確認記録の読み込み: ${completed}／${selected.length}件。履歴は変更していません。`;
-        const bytes = await readBytes(selectedFile.file, { maxBytes: HISTORY_REPORT_FILE_LIMIT, timeoutMs: remaining, signal: local.signal });
+        status.textContent = `${kind}の読み込み: ${completed}／${selected.length}件。履歴は変更していません。`;
+        const bytes = await readBytes(selectedFile.file, { maxBytes: fileLimit, timeoutMs: remaining, signal: local.signal });
         if (!owns()) return;
         if (!(bytes instanceof Uint8Array) || bytes.byteLength !== selectedFile.size) throw Error("Changed file");
         texts.push(new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes)); completed++;
       }
       if (!owns() || performance.now() - started >= 30000) throw Error("Batch timeout");
-      const prepared = preparePortfolioReportsHistory(texts, agent);
+      const prepared = prepare(texts, agent);
       if (!owns()) return;
       if (performance.now() - started >= 30000 || !matches(captured, id)) throw Error("Batch expired or history changed");
-      handedOff = true; const receipt = onImportText(prepared.text), kind = observeCallbackResult(receipt);
+      handedOff = true; const receipt = onImportText(prepared.text), callbackKind = observeCallbackResult(receipt);
       if (!owns() || !matches(captured, id)) return;
-      if (kind !== "synchronous" || receipt === false) throw Error("Unconfirmed handoff");
+      if (callbackKind !== "synchronous" || receipt === false) throw Error("Unconfirmed handoff");
       status.textContent = `${prepared.sourceCount}ファイルから${prepared.observationCount}件の履歴候補を入力欄へ準備しました（重複${prepared.duplicateCount}件）。プレビュー後に適用してください。履歴はまだ変更していません。`;
     } catch (error) {
       if (!owns()) return; const code = readOwnErrorCode(error); if (!owns()) return;
       const reason = code === "AGENT_MISMATCH" ? "別のカードの記録が含まれています。" : code === "OBSERVATION_CONFLICT" ? "同じ対象・ブロックの記録が矛盾しています。" : "形式・サイズ・読み込みを確認してください。";
-      status.textContent = `確認記録をまとめられませんでした（読み込み${completed}／${selected.length}件）。${reason}` + (handedOff ? "入力欄の内容を確認してください。履歴は自動変更していません。" : "入力欄と履歴は保持しています。");
+      status.textContent = `${kind}をまとめられませんでした（読み込み${completed}／${selected.length}件）。${reason}` + (handedOff ? "入力欄の内容を確認してください。履歴は自動変更していません。" : "入力欄と履歴は保持しています。");
     } finally { if (reportBatch === local) { reportBatch = null; local.abort(); reportControls(); } } })();
-  });
+  }); }
+  batchPicker(reportFiles, { countLimit: 64, fileLimit: HISTORY_REPORT_FILE_LIMIT, totalLimit: HISTORY_REPORT_BATCH_LIMIT, prepare: preparePortfolioReportsHistory, kind: "確認記録", limits: "1〜64件、各64 KiB・合計1 MiB" });
+  batchPicker(archiveFiles, { countLimit: 16, fileLimit: HISTORY_ARCHIVE_FILE_LIMIT, totalLimit: HISTORY_ARCHIVE_BATCH_LIMIT, prepare: prepareHistoryArchives, kind: "履歴ファイル", limits: "1〜16件、各1 MiB・合計4 MiB" });
   listen(file, "change", () => {
     if (disposed) return;
     stopReportBatch();
@@ -364,7 +372,8 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   listen(tokenStatus, "change", changedFilter);
   section.append(heading, explanation, save, backupState,
     labelled("保存した履歴JSONファイルを選択", file), cancel, status,
-    labelled("個別の確認記録をまとめて履歴候補にする（最大64件・各64 KiB・合計1 MiB）", reportFiles), reportCancel,
+    labelled("個別の確認記録をまとめて履歴候補にする（最大64件・各64 KiB・合計1 MiB）", reportFiles),
+    labelled("複数の履歴ファイルをまとめて候補にする（最大16件・各1 MiB・合計4 MiB）", archiveFiles), reportCancel,
     filterHeading, labelled("公開アドレス（空欄ならすべて）", account),
     labelled("チェーンID（空欄ならすべて）", chain),
     labelled("サイト（例 https://example.com または http://localhost:4231・空欄ならすべて）", origin),

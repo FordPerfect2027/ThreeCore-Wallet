@@ -6,6 +6,8 @@ import { captureDataArray } from "./security-data.js";
 export const HISTORY_FILE_LIMIT = HISTORY_TEXT_LIMIT * 4;
 export const HISTORY_REPORT_FILE_LIMIT = 65536;
 export const HISTORY_REPORT_BATCH_LIMIT = 1048576;
+export const HISTORY_ARCHIVE_FILE_LIMIT = 1048576;
+export const HISTORY_ARCHIVE_BATCH_LIMIT = 4194304;
 export class HistoryFileError extends Error {
   constructor(code, message) {
     super(message);
@@ -36,6 +38,24 @@ export function preparePortfolioReportsHistory(inputs, agent) {
   });
   const history = createPortfolioHistory(), merged = history.merge(snapshots);
   return Object.freeze({ ...validateHistoryFileText(history.exportText(), agent), sourceCount: sources.length, duplicateCount: merged.duplicates });
+}
+
+/** Consolidate separate archive files into one candidate; never touch the live collection. */
+export function prepareHistoryArchives(inputs, agent) {
+  agentName(agent);
+  let sources; try { sources = captureDataArray(inputs, 16, 1); } catch { fail("INVALID_FILE", "Choose one to 16 history archives"); }
+  let total = 0, sourceObservationCount = 0, duplicateCount = 0;
+  const history = createPortfolioHistory();
+  for (const text of sources) {
+    if (typeof text !== "string" || !text.length || text.length > HISTORY_ARCHIVE_FILE_LIMIT) fail("FILE_SIZE", "Archive too large");
+    const size = new TextEncoder().encode(text).byteLength; total += size;
+    if (size > HISTORY_ARCHIVE_FILE_LIMIT || total > HISTORY_ARCHIVE_BATCH_LIMIT) fail("FILE_SIZE", "Archive batch too large");
+    const checked = validateHistoryFileText(text, agent), source = createPortfolioHistory(); source.importText(checked.text);
+    const snapshots = source.state().snapshots; sourceObservationCount += snapshots.length;
+    duplicateCount += history.merge(snapshots).duplicates;
+  }
+  if (!sourceObservationCount) fail("INVALID_FILE", "No observations in selected archives");
+  return Object.freeze({ ...validateHistoryFileText(history.exportText(), agent), sourceCount: sources.length, sourceObservationCount, duplicateCount });
 }
 
 /** Validate a history archive and return a canonical, bounded copy. */
