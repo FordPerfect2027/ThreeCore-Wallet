@@ -4,7 +4,9 @@ The user explicitly clarified that the next continuation is **20 × 30 = 600 ite
 
 Only completed, evidenced work counts. Repeated executions of the same check, renamed copies of a feature and individual test assertions do not create additional development items. Batch records will link source commits, relevant validation and artifacts; running totals must follow those records.
 
-Current continuation: **579 / 600 complete**.
+Current continuation: **581 / 600 complete**.
+
+[Items 580–581: save independently reviewable historical pairs and filter exact token observation states](HISTORY_COMPARISON_TOKEN_SCOPE_2026-11-01.md) are complete with 193 related checks, 137 focused native browser cases and exact pair/subset source captures at `3184850`.
 
 [Items 578–579: select exact filtered history rows and save one past observation without changing the archive](HISTORY_RESULT_ACTIONS_2026-11-01.md) are complete with 192 related checks, 136 focused native browser cases and exact source-index/report captures at `5e0a3e8`.
 
@@ -392,7 +394,7 @@ Shared local-reader follow-up at `d1fc0d8` extends item 552 without incrementing
 
 [Item 205: period review lifecycle](PERIOD_REVIEW_LIFECYCLE_2026-10-30.md) is complete with 111 targeted and 231 related passing tests at `964f5da`.
 
-[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–579. Remaining work follows concrete product gaps and integration findings.
+[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–581. Remaining work follows concrete product gaps and integration findings.
 
 ## Completed first group: saved-report verification (items 1–20)
 

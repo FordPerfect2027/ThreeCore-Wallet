@@ -1,0 +1,47 @@
+{
+  "source": "3184850",
+  "scopes": {
+    "any": [
+      {
+        "sourceIndex": 1,
+        "block": "10"
+      },
+      {
+        "sourceIndex": 0,
+        "block": "30"
+      }
+    ],
+    "known": [
+      {
+        "sourceIndex": 0,
+        "block": "30"
+      }
+    ],
+    "unknown": [
+      {
+        "sourceIndex": 1,
+        "block": "10"
+      }
+    ],
+    "not-observed": [
+      {
+        "sourceIndex": 2,
+        "block": "20"
+      }
+    ]
+  },
+  "unknownDelta": null,
+  "comparedBlocks": [
+    "10",
+    "30"
+  ],
+  "wholeMatchedObservationsRetained": true,
+  "historyUnchanged": true,
+  "exactUiApi": true,
+  "backupStatus": "現在の履歴は、この画面からまだファイルとしてダウンロードしていません。",
+  "synthetic": true,
+  "nativeBrowserCases": 137,
+  "externalRpcCalls": 0,
+  "osPickerVerified": false,
+  "userWalletConnectionVerified": false
+}

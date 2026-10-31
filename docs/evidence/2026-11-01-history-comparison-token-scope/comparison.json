@@ -1,0 +1,99 @@
+{
+  "schema": "threecore-portfolio-comparison-v1",
+  "historicalObservation": true,
+  "readOnly": true,
+  "authenticated": false,
+  "securityAudit": false,
+  "provesTransfers": false,
+  "provesProfit": false,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false,
+  "earlier": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "connectionEpoch": 1,
+    "blockNumber": "10",
+    "blockHash": "0xabababababababababababababababababababababababababababababababab",
+    "nativeBalanceBaseUnits": "16",
+    "holdings": [
+      {
+        "address": "0xabababababababababababababababababababab",
+        "hasCode": false,
+        "balanceBaseUnits": null,
+        "notice": "TOKEN_CODE_MISSING"
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  },
+  "later": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "connectionEpoch": 1,
+    "blockNumber": "30",
+    "blockHash": "0xabababababababababababababababababababababababababababababababab",
+    "nativeBalanceBaseUnits": "16",
+    "holdings": [
+      {
+        "address": "0xabababababababababababababababababababab",
+        "hasCode": true,
+        "balanceBaseUnits": "0",
+        "notice": null
+      },
+      {
+        "address": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+        "hasCode": true,
+        "balanceBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+        "notice": null
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  },
+  "comparison": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "earlierBlockNumber": "10",
+    "earlierBlockHash": "0xabababababababababababababababababababababababababababababababab",
+    "laterBlockNumber": "30",
+    "laterBlockHash": "0xabababababababababababababababababababababababababababababababab",
+    "sameBlock": false,
+    "native": {
+      "earlierBalanceBaseUnits": "16",
+      "laterBalanceBaseUnits": "16",
+      "deltaBaseUnits": "0",
+      "direction": "unchanged"
+    },
+    "holdings": [
+      {
+        "address": "0xabababababababababababababababababababab",
+        "earlierBalanceBaseUnits": null,
+        "laterBalanceBaseUnits": "0",
+        "deltaBaseUnits": null,
+        "direction": "unknown",
+        "availability": "contract_code_missing"
+      },
+      {
+        "address": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+        "earlierBalanceBaseUnits": null,
+        "laterBalanceBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+        "deltaBaseUnits": null,
+        "direction": "unknown",
+        "availability": "not_observed_before"
+      }
+    ],
+    "historicalObservation": true,
+    "readOnly": true,
+    "securityAudit": false,
+    "provesTransfers": false,
+    "provesProfit": false,
+    "canAuthorizeConnection": false,
+    "canAuthorizeTransaction": false
+  }
+}

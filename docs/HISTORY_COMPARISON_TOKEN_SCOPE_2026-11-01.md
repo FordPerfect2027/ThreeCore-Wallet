@@ -1,0 +1,11 @@
+# Save historical pairs and find a token's recorded observations
+
+Items 580–581. Source: 3184850.
+
+580. A completed comparison of two selected historical records can now be saved with both normalized observations in the portable comparison format. The existing independent comparison-file input recomputes it without importing the archive or reading a wallet. Selection changes, another analysis, history replacement, invalidation and disposal retire export eligibility. Silent selection changes are checked again before saving. Invalid/reversed selections clear the previous comparison, and failed or asynchronous deliveries cannot claim success. This pair is explicitly not a full-history backup.
+
+581. History searches can filter by an exact normalized token contract and its observation state: included, balance known (including zero), contract code missing (balance unknown), or not observed. Existing account, chain and block criteria still intersect. The selected subset retains entire matching observations, including other holdings; the UI states that scope. State-only queries without a contract and invalid contracts/states are rejected. Editing criteria removes stale rows and export eligibility; reset clears the new fields as well.
+
+193 related tests passed (3724.5136 ms); 137 focused native browser cases passed. An initial test fixture incorrectly used an empty holdings array, which the existing schema correctly rejects; it was corrected to contain a different observed contract. The failed log is retained and no product validation was weakened. The native checks distinguish zero/unknown/unobserved records, reopen the saved historical pair independently, and preserve history with zero provider reads. [Evidence](evidence/2026-11-01-history-comparison-token-scope/) captures original archive indices, all four token scopes, an exact matching-observation subset and a source-included comparison whose unknown token delta remains null.
+
+Last full browser: 431dcfd (980 cases). Last full-wallet: d253e8d (15,720 tests). Synthetic/native-browser checks do not establish OS-picker use or a real-wallet connection. No existing-server restart, external RPC, signature, transfer, approval, private-key retrieval, publication or deployment occurred.
