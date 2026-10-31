@@ -5,6 +5,7 @@ import { walletFileReadService } from "../src/file-read-service.js";
 import { describeFileReadStatus, describeFileReadError } from "../src/file-read-status.js";
 import { compareWalletSavedTextInspections } from "../src/file-read-status.js";
 import { inspectWalletSavedTextDifferences, encodeWalletSavedTextDifferences, walletSavedTextDifferencesText, WALLET_SAVED_DIFFERENCE_SOURCE_LIMIT } from "../src/file-read-status.js";
+import { reviewWalletSavedTextDifferences, encodeWalletSavedTextDifferenceReview, walletSavedTextDifferenceReviewText, WALLET_SAVED_DIFFERENCE_REVIEW_LIMIT } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -343,7 +344,7 @@ async function readSavedGuideText(file, options) {
 export function mountSavedFileDifferencePanel({ document, parent, getPair = () => null,
   readText = readSavedGuideText, download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-differences"; parent.append(host);
-  let disposed = false, busy = false, generation = 0, aborter = null, result = null, lastPair = null;
+  let disposed = false, busy = false, generation = 0, aborter = null, result = null, lastPair = null, reviewPanel = null;
   const cleanup = [];
   function node(tag, name, text, target = host) { const value = document.createElement(tag); value.className = "saved-differences-" + name; if (text !== undefined) value.textContent = text; target.append(value); return value; }
   node("summary", "heading", "設定や練習用JSONの、変わった箇所を調べる");
@@ -355,7 +356,7 @@ export function mountSavedFileDifferencePanel({ document, parent, getPair = () =
   const current = () => { try { return getPair(); } catch { return null; } };
   const usable = pair => Boolean(pair?.comparison?.before?.validation === "validated-structure" && pair?.comparison?.after?.validation === "validated-structure" && pair.comparison.before.sourceSchema === pair.comparison.after.sourceSchema && pair.beforeFile && pair.afterFile);
   const same = own => !disposed && generation === own;
-  function render() { if (disposed) return; host.setAttribute("aria-busy", String(busy)); start.disabled = busy || !usable(current()); stop.disabled = !busy; ack.disabled = busy || !result; save.disabled = busy || !result || !ack.checked; output.textContent = result ? walletSavedTextDifferencesText(result) : ""; }
+  function render() { if (disposed) return; host.setAttribute("aria-busy", String(busy)); start.disabled = busy || !usable(current()); stop.disabled = !busy; ack.disabled = busy || !result; save.disabled = busy || !result || !ack.checked; output.textContent = result ? walletSavedTextDifferencesText(result) : ""; reviewPanel?.updateResult(); }
   function cancel() { if (disposed) return; const own = ++generation, previous = aborter; aborter = null; busy = false; result = null; ack.checked = false; previous?.abort(); if (same(own)) { status.textContent = "相違箇所の確認を中止しました。元ファイルは変更していません。"; render(); } }
   function updatePair() { if (disposed) return; const next = current()?.comparison ?? null; if (lastPair !== next) { lastPair = next; cancel(); status.textContent = "比較するファイルが変わりました。必要に応じて相違箇所を調べてください。"; } render(); }
   async function inspectPair() {
@@ -384,8 +385,51 @@ export function mountSavedFileDifferencePanel({ document, parent, getPair = () =
     } catch { if (same(own)) status.textContent = "相違箇所の保存を確認できませんでした。"; }
   }
   function listen(element, event, action) { element.addEventListener(event, action); cleanup.push(() => element.removeEventListener(event, action)); }
-  listen(start, "click", () => { void inspectPair(); }); listen(stop, "click", cancel); listen(ack, "change", render); listen(save, "click", saveResult); updatePair();
-  return Object.freeze({ inspectPair, updatePair, getState: () => Object.freeze({ busy, result, disposed }), dispose() { if (disposed) return; disposed = true; generation++; const previous = aborter; aborter = null; result = null; busy = false; previous?.abort(); cleanup.forEach(remove => remove()); host.remove(); } });
+  listen(start, "click", () => { void inspectPair(); }); listen(stop, "click", cancel); listen(ack, "change", render); listen(save, "click", saveResult);
+  reviewPanel = mountSavedFileDifferenceReviewPanel({ document, parent: host, readText, download, getResult: () => !disposed && !busy ? result : null }); updatePair();
+  return Object.freeze({ inspectPair, updatePair, getState: () => Object.freeze({ busy, result, disposed }), dispose() { if (disposed) return; disposed = true; generation++; const previous = aborter; aborter = null; result = null; busy = false; previous?.abort(); reviewPanel.dispose(); cleanup.forEach(remove => remove()); host.remove(); } });
+}
+
+/** A saved receipt is checked against the current owned calculation, never restored. */
+export function mountSavedFileDifferenceReviewPanel({ document, parent, getResult = () => null,
+  readText = readSavedGuideText, download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
+  const host = document.createElement("details"); host.className = "saved-difference-review"; parent.append(host);
+  let disposed = false, busy = false, generation = 0, aborter = null, result = null, lastResult = null;
+  const cleanup = [], current = () => { try { return getResult(); } catch { return null; } }, same = own => !disposed && generation === own;
+  function node(tag, name, text, target = host) { const value = document.createElement(tag); value.className = "saved-difference-review-" + name; if (text !== undefined) value.textContent = text; target.append(value); return value; }
+  node("summary", "heading", "保存した相違箇所JSONを再計算結果と照合する");
+  node("p", "intro", "上の「相違箇所を調べる」で得た結果と、以前に保存した相違箇所JSONを照合します。両方の元JSONの照合値、場所・件数・判定を確認します。");
+  const label = node("label", "file-label", "保存した相違箇所JSON（最大256 KiB）"), file = node("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json";
+  const stop = node("button", "stop", "保存結果の照合を中止"); stop.type = "button";
+  const status = node("p", "status", "両方の元ファイルから相違箇所を調べてから照合してください。"), notice = node("p", "notice"), output = node("pre", "output", ""); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  const selectionNotice = createFileSelectionNotice(file, notice), ackLabel = node("label", "ack-label", "照合結果と照合値を、暗号化せずPCに保存します"), ack = node("input", "ack", undefined, ackLabel); ack.type = "checkbox";
+  const save = node("button", "save", "相違箇所の照合結果をJSON保存"); save.type = "button";
+  function render() { if (disposed) return; host.setAttribute("aria-busy", String(busy)); file.disabled = busy || !current(); stop.disabled = !busy; ack.disabled = busy || !result; save.disabled = busy || !result || !ack.checked; output.textContent = walletSavedTextDifferenceReviewText(result); }
+  function cancel() { if (disposed) return; const own = ++generation, previous = aborter; aborter = null; busy = false; result = null; ack.checked = false; previous?.abort(); if (same(own)) { status.textContent = "保存結果の照合を中止しました。元の確認結果は変更していません。"; render(); } }
+  function updateResult() { if (disposed) return; const next = current(); if (lastResult !== next) { lastResult = next; cancel(); status.textContent = next ? "この再計算結果と照合する、保存済みの相違箇所JSONを選んでください。" : "両方の元ファイルから相違箇所を調べてから照合してください。"; } render(); }
+  async function inspectFile(chosen) {
+    if (disposed || busy) return false;
+    const expected = current(); if (!expected) return false;
+    const own = ++generation, local = new AbortController(); aborter = local; busy = true; result = null; ack.checked = false; selectionNotice.clear(); status.textContent = "保存した相違箇所JSONを再計算結果と照合しています。"; render();
+    const unchanged = () => same(own) && current() === expected;
+    try {
+      const text = await readText(chosen, { maxBytes: WALLET_SAVED_DIFFERENCE_REVIEW_LIMIT, signal: local.signal }); if (!unchanged()) return false;
+      const checked = await reviewWalletSavedTextDifferences(expected, text, { signal: local.signal }); if (!unchanged()) return false;
+      result = checked; status.textContent = checked.matchesRecomputation ? "再計算結果との一致を確認しました。元ファイル同士の一致とは別の判定です。" : "再計算結果と一致しない項目が見つかりました。"; return true;
+    } catch (error) { if (unchanged()) status.textContent = describeFileReadError(error, "256 KiB") ?? walletSavedInspectionErrorText(error); return false; }
+    finally { if (same(own)) { aborter = null; busy = false; render(); } }
+  }
+  async function selected() { if (disposed || busy) return; const chosen = file.files?.[0]; file.value = ""; if (!chosen) { selectionNotice.noSelection(); return; } return inspectFile(chosen); }
+  function saveResult() {
+    if (disposed || busy || !result || !ack.checked) return;
+    const own = generation, captured = result; ack.checked = false; render();
+    try { const prepared = Object.freeze({ text: encodeWalletSavedTextDifferenceReview(captured), filename: "ThreeCore-saved-file-differences-review.json", mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false, encrypted: false }), delivery = download(prepared), kind = observeCallbackResult(delivery);
+      if (same(own)) status.textContent = kind === "synchronous" && delivery !== false ? "照合結果の保存処理を開始しました。ダウンロード先をご確認ください。" : "照合結果の保存を確認できませんでした。";
+    } catch { if (same(own)) status.textContent = "照合結果の保存を確認できませんでした。"; }
+  }
+  function listen(element, event, action) { element.addEventListener(event, action); cleanup.push(() => element.removeEventListener(event, action)); }
+  listen(file, "change", () => { void selected(); }); listen(stop, "click", cancel); listen(ack, "change", render); listen(save, "click", saveResult); updateResult();
+  return Object.freeze({ inspectFile, updateResult, getState: () => Object.freeze({ busy, result, disposed }), dispose() { if (disposed) return; disposed = true; generation++; const previous = aborter; aborter = null; busy = false; result = null; previous?.abort(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); host.remove(); } });
 }
 
 /** Separate file-only inventory. No restore, account or storage callbacks exist. */
