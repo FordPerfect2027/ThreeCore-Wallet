@@ -1,0 +1,23 @@
+{
+  "source": "e3b067e",
+  "selectedFiles": 3,
+  "uniqueObservations": 2,
+  "duplicates": 1,
+  "readyStatus": "3ファイルから2件の履歴候補を入力欄へ準備しました（重複1件）。プレビュー後に適用してください。履歴はまだ変更していません。",
+  "invalidStatus": "確認記録をまとめられませんでした（読み込み2／2件）。形式・サイズ・読み込みを確認してください。入力欄と履歴は保持しています。",
+  "explicitPreviewAndApply": true,
+  "originalHistoryPreservedUntilApply": true,
+  "invalidBatchPreservesInputAndHistory": true,
+  "exactUiApi": true,
+  "limits": {
+    "files": 64,
+    "eachBytes": 65536,
+    "totalBytes": 1048576,
+    "totalDeadlineMs": 30000
+  },
+  "synthetic": true,
+  "nativeBrowserCases": 140,
+  "externalRpcCalls": 0,
+  "osPickerVerified": false,
+  "userWalletConnectionVerified": false
+}
