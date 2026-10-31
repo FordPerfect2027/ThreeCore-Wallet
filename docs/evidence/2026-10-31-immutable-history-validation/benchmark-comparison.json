@@ -1,0 +1,41 @@
+{
+  "localSyntheticMeasurement": true,
+  "rows": [
+    {
+      "name": "snapshot",
+      "beforeMedianMs": 1.8451000000000022,
+      "afterMedianMs": 0.0015599999999949433,
+      "resultUnchanged": true
+    },
+    {
+      "name": "archive",
+      "beforeMedianMs": 20.238500000000005,
+      "afterMedianMs": 0.0009333333333453689,
+      "resultUnchanged": true
+    },
+    {
+      "name": "reconciliation-workspace",
+      "beforeMedianMs": 20.163066666666662,
+      "afterMedianMs": 0.0018666666666717902,
+      "resultUnchanged": true
+    },
+    {
+      "name": "observation",
+      "beforeMedianMs": 0.0678700000000049,
+      "afterMedianMs": 0.00017500000000154615,
+      "resultUnchanged": true
+    },
+    {
+      "name": "archive-summary",
+      "beforeMedianMs": 19.213766666666668,
+      "afterMedianMs": 0.7025999999999991,
+      "resultUnchanged": true
+    },
+    {
+      "name": "reconciliation-query",
+      "beforeMedianMs": 28.087600000000066,
+      "afterMedianMs": 7.846799999999973,
+      "resultUnchanged": true
+    }
+  ]
+}

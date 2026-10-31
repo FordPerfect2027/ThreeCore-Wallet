@@ -1,0 +1,81 @@
+{
+  "source": "efb676b",
+  "sourceFiles": {
+    "src/transfer-codec.js": "abee9e6d80713c424053b7fdefd2be2bde0807cf072345dc8082e3b687784f81",
+    "src/transfer-archive.js": "d0e0e2c819ed60d797a99654c0c3b2c79a5e4caab285f91e9152dc27a66ad25b",
+    "src/reconciliation-model.js": "0b43ff23a5c0fdf714c6a31f6d31d1ea49bcd05993a5252435d03756c25bb72a",
+    "src/token-identity-model.js": "ccdfd2f518415ae4fdc4b787515b13922e066572e8ecf64c4ae6f426edadddff"
+  },
+  "runtime": "v24.19.0",
+  "platform": "win32",
+  "syntheticWindows": 10,
+  "syntheticEvents": 500,
+  "rows": [
+    {
+      "name": "snapshot",
+      "iterations": 5,
+      "samples": [
+        2.2438200000000053,
+        1.6970199999999978,
+        1.8451000000000022
+      ],
+      "medianMs": 1.8451000000000022,
+      "resultSha256": "3250cf9f15d7efd09e46b48001d9a0ddb383ca6dba311854c99949f1576457f8"
+    },
+    {
+      "name": "archive",
+      "iterations": 3,
+      "samples": [
+        21.609333333333364,
+        20.238500000000005,
+        18.587966666666677
+      ],
+      "medianMs": 20.238500000000005,
+      "resultSha256": "631a8953296a767ca971df497d841b5af7cb3870bc65bff67a8c015b58d0c9e8"
+    },
+    {
+      "name": "reconciliation-workspace",
+      "iterations": 3,
+      "samples": [
+        24.61943333333333,
+        20.163066666666662,
+        20.105766666666643
+      ],
+      "medianMs": 20.163066666666662,
+      "resultSha256": "7e7db7b5dabe52452fda32d850e4a00d3d857b56a92265c42db38cca07f1473c"
+    },
+    {
+      "name": "observation",
+      "iterations": 20,
+      "samples": [
+        0.08094499999999698,
+        0.0678700000000049,
+        0.05617999999999483
+      ],
+      "medianMs": 0.0678700000000049,
+      "resultSha256": "96b1d6b69cc95958cadc3ef05a354c142e19d3b1d75550c082c0e3c1e2482772"
+    },
+    {
+      "name": "archive-summary",
+      "iterations": 3,
+      "samples": [
+        19.801733333333306,
+        19.11116666666665,
+        19.213766666666668
+      ],
+      "medianMs": 19.213766666666668,
+      "resultSha256": "d220e6763a0e892e8bb0b38d4c66cbc3f9ed4718538ff517800994443999a42a"
+    },
+    {
+      "name": "reconciliation-query",
+      "iterations": 1,
+      "samples": [
+        28.227899999999863,
+        27.364100000000008,
+        28.087600000000066
+      ],
+      "medianMs": 28.087600000000066,
+      "resultSha256": "9d20c073952d10fd482b211d9aabc6e501a9dfc2f354ac63558cec13f646acd5"
+    }
+  ]
+}
