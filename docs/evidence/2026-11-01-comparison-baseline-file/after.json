@@ -1,0 +1,24 @@
+{
+  "schema": "threecore-portfolio-snapshot-v1",
+  "historicalObservation": true,
+  "snapshot": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4231",
+    "connectionEpoch": 1,
+    "blockNumber": "43",
+    "blockHash": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+    "nativeBalanceBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+    "holdings": [
+      {
+        "address": "0x2222222222222222222222222222222222222222",
+        "hasCode": false,
+        "balanceBaseUnits": null,
+        "notice": "TOKEN_CODE_MISSING"
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  }
+}

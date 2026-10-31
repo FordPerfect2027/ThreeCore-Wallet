@@ -1,0 +1,10 @@
+保存記録の比較（現在の残高・送金履歴・利益の証明ではありません）
+DAT / 0x1111111111111111111111111111111111111111
+チェーン: 84532
+比較ブロック: 42 → 43
+前のブロックハッシュ: 0xabababababababababababababababababababababababababababababababab
+後のブロックハッシュ: 0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+ETH残高差（wei）: +4
+0x2222222222222222222222222222222222222222
+契約コードがなく比較できません
+資産間の合算・価格換算は行っていません。
