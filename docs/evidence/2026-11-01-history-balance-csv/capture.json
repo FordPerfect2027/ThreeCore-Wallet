@@ -1,0 +1,20 @@
+{
+  "source": "6da1674",
+  "query": {
+    "minimumBlock": "9007199254740993"
+  },
+  "observationCount": 1,
+  "balanceRows": 3,
+  "byteLength": 2018,
+  "uiApiCliExact": true,
+  "cliExit": 0,
+  "historyUnchanged": true,
+  "fullBackupMarkerUnchanged": true,
+  "unknownBalanceRemainsBlank": true,
+  "integerTextPrefix": "'",
+  "restorable": false,
+  "synthetic": true,
+  "nativeBrowserCases": 148,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}
