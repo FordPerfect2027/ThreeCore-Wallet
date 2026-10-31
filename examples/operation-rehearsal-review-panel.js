@@ -3,7 +3,9 @@ import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
-import {canExportReviewedRehearsalWorkspace,exportReviewedRehearsalWorkspace, encodeRehearsalDifferenceQuery, encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
+import {canExportReviewedRehearsalWorkspace,exportReviewedRehearsalWorkspace,exportReviewedRehearsalAgent,compareReviewedRehearsalWorkspace, encodeRehearsalDifferenceQuery, encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
+import { encodeRehearsalWorkspace } from "../src/operation-rehearsal-workspace.js";
+import { encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
 import { REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_RECORD_REASON_LABELS, REHEARSAL_REFERENCE_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 
@@ -84,7 +86,7 @@ function outcomeText(outcome) {
     (outcome.query.search || "指定なし") + "。"+(outcome.query.searchScope?"検索場所: "+(outcome.query.searchScope==="recorded"?"記録に書かれた情報":"保存元と記録の両方")+"。":"")+"件数は資料に含まれる試算記録の範囲です。";
 }
 
-export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle }) {
+export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, getWorkspace = null, renderWorkspaceComparison = null }) {
   const offerDownload = payload => requireSyncExport(download(payload));
   const fileReader = createFileReadScope(), checksumReader=createFileReadScope();
   let checksumRevision=0,differenceOffset=0,differenceView=0,selectedDifference=null;
@@ -94,6 +96,55 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   let hashAbort = null;
   const listeners = [];
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
+  let workspaceGeneration=0,workspaceComparison=null;
+  const workspaceToolsAvailable=()=>!disposed&&canExportReviewedRehearsalWorkspace(receipt)&&typeof getWorkspace==="function"&&typeof renderWorkspaceComparison==="function";
+  function resetWorkspaceComparison(message="") {
+    workspaceGeneration++;workspaceComparison=null;
+    get("workspace-comparison-details").textContent="";get("workspace-comparison").hidden=true;
+    get("workspace-comparison-status").textContent=message;get("workspace-comparison-save").disabled=true;
+    const enabled=workspaceToolsAvailable();get("workspace-compare").disabled=!enabled;get("workspace-compare").hidden=!enabled;
+  }
+  function workspaceChanged(){if(disposed)return;resetWorkspaceComparison(workspaceComparison?"現在の履歴が変わりました。資料との比較をやり直してください。":"");}
+  function refreshAgentExtraction(result) {
+    get("agent-select").textContent="";get("agent-select").value="";
+    const allowed=canExportReviewedRehearsalWorkspace(result),subjects=allowed?result.scope.filter(row=>row.beforeRecords!==null):[];
+    for(const subject of subjects){const option=document.createElement("option");option.value=subject.agent;option.textContent=subject.agent+" / "+subject.beforeRecords+"件";get("agent-select").append(option);}
+    get("agent-select").value=subjects[0]?.agent??"";get("agent-select").disabled=!subjects.length;get("agent-save").disabled=!subjects.length;get("agent-recovery").hidden=!subjects.length;
+  }
+  listen("agent-save","click",()=>{
+    if(disposed||!receipt||get("agent-save").disabled)return;
+    const own=revision,reviewed=receipt,agent=get("agent-select").value;
+    try{const text=exportReviewedRehearsalAgent(reviewed,agent);
+      requireSyncExport(download({document,prepared:{text,filename:"ThreeCore-"+agent+"-recovered-rehearsal.json",mimeType:"application/json"}}));
+      if(disposed||own!==revision||receipt!==reviewed||get("agent-select").value!==agent)return;
+      get("export-status").textContent=agent+"の元入力だけを保存し始めました。現在の履歴には反映していません。読み込む場合は「記録を保存・再確認」で確認してください。";
+    }catch{if(!disposed&&own===revision&&receipt===reviewed&&get("agent-select").value===agent)get("export-status").textContent="選んだ対象の元入力を保存できませんでした。元資料と現在の履歴は保持しています。";}
+  });
+  listen("workspace-compare","click",()=>{
+    if(!workspaceToolsAvailable()||get("workspace-compare").disabled)return;
+    resetWorkspaceComparison();const own=revision,generation=workspaceGeneration,reviewed=receipt;
+    const current=()=>!disposed&&revision===own&&workspaceGeneration===generation&&receipt===reviewed;
+    try{const inputs=requireSyncExport(getWorkspace());if(!current())return;
+      const report=compareReviewedRehearsalWorkspace(reviewed,inputs),text=encodeRehearsalComparison(report.inputs.before,report.inputs.after);
+      const stage=document.createElement("div");requireSyncExport(renderWorkspaceComparison(report,stage));if(!current())return;
+      workspaceComparison=Object.freeze({report,text,beforeText:encodeRehearsalWorkspace(report.inputs.before)});
+      get("workspace-comparison-details").textContent="";
+      for(const child of Array.from(stage.childNodes??stage.children))get("workspace-comparison-details").append(child);
+      if(!current())return;
+      get("workspace-comparison-status").textContent="現在の履歴 → 資料内の元入力、の向きで比較しました。現在の履歴への適用は行っていません。";
+      get("workspace-comparison").hidden=false;get("workspace-comparison-save").disabled=false;
+    }catch{if(current())resetWorkspaceComparison("現在の履歴と資料内の元入力を比較できませんでした。元資料と現在の履歴は保持しています。");}
+  });
+  listen("workspace-comparison-save","click",()=>{
+    const saved=workspaceComparison;if(!workspaceToolsAvailable()||!saved||get("workspace-comparison-save").disabled)return;
+    const own=revision,generation=workspaceGeneration,reviewed=receipt;
+    const current=()=>!disposed&&revision===own&&workspaceGeneration===generation&&receipt===reviewed&&workspaceComparison===saved;
+    try{const beforeText=encodeRehearsalWorkspace(requireSyncExport(getWorkspace()));if(!current())return;
+      if(beforeText!==saved.beforeText){workspaceChanged();return;}
+      requireSyncExport(download({document,prepared:{text:saved.text,filename:"ThreeCore-current-vs-reviewed-workspace.json",mimeType:"application/json"}}));
+      if(current())get("export-status").textContent="現在の履歴と資料内の元入力の比較を、両方の入力と一緒に保存し始めました。資料の再確認欄で再計算できます。";
+    }catch{if(current())get("export-status").textContent="比較資料を保存できませんでした。元資料と現在の履歴は保持しています。";}
+  });
   mountDifferenceQuerySave(document,get,listen,()=>({review:receipt,target:"report",revision,view:differenceView,disposed}),download);
   const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
   listeners.push(() => fileNotice.dispose());
@@ -101,7 +152,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   listeners.push(()=>checksumNotice.dispose());
   function invalidate(message) {
     const own=++revision;checksumRevision++;differenceView++;setDifferenceFilters(get,false,true);selectedDifference=null;get("difference-save").disabled=true;get("difference-detail").hidden=true;get("difference-detail").textContent="";
-    const previous=hashAbort;hashAbort=null;receipt=null;differenceOffset=0;
+    const previous=hashAbort;hashAbort=null;receipt=null;differenceOffset=0;resetWorkspaceComparison();refreshAgentExtraction(null);
     feedback.clear();checksumNotice.clear();get("checksum-file").value="";
     get("checksum-file-status").textContent="";get("checksum-file-status").setAttribute("aria-busy","false");
     fileNotice.clear();get("previous").disabled=true;get("next").disabled=true;get("difference-status").textContent="";
@@ -146,7 +197,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       const result = await reviewRehearsalReport(text, { expectedSha256, subtle, signal: ownHash.signal });
       if(disposed || own !== revision) return;
       receipt = result;setDifferenceFilters(get,true); get("results").hidden = false; for(const name of ["save","source-save","checksum-save","evidence-save"])get(name).disabled=false;
-      const recoverable=canExportReviewedRehearsalWorkspace(result);get("workspace-save").disabled=!recoverable;get("workspace-save").hidden=!recoverable;
+      const recoverable=canExportReviewedRehearsalWorkspace(result);get("workspace-save").disabled=!recoverable;get("workspace-save").hidden=!recoverable;refreshAgentExtraction(result);resetWorkspaceComparison();
       const matches = result.matchesRecomputation && result.checksumMatches !== false;
       const expectedDifferences = result.reportOutcome?.kind === "expected-outcomes" && !result.reportOutcome.allMatched;
       get("status").className = matches && !expectedDifferences ? "passed" : "blocked";
@@ -271,7 +322,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   });
   reset();
   const evidencePanel=mountRehearsalEvidencePanel(document,{download,subtle});
-  return Object.freeze({dispose(){if(disposed)return;disposed=true;evidencePanel.dispose();reset("");get("expected").value="";for(const remove of listeners)remove();}});
+  return Object.freeze({workspaceChanged,dispose(){if(disposed)return;disposed=true;evidencePanel.dispose();reset("");get("expected").value="";for(const remove of listeners)remove();}});
 }
 
 /** Inspect a portable evidence file independently of the active rehearsal and ordinary report. */

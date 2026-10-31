@@ -75,7 +75,8 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   const scenarioPanel = mountRehearsalScenarioPanel(document, { download, reasons: REASONS, kinds: KINDS,
     onChange: () => scenarioSetPanel?.sourceChanged() });
   scenarioSetPanel = mountRehearsalScenarioSetPanel(document, { download, store: session.cases, getComparison: () => scenarioPanel.comparison() });
-  const reportReviewPanel = mountRehearsalReviewPanel(document, { download });
+  const reportReviewPanel = mountRehearsalReviewPanel(document, { download, getWorkspace:()=>ledger.snapshot(),
+    renderWorkspaceComparison:(comparison,root)=>renderComparisonDetails(comparison,root,true) });
   const checkPanel = mountRehearsalCheckPanel(document, { download, reasons: REASONS });
   const recordsPanel = mountRehearsalRecordsPanel(document, { download, reasons: REASONS, kinds: KINDS });
   const sessionPanel = mountRehearsalSessionPanel(document, { session, download,
@@ -179,25 +180,26 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     get("workspace-apply").disabled = false;
     setWorkspaceStage("review", "上の一覧は現在の履歴です。下の変更内容を確認し、「確認した3トークンの履歴を復旧」を押してください。必要なら現在の履歴を先に一括保存できます。");
   }
-  function renderComparisonDetails(comparison, root = get("workspace-details")) {
+  function renderComparisonDetails(comparison, root = get("workspace-details"), referenceMode=false) {
     root.textContent = "";
+    const afterLabel=referenceMode?"資料内の入力":"復旧後",actions=referenceMode?{absent:"双方で未作成",added:"資料側だけにある",removed:"現在側だけにある",unchanged:"入力内容は同じ",replaced:"入力内容が異なる"}:REVIEW_ACTIONS;
     const note = document.createElement("p"); note.className = "small";
     note.textContent = "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。" +
-      (comparison.selectedAgentChanged ? " 復旧後の表示対象: " + comparison.inputs.before.activeAgent + " → " + comparison.inputs.after.activeAgent + "。" : "");
+      (comparison.selectedAgentChanged ? " "+afterLabel+"の表示対象: " + comparison.inputs.before.activeAgent + " → " + comparison.inputs.after.activeAgent + "。" : "");
     root.append(note);
     for (const row of comparison.rows) {
       if (!row.before && !row.after) continue;
       const details = document.createElement("details"); details.className = "review-detail";
       const heading = document.createElement("summary");
-      heading.textContent = row.agent + "の照合詳細 — " + REVIEW_ACTIONS[row.action]; details.append(heading);
+      heading.textContent = row.agent + "の照合詳細 — " + actions[row.action]; details.append(heading);
       const intro = document.createElement("p"); intro.className = "small";
-      intro.textContent = "記録の追加 " + row.eventChanges.added.length + "件 / 削除 " + row.eventChanges.removed.length +
+      intro.textContent = (referenceMode?"資料側だけの記録 ":"記録の追加 ") + row.eventChanges.added.length + (referenceMode?"件 / 現在側だけの記録 ":"件 / 削除 ") + row.eventChanges.removed.length +
         "件 / 同じIDの内容変更 " + row.eventChanges.modified.length + "件 / 共通する記録の順序変更: " +
         (row.eventChanges.orderChanged ? "あり" : "なし") + "。";
       details.append(intro);
       if (row.before && row.after && row.contextChanges.length) {
         const changed = document.createElement("p"); changed.className = "comparison-note";
-        changed.textContent = "変わる項目: " + row.contextChanges.map(item => REVIEW_FIELDS[item.field]).join("・") + "。";
+        changed.textContent = (referenceMode?"異なる項目: ":"変わる項目: ") + row.contextChanges.map(item => REVIEW_FIELDS[item.field]).join("・") + "。";
         details.append(changed);
       }
       if (row.before && row.after && !row.sameAccountingContext) {
@@ -209,7 +211,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
         const wrap = document.createElement("div"); wrap.className = "table-wrap";
         const table = document.createElement("table"), title = document.createElement("caption"); title.textContent = caption; table.append(title);
         const head = document.createElement("tr");
-        for (const label of ["確認する項目", "現在", "復旧後"]) { const cell = document.createElement("th"); cell.setAttribute("scope", "col"); cell.textContent = label; head.append(cell); }
+        for (const label of ["確認する項目", "現在", afterLabel]) { const cell = document.createElement("th"); cell.setAttribute("scope", "col"); cell.textContent = label; head.append(cell); }
         table.append(head);
         for (const entry of entries) {
           const tr = document.createElement("tr");
@@ -228,16 +230,16 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
         if (key === "buybackBps") return formatRehearsalUnits(String(value), 2) + "%";
         return formatRehearsalUnits(value, summary.context.decimals) + " " + summary.context.symbol;
       };
-      if (row.policyChanges.length) table("変わる利用条件", row.policyChanges.map(change => [REVIEW_FIELDS[change.field],
+      if (row.policyChanges.length) table(referenceMode?"異なる利用条件":"変わる利用条件", row.policyChanges.map(change => [REVIEW_FIELDS[change.field],
         policyValue(change.before, change.field, row.before), policyValue(change.after, change.field, row.after)]));
       else { const unchanged = document.createElement("p"); unchanged.textContent = "利用条件の変更はありません。"; details.append(unchanged); }
       if (row.after) {
         const findings = document.createElement("p"); findings.className = "small";
-        findings.textContent = "復旧後の試算: 条件外の記録 " + row.after.rejectedRecords + "件、未決済 " + row.after.openPositions +
+        findings.textContent = afterLabel+"の試算: 条件外の記録 " + row.after.rejectedRecords + "件、未決済 " + row.after.openPositions +
           "件、利益を超える予約: " + (row.after.allocationOvercommitted ? "あり" : "なし") + "。実行の許可を示すものではありません。";
         details.append(findings);
       }
-      for (const [key, label] of [["added", "追加する記録ID"], ["removed", "削除する記録ID"], ["modified", "内容が変わる記録ID"]]) {
+      for (const [key, label] of [["added", referenceMode?"資料側だけの記録ID":"追加する記録ID"], ["removed", referenceMode?"現在側だけの記録ID":"削除する記録ID"], ["modified", referenceMode?"内容が異なる記録ID":"内容が変わる記録ID"]]) {
         const ids = row.eventChanges[key]; if (!ids.length) continue;
         const p = document.createElement("p"); p.className = "small";
         p.textContent = label + ": " + ids.slice(0, 8).join(", ") + (ids.length > 8 ? " ほか" + (ids.length - 8) + "件（全件は照合資料に含まれます）" : "");
@@ -273,6 +275,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     renderWorkspace();return own;
   }
   function renderWorkspace() {
+    reportReviewPanel.workspaceChanged();
     const report = reportRehearsalWorkspace(ledger.snapshot());
     get("workspace-rows").textContent = "";
     for (const row of report.rows) {

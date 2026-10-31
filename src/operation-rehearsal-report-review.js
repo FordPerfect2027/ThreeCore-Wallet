@@ -1,6 +1,6 @@
 import { captureDataRecord, sha256Hex } from "./security-data.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
-import { RehearsalError } from "./operation-rehearsal.js";
+import { RehearsalError, encodeRehearsal } from "./operation-rehearsal.js";
 import { encodeRehearsalWorkspace } from "./operation-rehearsal-workspace.js";
 import { reportRehearsalOverview, REHEARSAL_OVERVIEW_SCHEMA } from "./operation-rehearsal-overview.js";
 import { compareRehearsalWorkspaces, REHEARSAL_COMPARISON_SCHEMA } from "./operation-rehearsal-comparison.js";
@@ -129,9 +129,26 @@ export function canExportReviewedRehearsalWorkspace(receipt) {
 
 /** Reconstruct canonical workspace JSON; do not claim original file-byte recovery. */
 export function exportReviewedRehearsalWorkspace(receipt) {
+  return encodeRehearsalWorkspace(reviewedWorkspaceInputs(receipt));
+}
+
+function reviewedWorkspaceInputs(receipt) {
   if(!canExportReviewedRehearsalWorkspace(receipt))fail("REVIEW_WORKSPACE_UNAVAILABLE");
   const {recomputed}=prepareRehearsalReview(reviewSources.get(receipt),receipt.expectedSha256);
-  return encodeRehearsalWorkspace(recomputed.inputs);
+  return recomputed.inputs;
+}
+
+/** Extract only a present agent; an absent agent must never become a zero ledger. */
+export function exportReviewedRehearsalAgent(receipt,agent) {
+  if(typeof agent!=="string"||!["DAT","EMA","CAWELON"].includes(agent))fail("INVALID_REVIEW_AGENT");
+  const ledger=reviewedWorkspaceInputs(receipt).ledgers.find(row=>row.agent===agent);
+  if(!ledger)fail("REVIEW_AGENT_MISSING");
+  return encodeRehearsal(ledger);
+}
+
+/** The direction is current workspace -> report inputs; this never applies either side. */
+export function compareReviewedRehearsalWorkspace(receipt,currentInputs) {
+  return compareRehearsalWorkspaces(currentInputs,reviewedWorkspaceInputs(receipt));
 }
 
 export const REHEARSAL_REVIEW_EVIDENCE_SCHEMA = "threecore.operation-rehearsal-review-evidence.v1";

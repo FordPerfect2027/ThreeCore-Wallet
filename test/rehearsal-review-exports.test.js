@@ -8,11 +8,49 @@ const source=' \r\n'+JSON.stringify(reportRehearsalOverview({schema:REHEARSAL_WO
 const hash=text=>createHash('sha256').update(text).digest('hex');
 class Node extends Element{set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
 function setup(options={}){const elements=new Map(),downloads=[];let action=()=>{};const document={activeElement:null,getElementById(id){if(!elements.has(id)){const n=new Node('div');n.focus=()=>{document.activeElement=n;};elements.set(id,n);}return elements.get(id);},createElement:tag=>new Node(tag)};
- const q=id=>document.getElementById('report-review-'+id);const panel=mountRehearsalReviewPanel(document,{subtle:options.subtle??{digest:async(_algorithm,bytes)=>Uint8Array.from(createHash('sha256').update(bytes).digest()).buffer},download:({prepared})=>{const result=action();downloads.push(prepared);return result;}});
+ const q=id=>document.getElementById('report-review-'+id);const panel=mountRehearsalReviewPanel(document,{getWorkspace:options.getWorkspace,renderWorkspaceComparison:options.renderWorkspaceComparison,subtle:options.subtle??{digest:async(_algorithm,bytes)=>Uint8Array.from(createHash('sha256').update(bytes).digest()).buffer},download:({prepared})=>{const result=action();downloads.push(prepared);return result;}});
  const edit=(id,value)=>{q(id).value=value;q(id).dispatchEvent(new Event('input'));};
  return{q,panel,edit,downloads,document,downloadAction:fn=>{action=fn;},paste:text=>{edit('text',text);q('paste').click();}};
 }
 async function finished(f){const end=Date.now()+5000;while(f.q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await new Promise(resolve=>setTimeout(resolve,5));assert.equal(f.q('status').getAttribute('aria-busy'),'false');}
+
+test('agent export offers present zero-record inputs and keeps the chosen input separate from workspace restoration',async()=>{
+ const f=setup();try{const workspace={schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:'DAT',ledgers:[rehearsalExampleV2(),{...rehearsalExampleV2('EMA'),events:[]}]};
+  f.paste(JSON.stringify(reportRehearsalOverview(workspace)));await finished(f);
+  assert.deepEqual(f.q('agent-select').children.map(n=>n.value),['DAT','EMA']);assert.match(f.q('agent-select').children[1].textContent,/0件/);
+  f.q('agent-select').value='EMA';f.q('agent-save').click();const file=f.downloads.pop();assert.equal(file.filename,'ThreeCore-EMA-recovered-rehearsal.json');assert.deepEqual(JSON.parse(file.text),workspace.ledgers[1]);
+  assert.equal(f.q('workspace-compare').disabled,true);f.downloadAction(()=>false);f.q('agent-save').click();assert.match(f.q('export-status').textContent,/保存できません/);
+  f.downloadAction(()=>f.q('clear').click());f.q('agent-save').click();assert.equal(f.q('export-status').textContent,'');assert.equal(f.q('agent-save').disabled,true);
+ }finally{f.panel.dispose();}
+});
+for(const retirement of ['clear','edit','checksum','dispose'])test('reviewed agent action retires on '+retirement,async()=>{
+ const f=setup();try{f.paste(source);await finished(f);if(retirement==='clear')f.q('clear').click();if(retirement==='edit')f.edit('text','{}');if(retirement==='checksum')f.edit('expected','0'.repeat(64));if(retirement==='dispose')f.panel.dispose();
+  assert.equal(f.q('agent-save').disabled,true);assert.equal(f.q('agent-select').children.length,0);f.q('agent-save').dispatchEvent(new Event('click'));assert.equal(f.downloads.length,0);
+ }finally{f.panel.dispose();}
+});
+test('comparison is independently reviewable and a live input change retires only that comparison',async()=>{
+ let current={...JSON.parse(source).inputs,ledgers:[rehearsalExampleV2('DAT','loss')]};
+ const f=setup({getWorkspace:()=>current,renderWorkspaceComparison:(report,root)=>{const p=f.document.createElement('p');p.textContent=report.rows[0].action;root.append(p);}});
+ try{f.paste(source);await finished(f);f.q('workspace-compare').click();assert.equal(f.q('workspace-comparison').hidden,false);assert.equal(f.q('workspace-comparison-details').children[0].textContent,'replaced');
+  f.q('workspace-comparison-save').click();const saved=f.downloads.pop();assert.equal(saved.filename,'ThreeCore-current-vs-reviewed-workspace.json');
+  const data=JSON.parse(saved.text);assert.deepEqual(data.inputs.before,current);assert.deepEqual(data.inputs.after,JSON.parse(source).inputs);
+  current=JSON.parse(source).inputs;f.q('workspace-comparison-save').click();assert.equal(f.downloads.length,0);assert.equal(f.q('workspace-comparison-save').disabled,true);assert.match(f.q('workspace-comparison-status').textContent,/変わりました/);
+  assert.equal(f.q('agent-save').disabled,false);assert.equal(f.q('source-save').disabled,false);f.q('workspace-compare').click();assert.equal(f.q('workspace-comparison-save').disabled,false);
+  f.panel.workspaceChanged();assert.equal(f.q('workspace-comparison').hidden,true);assert.equal(f.q('workspace-compare').disabled,false);
+ }finally{f.panel.dispose();}
+});
+for(const boundary of ['get','render','download'])for(const behavior of ['clear','dispose','reject','throw'])test('workspace comparison handles '+boundary+' '+behavior+' without stale publication',async()=>{
+ let armed=false;const action=()=>{if(!armed)return;if(behavior==='clear')f.q('clear').click();if(behavior==='dispose')f.panel.dispose();if(behavior==='reject')return Promise.reject(Error('synthetic private'));if(behavior==='throw')throw Error('synthetic private');};
+ const f=setup({getWorkspace:()=>boundary==='get'&&armed?(action()??JSON.parse(source).inputs):JSON.parse(source).inputs,
+  renderWorkspaceComparison:(_r,root)=>{const p=f.document.createElement('p');p.textContent='comparison';root.append(p);if(boundary==='render')return action();}});
+ try{f.paste(source);await finished(f);if(boundary==='download'){f.q('workspace-compare').click();f.downloadAction(action);armed=true;f.q('workspace-comparison-save').click();}
+  else{armed=true;f.q('workspace-compare').click();}await new Promise(resolve=>setTimeout(resolve,0));
+  assert.ok(!f.q('workspace-comparison-status').textContent.includes('synthetic private'));assert.ok(!f.q('export-status').textContent.includes('synthetic private'));
+  if(['clear','dispose'].includes(behavior)){assert.equal(f.q('workspace-comparison-details').children.length,0);assert.equal(f.q('workspace-comparison-save').disabled,true);assert.equal(f.q('export-status').textContent,'');}
+  else if(boundary==='download'){assert.equal(f.q('workspace-comparison-save').disabled,false);assert.match(f.q('export-status').textContent,/保存できません/);}
+  else{assert.equal(f.q('workspace-comparison-details').children.length,0);assert.equal(f.q('workspace-comparison-save').disabled,true);assert.match(f.q('workspace-comparison-status').textContent,/比較できません/);}
+ }finally{f.panel.dispose();}
+});
 
 test('reviewed workspace export reconstructs full inputs while preserving original report export',async()=>{
  const f=setup();try{f.paste(source);await finished(f);assert.equal(f.q('workspace-save').disabled,false);assert.equal(f.q('workspace-save').hidden,false);

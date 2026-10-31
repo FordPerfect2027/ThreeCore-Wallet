@@ -57,6 +57,30 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  for(const mode of ['agent','comparison'])test('rehearsal reviewed inputs: '+mode+' action leaves newer current session unchanged',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const agent=value=>{q('agent').value=value;q('agent').dispatchEvent(new Event('change'));};
+    async function review(text){q('report-review-text').value=text;q('report-review-text').dispatchEvent(new Event('input'));q('report-review-paste').click();
+      const end=Date.now()+10000;while(q('report-review-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q('report-review-status').getAttribute('aria-busy')==='false');}
+    try{q('example').click();agent('EMA');q('scenario').value='pending';q('example').click();
+      q('record-browser-agent').value='DAT';q('record-browser-agent').dispatchEvent(new Event('change'));q('record-browser-save').click();const report=downloads.pop().text;
+      agent('CAWELON');q('scenario').value='loss';q('example').click();q('session-save').click();const current=downloads.pop().text;await review(report);
+      if(mode==='agent'){
+        assert(Array.from(q('report-review-agent-select').options).map(o=>o.value).join(',')==='DAT,EMA');q('report-review-agent-select').value='EMA';q('report-review-agent-save').click();
+        const file=downloads.pop(),input=JSON.parse(file.text);assert(file.filename==='ThreeCore-EMA-recovered-rehearsal.json'&&input.agent==='EMA'&&input.events.length===1);
+      }else{
+        q('report-review-workspace-compare').click();assert(!q('report-review-workspace-comparison').hidden);
+        assert(q('report-review-workspace-comparison-details').textContent.includes('現在側だけにある'));assert(!q('report-review-workspace-comparison-details').textContent.includes('履歴を消去する'));
+        q('report-review-workspace-comparison-save').click();const comparison=downloads.pop();const data=JSON.parse(comparison.text);
+        assert(data.inputs.before.ledgers.length===3&&data.inputs.after.ledgers.length===2&&data.inputs.after.activeAgent==='EMA');
+        q('session-save').click();assert(downloads.pop().text===current);q('scenario').value='profit';q('example').click();assert(q('report-review-workspace-comparison-save').disabled);
+        assert(!q('report-review-agent-save').disabled);await review(comparison.text);assert(q('report-review-status').textContent.includes('一致'));return;
+      }
+      q('session-save').click();assert(downloads.pop().text===current,'Viewing or extracting old inputs must not restore the session');
+    }finally{page.dispose();host.remove();}
+  });
   test("rehearsal reference CSV: includes hidden settlement and retires when the selected reference disappears",async()=>{
     const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
     const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];

@@ -295,6 +295,9 @@
       <button id="report-review-difference-save" type="button" disabled>選んだ相違の値を省略せず保存</button>
     </div>
     <div class="actions"><button id="report-review-save" type="button" disabled>資料の確認結果を保存</button>
+    <div id="report-review-agent-recovery" hidden><label>個別に取り出す対象<select id="report-review-agent-select" disabled></select></label><button id="report-review-agent-save" type="button" disabled>選んだ対象の元入力だけを保存</button><p class="small">資料の検索条件に隠れていた対象も含め、元入力にある対象から選びます。現在の履歴には反映しません。</p></div>
+    <button id="report-review-workspace-compare" type="button" disabled hidden>いまの履歴と資料内の元入力を比べる</button><p id="report-review-workspace-comparison-status" role="status" aria-live="polite"></p>
+    <div id="report-review-workspace-comparison" hidden><h3>現在の履歴 → 資料内の元入力</h3><p>入力内容の差を読むための比較です。この欄から履歴を変更する操作はありません。</p><div id="report-review-workspace-comparison-details"></div><button id="report-review-workspace-comparison-save" type="button" disabled>両方の入力を含む比較資料を保存</button></div>
     <button id="report-review-workspace-save" type="button" disabled hidden>資料内の元入力を一括履歴JSONとして取り出す</button>
     <p class="small">再計算が一致した確認一覧・記録検索・操作の資料から、その資料に含まれる全トークンの元入力を保存できます。元ファイルの書式を再現する機能ではなく、現在の履歴への取り込みも行いません。</p>
     <button id="report-review-source-save" type="button" disabled>確認した元資料を保存</button>
