@@ -1,0 +1,28 @@
+{
+  "source": "5e0a3e8",
+  "originalOrder": [
+    "30",
+    "10",
+    "20"
+  ],
+  "searchOrder": [
+    "30",
+    "20",
+    "10"
+  ],
+  "selectedSourceIndices": {
+    "before": 1,
+    "after": 0
+  },
+  "comparison": "保存記録の比較（現在の残高・送金履歴・利益の証明ではありません）\nDAT / 0x1111111111111111111111111111111111111111\nチェーン: 84532\n比較ブロック: 10 → 30\n前のブロックハッシュ: 0xabababababababababababababababababababababababababababababababab\n後のブロックハッシュ: 0xabababababababababababababababababababababababababababababababab\nETH残高差（wei）: +20\n0x4444444444444444444444444444444444444444\n残高差（最小単位）: 0\n資産間の合算・価格換算は行っていません。",
+  "downloadFilename": "ThreeCore-DAT-portfolio-30.json",
+  "downloadStatus": "選択した過去の1記録の保存を開始しました。全履歴のバックアップではありません。ダウンロード先をご確認ください。",
+  "backupStatus": "現在の履歴は、この画面からまだファイルとしてダウンロードしていません。",
+  "historyUnchanged": true,
+  "exactUiApi": true,
+  "synthetic": true,
+  "nativeBrowserCases": 136,
+  "externalRpcCalls": 0,
+  "osPickerVerified": false,
+  "userWalletConnectionVerified": false
+}
