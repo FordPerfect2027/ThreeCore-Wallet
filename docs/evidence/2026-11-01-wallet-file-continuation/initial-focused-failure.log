@@ -1,0 +1,32 @@
+✔ continuation retains the exact checked prefix and reads only the remaining source indices (149.0009ms)
+✔ continuation cannot accept uploaded, forged, text-only or already-complete receipts (28.8256ms)
+✔ repeated cancellation preserves successively longer prefixes with separate receipt hashes (18.6173ms)
+✖ a resumed source is still compared with its original manifest and callers cannot replace that reference (27.6646ms)
+✔ completed read failures are retained as failures, with unknown bytes explicit in resumed CSV (14.3026ms)
+✔ pre-cancelled continuation retains its prefix without reading or inventing a previous-receipt hash (6.3717ms)
+✔ receipt-hash failure cannot start later sources or consume the previous continuation (7.2859ms)
+✔ overall continuation deadline retains earlier checked rows while an unfinished reader stays pending (75.7297ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 655.988
+
+✖ failing tests:
+
+test at test\wallet-saved-file-resume.test.js:38:1
+✖ a resumed source is still compared with its original manifest and callers cannot replace that reference (27.6646ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-file-resume.test.js:43:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'FILE_BATCH_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
