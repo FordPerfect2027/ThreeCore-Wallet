@@ -1,4 +1,4 @@
-import { open } from "node:fs/promises";
+import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { resolve, extname } from "node:path";
 import { pathToFileURL } from "node:url";
 import { decodeCheckpointCollection, CHECKPOINT_TRANSFER_LIMIT } from "../src/checkpoint-transfer.js";
@@ -12,27 +12,9 @@ const USAGE = "node scripts/check-checkpoint-collection.js --file <checkpoints.j
 export async function inspectCheckpointCollection(filename) {
   if (typeof filename !== "string" || !filename || filename.includes("\0") ||
       extname(filename).toLowerCase() !== ".json") throw Error("Choose a JSON collection");
-  const handle = await open(resolve(filename), "r");
-  let bytes;
-  try {
-    const before = await handle.stat();
-    if (!before.isFile() || !Number.isSafeInteger(before.size) ||
-        before.size < 1 || before.size > CHECKPOINT_TRANSFER_LIMIT) throw Error("Invalid file size");
-    bytes = new Uint8Array(before.size);
-    let offset = 0;
-    while (offset < bytes.length) {
-      const read = await handle.read(bytes, offset, bytes.length - offset, offset);
-      if (!read.bytesRead) throw Error("File changed during inspection");
-      offset += read.bytesRead;
-    }
-    const extra = await handle.read(new Uint8Array(1), 0, 1, bytes.length);
-    const after = await handle.stat();
-    if (extra.bytesRead || after.size !== before.size || after.mtimeMs !== before.mtimeMs) {
-      throw Error("File changed during inspection");
-    }
-  } finally {
-    await handle.close();
-  }
+  const bytes = await readBoundedLocalBytes(resolve(filename), CHECKPOINT_TRANSFER_LIMIT, {
+    fail: message => { throw Error(message); }, sizeCode: "Invalid file size", changedCode: "File changed during inspection",
+  });
   const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
   const decoded = await decodeCheckpointCollection(text);
   const snapshots = [];

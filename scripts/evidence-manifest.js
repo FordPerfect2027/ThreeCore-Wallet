@@ -50,7 +50,7 @@ function contained(root, path) {
   const name = relative(root, path);
   return Boolean(name) && name !== '..' && !name.startsWith('..' + sep) && !isAbsolute(name);
 }
-const metadataKeys = ['size', 'mtimeMs', 'ctimeMs', 'ino', 'dev'];
+const metadataKeys = ['size', 'mtimeNs', 'ctimeNs', 'ino', 'dev'];
 const sameFile = (before, after) => after.isFile() && metadataKeys.every(name => before[name] === after[name]);
 function errorCode(error) {
   if (error instanceof EvidenceManifestError) return error.code;
@@ -63,13 +63,13 @@ function errorCode(error) {
 export async function verifyEvidenceManifest(file, options = {}) {
   const limits = inspectionLimits(options);
   if (typeof file !== 'string' || !file) fail('INVALID_MANIFEST_PATH');
-  const requested = resolve(file), manifestInfo = await lstat(requested);
+  const requested = resolve(file), manifestInfo = await lstat(requested, { bigint: true });
   if (!manifestInfo.isFile()) fail('MANIFEST_NOT_REGULAR');
   const manifestPath = await realpath(requested), root = dirname(manifestPath);
   const bytes = await readBoundedLocalBytes(manifestPath, EVIDENCE_MANIFEST_LIMIT,
     { fail, sizeCode: 'MANIFEST_SIZE', changedCode: 'MANIFEST_CHANGED' });
   async function manifestUnchanged() {
-    if (await realpath(requested) !== manifestPath || !sameFile(manifestInfo, await lstat(manifestPath))) fail('MANIFEST_CHANGED');
+    if (await realpath(requested) !== manifestPath || !sameFile(manifestInfo, await lstat(manifestPath, { bigint: true }))) fail('MANIFEST_CHANGED');
   }
   await manifestUnchanged();
   const manifestSha256 = createHash('sha256').update(bytes).digest('hex');
@@ -85,16 +85,17 @@ export async function verifyEvidenceManifest(file, options = {}) {
       const identity = process.platform === 'win32' ? actual.toLowerCase() : actual;
       if (targets.has(identity)) fail('FILE_ALIAS_DUPLICATE');
       targets.add(identity);
-      const info = await lstat(actual);
+      const info = await lstat(actual, { bigint: true });
       if (!info.isFile()) fail('FILE_NOT_REGULAR');
       const handle = await open(actual, 'r');
       let actualSha256, size;
       try {
-        const before = await handle.stat(); size = before.size;
-        if (!before.isFile() || !Number.isSafeInteger(size) || size < 0) fail('FILE_NOT_REGULAR');
+        const before = await handle.stat({ bigint: true });
+        if (!before.isFile() || typeof before.size !== 'bigint' || before.size < 0n) fail('FILE_NOT_REGULAR');
         if (!sameFile(info, before)) fail('FILE_CHANGED');
-        if (size > limits.maxFileBytes) fail('FILE_SIZE_LIMIT');
-        if (size > limits.maxTotalBytes - reservedBytes) fail('TOTAL_SIZE_LIMIT');
+        if (before.size > BigInt(limits.maxFileBytes)) fail('FILE_SIZE_LIMIT');
+        if (before.size > BigInt(limits.maxTotalBytes - reservedBytes)) fail('TOTAL_SIZE_LIMIT');
+        size = Number(before.size);
         reservedBytes += size;
         const hash = createHash('sha256'), buffer = new Uint8Array(Math.min(65536, Math.max(1, size)));
         let offset = 0;
@@ -103,9 +104,9 @@ export async function verifyEvidenceManifest(file, options = {}) {
           if (!Number.isSafeInteger(bytesRead) || bytesRead < 1 || bytesRead > length) fail('FILE_CHANGED');
           hash.update(buffer.subarray(0, bytesRead)); offset += bytesRead;
         }
-        const extra = await handle.read(new Uint8Array(1), 0, 1, size), after = await handle.stat();
+        const extra = await handle.read(new Uint8Array(1), 0, 1, size), after = await handle.stat({ bigint: true });
         if (extra.bytesRead !== 0 || !sameFile(before, after) || await realpath(candidate) !== actual ||
-            !sameFile(before, await lstat(actual))) fail('FILE_CHANGED');
+            !sameFile(before, await lstat(actual, { bigint: true }))) fail('FILE_CHANGED');
         actualSha256 = hash.digest('hex'); verifiedBytes += size;
       } finally { await handle.close(); }
       results.push(Object.freeze({ ...entry, status: actualSha256 === entry.expectedSha256 ? 'matched' : 'mismatch', bytes: size, actualSha256 }));
