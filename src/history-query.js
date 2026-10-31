@@ -1,6 +1,7 @@
 import { captureDataRecord } from "./security-data.js";
 import { createPortfolioHistory } from "./portfolio-history.js";
 import { normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
+import { exportTextBytes } from "./export-payload.js";
 
 export class HistoryQueryError extends Error {
   constructor(message) {
@@ -103,4 +104,27 @@ export function prepareHistoryPrune(text, input) {
   return Object.freeze({ query: q, previousCount: result.totalCount, removedCount: result.matchCount,
     remainingCount: result.totalCount - result.matchCount, removedIndices: Object.freeze([...selected]),
     text: remaining.exportText(), historicalObservation: true, canAuthorizeConnection: false, canAuthorizeTransaction: false });
+}
+
+/** Complete balance rows for matched observations; no valuation, rounding or inferred zeroes. */
+export function portfolioHistoryCSV(text, input = {}) {
+  const result = queryPortfolioHistory(text, input), queryText = JSON.stringify(result.query), limit = 16 * 1024 * 1024;
+  const cell = value => {
+    let text = value === null || value === undefined ? "" : String(value);
+    // Preserve long decimal values when opened in spreadsheets, without executable formulas.
+    if (/^\d+$/.test(text) || /^\s*[=+\-@]/.test(text) || /^[\t\r\n]/.test(text)) text = "'" + text;
+    return '"' + text.replaceAll('"', '""') + '"';
+  };
+  const columns = ["row_kind", "query_json", "total_observations", "matched_observations", "original_index", "agent", "account", "chain_id_text", "site_origin", "block_number_text", "block_hash", "asset_kind", "token_address", "balance_status", "balance_base_units_text", "historical_only", "proves_current_balance", "restorable"];
+  const lines = []; let size = 3, balanceRows = 0;
+  function add(values) { const line = values.map(cell).join(",") + "\r\n"; size += exportTextBytes(line, limit); if (size > limit) throw new HistoryQueryError("CSV exceeds 16 MiB; narrow the history scope"); lines.push(line); }
+  add(columns);
+  add(["scope", queryText, result.totalCount, result.matchCount, "", "", "", "", "", "", "", "", "", "", "", true, false, false]);
+  for (const { snapshot, index } of result.rows) {
+    const prefix = ["balance", queryText, result.totalCount, result.matchCount, index, snapshot.agent, snapshot.account, snapshot.chainId, snapshot.siteOrigin, snapshot.blockNumber, snapshot.blockHash];
+    add([...prefix, "native", "", "known", snapshot.nativeBalanceBaseUnits, true, false, false]); balanceRows++;
+    for (const holding of snapshot.holdings) { add([...prefix, "token", holding.address, holding.hasCode ? "known" : "code-missing", holding.balanceBaseUnits, true, false, false]); balanceRows++; }
+  }
+  return Object.freeze({ text: "\ufeff" + lines.join(""), filename: "ThreeCore-portfolio-history-balances.csv", mimeType: "text/csv;charset=utf-8", byteLength: size,
+    query: result.query, observationCount: result.matchCount, balanceRows, scope: "all-holdings-in-matching-observations", restorable: false, provesCurrentBalance: false });
 }

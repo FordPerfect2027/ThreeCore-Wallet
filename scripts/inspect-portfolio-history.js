@@ -3,15 +3,17 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { createPortfolioHistory, HISTORY_TEXT_LIMIT, HISTORY_LIMIT } from "../src/portfolio-history.js";
-import { queryPortfolioHistory, exportFilteredHistory, validateHistoryQuery } from "../src/history-query.js";
+import { queryPortfolioHistory, exportFilteredHistory, validateHistoryQuery, portfolioHistoryCSV } from "../src/history-query.js";
 import { encodePortfolioReport } from "../src/portfolio-report.js";
 import { encodePortfolioComparisonReport } from "../src/portfolio-comparison.js";
 import { describePortfolioHistory } from "../src/portfolio-history-summary.js";
 
-const USAGE = "Usage: node scripts/inspect-portfolio-history.js query|subset history.json [filters]\n" +
+const USAGE = "Usage: node scripts/inspect-portfolio-history.js query|subset|csv history.json [filters]\n" +
   "  Filters: --account ADDRESS --chain ID --origin ORIGIN --min-block DECIMAL --max-block DECIMAL\n" +
   "           --order oldest|newest --token CONTRACT --token-state any|known|unknown|not-observed\n" +
   "  subset requires at least one filter and exports whole matching observations, including other holdings.\n" +
+  "  csv emits a scope row and all native/token balances of matched observations; decimal text has a leading apostrophe.\n" +
+  "  Missing-code balances stay blank, not zero. CSV is not a restorable archive.\n" +
   "  record history.json --index INDEX\n" +
   "  compare history.json --before INDEX --after INDEX\n" +
   "  timeline history.json\n" +
@@ -26,11 +28,11 @@ function index(value) { if (!/^(0|[1-9][0-9]?)$/.test(value) || Number(value) >=
 export function parsePortfolioHistoryArgs(args) {
   if (!Array.isArray(args) || args.length < 2 || args.length % 2 !== 0 || args.some(value => typeof value !== "string" || value.includes("\0"))) fail();
   const [mode, path] = args;
-  if (!["query", "subset", "record", "compare", "timeline"].includes(mode) || !path || path.startsWith("-") || !/\.json$/i.test(path)) fail();
+  if (!["query", "subset", "csv", "record", "compare", "timeline"].includes(mode) || !path || path.startsWith("-") || !/\.json$/i.test(path)) fail();
   const query = {}, positions = {}, seen = new Set();
   for (let i = 2; i < args.length; i += 2) {
     const key = args[i], value = args[i + 1]; if (seen.has(key) || value === "") fail(); seen.add(key);
-    if (mode === "query" || mode === "subset") {
+    if (["query", "subset", "csv"].includes(mode)) {
       if (!Object.hasOwn(filters, key)) fail();
       if (key === "--chain" && !/^[1-9][0-9]{0,15}$/.test(value)) fail();
       query[filters[key]] = key === "--chain" ? Number(value) : value;
@@ -39,7 +41,7 @@ export function parsePortfolioHistoryArgs(args) {
     else fail();
   }
   if ((mode === "subset" && !seen.size) || (mode === "record" && seen.size !== 1) || (mode === "compare" && seen.size !== 2)) fail();
-  return Object.freeze({ mode, path, query: mode === "query" || mode === "subset" ? validateHistoryQuery(query) : null, positions: Object.freeze(positions) });
+  return Object.freeze({ mode, path, query: ["query", "subset", "csv"].includes(mode) ? validateHistoryQuery(query) : null, positions: Object.freeze(positions) });
 }
 
 export async function inspectPortfolioHistoryPath(request) {
@@ -48,6 +50,7 @@ export async function inspectPortfolioHistoryPath(request) {
   });
   const text = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
   if (request.mode === "query") return JSON.stringify(queryPortfolioHistory(text, request.query), null, 2) + "\n";
+  if (request.mode === "csv") return portfolioHistoryCSV(text, request.query).text;
   if (request.mode === "subset") {
     const result = exportFilteredHistory(text, request.query); if (!result.exportedCount) fail("PORTFOLIO_HISTORY_EMPTY_SELECTION"); return result.text;
   }

@@ -4,7 +4,7 @@ import { createHistoryFileReader } from "../src/history-file-reader.js";
 import { prepareHistoryDownload, createHistoryBackupTracker, preparePortfolioReportsHistory, prepareHistoryArchives, HISTORY_REPORT_FILE_LIMIT, HISTORY_REPORT_BATCH_LIMIT, HISTORY_ARCHIVE_FILE_LIMIT, HISTORY_ARCHIVE_BATCH_LIMIT } from "../src/history-file.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { validatePortfolioSnapshot } from "../src/portfolio-report.js";
-import { exportFilteredHistory, queryPortfolioHistory, prepareHistoryPrune } from "../src/history-query.js";
+import { exportFilteredHistory, queryPortfolioHistory, prepareHistoryPrune, portfolioHistoryCSV } from "../src/history-query.js";
 import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
 
 /** Browser file actions are explicit and scoped to one agent card. */
@@ -304,6 +304,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     view = null;
     results.textContent = "";
     saveSubset.disabled = true;
+    saveBalances.disabled = true;
   }
   function searchHistory(id) {
     invalidateView();
@@ -316,6 +317,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     results.textContent = result.matchCount + " / " + result.totalCount + "件\n" + result.rows.map(({ snapshot }) =>
       snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / " + snapshot.siteOrigin + " / block " + snapshot.blockNumber).join("\n");
     saveSubset.disabled = result.matchCount === 0;
+    saveBalances.disabled = result.matchCount === 0;
   }
   const search = button("history-filter-run", "条件に合う履歴を表示", searchHistory);
   const saveSubset = button("history-file-save-subset", "表示した履歴だけダウンロード", id => {
@@ -328,6 +330,13 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     status.textContent = subset.exportedCount + "件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。";
   });
   saveSubset.disabled = true;
+  const saveBalances = button("history-file-save-balances", "表示した記録の残高をCSVで保存", id => {
+    const selected = view;
+    if (!selected || !matches(selected, id) || JSON.stringify(selected.criteria) !== JSON.stringify(query())) throw Error("Search changed");
+    const prepared = portfolioHistoryCSV(selected.archive, selected.criteria);
+    if (!matches(selected, id) || !deliver(prepared, id)) return;
+    status.textContent = `${prepared.observationCount}記録・${prepared.balanceRows}残高行のCSV保存を開始しました。条件に合う記録内の全契約を含みます。復元用にはJSONも保存してください。`;
+  }); saveBalances.disabled = true;
   const pruneDetails = node("pre", "history-prune-details"); pruneDetails.setAttribute("tabindex", "-1");
   const pruneConfirm = node("input", "history-prune-confirm"); pruneConfirm.type = "checkbox";
   function invalidatePrune() { pruneProposal = null; pruneDetails.textContent = ""; pruneConfirm.checked = false; pruneApply.disabled = true; }
@@ -381,7 +390,8 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     node("p", "notice", "条件に合う記録全体を選びます。保存ファイルには、その記録内の他の契約も含まれます。未確認や残高不明は残高0とは異なります。"),
     labelled("最小ブロック（空欄なら制限なし）", minimum),
     labelled("最大ブロック（空欄なら制限なし）", maximum),
-    labelled("表示順", order), search, resetFilters, results, rowActions, saveSubset, pruneSection);
+    labelled("表示順", order), search, resetFilters, results, rowActions, saveSubset, saveBalances,
+    node("p", "notice", "残高CSVは最小単位の文字列です。桁を保つため数値の先頭に ' を付けています。不明な残高は空欄とcode-missingで示し、0に置き換えません。復元にはJSONを使ってください。"), pruneSection);
   parent.append(section);
   updateBackup();
   return Object.freeze({
