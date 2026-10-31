@@ -7,7 +7,7 @@ import { analyzeReportSet } from "./report-set-engine.js";
 import { prepareReportSetFile, readReportSetFile } from "./report-set-file.js";
 import { diagnosticQuery } from "./report-set-diagnostics.js";
 import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile,
-  readReportSetChecksText, reviewReportSetChecksFile } from "./report-set-export.js";
+  readReportSetChecksText, reviewReportSetChecksFile, prepareReportSetSourceFile } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -218,6 +218,28 @@ export function createReportSetController({ storage, onChange = () => {},
       }, () => { message = "固定した確認セットをファイルに出力しました。ダウンロード先をご確認ください。"; });
     } catch (value) { return fail(value, token); }
   }
+  async function exportSourceReport(idValue, acknowledged, deliver) {
+    let token = generation;
+    try {
+      if (!guard()) return false;
+      token = ++generation;
+      if (!input) periodFail("PERIOD_SET_NO_RESULT");
+      if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
+      if (typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      const snapshot = input, id = validateSetSelection([idValue], { allowEmpty: false })[0];
+      if (!snapshot.entries.some(entry => entry.id === id)) periodFail("PERIOD_SET_REPORT_MISSING");
+      if (!sameGeneration(token)) return false;
+      review = null;
+      return await run("exporting", async (same, signal) => {
+        const file = await prepareReportSetSourceFile(snapshot, id, { signal });
+        if (!same()) return null;
+        const delivery = deliver(file);
+        if (observeCallbackResult(delivery) !== "synchronous") periodFail("PERIOD_ASYNC_DELIVERY");
+        if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
+        return file;
+      }, () => { message = "選んだ元レポートを保存しました。期間レポート画面で開いて確認できます。"; });
+    } catch (value) { return fail(value, token); }
+  }
   function dispose() {
     if (disposed) return;
     generation++; disposed = true; phase = "disposed"; review = null; inspection = null; checkReview = null;
@@ -226,5 +248,5 @@ export function createReportSetController({ storage, onChange = () => {},
     consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,
-    inspectSources, reviewCheckFile, exportFile, cancel, invalidateReview, dispose });
+    inspectSources, reviewCheckFile, exportFile, exportSourceReport, cancel, invalidateReview, dispose });
 }

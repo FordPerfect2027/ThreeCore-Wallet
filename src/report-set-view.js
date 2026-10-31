@@ -22,6 +22,7 @@ const ERRORS = Object.freeze({
   PERIOD_SET_TITLE: "確認名を確認してください。",
   PERIOD_SET_DUPLICATE_SELECTION: "同じ報告が重複して選ばれています。",
   PERIOD_SET_SOURCE_MISSING: "選択した報告が保存一覧にありません。読み直してください。",
+  PERIOD_SET_REPORT_MISSING: "表示中の確認セットに、その元レポートは含まれていません。選び直してください。",
   PERIOD_SET_SOURCE_CHANGED: "確認中に選択した報告が変わりました。保存一覧を読み直して選び直してください。",
   PERIOD_SET_NOT_LOADED: "先に報告の一覧を読み込んでください。",
   PERIOD_SET_NO_REVIEW: "先に選択内容を確認してください。",

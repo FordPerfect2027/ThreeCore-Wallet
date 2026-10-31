@@ -2,6 +2,7 @@ import { mountReportSetPanel } from "/examples/report-set-panel.js";
 import { createReportHistoryStorage } from "/src/report-history-storage.js";
 import { prepareReportSetFile, decodeReportSetFile } from "/src/report-set-file.js";
 import { prepareReportSetChecksFile } from "/src/report-set-export.js";
+import { decodePeriodReportFile } from "/src/period-report-file.js";
 import { analyzeReportSet } from "/src/report-set-engine.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
   clone, id, AFTER, waitUntil, deferred } from "/test/helpers/report-set-fixtures.js";
@@ -431,6 +432,20 @@ export function registerReportSetUITests(test) {
       const changed = JSON.parse(file.text); changed.items = []; await choose(JSON.stringify(changed));
       assert(f.q("check-review-output").textContent.includes("食い違い"));
       assert(f.mounted.getState().checkReview.matchesRecomputation === false && f.q("check-file").value === "");
+    } finally { f.dispose(); }
+  });
+
+  test("report set: selecting one original exports an unchanged reloadable period report", async () => {
+    const f = fixture();
+    try {
+      assert(f.q("source-report").disabled); await f.accept(); const input = f.mounted.getState().input;
+      f.set("source-report", input.entries[1].id); assert(f.q("source-report-json").disabled);
+      f.check("ack"); f.click("source-report-json"); await f.settled();
+      const decoded = await decodePeriodReportFile(f.files[0].text);
+      assert(JSON.stringify(decoded.input) === JSON.stringify(input.entries[1].report));
+      assert(f.files[0].sourceReportId === input.entries[1].id && f.mounted.getState().input === input);
+      f.set("title", "Another set", "input"); f.click("prepare"); f.click("apply"); await f.settled();
+      assert(f.q("source-report").value === "" && f.q("source-report-json").disabled);
     } finally { f.dispose(); }
   });
 }

@@ -4,6 +4,7 @@ import { Element } from "./helpers/panel-dom.js";
 import { mountReportSetPanel } from "../examples/report-set-panel.js";
 import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-file.js";
 import { prepareReportSetChecksFile } from "../src/report-set-export.js";
+import { decodePeriodReportFile } from "../src/period-report-file.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
   clone, id, AFTER, fileFrom, waitUntil, deferred } from "./helpers/report-set-fixtures.js";
 
@@ -337,5 +338,20 @@ test("saved check details are compared on screen and the completed result can be
     f.q("check-file").files = [fileFrom("{")]; f.q("check-file").dispatchEvent(new Event("change"));
     await f.settled(); assert.match(f.q("check-review-output").textContent, /最後に完了した/);
     assert.equal(f.mounted.getState().checkReview.matchesRecomputation, false);
+  } finally { f.dispose(); }
+});
+
+test("an accepted original report can be selected and exported with its full evidence", async () => {
+  const f = fixture();
+  try {
+    assert.equal(f.q("source-report").disabled, true); await f.accept(); const input = f.mounted.getState().input;
+    assert.equal(f.q("source-report").children.length, input.entries.length + 1);
+    assert.equal(f.q("source-report-json").disabled, true); f.set("source-report", input.entries[1].id);
+    assert.equal(f.q("source-report-json").disabled, true); f.check("ack"); f.click("source-report-json"); await f.settled();
+    assert.deepEqual((await decodePeriodReportFile(f.files[0].text)).input, input.entries[1].report);
+    assert.equal(f.mounted.getState().input, input); assert.match(f.q("source-report-help").textContent, /全アドレス/);
+    f.set("source-report", id(999)); assert.equal(f.q("source-report-json").disabled, true);
+    f.set("title", "Another set", "input"); f.click("prepare"); f.click("apply"); await f.settled();
+    assert.equal(f.q("source-report").value, ""); assert.equal(f.q("source-report-json").disabled, true);
   } finally { f.dispose(); }
 });

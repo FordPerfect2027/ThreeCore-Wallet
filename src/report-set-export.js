@@ -1,9 +1,10 @@
 import { parseSecurityJson } from "./security-json.js";
 import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
-import { validateReportSet, validateSetExportOptions, freezeSet } from "./report-set-model.js";
+import { validateReportSet, validateSetExportOptions, validateSetSelection, freezeSet } from "./report-set-model.js";
 import { periodFail } from "./period-plan.js";
 import { prepareReportSetFile } from "./report-set-file.js";
+import { preparePeriodReportFile } from "./period-report-file.js";
 import { analyzeReportSet } from "./report-set-engine.js";
 import { reportSetDiagnostics, querySetDiagnostics, diagnosticQuery, diagnosticText } from "./report-set-diagnostics.js";
 import { escapeReportHTML } from "./period-report-export.js";
@@ -186,4 +187,14 @@ export async function readReportSetChecksText(file, { signal, timeoutMs } = {}) 
   return readFormatFileText(file, { maxBytes: REPORT_SET_CHECKS_LIMIT, fail: periodFail,
     sizeCode: "PERIOD_SET_CHECKS_SIZE", readCode: "PERIOD_SET_CHECKS_READ", encodingCode: "PERIOD_SET_CHECKS_ENCODING",
     signal, timeoutMs });
+}
+
+/** Extract one unchanged source report in its established, checksummed format. */
+export async function prepareReportSetSourceFile(value, idValue, fileOptions = {}) {
+  const input = validateReportSet(value), id = validateSetSelection([idValue], { allowEmpty: false })[0];
+  const entry = input.entries.find(row => row.id === id);
+  if (!entry) periodFail("PERIOD_SET_REPORT_MISSING");
+  const file = await preparePeriodReportFile(entry.report, fileOptions);
+  return Object.freeze({ ...file, filename: "ThreeCore-period-report-" + id + ".json",
+    sourceReportId: id, sourceReportLabel: entry.label, containsOriginalEvidence: true });
 }

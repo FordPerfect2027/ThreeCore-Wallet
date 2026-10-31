@@ -132,6 +132,9 @@ export function mountReportSetPanel({ document, parent,
   button("checks-csv", "絞り込んだ確認箇所をCSV保存", exportButtons);
   button("checks-json", "確認箇所と根拠の値をJSON保存", exportButtons);
   make("p", "checks-export-help", "確認箇所CSVには全体の件数を示す要約行と、条件に合う確認項目が入ります。該当0件でも全体の食い違いは残します。再読込み用の証拠ではありません。", exports);
+  select("source-report", "個別に取り出す元レポート", [["", "元レポートを選んでください"]], exports);
+  button("source-report-json", "選んだ元レポートをJSON保存", exports);
+  make("p", "source-report-help", "元レポートJSONは期間レポート画面で再読込みできます。レポート内の全アドレス・履歴・メモを含み、上のメモ・短縮設定は適用されません。確認セットや保存一覧の付随情報は含めません。", exports);
 
   const checkReviewSection = make("section", "saved-check-review", undefined, result);
   make("h4", "saved-check-heading", "保存した確認箇所JSONを元資料と照合", checkReviewSection);
@@ -253,6 +256,11 @@ export function mountReportSetPanel({ document, parent,
     timelinePanel = null;
     cards.replaceChildren();
     ranges.replaceChildren();
+    nodes["source-report"].replaceChildren();
+    for (const [id, label] of [["", "元レポートを選んでください"], ...(value?.reports ?? []).map(row => [row.id, row.label + " / " + row.id])]) {
+      const option = document.createElement("option"); option.value = id; option.textContent = label; nodes["source-report"].append(option);
+    }
+    nodes["source-report"].value = "";
     if (!value) return;
     timelinePanel = mountReportSetTimeline({ document, parent: timelineHost, input: state.input });
     for (const token of value.tokens) {
@@ -322,6 +330,8 @@ export function mountReportSetPanel({ document, parent,
     nodes["check-file"].disabled = value.busy || !value.input;
     nodes["check-review-output"].textContent = setCheckReviewText(value.checkReview);
     nodes["check-review"].disabled = value.busy || !value.checkReview || !nodes.ack.checked;
+    nodes["source-report"].disabled = value.busy || !value.input;
+    nodes["source-report-json"].disabled = value.busy || !nodes.ack.checked || !value.input?.entries.some(entry => entry.id === nodes["source-report"].value);
     review.hidden = !value.review;
     nodes["review-text"].textContent = value.review ? [
       "出所: " + (value.review.origin === "file" ? "確認セットJSON" : "PC内の保存履歴"),
@@ -360,6 +370,8 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });
+  listen(nodes["source-report"], "change", () => render(controller.state));
+  listen(nodes["source-report-json"], "click", () => { void controller.exportSourceReport(nodes["source-report"].value, nodes.ack.checked, download); });
   for (const format of ["json", "html", "csv", "checks-csv", "checks-json"]) {
     listen(nodes[format], "click", () => { void controller.exportFile(format, nodes.ack.checked, download,
       { includeNotes: nodes.notes.checked, shortAddresses: nodes["short-addresses"].checked }, format.startsWith("checks-") ? checkQuery() : undefined); });
