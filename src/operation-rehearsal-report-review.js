@@ -6,7 +6,7 @@ import { compareRehearsalWorkspaces, REHEARSAL_COMPARISON_SCHEMA } from "./opera
 import { compareRehearsalScenario, REHEARSAL_SCENARIO_SCHEMA } from "./operation-rehearsal-scenario.js";
 import { reportRehearsalScenarioSet, REHEARSAL_SCENARIO_SET_REPORT_SCHEMA } from "./operation-rehearsal-scenario-set.js";
 import { runRehearsalCheckSuite, REHEARSAL_CHECK_REPORT_SCHEMA } from "./operation-rehearsal-check-suite.js";
-import { indexRehearsalRecords, queryRehearsalRecords, validateRehearsalRecordQuery, REHEARSAL_RECORD_REPORT_SCHEMA } from "./operation-rehearsal-records.js";
+import { indexRehearsalRecords, queryRehearsalRecords, validateRehearsalRecordQuery, queryRehearsalContextRecords, validateRehearsalContextRecordQuery, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA } from "./operation-rehearsal-records.js";
 
 export const REHEARSAL_REPORT_REVIEW_SCHEMA = "threecore.operation-rehearsal-report-review.v1";
 export const REHEARSAL_REPORT_REVIEW_LIMIT = 2097152;
@@ -80,8 +80,8 @@ function prepareRehearsalReview(text, expectedSha256) {
       beforeRecords: row.beforeRecords, afterRecords: row.afterRecords }));
     reportOutcome = Object.freeze({ kind: "expected-outcomes", expectationOrigin: recomputed.inputs.expectationOrigin,
       ...recomputed.summary });
-  } else if (parsed?.schema === REHEARSAL_RECORD_REPORT_SCHEMA) {
-    recomputed = queryRehearsalRecords(indexRehearsalRecords(parsed.inputs), validateRehearsalRecordQuery(parsed.query));
+  } else if ([REHEARSAL_RECORD_REPORT_SCHEMA,REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA].includes(parsed?.schema)) {
+    recomputed = parsed.schema===REHEARSAL_RECORD_REPORT_SCHEMA?queryRehearsalRecords(indexRehearsalRecords(parsed.inputs), validateRehearsalRecordQuery(parsed.query)):queryRehearsalContextRecords(indexRehearsalRecords(parsed.inputs), validateRehearsalContextRecordQuery(parsed.query));
     scope = recomputed.subjects.map(row => ({ agent: row.agent, beforeRecords: row.recordCount, afterRecords: null }));
     reportOutcome = Object.freeze({ kind: "record-query", query: recomputed.query,
       totalRecords: recomputed.totalRecords, matchedRecords: recomputed.matchedRecords });

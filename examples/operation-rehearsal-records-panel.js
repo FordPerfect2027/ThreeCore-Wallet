@@ -1,11 +1,15 @@
 import { requireSyncExport } from "../src/export-policy.js";
-import { indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,rehearsalRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
+import { indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,rehearsalRecordCsv,queryRehearsalContextRecords,encodeRehearsalContextRecordReport,rehearsalContextRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   const offerDownload = payload => requireSyncExport(download(payload));
   const get=name=>document.getElementById("record-browser-"+name);let index=null,report=null,selected="",offset=0,disposed=false,revision=0,detailRevision=0,backView=null;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
+  function queryInput(){const query=Object.fromEntries(Object.keys(REHEARSAL_RECORD_QUERY).map(key=>[key,get(key).value||REHEARSAL_RECORD_QUERY[key]]));
+    const scope=get("search-scope").value||"stored";return scope==="stored"?query:{...query,searchScope:scope};}
+  const queryRows=(input)=>Object.hasOwn(input,"searchScope")?queryRehearsalContextRecords(index,input):queryRehearsalRecords(index,input);
+  const encode=(csv=false)=>Object.hasOwn(report.query,"searchScope")?(csv?rehearsalContextRecordCsv:encodeRehearsalContextRecordReport)(index.inputs,report.query):(csv?rehearsalRecordCsv:encodeRehearsalRecordReport)(index.inputs,report.query);
   function row(target,values){const tr=document.createElement("tr");for(const value of values){const td=document.createElement("td");td.textContent=value;tr.append(td);}get(target).append(tr);return tr;}
   const decision=item=>item.result.withinEnteredLimits?"仮の条件内":"見送り: "+item.result.reasons.map(code=>reasons[code]??code).join("・");
   const eventLabels={id:"記録ID",kind:"種類",agent:"記録上の対象",chainId:"記録上のネットワーク",account:"記録上の口座",operationId:"操作ID",reservationId:"予約ID",origin:"記録上のサイト",spender:"記録上の利用先契約",principal:"元本",fee:"費用",grossReturn:"元本を含む戻り額",amount:"金額",exitFeeReserve:"確保する決済費用"};
@@ -33,8 +37,8 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
         const position=rows.findIndex(entry=>entry.key===other.key);
         if(position<0)return;
         const query=Object.fromEntries(Object.keys(REHEARSAL_RECORD_QUERY).map(name=>[name,get(name).value]));
-        backView={index:sourceIndex,query,selected,offset,size};
-        get("agent").value=other.agent;get("kind").value="all";get("decision").value="all";get("search").value="";
+        backView={index:sourceIndex,query,selected,offset,size,searchScope:get("search-scope").value||"stored"};
+        get("agent").value=other.agent;get("kind").value="all";get("decision").value="all";get("search").value="";get("search-scope").value="stored";
         selected=other.key;offset=Math.floor(position/size)*size;render();
         get("select").focus?.();
       });
@@ -46,7 +50,7 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     get("back").disabled=!backView||backView.index!==index;
     get("save").disabled=true;get("csv-save").disabled=true;get("prev").disabled=true;get("next").disabled=true;get("select").disabled=true;
     if(!index){get("status").textContent="履歴を作成または復旧すると、ここから記録を探せます。";get("scope").textContent="";return;}
-    try{report=queryRehearsalRecords(index,Object.fromEntries(Object.keys(REHEARSAL_RECORD_QUERY).map(key=>[key,get(key).value||REHEARSAL_RECORD_QUERY[key]])));}
+    try{report=queryRows(queryInput());}
     catch{report=null;selected="";get("status").textContent="検索条件を確認してください。検索語は80文字以内です。";return;}
     const size=Number(get("size").value||"10");if(![10,25,50].includes(size))return;
     offset=Math.max(0,Math.min(offset,Math.max(0,Math.ceil(report.rows.length/size)-1)*size));
@@ -65,24 +69,24 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     get("save").disabled=!index.inputs.ledgers.length;get("csv-save").disabled=get("save").disabled;
     get("status").textContent="一致 "+report.matchedRecords+"件 / 全 "+report.totalRecords+"件。"+(shown.length?(offset+1)+"～"+(offset+shown.length)+"件目を表示。":"一致する記録はありません。")+"保存はページをまたぐ全一致記録と元入力が対象です。";detail();
   }
-  for(const name of["agent","kind","decision","size"])listen(name,"change",()=>{if(disposed)return;backView=null;offset=0;render();});
+  for(const name of["agent","kind","decision","size","search-scope"])listen(name,"change",()=>{if(disposed)return;backView=null;offset=0;render();});
   listen("search","input",()=>{if(disposed)return;backView=null;offset=0;render();});
-  listen("clear","click",()=>{if(disposed)return;backView=null;for(const [name,value]of Object.entries(REHEARSAL_RECORD_QUERY))get(name).value=value;offset=0;render();});
+  listen("clear","click",()=>{if(disposed)return;backView=null;for(const [name,value]of Object.entries(REHEARSAL_RECORD_QUERY))get(name).value=value;get("search-scope").value="stored";offset=0;render();});
   for(const [name,direction]of[["prev",-1],["next",1]])listen(name,"click",()=>{if(disposed||!report)return;offset+=direction*Number(get("size").value||"10");render();});
   listen("back","click",()=>{
     if(disposed||!backView||backView.index!==index)return;
     const previous=backView;backView=null;
     for(const [name,value]of Object.entries(previous.query))get(name).value=value;
-    get("size").value=String(previous.size);selected=previous.selected;offset=previous.offset;render();
+    get("search-scope").value=previous.searchScope;get("size").value=String(previous.size);selected=previous.selected;offset=previous.offset;render();
     get("select").focus?.();
   });
   listen("select","change",()=>{if(disposed)return;selected=get("select").value;detail();});
   listen("save","click",()=>{if(disposed||!index||!report||!index.inputs.ledgers.length)return;
-    const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalRecordReport(index.inputs,report.query),filename:"ThreeCore-record-query.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="検索条件・全一致記録・元入力の保存を開始しました。";}
+    const own=revision; try{offerDownload({document,prepared:{text:encode(),filename:"ThreeCore-record-query.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="検索条件・全一致記録・元入力の保存を開始しました。";}
     catch{if(disposed||own!==revision)return;get("export-status").textContent="検索結果を保存できませんでした。現在の履歴は保持しています。";}
   });
   listen("csv-save","click",()=>{if(disposed||!index||!report||!index.inputs.ledgers.length)return;
-    const own=revision;try{const matched=report.matchedRecords;offerDownload({document,prepared:{text:rehearsalRecordCsv(index.inputs,report.query),filename:"ThreeCore-record-query.csv",mimeType:"text/csv;charset=utf-8"}});if(disposed||own!==revision)return;
+    const own=revision;try{const matched=report.matchedRecords;offerDownload({document,prepared:{text:encode(true),filename:"ThreeCore-record-query.csv",mimeType:"text/csv;charset=utf-8"}});if(disposed||own!==revision)return;
       get("export-status").textContent="検索に一致する全"+matched+"件のCSV保存を開始しました。"+(matched?"":"一致する記録がないため列名だけを含みます。")+"CSVは閲覧用です。元入力を含む検証資料にはJSON保存を使ってください。";
     }catch{if(disposed||own!==revision)return;get("export-status").textContent="CSVを保存できませんでした。現在の履歴と検索条件は保持しています。";}
   });

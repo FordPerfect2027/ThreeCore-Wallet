@@ -53,6 +53,23 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: recorded-account search saves and rechecks the exact new scope without changing the ledger",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,event="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(event));};
+    try{
+      const source=rehearsalExampleV2(),account="0x"+"2".repeat(40),input={schema:"threecore.operation-rehearsal-workspace.v1",simulationOnly:true,activeAgent:"DAT",ledgers:[{...source,events:[{...source.events[0],account},source.events[1]]}]};
+      edit("workspace-text",JSON.stringify(input));q("workspace-text-review").click();q("workspace-apply").click();q("session-save").click();const before=downloads.pop().text;
+      edit("record-browser-search",account);assert(q("record-browser-rows").rows.length===0);edit("record-browser-search-scope","recorded","change");assert(q("record-browser-rows").rows.length===1);
+      q("record-browser-save").click();const text=downloads.pop().text,report=JSON.parse(text);assert(report.schema.endsWith(".v2")&&report.query.searchScope==="recorded");assert(report.rows[0].agent==="DAT");assert(report.rows[0].event.account===account);
+      edit("report-review-text",text);q("report-review-paste").click();for(let i=0;i<100&&q("report-review-save").disabled;i++)await tick();assert(!q("report-review-save").disabled);
+      q("report-review-save").click();const receipt=JSON.parse(downloads.pop().text);assert(receipt.differenceCount===0&&receipt.reportOutcome.query.searchScope==="recorded");
+      q("session-save").click();assert(downloads.pop().text===before);q("record-browser-clear").click();assert(q("record-browser-search-scope").value==="stored");
+    }finally{page.dispose();host.remove();}
+  });
+
   test("file-read: search CSV exports all 600 matching rows and retains the original session",async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);

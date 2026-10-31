@@ -198,9 +198,10 @@
     <div class="fields"><label>検索する保存元<select id="record-browser-agent"><option value="all">すべて</option><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label>
       <label>検索する記録の種類<select id="record-browser-kind"><option value="all">すべて</option><option value="open">投入</option><option value="settle">決済</option><option value="deposit">追加資金</option><option value="withdraw">資金引出し</option><option value="reserve">還元予約</option><option value="release">予約取消</option></select></label>
       <label>検索する判定<select id="record-browser-decision"><option value="all">すべて</option><option value="accepted">仮の条件内</option><option value="rejected">見送り</option></select></label>
+      <label>検索語を探す場所<select id="record-browser-search-scope"><option value="stored">保存元の情報（従来の検索）</option><option value="recorded">記録に書かれた情報</option><option value="both">保存元と記録の両方</option></select></label>
       <label>記録の検索語<input id="record-browser-search" maxlength="80" spellcheck="false" placeholder="記録ID、操作ID、予約ID、口座など"></label>
     </div>
-    <p class="small">ID、保存元の口座・資産アドレス、見送り理由のコードを部分一致で検索します。空白で区切るとすべての語を含む記録に絞ります。</p>
+    <p class="small">従来の検索はID、保存元の口座・資産アドレス、見送り理由のコードが対象です。「記録に書かれた情報」では記録上の対象・ネットワーク・口座・サイト・利用先契約も探せます。保存元の絞り込みは変わりません。空白で区切るとすべての語を含む記録に絞ります。</p>
     <button id="record-browser-clear" type="button">記録の検索条件をリセット</button>
     <div class="actions"><label>1ページの表示件数<select id="record-browser-size"><option>10</option><option>25</option><option>50</option></select></label><button id="record-browser-prev" type="button" disabled>前の記録ページ</button><button id="record-browser-next" type="button" disabled>次の記録ページ</button></div>
     <p id="record-browser-status" role="status" aria-live="polite"></p>

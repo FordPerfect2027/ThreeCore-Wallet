@@ -4,7 +4,7 @@ import { Element } from "./helpers/panel-dom.js";
 import { mountRehearsalRecordsPanel } from "../examples/operation-rehearsal-records-panel.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { REHEARSAL_WORKSPACE_SCHEMA } from "../src/operation-rehearsal-workspace.js";
-import { encodeRehearsalRecordReport,rehearsalRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
+import { encodeRehearsalRecordReport,rehearsalRecordCsv,encodeRehearsalContextRecordReport,rehearsalContextRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
 const workspace=(...ledgers)=>({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:"DAT",ledgers});
 class Node extends Element{set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
 const rendered=n=>[n.textContent,...n.children.map(rendered)].join(" ");
@@ -92,5 +92,28 @@ test("CSV delivery failure preserves the selected query and rows for a retry",()
   const f=setup();try{f.panel.refresh(many());f.change("search","deposit-2");f.failDownload();f.field("csv-save").click();
     assert.match(f.field("export-status").textContent,/CSVを保存できません/);assert.equal(f.field("rows").children.length,8);assert.equal(f.field("search").value,"deposit-2");
     assert.equal(f.field("csv-save").disabled,false);
+  }finally{f.panel.dispose();}
+});
+
+test("search scope finds recorded context and exports the same versioned query in JSON and CSV",()=>{
+  const f=setup(),source=rehearsalExampleV2(),account="0x"+"2".repeat(40),input=workspace({...source,events:[{...source.events[0],account},source.events[1]]});
+  try{f.panel.refresh(input);f.change("search",account);assert.equal(f.field("rows").children.length,0);f.change("search-scope","recorded");assert.equal(f.field("rows").children.length,1);
+    const query={...REHEARSAL_RECORD_QUERY,search:account,searchScope:"recorded"};f.field("save").click();assert.equal(f.downloads.pop().text,encodeRehearsalContextRecordReport(input,query));
+    f.field("csv-save").click();assert.equal(f.downloads.pop().text,rehearsalContextRecordCsv(input,query));
+    f.field("clear").click();assert.equal(f.field("search-scope").value,"stored");f.field("save").click();assert.equal(JSON.parse(f.downloads.pop().text).schema,"threecore.operation-rehearsal-record-query.v1");
+  }finally{f.panel.dispose();}
+});
+
+test("related navigation restores the recorded-context search and retires old row buttons",()=>{
+  const f=setup(),source=rehearsalExampleV2(),account="0x"+"2".repeat(40);try{f.panel.refresh(workspace({...source,events:[{...source.events[0],account},source.events[1]]}));
+    f.change("search-scope","recorded");f.change("search",account);const old=rowButton(f,0),related=f.field("related").children[0].children[3].children[0];
+    related.click();assert.equal(f.field("search-scope").value,"stored");assert.equal(f.field("select").value,"DAT:settle-one");old.click();assert.equal(f.field("select").value,"DAT:settle-one");
+    f.field("back").click();assert.equal(f.field("search-scope").value,"recorded");assert.equal(f.field("search").value,account);assert.equal(f.field("select").value,"DAT:open-one");
+  }finally{f.panel.dispose();}
+});
+
+test("an invalid scope disables exports until the user chooses a supported scope",()=>{
+  const f=setup();try{f.panel.refresh(many());f.change("search-scope","unexpected");assert.equal(f.field("save").disabled,true);assert.equal(f.field("csv-save").disabled,true);
+    f.change("search-scope","both");assert.equal(f.field("save").disabled,false);assert.equal(f.field("csv-save").disabled,false);
   }finally{f.panel.dispose();}
 });
