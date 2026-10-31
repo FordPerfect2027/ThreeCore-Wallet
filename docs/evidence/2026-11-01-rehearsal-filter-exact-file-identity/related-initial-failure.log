@@ -1,0 +1,120 @@
+✔ saved basenames, BOM, CRLF, binary markers and uppercase hash remain an exact captured reference (38.3112ms)
+✔ changed whitespace mismatches its reference before any semantic report claim (2.8019ms)
+✔ a matching checksum does not make unsupported data a valid report (4.5719ms)
+✔ reference decoder refuses ambiguous or unsupported text 0 (1.3368ms)
+✔ reference decoder refuses ambiguous or unsupported text 3 (0.4216ms)
+✔ reference decoder refuses ambiguous or unsupported text 72 (0.3747ms)
+✔ reference decoder refuses ambiguous or unsupported text 76 (2.1685ms)
+✔ reference decoder refuses ambiguous or unsupported text 77 (0.9398ms)
+✔ reference decoder refuses ambiguous or unsupported text 75 (0.6951ms)
+✔ reference decoder refuses ambiguous or unsupported text 74 (0.7262ms)
+✔ reference decoder refuses ambiguous or unsupported text 146 (0.6655ms)
+✔ reference decoder refuses ambiguous or unsupported text 16385 (0.5373ms)
+✔ reference must cover the exact selected names b.json (2.1472ms)
+✔ reference must cover the exact selected names a.json,b.json (0.6177ms)
+✔ reference must cover the exact selected names A.json (2.2135ms)
+✔ selected extra file cannot be silently left outside the reference (0.8301ms)
+✔ reference option is captured without invoking accessors (0.6755ms)
+✔ a caller cannot replace the saved reference during progress (4.9449ms)
+✔ partial reference review preserves expected hashes for unchecked files (5.2188ms)
+✔ cancelled reference digest cannot start any file digest or claim checksum comparisons (66.4227ms)
+✔ reference hashing failure refuses the run instead of falling back to unchecked review (1.3587ms)
+✔ previous V1 batch receipts remain byte-identical when no reference is supplied (143.172ms)
+✔ batch review keeps matching, altered, invalid and unsupported files distinct with exact hashes (67.5334ms)
+✔ browser batch manifest is usable by the existing bounded offline verifier (49.9885ms)
+✔ failed expected outcomes are visible even if every report matches recomputation (20.934ms)
+✔ batch refuses nonportable selection name "../a.json" (1.7877ms)
+✔ batch refuses nonportable selection name "sub/a.json" (0.3677ms)
+✔ batch refuses nonportable selection name "bad\\a.json" (0.3624ms)
+✔ batch refuses nonportable selection name "CON.json" (0.3953ms)
+✔ batch refuses nonportable selection name "prn.test.json" (0.2921ms)
+✔ batch refuses nonportable selection name "LPT1.json" (0.4375ms)
+✔ batch refuses nonportable selection name "a.json\n" (0.5609ms)
+✔ batch refuses nonportable selection name "a‮.json" (0.5032ms)
+✔ batch refuses nonportable selection name " a.json" (0.2915ms)
+✔ batch refuses nonportable selection name ".hidden.json" (0.2869ms)
+✔ batch refuses nonportable selection name "a:bad.json" (0.2603ms)
+✔ batch refuses nonportable selection name "a*.json" (0.2108ms)
+✔ batch refuses nonportable selection name "not-json.txt" (0.2464ms)
+✔ batch refuses nonportable selection name "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.json" (0.2443ms)
+✔ batch rejects invalid count, duplicate identity or byte budget before hashing 0 (0.8061ms)
+✔ batch rejects invalid count, duplicate identity or byte budget before hashing 2 (0.4499ms)
+✔ batch rejects invalid count, duplicate identity or byte budget before hashing 2 (1.3969ms)
+✔ batch rejects invalid count, duplicate identity or byte budget before hashing 21 (0.3592ms)
+✔ batch rejects invalid count, duplicate identity or byte budget before hashing 1 (0.4004ms)
+✔ batch rejects invalid count, duplicate identity or byte budget before hashing 9 (157.5369ms)
+✔ batch captures all source texts before callbacks can mutate caller inputs (9.3438ms)
+✔ batch rejects accessor input and options without execution (0.9242ms)
+✔ cancellation keeps completed rows and labels the remainder unchecked (11.1193ms)
+✔ pending digest cancel cannot later append a result (32.4407ms)
+✔ pending digest deadline cannot later append a result (13.8604ms)
+✔ unavailable hash is never a successful report or usable manifest (1.5847ms)
+✔ only owned completed results authorize encoded receipts and manifests (3.334ms)
+✔ maximum twenty-file selection preserves all rows and authentic progress counts (48.5211ms)
+✔ already cancelled native state cannot be concealed by an instance property (1.9179ms)
+✔ invalid native cancellation signal fails before hashing (0.731ms)
+✔ complete file reads preserve V1/V2 bytes and finish each report before reading the next (149.3228ms)
+✔ unreadable source retains other recomputations, unknown bytes and a saveable failure row (18.3449ms)
+✔ stalled source cancel releases the wait and preserves a completed prefix (19.2506ms)
+✔ stalled source timeout releases the wait and preserves a completed prefix (126.0975ms)
+✔ source length substitution is a read failure and reference mismatch never becomes a match (4.3079ms)
+✔ continuation reads pending originals only and links the exact prior receipt (24.5747ms)
+✔ continuations retain previous failures and immutable reference bytes across repeated stops (19.7964ms)
+✔ uploaded, text-only and complete receipts cannot authorize continuation (16.1306ms)
+✔ pre-cancelled continuation invents no receipt hash and a failed lineage hash never starts reading (7.0801ms)
+✔ batch preserves exact Unicode and CRLF report bytes and exposes immutable review receipts (108.6185ms)
+✔ mixed batch retains recomputation differences, byte mismatches, unsupported and missing files separately (161.5939ms)
+✔ faithful reports with failed expectations are counted without being called successful expected outcomes (84.1023ms)
+✔ batch limits cannot be widened and executable options are never observed (3.8136ms)
+✔ per-file and total byte budgets preserve completed earlier reviews (180.3913ms)
+✔ non-JSON paths, too many reports and unsafe manifest names fail before producing a batch (153.9866ms)
+✔ outside junctions and both path and physical aliases cannot receive multiple successful reviews (42.5837ms)
+✖ directories, empty files, malformed UTF8 and self-reference never become valid report reviews (43.1843ms)
+✔ JSON and formula-safe CSV commands reproduce owned results and refuse copied result objects (335.0206ms)
+✔ a report modified during asynchronous hashing is rejected after recomputation (29.6818ms)
+✔ a changing manifest suppresses the entire batch output (22.3096ms)
+✔ opened report replaced-before-read is refused and its owned handle is closed (17.4121ms)
+✔ opened report changed-after-read is refused and its owned handle is closed (16.0358ms)
+✔ opened report growth is refused and its owned handle is closed (15.4169ms)
+✔ opened report invalid-read-count is refused and its owned handle is closed (15.745ms)
+✔ opened report read-error is refused and its owned handle is closed (14.9273ms)
+✔ name and exact-status filters intersect without changing full result or exports (95.8602ms)
+✔ hidden actions cannot open the wrong source and changed views suppress stale detail feedback (31.2457ms)
+✔ invalid filter input is explicit, replacement clears it and disposed controls are inert (30.2973ms)
+✔ retry refreshes the current status filter without replaying retained successful rows (39.7751ms)
+ℹ tests 84
+ℹ suites 0
+ℹ pass 83
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2656.7833
+
+✖ failing tests:
+
+test at test\rehearsal-report-batch.test.js:58:1
+✖ directories, empty files, malformed UTF8 and self-reference never become valid report reviews (43.1843ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'FILE_NOT_REGULAR',
+      'FILE_SIZE_LIMIT',
+      'INVALID_UTF8',
+  +   'FILE_ALIAS_DUPLICATE',
+  -   'INVALID_REVIEW_REPORT',
+      'MANIFEST_SELF_REFERENCE'
+    ]
+  
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-report-batch.test.js:61:65
+      at async fixture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-report-batch.test.js:10:6)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'FILE_NOT_REGULAR', 'FILE_SIZE_LIMIT', 'INVALID_UTF8', 'FILE_ALIAS_DUPLICATE', 'MANIFEST_SELF_REFERENCE' ],
+    expected: [ 'FILE_NOT_REGULAR', 'FILE_SIZE_LIMIT', 'INVALID_UTF8', 'INVALID_REVIEW_REPORT', 'MANIFEST_SELF_REFERENCE' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,152 @@
+✖ rehearsal batch retains exact large file identities: distinct (757.7483ms)
+✖ rehearsal batch retains exact large file identities: replacement (75.933ms)
+✖ rehearsal batch retains exact large file identities: timestamp (36.0868ms)
+✖ wallet batch retains exact large file identities: distinct (45.2866ms)
+✖ wallet batch retains exact large file identities: replacement (43.8677ms)
+✖ wallet batch retains exact large file identities: timestamp (39.9649ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2077.1369
+
+✖ failing tests:
+
+test at test\local-batch-file-identity.test.js:19:63
+✖ rehearsal batch retains exact large file identities: distinct (757.7483ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'matched',
+  +   'unreadable'
+  -   'matched'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-batch-file-identity.test.js:37:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'matched', 'unreadable' ],
+    expected: [ 'matched', 'matched' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-batch-file-identity.test.js:19:63
+✖ rehearsal batch retains exact large file identities: replacement (75.933ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   undefined,
+  +   'FILE_ALIAS_DUPLICATE'
+  -   'FILE_CHANGED',
+  -   'FILE_CHANGED'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-batch-file-identity.test.js:38:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ undefined, 'FILE_ALIAS_DUPLICATE' ],
+    expected: [ 'FILE_CHANGED', 'FILE_CHANGED' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-batch-file-identity.test.js:19:63
+✖ rehearsal batch retains exact large file identities: timestamp (36.0868ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   undefined,
+  +   'FILE_ALIAS_DUPLICATE'
+  -   'FILE_CHANGED',
+  -   'FILE_CHANGED'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-batch-file-identity.test.js:38:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ undefined, 'FILE_ALIAS_DUPLICATE' ],
+    expected: [ 'FILE_CHANGED', 'FILE_CHANGED' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-batch-file-identity.test.js:19:63
+✖ wallet batch retains exact large file identities: distinct (45.2866ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'validated-structure',
+  +   'unreadable'
+  -   'validated-structure'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-batch-file-identity.test.js:37:34)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'validated-structure', 'unreadable' ],
+    expected: [ 'validated-structure', 'validated-structure' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-batch-file-identity.test.js:19:63
+✖ wallet batch retains exact large file identities: replacement (43.8677ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   undefined,
+  +   'FILE_ALIAS_DUPLICATE'
+  -   'FILE_CHANGED',
+  -   'FILE_CHANGED'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-batch-file-identity.test.js:38:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ undefined, 'FILE_ALIAS_DUPLICATE' ],
+    expected: [ 'FILE_CHANGED', 'FILE_CHANGED' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-batch-file-identity.test.js:19:63
+✖ wallet batch retains exact large file identities: timestamp (39.9649ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   undefined,
+  +   'FILE_ALIAS_DUPLICATE'
+  -   'FILE_CHANGED',
+  -   'FILE_CHANGED'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-batch-file-identity.test.js:38:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ undefined, 'FILE_ALIAS_DUPLICATE' ],
+    expected: [ 'FILE_CHANGED', 'FILE_CHANGED' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

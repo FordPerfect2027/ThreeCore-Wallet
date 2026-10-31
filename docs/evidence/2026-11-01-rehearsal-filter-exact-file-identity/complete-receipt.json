@@ -1,0 +1,59 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": false,
+  "phase": "complete",
+  "complete": true,
+  "allRecomputationsMatch": false,
+  "summary": {
+    "selected": 3,
+    "reviewed": 3,
+    "pending": 0,
+    "matching": 2,
+    "differing": 0,
+    "unsupported": 1,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 1,
+    "totalBytes": 13148
+  },
+  "files": [
+    {
+      "name": "FIRST.json",
+      "byteLength": 6492,
+      "status": "matched",
+      "sha256": "2e1081c79a8474507703cb2e3e73da073cf970ff1a70aff2adb02de9ceb67029",
+      "inputSchema": "threecore.operation-rehearsal-check-report.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": {
+        "cases": 1,
+        "matched": 1,
+        "differing": 0
+      }
+    },
+    {
+      "name": "negative.json",
+      "byteLength": 6654,
+      "status": "matched",
+      "sha256": "ed0c2d08b57fdde6d575e8c432f4effe8156e9cf48d515499d07134cb2719f0c",
+      "inputSchema": "threecore.operation-rehearsal-check-report.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": {
+        "cases": 1,
+        "matched": 0,
+        "differing": 1
+      }
+    },
+    {
+      "name": "invalid.json",
+      "byteLength": 2,
+      "status": "unsupported",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    }
+  ]
+}
