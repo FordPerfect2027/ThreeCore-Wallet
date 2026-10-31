@@ -17,6 +17,52 @@ function setup(subtle=fast){const nodes=new Map(),downloads=[];let action=()=>{}
 const file=(name="a.json",text=source)=>new File([text],name);
 const wait=async predicate=>{const end=Date.now()+5000;while(!predicate()&&Date.now()<end)await new Promise(r=>setTimeout(r,5));assert(predicate());};
 const done=f=>wait(()=>f.q("status").getAttribute("aria-busy")==="false");
+const manifest=(name="a.json",text=source)=>createHash("sha256").update(text).digest("hex")+"  "+name+"\n";
+const paste=(f,text)=>{f.q("reference-text").value=text;f.q("reference-text").dispatchEvent(new Event("input"));};
+
+test("previous checksum paste binds exact files and preserves the reference when the selected bytes differ",async()=>{
+  const f=setup(),reference=manifest();try{
+    f.choose([file()]);paste(f,reference);f.q("run").click();await done(f);f.q("save").click();
+    let result=JSON.parse(f.downloads.pop().text);assert.equal(result.schema,"threecore.operation-rehearsal-batch-review.v2");assert.equal(result.allExternalChecksumsMatch,true);
+    f.choose([file("a.json",source+"\n")]);assert.equal(f.q("reference-text").value,reference);f.q("run").click();await done(f);f.q("save").click();
+    result=JSON.parse(f.downloads.pop().text);assert.equal(result.files[0].status,"checksum-mismatch");assert.equal(result.files[0].differenceCount,null);assert.equal(result.reference.text,reference);
+    assert.match(f.q("summary").textContent,/以前の照合値との一致 0件、不一致 1件/);
+    f.q("manifest").click();assert.equal(f.downloads.at(-1).filename,"ThreeCore-selected-content-SHA256SUMS.txt");assert.equal(f.downloads.at(-1).text,manifest("a.json",source+"\n"));assert.equal(f.q("reference-text").value,reference);
+    f.q("reference-clear").click();assert.equal(f.q("run").disabled,false);assert.equal(f.q("save").disabled,true);f.q("run").click();await done(f);f.q("save").click();
+    result=JSON.parse(f.downloads.pop().text);assert.equal(result.schema,"threecore.operation-rehearsal-batch-review.v1");assert.equal(result.files[0].status,"matched");
+  }finally{f.panel.dispose();}
+});
+for(const reference of ["invalid",manifest("other.json"),manifest("A.json")])test("invalid or unmatched reference never silently falls back "+reference.slice(0,10),async()=>{
+  const f=setup();try{paste(f,reference);f.choose([file()]);assert.equal(f.q("run").disabled,true);assert.equal(f.q("reference-text").value,reference);assert.equal(f.q("save").disabled,true);
+    paste(f,manifest());assert.equal(f.q("run").disabled,false);
+  }finally{f.panel.dispose();}
+});
+test("native reference File preserves its exact bytes and rejects an unreadable replacement",async()=>{
+  const f=setup(),reference="\ufeff"+manifest().replace("\n","\r\n");try{
+    f.choose([file()]);f.q("reference-file").files=[new File([reference],"SHA256SUMS.txt")];f.q("reference-file").dispatchEvent(new Event("change"));
+    await wait(()=>f.q("reference-status").getAttribute("aria-busy")==="false");assert.equal(f.q("reference-text").value,reference);f.q("run").click();await done(f);f.q("save").click();
+    assert.equal(JSON.parse(f.downloads.pop().text).reference.text,reference);
+    f.q("reference-file").files=[{size:1,arrayBuffer(){throw Error("private");}}];f.q("reference-file").dispatchEvent(new Event("change"));await wait(()=>f.q("reference-status").getAttribute("aria-busy")==="false");
+    assert.equal(f.q("run").disabled,true);assert.equal(f.q("save").disabled,true);assert(!f.q("reference-status").textContent.includes("private"));
+  }finally{f.panel.dispose();}
+});
+for(const action of ["replace","clear","paste","dispose"])test("late reference read cannot overwrite "+action,async()=>{
+  let release;const f=setup();try{
+    f.choose([file()]);f.q("reference-file").files=[{size:manifest().length,arrayBuffer(){return new Promise(r=>{release=r;});}}];f.q("reference-file").dispatchEvent(new Event("change"));await wait(()=>Boolean(release));assert.equal(f.q("run").disabled,true);
+    if(action==="replace")f.choose([file()]);if(action==="clear")f.q("reference-clear").click();if(action==="paste")paste(f,manifest());if(action==="dispose")f.panel.dispose();
+    release(new TextEncoder().encode(manifest()).buffer);await new Promise(r=>setTimeout(r,10));assert.equal(f.q("run").disabled,action==="replace"||action==="dispose");
+    assert.equal(f.q("reference-text").value,action==="paste"?manifest():"");assert.equal(f.q("save").disabled,true);
+  }finally{release?.(new TextEncoder().encode(manifest()).buffer);f.panel.dispose();}
+});
+test("an explicitly selected empty checksum file is not treated as an absent reference",async()=>{
+  const f=setup();try{f.choose([file()]);f.q("reference-file").files=[new File([""],"SHA256SUMS.txt")];f.q("reference-file").dispatchEvent(new Event("change"));await wait(()=>f.q("reference-status").getAttribute("aria-busy")==="false");assert.equal(f.q("run").disabled,true);assert.match(f.q("reference-status").textContent,/確認してください/);}finally{f.panel.dispose();}
+});
+test("reference edit retires pending verification before a late digest returns",async()=>{
+  let release,calls=0;const f=setup({digest(...args){return ++calls===1?new Promise(r=>{release=r;}):fast.digest(...args);}});
+  try{f.choose([file()]);paste(f,manifest());f.q("run").click();await wait(()=>calls===1);paste(f,"bad");release(new Uint8Array(32).buffer);await new Promise(r=>setTimeout(r,10));
+    assert.equal(f.q("rows").children.length,0);assert.equal(f.q("save").disabled,true);assert.equal(f.q("run").disabled,true);paste(f,manifest());f.q("run").click();await done(f);f.q("save").click();assert.equal(JSON.parse(f.downloads.pop().text).allExternalChecksumsMatch,true);
+  }finally{release?.(new Uint8Array(32).buffer);f.panel.dispose();}
+});
 test("batch panel waits for explicit start, shows every result and exports compatible filenames",async()=>{
   const f=setup();try{f.choose([file(),file("bad.json","{oops"),file("other.json","{}")]);assert.equal(f.q("run").disabled,false);assert.equal(f.q("save").disabled,true);
     assert.match(f.q("status").textContent,/3件/);f.q("run").click();await done(f);assert.equal(f.q("rows").children.length,3);

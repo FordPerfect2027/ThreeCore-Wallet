@@ -64,6 +64,21 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('rehearsal batch: previous native checksum file detects changed bytes without replacing the reference',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[];
+    const panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared)}),q=id=>view.getElementById('report-batch-'+id);
+    const select=(id,files)=>{const transfer=new DataTransfer();for(const file of files)transfer.items.add(file);q(id).files=transfer.files;q(id).dispatchEvent(new Event('change'));};
+    const idle=async id=>{const end=Date.now()+10000;while(q(id).getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q(id).getAttribute('aria-busy')==='false');};
+    try{
+      const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,{...input,policy:{...input.policy,paused:true}}),digest=await crypto.subtle.digest('SHA-256',bytes(text)),hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join(''),reference=hex+'  original.json\n';
+      q('files').closest('details').open=true;select('reference-file',[new File([reference],'SHA256SUMS.txt')]);await idle('reference-status');
+      select('files',[new File([text+'\n'],'original.json')]);assert(!q('run').disabled);q('run').click();await idle('status');q('save').click();
+      const result=JSON.parse(downloads.pop().text);assert(result.schema==='threecore.operation-rehearsal-batch-review.v2'&&result.files[0].status==='checksum-mismatch'&&result.files[0].differenceCount===null&&result.reference.text===reference);
+      assert(q('rows').textContent.includes('再計算は未実施'));q('manifest').click();assert(downloads.pop().filename==='ThreeCore-selected-content-SHA256SUMS.txt');assert(q('reference-text').value===reference);
+      q('reference-clear').click();assert(!q('run').disabled);q('run').click();await idle('status');q('save').click();const without=JSON.parse(downloads.pop().text);assert(without.schema==='threecore.operation-rehearsal-batch-review.v1'&&without.files[0].status==='matched');
+    }finally{panel.dispose();host.remove();}
+  });
   test('rehearsal batch: native multiple files retain exact hashes, failures and the original session',async()=>{
     const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
     const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];

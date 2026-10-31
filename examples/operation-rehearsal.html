@@ -317,15 +317,22 @@
       <summary>複数の資料をまとめて再確認する</summary>
       <p>資料JSONを1〜20個、1件2 MiB・合計8 MiB以内で選べます。現在の履歴に取り込まず、順番に再計算します。途中で停止した場合は確認済みと未確認を分けて残します。</p>
       <label class="file-label">まとめて確認する資料<input id="report-batch-files" type="file" multiple accept=".json,application/json" aria-describedby="report-batch-status"></label>
+      <details><summary>以前保存した照合値と比較する（任意）</summary>
+        <p class="small">ファイル名だけを使ったSHA256SUMS.txtを選ぶか、内容を貼り付けます。上で選ぶ資料の名前と件数を一覧に合わせてください。フォルダー付きのパスには対応していません。</p>
+        <label class="file-label">以前の照合値一覧（16 KiB以内）<input id="report-batch-reference-file" type="file" accept=".txt,.sha256,text/plain" aria-describedby="report-batch-reference-status"></label>
+        <label>照合値一覧の内容<textarea id="report-batch-reference-text" rows="4" maxlength="16385" spellcheck="false" aria-describedby="report-batch-reference-status"></textarea></label>
+        <button id="report-batch-reference-clear" type="button">照合値の指定を解除</button>
+      </details>
+      <p id="report-batch-reference-status" class="small" role="status" aria-live="polite"></p>
       <div class="actions"><button id="report-batch-run" type="button" disabled>まとめて再確認</button><button id="report-batch-cancel" type="button" disabled>確認を停止</button><button id="report-batch-clear" type="button">選択と結果をクリア</button></div>
       <p id="report-batch-status" role="status" aria-live="polite"></p>
       <div id="report-batch-results" hidden>
         <p id="report-batch-summary"></p>
         <div class="table-wrap"><table><caption>選択した資料ごとの確認結果</caption><thead><tr><th scope="col">ファイル名</th><th scope="col">再計算</th><th scope="col">相違の数</th><th scope="col">選択した内容のSHA-256</th></tr></thead><tbody id="report-batch-rows"></tbody></table></div>
-        <p class="small">再計算の一致は、期待結果への一致や資料の出所・安全性の証明とは別です。照合値は今回選んだ内容から計算しており、外部の正解値とは比較していません。</p>
+        <p id="report-batch-reference-note" class="small"></p>
       </div>
       <div class="actions"><button id="report-batch-save" type="button" disabled>一括確認の控えを保存</button><button id="report-batch-manifest" type="button" disabled>選んだ資料の照合値一覧を保存</button></div>
-      <p class="small">照合値一覧はSHA256SUMS.txtとして保存します。名前を変えずに元資料と同じフォルダーへ置くと、一括確認用コマンドでも再確認できます。資料に相違や形式の問題があっても、計算できた照合値を記録します。</p>
+      <p class="small">保存する照合値一覧は、今回選んだ内容から計算した値です。以前の一覧を指定した場合は、区別できるようThreeCore-selected-content-SHA256SUMS.txtという名前で保存します。元資料と同じフォルダーへ置くと、一括確認用コマンドでも再確認できます。資料に相違や形式の問題があっても、計算できた照合値を記録します。</p>
       <p id="report-batch-export-status" class="small" role="status" aria-live="polite"></p>
     </details>
     <details>

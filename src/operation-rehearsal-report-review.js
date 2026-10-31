@@ -133,6 +133,8 @@ export function encodeRehearsalReviewReceipt(receipt) {
 export const REHEARSAL_BATCH_REVIEW_SCHEMA = "threecore.operation-rehearsal-batch-review.v1";
 export const REHEARSAL_BATCH_REVIEW_FILES = 20;
 export const REHEARSAL_BATCH_REVIEW_BYTES = 8 * 1024 * 1024;
+export const REHEARSAL_BATCH_MANIFEST_LIMIT = 16384;
+export const REHEARSAL_BATCH_REFERENCE_REVIEW_SCHEMA = "threecore.operation-rehearsal-batch-review.v2";
 const batchReceipts = new WeakSet();
 
 /** Portable unique basenames keep the exported manifest unambiguous. */
@@ -156,9 +158,35 @@ export function validateRehearsalReportBatchSelection(input) {
   } catch { fail("INVALID_REVIEW_BATCH_SELECTION"); }
 }
 
+/** This browser workflow binds basenames only, never paths or directory walks. */
+export function decodeRehearsalBatchManifest(text) {
+  try {
+    boundedUtf8Length(text, REHEARSAL_BATCH_MANIFEST_LIMIT);
+    const lines = text.replace(/^\uFEFF/, "").split(/\r?\n/);
+    if (lines.at(-1) === "") lines.pop();
+    if (!lines.length || lines.length > REHEARSAL_BATCH_REVIEW_FILES) throw Error();
+    const entries = lines.map(line => {
+      const matched = /^([a-fA-F0-9]{64}) [ *](.+)$/.exec(line);
+      if (!matched) throw Error();
+      return Object.freeze({ name: matched[2], expectedSha256: matched[1].toLowerCase() });
+    });
+    validateRehearsalReportBatchSelection(entries.map(row => ({ name: row.name, byteLength: 1 })));
+    return Object.freeze(entries);
+  } catch { fail("INVALID_REVIEW_BATCH_MANIFEST"); }
+}
+
+/** Require the exact same file names, not a silent subset of a saved reference. */
+export function matchRehearsalBatchManifest(selectionInput, text) {
+  const selection = validateRehearsalReportBatchSelection(selectionInput);
+  const entries = decodeRehearsalBatchManifest(text), byName = new Map(entries.map(row => [row.name, row]));
+  if (selection.files.length !== entries.length || selection.files.some(row => !byName.has(row.name)))
+    fail("REVIEW_BATCH_REFERENCE_SELECTION");
+  return Object.freeze(selection.files.map(row => byName.get(row.name)));
+}
+
 /** Sequential recomputation of explicit text inputs. No restoration or I/O. */
 export async function reviewRehearsalReportBatch(input, options = {}) {
-  try { options = captureOptionalDataFields(options, ["subtle", "signal", "onProgress", "timeoutMs"]); }
+  try { options = captureOptionalDataFields(options, ["subtle", "signal", "onProgress", "timeoutMs", "manifestText"]); }
   catch { fail("INVALID_REVIEW_BATCH_OPTIONS"); }
   const { subtle = globalThis.crypto?.subtle, signal, onProgress, timeoutMs = 120000 } = options;
   if ((onProgress !== undefined && typeof onProgress !== "function") ||
@@ -172,6 +200,9 @@ export async function reviewRehearsalReportBatch(input, options = {}) {
     });
   } catch { fail("INVALID_REVIEW_BATCH_INPUT"); }
   const selection = validateRehearsalReportBatchSelection(rows.map(({ name, byteLength }) => ({ name, byteLength })));
+  const hasReference = options.manifestText !== undefined;
+  const reference = hasReference ? matchRehearsalBatchManifest(selection.files, options.manifestText) : null;
+  let referenceSha256 = null;
   const completed = [], aborter = new AbortController();
   let cancellation, timer, phase = "complete";
   const stop = reason => { if (!aborter.signal.aborted) { phase = reason; aborter.abort(); } };
@@ -182,6 +213,7 @@ export async function reviewRehearsalReportBatch(input, options = {}) {
     const files = rows.map((row, index) => completed[index] ?? Object.freeze({
       name: row.name, byteLength: row.byteLength, status: "pending", sha256: null,
       inputSchema: null, differenceCount: null, expectedOutcomes: null,
+      ...(hasReference ? { expectedSha256: reference[index].expectedSha256, checksumMatches: null } : {}),
     }));
     const counts = status => files.filter(row => row.status === status).length;
     const summary = Object.freeze({ selected: rows.length, reviewed: completed.length,
@@ -189,11 +221,21 @@ export async function reviewRehearsalReportBatch(input, options = {}) {
       unsupported: counts("unsupported"), invalid: counts("invalid"), hashUnavailable: counts("hash-unavailable"),
       reportsWithFailedExpectations: files.filter(row => row.expectedOutcomes?.differing > 0).length,
       totalBytes: selection.totalBytes });
-    const result = Object.freeze({ schema: REHEARSAL_BATCH_REVIEW_SCHEMA, simulationOnly: true,
-      sourceVerified: false, authorizesExecution: false, externalChecksumsCompared: false,
+    const referenceSummary = hasReference ? {
+      ...summary, checksumsCompared: files.filter(row => row.checksumMatches !== null).length,
+      checksumsMatching: files.filter(row => row.checksumMatches === true).length,
+      checksumMismatches: files.filter(row => row.checksumMatches === false).length,
+    } : summary;
+    const result = Object.freeze({ schema: hasReference ? REHEARSAL_BATCH_REFERENCE_REVIEW_SCHEMA : REHEARSAL_BATCH_REVIEW_SCHEMA, simulationOnly: true,
+      sourceVerified: false, authorizesExecution: false,
+      externalChecksumsCompared: hasReference && referenceSummary.checksumsCompared > 0,
       phase, complete: phase === "complete" && completed.length === rows.length,
       allRecomputationsMatch: phase === "complete" && summary.matching === rows.length,
-      summary, files: Object.freeze(files) });
+      summary: Object.freeze(referenceSummary), files: Object.freeze(files),
+      ...(hasReference ? { referenceProvided: true,
+        reference: Object.freeze({ text: options.manifestText, sha256: referenceSha256, entries: reference }),
+        allExternalChecksumsMatch: phase === "complete" && referenceSummary.checksumsMatching === rows.length } : {}),
+    });
     batchReceipts.add(result); return result;
   }
   try {
@@ -201,14 +243,23 @@ export async function reviewRehearsalReportBatch(input, options = {}) {
     catch { fail("INVALID_REVIEW_BATCH_SIGNAL"); }
     timer = setTimeout(() => stop("timed-out"), timeoutMs);
     notify();
-    for (const row of rows) {
+    if (hasReference && !aborter.signal.aborted) {
+      try { referenceSha256 = await sha256Hex(new TextEncoder().encode(options.manifestText), subtle,
+        { signal: aborter.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
+      catch { if (!aborter.signal.aborted) fail("REVIEW_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
+    }
+    for (const [index, row] of rows.entries()) {
       if (aborter.signal.aborted) break;
       let sha256 = null, status = "hash-unavailable", inputSchema = null, differenceCount = null, expectedOutcomes = null;
+      const expectedSha256 = hasReference ? reference[index].expectedSha256 : null;
+      let checksumMatches = null;
       try { sha256 = await sha256Hex(new TextEncoder().encode(row.text), subtle,
         { signal: aborter.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
       catch { /* Hash failures remain per-file failures, never matching reports. */ }
       if (aborter.signal.aborted) break;
-      if (sha256 !== null) {
+      if (hasReference && sha256 !== null) checksumMatches = expectedSha256 === sha256;
+      if (checksumMatches === false) status = "checksum-mismatch";
+      if (sha256 !== null && checksumMatches !== false) {
         try {
           const prepared = prepareRehearsalReview(row.text, null);
           const comparison = compareValues(prepared.recomputed, prepared.parsed);
@@ -221,7 +272,8 @@ export async function reviewRehearsalReportBatch(input, options = {}) {
         } catch (error) { status = error?.code === "UNSUPPORTED_REVIEW_REPORT" ? "unsupported" : "invalid"; }
       }
       completed.push(Object.freeze({ name: row.name, byteLength: row.byteLength, status, sha256,
-        inputSchema, differenceCount, expectedOutcomes }));
+        inputSchema, differenceCount, expectedOutcomes,
+        ...(hasReference ? { expectedSha256, checksumMatches } : {}) }));
       notify();
     }
     return finish();

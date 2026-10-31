@@ -5,7 +5,8 @@ import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
 import { validateRehearsalReportBatchSelection, reviewRehearsalReportBatch,
   encodeRehearsalBatchReview, encodeRehearsalBatchManifest, REHEARSAL_BATCH_REVIEW_BYTES,
-  REHEARSAL_BATCH_REVIEW_FILES } from "../src/operation-rehearsal-report-review.js";
+  REHEARSAL_BATCH_REVIEW_FILES, decodeRehearsalBatchManifest, matchRehearsalBatchManifest,
+  REHEARSAL_BATCH_MANIFEST_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { reviewedRehearsalInputChoices, exportReviewedRehearsalPart } from "../src/operation-rehearsal-report-review.js";
@@ -101,36 +102,61 @@ function outcomeText(outcome) {
 /** Independent file-only review. It receives no live workspace writer. */
 export function mountRehearsalBatchReviewPanel(document, { download, subtle = globalThis.crypto?.subtle }) {
   const get = id => document.getElementById("report-batch-" + id);
-  const reader = createFileReadScope(), listeners = [];
+  const reader = createFileReadScope(), referenceReader = createFileReadScope(), listeners = [];
   let revision = 0, disposed = false, selection = null, active = null, result = null;
+  let referenceText, referenceValid = true, referenceBusy = false;
   const current = id => !disposed && id === revision;
   function listen(id, event, callback) {
     const node = get(id); node.addEventListener(event, callback);
     listeners.push(() => node.removeEventListener(event, callback));
   }
+  function referenceReady() {
+    if (referenceBusy || !referenceValid) return false;
+    if (referenceText === undefined) return true;
+    if (!selection) return false;
+    try { matchRehearsalBatchManifest(selection.map(({ name, byteLength }) => ({ name, byteLength })), referenceText); return true; }
+    catch { return false; }
+  }
   function buttons() {
-    get("run").disabled = disposed || !selection || Boolean(active);
+    const referenceMatches = referenceReady();
+    get("run").disabled = disposed || !selection || Boolean(active) || !referenceMatches;
     get("cancel").disabled = disposed || !active || active.controller.signal.aborted;
     get("save").disabled = disposed || Boolean(active) || !result;
     get("manifest").disabled = disposed || Boolean(active) || !result?.complete || result.files.some(row => row.sha256 === null);
     get("status").setAttribute("aria-busy", active ? "true" : "false");
+    get("reference-status").setAttribute("aria-busy", referenceBusy ? "true" : "false");
+    get("reference-status").textContent = referenceBusy ? "照合値一覧を読み込んでいます。" :
+      !referenceValid ? "照合値一覧を確認してください。ファイル名だけを使った1〜20行のSHA-256一覧が必要です。使わない場合は「照合値の指定を解除」で解除できます。" :
+      referenceText === undefined ? "以前の照合値は未指定です。今回の内容から照合値を計算します。" :
+      !selection ? "照合値一覧を読み込みました。対応する資料を選んでください。" :
+      !referenceMatches ? "一覧のファイル名と選択した資料が一致していません。名前・大文字小文字を変えず、一覧にある資料をすべて選んでください。" :
+      "選択した" + selection.length + "件を、以前の一覧にある照合値と比較します。";
   }
-  function reset() {
+  function reset({ keepSelection = false, keepReference = false } = {}) {
     const id = ++revision, old = active;
-    active = null; selection = null; result = null;
-    old?.controller.abort(); reader.cancel();
+    active = null; if (!keepSelection) selection = null; result = null;
+    old?.controller.abort(); reader.cancel(); referenceReader.cancel();
     if (!current(id)) return id;
+    if (!keepReference) {
+      referenceText = undefined; referenceValid = true;
+      get("reference-text").value = ""; get("reference-file").value = "";
+    } else if (referenceBusy) {
+      referenceText = undefined; referenceValid = false; get("reference-file").value = "";
+    }
+    referenceBusy = false;
     get("rows").replaceChildren(); get("summary").textContent = "";
     get("export-status").textContent = ""; get("results").hidden = true;
     get("status").textContent = ""; buttons(); return id;
   }
   function render(receipt, id) {
     const labels = { matched: "再計算と一致", different: "再計算と相違あり", invalid: "資料の内容を確認できません",
-      unsupported: "この欄の対象外の形式", "hash-unavailable": "照合値を計算できません", pending: "未確認" };
+      unsupported: "この欄の対象外の形式", "hash-unavailable": "照合値を計算できません", pending: "未確認",
+      "checksum-mismatch": "以前の照合値と不一致（再計算は未実施）" };
     const nodes = receipt.files.map(row => {
       const tr = document.createElement("tr");
       const fields = [row.name, labels[row.status] + (row.expectedOutcomes?.differing ? "／期待結果との差あり" : ""),
-        row.differenceCount === null ? "—" : String(row.differenceCount), row.sha256 ?? "未計算"];
+        row.differenceCount === null ? "—" : String(row.differenceCount), (row.sha256 ?? "未計算") +
+          (receipt.referenceProvided ? " ／ 基準: " + row.expectedSha256 : "")];
       for (const text of fields) { const td = document.createElement("td"); td.textContent = text; tr.append(td); }
       return tr;
     });
@@ -138,13 +164,17 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     result = receipt; get("rows").replaceChildren(...nodes);
     if (!current(id)) return;
     const s = receipt.summary;
-    get("summary").textContent = `${s.selected}件中、確認済み ${s.reviewed}件／未確認 ${s.pending}件。一致 ${s.matching}件、相違 ${s.differing}件、形式・照合値の問題 ${s.invalid + s.unsupported + s.hashUnavailable}件。期待結果との差が残る資料 ${s.reportsWithFailedExpectations}件。`;
+    get("summary").textContent = `${s.selected}件中、確認済み ${s.reviewed}件／未確認 ${s.pending}件。再計算の一致 ${s.matching}件、相違 ${s.differing}件、形式・照合値の問題 ${s.invalid + s.unsupported + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。期待結果との差が残る資料 ${s.reportsWithFailedExpectations}件。` +
+      (receipt.referenceProvided ? ` 以前の照合値との一致 ${s.checksumsMatching}件、不一致 ${s.checksumMismatches}件、未比較 ${s.selected - s.checksumsCompared}件。` : "");
+    get("reference-note").textContent = receipt.referenceProvided ?
+      "読み込んだ一覧との比較は、上記の一致・不一致・未比較の件数をご確認ください。一覧の出所を証明するものではありません。再計算の一致と期待結果への一致も別に確認してください。" :
+      "再計算の一致は、期待結果への一致や資料の出所・安全性の証明とは別です。照合値は今回選んだ内容から計算しており、外部の正解値とは比較していません。";
     get("status").textContent = receipt.phase === "complete" ? "選択した資料の確認を終えました。各行の結果をご確認ください。" :
       receipt.phase === "timed-out" ? "時間の上限に達したため停止しました。確認できた分の控えを保存できます。" : "確認を停止しました。確認できた分の控えを保存できます。";
     get("results").hidden = false;
   }
   listen("files", "change", () => {
-    const id = reset();
+    const id = reset({ keepReference: true });
     try {
       const offered = get("files").files, count = offered?.length;
       observeCallbackResult(count);
@@ -163,9 +193,37 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
       buttons();
     } catch { if (current(id)) get("status").textContent = "名前が重複しないJSONを1〜20個選んでください。1件2 MiB、合計8 MiB以内です。ファイル名に特殊な記号がある場合は名前を変更して選び直してください。"; }
   });
+  function acceptReference(text) {
+    referenceText = text === "" ? undefined : text;
+    try { if (referenceText !== undefined) decodeRehearsalBatchManifest(referenceText); referenceValid = true; }
+    catch { referenceValid = false; }
+  }
+  listen("reference-text", "input", () => {
+    if (disposed) return;
+    const text = get("reference-text").value, id = reset({ keepSelection: true });
+    if (!current(id)) return;
+    get("reference-text").value = text; acceptReference(text); buttons();
+  });
+  listen("reference-file", "change", async () => {
+    if (disposed) return;
+    const offered = get("reference-file").files, file = offered?.[0], count = offered?.length;
+    const id = reset({ keepSelection: true });
+    if (!current(id)) return;
+    referenceValid = false;
+    if (!file || count !== 1) { buttons(); return; }
+    referenceBusy = true; buttons();
+    try {
+      const text = await referenceReader.readText(file, { maxBytes: REHEARSAL_BATCH_MANIFEST_LIMIT });
+      if (!current(id)) return;
+      decodeRehearsalBatchManifest(text);
+      get("reference-text").value = text; acceptReference(text);
+    } catch { if (current(id)) referenceValid = false; }
+    finally { if (current(id)) { referenceBusy = false; buttons(); } }
+  });
+  listen("reference-clear", "click", () => { if (!disposed) reset({ keepSelection: true }); });
   listen("run", "click", async () => {
-    if (disposed || active || !selection || get("run").disabled) return;
-    const id = ++revision, chosen = selection, job = { controller: new AbortController() };
+    if (disposed || active || !selection || !referenceReady() || get("run").disabled) return;
+    const id = ++revision, chosen = selection, manifestText = referenceText, job = { controller: new AbortController() };
     active = job; result = null;
     get("results").hidden = true; get("rows").replaceChildren(); get("summary").textContent = ""; get("export-status").textContent = ""; buttons();
     try {
@@ -179,7 +237,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
         if (!current(id) || job.controller.signal.aborted) throw Error("CANCELLED");
         bytes += boundedUtf8Length(text, REHEARSAL_REPORT_REVIEW_LIMIT); rows.push({ name: entry.name, text });
       }
-      const receipt = await reviewRehearsalReportBatch(rows, { subtle, signal: job.controller.signal,
+      const receipt = await reviewRehearsalReportBatch(rows, { subtle, signal: job.controller.signal, manifestText,
         onProgress(progress) { if (current(id)) get("status").textContent = `資料を再計算しています（${progress.reviewed} / ${progress.selected}件）。`; } });
       if (current(id)) render(receipt, id);
     } catch (error) {
@@ -205,7 +263,8 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     const id = revision, own = result;
     try {
       const text = encode(own);
-      requireSyncExport(download({ document, prepared: { text, filename, mimeType } }));
+      const name = button === "manifest" && own.referenceProvided ? "ThreeCore-selected-content-SHA256SUMS.txt" : filename;
+      requireSyncExport(download({ document, prepared: { text, filename: name, mimeType } }));
       if (current(id) && result === own) get("export-status").textContent = "確認用の控えを保存し始めました。元の資料も一緒に保管してください。";
     } catch { if (current(id) && result === own) get("export-status").textContent = "控えを保存できませんでした。確認結果は保持しています。"; }
   });
