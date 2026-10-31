@@ -3,8 +3,10 @@ import { mountComparisonPanel } from "./comparison-panel.js";
 import { mountTokenPlanPanel } from "./token-plan-panel.js";
 import { createPortfolioProgressTracker, portfolioFailureStatus } from "../src/portfolio-progress.js";
 import { encodePortfolioReport, decodePortfolioReport } from "../src/portfolio-report.js";
-import { consumeCallback } from "../src/security-callback.js";
+import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
+import { readSecurityFileText } from "../src/security-file.js";
+import { offerWalletDownload } from "./export-download.js";
 
 const STATUS = Object.freeze({
   idle: "未確認",
@@ -15,13 +17,14 @@ const STATUS = Object.freeze({
 });
 
 /** A card-scoped, text-only view. All wallet requests stay in the controller. */
-export function mountPortfolioPanel({ document, card, read, onCancel, getContext = () => null }) {
+export function mountPortfolioPanel({ document, card, read, onCancel, getContext = () => null, download = offerWalletDownload }) {
   const section = document.createElement("section");
   section.className = "portfolio-panel";
   const listeners = [];
   let disposed = false;
   let revision = 0;
   let active = null;
+  let fileRead = null;
   let current = null;
   let comparison;
   let tokenPlan;
@@ -57,6 +60,10 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
   const cancel = button("portfolio-cancel", "確認をキャンセル");
   const clear = button("portfolio-clear", "結果を消去");
   const exportButton = button("portfolio-export", "確認記録をJSONにする");
+  const downloadButton = button("portfolio-download", "今回の確認記録をファイル保存");
+  const fileLabel = element("label", "", "保存した確認記録を読み込む（JSON・64 KiBまで）");
+  const file = element("input", "portfolio-file"); file.type = "file"; file.accept = ".json,application/json"; fileLabel.append(file);
+  const fileStop = button("portfolio-file-stop", "ファイル読み込みを中止");
   const importButton = button("portfolio-import", "過去の記録を表示");
   const status = element("p", "portfolio-status", STATUS.idle);
   status.setAttribute("role", "status");
@@ -76,16 +83,17 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
   reportLabel.append(report);
   const note = element("p", "notice", "読み取り専用。署名・送金は行いません。過去の記録は現在の残高や接続を証明しません。");
   section.append(heading, label, inspect, cancel, clear, status, progress, details,
-    exportButton, reportLabel, importButton, note);
+    exportButton, downloadButton, fileLabel, fileStop, reportLabel, importButton, note);
   card.append(section);
 
-  function controls(loading = false) {
+  function controls(loading = Boolean(active)) {
+    const busy = loading || Boolean(fileRead);
     progress.hidden = !loading;
-    inspect.disabled = loading;
+    inspect.disabled = busy;
     cancel.disabled = !loading;
-    exportButton.disabled = !current || loading;
-    importButton.disabled = loading;
-    section.setAttribute("aria-busy", String(loading));
+    exportButton.disabled = downloadButton.disabled = !current || busy;
+    importButton.disabled = busy; file.disabled = busy; fileStop.disabled = !fileRead;
+    section.setAttribute("aria-busy", String(busy));
   }
   function show(snapshot, historical) {
     comparison.setTarget(snapshot);
@@ -107,8 +115,10 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
     if (disposed) return null;
     const id = ++revision;
     const previous = active;
+    const oldFile = fileRead; fileRead = null;
     active = null;
     current = null;
+    oldFile?.abort();
     previous?.abort();
     if (!alive(id)) return id;
     progress.value = 0;
@@ -126,7 +136,7 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
     return id;
   }
   async function refresh() {
-    if (disposed || active) return;
+    if (disposed || active || fileRead) return;
     const id = invalidate();
     if (!alive(id)) return;
     const abort = new AbortController();
@@ -179,12 +189,35 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
   listen(clear, "click", () => cancelRead());
   listen(input, "input", () => cancelRead("入力が変わりました。もう一度確認してください。"));
   listen(exportButton, "click", () => {
-    if (!current || active || disposed) return;
+    if (!current || active || fileRead || disposed) return;
     report.value = encodePortfolioReport(current);
     status.textContent = "確認記録をJSONにしました。内容を確認して保存してください。";
   });
+  listen(downloadButton, "click", () => {
+    if (!current || active || fileRead || disposed) return; const id = revision, value = current;
+    try { const prepared = { text: encodePortfolioReport(value), filename: `ThreeCore-${value.agent}-portfolio-${value.blockNumber}.json`, mimeType: "application/json;charset=utf-8", containsOriginalEvidence: true, restorable: false };
+      const result = download({ document, prepared }), kind = observeCallbackResult(result); if (!alive(id)) return;
+      if (kind !== "synchronous" || result === false) throw Error();
+      status.textContent = "確認記録の保存を開始しました。ダウンロード先をご確認ください。";
+    } catch { if (alive(id)) status.textContent = "確認記録を保存できませんでした。今回の確認結果は保持しています。"; }
+  });
+  listen(file, "change", () => {
+    const chosen = file.files?.[0]; file.value = ""; if (!chosen || active || fileRead) return;
+    const id = ++revision, local = new AbortController(); fileRead = local; controls();
+    status.textContent = "保存した確認記録を読み込んでいます。今回の確認結果と履歴は保持しています。";
+    void (async () => { try {
+      const source = await readSecurityFileText(chosen, { maxBytes: 65536, signal: local.signal });
+      if (!alive(id) || local.signal.aborted) return; decodePortfolioReport(source);
+      if (!alive(id) || local.signal.aborted) return; report.value = source;
+      status.textContent = "確認記録JSONを読み込みました。「過去の記録を表示」で内容を確認できます。履歴への追加は別の操作です。";
+    } catch { if (alive(id) && !local.signal.aborted) status.textContent = "確認記録を読み込めませんでした。64 KiB以内のUTF-8 JSONを確認してください。今回の結果と履歴は保持しています。"; }
+    finally { if (alive(id) && fileRead === local) { fileRead = null; local.abort(); controls(); } } })();
+  });
+  function cancelFileRead(message) { if (!fileRead) return; const id = ++revision, previous = fileRead; fileRead = null; previous.abort(); if (alive(id)) { controls(); status.textContent = message; } }
+  listen(fileStop, "click", () => cancelFileRead("ファイル読み込みを中止しました。今回の結果と履歴は保持しています。"));
+  listen(report, "input", () => cancelFileRead("JSONが編集されたためファイル読み込みを中止しました。編集した内容は保持しています。"));
   listen(importButton, "click", () => {
-    if (disposed || active) return;
+    if (disposed || active || fileRead) return;
     const text = report.value;
     const id = invalidate();
     if (!alive(id)) return;
@@ -197,7 +230,7 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
     }
   });
   comparison = mountComparisonPanel({ document, parent: section });
-  tokenPlan = mountTokenPlanPanel({ document, parent: section, getContext,
+  tokenPlan = mountTokenPlanPanel({ document, parent: section, getContext, download,
     readLines: () => input.value,
     applyLines: value => {
       if (disposed) return false;
@@ -218,6 +251,7 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
       revision++;
       const previous = active;
       active = null;
+      const oldFile = fileRead; fileRead = null; oldFile?.abort();
       current = null;
       previous?.abort();
       comparison.dispose();
