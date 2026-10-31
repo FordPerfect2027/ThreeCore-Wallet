@@ -609,4 +609,30 @@ export function registerReportSetUITests(test) {
   });
 
 
+  test("report set: native recovery saves either verified original without changing the displayed set", async () => {
+    const f = fixture(), before = sequenceSet(), after = sequenceSet(demoSetHistory());
+    const choose = async text => {
+      const transfer = new DataTransfer(); transfer.items.add(new File([text], "comparison-evidence.json", { type: "application/json" }));
+      f.q("comparison-evidence-file").files = transfer.files; f.q("comparison-evidence-file").dispatchEvent(new Event("change", { bubbles: true })); await f.settled();
+    };
+    try {
+      assert(f.q("evidence-source-role").disabled); const bundle = await prepareReportSetComparisonEvidenceFile(before, after);
+      await choose(bundle.text); f.set("evidence-source-role", "before");
+      f.check("comparison-evidence-review-ack"); assert(f.q("evidence-source-json").disabled);
+      f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
+      assert(f.files[0].text === JSON.parse(bundle.text).beforeFileText && f.mounted.getState().input === null);
+      f.set("evidence-source-role", "after"); assert(!f.q("evidence-source-ack").checked && f.q("evidence-source-json").disabled);
+      f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
+      assert((await decodeReportSetFile(f.files[1].text)).input.entries.length === 7);
+      await f.accept(); const accepted = f.mounted.getState().input;
+      const changed = JSON.parse(bundle.text), comparison = JSON.parse(changed.comparisonText); comparison.comparison.rows = [];
+      changed.comparisonText = JSON.stringify(comparison); await choose(JSON.stringify(changed));
+      assert(f.q("evidence-source-role").value === "" && !f.q("evidence-source-ack").checked);
+      assert(f.q("comparison-evidence-output").textContent.includes("食い違い"));
+      f.set("evidence-source-role", "before"); f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
+      assert(f.files[2].comparisonMatchesRecomputation === false && f.files[2].text === changed.beforeFileText);
+      assert(f.mounted.getState().input === accepted && f.q("comparison-evidence-output").textContent.includes("食い違い"));
+    } finally { f.dispose(); }
+  });
+
 }

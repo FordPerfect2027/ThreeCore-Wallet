@@ -34,6 +34,8 @@ const ERRORS = Object.freeze({
   PERIOD_SET_EVIDENCE_CONTENT: "一式に含まれる元資料または比較結果が、必要なファイル形式と異なります。別の欄へこの一式を移す操作はせず、保存した元の証拠一式を選び直してください。",
   PERIOD_SET_EVIDENCE_READ: "比較の証拠一式を読み取れませんでした。",
   PERIOD_SET_EVIDENCE_ENCODING: "比較の証拠一式はUTF-8で保存されたJSONを選んでください。",
+  PERIOD_SET_EVIDENCE_SOURCE_REVIEW: "先に元の比較の証拠一式JSONを、この画面で検証してください。検証結果の控えだけでは元資料を取り出せません。",
+  PERIOD_SET_EVIDENCE_SOURCE_ROLE: "差し替え前か候補か、取り出す元資料を選んでください。",
   PERIOD_SET_EVIDENCE_NO_REVIEW: "先に比較の証拠一式を確認してください。",
   PERIOD_SET_COVERAGE_SIZE: "保存済み履歴範囲の説明ファイルが上限4 MiBを超えています。元の確認セットJSONを保管してください。",
   PERIOD_SET_COMPARISON_JSON: "比較ファイルのJSONを読み取れません。",

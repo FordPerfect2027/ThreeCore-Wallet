@@ -345,6 +345,7 @@ export async function prepareReportSetCoverageFile(value, format = "json", optio
 }
 
 export const REPORT_SET_COMPARISON_EVIDENCE_LIMIT = 24 * 1024 * 1024;
+const comparisonEvidenceSources = new WeakMap();
 
 /** A portable pair of canonical originals and their derived comparison, never an apply request. */
 export async function prepareReportSetComparisonEvidenceFile(beforeValue, afterValue, fileOptions = {}) {
@@ -391,11 +392,13 @@ export async function reviewReportSetComparisonEvidence(text, fileOptions = {}) 
   try { evidenceTextSha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle,
     { signal: options.signal, timeoutMs: options.timeoutMs }); }
   catch { periodFail("PERIOD_CRYPTO"); }
-  return freezeSet({ schema: "threecore.report-set-comparison-evidence-review.v1", evidenceTextSha256,
+  const result = freezeSet({ schema: "threecore.report-set-comparison-evidence-review.v1", evidenceTextSha256,
     beforeChecksumVerified: true, afterChecksumVerified: true, comparisonReview,
     beforeReportCount: before.input.entries.length, afterReportCount: after.input.entries.length,
     readOnly: true, imported: false, historicalOnly: true, liveChainRechecked: false,
     authenticated: false, encrypted: false, restorable: false, authorizesExecution: false });
+  comparisonEvidenceSources.set(result, Object.freeze({ beforeFileText: evidence.beforeFileText, afterFileText: evidence.afterFileText }));
+  return result;
 }
 
 export async function readReportSetComparisonEvidenceText(file, { signal, timeoutMs } = {}) {
@@ -412,4 +415,18 @@ async function checkEmbeddedComparisonEvidence(check) {
     if (walletSavedFileTargetMessage(error?.code)) periodFail("PERIOD_SET_EVIDENCE_CONTENT");
     throw error;
   }
+}
+
+/** Only completed reviews owned by this module can expose verified embedded originals. */
+export function prepareComparisonEvidenceSourceFile(receipt, role) {
+  const originals = comparisonEvidenceSources.get(receipt);
+  if (!originals) periodFail("PERIOD_SET_EVIDENCE_SOURCE_REVIEW");
+  if (role !== "before" && role !== "after") periodFail("PERIOD_SET_EVIDENCE_SOURCE_ROLE");
+  const text = role === "before" ? originals.beforeFileText : originals.afterFileText;
+  return Object.freeze({ text, filename: "ThreeCore-recovered-" + role + "-report-set.json",
+    mimeType: "application/json;charset=utf-8", byteLength: new TextEncoder().encode(text).byteLength,
+    sourcePayloadDigest: role === "before" ? receipt.comparisonReview.beforePayloadDigest : receipt.comparisonReview.afterPayloadDigest,
+    evidenceTextSha256: receipt.evidenceTextSha256, role,
+    comparisonMatchesRecomputation: receipt.comparisonReview.matchesRecomputation,
+    authenticated: false, encrypted: false, containsOriginalEvidence: true, restorable: true });
 }

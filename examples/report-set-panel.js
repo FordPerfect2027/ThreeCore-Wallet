@@ -169,6 +169,11 @@ export function mountReportSetPanel({ document, parent,
   field("comparison-evidence-review-ack", "検証結果に元資料の識別値・件数・確認結果が入り、暗号化されないことを確認しました", "checkbox", evidenceSection);
   button("comparison-evidence-review-json", "最後に完了した証拠一式の検証結果を保存", evidenceSection);
 
+  select("evidence-source-role", "検証した一式から取り出す元資料", [["", "差し替え前か候補かを選んでください"], ["before", "差し替え前の元資料"], ["after", "候補の元資料"]], evidenceSection);
+  field("evidence-source-ack", "元資料の全アドレス・残高・履歴・メモが暗号化されずに保存されることを確認しました", "checkbox", evidenceSection);
+  button("evidence-source-json", "選んだ元の確認セットJSONを取り出す", evidenceSection);
+  make("p", "evidence-source-help", "検証した一式に実際に含まれる元資料を、そのまま保存します。表示中の確認セットへは取り込みません。比較結果が不一致でも、検査値を確認できた元資料は取り出せます。不一致の判定は変えません。", evidenceSection);
+
   const restore = make("section", "restore");
   make("h3", "restore-heading", "保存した確認セットを開く", restore);
   field("file", "確認セットのJSONを選ぶ（最大96 MiB）", "file", restore).accept = ".json,application/json";
@@ -355,7 +360,10 @@ export function mountReportSetPanel({ document, parent,
       showDiagnostics();
     }
     if (lastReview !== value.review) { lastReview = value.review; nodes["comparison-ack"].checked = false; nodes["comparison-evidence-ack"].checked = false; }
-    if (lastEvidenceReview !== value.evidenceReview) { lastEvidenceReview = value.evidenceReview; nodes["comparison-evidence-review-ack"].checked = false; }
+    if (lastEvidenceReview !== value.evidenceReview) { lastEvidenceReview = value.evidenceReview; nodes["comparison-evidence-review-ack"].checked = false; nodes["evidence-source-role"].value = ""; nodes["evidence-source-ack"].checked = false; }
+    nodes["evidence-source-role"].disabled = value.busy || !value.evidenceReview;
+    nodes["evidence-source-ack"].disabled = value.busy || !value.evidenceReview || !["before", "after"].includes(nodes["evidence-source-role"].value);
+    nodes["evidence-source-json"].disabled = value.busy || !value.evidenceReview || !["before", "after"].includes(nodes["evidence-source-role"].value) || !nodes["evidence-source-ack"].checked;
     nodes["comparison-evidence-file"].disabled = value.busy;
     nodes["comparison-evidence-output"].textContent = setComparisonEvidenceReviewText(value.evidenceReview);
     nodes["comparison-evidence-review-ack"].disabled = value.busy || !value.evidenceReview;
@@ -435,6 +443,9 @@ export function mountReportSetPanel({ document, parent,
   });
   listen(nodes["comparison-evidence-review-ack"], "change", () => render(controller.state));
   listen(nodes["comparison-evidence-review-json"], "click", () => { void controller.exportEvidenceReview(nodes["comparison-evidence-review-ack"].checked, download); });
+  listen(nodes["evidence-source-role"], "change", () => { nodes["evidence-source-ack"].checked = false; render(controller.state); });
+  listen(nodes["evidence-source-ack"], "change", () => render(controller.state));
+  listen(nodes["evidence-source-json"], "click", () => { void controller.exportEvidenceSource(nodes["evidence-source-role"].value, nodes["evidence-source-ack"].checked, download); });
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });

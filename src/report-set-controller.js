@@ -9,7 +9,7 @@ import { diagnosticQuery } from "./report-set-diagnostics.js";
 import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile,
   readReportSetChecksText, reviewReportSetChecksFile, prepareReportSetSourceFile, prepareMissingHistoryDraftFile,
   prepareReportSetComparisonFile, prepareReportSetCoverageFile, readReportSetComparisonText, reviewReportSetComparisonFile, prepareReportSetComparisonEvidenceFile,
-  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence } from "./report-set-export.js";
+  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence, prepareComparisonEvidenceSourceFile } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -379,6 +379,26 @@ export function createReportSetController({ storage, onChange = () => {},
     } catch (value) { return fail(value, token); }
   }
 
+  async function exportEvidenceSource(role, acknowledged, deliver) {
+    let token = generation;
+    try {
+      if (!guard()) return false;
+      token = ++generation;
+      if (!evidenceReview) periodFail("PERIOD_SET_EVIDENCE_NO_REVIEW");
+      if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
+      if (typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      const file = prepareComparisonEvidenceSourceFile(evidenceReview, role);
+      return await run("exporting", async same => {
+        if (!same()) return null;
+        const delivery = deliver(file);
+        if (observeCallbackResult(delivery) !== "synchronous") periodFail("PERIOD_ASYNC_DELIVERY");
+        if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
+        return file;
+      }, () => { phase = review ? "review" : input ? "ready" : "idle";
+        message = "検証した証拠一式から、選んだ元の確認セットJSONを保存しました。表示中の資料には取り込んでいません。"; });
+    } catch (value) { return fail(value, token); }
+  }
+
   function dispose() {
     if (disposed) return;
     generation++; disposed = true; phase = "disposed"; review = null; comparisonReview = null; inspection = null; checkReview = null; evidenceReview = null;
@@ -387,5 +407,5 @@ export function createReportSetController({ storage, onChange = () => {},
     consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,
-    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, cancel, invalidateReview, dispose });
+    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, exportEvidenceSource, cancel, invalidateReview, dispose });
 }

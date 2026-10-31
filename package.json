@@ -41,6 +41,7 @@
     "report-checks:verify": "node scripts/verify-report-checks.js",
     "history-coverage:export": "node scripts/export-history-coverage.js",
     "history-queue:plan": "node scripts/plan-missing-history.js",
+    "report-set:recover-source": "node scripts/recover-report-set-source.js",
     "report-set:verify-evidence": "node scripts/verify-report-set-evidence.js",
     "report-set:verify-comparison": "node scripts/verify-report-set-comparison.js",
     "report-set:compare": "node scripts/compare-report-sets.js"

@@ -486,3 +486,24 @@ test("portable comparison evidence is independently reviewed and requires separa
     const control = f.q("comparison-evidence-file"); f.dispose(); control.files = [fileFrom("{}")]; control.dispatchEvent(new Event("change")); assert.equal(f.files.length, 2);
   } finally { f.dispose(); }
 });
+
+test("verified source recovery resets disclosure on side changes and never replaces the displayed set", async () => {
+  const f = fixture(), before = sequenceSet(), after = sequenceSet(demoSetHistory());
+  const choose = async text => { f.q("comparison-evidence-file").files = [fileFrom(text)]; f.q("comparison-evidence-file").dispatchEvent(new Event("change")); await f.settled(); };
+  try {
+    assert.equal(f.q("evidence-source-role").disabled, true);
+    const bundle = await prepareReportSetComparisonEvidenceFile(before, after); await choose(bundle.text);
+    assert.equal(f.q("evidence-source-json").disabled, true); f.set("evidence-source-role", "before");
+    f.check("comparison-evidence-review-ack"); assert.equal(f.q("evidence-source-json").disabled, true);
+    f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
+    assert.deepEqual((await decodeReportSetFile(f.files[0].text)).input, before); assert.equal(f.mounted.getState().input, null);
+    f.set("evidence-source-role", "after"); assert.equal(f.q("evidence-source-ack").checked, false); assert.equal(f.q("evidence-source-json").disabled, true);
+    f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
+    assert.deepEqual((await decodeReportSetFile(f.files[1].text)).input, after);
+    await f.accept(); const accepted = f.mounted.getState().input;
+    await choose(bundle.text); assert.equal(f.q("evidence-source-role").value, ""); assert.equal(f.q("evidence-source-ack").checked, false);
+    f.set("evidence-source-role", "before"); f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
+    assert.equal(f.mounted.getState().input, accepted); assert.ok(f.store.calls.every(row => row[0] === "read"));
+    const control = f.q("evidence-source-json"); f.dispose(); control.click(); assert.equal(f.files.length, 3);
+  } finally { f.dispose(); }
+});
