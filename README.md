@@ -519,6 +519,8 @@ Saved report-set checklists have a separate [offline export command](docs/REPORT
 
 The [structured check-detail export](docs/REPORT_CHECK_DETAILS_2026-10-31.md) includes contradictory stored values and hashes plus the canonical source digest. Save it from the screen or use `--format details` with the offline command. Keep the original report-set JSON separately for reproduction.
 
+[Independent checklist recomputation](docs/REPORT_CHECK_RECOMPUTATION_2026-10-31.md) compares a saved detail file with its verified original report set and reports altered counts, observations, claims or source identity.
+
 
 ### Resumable historical period collection (local development)
 

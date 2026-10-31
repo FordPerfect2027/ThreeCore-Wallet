@@ -1,3 +1,5 @@
+import { parseSecurityJson } from "./security-json.js";
+import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { validateReportSet, validateSetExportOptions, freezeSet } from "./report-set-model.js";
 import { periodFail } from "./period-plan.js";
 import { prepareReportSetFile } from "./report-set-file.js";
@@ -144,4 +146,35 @@ export async function prepareReportSetChecksFile(value, queryValue = {}, options
   if (new TextEncoder().encode(text).byteLength > REPORT_SET_CHECKS_LIMIT) periodFail("PERIOD_SET_CHECKS_SIZE");
   return Object.freeze({ ...resultFile(text, "json", "application/json"), filename: "ThreeCore-report-set-checks.json",
     sourcePayloadDigest: source.digest, query, options, total: found.count, matched: found.matched, scope: "all-matches" });
+}
+
+function sameCheckJSON(left, right) {
+  if (Object.is(left, right)) return true;
+  if (!left || !right || typeof left !== "object" || typeof right !== "object" || Array.isArray(left) !== Array.isArray(right)) return false;
+  const keys = Object.keys(left);
+  return keys.length === Object.keys(right).length && keys.every(key => Object.hasOwn(right, key) && sameCheckJSON(left[key], right[key]));
+}
+
+/** Recompute from the original source; saved checklist conclusions are never trusted. */
+export async function reviewReportSetChecksFile(value, text, fileOptions = {}) {
+  const input = validateReportSet(value);
+  let cryptoOptions;
+  try { cryptoOptions = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  let supplied;
+  try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_CHECKS_LIMIT }); }
+  catch { periodFail("PERIOD_SET_CHECKS_JSON"); }
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== REPORT_SET_CHECKS_SCHEMA) periodFail("PERIOD_SET_CHECKS_SCHEMA");
+  const query = diagnosticQuery(supplied.query), options = validateSetExportOptions(supplied.options);
+  const expected = JSON.parse((await prepareReportSetChecksFile(input, query, options, cryptoOptions)).text);
+  let detailsTextSha256;
+  try { detailsTextSha256 = await sha256Hex(new TextEncoder().encode(text), cryptoOptions.subtle, { signal: cryptoOptions.signal, timeoutMs: cryptoOptions.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const known = Object.keys(expected), differences = known.filter(key => !Object.hasOwn(supplied, key) || !sameCheckJSON(supplied[key], expected[key]));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  return freezeSet({ schema: "threecore.report-set-check-review.v1", matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    sourcePayloadDigest: expected.sourcePayloadDigest, sourceDigestMatches: supplied.sourcePayloadDigest === expected.sourcePayloadDigest, detailsTextSha256,
+    query, options, total: expected.total, matched: expected.matched,
+    summary: expected.summary, differences, unexpectedFields,
+    historicalOnly: true, readOnly: true, liveChainRechecked: false, authenticated: false, restorable: false });
 }
