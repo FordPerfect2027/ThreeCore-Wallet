@@ -1,0 +1,32 @@
+{
+  "source": "4e884d6",
+  "synthetic": true,
+  "realStorageWrites": 0,
+  "providerCalls": 0,
+  "rows": [
+    {
+      "revision": 9,
+      "previewCapacityExceeded": false,
+      "previewRevisionLimited": false,
+      "previewBytes": 27172,
+      "currentRevisionCandidateBytes": 27171,
+      "actualSavedBytes": 27172,
+      "actualImportError": null,
+      "maximumRevisionApplyResult": null,
+      "syntheticStorageAttempts": 0,
+      "maximumRevisionSourceUnchanged": null
+    },
+    {
+      "revision": 9007199254740991,
+      "previewCapacityExceeded": false,
+      "previewRevisionLimited": true,
+      "previewBytes": null,
+      "currentRevisionCandidateBytes": 27186,
+      "actualSavedBytes": null,
+      "actualImportError": "PERIOD_HISTORY_REVISION_LIMIT",
+      "maximumRevisionApplyResult": false,
+      "syntheticStorageAttempts": 0,
+      "maximumRevisionSourceUnchanged": true
+    }
+  ]
+}

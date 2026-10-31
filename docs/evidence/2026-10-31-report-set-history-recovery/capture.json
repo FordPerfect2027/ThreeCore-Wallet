@@ -1,0 +1,47 @@
+{
+  "source": "4e884d6",
+  "synthetic": true,
+  "realStorageWrites": 0,
+  "providerCalls": 0,
+  "rows": [
+    {
+      "name": "annotated-seven-reports",
+      "reportCount": 7,
+      "archivedReports": 1,
+      "cliExit": 0,
+      "exactOriginalEntries": true,
+      "portableRevision": 0,
+      "reviewAdditions": 6,
+      "reviewDuplicates": 1,
+      "localMetadataRetained": true,
+      "simulatedImportMatchesExpected": true,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "selected-one-report",
+      "reportCount": 1,
+      "archivedReports": 0,
+      "cliExit": 0,
+      "exactOriginalEntries": true,
+      "portableRevision": 0,
+      "reviewAdditions": 0,
+      "reviewDuplicates": 1,
+      "localMetadataRetained": true,
+      "simulatedImportMatchesExpected": true,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "three-reports",
+      "reportCount": 3,
+      "archivedReports": 0,
+      "cliExit": 0,
+      "exactOriginalEntries": true,
+      "portableRevision": 0,
+      "reviewAdditions": 2,
+      "reviewDuplicates": 1,
+      "localMetadataRetained": true,
+      "simulatedImportMatchesExpected": true,
+      "sourceUnchanged": true
+    }
+  ]
+}
