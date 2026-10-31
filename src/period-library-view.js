@@ -79,3 +79,22 @@ export function libraryReviewText(review) {
     "同じ保存番号で内容が異なる場合は追加できません。現在の取得画面の控えは変更しません。"].join("\n");
   return "";
 }
+
+export function libraryImportInspectionText(value) {
+  if (!value) return "";
+  const names = { label: "保存名", createdAt: "作成時刻", updatedAt: "更新時刻", archived: "非表示保管の印", requiresNewPlan: "再取得の印", draft: "取得記録" };
+  const kinds = { addition: "追加候補", identical: "同一内容", conflict: "同じ保存番号で内容が異なります" };
+  const drafts = { identical: "取得内容は同一", extension: "取得工程が増えています", shorter: "取得工程が減っています", "different-plan": "対象または計画が異なります", "changed-evidence": "共通の取得工程に違いがあります" };
+  return ["読込ファイルと現在の一覧の比較（この表示では変更しません）",
+    `追加候補 ${value.additions}件 / 同一 ${value.identical}件 / 不一致 ${value.conflicts}件`,
+    `ファイルに含まれず、そのまま残る既存の控え: ${value.retainedIds.length}件`,
+    `追加だけ行う場合の容量: ${value.capacity.entriesAfter}/${value.capacity.maxEntries}件 · ${value.capacity.bytesAfter}/${value.capacity.maxBytes} bytes`,
+    value.capacity.fits ? "件数・容量の上限内です。" : "件数または容量の上限を超えます。",
+    value.compatible ? "追加可能な構成です。内容を確認してから操作してください。" : "このファイルは追加できません。既存の控えを上書きしません。",
+    ...value.rows.flatMap(row => [row.id + " · " + row.incoming.agent + " · " + kinds[row.kind],
+      row.changedFields.length ? "違い: " + row.changedFields.map(field => names[field]).join("、") : "",
+      row.draftComparison ? drafts[row.draftComparison.kind] : "",
+      row.before ? `取得工程 ${row.before.completed}/${row.before.total} → ${row.incoming.completed}/${row.incoming.total}` : `取得工程 ${row.incoming.completed}/${row.incoming.total}`,
+      row.removedRestriction ? "注意: 読込側では再取得の印が外れています。解除の妥当性は確認していません。" : ""]),
+    "記録の正しさや現在のチェーンを確認する検証ではありません。"].filter(Boolean).join("\n");
+}

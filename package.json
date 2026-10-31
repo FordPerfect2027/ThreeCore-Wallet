@@ -9,6 +9,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "period-library:inspect-import": "node scripts/inspect-period-library-import.js",
     "period-report:extract-entry": "node scripts/extract-period-report-entry.js",
     "test": "node --test test/*.test.js",
     "test:wallet": "node --test --test-concurrency=2 test/*.test.js integration/*-server.test.mjs integration/local-navigation-help.test.mjs",

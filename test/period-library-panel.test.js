@@ -1,3 +1,4 @@
+import { library } from "./helpers/period-library-fixtures.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mountPeriodLibraryPanel } from "../examples/period-library-panel.js";
@@ -319,4 +320,23 @@ test("sanitized error text never falls back to raw untrusted error content", () 
   assert.ok(!libraryErrorText("raw secret from provider").includes("raw secret"));
   assert.match(libraryEntryText(entry(1, { requiresNewPlan: true })), /再取得/);
   assert.match(libraryComparisonText({ kind: "changed-evidence", changedParts: ["earlier"], before: { completed: 2, total: 5 }, after: { completed: 3, total: 5 } }), /通信を行いません/);
+});
+
+test("conflicting file inspection explains removed restriction and retained entries without offering apply", async () => {
+  const initial = library([entry(1, { requiresNewPlan: true }), entry(2)]), f = fixture({ initial });
+  try {
+    await f.open(); const original = f.mounted.getDocument();
+    await f.file((await preparePeriodLibraryFile(library([entry(1, { label: "<b>untrusted</b>" })]))).text);
+    assert.equal(f.q("import-inspection").hidden, false); assert.equal(f.q("review").hidden, true); assert.equal(f.q("apply").disabled, true);
+    assert.match(f.q("import-inspection-text").textContent, /不一致 1件/);
+    assert.match(f.q("import-inspection-text").textContent, /再取得の印が外れています/);
+    assert.match(f.q("import-inspection-text").textContent, /そのまま残る既存の控え: 1件/);
+    assert.doesNotMatch(f.q("import-inspection-text").textContent, /untrusted/);
+    assert.equal(f.mounted.getDocument(), original); assert.equal(f.store.calls.filter(row => row[0] === "change").length, 0);
+    await f.file("{"); assert.equal(f.q("import-inspection").hidden, true);
+    await f.file((await preparePeriodLibraryFile(library([entry(3)]))).text);
+    assert.equal(f.q("apply").disabled, false); assert.match(f.q("import-inspection-text").textContent, /追加可能な構成/);
+    f.q("apply").click(); await f.settled(); assert.equal(f.q("import-inspection").hidden, true);
+    assert.equal(f.mounted.getDocument().entries.length, 3);
+  } finally { f.mounted.dispose(); }
 });

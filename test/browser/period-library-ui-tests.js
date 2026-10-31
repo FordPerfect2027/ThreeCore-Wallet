@@ -87,6 +87,21 @@ function fixture(options = {}) {
 }
 
 export function registerPeriodLibraryUITests(test) {
+  test("period library: show why an import conflicts without replacing stored evidence", async () => {
+    const f = fixture({ initial: library([entry(1, { requiresNewPlan: true }), entry(2)]) });
+    try {
+      await f.open(); const original = f.mounted.getDocument();
+      const file = await preparePeriodLibraryFile(library([entry(1)]));
+      const transfer = new DataTransfer(); transfer.items.add(new File([file.text], "incoming.json", { type: "application/json" }));
+      f.q("file").files = transfer.files; f.q("file").dispatchEvent(new Event("change", { bubbles: true })); await f.settled();
+      assert(!f.q("import-inspection").hidden && f.q("apply").disabled && f.q("review").hidden);
+      assert(f.q("import-inspection-text").textContent.includes("再取得の印が外れています"));
+      assert(f.q("import-inspection-text").textContent.includes("そのまま残る既存の控え: 1件"));
+      assert(f.mounted.getDocument() === original && !f.store.calls.some(row => row[0] === "change"));
+      f.click("refresh"); await f.settled(); assert(f.q("import-inspection").hidden);
+    } finally { f.dispose(); }
+  });
+
   test("period library: IndexedDB remains unopened until explicit read", () => database(async ({ name, connect }) => {
     const adapter = connect();
     const before = await indexedDB.databases();

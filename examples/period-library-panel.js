@@ -2,7 +2,7 @@ import { offerWalletDownload } from "./export-download.js";
 import { createPeriodLibraryController } from "../src/period-library-controller.js";
 import { createPeriodLibraryStorage } from "../src/period-library-storage.js";
 import { queryPeriodLibrary, summarizePeriodLibrary } from "../src/period-library-query.js";
-import { libraryEntryText, libraryErrorText, libraryReviewText, LIBRARY_STATUS_TEXT } from "../src/period-library-view.js";
+import { libraryEntryText, libraryErrorText, libraryReviewText, libraryImportInspectionText, LIBRARY_STATUS_TEXT } from "../src/period-library-view.js";
 
 /** Stored drafts are rendered as text and require another review in the acquisition panel. */
 export function mountPeriodLibraryPanel({ document, parent, getCheckpoint, stageCheckpoint,
@@ -99,6 +99,9 @@ export function mountPeriodLibraryPanel({ document, parent, getCheckpoint, stage
   input("file", "期間の保存一覧JSONを読み込む（最大64 MiB）", "file", files).accept = ".json,application/json";
   node("p", "file-note", "JSONは非表示保管と再取得が必要な状態も含みます。CSVは一覧の要約のみで復元には使えません。チェックサムは破損検出用で、記録の正しさを認証しません。", files);
 
+  const importInspection = node("section", "import-inspection", undefined, files);
+  node("h4", "import-inspection-heading", "読込前後の違い", importInspection);
+  node("pre", "import-inspection-text", "", importInspection);
   const query = () => ({ agent: nodes.agent.value, archive: nodes.archive.value,
     status: nodes["status-filter"].value, search: nodes.search.value, order: nodes.order.value });
   function renderList() {
@@ -135,6 +138,8 @@ export function mountPeriodLibraryPanel({ document, parent, getCheckpoint, stage
     review.hidden = !state.review;
     nodes["review-text"].textContent = libraryReviewText(state.review);
     nodes.apply.disabled = state.busy || !state.review;
+    importInspection.hidden = !state.importInspection;
+    nodes["import-inspection-text"].textContent = libraryImportInspectionText(state.importInspection);
     if (state.document !== renderedDocument) {
       renderedDocument = state.document;
       const info = summarizePeriodLibrary(state.document);

@@ -2,7 +2,7 @@ import { observeCallbackResult, consumeCallback } from "./security-callback.js";
 import { periodFail, periodShape } from "./period-plan.js";
 import { validatePeriodDraft, periodDraftKey } from "./period-draft.js";
 import { emptyPeriodLibrary, validatePeriodLibrary, validateLibraryEntry, libraryId, libraryLabel,
-  libraryTime, compareLibraryDrafts } from "./period-library-model.js";
+  libraryTime, compareLibraryDrafts, inspectPeriodLibraryImport } from "./period-library-model.js";
 import { preparePeriodLibraryFile, readPeriodLibraryFile, reviewPeriodLibraryImport } from "./period-library-file.js";
 import { periodLibraryCSV, libraryQuery } from "./period-library-query.js";
 import { libraryErrorCode, libraryComparisonText } from "./period-library-view.js";
@@ -16,9 +16,9 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
     onChange, now, createId, readFile, prepareFile].every(value => typeof value === "function")) periodFail("PERIOD_LIBRARY_OPTIONS");
   let document = emptyPeriodLibrary(), loaded = false, selectedId = null, review = null;
   let phase = "idle", error = null, message = "PC内の保存一覧は、開く操作をしたときだけ読み込みます。";
-  let comparison = "", generation = 0, aborter = null, disposed = false;
+  let comparison = "", importInspection = null, generation = 0, aborter = null, disposed = false;
   const busy = () => ["loading", "saving", "importing", "exporting", "restoring"].includes(phase);
-  const state = () => Object.freeze({ document, loaded, selectedId, review, phase, error, message, comparison, busy: busy(), disposed });
+  const state = () => Object.freeze({ document, loaded, selectedId, review, phase, error, message, comparison, importInspection, busy: busy(), disposed });
   let notificationRevision = 0;
   const observers = new Set([() => onChange(state())]);
   const notifier = createStateNotifier({ observers, read: () => Object.freeze({ revision: notificationRevision }) });
@@ -59,7 +59,7 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
   function adopt(value, same) {
     const captured = validatePeriodLibrary(value);
     if (!same()) return false;
-    document = captured;
+    document = captured; importInspection = null;
     loaded = true;
     if (selectedId && !document.entries.some(row => row.id === selectedId)) selectedId = null;
     return true;
@@ -85,7 +85,7 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
       aborter = null;
       phase = "error";
       // The cached revision cannot be reused after failed or competing writes.
-      if (nextPhase === "saving") loaded = false;
+      if (nextPhase === "saving") { loaded = false; importInspection = null; }
       return fail(value, id);
     }
   }
@@ -96,14 +96,14 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
     aborter = null;
     previous?.abort();
     if (!sameGeneration(id)) return;
-    review = null; comparison = ""; error = null; phase = "idle";
+    review = null; comparison = ""; importInspection = null; error = null; phase = "idle";
     message = "処理を中止しました。保存中だった場合は一覧を再読み込みして保存状況を確認してください。";
     emit();
   }
   async function refresh() {
     try {
       if (!guard(false)) return false;
-      review = null; comparison = "";
+      review = null; comparison = ""; importInspection = null;
       return await run("loading", ({ signal }) => storage.read({ signal }), (value, same) => {
         if (adopt(value, same)) message = "PC内の保存一覧を読み込みました。";
       });
@@ -149,10 +149,14 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
   async function importFile(file) {
     try {
       if (!guard()) return false;
-      review = null;
+      review = null; importInspection = null;
       const before = document;
       return await run("importing", ({ signal }) => readFile(file, { signal }), (value, same) => {
-        const plan = reviewPeriodLibraryImport(before, value.document);
+        const incoming = validatePeriodLibrary(value.document);
+        const inspection = inspectPeriodLibraryImport(before, incoming);
+        if (!same()) return;
+        importInspection = inspection;
+        const plan = reviewPeriodLibraryImport(before, incoming);
         if (!same()) return;
         review = Object.freeze({ kind: "import", expectedRevision: before.revision, plan });
         phase = "review"; message = "保存一覧に追加する内容を確認してください。";
@@ -257,7 +261,7 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
     importFile, applyReview, edit, compare, exportFile, cancel,
     dispose() {
       if (disposed) return;
-      disposed = true; generation++; phase = "disposed"; review = null;
+      disposed = true; generation++; importInspection = null; phase = "disposed"; review = null;
       observers.clear();
       const previous = aborter; aborter = null;
       previous?.abort();

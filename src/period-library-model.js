@@ -157,3 +157,41 @@ export function compareLibraryDrafts(leftInput, rightInput) {
   return Object.freeze({ ...base, kind: changedParts.length ? "changed-evidence" :
     after.completed > before.completed ? "extension" : "shorter", changedParts: Object.freeze(changedParts) });
 }
+
+/** Explain an add-only import without merging, replacing, or trusting either source. */
+export function inspectPeriodLibraryImport(beforeValue, incomingValue) {
+  const before = validatePeriodLibrary(beforeValue), incoming = validatePeriodLibrary(incomingValue);
+  const current = new Map(before.entries.map(entry => [entry.id, entry]));
+  const summary = entry => {
+    if (!entry) return null;
+    const progress = periodDraftProgress(entry.draft), plan = entry.draft.plan;
+    return Object.freeze({ agent: plan.context.agent, chainId: plan.context.chainId,
+      earlierBlock: plan.earlierBlock, laterBlock: plan.laterBlock,
+      archived: entry.archived, requiresNewPlan: entry.requiresNewPlan,
+      completed: progress.completed, total: progress.total, events: progress.events });
+  };
+  const rows = incoming.entries.map(entry => {
+    const previous = current.get(entry.id), same = previous && JSON.stringify(previous) === JSON.stringify(entry);
+    const changedFields = previous ? ENTRY_FIELDS.filter(field => field !== "id" && JSON.stringify(previous[field]) !== JSON.stringify(entry[field])) : [];
+    const comparison = previous ? compareLibraryDrafts(previous.draft, entry.draft) : null;
+    return Object.freeze({ id: entry.id, kind: !previous ? "addition" : same ? "identical" : "conflict",
+      before: summary(previous), incoming: summary(entry), changedFields: Object.freeze(changedFields),
+      removedRestriction: Boolean(previous?.requiresNewPlan && !entry.requiresNewPlan),
+      draftComparison: comparison ? Object.freeze({ kind: comparison.kind, changedParts: Object.freeze([...comparison.changedParts]) }) : null });
+  });
+  const additions = incoming.entries.filter(entry => !current.has(entry.id));
+  // Conflicting existing IDs are retained unchanged for this hypothetical add-only size.
+  const combined = { schema: PERIOD_LIBRARY_SCHEMA, revision: 0, entries: [...before.entries, ...additions] };
+  const bytes = encoder.encode(JSON.stringify(combined)).byteLength;
+  const capacity = Object.freeze({ entriesAfter: combined.entries.length, maxEntries: PERIOD_LIBRARY_ENTRIES,
+    bytesAfter: bytes, maxBytes: PERIOD_LIBRARY_BYTES,
+    fits: combined.entries.length <= PERIOD_LIBRARY_ENTRIES && bytes <= PERIOD_LIBRARY_BYTES });
+  const conflicts = rows.filter(row => row.kind === "conflict").length;
+  return Object.freeze({ schema: "threecore.period-library-import-inspection.v1",
+    beforeCount: before.entries.length, incomingCount: incoming.entries.length,
+    additions: additions.length, identical: rows.filter(row => row.kind === "identical").length, conflicts,
+    retainedIds: Object.freeze(before.entries.filter(entry => !incoming.entries.some(row => row.id === entry.id)).map(entry => entry.id)),
+    rows: Object.freeze(rows), capacity, compatible: conflicts === 0 && capacity.fits,
+    addOnly: true, historicalOnly: true, automaticallyApplied: false,
+    liveChainRechecked: false, authenticated: false, authorizesExecution: false });
+}
