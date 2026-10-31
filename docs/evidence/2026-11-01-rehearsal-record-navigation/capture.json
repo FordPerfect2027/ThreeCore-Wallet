@@ -1,0 +1,127 @@
+{
+  "source": "0388e28",
+  "synthetic": true,
+  "sourceRecords": 600,
+  "navigationDoesNotAddDevelopmentItems": true,
+  "captures": [
+    {
+      "name": "initial",
+      "selected": "DAT:deposit-0",
+      "page": "1",
+      "pageCount": "/ 全60ページ（現在の検索条件）",
+      "status": "一致 600件 / 全 600件。1～10件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全600件中、1件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "",
+      "pageInvalid": "false",
+      "pageStatus": ""
+    },
+    {
+      "name": "last-page",
+      "selected": "CAWELON:deposit-190",
+      "page": "60",
+      "pageCount": "/ 全60ページ（現在の検索条件）",
+      "status": "一致 600件 / 全 600件。591～600件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全600件中、591件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "",
+      "pageInvalid": "false",
+      "pageStatus": ""
+    },
+    {
+      "name": "jump-page-21",
+      "selected": "EMA:deposit-0",
+      "page": "21",
+      "pageCount": "/ 全60ページ（現在の検索条件）",
+      "status": "一致 600件 / 全 600件。201～210件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全600件中、201件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "",
+      "pageInvalid": "false",
+      "pageStatus": ""
+    },
+    {
+      "name": "previous-matching-across-agent-and-page",
+      "selected": "DAT:deposit-199",
+      "page": "20",
+      "pageCount": "/ 全60ページ（現在の検索条件）",
+      "status": "一致 600件 / 全 600件。191～200件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全600件中、200件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "",
+      "pageInvalid": "false",
+      "pageStatus": ""
+    },
+    {
+      "name": "next-matching-across-agent-and-page",
+      "selected": "EMA:deposit-0",
+      "page": "21",
+      "pageCount": "/ 全60ページ（現在の検索条件）",
+      "status": "一致 600件 / 全 600件。201～210件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全600件中、201件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "",
+      "pageInvalid": "false",
+      "pageStatus": ""
+    },
+    {
+      "name": "invalid-page-retains-current",
+      "selected": "EMA:deposit-0",
+      "page": "61",
+      "pageCount": "/ 全60ページ（現在の検索条件）",
+      "status": "一致 600件 / 全 600件。201～210件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全600件中、201件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "",
+      "pageInvalid": "true",
+      "pageStatus": "1〜60のページ番号を入力してください。現在の表示と検索条件は保持しています。"
+    },
+    {
+      "name": "first-page",
+      "selected": "DAT:deposit-0",
+      "page": "1",
+      "pageCount": "/ 全60ページ（現在の検索条件）",
+      "status": "一致 600件 / 全 600件。1～10件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全600件中、1件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "",
+      "pageInvalid": "false",
+      "pageStatus": ""
+    },
+    {
+      "name": "filtered-first",
+      "selected": "DAT:deposit-199",
+      "page": "1",
+      "pageCount": "/ 全1ページ（現在の検索条件）",
+      "status": "一致 3件 / 全 600件。1～3件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全3件中、1件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "deposit-199",
+      "pageInvalid": "false",
+      "pageStatus": ""
+    },
+    {
+      "name": "filtered-next",
+      "selected": "EMA:deposit-199",
+      "page": "1",
+      "pageCount": "/ 全1ページ（現在の検索条件）",
+      "status": "一致 3件 / 全 600件。1～3件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全3件中、2件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "deposit-199",
+      "pageInvalid": "false",
+      "pageStatus": ""
+    },
+    {
+      "name": "filtered-last",
+      "selected": "CAWELON:deposit-199",
+      "page": "1",
+      "pageCount": "/ 全1ページ（現在の検索条件）",
+      "status": "一致 3件 / 全 600件。1～3件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+      "detailPosition": "一致する全3件中、3件目の詳細です。前後への移動も現在の検索条件を保ちます。",
+      "search": "deposit-199",
+      "pageInvalid": "false",
+      "pageStatus": ""
+    }
+  ],
+  "workspaceUnchanged": true,
+  "completeQueryExportUnchanged": true,
+  "nativeFocus": "file-read",
+  "nativeFocusedCases": 109,
+  "fullBrowserCoverage": false,
+  "lastFullBrowserSource": "a2eb7e5",
+  "lastFullBrowserCases": 950,
+  "userTabConnectionVerified": false,
+  "realProviderCalls": 0
+}
