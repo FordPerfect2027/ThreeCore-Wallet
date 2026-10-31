@@ -22,3 +22,28 @@ for(const id of ['source-save','checksum-save'])test(id+' failure preserves revi
 for(const id of ['source-save','checksum-save'])test(id+' cannot report success over a source cleared inside the download',async()=>{const f=setup();try{f.paste(source);await finished(f);f.downloadAction(()=>f.q('clear').click());f.q(id).click();assert.equal(f.q('export-status').textContent,'');assert.equal(f.q(id).disabled,true);}finally{f.panel.dispose();}});
 test('invalid optional checksum focuses its own field and can be corrected without repasting',async()=>{const f=setup();try{f.q('expected').setAttribute('aria-describedby','hash-help');f.edit('expected','g'.repeat(64));f.paste(source);await finished(f);assert.equal(f.document.activeElement,f.q('expected'));assert.equal(f.q('expected').getAttribute('aria-invalid'),'true');assert.equal(f.q('expected').getAttribute('aria-describedby'),'hash-help report-review-status');assert.match(f.q('status').textContent,/0〜9とa〜f/);assert.equal(f.q('run').disabled,false);f.edit('expected',hash(source).toUpperCase());assert.equal(f.q('expected').getAttribute('aria-invalid'),undefined);assert.equal(f.q('expected').getAttribute('aria-describedby'),'hash-help');f.q('run').click();await finished(f);assert.match(f.q('summary').textContent,/照合値: 一致/);assert.equal(f.q('source-save').disabled,false);}finally{f.panel.dispose();}});
 test('an absent optional checksum can be left blank after an error',async()=>{const f=setup();try{f.edit('expected','invalid');f.paste(source);await finished(f);f.edit('expected','');f.q('run').click();await finished(f);assert.match(f.q('summary').textContent,/照合値: 指定なし/);assert.equal(f.q('checksum-save').disabled,false);}finally{f.panel.dispose();}});
+
+test('combined evidence export includes exact source, receipt and original expectation',async()=>{
+  const f=setup();try{f.edit('expected','0'.repeat(64));f.paste(source);await finished(f);f.q('evidence-save').click();
+    assert.equal(f.downloads.length,1);const file=f.downloads[0],data=JSON.parse(file.text);
+    assert.equal(file.filename,'ThreeCore-review-evidence.json');assert.equal(data.sourceText,source);
+    assert.equal(data.receipt.sha256,hash(source));assert.equal(data.receipt.expectedSha256,'0'.repeat(64));assert.equal(data.receipt.checksumMatches,false);
+    assert.equal(data.sourceVerified,false);assert.equal(data.authorizesExecution,false);assert.match(f.q('export-status').textContent,/不一致.*含みます/);
+  }finally{f.panel.dispose();}
+});
+for(const retirement of ['clear','edit','checksum','dispose'])test('combined evidence export retires on '+retirement,async()=>{
+  const f=setup();try{f.paste(source);await finished(f);if(retirement==='clear')f.q('clear').click();if(retirement==='edit')f.edit('text','{}');if(retirement==='checksum')f.edit('expected','0'.repeat(64));if(retirement==='dispose')f.panel.dispose();
+    assert.equal(f.q('evidence-save').disabled,true);f.q('evidence-save').dispatchEvent(new Event('click'));assert.equal(f.downloads.length,0);
+  }finally{f.panel.dispose();}
+});
+test('combined evidence export failure permits retry without losing source or receipt',async()=>{
+  const f=setup();try{f.paste(source);await finished(f);f.downloadAction(()=>{throw Error('synthetic unavailable');});f.q('evidence-save').click();
+    assert.match(f.q('export-status').textContent,/保存を開始できません/);assert.equal(f.q('evidence-save').disabled,false);
+    f.downloadAction(()=>{});f.q('evidence-save').click();assert.equal(f.downloads.length,1);assert.equal(JSON.parse(f.downloads[0].text).sourceText,source);
+  }finally{f.panel.dispose();}
+});
+test('combined evidence export cannot overwrite a newer cleared view',async()=>{
+  const f=setup();try{f.paste(source);await finished(f);f.downloadAction(()=>f.q('clear').click());f.q('evidence-save').click();
+    assert.equal(f.q('export-status').textContent,'');assert.equal(f.q('evidence-save').disabled,true);
+  }finally{f.panel.dispose();}
+});

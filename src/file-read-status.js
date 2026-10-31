@@ -105,8 +105,10 @@ const rehearsalDestinations = Object.freeze({
   cases: "比較ケースを名前付きで残す",
   expectations: "保存した期待結果との比較",
   report: "保存した資料を再計算して確認",
+  evidence: "まとめて保存した証拠を再確認する",
 });
 const rehearsalSchemaTargets = Object.freeze({
+  "threecore.operation-rehearsal-review-evidence.v1": "evidence",
   "threecore.operation-rehearsal.v1": "record",
   "threecore.operation-rehearsal.v2": "record",
   "threecore.operation-rehearsal-workspace.v1": "workspace",
@@ -127,11 +129,13 @@ export function describeRehearsalFileTarget(text, currentTarget) {
   if (typeof currentTarget !== "string" || !Object.hasOwn(rehearsalDestinations, currentTarget)) return null;
   let root;
   try {
-    root = parseSecurityJson(text, { bytes: 2097152, depth: 24, nodes: 150000,
-      keyCharacters: 128, stringCharacters: 4096 });
+    root = parseSecurityJson(text, { bytes: 6291456, depth: 28, nodes: 150000,
+      keyCharacters: 128, stringCharacters: 2097152 });
   } catch { return null; }
   if (!root || typeof root !== "object" || Array.isArray(root) || root.simulationOnly !== true ||
       typeof root.schema !== "string") return null;
+  if (root.schema === "threecore.operation-rehearsal-evidence-review.v1")
+    return "これは証拠ファイルの再確認結果を記した控えです。再確認には、元の証拠ファイルを「まとめて保存した証拠を再確認する」欄で選んでください。";
   if (root.schema === "threecore.operation-rehearsal-report-review.v1")
     return "これは資料の確認結果を記した控えの形式です。再計算する場合は、この控えと一緒に保管した元の資料を選んでください。";
   if (!Object.hasOwn(rehearsalSchemaTargets, root.schema)) return null;

@@ -53,6 +53,33 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  for(const altered of [false,true])test("file-read: portable evidence native round trip"+(altered?" detects a changed receipt":" preserves independent views"),async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    const pick=(id,text)=>{const transfer=new DataTransfer();transfer.items.add(new File([text],"evidence.json",{type:"application/json"}));q(id).files=transfer.files;q(id).dispatchEvent(new Event("change"));};
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("overview-save").click();const source=downloads.pop().text;
+      q("report-review-text").value=source;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();await finish("report-review-status");
+      const ordinaryStatus=q("report-review-status").textContent;q("report-review-evidence-save").click();const encoded=downloads.pop().text;
+      const evidence=JSON.parse(encoded);assert(evidence.sourceText===source);
+      if(altered)evidence.receipt["<img src=x onerror=alert(1)>"]=true;
+      pick("report-evidence-file",JSON.stringify(evidence));await finish("report-evidence-status");
+      assert(q("report-evidence-status").className===(altered?"blocked":"passed"));assert(!q("report-evidence-save").disabled);
+      assert(q("report-review-status").textContent===ordinaryStatus&&!q("report-review-evidence-save").disabled,"Separate verification retains the original review");
+      assert(!q("report-evidence-results").querySelector("img"));
+      q("report-evidence-source-save").click();assert(downloads.pop().text===source);
+      q("report-evidence-save").click();assert(JSON.parse(downloads.pop().text).matchesReceipt===!altered);
+      q("session-save").click();assert(downloads.pop().text===before,"Evidence inspection never restores or modifies live ledgers");
+      q("report-evidence-file").dispatchEvent(new Event("cancel"));assert(!q("report-evidence-save").disabled);
+      if(!altered){pick("report-review-file",encoded);await finish("report-review-status");assert(q("report-review-status").textContent.includes("まとめて保存した証拠を再確認する"));
+        pick("report-evidence-file",source);await finish("report-evidence-status");assert(q("report-evidence-status").textContent.includes("保存した資料を再計算して確認"));}
+    }finally{page.dispose();host.remove();}
+  });
+
   test("file-read: saved checksum text uses a native file picker and retains its selected source", async () => {
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);

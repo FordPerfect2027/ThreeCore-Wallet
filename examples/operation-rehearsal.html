@@ -29,6 +29,8 @@
         <tr><td>期待結果<br>ThreeCore-expected-outcomes.json</td><td>保存時の期待結果と再計算を比較</td><td><a href="#check-suite-title">期待結果の確認</a></td></tr>
         <tr><td>確認一覧・比較・検索の資料<br>例：ThreeCore-workspace-overview.json</td><td>資料を再計算して確認。履歴の復旧には使いません。</td><td><a href="#report-review-title">資料の再確認</a></td></tr>
         <tr><td>資料の確認結果の控え<br>ThreeCore-report-review-receipt.json</td><td>確認結果を保管。再確認には控えと一緒に保存した元の資料を使います。</td><td>元の資料は<a href="#report-review-title">資料の再確認</a>へ</td></tr>
+        <tr><td>元資料と確認結果をまとめた証拠<br>ThreeCore-review-evidence.json</td><td>元資料と控えを再計算して確認。現在の履歴には反映しません。</td><td><a href="#report-evidence-title">証拠の再確認</a></td></tr>
+        <tr><td>証拠の再確認結果<br>ThreeCore-evidence-verification.json</td><td>今回の再確認結果を保管。再確認には元の証拠ファイルを使います。</td><td>元の証拠は<a href="#report-evidence-title">証拠の再確認</a>へ</td></tr>
         <tr><td>計算の流れのCSV<br>ThreeCore-DAT-rehearsal-ledger.csv</td><td>表計算ソフトなどで読むための資料。復旧にはJSONファイルを使います。</td><td>この画面への読み込み対象外</td></tr>
       </tbody>
     </table></div>
@@ -278,12 +280,29 @@
     </div>
     <div class="actions"><button id="report-review-save" type="button" disabled>資料の確認結果を保存</button>
     <button id="report-review-source-save" type="button" disabled>確認した元資料を保存</button>
-    <button id="report-review-checksum-save" type="button" disabled>照合値をテキスト保存</button></div>
+    <button id="report-review-checksum-save" type="button" disabled>照合値をテキスト保存</button>
+    <button id="report-review-evidence-save" type="button" disabled>元資料と確認結果をまとめて保存</button></div>
     <p class="small">再確認するため、元資料・確認結果の控え・照合値を一緒に保管してください。貼り付けた資料は、確認に使った文字列を保存します。</p>
     <p id="report-review-export-status" class="small" role="status" aria-live="polite"></p>
     <details><summary>資料ファイルを選べない場合</summary><p class="small">2 MiB以内の資料JSONを貼り付けて確認できます。照合値は貼り付けた文字列のUTF-8から計算するため、改行などが変わると元ファイルと異なります。外部へ送信しません。</p>
       <label>確認する資料の内容<textarea id="report-review-text" rows="7" maxlength="2097153" spellcheck="false"></textarea></label>
       <button id="report-review-paste" type="button">貼り付けた資料を確認</button>
+    </details>
+    <details>
+      <summary id="report-evidence-title">まとめて保存した証拠を再確認する</summary>
+      <p>元資料と確認結果を一つにした証拠ファイルを、読み取り専用で確かめます。現在の履歴や上の確認欄には反映しません。</p>
+      <label class="file-label">まとめた証拠ファイル（6 MiB以内）<input id="report-evidence-file" type="file" accept=".json,application/json" aria-describedby="report-evidence-file-note report-evidence-status"></label>
+      <p id="report-evidence-file-note" class="small" role="status" aria-live="polite"></p>
+      <p id="report-evidence-source" class="small"></p>
+      <button id="report-evidence-clear" type="button">証拠の確認をクリア</button>
+      <p id="report-evidence-status" role="status" aria-live="polite"></p>
+      <div id="report-evidence-results" hidden>
+        <p id="report-evidence-summary"></p><p id="report-evidence-digest" class="small"></p><p id="report-evidence-outcome"></p>
+        <div class="table-wrap"><table><caption>今回の再計算と異なる項目（それぞれ最大40箇所）</caption><thead><tr><th scope="col">対象</th><th scope="col">場所</th><th scope="col">違い</th></tr></thead><tbody id="report-evidence-differences"></tbody></table></div>
+      </div>
+      <div class="actions"><button id="report-evidence-source-save" type="button" disabled>含まれる元資料を取り出して保存</button><button id="report-evidence-save" type="button" disabled>今回の再確認結果を保存</button></div>
+      <p id="report-evidence-export-status" role="status" aria-live="polite" class="small"></p>
+      <details><summary>証拠ファイルを選べない場合</summary><label>証拠ファイルの内容<textarea id="report-evidence-text" rows="7" maxlength="6291457" spellcheck="false"></textarea></label><button id="report-evidence-paste" type="button">貼り付けた証拠ファイルを確認</button></details>
     </details>
     <p class="small">再計算の一致は、入力の出所・実際の残高・安全性の証明ではありません。確認結果の控えは元の資料と一緒に保管してください。</p>
   </section>

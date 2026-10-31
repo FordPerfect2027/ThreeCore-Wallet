@@ -3,7 +3,7 @@ import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
-import { reviewRehearsalReport, encodeRehearsalReviewReceipt, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
+import { reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
 import { REHEARSAL_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 
@@ -52,7 +52,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     const previous = hashAbort; hashAbort = null; previous?.abort();
     fileReader.cancel();
     for(const name of ["scope", "differences", "digest", "summary", "outcome", "export-status"]) get(name).textContent = "";
-    for(const name of ["save","source-save","checksum-save"])get(name).disabled=true; get("results").hidden = true;
+    for(const name of ["save","source-save","checksum-save","evidence-save"])get(name).disabled=true; get("results").hidden = true;
     get("status").textContent = message; get("status").className = "";
     get("status").setAttribute("aria-busy", "false");
   }
@@ -74,7 +74,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     try {
       const result = await reviewRehearsalReport(text, { expectedSha256, subtle, signal: ownHash.signal });
       if(disposed || own !== revision) return;
-      receipt = result; get("results").hidden = false; for(const name of ["save","source-save","checksum-save"])get(name).disabled=false;
+      receipt = result; get("results").hidden = false; for(const name of ["save","source-save","checksum-save","evidence-save"])get(name).disabled=false;
       const matches = result.matchesRecomputation && result.checksumMatches !== false;
       const expectedDifferences = result.reportOutcome?.kind === "expected-outcomes" && !result.reportOutcome.allMatched;
       get("status").className = matches && !expectedDifferences ? "passed" : "blocked";
@@ -167,6 +167,101 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
         "確認した文字列のSHA-256を保存し始めました。元資料と確認結果の控えも一緒に保管してください。";
     }catch{if(disposed||own!==revision)return;get("export-status").textContent=original?"元資料の保存を開始できませんでした。確認結果は保持しています。":"照合値の保存を開始できませんでした。確認結果は保持しています。";}
   });
+  listen("evidence-save","click",()=>{
+    if(disposed||!receipt)return;
+    const own=revision;
+    try{
+      offerDownload({document,prepared:{text:encodeRehearsalReviewEvidence(receipt),filename:"ThreeCore-review-evidence.json",mimeType:"application/json"}});
+      if(disposed||own!==revision)return;
+      get("export-status").textContent="元資料・確認結果・照合値を一つにした証拠ファイルの保存を開始しました。不一致がある場合も、その結果を含みます。";
+    }catch{if(disposed||own!==revision)return;get("export-status").textContent="証拠ファイルの保存を開始できませんでした。確認結果は保持しています。";}
+  });
   reset();
-  return Object.freeze({dispose(){if(disposed)return;reset("");disposed=true;get("expected").value="";for(const remove of listeners)remove();}});
+  const evidencePanel=mountRehearsalEvidencePanel(document,{download,subtle});
+  return Object.freeze({dispose(){if(disposed)return;evidencePanel.dispose();reset("");disposed=true;get("expected").value="";for(const remove of listeners)remove();}});
+}
+
+/** Inspect a portable evidence file independently of the active rehearsal and ordinary report. */
+export function mountRehearsalEvidencePanel(document, { download, subtle = globalThis.crypto?.subtle }) {
+  const get = name => document.getElementById("report-evidence-" + name), reader = createFileReadScope();
+  const listeners = []; let revision = 0, disposed = false, hashAbort = null, result = null, sourceText = null;
+  const notice = createFileSelectionNotice(get("file"), get("file-note"));
+  function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(() => get(name).removeEventListener(event, fn)); }
+  function reset(message) {
+    revision++; result = null; sourceText = null; reader.cancel(); notice.clear();
+    const previous = hashAbort; hashAbort = null; previous?.abort();
+    for (const name of ["summary", "digest", "differences", "outcome", "source", "export-status"]) get(name).textContent = "";
+    get("results").hidden = true; get("source-save").disabled = true; get("save").disabled = true;
+    get("status").textContent = message; get("status").className = ""; get("status").setAttribute("aria-busy", "false");
+  }
+  function failed(error, own, text = null) {
+    if (disposed || own !== revision) return;
+    const reason = describeRehearsalFileTarget(text, "evidence") ?? describeFileReadError(error, "6 MiB") ??
+      (Object.getOwnPropertyDescriptor(error, "code")?.value === "REVIEW_HASH_UNAVAILABLE"
+        ? "照合値を計算できませんでした。もう一度選んでください。"
+        : "証拠ファイルを確認できませんでした。「元資料と確認結果をまとめて保存」で作った6 MiB以内のJSONを選んでください。");
+    reset(reason + " 現在の履歴や別欄の確認結果は変更していません。");
+  }
+  async function inspect(text, own) {
+    if (disposed || own !== revision) return;
+    const control = new AbortController(); hashAbort = control;
+    try {
+      const checked = await reviewRehearsalEvidence(text, { subtle, signal: control.signal });
+      if (disposed || own !== revision) return;
+      result = checked; sourceText = decodeRehearsalReviewEvidence(text).sourceText;
+      const report = checked.reportReview, expectationDiff = report.reportOutcome?.kind === "expected-outcomes" && !report.reportOutcome.allMatched;
+      const matches = checked.matchesReceipt && report.matchesRecomputation && report.checksumMatches !== false;
+      get("status").className = matches && !expectationDiff ? "passed" : "blocked";
+      get("status").textContent = !checked.matchesReceipt ? "証拠内の確認結果の控えが、今回の再計算と一致しません。下の相違を確認してください。"
+        : !report.matchesRecomputation ? "控えは再現できましたが、元資料の計算結果に不一致があります。"
+        : report.checksumMatches === false ? "控えは再現できましたが、元資料は記録された照合値と一致しません。"
+        : expectationDiff ? "証拠内の控えと再計算は一致しました。元資料には期待結果との差があります。"
+        : "証拠内の控えと再計算は一致しました。入力の出所や実際の残高を証明するものではありません。";
+      get("summary").textContent = "控えとの相違 " + checked.differenceCount + "箇所 / 元資料の再計算との相違 " + report.differenceCount + "箇所 / 記録された照合値: " +
+        (report.checksumMatches === null ? "指定なし" : report.checksumMatches ? "一致" : "不一致");
+      get("digest").textContent = "元資料のSHA-256: " + report.sha256 + " / " + report.byteLength + " bytes";
+      get("outcome").textContent = outcomeText(report.reportOutcome);
+      const labels = { missing: "項目が不足", unexpected: "余分な項目", type: "値の種類が異なる", value: "値が異なる", "array-length": "件数が異なる" };
+      for (const [label, data] of [["確認結果の控え", checked], ["元資料", report]]) for (const diff of data.differences) {
+        const row = document.createElement("tr");
+        for (const text of [label, diff.path, labels[diff.kind]]) { const cell = document.createElement("td"); cell.textContent = text; row.append(cell); }
+        get("differences").append(row);
+      }
+      if (checked.differencesTruncated || report.differencesTruncated) get("summary").textContent += "。相違はそれぞれ先頭40箇所を表示しています。";
+      get("results").hidden = false; get("source-save").disabled = false; get("save").disabled = false;
+    } catch (error) { failed(error, own, text); }
+    finally { if (hashAbort === control) hashAbort = null; if (!disposed && own === revision) get("status").setAttribute("aria-busy", "false"); }
+  }
+  listen("file", "change", async () => {
+    if (disposed) return; const file = get("file").files?.[0]; if (!file) { notice.noSelection(); return; }
+    reset("証拠ファイルを読み込んでいます。"); get("file").value = ""; get("text").value = "";
+    const own = revision; get("status").setAttribute("aria-busy", "true");
+    const name = displayFileName(file, "証拠ファイル"); if (disposed || own !== revision) return;
+    get("source").textContent = "確認する証拠ファイル: " + name;
+    try {
+      const text = await reader.readText(file, { maxBytes: REHEARSAL_REVIEW_EVIDENCE_LIMIT });
+      if (!disposed && own === revision) await inspect(text, own);
+    } catch (error) { failed(error, own); }
+  });
+  listen("paste", "click", () => {
+    if (disposed) return; const text = get("text").value;
+    reset("貼り付けた証拠ファイルを確認しています。"); get("text").value = "";
+    get("source").textContent = "確認する証拠: 貼り付けたJSON"; get("status").setAttribute("aria-busy", "true");
+    void inspect(text, revision);
+  });
+  listen("text", "input", () => { if (!disposed) reset("貼り付けた証拠ファイルを確認するボタンを押してください。"); });
+  listen("clear", "click", () => { if (disposed) return; reset("証拠ファイルの確認をクリアしました。"); get("file").value = ""; get("text").value = ""; });
+  for (const name of ["source-save", "save"]) listen(name, "click", () => {
+    if (disposed || !result || sourceText === null) return; const own = revision;
+    try {
+      requireSyncExport(download({ document, prepared: name === "source-save"
+        ? { text: sourceText, filename: "ThreeCore-evidence-source-report.json", mimeType: "application/json" }
+        : { text: JSON.stringify(result, null, 2) + "\n", filename: "ThreeCore-evidence-verification.json", mimeType: "application/json" } }));
+      if (disposed || own !== revision) return;
+      get("export-status").textContent = name === "source-save" ? "証拠に含まれる元資料の保存を開始しました。元の文字列をそのまま取り出しています。"
+        : "証拠の再確認結果を保存し始めました。検出した不一致も結果に含みます。";
+    } catch { if (!disposed && own === revision) get("export-status").textContent = "保存を開始できませんでした。確認結果は保持しています。"; }
+  });
+  reset("まとめて保存した証拠を選ぶと、元資料と確認結果の控えを再計算で確かめます。");
+  return Object.freeze({ dispose() { if (disposed) return; reset(""); disposed = true; get("file").value = ""; get("text").value = ""; notice.dispose(); for (const remove of listeners) remove(); } });
 }

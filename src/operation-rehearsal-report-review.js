@@ -11,6 +11,7 @@ import { indexRehearsalRecords, queryRehearsalRecords, validateRehearsalRecordQu
 export const REHEARSAL_REPORT_REVIEW_SCHEMA = "threecore.operation-rehearsal-report-review.v1";
 export const REHEARSAL_REPORT_REVIEW_LIMIT = 2097152;
 export const REHEARSAL_REPORT_DIFFERENCE_LIMIT = 40;
+const reviewSources = new WeakMap();
 const fail = code => { throw new RehearsalError(code); };
 const pointer = key => String(key).replace(/~/g, "~0").replace(/\//g, "~1");
 
@@ -89,14 +90,63 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
   try { sha256 = await sha256Hex(new TextEncoder().encode(text), subtle, { signal, timeoutMs }); }
   catch { fail("REVIEW_HASH_UNAVAILABLE"); }
   const expectedHash = expectedSha256?.toLowerCase() ?? null;
-  return Object.freeze({ schema: REHEARSAL_REPORT_REVIEW_SCHEMA, simulationOnly: true,
+  const receipt = Object.freeze({ schema: REHEARSAL_REPORT_REVIEW_SCHEMA, simulationOnly: true,
     sourceVerified: false, authorizesExecution: false, inputSchema: parsed.schema, byteLength, sha256,
     expectedSha256: expectedHash, checksumMatches: expectedHash === null ? null : expectedHash === sha256,
     matchesRecomputation: comparison.differenceCount === 0, ...comparison,
     scope: Object.freeze(scope.map(row => Object.freeze(row))), ...(reportOutcome ? { reportOutcome } : {}) });
+  reviewSources.set(receipt, text);
+  return receipt;
 }
 
 export function encodeRehearsalReviewReceipt(receipt) {
   // Receipts come only from reviewRehearsalReport; this is not an untrusted-receipt importer.
   return JSON.stringify(receipt, null, 2) + "\n";
+}
+
+export const REHEARSAL_REVIEW_EVIDENCE_SCHEMA = "threecore.operation-rehearsal-review-evidence.v1";
+export const REHEARSAL_EVIDENCE_REVIEW_SCHEMA = "threecore.operation-rehearsal-evidence-review.v1";
+export const REHEARSAL_REVIEW_EVIDENCE_LIMIT = 6 * 1024 * 1024;
+const EVIDENCE_RECEIPT_LIMIT = 128 * 1024;
+
+/** Only a receipt produced in this module can be paired with its exact source. */
+export function encodeRehearsalReviewEvidence(receipt) {
+  const sourceText = reviewSources.get(receipt);
+  if (sourceText === undefined) fail("UNRECOGNIZED_REVIEW_RECEIPT");
+  const text = JSON.stringify({ schema: REHEARSAL_REVIEW_EVIDENCE_SCHEMA, simulationOnly: true,
+    sourceVerified: false, authorizesExecution: false, sourceText, receipt }, null, 2) + "\n";
+  try { boundedUtf8Length(text, REHEARSAL_REVIEW_EVIDENCE_LIMIT); }
+  catch { fail("INVALID_REVIEW_EVIDENCE"); }
+  return text;
+}
+
+/** Decode only the envelope. Neither its receipt nor its source is trusted yet. */
+export function decodeRehearsalReviewEvidence(text) {
+  let value;
+  try {
+    value = parseSecurityJson(text, { bytes: REHEARSAL_REVIEW_EVIDENCE_LIMIT, depth: 28, nodes: 100000,
+      keyCharacters: 128, stringCharacters: REHEARSAL_REPORT_REVIEW_LIMIT });
+    if (!value || typeof value !== "object" || Array.isArray(value) ||
+        Object.keys(value).sort().join(",") !== "authorizesExecution,receipt,schema,simulationOnly,sourceText,sourceVerified" ||
+        value.schema !== REHEARSAL_REVIEW_EVIDENCE_SCHEMA || value.simulationOnly !== true ||
+        value.sourceVerified !== false || value.authorizesExecution !== false) throw Error();
+    boundedUtf8Length(value.sourceText, REHEARSAL_REPORT_REVIEW_LIMIT);
+    const receipt = value.receipt;
+    if (!receipt || typeof receipt !== "object" || Array.isArray(receipt) ||
+        receipt.schema !== REHEARSAL_REPORT_REVIEW_SCHEMA ||
+        !(receipt.expectedSha256 === null || (typeof receipt.expectedSha256 === "string" && /^[a-f0-9]{64}$/.test(receipt.expectedSha256)))) throw Error();
+    boundedUtf8Length(JSON.stringify(receipt), EVIDENCE_RECEIPT_LIMIT);
+  } catch { fail("INVALID_REVIEW_EVIDENCE"); }
+  return Object.freeze(value);
+}
+
+/** Recompute the report and compare every recorded receipt field. No live-state import. */
+export async function reviewRehearsalEvidence(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
+  const evidence = decodeRehearsalReviewEvidence(text);
+  const reportReview = await reviewRehearsalReport(evidence.sourceText,
+    { expectedSha256: evidence.receipt.expectedSha256, subtle, signal, timeoutMs });
+  const comparison = compareValues(reportReview, evidence.receipt);
+  return Object.freeze({ schema: REHEARSAL_EVIDENCE_REVIEW_SCHEMA, simulationOnly: true,
+    sourceVerified: false, authorizesExecution: false,
+    matchesReceipt: comparison.differenceCount === 0, ...comparison, reportReview });
 }
