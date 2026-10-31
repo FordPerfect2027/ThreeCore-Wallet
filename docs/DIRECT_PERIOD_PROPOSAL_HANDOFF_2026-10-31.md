@@ -15,3 +15,7 @@ The source report set and pending replacement candidate remain intact. The direc
 Two [captured handoffs](evidence/2026-10-31-direct-period-proposal-handoff/) cover discrepancy-to-collected-period and missing-page-to-empty-period cases using the real controllers. Proposed period JSON is retained as evidence after the handoff, not as a prerequisite to it. A nonempty proposal rejection preserves the pending review. Four recheck files captured at item 474 are reproduced byte-for-byte after sharing draft builders. Captures include source and proposed/previous synthetic files, state transitions, logs and a SHA-256 manifest. Latest full-wallet checkpoint remains 15,154 checks and 883 native cases at 6c76e88. Native tests use an isolated browser; no claim is made about a restored connection to the user's currently open tab.
 
 No real signatures, transfers, approvals, secret retrieval, publication or deployment occurred. No real wallet read was initiated, and the user's existing server was not restarted.
+
+## Evidence collection checkpoint
+
+At committed record c2e8106, all 138 tracked manifests and all 989 referenced files matched their SHA-256 checksums (59,638,828 bytes). The read-only audit is retained as `prior-evidence-audit.log`. That observation predates adding this audit log itself and regenerating this folder’s manifest; it does not authenticate authorship or current chain state. This record-only update adds no development item.
