@@ -1,0 +1,167 @@
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:40
+    catch (error) { throw Error(error.message + "\nRecent browser diagnostics:\n" + errors); }
+                          ^
+
+Error: Browser did not report a completed suite
+Recent browser diagnostics:
+s 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104856.736:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104857.344:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104857.470:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104858.158:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104858.471:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104859.173:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104859.486:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104900.184:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104900.498:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104901.199:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104901.511:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104902.213:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104902.526:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104903.226:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104903.544:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104904.242:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104904.553:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104905.252:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104905.564:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104906.260:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104906.569:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104907.277:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104907.573:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104908.294:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104908.589:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104909.309:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104909.592:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104910.311:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104910.606:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104911.138:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104911.324:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104911.340:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104911.746:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104912.337:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104912.353:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104913.176:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104913.363:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104914.193:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104914.380:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104915.210:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104915.396:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104916.221:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104916.409:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104917.226:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104917.414:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104918.242:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104918.415:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104919.258:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104919.429:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104920.271:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104920.443:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104921.286:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104921.455:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104922.301:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104922.457:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104923.302:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104923.461:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104924.316:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104924.473:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104925.331:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104925.487:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104926.342:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104927.355:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104928.358:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104929.371:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104930.384:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:26912:1031/104931.398:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104932.402:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104933.416:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104934.429:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104935.444:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104936.454:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104937.471:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104938.485:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:7492:1031/104939.495:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:26912:1031/104940.500:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 24792: アクセスが拒否されました。 (0x5)
+
+[26260:22292:1031/105122.346:ERROR:services\on_device_model\public\cpp\service_client.cc:37] Unexpected on_device_model service disconnect; reason: 1, description: Error loading backend.
+
+
+    at runBrowserPage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:40:27)
+    at async file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:87:30
+
+Node.js v24.19.0

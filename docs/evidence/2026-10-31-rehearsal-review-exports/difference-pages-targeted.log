@@ -1,0 +1,39 @@
+✔ manually calculated profit and cascading rejection expectations match exactly (31.2642ms)
+✔ recorded baseline is immutable and round-trips without claiming independent verification (58.3162ms)
+✔ a changed final amount identifies side, expected amount and actual amount (25.4777ms)
+✔ per-record decisions and reasons are checked even with equal final amounts (28.1208ms)
+✔ blocker and open position changes are independently visible (11.5478ms)
+✔ missing cases, reordered IDs and partial record coverage are rejected (52.2125ms)
+✔ amounts retain exact integers and prohibit signed unsigned values or negative zero (87.046ms)
+✔ inconsistent decisions, repeated reasons, extra expected keys and getters are refused (29.5092ms)
+✔ strict parser refuses unsafe keys, duplicate keys, oversized data and BOM (1.6111ms)
+✔ empty collections do not claim a passing verification (0.9818ms)
+✔ version one remains version one without inventing fee caps (12.6128ms)
+✔ difference display is bounded but reports the true count (35.074ms)
+✔ bounded difference pages cover every difference without gaps or duplicate rows (127.1136ms)
+✔ difference paging clamps large offsets and normalizes an in-between offset (59.5199ms)
+✔ difference paging rejects invalid offset -1 (20.8958ms)
+✔ difference paging rejects invalid offset 1.5 (19.4472ms)
+✔ difference paging rejects invalid offset Infinity (28.1902ms)
+✔ difference paging rejects invalid offset NaN (28.8522ms)
+✔ difference paging rejects invalid offset 40 (18.126ms)
+✔ difference paging rejects invalid offset [object Object] (36.178ms)
+✔ difference paging rejects invalid offset 9007199254740992 (20.9911ms)
+✔ difference paging does not fall back from a missing or malformed case ID (46.7719ms)
+✔ paging validates expected scope before showing a detail window (31.1167ms)
+✔ result filters change only visible cases and keep complete report export (92.7919ms)
+✔ case ID all remains selectable and shows every page of its differences (106.6165ms)
+✔ case and filter changes reset detail paging and distinguish no matches from no differences (144.1263ms)
+✔ retired difference action cannot revive a case after filter (60.5605ms)
+✔ retired difference action cannot revive a case after clear (50.874ms)
+✔ retired difference action cannot revive a case after replace (101.4996ms)
+✔ retired difference action cannot revive a case after dispose (50.2348ms)
+✔ reset clears all result filters and navigation authority (135.5122ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1670.3278
