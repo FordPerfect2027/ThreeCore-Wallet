@@ -1,0 +1,29 @@
+{
+  "source": "63c9580",
+  "synthetic": true,
+  "captures": [
+    {
+      "kind": "wallet",
+      "apiAndUiExact": true,
+      "queryApplied": "invalid",
+      "visibleRows": 1,
+      "fullReceiptUnchanged": true,
+      "unselectedSourceContentsCompared": false,
+      "recordedProcessVerified": false,
+      "alteredClaimsRejected": true
+    },
+    {
+      "kind": "rehearsal",
+      "apiAndUiExact": true,
+      "queryApplied": "invalid",
+      "visibleRows": 1,
+      "fullReceiptUnchanged": true,
+      "unselectedSourceContentsCompared": false,
+      "recordedProcessVerified": false,
+      "alteredClaimsRejected": true
+    }
+  ],
+  "userTabConnectionVerified": false,
+  "realFilePickerVerified": false,
+  "externalRpcCalls": 0
+}

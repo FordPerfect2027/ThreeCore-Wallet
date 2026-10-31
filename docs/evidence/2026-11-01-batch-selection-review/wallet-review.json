@@ -1,0 +1,23 @@
+{
+  "schema": "threecore.wallet-batch-selection-review.v1",
+  "matchesRecomputation": true,
+  "selectionTextDigest": "5a9e40ebbf5ba315784844ffc2d9a873c0e4e28e140a7f8836de3b7f0474ae45",
+  "sourceBatchTextDigest": "eb46ae9105c8c25609961844b8559ce6ae21c901935f1949742ff54f095da9a9",
+  "query": {
+    "name": "",
+    "status": "invalid"
+  },
+  "selectedBatchFiles": 2,
+  "matchedFiles": 1,
+  "differences": [],
+  "unexpectedFields": 0,
+  "sourceComplete": true,
+  "sourcePhase": "complete",
+  "unselectedSourceContentsCompared": false,
+  "recordedProcessVerified": false,
+  "readOnly": true,
+  "authorizesExecution": false,
+  "automaticallyImported": false,
+  "containsOriginalEvidence": false,
+  "restorable": false
+}
