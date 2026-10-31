@@ -55,6 +55,39 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: native discrepancy filters retain full totals and select the original value",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,event="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(event));};
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("overview-save").click();const source=JSON.parse(downloads.pop().text);source.sourceVerified=true;
+      for(let i=0;i<83;i++)source["extra"+String(i).padStart(3,"0")]=i;
+      edit("report-review-text",JSON.stringify(source));q("report-review-paste").click();await finish("report-review-status");
+      edit("report-review-difference-search","extra08");edit("report-review-difference-type","unexpected","change");
+      assert(q("report-review-differences").children.length===3);
+      q("report-review-differences").querySelectorAll("button")[2].click();q("report-review-difference-save").click();
+      const selected=JSON.parse(downloads.pop().text);assert(selected.actual.value===82&&selected.index===83&&selected.totalDifferences===84);
+      edit("report-review-difference-type","value","change");
+      assert(q("report-review-differences").children.length===0&&q("report-review-difference-status").textContent.includes("相違は84箇所"));
+      assert(q("report-review-status").className==="blocked"&&q("report-review-difference-save").disabled);
+      q("report-review-save").click();assert(JSON.parse(downloads.pop().text).differenceCount===84);
+      q("report-review-difference-filter-clear").click();assert(q("report-review-differences").children.length===40);
+      q("report-review-evidence-save").click();const evidence=JSON.parse(downloads.pop().text);evidence.receipt.differenceCount=9;evidence.receipt.extra="receipt";
+      edit("report-evidence-text",JSON.stringify(evidence));q("report-evidence-paste").click();await finish("report-evidence-status");
+      edit("report-evidence-difference-search","/differenceCount");edit("report-evidence-difference-type","value","change");
+      assert(q("report-evidence-differences").children.length===1);q("report-evidence-differences").querySelector("button").click();q("report-evidence-difference-save").click();
+      const saved=JSON.parse(downloads.pop().text);assert(saved.actual.value===9&&saved.totalDifferences===2);
+      edit("report-evidence-difference-kind","source","change");assert(q("report-evidence-difference-search").value===""&&q("report-evidence-differences").children.length===40);
+      q("session-save").click();assert(downloads.pop().text===before,"Filtered inspection preserves rehearsal data");
+    }finally{page.dispose();host.remove();}
+  });
+
+
+
   test("file-read: discrepancy values remain exact, readable and tied to the current native review",async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);

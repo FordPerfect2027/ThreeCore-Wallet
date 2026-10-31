@@ -6,7 +6,7 @@ import { reviewRehearsalReport, reviewRehearsalEvidence, encodeRehearsalReviewEv
   inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference } from "../src/operation-rehearsal-report-review.js";
 const options={subtle:webcrypto.subtle}, original=newReportFixtures().filtered;
 import { describeRehearsalFileTarget } from "../src/file-read-status.js";
-for(const schema of ["threecore.operation-rehearsal-difference-page.v1","threecore.operation-rehearsal-difference-detail.v1","threecore.operation-rehearsal-difference-values.v1"])
+for(const schema of ["threecore.operation-rehearsal-difference-page.v1","threecore.operation-rehearsal-difference-detail.v1","threecore.operation-rehearsal-difference-values.v1","threecore.operation-rehearsal-difference-query.v1"])
   test(schema+" is labelled as inspection output rather than a restore input",()=>{
     for(const target of ["record","workspace","session","cases","expectations","report","evidence"])
       assert.match(describeRehearsalFileTarget(JSON.stringify({schema,simulationOnly:true}),target),/確認用.*元の資料.*復元できません/);
@@ -230,5 +230,48 @@ for(const target of ["review","evidence"])for(const action of ["next","clear","d
       after=f.field("export-status",target).textContent;return true;
     });
     f.field("difference-save",target).click();assert.equal(f.field("export-status",target).textContent,after);
+  }finally{f.panel.dispose();}
+});
+
+for(const target of ["review","evidence"])test(target+" filters preserve global discrepancy state and exact selected indices",async()=>{
+  const f=panelFixture();let text=JSON.stringify(many);
+  if(target==="evidence"){
+    const saved=JSON.parse(encodeRehearsalReviewEvidence(await reviewRehearsalReport(text,options)));
+    for(let i=0;i<83;i++)saved.receipt["extra"+String(i).padStart(3,"0")]=i;
+    text=JSON.stringify(saved);
+  }
+  const filter=(name,value,event="input")=>{f.field(name,target).value=value;f.field(name,target).dispatchEvent(new Event(event));};
+  try{
+    await f.load(text,target);f.field("next",target).click();const retired=f.button(0,target);
+    filter("difference-search","extra08");assert.equal(f.field("differences",target).children.length,3);
+    assert.match(f.field("difference-status",target).textContent,/全83箇所.*一致 3箇所/);
+    assert.equal(f.field("previous",target).disabled,true);retired.click();assert.equal(f.field("difference-detail",target).hidden,true);
+    f.button(2,target).click();assert.match(f.field("difference-detail",target).textContent,/相違 83 \/ 83/);
+    f.field("difference-save",target).click();assert.equal(JSON.parse(f.downloads.at(-1).text).actual.value,82);
+    filter("difference-type","missing","change");
+    assert.equal(f.field("differences",target).children.length,0);assert.match(f.field("difference-status",target).textContent,/一致する相違はありません.*相違は83箇所/);
+    assert.equal(f.field("status",target).className,"blocked");assert.equal(f.field("difference-save",target).disabled,true);
+    f.field("save",target).click();assert.equal(JSON.parse(f.downloads.at(-1).text).differenceCount,83);
+    f.field("difference-filter-clear",target).click();assert.equal(f.field("differences",target).children.length,40);
+    assert.equal(f.field("difference-search",target).value,"");assert.equal(f.field("difference-type",target).value,"all");
+    if(target==="evidence"){
+      filter("difference-search","extra08");f.edit("difference-kind","source",target);
+      assert.equal(f.field("difference-search",target).value,"");assert.equal(f.field("differences",target).children.length,40);
+    }
+  }finally{f.panel.dispose();}
+});
+for(const target of ["review","evidence"])test(target+" invalid filters retain the review and retire old detail authority",async()=>{
+  const f=panelFixture();let text=JSON.stringify(many);
+  if(target==="evidence")text=encodeRehearsalReviewEvidence(await reviewRehearsalReport(text,options));
+  try{
+    await f.load(text,target);const old=f.button(0,target);old.click();
+    f.field("difference-search",target).value="x".repeat(129);f.field("difference-search",target).dispatchEvent(new Event("input"));
+    assert.match(f.field("difference-status",target).textContent,/128文字以内/);assert.equal(f.field("save",target).disabled,false);
+    assert.equal(f.field("next",target).disabled,true);assert.equal(f.field("difference-save",target).disabled,true);
+    old.click();assert.equal(f.field("difference-detail",target).hidden,true);
+    f.field("difference-filter-clear",target).click();assert.equal(f.field("difference-search",target).getAttribute("aria-invalid"),undefined);
+    assert.equal(f.field("differences",target).children.length,40);
+    f.field("clear",target).click();assert.equal(f.field("difference-search",target).disabled,true);
+    assert.equal(f.field("difference-type",target).disabled,true);assert.equal(f.field("difference-filter-clear",target).disabled,true);
   }finally{f.panel.dispose();}
 });

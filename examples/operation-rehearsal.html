@@ -278,7 +278,12 @@
       <p id="report-review-summary"></p><p id="report-review-digest" class="small"></p>
       <p id="report-review-outcome"></p>
       <div class="table-wrap"><table><caption>資料に含まれる入力の範囲</caption><thead><tr><th>対象</th><th>元入力の件数</th><th>比較後の件数</th></tr></thead><tbody id="report-review-scope"></tbody></table></div>
-      <p id="report-review-difference-status" role="status" aria-live="polite"></p>
+            <div class="fields">
+        <label>相違の場所を絞る（部分一致）<input id="report-review-difference-search" type="text" maxlength="128" disabled></label>
+        <label>違いの種類<select id="report-review-difference-type" disabled><option value="all">すべて</option><option value="missing">項目が不足</option><option value="unexpected">余分な項目</option><option value="type">値の種類が異なる</option><option value="value">値が異なる</option><option value="array-length">件数が異なる</option></select></label>
+        <button id="report-review-difference-filter-clear" type="button" disabled>絞り込みだけを解除</button>
+      </div>
+<p id="report-review-difference-status" role="status" aria-live="polite"></p>
       <div class="actions"><button id="report-review-previous" type="button" disabled>前の40箇所</button><button id="report-review-next" type="button" disabled>次の40箇所</button></div>
       <div class="table-wrap"><table><caption>再計算と異なる項目（40箇所ずつ）</caption><thead><tr><th scope="col">資料内の場所</th><th scope="col">違い</th><th scope="col">値の確認</th></tr></thead><tbody id="report-review-differences"></tbody></table></div>
       <pre id="report-review-difference-detail" tabindex="-1" aria-label="選んだ相違の値" hidden></pre>
@@ -305,7 +310,12 @@
       <div id="report-evidence-results" hidden>
         <p id="report-evidence-summary"></p><p id="report-evidence-digest" class="small"></p><p id="report-evidence-outcome"></p>
         <label>相違を表示する対象<select id="report-evidence-difference-kind" disabled><option value="receipt">確認結果の控え</option><option value="source">元資料</option></select></label>
-        <p id="report-evidence-difference-status" role="status" aria-live="polite"></p>
+              <div class="fields">
+        <label>相違の場所を絞る（部分一致）<input id="report-evidence-difference-search" type="text" maxlength="128" disabled></label>
+        <label>違いの種類<select id="report-evidence-difference-type" disabled><option value="all">すべて</option><option value="missing">項目が不足</option><option value="unexpected">余分な項目</option><option value="type">値の種類が異なる</option><option value="value">値が異なる</option><option value="array-length">件数が異なる</option></select></label>
+        <button id="report-evidence-difference-filter-clear" type="button" disabled>絞り込みだけを解除</button>
+      </div>
+<p id="report-evidence-difference-status" role="status" aria-live="polite"></p>
         <div class="actions"><button id="report-evidence-previous" type="button" disabled>前の40箇所</button><button id="report-evidence-next" type="button" disabled>次の40箇所</button></div>
         <div class="table-wrap"><table><caption>今回の再計算と異なる項目（40箇所ずつ）</caption><thead><tr><th scope="col">対象</th><th scope="col">場所</th><th scope="col">違い</th><th scope="col">値の確認</th></tr></thead><tbody id="report-evidence-differences"></tbody></table></div>
         <pre id="report-evidence-difference-detail" tabindex="-1" aria-label="証拠から選んだ相違の値" hidden></pre>

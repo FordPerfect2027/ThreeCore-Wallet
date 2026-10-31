@@ -1,4 +1,4 @@
-import { sha256Hex } from "./security-data.js";
+import { captureDataRecord, sha256Hex } from "./security-data.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { RehearsalError } from "./operation-rehearsal.js";
 import { reportRehearsalOverview, REHEARSAL_OVERVIEW_SCHEMA } from "./operation-rehearsal-overview.js";
@@ -268,4 +268,48 @@ export function encodeRehearsalDifferenceValues(review, index, target = "report"
   try { boundedUtf8Length(text, REHEARSAL_REVIEW_EVIDENCE_LIMIT); }
   catch { fail("DIFFERENCE_VALUES_TOO_LARGE"); }
   return text;
+}
+
+export const REHEARSAL_DIFFERENCE_QUERY = Object.freeze({ path: "", kind: "all" });
+export function validateRehearsalDifferenceQuery(input) {
+  let value;
+  try { value = captureDataRecord(input, ["path", "kind"]); }
+  catch { fail("INVALID_REVIEW_DIFFERENCE_QUERY"); }
+  if (typeof value.path !== "string" || value.path.length > 128 ||
+      /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(value.path) ||
+      !["all", "missing", "unexpected", "type", "value", "array-length"].includes(value.kind))
+    fail("INVALID_REVIEW_DIFFERENCE_QUERY");
+  return Object.freeze({ path: value.path.trim(), kind: value.kind });
+}
+function queryDifferencePage(expected, actual, input, requestedOffset) {
+  const query = validateRehearsalDifferenceQuery(input);
+  if (!Number.isSafeInteger(requestedOffset) || requestedOffset < 0) fail("INVALID_REVIEW_DIFFERENCE_OFFSET");
+  const limit = REHEARSAL_REPORT_DIFFERENCE_LIMIT, requested = Math.floor(requestedOffset / limit) * limit;
+  function collect(offset) {
+    const differences = []; let matched = 0;
+    const compared = compareValues(expected, actual, 0, (index, difference) => {
+      if ((query.kind !== "all" && difference.kind !== query.kind) || !difference.path.includes(query.path)) return;
+      if (matched >= offset && differences.length < limit) differences.push(Object.freeze({ index, ...difference }));
+      matched++;
+    });
+    return { differences: Object.freeze(differences), matched, total: compared.differenceCount };
+  }
+  let result = collect(requested);
+  const totalPages = Math.max(1, Math.ceil(result.matched / limit)), offset = Math.min(requested, (totalPages - 1) * limit);
+  if (offset !== requested) result = collect(offset);
+  return Object.freeze({ query, offset, limit, page: offset / limit + 1, totalPages,
+    totalDifferences: result.total, matchedDifferences: result.matched, differences: result.differences,
+    hasPrevious: offset > 0, hasNext: offset + limit < result.matched });
+}
+/** Filter inspection paths only; global mismatch status and original indices stay intact. */
+export function queryReviewedRehearsalDifferences(receipt, query = REHEARSAL_DIFFERENCE_QUERY, offset = 0) {
+  const text = reviewSources.get(receipt);
+  if (text === undefined) fail("UNRECOGNIZED_REVIEW_RECEIPT");
+  const { parsed, recomputed } = prepareRehearsalReview(text, receipt.expectedSha256);
+  return queryDifferencePage(recomputed, parsed, query, offset);
+}
+export function queryRehearsalEvidenceReceiptDifferences(review, query = REHEARSAL_DIFFERENCE_QUERY, offset = 0) {
+  const recorded = evidenceReceipts.get(review);
+  if (recorded === undefined) fail("UNRECOGNIZED_EVIDENCE_REVIEW");
+  return queryDifferencePage(review.reportReview, recorded, query, offset);
 }
