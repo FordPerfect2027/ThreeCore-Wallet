@@ -190,6 +190,8 @@ const walletSavedTargets = Object.freeze({
   "threecore.wallet-saved-batch-evidence-review.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
   "threecore.operation-rehearsal-batch-evidence.v1": [null, "FILE_REHEARSAL_BATCH_EVIDENCE_ONLY"],
   "threecore.operation-rehearsal-batch-evidence-review.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
+  "threecore.wallet-batch-evidence-receipt-check.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
+  "threecore.operation-rehearsal-batch-evidence-receipt-check.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
   "threecore.wallet-saved-local-batch-comparison-review.v1": [null, "PERIOD_FILE_LOCAL_BATCH_COMPARISON_ONLY"],
   "threecore.wallet-saved-batch-comparison-review.v1": [null, "PERIOD_FILE_SAVED_BATCH_COMPARISON_REVIEW_ONLY"],
   "threecore.wallet-saved-batch-comparison.v1": [null, "PERIOD_FILE_SAVED_BATCH_COMPARISON_ONLY"],
@@ -1191,6 +1193,30 @@ export async function reviewWalletSavedBatchEvidence(text, input = {}) {
 export function encodeWalletSavedBatchEvidenceReview(review) {
   if (!savedBatchEvidenceReviews.has(review)) savedInspectionFail("FILE_BATCH_EVIDENCE_REVIEW");
   return JSON.stringify(review, null, 2) + "\n";
+}
+const savedBatchEvidenceReceiptChecks = new WeakSet();
+export async function reviewWalletSavedBatchEvidenceReceipt(expected, text, input = {}) {
+  if (!savedBatchEvidenceReviews.has(expected)) savedInspectionFail("FILE_BATCH_RECEIPT_SOURCE");
+  let options, supplied;
+  try { options = captureOptionalDataFields(input, ["subtle", "signal", "timeoutMs"]); } catch { savedInspectionFail("FILE_BATCH_RECEIPT_OPTIONS"); }
+  if (options.timeoutMs !== undefined && (!Number.isInteger(options.timeoutMs) || options.timeoutMs < 1 || options.timeoutMs > 30000)) savedInspectionFail("FILE_BATCH_RECEIPT_OPTIONS");
+  if (readAbortState(options.signal)) savedInspectionFail("FILE_CANCELLED");
+  try { supplied = parseSecurityJson(text, { bytes: 256 * 1024, depth: 32, nodes: 10000 }); } catch { savedInspectionFail("FILE_BATCH_RECEIPT_JSON"); }
+  if (!supplied || Array.isArray(supplied) || supplied.schema !== expected.schema) savedInspectionFail("FILE_BATCH_RECEIPT_SCHEMA");
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || !sameSavedJSON(expected[key], supplied[key]));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  const receiptTextDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, options);
+  if (readAbortState(options.signal)) savedInspectionFail("FILE_CANCELLED");
+  const result = Object.freeze({ schema: "threecore.wallet-batch-evidence-receipt-check.v1", matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    bundleTextDigest: expected.textDigest, bundleTextBindingMatches: supplied.textDigest === expected.textDigest, receiptTextDigest,
+    expectedEvidenceMatches: expected.matchesRecomputation, expectedSummary: expected.expectedSummary,
+    differences: Object.freeze(differences), unexpectedFields, readOnly: true, authenticated: false,
+    authorizesExecution: false, automaticallyImported: false, containsOriginalEvidence: false, restorable: false });
+  savedBatchEvidenceReceiptChecks.add(result); return result;
+}
+export function encodeWalletSavedBatchEvidenceReceiptCheck(result) {
+  if (!savedBatchEvidenceReceiptChecks.has(result)) savedInspectionFail("FILE_BATCH_RECEIPT_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
 }
 export function openReviewedWalletSavedBatchEvidence(review) {
   if (!savedBatchEvidenceReviews.has(review) || !review.matchesRecomputation) savedInspectionFail("FILE_BATCH_EVIDENCE_UNVERIFIED");

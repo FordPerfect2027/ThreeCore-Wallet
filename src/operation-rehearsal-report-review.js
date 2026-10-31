@@ -468,6 +468,30 @@ export function encodeRehearsalBatchEvidenceReview(review) {
   if (!batchEvidenceReviews.has(review)) fail("UNRECOGNIZED_BATCH_EVIDENCE_REVIEW");
   return JSON.stringify(review, null, 2) + "\n";
 }
+const batchEvidenceReceiptChecks = new WeakSet();
+export async function reviewRehearsalBatchEvidenceReceipt(expected, text, input = {}) {
+  if (!batchEvidenceReviews.has(expected)) fail("REVIEW_BATCH_RECEIPT_SOURCE");
+  let options, supplied;
+  try { options = captureOptionalDataFields(input, ["subtle", "signal", "timeoutMs"]); } catch { fail("REVIEW_BATCH_RECEIPT_OPTIONS"); }
+  if (options.timeoutMs !== undefined && (!Number.isInteger(options.timeoutMs) || options.timeoutMs < 1 || options.timeoutMs > 30000)) fail("REVIEW_BATCH_RECEIPT_OPTIONS");
+  if (readAbortState(options.signal)) fail("REVIEW_CANCELLED");
+  try { supplied = parseSecurityJson(text, { bytes: 256 * 1024, depth: 32, nodes: 10000 }); } catch { fail("REVIEW_BATCH_RECEIPT_JSON"); }
+  if (!supplied || Array.isArray(supplied) || supplied.schema !== expected.schema) fail("REVIEW_BATCH_RECEIPT_SCHEMA");
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || compareValues(expected[key], supplied[key]).differenceCount !== 0);
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  const receiptTextDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, options);
+  if (readAbortState(options.signal)) fail("REVIEW_CANCELLED");
+  const result = Object.freeze({ schema: "threecore.operation-rehearsal-batch-evidence-receipt-check.v1", matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    bundleTextDigest: expected.sha256, bundleTextBindingMatches: supplied.sha256 === expected.sha256, receiptTextDigest,
+    expectedEvidenceMatches: expected.matchesRecomputation, expectedSummary: expected.expectedSummary,
+    differences: Object.freeze(differences), unexpectedFields, readOnly: true, simulationOnly: true, sourceVerified: false,
+    authorizesExecution: false, automaticallyImported: false, containsOriginalEvidence: false, restorable: false });
+  batchEvidenceReceiptChecks.add(result); return result;
+}
+export function encodeRehearsalBatchEvidenceReceiptCheck(result) {
+  if (!batchEvidenceReceiptChecks.has(result)) fail("REVIEW_BATCH_RECEIPT_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
+}
 /** Only a fully matching owned verification can expose the captured sources to a review panel. */
 export function openReviewedRehearsalBatchEvidence(review) {
   if (!batchEvidenceReviews.has(review) || !review.matchesRecomputation) fail("UNVERIFIED_BATCH_EVIDENCE");

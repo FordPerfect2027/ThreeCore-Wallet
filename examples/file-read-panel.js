@@ -11,6 +11,7 @@ import { encodeWalletSavedBundleReview } from "../src/file-read-status.js";
 import { canPrepareWalletSavedBatchEvidence, prepareWalletSavedBatchEvidence, reviewWalletSavedBatchEvidence,
   encodeWalletSavedBatchEvidenceReview, openReviewedWalletSavedBatchEvidence, extractWalletSavedBatchEvidenceSource, WALLET_SAVED_BATCH_EVIDENCE_LIMIT } from "../src/file-read-status.js";
 import { reviewWalletSavedBundleReceipt, encodeWalletSavedBundleReceiptCheck, walletSavedBundleReceiptCheckText, WALLET_SAVED_BUNDLE_RECEIPT_LIMIT } from "../src/file-read-status.js";
+import { reviewWalletSavedBatchEvidenceReceipt, encodeWalletSavedBatchEvidenceReceiptCheck } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -581,7 +582,12 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   const sourceExport = mountBatchSourceExportPanel({ document, parent: evidenceBox, download,
     list: review => openReviewedWalletSavedBatchEvidence(review).files,
     extract: extractWalletSavedBatchEvidenceSource });
+  const receiptCheck = mountSavedBundleReceiptCheckPanel({ document, parent: evidenceBox, download, readText,
+    getExpected: () => disposed || active ? null : evidenceReview, review: reviewWalletSavedBatchEvidenceReceipt,
+    encode: encodeWalletSavedBatchEvidenceReceiptCheck, describe: batchEvidenceReceiptCheckText,
+    filename: "ThreeCore-wallet-batch-evidence-receipt-check.json" });
   function buttons() {
+    receiptCheck.updateExpected();
     sourceExport.updateCurrent(disposed || active ? null : openedEvidence);
     evidenceAck.disabled = disposed || Boolean(active) || !canPrepareWalletSavedBatchEvidence(result);
     evidenceSave.disabled = evidenceAck.disabled || !evidenceAck.checked;
@@ -772,7 +778,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   }, getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
     if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; evidenceReview = null; openedEvidence = null;
     referenceText = undefined; referenceInput.value = ""; ack.checked = false; evidenceAck.checked = false; evidenceFile.value = ""; evidenceStatus.textContent = "";
-    old?.abort(); comparisonPanel.dispose(); sourceExport.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
+    old?.abort(); comparisonPanel.dispose(); sourceExport.dispose(); receiptCheck.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
   } });
 }
 
@@ -879,8 +885,17 @@ export function mountSavedBatchComparisonPanel({ document, parent,
 }
 
 /** Receipt validation has its own cancellation and acknowledgement; it cannot extract a source. */
+export function batchEvidenceReceiptCheckText(result) {
+  if (!result) return "";
+  return [result.matchesRecomputation ? "保存した照合結果の全項目が再計算と一致しました。" : "保存した照合結果に再計算との不一致があります。",
+    "まとめた資料との結び付け: " + (result.bundleTextBindingMatches ? "一致" : "不一致"),
+    `相違の項目 ${result.differences.length}個／追加項目 ${result.unexpectedFields}個。`,
+    result.expectedEvidenceMatches ? "まとめた資料の保存内容も再計算と一致しています。" : "まとめた資料の保存内容には相違があります。控えの一致で、その相違は解消しません。",
+    "元資料ごとの判定は上の一覧で別に確認してください。控えの一致は出所や実際の残高を証明せず、履歴への取り込みも行いません。"].join("\n");
+}
 export function mountSavedBundleReceiptCheckPanel({ document, parent, getExpected = () => null, readText = readSavedGuideText,
-  review = reviewWalletSavedBundleReceipt, download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
+  review = reviewWalletSavedBundleReceipt, encode = encodeWalletSavedBundleReceiptCheck, describe = walletSavedBundleReceiptCheckText,
+  filename = "ThreeCore-saved-bundle-receipt-check.json", download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-bundle-receipt-check"; parent.append(host);
   const cleanup = []; let disposed = false, revision = 0, expected = null, active = null, result = null;
   function node(tag, name, text, target = host) { const value = document.createElement(tag); value.className = "saved-bundle-receipt-check-" + name; if (text !== undefined) value.textContent = text; target.append(value); return value; }
@@ -890,7 +905,7 @@ export function mountSavedBundleReceiptCheckPanel({ document, parent, getExpecte
   const stop = node("button", "stop", "照合結果の再確認を中止"), status = node("p", "status", "先に、上でまとめた資料を読み込んでください。"), output = node("pre", "output", ""); stop.type = "button"; status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const ackLabel = node("label", "ack-label", "再確認の結果と照合値を、暗号化せずPCに保存します"), ack = node("input", "ack", undefined, ackLabel); ack.type = "checkbox";
   const save = node("button", "save", "再確認の結果をJSON保存"); save.type = "button";
-  function render() { file.disabled = disposed || !expected || Boolean(active); stop.disabled = disposed || !active; ack.disabled = disposed || Boolean(active) || !result; save.disabled = ack.disabled || !ack.checked; host.setAttribute("aria-busy", String(Boolean(active))); output.textContent = walletSavedBundleReceiptCheckText(result); }
+  function render() { file.disabled = disposed || !expected || Boolean(active); stop.disabled = disposed || !active; ack.disabled = disposed || Boolean(active) || !result; save.disabled = ack.disabled || !ack.checked; host.setAttribute("aria-busy", String(Boolean(active))); output.textContent = describe(result); }
   function updateExpected() {
     if (disposed) return; const next = getExpected(); if (next !== expected) { ++revision; const old = active; active = null; expected = next; result = null; ack.checked = false; old?.abort(); status.textContent = next ? "以前保存した照合結果JSONを選んでください。" : "先に、上でまとめた資料を読み込んでください。"; } render();
   }
@@ -909,7 +924,7 @@ export function mountSavedBundleReceiptCheckPanel({ document, parent, getExpecte
   listen(ack, "change", render);
   listen(save, "click", () => {
     if (disposed || active || !result || !ack.checked || getExpected() !== expected) return; const own = revision, captured = result, source = expected; ack.checked = false; render();
-    try { const prepared = Object.freeze({ text: encodeWalletSavedBundleReceiptCheck(captured), filename: "ThreeCore-saved-bundle-receipt-check.json", mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false, encrypted: false }), delivered = download(prepared), kind = observeCallbackResult(delivered);
+    try { const prepared = Object.freeze({ text: encode(captured), filename, mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false, encrypted: false }), delivered = download(prepared), kind = observeCallbackResult(delivered);
       if (!disposed && own === revision && getExpected() === source) status.textContent = kind === "synchronous" && delivered !== false ? "再確認の結果の保存処理を開始しました。ダウンロード先をご確認ください。" : "再確認の結果の保存を確認できませんでした。";
     } catch { if (!disposed && own === revision && getExpected() === source) status.textContent = "再確認の結果の保存を確認できませんでした。"; }
   });

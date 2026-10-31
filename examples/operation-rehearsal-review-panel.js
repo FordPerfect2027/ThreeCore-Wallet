@@ -1,5 +1,6 @@
 import { createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
-import { createFileSelectionNotice, mountBatchSourceExportPanel } from "./file-read-panel.js";
+import { createFileSelectionNotice, mountBatchSourceExportPanel, mountSavedBundleReceiptCheckPanel, batchEvidenceReceiptCheckText } from "./file-read-panel.js";
+import { reviewRehearsalBatchEvidenceReceipt, encodeRehearsalBatchEvidenceReceiptCheck } from "../src/operation-rehearsal-report-review.js";
 import { createFileReadScope, readFormatFileName, readSecurityFileText } from "../src/security-file.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -112,6 +113,10 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   const sourceExport = mountBatchSourceExportPanel({ document, parent: get("source-export"),
     download: prepared => download({ document, prepared }), list: review => openReviewedRehearsalBatchEvidence(review).files,
     extract: extractRehearsalBatchEvidenceSource });
+  const receiptCheck = mountSavedBundleReceiptCheckPanel({ document, parent: get("source-export"),
+    download: prepared => download({ document, prepared }), getExpected: () => disposed || active || referenceBusy ? null : evidenceReview,
+    review: reviewRehearsalBatchEvidenceReceipt, encode: encodeRehearsalBatchEvidenceReceiptCheck,
+    describe: batchEvidenceReceiptCheckText, filename: "ThreeCore-report-batch-evidence-receipt-check.json" });
   const current = id => !disposed && id === revision;
   function listen(id, event, callback) {
     const node = get(id); node.addEventListener(event, callback);
@@ -126,6 +131,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   }
   function buttons() {
     const referenceMatches = referenceReady();
+    receiptCheck.updateExpected();
     sourceExport.updateCurrent(disposed || active || referenceBusy ? null : openedEvidence);
     get("evidence-ack").disabled = disposed || Boolean(active) || !canPrepareRehearsalBatchEvidence(result);
     get("evidence-save").disabled = get("evidence-ack").disabled || !get("evidence-ack").checked;
@@ -411,7 +417,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     return evidenceJob(file);
   }, dispose() {
     if (disposed) return;
-    reset(); disposed = true; ++revision; for (const remove of listeners) remove(); sourceExport.dispose(); buttons();
+    reset(); disposed = true; ++revision; for (const remove of listeners) remove(); sourceExport.dispose(); receiptCheck.dispose(); buttons();
   } });
 }
 
