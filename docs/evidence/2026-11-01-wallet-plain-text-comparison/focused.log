@@ -1,0 +1,20 @@
+✔ local CLI compares plain texts with exit 2 and independently reproduces a V2 comparison with exit 0 (937.7705ms)
+✔ exact selected text is comparable without an original-checksum claim: portfolio.json (35.3551ms)
+✔ exact selected text is comparable without an original-checksum claim: portfolio-history.json (13.846ms)
+✔ exact selected text is comparable without an original-checksum claim: setup.json (9.3532ms)
+✔ exact selected text is comparable without an original-checksum claim: rehearsal-v1.json (9.3217ms)
+✔ exact selected text is comparable without an original-checksum claim: rehearsal-v2.json (5.545ms)
+✔ exact selected text is comparable without an original-checksum claim: rehearsal-workspace.json (12.6768ms)
+✔ exact selected text is comparable without an original-checksum claim: rehearsal-cases.json (20.15ms)
+✔ exact selected text is comparable without an original-checksum claim: rehearsal-session.json (21.8988ms)
+✔ new saved comparison review independently binds both source texts and rejects modified conclusions (6.6168ms)
+✔ changed public settings with unchanged row counts still produce an exact-text difference (5.4961ms)
+✔ checksummed pairs retain their old receipt and auxiliary or forged captures gain no text verification (18.8519ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1308.486

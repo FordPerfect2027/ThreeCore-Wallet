@@ -1,0 +1,40 @@
+{
+  "source": "bfd1396",
+  "synthetic": true,
+  "commands": [
+    {
+      "script": "compare-wallet-saved-files.js",
+      "exit": 2
+    },
+    {
+      "script": "verify-wallet-saved-comparison.js",
+      "exit": 0
+    },
+    {
+      "script": "compare-wallet-saved-files.js",
+      "exit": 2
+    },
+    {
+      "script": "verify-wallet-saved-comparison.js",
+      "exit": 0
+    },
+    {
+      "script": "verify-wallet-saved-comparison.js",
+      "exit": 2
+    }
+  ],
+  "beforeSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+  "formattedSha256": "4747d2a3406e31510ab82549679e7303bb3231b4a1f44102543be39eb9fb2ea1",
+  "identicalTextMatches": true,
+  "formattingDifferenceDetected": true,
+  "originalChecksumMatchClaimed": false,
+  "panelAndCliByteIdentical": true,
+  "oldV1ReviewPreserved": true,
+  "alteredConclusionRejected": true,
+  "fullBrowserCoverageRun": false,
+  "focusedBrowserCases": 101,
+  "focusedBrowserElapsedMs": 21867,
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}
