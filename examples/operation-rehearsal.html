@@ -176,7 +176,8 @@
     <p class="small">ケース集だけの変更は最大10回取り消せます。現在の試算履歴を変更したり、実際の操作を実行したりする機能ではありません。</p>
     <div class="fields"><label>ケース一覧の対象<select id="scenario-set-agent"><option value="all">すべて</option><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label><label>ケース一覧の結果<select id="scenario-set-outcome"><option value="all">すべて</option><option value="changed">記録の結果が変わる</option><option value="rejected">新たに見送る記録がある</option></select></label></div>
     <p id="scenario-set-count" role="status"></p>
-    <div class="table-wrap"><table><caption>保存中の比較ケース</caption><thead><tr><th>ID</th><th>名前</th><th>対象</th><th>変更条件</th><th>変わる記録</th><th>新たな見送り</th></tr></thead><tbody id="scenario-set-rows"></tbody></table></div>
+    <p id="scenario-set-capacity" role="status" aria-live="polite"></p>
+    <div class="table-wrap"><table><caption>保存中の比較ケース</caption><thead><tr><th>ID</th><th>名前</th><th>対象</th><th>変更条件</th><th>変わる記録</th><th>新たな見送り</th><th scope="col">操作</th></tr></thead><tbody id="scenario-set-rows"></tbody></table></div>
     <label>詳細を見るケース<select id="scenario-set-select" disabled></select></label><p id="scenario-set-detail"></p>
     <div class="table-wrap"><table><caption>選択したケースの金額比較</caption><thead><tr><th>項目</th><th>元の条件</th><th>比較条件</th><th>差額</th></tr></thead><tbody id="scenario-set-metrics"></tbody></table></div>
     <div class="actions"><button id="scenario-set-save" type="button" disabled>全ケースの入力を保存</button><button id="scenario-set-report-save" type="button" disabled>全ケースの集計資料を保存</button><button id="scenario-set-case-save" type="button" disabled>選択したケースの比較資料を保存</button></div>
@@ -210,13 +211,17 @@
   <section aria-labelledby="ledger-title"><h2 id="ledger-title">いまの履歴に1件追記</h2>
     <p>新形式の試算に、仮の記録を順番に追加できます。条件外の記録は見送りとして残ります。予約は資金を動かさず、他の用途に重ねて計上しないための仮の確保です。</p>
     <p id="ledger-details" class="small"></p>
+    <p id="append-capacity" role="status" aria-live="polite"></p>
     <div class="fields">
-      <label>追記する記録<select id="append-kind"><option value="open">元本を投入する想定</option><option value="settle">決済する想定</option><option value="deposit">資金を追加する想定</option><option value="withdraw">資金を引き出す想定</option><option value="reserve">還元額を予約する想定</option><option value="release">還元予約を取り消す想定</option></select></label>
-      <label>操作または予約のID<input id="append-reference" value="two" maxlength="64"></label>
+      <label>追記する記録<select id="append-kind" aria-describedby="append-kind-help append-capacity"><option value="open">元本を投入する想定</option><option value="settle">決済する想定</option><option value="deposit">資金を追加する想定</option><option value="withdraw">資金を引き出す想定</option><option value="reserve">還元額を予約する想定</option><option value="release">還元予約を取り消す想定</option></select></label>
+      <label>履歴からIDを選ぶ<select id="append-reference-choice" aria-describedby="append-reference-help" disabled></select></label>
+      <label>操作または予約のID<input id="append-reference" aria-describedby="append-reference-help" value="two" maxlength="64"></label>
       <label>追記する金額（SIM）<input id="append-amount" value="100" inputmode="decimal" maxlength="100"></label>
       <label>追記する費用（SIM）<input id="append-fee" value="1" inputmode="decimal" maxlength="100"></label>
       <label>追記時に確保する決済費用（SIM）<input id="append-exit-reserve" value="2" inputmode="decimal" maxlength="100"></label>
     </div>
+    <p id="append-kind-help" class="small" role="status" aria-live="polite"></p>
+    <p id="append-reference-help" class="small"></p>
     <p class="small">金額は、投入時は元本、決済時は元本を含む戻り額、予約時は予約額です。費用は投入・決済だけ、決済費用の確保は投入だけに使います。決済・取消には、上に表示された未決済ID・予約IDを指定してください。</p>
     <div class="actions"><button id="append-preview" type="button" disabled>追記前に確認</button><button id="append-confirm" type="button" disabled>確認した記録を追記</button><button id="append-cancel" type="button">追記確認を取り消す</button><button id="undo" type="button" disabled>直前の追記を取り消す</button></div>
     <p id="append-summary" role="status" aria-live="polite"></p>

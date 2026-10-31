@@ -51,6 +51,40 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: append kinds and recorded ID choices guide the native form", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html");
+    const host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    const edit=(id,value,type="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(type));};
+    try{
+      assert(q("append-amount").disabled&&q("append-reference-choice").disabled);
+      edit("scenario","pending","change");q("example").click();edit("append-kind","settle","change");
+      assert(q("append-exit-reserve").disabled&&!q("append-fee").disabled);assert(!q("append-reference-choice").disabled);
+      assert([...q("append-reference-choice").options].some(option=>option.value==="one"));
+      edit("append-reference-choice","one","change");assert(q("append-reference").value==="one");
+      edit("append-amount","130");edit("append-fee","1");q("append-preview").click();assert(!q("append-confirm").disabled);
+      q("append-confirm").click();assert(q("append-reference-choice").disabled);assert(q("append-capacity").textContent.includes("あと198件"));
+      edit("append-kind","deposit","change");assert(q("append-reference").disabled&&q("append-fee").disabled&&!q("append-amount").disabled);
+      for(const id of ["append-kind","append-reference-choice","append-reference"]){for(const ref of q(id).getAttribute("aria-describedby").split(" "))assert(q(ref),"Append description target exists");}
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: case editing identifies duplicate IDs and row buttons select saved details", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html");
+    const host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    const edit=(id,value)=>{q(id).value=value;q(id).dispatchEvent(new Event("input"));};
+    try{
+      q("example").click();q("whatif-compare").click();edit("scenario-set-id","case-one");edit("scenario-set-label","比較ケース");
+      q("scenario-set-add").click();q("scenario-set-apply").click();assert(q("scenario-set-capacity").textContent.includes("あと11件"));
+      q("scenario-set-add").click();assert(document.activeElement===q("scenario-set-id"));assert(q("scenario-set-id").getAttribute("aria-invalid")==="true");assert(q("scenario-set-status").textContent.includes("すでに使われています"));
+      edit("scenario-set-id","changed-draft");const button=q("scenario-set-rows").querySelector("button");assert(button?.getAttribute("aria-label").includes("case-one"));button.click();
+      assert(document.activeElement===q("scenario-set-select"));assert(q("scenario-set-id").value==="case-one"&&q("scenario-set-label").value==="比較ケース");assert(!q("scenario-set-id").hasAttribute("aria-invalid"));
+    }finally{page.dispose();host.remove();}
+  });
   test("file-read: rehearsal invalid fields receive native focus and clear after correction", async () => {
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html");

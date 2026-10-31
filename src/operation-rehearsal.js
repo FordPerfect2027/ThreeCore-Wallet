@@ -4,6 +4,7 @@ import { parseSecurityJson } from "./security-json.js";
 export const REHEARSAL_SCHEMA = "threecore.operation-rehearsal.v1";
 export const REHEARSAL_SCHEMA_V2 = "threecore.operation-rehearsal.v2";
 export const REHEARSAL_LIMIT = 131072;
+export const REHEARSAL_RECORD_LIMIT = 200;
 const MAX = (1n << 256n) - 1n;
 const AGENTS = ["DAT", "EMA", "CAWELON"];
 const ROOT = ["schema", "simulationOnly", "agent", "chainId", "account", "asset",
@@ -56,7 +57,7 @@ function record(input, fields) {
   try { return captureDataRecord(input, fields); } catch { fail("INVALID_STRUCTURE"); }
 }
 function array(input) {
-  try { return captureDataArray(input, 200); } catch { fail("INVALID_STRUCTURE"); }
+  try { return captureDataArray(input, REHEARSAL_RECORD_LIMIT); } catch { fail("INVALID_STRUCTURE"); }
 }
 function kindOf(input) {
   // Inspect one own data descriptor; never invoke an input getter.

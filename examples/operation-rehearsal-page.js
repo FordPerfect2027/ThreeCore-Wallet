@@ -3,7 +3,7 @@ import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, decodeRehearsalForPanel } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { decodeRehearsal, encodeRehearsal, evaluateRehearsal,
-  formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
+  formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_RECORD_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { rehearsalCsv } from "../src/operation-rehearsal-ledger.js";
 import { decodeRehearsalWorkspace, encodeRehearsalWorkspace,
@@ -63,6 +63,8 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     renderWorkspaceComparison: comparison => renderComparisonDetails(comparison, get("session-workspace-details")),
     onRestored: () => {get("agent").value=ledger.state().activeAgent;const input=ledger.state().current;
       if(input)show(input,true);else clear("選択中の対象は未作成です。",true);scenarioSetPanel.refresh();} });
+  let referenceChoices=new Set();
+  if(!get("append-kind").value)get("append-kind").value="open";
   let appendReview = null, workspaceReview = null, workspaceComparison = null;
   let workspacePhase = "idle", workspaceSource = "";
   const listeners = [];
@@ -87,6 +89,30 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     appendReview = null; ledger.cancel(); get("append-confirm").disabled = true;
     get("append-summary").textContent = "";
   }
+
+  function renderAppendControls(report=null){
+    const kind=get("append-kind").value,created=current?.schema===REHEARSAL_SCHEMA_V2;
+    const available=created&&current.events.length<REHEARSAL_RECORD_LIMIT;
+    const fields={open:["reference","amount","fee","exit-reserve"],settle:["reference","amount","fee"],deposit:["amount"],withdraw:["amount"],reserve:["reference","amount"],release:["reference"]};
+    const used=Object.hasOwn(fields,kind)?fields[kind]:[];
+    for(const field of ["reference","amount","fee","exit-reserve"])get("append-"+field).disabled=!available||!used.includes(field);
+    get("append-preview").disabled=!available||!used.length;
+    const hints={open:"新しい操作ID・元本・開始費用・確保する決済費用を入力します。",settle:"未決済の操作ID・元本を含む戻り額・決済費用を入力します。",deposit:"追加する金額だけを入力します。IDや費用は使いません。",withdraw:"引き出す金額だけを入力します。IDや費用は使いません。",reserve:"新しい予約IDと、予約する金額を入力します。",release:"取り消す予約IDだけを入力します。金額や費用は使いません。"};
+    get("append-kind-help").textContent=Object.hasOwn(hints,kind)?hints[kind]:"追記する記録の種類を選んでください。";
+    get("append-capacity").textContent=!current?"先に履歴を作成または復旧してください。":!created?"旧形式の履歴は表示・保存できます。追記はできません。":
+      "記録 "+current.events.length+" / "+REHEARSAL_RECORD_LIMIT+"件。"+(available?"あと"+(REHEARSAL_RECORD_LIMIT-current.events.length)+"件追記できます。":"この履歴は上限に達しました。保存できます。直前の追記を取り消せる場合は、取り消すと空きが戻ります。");
+    referenceChoices=new Set();const select=get("append-reference-choice");select.textContent="";
+    const placeholder=document.createElement("option");placeholder.value="";placeholder.textContent=kind==="release"?"現在の予約から選ぶ":"未決済記録から選ぶ";select.append(placeholder);
+    if(available&&["settle","release"].includes(kind)){
+      const state=report??evaluateRehearsal(current),entries=kind==="settle"?state.positions:state.reservations;
+      for(const entry of entries){const id=kind==="settle"?entry.operationId:entry.reservationId;referenceChoices.add(id);
+        const option=document.createElement("option");option.value=id;option.textContent=id;select.append(option);}
+    }
+    select.value="";select.disabled=!referenceChoices.size;
+    get("append-reference-help").textContent=referenceChoices.size?current.agent+" の履歴からIDを選べます。選択すると下のID欄に入ります。手入力もできます。":
+      ["settle","release"].includes(kind)?"選択できるIDはありません。手入力したIDも追記前に確認されます。":"IDの選択は決済・予約取消で使えます。";
+  }
+
   function setWorkspaceStage(phase, message) {
     workspacePhase = phase;
     const captions = { idle: "1 / 3 — 保存した記録を選ぶ", reading: "1 / 3 — 記録を確認中",
@@ -219,6 +245,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     for (const name of ["csv-save", "append-preview", "undo"]) get(name).disabled = true;
     for (const name of ["metrics", "rows", "allocation-note", "context", "preview", "ledger-details"]) get(name).textContent = "";
     get("status").textContent = message;
+    renderAppendControls();
     renderWorkspace();
   }
   function renderWorkspace() {
@@ -346,6 +373,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       data.events.length + "件。未決済ID: " + (report.positions.map(item => item.operationId).join(", ") || "なし") +
       "。予約ID: " + (report.reservations.map(item => item.reservationId + "=" + formatted(item.amount)).join(", ") || "なし") +
       "。取り消せる追記: " + ledger.state().undoCount + "件。";
+    renderAppendControls(report);
     renderWorkspace();
   }
   function fromFields(pending) {
@@ -402,9 +430,15 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   });
   for (const name of ["append-reference", "append-amount", "append-fee", "append-exit-reserve"])
     listen(name, "input", cancelAppend);
-  listen("append-kind", "change", cancelAppend);
+  listen("append-kind", "change", () => {if(disposed)return;cancelAppend();renderAppendControls();});
+  listen("append-reference-choice","change",()=>{
+    if(disposed||get("append-reference-choice").disabled)return;
+    const selected=get("append-reference-choice").value;if(!referenceChoices.has(selected))return;
+    cancelAppend();get("append-reference").value=selected;
+  });
   listen("append-preview", "click", () => {
     cancelAppend(); if (disposed || !current || current.schema !== REHEARSAL_SCHEMA_V2) return;
+    if(current.events.length>=REHEARSAL_RECORD_LIMIT){renderAppendControls();return;}
     try {
       const kind = get("append-kind").value;
       const reference=["open","settle","reserve","release"].includes(kind)?appendFeedback.identifier("append-reference","操作または予約のID"):null;
@@ -554,6 +588,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     get("workspace-text").value = ""; get("workspace-file").value = "";
     setWorkspaceStage("idle", "一括読込を取り消しました。現在の履歴は保持しています。");
   });
+  renderAppendControls();
   renderWorkspace();
   setWorkspaceStage("idle", "保存した記録を選ぶと、復旧前に変更内容を確認できます。自動保存は行いません。");
   return Object.freeze({ dispose() {

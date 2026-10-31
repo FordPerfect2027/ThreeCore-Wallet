@@ -22,6 +22,13 @@ export function createRehearsalFieldFeedback(document, statusId) {
   function clear(){for(const [control,values] of marked){attributes.forEach((name,i)=>{
     if(values[i]==null)control.removeAttribute(name);else control.setAttribute(name,values[i]);
   });}marked.clear();}
+  function report(error){const detail=errors.get(error);if(!detail)return false;
+      clear();const control=document.getElementById(detail.id),status=document.getElementById(statusId);
+      const values=attributes.map(name=>control.getAttribute(name));marked.set(control,values);
+      control.setAttribute("aria-invalid","true");control.setAttribute("aria-errormessage",statusId);
+      control.setAttribute("aria-describedby",[...new Set([...(values[2]||"").split(/\s+/).filter(Boolean),statusId])].join(" "));
+      status.textContent=detail.message;control.focus?.();return true;
+    }
   return Object.freeze({clear,
     units(id,label,decimals,maximum=null){
       let value;
@@ -34,13 +41,9 @@ export function createRehearsalFieldFeedback(document, statusId) {
       if(typeof value!=="string"||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(value))fail(id,label,"先頭は英数字、全体は英数字・ハイフン・下線で1〜64文字にしてください。");
       return value;
     },
-    report(error){const detail=errors.get(error);if(!detail)return false;
-      clear();const control=document.getElementById(detail.id),status=document.getElementById(statusId);
-      const values=attributes.map(name=>control.getAttribute(name));marked.set(control,values);
-      control.setAttribute("aria-invalid","true");control.setAttribute("aria-errormessage",statusId);
-      control.setAttribute("aria-describedby",[...new Set([...(values[2]||"").split(/\s+/).filter(Boolean),statusId])].join(" "));
-      status.textContent=detail.message;control.focus?.();return true;
-    }
+    report,
+    field(id,label,message){const error=new Error("Invalid rehearsal field");errors.set(error,{id,message:label+"："+message});return report(error);}
+
   });
 }
 
