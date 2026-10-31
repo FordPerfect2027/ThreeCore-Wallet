@@ -96,3 +96,5 @@
 .file-review-table-wrap caption { text-align: left; font-weight: 700; padding-bottom: 10px; }
 .file-review-table-wrap:focus-visible,
 :is(.saved-file-guide,.saved-file-batch,.saved-batch-comparison,.rehearsal-batch-comparison,.reviewed-batch-comparison,.batch-comparison-differences,.file-review-surface) :focus-visible { outline: 3px solid #ffd369; outline-offset: 2px; }
+.history-filter-actions { padding-left: 20px; overflow-wrap: anywhere; font-size: 12px; }
+.history-filter-actions button { max-width: 100%; }

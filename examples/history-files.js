@@ -7,6 +7,7 @@ import { consumeCallback, observeCallbackResult } from "../src/security-callback
 
 /** Browser file actions are explicit and scoped to one agent card. */
 export function mountHistoryFiles({ document, parent, agent, getArchive, getRevision, onImportText, onReadStart = () => {},
+  onSelectRecord = null,
   readBytes = readSecurityFileBytes,
   download = offerHistoryDownload }) {
   const cleanup = [];
@@ -180,6 +181,29 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   }
   order.value = "oldest";
   const results = node("pre", "history-filter-results");
+  const rowActions = node("ol", "history-filter-actions"); rowActions.hidden = typeof onSelectRecord !== "function";
+  let rowCleanup = [];
+  function clearRows() { for (const stop of rowCleanup) stop(); rowCleanup = []; rowActions.replaceChildren(); }
+  function renderRows(selected, rows) {
+    clearRows(); if (typeof onSelectRecord !== "function") return;
+    for (const { snapshot, index } of rows) {
+      const item = node("li", "history-filter-action-row", snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / block " + snapshot.blockNumber);
+      for (const [side, caption] of [["before", "前の記録に選ぶ"], ["after", "後の記録・削除対象に選ぶ"]]) {
+        const control = node("button", "history-filter-select-" + side + " secondary", caption); control.type = "button";
+        const action = () => {
+          if (disposed || view !== selected) return; const id = ++generation;
+          try { if (!matches(selected, id) || JSON.stringify(selected.criteria) !== JSON.stringify(query())) throw Error("Search changed");
+            const receipt = onSelectRecord(Object.freeze({ index, side, revision: selected.revision, archive: selected.archive })), kind = observeCallbackResult(receipt);
+            if (!current(id) || view !== selected) return;
+            if (kind !== "synchronous" || receipt !== true || !matches(selected, id)) throw Error("Selection unconfirmed");
+            status.textContent = caption.replace("選ぶ", "選びました") + "。比較・削除は実行していません。";
+          } catch { if (current(id) && view === selected) status.textContent = "記録の選択を確認できませんでした。条件と履歴をもう一度確認してください。"; }
+        };
+        control.addEventListener("click", action); rowCleanup.push(() => control.removeEventListener("click", action)); item.append(control);
+      }
+      rowActions.append(item);
+    }
+  }
   function query() {
     const chainText = chain.value.trim();
     if (chainText && !/^[1-9][0-9]*$/.test(chainText)) throw Error("Invalid chain");
@@ -192,6 +216,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     };
   }
   function invalidateView() {
+    clearRows();
     view = null;
     results.textContent = "";
     saveSubset.disabled = true;
@@ -203,6 +228,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     const result = queryPortfolioHistory(captured.archive, criteria);
     if (!matches(captured, id)) throw Error("History changed");
     view = { ...captured, criteria };
+    renderRows(view, result.rows);
     results.textContent = result.matchCount + " / " + result.totalCount + "件\n" + result.rows.map(({ snapshot }) =>
       snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / block " + snapshot.blockNumber).join("\n");
     saveSubset.disabled = result.matchCount === 0;
@@ -231,7 +257,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     labelled("チェーンID（空欄ならすべて）", chain),
     labelled("最小ブロック（空欄なら制限なし）", minimum),
     labelled("最大ブロック（空欄なら制限なし）", maximum),
-    labelled("表示順", order), search, resetFilters, results, saveSubset);
+    labelled("表示順", order), search, resetFilters, results, rowActions, saveSubset);
   parent.append(section);
   updateBackup();
   return Object.freeze({
@@ -248,6 +274,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
       disposed = true;
       generation++;
       reader.dispose();
+      clearRows();
       for (const stop of cleanup) stop();
       section.remove();
     },

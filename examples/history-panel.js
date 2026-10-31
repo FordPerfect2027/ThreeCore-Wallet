@@ -1,17 +1,17 @@
 import { createHistoryRecovery } from "../src/history-recovery.js";
 import { mountHistoryRecovery } from "./history-recovery-panel.js";
 import { mountHistoryReview } from "./history-review-panel.js";
-import { mountHistoryFiles } from "./history-files.js";
+import { mountHistoryFiles, offerHistoryDownload } from "./history-files.js";
 import { createPortfolioHistory, HISTORY_TEXT_LIMIT } from "../src/portfolio-history.js";
 import { createHistoryImportController } from "../src/history-import-controller.js";
 import { describePortfolioHistory } from "../src/portfolio-history-summary.js";
-import { decodePortfolioReport, validatePortfolioSnapshot } from "../src/portfolio-report.js";
+import { decodePortfolioReport, validatePortfolioSnapshot, encodePortfolioReport } from "../src/portfolio-report.js";
 import { describePortfolioComparison } from "../src/portfolio-comparison.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 
 /** Local, card-scoped history. No automatic persistence or provider access. */
-export function mountHistoryPanel({ document, parent, agent, getSnapshot, getReport }) {
+export function mountHistoryPanel({ document, parent, agent, getSnapshot, getReport, download = offerHistoryDownload }) {
   const history = createPortfolioHistory();
   const recovery = createHistoryRecovery(history);
   const importer = createHistoryImportController({
@@ -150,6 +150,18 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     recovery.remove(Number(last.value), renderedRevision);
     changed("選択した記録を履歴から削除しました。");
   });
+  const saveRecord = button("history-save-record", "選択した後の記録を単独で保存", id => {
+    const state = history.state(), value = last.value;
+    if (state.revision !== renderedRevision || !/^(0|[1-9][0-9]*)$/.test(value)) throw Error("Stale record selection");
+    const index = Number(value); if (!Number.isSafeInteger(index) || index >= state.size) throw Error("Invalid record selection");
+    const snapshot = checkAgent(state.snapshots[index]); if (!current(id)) return;
+    const prepared = { text: encodePortfolioReport(snapshot), filename: `ThreeCore-${agent}-portfolio-${snapshot.blockNumber}.json`, mimeType: "application/json;charset=utf-8", containsOriginalEvidence: true, restorable: false };
+    if (history.state().revision !== state.revision || last.value !== value) return;
+    const result = download({ document, prepared }), kind = observeCallbackResult(result);
+    if (!current(id) || history.state().revision !== state.revision || last.value !== value) return;
+    if (kind !== "synchronous" || result === false) throw Error("Download unconfirmed");
+    status.textContent = "選択した過去の1記録の保存を開始しました。全履歴のバックアップではありません。ダウンロード先をご確認ください。";
+  });
   const clearConfirm = element("input", "history-clear-confirm");
   clearConfirm.type = "checkbox";
   const clear = button("history-clear", "このカードの履歴を全消去", () => {
@@ -177,7 +189,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
       }
     });
     if (state.size) last.value = String(state.size - 1);
-    first.disabled = last.disabled = compare.disabled = remove.disabled = !state.size;
+    first.disabled = last.disabled = compare.disabled = remove.disabled = saveRecord.disabled = !state.size;
     clear.disabled = !state.size;
     recoveryPanel?.refresh();
   }
@@ -193,16 +205,24 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   listen(json, "input", () => { filesPanel?.invalidate(); cancelReview(); status.textContent = "JSONが変わりました。再度プレビューしてください。"; });
   listen(replace, "change", () => { filesPanel?.invalidate(); cancelReview(); });
   section.append(heading, note, addCurrent, addReport, status, list,
-    label("前の記録", first), label("後の記録・削除対象", last), compare, remove, timeline,
+    label("前の記録", first), label("後の記録・削除対象", last), compare, remove, saveRecord, timeline,
     details, exportButton, label("保存・読み込み用の履歴JSON", json),
     label("既存履歴を置き換える（未選択なら追加）", replace), previewButton, previewText, apply,
     label("このカードの全履歴を消去することを確認", clearConfirm), clear);
-  filesPanel = mountHistoryFiles({ document, parent: section, agent,
+  filesPanel = mountHistoryFiles({ document, parent: section, agent, download,
     getArchive: () => history.exportText(), getRevision: () => history.state().revision,
     onReadStart: cancelReview,
     onImportText: text => { cancelReview(); json.value = text; },
+    onSelectRecord: selected => {
+      if (disposed) return false; const state = history.state();
+      if (!Number.isSafeInteger(selected.index) || selected.index < 0 || selected.index >= state.size || !["before", "after"].includes(selected.side) ||
+        selected.revision !== state.revision || renderedRevision !== state.revision || selected.archive !== history.exportText()) return false;
+      const id = ++generation, target = selected.side === "before" ? first : last; target.value = String(selected.index); details.textContent = ""; clearConfirm.checked = false;
+      try { target.focus?.(); } catch {}
+      return current(id) && history.state().revision === state.revision && target.value === String(selected.index);
+    },
   });
-  reviewPanel = mountHistoryReview({ document, parent: section, agent,
+  reviewPanel = mountHistoryReview({ document, parent: section, agent, download,
     getArchive: () => history.exportText(), getRevision: () => history.state().revision,
     getIncoming: () => json.value, getReplace: () => replace.checked,
   });
