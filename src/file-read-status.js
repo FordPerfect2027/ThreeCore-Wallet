@@ -126,6 +126,8 @@ const rehearsalSchemaTargets = Object.freeze({
   "threecore.operation-rehearsal-record-query.v2": "report",
   "threecore.operation-rehearsal-record-query.v3": "report",
   "threecore.operation-rehearsal-reference.v1": "report",
+  "threecore.operation-rehearsal-record-summary.v1": "report",
+  "threecore.operation-rehearsal-record-prefix.v1": "report",
 });
 const rehearsalTargetErrors = new WeakMap();
 

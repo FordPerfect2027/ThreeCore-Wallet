@@ -5,17 +5,42 @@ import { mountRehearsalRecordsPanel } from "../examples/operation-rehearsal-reco
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { REHEARSAL_WORKSPACE_SCHEMA } from "../src/operation-rehearsal-workspace.js";
 import { encodeRehearsalRecordReport,rehearsalRecordCsv,encodeRehearsalContextRecordReport,rehearsalContextRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
+import {encodeRehearsalRecordSummary,rehearsalRecordSummaryCsv,encodeRehearsalRecordPrefix,extractRehearsalRecordPrefix,REHEARSAL_SUMMARY_QUERY} from "../src/operation-rehearsal-records.js";
 const workspace=(...ledgers)=>({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:"DAT",ledgers});
 class Node extends Element{set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
 const rendered=n=>[n.textContent,...n.children.map(rendered)].join(" ");
-function setup(){const elements=new Map(),downloads=[];let throwDownload=false;
+function setup(){const elements=new Map(),downloads=[];let throwDownload=false,downloadAction=()=>{};
   const document={getElementById(id){if(!elements.has(id))elements.set(id,new Node("div"));return elements.get(id);},createElement:tag=>new Node(tag)};
   const field=id=>document.getElementById("record-browser-"+id);
-  const panel=mountRehearsalRecordsPanel(document,{reasons:{WRONG_AGENT:"対象トークンが異なる"},kinds:{open:"投入",settle:"決済",deposit:"追加資金"},download:({prepared})=>{if(throwDownload)throw Error("Download");downloads.push(prepared);}});
+  const panel=mountRehearsalRecordsPanel(document,{reasons:{WRONG_AGENT:"対象トークンが異なる"},kinds:{open:"投入",settle:"決済",deposit:"追加資金"},download:({prepared})=>{if(throwDownload)throw Error("Download");const result=downloadAction();downloads.push(prepared);return result;}});
   const change=(id,value,event=id==="search"?"input":"change")=>{field(id).value=value;field(id).dispatchEvent(new Event(event));};
-  return{field,panel,change,downloads,failDownload:()=>{throwDownload=true;}};
+  return{field,panel,change,downloads,failDownload:()=>{throwDownload=true;},onDownload:fn=>{downloadAction=fn;}};
 }
 const many=()=>{const source=rehearsalExampleV2();return workspace({...source,events:Array.from({length:27},(_,i)=>({id:"deposit-"+i,kind:"deposit",agent:source.agent,chainId:source.chainId,account:source.account,amount:"1"}))});};
+
+test('summary counts and exports all matches independent of the displayed page',()=>{
+ const f=setup(),input=many();try{f.panel.refresh(input);f.field('next').click();assert.match(f.field('summary').textContent,/DAT: 一致 27件/);assert.match(f.field('summary').textContent,/EMA: 未作成/);
+  for(const [name,encode]of [['summary-save',encodeRehearsalRecordSummary],['summary-csv-save',rehearsalRecordSummaryCsv]]){f.field(name).click();assert.equal(f.downloads.pop().text,encode(input));}
+  f.change('search','deposit-26');assert.match(f.field('summary').textContent,/DAT: 一致 1件/);f.field('summary-save').click();assert.equal(f.downloads.pop().text,encodeRehearsalRecordSummary(input,{...REHEARSAL_SUMMARY_QUERY,search:'deposit-26'}));
+  f.change('search','absent');assert.match(f.field('summary').textContent,/DAT: 一致 0件/);assert.equal(f.field('summary-save').disabled,false);f.change('search','x'.repeat(81));assert.equal(f.field('summary-save').disabled,true);assert.equal(f.field('summary').textContent,'');
+ }finally{f.panel.dispose();}
+});
+test('selected prefix retains prior hidden records and clears its actions when selection disappears',()=>{
+ const f=setup(),input=many();try{f.panel.refresh(input);f.change('search','deposit-26');assert.match(f.field('prefix-note').textContent,/先頭からこの記録を含む27件/);
+  f.field('prefix-save').click();assert.equal(f.downloads.pop().text,extractRehearsalRecordPrefix(input,'DAT:deposit-26'));
+  f.field('prefix-report-save').click();assert.equal(f.downloads.pop().text,encodeRehearsalRecordPrefix(input,'DAT:deposit-26'));
+  f.change('search','absent');assert.equal(f.field('prefix-save').disabled,true);assert.equal(f.field('prefix-report-save').disabled,true);assert.equal(f.field('prefix-note').textContent,'');
+ }finally{f.panel.dispose();}
+});
+for(const name of ['summary-save','summary-csv-save','prefix-save','prefix-report-save'])test(name+' cannot publish after a source change inside download',()=>{
+ const f=setup();try{f.panel.refresh(many());f.onDownload(()=>f.panel.refresh(workspace(rehearsalExampleV2())));f.field(name).click();assert.equal(f.field('export-status').textContent,'');assert.match(f.field('detail').textContent,/open-one/);
+  f.failDownload();f.field(name).click();assert.match(f.field('export-status').textContent,/保存できません/);assert.equal(f.field(name).disabled,false);
+ }finally{f.panel.dispose();}
+});
+test('prefix export cannot overwrite a newer selection made during download',()=>{
+ const f=setup();try{f.panel.refresh(workspace(rehearsalExampleV2()));f.onDownload(()=>f.change('select','DAT:settle-one'));f.field('prefix-save').click();assert.equal(f.field('export-status').textContent,'');assert.match(f.field('prefix-note').textContent,/含む2件/);
+ }finally{f.panel.dispose();}
+});
 test("empty source and missing agents are explicit, not assumed zero balances",()=>{
   const f=setup();assert.equal(f.field("save").disabled,true);f.panel.refresh(workspace({...rehearsalExampleV2(),events:[]}));assert.match(f.field("scope").textContent,/DAT: 0件 \/ EMA: 未作成/);assert.equal(f.field("select").disabled,true);
 });

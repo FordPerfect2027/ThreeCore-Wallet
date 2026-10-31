@@ -1,6 +1,6 @@
 import { captureDataRecord } from "./security-data.js";
 import { boundedUtf8Length } from "./security-json.js";
-import { evaluateRehearsal, RehearsalError } from "./operation-rehearsal.js";
+import { validateRehearsal, encodeRehearsal, evaluateRehearsal, RehearsalError } from "./operation-rehearsal.js";
 import { validateRehearsalWorkspace, REHEARSAL_AGENTS } from "./operation-rehearsal-workspace.js";
 export const REHEARSAL_RECORD_REPORT_SCHEMA="threecore.operation-rehearsal-record-query.v1";
 export const REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA="threecore.operation-rehearsal-record-query.v2";
@@ -171,3 +171,58 @@ export function encodeRehearsalReasonRecordReport(input,query){
   try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
 }
 export function rehearsalReasonRecordCsv(input,query){return recordReportCsv(queryRehearsalReasonRecords(indexRehearsalRecords(input),query));}
+
+export const REHEARSAL_RECORD_SUMMARY_SCHEMA="threecore.operation-rehearsal-record-summary.v1";
+export const REHEARSAL_PREFIX_REPORT_SCHEMA="threecore.operation-rehearsal-record-prefix.v1";
+export const REHEARSAL_SUMMARY_QUERY=Object.freeze({...REHEARSAL_RECORD_QUERY,searchScope:"stored",reason:"all"});
+
+/** Changes contributed by matched records, grouped by stored agent, never cross-asset totals. */
+export function summarizeRehearsalRecords(index,query=REHEARSAL_SUMMARY_QUERY){
+  validIndex(index);const selected=queryRehearsalReasonRecords(index,query);
+  const rows=index.subjects.map(subject=>{
+    const ledger=index.inputs.ledgers.find(item=>item.agent===subject.agent),matches=selected.rows.filter(row=>row.agent===subject.agent);
+    const accepted=matches.filter(row=>row.result.withinEnteredLimits),reasons=new Map();
+    for(const row of matches)for(const reason of row.result.reasons)reasons.set(reason,(reasons.get(reason)??0)+1);
+    return Object.freeze({...subject,context:ledger?Object.freeze({chainId:ledger.chainId,account:ledger.account,asset:ledger.asset}):null,
+      matchedRecords:matches.length,acceptedRecords:accepted.length,rejectedRecords:matches.length-accepted.length,
+      kindCounts:Object.freeze(Object.fromEntries(KINDS.map(kind=>[kind,matches.filter(row=>row.event.kind===kind).length]))),
+      reasonCounts:Object.freeze([...reasons].sort(([a],[b])=>a<b?-1:a>b?1:0).map(([reason,records])=>Object.freeze({reason,records}))),
+      balanceChanges:Object.freeze(Object.fromEntries(REHEARSAL_RECORD_BALANCES.map(field=>[field,ledger?matches.reduce((sum,row)=>sum+BigInt(row.changes.find(change=>change.field===field).delta),0n).toString():null]))),
+      acceptedFeeUnits:ledger?accepted.reduce((sum,row)=>sum+BigInt(row.event.fee??"0"),0n).toString():null,
+      recordKeys:Object.freeze(matches.map(row=>row.key))});
+  });
+  return Object.freeze({schema:REHEARSAL_RECORD_SUMMARY_SCHEMA,simulationOnly:true,sourceVerified:false,authorizesExecution:false,
+    inputs:index.inputs,subjects:index.subjects,query:selected.query,scope:"matched-record-contributions",totalRecords:selected.totalRecords,matchedRecords:selected.matchedRecords,rows:Object.freeze(rows)});
+}
+export function encodeRehearsalRecordSummary(input,query=REHEARSAL_SUMMARY_QUERY){
+  const text=JSON.stringify(summarizeRehearsalRecords(indexRehearsalRecords(input),query),null,2)+"\n";
+  try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
+}
+export function rehearsalRecordSummaryCsv(input,query=REHEARSAL_SUMMARY_QUERY){
+  const report=summarizeRehearsalRecords(indexRehearsalRecords(input),query),lines=[[
+    "simulationOnly","sourceVerified","authorizesExecution","scope","queryAgent","queryKind","queryDecision","querySearch","querySearchScope","queryReason","totalRecords","matchedRecords",
+    "agent","present","sourceRecords","agentMatchedRecords","acceptedRecords","rejectedRecords","chainId","account","assetAddress","assetSymbol","assetDecimals",
+    ...KINDS.map(kind=>kind+"Records"),"reasonCounts",...REHEARSAL_RECORD_BALANCES.map(field=>field+"ChangeUnits"),"acceptedFeeUnits"]];
+  for(const row of report.rows)lines.push([true,false,false,report.scope,report.query.agent,report.query.kind,report.query.decision,report.query.search,report.query.searchScope,report.query.reason,report.totalRecords,report.matchedRecords,
+    row.agent,row.present,row.recordCount??"",row.matchedRecords,row.acceptedRecords,row.rejectedRecords,row.context?.chainId??"",row.context?.account??"",row.context?.asset.address??"",row.context?.asset.symbol??"",row.context?.asset.decimals??"",
+    ...KINDS.map(kind=>row.kindCounts[kind]),row.reasonCounts.map(item=>item.reason+":"+item.records).join("|"),...REHEARSAL_RECORD_BALANCES.map(field=>row.balanceChanges[field]??""),row.acceptedFeeUnits??""]);
+  const cell=value=>{let text=String(value);if(/^\s*[=+@-]/u.test(text)&&!/^-[0-9]+$/.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';};
+  const text="\uFEFF"+lines.map(line=>line.map(cell).join(",")).join("\r\n")+"\r\n";
+  try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
+}
+
+/** Keep every prior record of this stored agent, including rejected events; stop inclusively. */
+export function reportRehearsalRecordPrefix(index,key){
+  validIndex(index);if(typeof key!=="string")fail("INVALID_RECORD_KEY");
+  const selected=index.rows.find(row=>row.key===key);if(!selected)fail("RECORD_NOT_FOUND");
+  const ledger=index.inputs.ledgers.find(item=>item.agent===selected.agent),prefix=validateRehearsal({...ledger,events:ledger.events.slice(0,selected.recordNumber)});
+  return Object.freeze({schema:REHEARSAL_PREFIX_REPORT_SCHEMA,simulationOnly:true,sourceVerified:false,authorizesExecution:false,
+    inputs:index.inputs,subjects:index.subjects,selectedKey:key,agent:selected.agent,throughRecordId:selected.event.id,
+    sourceRecords:ledger.events.length,includedRecords:prefix.events.length,omittedLaterRecords:ledger.events.length-prefix.events.length,
+    prefix,result:evaluateRehearsal(prefix)});
+}
+export function encodeRehearsalRecordPrefix(input,key){
+  const text=JSON.stringify(reportRehearsalRecordPrefix(indexRehearsalRecords(input),key),null,2)+"\n";
+  try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
+}
+export function extractRehearsalRecordPrefix(input,key){return encodeRehearsal(reportRehearsalRecordPrefix(indexRehearsalRecords(input),key).prefix);}

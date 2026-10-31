@@ -8,9 +8,12 @@ import {canExportReviewedRehearsalWorkspace,exportReviewedRehearsalWorkspace,exp
 import { encodeRehearsalWorkspace } from "../src/operation-rehearsal-workspace.js";
 import { encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
+import { REHEARSAL_RECORD_SUMMARY_SCHEMA,REHEARSAL_PREFIX_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 import { REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_RECORD_REASON_LABELS, REHEARSAL_REFERENCE_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 
 const reportNames = {
+  "threecore.operation-rehearsal-record-summary.v1": "検索記録のトークン別集計",
+  "threecore.operation-rehearsal-record-prefix.v1": "選んだ記録までの再現資料",
   "threecore.operation-rehearsal-overview.v1": "確認一覧",
   "threecore.operation-rehearsal-comparison.v1": "復旧比較",
   "threecore.operation-rehearsal-scenario.v1": "条件比較",
@@ -74,6 +77,8 @@ function differencePageText(page,label="") {
 }
 function outcomeText(outcome) {
   if (!outcome) return "";
+  if(outcome.kind==="record-summary")return "全"+outcome.totalRecords+"件のうち検索に一致した"+outcome.matchedRecords+"件を、保存元ごとに集計しました。金額は一致記録による増減で、最終残高や期間全体の損益ではありません。";
+  if(outcome.kind==="record-prefix")return outcome.agent+" の先頭から"+outcome.includedRecords+"件を含み、後続の"+outcome.omittedLaterRecords+"件を除いた再現入力です。他のトークンは再現入力に含みません。資料には確認用の元履歴も保持しています。";
   if(outcome.kind==="record-reference")return outcome.agent+" の "+(outcome.reference.kind==="operation"?"操作":"予約")+"ID「"+outcome.reference.id+"」の関連記録 "+outcome.recordCount+"件。条件内 "+outcome.summary.acceptedRecords+"件、見送り "+outcome.summary.rejectedRecords+"件。元入力から再計算した試算の結果です。";
   if (outcome.kind === "expected-outcomes") return "含まれる期待結果: " + outcome.cases + "ケース中、一致 " +
     outcome.matched + "件、差あり " + outcome.differing + "件。期待値の作成方法: " +
@@ -232,7 +237,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
         (result.differencesTruncated ? "。相違一覧は40箇所ずつ表示します。" : "");
       get("outcome").textContent = outcomeText(result.reportOutcome);
       for(const scope of result.scope) row("scope", [scope.agent + (scope.caseId ? " / " + scope.caseId : ""), scope.beforeRecords === null ? "未作成" : scope.beforeRecords + "件",
-        [REHEARSAL_OVERVIEW_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA, REHEARSAL_REFERENCE_REPORT_SCHEMA, REHEARSAL_REASON_RECORD_REPORT_SCHEMA].includes(result.inputSchema) ? "比較なし" : scope.afterRecords === null ? "未作成" : scope.afterRecords + "件"]);
+        [REHEARSAL_OVERVIEW_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA, REHEARSAL_REFERENCE_REPORT_SCHEMA, REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_RECORD_SUMMARY_SCHEMA,REHEARSAL_PREFIX_REPORT_SCHEMA].includes(result.inputSchema) ? "比較なし" : scope.afterRecords === null ? "未作成" : scope.afterRecords + "件"]);
       renderDifferencePage();
     } catch(error) {
       if(disposed || own !== revision) return;

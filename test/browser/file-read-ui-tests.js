@@ -63,6 +63,27 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  for(const mode of ['summary','prefix'])test('rehearsal record analysis: '+mode+' exports recomputable data without changing the session',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{q('example').click();q('agent').value='EMA';q('agent').dispatchEvent(new Event('change'));q('scenario').value='pending';q('example').click();q('session-save').click();const current=downloads.pop().text;let text;
+      if(mode==='summary'){
+        q('record-browser-kind').value='settle';q('record-browser-kind').dispatchEvent(new Event('change'));assert(q('record-browser-summary').textContent.includes('DAT: 一致 1件'));assert(q('record-browser-summary').textContent.includes('CAWELON: 未作成'));
+        q('record-browser-summary-csv-save').click();const csv=downloads.pop();assert(csv.text.startsWith('\uFEFF')&&csv.mimeType==='text/csv;charset=utf-8');
+        q('record-browser-summary-save').click();text=downloads.pop().text;const data=JSON.parse(text);assert(data.rows[0].balanceChanges.cash==='129000000'&&data.rows[1].balanceChanges.cash==='0'&&data.rows[2].balanceChanges.cash===null);
+      }else{
+        q('record-browser-select').value='DAT:open-one';q('record-browser-select').dispatchEvent(new Event('change'));assert(q('record-browser-prefix-note').textContent.includes('後続1件'));
+        q('record-browser-prefix-save').click();const input=JSON.parse(downloads.pop().text);assert(input.agent==='DAT'&&input.events.length===1&&input.events[0].id==='open-one');
+        q('record-browser-prefix-report-save').click();text=downloads.pop().text;const data=JSON.parse(text);assert(data.inputs.ledgers.length===2&&data.includedRecords===1&&data.result.openPositions===1);
+      }
+      q('session-save').click();assert(downloads.pop().text===current);
+      q('report-review-text').value=text;q('report-review-text').dispatchEvent(new Event('input'));q('report-review-paste').click();const end=Date.now()+10000;
+      while(q('report-review-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q('report-review-status').getAttribute('aria-busy')==='false'&&q('report-review-status').textContent.includes('再計算と一致'));
+      if(mode==='prefix'){q('report-review-input-part').value='record-prefix';q('report-review-input-part').dispatchEvent(new Event('change'));q('report-review-input-save').click();assert(JSON.parse(downloads.pop().text).events.length===1);}
+      q('session-save').click();assert(downloads.pop().text===current);
+    }finally{page.dispose();host.remove();}
+  });
   for(const kind of ['workspace','scenario','scenario-set','check-suite'])test('rehearsal source parts: '+kind+' requires explicit selection and preserves current session',async()=>{
     const before=rehearsalExampleV2(),after={...before,policy:{...before.policy,paused:true}},workspace={schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:'DAT',ledgers:[before]},nextWorkspace={...workspace,ledgers:[after]};
     const cases={schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:'paused',label:'停止条件',before,after}]};

@@ -2,7 +2,7 @@
 import {resolve} from 'node:path';import {pathToFileURL} from 'node:url';
 import {readBoundedRehearsalText} from './read-bounded-rehearsal-file.js';
 import {reviewRehearsalReport,exportReviewedRehearsalPart,REHEARSAL_REPORT_REVIEW_LIMIT} from '../src/operation-rehearsal-report-review.js';
-const parts=['workspace-before','workspace-after','scenario-before','scenario-after','scenario-set','check-suite'];
+const parts=['workspace-before','workspace-after','scenario-before','scenario-after','scenario-set','check-suite','record-prefix'];
 export async function recoverRehearsalReportInputs(args,output=process.stdout,errors=process.stderr){
  try{
   if(Array.isArray(args)&&args.length===1&&args[0]==='--help'){

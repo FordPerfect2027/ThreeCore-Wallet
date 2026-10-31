@@ -7,6 +7,7 @@ import { compareRehearsalWorkspaces, REHEARSAL_COMPARISON_SCHEMA } from "./opera
 import { compareRehearsalScenario, REHEARSAL_SCENARIO_SCHEMA } from "./operation-rehearsal-scenario.js";
 import { encodeRehearsalScenarioSet, reportRehearsalScenarioSet, REHEARSAL_SCENARIO_SET_REPORT_SCHEMA } from "./operation-rehearsal-scenario-set.js";
 import { encodeRehearsalCheckSuite, runRehearsalCheckSuite, REHEARSAL_CHECK_REPORT_SCHEMA } from "./operation-rehearsal-check-suite.js";
+import { summarizeRehearsalRecords, reportRehearsalRecordPrefix, REHEARSAL_RECORD_SUMMARY_SCHEMA, REHEARSAL_PREFIX_REPORT_SCHEMA } from "./operation-rehearsal-records.js";
 import { REHEARSAL_REASON_RECORD_REPORT_SCHEMA,queryRehearsalReasonRecords,reportRehearsalReference, REHEARSAL_REFERENCE_REPORT_SCHEMA, indexRehearsalRecords, queryRehearsalRecords, validateRehearsalRecordQuery, queryRehearsalContextRecords, validateRehearsalContextRecordQuery, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA } from "./operation-rehearsal-records.js";
 
 export const REHEARSAL_REPORT_REVIEW_SCHEMA = "threecore.operation-rehearsal-report-review.v1";
@@ -85,6 +86,14 @@ function prepareRehearsalReview(text, expectedSha256) {
       beforeRecords: row.beforeRecords, afterRecords: row.afterRecords }));
     reportOutcome = Object.freeze({ kind: "expected-outcomes", expectationOrigin: recomputed.inputs.expectationOrigin,
       ...recomputed.summary });
+  } else if(parsed?.schema===REHEARSAL_RECORD_SUMMARY_SCHEMA){
+    recomputed=summarizeRehearsalRecords(indexRehearsalRecords(parsed.inputs),parsed.query);
+    scope=recomputed.subjects.map(row=>({agent:row.agent,beforeRecords:row.recordCount,afterRecords:null}));
+    reportOutcome=Object.freeze({kind:"record-summary",matchedRecords:recomputed.matchedRecords,totalRecords:recomputed.totalRecords});
+  } else if(parsed?.schema===REHEARSAL_PREFIX_REPORT_SCHEMA){
+    recomputed=reportRehearsalRecordPrefix(indexRehearsalRecords(parsed.inputs),parsed.selectedKey);
+    scope=recomputed.subjects.map(row=>({agent:row.agent,beforeRecords:row.recordCount,afterRecords:null}));
+    reportOutcome=Object.freeze({kind:"record-prefix",agent:recomputed.agent,includedRecords:recomputed.includedRecords,omittedLaterRecords:recomputed.omittedLaterRecords});
   } else if(parsed?.schema===REHEARSAL_REFERENCE_REPORT_SCHEMA) {
     recomputed=reportRehearsalReference(indexRehearsalRecords(parsed.inputs),parsed.selectedKey);
     scope=recomputed.subjects.map(row=>({agent:row.agent,beforeRecords:row.recordCount,afterRecords:null}));
@@ -120,7 +129,7 @@ export function encodeRehearsalReviewReceipt(receipt) {
 }
 
 const workspaceSourceSchemas = new Set([REHEARSAL_OVERVIEW_SCHEMA,REHEARSAL_RECORD_REPORT_SCHEMA,
-  REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA,REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_REFERENCE_REPORT_SCHEMA]);
+  REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA,REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_REFERENCE_REPORT_SCHEMA,REHEARSAL_RECORD_SUMMARY_SCHEMA]);
 
 /** Only a fresh successful review with one unambiguous workspace can export inputs. */
 export function canExportReviewedRehearsalWorkspace(receipt) {
@@ -152,6 +161,7 @@ export function compareReviewedRehearsalWorkspace(receipt,currentInputs) {
 }
 
 const reviewedParts = Object.freeze([
+  {part:"record-prefix",label:"選んだ記録までの単体入力",schema:REHEARSAL_PREFIX_REPORT_SCHEMA,destination:"記録を保存・再確認",note:"選んだ記録より後の記録と、他のトークンは含みません。元の全履歴ではありません。"},
   {part:"workspace-before",label:"比較前の3トークン入力",schema:REHEARSAL_COMPARISON_SCHEMA,destination:"3トークンの履歴の復旧欄",note:"比較後の入力は含みません。"},
   {part:"workspace-after",label:"比較後の3トークン入力",schema:REHEARSAL_COMPARISON_SCHEMA,destination:"3トークンの履歴の復旧欄",note:"比較前の入力は含みません。"},
   {part:"scenario-before",label:"条件変更前の単体入力",schema:REHEARSAL_SCENARIO_SCHEMA,destination:"記録を保存・再確認",note:"仮の条件比較の、変更前の入力です。"},
@@ -173,7 +183,8 @@ export function exportReviewedRehearsalPart(receipt,part) {
   if(!choice)fail("REVIEW_PART_UNAVAILABLE");
   const {recomputed}=prepareRehearsalReview(reviewSources.get(receipt),receipt.expectedSha256),input=recomputed.inputs;
   let text;
-  if(part==="workspace-before"||part==="workspace-after")text=encodeRehearsalWorkspace(input[part.slice(10)]);
+  if(part==="record-prefix")text=encodeRehearsal(recomputed.prefix);
+  else if(part==="workspace-before"||part==="workspace-after")text=encodeRehearsalWorkspace(input[part.slice(10)]);
   else if(part==="scenario-before"||part==="scenario-after")text=encodeRehearsal(input[part.slice(9)]);
   else if(part==="scenario-set")text=encodeRehearsalScenarioSet(input);
   else text=encodeRehearsalCheckSuite(input);
