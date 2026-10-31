@@ -5,7 +5,7 @@ import { describeFileReadError, displayFileName, describeRehearsalFileTarget } f
 import { requireSyncExport } from "../src/export-policy.js";
 import { encodeRehearsalDifferenceQuery, encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
-import { REHEARSAL_REFERENCE_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
+import { REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_RECORD_REASON_LABELS, REHEARSAL_REFERENCE_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 
 const reportNames = {
   "threecore.operation-rehearsal-overview.v1": "確認一覧",
@@ -15,7 +15,8 @@ const reportNames = {
   "threecore.operation-rehearsal-check-report.v1": "期待結果の確認資料",
   "threecore.operation-rehearsal-record-query.v1": "記録の検索資料",
   "threecore.operation-rehearsal-record-query.v2": "検索する情報を指定した記録資料",
-  "threecore.operation-rehearsal-reference.v1": "操作・予約の関連記録資料"
+  "threecore.operation-rehearsal-reference.v1": "操作・予約の関連記録資料",
+  "threecore.operation-rehearsal-record-query.v3": "見送りの理由を指定した記録資料"
 };
 function addDifferenceDetailButton(document, row, index, inspect, current, output, actualLabel, select) {
   const cell=document.createElement("td"),button=document.createElement("button");button.type="button";
@@ -77,7 +78,7 @@ function outcomeText(outcome) {
     "。資料の再計算の一致と、期待値への一致は別に確認してください。";
   const kinds = { all: "すべて", open: "運用開始", settle: "決済", deposit: "入金", withdraw: "出金", reserve: "還元予約", release: "予約解除" };
   const decisions = { all: "すべて", accepted: "条件内", rejected: "条件外" };
-  return "検索対象の全記録 " + outcome.totalRecords + "件 / 条件に一致 " + outcome.matchedRecords +
+  return (outcome.query.reason?"見送りの理由: "+(outcome.query.reason==="all"?"すべて":REHEARSAL_RECORD_REASON_LABELS[outcome.query.reason])+"。":"")+"検索対象の全記録 " + outcome.totalRecords + "件 / 条件に一致 " + outcome.matchedRecords +
     "件。対象: " + (outcome.query.agent === "all" ? "すべて" : outcome.query.agent) + " / 種類: " +
     kinds[outcome.query.kind] + " / 判定: " + decisions[outcome.query.decision] + " / 検索語: " +
     (outcome.query.search || "指定なし") + "。"+(outcome.query.searchScope?"検索場所: "+(outcome.query.searchScope==="recorded"?"記録に書かれた情報":"保存元と記録の両方")+"。":"")+"件数は資料に含まれる試算記録の範囲です。";
@@ -158,7 +159,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
         (result.differencesTruncated ? "。相違一覧は40箇所ずつ表示します。" : "");
       get("outcome").textContent = outcomeText(result.reportOutcome);
       for(const scope of result.scope) row("scope", [scope.agent + (scope.caseId ? " / " + scope.caseId : ""), scope.beforeRecords === null ? "未作成" : scope.beforeRecords + "件",
-        [REHEARSAL_OVERVIEW_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA, REHEARSAL_REFERENCE_REPORT_SCHEMA].includes(result.inputSchema) ? "比較なし" : scope.afterRecords === null ? "未作成" : scope.afterRecords + "件"]);
+        [REHEARSAL_OVERVIEW_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA, REHEARSAL_REFERENCE_REPORT_SCHEMA, REHEARSAL_REASON_RECORD_REPORT_SCHEMA].includes(result.inputSchema) ? "比較なし" : scope.afterRecords === null ? "未作成" : scope.afterRecords + "件"]);
       renderDifferencePage();
     } catch(error) {
       if(disposed || own !== revision) return;

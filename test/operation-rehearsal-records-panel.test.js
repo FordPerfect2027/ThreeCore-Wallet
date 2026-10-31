@@ -148,3 +148,27 @@ test("reference exports handle a refused delivery without changing source record
   assert.match(f.field("export-status").textContent,/保存できません/);assert.match(f.field("reference-summary").textContent,/未決済/);assert.match(f.field("reference-summary").textContent,/戻り額: 記録なし/);
   f.panel.dispose();assert.equal(f.field("reference-summary").textContent,"");assert.equal(f.field("reference-save").disabled,true);
 });
+
+test("exact reason selection differs from text search, preserves decision and exports all matches",()=>{
+  const f=setup(),source=rehearsalExampleV2(),events=Array.from({length:27},(_,i)=>({...source.events[0],id:"wrong-"+i,account:"0x"+"9".repeat(40)}));
+  try{f.panel.refresh(workspace({...source,events}));f.change("reason","WRONG_ACCOUNT");
+    assert.equal(f.field("rows").children.length,10);assert.match(f.field("status").textContent,/一致 27件/);
+    f.field("save").click();const report=JSON.parse(f.downloads.pop().text);assert.equal(report.matchedRecords,27);assert.equal(report.query.reason,"WRONG_ACCOUNT");
+    f.field("csv-save").click();assert.equal(f.downloads.pop().text.trim().split("\r\n").length,28);
+    f.change("decision","accepted");assert.equal(f.field("decision").value,"accepted");assert.equal(f.field("rows").children.length,0);
+    f.field("save").click();assert.equal(JSON.parse(f.downloads.pop().text).matchedRecords,0);
+    f.field("clear").click();assert.equal(f.field("reason").value,"all");
+  }finally{f.panel.dispose();}
+});
+
+test("overview and related navigation restore the exact reason-filtered view on Back",()=>{
+  const f=setup(),source=rehearsalExampleV2(),bad={...source.events[0],id:"wrong-open",account:"0x"+"9".repeat(40)};
+  try{f.panel.refresh(workspace({...source,events:[bad,...source.events]}));f.change("reason","WRONG_ACCOUNT");
+    assert.equal(f.field("select").value,"DAT:wrong-open");const before=f.field("status").textContent;
+    assert.equal(f.panel.openRecord("DAT:settle-one"),true);assert.equal(f.field("reason").value,"all");
+    f.field("back").click();assert.equal(f.field("reason").value,"WRONG_ACCOUNT");assert.equal(f.field("select").value,"DAT:wrong-open");assert.equal(f.field("status").textContent,before);
+    const related=f.field("related").children[0].children[3].children[0];related.click();assert.equal(f.field("reason").value,"all");
+    f.field("back").click();assert.equal(f.field("reason").value,"WRONG_ACCOUNT");assert.equal(f.field("status").textContent,before);
+    f.change("reason","UNKNOWN");assert.equal(f.field("save").disabled,true);assert.equal(f.field("reference-save").disabled,true);
+  }finally{f.panel.dispose();}
+});

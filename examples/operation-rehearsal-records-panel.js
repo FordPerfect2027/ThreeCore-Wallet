@@ -1,15 +1,18 @@
 import { requireSyncExport } from "../src/export-policy.js";
-import { reportRehearsalReference,encodeRehearsalReferenceReport,indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,rehearsalRecordCsv,queryRehearsalContextRecords,encodeRehearsalContextRecordReport,rehearsalContextRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
+import { REHEARSAL_RECORD_REASON_LABELS,queryRehearsalReasonRecords,encodeRehearsalReasonRecordReport,rehearsalReasonRecordCsv,reportRehearsalReference,encodeRehearsalReferenceReport,indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,rehearsalRecordCsv,queryRehearsalContextRecords,encodeRehearsalContextRecordReport,rehearsalContextRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   const offerDownload = payload => requireSyncExport(download(payload));
   const get=name=>document.getElementById("record-browser-"+name);let index=null,report=null,selected="",offset=0,disposed=false,revision=0,detailRevision=0,backView=null;const listeners=[];
   function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
+  get("reason").textContent="";
+  for(const [value,label]of [["all","すべて"],...Object.entries(REHEARSAL_RECORD_REASON_LABELS)]){const option=document.createElement("option");option.value=value;option.textContent=label;get("reason").append(option);}
+  get("reason").value="all";
   function queryInput(){const query=Object.fromEntries(Object.keys(REHEARSAL_RECORD_QUERY).map(key=>[key,get(key).value||REHEARSAL_RECORD_QUERY[key]]));
-    const scope=get("search-scope").value||"stored";return scope==="stored"?query:{...query,searchScope:scope};}
-  const queryRows=(input)=>Object.hasOwn(input,"searchScope")?queryRehearsalContextRecords(index,input):queryRehearsalRecords(index,input);
-  const encode=(csv=false)=>Object.hasOwn(report.query,"searchScope")?(csv?rehearsalContextRecordCsv:encodeRehearsalContextRecordReport)(index.inputs,report.query):(csv?rehearsalRecordCsv:encodeRehearsalRecordReport)(index.inputs,report.query);
+    const scope=get("search-scope").value||"stored",reason=get("reason").value||"all";return reason!=="all"?{...query,searchScope:scope,reason}:scope==="stored"?query:{...query,searchScope:scope};}
+  const queryRows=(input)=>Object.hasOwn(input,"reason")?queryRehearsalReasonRecords(index,input):Object.hasOwn(input,"searchScope")?queryRehearsalContextRecords(index,input):queryRehearsalRecords(index,input);
+  const encode=(csv=false)=>Object.hasOwn(report.query,"reason")?(csv?rehearsalReasonRecordCsv:encodeRehearsalReasonRecordReport)(index.inputs,report.query):Object.hasOwn(report.query,"searchScope")?(csv?rehearsalContextRecordCsv:encodeRehearsalContextRecordReport)(index.inputs,report.query):(csv?rehearsalRecordCsv:encodeRehearsalRecordReport)(index.inputs,report.query);
   function row(target,values){const tr=document.createElement("tr");for(const value of values){const td=document.createElement("td");td.textContent=value;tr.append(td);}get(target).append(tr);return tr;}
   const decision=item=>item.result.withinEnteredLimits?"仮の条件内":"見送り: "+item.result.reasons.map(code=>reasons[code]??code).join("・");
   const eventLabels={id:"記録ID",kind:"種類",agent:"記録上の対象",chainId:"記録上のネットワーク",account:"記録上の口座",operationId:"操作ID",reservationId:"予約ID",origin:"記録上のサイト",spender:"記録上の利用先契約",principal:"元本",fee:"費用",grossReturn:"元本を含む戻り額",amount:"金額",exitFeeReserve:"確保する決済費用"};
@@ -52,9 +55,9 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
         const rows=sourceIndex.rows.filter(entry=>entry.agent===other.agent);
         const position=rows.findIndex(entry=>entry.key===other.key);
         if(position<0)return;
-        const query=Object.fromEntries(Object.keys(REHEARSAL_RECORD_QUERY).map(name=>[name,get(name).value]));
+        const query=Object.fromEntries([...Object.keys(REHEARSAL_RECORD_QUERY),"reason"].map(name=>[name,get(name).value|| (name==="reason"?"all":"")]));
         backView={index:sourceIndex,query,selected,offset,size,searchScope:get("search-scope").value||"stored"};
-        get("agent").value=other.agent;get("kind").value="all";get("decision").value="all";get("search").value="";get("search-scope").value="stored";
+        get("agent").value=other.agent;get("kind").value="all";get("decision").value="all";get("search").value="";get("search-scope").value="stored";get("reason").value="all";
         selected=other.key;offset=Math.floor(position/size)*size;render();
         get("select").focus?.();
       });
@@ -86,9 +89,9 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     get("save").disabled=!index.inputs.ledgers.length;get("csv-save").disabled=get("save").disabled;
     get("status").textContent="一致 "+report.matchedRecords+"件 / 全 "+report.totalRecords+"件。"+(shown.length?(offset+1)+"～"+(offset+shown.length)+"件目を表示。":"一致する記録はありません。")+"保存はページをまたぐ全一致記録と元入力が対象です。";detail();
   }
-  for(const name of["agent","kind","decision","size","search-scope"])listen(name,"change",()=>{if(disposed)return;backView=null;offset=0;render();});
+  for(const name of["agent","kind","decision","size","search-scope","reason"])listen(name,"change",()=>{if(disposed)return;backView=null;offset=0;render();});
   listen("search","input",()=>{if(disposed)return;backView=null;offset=0;render();});
-  listen("clear","click",()=>{if(disposed)return;backView=null;for(const [name,value]of Object.entries(REHEARSAL_RECORD_QUERY))get(name).value=value;get("search-scope").value="stored";offset=0;render();});
+  listen("clear","click",()=>{if(disposed)return;backView=null;for(const [name,value]of Object.entries(REHEARSAL_RECORD_QUERY))get(name).value=value;get("search-scope").value="stored";get("reason").value="all";offset=0;render();});
   for(const [name,direction]of[["prev",-1],["next",1]])listen(name,"click",()=>{if(disposed||!report)return;offset+=direction*Number(get("size").value||"10");render();});
   listen("back","click",()=>{
     if(disposed||!backView||backView.index!==index)return;
@@ -113,12 +116,12 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     const sourceIndex=index,own=revision,item=sourceIndex.rows.find(row=>row.key===key);
     if(!item)return false;
     const size=Number(get("size").value||"10");if(![10,25,50].includes(size))return false;
-    const query=Object.fromEntries(Object.keys(REHEARSAL_RECORD_QUERY).map(name=>[name,get(name).value]));
+    const query=Object.fromEntries([...Object.keys(REHEARSAL_RECORD_QUERY),"reason"].map(name=>[name,get(name).value|| (name==="reason"?"all":"")]));
     const previous={index:sourceIndex,query,selected,offset,size,searchScope:get("search-scope").value||"stored"};
     if(disposed||index!==sourceIndex||revision!==own)return false;
     const position=sourceIndex.rows.filter(row=>row.agent===item.agent).findIndex(row=>row.key===key);
     backView=previous;get("agent").value=item.agent;get("kind").value="all";get("decision").value="all";
-    get("search").value="";get("search-scope").value="stored";selected=key;offset=Math.floor(position/size)*size;
+    get("search").value="";get("search-scope").value="stored";get("reason").value="all";selected=key;offset=Math.floor(position/size)*size;
     render();if(disposed||index!==sourceIndex)return false;get("select").focus?.();return true;
   }
   listen("reference-save","click",()=>{

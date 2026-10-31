@@ -57,6 +57,24 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("rehearsal exact reason: structured reason filters, navigation Back and independent report review preserve the original session",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const change=(id,value)=>{q(id).value=value;q(id).dispatchEvent(new Event(id==="record-browser-search"?"input":"change"));};
+    try{
+      q("scenario").value="limit";q("example").click();q("session-save").click();const before=downloads.pop().text;
+      change("record-browser-reason","PER_OPERATION_LIMIT");assert(q("record-browser-status").textContent.includes("一致 1件"));
+      change("record-browser-decision","accepted");assert(q("record-browser-status").textContent.includes("一致 0件")&&q("record-browser-decision").value==="accepted");
+      change("record-browser-decision","all");q("record-browser-save").click();const text=downloads.pop().text;
+      const button=q("overview-rows").querySelector("button");button.click();assert(q("record-browser-reason").value==="all");q("record-browser-back").click();assert(q("record-browser-reason").value==="PER_OPERATION_LIMIT");
+      q("report-review-text").value=text;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();
+      const end=Date.now()+10000;while(q("report-review-status").getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();
+      assert(q("report-review-status").className==="passed");assert(q("report-review-outcome").textContent.includes("1回の上限超過"));
+      q("session-save").click();assert(downloads.pop().text===before);
+    }finally{page.dispose();host.remove();}
+  });
+
   test("rehearsal overview: opens an exact pending record and restores the previous empty search without changing history",async()=>{
     const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
     const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};

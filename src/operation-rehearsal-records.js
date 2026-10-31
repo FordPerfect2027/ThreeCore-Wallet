@@ -39,6 +39,7 @@ function queryRecords(index,query,schema){
   const rows=index.rows.filter(row=>{
     if(query.agent!=="all"&&row.agent!==query.agent||query.kind!=="all"&&row.event.kind!==query.kind||
       query.decision==="accepted"&&!row.result.withinEnteredLimits||query.decision==="rejected"&&row.result.withinEnteredLimits)return false;
+    if(query.reason&&query.reason!=="all"&&!row.result.reasons.includes(query.reason))return false;
     // V1 keeps its original stored-context search so historical reports reproduce.
     const stored=[row.key,row.event.id,row.reference?.id??"",row.account,row.asset.address,...row.result.reasons];
     const recorded=[row.event.id,row.reference?.id??"",row.event.agent,String(row.event.chainId),row.event.account,row.event.origin??"",row.event.spender??"",...row.result.reasons];
@@ -74,7 +75,7 @@ function recordReportCsv(report){
     "agent","recordNumber","recordId","eventKind","withinEnteredLimits","reasons","chainId","account","assetAddress","assetSymbol","assetDecimals",
     "eventAgent","eventChainId","eventAccount","eventOrigin","eventSpender","referenceKind","referenceId",
     "principalUnits","feeUnits","grossReturnUnits","amountUnits","exitFeeReserveUnits",
-    ...REHEARSAL_RECORD_BALANCES.flatMap(field=>[field+"BeforeUnits",field+"AfterUnits",field+"ChangeUnits"])];
+    ...REHEARSAL_RECORD_BALANCES.flatMap(field=>[field+"BeforeUnits",field+"AfterUnits",field+"ChangeUnits"]),...(Object.hasOwn(report.query,"reason")?["queryReason"]:[])];
   const cell=value=>{let text=String(value);if(/^\s*[=+@-]/u.test(text)&&!/^-[0-9]+$/.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';};
   const lines=[fields];
   for(const row of report.rows){const event=row.event;
@@ -82,7 +83,7 @@ function recordReportCsv(report){
       row.agent,row.recordNumber,event.id,event.kind,row.result.withinEnteredLimits,row.result.reasons.join("|"),row.chainId,row.account,row.asset.address,row.asset.symbol,row.asset.decimals,
       event.agent,event.chainId,event.account,event.origin??"",event.spender??"",row.reference?.kind??"",row.reference?.id??"",
       ...["principal","fee","grossReturn","amount","exitFeeReserve"].map(field=>event[field]??""),
-      ...row.changes.flatMap(change=>[change.before,change.after,change.delta])]);
+      ...row.changes.flatMap(change=>[change.before,change.after,change.delta]),...(Object.hasOwn(report.query,"reason")?[report.query.reason]:[])]);
   }
   const text="\uFEFF"+lines.map(line=>line.map(cell).join(",")).join("\r\n")+"\r\n";
   try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
@@ -124,3 +125,29 @@ export function encodeRehearsalReferenceReport(input,key) {
   const text=JSON.stringify(reportRehearsalReference(indexRehearsalRecords(input),key),null,2)+"\n";
   try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
 }
+
+export const REHEARSAL_REASON_RECORD_REPORT_SCHEMA = "threecore.operation-rehearsal-record-query.v3";
+export const REHEARSAL_RECORD_REASON_LABELS = Object.freeze({
+  PAUSED:"新規利用の停止中",REUSED_OPERATION:"同じ操作の再利用",UNLISTED_ORIGIN:"対象外のサイト",UNLISTED_SPENDER:"対象外の契約",
+  ZERO_PRINCIPAL:"元本が0",PER_OPERATION_LIMIT:"1回の上限超過",OUTSTANDING_LIMIT:"未決済元本の上限超過",INSUFFICIENT_BALANCE:"資金不足",
+  RESERVE_FLOOR:"予備資金を下回る",LOSS_LIMIT:"全額損失時に損失上限を超える",NO_OPEN_POSITION:"対応する未決済記録がない",
+  INSUFFICIENT_FEE_BALANCE:"費用の資金不足",BALANCE_OVERFLOW:"金額の上限超過",WRONG_AGENT:"対象トークンが異なる",
+  WRONG_CHAINID:"ネットワークが異なる",WRONG_ACCOUNT:"口座が異なる",ENTRY_FEE_LIMIT:"開始費用の上限超過",EXIT_FEE_LIMIT:"決済費用の上限超過",
+  EXIT_FEE_RESERVE_EXCEEDED:"確保した決済費用を超える",REUSED_RESERVATION:"予約IDの再利用",ZERO_RESERVATION:"予約額が0",
+  ALLOCATION_LIMIT:"予約できる還元額を超える",NO_RESERVATION:"取消対象の予約がない",UNSETTLED_POSITIONS:"未決済の記録あり",REJECTED_RECORDS:"条件に合わない記録あり"
+});
+export function validateRehearsalReasonRecordQuery(input){
+  let data;try{data=captureDataRecord(input,["agent","kind","decision","search","searchScope","reason"]);}catch{fail("INVALID_RECORD_QUERY");}
+  if(!["stored","recorded","both"].includes(data.searchScope)||typeof data.reason!=="string"||
+     (data.reason!=="all"&&!Object.hasOwn(REHEARSAL_RECORD_REASON_LABELS,data.reason)))fail("INVALID_RECORD_QUERY");
+  const query=validateRehearsalRecordQuery({agent:data.agent,kind:data.kind,decision:data.decision,search:data.search});
+  return Object.freeze({...query,searchScope:data.searchScope,reason:data.reason});
+}
+export function queryRehearsalReasonRecords(index,input){
+  validIndex(index);return queryRecords(index,validateRehearsalReasonRecordQuery(input),REHEARSAL_REASON_RECORD_REPORT_SCHEMA);
+}
+export function encodeRehearsalReasonRecordReport(input,query){
+  const text=JSON.stringify(queryRehearsalReasonRecords(indexRehearsalRecords(input),query),null,2)+"\n";
+  try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
+}
+export function rehearsalReasonRecordCsv(input,query){return recordReportCsv(queryRehearsalReasonRecords(indexRehearsalRecords(input),query));}
