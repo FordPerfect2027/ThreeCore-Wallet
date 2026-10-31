@@ -1,0 +1,254 @@
+{
+  "schema": "threecore.saved-file-differences.v1",
+  "readOnly": true,
+  "before": {
+    "schema": "threecore.saved-file-inspection.v3",
+    "sourceSchema": "threecore.operation-rehearsal.v2",
+    "byteLength": 17098,
+    "title": "運用リハーサルの記録",
+    "target": "rehearsal-record",
+    "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+    "validation": "validated-structure",
+    "simulationOnly": true,
+    "checksumVerified": false,
+    "sourceDigest": null,
+    "textDigest": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+    "scope": {
+      "reportCount": null,
+      "archivedReports": null,
+      "entryReferences": null,
+      "draftReferences": null,
+      "archivedEntryReferences": null,
+      "restrictedEntryReferences": null,
+      "incompleteDraftReferences": null,
+      "emptyDraftReferences": null,
+      "agents": [
+        "DAT"
+      ],
+      "annotationValuesIncluded": false,
+      "repeatedReferencesMayExist": true,
+      "rehearsalLedgerReferences": 1,
+      "rehearsalRecordReferences": 85,
+      "rehearsalRejectedRecordReferences": 0,
+      "rehearsalScenarioReferences": null
+    },
+    "originalEvidenceValidated": false,
+    "restorable": false,
+    "automaticallyImported": false,
+    "liveChainRechecked": false,
+    "authenticated": false,
+    "authorizesExecution": false
+  },
+  "after": {
+    "schema": "threecore.saved-file-inspection.v3",
+    "sourceSchema": "threecore.operation-rehearsal.v2",
+    "byteLength": 17097,
+    "title": "運用リハーサルの記録",
+    "target": "rehearsal-record",
+    "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+    "validation": "validated-structure",
+    "simulationOnly": true,
+    "checksumVerified": false,
+    "sourceDigest": null,
+    "textDigest": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1",
+    "scope": {
+      "reportCount": null,
+      "archivedReports": null,
+      "entryReferences": null,
+      "draftReferences": null,
+      "archivedEntryReferences": null,
+      "restrictedEntryReferences": null,
+      "incompleteDraftReferences": null,
+      "emptyDraftReferences": null,
+      "agents": [
+        "DAT"
+      ],
+      "annotationValuesIncluded": false,
+      "repeatedReferencesMayExist": true,
+      "rehearsalLedgerReferences": 1,
+      "rehearsalRecordReferences": 85,
+      "rehearsalRejectedRecordReferences": 0,
+      "rehearsalScenarioReferences": null
+    },
+    "originalEvidenceValidated": false,
+    "restorable": false,
+    "automaticallyImported": false,
+    "liveChainRechecked": false,
+    "authenticated": false,
+    "authorizesExecution": false
+  },
+  "sourceTextMatches": false,
+  "parsedJSONValuesMatch": false,
+  "differenceCount": 86,
+  "differences": [
+    {
+      "path": "/policy/paused",
+      "kind": "value"
+    },
+    {
+      "path": "/events/0/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/1/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/2/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/3/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/4/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/5/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/6/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/7/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/8/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/9/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/10/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/11/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/12/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/13/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/14/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/15/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/16/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/17/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/18/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/19/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/20/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/21/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/22/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/23/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/24/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/25/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/26/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/27/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/28/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/29/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/30/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/31/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/32/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/33/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/34/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/35/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/36/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/37/amount",
+      "kind": "value"
+    },
+    {
+      "path": "/events/38/amount",
+      "kind": "value"
+    }
+  ],
+  "differencesTruncated": true,
+  "listedDifferences": 40,
+  "valuesIncluded": false,
+  "arrayMatching": "position",
+  "containsOriginalEvidence": false,
+  "restorable": false,
+  "authenticated": false,
+  "liveChainRechecked": false,
+  "authorizesExecution": false
+}
