@@ -1,0 +1,549 @@
+{
+  "baselineSource": "723d656",
+  "currentRecordsModuleSha256": "49cee2608021bf744bddf90d87cd885693ac2daf54aa0d5df8c870014a087713",
+  "synthetic": true,
+  "sourceRecords": 600,
+  "iterationsPerRound": 300,
+  "rounds": [
+    {
+      "round": 1,
+      "baselineMs": 2139.9568,
+      "currentMs": 14.47460000000001
+    },
+    {
+      "round": 2,
+      "currentMs": 39.166699999999764,
+      "baselineMs": 2004.7416999999996
+    },
+    {
+      "round": 3,
+      "baselineMs": 1731.9634999999998,
+      "currentMs": 8.436500000000706
+    },
+    {
+      "round": 4,
+      "currentMs": 7.34059999999954,
+      "baselineMs": 2316.7308999999996
+    },
+    {
+      "round": 5,
+      "baselineMs": 1979.346300000001,
+      "currentMs": 7.58640000000014
+    }
+  ],
+  "baselineMedianMs": 2004.7416999999996,
+  "currentMedianMs": 8.436500000000706,
+  "ratio": 237.62717951755252,
+  "comparisons": [
+    {
+      "name": "queryRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": ""
+      },
+      "sha256": "4e57c470dfd50ba3cda952153ac442c6701090403f90797b473125f636978a60",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "",
+        "searchScope": "recorded"
+      },
+      "sha256": "58a8d626a635a071b9117ccbe43766acd9305736cb34d6607be6fbb628d5ba34",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "",
+        "searchScope": "both"
+      },
+      "sha256": "44c802a207274c89e6bcd5b5b181a3f04273292f5eae0b36f49a7249b6d6a143",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalReasonRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "6d480fed9050bd13ff2e0c5e9a0d640c4bde5c8d8d1f9e0ef463403e8a597843",
+      "byteIdentical": true
+    },
+    {
+      "name": "summarizeRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "5ad3c19c9974d53d7f75ff6771e2cf42f0c71df3fa48f49a17dda056b174c6c5",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalRecords",
+      "query": {
+        "agent": "DAT",
+        "kind": "all",
+        "decision": "all",
+        "search": ""
+      },
+      "sha256": "e0c80a1b0c5bd99e0186244e477c813e2d1d24c8159f29ca68b79b19a6e69155",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "DAT",
+        "kind": "all",
+        "decision": "all",
+        "search": "",
+        "searchScope": "recorded"
+      },
+      "sha256": "48a0d38e6c3c1870b30f758da5307f39bb68d6f8e52a145053645cb36111660a",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "DAT",
+        "kind": "all",
+        "decision": "all",
+        "search": "",
+        "searchScope": "both"
+      },
+      "sha256": "0c890255111df59f277614924a25897512058d8c531d6cf7bcee03c4cda5017a",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalReasonRecords",
+      "query": {
+        "agent": "DAT",
+        "kind": "all",
+        "decision": "all",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "0e678e6b76fc5a54b70dc86607ff36e7eabab2c594a7c3ff901f322d8f0984c1",
+      "byteIdentical": true
+    },
+    {
+      "name": "summarizeRehearsalRecords",
+      "query": {
+        "agent": "DAT",
+        "kind": "all",
+        "decision": "all",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "09d16d07dc3871b2cf06b0fd76737d04a0ead716409e0dbaaffe93963acce3ba",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalRecords",
+      "query": {
+        "agent": "EMA",
+        "kind": "deposit",
+        "decision": "all",
+        "search": ""
+      },
+      "sha256": "3552c3269e1a196be2e6aea6327ef913b46d89d1a7024ad61305669dac1d057f",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "EMA",
+        "kind": "deposit",
+        "decision": "all",
+        "search": "",
+        "searchScope": "recorded"
+      },
+      "sha256": "3a15e67f1f5e6170d774d2e4fdc3b73dc450fc4d03365f4a613728a6d2763160",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "EMA",
+        "kind": "deposit",
+        "decision": "all",
+        "search": "",
+        "searchScope": "both"
+      },
+      "sha256": "ce477c0ffc339deec7979244f3e1655ad6e51dde762c006e331ef32ca953065c",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalReasonRecords",
+      "query": {
+        "agent": "EMA",
+        "kind": "deposit",
+        "decision": "all",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "72a005c7d9c74a6889eefd00617a0a745a4f6c3010dec38287f0bb47974c848f",
+      "byteIdentical": true
+    },
+    {
+      "name": "summarizeRehearsalRecords",
+      "query": {
+        "agent": "EMA",
+        "kind": "deposit",
+        "decision": "all",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "c36641dcf96ece2ee58dd16539bea22f411502271b13fabecfc60df53a329f47",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "rejected",
+        "search": ""
+      },
+      "sha256": "a8916ed5545f352c4c33d46266a3655d25ea97fd79f2aa52b1c681612be29478",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "rejected",
+        "search": "",
+        "searchScope": "recorded"
+      },
+      "sha256": "966a925a9e3c6218180afa4420d9dc2979648c1297e43d56fd5b72cba1fa7137",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "rejected",
+        "search": "",
+        "searchScope": "both"
+      },
+      "sha256": "adca43862c1a5564437b4cb21301352e12d17f0be9822b30d30b842e8eb494f4",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalReasonRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "rejected",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "34e2f41891554026514e5f81294987185c66f6e18f116cf0175a05f65f9e333d",
+      "byteIdentical": true
+    },
+    {
+      "name": "summarizeRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "rejected",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "6133d658af68e2e8f4c013bcbd93d1b178b0f5cdb0149d06b855c9a3baeef3a7",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "deposit-199"
+      },
+      "sha256": "b2a070293c454fbc82a9c19f9dd44ae520c2b01ca6e73858b742eb43535452d4",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "deposit-199",
+        "searchScope": "recorded"
+      },
+      "sha256": "b724252217bc8fdf958b000f2dcb87c025a4e9fc49bae2113c1fa29cf84276c5",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "deposit-199",
+        "searchScope": "both"
+      },
+      "sha256": "294195a994fa2da39c419fa39f39345d73b5021a4b396368b837f24c83338859",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalReasonRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "deposit-199",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "d5b6202a6e0cfc32a0e5129627aa22301e2781c4fa7ec7b83f2e3241a3e15ba7",
+      "byteIdentical": true
+    },
+    {
+      "name": "summarizeRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "deposit-199",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "219af8bdbbe072da428a58ad572a664a513b1279be87b8bdb32e004c1e12958e",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "absent"
+      },
+      "sha256": "0ab50d8b7e2b1a0737cbab17f80852021d7b1874d97fc17ee0e6f3277ddf8d68",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "absent",
+        "searchScope": "recorded"
+      },
+      "sha256": "f7d896ba40fcd03f9e53162b39573ad60e934cceabd8d99a1bd6b6ee0c89acc0",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "absent",
+        "searchScope": "both"
+      },
+      "sha256": "d61c60adf977106fa3375cb45d621403196de367372b696cb05e08ade3346af0",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalReasonRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "absent",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "d7520f43b9253372013a06ad22dcc0c3e7ddec0e4e128fe6aaf6c3bfb40e7d51",
+      "byteIdentical": true
+    },
+    {
+      "name": "summarizeRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": "absent",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "71043104f064135a8339e9c0815a753cb28b70dbaff44c6b051b9d187248de04",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": " DAT DEPOSIT-1 "
+      },
+      "sha256": "6e9a91cf3f64010ebc8939ea92a1eaf3ca4dc3687a9c0037dc4f60107a9815e8",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": " DAT DEPOSIT-1 ",
+        "searchScope": "recorded"
+      },
+      "sha256": "d2adf6566d16222556697fd7f987536456420049370d4924b878903028f0f99c",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": " DAT DEPOSIT-1 ",
+        "searchScope": "both"
+      },
+      "sha256": "b57680fe5402be0c9b3df95a46d4cb1e0254f29f4bcf888f4a8fefb27f3efecd",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalReasonRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": " DAT DEPOSIT-1 ",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "5d83058b4009def5928dedad66028893651e09e778e1c162ecaa43e61304d729",
+      "byteIdentical": true
+    },
+    {
+      "name": "summarizeRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "all",
+        "decision": "all",
+        "search": " DAT DEPOSIT-1 ",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "5cf065245599a7f2c53eeabe3e7bc23f904ee305aa85103f5e92e9c1bef52898",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "settle",
+        "decision": "all",
+        "search": ""
+      },
+      "sha256": "e56b9ed93c50994ffb81baa8e5b3178c97bd54e80fcc61d6a8278a2b1977b21e",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "settle",
+        "decision": "all",
+        "search": "",
+        "searchScope": "recorded"
+      },
+      "sha256": "4c5827d1f6fbff7dfaad7b5226afbddd9d7e6caaf128354f8887b29fa926dfb4",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalContextRecords",
+      "query": {
+        "agent": "all",
+        "kind": "settle",
+        "decision": "all",
+        "search": "",
+        "searchScope": "both"
+      },
+      "sha256": "1bc3aea199b980e946a80ec2441c4ec8b8a38f72938fc6393a243f4a7517a957",
+      "byteIdentical": true
+    },
+    {
+      "name": "queryRehearsalReasonRecords",
+      "query": {
+        "agent": "all",
+        "kind": "settle",
+        "decision": "all",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "9ae3f39d873b75ca141449ada40523f079bb6279f9e63aca2434fd2888a16fc0",
+      "byteIdentical": true
+    },
+    {
+      "name": "summarizeRehearsalRecords",
+      "query": {
+        "agent": "all",
+        "kind": "settle",
+        "decision": "all",
+        "search": "",
+        "searchScope": "stored",
+        "reason": "all"
+      },
+      "sha256": "405b5c79f06b0b1628ace934e1c45f3a961774ec2d526da24c4ab69f13a8a4f8",
+      "byteIdentical": true
+    },
+    {
+      "name": "encodeRehearsalRecordReport",
+      "sha256": "69c905a04ee51e600ee0c095b92526c5753e1bbbfac0cb16e2015aa522963c8c",
+      "byteIdentical": true
+    },
+    {
+      "name": "rehearsalRecordCsv",
+      "sha256": "df2352ce9efa83e442b9ef3260e66a082cce58483a6296acc76288a85a256cfb",
+      "byteIdentical": true
+    },
+    {
+      "name": "encodeRehearsalRecordSummary",
+      "sha256": "fc573aa464ab41ea3bc41fd32ff67107742148763466ea1b11e6fcc586869be3",
+      "byteIdentical": true
+    },
+    {
+      "name": "rehearsalRecordSummaryCsv",
+      "sha256": "c931a1201f0d512785ed4a5361b901c8dbcee8dd4a57263e2a14580b1ff46720",
+      "byteIdentical": true
+    }
+  ],
+  "scope": "Node-only repeated identical query and summary calls on a prebuilt immutable 600-record index; excludes DOM, exports, network and index construction",
+  "wallClockImprovementGuaranteed": false
+}
