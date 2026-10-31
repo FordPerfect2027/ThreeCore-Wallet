@@ -1,0 +1,65 @@
+{
+  "source": "565c379",
+  "syntheticOnly": true,
+  "inputFilesUnchanged": true,
+  "results": [
+    {
+      "input": "source-report.json",
+      "args": [
+        "--path",
+        "extra0",
+        "--kind",
+        "unexpected",
+        "--page",
+        "3"
+      ],
+      "output": "report-page-3.json",
+      "exitCode": 2,
+      "matchesCore": true,
+      "totalDifferences": 103,
+      "matchedDifferences": 100
+    },
+    {
+      "input": "source-report.json",
+      "args": [
+        "--path",
+        "not-present"
+      ],
+      "output": "report-no-matches.json",
+      "exitCode": 2,
+      "matchesCore": true,
+      "totalDifferences": 103,
+      "matchedDifferences": 0
+    },
+    {
+      "input": "source-evidence.json",
+      "args": [
+        "--path",
+        "extra08",
+        "--kind",
+        "unexpected",
+        "--evidence",
+        "receipt"
+      ],
+      "output": "receipt-query.json",
+      "exitCode": 2,
+      "matchesCore": true,
+      "totalDifferences": 87,
+      "matchedDifferences": 7
+    },
+    {
+      "input": "source-evidence.json",
+      "args": [
+        "--path",
+        "extra10",
+        "--evidence",
+        "source"
+      ],
+      "output": "evidence-source-query.json",
+      "exitCode": 2,
+      "matchesCore": true,
+      "totalDifferences": 103,
+      "matchedDifferences": 3
+    }
+  ]
+}
