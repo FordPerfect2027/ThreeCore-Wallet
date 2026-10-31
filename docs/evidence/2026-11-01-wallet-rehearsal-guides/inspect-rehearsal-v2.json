@@ -1,0 +1,38 @@
+{
+  "schema": "threecore.saved-file-inspection.v3",
+  "sourceSchema": "threecore.operation-rehearsal.v2",
+  "byteLength": 1096,
+  "title": "運用リハーサルの記録",
+  "target": "rehearsal-record",
+  "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+  "validation": "validated-structure",
+  "simulationOnly": true,
+  "checksumVerified": false,
+  "sourceDigest": null,
+  "textDigest": "afb36e2d9e8f46d5478e3291937abe6c97babc3ad46855c1bd13031ac9c8eb5f",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "EMA"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "rehearsalLedgerReferences": 1,
+    "rehearsalRecordReferences": 1,
+    "rehearsalRejectedRecordReferences": 1,
+    "rehearsalScenarioReferences": null
+  },
+  "originalEvidenceValidated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

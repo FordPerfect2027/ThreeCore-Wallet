@@ -1,0 +1,122 @@
+{
+  "source": "ef8f1a0",
+  "synthetic": true,
+  "fixtureSource": "test/helpers/workspace-fixtures.js#savedRehearsalGuideFixtures",
+  "files": [
+    {
+      "name": "rehearsal-v1.json",
+      "sha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "counts": [
+        1,
+        2,
+        0,
+        null
+      ]
+    },
+    {
+      "name": "rehearsal-v2.json",
+      "sha256": "afb36e2d9e8f46d5478e3291937abe6c97babc3ad46855c1bd13031ac9c8eb5f",
+      "counts": [
+        1,
+        1,
+        1,
+        null
+      ]
+    },
+    {
+      "name": "rehearsal-workspace.json",
+      "sha256": "f933386f4367458cfb8cdaf64e0f2c1d433ce5eeb318f49b82d1ef66b34a92c7",
+      "counts": [
+        2,
+        3,
+        1,
+        null
+      ]
+    },
+    {
+      "name": "rehearsal-cases.json",
+      "sha256": "b64a20a28e090d3d23a5b519430a726741634bc556eda80010f7c55403a3fe7b",
+      "counts": [
+        2,
+        4,
+        2,
+        1
+      ]
+    },
+    {
+      "name": "rehearsal-session.json",
+      "sha256": "491b17dc86b8790213e20d7472eb82e58004d01b33bbd06f69316e55a3921a47",
+      "counts": [
+        4,
+        7,
+        3,
+        1
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "script": "scripts/inspect-wallet-saved-file.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-file.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-file.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-file.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-file.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-batch.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-batch.js",
+      "exit": 2
+    }
+  ],
+  "opened": [
+    {
+      "name": "rehearsal-v1.json",
+      "accepted": true,
+      "simulationOnly": true
+    },
+    {
+      "name": "rehearsal-v2.json",
+      "accepted": true,
+      "simulationOnly": true
+    },
+    {
+      "name": "rehearsal-workspace.json",
+      "accepted": true,
+      "simulationOnly": true
+    },
+    {
+      "name": "rehearsal-cases.json",
+      "accepted": true,
+      "simulationOnly": true
+    },
+    {
+      "name": "rehearsal-session.json",
+      "accepted": true,
+      "simulationOnly": true
+    }
+  ],
+  "allExternalHashesMatch": true,
+  "allInternalOriginalsValidated": false,
+  "browserAndCliInspectionsIdentical": true,
+  "originalsUnchanged": true,
+  "captureMethod": "shared panels with real File objects in Node and actual local CLI commands; isolated native browser recorded separately",
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "threecore.saved-file-inspection.v3",
+  "sourceSchema": "threecore.operation-rehearsal-scenario-set.v1",
+  "byteLength": 3504,
+  "title": "運用リハーサルの比較ケース集",
+  "target": "rehearsal-cases",
+  "destinationMessage": "運用リハーサルの仮想条件を比べるケース集です。「比較ケースを名前付きで残す」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+  "validation": "validated-structure",
+  "simulationOnly": true,
+  "checksumVerified": false,
+  "sourceDigest": null,
+  "textDigest": "b64a20a28e090d3d23a5b519430a726741634bc556eda80010f7c55403a3fe7b",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "rehearsalLedgerReferences": 2,
+    "rehearsalRecordReferences": 4,
+    "rehearsalRejectedRecordReferences": 2,
+    "rehearsalScenarioReferences": 1
+  },
+  "originalEvidenceValidated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

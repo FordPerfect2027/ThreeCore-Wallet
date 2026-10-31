@@ -1,0 +1,21 @@
+✔ rehearsal source guidance recalculates references without presenting practice as chain evidence: rehearsal-v1.json (43.5673ms)
+✔ rehearsal guide refuses simulation flag changes and extra input fields: rehearsal-v1.json (3.8551ms)
+✔ rehearsal source guidance recalculates references without presenting practice as chain evidence: rehearsal-v2.json (10.3244ms)
+✔ rehearsal guide refuses simulation flag changes and extra input fields: rehearsal-v2.json (15.1696ms)
+✔ rehearsal source guidance recalculates references without presenting practice as chain evidence: rehearsal-workspace.json (51.6188ms)
+✔ rehearsal guide refuses simulation flag changes and extra input fields: rehearsal-workspace.json (2.5681ms)
+✔ rehearsal source guidance recalculates references without presenting practice as chain evidence: rehearsal-cases.json (32.5009ms)
+✔ rehearsal guide refuses simulation flag changes and extra input fields: rehearsal-cases.json (4.1573ms)
+✔ rehearsal source guidance recalculates references without presenting practice as chain evidence: rehearsal-session.json (31.8118ms)
+✔ rehearsal guide refuses simulation flag changes and extra input fields: rehearsal-session.json (7.3686ms)
+✔ mixed rehearsal batches preserve simulation scope, external hashes and structure-only outcomes (32.3901ms)
+✔ empty practice collections use zero counts, while malformed nested sources never gain guidance (8.8437ms)
+✔ actual local inspect and batch CLI retain practice-only scope and exact source hashes (2383.3766ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2812.7616
