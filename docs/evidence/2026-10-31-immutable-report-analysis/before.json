@@ -1,0 +1,84 @@
+{
+  "source": "28f2485",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "arch": "x64",
+  "synthetic": true,
+  "workload": "Seven canonical immutable report snapshots including duplicates, gaps, archived partial evidence and conflicts; two warmups then fifteen timed repetitions per operation; serialization/hash excluded from timings",
+  "sourceFiles": [
+    {
+      "path": "src/period-report-engine.js",
+      "sha256": "027b4a32b9d28795431416beafa1e348e99ab1b3f320ff9749434658bb4e96d8"
+    },
+    {
+      "path": "src/report-set-engine.js",
+      "sha256": "7386c0ca808fcf91fc32de30840c1384a4c8387e6cf532cfae3a6aadc6882914"
+    },
+    {
+      "path": "src/report-set-timeline.js",
+      "sha256": "8088117e2119d01c358c3c9f6ccb716b2b3d4cf06077e71e4260e072c19fd41d"
+    }
+  ],
+  "rows": [
+    {
+      "name": "period-analysis",
+      "iterations": 15,
+      "medianMs": 1.8256000000001222,
+      "meanMs": 10.302366666666634,
+      "minMs": 1.5140999999998712,
+      "maxMs": 77.769,
+      "outputBytes": 10274,
+      "outputSha256": "1e103f9b7a853fe77721861978eb3e93a776ad4e5b51c74bbce37baa50f9f53f"
+    },
+    {
+      "name": "set-analysis",
+      "iterations": 15,
+      "medianMs": 49.259599999999864,
+      "meanMs": 51.431560000000005,
+      "minMs": 36.782500000000255,
+      "maxMs": 72.00689999999986,
+      "outputBytes": 33164,
+      "outputSha256": "4f8ae21691b89b737660076d6f80e186bec32ae867b99ca27d4424adfab4cb1c"
+    },
+    {
+      "name": "timeline",
+      "iterations": 15,
+      "medianMs": 47.48540000000003,
+      "meanMs": 49.532966666666624,
+      "minMs": 42.620400000000245,
+      "maxMs": 75.70730000000003,
+      "outputBytes": 36795,
+      "outputSha256": "504f619b504e3ca3a3a6b80d8ffc7a9e497201b0b531c828dc2ca2b9b37719ae"
+    },
+    {
+      "name": "missing-queue",
+      "iterations": 15,
+      "medianMs": 34.5612000000001,
+      "meanMs": 38.88698666666666,
+      "minMs": 33.705799999999726,
+      "maxMs": 69.86189999999988,
+      "outputBytes": 769,
+      "outputSha256": "e87e6f8128eb4e9297833b9ab39d84d46954f715bb44e89df3294db46c832074"
+    },
+    {
+      "name": "check-search",
+      "iterations": 15,
+      "medianMs": 33.964200000000346,
+      "meanMs": 35.95906666666664,
+      "minMs": 33.26560000000063,
+      "maxMs": 46.07290000000012,
+      "outputBytes": 17753,
+      "outputSha256": "9ec8f38082d03ccf960a7edb8984a9e1973442e8e219d44294b8d23ea71b2c13"
+    },
+    {
+      "name": "html-export",
+      "iterations": 15,
+      "medianMs": 79.50510000000031,
+      "meanMs": 81.8231000000001,
+      "minMs": 66.4414999999999,
+      "maxMs": 132.4973,
+      "outputBytes": 14441,
+      "outputSha256": "948379d06c0cc95cce3f9381243d78f1e91110a5237d5cb8780c3fa9ebf060b8"
+    }
+  ]
+}
