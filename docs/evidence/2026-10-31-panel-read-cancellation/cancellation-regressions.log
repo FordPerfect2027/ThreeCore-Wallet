@@ -1,0 +1,41 @@
+✔ check cancellation must preserve a newer operation over older clear (40.6588ms)
+✔ check cancellation must preserve a newer operation over older paste (12.6067ms)
+✔ check cancellation must preserve a newer operation over older file (7.3046ms)
+✔ check cancellation must preserve a newer operation over older dispose (2.5332ms)
+✔ cases cancellation must preserve a newer operation over older clear (11.4371ms)
+✔ cases cancellation must preserve a newer operation over older paste (9.1092ms)
+✔ cases cancellation must preserve a newer operation over older file (8.9837ms)
+✔ cases cancellation must preserve a newer operation over older dispose (2.7559ms)
+✔ session cancellation must preserve a newer operation over older clear (18.4976ms)
+✔ session cancellation must preserve a newer operation over older paste (9.378ms)
+✔ session cancellation must preserve a newer operation over older file (10.2994ms)
+✔ session cancellation must preserve a newer operation over older dispose (3.8977ms)
+✔ report cancellation must preserve a newer operation over older clear (19.6167ms)
+✔ report cancellation must preserve a newer operation over older paste (5.4682ms)
+✔ report cancellation must preserve a newer operation over older file (5.4401ms)
+✔ report cancellation must preserve a newer operation over older dispose (2.0792ms)
+✔ workspace cancellation must preserve a newer operation over older clear (32.4956ms)
+✔ workspace cancellation must preserve a newer operation over older paste (24.3204ms)
+✔ workspace cancellation must preserve a newer operation over older file (24.207ms)
+✔ workspace cancellation must preserve a newer operation over older dispose (14.0389ms)
+✔ workspace review survives main-page undo during cancellation (41.2111ms)
+✔ workspace review survives main-page form-restore during cancellation (76.4995ms)
+✔ workspace review survives main-page example during cancellation (42.4916ms)
+✔ workspace review survives main-page calculate during cancellation (37.9155ms)
+✔ workspace review survives main-page agent during cancellation (36.716ms)
+✔ workspace review survives main-page append-preview during cancellation (35.5815ms)
+✔ report source survives cancelling its pending checksum file during clear (13.4152ms)
+✔ report source survives cancelling its pending checksum file during paste (11.6941ms)
+✔ report source survives cancelling its pending checksum file during file (11.8051ms)
+✔ report source survives cancelling its pending checksum file during run (13.0558ms)
+✔ single-record read cancellation cannot erase a newer workspace preview during cancel (26.523ms)
+✔ single-record read cancellation cannot erase a newer workspace preview during example (31.4804ms)
+✔ single-record read cancellation cannot erase a newer workspace preview during calculate (23.5187ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1066.716

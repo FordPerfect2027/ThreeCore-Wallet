@@ -1,0 +1,336 @@
+✖ check cancellation must preserve a newer operation over older clear (1524.6178ms)
+✖ check cancellation must preserve a newer operation over older paste (1516.1928ms)
+✖ check cancellation must preserve a newer operation over older file (1486.4125ms)
+✖ check cancellation must preserve a newer operation over older dispose (1515.8273ms)
+✖ cases cancellation must preserve a newer operation over older clear (1536.9574ms)
+✖ cases cancellation must preserve a newer operation over older paste (1509.036ms)
+✖ cases cancellation must preserve a newer operation over older file (1550.4608ms)
+✖ cases cancellation must preserve a newer operation over older dispose (1520.9173ms)
+✖ session cancellation must preserve a newer operation over older clear (1512.4877ms)
+✖ session cancellation must preserve a newer operation over older paste (1487.9157ms)
+✖ session cancellation must preserve a newer operation over older file (1530.8704ms)
+✖ session cancellation must preserve a newer operation over older dispose (2126.3639ms)
+✔ report cancellation must preserve a newer operation over older clear (28.507ms)
+✖ report cancellation must preserve a newer operation over older paste (1502.1021ms)
+✖ report cancellation must preserve a newer operation over older file (1495.6439ms)
+✖ report cancellation must preserve a newer operation over older dispose (1512.1453ms)
+✖ workspace cancellation must preserve a newer operation over older clear (1577.8324ms)
+✖ workspace cancellation must preserve a newer operation over older paste (1535.1436ms)
+✖ workspace cancellation must preserve a newer operation over older file (1515.8707ms)
+✔ workspace cancellation must preserve a newer operation over older dispose (1541.3757ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 2
+ℹ fail 18
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29979.1513
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ check cancellation must preserve a newer operation over older clear (1524.6178ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ check cancellation must preserve a newer operation over older paste (1516.1928ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ check cancellation must preserve a newer operation over older file (1486.4125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ check cancellation must preserve a newer operation over older dispose (1515.8273ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:65)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ cases cancellation must preserve a newer operation over older clear (1536.9574ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ cases cancellation must preserve a newer operation over older paste (1509.036ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ cases cancellation must preserve a newer operation over older file (1550.4608ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ cases cancellation must preserve a newer operation over older dispose (1520.9173ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:65)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ session cancellation must preserve a newer operation over older clear (1512.4877ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ session cancellation must preserve a newer operation over older paste (1487.9157ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ session cancellation must preserve a newer operation over older file (1530.8704ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ session cancellation must preserve a newer operation over older dispose (2126.3639ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:65)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ report cancellation must preserve a newer operation over older paste (1502.1021ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ report cancellation must preserve a newer operation over older file (1495.6439ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ report cancellation must preserve a newer operation over older dispose (1512.1453ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:65)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ workspace cancellation must preserve a newer operation over older clear (1577.8324ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ workspace cancellation must preserve a newer operation over older paste (1535.1436ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cancellation-regressions-draft.mjs:35:123
+✖ workspace cancellation must preserve a newer operation over older file (1515.8707ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cancellation-regressions-draft.mjs:47:93)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
