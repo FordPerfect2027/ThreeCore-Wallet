@@ -1,0 +1,47 @@
+{
+  "synthetic": true,
+  "result": [
+    {
+      "value": "",
+      "remainingBlocks": [
+        "20"
+      ],
+      "status": "選択した記録を履歴から削除しました。 履歴 1件。"
+    },
+    {
+      "value": " ",
+      "remainingBlocks": [
+        "20"
+      ],
+      "status": "選択した記録を履歴から削除しました。 履歴 1件。"
+    },
+    {
+      "value": "00",
+      "remainingBlocks": [
+        "20"
+      ],
+      "status": "選択した記録を履歴から削除しました。 履歴 1件。"
+    },
+    {
+      "value": "0e0",
+      "remainingBlocks": [
+        "20"
+      ],
+      "status": "選択した記録を履歴から削除しました。 履歴 1件。"
+    },
+    {
+      "value": "-0",
+      "remainingBlocks": [
+        "20"
+      ],
+      "status": "選択した記録を履歴から削除しました。 履歴 1件。"
+    },
+    {
+      "value": "0x0",
+      "remainingBlocks": [
+        "20"
+      ],
+      "status": "選択した記録を履歴から削除しました。 履歴 1件。"
+    }
+  ]
+}
