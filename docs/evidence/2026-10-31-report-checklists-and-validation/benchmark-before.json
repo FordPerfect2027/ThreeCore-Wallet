@@ -1,0 +1,74 @@
+{
+  "source": "57090d9",
+  "runtime": "v24.19.0",
+  "platform": "win32",
+  "syntheticReports": 7,
+  "rows": [
+    {
+      "name": "period-draft",
+      "iterations": 20,
+      "samples": [
+        1.4045399999999972,
+        1.2577300000000036,
+        1.2579649999999902
+      ],
+      "medianMs": 1.2579649999999902,
+      "resultSha256": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f"
+    },
+    {
+      "name": "period-report",
+      "iterations": 10,
+      "samples": [
+        4.44686999999999,
+        6.726549999999998,
+        4.336320000000001
+      ],
+      "medianMs": 4.44686999999999,
+      "resultSha256": "acd37414e8786440996d1ba65eb6305a39445f5ea6e27987b0a22cc70ad73221"
+    },
+    {
+      "name": "report-history",
+      "iterations": 3,
+      "samples": [
+        76.5644666666667,
+        80.18716666666667,
+        66.20056666666672
+      ],
+      "medianMs": 76.5644666666667,
+      "resultSha256": "badf1231be17916c2b42f14af21515b11e64faea1d218e9bc5131e08aa9c0844"
+    },
+    {
+      "name": "report-set",
+      "iterations": 3,
+      "samples": [
+        69.11959999999999,
+        61.97276666666661,
+        67.7461
+      ],
+      "medianMs": 67.7461,
+      "resultSha256": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e"
+    },
+    {
+      "name": "filtered-diagnostics",
+      "iterations": 1,
+      "samples": [
+        1076.9370000000008,
+        1098.0277999999998,
+        1085.8002999999999
+      ],
+      "medianMs": 1085.8002999999999,
+      "resultSha256": "9ec8f38082d03ccf960a7edb8984a9e1973442e8e219d44294b8d23ea71b2c13"
+    },
+    {
+      "name": "filtered-checklist-csv",
+      "iterations": 1,
+      "samples": [
+        2225.2445000000007,
+        2092.1088,
+        2595.964899999999
+      ],
+      "medianMs": 2225.2445000000007,
+      "resultSha256": "e34cf9ad6b80b24ffdf2a7d7dda77788a8c34d236af22c33cf317660cc710811"
+    }
+  ]
+}

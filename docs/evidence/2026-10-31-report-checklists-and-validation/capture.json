@@ -1,0 +1,70 @@
+{
+  "synthetic": true,
+  "source": "db8fb98",
+  "sourceUnchanged": true,
+  "rows": [
+    {
+      "name": "all",
+      "query": {
+        "agent": "all",
+        "severity": "all",
+        "search": ""
+      },
+      "total": 15,
+      "matched": 15,
+      "counts": {
+        "conflict": 8,
+        "missing": 0,
+        "review": 6,
+        "information": 1
+      },
+      "sourceContinuous": false,
+      "bytes": 9580,
+      "summaryRow": true,
+      "restorable": false,
+      "sha256": "4a4ead0520e5893f6a39048123ecadd79a5d3741da86284bd779139ca8b5ed55"
+    },
+    {
+      "name": "conflicts",
+      "query": {
+        "agent": "EMA",
+        "severity": "conflict",
+        "search": ""
+      },
+      "total": 15,
+      "matched": 8,
+      "counts": {
+        "conflict": 8,
+        "missing": 0,
+        "review": 6,
+        "information": 1
+      },
+      "sourceContinuous": false,
+      "bytes": 5762,
+      "summaryRow": true,
+      "restorable": false,
+      "sha256": "572273b1f7612827afd78a7e2fc2567851958ba2efdae2ea1caaf942560e9333"
+    },
+    {
+      "name": "empty",
+      "query": {
+        "agent": "all",
+        "severity": "all",
+        "search": "no matching record"
+      },
+      "total": 15,
+      "matched": 0,
+      "counts": {
+        "conflict": 8,
+        "missing": 0,
+        "review": 6,
+        "information": 1
+      },
+      "sourceContinuous": false,
+      "bytes": 617,
+      "summaryRow": true,
+      "restorable": false,
+      "sha256": "459aea3146ed5bbfefb932c9aaf795c02592c87e306715fa09398726aa23f01f"
+    }
+  ]
+}

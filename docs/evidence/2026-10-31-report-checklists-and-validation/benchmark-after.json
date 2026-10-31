@@ -1,0 +1,74 @@
+{
+  "source": "57090d9",
+  "runtime": "v24.19.0",
+  "platform": "win32",
+  "syntheticReports": 7,
+  "rows": [
+    {
+      "name": "period-draft",
+      "iterations": 20,
+      "samples": [
+        0.001290000000000191,
+        0.0037049999999965166,
+        0.00044499999999629835
+      ],
+      "medianMs": 0.001290000000000191,
+      "resultSha256": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f"
+    },
+    {
+      "name": "period-report",
+      "iterations": 10,
+      "samples": [
+        0.07408000000000356,
+        0.0008899999999925967,
+        0.00047999999999319697
+      ],
+      "medianMs": 0.0008899999999925967,
+      "resultSha256": "acd37414e8786440996d1ba65eb6305a39445f5ea6e27987b0a22cc70ad73221"
+    },
+    {
+      "name": "report-history",
+      "iterations": 3,
+      "samples": [
+        0.0033000000000053356,
+        0.0007666666666636957,
+        0.003366666666655268
+      ],
+      "medianMs": 0.0033000000000053356,
+      "resultSha256": "badf1231be17916c2b42f14af21515b11e64faea1d218e9bc5131e08aa9c0844"
+    },
+    {
+      "name": "report-set",
+      "iterations": 3,
+      "samples": [
+        0.0031333333333426103,
+        0.0010666666666641806,
+        0.003633333333330787
+      ],
+      "medianMs": 0.0031333333333426103,
+      "resultSha256": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e"
+    },
+    {
+      "name": "filtered-diagnostics",
+      "iterations": 1,
+      "samples": [
+        314.38390000000004,
+        310.2017999999998,
+        366.8442000000002
+      ],
+      "medianMs": 314.38390000000004,
+      "resultSha256": "9ec8f38082d03ccf960a7edb8984a9e1973442e8e219d44294b8d23ea71b2c13"
+    },
+    {
+      "name": "filtered-checklist-csv",
+      "iterations": 1,
+      "samples": [
+        427.7258999999999,
+        421.3298,
+        461.63509999999997
+      ],
+      "medianMs": 427.7258999999999,
+      "resultSha256": "e34cf9ad6b80b24ffdf2a7d7dda77788a8c34d236af22c33cf317660cc710811"
+    }
+  ]
+}
