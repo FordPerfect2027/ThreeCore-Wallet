@@ -1,0 +1,91 @@
+✔ offline expected-outcome report equals browser encoder and does not write input (66.08ms)
+✔ valid disagreement exits two with concrete comparison and no stderr error (37.4112ms)
+✔ invalid JSON exits one without partial output (20.8463ms)
+✔ duplicate keys exits one without partial output (27.1872ms)
+✔ UTF8 exits one without partial output (22.58ms)
+✔ size exits one without partial output (17.0908ms)
+✔ BOM exits one without partial output (16.2352ms)
+✔ invalid arguments, directory and missing file do not generate a report (14.2115ms)
+✔ offline review reproduces browser receipt exactly and does not modify report (67.9844ms)
+✔ wrong expected checksum produces a mismatch receipt and exit two (31.2798ms)
+✔ altered derived values produce a mismatch receipt and exit two (32.6857ms)
+✔ invalid JSON emits no partial receipt (9.3022ms)
+✔ invalid UTF-8 emits no partial receipt (7.4657ms)
+✔ UTF-8 BOM emits no partial receipt (8.9197ms)
+✔ oversized emits no partial receipt (20.6859ms)
+✔ unsupported receipt emits no partial receipt (10.562ms)
+✔ bad arguments, absent paths and directories fail (10.4891ms)
+✔ different line endings retain byte-specific checksum while recomputation still agrees (19.9448ms)
+✔ a faithful expectation discrepancy exits zero for report fidelity and preserves the failed outcome (59.4111ms)
+✔ filtered query receipt is exact and does not modify the source file (40.6546ms)
+✔ query output tampering yields two while invalid source conditions yield one without receipt (30.275ms)
+✔ saved checksum file fills the optional value and requires explicit recheck of retained source (78.3734ms)
+✔ checksum can be selected before its source without enabling a source-less run (28.4708ms)
+✔ invalid checksum file preserves the existing expected value and receipt (30.4538ms)
+✔ empty checksum file preserves the existing expected value and receipt (31.8838ms)
+✔ filename checksum file preserves the existing expected value and receipt (32.6769ms)
+✔ oversized checksum file is rejected before reading its contents (18.7296ms)
+✔ late checksum completion cannot overwrite a newer clear (27.3399ms)
+✔ late checksum completion cannot overwrite a newer source (30.0512ms)
+✔ late checksum completion cannot overwrite a newer manual (36.8547ms)
+✔ late checksum completion cannot overwrite a newer dispose (24.4636ms)
+✔ a newer selected checksum wins over an older delayed file (45.7902ms)
+✔ dismissing checksum picker keeps its active read and existing review (20.9181ms)
+✖ filename capture that clears the view cannot revive a retired checksum (14.3769ms)
+✔ offline later difference page is exact, bounded and leaves source bytes unchanged (166.4224ms)
+✔ viewing a matching case cannot mask a mismatch elsewhere in the suite exit status (91.7426ms)
+✔ default offline output remains byte-identical to the complete report (93.5221ms)
+✔ missing cases, out-of-range pages and malformed paging arguments emit no partial report (120.6722ms)
+✔ checksum-only text accepts a saved value and normalizes optional whitespace and case (0.7224ms)
+✔ checksum-only text rejects empty (1.5417ms)
+✔ checksum-only text rejects nonhex (0.3677ms)
+✔ checksum-only text rejects short (0.3935ms)
+✔ checksum-only text rejects long (0.4284ms)
+✔ checksum-only text rejects filename (0.5393ms)
+✔ checksum-only text rejects interior newline (0.3694ms)
+✔ checksum-only text rejects oversized (0.258ms)
+✔ checksum-only text rejects object (0.2306ms)
+✔ offline verification accepts the saved checksum file without altering either input (80.83ms)
+✔ wrong checksum file returns a discrepancy receipt instead of a read failure (67.1199ms)
+✔ invalid checksum files, directories and missing files never output a receipt (81.7361ms)
+✔ source, checksum and receipt downloads describe exactly the reviewed text including whitespace (31.8168ms)
+✔ mismatching derived results remain exact exportable evidence without being called an agreement (23.3531ms)
+✔ new evidence exports retire on clear (13.9363ms)
+✔ new evidence exports retire on edit (14.0199ms)
+✔ new evidence exports retire on checksum (14.5082ms)
+✔ new evidence exports retire on dispose (16ms)
+✔ source-save failure preserves reviewed evidence and permits retry (15.9852ms)
+✔ checksum-save failure preserves reviewed evidence and permits retry (14.1631ms)
+✔ source-save cannot report success over a source cleared inside the download (16.3687ms)
+✔ checksum-save cannot report success over a source cleared inside the download (15.3332ms)
+✔ invalid optional checksum focuses its own field and can be corrected without repasting (31.3309ms)
+✔ an absent optional checksum can be left blank after an error (31.6656ms)
+ℹ tests 62
+ℹ suites 0
+ℹ pass 61
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1704.2989
+
+✖ failing tests:
+
+test at test\rehearsal-checksum-file-panel.test.js:21:1
+✖ filename capture that clears the view cannot revive a retired checksum (14.3769ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ec5457e68d1b8fea17c04de2b92fa4f31f088fc68dd382f0995db754354a5974'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-checksum-file-panel.test.js:21:201)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ec5457e68d1b8fea17c04de2b92fa4f31f088fc68dd382f0995db754354a5974',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
