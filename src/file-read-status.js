@@ -899,6 +899,10 @@ export const WALLET_SAVED_BROWSER_BATCH_LIMITS = Object.freeze({ files: 20, file
 export const WALLET_SAVED_BATCH_MANIFEST_LIMIT = 16384;
 const browserSavedBatchReceipts = new WeakSet();
 const browserSavedFileBatchSelections = new WeakMap();
+const browserSavedBatchSources = new WeakMap(), savedBatchEvidenceReviews = new WeakMap();
+export const WALLET_SAVED_BATCH_SOURCE_LIMIT = 24 * 1024 * 1024;
+export const WALLET_SAVED_BATCH_EVIDENCE_LIMIT = 48 * 1024 * 1024;
+export const WALLET_SAVED_BATCH_EVIDENCE_SCHEMA = "threecore.wallet-saved-batch-evidence.v1";
 export function validateWalletSavedBatchSelection(input) {
   try {
     const names = new Set(); let totalBytes = 0;
@@ -1009,7 +1013,10 @@ export async function inspectWalletSavedTextBatch(input, options = {}) {
       if (readAbortState(local.signal) || !checked) break;
       completed.push(checked); progress();
     }
-    return finishSavedBatch(rows, selection, completed, phase, options.manifestText, reference, referenceSha256);
+    const result = finishSavedBatch(rows, selection, completed, phase, options.manifestText, reference, referenceSha256);
+    if (selection.totalBytes <= WALLET_SAVED_BATCH_SOURCE_LIMIT) browserSavedBatchSources.set(result,
+      Object.freeze(rows.map(({ name, text }) => Object.freeze({ name, text }))));
+    return result;
   } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
 }
 
@@ -1061,6 +1068,8 @@ async function inspectSavedFileBatchCaptured(selection, readSource, options, pre
   if (typeof readSource !== "function" || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000 || (onProgress !== undefined && typeof onProgress !== "function")) savedInspectionFail("FILE_BATCH_OPTIONS");
   const reference = options.manifestText === undefined ? null : matchWalletSavedBatchManifest(selection.files, options.manifestText);
   const completed = previous ? previous.files.slice(0, previous.summary.checked) : [], startAt = completed.length, local = new AbortController();
+  const keepSources = selection.totalBytes <= WALLET_SAVED_BATCH_SOURCE_LIMIT;
+  const capturedSources = keepSources && previous ? (browserSavedBatchSources.get(previous) ?? []).slice() : [];
   const targets = selection.files.map((_, index) => index).filter(index => retryFailed ? ["source-unavailable", "hash-unavailable"].includes(previous.files[index].status) : index >= startAt), retried = [];
   let phase = "complete", timer, subscription, referenceSha256 = previous?.reference?.sha256 ?? null;
   const continuation = previous && !retryFailed ? { sequence: (previous.continuation?.sequence ?? 0) + 1, retainedChecks: startAt, previousPhase: previous.phase, previousBatchSha256: null } : null;
@@ -1096,16 +1105,89 @@ async function inspectSavedFileBatchCaptured(selection, readSource, options, pre
           ...(reference ? { expectedSha256: reference[index].expectedSha256, checksumMatches: null } : {}) })); continue;
       }
       const checked = await inspectSavedBatchRow({ ...row, text }, { subtle, signal: local.signal, timeoutMs, expectedSha256: reference ? reference[index].expectedSha256 : undefined });
-      if (readAbortState(local.signal) || !checked) break; accept(index, checked);
+      if (readAbortState(local.signal) || !checked) break;
+      if (keepSources && checked.sha256 !== null) capturedSources[index] = Object.freeze({ name: row.name, text });
+      accept(index, checked);
     }
     if (retry) Object.assign(retry, { targetIndexes: Object.freeze(targets), completedIndexes: Object.freeze(retried), remainingIndexes: Object.freeze(targets.filter(index => !retried.includes(index))), retainedChecks: selection.files.length - retried.length });
     const result = finishSavedBatch(selection.files, selection, completed, phase, options.manifestText, reference, referenceSha256, true, continuation, retry);
-    browserSavedFileBatchSelections.set(result, selection); return result;
+    browserSavedFileBatchSelections.set(result, selection);
+    if (keepSources) browserSavedBatchSources.set(result, Object.freeze(capturedSources.slice()));
+    return result;
   } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
 }
 export function encodeWalletSavedTextBatch(result) {
   if (!browserSavedBatchReceipts.has(result)) savedInspectionFail("FILE_BATCH_RESULT");
   return JSON.stringify(result, null, 2) + "\n";
+}
+
+export function canPrepareWalletSavedBatchEvidence(result) {
+  const sources = browserSavedBatchSources.get(result);
+  return Boolean(browserSavedBatchReceipts.has(result) && result.complete && sources?.length === result.files.length &&
+    result.files.every((row, index) => row.sha256 !== null && sources[index]?.name === row.name));
+}
+function savedBatchEvidenceOptions(input) {
+  let options; try { options = captureOptionalDataFields(input, ["subtle", "signal", "timeoutMs", "onProgress", "manifestText"]); }
+  catch { savedInspectionFail("FILE_BATCH_OPTIONS"); }
+  if (Object.hasOwn(options, "manifestText")) savedInspectionFail("FILE_BATCH_OPTIONS");
+  if (options.timeoutMs !== undefined && (!Number.isInteger(options.timeoutMs) || options.timeoutMs < 1 || options.timeoutMs > 120000) ||
+      options.onProgress !== undefined && typeof options.onProgress !== "function") savedInspectionFail("FILE_BATCH_OPTIONS");
+  return options;
+}
+function savedBatchEvidenceDocument(result, sources) {
+  return { schema: WALLET_SAVED_BATCH_EVIDENCE_SCHEMA, readOnly: true, authenticated: false, encrypted: false,
+    authorizesExecution: false, referenceText: result.referenceProvided ? result.reference.text : null, files: sources, receipt: result };
+}
+/** Pack a newly inspected snapshot of captured source bytes; prior retry chronology stays separate. */
+export async function prepareWalletSavedBatchEvidence(previous, input = {}) {
+  if (!canPrepareWalletSavedBatchEvidence(previous)) savedInspectionFail("FILE_BATCH_EVIDENCE_UNAVAILABLE");
+  const options = savedBatchEvidenceOptions(input), sources = browserSavedBatchSources.get(previous);
+  const result = await inspectWalletSavedTextBatch(sources, { ...options,
+    ...(previous.referenceProvided ? { manifestText: previous.reference.text } : {}) });
+  if (!canPrepareWalletSavedBatchEvidence(result)) savedInspectionFail("FILE_BATCH_EVIDENCE_INCOMPLETE");
+  const text = JSON.stringify(savedBatchEvidenceDocument(result, sources), null, 2) + "\n";
+  try { boundedUtf8Length(text, WALLET_SAVED_BATCH_EVIDENCE_LIMIT); } catch { savedInspectionFail("FILE_BATCH_EVIDENCE_SIZE"); }
+  if (readAbortState(options.signal)) savedInspectionFail("FILE_CANCELLED");
+  return Object.freeze({ text, filename: "ThreeCore-wallet-batch-evidence.json", mimeType: "application/json;charset=utf-8",
+    containsOriginalEvidence: true, encrypted: false, authenticated: false, restorable: false, authorizesExecution: false });
+}
+/** The stored success flag is compared with source inspection, never trusted as validation. */
+export async function reviewWalletSavedBatchEvidence(text, input = {}) {
+  const options = savedBatchEvidenceOptions(input), started = Date.now();let parsed;
+  try { parsed = parseSecurityJson(text, { bytes: WALLET_SAVED_BATCH_EVIDENCE_LIMIT, depth: 32, nodes: 100000,
+    keyCharacters: 256, stringCharacters: WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes }); }
+  catch { savedInspectionFail("FILE_BATCH_EVIDENCE_JSON"); }
+  if (parsed?.schema !== WALLET_SAVED_BATCH_EVIDENCE_SCHEMA || !(parsed.referenceText === null || typeof parsed.referenceText === "string")) savedInspectionFail("FILE_BATCH_EVIDENCE_SCHEMA");
+  let total = 0;
+  try { for (const row of captureDataArray(parsed.files, WALLET_SAVED_BROWSER_BATCH_LIMITS.files, 1)) {
+    const value = captureDataRecord(row, ["name", "text"]);total += boundedUtf8Length(value.text, WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes);
+    if (total > WALLET_SAVED_BATCH_SOURCE_LIMIT) throw Error();
+  } } catch { savedInspectionFail("FILE_BATCH_EVIDENCE_SIZE"); }
+  const result = await inspectWalletSavedTextBatch(parsed.files, { ...options,
+    ...(parsed.referenceText !== null ? { manifestText: parsed.referenceText } : {}) });
+  if (!canPrepareWalletSavedBatchEvidence(result)) savedInspectionFail("FILE_BATCH_EVIDENCE_INCOMPLETE");
+  const remaining = (options.timeoutMs ?? 120000) - (Date.now() - started);
+  if (remaining <= 0 || readAbortState(options.signal)) savedInspectionFail("FILE_BATCH_EVIDENCE_INCOMPLETE");
+  let textDigest;try { textDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle,
+    { signal: options.signal, timeoutMs: Math.min(remaining, 30000) }); } catch { savedInspectionFail("FILE_BATCH_EVIDENCE_HASH_UNAVAILABLE"); }
+  const sources = browserSavedBatchSources.get(result), expected = savedBatchEvidenceDocument(result, sources);
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(parsed, key) || !sameSavedJSON(expected[key], parsed[key]));
+  const unexpectedFields = Object.keys(parsed).filter(key => !Object.hasOwn(expected, key)).length;
+  const review = Object.freeze({ schema: "threecore.wallet-saved-batch-evidence-review.v1", textDigest,
+    matchesRecomputation: differences.length === 0 && unexpectedFields === 0, differences: Object.freeze(differences), unexpectedFields,
+    expectedSummary: result.summary, allOriginalsValidated: result.allOriginalsValidated,
+    allExternalChecksumsMatch: result.allExternalChecksumsMatch ?? null, externalChecksumsCompared: result.externalChecksumsCompared,
+    readOnly: true, authenticated: false, restorable: false, automaticallyImported: false, containsOriginalEvidence: false,
+    authorizesExecution: false, liveChainRechecked: false, atomicSnapshot: false, recordedProcessVerified: false });
+  savedBatchEvidenceReviews.set(review, Object.freeze({ result, files: sources }));return review;
+}
+export function encodeWalletSavedBatchEvidenceReview(review) {
+  if (!savedBatchEvidenceReviews.has(review)) savedInspectionFail("FILE_BATCH_EVIDENCE_REVIEW");
+  return JSON.stringify(review, null, 2) + "\n";
+}
+export function openReviewedWalletSavedBatchEvidence(review) {
+  if (!savedBatchEvidenceReviews.has(review) || !review.matchesRecomputation) savedInspectionFail("FILE_BATCH_EVIDENCE_UNVERIFIED");
+  return savedBatchEvidenceReviews.get(review);
 }
 export function walletSavedTextBatchManifest(result) {
   if (!browserSavedBatchReceipts.has(result)) savedInspectionFail("FILE_BATCH_RESULT");

@@ -8,6 +8,8 @@ import { inspectWalletSavedTextDifferences, encodeWalletSavedTextDifferences, WA
 import { reviewWalletSavedTextDifferences, encodeWalletSavedTextDifferenceReview, walletSavedTextDifferenceReviewText, WALLET_SAVED_DIFFERENCE_REVIEW_LIMIT } from "../src/file-read-status.js";
 import { queryWalletSavedTextDifferences, walletSavedTextDifferencePageText, encodeWalletSavedTextDifferencePage } from "../src/file-read-status.js";
 import { encodeWalletSavedBundleReview } from "../src/file-read-status.js";
+import { canPrepareWalletSavedBatchEvidence, prepareWalletSavedBatchEvidence, reviewWalletSavedBatchEvidence,
+  encodeWalletSavedBatchEvidenceReview, openReviewedWalletSavedBatchEvidence, WALLET_SAVED_BATCH_EVIDENCE_LIMIT } from "../src/file-read-status.js";
 import { reviewWalletSavedBundleReceipt, encodeWalletSavedBundleReceiptCheck, walletSavedBundleReceiptCheckText, WALLET_SAVED_BUNDLE_RECEIPT_LIMIT } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
@@ -463,7 +465,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   const host = document.createElement("details"); host.className = "saved-file-batch"; parent.append(host);
   let disposed = false, generation = 0, selection = null, active = null, result = null, viewRevision = 0;
   let referenceText;
-  let comparisonPanel;
+  let comparisonPanel, evidenceReview = null;
   const cleanup = [], nodes = {};
   function make(tag, name, text, target = host) { const element = document.createElement(tag); element.className = "saved-file-batch-" + name; if (text !== undefined) element.textContent = text; target.append(element); nodes[name] = element; return element; }
   function button(name, text) { const element = make("button", name, text); element.type = "button"; return element; }
@@ -505,7 +507,18 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   const save = button("save", "一括確認の控えをJSON保存"), csv = button("csv", "全ファイルの確認結果をCSV保存"), manifest = button("manifest", "今回の内容の照合値一覧を保存");
   make("p", "limits", "以前の一覧を指定した場合だけ、その値と比較します。一覧の出所は保証しません。今回の照合値一覧を保存しても、以前の値が正しいことの証明にはなりません。補助資料は形式の案内だけです。この控えに元記録は含まれず、復元には使えません。元ファイルと同じ名前のまま一緒に保管してください。同じ記録が複数の報告に含まれる場合があります。");
   const exportStatus = make("p", "export-status"); exportStatus.setAttribute("role", "status"); exportStatus.setAttribute("aria-live", "polite");
+  const evidenceBox = make("details", "evidence"); make("summary", "evidence-heading", "元ファイルと確認結果を一つにまとめる", evidenceBox);
+  make("p", "evidence-intro", "読み込みと照合値の計算が終わった全ファイルを、元の内容と新しい確認結果を含む一つのJSONにできます。元ファイルの合計24 MiB、保存後48 MiBまでです。公開アドレス・残高・注記も含み、暗号化しません。中断や再試行の経過を残す場合は、上の確認控えも保管してください。", evidenceBox);
+  const evidenceAckLabel = make("label", "evidence-ack-label", "元ファイルの内容もまとめて保存する", evidenceBox), evidenceAck = make("input", "evidence-ack", undefined, evidenceAckLabel); evidenceAck.type = "checkbox";
+  const evidenceSave = make("button", "evidence-save", "元ファイルと新しい確認結果をまとめて保存", evidenceBox); evidenceSave.type = "button";
+  const evidenceFileLabel = make("label", "evidence-file-label", "まとめて保存した資料を再確認", evidenceBox), evidenceFile = make("input", "evidence-file", undefined, evidenceFileLabel); evidenceFile.type = "file"; evidenceFile.accept = ".json,application/json";
+  const evidenceStatus = make("p", "evidence-status", "", evidenceBox); evidenceStatus.setAttribute("role", "status"); evidenceStatus.setAttribute("aria-live", "polite");
+  const evidenceReviewSave = make("button", "evidence-review-save", "まとめた資料の照合結果を保存", evidenceBox); evidenceReviewSave.type = "button";
   function buttons() {
+    evidenceAck.disabled = disposed || Boolean(active) || !canPrepareWalletSavedBatchEvidence(result);
+    evidenceSave.disabled = evidenceAck.disabled || !evidenceAck.checked;
+    evidenceFile.disabled = disposed || Boolean(active);
+    evidenceReviewSave.disabled = disposed || Boolean(active) || !evidenceReview;
     comparisonPanel?.updateCurrent(!disposed && !active ? result : null);
     host.setAttribute("aria-busy", active ? "true" : "false"); start.disabled = disposed || Boolean(active) || !selection;
     if (referenceText !== undefined && selection) {
@@ -524,6 +537,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   function reset(keepSelection = false) {
     const id = ++generation, old = active; active = null; if (!keepSelection) selection = null; result = null; ack.checked = false;
     old?.abort(); if (!current(id)) return id;
+    evidenceReview = null; evidenceAck.checked = false; evidenceFile.value = ""; evidenceStatus.textContent = "";
     rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; selectionNotice.clear(); filterName.value = ""; filterStatus.value = "all"; applyView(); buttons(); return id;
   }
   listen(referenceInput, "input", () => {
@@ -582,7 +596,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
       } tr.append(action);
       return tr;
     });
-    if (!current(id)) return; result = receipt; rows.replaceChildren(...elements); applyView();
+    if (!current(id)) return; result = receipt; rows.replaceChildren(...elements); applyView(); evidenceAck.checked = false;
     const s = receipt.summary; summary.textContent = `${s.selected}件中、確認済み ${s.checked}件／未確認 ${s.pending}件。元記録 ${s.validatedOriginals}件、補助資料 ${s.declaredOnly}件、形式・照合値の問題 ${s.invalid + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。`;
     if (s.simulationFiles) summary.textContent += ` 練習用 ${s.simulationFiles}件（実際の入出金の証拠ではありません）。`;
     if (receipt.continuation) summary.textContent += ` 続きの確認 ${receipt.continuation.sequence}回目：前回の結果を保持 ${receipt.continuation.retainedChecks}件（再確認していません）。`;
@@ -596,6 +610,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   async function run(previous = null, retryFailed = false) {
     if (disposed || active || !selection || (retryFailed ? retry.disabled : previous ? resume.disabled : start.disabled)) return;
     const id = ++generation, chosen = selection, manifestText = referenceText, local = new AbortController(); active = local; result = previous; ack.checked = false;
+    evidenceReview = null; evidenceAck.checked = false; evidenceStatus.textContent = "";
     if (!previous) { rows.replaceChildren(); summary.textContent = ""; } exportStatus.textContent = ""; buttons();
     try {
       if (manifestText !== undefined) matchWalletSavedBatchManifest(chosen.map(({ name, byteLength }) => ({ name, byteLength })), manifestText);
@@ -609,6 +624,56 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     } catch (error) { if (current(id)) { if (previous) render(previous, id); status.textContent = (retryFailed ? "再試行を完了できませんでした。前回の結果は保持しています。" : previous ? "続きの確認を完了できませんでした。前回の結果は保持しています。" : local.signal.aborted ? "ファイルの読み込みを中止しました。確認結果はまだありません。" : "まとめて読み込めませんでした。") + errorText(error); } }
     finally { local.abort(); if (current(id)) { active = null; if (!result && local.signal.aborted && status.textContent.startsWith("中止しています")) status.textContent = "ファイルの読み込みを中止しました。確認結果はまだありません。"; buttons(); } }
   }
+  async function evidenceJob(chosenFile = null) {
+    if (disposed || active || (chosenFile ? evidenceFile.disabled : evidenceSave.disabled)) return;
+    const id = ++generation, previous = result, local = new AbortController(); active = local;
+    evidenceReview = null; evidenceAck.checked = false; ack.checked = false; buttons(); let message = "";
+    try {
+      evidenceStatus.textContent = chosenFile ? "まとめた資料を読み込み、元ファイルを再確認しています。" : "元ファイルから新しい確認結果を作っています。";
+      const options = { subtle, signal: local.signal, onProgress: p => { if (current(id)) evidenceStatus.textContent = `元ファイルを確認しています（${p.checked} / ${p.selected}件）。`; } };
+      if (chosenFile) {
+        const text = await readText(chosenFile, { maxBytes: WALLET_SAVED_BATCH_EVIDENCE_LIMIT, signal: local.signal });
+        const review = await reviewWalletSavedBatchEvidence(text, options);
+        if (!current(id) || local.signal.aborted) return;
+        evidenceReview = review;
+        if (review.matchesRecomputation) {
+          const opened = openReviewedWalletSavedBatchEvidence(review);
+          selection = Object.freeze(opened.files.map(row => Object.freeze({ name: row.name,
+            file: new File([row.text], row.name, { type: "application/json" }), byteLength: boundedUtf8Length(row.text, WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes) })));
+          referenceText = opened.result.referenceProvided ? opened.result.reference.text : undefined;
+          referenceInput.value = referenceText ?? ""; referenceFile.value = ""; file.value = "";
+          filterName.value = ""; filterStatus.value = "all"; render(opened.result, id);
+          message = "保存内容と再確認の結果が一致しました。元ファイルを確認一覧に開きました。ウォレットの履歴や設定への取り込みは行っていません。";
+          if (!review.allOriginalsValidated) message += " 内部チェックサムのない資料・補助資料・確認できない資料は、各行で区別しています。";
+        } else {
+          if (previous) render(previous, id);
+          message = "保存内容と再確認の結果に相違があります。現在の一覧は置き換えていません。照合結果の控えを保存できます。";
+        }
+      } else {
+        const prepared = await prepareWalletSavedBatchEvidence(previous, options);
+        if (!current(id) || result !== previous || local.signal.aborted) return;
+        const delivered = download(prepared);
+        if (observeCallbackResult(delivered) !== "synchronous" || delivered === false) throw Error();
+        if (current(id) && result === previous) render(previous, id);
+        message = "全選択ファイルの元の内容と確認結果を一つにまとめて保存し始めました。ダウンロード先をご確認ください。";
+      }
+    } catch {
+      if (current(id) && previous) render(previous, id);
+      message = local.signal.aborted ? "まとめた資料の処理を中止しました。現在の一覧は保持しています。" : "まとめた資料を処理できませんでした。元ファイル合計24 MiB、保存資料48 MiB以内の対応形式か確認してください。現在の一覧は保持しています。";
+    } finally { local.abort(); if (current(id)) { active = null; evidenceStatus.textContent = message; buttons(); } }
+  }
+  listen(evidenceAck, "change", () => { if (!disposed) buttons(); });
+  listen(evidenceSave, "click", () => { void evidenceJob(); });
+  listen(evidenceFile, "change", () => { if (!disposed && !active && evidenceFile.files?.length === 1) void evidenceJob(evidenceFile.files[0]); });
+  listen(evidenceReviewSave, "click", () => {
+    if (disposed || active || !evidenceReview) return;
+    const id = generation, own = evidenceReview;
+    try {
+      const delivered = download({ text: encodeWalletSavedBatchEvidenceReview(own), filename: "ThreeCore-wallet-batch-evidence-review.json", mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false });
+      if (observeCallbackResult(delivered) !== "synchronous" || delivered === false) throw Error();
+      if (current(id) && evidenceReview === own) evidenceStatus.textContent += " 照合結果の保存処理を開始しました。";
+    } catch { if (current(id) && evidenceReview === own) evidenceStatus.textContent = "照合結果を保存できませんでした。確認結果は保持しています。"; }
+  });
   listen(start, "click", () => { void run(); }); listen(resume, "click", () => { void run(result); });
   listen(retry, "click", () => { void run(result, true); });
   listen(filterName, "input", () => { if (!disposed && !active) applyView(); });
@@ -629,7 +694,8 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   comparisonPanel = mountSavedBatchComparisonPanel({ document, parent: host, download, readText });
   buttons();
   return Object.freeze({ getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
-    if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; referenceText = undefined; referenceInput.value = ""; ack.checked = false;
+    if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; evidenceReview = null;
+    referenceText = undefined; referenceInput.value = ""; ack.checked = false; evidenceAck.checked = false; evidenceFile.value = ""; evidenceStatus.textContent = "";
     old?.abort(); comparisonPanel.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
   } });
 }
