@@ -1,0 +1,36 @@
+{
+  "schema": "threecore.report-set-check-review.v1",
+  "matchesRecomputation": true,
+  "sourcePayloadDigest": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e",
+  "sourceDigestMatches": true,
+  "detailsTextSha256": "b68f74cda50128187a8847e3d818832687df4afd92ba5bd7a5a953fed1b9aef5",
+  "query": {
+    "agent": "all",
+    "severity": "all",
+    "search": "no matching check"
+  },
+  "options": {
+    "includeNotes": false,
+    "shortAddresses": true
+  },
+  "total": 15,
+  "matched": 0,
+  "summary": {
+    "counts": {
+      "conflict": 8,
+      "missing": 0,
+      "review": 6,
+      "information": 1
+    },
+    "allContinuous": false,
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "differences": [],
+  "unexpectedFields": 0,
+  "historicalOnly": true,
+  "readOnly": true,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "restorable": false,
+  "sourceChecksumVerified": true
+}

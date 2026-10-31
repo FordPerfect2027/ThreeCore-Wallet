@@ -1,0 +1,288 @@
+{
+  "schema": "threecore.report-set-check-details.v1",
+  "sourcePayloadDigest": "244deb3286879d1ec6c8061e3e41296f654ee1a92df5513e306cb5507e120f79",
+  "digestAlgorithm": "SHA-256",
+  "query": {
+    "agent": "all",
+    "severity": "conflict",
+    "search": ""
+  },
+  "options": {
+    "includeNotes": false,
+    "shortAddresses": true
+  },
+  "total": 9,
+  "matched": 6,
+  "scope": "all-matches",
+  "summary": {
+    "counts": {
+      "conflict": 6,
+      "missing": 0,
+      "review": 3,
+      "information": 0
+    },
+    "allContinuous": false,
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "items": [
+    {
+      "id": "check-2",
+      "kind": "balance-conflict",
+      "severity": "conflict",
+      "severityLabel": "証拠の食い違い",
+      "title": "同じブロック・ハッシュの残高が異なります",
+      "action": "各報告の取得元と保存時点を確認してください。片方の値を自動採用せず、元の証拠を保全したまま調べてください。",
+      "agents": [
+        "DAT"
+      ],
+      "chainId": 84532,
+      "account": "0x111111…111111",
+      "fromBlock": "30",
+      "toBlock": "30",
+      "blocks": null,
+      "reportIds": [
+        "12345678-1234-4234-8234-000000000101",
+        "12345678-1234-4234-8234-000000000102"
+      ],
+      "reportLabels": [
+        "報告 1",
+        "報告 2"
+      ],
+      "observations": [
+        {
+          "reportId": "12345678-1234-4234-8234-000000000101",
+          "agent": "DAT",
+          "position": "start",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+          "value": "100000000000000000000"
+        },
+        {
+          "reportId": "12345678-1234-4234-8234-000000000102",
+          "agent": "DAT",
+          "position": "start",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+          "value": "107000000000000000000"
+        }
+      ],
+      "rangeNotation": "single-block",
+      "notes": []
+    },
+    {
+      "id": "check-3",
+      "kind": "balance-conflict",
+      "severity": "conflict",
+      "severityLabel": "証拠の食い違い",
+      "title": "同じブロック・ハッシュの残高が異なります",
+      "action": "各報告の取得元と保存時点を確認してください。片方の値を自動採用せず、元の証拠を保全したまま調べてください。",
+      "agents": [
+        "DAT"
+      ],
+      "chainId": 84532,
+      "account": "0x111111…111111",
+      "fromBlock": "42",
+      "toBlock": "42",
+      "blocks": null,
+      "reportIds": [
+        "12345678-1234-4234-8234-000000000101",
+        "12345678-1234-4234-8234-000000000102"
+      ],
+      "reportLabels": [
+        "報告 1",
+        "報告 2"
+      ],
+      "observations": [
+        {
+          "reportId": "12345678-1234-4234-8234-000000000101",
+          "agent": "DAT",
+          "position": "end",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+          "value": "107000000000000000000"
+        },
+        {
+          "reportId": "12345678-1234-4234-8234-000000000102",
+          "agent": "DAT",
+          "position": "end",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+          "value": "114000000000000000000"
+        }
+      ],
+      "rangeNotation": "single-block",
+      "notes": []
+    },
+    {
+      "id": "check-5",
+      "kind": "balance-conflict",
+      "severity": "conflict",
+      "severityLabel": "証拠の食い違い",
+      "title": "同じブロック・ハッシュの残高が異なります",
+      "action": "各報告の取得元と保存時点を確認してください。片方の値を自動採用せず、元の証拠を保全したまま調べてください。",
+      "agents": [
+        "EMA"
+      ],
+      "chainId": 84532,
+      "account": "0x222222…222222",
+      "fromBlock": "30",
+      "toBlock": "30",
+      "blocks": null,
+      "reportIds": [
+        "12345678-1234-4234-8234-000000000101",
+        "12345678-1234-4234-8234-000000000102"
+      ],
+      "reportLabels": [
+        "報告 1",
+        "報告 2"
+      ],
+      "observations": [
+        {
+          "reportId": "12345678-1234-4234-8234-000000000101",
+          "agent": "EMA",
+          "position": "start",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+          "value": "100000000000000000000"
+        },
+        {
+          "reportId": "12345678-1234-4234-8234-000000000102",
+          "agent": "EMA",
+          "position": "start",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+          "value": "107000000000000000000"
+        }
+      ],
+      "rangeNotation": "single-block",
+      "notes": []
+    },
+    {
+      "id": "check-6",
+      "kind": "balance-conflict",
+      "severity": "conflict",
+      "severityLabel": "証拠の食い違い",
+      "title": "同じブロック・ハッシュの残高が異なります",
+      "action": "各報告の取得元と保存時点を確認してください。片方の値を自動採用せず、元の証拠を保全したまま調べてください。",
+      "agents": [
+        "EMA"
+      ],
+      "chainId": 84532,
+      "account": "0x222222…222222",
+      "fromBlock": "42",
+      "toBlock": "42",
+      "blocks": null,
+      "reportIds": [
+        "12345678-1234-4234-8234-000000000101",
+        "12345678-1234-4234-8234-000000000102"
+      ],
+      "reportLabels": [
+        "報告 1",
+        "報告 2"
+      ],
+      "observations": [
+        {
+          "reportId": "12345678-1234-4234-8234-000000000101",
+          "agent": "EMA",
+          "position": "end",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+          "value": "107000000000000000000"
+        },
+        {
+          "reportId": "12345678-1234-4234-8234-000000000102",
+          "agent": "EMA",
+          "position": "end",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+          "value": "114000000000000000000"
+        }
+      ],
+      "rangeNotation": "single-block",
+      "notes": []
+    },
+    {
+      "id": "check-8",
+      "kind": "balance-conflict",
+      "severity": "conflict",
+      "severityLabel": "証拠の食い違い",
+      "title": "同じブロック・ハッシュの残高が異なります",
+      "action": "各報告の取得元と保存時点を確認してください。片方の値を自動採用せず、元の証拠を保全したまま調べてください。",
+      "agents": [
+        "CAWELON"
+      ],
+      "chainId": 84532,
+      "account": "0x333333…333333",
+      "fromBlock": "30",
+      "toBlock": "30",
+      "blocks": null,
+      "reportIds": [
+        "12345678-1234-4234-8234-000000000101",
+        "12345678-1234-4234-8234-000000000102"
+      ],
+      "reportLabels": [
+        "報告 1",
+        "報告 2"
+      ],
+      "observations": [
+        {
+          "reportId": "12345678-1234-4234-8234-000000000101",
+          "agent": "CAWELON",
+          "position": "start",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+          "value": "100000000000000000000"
+        },
+        {
+          "reportId": "12345678-1234-4234-8234-000000000102",
+          "agent": "CAWELON",
+          "position": "start",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+          "value": "107000000000000000000"
+        }
+      ],
+      "rangeNotation": "single-block",
+      "notes": []
+    },
+    {
+      "id": "check-9",
+      "kind": "balance-conflict",
+      "severity": "conflict",
+      "severityLabel": "証拠の食い違い",
+      "title": "同じブロック・ハッシュの残高が異なります",
+      "action": "各報告の取得元と保存時点を確認してください。片方の値を自動採用せず、元の証拠を保全したまま調べてください。",
+      "agents": [
+        "CAWELON"
+      ],
+      "chainId": 84532,
+      "account": "0x333333…333333",
+      "fromBlock": "42",
+      "toBlock": "42",
+      "blocks": null,
+      "reportIds": [
+        "12345678-1234-4234-8234-000000000101",
+        "12345678-1234-4234-8234-000000000102"
+      ],
+      "reportLabels": [
+        "報告 1",
+        "報告 2"
+      ],
+      "observations": [
+        {
+          "reportId": "12345678-1234-4234-8234-000000000101",
+          "agent": "CAWELON",
+          "position": "end",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+          "value": "107000000000000000000"
+        },
+        {
+          "reportId": "12345678-1234-4234-8234-000000000102",
+          "agent": "CAWELON",
+          "position": "end",
+          "hash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+          "value": "114000000000000000000"
+        }
+      ],
+      "rangeNotation": "single-block",
+      "notes": []
+    }
+  ],
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "automaticRepairs": false,
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false,
+  "containsOriginalEvidence": false
+}
