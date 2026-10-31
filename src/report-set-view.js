@@ -18,6 +18,10 @@ export const SET_ISSUES = Object.freeze({
 export const SET_SEGMENTS = Object.freeze({ single: "計画1件", gap: "計画の抜け", overlap: "計画の重複", repeated: "同じ証拠の重複" });
 export const SET_SOURCE_STATUS = Object.freeze({ exact: "保存内容と一致", metadata: "名前・メモ・保管状態が変更", changed: "報告の証拠が変更", missing: "保存番号が見つからない" });
 const ERRORS = Object.freeze({
+  PERIOD_SET_LIBRARY_AGENT: "取り出すトークンを選んでください。",
+  PERIOD_SET_LIBRARY_EMPTY: "この確認セットには、選んだトークンの元の控えがありません。",
+  PERIOD_SET_LIBRARY_CONFLICT: "同じ保存番号に異なる元の控えがあります。どちらかを選んだり上書きしたりせず、一覧への出力を中止します。元レポートを個別に保存して確認してください。",
+  PERIOD_SET_LIBRARY_CAPACITY: "元の控えをまとめると一覧の容量上限を超えます。元レポートを個別に保存して保全してください。",
   PERIOD_SET_COVERAGE_JSON: "履歴範囲のJSONを読み取れませんでした。保存した元ファイルを確認してください。",
   PERIOD_SET_COVERAGE_SCHEMA: "保存した履歴範囲JSONを選んでください。CSVはこの照合欄では読み込めません。",
   PERIOD_SET_COVERAGE_OPTIONS: "履歴範囲JSONのアドレス表示設定が正しくありません。保存した元ファイルを確認してください。",
@@ -266,4 +270,16 @@ export function setCoverageReviewText(value) {
     "異なる項目: " + (value.differences.join(", ") || "なし") + " / 余分な項目: " + value.unexpectedFields,
     "履歴範囲ファイルのテキスト SHA-256: " + value.coverageTextSha256,
     "ファイルと再計算の一致は、全履歴の取得完了を意味しません。保存された問い合わせ区間の存在を照合しています。元資料の変更・履歴の統合・チェーンへの読み取りは行いません。"].join("\n");
+}
+
+export function setTokenLibraryText(recovery) {
+  if (!recovery) return "先に確認セットを開いてください。";
+  return [recovery.agent + "の元の控えを、表示中の確認セット全体から取り出します。",
+    `元の報告 ${recovery.reportCount}件 / このトークンの控えがない報告 ${recovery.missingReports}件`,
+    `元の保存番号 ${recovery.entryCount}件 / 同じ番号・同じ内容の重複参照 ${recovery.duplicateReferences}件`,
+    recovery.error ? setErrorText(recovery.error) : "保存一覧のJSONにまとめられます。PC内の一覧にはまだ追加しません。",
+    ...recovery.conflicts.map(row => "相違する保存番号 " + row.entryId + " · 報告 " + row.firstReportId + " / " + row.conflictingReportId),
+    "このトークンの全アカウント・全期間の元の控えを含みます。再取得・非表示保管の印は元の控えのままです。",
+    "報告側の名前・メモ・保管状態と、複数報告の比較結果は含めません。元の確認セットも保全してください。",
+    "保存したJSONは「期間の保存一覧JSONを読み込む」で確認できます。自動接続・取得は行いません。"].join("\n");
 }

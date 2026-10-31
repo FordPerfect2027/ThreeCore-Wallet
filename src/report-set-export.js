@@ -1,8 +1,9 @@
+import { preparePeriodLibraryFile } from "./period-library-file.js";
 import { walletSavedFileTargetCode, walletSavedFileTargetMessage } from "./file-read-status.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
-import { validateReportSet, validateSetExportOptions, validateSetSelection, freezeSet } from "./report-set-model.js";
+import { validateReportSet, validateSetExportOptions, validateSetSelection, freezeSet, reportSetTokenLibrary } from "./report-set-model.js";
 import { periodFail, createPeriodPlan } from "./period-plan.js";
 import { prepareReportSetFile, decodeReportSetFile } from "./report-set-file.js";
 import { preparePeriodReportFile } from "./period-report-file.js";
@@ -543,4 +544,19 @@ export async function readReportSetCoverageText(file, { signal, timeoutMs } = {}
   readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
   return readFormatFileText(file, { maxBytes: REPORT_SET_COVERAGE_LIMIT, fail: periodFail,
     sizeCode: "PERIOD_SET_COVERAGE_SIZE", readCode: "PERIOD_SET_COVERAGE_READ", encodingCode: "PERIOD_SET_COVERAGE_ENCODING", signal, timeoutMs });
+}
+
+/** Recover a token collection in the existing library format; never silently choose conflicting originals. */
+export async function prepareReportSetTokenLibraryFile(value, agent, fileOptions = {}) {
+  const recovery = reportSetTokenLibrary(value, agent);
+  if (recovery.error) periodFail(recovery.error);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const file = await preparePeriodLibraryFile(recovery.document, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-recovered-period-library-" + recovery.agent + ".json",
+    recovery: Object.freeze({ agent: recovery.agent, reportCount: recovery.reportCount,
+      missingReports: recovery.missingReports, entryCount: recovery.entryCount,
+      duplicateReferences: recovery.duplicateReferences }), containsOriginalEvidence: true,
+    historicalOnly: true, liveChainRechecked: false, automaticallyImported: false, authorizesExecution: false });
 }

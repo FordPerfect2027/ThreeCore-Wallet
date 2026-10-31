@@ -181,17 +181,19 @@ export function inspectPeriodLibraryImport(beforeValue, incomingValue) {
   });
   const additions = incoming.entries.filter(entry => !current.has(entry.id));
   // Conflicting existing IDs are retained unchanged for this hypothetical add-only size.
-  const combined = { schema: PERIOD_LIBRARY_SCHEMA, revision: 0, entries: [...before.entries, ...additions] };
-  const bytes = encoder.encode(JSON.stringify(combined)).byteLength;
+  const revisionAvailable = !additions.length || before.revision < Number.MAX_SAFE_INTEGER;
+  const resultingRevision = revisionAvailable ? before.revision + Number(additions.length > 0) : null;
+  const combined = { schema: PERIOD_LIBRARY_SCHEMA, revision: resultingRevision, entries: [...before.entries, ...additions] };
+  const bytes = revisionAvailable ? encoder.encode(JSON.stringify(combined)).byteLength : null;
   const capacity = Object.freeze({ entriesAfter: combined.entries.length, maxEntries: PERIOD_LIBRARY_ENTRIES,
     bytesAfter: bytes, maxBytes: PERIOD_LIBRARY_BYTES,
-    fits: combined.entries.length <= PERIOD_LIBRARY_ENTRIES && bytes <= PERIOD_LIBRARY_BYTES });
+    fits: combined.entries.length <= PERIOD_LIBRARY_ENTRIES && bytes !== null && bytes <= PERIOD_LIBRARY_BYTES });
   const conflicts = rows.filter(row => row.kind === "conflict").length;
   return Object.freeze({ schema: "threecore.period-library-import-inspection.v1",
     beforeCount: before.entries.length, incomingCount: incoming.entries.length,
     additions: additions.length, identical: rows.filter(row => row.kind === "identical").length, conflicts,
     retainedIds: Object.freeze(before.entries.filter(entry => !incoming.entries.some(row => row.id === entry.id)).map(entry => entry.id)),
-    rows: Object.freeze(rows), capacity, compatible: conflicts === 0 && capacity.fits,
+    rows: Object.freeze(rows), capacity, revisionAvailable, resultingRevision, compatible: conflicts === 0 && capacity.fits && revisionAvailable,
     addOnly: true, historicalOnly: true, automaticallyApplied: false,
     liveChainRechecked: false, authenticated: false, authorizesExecution: false });
 }

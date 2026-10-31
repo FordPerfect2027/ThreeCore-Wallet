@@ -1,3 +1,4 @@
+import { decodePeriodLibraryFile } from "/src/period-library-file.js";
 import { mountPeriodPanel } from "/examples/period-panel.js";
 import { checkpoint as proposalCheckpoint } from "/test/helpers/period-fixtures.js";
 import { manyEventsInput } from "/test/helpers/period-report-fixtures.js";
@@ -88,6 +89,24 @@ async function withDatabase(run) {
 }
 
 export function registerReportSetUITests(test) {
+  test("report set: recover one token collection while retaining source restrictions and refusing conflicting IDs", async () => {
+    const source=sequenceSet(sequenceHistory([0n,12n],(report,index)=>report.slots.forEach((slot,n)=>{slot.entry.id=id(1000+3*index+n);slot.entry.requiresNewPlan=true;})));
+    const f=fixture();
+    try{
+      await f.file((await prepareReportSetFile(source)).text);f.click("apply");await f.settled();const original=f.mounted.getState().input;
+      f.click("token-library-heading");f.check("ack");assert(f.q("token-library-json").disabled);
+      await f.file((await prepareReportSetFile(sequenceSet())).text);const pending=f.mounted.getState().review;
+      f.check("token-library-ack");f.click("token-library-json");await f.settled();
+      const library=(await decodePeriodLibraryFile(f.files[0].text)).document;
+      assert(library.entries.length===2&&library.entries.every(row=>row.requiresNewPlan));
+      assert(JSON.stringify(library.entries)===JSON.stringify(source.entries.map(row=>row.report.slots[0].entry)));
+      assert(f.mounted.getState().input===original&&f.mounted.getState().review===pending&&f.store.calls.length===0);
+      f.set("token-library-agent","EMA");assert(!f.q("token-library-ack").checked&&f.q("token-library-json").disabled);
+      f.check("token-library-ack");f.click("apply");await f.settled();assert(f.q("token-library-json").disabled&&!f.q("token-library-ack").checked);
+      assert(f.q("token-library-description").textContent.includes("同じ保存番号に異なる"));
+    }finally{f.dispose();}
+  });
+
   test("report set: replacement comparison saves before applying and resets its acknowledgement for another candidate", async () => {
     const f = fixture();
     try {

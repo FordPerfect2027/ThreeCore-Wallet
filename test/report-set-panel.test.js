@@ -1,3 +1,4 @@
+import { decodePeriodLibraryFile } from "../src/period-library-file.js";
 import { mountPeriodPanel } from "../examples/period-panel.js";
 import { checkpoint as proposalCheckpoint } from "./helpers/period-fixtures.js";
 import { manyEventsInput } from "./helpers/period-report-fixtures.js";
@@ -643,3 +644,22 @@ test("set block scope keeps selected and accepted sources while filtering the sa
     assert.ok(f.mounted.getState().coverageReview === null && f.q("coverage-review-json").disabled);
   } finally { f.dispose(); }
   });
+
+test("token library extraction preserves a pending set, requires its own acknowledgement and refuses conflicts", async () => {
+  const source = sequenceSet(sequenceHistory([0n,12n], (report,index) => report.slots.forEach((slot,n) => { slot.entry.id=id(1000+3*index+n); })));
+  const f = fixture();
+  try {
+    await f.file((await prepareReportSetFile(source)).text); f.click("apply"); await f.settled(); const original=f.mounted.getState().input;
+    assert.equal(f.q("token-library-json").disabled,true); f.check("ack"); assert.equal(f.q("token-library-json").disabled,true);
+    await f.file((await prepareReportSetFile(sequenceSet())).text); const pending=f.mounted.getState().review;
+    f.check("token-library-ack"); f.click("token-library-json"); await f.settled();
+    const library=(await decodePeriodLibraryFile(f.files[0].text)).document;
+    assert.deepEqual(library.entries,source.entries.map(row=>row.report.slots[0].entry));
+    assert.equal(f.mounted.getState().input,original); assert.equal(f.mounted.getState().review,pending);
+    assert.equal(f.store.calls.length,0); f.set("token-library-agent","EMA");
+    assert.equal(f.q("token-library-ack").checked,false); assert.equal(f.q("token-library-json").disabled,true);
+    f.check("token-library-ack"); f.click("apply"); await f.settled();
+    assert.equal(f.q("token-library-json").disabled,true); assert.equal(f.q("token-library-ack").checked,false);
+    assert.match(f.q("token-library-description").textContent,/同じ保存番号に異なる/);
+  } finally { f.dispose(); }
+});

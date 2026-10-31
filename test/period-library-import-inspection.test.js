@@ -85,3 +85,34 @@ test("failed files, cancel, refresh, dispose and stale writes cannot leave curre
     assert.equal(await pending, false); assert.equal(f.controller.state.importInspection, null); f.controller.dispose();
   }
 });
+
+test("import inspection uses the actual resulting local revision when computing bytes", () => {
+  for (const revision of [9, 99, Number.MAX_SAFE_INTEGER - 1]) {
+    const before = library([entry(1)], revision), incoming = library([entry(2)]);
+    const inspection = inspectPeriodLibraryImport(before, incoming), actual = reviewPeriodLibraryImport(before, incoming);
+    assert.equal(inspection.revisionAvailable, true); assert.equal(inspection.resultingRevision, revision + 1);
+    assert.equal(inspection.capacity.bytesAfter, actual.after.bytes); assert.equal(inspection.compatible, true);
+  }
+});
+
+test("revision exhaustion refuses additions but still admits an identical no-op", () => {
+  const before = library([entry(1)], Number.MAX_SAFE_INTEGER), addition = inspectPeriodLibraryImport(before, library([entry(2)]));
+  assert.equal(addition.compatible, false); assert.equal(addition.revisionAvailable, false);
+  assert.equal(addition.resultingRevision, null); assert.equal(addition.capacity.bytesAfter, null);
+  assert.match(libraryImportInspectionText(addition), /更新番号が上限/);
+  assert.doesNotMatch(libraryImportInspectionText(addition), /追加可能な構成/);
+  const identical = inspectPeriodLibraryImport(before, library([entry(1)]));
+  assert.equal(identical.compatible, true); assert.equal(identical.resultingRevision, Number.MAX_SAFE_INTEGER);
+  assert.equal(identical.capacity.bytesAfter, reviewPeriodLibraryImport(before, library([entry(1)])).after.bytes);
+});
+
+test("a revision-limited stored library cannot display an incoming addition as compatible", async () => {
+  const store = memoryStorage(library([entry(1)], Number.MAX_SAFE_INTEGER));
+  const controller = createPeriodLibraryController({ storage: store.storage, getCheckpoint: () => assert.fail("live"), stageCheckpoint: () => assert.fail("restore") });
+  try {
+    await controller.refresh(); const file = await preparePeriodLibraryFile(library([entry(2)]));
+    assert.equal(await controller.importFile(fileFrom(file.text)), false); assert.equal(controller.state.error, "PERIOD_LIBRARY_REVISION_LIMIT");
+    assert.equal(controller.state.importInspection.compatible, false); assert.equal(controller.state.review, null);
+    assert.equal(store.calls.filter(row => row[0] === "change").length, 0);
+  } finally { controller.dispose(); }
+});

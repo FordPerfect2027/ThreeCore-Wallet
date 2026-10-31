@@ -1,3 +1,4 @@
+import { reportSetTokenLibrary } from "../src/report-set-model.js";
 import { compareReportSetEvents, reportSetEventRecheckRange } from "../src/report-set-engine.js";
 import { offerWalletDownload } from "./export-download.js";
 import { createReportHistoryStorage } from "../src/report-history-storage.js";
@@ -6,7 +7,7 @@ import { queryReportHistory } from "../src/report-history-query.js";
 import { querySetDiagnostics, diagnosticText } from "../src/report-set-diagnostics.js";
 import { mountReportSetTimeline } from "./report-set-timeline-panel.js";
 import { SET_LIMITATION, SET_SEGMENTS, setErrorText, setSummaryText,
-  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText, setEventComparisonText, setEventComparisonReviewText, setCoverageReviewText } from "../src/report-set-view.js";
+  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText, setEventComparisonText, setEventComparisonReviewText, setCoverageReviewText, setTokenLibraryText } from "../src/report-set-view.js";
 
 export function mountReportSetPanel({ document, parent,
   storage = createReportHistoryStorage(), now, stagePeriodProposal = null,
@@ -17,6 +18,7 @@ export function mountReportSetPanel({ document, parent,
   let diagnosticInput = null, diagnosticKey = null, diagnosticRows = null;
   let timelinePanel = null;
   let queueSelection = null;
+  let librarySource = null, libraryAgent = null, libraryRecovery = null;
   let eventComparison = null, eventPage = 0;
   let eventRecheck = null, recheckModel = null, recheckPage = null;
   let lastReview = null, lastEvidenceReview = null, lastEventReview = null, lastCoverageReview = null;
@@ -172,6 +174,13 @@ export function mountReportSetPanel({ document, parent,
   button("checks-csv", "絞り込んだ確認箇所をCSV保存", exportButtons);
   button("checks-json", "確認箇所と根拠の値をJSON保存", exportButtons);
   make("p", "checks-export-help", "確認箇所CSVには全体の件数を示す要約行と、条件に合う確認項目が入ります。該当0件でも全体の食い違いは残します。再読込み用の証拠ではありません。", exports);
+  const librarySection = make("details", "token-library", undefined, exports);
+  make("summary", "token-library-heading", "このトークンの元の控え一覧を取り出す", librarySection);
+  select("token-library-agent", "まとめて取り出すトークン", [["DAT", "DAT"], ["EMA", "EMA"], ["CAWELON", "CAWELON"]], librarySection);
+  nodes["token-library-agent"].value = "DAT";
+  make("pre", "token-library-description", "", librarySection);
+  field("token-library-ack", "表示したトークンの全アカウント・全期間の元の控えを、暗号化せずPCに保存します", "checkbox", librarySection);
+  button("token-library-json", "このトークンの控え一覧をJSON保存", librarySection);
   select("source-report", "個別に取り出す元レポート", [["", "元レポートを選んでください"]], exports);
   button("source-report-json", "選んだ元レポートをJSON保存", exports);
   make("p", "source-report-help", "元レポートJSONは期間レポート画面で再読込みできます。レポート内の全アドレス・履歴・メモを含み、上のメモ・短縮設定は適用されません。確認セットや保存一覧の付随情報は含めません。", exports);
@@ -427,6 +436,20 @@ export function mountReportSetPanel({ document, parent,
       }
     }
   }
+  function renderTokenLibrary(value) {
+    const agent = nodes["token-library-agent"].value;
+    if (librarySource !== value.input || libraryAgent !== agent) {
+      librarySource = value.input; libraryAgent = agent; libraryRecovery = null;
+      nodes["token-library-ack"].checked = false;
+      try {
+        libraryRecovery = value.input ? reportSetTokenLibrary(value.input, agent) : null;
+        nodes["token-library-description"].textContent = setTokenLibraryText(libraryRecovery);
+      } catch { nodes["token-library-description"].textContent = "取り出す元資料とトークンを確認してください。"; }
+    }
+    nodes["token-library-agent"].disabled = value.busy || !value.input;
+    nodes["token-library-ack"].disabled = value.busy || !libraryRecovery?.document;
+    nodes["token-library-json"].disabled = value.busy || !libraryRecovery?.document || !nodes["token-library-ack"].checked;
+  }
   function render(value) {
     if (disposed) return;
     state = value;
@@ -476,6 +499,7 @@ export function mountReportSetPanel({ document, parent,
     nodes["check-file"].disabled = value.busy || !value.input;
     nodes["check-review-output"].textContent = setCheckReviewText(value.checkReview);
     nodes["check-review"].disabled = value.busy || !value.checkReview || !nodes.ack.checked;
+    renderTokenLibrary(value);
     nodes["source-report"].disabled = value.busy || !value.input;
     nodes["source-report-json"].disabled = value.busy || !nodes.ack.checked || !value.input?.entries.some(entry => entry.id === nodes["source-report"].value);
     nodes["queue-window-json"].disabled = value.busy || !value.input || !nodes.ack.checked || !queueSelection;
@@ -569,6 +593,9 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });
+  listen(nodes["token-library-agent"], "change", () => renderTokenLibrary(controller.state));
+  listen(nodes["token-library-ack"], "change", () => renderTokenLibrary(controller.state));
+  listen(nodes["token-library-json"], "click", () => { void controller.exportTokenLibrary(nodes["token-library-agent"].value, nodes["token-library-ack"].checked, download); });
   listen(nodes["source-report"], "change", () => render(controller.state));
   listen(nodes["source-report-json"], "click", () => { void controller.exportSourceReport(nodes["source-report"].value, nodes.ack.checked, download); });
   listen(nodes["queue-window-json"], "click", () => {
