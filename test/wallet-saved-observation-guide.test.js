@@ -7,7 +7,7 @@ const fixtures=await savedObservationFixtures(),hash=text=>createHash('sha256').
 for(const fixture of fixtures){
  test('saved observation guide validates and summarizes '+fixture.name,async()=>{
   const result=await inspectWalletSavedText(fixture.text),raw=JSON.parse(fixture.text);assert.equal(result.schema,'threecore.saved-file-inspection.v2');assert.equal(result.target,fixture.target);assert.equal(result.validation,'validated-original');assert.equal(result.checksumVerified,true);assert.equal(result.sourceDigest,raw.digest);assert.equal(result.textDigest,hash(fixture.text));assert.equal(result.scope.draftReferences,null);assert.equal(result.liveChainRechecked,false);assert.equal(result.authorizesExecution,false);assert.equal(result.authenticated,false);assert.equal(result.restorable,false);assert(Object.isFrozen(result.scope));
-  for(const field of WALLET_SAVED_OBSERVATION_SCOPE_FIELDS)assert.equal(result.scope[field],fixture.counts[field]??null);
+  for(const field of WALLET_SAVED_OBSERVATION_SCOPE_FIELDS.slice(0,6))assert.equal(result.scope[field],fixture.counts[field]??null);for(const field of WALLET_SAVED_OBSERVATION_SCOPE_FIELDS.slice(6))assert.equal(Object.hasOwn(result.scope,field),false);
   const display=walletSavedInspectionText(result);assert(!display.includes('null件'));assert(!display.includes('undefined'));assert(!display.includes('0x111111'));assert(!JSON.stringify(result).includes('1234567890123456789'));assert(walletSavedFileTargetMessage(walletSavedFileTargetCode(raw.schema,'period')));
  });
  test('saved observation guide refuses checksum and shape substitution '+fixture.name,async()=>{
@@ -19,7 +19,7 @@ for(const fixture of fixtures){
  });
 }
 test('new original scopes keep absent values null and CSV blank while exports retain observed counts',async()=>{
- const batch=await inspectWalletSavedTextBatch(fixtures.map(({name,text})=>({name,text})));assert.equal(batch.allOriginalsValidated,true);assert.equal(batch.summary.validatedOriginals,7);const csv=encodeWalletSavedTextBatchCsv(batch);for(const field of WALLET_SAVED_OBSERVATION_SCOPE_FIELDS)assert(csv.includes('"'+field+'"'));assert(!csv.includes('"null"'));assert(!csv.includes('"undefined"'));
+ const batch=await inspectWalletSavedTextBatch(fixtures.map(({name,text})=>({name,text})));assert.equal(batch.allOriginalsValidated,true);assert.equal(batch.summary.validatedOriginals,7);const csv=encodeWalletSavedTextBatchCsv(batch);for(const field of WALLET_SAVED_OBSERVATION_SCOPE_FIELDS.slice(0,6))assert(csv.includes('"'+field+'"'));assert(!csv.includes('"configurationReferences"'));assert(!csv.includes('"null"'));assert(!csv.includes('"undefined"'));
  const targets=batch.files.find(row=>row.name==='allowance-targets.json').inspection;assert.equal(targets.scope.identityObservationReferences,null);assert.equal(targets.scope.allowanceObservationReferences,null);
 });
 test('new inspection receipt is a declaration, not reusable original evidence',async()=>{

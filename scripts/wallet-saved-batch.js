@@ -22,7 +22,7 @@ export function walletSavedBatchErrorCode(error){
  if(error instanceof WalletSavedBatchError||error instanceof EvidenceManifestError)return error.code;
  let code;try{code=Object.getOwnPropertyDescriptor(error,'code')?.value;}catch{}
  if(code==='ENOENT')return 'FILE_MISSING';if(['EACCES','EPERM'].includes(code))return 'FILE_ACCESS_DENIED';
- return typeof code==='string'&&/^(?:FILE|PERIOD|TRANSFER|IDENTITY|ALLOWANCE|RECONCILIATION)_[A-Z_]{1,64}$/.test(code)?code:'BATCH_FILE_READ_FAILED';
+ return typeof code==='string'&&/^(?:FILE|PERIOD|TRANSFER|IDENTITY|ALLOWANCE|WORKSPACE|SETUP|HISTORY|RECONCILIATION)_[A-Z_]{1,64}$/.test(code)?code:'BATCH_FILE_READ_FAILED';
 }
 async function stableBytes(path,info,limit){
  const handle=await open(path,'r');try{
@@ -57,14 +57,15 @@ export async function inspectWalletSavedBatch(path,options={}){
   }catch(error){files.push(Object.freeze({...entry,actualSha256,byteLength,status:'unreadable',code:walletSavedBatchErrorCode(error),inspection:null}));}
  }
  await unchanged();
- const summary=Object.freeze({files:entries.length,validatedOriginals:files.filter(row=>row.status==='validated-original').length,declaredOnly:files.filter(row=>row.status==='declared-only').length,checksumMismatched:files.filter(row=>row.status==='checksum-mismatch').length,unreadable:files.filter(row=>row.status==='unreadable').length,admittedBytes,readBytes});
- const result=Object.freeze({schema:'threecore.wallet-saved-batch-inspection.v1',readOnly:true,authenticatesOrigin:false,authorizesExecution:false,restorable:false,liveChainRechecked:false,atomicSnapshot:false,manifestSha256:hash(manifestBytes),allOriginalsValidated:summary.validatedOriginals===summary.files,allChecksumsMatch:files.every(row=>['validated-original','declared-only'].includes(row.status)&&row.actualSha256===row.expectedSha256),limits,summary,files:Object.freeze(files)});receipts.add(result);return result;
+ const structureValidated=files.filter(row=>row.status==='validated-structure').length;
+ const summary=Object.freeze({files:entries.length,validatedOriginals:files.filter(row=>row.status==='validated-original').length,declaredOnly:files.filter(row=>row.status==='declared-only').length,checksumMismatched:files.filter(row=>row.status==='checksum-mismatch').length,unreadable:files.filter(row=>row.status==='unreadable').length,admittedBytes,readBytes,...(structureValidated?{structureValidated}:{})});
+ const result=Object.freeze({schema:'threecore.wallet-saved-batch-inspection.v1',readOnly:true,authenticatesOrigin:false,authorizesExecution:false,restorable:false,liveChainRechecked:false,atomicSnapshot:false,manifestSha256:hash(manifestBytes),allOriginalsValidated:summary.validatedOriginals===summary.files,allChecksumsMatch:files.every(row=>['validated-original','validated-structure','declared-only'].includes(row.status)&&row.actualSha256===row.expectedSha256),limits,summary,files:Object.freeze(files)});receipts.add(result);return result;
 }
 export function encodeWalletSavedBatch(result,format='json'){
  if(!receipts.has(result)||!['json','csv'].includes(format))fail('INVALID_BATCH_RESULT');if(format==='json')return JSON.stringify(result,null,2)+'\n';
  const rows=[['readOnly','authenticatesOrigin','authorizesExecution','restorable','liveChainRechecked','atomicSnapshot','manifestSha256','allOriginalsValidated','allChecksumsMatch','selectedFiles','path','status','code','byteLength','expectedSha256','actualSha256','sourceSchema','target','internalChecksumVerified','draftReferences','incompleteDraftReferences','restrictedEntryReferences','agents','repeatedReferencesMayExist']];
  for(const row of result.files){const i=row.inspection,s=i?.scope;rows.push([true,false,false,false,false,false,result.manifestSha256,result.allOriginalsValidated,result.allChecksumsMatch,result.summary.files,row.path,row.status,row.code??'',row.byteLength??'',row.expectedSha256,row.actualSha256??'',i?.sourceSchema??'',i?.target??'',i?.checksumVerified??'',s?.draftReferences??'',s?.incompleteDraftReferences??'',s?.restrictedEntryReferences??'',s?.agents.join(' | ')??'',s?.repeatedReferencesMayExist??'']);}
- if(result.files.some(row=>row.inspection?.schema==='threecore.saved-file-inspection.v2')){rows[0].push(...WALLET_SAVED_OBSERVATION_SCOPE_FIELDS);result.files.forEach((row,index)=>rows[index+1].push(...WALLET_SAVED_OBSERVATION_SCOPE_FIELDS.map(field=>row.inspection?.scope?.[field]??'')));}
+ const extraFields=WALLET_SAVED_OBSERVATION_SCOPE_FIELDS.filter(field=>result.files.some(row=>row.inspection?.scope&&Object.hasOwn(row.inspection.scope,field)));if(extraFields.length){rows[0].push(...extraFields);result.files.forEach((row,index)=>rows[index+1].push(...extraFields.map(field=>row.inspection?.scope?.[field]??'')));}
  const cell=value=>{let text=String(value);if(/^\s*[=+@-]/u.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';};return '\uFEFF'+rows.map(row=>row.map(cell).join(',')).join('\r\n')+'\r\n';
 }
 

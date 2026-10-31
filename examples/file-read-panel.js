@@ -120,7 +120,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
     target.append(node); nodes[name] = node; return node;
   };
   const heading = make("summary", "heading", "保存したJSONの種類と開く場所を調べる"); heading.setAttribute("tabindex", "-1");
-  make("p", "intro", "ThreeCoreの期間・報告・受信送信履歴・トークンと残高の観測・利用許可の確認・残高照合など、チェックサム付きの元の保存JSONを1つ選んでください。形式とチェックサムを調べ、開く欄を案内します。ここでは履歴への追加や画面への復元は行いません。");
+  make("p", "intro", "ThreeCoreの元の保存JSONを1つ選んでください。期間・報告・受信送信履歴・残高・利用許可の観測・設定と履歴のバックアップなどに対応しています。形式と内部チェックサムの有無を分けて確認し、開く欄を案内します。ここでは履歴への追加や画面への復元は行いません。");
   const label = make("label", "file-label", "調べる元のJSON（最大96 MiB）");
   const file = make("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json";
   const stop = make("button", "stop", "このファイルの確認を中止"); stop.type = "button";
@@ -404,7 +404,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     } catch { if (current(id)) status.textContent = "名前が重複しないJSONを1〜20個選んでください。1件16 MiB、合計64 MiBまでです。ファイル名に特殊な記号がある場合は名前を変えて選び直してください。"; }
   });
   function render(receipt, id) {
-    const labels = { "validated-original": "元記録の形式・内部チェックサムを確認", "declared-only": "補助資料の形式指定だけ", invalid: "元記録を確認できません", "hash-unavailable": "照合値を計算できません", "source-unavailable": "ファイルを読み込めません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
+    const labels = { "validated-original": "元記録の形式・内部チェックサムを確認", "validated-structure": "データ形式を確認・内部チェックサムなし", "declared-only": "補助資料の形式指定だけ", invalid: "元記録を確認できません", "hash-unavailable": "照合値を計算できません", "source-unavailable": "ファイルを読み込めません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
     const sourceSelection = selection;
     const elements = receipt.files.map((row, index) => {
       const tr = document.createElement("tr"), scope = row.inspection?.scope;
@@ -414,7 +414,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
       const action = document.createElement("td");
       for (const [name, label, callback] of [["open", "この元記録の詳細を開く", inspectOriginal], ["compare", "開いている元記録と比較", compareOriginal]]) {
         const open = document.createElement("button"); open.className = "saved-file-batch-" + name; open.type = "button"; open.textContent = label;
-        open.disabled = row.status !== "validated-original" || !row.sha256 || typeof callback !== "function";
+        open.disabled = !["validated-original", "validated-structure"].includes(row.status) || !row.sha256 || typeof callback !== "function";
         open.addEventListener("click", async () => {
           if (disposed || active || !current(id) || result !== receipt || open.disabled) return;
           open.disabled = true;
@@ -428,6 +428,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     });
     if (!current(id)) return; result = receipt; rows.replaceChildren(...elements);
     const s = receipt.summary; summary.textContent = `${s.selected}件中、確認済み ${s.checked}件／未確認 ${s.pending}件。元記録 ${s.validatedOriginals}件、補助資料 ${s.declaredOnly}件、形式・照合値の問題 ${s.invalid + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。`;
+    if (s.structureValidated) summary.textContent += ` データ形式を確認・内部チェックサムなし ${s.structureValidated}件。内部チェックサム付きの元記録とは分けています。`;
     if (s.sourceUnavailable) summary.textContent += ` ファイルを読み込めなかったもの ${s.sourceUnavailable}件。ほかのファイルの確認結果は残しています。`;
     if (receipt.referenceProvided) summary.textContent += ` 以前の照合値との一致 ${s.checksumsMatching}件／不一致 ${s.checksumMismatches}件／未比較 ${s.selected - s.checksumsCompared}件。`;
     status.textContent = receipt.complete ? s.sourceUnavailable ? "読み込めないファイルがありました。ほかのファイルの確認結果は残しています。各行をご確認ください。" : "一括確認を終えました。各ファイルの結果をご確認ください。" : receipt.phase === "timed-out" ? "待ち時間の上限で止めました。確認できた分と未確認の行を含む控えを保存できます。" : "一括確認を止めました。確認できた分の控えを保存できます。未確認の行も含みます。";
@@ -496,7 +497,7 @@ export function mountSavedBatchComparisonPanel({ document, parent,
   const reviewSave = make("button", "review-save", "比較JSONの照合結果を保存", reviewBox); reviewSave.type = "button";
   const reviewSaveStatus = make("p", "review-save-status", "", reviewBox); reviewSaveStatus.setAttribute("role", "status");
   const labels = { identical: "同じ元記録・同じ書式", "format-only": "書式だけの違い", "changed-original": "元記録が変化", "different-format": "異なる形式", unverified: "元記録を比較できません", "only-before": "比較元だけに選択", "only-after": "今回だけに選択" };
-  const statusLabels = { "validated-original": "元記録を確認", "declared-only": "補助資料の形式だけ", invalid: "形式・内部照合の問題", "hash-unavailable": "照合値を計算できません", "source-unavailable": "ファイルを読み込めません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
+  const statusLabels = { "validated-original": "元記録を確認", "validated-structure": "データ形式を確認・内部チェックサムなし", "declared-only": "補助資料の形式だけ", invalid: "形式・内部照合の問題", "hash-unavailable": "照合値を計算できません", "source-unavailable": "ファイルを読み込めません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
   function controls() {
     hold.disabled = disposed || !current || Boolean(reviewActive); clear.disabled = disposed || !baseline; ack.disabled = disposed || !comparison; json.disabled = csv.disabled = ack.disabled || !ack.checked;
     reviewBox.setAttribute("aria-busy", reviewActive ? "true" : "false"); reviewFile.disabled = disposed || !comparison || Boolean(reviewActive); reviewStop.disabled = disposed || !reviewActive;

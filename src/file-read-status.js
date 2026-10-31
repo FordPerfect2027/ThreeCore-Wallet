@@ -168,6 +168,11 @@ export function decodeRehearsalForPanel(text, target, decode) {
 
 // These routes describe a declared format only. They never validate or open a file.
 const walletSavedTargets = Object.freeze({
+  "threecore-workspace-file-v1": ["workspace", "FILE_USE_WORKSPACE"],
+  "threecore-portfolio-snapshot-v1": ["portfolio", "FILE_USE_PORTFOLIO"],
+  "threecore-portfolio-history-v1": ["portfolio-history", "FILE_USE_PORTFOLIO_HISTORY"],
+  "threecore-wallet-setup-v1": ["setup", "FILE_USE_SETUP"],
+  "threecore.saved-file-inspection.v3": [null, "PERIOD_FILE_INSPECTION_ONLY"],
   "threecore.transfer-file.v1": ["transfer", "FILE_USE_TRANSFER"],
   "threecore.transfer-archive-file.v1": ["transfer-archive", "FILE_USE_TRANSFER_ARCHIVE"],
   "threecore.transfer-vault-file.v1": ["transfer-vault", "FILE_USE_TRANSFER_VAULT"],
@@ -208,6 +213,10 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  FILE_USE_WORKSPACE: "3ウォレットの設定と保存記録をまとめたバックアップです。「3ウォレットをまとめて保存・復元」で元のJSONを選んで確認してください。ここでは設定や履歴を反映しません。",
+  FILE_USE_PORTFOLIO: "過去の複数トークン残高の記録です。「複数トークンの残高確認」の「過去の記録を表示」で元のJSONを確認してください。この形式には内部チェックサムがありません。",
+  FILE_USE_PORTFOLIO_HISTORY: "過去の複数トークン残高の保存履歴です。「保存記録の履歴管理」で元のJSONを確認してください。この形式には内部チェックサムがありません。",
+  FILE_USE_SETUP: "3ウォレットの公開アドレスとネットワークの設定です。「3ウォレットの設定を保存・復元」で元のJSONを確認してください。この形式には内部チェックサムがなく、接続許可や所有権を証明しません。",
   FILE_USE_TRANSFER: "受信・送信履歴の保存JSONです。該当トークンの履歴画面で、元のJSONを選んで確認してください。現在のチェーンへの再照会は行いません。",
   FILE_USE_TRANSFER_ARCHIVE: "複数区間の履歴をまとめたJSONです。履歴の保管画面で元のJSONを確認してください。取得済み区間の記録であり、全履歴を取得した証明ではありません。",
   FILE_USE_TRANSFER_VAULT: "3トークンの履歴をまとめた保管JSONです。履歴の保管画面で元のJSONを確認してください。保存先への反映は行っていません。",
@@ -265,6 +274,7 @@ const originalSavedTypes = Object.freeze({
   "threecore.report-set-file.v1": ["set", "報告の確認セット", "「保存した確認セットを開く」で、この元のファイルを選んで確認してください。"],
 });
 const observationSavedTypes = Object.freeze({
+  "threecore-workspace-file-v1": "3ウォレットの設定・残高履歴バックアップ",
   "threecore.transfer-file.v1": "1区間の受信・送信履歴",
   "threecore.transfer-archive-file.v1": "複数区間の受信・送信履歴",
   "threecore.transfer-vault-file.v1": "3トークンの履歴保管",
@@ -272,10 +282,31 @@ const observationSavedTypes = Object.freeze({
   "threecore-allowance-file-v1": "利用許可の確認用保存資料",
   "threecore.reconciliation-file.v1": "残高と履歴の照合用保存資料",
 });
-export const WALLET_SAVED_OBSERVATION_SCOPE_FIELDS = Object.freeze(["archiveReferences", "transferRecordReferences", "eventReferences", "identityObservationReferences", "allowanceTargetReferences", "allowanceObservationReferences"]);
-const observationScopeLabels = Object.freeze({ archiveReferences: "履歴まとめの参照", transferRecordReferences: "取得区間の記録の参照", eventReferences: "履歴イベントの参照", identityObservationReferences: "トークン・残高観測の参照", allowanceTargetReferences: "利用許可の確認対象の参照", allowanceObservationReferences: "利用許可の観測行の参照" });
+export const WALLET_SAVED_OBSERVATION_SCOPE_FIELDS = Object.freeze(["archiveReferences", "transferRecordReferences", "eventReferences", "identityObservationReferences", "allowanceTargetReferences", "allowanceObservationReferences", "configurationReferences", "configuredAccountReferences", "configuredTokenReferences", "portfolioObservationReferences", "holdingReferences", "unknownHoldingReferences"]);
+const observationScopeLabels = Object.freeze({ archiveReferences: "履歴まとめの参照", transferRecordReferences: "取得区間の記録の参照", eventReferences: "履歴イベントの参照", identityObservationReferences: "トークン・残高観測の参照", allowanceTargetReferences: "利用許可の確認対象の参照", allowanceObservationReferences: "利用許可の観測行の参照", configurationReferences: "ウォレット設定の行", configuredAccountReferences: "設定済み公開アドレスの参照", configuredTokenReferences: "設定済みトークン契約の参照", portfolioObservationReferences: "複数トークン残高記録の参照", holdingReferences: "トークン残高の行の参照", unknownHoldingReferences: "残高が不明な行の参照" });
+const legacySavedTypes = Object.freeze({ "threecore-portfolio-snapshot-v1": "過去の複数トークン残高記録", "threecore-portfolio-history-v1": "複数トークン残高の保存履歴", "threecore-wallet-setup-v1": "3ウォレットの公開設定" });
+function savedPortfolioScope(observations, configuration) {
+  const holdings = observations?.flatMap(row => row.holdings) ?? null;
+  return { configurationReferences: configuration?.length ?? null, configuredAccountReferences: configuration?.filter(row => row.account !== null).length ?? null,
+    configuredTokenReferences: configuration?.some(row => Array.isArray(row.tokens)) ? configuration.reduce((count, row) => count + row.tokens.length + (row.tokenAddress === null ? 0 : 1), 0) : null,
+    portfolioObservationReferences: observations?.length ?? null, holdingReferences: holdings?.length ?? null,
+    unknownHoldingReferences: holdings?.filter(row => !row.hasCode).length ?? null };
+}
+function emptySavedPeriodScope(agents) { return { reportCount: null, archivedReports: null, entryReferences: null, draftReferences: null, archivedEntryReferences: null, restrictedEntryReferences: null, incompleteDraftReferences: null, emptyDraftReferences: null,
+  agents: Object.freeze(["DAT", "EMA", "CAWELON"].filter(agent => agents.includes(agent))), annotationValuesIncluded: false, repeatedReferencesMayExist: true }; }
+async function inspectLegacySaved(text, schema, byteLength, options, checkpoint, knownTextDigest) {
+  let observations = null, configuration = null;
+  if (schema === "threecore-portfolio-snapshot-v1") observations = [(await import("./portfolio-report.js")).decodePortfolioReport(text).snapshot];
+  else if (schema === "threecore-portfolio-history-v1") { const history = (await import("./portfolio-history.js")).createPortfolioHistory(); history.importText(text); observations = history.state().snapshots; }
+  else configuration = (await import("./wallet-setup.js")).decodeWalletSetup(text).entries;
+  checkpoint();
+  const scope = Object.freeze({ ...emptySavedPeriodScope((observations ?? configuration).map(row => row.agent)), ...savedPortfolioScope(observations, configuration) });
+  const textDigest = knownTextDigest ?? await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options); checkpoint();
+  return captureSavedInspection({ schema: "threecore.saved-file-inspection.v3", sourceSchema: schema, byteLength, title: legacySavedTypes[schema], target: walletSavedTargets[schema][0], destinationMessage: walletSavedMessages[walletSavedTargets[schema][1]],
+    validation: "validated-structure", checksumVerified: false, sourceDigest: null, textDigest, scope, originalEvidenceValidated: false, restorable: false, automaticallyImported: false, liveChainRechecked: false, authenticated: false, authorizesExecution: false });
+}
 async function inspectSavedObservation(text, schema, byteLength, options, checkpoint, knownTextDigest) {
-  let decoded, agents = [], archives = [], records = [], identities = null, targetCount = null, allowanceCount = null;
+  let decoded, agents = [], archives = [], records = [], identities = null, targetCount = null, allowanceCount = null, portfolioScope;
   const target = walletSavedTargets[schema][0];
   if (target === "transfer") { decoded = await (await import("./transfer-file.js")).decodeTransferFile(text, options); records = [decoded.snapshot]; agents = [decoded.snapshot.context.agent]; }
   else if (target === "transfer-archive") { decoded = await (await import("./transfer-archive-file.js")).decodeTransferArchiveFile(text, options); archives = [decoded.archive]; }
@@ -287,6 +318,10 @@ async function inspectSavedObservation(text, schema, byteLength, options, checkp
     agents = [observation ? decoded.payload.identity.agent : decoded.payload.agent];
     targetCount = (observation ? decoded.payload.targets : decoded.payload).targets.length;
     if (observation) { identities = [decoded.payload.identity]; allowanceCount = decoded.payload.rows.length; }
+  } else if (target === "workspace") {
+    decoded = await (await import("./workspace-file.js")).decodeWorkspaceFile(new TextEncoder().encode(text), options);
+    const configuration = decoded.workspace.entries, observations = configuration.flatMap(row => row.history.reports.map(report => report.snapshot));
+    agents = configuration.map(row => row.agent); portfolioScope = savedPortfolioScope(observations, configuration);
   } else {
     decoded = await (await import("./reconciliation-file.js")).decodeReconciliationFile(text, options);
     archives = decoded.workspace.slots.map(row => row.archive).filter(Boolean);
@@ -302,7 +337,7 @@ async function inspectSavedObservation(text, schema, byteLength, options, checkp
     repeatedReferencesMayExist: archives.length > 0 || target === "reconciliation",
     archiveReferences: hasTransfers && target !== "transfer" ? archives.length : null,
     transferRecordReferences: hasTransfers ? records.length : null, eventReferences: hasTransfers ? records.reduce((count, row) => count + row.events.length, 0) : null,
-    identityObservationReferences: identities?.length ?? null, allowanceTargetReferences: targetCount, allowanceObservationReferences: allowanceCount });
+    identityObservationReferences: identities?.length ?? null, allowanceTargetReferences: targetCount, allowanceObservationReferences: allowanceCount, ...portfolioScope });
   const textDigest = knownTextDigest ?? await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options); checkpoint();
   return captureSavedInspection({ schema: "threecore.saved-file-inspection.v2", sourceSchema: schema, byteLength,
     title: observationSavedTypes[schema], target, destinationMessage: walletSavedMessages[walletSavedTargets[schema][1]],
@@ -338,6 +373,7 @@ async function inspectWalletSavedTextCaptured(text, fileOptions, knownTextDigest
   declared = null;
   if (typeof schema !== "string" || !Object.hasOwn(walletSavedTargets, schema)) savedInspectionFail("FILE_INSPECTION_UNSUPPORTED");
   const targetCode = walletSavedTargets[schema][1], definition = originalSavedTypes[schema];
+  if (Object.hasOwn(legacySavedTypes, schema)) return inspectLegacySaved(text, schema, byteLength, options, checkpoint, knownTextDigest);
   if (Object.hasOwn(observationSavedTypes, schema)) return inspectSavedObservation(text, schema, byteLength, options, checkpoint, knownTextDigest);
   if (!definition) {
     checkpoint();
@@ -384,7 +420,7 @@ async function inspectWalletSavedTextCaptured(text, fileOptions, knownTextDigest
 export function walletSavedInspectionText(value) {
   if (!value) return "";
   const summary = [value.title + " · " + value.byteLength + " bytes",
-    value.validation === "validated-original" ? "元記録の形式とチェックサムを確認しました。まだ読み込み先へ反映していません。" :
+    value.validation === "validated-original" ? "元記録の形式とチェックサムを確認しました。まだ読み込み先へ反映していません。" : value.validation === "validated-structure" ? "データ形式を確認しました。この形式に内部チェックサムはなく、変更前との一致は確認していません。まだ読み込み先へ反映していません。" :
       "形式の指定だけを判別しました。中身・チェックサム・記載された結論は検証していません。",
     value.destinationMessage];
   if (value.scope) {
@@ -446,7 +482,7 @@ export function walletSavedComparisonText(value) {
     "format-only": "元記録のチェックサムは一致しています。空白や項目の並びなど、ファイルの書式に違いがあります。",
     "changed-original": "同じ形式ですが、元記録の内容に違いがあります。どちらが正しいかは、この比較では判断しません。",
     "different-format": "種類が異なるファイルです。元記録の一致・不一致としては比較しません。",
-    unverified: "元記録として検証できない補助資料が含まれるため、内容の一致を判断していません。",
+    unverified: "内部チェックサム付きの元記録として両方を確認できないため、内容の一致を判断していません。",
   };
   const fields = { reportCount: "報告件数", archivedReports: "非表示保管の報告", entryReferences: "保存項目の参照数",
     draftReferences: "取得控えの参照数", archivedEntryReferences: "非表示保管の保存項目", restrictedEntryReferences: "再取得の印がある保存項目",
@@ -506,7 +542,7 @@ export function walletSavedComparisonReviewText(value) {
     restorable: "復元に使えるか", automaticallyImported: "自動取込の主張", liveChainRechecked: "現在のチェーン確認の主張",
     authenticated: "出所の認証の主張", authorizesExecution: "実行許可の主張" };
   return [value.matchesRecomputation ? "保存した比較結果は、この2つの記録からの再計算と一致しています。" : "保存した比較結果に、再計算と一致しない箇所があります。",
-    value.originalPairValidated ? "両方の元記録の形式とチェックサムを確認しています。" : "補助資料が含まれるため、元記録同士としての一致は判断していません。",
+    value.originalPairValidated ? "両方の元記録の形式とチェックサムを確認しています。" : "内部チェックサム付きの元記録として両方を確認できないため、元記録同士の一致は判断していません。",
     "比較元との結び付け: " + (value.beforeBindingMatches === null ? "未検証" : value.beforeBindingMatches ? "一致" : "不一致") + " / 比較先との結び付け: " + (value.afterBindingMatches === null ? "未検証" : value.afterBindingMatches ? "一致" : "不一致"),
     ...value.differences.map(field => "不一致: " + fields[field]),
     value.unexpectedFields ? "仕様にない追加項目: " + value.unexpectedFields + "個" : "",
@@ -646,7 +682,7 @@ async function inspectSavedBatchRow(row, { subtle, signal, timeoutMs, expectedSh
     } catch (error) {
       status = "invalid"; inspection = null;
       try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; } catch {}
-      if (typeof code !== "string" || !/^(FILE|PERIOD|TRANSFER|IDENTITY|ALLOWANCE|RECONCILIATION)_[A-Z_]{1,64}$/.test(code)) code = "FILE_INSPECTION_FAILED";
+      if (typeof code !== "string" || !/^(FILE|PERIOD|TRANSFER|IDENTITY|ALLOWANCE|WORKSPACE|SETUP|HISTORY|RECONCILIATION)_[A-Z_]{1,64}$/.test(code)) code = "FILE_INSPECTION_FAILED";
     }
   }
   if (signal.aborted) return null;
@@ -664,7 +700,8 @@ function finishSavedBatch(rows, selection, completed, phase, referenceText, refe
   const summary = Object.freeze({ selected: files.length, checked: completed.length, pending: count("pending"), validatedOriginals: count("validated-original"), declaredOnly: count("declared-only"), invalid: count("invalid"), hashUnavailable: count("hash-unavailable"),
     totalBytes: unknownSourceBytes ? files.reduce((total, row) => total + (row.byteLength ?? 0), 0) : selection.totalBytes,
     ...(hasReference ? { checksumsCompared: files.filter(row => row.checksumMatches !== null).length, checksumsMatching: files.filter(row => row.checksumMatches === true).length, checksumMismatches: count("checksum-mismatch") } : {}),
-    ...(unknownSourceBytes ? { sourceUnavailable: count("source-unavailable"), selectedReportedBytes: selection.totalBytes, unreadSourceReportedBytes: files.reduce((total, row) => total + (row.reportedByteLength ?? 0), 0) } : {}) });
+    ...(unknownSourceBytes ? { sourceUnavailable: count("source-unavailable"), selectedReportedBytes: selection.totalBytes, unreadSourceReportedBytes: files.reduce((total, row) => total + (row.reportedByteLength ?? 0), 0) } : {}),
+    ...(count("validated-structure") ? { structureValidated: count("validated-structure") } : {}) });
   const result = Object.freeze({ schema: "threecore.wallet-saved-browser-batch." + (unknownSourceBytes ? "v3" : hasReference ? "v2" : "v1"), readOnly: true, authenticatesOrigin: false, authorizesExecution: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, externalChecksumsCompared: hasReference && summary.checksumsCompared > 0,
     phase, complete: phase === "complete" && completed.length === rows.length, allOriginalsValidated: phase === "complete" && summary.validatedOriginals === rows.length, summary, files: Object.freeze(files),
     ...(hasReference ? { referenceProvided: true, reference: Object.freeze({ text: referenceText, sha256: referenceSha256, entries: reference }), allExternalChecksumsMatch: phase === "complete" && summary.checksumsMatching === rows.length } : {}) });
@@ -777,9 +814,10 @@ export function encodeWalletSavedTextBatchCsv(result) {
     rows[0].push("reportedByteLength", "sourceUnavailable", "selectedReportedBytes", "unreadSourceReportedBytes");
     result.files.forEach((row, index) => rows[index + 1].push(row.reportedByteLength ?? "", result.summary.sourceUnavailable, result.summary.selectedReportedBytes, result.summary.unreadSourceReportedBytes));
   }
-  if (result.files.some(row => row.inspection?.schema === "threecore.saved-file-inspection.v2")) {
-    rows[0].push(...WALLET_SAVED_OBSERVATION_SCOPE_FIELDS);
-    result.files.forEach((row, index) => rows[index + 1].push(...WALLET_SAVED_OBSERVATION_SCOPE_FIELDS.map(field => row.inspection?.scope?.[field] ?? "")));
+  const extraFields = WALLET_SAVED_OBSERVATION_SCOPE_FIELDS.filter(field => result.files.some(row => row.inspection?.scope && Object.hasOwn(row.inspection.scope, field)));
+  if (extraFields.length) {
+    rows[0].push(...extraFields);
+    result.files.forEach((row, index) => rows[index + 1].push(...extraFields.map(field => row.inspection?.scope?.[field] ?? "")));
   }
   const cell = value => { let text = String(value); if (/^\s*[=+@-]/u.test(text)) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
   return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";

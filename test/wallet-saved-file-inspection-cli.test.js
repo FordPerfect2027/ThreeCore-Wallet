@@ -28,6 +28,6 @@ test("standalone saved-file inspection exactly reproduces the shared result and 
 test("saved-file inspection argument failures and errors cannot leak the supplied local path", async () => {
   for (const args of [[], ["file.txt"], ["file.json", "--execute"], ["file.json", "--json", "--json"], ["--json"]]) assert.throws(() => parseSavedInspectionArgs(args));
   let out = "", err = ""; const io = { stdout: { write: value => { out += value; } }, stderr: { write: value => { err += value; } } };
-  assert.equal(await runSavedFileInspection(["--help"], io), 0); assert.match(out, /auxiliary declaration only/); assert.equal(err, "");
+  assert.equal(await runSavedFileInspection(["--help"], io), 0); assert.match(out, /structure-only validation or auxiliary declaration/); assert.equal(err, "");
   out = ""; assert.equal(await runSavedFileInspection(["PRIVATE_DOES_NOT_EXIST.json", "--json"], io), 1); assert.equal(out, ""); assert.ok(!err.includes("PRIVATE_DOES_NOT_EXIST"));
 });

@@ -1,5 +1,8 @@
 import { observation, archive } from "./history-fixtures.js";
 import { workspaceFromDraft, encodeWorkspace } from "../../src/workspace-format.js";
+import { prepareWorkspaceFile } from "../../src/workspace-file.js";
+import { encodePortfolioReport } from "../../src/portfolio-report.js";
+import { encodeWalletSetup, WALLET_SETUP_SCHEMA } from "../../src/wallet-setup.js";
 
 export const AGENTS = ["DAT", "EMA", "CAWELON"];
 export const ACCOUNTS = ["11", "22", "33"].map(pair => "0x" + pair.repeat(20));
@@ -40,6 +43,16 @@ export function fileObject(text, changes = {}) {
   const bytes = new TextEncoder().encode(text);
   return { name: "workspace.json", size: bytes.length,
     arrayBuffer: async () => bytes.buffer, ...changes };
+}
+
+export async function savedWorkspaceGuideFixtures() {
+  const workspace = bundle();
+  return [
+    { name: "workspace.json", text: (await prepareWorkspaceFile(workspace)).text, target: "workspace", validation: "validated-original", counts: { configurationReferences: 3, configuredAccountReferences: 3, configuredTokenReferences: 6, portfolioObservationReferences: 3, holdingReferences: 3, unknownHoldingReferences: 0 } },
+    { name: "portfolio.json", text: encodePortfolioReport(snapshot()), target: "portfolio", validation: "validated-structure", counts: { portfolioObservationReferences: 1, holdingReferences: 1, unknownHoldingReferences: 0 } },
+    { name: "portfolio-history.json", text: archive([snapshot(0), snapshot(1)]), target: "portfolio-history", validation: "validated-structure", counts: { portfolioObservationReferences: 2, holdingReferences: 2, unknownHoldingReferences: 0 } },
+    { name: "setup.json", text: encodeWalletSetup({ schema: WALLET_SETUP_SCHEMA, entries: workspace.entries.map(({agent, account, chainId}) => ({agent, account, chainId})) }), target: "setup", validation: "validated-structure", counts: { configurationReferences: 3, configuredAccountReferences: 3 } },
+  ];
 }
 
 export function gate() {

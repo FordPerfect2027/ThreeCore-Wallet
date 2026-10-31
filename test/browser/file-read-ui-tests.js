@@ -26,6 +26,7 @@ import { createHistoryFileReader } from "/src/history-file-reader.js";
 import { readSecurityFileBytes } from "/src/security-file.js";
 import { mountRehearsalBatchReviewPanel } from "/examples/operation-rehearsal-review-panel.js";
 import { savedObservationFixtures } from "/test/helpers/saved-observation-fixtures.js";
+import { savedWorkspaceGuideFixtures } from "/test/helpers/workspace-fixtures.js";
 
 const assert = (value, message = "File boundary UI assertion failed") => { if (!value) throw Error(message); };
 const bytes = text => new TextEncoder().encode(text);
@@ -66,6 +67,16 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('wallet backup guide: native files keep checksummed workspace and plain history validation distinct',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name);
+    try{for(const fixture of await savedWorkspaceGuideFixtures()){const files=new DataTransfer();files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.validation===fixture.validation&&result.target===fixture.target);assert(!q('output').textContent.includes('null件'));if(fixture.validation==='validated-structure')assert(q('output').textContent.includes('内部チェックサムはなく'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.at(-1).text).checksumVerified===(fixture.validation==='validated-original'));}}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet backup batch: native exports retain structure-only rows without claiming all originals validated',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-batch-'+name);
+    try{const fixtures=await savedWorkspaceGuideFixtures(),files=new DataTransfer();for(const fixture of fixtures)files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.summary.validatedOriginals===1&&result.summary.structureValidated===3&&!result.allOriginalsValidated);assert(q('summary').textContent.includes('内部チェックサムなし 3件'));for(const name of ['save','csv']){q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q(name).click();}assert(JSON.parse(downloads[0].text).files[1].inspection.sourceDigest===null);assert(downloads[1].text.includes('"validated-structure"')&&!downloads[1].text.includes('"null"'));}
+    finally{panel.dispose();host.remove();}
+  });
   test('wallet observation originals: native file guide handles transfer, balance, allowance and reconciliation sources',async()=>{
     const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name);
     try{for(const fixture of await savedObservationFixtures()){const files=new DataTransfer();files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.validation==='validated-original'&&result.target===fixture.target);assert(!q('output').textContent.includes('null件')&&!q('output').textContent.includes('undefined')&&!q('output').textContent.includes('0x111111'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.at(-1).text).sourceDigest===JSON.parse(fixture.text).digest);}}
