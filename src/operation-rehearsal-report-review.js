@@ -57,21 +57,40 @@ export function compareBoundedSavedJSONTexts(beforeText, afterText) {
 
 /** Page field locations without retaining all matches or returning values. */
 export function queryBoundedSavedJSONDifferences(beforeText, afterText, input = {}) {
+  const query = captureSavedDifferenceQuery(input);
+  return createBoundedSavedJSONDifferenceReader(beforeText, afterText).query(query);
+}
+function captureSavedDifferenceQuery(input) {
   let options; try { options = captureOptionalDataFields(input, ["offset", "pathIncludes"]); } catch { fail("INVALID_SAVED_DIFFERENCE_QUERY"); }
   const { offset = 0, pathIncludes = "" } = options;
   if (!Number.isSafeInteger(offset) || offset < 0 || offset > 200000 || offset % REHEARSAL_REPORT_DIFFERENCE_LIMIT !== 0 ||
       typeof pathIncludes !== "string" || pathIncludes.length > 128 || /[\u0000-\u001f\u007f-\u009f\u200e\u200f\u202a-\u202e\u2066-\u2069]/.test(pathIncludes)) fail("INVALID_SAVED_DIFFERENCE_QUERY");
-  const limits = { bytes: 2097152, depth: 32, nodes: 100000, keyCharacters: 256, stringCharacters: 1048576 }, differences = [];
+  return { offset, pathIncludes };
+}
+
+/** Hold one bounded parsed pair; retain at most eight immutable location pages, never all source paths. */
+export function createBoundedSavedJSONDifferenceReader(beforeText, afterText) {
+  const limits = { bytes: 2097152, depth: 32, nodes: 100000, keyCharacters: 256, stringCharacters: 1048576 };
+  const before = parseSecurityJson(beforeText, limits), after = parseSecurityJson(afterText, limits), overview = compareValues(before, after), cache = new Map();
+  function query(input = {}) {
+  const { offset, pathIncludes } = captureSavedDifferenceQuery(input);
+  const key = JSON.stringify([offset, pathIncludes]), hit = cache.get(key);
+  if (hit) { cache.delete(key); cache.set(key, hit); return hit; }
+  const differences = [];
   let matched = 0;
-  const full = compareValues(parseSecurityJson(beforeText, limits), parseSecurityJson(afterText, limits), 0, (index, location) => {
+  if (!pathIncludes && offset === 0) { matched = overview.differenceCount; differences.push(...overview.differences.map((location, index) => Object.freeze({ ordinal: index + 1, ...location }))); }
+  else compareValues(before, after, 0, (index, location) => {
     if (!location.path.includes(pathIncludes)) return;
     if (matched >= offset && differences.length < REHEARSAL_REPORT_DIFFERENCE_LIMIT) differences.push(Object.freeze({ ordinal: index + 1, ...location }));
     matched++;
   });
   if (offset > 0 && offset >= matched) fail("INVALID_SAVED_DIFFERENCE_QUERY");
-  return Object.freeze({ query: Object.freeze({ pathIncludes }), offset, limit: REHEARSAL_REPORT_DIFFERENCE_LIMIT,
-    totalDifferences: full.differenceCount, matchedDifferences: matched, shownDifferences: differences.length,
+  const page = Object.freeze({ query: Object.freeze({ pathIncludes }), offset, limit: REHEARSAL_REPORT_DIFFERENCE_LIMIT,
+    totalDifferences: overview.differenceCount, matchedDifferences: matched, shownDifferences: differences.length,
     differences: Object.freeze(differences), hasPrevious: offset > 0, hasNext: offset + differences.length < matched });
+  cache.set(key, page); if (cache.size > 8) cache.delete(cache.keys().next().value); return page;
+  }
+  return Object.freeze({ overview, query });
 }
 
 /** A checksum-only text file, bounded independently from a report. */
@@ -498,9 +517,13 @@ export function extractRehearsalBatchComparisonEvidenceSource(review, role, name
   return extractRehearsalBatchEvidenceSource(rehearsalBatchComparisonEvidenceReviews.get(review)[role + "Review"], name);
 }
 const rehearsalBatchComparisonDifferencePages = new WeakSet();
+const rehearsalBatchDifferenceReaders = new WeakMap();
 export function queryRehearsalBatchComparisonDifferences(review, name, input = {}) {
   const before = extractRehearsalBatchComparisonEvidenceSource(review, "before", name), after = extractRehearsalBatchComparisonEvidenceSource(review, "after", name); let page;
-  try { page = queryBoundedSavedJSONDifferences(before.text, after.text, input); } catch { fail("REVIEW_BATCH_COMPARISON_DIFFERENCE"); }
+  try { let cached = rehearsalBatchDifferenceReaders.get(review);
+    if (!cached || cached.name !== name) { rehearsalBatchDifferenceReaders.delete(review); cached = { name, reader: createBoundedSavedJSONDifferenceReader(before.text, after.text) }; rehearsalBatchDifferenceReaders.set(review, cached); }
+    page = cached.reader.query(input);
+  } catch { fail("REVIEW_BATCH_COMPARISON_DIFFERENCE"); }
   const result = Object.freeze({ schema: "threecore.batch-comparison-difference-page.v1", family: "rehearsal", name,
     comparisonEvidenceDigest: review.sha256, beforeTextDigest: before.sourceTextDigest, afterTextDigest: after.sourceTextDigest,
     beforeStatus: before.sourceStatus, afterStatus: after.sourceStatus, sourceTextMatches: before.sourceTextDigest === after.sourceTextDigest,

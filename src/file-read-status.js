@@ -581,14 +581,14 @@ export async function inspectWalletSavedTextDifferences(beforeText, afterText, f
       if (before.sourceSchema !== after.sourceSchema) savedInspectionFail("FILE_DIFFERENCE_FORMAT");
       if ((Object.hasOwn(options, "expectedBeforeSha256") && before.textDigest !== options.expectedBeforeSha256) ||
           (Object.hasOwn(options, "expectedAfterSha256") && after.textDigest !== options.expectedAfterSha256)) savedInspectionFail("FILE_DIFFERENCE_SOURCE_CHANGED");
-      const { compareBoundedSavedJSONTexts, queryBoundedSavedJSONDifferences } = await import("./operation-rehearsal-report-review.js"); checkpoint();
-      const difference = compareBoundedSavedJSONTexts(beforeText, afterText); checkpoint();
+      const { createBoundedSavedJSONDifferenceReader } = await import("./operation-rehearsal-report-review.js"); checkpoint();
+      const reader = createBoundedSavedJSONDifferenceReader(beforeText, afterText), difference = reader.overview; checkpoint();
       const result = Object.freeze({ schema: "threecore.saved-file-differences.v1", readOnly: true,
         before, after, sourceTextMatches: before.textDigest === after.textDigest, parsedJSONValuesMatch: difference.differenceCount === 0,
         ...difference, listedDifferences: difference.differences.length, valuesIncluded: false, arrayMatching: "position",
         containsOriginalEvidence: false, restorable: false, authenticated: false, liveChainRechecked: false, authorizesExecution: false });
       savedDifferenceReceipts.add(result);
-      savedDifferenceSources.set(result, query => queryBoundedSavedJSONDifferences(beforeText, afterText, query)); return result;
+      savedDifferenceSources.set(result, reader.query); return result;
     };
     try { return await waitSavedBatchSource(work, local.signal); } catch (error) { checkpoint(); throw error; }
   } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
@@ -1452,14 +1452,14 @@ export async function reviewWalletBatchComparisonEvidence(text, input = {}) {
   const expected = walletBatchComparisonEvidenceDocument(before, after), differences = Object.keys(expected).filter(key => !Object.hasOwn(parsed, key) || !sameSavedJSON(expected[key], parsed[key]));
   const unexpectedFields = Object.keys(parsed).filter(key => !Object.hasOwn(expected, key)).length, options = budget();
   const textDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, { signal: options.signal, timeoutMs: Math.min(options.timeoutMs, 30000) }); budget();
-  const { queryBoundedSavedJSONDifferences } = await import("./operation-rehearsal-report-review.js"); budget();
+  const { createBoundedSavedJSONDifferenceReader } = await import("./operation-rehearsal-report-review.js"); budget();
   const result = Object.freeze({ schema: "threecore.wallet-batch-comparison-evidence-review.v1", textDigest,
     matchesRecomputation: differences.length === 0 && unexpectedFields === 0 && beforeReview.matchesRecomputation && afterReview.matchesRecomputation,
     differences: Object.freeze(differences), unexpectedFields, beforeEvidenceMatches: beforeReview.matchesRecomputation, afterEvidenceMatches: afterReview.matchesRecomputation,
     comparisonMatches: sameSavedJSON(expected.comparison, parsed.comparison), beforeSummary: before.summary, afterSummary: after.summary, comparisonSummary: expected.comparison.summary,
     allOriginalsValidated: before.allOriginalsValidated && after.allOriginalsValidated, readOnly: true, authenticated: false,
     containsOriginalEvidence: false, authorizesExecution: false, automaticallyImported: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, recordedProcessVerified: false });
-  walletBatchComparisonEvidenceReviews.set(result, Object.freeze({ before: savedBatchEvidenceReviews.get(beforeReview), after: savedBatchEvidenceReviews.get(afterReview), comparison: expected.comparison, beforeReview, afterReview, queryDifferences: queryBoundedSavedJSONDifferences })); return result;
+  walletBatchComparisonEvidenceReviews.set(result, Object.freeze({ before: savedBatchEvidenceReviews.get(beforeReview), after: savedBatchEvidenceReviews.get(afterReview), comparison: expected.comparison, beforeReview, afterReview, createDifferenceReader: createBoundedSavedJSONDifferenceReader })); return result;
 }
 export function encodeWalletBatchComparisonEvidenceReview(result) {
   if (!walletBatchComparisonEvidenceReviews.has(result)) savedInspectionFail("FILE_BATCH_COMPARISON_RESULT");
@@ -1475,10 +1475,14 @@ export function extractWalletBatchComparisonEvidenceSource(review, role, name) {
   return extractWalletSavedBatchEvidenceSource(walletBatchComparisonEvidenceReviews.get(review)[role + "Review"], name);
 }
 const walletBatchComparisonDifferencePages = new WeakSet();
+const walletBatchDifferenceReaders = new WeakMap();
 /** JSON locations only, from the exact two embedded sources; a JSON difference is not source validation. */
 export function queryWalletBatchComparisonDifferences(review, name, input = {}) {
   const before = extractWalletBatchComparisonEvidenceSource(review, "before", name), after = extractWalletBatchComparisonEvidenceSource(review, "after", name); let page;
-  try { page = walletBatchComparisonEvidenceReviews.get(review).queryDifferences(before.text, after.text, input); } catch { savedInspectionFail("FILE_BATCH_COMPARISON_DIFFERENCE"); }
+  try { let cached = walletBatchDifferenceReaders.get(review);
+    if (!cached || cached.name !== name) { walletBatchDifferenceReaders.delete(review); cached = { name, reader: walletBatchComparisonEvidenceReviews.get(review).createDifferenceReader(before.text, after.text) }; walletBatchDifferenceReaders.set(review, cached); }
+    page = cached.reader.query(input);
+  } catch { savedInspectionFail("FILE_BATCH_COMPARISON_DIFFERENCE"); }
   const result = Object.freeze({ schema: "threecore.batch-comparison-difference-page.v1", family: "wallet", name,
     comparisonEvidenceDigest: review.textDigest, beforeTextDigest: before.sourceTextDigest, afterTextDigest: after.sourceTextDigest,
     beforeStatus: before.sourceStatus, afterStatus: after.sourceStatus, sourceTextMatches: before.sourceTextDigest === after.sourceTextDigest,
