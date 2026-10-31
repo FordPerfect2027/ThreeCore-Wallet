@@ -1,0 +1,88 @@
+{
+  "source": "7ab0bcd",
+  "synthetic": true,
+  "realStorageWrites": 0,
+  "providerReads": 0,
+  "rows": [
+    {
+      "name": "complete-DAT",
+      "agent": "DAT",
+      "entryId": "12345678-1234-4234-8234-000000000001",
+      "archived": false,
+      "requiresNewPlan": false,
+      "extractedEntryMatchesExactly": true,
+      "cliMatchesSharedBytes": true,
+      "sourceUnchanged": true,
+      "beforeApply": {
+        "storedEntries": 0,
+        "deliveries": 0
+      },
+      "beforeRestore": {
+        "storedEntries": 1,
+        "deliveries": 0
+      },
+      "deliveredRequiresNewPlan": false,
+      "syntheticStorageWrites": 1
+    },
+    {
+      "name": "partial-EMA",
+      "agent": "EMA",
+      "entryId": "12345678-1234-4234-8234-000000000002",
+      "archived": false,
+      "requiresNewPlan": false,
+      "extractedEntryMatchesExactly": true,
+      "cliMatchesSharedBytes": true,
+      "sourceUnchanged": true,
+      "beforeApply": {
+        "storedEntries": 0,
+        "deliveries": 0
+      },
+      "beforeRestore": {
+        "storedEntries": 1,
+        "deliveries": 0
+      },
+      "deliveredRequiresNewPlan": false,
+      "syntheticStorageWrites": 1
+    },
+    {
+      "name": "empty-CAWELON",
+      "agent": "CAWELON",
+      "entryId": "12345678-1234-4234-8234-000000000003",
+      "archived": false,
+      "requiresNewPlan": false,
+      "extractedEntryMatchesExactly": true,
+      "cliMatchesSharedBytes": true,
+      "sourceUnchanged": true,
+      "beforeApply": {
+        "storedEntries": 0,
+        "deliveries": 0
+      },
+      "beforeRestore": {
+        "storedEntries": 1,
+        "deliveries": 0
+      },
+      "deliveredRequiresNewPlan": false,
+      "syntheticStorageWrites": 1
+    },
+    {
+      "name": "restricted-archived-DAT",
+      "agent": "DAT",
+      "entryId": "12345678-1234-4234-8234-000000000001",
+      "archived": true,
+      "requiresNewPlan": true,
+      "extractedEntryMatchesExactly": true,
+      "cliMatchesSharedBytes": true,
+      "sourceUnchanged": true,
+      "beforeApply": {
+        "storedEntries": 0,
+        "deliveries": 0
+      },
+      "beforeRestore": {
+        "storedEntries": 1,
+        "deliveries": 0
+      },
+      "deliveredRequiresNewPlan": true,
+      "syntheticStorageWrites": 1
+    }
+  ]
+}

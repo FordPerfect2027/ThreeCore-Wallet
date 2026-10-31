@@ -1,0 +1,104 @@
+✔ controller construction performs no reads, wallet access or writes (67.4309ms)
+✔ load, select, review, apply are distinct operations (75.7626ms)
+✔ loaded sources never write to the library (182.6475ms)
+✔ storage may be a read-only interface without change (41.663ms)
+✔ selection requires a loaded library and correct token (28.2521ms)
+✔ preparing all empty slots fails without reading storage again (30.0626ms)
+✔ one selected record is a usable incomplete report (48.9688ms)
+✔ selection change invalidates prior result and pending review (47.8163ms)
+✔ editing title invalidates review but retains the clearly titled accepted report (72.7725ms)
+✔ review detects renamed selected source before accepting (64.8389ms)
+✔ review detects archived selected source before accepting (63.0983ms)
+✔ review detects deleted selected source before accepting (48.0225ms)
+✔ review detects evidence changed selected source before accepting (40.2433ms)
+✔ unrelated library update does not reject selected evidence (40.2881ms)
+✔ refresh clears accepted result and removes deleted selections (51.3916ms)
+✔ already accepted report stays a historical snapshot when library changes later (97.7459ms)
+✔ JSON import works without IndexedDB and does not touch the library (48.8673ms)
+✔ imported report remains pending until explicit apply (73.0118ms)
+✔ bad import does not erase accepted report (49.8357ms)
+✔ file acceptance realigns selectors only to exact records in the loaded library (148.0326ms)
+✔ cancelled import cannot create a late review (51.0624ms)
+✔ cancelled read cannot replace a later successful refresh (35.7298ms)
+✔ cancel during fresh source validation does not accept the reviewed report (41.5051ms)
+✔ failed fresh read preserves original records and surfaces safe error (22.5242ms)
+✔ busy operation prevents conflicting selection or preparation (67.4775ms)
+✔ export json requires exact acknowledgement (53.5495ms)
+✔ export csv requires exact acknowledgement (31.6235ms)
+✔ export html requires exact acknowledgement (29.1048ms)
+✔ export requires accepted input and valid format (37.0447ms)
+✔ cancel during asynchronous checksum never initiates download (40.6329ms)
+✔ failed delivery throw does not claim download success (58.7466ms)
+✔ failed delivery explicit failure does not claim download success (76.201ms)
+✔ failed delivery async rejection does not claim download success (46.9992ms)
+✔ failed delivery async resolution does not claim download success (34.5093ms)
+✔ export clears an older pending import review without accepting it (82.2344ms)
+✔ failed observer callbacks do not alter results or create unhandled rejections (70.0446ms)
+✔ observer cancellation before async operation prevents even a database read (16.1624ms)
+✔ dispose cancels pending work and all later public operations are inert (38.4753ms)
+✔ invalid dependencies fail immediately (1.518ms)
+✔ invalid clock cannot produce a report (19.9919ms)
+✔ standalone extraction verifies the source and exactly reproduces the selected restricted original (3519.1781ms)
+✔ entry CLI requires a single explicit token and documents extraction limits (221.548ms)
+✖ entry extraction preserves every original field and restriction without including the other tokens (121.8553ms)
+✔ missing slots and invalid tokens cannot be substituted with another entry (70.6468ms)
+✔ source entries and options are captured before digest waits; abort refuses a completed file (94.0906ms)
+✔ exporting one entry preserves accepted and pending reports and never reads or writes storage (145.8403ms)
+✔ cancel and dispose block late prepared files, delivery, and concurrent exports (174.1068ms)
+✔ reentrant cancellation before preparation prevents work and invalid dependencies are refused (105.7646ms)
+✔ period report cancel during clock cannot restore old selection review (14.1928ms)
+✔ period report invalidateReview during clock cannot restore old selection review (8.8987ms)
+✔ period report select during clock cannot restore old selection review (7.357ms)
+✔ period report cancelled history capture cannot stage evidence (6.2273ms)
+✔ period report invalid new history handoff retires previous review (11.2415ms)
+✔ period report cancelled storage capture cannot adopt records (11.5665ms)
+✔ period report cancelled import input cannot recreate review (12.1821ms)
+✔ period report cancelled import checksum cannot recreate review (10.3293ms)
+✔ period report recursive observer cancellation is bounded (1.6235ms)
+✔ period report cancellation during ready notification retires return status (8.1966ms)
+✔ period report malformed asynchronous observer rejection is contained (661.8275ms)
+✔ panel starts without reading local storage and uses an accessible status region (58.96ms)
+✔ read selectors show only each token and preserve no-selection option (59.9144ms)
+✔ review displays accounts and range before accepting the report (60.0634ms)
+✔ incomplete, archived and quarantined records are visible choices (36.2498ms)
+✔ text fields never become HTML elements (67.2734ms)
+✔ changing a token selector clears stale report and export acknowledgement (41.4476ms)
+✔ editing report name invalidates pending review (36.592ms)
+✔ file import clears chooser and stages a review before display (70.7652ms)
+✔ import parse failure retains accepted report and shows a safe status (35.6931ms)
+✔ export button json follows acknowledgement and produces the requested file (52.6954ms)
+✔ export button csv follows acknowledgement and produces the requested file (32.6046ms)
+✔ export button html follows acknowledgement and produces the requested file (52.6045ms)
+✔ pagination and filters do not change cards or the full report (87.505ms)
+✔ cancelled refresh does not leave selection controls enabled with stale data (78.0994ms)
+✔ dispose removes host and event handlers and closes storage exactly once (27.1642ms)
+✔ selected source changes are explained without constructing a stale report (49.7924ms)
+✔ filtered event CSV saves every matching page under the existing acknowledgement (85.5214ms)
+✔ individual original export keeps restrictions, pending report and independent acknowledgements (76.7865ms)
+ℹ tests 77
+ℹ suites 0
+ℹ pass 76
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4392.7638
+
+✖ failing tests:
+
+test at test\period-report-entry-extraction.test.js:10:1
+✖ entry extraction preserves every original field and restriction without including the other tokens (121.8553ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!file.text.includes(other.entry.draft.plan.context.account))
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-entry-extraction.test.js:17:85)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
