@@ -40,6 +40,7 @@
     "report-checks:export": "node scripts/export-report-checks.js",
     "report-checks:verify": "node scripts/verify-report-checks.js",
     "history-queue:plan": "node scripts/plan-missing-history.js",
+    "report-set:verify-comparison": "node scripts/verify-report-set-comparison.js",
     "report-set:compare": "node scripts/compare-report-sets.js"
   }
 }

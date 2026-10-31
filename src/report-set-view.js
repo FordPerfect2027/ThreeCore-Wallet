@@ -29,6 +29,11 @@ const ERRORS = Object.freeze({
   PERIOD_SET_QUEUE_GROUP: "表示中の確認セットに、そのアカウントの区間はありません。",
   PERIOD_SET_QUEUE_PAGE: "指定したページには予定がありません。最初のページから選び直してください。",
   PERIOD_SET_QUEUE_DISJOINT: "このページの区間は連続していません。1区間ずつ保存対象に選んでください。",
+  PERIOD_SET_COMPARISON_JSON: "比較ファイルのJSONを読み取れません。",
+  PERIOD_SET_COMPARISON_SCHEMA: "差し替え比較のJSONを選んでください。",
+  PERIOD_SET_COMPARISON_READ: "比較ファイルを読み取れませんでした。",
+  PERIOD_SET_COMPARISON_ENCODING: "比較ファイルの文字コードを確認してください。",
+  PERIOD_SET_COMPARISON_NO_REVIEW: "先に比較ファイルを照合してください。",
   PERIOD_SET_NO_COMPARISON: "表示中の確認セットがある状態で、差し替える候補を先に確認してください。",
   PERIOD_SET_COMPARISON_SIZE: "比較ファイルが保存できる大きさを超えています。",
   PERIOD_SET_SOURCE_CHANGED: "確認中に選択した報告が変わりました。保存一覧を読み直して選び直してください。",
@@ -139,4 +144,15 @@ export function setComparisonText(comparison) {
     (comparison.afterSummary.allContinuous ? "この保存資料内では連続" : "要確認"),
     "過去の保存資料同士の比較です。時刻や版番号の大きさで信頼性を判断せず、現在のチェーンの再検証や自動統合も行いません。");
   return lines.join("\n");
+}
+
+export function setComparisonReviewText(value) {
+  if (!value) return "保存した比較ファイルを、現在表示中の元資料と差し替え候補に照らして確認できます。";
+  return ["最後に完了した比較ファイルの照合結果:", value.matchesRecomputation ? "比較ファイルは再計算と一致しました。" : "比較ファイルに再計算との食い違いがあります。",
+    "差し替え前の元資料: " + (value.beforeDigestMatches ? "一致" : "不一致"),
+    "候補の元資料: " + (value.afterDigestMatches ? "一致" : "不一致"),
+    "異なる項目: " + (value.differences.join(", ") || "なし") + " / 余分な項目: " + value.unexpectedFields,
+    "比較ファイルのテキスト SHA-256: " + value.comparisonTextSha256,
+    "読み取ったテキストと元資料からの再計算を照合した結果です。出所の認証や現在のチェーン確認ではありません。",
+    "資料の差し替え・保存履歴の変更は行っていません。"].join("\n");
 }

@@ -232,7 +232,46 @@ export async function prepareReportSetComparisonFile(beforeValue, afterValue, fi
   const text = JSON.stringify({ schema: "threecore.report-set-comparison-file.v1", algorithm: "SHA-256",
     beforePayloadDigest, afterPayloadDigest, comparison, authenticated: false, encrypted: false, restorable: false }, null, 2) + "\n";
   const byteLength = new TextEncoder().encode(text).byteLength;
-  if (byteLength > 4 * 1024 * 1024) periodFail("PERIOD_SET_COMPARISON_SIZE");
+  if (byteLength > REPORT_SET_COMPARISON_LIMIT) periodFail("PERIOD_SET_COMPARISON_SIZE");
   return Object.freeze({ text, byteLength, filename: "ThreeCore-report-set-comparison.json", mimeType: "application/json;charset=utf-8",
     encrypted: false, authenticated: false, restorable: false, containsOriginalEvidence: false });
+}
+
+export const REPORT_SET_COMPARISON_LIMIT = 4 * 1024 * 1024;
+
+/** Recompute a saved comparison from both originals, including metadata and order. */
+export async function reviewReportSetComparisonFile(beforeValue, afterValue, text, fileOptions = {}) {
+  const before = validateReportSet(beforeValue), after = validateReportSet(afterValue);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  let supplied;
+  try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_COMPARISON_LIMIT }); }
+  catch { periodFail("PERIOD_SET_COMPARISON_JSON"); }
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) ||
+      supplied.schema !== "threecore.report-set-comparison-file.v1") periodFail("PERIOD_SET_COMPARISON_SCHEMA");
+  const expected = JSON.parse((await prepareReportSetComparisonFile(before, after, options)).text);
+  let comparisonTextSha256;
+  try { comparisonTextSha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle,
+    { signal: options.signal, timeoutMs: options.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || !sameCheckJSON(supplied[key], expected[key]));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  return freezeSet({ schema: "threecore.report-set-comparison-review.v1",
+    matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    beforePayloadDigest: expected.beforePayloadDigest, afterPayloadDigest: expected.afterPayloadDigest,
+    beforeDigestMatches: supplied.beforePayloadDigest === expected.beforePayloadDigest,
+    afterDigestMatches: supplied.afterPayloadDigest === expected.afterPayloadDigest,
+    comparisonTextSha256, differences, unexpectedFields,
+    counts: expected.comparison.counts, sameContents: expected.comparison.sameContents,
+    beforeSummary: expected.comparison.beforeSummary, afterSummary: expected.comparison.afterSummary,
+    historicalOnly: true, readOnly: true, liveChainRechecked: false,
+    authenticated: false, encrypted: false, restorable: false });
+}
+
+export async function readReportSetComparisonText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_COMPARISON_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_COMPARISON_SIZE", readCode: "PERIOD_SET_COMPARISON_READ",
+    encodingCode: "PERIOD_SET_COMPARISON_ENCODING", signal, timeoutMs });
 }

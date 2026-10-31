@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { Element } from "./helpers/panel-dom.js";
 import { mountReportSetPanel } from "../examples/report-set-panel.js";
 import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-file.js";
-import { prepareReportSetChecksFile } from "../src/report-set-export.js";
+import { prepareReportSetChecksFile, prepareReportSetComparisonFile } from "../src/report-set-export.js";
 import { decodePeriodReportFile } from "../src/period-report-file.js";
 import { decodePeriodFile } from "../src/period-file.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
@@ -409,5 +409,27 @@ test("an accepted original report can be selected and exported with its full evi
     f.set("source-report", id(999)); assert.equal(f.q("source-report-json").disabled, true);
     f.set("title", "Another set", "input"); f.click("prepare"); f.click("apply"); await f.settled();
     assert.equal(f.q("source-report").value, ""); assert.equal(f.q("source-report-json").disabled, true);
+  } finally { f.dispose(); }
+});
+
+test("saved comparisons are reviewed against the pending pair and saved without applying it", async () => {
+  const f = fixture();
+  const choose = async text => {
+    f.q("comparison-file").files = [fileFrom(text)]; f.q("comparison-file").dispatchEvent(new Event("change")); await f.settled();
+  };
+  try {
+    assert.equal(f.q("comparison-file").disabled, true); await f.accept(); const before = f.mounted.getState().input;
+    const after = sequenceSet(demoSetHistory()); await f.file((await prepareReportSetFile(after)).text);
+    const saved = await prepareReportSetComparisonFile(before, after); await choose(saved.text);
+    assert.match(f.q("comparison-review-output").textContent, /再計算と一致/);
+    assert.equal(f.q("comparison-review-json").disabled, true); f.check("comparison-ack"); f.click("comparison-review-json"); await f.settled();
+    assert.equal(JSON.parse(f.files[0].text).matchesRecomputation, true); assert.equal(f.mounted.getState().input, before);
+    const altered = JSON.parse(saved.text); altered.comparison.rows = []; await choose(JSON.stringify(altered));
+    assert.match(f.q("comparison-review-output").textContent, /食い違い/); assert.equal(f.q("comparison-file").value, "");
+    await f.file((await prepareReportSetFile(after)).text);
+    assert.equal(f.mounted.getState().comparisonReview, null); assert.equal(f.q("comparison-review-json").disabled, true);
+    assert.equal(f.q("comparison-ack").checked, false); assert.equal(f.mounted.getState().input, before);
+    const control = f.q("comparison-file"); f.dispose(); control.files = [fileFrom(saved.text)]; control.dispatchEvent(new Event("change"));
+    assert.equal(f.files.length, 1);
   } finally { f.dispose(); }
 });
