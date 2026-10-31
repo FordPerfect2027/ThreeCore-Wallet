@@ -68,7 +68,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   const get = name => document.getElementById(name);
   const formFeedback=createRehearsalFieldFeedback(document,"status");
   const appendFeedback=createRehearsalFieldFeedback(document,"append-summary");
-  let current = null, candidate = null, revision = 0, disposed = false, formDraft=false;
+  let current = null, candidate = null, revision = 0, disposed = false, formDraft=false, overviewGeneration=0;
   get("form-restore").disabled=true;get("form-draft-note").hidden=true;
   const session = createRehearsalSession(get("agent").value), ledger = session.workspace;
   let scenarioSetPanel = null;
@@ -289,6 +289,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     recordsPanel.refresh(ledger.snapshot());
   }
   function renderOverview() {
+    const overviewOwn=++overviewGeneration;
     const report = reportRehearsalOverview(ledger.snapshot());
     const agent = get("overview-agent").value || "all", kind = get("overview-kind").value || "all";
     const entries = filterRehearsalOverview(report, agent, kind);
@@ -331,6 +332,14 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       for (const value of [entry.agent, labels[entry.kind], entry.id, description, source]) {
         const td = document.createElement("td"); td.textContent = value; tr.append(td);
       }
+      const detailCell=document.createElement("td"),detailButton=document.createElement("button");
+      detailButton.type="button";detailButton.textContent="元の記録を詳しく見る";
+      detailButton.setAttribute("aria-label",entry.agent+" の "+entry.recordNumber+"番目、"+entry.recordId+" を詳しく見る");
+      detailButton.addEventListener("click",()=>{
+        if(disposed||overviewOwn!==overviewGeneration)return;
+        recordsPanel.openRecord(entry.agent+":"+entry.recordId);
+      });
+      detailCell.append(detailButton);tr.append(detailCell);
       if (entry.kind === "rejected") tr.className = "blocked";
       get("overview-rows").append(tr);
     }

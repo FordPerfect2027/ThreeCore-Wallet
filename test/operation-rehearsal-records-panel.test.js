@@ -117,3 +117,34 @@ test("an invalid scope disables exports until the user chooses a supported scope
     f.change("search-scope","both");assert.equal(f.field("save").disabled,false);assert.equal(f.field("csv-save").disabled,false);
   }finally{f.panel.dispose();}
 });
+
+test("an overview destination opens the exact original record beyond page one and Back restores the old query",()=>{
+  const f=setup(),input=many(),source=input.ledgers[0];source.events.push(rehearsalExampleV2().events[0]);
+  f.panel.refresh(input);f.change("search","deposit");f.field("next").click();f.change("select","DAT:deposit-15");
+  const before=f.field("status").textContent;assert.equal(f.panel.openRecord("DAT:open-one"),true);
+  assert.equal(f.field("select").value,"DAT:open-one");assert.match(f.field("status").textContent,/21～28/);
+  assert.equal(f.field("search").value,"");f.field("back").click();
+  assert.equal(f.field("search").value,"deposit");assert.equal(f.field("select").value,"DAT:deposit-15");assert.equal(f.field("status").textContent,before);
+  assert.equal(input.ledgers[0].events.length,28);f.panel.dispose();
+});
+test("external record navigation keeps agent identity and rejects missing, invalid and disposed destinations",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2(),rehearsalExampleV2("EMA")));
+  assert.equal(f.panel.openRecord("EMA:settle-one"),true);assert.equal(f.field("agent").value,"EMA");assert.equal(f.field("select").value,"EMA:settle-one");
+  const before=f.field("status").textContent;assert.equal(f.panel.openRecord("DAT:missing"),false);assert.equal(f.panel.openRecord({toString(){throw Error("Do not coerce");}}),false);
+  assert.equal(f.field("status").textContent,before);f.field("size").value="999";assert.equal(f.panel.openRecord("DAT:open-one"),false);
+  f.panel.dispose();assert.equal(f.panel.openRecord("DAT:open-one"),false);
+});
+
+test("selected operation detail shows the whole lifecycle even when the filter hides its settlement",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2()));f.change("search","open-one");
+  assert.equal(f.field("reference-summary").hidden,false);
+  assert.match(f.field("reference-summary").textContent,/決済済み（試算）/);assert.match(f.field("reference-summary").textContent,/関連する全2件/);
+  assert.match(f.field("reference-summary").textContent,/累計実現損益: 28 SIM/);assert.match(f.field("reference-summary").textContent,/費用合計: 2 SIM/);
+  f.field("reference-save").click();const report=JSON.parse(f.downloads[0].text);assert.equal(report.selectedKey,"DAT:open-one");assert.equal(report.recordCount,2);
+  f.change("search","absent");assert.equal(f.field("reference-summary").textContent,"");assert.equal(f.field("reference-summary").hidden,true);assert.equal(f.field("reference-save").disabled,true);f.panel.dispose();
+});
+test("reference exports handle a refused delivery without changing source records",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2("DAT","pending")));f.failDownload();f.field("reference-save").click();
+  assert.match(f.field("export-status").textContent,/保存できません/);assert.match(f.field("reference-summary").textContent,/未決済/);assert.match(f.field("reference-summary").textContent,/戻り額: 記録なし/);
+  f.panel.dispose();assert.equal(f.field("reference-summary").textContent,"");assert.equal(f.field("reference-save").disabled,true);
+});

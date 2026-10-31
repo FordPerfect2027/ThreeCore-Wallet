@@ -72,7 +72,7 @@
         <label>一覧の種類<select id="overview-kind"><option value="all">すべての種類</option><option value="position">未決済</option><option value="reservation">還元予約</option><option value="rejected">条件外</option></select></label>
       </div>
       <p id="overview-status" role="status" aria-live="polite"></p>
-      <div class="table-wrap"><table><caption>確定した履歴の確認対象</caption><thead><tr><th scope="col">対象</th><th scope="col">種類</th><th scope="col">ID</th><th scope="col">確認内容</th><th scope="col">元の記録</th></tr></thead><tbody id="overview-rows"></tbody></table></div>
+      <div class="table-wrap"><table><caption>確定した履歴の確認対象</caption><thead><tr><th scope="col">対象</th><th scope="col">種類</th><th scope="col">ID</th><th scope="col">確認内容</th><th scope="col">元の記録</th><th scope="col">詳細への移動</th></tr></thead><tbody id="overview-rows"></tbody></table></div>
       <button id="overview-save" type="button" disabled>全対象の確認一覧を保存</button>
       <p id="overview-save-status" class="small" role="status" aria-live="polite"></p>
     </div>
@@ -210,6 +210,7 @@
     <label>詳しく見る記録<select id="record-browser-select" disabled></select></label><p id="record-browser-detail" class="small"></p>
     <div class="table-wrap"><table><caption>選択した記録に含まれる入力</caption><thead><tr><th>項目</th><th>記録された値</th></tr></thead><tbody id="record-browser-event"></tbody></table></div>
     <div class="table-wrap"><table><caption>この記録を評価した前後の金額</caption><thead><tr><th>項目</th><th>直前</th><th>評価後</th><th>差額</th></tr></thead><tbody id="record-browser-balances"></tbody></table></div>
+    <pre id="record-browser-reference-summary" class="rehearsal-difference-detail small" tabindex="0" aria-label="選んだ操作・予約の全関連記録の集計" hidden></pre><button id="record-browser-reference-save" type="button" disabled>この操作・予約の資料を保存</button>
     <p id="record-browser-related-status" class="small"></p><div class="table-wrap"><table><caption>同じ保存元の関連する記録</caption><thead><tr><th>順番・ID</th><th>種類</th><th>条件判定</th><th>詳細への移動</th></tr></thead><tbody id="record-browser-related"></tbody></table></div>
     <button id="record-browser-save" type="button" disabled>検索結果と元入力を保存</button> <button id="record-browser-csv-save" type="button" disabled aria-describedby="record-browser-csv-note">全一致記録をCSV保存</button><p id="record-browser-csv-note" class="small">CSVは表計算ソフトで読むための資料です。金額は最小単位の文字列です。桁数を保つには、表計算ソフトへの取り込みで全列を文字列に指定してください。履歴の復旧や資料の再確認にはJSONを使います。</p><p id="record-browser-export-status" class="small" role="status" aria-live="polite"></p>
   </section>

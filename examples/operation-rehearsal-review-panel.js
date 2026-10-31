@@ -5,7 +5,7 @@ import { describeFileReadError, displayFileName, describeRehearsalFileTarget } f
 import { requireSyncExport } from "../src/export-policy.js";
 import { encodeRehearsalDifferenceQuery, encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
-import { REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
+import { REHEARSAL_REFERENCE_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 
 const reportNames = {
   "threecore.operation-rehearsal-overview.v1": "確認一覧",
@@ -14,7 +14,8 @@ const reportNames = {
   "threecore.operation-rehearsal-scenario-set-report.v1": "ケース集の集計",
   "threecore.operation-rehearsal-check-report.v1": "期待結果の確認資料",
   "threecore.operation-rehearsal-record-query.v1": "記録の検索資料",
-  "threecore.operation-rehearsal-record-query.v2": "検索する情報を指定した記録資料"
+  "threecore.operation-rehearsal-record-query.v2": "検索する情報を指定した記録資料",
+  "threecore.operation-rehearsal-reference.v1": "操作・予約の関連記録資料"
 };
 function addDifferenceDetailButton(document, row, index, inspect, current, output, actualLabel, select) {
   const cell=document.createElement("td"),button=document.createElement("button");button.type="button";
@@ -69,6 +70,7 @@ function differencePageText(page,label="") {
 }
 function outcomeText(outcome) {
   if (!outcome) return "";
+  if(outcome.kind==="record-reference")return outcome.agent+" の "+(outcome.reference.kind==="operation"?"操作":"予約")+"ID「"+outcome.reference.id+"」の関連記録 "+outcome.recordCount+"件。条件内 "+outcome.summary.acceptedRecords+"件、見送り "+outcome.summary.rejectedRecords+"件。元入力から再計算した試算の結果です。";
   if (outcome.kind === "expected-outcomes") return "含まれる期待結果: " + outcome.cases + "ケース中、一致 " +
     outcome.matched + "件、差あり " + outcome.differing + "件。期待値の作成方法: " +
     (outcome.expectationOrigin === "recorded-calculation" ? "計算結果から記録した基準" : "手動で指定した期待値") +
@@ -156,7 +158,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
         (result.differencesTruncated ? "。相違一覧は40箇所ずつ表示します。" : "");
       get("outcome").textContent = outcomeText(result.reportOutcome);
       for(const scope of result.scope) row("scope", [scope.agent + (scope.caseId ? " / " + scope.caseId : ""), scope.beforeRecords === null ? "未作成" : scope.beforeRecords + "件",
-        [REHEARSAL_OVERVIEW_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA].includes(result.inputSchema) ? "比較なし" : scope.afterRecords === null ? "未作成" : scope.afterRecords + "件"]);
+        [REHEARSAL_OVERVIEW_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA, REHEARSAL_REFERENCE_REPORT_SCHEMA].includes(result.inputSchema) ? "比較なし" : scope.afterRecords === null ? "未作成" : scope.afterRecords + "件"]);
       renderDifferencePage();
     } catch(error) {
       if(disposed || own !== revision) return;

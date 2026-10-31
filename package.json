@@ -57,6 +57,7 @@
     "report-set:recover-source": "node scripts/recover-report-set-source.js",
     "report-set:verify-evidence": "node scripts/verify-report-set-evidence.js",
     "report-set:verify-comparison": "node scripts/verify-report-set-comparison.js",
-    "report-set:compare": "node scripts/compare-report-sets.js"
+    "report-set:compare": "node scripts/compare-report-sets.js",
+    "rehearsal:reference": "node scripts/inspect-rehearsal-reference.js"
   }
 }

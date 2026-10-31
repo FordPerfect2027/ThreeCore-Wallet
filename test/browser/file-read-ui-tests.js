@@ -57,6 +57,37 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("rehearsal overview: opens an exact pending record and restores the previous empty search without changing history",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    try{
+      q("scenario").value="pending";q("example").click();q("record-browser-search").value="absent";q("record-browser-search").dispatchEvent(new Event("input"));
+      const before=q("rows").innerHTML,button=q("overview-rows").querySelector("button");assert(button?.getAttribute("aria-label").includes("open-one"));
+      q("append-amount").value="2";q("append-amount").dispatchEvent(new Event("input"));
+      button.click();assert(q("record-browser-select").value==="DAT:open-one"&&document.activeElement===q("record-browser-select"));
+      q("record-browser-back").click();assert(q("record-browser-search").value==="absent"&&q("record-browser-select").disabled);assert(q("rows").innerHTML===before);
+      q("scenario").value="profit";q("example").click();q("record-browser-search").value="absent";q("record-browser-search").dispatchEvent(new Event("input"));
+      button.click();assert(q("record-browser-search").value==="absent"&&q("record-browser-select").disabled,"Detached overview button cannot select from a newer source");
+    }finally{page.dispose();host.remove();}
+  });
+  test("rehearsal reference lifecycle: whole operation summary survives a narrow search and its exported report detects altered profit",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    async function review(text){q("report-review-text").value=text;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();const end=Date.now()+10000;while(q("report-review-status").getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q("report-review-status").getAttribute("aria-busy")==="false");}
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("record-browser-search").value="open-one";q("record-browser-search").dispatchEvent(new Event("input"));
+      assert(q("record-browser-reference-summary").textContent.includes("関連する全2件"));assert(q("record-browser-reference-summary").textContent.includes("累計実現損益: 28 SIM"));
+      q("record-browser-reference-save").click();const source=downloads.pop().text;await review(source);
+      assert(q("report-review-status").className==="passed"&&q("report-review-outcome").textContent.includes("関連記録 2件"));
+      const altered=JSON.parse(source);altered.summary.realizedPnlUnits="999";await review(JSON.stringify(altered));
+      assert(q("report-review-status").className==="blocked"&&q("report-review-differences").textContent.includes("realizedPnlUnits"));
+      q("session-save").click();assert(downloads.pop().text===before,"Navigation and report review preserve original session");
+    }finally{page.dispose();host.remove();}
+  });
+
   test("saved comparison review: rechecks both current originals and detects altered claims before any receipt save",async()=>{
     const parent=document.createElement("div");document.body.append(parent);const files=[];
     const guide=mountSavedFileInspectionPanel({document,parent,download:file=>files.push(file)}),q=name=>parent.querySelector(".saved-file-guide-"+name);

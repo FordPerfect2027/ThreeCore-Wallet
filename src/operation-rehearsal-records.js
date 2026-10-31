@@ -87,3 +87,40 @@ function recordReportCsv(report){
   const text="\uFEFF"+lines.map(line=>line.map(cell).join(",")).join("\r\n")+"\r\n";
   try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
 }
+
+export const REHEARSAL_REFERENCE_REPORT_SCHEMA = "threecore.operation-rehearsal-reference.v1";
+
+/** Recalculate one operation/reservation's accepted lifecycle in its own stored agent. */
+export function reportRehearsalReference(index, key) {
+  validIndex(index);
+  if(typeof key!=="string")fail("INVALID_RECORD_KEY");
+  const selected=index.rows.find(row=>row.key===key);
+  if(!selected)fail("RECORD_NOT_FOUND");
+  if(!selected.reference)fail("RECORD_HAS_NO_REFERENCE");
+  const reference=selected.reference,operation=reference.kind==="operation";
+  const rows=index.rows.filter(row=>row.agent===selected.agent&&row.reference?.kind===reference.kind&&row.reference.id===reference.id);
+  const accepted=rows.filter(row=>row.result.withinEnteredLimits);
+  const opening=accepted.find(row=>row.event.kind===(operation?"open":"reserve"));
+  const closing=accepted.find(row=>row.event.kind===(operation?"settle":"release"));
+  const phase=opening?(closing?"closed":"open"):"not-started";
+  const summary=Object.freeze({phase,openingRecordId:opening?.event.id??null,closingRecordId:closing?.event.id??null,
+    acceptedRecords:accepted.length,rejectedRecords:rows.length-accepted.length,
+    principalUnits:operation?opening?.event.principal??null:null,
+    pendingPrincipalUnits:operation?(phase==="open"?opening.event.principal:"0"):null,
+    grossReturnUnits:operation?closing?.event.grossReturn??null:null,
+    entryFeeUnits:operation?opening?.event.fee??"0":null,
+    exitFeeUnits:operation?closing?.event.fee??"0":null,
+    totalFeeUnits:operation?accepted.reduce((sum,row)=>sum+BigInt(row.event.fee??"0"),0n).toString():null,
+    realizedPnlUnits:operation?accepted.reduce((sum,row)=>sum+BigInt(row.result.pnlChange),0n).toString():null,
+    reservedAmountUnits:operation?null:opening?.event.amount??null,
+    releasedAmountUnits:operation?null:closing?opening.event.amount:"0",
+    pendingReservedAmountUnits:operation?null:phase==="open"?opening.event.amount:"0"});
+  return Object.freeze({schema:REHEARSAL_REFERENCE_REPORT_SCHEMA,simulationOnly:true,sourceVerified:false,authorizesExecution:false,
+    inputs:index.inputs,subjects:index.subjects,selectedKey:key,agent:selected.agent,context:Object.freeze({chainId:selected.chainId,account:selected.account,asset:selected.asset}),
+    reference,summary,recordCount:rows.length,rows:Object.freeze(rows)});
+}
+
+export function encodeRehearsalReferenceReport(input,key) {
+  const text=JSON.stringify(reportRehearsalReference(indexRehearsalRecords(input),key),null,2)+"\n";
+  try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
+}

@@ -45,6 +45,20 @@ function prepareAppend(f, kind, amount = "2.8", reference = "reward-one") {
   f.field("append-preview").click();
 }
 
+test("overview record destinations survive unrelated append drafts but retire with their overview",()=>{
+  const f=setup();try{
+    f.field("scenario").value="pending";f.field("example").click();
+    const button=f.field("overview-rows").children[0].children[5].children[0];
+    f.field("session-save").click();const before=f.downloads.pop().text;
+    f.change("record-browser-search","absent");f.change("append-amount","2");button.click();
+    assert.equal(f.field("record-browser-select").value,"DAT:open-one");
+    f.field("record-browser-back").click();assert.equal(f.field("record-browser-search").value,"absent");
+    f.field("session-save").click();assert.equal(f.downloads.pop().text,before);
+    f.field("scenario").value="profit";f.field("example").click();f.change("record-browser-search","absent");
+    button.click();assert.equal(f.field("record-browser-search").value,"absent");
+  }finally{f.page.dispose();}
+});
+
 test("confirmed single-record import focuses its recomputed result without applying during preview", async()=>{
   const f=setup();let focus=0;f.field("result-title").focus=()=>{focus++;};
   try{f.file(encodeRehearsal(rehearsalExampleV2("EMA")));await tick();
