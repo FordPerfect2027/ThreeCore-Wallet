@@ -1,0 +1,17 @@
+{
+  "source": "47c3d26",
+  "exactUiApi": true,
+  "exactCliApi": true,
+  "cliExit": 2,
+  "reviewedStatus": "保存した比較と前後の記録からの再計算が一致しました。現在の比較先・比較元の入力・履歴は置き換えていません。出所や現在の残高は未確認です。",
+  "alteredStatus": "比較資料を確認できませんでした。形式・128 KiBの上限・保存された値と再計算の一致を確認してください。比較先と比較元の入力は保持しています。",
+  "originalFormattingPreserved": false,
+  "normalizedSourceObservationsIncluded": true,
+  "originalAuthenticityVerified": false,
+  "comparisonInputPreserved": true,
+  "synthetic": true,
+  "nativeBrowserCases": 135,
+  "externalRpcCalls": 0,
+  "osPickerVerified": false,
+  "userWalletConnectionVerified": false
+}
