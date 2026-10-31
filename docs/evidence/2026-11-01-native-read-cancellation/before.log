@@ -1,0 +1,501 @@
+✖ IDENTITY: native cancellation ignores instance override aborted (6.9534ms)
+✖ IDENTITY: native cancellation ignores instance override addEventListener (3.3597ms)
+✖ IDENTITY: native cancellation ignores instance override removeEventListener (5.0602ms)
+✖ IDENTITY: borrowed signal prototype is rejected before reads (6.2863ms)
+✖ IDENTITY: dispatched abort event alone is not native cancellation (1.8877ms)
+✖ IDENTITY: real cancellation still works after a dispatched event (2.2992ms)
+✖ IDENTITY: already cancelled native signal cannot be hidden by own property (4.455ms)
+✔ IDENTITY: cancelled provider wait cannot issue subsequent calls (37.2438ms)
+✖ TRANSFER: native cancellation ignores instance override aborted (2.3954ms)
+✖ TRANSFER: native cancellation ignores instance override addEventListener (0.8928ms)
+✖ TRANSFER: native cancellation ignores instance override removeEventListener (8.8411ms)
+✖ TRANSFER: borrowed signal prototype is rejected before reads (2.6854ms)
+✖ TRANSFER: dispatched abort event alone is not native cancellation (1.2059ms)
+✖ TRANSFER: real cancellation still works after a dispatched event (1.3886ms)
+✖ TRANSFER: already cancelled native signal cannot be hidden by own property (3.3985ms)
+✔ TRANSFER: cancelled provider wait cannot issue subsequent calls (17.0497ms)
+✖ ALLOWANCE: native cancellation ignores instance override aborted (2.9242ms)
+✖ ALLOWANCE: native cancellation ignores instance override addEventListener (1.2399ms)
+✖ ALLOWANCE: native cancellation ignores instance override removeEventListener (6.591ms)
+✖ ALLOWANCE: borrowed signal prototype is rejected before reads (1.1886ms)
+✖ ALLOWANCE: dispatched abort event alone is not native cancellation (1.1798ms)
+✖ ALLOWANCE: real cancellation still works after a dispatched event (1.2152ms)
+✖ ALLOWANCE: already cancelled native signal cannot be hidden by own property (3.0651ms)
+✔ ALLOWANCE: cancelled provider wait cannot issue subsequent calls (16.4943ms)
+✖ PERIOD: native cancellation ignores instance override aborted (6.0721ms)
+✖ PERIOD: native cancellation ignores instance override addEventListener (1.6323ms)
+✖ PERIOD: native cancellation ignores instance override removeEventListener (40.4687ms)
+✖ PERIOD: borrowed signal prototype is rejected before reads (1.3479ms)
+✖ PERIOD: dispatched abort event alone is not native cancellation (1.4921ms)
+✖ PERIOD: real cancellation still works after a dispatched event (1.4911ms)
+✖ PERIOD: already cancelled native signal cannot be hidden by own property (22.7371ms)
+✔ PERIOD: cancelled provider wait cannot issue subsequent calls (32.2651ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 4
+ℹ fail 28
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 691.8353
+
+✖ failing tests:
+
+test at test\read-signal-boundary.test.js:22:5
+✖ IDENTITY: native cancellation ignores instance override aborted (6.9534ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at guard (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:66:26)
+      at readTokenIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:85:3)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:14:41
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at test\read-signal-boundary.test.js:22:5
+✖ IDENTITY: native cancellation ignores instance override addEventListener (3.3597ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:96:14
+      at new Promise (<anonymous>)
+      at readTokenIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:86:24)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:14:41
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at test\read-signal-boundary.test.js:22:5
+✖ IDENTITY: native cancellation ignores instance override removeEventListener (5.0602ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at readTokenIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:139:23)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:32:3
+✖ IDENTITY: borrowed signal prototype is rejected before reads (6.2863ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'ERR_INVALID_THIS'
+  -   code: 'IDENTITY_SIGNAL'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:34:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError [ERR_INVALID_THIS]: Value of "this" must be of type AbortSignal
+        at validateThisAbortSignal (node:internal/abort_controller:137:11)
+        at get aborted (node:internal/abort_controller:256:5)
+        at guard (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:66:26)
+        at readTokenIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:85:3)
+        at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:14:41
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:34:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: { code: 'IDENTITY_SIGNAL' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:37:3
+✖ IDENTITY: dispatched abort event alone is not native cancellation (1.8877ms)
+  Error [TokenIdentityError]: IDENTITY_CANCELLED
+      at AbortSignal.abort (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:94:16)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)
+      at AbortSignal.dispatchEvent (node:internal/event_target:789:26)
+      at onProgress (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:41:63)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:75:29
+      at consumeCallback (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-callback.js:26:31)
+      at progress (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:75:7)
+      at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:80:5)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:100:32)
+      at readTokenIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:135:36) {
+    code: 'IDENTITY_CANCELLED'
+  }
+
+test at test\read-signal-boundary.test.js:47:3
+✖ IDENTITY: real cancellation still works after a dispatched event (2.2992ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:55:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:58:3
+✖ IDENTITY: already cancelled native signal cannot be hidden by own property (4.455ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:62:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'IDENTITY_CANCELLED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:22:5
+✖ TRANSFER: native cancellation ignores instance override aborted (2.3954ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at readTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:54:21)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:15:41
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:22:5
+✖ TRANSFER: native cancellation ignores instance override addEventListener (0.8928ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at readTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:92:17)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:15:41
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:22:5
+✖ TRANSFER: native cancellation ignores instance override removeEventListener (8.8411ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at readTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:160:19)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:32:3
+✖ TRANSFER: borrowed signal prototype is rejected before reads (2.6854ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'ERR_INVALID_THIS'
+  -   code: 'TRANSFER_SIGNAL'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:34:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError [ERR_INVALID_THIS]: Value of "this" must be of type AbortSignal
+        at validateThisAbortSignal (node:internal/abort_controller:137:11)
+        at get aborted (node:internal/abort_controller:256:5)
+        at readTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:54:21)
+        at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:15:41
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:34:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: { code: 'TRANSFER_SIGNAL' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:37:3
+✖ TRANSFER: dispatched abort event alone is not native cancellation (1.2059ms)
+  Error [TransferError]: TRANSFER_CANCELLED
+      at transferFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:22:9)
+      at guard (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:66:18)
+      at progress (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:77:5)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:95:5)
+      at readTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:156:36)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:15:41
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:40:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18) {
+    code: 'TRANSFER_CANCELLED'
+  }
+
+test at test\read-signal-boundary.test.js:47:3
+✖ TRANSFER: real cancellation still works after a dispatched event (1.3886ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:55:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:58:3
+✖ TRANSFER: already cancelled native signal cannot be hidden by own property (3.3985ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:62:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'TRANSFER_CANCELLED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:22:5
+✖ ALLOWANCE: native cancellation ignores instance override aborted (2.9242ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at readAllowanceSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:75:13)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:16:39
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:22:5
+✖ ALLOWANCE: native cancellation ignores instance override addEventListener (1.2399ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at readAllowanceSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:76:9)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:16:39
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:22:5
+✖ ALLOWANCE: native cancellation ignores instance override removeEventListener (6.591ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at readAllowanceSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:130:11)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:32:3
+✖ ALLOWANCE: borrowed signal prototype is rejected before reads (1.1886ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'ERR_INVALID_THIS'
+  -   code: 'ALLOWANCE_SIGNAL'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:34:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError [ERR_INVALID_THIS]: Value of "this" must be of type AbortSignal
+        at validateThisAbortSignal (node:internal/abort_controller:137:11)
+        at get aborted (node:internal/abort_controller:256:5)
+        at readAllowanceSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:75:13)
+        at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:16:39
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:34:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: { code: 'ALLOWANCE_SIGNAL' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:37:3
+✖ ALLOWANCE: dispatched abort event alone is not native cancellation (1.1798ms)
+  Error [AllowanceError]: ALLOWANCE_CANCELLED
+      at allowanceFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-targets.js:16:45)
+      at guard (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:47:37)
+      at progress (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:60:5)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:79:5)
+      at readAllowanceSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:125:36)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:16:39
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:40:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18) {
+    code: 'ALLOWANCE_CANCELLED'
+  }
+
+test at test\read-signal-boundary.test.js:47:3
+✖ ALLOWANCE: real cancellation still works after a dispatched event (1.2152ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:55:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:58:3
+✖ ALLOWANCE: already cancelled native signal cannot be hidden by own property (3.0651ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:62:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'ALLOWANCE_CANCELLED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:22:5
+✖ PERIOD: native cancellation ignores instance override aborted (6.0721ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at collectPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:71:21)
+      at entries (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:17:39)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:22:5
+✖ PERIOD: native cancellation ignores instance override addEventListener (1.6323ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at collectPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:117:17)
+      at entries (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:17:39)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:22:5
+✖ PERIOD: native cancellation ignores instance override removeEventListener (40.4687ms)
+  Error: private adapter detail
+      at AbortSignal.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:25:102)
+      at collectPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:165:19)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:26:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\read-signal-boundary.test.js:32:3
+✖ PERIOD: borrowed signal prototype is rejected before reads (1.3479ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'ERR_INVALID_THIS'
+  -   code: 'PERIOD_SIGNAL'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:34:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError [ERR_INVALID_THIS]: Value of "this" must be of type AbortSignal
+        at validateThisAbortSignal (node:internal/abort_controller:137:11)
+        at get aborted (node:internal/abort_controller:256:5)
+        at collectPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:71:21)
+        at entries (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:17:39)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:34:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: { code: 'PERIOD_SIGNAL' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:37:3
+✖ PERIOD: dispatched abort event alone is not native cancellation (1.4921ms)
+  Error [PeriodError]: PERIOD_CANCELLED
+      at stop (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:82:21)
+      at AbortSignal.cancel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:116:24)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)
+      at AbortSignal.dispatchEvent (node:internal/event_target:789:26)
+      at onProgress (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:41:63)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:92:29
+      at consumeCallback (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-callback.js:26:31)
+      at notify (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:92:7)
+      at progress (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:97:5)
+      at recheck (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:128:5) {
+    code: 'PERIOD_CANCELLED'
+  }
+
+test at test\read-signal-boundary.test.js:47:3
+✖ PERIOD: real cancellation still works after a dispatched event (1.4911ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:55:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\read-signal-boundary.test.js:58:3
+✖ PERIOD: already cancelled native signal cannot be hidden by own property (22.7371ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/read-signal-boundary.test.js:62:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_CANCELLED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }

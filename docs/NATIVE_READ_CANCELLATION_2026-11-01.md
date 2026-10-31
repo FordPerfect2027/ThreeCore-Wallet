@@ -1,0 +1,13 @@
+# Native cancellation for wallet observations
+
+Item 508. Source: `726723a`.
+
+Token identity/balance, bounded transfer history, existing allowance observations and sequential period reads now use native AbortSignal state and captured native EventTarget registration/removal. Caller-supplied own properties or methods cannot hide an actual cancellation, synthesize one, prevent listener registration or replace a completed observation with a cleanup exception. A manually dispatched abort event alone does not cancel a read or consume its later genuine cancellation. Malformed native-looking objects and unusable proxies become the reader's typed signal error before any provider call.
+
+Listener registration, initial cancellation checks and timers are inside the protected read lifecycle. Interruption promises are observed before registration can synchronously cancel. Cleanup retires listeners and timers on success, failure and cancellation, and late provider completion cannot start the next request or publish data. No RPC is recalled after it has already been sent. Captured platform methods assume an uncompromised realm when the module initializes; this is not a claim to sandbox malicious page code. Existing callback-adapter APIs in security-abort retain their existing behavior.
+
+## Validation and scope
+
+Initial regression controls at a4c1f38 reproduced 28 failures out of 32 (691.8353 ms); four ordinary pending-read cancellation controls already passed. After the fix, the first focused selection passed 282 cases. Eight additional proxy controls were then added and included in the final fixed-source related selection: **5,181 passed**, zero failed/skipped/cancelled (77269.6568 ms). Native Chrome passed **924 cases**, in two reconciled isolated profiles with verified cleanup. Four new browser cases exercise all four reader paths using native cancellation and synthetic sessions. No user-controlled wallet, external RPC or OS file picker is involved.
+
+[Evidence](evidence/2026-11-01-native-read-cancellation/) retains the failed-before run, focused run, final related/native logs, regression controls and validation metadata with SHA-256 hashes checked against committed Git bytes. This shared correction counts once; the four call sites, test cases and repeated runs do not add separate items. Previous full-run limitations remain; the last clean full-wallet checkpoint is c94b3fe (15,294 tests). No signatures, transfers, approvals, secret retrieval, publication, deployment or restart of the existing 4231 server occurred. The completed-item count is not a mainnet-readiness percentage.
