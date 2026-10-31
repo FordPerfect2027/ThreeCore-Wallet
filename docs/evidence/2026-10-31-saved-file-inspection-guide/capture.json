@@ -1,0 +1,161 @@
+{
+  "source": "102253e",
+  "synthetic": true,
+  "storageWrites": 0,
+  "providerCalls": 0,
+  "rows": [
+    {
+      "name": "period",
+      "exitCode": 0,
+      "validation": "validated-original",
+      "checksumVerified": true,
+      "scope": {
+        "reportCount": null,
+        "archivedReports": null,
+        "entryReferences": 0,
+        "draftReferences": 1,
+        "archivedEntryReferences": null,
+        "restrictedEntryReferences": null,
+        "incompleteDraftReferences": 0,
+        "emptyDraftReferences": 0,
+        "agents": [
+          "DAT"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": false
+      },
+      "sharedAndCliIdentical": true,
+      "noPartialInvalidOutput": null,
+      "sourceUnchanged": true,
+      "errorCode": null
+    },
+    {
+      "name": "library",
+      "exitCode": 0,
+      "validation": "validated-original",
+      "checksumVerified": true,
+      "scope": {
+        "reportCount": null,
+        "archivedReports": null,
+        "entryReferences": 1,
+        "draftReferences": 1,
+        "archivedEntryReferences": 1,
+        "restrictedEntryReferences": 1,
+        "incompleteDraftReferences": 0,
+        "emptyDraftReferences": 0,
+        "agents": [
+          "DAT"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": false
+      },
+      "sharedAndCliIdentical": true,
+      "noPartialInvalidOutput": null,
+      "sourceUnchanged": true,
+      "errorCode": null
+    },
+    {
+      "name": "report",
+      "exitCode": 0,
+      "validation": "validated-original",
+      "checksumVerified": true,
+      "scope": {
+        "reportCount": 1,
+        "archivedReports": null,
+        "entryReferences": 3,
+        "draftReferences": 3,
+        "archivedEntryReferences": 1,
+        "restrictedEntryReferences": 1,
+        "incompleteDraftReferences": 0,
+        "emptyDraftReferences": 0,
+        "agents": [
+          "DAT",
+          "EMA",
+          "CAWELON"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": false
+      },
+      "sharedAndCliIdentical": true,
+      "noPartialInvalidOutput": null,
+      "sourceUnchanged": true,
+      "errorCode": null
+    },
+    {
+      "name": "history",
+      "exitCode": 0,
+      "validation": "validated-original",
+      "checksumVerified": true,
+      "scope": {
+        "reportCount": 3,
+        "archivedReports": 1,
+        "entryReferences": 9,
+        "draftReferences": 9,
+        "archivedEntryReferences": 1,
+        "restrictedEntryReferences": 1,
+        "incompleteDraftReferences": 0,
+        "emptyDraftReferences": 0,
+        "agents": [
+          "DAT",
+          "EMA",
+          "CAWELON"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": true
+      },
+      "sharedAndCliIdentical": true,
+      "noPartialInvalidOutput": null,
+      "sourceUnchanged": true,
+      "errorCode": null
+    },
+    {
+      "name": "set",
+      "exitCode": 0,
+      "validation": "validated-original",
+      "checksumVerified": true,
+      "scope": {
+        "reportCount": 3,
+        "archivedReports": 1,
+        "entryReferences": 9,
+        "draftReferences": 9,
+        "archivedEntryReferences": 1,
+        "restrictedEntryReferences": 1,
+        "incompleteDraftReferences": 0,
+        "emptyDraftReferences": 0,
+        "agents": [
+          "DAT",
+          "EMA",
+          "CAWELON"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": true
+      },
+      "sharedAndCliIdentical": true,
+      "noPartialInvalidOutput": null,
+      "sourceUnchanged": true,
+      "errorCode": null
+    },
+    {
+      "name": "auxiliary-declaration",
+      "exitCode": 2,
+      "validation": "declared-only",
+      "checksumVerified": false,
+      "scope": null,
+      "sharedAndCliIdentical": true,
+      "noPartialInvalidOutput": null,
+      "sourceUnchanged": true,
+      "errorCode": null
+    },
+    {
+      "name": "corrupt-set",
+      "exitCode": 1,
+      "validation": null,
+      "checksumVerified": false,
+      "scope": null,
+      "sharedAndCliIdentical": null,
+      "noPartialInvalidOutput": true,
+      "sourceUnchanged": true,
+      "errorCode": "PERIOD_CHECKSUM"
+    }
+  ]
+}

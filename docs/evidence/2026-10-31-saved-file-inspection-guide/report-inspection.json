@@ -1,0 +1,35 @@
+{
+  "schema": "threecore.saved-file-inspection.v1",
+  "sourceSchema": "threecore.period-report-file.v1",
+  "byteLength": 13491,
+  "title": "3トークンの期間レポート",
+  "target": "report",
+  "destinationMessage": "「3つの記録を、一つの報告に」で、この元のファイルを選んで確認してください。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "a993e73336008eeec979448a7f6741ec235eff60e951fc5760d7dfc15f871c1b",
+  "textDigest": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89",
+  "scope": {
+    "reportCount": 1,
+    "archivedReports": null,
+    "entryReferences": 3,
+    "draftReferences": 3,
+    "archivedEntryReferences": 1,
+    "restrictedEntryReferences": 1,
+    "incompleteDraftReferences": 0,
+    "emptyDraftReferences": 0,
+    "agents": [
+      "DAT",
+      "EMA",
+      "CAWELON"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": false
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

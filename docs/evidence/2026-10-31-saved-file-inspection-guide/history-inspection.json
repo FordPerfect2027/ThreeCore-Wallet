@@ -1,0 +1,35 @@
+{
+  "schema": "threecore.saved-file-inspection.v1",
+  "sourceSchema": "threecore.report-history-file.v1",
+  "byteLength": 40882,
+  "title": "報告履歴のバックアップ",
+  "target": "history",
+  "destinationMessage": "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "0c485afe426a836388c851653f5fec42391bf918ac1b2e831bae3afb4f0f20e7",
+  "textDigest": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f",
+  "scope": {
+    "reportCount": 3,
+    "archivedReports": 1,
+    "entryReferences": 9,
+    "draftReferences": 9,
+    "archivedEntryReferences": 1,
+    "restrictedEntryReferences": 1,
+    "incompleteDraftReferences": 0,
+    "emptyDraftReferences": 0,
+    "agents": [
+      "DAT",
+      "EMA",
+      "CAWELON"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}
