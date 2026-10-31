@@ -2,6 +2,7 @@ import { captureWalletReadState } from "./wallet-read-scope.js";
 import { AGENT_IDS, normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
 import { captureDataArray, captureDataRecord, captureOptionalDataFields } from "./security-data.js";
 import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
 
 const MAX_UINT256 = (1n << 256n) - 1n;
 const HASH = /^0x[0-9a-fA-F]{64}$/;
@@ -94,9 +95,6 @@ function optionsFor(options) {
     fail("INVALID_TIMEOUT", "Snapshot timeout must be 1..120000ms");
   }
   const signal = options.signal;
-  if (signal !== undefined && !(signal instanceof AbortSignal)) {
-    fail("INVALID_SIGNAL", "Expected an AbortSignal");
-  }
   const onProgress = options.onProgress;
   if (onProgress !== undefined && typeof onProgress !== "function") {
     fail("INVALID_PROGRESS_OBSERVER", "Expected a progress callback");
@@ -115,24 +113,21 @@ export async function readPortfolioSnapshot(session, options) {
   const { tokens, timeoutMs, signal, onProgress } = optionsFor(options);
   const initial = identity(session);
   let timer;
-  let abort;
+  let cancellation;
+  let rejectInterrupt;
+  let reason = "ABORTED";
   let stopped = false;
   const stop = (code, message) => {
+    if (stopped) return;
     stopped = true;
-    return new PortfolioSnapshotError(code, message);
+    reason = code;
+    rejectInterrupt(new PortfolioSnapshotError(code, message));
   };
   const guard = () => {
-    if (stopped || signal?.aborted) fail("ABORTED", "Snapshot was cancelled");
+    if (stopped || cancellation?.aborted()) fail(reason, "Snapshot read ended");
     unchanged(session, initial);
   };
-  if (signal?.aborted) fail("ABORTED", "Snapshot was cancelled");
-  const interruption = new Promise((resolve, reject) => {
-    timer = setTimeout(() => reject(stop("SNAPSHOT_TIMEOUT", "Snapshot deadline exceeded")), timeoutMs);
-    if (signal) {
-      abort = () => reject(stop("ABORTED", "Snapshot was cancelled"));
-      signal.addEventListener("abort", abort, { once: true });
-    }
-  });
+  const interruption = new Promise((resolve, reject) => { rejectInterrupt = reject; });
   const read = async operation => {
     guard();
     const value = await operation();
@@ -194,11 +189,16 @@ export async function readPortfolioSnapshot(session, options) {
       securityAudit: false,
     });
   };
+  interruption.catch(() => {});
   try {
+    try { cancellation = subscribeReadAbort(signal, () => stop("ABORTED", "Snapshot was cancelled")); }
+    catch { fail("INVALID_SIGNAL", "Expected a native AbortSignal"); }
+    guard();
+    timer = setTimeout(() => stop("SNAPSHOT_TIMEOUT", "Snapshot deadline exceeded"), timeoutMs);
     return await Promise.race([collect(), interruption]);
   } finally {
     stopped = true;
     clearTimeout(timer);
-    if (abort) signal.removeEventListener("abort", abort);
+    cancellation?.dispose();
   }
 }

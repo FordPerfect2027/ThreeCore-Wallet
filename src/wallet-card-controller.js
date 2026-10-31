@@ -8,6 +8,10 @@ import { readTokenIdentity } from "./token-identity-reader.js";
 import { readAllowanceSnapshot } from "./allowance-reader.js";
 import { readTransferSnapshot } from "./transfer-reader.js";
 import { collectPeriod } from "./period-reader.js";
+import { periodFail, validatePeriodPlan } from "./period-plan.js";
+import { validatePeriodDraft } from "./period-draft.js";
+import { captureOptionalDataFields } from "./security-data.js";
+import { subscribeReadAbort } from "./security-abort.js";
 import { portfolioFailureStatus } from "./portfolio-progress.js";
 import { readErrorCode, readErrorMessage } from "./provider-error.js";
 
@@ -274,22 +278,31 @@ export function createWalletCardController({
   return Object.freeze({
     get state() { return state; }, connect, disconnect, clearResult, readBalances, inspect, dispose,
     async readPeriod(plan, options = {}) {
+      // Capture before publishing the reading state: view callbacks may mutate
+      // the caller's objects, but cannot redirect an already accepted read.
+      try { options = boundary(() => captureOptionalDataFields(options,
+        ["draft", "timeoutMs", "stepTimeoutMs", "signal", "onProgress", "onCheckpoint"])); }
+      catch { periodFail("PERIOD_OPTIONS"); }
+      plan = boundary(() => validatePeriodPlan(plan));
+      if (options.draft !== undefined) options = { ...options,
+        draft: boundary(() => validatePeriodDraft(options.draft)) };
       let result;
       let failure;
       const accepted = await runRead(async (session, read) => {
         const aborter = new AbortController();
         activePeriodAborter = aborter;
         const cancel = () => aborter.abort();
-        options.signal?.addEventListener("abort", cancel, { once: true });
-        if (options.signal?.aborted) aborter.abort();
+        let cancellation;
         try {
+          try { cancellation = subscribeReadAbort(options.signal, cancel); }
+          catch { periodFail("PERIOD_SIGNAL"); }
           result = await read(() => collectPeriod(session, plan, { ...options, signal: aborter.signal }));
           return { kind: "period", blockNumber: result.plan.laterBlock };
         } catch (error) {
           failure = readErrorCode(error);
           throw error;
         } finally {
-          options.signal?.removeEventListener("abort", cancel);
+          cancellation?.dispose();
           if (activePeriodAborter === aborter) activePeriodAborter = null;
         }
       });

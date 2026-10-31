@@ -12,6 +12,8 @@ import { readAllowanceSnapshot } from "/src/allowance-reader.js";
 import { ALLOWANCE_TARGET_SCHEMA } from "/src/allowance-targets.js";
 import { collectPeriod } from "/src/period-reader.js";
 import { periodSession, plan } from "/test/helpers/period-fixtures.js";
+import { readAgentPortfolios } from "/src/agent-portfolios.js";
+import { createWalletCardController } from "/src/wallet-card-controller.js";
 
 const assert = (value, message) => { if (!value) throw Error(message); };
 const outcome = promise => promise.then(value => ({ value }), error => ({ code: error.code }));
@@ -35,6 +37,46 @@ function host() {
 }
 
 export function registerAdapterBoundaryUITests(test) {
+  test("agent capture: native three-account reads cannot be emptied by caller array methods", async () => {
+    const base = plan();
+    const fixtures = ["DAT", "EMA", "CAWELON"].map((agent, index) => periodSession(plan({}, {
+      ...base.context, agent, account: "0x" + String(index + 1).repeat(40),
+    })));
+    const entries = fixtures.map(f => ({ agent: f.state.agent, session: f.session, tokens: [f.token.address] }));
+    let maps = 0;
+    entries.map = () => { maps++; return []; };
+    assert((await outcome(readAgentPortfolios(entries))).code === "INVALID_AGENT_PLAN", "Reject owned array method");
+    assert(maps === 0 && fixtures.every(f => f.calls.length === 0), "Invalid plan must not run or read");
+    delete entries.map;
+    const abort = new AbortController();
+    Object.defineProperty(abort.signal, "removeEventListener", { get() { throw Error("Synthetic cleanup override"); } });
+    const result = await readAgentPortfolios(entries, { signal: abort.signal });
+    assert(result.portfolios.length === 3 && new Set(result.portfolios.map(row => row.account)).size === 3, "Three independent accounts retained");
+    assert(result.atomicAcrossAgents === false, "Do not claim a common atomic observation");
+    abort.abort();
+    const before = fixtures.map(f => f.calls.length).join();
+    assert((await outcome(readAgentPortfolios(entries, { signal: abort.signal }))).code === "ABORTED", "Real abort remains authoritative");
+    assert(fixtures.map(f => f.calls.length).join() === before, "No cancelled follow-up reads");
+  });
+  test("card period capture: native view callbacks cannot redirect accepted range or cancellation", async () => {
+    const selected = structuredClone(plan()), f = periodSession(), abort = new AbortController();
+    f.session.connect = async () => { f.state.connected = true; };
+    f.session.disconnect = () => { f.state.connected = false; f.state.connectionEpoch++; };
+    let stages = 0;
+    const options = { signal: abort.signal, onProgress() { stages++; abort.signal.dispatchEvent(new Event("abort")); } };
+    const card = createWalletCardController({ agent: "DAT", siteOrigin: f.state.siteOrigin, createSession: () => f.session,
+      onChange(state) { if (state.phase === "reading") { selected.laterBlock = "43"; options.signal = {}; options.onProgress = null; } } });
+    try {
+      assert(await card.connect({ provider: { request() { throw Error("No live provider"); } }, account: f.state.account, chainId: 8453 }), "Synthetic connection");
+      const result = await card.readPeriod(selected, options);
+      assert(result.plan.laterBlock === "42" && result.records.at(-1).range.toBlock === "42", "Accepted block range preserved");
+      assert(stages > 1 && card.state.result.kind === "period", "Original observer and successful state retained");
+      abort.abort();
+      const before = f.calls.length;
+      assert((await outcome(card.readPeriod(plan(), { signal: abort.signal }))).code === "PERIOD_CANCELLED", "Native cancellation reaches card reader");
+      assert(f.calls.length === before && card.state.result === null, "No cancelled provider data published");
+    } finally { card.dispose(); }
+  });
   for (const [name, run] of [
     ["IDENTITY", (f, options) => readTokenIdentity(f.session, options)],
     ["TRANSFER", (f, options) => readTransferSnapshot(f.session, { fromBlock: "31", toBlock: "42", lookback: 12 }, options)],
