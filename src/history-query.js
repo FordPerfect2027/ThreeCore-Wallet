@@ -18,7 +18,7 @@ function height(value) {
 }
 /** Strict, primitive-only filters. No regex, arbitrary search expressions or code. */
 export function validateHistoryQuery(query = {}) {
-  const allowed = ["account", "chainId", "minimumBlock", "maximumBlock", "order"];
+  const allowed = ["account", "chainId", "minimumBlock", "maximumBlock", "order", "tokenAddress", "tokenStatus"];
   try {
     const keys=Reflect.ownKeys(query);if(keys.some(key=>!allowed.includes(key)))fail();
     query=captureDataRecord(query,keys);
@@ -34,7 +34,11 @@ export function validateHistoryQuery(query = {}) {
   if (minimumBlock !== null && maximumBlock !== null && BigInt(minimumBlock) > BigInt(maximumBlock)) fail();
   const order = query.order ?? "oldest";
   if (order !== "oldest" && order !== "newest") fail();
-  return Object.freeze({ account, chainId, minimumBlock, maximumBlock, order });
+  let tokenAddress = query.tokenAddress ?? "";
+  if (tokenAddress !== "") { try { tokenAddress = normalizeAddress(tokenAddress); } catch { fail(); } }
+  const tokenStatus = query.tokenStatus ?? "any";
+  if (!["any", "known", "unknown", "not-observed"].includes(tokenStatus) || (!tokenAddress && tokenStatus !== "any")) fail();
+  return Object.freeze({ account, chainId, minimumBlock, maximumBlock, order, tokenAddress, tokenStatus });
 }
 
 /** Query a copied archive; retained source indices are local to this archive. */
@@ -49,6 +53,11 @@ export function queryPortfolioHistory(text, input = {}) {
     const block = BigInt(snapshot.blockNumber);
     if (query.minimumBlock !== null && block < BigInt(query.minimumBlock)) return false;
     if (query.maximumBlock !== null && block > BigInt(query.maximumBlock)) return false;
+    if (query.tokenAddress) {
+      const holding = snapshot.holdings.find(row => row.address === query.tokenAddress);
+      if (query.tokenStatus === "not-observed") return !holding;
+      if (!holding || (query.tokenStatus === "known" && !holding.hasCode) || (query.tokenStatus === "unknown" && holding.hasCode)) return false;
+    }
     return true;
   });
   rows.sort((a, b) => {

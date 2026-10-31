@@ -6,7 +6,7 @@ import { createPortfolioHistory, HISTORY_TEXT_LIMIT } from "../src/portfolio-his
 import { createHistoryImportController } from "../src/history-import-controller.js";
 import { describePortfolioHistory } from "../src/portfolio-history-summary.js";
 import { decodePortfolioReport, validatePortfolioSnapshot, encodePortfolioReport } from "../src/portfolio-report.js";
-import { describePortfolioComparison } from "../src/portfolio-comparison.js";
+import { describePortfolioComparison, encodePortfolioComparisonReport } from "../src/portfolio-comparison.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 
@@ -28,6 +28,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   let reviewPanel;
   let recoveryPanel;
   let renderedRevision = 0;
+  let completedComparison = null;
   const section = document.createElement("section");
   section.className = "history-panel";
   function element(tag, className, text) {
@@ -139,13 +140,30 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     changed("確認した履歴を適用しました。");
   });
   apply.disabled = true;
+  function clearComparison() { completedComparison = null; details.textContent = ""; saveComparison.disabled = true; }
   const compare = button("history-compare", "選択した2件を比較", () => {
+    clearComparison();
+    if (![first.value, last.value].every(value => /^(0|[1-9][0-9]*)$/.test(value))) throw Error("Invalid record selection");
     const before = Number(first.value), after = Number(last.value);
     history.compare(before, after, renderedRevision);
     const state = history.state();
     details.textContent = describePortfolioComparison(state.snapshots[before], state.snapshots[after]);
+    completedComparison = { revision: state.revision, before: first.value, after: last.value, earlier: state.snapshots[before], later: state.snapshots[after] };
+    saveComparison.disabled = false;
     status.textContent = "過去の2記録を比較しています。送金履歴や利益ではありません。";
   });
+  const saveComparison = button("history-save-comparison", "この2件の比較を資料付きで保存", id => {
+    const selected = completedComparison;
+    const matches = () => current(id) && selected && completedComparison === selected && history.state().revision === selected.revision && first.value === selected.before && last.value === selected.after;
+    if (!matches()) { clearComparison(); throw Error("Review comparison first"); }
+    const prepared = { text: encodePortfolioComparisonReport(selected.earlier, selected.later), filename: `ThreeCore-${agent}-portfolio-comparison-${selected.earlier.blockNumber}-${selected.later.blockNumber}.json`, mimeType: "application/json;charset=utf-8", containsOriginalEvidence: true, restorable: false };
+    if (!matches()) return;
+    const result = download({ document, prepared }), kind = observeCallbackResult(result);
+    if (!matches()) return;
+    if (kind !== "synchronous" || result === false) throw Error("Download unconfirmed");
+    status.textContent = "比較と元の2記録の保存を開始しました。残高比較欄で再計算できます。全履歴のバックアップではありません。";
+  });
+  saveComparison.disabled = true;
   const remove = button("history-remove", "選択した後の記録を削除", () => {
     recovery.remove(Number(last.value), renderedRevision);
     changed("選択した記録を履歴から削除しました。");
@@ -171,6 +189,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     changed("このカードの履歴を消去しました。");
   });
   const timeline = button("history-timeline", "履歴の時系列一覧を表示", () => {
+    clearComparison();
     details.textContent = describePortfolioHistory(history.exportText());
   });
   function render() {
@@ -197,15 +216,15 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     filesPanel?.invalidate();
     clearConfirm.checked = false;
     cancelReview();
-    details.textContent = "";
+    clearComparison();
     render();
     status.textContent = message + " 履歴 " + history.state().size + "件。";
   }
-  for (const select of [first, last]) listen(select, "change", () => { details.textContent = ""; });
+  for (const select of [first, last]) listen(select, "change", () => { generation++; clearComparison(); });
   listen(json, "input", () => { filesPanel?.invalidate(); cancelReview(); status.textContent = "JSONが変わりました。再度プレビューしてください。"; });
   listen(replace, "change", () => { filesPanel?.invalidate(); cancelReview(); });
   section.append(heading, note, addCurrent, addReport, status, list,
-    label("前の記録", first), label("後の記録・削除対象", last), compare, remove, saveRecord, timeline,
+    label("前の記録", first), label("後の記録・削除対象", last), compare, saveComparison, remove, saveRecord, timeline,
     details, exportButton, label("保存・読み込み用の履歴JSON", json),
     label("既存履歴を置き換える（未選択なら追加）", replace), previewButton, previewText, apply,
     label("このカードの全履歴を消去することを確認", clearConfirm), clear);
@@ -217,7 +236,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
       if (disposed) return false; const state = history.state();
       if (!Number.isSafeInteger(selected.index) || selected.index < 0 || selected.index >= state.size || !["before", "after"].includes(selected.side) ||
         selected.revision !== state.revision || renderedRevision !== state.revision || selected.archive !== history.exportText()) return false;
-      const id = ++generation, target = selected.side === "before" ? first : last; target.value = String(selected.index); details.textContent = ""; clearConfirm.checked = false;
+      const id = ++generation, target = selected.side === "before" ? first : last; target.value = String(selected.index); clearComparison(); clearConfirm.checked = false;
       try { target.focus?.(); } catch {}
       return current(id) && history.state().revision === state.revision && target.value === String(selected.index);
     },
@@ -246,11 +265,12 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
       history.importText(candidate.exportText(), { replace: true });
       changed("一括復元から履歴を反映しました。");
     },
-    invalidate() { if (!disposed) { generation++; cancelReview(); filesPanel.invalidate(); } },
+    invalidate() { if (!disposed) { generation++; clearComparison(); cancelReview(); filesPanel.invalidate(); } },
     dispose() {
       if (disposed) return;
       disposed = true;
       generation++;
+      clearComparison();
       filesPanel.dispose();
       reviewPanel.dispose();
       recoveryPanel.dispose();

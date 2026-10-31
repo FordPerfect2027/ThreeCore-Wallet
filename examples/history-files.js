@@ -153,6 +153,11 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     status.textContent = prepared.filename + " のダウンロードを開始しました。保存先を確認してください。";
   });
   const filterHeading = node("h4", "", "履歴の絞り込み・一部だけ保存");
+  const tokenAddress = node("input", "history-filter-token"); tokenAddress.type = "text"; tokenAddress.maxLength = 42; tokenAddress.spellcheck = false;
+  tokenAddress.setAttribute("aria-label", "履歴を絞るトークン契約アドレス");
+  const tokenStatus = node("select", "history-filter-token-status");
+  for (const [value, text] of [["any", "この契約を確認した記録すべて"], ["known", "残高を読み取れた記録（0を含む）"], ["unknown", "契約コードがなく残高不明の記録"], ["not-observed", "この契約を確認していない記録"]]) { const option = node("option", "", text); option.value = value; tokenStatus.append(option); }
+  tokenStatus.value = "any";
   const account = node("input", "history-filter-account");
   account.type = "text";
   account.maxLength = 42;
@@ -213,6 +218,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
       minimumBlock: minimum.value.trim(),
       maximumBlock: maximum.value.trim(),
       order: order.value,
+      tokenAddress: tokenAddress.value.trim(), tokenStatus: tokenStatus.value,
     };
   }
   function invalidateView() {
@@ -244,17 +250,21 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   });
   saveSubset.disabled = true;
   const resetFilters = button("history-filter-reset", "絞り込み条件を消去", () => {
-    for (const input of [account, chain, minimum, maximum]) input.value = "";
+    for (const input of [account, chain, minimum, maximum, tokenAddress]) input.value = "";
     order.value = "oldest";
+    tokenStatus.value = "any";
     invalidateView();
   });
   const changedFilter = () => { generation++; invalidateView(); };
-  for (const input of [account, chain, minimum, maximum]) listen(input, "input", changedFilter);
+  for (const input of [account, chain, minimum, maximum, tokenAddress]) listen(input, "input", changedFilter);
   listen(order, "change", changedFilter);
+  listen(tokenStatus, "change", changedFilter);
   section.append(heading, explanation, save, backupState,
     labelled("保存した履歴JSONファイルを選択", file), cancel, status,
     filterHeading, labelled("公開アドレス（空欄ならすべて）", account),
     labelled("チェーンID（空欄ならすべて）", chain),
+    labelled("トークン契約アドレス（空欄なら絞り込まない）", tokenAddress), labelled("その契約の確認状態（契約アドレスが必要）", tokenStatus),
+    node("p", "notice", "条件に合う記録全体を選びます。保存ファイルには、その記録内の他の契約も含まれます。未確認や残高不明は残高0とは異なります。"),
     labelled("最小ブロック（空欄なら制限なし）", minimum),
     labelled("最大ブロック（空欄なら制限なし）", maximum),
     labelled("表示順", order), search, resetFilters, results, rowActions, saveSubset);
