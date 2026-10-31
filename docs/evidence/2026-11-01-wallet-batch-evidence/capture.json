@@ -1,0 +1,82 @@
+{
+  "source": "8fd952f",
+  "synthetic": true,
+  "captures": [
+    {
+      "name": "original",
+      "exitCode": 0,
+      "sourceCount": 1,
+      "bundleDigest": "2ec0f5dda9a8ad9e6b1024e00c3556185246e6b85a002a163227f7c8f905c706",
+      "matchesRecomputation": true,
+      "allOriginalsValidated": true,
+      "expectedSummary": {
+        "selected": 1,
+        "checked": 1,
+        "pending": 0,
+        "validatedOriginals": 1,
+        "declaredOnly": 0,
+        "invalid": 0,
+        "hashUnavailable": 0,
+        "totalBytes": 5847
+      },
+      "exactSourceBytesRecovered": true
+    },
+    {
+      "name": "altered",
+      "exitCode": 2,
+      "matchesRecomputation": false,
+      "sourceExtractionAllowed": false
+    },
+    {
+      "name": "mixed",
+      "exitCode": 0,
+      "sourceCount": 3,
+      "bundleDigest": "901603b60a2a587f4751f23c1f41ba89e85e7579e41dae451843171ca3cd21dc",
+      "matchesRecomputation": true,
+      "allOriginalsValidated": false,
+      "expectedSummary": {
+        "selected": 3,
+        "checked": 3,
+        "pending": 0,
+        "validatedOriginals": 1,
+        "declaredOnly": 0,
+        "invalid": 1,
+        "hashUnavailable": 0,
+        "totalBytes": 7109,
+        "structureValidated": 1,
+        "simulationFiles": 1
+      },
+      "exactSourceBytesRecovered": true
+    },
+    {
+      "name": "reference-mismatch",
+      "exitCode": 0,
+      "sourceCount": 1,
+      "bundleDigest": "c18ee9e60a109d138972ffeaee6d0fc7338025732d0970102edf37058c3778c1",
+      "matchesRecomputation": true,
+      "allOriginalsValidated": false,
+      "expectedSummary": {
+        "selected": 1,
+        "checked": 1,
+        "pending": 0,
+        "validatedOriginals": 0,
+        "declaredOnly": 0,
+        "invalid": 0,
+        "hashUnavailable": 0,
+        "totalBytes": 5847,
+        "checksumsCompared": 1,
+        "checksumsMatching": 0,
+        "checksumMismatches": 1
+      },
+      "exactSourceBytesRecovered": true
+    }
+  ],
+  "retainedSourceLimitBytes": 25165824,
+  "bundleLimitBytes": 50331648,
+  "nativeFocusedCases": 116,
+  "lastFullBrowserSource": "ccbbbe3",
+  "lastFullBrowserCases": 959,
+  "fullBrowserCoverage": false,
+  "userTabConnectionVerified": false,
+  "realProviderCalls": 0
+}

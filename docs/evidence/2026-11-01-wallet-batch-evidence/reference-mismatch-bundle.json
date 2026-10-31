@@ -1,0 +1,64 @@
+{
+  "schema": "threecore.wallet-saved-batch-evidence.v1",
+  "readOnly": true,
+  "authenticated": false,
+  "encrypted": false,
+  "authorizesExecution": false,
+  "referenceText": "73872a5c9d70bcb0d4f68c57781e83f44bc61a16672953bf81719be5be22ad15  period.json\r\n",
+  "files": [
+    {
+      "name": "period.json",
+      "text": "{\n  \"schema\": \"threecore.period-file.v1\",\n  \"algorithm\": \"SHA-256\",\n  \"digest\": \"ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f\",\n  \"draft\": {\n    \"schema\": \"threecore.period-draft.v1\",\n    \"plan\": {\n      \"schema\": \"threecore.period-plan.v1\",\n      \"context\": {\n        \"agent\": \"DAT\",\n        \"chainId\": 84532,\n        \"account\": \"0x1111111111111111111111111111111111111111\"\n      },\n      \"earlierBlock\": \"30\",\n      \"laterBlock\": \"42\",\n      \"windowSize\": 5\n    },\n    \"earlier\": {\n      \"schema\": \"threecore-token-observation-v1\",\n      \"catalogVersion\": \"threecore-erc20-2026-10-23\",\n      \"agent\": \"DAT\",\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"chainId\": 84532,\n      \"siteOrigin\": \"http://127.0.0.1:4192\",\n      \"connectionEpoch\": 1,\n      \"blockNumber\": \"30\",\n      \"blockHash\": \"0x0000000000000000000000000000000000000000000000000000000000000406\",\n      \"tokenAddress\": \"0x2474a062ec669c1912ed41bc491e8a97db4743d4\",\n      \"hasCode\": true,\n      \"metadata\": {\n        \"name\": \"DATCORE\",\n        \"symbol\": \"DAT\",\n        \"decimals\": 18,\n        \"totalSupply\": \"1000000000000000000000000000\"\n      },\n      \"balanceBaseUnits\": \"100000000000000000000\",\n      \"nativeBalanceBaseUnits\": \"1000000000000000000\",\n      \"readOnly\": true,\n      \"securityAudit\": false\n    },\n    \"later\": {\n      \"schema\": \"threecore-token-observation-v1\",\n      \"catalogVersion\": \"threecore-erc20-2026-10-23\",\n      \"agent\": \"DAT\",\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"chainId\": 84532,\n      \"siteOrigin\": \"http://127.0.0.1:4192\",\n      \"connectionEpoch\": 1,\n      \"blockNumber\": \"42\",\n      \"blockHash\": \"0x0000000000000000000000000000000000000000000000000000000000000412\",\n      \"tokenAddress\": \"0x2474a062ec669c1912ed41bc491e8a97db4743d4\",\n      \"hasCode\": true,\n      \"metadata\": {\n        \"name\": \"DATCORE\",\n        \"symbol\": \"DAT\",\n        \"decimals\": 18,\n        \"totalSupply\": \"1000000000000000000000000000\"\n      },\n      \"balanceBaseUnits\": \"107000000000000000000\",\n      \"nativeBalanceBaseUnits\": \"1000000000000000000\",\n      \"readOnly\": true,\n      \"securityAudit\": false\n    },\n    \"records\": [\n      {\n        \"schema\": \"threecore.transfer-observation.v1\",\n        \"context\": {\n          \"agent\": \"DAT\",\n          \"chainId\": 84532,\n          \"account\": \"0x1111111111111111111111111111111111111111\"\n        },\n        \"tokenAddress\": \"0x2474a062ec669c1912ed41bc491e8a97db4743d4\",\n        \"metadata\": {\n          \"name\": \"DATCORE\",\n          \"symbol\": \"DAT\",\n          \"decimals\": 18,\n          \"totalSupply\": \"1000000000000000000000000000\"\n        },\n        \"range\": {\n          \"fromBlock\": \"31\",\n          \"toBlock\": \"35\"\n        },\n        \"fromBlockHash\": \"0x0000000000000000000000000000000000000000000000000000000000000407\",\n        \"toBlockHash\": \"0x000000000000000000000000000000000000000000000000000000000000040b\",\n        \"events\": [\n          {\n            \"blockNumber\": \"35\",\n            \"blockHash\": \"0x000000000000000000000000000000000000000000000000000000000000040b\",\n            \"transactionHash\": \"0x0000000000000000000000000000000000000000000000000000000000000835\",\n            \"transactionIndex\": \"1\",\n            \"logIndex\": \"1\",\n            \"from\": \"0x2222222222222222222222222222222222222222\",\n            \"to\": \"0x1111111111111111111111111111111111111111\",\n            \"amountBaseUnits\": \"10000000000000000000\"\n          }\n        ],\n        \"readOnly\": true,\n        \"completeHistory\": false,\n        \"independentVerification\": false\n      },\n      {\n        \"schema\": \"threecore.transfer-observation.v1\",\n        \"context\": {\n          \"agent\": \"DAT\",\n          \"chainId\": 84532,\n          \"account\": \"0x1111111111111111111111111111111111111111\"\n        },\n        \"tokenAddress\": \"0x2474a062ec669c1912ed41bc491e8a97db4743d4\",\n        \"metadata\": {\n          \"name\": \"DATCORE\",\n          \"symbol\": \"DAT\",\n          \"decimals\": 18,\n          \"totalSupply\": \"1000000000000000000000000000\"\n        },\n        \"range\": {\n          \"fromBlock\": \"36\",\n          \"toBlock\": \"40\"\n        },\n        \"fromBlockHash\": \"0x000000000000000000000000000000000000000000000000000000000000040c\",\n        \"toBlockHash\": \"0x0000000000000000000000000000000000000000000000000000000000000410\",\n        \"events\": [\n          {\n            \"blockNumber\": \"40\",\n            \"blockHash\": \"0x0000000000000000000000000000000000000000000000000000000000000410\",\n            \"transactionHash\": \"0x0000000000000000000000000000000000000000000000000000000000000836\",\n            \"transactionIndex\": \"2\",\n            \"logIndex\": \"2\",\n            \"from\": \"0x1111111111111111111111111111111111111111\",\n            \"to\": \"0x2222222222222222222222222222222222222222\",\n            \"amountBaseUnits\": \"3000000000000000000\"\n          }\n        ],\n        \"readOnly\": true,\n        \"completeHistory\": false,\n        \"independentVerification\": false\n      },\n      {\n        \"schema\": \"threecore.transfer-observation.v1\",\n        \"context\": {\n          \"agent\": \"DAT\",\n          \"chainId\": 84532,\n          \"account\": \"0x1111111111111111111111111111111111111111\"\n        },\n        \"tokenAddress\": \"0x2474a062ec669c1912ed41bc491e8a97db4743d4\",\n        \"metadata\": {\n          \"name\": \"DATCORE\",\n          \"symbol\": \"DAT\",\n          \"decimals\": 18,\n          \"totalSupply\": \"1000000000000000000000000000\"\n        },\n        \"range\": {\n          \"fromBlock\": \"41\",\n          \"toBlock\": \"42\"\n        },\n        \"fromBlockHash\": \"0x0000000000000000000000000000000000000000000000000000000000000411\",\n        \"toBlockHash\": \"0x0000000000000000000000000000000000000000000000000000000000000412\",\n        \"events\": [],\n        \"readOnly\": true,\n        \"completeHistory\": false,\n        \"independentVerification\": false\n      }\n    ],\n    \"readOnly\": true,\n    \"independentlyVerified\": false\n  }\n}\n"
+    }
+  ],
+  "receipt": {
+    "schema": "threecore.wallet-saved-browser-batch.v2",
+    "readOnly": true,
+    "authenticatesOrigin": false,
+    "authorizesExecution": false,
+    "restorable": false,
+    "liveChainRechecked": false,
+    "atomicSnapshot": false,
+    "externalChecksumsCompared": true,
+    "phase": "complete",
+    "complete": true,
+    "allOriginalsValidated": false,
+    "summary": {
+      "selected": 1,
+      "checked": 1,
+      "pending": 0,
+      "validatedOriginals": 0,
+      "declaredOnly": 0,
+      "invalid": 0,
+      "hashUnavailable": 0,
+      "totalBytes": 5847,
+      "checksumsCompared": 1,
+      "checksumsMatching": 0,
+      "checksumMismatches": 1
+    },
+    "files": [
+      {
+        "name": "period.json",
+        "byteLength": 5847,
+        "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "status": "checksum-mismatch",
+        "code": "FILE_BATCH_CHECKSUM_MISMATCH",
+        "inspection": null,
+        "expectedSha256": "73872a5c9d70bcb0d4f68c57781e83f44bc61a16672953bf81719be5be22ad15",
+        "checksumMatches": false
+      }
+    ],
+    "referenceProvided": true,
+    "reference": {
+      "text": "73872a5c9d70bcb0d4f68c57781e83f44bc61a16672953bf81719be5be22ad15  period.json\r\n",
+      "sha256": "35ee37bf23cb15e4d342dba98604568e454b11ea7eb2547270478b794757acd0",
+      "entries": [
+        {
+          "name": "period.json",
+          "expectedSha256": "73872a5c9d70bcb0d4f68c57781e83f44bc61a16672953bf81719be5be22ad15"
+        }
+      ]
+    },
+    "allExternalChecksumsMatch": false
+  }
+}

@@ -1,0 +1,100 @@
+✔ native-like source files reopen only after matching evidence and preserve complete negative scope (160.4413ms)
+✔ stopped evidence preparation retains a usable list and a late result cannot overwrite a new selection (20.1338ms)
+✔ failed evidence delivery preserves originals and allows a deliberate retry (23.1441ms)
+✔ wallet bundle preserves exact originals, plain inputs and negative inspections with separate scope (177.5918ms)
+✔ wallet bundle preserves a bad external reference as a faithful negative result (88.6955ms)
+✔ altered contents and claims cannot authorize reopening; unknown values are not echoed (54.2605ms)
+✔ recovered file batches retain exact captured sources but produce a fresh inspection snapshot (88.7282ms)
+✔ oversized source totals and duplicate names are rejected before hashing (1378.1613ms)
+✖ invalid options, cancellation and stalled hashing cannot release source evidence (50.5925ms)
+✔ wallet evidence CLI distinguishes faithful plain/negative outcomes from altered claims and preserves inputs (2085.5895ms)
+✔ name and exact-status filters intersect without changing full result or exports (136.1193ms)
+✔ hidden actions cannot open the wrong source and changed views suppress stale detail feedback (28.4046ms)
+✔ invalid filter input is explicit, replacement clears it and disposed controls are inert (13.2473ms)
+✔ retry refreshes the current status filter without replaying retained successful rows (10.1122ms)
+✔ batch UI requires explicit start and acknowledged exports and retains each exact source fingerprint (297.9693ms)
+✔ invalid UI selection duplicate cannot start a file read (15.7492ms)
+✔ invalid UI selection unsafe cannot start a file read (1.3386ms)
+✔ invalid UI selection count cannot start a file read (37.5515ms)
+✔ invalid UI selection large cannot start a file read (1.5204ms)
+✔ cancelled verification preserves one checked and one unchecked row for a JSON receipt (85.9378ms)
+✔ late file read cannot overwrite clear (31.1975ms)
+✔ late file read cannot overwrite replace (132.9684ms)
+✔ late file read cannot overwrite dispose (51.7436ms)
+✔ picker dismissal preserves the current result and incomplete loading never becomes a successful empty batch (44.2202ms)
+✔ batch read size failures explain the batch limit rather than the single-file guide limit (13.0873ms)
+✔ save callback throws cannot claim a completed download (64.9913ms)
+✔ save callback false cannot claim a completed download (64.3066ms)
+✔ save callback async cannot claim a completed download (122.5052ms)
+✔ save callback clears cannot claim a completed download (32.0493ms)
+✔ browser original batch separates valid, auxiliary, internally corrupt and malformed inputs with exact hashes (148.5885ms)
+✔ invalid browser batch admission is refused [] (2.0069ms)
+✔ invalid browser batch admission is refused [{"name":"0.json","byteLength":1},{"name":"1.json","byteLength":1},{"name":"2.js (0.4181ms)
+✔ invalid browser batch admission is refused [{"name":"a.json","byteLength":1},{"name":"A.json","byteLength":1}] (0.4303ms)
+✔ invalid browser batch admission is refused [{"name":"../a.json","byteLength":1}] (0.4069ms)
+✔ invalid browser batch admission is refused [{"name":"a.json","byteLength":16777217}] (0.8403ms)
+✔ invalid browser batch admission is refused [{"name":"0.json","byteLength":16777216},{"name":"1.json","byteLength":16777216} (1.0421ms)
+✔ source and options are captured before callbacks; input getters are never executed (31.9264ms)
+✔ cancellation retains completed originals and marks pending files without a partial manifest (10.5623ms)
+✔ already cancelled native signal is not hidden by an instance property (1.786ms)
+✔ pending hash cancel cannot later publish an original (3.1366ms)
+✔ pending hash timeout cannot later publish an original (40.3322ms)
+✔ hash failure is explicit and cloned receipts cannot authorize exports (2.2634ms)
+✔ native File decoding failure retains the other originals and saves an honest unavailable row (145.6572ms)
+✔ Stop during a stalled second source returns the first checked file without waiting for that source (54.8865ms)
+✔ clear during a stalled source releases visible ownership immediately and old work cannot restore it (15.4651ms)
+✔ sequential file reads preserve exact existing V1/V2 receipt bytes false (160.5609ms)
+✔ sequential file reads preserve exact existing V1/V2 receipt bytes true (31.0962ms)
+✔ unreadable middle source preserves both other originals and distinguishes known text bytes from reported metadata (20.98ms)
+✔ failed reads never claim expected-hash comparisons even when all sources are unavailable (8.7497ms)
+✔ cancellation during an uncooperative second read returns completed results before the underlying promise settles (39.3623ms)
+✔ overall deadline includes file reading and late reader rejection remains observed (31.0864ms)
+✔ native pre-abort is authoritative and artificial events cannot consume future cancellation (1.6317ms)
+✔ selection and options are captured before progress while invalid arguments never invoke the reader (28.3224ms)
+✔ wrong-sized, non-text and malformed thenable results remain read failures and cannot block following files (33.1723ms)
+✔ read-failure error accessors cannot leak private values or run arbitrary getters (1.3483ms)
+✔ rejected asynchronous failure values are observed while remaining ordinary read failures (2.839ms)
+✔ Stop then Continue keeps the first source and saves linked receipts without reading it again (361.9281ms)
+✔ failed continuation preparation preserves the earlier receipt and leaves continuation available (81.2149ms)
+✔ changing selection or clearing during continuation invalidates old work without restoring it later (93.379ms)
+✔ continuation retains the exact checked prefix and reads only the remaining source indices (266.4697ms)
+✔ continuation cannot accept uploaded, forged, text-only or already-complete receipts (52.1926ms)
+✔ repeated cancellation preserves successively longer prefixes with separate receipt hashes (25.3076ms)
+✔ a resumed source is still compared with its original manifest and callers cannot replace that reference (23.5915ms)
+✔ completed read failures are retained as failures, with unknown bytes explicit in resumed CSV (31.3295ms)
+✔ pre-cancelled continuation retains its prefix without reading or inventing a previous-receipt hash (8.0955ms)
+✔ receipt-hash failure cannot start later sources or consume the previous continuation (6.396ms)
+✔ overall continuation deadline retains earlier checked rows while an unfinished reader stays pending (83.633ms)
+✔ saved before/after comparison binds the continuation lineage and rejects an altered retained-count claim (87.7295ms)
+✔ explicit retry preserves successful files, clears save acknowledgement and exports linked outcomes (119.1594ms)
+✔ stop and selection replacement cannot turn a late retry into a new result (51.4786ms)
+✔ retry failure retains its prior receipt and remains available for another attempt (16.3241ms)
+✔ retry reads only noncontiguous failures and binds the previous exact receipt and original reference (48.1186ms)
+✔ hash failures are retried while invalid documents and mismatching checksums stay untouched (18.5818ms)
+✔ stopping a retry preserves unattempted old failures and a later retry only reads remaining failures (79.9022ms)
+✔ pre-abort, deadline and lineage hashing failure never consume or alter previous results (39.374ms)
+✔ only current captured file selections allow retry; copied, text-only and pending receipts cannot (10.4664ms)
+ℹ tests 76
+ℹ suites 0
+ℹ pass 75
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7081.3693
+
+✖ failing tests:
+
+test at test\wallet-batch-evidence.test.js:20:1
+✖ invalid options, cancellation and stalled hashing cannot release source evidence (50.5925ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-batch-evidence.test.js:21:223)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
