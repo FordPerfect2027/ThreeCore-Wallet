@@ -1,0 +1,44 @@
+{
+  "source": "2298deb",
+  "syntheticOnly": true,
+  "inputFilesUnchanged": true,
+  "observations": [
+    {
+      "input": "source-report.json",
+      "args": [
+        "--full-values",
+        "103"
+      ],
+      "output": "report-full-103.json",
+      "exitCode": 2,
+      "byteIdenticalToCore": true,
+      "valuesComplete": true
+    },
+    {
+      "input": "source-evidence.json",
+      "args": [
+        "--full-values",
+        "41",
+        "--evidence",
+        "receipt"
+      ],
+      "output": "receipt-full-41.json",
+      "exitCode": 2,
+      "byteIdenticalToCore": true,
+      "valuesComplete": true
+    },
+    {
+      "input": "source-evidence.json",
+      "args": [
+        "--full-values",
+        "103",
+        "--evidence",
+        "source"
+      ],
+      "output": "evidence-source-full-103.json",
+      "exitCode": 2,
+      "byteIdenticalToCore": true,
+      "valuesComplete": true
+    }
+  ]
+}
