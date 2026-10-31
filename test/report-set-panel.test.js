@@ -74,6 +74,24 @@ test("whole-page draft selection is offered only for contiguous windows and keep
   } finally { f.dispose(); }
 });
 
+test("replacement comparison is readable and can be saved before applying with separate acknowledgement", async () => {
+  const f = fixture();
+  try {
+    await f.accept(); const before = f.mounted.getState().input;
+    const after = clone(sequenceSet()); after.entries[0].label = "<img src=x>"; after.entries[0].note = "PRIVATE_COMPARISON_NOTE";
+    await f.file((await prepareReportSetFile(after)).text);
+    assert.match(f.q("review-text").textContent, /現在表示中の確認セットとの差/); assert.match(f.q("review-text").textContent, /<img src=x>/);
+    assert.equal(f.q("review-text").children.length, 0); assert.equal(f.q("comparison-json").disabled, true);
+    f.check("ack"); assert.equal(f.q("comparison-json").disabled, true);
+    f.check("comparison-ack"); f.click("comparison-json"); await f.settled();
+    assert.equal(f.files.length, 1); assert.doesNotMatch(f.files[0].text, /PRIVATE_COMPARISON_NOTE/);
+    assert.equal(f.mounted.getState().input, before); assert.equal(f.mounted.getState().phase, "review");
+    await f.file((await prepareReportSetFile(sequenceSet(demoSetHistory()))).text);
+    assert.equal(f.q("comparison-ack").checked, false); assert.equal(f.q("comparison-json").disabled, true);
+    f.click("apply"); await f.settled(); assert.equal(f.mounted.getState().input.entries.length, 7);
+  } finally { f.dispose(); }
+});
+
 test("set panel mounts with accessible labels and no reads or wallet calls", () => {
   const f = fixture();
   assert.deepEqual(f.store.calls, []);

@@ -5,7 +5,7 @@ import { queryReportHistory } from "../src/report-history-query.js";
 import { querySetDiagnostics, diagnosticText } from "../src/report-set-diagnostics.js";
 import { mountReportSetTimeline } from "./report-set-timeline-panel.js";
 import { SET_LIMITATION, SET_SEGMENTS, setErrorText, setSummaryText,
-  setTokenText, setSourcesText, setCheckReviewText } from "../src/report-set-view.js";
+  setTokenText, setSourcesText, setCheckReviewText, setComparisonText } from "../src/report-set-view.js";
 
 export function mountReportSetPanel({ document, parent,
   storage = createReportHistoryStorage(), now,
@@ -16,6 +16,7 @@ export function mountReportSetPanel({ document, parent,
   let diagnosticInput = null, diagnosticKey = null, diagnosticRows = null;
   let timelinePanel = null;
   let queueSelection = null;
+  let lastReview = null;
   const host = document.createElement("section");
   host.className = "report-set-panel";
   host.setAttribute("aria-label", "複数の保存報告の期間確認");
@@ -93,6 +94,9 @@ export function mountReportSetPanel({ document, parent,
   const review = make("section", "review");
   make("h3", "review-heading", "2. 作成前の確認", review);
   make("pre", "review-text", "", review);
+  field("comparison-ack", "比較ファイルに確認セット名・保存名・変更点が入り、暗号化されないことを確認しました", "checkbox", review);
+  button("comparison-json", "差し替え前後の比較をJSON保存", review);
+  make("p", "comparison-help", "比較ファイルは元資料の代わりにはなりません。再計算できるよう、差し替え前と候補の確認セットJSONも保管してください。メモ本文・履歴・残高の値は比較ファイルに含めません。", review);
   button("apply", "確認したセットを表示", review);
   const result = make("section", "result");
   make("h3", "result-heading", "3. 期間と証拠の確認結果", result);
@@ -333,6 +337,7 @@ export function mountReportSetPanel({ document, parent,
       nodes.ack.checked = false;
       showDiagnostics();
     }
+    if (lastReview !== value.review) { lastReview = value.review; nodes["comparison-ack"].checked = false; }
     nodes.refresh.disabled = value.busy;
     nodes.cancel.disabled = !value.busy && !value.review;
     for (const name of ["archive", "status-filter", "search", "title"]) nodes[name].disabled = value.busy || !value.loaded;
@@ -351,8 +356,11 @@ export function mountReportSetPanel({ document, parent,
       queueSelection.window.fromBlock + " ～ " + queueSelection.window.toBlock : "未取得の控えの保存対象: 選択なし";
     timelinePanel?.setBusy(value.busy);
     review.hidden = !value.review;
+    nodes["comparison-ack"].disabled = value.busy || !value.review?.comparison;
+    nodes["comparison-json"].disabled = value.busy || !value.review?.comparison || !nodes["comparison-ack"].checked;
     nodes["review-text"].textContent = value.review ? [
       "出所: " + (value.review.origin === "file" ? "確認セットJSON" : "PC内の保存履歴"),
+      setComparisonText(value.review.comparison),
       ...value.review.input.entries.map(entry => "・" + entry.label + (entry.archived ? "（非表示保管）" : "")),
       setSummaryText(value.review.result),
       ...value.review.result.tokens.map(token => setTokenText(token)),
@@ -385,6 +393,8 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes["clear-selection"], "click", () => controller.select([]));
   listen(nodes.prepare, "click", () => controller.prepare(nodes.title.value));
   listen(nodes.apply, "click", () => { void controller.applyReview(); });
+  listen(nodes["comparison-ack"], "change", () => render(controller.state));
+  listen(nodes["comparison-json"], "click", () => { void controller.exportReviewComparison(nodes["comparison-ack"].checked, download); });
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });

@@ -85,6 +85,21 @@ async function withDatabase(run) {
 }
 
 export function registerReportSetUITests(test) {
+  test("report set: replacement comparison saves before applying and resets its acknowledgement for another candidate", async () => {
+    const f = fixture();
+    try {
+      await f.accept(); const before = f.mounted.getState().input;
+      await f.file((await prepareReportSetFile(sequenceSet(demoSetHistory()))).text);
+      assert(f.q("review-text").textContent.includes("現在表示中の確認セットとの差"));
+      assert(f.q("review-text").textContent.includes("追加 4")); assert(f.q("comparison-json").disabled);
+      f.check("comparison-ack"); f.click("comparison-json"); await f.settled();
+      const data = JSON.parse(f.files[0].text); assert(data.comparison.counts.added === 4 && !data.restorable);
+      assert(f.mounted.getState().input === before && f.mounted.getState().phase === "review");
+      await f.file((await prepareReportSetFile(sequenceSet())).text);
+      assert(!f.q("comparison-ack").checked && f.q("comparison-json").disabled);
+      f.click("apply"); await f.settled(); assert(f.mounted.getState().review === null);
+    } finally { f.dispose(); }
+  });
   test("report set: a contiguous page saves ten unread windows in one period file", async () => {
     const initial = sequenceHistory([0n], report => {
       const draft = report.slots[0].entry.draft; draft.plan.laterBlock = "24030"; draft.plan.windowSize = 2000;

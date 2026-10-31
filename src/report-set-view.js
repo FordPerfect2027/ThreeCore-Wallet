@@ -1,5 +1,6 @@
 import { historyErrorText, historyErrorCode } from "./report-history-view.js";
 import { reportStatusText } from "./period-report-view.js";
+import { REPORT_CHANGE_TEXT } from "./period-report-comparison.js";
 
 export const SET_LIMITATION = "保存した報告の計画範囲と証拠の照合です。現在のチェーン状態や履歴の完全性を認証しません。トークン数量やイベントを合算せず、利益も計算しません。";
 export const SET_ISSUES = Object.freeze({
@@ -28,6 +29,8 @@ const ERRORS = Object.freeze({
   PERIOD_SET_QUEUE_GROUP: "表示中の確認セットに、そのアカウントの区間はありません。",
   PERIOD_SET_QUEUE_PAGE: "指定したページには予定がありません。最初のページから選び直してください。",
   PERIOD_SET_QUEUE_DISJOINT: "このページの区間は連続していません。1区間ずつ保存対象に選んでください。",
+  PERIOD_SET_NO_COMPARISON: "表示中の確認セットがある状態で、差し替える候補を先に確認してください。",
+  PERIOD_SET_COMPARISON_SIZE: "比較ファイルが保存できる大きさを超えています。",
   PERIOD_SET_SOURCE_CHANGED: "確認中に選択した報告が変わりました。保存一覧を読み直して選び直してください。",
   PERIOD_SET_NOT_LOADED: "先に報告の一覧を読み込んでください。",
   PERIOD_SET_NO_REVIEW: "先に選択内容を確認してください。",
@@ -105,4 +108,35 @@ export function setSourcesText(inspection) {
   return ["現在のPC内保存一覧との照合 / 版 " + inspection.revision,
     ...inspection.rows.map(row => row.label + ": " + SET_SOURCE_STATUS[row.status]),
     "照合のみです。確認セットと元の保存一覧は変更していません。"].join("\n");
+}
+
+
+export function setComparisonText(comparison) {
+  if (!comparison) return "";
+  const kinds = { added: "表示対象に追加", removed: "表示対象から外れる", changed: "保存した証拠の変更", "metadata-only": "名前・保管情報などの変更", unchanged: "同じ記録" };
+  const metadata = { label: "保存名", note: "メモ", tags: "タグ", savedAt: "保存日時", updatedAt: "更新日時", archived: "非表示保管", title: "報告名", createdAt: "作成日時", sourceRevision: "元一覧の版番号" };
+  const c = comparison.counts;
+  const lines = ["現在表示中の確認セットとの差", comparison.beforeTitle + " → " + comparison.afterTitle,
+    "報告数: " + comparison.beforeCount + " → " + comparison.afterCount,
+    "追加 " + c.added + " / 対象外へ " + c.removed + " / 証拠の変更 " + c.changed + " / 名前・保管情報 " + c["metadata-only"] + " / 同一 " + c.unchanged];
+  if (comparison.metadataChanges.length) lines.push("確認セットの変更項目: " + comparison.metadataChanges.map(key => metadata[key]).join("、"));
+  if (comparison.orderChanged) lines.push("報告の選択または並び順が変わります。");
+  for (const row of comparison.rows) {
+    if (row.kind === "unchanged") continue;
+    lines.push("", kinds[row.kind] + ": " + (row.afterLabel ?? row.beforeLabel) + " / " + row.id);
+    if (row.metadataChanges.length) lines.push("  保存情報の変更: " + row.metadataChanges.map(key => metadata[key]).join("、"));
+    if (row.reportMetadataChanges.length) lines.push("  報告内の変更: " + row.reportMetadataChanges.map(key => metadata[key]).join("、"));
+    for (const slot of row.tokenChanges.filter(item => item.kind !== "unchanged")) {
+      lines.push("  " + slot.agent + ": " + REPORT_CHANGE_TEXT[slot.kind]);
+      if (slot.beforeSteps !== null && slot.afterSteps !== null) lines.push("    取得工程: " + slot.beforeSteps + " → " + slot.afterSteps);
+      if (slot.changedAnchorCount) lines.push("    同じブロックの観測ハッシュが変わった箇所: " + slot.changedAnchorCount);
+      if (slot.restrictionChange !== "unchanged") lines.push("    再取得が必要という印が" + (slot.restrictionChange === "introduced" ? "付きます。" : "外れます。この比較で妥当性を認証したものではありません。"));
+      if (slot.archiveChange !== "unchanged") lines.push("    元控えの保管状態が変わります。");
+      if (slot.eventChanges) lines.push("    保存履歴の差: 追加 " + slot.eventChanges.added + " / 除外 " + slot.eventChanges.removed + " / 内容変更 " + slot.eventChanges.changed);
+    }
+  }
+  lines.push("", "対象から外れてもPC内の保存履歴を削除しません。差し替え後の全体に確認点があるか: " +
+    (comparison.afterSummary.allContinuous ? "この保存資料内では連続" : "要確認"),
+    "過去の保存資料同士の比較です。時刻や版番号の大きさで信頼性を判断せず、現在のチェーンの再検証や自動統合も行いません。");
+  return lines.join("\n");
 }

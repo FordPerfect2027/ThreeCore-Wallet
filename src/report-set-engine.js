@@ -4,6 +4,7 @@ import { periodDraftKey, periodDraftAnchors } from "./period-draft.js";
 import { analyzePeriodReport } from "./period-report-engine.js";
 import { inspectReportContinuity } from "./report-history-continuity.js";
 import { catalogToken } from "./token-catalog.js";
+import { comparePeriodReports } from "./period-report-comparison.js";
 
 const compareBlocks = (a, b) => BigInt(a) < BigInt(b) ? -1 : BigInt(a) > BigInt(b) ? 1 : 0;
 const sameEvidence = row => row.evidenceKey;
@@ -156,4 +157,48 @@ export function analyzeReportSet(value) {
     independentlyVerified: false, provesProfit: false });
   analyses.set(input, result);
   return Object.freeze({ ...result });
+}
+
+
+/** Compare accepted/proposed saved sets by source ID; never merge or remove storage entries. */
+export function compareReportSets(beforeValue, afterValue) {
+  const before = validateReportSet(beforeValue), after = validateReportSet(afterValue);
+  const beforeAnalysis = analyzeReportSet(before), afterAnalysis = analyzeReportSet(after);
+  const oldRows = new Map(before.entries.map(row => [row.id, row])), newRows = new Map(after.entries.map(row => [row.id, row]));
+  const oldStatuses = new Map(beforeAnalysis.reports.map(row => [row.id, row.status]));
+  const newStatuses = new Map(afterAnalysis.reports.map(row => [row.id, row.status]));
+  const metadata = ["label", "note", "tags", "savedAt", "updatedAt", "archived"];
+  const ids = [...new Set([...oldRows.keys(), ...newRows.keys()])].sort();
+  const rows = ids.map(id => {
+    const old = oldRows.get(id), next = newRows.get(id);
+    const fields = old && next ? metadata.filter(key => JSON.stringify(old[key]) !== JSON.stringify(next[key])) : [];
+    const comparison = old && next ? comparePeriodReports(old.report, next.report) : null;
+    const reportMetadata = comparison ? [...(comparison.titleChanged ? ["title"] : []), ...(comparison.timestampChanged ? ["createdAt"] : [])] : [];
+    const tokenChanges = comparison ? comparison.slots.map(slot => ({
+      agent: slot.agent, kind: slot.kind, sameContext: slot.sameContext, samePeriod: slot.samePeriod,
+      evidenceChanged: slot.evidenceChanged, metadataChanges: slot.metadataChanges,
+      beforeStatus: slot.beforeStatus, afterStatus: slot.afterStatus, beforeSteps: slot.beforeSteps, afterSteps: slot.afterSteps,
+      eventChanges: slot.eventChanges, endpointChanges: slot.endpointChanges,
+      changedAnchorCount: slot.anchorChanges.length, restrictionChange: slot.restrictionChange,
+      archiveChange: slot.archiveChange, needsAttention: slot.attention,
+    })) : [];
+    const evidenceChanged = tokenChanges.some(slot => slot.evidenceChanged);
+    const changed = fields.length || reportMetadata.length || tokenChanges.some(slot => slot.kind !== "unchanged");
+    const kind = !old ? "added" : !next ? "removed" : evidenceChanged ? "changed" : changed ? "metadata-only" : "unchanged";
+    return { id, kind, beforeLabel: old?.label ?? null, afterLabel: next?.label ?? null,
+      beforeStatus: oldStatuses.get(id) ?? null, afterStatus: newStatuses.get(id) ?? null,
+      metadataChanges: fields, reportMetadataChanges: reportMetadata, tokenChanges,
+      needsAttention: ["added", "removed", "changed"].includes(kind) || comparison?.needsAttention === true };
+  });
+  const counts = Object.fromEntries(["added", "removed", "changed", "metadata-only", "unchanged"].map(kind => [kind, rows.filter(row => row.kind === kind).length]));
+  const metadataChanges = ["title", "createdAt", "sourceRevision"].filter(key => before[key] !== after[key]);
+  return freezeSet({ schema: "threecore.report-set-comparison.v1",
+    beforeTitle: before.title, afterTitle: after.title, beforeCount: before.entries.length, afterCount: after.entries.length,
+    metadataChanges, orderChanged: JSON.stringify(before.entries.map(row => row.id)) !== JSON.stringify(after.entries.map(row => row.id)),
+    beforeSummary: { allContinuous: beforeAnalysis.allContinuous, issues: beforeAnalysis.issues },
+    afterSummary: { allContinuous: afterAnalysis.allContinuous, issues: afterAnalysis.issues },
+    counts, rows, needsAttention: rows.some(row => row.needsAttention), sameContents: metadataChanges.length === 0 &&
+      JSON.stringify(before.entries.map(row => row.id)) === JSON.stringify(after.entries.map(row => row.id)) &&
+      rows.every(row => row.kind === "unchanged"),
+    historicalOnly: true, liveChainRechecked: false, independentlyVerified: false, automaticMerge: false, deletesStoredReports: false });
 }

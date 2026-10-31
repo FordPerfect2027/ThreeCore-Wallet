@@ -3,11 +3,12 @@ import { periodFail } from "./period-plan.js";
 import { emptyReportHistory, validateReportHistory } from "./report-history-model.js";
 import { validateSetSelection, validateReportSet, createReportSet, inspectSetSources,
   assertSetSourcesUnchanged, validateSetExportOptions } from "./report-set-model.js";
-import { analyzeReportSet } from "./report-set-engine.js";
+import { analyzeReportSet, compareReportSets } from "./report-set-engine.js";
 import { prepareReportSetFile, readReportSetFile } from "./report-set-file.js";
 import { diagnosticQuery } from "./report-set-diagnostics.js";
 import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile,
-  readReportSetChecksText, reviewReportSetChecksFile, prepareReportSetSourceFile, prepareMissingHistoryDraftFile } from "./report-set-export.js";
+  readReportSetChecksText, reviewReportSetChecksFile, prepareReportSetSourceFile, prepareMissingHistoryDraftFile,
+  prepareReportSetComparisonFile } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -120,7 +121,8 @@ export function createReportSetController({ storage, onChange = () => {},
       const createdAt = now();
       if (!sameGeneration(token)) return false;
       const candidate = createReportSet(document, selection, title, createdAt);
-      review = Object.freeze({ input: candidate, result: analyzeReportSet(candidate), origin: "history", checksumVerified: false });
+      review = Object.freeze({ input: candidate, result: analyzeReportSet(candidate), origin: "history", checksumVerified: false,
+        comparison: input ? compareReportSets(input, candidate) : null });
       phase = "review"; error = null; message = "選択した報告、期間と確認が必要な箇所を確認してください。";
       emit(); return sameGeneration(token);
     } catch (value) { return fail(value, token); }
@@ -133,7 +135,8 @@ export function createReportSetController({ storage, onChange = () => {},
         const candidate = validateReportSet(decoded.input);
         const analysis = analyzeReportSet(candidate), checksumVerified = decoded.checksumVerified === true;
         if (!same()) return;
-        review = Object.freeze({ input: candidate, result: analysis, origin: "file", checksumVerified });
+        review = Object.freeze({ input: candidate, result: analysis, origin: "file", checksumVerified,
+          comparison: input ? compareReportSets(input, candidate) : null });
         phase = "review";
         message = "JSONの元記録から再計算しました。確認後に開きます。保存履歴へは追加しません。";
       });
@@ -260,6 +263,25 @@ export function createReportSetController({ storage, onChange = () => {},
       }, () => { message = "未取得の期間控えを保存しました。期間読み取り画面で開き、内容を確認してから読み取りを開始できます。"; });
     } catch (value) { return fail(value, token); }
   }
+  async function exportReviewComparison(acknowledged, deliver) {
+    let token = generation;
+    try {
+      if (!guard()) return false;
+      token = ++generation;
+      if (!input || !review?.comparison) periodFail("PERIOD_SET_NO_COMPARISON");
+      if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
+      if (typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      const before = input, after = review.input;
+      return await run("exporting", async (same, signal) => {
+        const file = await prepareReportSetComparisonFile(before, after, { signal });
+        if (!same()) return null;
+        const delivery = deliver(file);
+        if (observeCallbackResult(delivery) !== "synchronous") periodFail("PERIOD_ASYNC_DELIVERY");
+        if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
+        return file;
+      }, () => { phase = "review"; message = "差し替え前後の比較を保存しました。表示中の確認セットは変更していません。"; });
+    } catch (value) { return fail(value, token); }
+  }
   function dispose() {
     if (disposed) return;
     generation++; disposed = true; phase = "disposed"; review = null; inspection = null; checkReview = null;
@@ -268,5 +290,5 @@ export function createReportSetController({ storage, onChange = () => {},
     consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,
-    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, cancel, invalidateReview, dispose });
+    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, exportReviewComparison, cancel, invalidateReview, dispose });
 }

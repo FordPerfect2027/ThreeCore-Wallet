@@ -8,7 +8,7 @@ import { preparePeriodReportFile } from "./period-report-file.js";
 import { preparePeriodFile } from "./period-file.js";
 import { emptyPeriodDraft } from "./period-draft.js";
 import { reportSetMissingHistoryQueue, missingHistoryPageRange } from "./report-set-timeline.js";
-import { analyzeReportSet } from "./report-set-engine.js";
+import { analyzeReportSet, compareReportSets } from "./report-set-engine.js";
 import { reportSetDiagnostics, querySetDiagnostics, diagnosticQuery, diagnosticText } from "./report-set-diagnostics.js";
 import { escapeReportHTML } from "./period-report-export.js";
 import { reportStatusText } from "./period-report-view.js";
@@ -218,4 +218,21 @@ export async function prepareMissingHistoryDraftFile(value, query, number, fileO
   const file = await preparePeriodFile(draft, options);
   return Object.freeze({ ...file, filename: "ThreeCore-unread-period-" + queue.context.agent + ".json",
     encrypted: false, containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: window });
+}
+
+/** A reproducible comparison receipt; both original evidence files remain separate. */
+export async function prepareReportSetComparisonFile(beforeValue, afterValue, fileOptions = {}) {
+  const before = validateReportSet(beforeValue), after = validateReportSet(afterValue);
+  const comparison = compareReportSets(before, after);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const { digest: beforePayloadDigest } = await prepareReportSetFile(before, options);
+  const { digest: afterPayloadDigest } = await prepareReportSetFile(after, options);
+  const text = JSON.stringify({ schema: "threecore.report-set-comparison-file.v1", algorithm: "SHA-256",
+    beforePayloadDigest, afterPayloadDigest, comparison, authenticated: false, encrypted: false, restorable: false }, null, 2) + "\n";
+  const byteLength = new TextEncoder().encode(text).byteLength;
+  if (byteLength > 4 * 1024 * 1024) periodFail("PERIOD_SET_COMPARISON_SIZE");
+  return Object.freeze({ text, byteLength, filename: "ThreeCore-report-set-comparison.json", mimeType: "application/json;charset=utf-8",
+    encrypted: false, authenticated: false, restorable: false, containsOriginalEvidence: false });
 }
