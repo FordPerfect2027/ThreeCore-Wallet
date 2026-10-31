@@ -1,0 +1,51 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": false,
+  "phase": "complete",
+  "complete": true,
+  "allRecomputationsMatch": true,
+  "summary": {
+    "selected": 3,
+    "reviewed": 3,
+    "pending": 0,
+    "matching": 3,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 37845
+  },
+  "files": [
+    {
+      "name": "01-saved-report.json",
+      "byteLength": 8218,
+      "status": "matched",
+      "sha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2",
+      "inputSchema": "threecore.operation-rehearsal-overview.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "02-saved-report.json",
+      "byteLength": 9274,
+      "status": "matched",
+      "sha256": "e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "03-saved-report.json",
+      "byteLength": 20353,
+      "status": "matched",
+      "sha256": "911345565d4dec9a6183f54f6cc159b6744d0dba21958f85387563d07e1207b1",
+      "inputSchema": "threecore.operation-rehearsal-comparison.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    }
+  ]
+}
