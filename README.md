@@ -529,6 +529,8 @@ The timeline separately displays [saved Transfer-query coverage and missing rang
 
 The same [ten-window missing-history proposals can be reproduced offline](docs/MISSING_HISTORY_QUEUE_CLI_2026-10-31.md) from a checksummed source file, with explicit account/chain context and source-wide findings retained.
 
+A selected missing window or contiguous page can become a [new unread period draft](docs/MISSING_HISTORY_DRAFT_2026-10-31.md), ready for the existing import/review workflow without starting any provider reads.
+
 
 ### Resumable historical period collection (local development)
 

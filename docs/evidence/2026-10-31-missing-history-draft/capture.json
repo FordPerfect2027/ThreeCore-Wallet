@@ -1,0 +1,274 @@
+{
+  "source": "08d00c9",
+  "synthetic": true,
+  "captureEnvironment": "Node shared draft preparation, decoder and existing period-controller import/review with synthetic file adapters; native UI verified separately",
+  "rows": [
+    {
+      "name": "first-ten",
+      "sourceFile": "unfinished-source.json",
+      "query": {
+        "groupId": "DAT-1"
+      },
+      "selection": "page",
+      "suggestedFilename": "ThreeCore-unread-period-DAT.json",
+      "bytes": 617,
+      "draftDigest": "2e7a5b053db8c54e8d5407a03087069528311a61658d484c85a960a16f7c0a3f",
+      "plan": {
+        "schema": "threecore.period-plan.v1",
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "earlierBlock": "4030",
+        "laterBlock": "24030",
+        "windowSize": 2000
+      },
+      "windows": [
+        {
+          "index": 0,
+          "fromBlock": "4031",
+          "toBlock": "6030",
+          "blocks": "2000"
+        },
+        {
+          "index": 1,
+          "fromBlock": "6031",
+          "toBlock": "8030",
+          "blocks": "2000"
+        },
+        {
+          "index": 2,
+          "fromBlock": "8031",
+          "toBlock": "10030",
+          "blocks": "2000"
+        },
+        {
+          "index": 3,
+          "fromBlock": "10031",
+          "toBlock": "12030",
+          "blocks": "2000"
+        },
+        {
+          "index": 4,
+          "fromBlock": "12031",
+          "toBlock": "14030",
+          "blocks": "2000"
+        },
+        {
+          "index": 5,
+          "fromBlock": "14031",
+          "toBlock": "16030",
+          "blocks": "2000"
+        },
+        {
+          "index": 6,
+          "fromBlock": "16031",
+          "toBlock": "18030",
+          "blocks": "2000"
+        },
+        {
+          "index": 7,
+          "fromBlock": "18031",
+          "toBlock": "20030",
+          "blocks": "2000"
+        },
+        {
+          "index": 8,
+          "fromBlock": "20031",
+          "toBlock": "22030",
+          "blocks": "2000"
+        },
+        {
+          "index": 9,
+          "fromBlock": "22031",
+          "toBlock": "24030",
+          "blocks": "2000"
+        }
+      ],
+      "progress": {
+        "completed": 0,
+        "total": 12,
+        "complete": false,
+        "windowsCompleted": 0,
+        "windowsTotal": 10,
+        "events": 0,
+        "next": "earlier",
+        "nextWindow": {
+          "index": 0,
+          "fromBlock": "4031",
+          "toBlock": "6030",
+          "blocks": "2000"
+        }
+      },
+      "providerReads": 0,
+      "sourceUnchanged": true,
+      "existingImportAndReview": true
+    },
+    {
+      "name": "remaining-two",
+      "sourceFile": "unfinished-source.json",
+      "query": {
+        "groupId": "DAT-1",
+        "page": "1"
+      },
+      "selection": "page",
+      "suggestedFilename": "ThreeCore-unread-period-DAT.json",
+      "bytes": 614,
+      "draftDigest": "94413c0fc47f7e49d1b3a685d45ca5d32624c5885555401012a78c298ecd3191",
+      "plan": {
+        "schema": "threecore.period-plan.v1",
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "earlierBlock": "30",
+        "laterBlock": "4030",
+        "windowSize": 2000
+      },
+      "windows": [
+        {
+          "index": 0,
+          "fromBlock": "31",
+          "toBlock": "2030",
+          "blocks": "2000"
+        },
+        {
+          "index": 1,
+          "fromBlock": "2031",
+          "toBlock": "4030",
+          "blocks": "2000"
+        }
+      ],
+      "progress": {
+        "completed": 0,
+        "total": 4,
+        "complete": false,
+        "windowsCompleted": 0,
+        "windowsTotal": 2,
+        "events": 0,
+        "next": "earlier",
+        "nextWindow": {
+          "index": 0,
+          "fromBlock": "31",
+          "toBlock": "2030",
+          "blocks": "2000"
+        }
+      },
+      "providerReads": 0,
+      "sourceUnchanged": true,
+      "existingImportAndReview": true
+    },
+    {
+      "name": "one-block",
+      "sourceFile": "partial-source.json",
+      "query": {
+        "groupId": "EMA-1",
+        "windowSize": 3
+      },
+      "selection": "3",
+      "suggestedFilename": "ThreeCore-unread-period-EMA.json",
+      "bytes": 609,
+      "draftDigest": "808895ff60a53f1526719035eaa635548e2329ad6acce25457a5bbef6017646e",
+      "plan": {
+        "schema": "threecore.period-plan.v1",
+        "context": {
+          "agent": "EMA",
+          "chainId": 84532,
+          "account": "0x2222222222222222222222222222222222222222"
+        },
+        "earlierBlock": "35",
+        "laterBlock": "36",
+        "windowSize": 1
+      },
+      "windows": [
+        {
+          "index": 0,
+          "fromBlock": "36",
+          "toBlock": "36",
+          "blocks": "1"
+        }
+      ],
+      "progress": {
+        "completed": 0,
+        "total": 3,
+        "complete": false,
+        "windowsCompleted": 0,
+        "windowsTotal": 1,
+        "events": 0,
+        "next": "earlier",
+        "nextWindow": {
+          "index": 0,
+          "fromBlock": "36",
+          "toBlock": "36",
+          "blocks": "1"
+        }
+      },
+      "providerReads": 0,
+      "sourceUnchanged": true,
+      "existingImportAndReview": true
+    },
+    {
+      "name": "partial-page",
+      "sourceFile": "partial-source.json",
+      "query": {
+        "groupId": "EMA-1",
+        "windowSize": 3
+      },
+      "selection": "page",
+      "suggestedFilename": "ThreeCore-unread-period-EMA.json",
+      "bytes": 609,
+      "draftDigest": "94c5879cf3236cc6abba22ec7b8fc2635e31b7970602ad44cfceb034dd39ded5",
+      "plan": {
+        "schema": "threecore.period-plan.v1",
+        "context": {
+          "agent": "EMA",
+          "chainId": 84532,
+          "account": "0x2222222222222222222222222222222222222222"
+        },
+        "earlierBlock": "35",
+        "laterBlock": "42",
+        "windowSize": 3
+      },
+      "windows": [
+        {
+          "index": 0,
+          "fromBlock": "36",
+          "toBlock": "38",
+          "blocks": "3"
+        },
+        {
+          "index": 1,
+          "fromBlock": "39",
+          "toBlock": "41",
+          "blocks": "3"
+        },
+        {
+          "index": 2,
+          "fromBlock": "42",
+          "toBlock": "42",
+          "blocks": "1"
+        }
+      ],
+      "progress": {
+        "completed": 0,
+        "total": 5,
+        "complete": false,
+        "windowsCompleted": 0,
+        "windowsTotal": 3,
+        "events": 0,
+        "next": "earlier",
+        "nextWindow": {
+          "index": 0,
+          "fromBlock": "36",
+          "toBlock": "38",
+          "blocks": "3"
+        }
+      },
+      "providerReads": 0,
+      "sourceUnchanged": true,
+      "existingImportAndReview": true
+    }
+  ]
+}
