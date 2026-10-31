@@ -91,3 +91,16 @@ export function exportFilteredHistory(text, query) {
     excludesOtherRecords: result.matchCount !== result.totalCount,
   });
 }
+
+/** Prepare a bounded complement. No mutation; never treat display order as a removal scope. */
+export function prepareHistoryPrune(text, input) {
+  const result = queryPortfolioHistory(text, input), q = result.query;
+  if (!(q.account || q.chainId !== "" || q.siteOrigin || q.minimumBlock !== null || q.maximumBlock !== null || q.tokenAddress)) fail();
+  if (result.matchCount === 0 || result.matchCount === result.totalCount) fail();
+  const source = createPortfolioHistory(); source.importText(text);
+  const selected = new Set(result.rows.map(row => row.index)), remaining = createPortfolioHistory();
+  remaining.merge(source.state().snapshots.filter((_, index) => !selected.has(index)));
+  return Object.freeze({ query: q, previousCount: result.totalCount, removedCount: result.matchCount,
+    remainingCount: result.totalCount - result.matchCount, removedIndices: Object.freeze([...selected]),
+    text: remaining.exportText(), historicalObservation: true, canAuthorizeConnection: false, canAuthorizeTransaction: false });
+}

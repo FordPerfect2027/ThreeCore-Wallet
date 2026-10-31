@@ -11,6 +11,7 @@ import { readOwnErrorCode } from "../src/provider-error.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { createTokenPlan } from "../src/token-plan.js";
 import { assessHistoryMerge, describeHistoryMergeAssessment } from "../src/history-review.js";
+import { prepareHistoryPrune } from "../src/history-query.js";
 
 /** Local, card-scoped history. No automatic persistence or provider access. */
 export function mountHistoryPanel({ document, parent, agent, getSnapshot, getReport, download = offerHistoryDownload, onReuseTokens = null }) {
@@ -282,6 +283,13 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     getArchive: () => history.exportText(), getRevision: () => history.state().revision,
     onReadStart: cancelReview,
     onImportText: text => { cancelReview(); json.value = text; },
+    onPrune: proposal => {
+      if (disposed || proposal.revision !== history.state().revision || proposal.archive !== history.exportText()) return false;
+      const prepared = prepareHistoryPrune(proposal.archive, proposal.criteria);
+      if (prepared.text !== proposal.text) return false;
+      generation++; recovery.replace(prepared.text, proposal.revision);
+      changed(prepared.removedCount + "件を削除しました。直前の履歴は復元欄から戻せます。"); return true;
+    },
     onSelectRecord: selected => {
       if (disposed) return false; const state = history.state();
       if (!Number.isSafeInteger(selected.index) || selected.index < 0 || selected.index >= state.size || !["before", "after"].includes(selected.side) ||

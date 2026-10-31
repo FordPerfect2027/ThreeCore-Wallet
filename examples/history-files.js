@@ -4,17 +4,17 @@ import { createHistoryFileReader } from "../src/history-file-reader.js";
 import { prepareHistoryDownload, createHistoryBackupTracker, preparePortfolioReportsHistory, HISTORY_REPORT_FILE_LIMIT, HISTORY_REPORT_BATCH_LIMIT } from "../src/history-file.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { validatePortfolioSnapshot } from "../src/portfolio-report.js";
-import { exportFilteredHistory, queryPortfolioHistory } from "../src/history-query.js";
+import { exportFilteredHistory, queryPortfolioHistory, prepareHistoryPrune } from "../src/history-query.js";
 import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
 
 /** Browser file actions are explicit and scoped to one agent card. */
 export function mountHistoryFiles({ document, parent, agent, getArchive, getRevision, onImportText, onReadStart = () => {},
-  onSelectRecord = null,
+  onSelectRecord = null, onPrune = null,
   readBytes = readSecurityFileBytes,
   download = offerHistoryDownload }) {
   const cleanup = [];
   let disposed = false;
-  let view = null;
+  let view = null, pruneProposal = null;
   let generation = 0, updatingBackup = false;
   let reportBatch = null;
   const current = id => !disposed && generation === id;
@@ -58,6 +58,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     listen(value, "click", () => {
       if (disposed) return;
       stopReportBatch();
+      if (name !== "history-prune-preview" && name !== "history-prune-apply") invalidatePrune();
       const id = ++generation;
       try { return action(id); }
       catch { if (current(id)) status.textContent = "操作できませんでした。入力とブラウザーの保存設定を確認してください。履歴は変更していません。"; }
@@ -290,6 +291,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     };
   }
   function invalidateView() {
+    invalidatePrune();
     clearRows();
     view = null;
     results.textContent = "";
@@ -318,6 +320,38 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     status.textContent = subset.exportedCount + "件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。";
   });
   saveSubset.disabled = true;
+  const pruneDetails = node("pre", "history-prune-details"); pruneDetails.setAttribute("tabindex", "-1");
+  const pruneConfirm = node("input", "history-prune-confirm"); pruneConfirm.type = "checkbox";
+  function invalidatePrune() { pruneProposal = null; pruneDetails.textContent = ""; pruneConfirm.checked = false; pruneApply.disabled = true; }
+  const prunePreview = button("history-prune-preview", "表示した記録の削除予定を確認", id => {
+    invalidatePrune(); reader.reset(); const selected = view;
+    if (typeof onPrune !== "function" || !selected || !matches(selected, id) || JSON.stringify(selected.criteria) !== JSON.stringify(query())) throw Error("Search required");
+    const prepared = prepareHistoryPrune(selected.archive, selected.criteria);
+    if (!matches(selected, id)) throw Error("History changed");
+    pruneProposal = { ...selected, prepared };
+    pruneDetails.textContent = `削除予定${prepared.removedCount}件 / 残す記録${prepared.remainingCount}件。まだ変更していません。\n` +
+      queryPortfolioHistory(selected.archive, selected.criteria).rows.map(({ snapshot, index }) => `元の位置${index}: ${snapshot.account} / chain ${snapshot.chainId} / ${snapshot.siteOrigin} / block ${snapshot.blockNumber}`).join("\n") +
+      "\n必要な履歴は先にファイルへ保存してください。適用後は直前の履歴を復元できます。ページを閉じると復元用データも消えます。";
+    status.textContent = "削除予定を表示しました。内容を確認し、確認欄を選んでから適用してください。";
+    if (current(id)) { try { pruneDetails.focus?.(); } catch {} }
+  });
+  const pruneApply = button("history-prune-apply", "確認した記録だけ削除", id => {
+    const proposal = pruneProposal;
+    if (!pruneConfirm.checked || !proposal || !matches(proposal, id) || JSON.stringify(proposal.criteria) !== JSON.stringify(query())) { invalidatePrune(); throw Error("New review required"); }
+    const prepared = prepareHistoryPrune(proposal.archive, proposal.criteria);
+    if (prepared.text !== proposal.prepared.text || !matches(proposal, id) || proposal !== pruneProposal) { invalidatePrune(); throw Error("Stale deletion"); }
+    invalidatePrune();
+    try {
+      const receipt = onPrune(Object.freeze({ archive: proposal.archive, revision: proposal.revision, criteria: Object.freeze({ ...proposal.criteria }), text: prepared.text })), kind = observeCallbackResult(receipt);
+      if (!current(id)) return;
+      if (kind !== "synchronous" || receipt !== true) throw Error("Unconfirmed deletion");
+    } catch { if (current(id)) status.textContent = "削除結果を確認できませんでした。現在の履歴と復元欄を確認してください。"; return; }
+    invalidateView(); status.textContent = prepared.removedCount + "件の削除を確認しました。直前の履歴は復元欄で確認できます。";
+  }); pruneApply.disabled = true;
+  listen(pruneConfirm, "change", () => { pruneApply.disabled = !pruneConfirm.checked || !pruneProposal; });
+  const pruneSection = node("section", "history-prune"); pruneSection.hidden = typeof onPrune !== "function";
+  pruneSection.append(node("p", "notice", "容量整理: 条件で絞った一部の記録だけを削除します。全件の消去は上の専用確認欄で行ってください。"), prunePreview, pruneDetails,
+    labelled("表示した記録をこの履歴から削除することを確認", pruneConfirm), pruneApply);
   const resetFilters = button("history-filter-reset", "絞り込み条件を消去", () => {
     for (const input of [account, chain, minimum, maximum, tokenAddress, origin]) input.value = "";
     order.value = "oldest";
@@ -338,7 +372,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     node("p", "notice", "条件に合う記録全体を選びます。保存ファイルには、その記録内の他の契約も含まれます。未確認や残高不明は残高0とは異なります。"),
     labelled("最小ブロック（空欄なら制限なし）", minimum),
     labelled("最大ブロック（空欄なら制限なし）", maximum),
-    labelled("表示順", order), search, resetFilters, results, rowActions, saveSubset);
+    labelled("表示順", order), search, resetFilters, results, rowActions, saveSubset, pruneSection);
   parent.append(section);
   updateBackup();
   return Object.freeze({
@@ -370,6 +404,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
       generation++;
       stopReportBatch();
       reader.dispose();
+      invalidatePrune();
       clearRows();
       for (const stop of cleanup) stop();
       section.remove();
