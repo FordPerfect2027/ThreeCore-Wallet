@@ -1,0 +1,39 @@
+✔ set panel mounts with accessible labels and no reads or wallet calls (226.6335ms)
+✔ loading retains explicit empty selection and native checkboxes (247.3925ms)
+✔ selection changes keep focused checkbox nodes and do not duplicate handlers (152.2115ms)
+✔ filtering never silently deselects hidden reports (209.2146ms)
+✔ clearing selection clears hidden choices too (164.0466ms)
+✔ archive filtering adds an archived report explicitly without restoring it (400.6894ms)
+✔ invalid filter input shows a useful message and preserves selected evidence (148.8783ms)
+✔ review and application are separate actions with three token cards (274.8191ms)
+✔ editing the name invalidates a pending review (124.7012ms)
+✔ source change during review is shown and never overwrites old accepted evidence (367.6526ms)
+✔ source inspection keeps the frozen set and describes later metadata changes (376.832ms)
+✔ new result clears export acknowledgement; selection editing does not replace that result (321.2951ms)
+✔ privacy controls apply to explanation files while JSON retains complete evidence (371.8163ms)
+✔ JSON import stages a review before display and never inserts history rows (202.5246ms)
+✔ tampered file keeps previous output visible and reports checksum failure (323.3127ms)
+✔ diagnostic filtering narrows visible checks without changing the result (538.8883ms)
+✔ diagnostic malformed query never reports zero unresolved checks (421.4541ms)
+✔ all untrusted names are rendered as text nodes, including diagnostics (118.4841ms)
+✔ busy state disables edits and cancelling suppresses a late read (141.0221ms)
+✔ panel disposal removes listeners and closes only its own storage adapter (86.4254ms)
+✔ filtered checklist CSV preserves source summary on zero matches and respects export controls (748.0686ms)
+✔ visible check references can be searched and exported without changing source conclusions (182.5231ms)
+✔ check-detail JSON saves exact observations with the selected disclosure controls (160.8259ms)
+✔ saved check details are compared on screen and the completed result can be saved (214.0929ms)
+✔ an accepted original report can be selected and exported with its full evidence (265.3313ms)
+✔ each selected source is extracted byte-for-byte in the existing period-report format (258.3843ms)
+✔ invalid or absent report IDs cannot select data outside the accepted set (143.0844ms)
+✔ mutable caller evidence is captured before hashing and unsafe labels never enter filenames (176.759ms)
+✔ controller exports only accepted sources after acknowledgement and leaves storage unchanged (236.7516ms)
+✔ cancellation and refused or asynchronous delivery cannot publish a successful source export (193.9333ms)
+✔ cancellation inside delivery suppresses the late success receipt without inventing rollback (260.2192ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7373.6134
