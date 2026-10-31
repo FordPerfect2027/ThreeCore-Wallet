@@ -169,7 +169,7 @@ export function mountReportHistoryPanel({ document, parent, getReport, stageRepo
     nodes["skip-conflicts"].checked = Boolean(merge && value.review.skipConflicts);
     nodes["skip-conflicts"].disabled = value.busy;
     nodes.apply.disabled = value.busy || !value.loaded || !value.review || Boolean(merge &&
-      (value.review.plan.capacityExceeded || (value.review.plan.conflicts.length && !value.review.skipConflicts)));
+      (value.review.plan.revisionLimited || value.review.plan.capacityExceeded || (value.review.plan.conflicts.length && !value.review.skipConflicts)));
     nodes["export-ack"].disabled = value.busy || !value.loaded;
     for (const name of ["backup-json", "selected-json", "csv"]) nodes[name].disabled = value.busy || !value.loaded ||
       !nodes["export-ack"].checked || (name === "selected-json" && !entry);

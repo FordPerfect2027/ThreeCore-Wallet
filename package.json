@@ -9,6 +9,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "report-set:recover-history": "node scripts/recover-report-set-history.js",
     "report-set:recover-token-library": "node scripts/recover-report-set-token-library.js",
     "period-library:inspect-import": "node scripts/inspect-period-library-import.js",
     "period-report:extract-entry": "node scripts/extract-period-report-entry.js",

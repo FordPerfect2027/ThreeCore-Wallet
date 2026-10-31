@@ -1,3 +1,4 @@
+import { decodeReportHistoryFile } from "../src/report-history-file.js";
 import { decodePeriodLibraryFile } from "../src/period-library-file.js";
 import { mountPeriodPanel } from "../examples/period-panel.js";
 import { checkpoint as proposalCheckpoint } from "./helpers/period-fixtures.js";
@@ -661,5 +662,19 @@ test("token library extraction preserves a pending set, requires its own acknowl
     f.check("token-library-ack"); f.click("apply"); await f.settled();
     assert.equal(f.q("token-library-json").disabled,true); assert.equal(f.q("token-library-ack").checked,false);
     assert.match(f.q("token-library-description").textContent,/同じ保存番号に異なる/);
+  } finally { f.dispose(); }
+});
+
+test("recover history backup preserves annotations and pending review under a separate acknowledgement", async () => {
+  const source = sequenceSet(demoSetHistory()), f = fixture();
+  try {
+    await f.file((await prepareReportSetFile(source)).text); f.click("apply"); await f.settled(); const original = f.mounted.getState().input;
+    f.check("ack"); assert.equal(f.q("history-backup-json").disabled, true);
+    assert.match(f.q("history-backup-description").textContent, /7件.*非表示保管 1件/);
+    await f.file((await prepareReportSetFile(sequenceSet())).text); const pending = f.mounted.getState().review;
+    f.check("history-backup-ack"); f.click("history-backup-json"); await f.settled();
+    assert.deepEqual((await decodeReportHistoryFile(f.files[0].text)).document.entries, source.entries);
+    assert.equal(f.mounted.getState().input, original); assert.equal(f.mounted.getState().review, pending); assert.equal(f.store.calls.length, 0);
+    f.click("apply"); await f.settled(); assert.equal(f.q("history-backup-ack").checked, false); assert.equal(f.q("history-backup-json").disabled, true);
   } finally { f.dispose(); }
 });

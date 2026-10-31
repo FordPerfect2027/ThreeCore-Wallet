@@ -161,6 +161,7 @@ export function decodeRehearsalForPanel(text, target, decode) {
 
 // These routes describe a declared format only. They never validate or open a file.
 const walletSavedTargets = Object.freeze({
+  "threecore.report-history-file.v1": ["history", "PERIOD_FILE_USE_HISTORY"],
   "threecore.period-library-file.v1": ["library", "PERIOD_FILE_USE_LIBRARY"],
   "threecore.period-library-import-inspection.v1": [null, "PERIOD_FILE_IMPORT_INSPECTION_ONLY"],
   "threecore.report-set-history-coverage-review.v1": [null, "PERIOD_FILE_COVERAGE_REVIEW_ONLY"],
@@ -179,6 +180,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  PERIOD_FILE_USE_HISTORY: "ファイルの形式指定は報告履歴のバックアップです。「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で選んでください。内容の検証や既存の履歴への追加は行っていません。",
   PERIOD_FILE_USE_LIBRARY: "ファイルの形式指定は期間の保存一覧です。1件だけの元の控えも、この形式です。「途中の控えを、名前を付けて保管する」の「期間の保存一覧JSONを読み込む」で選んでください。内容の検証や保存先への追加は行っていません。",
   PERIOD_FILE_IMPORT_INSPECTION_ONLY: "これは期間の保存一覧の読込み前の比較結果です。元の控えは含まれていません。再確認には、比較に使った現在側と読込側の期間の保存一覧JSONを使ってください。",
   PERIOD_FILE_COVERAGE_REVIEW_ONLY: "これは履歴範囲JSONの照合結果です。再確認には、元の確認セットJSONと履歴範囲JSONを使ってください。この控えから元の履歴は復元できません。",
@@ -199,7 +201,7 @@ const walletSavedMessages = Object.freeze({
 
 export function walletSavedFileTargetCode(schema, currentTarget) {
   if (typeof schema !== "string" || typeof currentTarget !== "string" ||
-      !["library", "period", "report", "set", "checks", "comparison", "evidence", "event-comparison", "coverage"].includes(currentTarget) || !Object.hasOwn(walletSavedTargets, schema)) return null;
+      !["history", "library", "period", "report", "set", "checks", "comparison", "evidence", "event-comparison", "coverage"].includes(currentTarget) || !Object.hasOwn(walletSavedTargets, schema)) return null;
   const [target, code] = walletSavedTargets[schema];
   return target === currentTarget ? null : code;
 }

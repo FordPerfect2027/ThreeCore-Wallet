@@ -2,14 +2,14 @@ import { observeCallbackResult, consumeCallback } from "./security-callback.js";
 import { periodFail } from "./period-plan.js";
 import { emptyReportHistory, validateReportHistory } from "./report-history-model.js";
 import { validateSetSelection, validateReportSet, createReportSet, inspectSetSources,
-  assertSetSourcesUnchanged, validateSetExportOptions, reportSetTokenLibrary } from "./report-set-model.js";
+  assertSetSourcesUnchanged, validateSetExportOptions, reportSetTokenLibrary, reportSetHistoryDocument } from "./report-set-model.js";
 import { analyzeReportSet, compareReportSets, compareReportSetEvents, reportSetEventRecheckRange } from "./report-set-engine.js";
 import { prepareReportSetFile, readReportSetFile } from "./report-set-file.js";
 import { diagnosticQuery } from "./report-set-diagnostics.js";
 import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile,
   readReportSetChecksText, reviewReportSetChecksFile, prepareReportSetSourceFile, prepareMissingHistoryDraftFile,
   prepareReportSetComparisonFile, prepareReportSetCoverageFile, readReportSetComparisonText, reviewReportSetComparisonFile, prepareReportSetComparisonEvidenceFile,
-  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence, prepareComparisonEvidenceSourceFile, prepareReportSetEventComparisonFile, prepareReportSetEventRecheckFile, buildMissingHistoryDraft, buildEventRecheckDraft, reviewReportSetEventComparisonFile, readReportSetEventComparisonText, reviewReportSetCoverageFile, readReportSetCoverageText, prepareReportSetTokenLibraryFile } from "./report-set-export.js";
+  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence, prepareComparisonEvidenceSourceFile, prepareReportSetEventComparisonFile, prepareReportSetEventRecheckFile, buildMissingHistoryDraft, buildEventRecheckDraft, reviewReportSetEventComparisonFile, readReportSetEventComparisonText, reviewReportSetCoverageFile, readReportSetCoverageText, prepareReportSetTokenLibraryFile, prepareReportSetHistoryFile } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -221,6 +221,30 @@ export function createReportSetController({ storage, onChange = () => {},
         if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
         return file;
       }, () => { message = "固定した確認セットをファイルに出力しました。ダウンロード先をご確認ください。"; });
+    } catch (value) { return fail(value, token); }
+  }
+  async function exportHistoryBackup(acknowledged, deliver) {
+    let token = generation;
+    try {
+      if (!guard()) return false;
+      token = ++generation;
+      if (!input) periodFail("PERIOD_SET_NO_RESULT");
+      if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
+      if (typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      const snapshot = input;
+      reportSetHistoryDocument(snapshot);
+      if (!sameGeneration(token)) return false;
+      return await run("exporting", async (same, signal) => {
+        const file = await prepareReportSetHistoryFile(snapshot, { signal });
+        if (!same()) return null;
+        const delivery = deliver(file);
+        if (observeCallbackResult(delivery) !== "synchronous") periodFail("PERIOD_ASYNC_DELIVERY");
+        if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
+        return file;
+      }, () => {
+        if (review) phase = "review";
+        message = "この確認セットに含まれる報告履歴を保存します。報告履歴のバックアップJSONから追加復元する欄で確認できます。";
+      });
     } catch (value) { return fail(value, token); }
   }
   async function exportTokenLibrary(agent, acknowledged, deliver) {
@@ -574,5 +598,5 @@ export function createReportSetController({ storage, onChange = () => {},
     consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,
-    inspectSources, reviewCheckFile, exportFile, exportTokenLibrary, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, exportEvidenceSource, exportEventComparison, exportEventRecheck, stagePeriodProposal, reviewEventComparisonFile, exportEventComparisonReview, reviewCoverageFile, exportCoverageReview, cancel, invalidateReview, dispose });
+    inspectSources, reviewCheckFile, exportFile, exportHistoryBackup, exportTokenLibrary, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, exportEvidenceSource, exportEventComparison, exportEventRecheck, stagePeriodProposal, reviewEventComparisonFile, exportEventComparisonReview, reviewCoverageFile, exportCoverageReview, cancel, invalidateReview, dispose });
 }

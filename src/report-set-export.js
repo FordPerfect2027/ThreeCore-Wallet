@@ -1,9 +1,10 @@
+import { prepareReportHistoryFile } from "./report-history-file.js";
 import { preparePeriodLibraryFile } from "./period-library-file.js";
 import { walletSavedFileTargetCode, walletSavedFileTargetMessage } from "./file-read-status.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
-import { validateReportSet, validateSetExportOptions, validateSetSelection, freezeSet, reportSetTokenLibrary } from "./report-set-model.js";
+import { validateReportSet, validateSetExportOptions, validateSetSelection, freezeSet, reportSetTokenLibrary, reportSetHistoryDocument } from "./report-set-model.js";
 import { periodFail, createPeriodPlan } from "./period-plan.js";
 import { prepareReportSetFile, decodeReportSetFile } from "./report-set-file.js";
 import { preparePeriodReportFile } from "./period-report-file.js";
@@ -558,5 +559,18 @@ export async function prepareReportSetTokenLibraryFile(value, agent, fileOptions
     recovery: Object.freeze({ agent: recovery.agent, reportCount: recovery.reportCount,
       missingReports: recovery.missingReports, entryCount: recovery.entryCount,
       duplicateReferences: recovery.duplicateReferences }), containsOriginalEvidence: true,
+    historicalOnly: true, liveChainRechecked: false, automaticallyImported: false, authorizesExecution: false });
+}
+
+/** Export original report-history metadata without inventing entries absent from the set. */
+export async function prepareReportSetHistoryFile(value, fileOptions = {}) {
+  const document = reportSetHistoryDocument(value);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const file = await prepareReportHistoryFile(document, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-recovered-report-history.json",
+    reportCount: document.entries.length, archivedReports: document.entries.filter(row => row.archived).length,
+    containsOriginalEvidence: true, includesOriginalAnnotations: true,
     historicalOnly: true, liveChainRechecked: false, automaticallyImported: false, authorizesExecution: false });
 }

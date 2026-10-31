@@ -52,6 +52,15 @@ async function seed(storage, source = sampleHistory()) {
 }
 
 export function registerReportHistoryUITests(test) {
+  test("history: exhausted revision disables import before any write attempt", async () => {
+    const initial=historyDocument([historyRecord(1)],Number.MAX_SAFE_INTEGER),f=fixture({initial});
+    try{
+      await f.load();await f.file((await prepareReportHistoryFile(historyDocument([historyRecord(2)]))).text);
+      assert(!f.q("review").hidden&&f.q("apply").disabled);
+      assert(f.q("review-text").textContent.includes("更新番号が上限"));
+      assert(JSON.stringify(f.store.document)===JSON.stringify(initial)&&!f.store.calls.some(row=>row[0]==="change"));
+    }finally{f.dispose();}
+  });
   test("history: source inspection identifies the original records without changing history", async () => {
     const f = fixture();
     try {

@@ -1,3 +1,4 @@
+import { decodeReportHistoryFile } from "/src/report-history-file.js";
 import { decodePeriodLibraryFile } from "/src/period-library-file.js";
 import { mountPeriodPanel } from "/examples/period-panel.js";
 import { checkpoint as proposalCheckpoint } from "/test/helpers/period-fixtures.js";
@@ -89,6 +90,19 @@ async function withDatabase(run) {
 }
 
 export function registerReportSetUITests(test) {
+  test("report set: recover original annotated history without replacing the displayed set", async () => {
+    const source=sequenceSet(demoSetHistory()),f=fixture();
+    try{
+      await f.file((await prepareReportSetFile(source)).text);f.click("apply");await f.settled();const original=f.mounted.getState().input;
+      f.click("history-backup-heading");f.check("ack");assert(f.q("history-backup-json").disabled);
+      assert(f.q("history-backup-description").textContent.includes("7件（非表示保管 1件"));
+      await f.file((await prepareReportSetFile(sequenceSet())).text);const pending=f.mounted.getState().review;
+      f.check("history-backup-ack");f.click("history-backup-json");await f.settled();
+      assert(JSON.stringify((await decodeReportHistoryFile(f.files[0].text)).document.entries)===JSON.stringify(source.entries));
+      assert(f.mounted.getState().input===original&&f.mounted.getState().review===pending&&f.store.calls.length===0);
+      f.click("apply");await f.settled();assert(!f.q("history-backup-ack").checked&&f.q("history-backup-json").disabled);
+    }finally{f.dispose();}
+  });
   test("report set: recover one token collection while retaining source restrictions and refusing conflicting IDs", async () => {
     const source=sequenceSet(sequenceHistory([0n,12n],(report,index)=>report.slots.forEach((slot,n)=>{slot.entry.id=id(1000+3*index+n);slot.entry.requiresNewPlan=true;})));
     const f=fixture();

@@ -19,6 +19,7 @@ export function mountReportSetPanel({ document, parent,
   let timelinePanel = null;
   let queueSelection = null;
   let librarySource = null, libraryAgent = null, libraryRecovery = null;
+  let historyBackupSource = null;
   let eventComparison = null, eventPage = 0;
   let eventRecheck = null, recheckModel = null, recheckPage = null;
   let lastReview = null, lastEvidenceReview = null, lastEventReview = null, lastCoverageReview = null;
@@ -174,6 +175,13 @@ export function mountReportSetPanel({ document, parent,
   button("checks-csv", "絞り込んだ確認箇所をCSV保存", exportButtons);
   button("checks-json", "確認箇所と根拠の値をJSON保存", exportButtons);
   make("p", "checks-export-help", "確認箇所CSVには全体の件数を示す要約行と、条件に合う確認項目が入ります。該当0件でも全体の食い違いは残します。再読込み用の証拠ではありません。", exports);
+  const historyBackup = make("details", "history-backup", undefined, exports);
+  make("summary", "history-backup-heading", "報告名・メモを含む報告履歴を取り出す", historyBackup);
+  make("p", "history-backup-description", "", historyBackup);
+  make("p", "history-backup-note", "この確認セットに含まれる報告の保存番号・名前・メモ・タグ・時刻・保管状態と、全トークンの元記録を保存します。表示の短縮やメモ非表示の設定は適用しません。元の保存一覧で、このセットに含めなかった報告は復元できません。", historyBackup);
+  field("history-backup-ack", "この確認セットに含まれる全報告のアドレス・残高・履歴・メモを、暗号化せずPCに保存します", "checkbox", historyBackup);
+  button("history-backup-json", "この確認セットの報告履歴をJSON保存", historyBackup);
+  make("p", "history-backup-help", "保存したJSONは「報告履歴のバックアップJSONから追加復元」で内容を確認できます。既存の報告を自動で置き換えたり、読込みを開始したりしません。", historyBackup);
   const librarySection = make("details", "token-library", undefined, exports);
   make("summary", "token-library-heading", "このトークンの元の控え一覧を取り出す", librarySection);
   select("token-library-agent", "まとめて取り出すトークン", [["DAT", "DAT"], ["EMA", "EMA"], ["CAWELON", "CAWELON"]], librarySection);
@@ -499,6 +507,10 @@ export function mountReportSetPanel({ document, parent,
     nodes["check-file"].disabled = value.busy || !value.input;
     nodes["check-review-output"].textContent = setCheckReviewText(value.checkReview);
     nodes["check-review"].disabled = value.busy || !value.checkReview || !nodes.ack.checked;
+    if (historyBackupSource !== value.input) { historyBackupSource = value.input; nodes["history-backup-ack"].checked = false; }
+    nodes["history-backup-description"].textContent = value.input ? "取り出す報告 " + value.input.entries.length + "件（非表示保管 " + value.input.entries.filter(row => row.archived).length + "件を含む）" : "先に確認セットを開いてください。";
+    nodes["history-backup-ack"].disabled = value.busy || !value.input;
+    nodes["history-backup-json"].disabled = value.busy || !value.input || !nodes["history-backup-ack"].checked;
     renderTokenLibrary(value);
     nodes["source-report"].disabled = value.busy || !value.input;
     nodes["source-report-json"].disabled = value.busy || !nodes.ack.checked || !value.input?.entries.some(entry => entry.id === nodes["source-report"].value);
@@ -593,6 +605,8 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });
+  listen(nodes["history-backup-ack"], "change", () => render(controller.state));
+  listen(nodes["history-backup-json"], "click", () => { void controller.exportHistoryBackup(nodes["history-backup-ack"].checked, download); });
   listen(nodes["token-library-agent"], "change", () => renderTokenLibrary(controller.state));
   listen(nodes["token-library-ack"], "change", () => renderTokenLibrary(controller.state));
   listen(nodes["token-library-json"], "click", () => { void controller.exportTokenLibrary(nodes["token-library-agent"].value, nodes["token-library-ack"].checked, download); });

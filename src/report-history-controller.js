@@ -194,6 +194,7 @@ export function createReportHistoryController({ storage, getReport, stageReport,
         if (key !== pending.sourceKey) { review = null; periodFail("PERIOD_HISTORY_SOURCE_CHANGED"); }
       }
       if (pending.kind === "merge") {
+        if (pending.plan.revisionLimited) periodFail("PERIOD_HISTORY_REVISION_LIMIT");
         if (pending.plan.capacityExceeded) periodFail("PERIOD_HISTORY_CAPACITY");
         if (pending.plan.conflicts.length && !pending.skipConflicts) periodFail("PERIOD_HISTORY_CONFLICT");
       }

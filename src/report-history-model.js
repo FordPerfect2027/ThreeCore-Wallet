@@ -89,14 +89,15 @@ export function planHistoryMerge(currentInput, incomingInput) {
     } else additions.push(entry);
   }
   const resultingCount = current.entries.length + additions.length;
-  let capacityExceeded = resultingCount > REPORT_HISTORY_LIMIT;
-  if (!capacityExceeded) {
-    capacityExceeded = encoder.encode(JSON.stringify({ ...current, entries: [...current.entries, ...additions] })).byteLength > REPORT_HISTORY_BYTES;
-  }
+  const revisionLimited = additions.length > 0 && current.revision === Number.MAX_SAFE_INTEGER;
+  const resultingRevision = revisionLimited ? null : current.revision + Number(additions.length > 0);
+  const resultingBytes = revisionLimited ? null : encoder.encode(JSON.stringify({ ...current,
+    revision: resultingRevision, entries: [...current.entries, ...additions] })).byteLength;
+  const capacityExceeded = resultingCount > REPORT_HISTORY_LIMIT || (resultingBytes !== null && resultingBytes > REPORT_HISTORY_BYTES);
   return Object.freeze({ expectedRevision: current.revision,
     additions: Object.freeze(additions), duplicates: Object.freeze(duplicates),
     conflicts: Object.freeze(conflicts), metadataKept: Object.freeze(metadataKept),
-    resultingCount, capacityExceeded, overwritesExisting: false });
+    resultingCount, resultingRevision, resultingBytes, revisionLimited, capacityExceeded, overwritesExisting: false });
 }
 
 /** CAS operations are synchronous so native IndexedDB commits remain atomic. */
@@ -123,6 +124,7 @@ export function mutateReportHistory(input, expectedRevision, operation) {
     if (typeof operation.skipConflicts !== "boolean") periodFail("PERIOD_HISTORY_OPERATION");
     const plan = planHistoryMerge(document, operation.document);
     if (plan.conflicts.length && !operation.skipConflicts) periodFail("PERIOD_HISTORY_CONFLICT");
+    if (plan.revisionLimited) periodFail("PERIOD_HISTORY_REVISION_LIMIT");
     if (plan.capacityExceeded) periodFail("PERIOD_HISTORY_CAPACITY");
     entries.push(...plan.additions);
   } else if (["annotate", "archive"].includes(kind.value)) {

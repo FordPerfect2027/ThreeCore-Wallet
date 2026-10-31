@@ -179,3 +179,13 @@ test("history block scope keeps hidden selection and exports only matching rows"
     assert.ok(f.store.calls.every(call => call[0] === "read"));
   } finally { f.dispose(); }
 });
+
+test("a revision-limited history import explains the limit and disables apply", async () => {
+  const initial=historyDocument([historyRecord(1)],Number.MAX_SAFE_INTEGER),f=fixture(initial);
+  try {
+    await f.load();await f.file((await prepareReportHistoryFile(historyDocument([historyRecord(2)]))).text);
+    assert.equal(f.q("review").hidden,false);assert.equal(f.q("apply").disabled,true);
+    assert.match(f.q("review-text").textContent,/更新番号が上限/);assert.deepEqual(f.store.document,initial);
+    assert.equal(f.store.calls.filter(row=>row[0]==="change").length,0);
+  } finally { f.dispose(); }
+});

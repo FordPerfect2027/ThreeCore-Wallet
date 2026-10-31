@@ -13,6 +13,7 @@ const ERRORS = Object.freeze({
   PERIOD_HISTORY_DUPLICATE_REPORT: "同じ報告はすでに保存されています。既存の報告を選んでください。",
   PERIOD_HISTORY_DUPLICATE_ID: "保存番号が重複しています。確認からやり直してください。",
   PERIOD_HISTORY_CONFLICT: "同じ保存番号に別の報告があります。競合を除外するか、復元を中止してください。",
+  PERIOD_HISTORY_REVISION_LIMIT: "報告履歴の更新番号が上限に達しています。現在の報告をJSONへ保全してください。追加は行っていません。",
   PERIOD_HISTORY_CAPACITY: "保存上限は12件・合計64 MiBです。既存の履歴を保全し、別のJSONとして管理してください。",
   PERIOD_LIBRARY_CAPACITY: "保存件数または配列の形式が上限に合いません。",
   PERIOD_HISTORY_NOTE: "メモは500文字以内です。制御文字は使えません。",
@@ -59,7 +60,7 @@ export function historyReviewText(review) {
       "既存の名前・メモ・保管状態を優先する記録: " + plan.metadataKept.length + "件",
       ...plan.conflicts.map(row => "競合: " + row.localLabel + " / 取込側: " + row.incomingLabel),
       review.skipConflicts ? "競合する記録は除外し、ほかの新しい記録だけを追加します。" : "競合がある場合、まだ適用できません。",
-      plan.capacityExceeded ? "容量上限を超えるため追加できません。" : "復元後の合計: " + plan.resultingCount + "件",
+      plan.revisionLimited ? "報告履歴の更新番号が上限に達しているため追加できません。現在の報告をJSONへ保全してください。" : plan.capacityExceeded ? "容量上限を超えるため追加できません。" : "復元後の合計: " + plan.resultingCount + "件",
       "既存の証拠・メモは上書きされません。チェックサムは出所や正しさを認証しません。"].join("\n");
   }
   return [review.kind === "save" ? "表示中の報告をPC内に保存" : "保存した報告を上の報告画面で開く",

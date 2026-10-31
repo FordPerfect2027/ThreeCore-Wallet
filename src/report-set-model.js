@@ -116,3 +116,9 @@ export function reportSetTokenLibrary(value, agent) {
     document, error, containsOriginalEvidence: true, historicalOnly: true,
     liveChainRechecked: false, automaticallyImported: false, authorizesExecution: false });
 }
+
+/** Recover the set's unchanged history entries, including local annotations and archive flags. */
+export function reportSetHistoryDocument(value) {
+  const input = validateReportSet(value);
+  return validateReportHistory({ schema: REPORT_HISTORY_SCHEMA, revision: 0, entries: input.entries });
+}
