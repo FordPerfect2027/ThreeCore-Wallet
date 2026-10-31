@@ -6,7 +6,7 @@ export const REHEARSAL_RECORD_REPORT_SCHEMA="threecore.operation-rehearsal-recor
 export const REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA="threecore.operation-rehearsal-record-query.v2";
 export const REHEARSAL_RECORD_BALANCES=Object.freeze(["cash","outstanding","realizedPnl","reservedExitFees","reservedAllocations","availableCash"]);
 export const REHEARSAL_RECORD_QUERY=Object.freeze({agent:"all",kind:"all",decision:"all",search:""});
-const KINDS=["open","settle","deposit","withdraw","reserve","release"],indexes=new WeakSet();
+const KINDS=["open","settle","deposit","withdraw","reserve","release"],indexes=new WeakSet(),recordViews=new WeakMap();
 const fail=code=>{throw new RehearsalError(code);};
 const validIndex=index=>{if(!indexes.has(index))fail("INVALID_RECORD_INDEX");};
 export function validateRehearsalRecordQuery(input){let data;try{data=captureDataRecord(input,["agent","kind","decision","search"]);}catch{fail("INVALID_RECORD_QUERY");}
@@ -30,11 +30,15 @@ export function indexRehearsalRecords(input){const inputs=validateRehearsalWorks
         recordNumber:i+1,event,reference:reference?Object.freeze(reference):null,result,changes}));
     }
   }
-  const index=Object.freeze({inputs,subjects:Object.freeze(subjects),rows:Object.freeze(rows)});indexes.add(index);return index;
+  const index=Object.freeze({inputs,subjects:Object.freeze(subjects),rows:Object.freeze(rows)});indexes.add(index);
+  // One validated query per supported report schema, plus one summary, per immutable index.
+  recordViews.set(index,{queries:new Map(),summary:null});return index;
 }
 export function queryRehearsalRecords(index,input=REHEARSAL_RECORD_QUERY){validIndex(index);return queryRecords(index,validateRehearsalRecordQuery(input),REHEARSAL_RECORD_REPORT_SCHEMA);}
 export function queryRehearsalContextRecords(index,input){validIndex(index);return queryRecords(index,validateRehearsalContextRecordQuery(input),REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA);}
 function queryRecords(index,query,schema){
+  const cache=recordViews.get(index),key=JSON.stringify(query),previous=cache.queries.get(schema);
+  if(previous?.key===key)return previous.report;
   const terms=query.search.split(/\s+/).filter(Boolean);
   const rows=index.rows.filter(row=>{
     if(query.agent!=="all"&&row.agent!==query.agent||query.kind!=="all"&&row.event.kind!==query.kind||
@@ -46,8 +50,9 @@ function queryRecords(index,query,schema){
     const haystack=(query.searchScope==="recorded"?recorded:query.searchScope==="both"?[...stored,...recorded]:stored).join(" ").toLowerCase();
     return terms.every(term=>haystack.includes(term));
   });
-  return Object.freeze({schema,simulationOnly:true,sourceVerified:false,authorizesExecution:false,
+  const report=Object.freeze({schema,simulationOnly:true,sourceVerified:false,authorizesExecution:false,
     inputs:index.inputs,query,subjects:index.subjects,totalRecords:index.rows.length,matchedRecords:rows.length,rows:Object.freeze(rows)});
+  cache.queries.set(schema,{key,report});return report;
 }
 export function relatedRehearsalRecords(index,key){validIndex(index);if(typeof key!=="string")fail("INVALID_RECORD_KEY");
   const selected=index.rows.find(row=>row.key===key);if(!selected)fail("RECORD_NOT_FOUND");
@@ -179,6 +184,7 @@ export const REHEARSAL_SUMMARY_QUERY=Object.freeze({...REHEARSAL_RECORD_QUERY,se
 /** Changes contributed by matched records, grouped by stored agent, never cross-asset totals. */
 export function summarizeRehearsalRecords(index,query=REHEARSAL_SUMMARY_QUERY){
   validIndex(index);const selected=queryRehearsalReasonRecords(index,query);
+  const cache=recordViews.get(index);if(cache.summary?.selected===selected)return cache.summary.report;
   const rows=index.subjects.map(subject=>{
     const ledger=index.inputs.ledgers.find(item=>item.agent===subject.agent),matches=selected.rows.filter(row=>row.agent===subject.agent);
     const accepted=matches.filter(row=>row.result.withinEnteredLimits),reasons=new Map();
@@ -191,8 +197,9 @@ export function summarizeRehearsalRecords(index,query=REHEARSAL_SUMMARY_QUERY){
       acceptedFeeUnits:ledger?accepted.reduce((sum,row)=>sum+BigInt(row.event.fee??"0"),0n).toString():null,
       recordKeys:Object.freeze(matches.map(row=>row.key))});
   });
-  return Object.freeze({schema:REHEARSAL_RECORD_SUMMARY_SCHEMA,simulationOnly:true,sourceVerified:false,authorizesExecution:false,
+  const report=Object.freeze({schema:REHEARSAL_RECORD_SUMMARY_SCHEMA,simulationOnly:true,sourceVerified:false,authorizesExecution:false,
     inputs:index.inputs,subjects:index.subjects,query:selected.query,scope:"matched-record-contributions",totalRecords:selected.totalRecords,matchedRecords:selected.matchedRecords,rows:Object.freeze(rows)});
+  cache.summary={selected,report};return report;
 }
 export function encodeRehearsalRecordSummary(input,query=REHEARSAL_SUMMARY_QUERY){
   const text=JSON.stringify(summarizeRehearsalRecords(indexRehearsalRecords(input),query),null,2)+"\n";
