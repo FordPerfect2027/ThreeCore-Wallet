@@ -1,0 +1,600 @@
+✖ agent plan: options accessor timeoutMs is not invoked (25.0561ms)
+✖ agent plan: options accessor signal is not invoked (7.2905ms)
+✖ agent plan: options accessor reader is not invoked (5.8862ms)
+✖ agent plan: entry accessor agent is not invoked (20.4506ms)
+✖ agent plan: entry accessor session is not invoked (6.293ms)
+✖ agent plan: entry accessor tokens is not invoked (4.1184ms)
+✖ agent plan: returned state accessor agent is not invoked (8.2729ms)
+✖ agent plan: returned state accessor account is not invoked (3.9074ms)
+✖ agent plan: returned state accessor chainId is not invoked (4.3996ms)
+✖ agent plan: returned state accessor connected is not invoked (9.1579ms)
+✖ agent plan: returned state accessor canSign is not invoked (4.2307ms)
+✖ agent plan: returned state accessor connectionEpoch is not invoked (2.6874ms)
+✖ agent plan: returned state accessor siteOrigin is not invoked (3.6726ms)
+✖ agent plan: caller-owned entries mapping cannot fabricate an empty result (0.9712ms)
+✖ agent plan: caller-owned tokens mapping cannot fabricate an empty result (1.115ms)
+✖ agent plan: entries slot accessor fails before readers (5.0694ms)
+✖ agent plan: tokens slot accessor fails before readers (3.0946ms)
+✖ agent plan: own descriptors are used without live option, array, entry or state reads (1.0226ms)
+✖ agent plan: a later entry cannot replace an already captured session (5.8499ms)
+✖ agent plan: state changes during plan reflection stop before first reader (7.0273ms)
+✖ portfolio cancellation single: native state and cleanup ignore own overrides (43.6485ms)
+✖ portfolio cancellation single: artificial event does not consume later abort (1.6469ms)
+✖ portfolio cancellation single: revoked signal refuses before provider call (1.1503ms)
+✖ portfolio cancellation coordinated: native state and cleanup ignore own overrides (1.8517ms)
+✖ portfolio cancellation coordinated: artificial event does not consume later abort (1.3554ms)
+✖ portfolio cancellation coordinated: revoked signal refuses before provider call (0.7903ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 0
+ℹ fail 26
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 661.6448
+
+✖ failing tests:
+
+test at test\agent-portfolio-capture.test.js:15:54
+✖ agent plan: options accessor timeoutMs is not invoked (25.0561ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:18:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:15:54
+✖ agent plan: options accessor signal is not invoked (7.2905ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:18:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:15:54
+✖ agent plan: options accessor reader is not invoked (5.8862ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:18:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:21:51
+✖ agent plan: entry accessor agent is not invoked (20.4506ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:24:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_AGENT_PLAN' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:21:51
+✖ agent plan: entry accessor session is not invoked (6.293ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:24:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_AGENT_PLAN' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:21:51
+✖ agent plan: entry accessor tokens is not invoked (4.1184ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:24:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_AGENT_PLAN' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:27:105
+✖ agent plan: returned state accessor agent is not invoked (8.2729ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_SESSION'
+  -   code: 'INVALID_AGENT_SESSION'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PortfolioSnapshotError: Expected own-data session state
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:19:9)
+        at identity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:23:68)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:116:19)
+        at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:118:54)
+        at async readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:141:12)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_AGENT_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:27:105
+✖ agent plan: returned state accessor account is not invoked (3.9074ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_SESSION'
+  -   code: 'INVALID_AGENT_SESSION'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PortfolioSnapshotError: Expected own-data session state
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:19:9)
+        at identity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:23:68)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:116:19)
+        at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:118:54)
+        at async readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:141:12)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_AGENT_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:27:105
+✖ agent plan: returned state accessor chainId is not invoked (4.3996ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_SESSION'
+  -   code: 'INVALID_AGENT_SESSION'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PortfolioSnapshotError: Expected own-data session state
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:19:9)
+        at identity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:23:68)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:116:19)
+        at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:118:54)
+        at async readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:141:12)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_AGENT_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:27:105
+✖ agent plan: returned state accessor connected is not invoked (9.1579ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_SESSION'
+  -   code: 'INVALID_AGENT_SESSION'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PortfolioSnapshotError: Expected own-data session state
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:19:9)
+        at identity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:23:68)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:116:19)
+        at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:118:54)
+        at async readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:141:12)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_AGENT_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:27:105
+✖ agent plan: returned state accessor canSign is not invoked (4.2307ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_SESSION'
+  -   code: 'INVALID_AGENT_SESSION'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PortfolioSnapshotError: Expected own-data session state
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:19:9)
+        at identity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:23:68)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:116:19)
+        at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:118:54)
+        at async readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:141:12)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_AGENT_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:27:105
+✖ agent plan: returned state accessor connectionEpoch is not invoked (2.6874ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_SESSION'
+  -   code: 'INVALID_AGENT_SESSION'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PortfolioSnapshotError: Expected own-data session state
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:19:9)
+        at identity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:23:68)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:116:19)
+        at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:118:54)
+        at async readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:141:12)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_AGENT_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:27:105
+✖ agent plan: returned state accessor siteOrigin is not invoked (3.6726ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_SESSION'
+  -   code: 'INVALID_AGENT_SESSION'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PortfolioSnapshotError: Expected own-data session state
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:19:9)
+        at identity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:23:68)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:116:19)
+        at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:118:54)
+        at async readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:141:12)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:30:3)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_AGENT_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:33:44
+✖ agent plan: caller-owned entries mapping cannot fabricate an empty result (0.9712ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:36:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_AGENT_PLAN' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:33:44
+✖ agent plan: caller-owned tokens mapping cannot fabricate an empty result (1.115ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'INVALID_TOKENS'
+  -   code: 'INVALID_AGENT_PLAN'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:36:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PortfolioSnapshotError: Choose between one and 32 own-data token contracts
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:19:9)
+        at tokenList (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:79:11)
+        at optionsFor (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:104:20)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:115:53)
+        at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:118:54)
+        at readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:141:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:36:24)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18),
+    expected: { code: 'INVALID_AGENT_PLAN' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:39:44
+✖ agent plan: entries slot accessor fails before readers (5.0694ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:42:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_AGENT_PLAN' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:39:44
+✖ agent plan: tokens slot accessor fails before readers (3.0946ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:42:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_AGENT_PLAN' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:45:1
+✖ agent plan: own descriptors are used without live option, array, entry or state reads (1.0226ms)
+  Error: live input
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:46:87)
+      at readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:43:3)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:48:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\agent-portfolio-capture.test.js:51:1
+✖ agent plan: a later entry cannot replace an already captured session (5.8499ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" not to be reference-equal to "expected":
+  
+  {
+    getBlockSnapshot: [AsyncFunction: getBlockSnapshot],
+    getContractCode: [AsyncFunction: getContractCode],
+    getNativeBalance: [AsyncFunction: getNativeBalance],
+    getTokenBalance: [AsyncFunction: getTokenBalance],
+    getTokenMetadata: [AsyncFunction: getTokenMetadata],
+    getTransferEvents: [AsyncFunction: getTransferEvents],
+    state: [Getter] {
+      account: '0x1111111111111111111111111111111111111111',
+      agent: 'DAT',
+      canBridge: false,
+      canSendTransactions: false,
+      canSign: false,
+      chainId: 8453,
+      connected: true,
+      connectionEpoch: 1,
+      siteOrigin: 'http://127.0.0.1:4193'
+    }
+  }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:55:88)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Object],
+    expected: [Object],
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:57:1
+✖ agent plan: state changes during plan reflection stop before first reader (7.0273ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:60:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'SESSION_CHANGED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:64:3
+✖ portfolio cancellation single: native state and cleanup ignore own overrides (43.6485ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert((await output(run(f,{signal:controller.signal,timeoutMs:1000}))).value)
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:67:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:71:3
+✖ portfolio cancellation single: artificial event does not consume later abort (1.6469ms)
+  Error [PortfolioSnapshotError]: Snapshot was cancelled
+      at stop (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:122:12)
+      at AbortSignal.abort (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:132:28)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)
+      at AbortSignal.dispatchEvent (node:internal/event_target:789:26)
+      at f.entries.<computed>.session.getBlockSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:74:86)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:152:56
+      at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:138:25)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:152:37)
+      at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:198:32)
+      at run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:63:42) {
+    code: 'ABORTED'
+  }
+
+test at test\agent-portfolio-capture.test.js:79:3
+✖ portfolio cancellation single: revoked signal refuses before provider call (1.1503ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'INVALID_SIGNAL'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:81:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Cannot perform 'getPrototypeOf' on a proxy that has been revoked
+        at [Symbol.hasInstance] (<anonymous>)
+        at optionsFor (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:97:40)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:115:53)
+        at run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:63:42)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:81:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: { code: 'INVALID_SIGNAL' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:64:3
+✖ portfolio cancellation coordinated: native state and cleanup ignore own overrides (1.8517ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert((await output(run(f,{signal:controller.signal,timeoutMs:1000}))).value)
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:67:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\agent-portfolio-capture.test.js:71:3
+✖ portfolio cancellation coordinated: artificial event does not consume later abort (1.3554ms)
+  Error [AgentPortfoliosError]: Agent portfolio read cancelled
+      at AbortSignal.forward (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:108:14)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)
+      at AbortSignal.dispatchEvent (node:internal/event_target:789:26)
+      at f.entries.<computed>.session.getBlockSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:74:86)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:152:56
+      at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:138:25)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:152:37)
+      at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:198:32)
+      at collect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:118:54)
+      at readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:141:32) {
+    code: 'ABORTED'
+  }
+
+test at test\agent-portfolio-capture.test.js:79:3
+✖ portfolio cancellation coordinated: revoked signal refuses before provider call (0.7903ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'INVALID_SIGNAL'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:81:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Cannot perform 'getPrototypeOf' on a proxy that has been revoked
+        at [Symbol.hasInstance] (<anonymous>)
+        at readAgentPortfolios (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/agent-portfolios.js:54:40)
+        at run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:63:126)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/agent-portfolio-capture.test.js:81:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_SIGNAL' },
+    operator: 'rejects',
+    diff: 'simple'
+  }

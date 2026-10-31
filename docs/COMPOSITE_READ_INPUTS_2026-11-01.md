@@ -1,0 +1,15 @@
+# Capture coordinated wallet and period inputs before callbacks
+
+Items 509–510. Source: `db69d73`.
+
+509. The coordinated DAT/EMA/CAWELON portfolio reader captures bounded own-data arrays, entry fields, token lists, options and session observations. Caller-owned map methods can no longer fabricate a successful empty three-agent result. Accessors are refused without executing them, descriptor-inaccessible input is a typed error, and captured sessions/tokens cannot be replaced by mutations to the caller's entries. Identity changes while capturing later entries still stop before the first reader. Each returned portfolio retains its own account, token plan and canonical block; no cross-agent atomicity is claimed. Native cancellation is forwarded to child reads and checked at every boundary. Extending item 508's cancellation fix to the single-portfolio reader is maintenance and adds no separate item.
+
+510. The wallet card captures the period plan, accepted options and optional resumed draft before publishing its reading state. A view callback can no longer change accepted endpoints, replace the signal/observer, rewrite an included saved observation or leak the original abort listener by modifying the caller's options. Invalid option accessors fail without starting or clearing the current read state. Cancellation registration and cleanup are inside the card's error boundary; invalid signals return PERIOD_SIGNAL, actual cancellation reaches the collector, and artificial events do not cancel. A subsequent explicit read remains available after refusal. Existing disconnect/clear/disposal guards remain authoritative.
+
+## Validation
+
+Before controls: all 26 coordinated-input controls failed on the previous source (661.6448 ms), and all 14 card-period controls failed against the unchanged previous card (1719.6207 ms). These are regression checks, not 40 separate development items. After correction, the combined focused selection passed 359 cases (3194.2874 ms).
+
+The complete wallet command, including server integration and local navigation checks, passed **15,581 tests**, zero failed/skipped/cancelled (401507.5283 ms) at db69d73. Native Chrome passed **926 cases**, reconciled across two isolated profiles with cleanup. New native workflows verify three distinct account results, refusal of a caller-owned array method with zero reads, and a card period read whose source range/options are mutated by a view observer. Existing failed and stopped full runs remain recorded in their original evidence; this successful fixed-source run is a new full-wallet checkpoint.
+
+[Evidence](evidence/2026-11-01-composite-read-inputs/) preserves failed-before controls, successful focused/full/native logs, exact regression sources and metadata with SHA-256 hashes checked against committed Git bytes. Tests use synthetic providers and local servers. No real signatures, transfers, approvals, secrets, external RPC, source publication, deployment or restart of the existing 4231 process occurred. Native checks do not prove control of the user's Chrome/Edge tab or native file dialog. The completed count is not a launch-readiness percentage.

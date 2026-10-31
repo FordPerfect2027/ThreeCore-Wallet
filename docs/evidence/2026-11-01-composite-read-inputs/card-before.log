@@ -1,0 +1,232 @@
+✖ card period: refuses option accessor signal without starting the read (276.2706ms)
+✖ card period: refuses option accessor draft without starting the read (45.0341ms)
+✖ card period: refuses option accessor timeoutMs without starting the read (25.6635ms)
+✖ card period: refuses option accessor stepTimeoutMs without starting the read (40.7568ms)
+✖ card period: refuses option accessor onProgress without starting the read (39.5523ms)
+✖ card period: refuses option accessor onCheckpoint without starting the read (36.8984ms)
+✖ card period: plan is captured before reading observer can change its block range (36.1338ms)
+✖ card period: resumed draft is captured before the reading observer can alter observations (28.2265ms)
+✖ card period: options and accepted cancellation remain stable through view callbacks (2.9308ms)
+✖ card period: completion observer changing original signal cannot leak its listener (31.7333ms)
+✖ card period: signal overrides neither run nor replace a completed result (2.0137ms)
+✖ card period: native cancellation concealed by a property prevents all provider reads (29.963ms)
+✖ card period: inaccessible signal returns typed error and later explicit read works (3.8451ms)
+✖ card period: artificial abort event does not interrupt a valid complete run (2.8725ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 0
+ℹ fail 14
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1719.6207
+
+✖ failing tests:
+
+test at test\card-period-input-capture.test.js:17:95
+✖ card period: refuses option accessor signal without starting the read (276.2706ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:20:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:17:95
+✖ card period: refuses option accessor draft without starting the read (45.0341ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:20:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:17:95
+✖ card period: refuses option accessor timeoutMs without starting the read (25.6635ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:20:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:17:95
+✖ card period: refuses option accessor stepTimeoutMs without starting the read (40.7568ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:20:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:17:95
+✖ card period: refuses option accessor onProgress without starting the read (39.5523ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:20:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:17:95
+✖ card period: refuses option accessor onCheckpoint without starting the read (36.8984ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:20:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:23:1
+✖ card period: plan is captured before reading observer can change its block range (36.1338ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '43' !== '42'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:27:26)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '43',
+    expected: '42',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:29:1
+✖ card period: resumed draft is captured before the reading observer can alter observations (28.2265ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '999'
+  - '100000000000000000000'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:33:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '999',
+    expected: '100000000000000000000',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:35:1
+✖ card period: options and accepted cancellation remain stable through view callbacks (2.9308ms)
+  Error: Period observation unavailable
+      at Object.readPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:297:29)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:39:36)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    code: 'PERIOD_NOT_CONNECTED'
+  }
+
+test at test\card-period-input-capture.test.js:42:1
+✖ card period: completion observer changing original signal cannot leak its listener (31.7333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:45:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:47:1
+✖ card period: signal overrides neither run nor replace a completed result (2.0137ms)
+  Error: Period observation unavailable
+      at Object.readPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:297:29)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:50:75)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    code: 'PERIOD_NOT_CONNECTED'
+  }
+
+test at test\card-period-input-capture.test.js:53:1
+✖ card period: native cancellation concealed by a property prevents all provider reads (29.963ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:55:44)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_CANCELLED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:58:1
+✖ card period: inaccessible signal returns typed error and later explicit read works (3.8451ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'PERIOD_NOT_CONNECTED'
+  -   code: 'PERIOD_SIGNAL'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:60:44)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Period observation unavailable
+        at Object.readPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:297:29)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:60:44)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_SIGNAL' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\card-period-input-capture.test.js:63:1
+✖ card period: artificial abort event does not interrupt a valid complete run (2.8725ms)
+  Error: Period observation unavailable
+      at Object.readPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:297:29)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/card-period-input-capture.test.js:65:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    code: 'PERIOD_CANCELLED'
+  }
