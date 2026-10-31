@@ -1,0 +1,43 @@
+{
+  "source": "5ef9ea5403994913c6c2e29b9accf5576330a376",
+  "synthetic": true,
+  "rows": [
+    {
+      "kind": "missing-history-draft",
+      "ok": true,
+      "expectedPlan": {
+        "schema": "threecore.period-plan.v1",
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "earlierBlock": "40",
+        "laterBlock": "42",
+        "windowSize": 2
+      },
+      "actualPlan": {
+        "schema": "threecore.period-plan.v1",
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "earlierBlock": "41",
+        "laterBlock": "42",
+        "windowSize": 1
+      },
+      "sourceUnchanged": true,
+      "storageCalls": 0
+    },
+    {
+      "kind": "filtered-vault-activity",
+      "requestedAgent": "DAT",
+      "agentAfterObserver": "all",
+      "expectedRows": 1,
+      "actualRows": 3,
+      "sourceUnchanged": true,
+      "storageCalls": 0
+    }
+  ]
+}
