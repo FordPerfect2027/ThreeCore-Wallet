@@ -515,6 +515,8 @@ See [the Japanese user guide](docs/BALANCE_RECONCILIATION_JA.md) and [the design
 Run `npm run reconciliation:check -- saved.json --json` to inspect a backup without wallet access.
 The reconciliation and period-report screens can also save every filtered event across all pages. [Offline reproduction](docs/HISTORICAL_EVENT_EXPORT_CLI_2026-10-31.md) generates the same CSV from verified saved JSON and can retain query metadata for empty selections.
 
+Saved report-set checklists have a separate [offline export command](docs/REPORT_CHECKLIST_EXPORT_CLI_2026-10-31.md). It reproduces the browser CSV with token, severity and search filters while retaining the unfiltered summary, including when no checks match.
+
 
 ### Resumable historical period collection (local development)
 
