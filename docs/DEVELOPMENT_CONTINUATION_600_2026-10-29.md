@@ -4,7 +4,9 @@ The user explicitly clarified that the next continuation is **20 × 30 = 600 ite
 
 Only completed, evidenced work counts. Repeated executions of the same check, renamed copies of a feature and individual test assertions do not create additional development items. Batch records will link source commits, relevant validation and artifacts; running totals must follow those records.
 
-Current continuation: **536 / 600 complete**.
+Current continuation: **537 / 600 complete**.
+
+[Item 537: verify saved difference conclusions against owned source recomputations](WALLET_DIFFERENCE_REVIEW_2026-11-01.md) is complete with 1032 related checks, 104 focused native file-read cases and exact accepted/rejected CLI receipts at `0681a42`.
 
 [Item 536: locate differing JSON fields without exposing source values](WALLET_SAVED_DIFFERENCES_2026-11-01.md) is complete with 1178 related checks, 103 focused native file-read cases and exact offline API/CLI receipts at `7b42cd5`.
 
@@ -328,7 +330,7 @@ Current continuation: **536 / 600 complete**.
 
 [Item 205: period review lifecycle](PERIOD_REVIEW_LIFECYCLE_2026-10-30.md) is complete with 111 targeted and 231 related passing tests at `964f5da`.
 
-[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–536. Remaining work follows concrete product gaps and integration findings.
+[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–537. Remaining work follows concrete product gaps and integration findings.
 
 ## Completed first group: saved-report verification (items 1–20)
 
