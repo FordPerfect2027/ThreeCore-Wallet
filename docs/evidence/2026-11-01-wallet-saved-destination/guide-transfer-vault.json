@@ -1,0 +1,41 @@
+{
+  "schema": "threecore.saved-file-inspection.v2",
+  "sourceSchema": "threecore.transfer-vault-file.v1",
+  "byteLength": 5752,
+  "title": "3トークンの履歴保管",
+  "target": "transfer-vault",
+  "destinationMessage": "3トークンの履歴をまとめた保管JSONです。履歴の保管画面で元のJSONを確認してください。保存先への反映は行っていません。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "39d31a2e0d431894c625fe33d8bccc6cc5420b1cbb1285cb82f544b2cf52087f",
+  "textDigest": "c222429943bcba893ba5328d8d0b05ca3c9c3b0d90a0980db2e81a5885d21087",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT",
+      "EMA",
+      "CAWELON"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "archiveReferences": 3,
+    "transferRecordReferences": 3,
+    "eventReferences": 3,
+    "identityObservationReferences": null,
+    "allowanceTargetReferences": null,
+    "allowanceObservationReferences": null
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

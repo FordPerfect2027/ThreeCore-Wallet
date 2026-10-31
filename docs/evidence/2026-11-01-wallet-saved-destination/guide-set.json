@@ -1,0 +1,35 @@
+{
+  "schema": "threecore.saved-file-inspection.v1",
+  "sourceSchema": "threecore.report-set-file.v1",
+  "byteLength": 40965,
+  "title": "報告の確認セット",
+  "target": "set",
+  "destinationMessage": "「保存した確認セットを開く」で、この元のファイルを選んで確認してください。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "13dba85f0f0e12838108b8c6fb3a42247ace683f8c3da1615d0ab215ab5e12d2",
+  "textDigest": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3",
+  "scope": {
+    "reportCount": 3,
+    "archivedReports": 1,
+    "entryReferences": 9,
+    "draftReferences": 9,
+    "archivedEntryReferences": 1,
+    "restrictedEntryReferences": 1,
+    "incompleteDraftReferences": 0,
+    "emptyDraftReferences": 0,
+    "agents": [
+      "DAT",
+      "EMA",
+      "CAWELON"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}
