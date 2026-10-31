@@ -1,0 +1,39 @@
+{
+  "source": "06f92ef",
+  "method": "local reader adapter shadows only the exposed owned AbortSignal property; no network or wallet",
+  "rows": [
+    {
+      "shadow": "false",
+      "reads": 1,
+      "phase": "cancelled",
+      "checked": 2,
+      "pending": 0,
+      "statuses": [
+        "source-unavailable",
+        "source-unavailable"
+      ],
+      "errorCode": null
+    },
+    {
+      "shadow": "true",
+      "reads": 1,
+      "phase": "complete",
+      "checked": 0,
+      "pending": 2,
+      "statuses": [
+        "pending",
+        "pending"
+      ],
+      "errorCode": null
+    },
+    {
+      "shadow": "throw",
+      "reads": 1,
+      "phase": null,
+      "checked": null,
+      "pending": null,
+      "statuses": null,
+      "errorCode": "Error"
+    }
+  ]
+}

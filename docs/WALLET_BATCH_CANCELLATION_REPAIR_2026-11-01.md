@@ -1,0 +1,15 @@
+# Saved-file batch cancellation repair
+
+Maintenance source: 2c476f6, including native owned-signal repair 93dadaa. This fixes existing workflows and adds zero continuation items. Completed count remains 531 / 600.
+
+A reader adapter receives the batch-owned AbortSignal. Shadowing its instance aborted property could hide real cancellation, fabricate cancellation, or throw during an event. Batch loops and stop handlers now read native state through the existing captured accessor. Cancelled, not-yet-checked sources remain pending; a true shadow alone does not stop valid originals or hide a real file-decoding failure. Artificial abort events do not consume subsequent real cancellation. Tests also check listener cleanup and observed late reader rejection.
+
+A second reproduction delayed the real period-file ESM import. At 93dadaa, explicit cancellation still left the batch waiting until the owned child watchdog ended it. The repaired row-inspection wait races against the native batch signal, including the overall deadline. It returns the checked prefix and leaves unfinished rows pending. It does not cancel a browser or Node module import itself and does not start following sources. The before/after capture now returns one checked structure-only setup file and two pending originals, with two files read rather than three.
+
+12 focused cases passed (8215.5309 ms); 965 saved-file/read-path related cases passed (32475.5349 ms), with zero failed, skipped or cancelled cases. Native Chrome passed 945 cases across two reconciled isolated profiles. The existing native stalled-reader Stop case now also shadows the reader's exposed owned-signal property. This browser run uses synthetic providers and controlled File selection, not the user's browser tab or OS file picker. Last full-wallet checkpoint remains d253e8d, 15,720 tests; no new full-wallet run is claimed.
+
+[Evidence](evidence/2026-11-01-wallet-batch-cancellation-repair/) retains failure reproductions, final captures and passing logs. The initial import-marker harness did not observe its marker and is not a product reproduction. Later experimental release-capable loader harnesses also stalled and are retained as failed harness attempts. The final regression uses a permanently pending real module-load hook, verifies the marker was reached before accepting cancellation/deadline results, and checks stable receipts without claiming successful late module resolution. Existing reader tests separately cover late reader rejection. Tests own and clean up their child processes and guarded temporary directories.
+
+Run the focused regression with node --test test/wallet-saved-owned-abort.test.js test/wallet-saved-import-cancellation.test.js. The related run used node --test --test-concurrency=2 test/wallet-saved*.test.js test/file-read*.test.js; native validation used node scripts/test-browser-ui.js. Evidence SHA-256 values are verified against committed Git blobs.
+
+No signature, transfer, approval, key access, external RPC, publication, deployment or restart of the user's existing server occurred. Item counts are not mainnet-readiness percentages.

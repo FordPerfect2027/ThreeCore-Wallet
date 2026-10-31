@@ -358,3 +358,5 @@ Persistent boundaries: local development and fictional/read-only operations; no 
 ## November 1 maintenance follow-up
 
 [State RPC cancellation repair](STATE_RPC_SIGNAL_REPAIR_2026-11-01.md) closes native-signal and stream-ownership cleanup gaps in the existing HTTP read path at `d253e8d`. It passed 97 related checks and 15,720 full-wallet tests and adds zero items; the count remains 515 / 600.
+
+[Saved-file batch cancellation repair](WALLET_BATCH_CANCELLATION_REPAIR_2026-11-01.md) preserves native cancellation and releases delayed decoder-import waits at `2c476f6`. It passed 965 related checks and 945 native Chrome cases. This maintenance adds zero items; the completed count remains 531 / 600.

@@ -1,0 +1,94 @@
+✖ saved files batch releases a delayed decoder import on cancelled, retaining its checked prefix (12050.0957ms)
+✖ saved files batch releases a delayed decoder import on timed-out, retaining its checked prefix (12065.0908ms)
+✖ saved texts batch releases a delayed decoder import on cancelled, retaining its checked prefix (12037.4984ms)
+✖ saved texts batch releases a delayed decoder import on timed-out, retaining its checked prefix (12034.8934ms)
+✔ native cancellation survives reader shadowing of the owned signal: false (27.1775ms)
+✔ native cancellation survives reader shadowing of the owned signal: true (2.9459ms)
+✔ native cancellation survives reader shadowing of the owned signal: throw (2.5579ms)
+✔ a true shadow does not fabricate a native abort or discard successfully read originals (88.9148ms)
+✔ cancellation retains the checked prefix even if the second source shadows the owned signal with a getter (10.0474ms)
+✔ overall deadline uses native state despite a false shadow, and late source rejection stays observed (42.0714ms)
+✔ artificial owned-signal events cannot consume later real cancellation (1.515ms)
+✔ fake true abort state cannot hide a real source decoding failure or skip the following source (7.5458ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 8
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 48396.0793
+
+✖ failing tests:
+
+test at test\wallet-saved-import-cancellation.test.js:15:3
+✖ saved files batch releases a delayed decoder import on cancelled, retaining its checked prefix (12050.0957ms)
+  AssertionError [ERR_ASSERTION]: the owned child should finish before its watchdog
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-import-cancellation.test.js:64:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-import-cancellation.test.js:15:3
+✖ saved files batch releases a delayed decoder import on timed-out, retaining its checked prefix (12065.0908ms)
+  AssertionError [ERR_ASSERTION]: the owned child should finish before its watchdog
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-import-cancellation.test.js:64:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-import-cancellation.test.js:15:3
+✖ saved texts batch releases a delayed decoder import on cancelled, retaining its checked prefix (12037.4984ms)
+  AssertionError [ERR_ASSERTION]: the owned child should finish before its watchdog
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-import-cancellation.test.js:64:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-import-cancellation.test.js:15:3
+✖ saved texts batch releases a delayed decoder import on timed-out, retaining its checked prefix (12034.8934ms)
+  AssertionError [ERR_ASSERTION]: the owned child should finish before its watchdog
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-import-cancellation.test.js:64:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

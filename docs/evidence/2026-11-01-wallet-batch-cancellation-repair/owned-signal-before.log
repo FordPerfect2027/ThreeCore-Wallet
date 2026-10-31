@@ -1,0 +1,18 @@
+[{"shadow":"false","reads":1,"phase":"cancelled","checked":2,"pending":0,"statuses":["source-unavailable","source-unavailable"],"errorCode":null},{"shadow":"true","reads":1,"phase":"complete","checked":0,"pending":2,"statuses":["pending","pending"],"errorCode":null},{"shadow":"throw","reads":1,"phase":null,"checked":null,"pending":null,"statuses":null,"errorCode":"Error"}]
+node:internal/event_target:1136
+  process.nextTick(() => { throw err; });
+                           ^
+
+Error: shadow access
+    at AbortSignal.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-reproduce-owned-batch-abort.mjs:4:268)
+    at stop (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/file-read-status.js:768:46)
+    at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/file-read-status.js:771:59
+    at AbortSignal.listener (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-abort.js:42:5)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)
+    at AbortSignal.dispatchEvent (node:internal/event_target:789:26)
+    at runAbort (node:internal/abort_controller:547:10)
+    at abortSignal (node:internal/abort_controller:518:3)
+    at AbortController.abort (node:internal/abort_controller:566:5)
+    at inspectWalletSavedFileBatch.signal (file:///C:/Users/aseet/AppData/Local/Temp/threecore-reproduce-owned-batch-abort.mjs:4:344)
+
+Node.js v24.19.0

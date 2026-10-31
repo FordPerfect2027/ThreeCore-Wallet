@@ -1,0 +1,29 @@
+{
+  "source": "2c476f6",
+  "priorNativeSignalRepair": "93dadaa",
+  "completedItemsBefore": 531,
+  "completedItemsAfter": 531,
+  "focused": {
+    "tests": 12,
+    "pass": 12,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "duration_ms": 8215.5309
+  },
+  "related": {
+    "tests": 965,
+    "pass": 965,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "duration_ms": 32475.5349
+  },
+  "nativeCases": 945,
+  "externalRpcCalls": 0,
+  "realWalletCalls": 0,
+  "userTabVerified": false,
+  "osFilePickerVerified": false,
+  "existing4231ServerRestarted": false,
+  "scope": "Owned batch cancellation state and cancelled/timed-out waits during real delayed decoder-module imports. Module imports themselves are not cancelled. The permanently stalled-import test does not establish successful late module resolution."
+}
