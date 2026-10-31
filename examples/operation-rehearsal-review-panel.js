@@ -132,7 +132,7 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
   const evidenceSave = node("button", "evidence-save", "二組の元資料と新しい比較をまとめて保存", evidence); evidenceSave.type = "button";
   const fileLabel = node("label", "evidence-file-label", "まとめて保存した比較資料を再確認", evidence), evidenceFile = node("input", "evidence-file", undefined, fileLabel); evidenceFile.type = "file"; evidenceFile.accept = ".json,application/json";
   const stop = node("button", "evidence-stop", "まとめた比較資料の処理を中止", evidence); stop.type = "button";
-  const evidenceStatus = node("p", "evidence-status", "", evidence); evidenceStatus.setAttribute("role", "status"); evidenceStatus.setAttribute("aria-live", "polite");
+  const evidenceStatus = node("p", "evidence-status", "", evidence); evidenceStatus.setAttribute("role", "status"); evidenceStatus.setAttribute("aria-live", "polite"); evidenceStatus.setAttribute("tabindex", "-1");
   const reviewSave = node("button", "evidence-review-save", "まとめた比較資料の照合結果を保存", evidence); reviewSave.type = "button";
   const viewer = mountReviewedBatchComparisonPanel({ document, parent: evidence, open: openReviewedRehearsalBatchComparisonEvidence,
     extract: extractRehearsalBatchComparisonEvidenceSource, encodeComparison: encodeRehearsalBatchComparison, queryDifferences: queryRehearsalBatchComparisonDifferences,
@@ -156,7 +156,7 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
   listen(changed, "change", () => { if (!disposed) render(); });
   listen(evidenceAck, "change", render);
   async function evidenceJob(file = null) {
-    if (disposed || active || (file ? evidenceFile.disabled : evidenceSave.disabled)) return;
+    if (disposed || active || (file ? evidenceFile.disabled : evidenceSave.disabled)) return false;
     const own = ++revision, left = baseline, right = current, job = new AbortController(); active = job; evidenceReview = null; evidenceAck.checked = false;
     evidenceStatus.textContent = file ? "二組の元資料と保存された比較を再確認しています。" : "二組の元資料から、新しい確認結果と比較を作っています。"; render();
     const owns = () => !disposed && own === revision && !job.signal.aborted;
@@ -171,7 +171,8 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
         const prepared = await prepareRehearsalBatchComparisonEvidence(left, right, { signal: job.signal }); if (!owns()) return;
         requireSyncExport(download({ document, prepared })); if (owns()) evidenceStatus.textContent = "二組の元資料と新しい比較の保存を開始しました。中断・再試行の経過は、元の確認控えを別に保管してください。";
       }
-    } catch { if (!disposed && own === revision) evidenceStatus.textContent = job.signal.aborted ? "まとめた比較資料の処理を中止しました。現在の一覧と比較元は保持しています。" : "まとめた比較資料を処理できませんでした。32 MiB以内の対応資料か確認してください。現在の一覧と比較元は保持しています。"; }
+      return owns();
+    } catch { if (!disposed && own === revision) evidenceStatus.textContent = job.signal.aborted ? "まとめた比較資料の処理を中止しました。現在の一覧と比較元は保持しています。" : "まとめた比較資料を処理できませんでした。32 MiB以内の対応資料か確認してください。現在の一覧と比較元は保持しています。"; return false; }
     finally { const cancelled = job.signal.aborted; job.abort(); if (!disposed && own === revision) { active = null; if (cancelled && /^(二組の元資料と保存された比較を再確認|二組の元資料から、新しい確認結果と比較を作って)/.test(evidenceStatus.textContent)) evidenceStatus.textContent = "まとめた比較資料の処理を中止しました。現在の一覧と比較元は保持しています。"; render(); } }
   }
   listen(evidenceSave, "click", () => { void evidenceJob(); });
@@ -190,6 +191,7 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
     } catch { if (!disposed && own === revision && captured === comparison) status.textContent = "比較結果を保存できませんでした。二組の結果は保持しています。"; }
   });
   render(); return Object.freeze({ updateCurrent(value) { if (disposed || value === current) return; if (value !== null) compareRehearsalBatches(value, value); current = value; refresh(); },
+    async inspectEvidenceFile(file) { if (disposed || active || !file) return false; host.open = evidence.open = true; for (let parent = host.parentElement; parent; parent = parent.parentElement) if (parent.tagName === "DETAILS") parent.open = true; const expected = revision + 1, completed = await evidenceJob(file); if (!disposed && revision === expected) try { evidenceStatus.focus?.(); } catch {} return completed; },
     getState: () => Object.freeze({ baseline, current, comparison, evidenceReview, busy: Boolean(active), disposed }), dispose() { if (disposed) return; disposed = true; ++revision; const old = active; active = null; old?.abort(); baseline = current = comparison = evidenceReview = null; viewer.dispose(); listeners.forEach(remove => remove()); host.remove(); } });
 }
 
@@ -527,13 +529,14 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     while (section) { section.open = true; section = section.parentElement?.closest("details"); }
     try { get("evidence-file").focus?.(); } catch { /* Focus is advisory. */ }
     return evidenceJob(file);
+  }, inspectComparisonEvidenceFile(file) { if (disposed || active || referenceBusy || !file) return Promise.resolve(false); return comparisonPanel.inspectEvidenceFile(file);
   }, dispose() {
     if (disposed) return;
     reset(); disposed = true; ++revision; for (const remove of listeners) remove(); sourceExport.dispose(); receiptCheck.dispose(); selectionCheck.dispose(); comparisonPanel.dispose(); buttons();
   } });
 }
 
-export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, getWorkspace = null, renderWorkspaceComparison = null, applyRecordQuery = null, reviewBatchEvidence = null }) {
+export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, getWorkspace = null, renderWorkspaceComparison = null, applyRecordQuery = null, reviewBatchEvidence = null, reviewComparisonEvidence = null }) {
   const offerDownload = payload => requireSyncExport(download(payload));
   const fileReader = createFileReadScope(), checksumReader=createFileReadScope();
   let checksumRevision=0,differenceOffset=0,differenceView=0,selectedDifference=null;
@@ -544,7 +547,14 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   let sourceFile = null, pendingHandoff = null, sourceLoad = null;
   const listeners = [];
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
-  function refreshBatchHandoff() { get("batch-evidence").disabled = disposed || !sourceFile || typeof reviewBatchEvidence !== "function" || Boolean(hashAbort) || Boolean(sourceLoad) || pendingHandoff?.revision === revision; }
+  function refreshBatchHandoff() { const unavailable = disposed || !sourceFile || Boolean(hashAbort) || Boolean(sourceLoad) || pendingHandoff?.revision === revision; get("batch-evidence").disabled = unavailable || typeof reviewBatchEvidence !== "function"; get("comparison-evidence").disabled = unavailable || typeof reviewComparisonEvidence !== "function"; }
+  listen("comparison-evidence", "click", async () => {
+    if (disposed || get("comparison-evidence").disabled || !sourceFile || typeof reviewComparisonEvidence !== "function") return;
+    const job = { revision, file: sourceFile }; pendingHandoff = job; refreshBatchHandoff(); get("batch-evidence-status").textContent = "同じファイルを、二組の比較資料として再確認しています。";
+    try { const accepted = await reviewComparisonEvidence(job.file); if (!disposed && revision === job.revision && sourceFile === job.file) get("batch-evidence-status").textContent = accepted === true ? "二組の比較資料の再確認を終えました。比較資料の欄で結果をご確認ください。現在の履歴・一覧・比較元は変更していません。" : "再確認の完了を確認できませんでした。二組の比較資料の欄をご確認ください。選んだファイルは保持しています。"; }
+    catch { if (!disposed && revision === job.revision && sourceFile === job.file) get("batch-evidence-status").textContent = "二組の比較資料の確認欄に渡せませんでした。選んだファイルは保持しています。"; }
+    finally { if (pendingHandoff === job) pendingHandoff = null; refreshBatchHandoff(); }
+  });
   listen("batch-evidence", "click", async () => {
     if (disposed || get("batch-evidence").disabled || !sourceFile || typeof reviewBatchEvidence !== "function") return;
     const job = { revision, file: sourceFile }; pendingHandoff = job; refreshBatchHandoff();

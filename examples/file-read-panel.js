@@ -52,7 +52,7 @@ export function mountFileReadPanel({ document, parent, service = walletFileReadS
   action.setAttribute("role", "status");
   parent.append(section);
   const savedGuide = mountSavedFileInspectionPanel({ document, parent: section, destinations: savedFileDestinations,
-    reviewBatchEvidence: file => savedBatch.inspectEvidenceFile(file) });
+    reviewBatchEvidence: file => savedBatch.inspectEvidenceFile(file), reviewComparisonEvidence: file => savedBatch.inspectComparisonEvidenceFile(file) });
   const savedBatch = mountSavedFileBatchPanel({ document, parent: section,
     inspectOriginal: (file, digest) => savedGuide.inspectFile(file, digest),
     compareOriginal: (file, digest) => savedGuide.compareFile(file, digest) });
@@ -125,7 +125,7 @@ export function createFileSelectionNotice(input, note) {
 /** A separate, explicitly selected file is inspected only; no import callbacks exist. */
 export function mountSavedFileInspectionPanel({ document, parent,
   readText = readSavedGuideText, inspect = inspectWalletSavedText,
-  destinations = {}, reviewBatchEvidence = null,
+  destinations = {}, reviewBatchEvidence = null, reviewComparisonEvidence = null,
   download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-file-guide";
   parent.append(host); const nodes = {}, cleanup = [];
@@ -182,7 +182,10 @@ export function mountSavedFileInspectionPanel({ document, parent,
     ack.disabled = busy || !result; save.disabled = busy || !result || !ack.checked;
     output.textContent = walletSavedInspectionText(result);
     destination.disabled = disposed || busy || !result || !["validated-original", "validated-structure"].includes(result.validation) || !destinationCallbacks[result.target];
-    batchEvidence.disabled = disposed || busy || handoffGeneration === generation || !sourceFile || result?.sourceSchema !== "threecore.wallet-saved-batch-evidence.v1" || typeof reviewBatchEvidence !== "function";
+    const comparisonEvidence = result?.sourceSchema === "threecore.wallet-batch-comparison-evidence.v1";
+    batchEvidence.textContent = comparisonEvidence ? "このファイルを二組の比較資料として再確認" : "このファイルを一括資料として再確認";
+    batchEvidence.disabled = disposed || busy || handoffGeneration === generation || !sourceFile ||
+      (comparisonEvidence ? typeof reviewComparisonEvidence !== "function" : result?.sourceSchema !== "threecore.wallet-saved-batch-evidence.v1" || typeof reviewBatchEvidence !== "function");
     if (!result) destinationStatus.textContent = "";
     compareFile.disabled = busy || !result; compareAck.disabled = busy || !comparison;
     compareSave.disabled = busy || !comparison || !compareAck.checked;
@@ -332,14 +335,14 @@ export function mountSavedFileInspectionPanel({ document, parent,
   listen(file, "change", () => { void selected(); }); listen(stop, "click", cancel);
   listen(batchEvidence, "click", async () => {
     if (disposed || busy || batchEvidence.disabled || !sourceFile) return;
-    const own = generation, captured = result, file = sourceFile;
-    handoffGeneration = own; batchEvidenceStatus.textContent = "同じファイルを一括資料の再確認へ渡しています。形式の案内だけでは、内容の一致を判断しません。"; render();
+    const own = generation, captured = result, file = sourceFile, comparisonEvidence = captured.sourceSchema === "threecore.wallet-batch-comparison-evidence.v1", target = comparisonEvidence ? "二組の比較資料" : "一括資料";
+    handoffGeneration = own; batchEvidenceStatus.textContent = "同じファイルを" + target + "の再確認へ渡しています。形式の案内だけでは、内容の一致を判断しません。"; render();
     try {
-      const accepted = await reviewBatchEvidence(file);
+      const accepted = await (comparisonEvidence ? reviewComparisonEvidence : reviewBatchEvidence)(file);
       if (!disposed && generation === own && result === captured) batchEvidenceStatus.textContent = accepted === true ?
-        "同じファイルの再確認を終えました。一括資料の欄で結果をご確認ください。履歴や設定の復元は行っていません。" :
-        "再確認の完了を確認できませんでした。一括資料の欄の結果をご確認ください。この案内は保持しています。";
-    } catch { if (!disposed && generation === own && result === captured) batchEvidenceStatus.textContent = "一括資料の再確認へ渡せませんでした。この案内は保持しています。"; }
+        "同じファイルの再確認を終えました。" + target + "の欄で結果をご確認ください。履歴や設定の復元は行っていません。" :
+        "再確認の完了を確認できませんでした。" + target + "の欄の結果をご確認ください。この案内は保持しています。";
+    } catch { if (!disposed && generation === own && result === captured) batchEvidenceStatus.textContent = target + "の再確認へ渡せませんでした。この案内は保持しています。"; }
     finally {
       if (!disposed && handoffGeneration === own) {
         handoffGeneration = null;
@@ -803,6 +806,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     host.open = true; evidenceBox.open = true;
     try { evidenceFile.focus?.(); } catch { /* Focus is advisory. */ }
     return evidenceJob(chosen);
+  }, inspectComparisonEvidenceFile(chosen) { if (disposed || active || !chosen) return Promise.resolve(false); host.open = true; return comparisonPanel.inspectEvidenceFile(chosen);
   }, getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
     if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; evidenceReview = null; openedEvidence = null;
     referenceText = undefined; referenceInput.value = ""; ack.checked = false; evidenceAck.checked = false; evidenceFile.value = ""; evidenceStatus.textContent = "";
@@ -909,6 +913,7 @@ export function mountSavedBatchComparisonPanel({ document, parent,
     if (disposed || current === value) return;
     if (value !== null) compareWalletSavedTextBatches(value, value); // Validate ownership before changing the retained pair.
     current = value; changed();
+  }, inspectEvidenceFile(chosen) { if (disposed || reviewActive || !chosen) return Promise.resolve(false); host.open = true; return portable.inspectFile(chosen);
   }, getState: () => Object.freeze({ baseline, current, comparison, reviewed, reviewing: Boolean(reviewActive), disposed }), dispose() {
     if (disposed) return; disposed = true; ++revision; baseline = null; current = null; comparison = null; reviewed = null; const old = reviewActive; reviewActive = null; old?.abort(); portable.dispose(); ack.checked = false; reviewAck.checked = false; cleanup.forEach(remove => remove()); controls(); host.remove();
   } });
@@ -1006,25 +1011,26 @@ export function mountWalletBatchComparisonEvidencePanel({ document, parent, getP
   const save = make("button", "save", "元ファイルと比較をまとめて保存"); save.type = "button";
   const fileLabel = make("label", "file-label", "保存した比較資料を再確認（最大96 MiB）"), file = make("input", "file", undefined, fileLabel); file.type = "file"; file.accept = ".json,application/json";
   const stop = make("button", "stop", "処理を中止"); stop.type = "button";
-  const status = make("p", "status", ""); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  const status = make("p", "status", ""); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite"); status.setAttribute("tabindex", "-1");
   const receipt = make("button", "receipt", "比較資料の照合結果を保存"); receipt.type = "button";
   const viewer = mountReviewedBatchComparisonPanel({ document, parent: host, open: openReviewedWalletBatchComparisonEvidence, extract: extractWalletBatchComparisonEvidenceSource, encodeComparison: encodeWalletSavedBatchComparison,
     queryDifferences: queryWalletBatchComparisonDifferences, encodeDifferences: encodeWalletBatchComparisonDifferences, download });
   function controls() { const pair = getPair(); ack.disabled = disposed || Boolean(active) || !canPrepareWalletSavedBatchEvidence(pair?.before) || !canPrepareWalletSavedBatchEvidence(pair?.after); save.disabled = ack.disabled || !ack.checked; file.disabled = disposed || Boolean(active); stop.disabled = disposed || !active; receipt.disabled = disposed || Boolean(active) || !reviewed; host.setAttribute("aria-busy", String(Boolean(active))); }
   function sourceChanged() { if (disposed) return; ++revision; const old = active; active = null; reviewed = null; viewer.updateReview(null); ack.checked = false; status.textContent = ""; old?.abort(); controls(); }
   async function run(chosen = null) {
-    if (disposed || active || (chosen ? file.disabled : save.disabled)) return;
+    if (disposed || active || (chosen ? file.disabled : save.disabled)) return false;
     const own = ++revision, pair = getPair(), local = new AbortController(); active = local; reviewed = null; viewer.updateReview(null); ack.checked = false; status.textContent = "二組の元ファイルと比較を確認しています。"; controls();
     const owns = () => !disposed && own === revision && !local.signal.aborted;
     try {
       if (chosen) { const text = await readSavedGuideText(chosen, { maxBytes: WALLET_BATCH_COMPARISON_EVIDENCE_LIMIT, signal: local.signal }); if (!owns()) return;
-        const result = await reviewWalletBatchComparisonEvidence(text, { signal: local.signal }); if (!owns()) return; reviewed = result;
+        const result = await reviewWalletBatchComparisonEvidence(text, { signal: local.signal }); if (!owns()) return false; reviewed = result;
         viewer.updateReview(result.matchesRecomputation ? result : null);
         status.textContent = (result.matchesRecomputation ? "保存内容と二組の再計算・比較が一致しました。" : "保存内容と再計算・比較に相違があります。") + (result.allOriginalsValidated ? "" : " 元記録を確認できない資料も含まれます。") + " 現在の一覧・比較元・履歴は変更していません。";
       } else { const prepared = await prepareWalletBatchComparisonEvidence(pair.before, pair.after, { signal: local.signal }); if (!owns()) return;
         const delivered = download(prepared); if (observeCallbackResult(delivered) !== "synchronous" || delivered === false) throw Error();
         if (owns()) status.textContent = "二組の元ファイルと比較の保存を開始しました。ダウンロード先をご確認ください。"; }
-    } catch { if (owns()) status.textContent = "比較資料を処理できませんでした。対応する96 MiB以内の資料を選んでください。現在の二組は保持しています。"; }
+      return owns();
+    } catch { if (owns()) status.textContent = "比較資料を処理できませんでした。対応する96 MiB以内の資料を選んでください。現在の二組は保持しています。"; return false; }
     finally { local.abort(); if (!disposed && own === revision) { active = null; controls(); } }
   }
   listen(ack, "change", controls); listen(save, "click", () => { void run(); });
@@ -1033,7 +1039,7 @@ export function mountWalletBatchComparisonEvidencePanel({ document, parent, getP
   listen(receipt, "click", () => { if (disposed || active || !reviewed) return; const own = revision, value = reviewed;
     try { const delivered = download({ text: encodeWalletBatchComparisonEvidenceReview(value), filename: "ThreeCore-wallet-batch-comparison-evidence-review.json", mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false }); if (observeCallbackResult(delivered) !== "synchronous" || delivered === false) throw Error(); if (!disposed && own === revision) status.textContent = "照合結果の保存を開始しました。元資料の判定は変わりません。"; }
     catch { if (!disposed && own === revision) status.textContent = "照合結果の保存を確認できませんでした。確認結果は保持しています。"; } });
-  controls(); return Object.freeze({ sourceChanged, getState: () => Object.freeze({ reviewed, busy: Boolean(active), disposed }), dispose() { if (disposed) return; sourceChanged(); disposed = true; viewer.dispose(); cleanup.forEach(remove => remove()); host.remove(); } });
+  controls(); return Object.freeze({ sourceChanged, async inspectFile(chosen) { if (disposed || active || !chosen) return false; host.open = true; const expected = revision + 1, completed = await run(chosen); if (!disposed && revision === expected) try { status.focus?.(); } catch {} return completed; }, getState: () => Object.freeze({ reviewed, busy: Boolean(active), disposed }), dispose() { if (disposed) return; sourceChanged(); disposed = true; viewer.dispose(); cleanup.forEach(remove => remove()); host.remove(); } });
 }
 
 /** Receipt validation has its own cancellation and acknowledgement; it cannot extract a source. */

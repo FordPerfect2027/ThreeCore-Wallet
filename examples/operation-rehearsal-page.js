@@ -76,7 +76,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     onChange: () => scenarioSetPanel?.sourceChanged() });
   scenarioSetPanel = mountRehearsalScenarioSetPanel(document, { download, store: session.cases, getComparison: () => scenarioPanel.comparison() });
   const reportReviewPanel = mountRehearsalReviewPanel(document, { download, getWorkspace:()=>ledger.snapshot(), applyRecordQuery:query=>recordsPanel.applyQuery(query),
-    reviewBatchEvidence:file=>batchReviewPanel.inspectEvidenceFile(file),
+    reviewBatchEvidence:file=>batchReviewPanel.inspectEvidenceFile(file), reviewComparisonEvidence:file=>batchReviewPanel.inspectComparisonEvidenceFile(file),
     renderWorkspaceComparison:(comparison,root)=>renderComparisonDetails(comparison,root,true) });
   const batchReviewPanel = mountRehearsalBatchReviewPanel(document, { download, inspectSource: reportReviewPanel.inspectSource });
   const checkPanel = mountRehearsalCheckPanel(document, { download, reasons: REASONS });
