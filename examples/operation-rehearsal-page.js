@@ -511,6 +511,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   listen("apply", "click", () => {
     if (disposed || !candidate) return;
     const data = candidate; candidate = null; show(data);
+    if (!disposed && current === ledger.state().current && !formDraft) get("result-title").focus?.();
   });
   listen("cancel", "click", () => { clear("読み込み・表示をクリアしました。"); get("file").value = ""; });
   listen("workspace-save", "click", () => {

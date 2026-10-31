@@ -105,7 +105,7 @@ export function mountRehearsalScenarioSetPanel(document, { download, getComparis
   for(const action of ["rename","remove"])listen(action,"click",()=>{
     if(disposed)return;cancel();try{showReview(action==="rename"?store.previewRename(get("id").value,get("label").value):store.previewRemove(get("id").value));}catch(error){fail(error,true);}
   });
-  listen("apply","click",()=>{if(disposed||!pending)return;try{store.commit(pending);cancel("ケース集の変更を確定しました。元の試算履歴は保持しています。");render();}catch{fail();}});
+  listen("apply","click",()=>{if(disposed||!pending)return;try{store.commit(pending);cancel("ケース集の変更を確定しました。元の試算履歴は保持しています。");render();get("status").focus?.();}catch{fail();}});
   listen("cancel","click",()=>{if(!disposed)cancel();});
   listen("undo","click",()=>{if(disposed)return;try{store.undo();cancel("ケース集の直前の変更を取り消しました。");render();}catch{fail();}});
   for(const name of ["id","label"])listen(name,"input",()=>{if(!disposed)cancel("指定が変わりました。変更前にもう一度確認してください。");});

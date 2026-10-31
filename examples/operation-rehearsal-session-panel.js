@@ -8,8 +8,8 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   const offerDownload = payload => requireSyncExport(download(payload));
   const fileReader = createFileReadScope();
   const checkpoint = createRehearsalSaveCheckpoint();
-  const get=name=>document.getElementById("session-"+name);let pending=null,revision=0,disposed=false,source="",sourceKind=null;const listeners=[];
-  function listen(name,event,fn){get(name).addEventListener(event,fn);listeners.push(()=>get(name).removeEventListener(event,fn));}
+  const get=name=>document.getElementById("session-"+name);let pending=null,revision=0,interaction=0,disposed=false,source="",sourceKind=null;const listeners=[];
+  function listen(name,event,fn){const handler=(...args)=>{if(disposed)return;interaction++;return fn(...args);};get(name).addEventListener(event,handler);listeners.push(()=>get(name).removeEventListener(event,handler));}
   const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
   listeners.push(() => fileNotice.dispose());
   function reset(message){
@@ -31,7 +31,7 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   }
   const view=document.defaultView;
   view?.addEventListener("beforeunload",beforeUnload);
-  const unsubscribe=session.subscribe(()=>{if(disposed)return;reset("履歴またはケースの操作がありました。まとめて復旧する場合は保存したファイルをもう一度確認してください。");available();});
+  const unsubscribe=session.subscribe(()=>{if(disposed)return;if(!pending||!session.isCurrentReview(pending))reset("履歴またはケースの操作がありました。まとめて復旧する場合は保存したファイルをもう一度確認してください。");available();});
   function cancel(message){session.cancel();reset(message);}
   const describe=item=>item?item.label+" / "+item.before.agent+" / ネットワーク "+item.before.chainId+" / 口座 "+item.before.account+" / 資産 "+item.before.asset.symbol+" ("+item.before.asset.address+") / 元記録 "+item.before.events.length+"件":"なし";
   function review(text,name,kind="paste"){const data=decodeRehearsalForPanel(text, "session", decodeRehearsalSession);
@@ -58,16 +58,21 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   });
   listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel("貼り付けた記録を確認しています。");try{review(text,"貼り付けたまとめ記録");}catch(error){failed(error);}});
   listen("text","input",()=>{if(!disposed)cancel("貼り付けたまとめ記録を確認してください。");});
-  listen("apply","click",()=>{if(disposed||!pending)return;const reviewed=pending,name=source,kind=sourceKind;
-    let restored;try{restored=session.commit(reviewed);}catch{failed();return;}
-    if(disposed)return;
+  listen("apply","click",()=>{if(disposed||!pending)return;const reviewed=pending,name=source,kind=sourceKind,own=interaction;
+    let restored;try{restored=session.commit(reviewed);}catch{if(!disposed&&own===interaction)failed();return;}
+    // Rendering may synchronously start another review or change either store.
+    // A completed commit is historical evidence, not authority over that newer work.
+    const current=()=>{if(disposed||own!==interaction)return false;try{return encodeRehearsalSession(session.snapshot())===encodeRehearsalSession(restored);}catch{return false;}};
+    if(!current())return;
     if(kind==="file")checkpoint.record(restored,"file");
-    try{const result=observeCallbackResult(onRestored(restored));if(disposed)return;
+    try{const result=observeCallbackResult(onRestored(restored));if(!current())return;
       if(result!=="synchronous")throw Error("UNCONFIRMED_RESTORE_VIEW");
       reset("履歴とケース集をまとめて復旧しました。両方の取り消し履歴は新しく開始します。");}
-    catch{if(disposed)return;reset("記録の復旧は完了しましたが、画面の更新に問題がありました。まとめ保存で復旧した記録を保管できます。");}
+    catch{if(!current())return;reset("記録の復旧は完了しましたが、画面の更新に問題がありました。まとめ保存で復旧した記録を保管できます。");}
+    if(!current())return;
     get("receipt").textContent="直前のまとめ復旧: "+name+" / "+restored.workspace.ledgers.map(item=>item.agent+" "+item.events.length+"件").join(" / ")+" / 比較ケース "+restored.cases.cases.length+"件。";
     available();
+    get("status").focus?.();
   });
   listen("cancel","click",()=>{if(disposed)return;cancel("まとめ復旧の確認を取り消しました。現在の履歴とケース集は保持しています。");get("text").value="";get("file").value="";});
   reset("履歴と比較ケースを一つのファイルに保存・復旧できます。保存済みの資料や期待結果の確認表示は含みません。");available();

@@ -25,6 +25,19 @@ function setup(){const elements=new Map(),downloads=[];let current=null,throwDow
   const file=(text,extras={})=>{const bytes=new TextEncoder().encode(text);field("file").files=[{name:"cases.json",size:bytes.length,arrayBuffer:async()=>bytes.buffer,...extras}];field("file").dispatchEvent(new Event("change"));};
   return{field,panel,change,source,add,saved,paste,file,downloads,failDownload:()=>{throwDownload=true;}};
 }
+
+test("committing a reviewed case change focuses its outcome including an empty collection",()=>{
+  const f=setup();let focused=0;f.field("status").focus=()=>{focused++;assert.equal(f.field("apply").disabled,true);assert.match(f.field("status").textContent,/変更を確定/);};
+  try{f.add();assert.equal(focused,1);f.field("remove").click();assert.equal(focused,1);
+    f.field("apply").click();assert.equal(focused,2);assert.equal(f.field("rows").children.length,0);
+  }finally{f.panel.dispose();}
+});
+
+test("a focus listener's subsequent case edit retains its own message",()=>{
+  const f=setup();f.field("status").focus=()=>f.change("label","later edit");
+  try{f.add();assert.match(f.field("status").textContent,/指定が変わりました/);assert.equal(f.field("apply").disabled,true);assert.equal(f.saved().cases.length,1);}
+  finally{f.panel.dispose();}
+});
 test("only a completed comparison enables capture, and preview shows exact changed conditions",()=>{
   const f=setup();assert.equal(f.field("add").disabled,true);f.source(comparison());f.change("id","one");f.change("label","上限50");f.field("add").click();
   assert.equal(f.field("rows").children.length,0);assert.equal(f.field("save").disabled,true);

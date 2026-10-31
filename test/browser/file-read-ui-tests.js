@@ -53,6 +53,26 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: confirmed restores keep keyboard focus on their completed outcomes",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,event="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(event));};
+    try{
+      q("example").click();q("session-save").click();const original=downloads.pop().text;
+      q("whatif-compare").click();edit("scenario-set-id","focus-case");edit("scenario-set-label","Focus case");q("scenario-set-add").click();
+      q("scenario-set-apply").focus();q("scenario-set-apply").click();assert(document.activeElement===q("scenario-set-status"));
+      assert(q("scenario-set-rows").rows.length===1);
+      edit("session-text",original);q("session-paste").click();q("session-apply").focus();q("session-apply").click();
+      assert(document.activeElement===q("session-status"));assert(q("session-status").textContent.includes("まとめて復旧しました"));
+      assert(q("scenario-set-rows").rows.length===0);assert(q("session-receipt").textContent.includes("比較ケース 0件"));
+      const transfer=new DataTransfer();transfer.items.add(new File([JSON.stringify(rehearsalExampleV2("EMA"))],"synthetic-record.json",{type:"application/json"}));q("file").files=transfer.files;q("file").dispatchEvent(new Event("change"));
+      for(let i=0;i<100&&q("apply").disabled;i++)await tick();assert(!q("apply").disabled);
+      q("apply").focus();q("apply").click();assert(document.activeElement===q("result-title"));assert(q("agent").value==="EMA");assert(q("rows").rows.length===2);
+    }finally{page.dispose();host.remove();}
+  });
+
   test("file-read: each searched record row opens its own detail without changing saved history",async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);

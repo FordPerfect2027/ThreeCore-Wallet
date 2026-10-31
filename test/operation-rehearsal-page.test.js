@@ -44,6 +44,16 @@ function prepareAppend(f, kind, amount = "2.8", reference = "reward-one") {
   f.change("append-fee", "1"); f.change("append-exit-reserve", "2");
   f.field("append-preview").click();
 }
+
+test("confirmed single-record import focuses its recomputed result without applying during preview", async()=>{
+  const f=setup();let focus=0;f.field("result-title").focus=()=>{focus++;};
+  try{f.file(encodeRehearsal(rehearsalExampleV2("EMA")));await tick();
+    assert.equal(focus,0);assert.equal(f.field("apply").disabled,false);
+    f.field("apply").click();assert.equal(focus,1);assert.equal(f.field("agent").value,"EMA");
+    assert.equal(f.field("rows").children.length,2);assert.equal(f.field("apply").disabled,true);
+    f.field("apply").click();assert.equal(focus,1);
+  }finally{f.page.dispose();}
+});
 const workspaceFile = (f, ledgers, activeAgent = "DAT", extras = {}) => {
   const text = encodeRehearsalWorkspace({ schema: REHEARSAL_WORKSPACE_SCHEMA, simulationOnly: true, activeAgent, ledgers });
   f.field("workspace-file").files = [selectedFile(text, extras)];

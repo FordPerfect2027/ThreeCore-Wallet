@@ -12,6 +12,16 @@ const target = () => {
   return document;
 };
 
+test("current-review inquiry accepts only this session's pending capability and retires on edits",()=>{
+  const session=createRehearsalSession(),other=createRehearsalSession();
+  try{assert.equal(session.isCurrentReview(null),false);const review=session.preview(target());
+    assert.equal(session.isCurrentReview(review),true);assert.equal(session.isCurrentReview({...review}),false);
+    assert.equal(other.isCurrentReview(review),false);session.workspace.select("CAWELON");assert.equal(session.isCurrentReview(review),false);
+    const next=session.preview(target());session.commit(next);assert.equal(session.isCurrentReview(next),false);
+    const last=session.preview(target());session.dispose();assert.equal(session.isCurrentReview(last),false);
+  }finally{session.dispose();other.dispose();}
+});
+
 for (const failure of ["throw", "reject", "then-getter", "then-reject", "async-then"]) {
   test(`session observer ${failure} cannot suppress restoration or healthy views`, async () => {
     const session = createRehearsalSession(), document = target(), seen = [];

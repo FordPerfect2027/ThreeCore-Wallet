@@ -41,7 +41,7 @@
     <p id="session-save-state" role="status" aria-live="polite" class="notice"></p>
     <div class="actions"><button id="session-save" type="button" disabled>履歴とケース集をまとめて保存</button><label class="file-label">まとめた記録を選ぶ<input id="session-file" type="file" accept=".json,application/json" aria-describedby="session-file-note session-status"></label><button id="session-cancel" type="button">まとめ復旧の確認を取り消す</button></div>
     <p id="session-file-note" class="small" role="status" aria-live="polite"></p>
-    <p id="session-export-status" role="status" aria-live="polite" class="small"></p><p id="session-status" role="status" aria-live="polite"></p><p id="session-source" class="small"></p>
+    <p id="session-export-status" role="status" aria-live="polite" class="small"></p><p id="session-status" tabindex="-1" role="status" aria-live="polite"></p><p id="session-source" class="small"></p>
     <div id="session-review" hidden><p id="session-summary"></p><div id="session-workspace-details"></div>
       <div class="table-wrap"><table><caption>比較ケース集の置き換え内容</caption><thead><tr><th>ID</th><th>操作</th><th>現在</th><th>復旧後</th><th>入力の変更</th></tr></thead><tbody id="session-cases"></tbody></table></div>
     </div>
@@ -173,7 +173,7 @@
     <p class="small">IDは英数字で始め、英数字・ハイフン・アンダースコアを使えます。同じIDへの上書きは「置き換える前に確認」を選びます。</p>
     <div class="actions"><button id="scenario-set-add" type="button" disabled>比較ケースの追加前に確認</button><button id="scenario-set-replace" type="button" disabled>比較ケースを置き換える前に確認</button><button id="scenario-set-rename" type="button">ケースの名前変更を確認</button><button id="scenario-set-remove" type="button">ケースの削除を確認</button></div>
     <p id="scenario-set-file-note" class="small" role="status" aria-live="polite"></p>
-    <p id="scenario-set-status" role="status" aria-live="polite"></p><p id="scenario-set-source" class="small"></p>
+    <p id="scenario-set-status" tabindex="-1" role="status" aria-live="polite"></p><p id="scenario-set-source" class="small"></p>
     <div id="scenario-set-review" hidden><p id="scenario-set-preview"></p><div class="table-wrap"><table><caption>確定前のケース集の変更</caption><thead><tr><th>ID</th><th>現在</th><th>変更後</th></tr></thead><tbody id="scenario-set-changes"></tbody></table></div></div>
     <div class="actions"><button id="scenario-set-apply" type="button" disabled>確認したケース集の変更を確定</button><button id="scenario-set-cancel" type="button">ケース集の変更確認を取り消す</button><button id="scenario-set-undo" type="button" disabled>ケース集の直前の変更を取り消す</button></div>
     <p class="small">ケース集だけの変更は最大10回取り消せます。現在の試算履歴を変更したり、実際の操作を実行したりする機能ではありません。</p>

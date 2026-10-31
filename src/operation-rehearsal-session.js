@@ -83,6 +83,7 @@ export function createRehearsalSession(initialAgent="DAT"){
     const review=Object.freeze({document,comparison});pending={review,next,base};return review;
   }
   return Object.freeze({...proxies,snapshot,preview,
+    isCurrentReview(review){return !disposed&&Boolean(pending)&&pending.review===review&&pending.base===current;},
     commit(review){active();if(!pending||pending.review!==review||pending.base!==current)fail("STALE_REVIEW");
       const previous=current;current=pending.next;pending=null;revision++;disposePair(previous);
       // A view may perform another edit or dispose the session during delivery.
