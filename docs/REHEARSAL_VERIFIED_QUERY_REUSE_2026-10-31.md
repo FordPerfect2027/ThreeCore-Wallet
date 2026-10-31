@@ -1,0 +1,15 @@
+# Reuse verified search criteria against current rehearsal inputs
+
+Item 506. Source: `78fafd0`.
+
+A freshly verified V1/V2/V3 record-query report or record-summary report can supply search criteria to the current record browser. The explicit action retains agent, kind, decision, normalized search text, stored/recorded/both scope and exact reason. It resets paging and related-navigation Back, then recalculates against the current workspace. It never restores the older report's inputs. Original source and verification remain available. Zero current matches are valid even when the old report matched records. Invalid criteria are validated before any filter changes; a newer source/disposal/focus callback retires old success reporting.
+
+Query reuse requires a receipt owned by the reviewer, successful recomputation and a matching optional expected checksum. Copied receipts, changed results and non-query report formats cannot authorize it. The UI hides the action when there is no current-record consumer. False, throwing or asynchronous callback results cannot claim success, and source edits/clearing/disposal retire the action.
+
+The offline equivalent is `node scripts/replay-rehearsal-query.js saved-query-report.json current-workspace.json [--sha256 HEX] [--format json|csv] [--view records|summary]`. It reads only the two explicit local inputs and emits a V3 query report or per-agent summary from the current input. CSV is a viewing artifact. Duplicate/invalid options are refused. Exit 0 emits output, 2 refuses failed verification or unsupported query source, and 1 reports malformed input. No partial output is written on refusal; neither original is changed. The old and current data are deliberately different in the saved evidence.
+
+## Validation
+
+101 focused checks passed (3179.7106 ms). Related rehearsal, file-boundary and HTTP checks: 1,618 passed, zero failed/skipped/cancelled (76417.2623 ms). Native Chrome: all 920 cases passed at this source in two reconciled isolated profiles with cleanup. The new native workflow starts with an older EMA settlement, replaces the current EMA scenario with a pending input, reuses the old settlement filter, observes zero matches, and confirms byte-identical current-session preservation and cleared-action retirement. Captured download callbacks do not establish user-tab control or native file-dialog operation.
+
+[Evidence](evidence/2026-10-31-verified-query-reuse/) contains old/current inputs, the older verified query, normalized criteria, JSON/CSV current results, independent reviews, zero-output refusal capture, logs and SHA-256 hashes. Committed Git bytes are checked after recording. This is one completed workflow; tests and repeated runs do not add items. Small format-help updates cover the preceding summary/prefix formats and add no item. Prior full-run limitations remain documented; the last clean full-wallet checkpoint remains c94b3fe (15,294 tests). No signatures, transfers, approvals, keys, external RPC, publication, deployment or restart of the existing server occurred. The count is not mainnet readiness.

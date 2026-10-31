@@ -1,0 +1,81 @@
+{
+  "schema": "threecore.operation-rehearsal-record-query.v3",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "inputs": {
+    "schema": "threecore.operation-rehearsal-workspace.v1",
+    "simulationOnly": true,
+    "activeAgent": "EMA",
+    "ledgers": [
+      {
+        "schema": "threecore.operation-rehearsal.v2",
+        "simulationOnly": true,
+        "agent": "EMA",
+        "chainId": 84532,
+        "account": "0x2222222222222222222222222222222222222222",
+        "asset": {
+          "address": "0x4444444444444444444444444444444444444444",
+          "symbol": "SIM",
+          "decimals": 6
+        },
+        "openingBalance": "1000000000",
+        "policy": {
+          "origin": "https://training.example",
+          "spender": "0x5555555555555555555555555555555555555555",
+          "maxPerOperation": "100000000",
+          "maxOutstanding": "200000000",
+          "reserveFloor": "200000000",
+          "lossLimit": "250000000",
+          "buybackBps": 1000,
+          "paused": false,
+          "maxEntryFee": "3000000",
+          "maxExitFee": "5000000"
+        },
+        "events": [
+          {
+            "id": "open-one",
+            "kind": "open",
+            "agent": "EMA",
+            "chainId": 84532,
+            "account": "0x2222222222222222222222222222222222222222",
+            "operationId": "one",
+            "origin": "https://training.example",
+            "spender": "0x5555555555555555555555555555555555555555",
+            "principal": "100000000",
+            "fee": "1000000",
+            "exitFeeReserve": "2000000"
+          }
+        ]
+      }
+    ]
+  },
+  "query": {
+    "agent": "EMA",
+    "kind": "settle",
+    "decision": "all",
+    "search": "",
+    "searchScope": "stored",
+    "reason": "all"
+  },
+  "subjects": [
+    {
+      "agent": "DAT",
+      "present": false,
+      "recordCount": null
+    },
+    {
+      "agent": "EMA",
+      "present": true,
+      "recordCount": 1
+    },
+    {
+      "agent": "CAWELON",
+      "present": false,
+      "recordCount": null
+    }
+  ],
+  "totalRecords": 1,
+  "matchedRecords": 0,
+  "rows": []
+}
