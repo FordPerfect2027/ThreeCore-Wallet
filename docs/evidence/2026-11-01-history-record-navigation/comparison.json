@@ -1,0 +1,85 @@
+{
+  "schema": "threecore-portfolio-comparison-v1",
+  "historicalObservation": true,
+  "readOnly": true,
+  "authenticated": false,
+  "securityAudit": false,
+  "provesTransfers": false,
+  "provesProfit": false,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false,
+  "earlier": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "connectionEpoch": 1,
+    "blockNumber": "9007199254740991",
+    "blockHash": "0xabababababababababababababababababababababababababababababababab",
+    "nativeBalanceBaseUnits": "0",
+    "holdings": [
+      {
+        "address": "0x3333333333333333333333333333333333333333",
+        "hasCode": false,
+        "balanceBaseUnits": null,
+        "notice": "TOKEN_CODE_MISSING"
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  },
+  "later": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "connectionEpoch": 1,
+    "blockNumber": "9007199254740993",
+    "blockHash": "0xabababababababababababababababababababababababababababababababab",
+    "nativeBalanceBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+    "holdings": [
+      {
+        "address": "0x3333333333333333333333333333333333333333",
+        "hasCode": true,
+        "balanceBaseUnits": "42",
+        "notice": null
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  },
+  "comparison": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "earlierBlockNumber": "9007199254740991",
+    "earlierBlockHash": "0xabababababababababababababababababababababababababababababababab",
+    "laterBlockNumber": "9007199254740993",
+    "laterBlockHash": "0xabababababababababababababababababababababababababababababababab",
+    "sameBlock": false,
+    "native": {
+      "earlierBalanceBaseUnits": "0",
+      "laterBalanceBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "deltaBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "direction": "increased"
+    },
+    "holdings": [
+      {
+        "address": "0x3333333333333333333333333333333333333333",
+        "earlierBalanceBaseUnits": null,
+        "laterBalanceBaseUnits": "42",
+        "deltaBaseUnits": null,
+        "direction": "unknown",
+        "availability": "contract_code_missing"
+      }
+    ],
+    "historicalObservation": true,
+    "readOnly": true,
+    "securityAudit": false,
+    "provesTransfers": false,
+    "provesProfit": false,
+    "canAuthorizeConnection": false,
+    "canAuthorizeTransaction": false
+  }
+}

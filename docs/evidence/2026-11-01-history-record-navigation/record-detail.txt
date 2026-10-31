@@ -1,0 +1,9 @@
+過去の保存記録（現在の状態ではありません）
+DAT / 0x1111111111111111111111111111111111111111
+チェーン: 84532
+サイト: http://localhost:4184
+参照ブロック: 9007199254740991
+ブロックハッシュ: 0xabababababababababababababababababababababababababababababababab
+ETH残高（wei）: 0
+0x3333333333333333333333333333333333333333
+契約コードなし：残高は確認できません

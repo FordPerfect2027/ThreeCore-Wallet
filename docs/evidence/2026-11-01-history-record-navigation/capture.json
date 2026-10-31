@@ -1,0 +1,17 @@
+{
+  "source": "b3254c9",
+  "matchingSourceIndices": {
+    "before": 2,
+    "after": 0
+  },
+  "comparisonText": "保存記録の比較（現在の残高・送金履歴・利益の証明ではありません）\nDAT / 0x1111111111111111111111111111111111111111\nチェーン: 84532\n比較ブロック: 9007199254740991 → 9007199254740993\n前のブロックハッシュ: 0xabababababababababababababababababababababababababababababababab\n後のブロックハッシュ: 0xabababababababababababababababababababababababababababababababab\nETH残高差（wei）: +115792089237316195423570985008687907853269984665640564039457584007913129639935\n0x3333333333333333333333333333333333333333\n契約コードがなく比較できません\n資産間の合算・価格換算は行っていません。",
+  "status": "同じアカウント・チェーン・サイトの直前の保存記録と比較しました。間のブロックをすべて確認したという意味ではありません。",
+  "noMatchingPredecessor": "同じアカウント・チェーン・サイトの、さらに前の記録はありません。",
+  "exactUiApi": true,
+  "historyUnchanged": true,
+  "synthetic": true,
+  "nativeBrowserCases": 986,
+  "externalRpcCalls": 0,
+  "osPickerVerified": false,
+  "userWalletConnectionVerified": false
+}
