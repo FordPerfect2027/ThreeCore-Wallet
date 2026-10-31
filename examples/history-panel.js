@@ -5,7 +5,7 @@ import { mountHistoryFiles, offerHistoryDownload } from "./history-files.js";
 import { createPortfolioHistory, HISTORY_TEXT_LIMIT } from "../src/portfolio-history.js";
 import { createHistoryImportController } from "../src/history-import-controller.js";
 import { describePortfolioHistory } from "../src/portfolio-history-summary.js";
-import { decodePortfolioReport, validatePortfolioSnapshot, encodePortfolioReport } from "../src/portfolio-report.js";
+import { decodePortfolioReport, validatePortfolioSnapshot, encodePortfolioReport, describePortfolioObservation } from "../src/portfolio-report.js";
 import { describePortfolioComparison, encodePortfolioComparisonReport } from "../src/portfolio-comparison.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { observeCallbackResult } from "../src/security-callback.js";
@@ -90,6 +90,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   const last = element("select", "history-last");
   last.setAttribute("aria-label", "履歴比較の後の記録・削除対象");
   const details = element("pre", "history-details");
+  details.setAttribute("tabindex", "-1"); details.setAttribute("aria-label", "保存履歴の詳細・比較");
   const json = element("textarea", "history-json");
   json.rows = 5;
   json.maxLength = HISTORY_TEXT_LIMIT;
@@ -141,7 +142,13 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   });
   apply.disabled = true;
   function clearComparison() { completedComparison = null; details.textContent = ""; saveComparison.disabled = true; }
-  const compare = button("history-compare", "選択した2件を比較", () => {
+  function selectedAfter() {
+    const state = history.state(), value = last.value;
+    if (state.revision !== renderedRevision || !/^(0|[1-9][0-9]*)$/.test(value)) throw Error("Stale record selection");
+    const index = Number(value); if (!Number.isSafeInteger(index) || index >= state.size) throw Error("Invalid record selection");
+    return { state, value, index, snapshot: state.snapshots[index] };
+  }
+  function compareSelected() {
     clearComparison();
     if (![first.value, last.value].every(value => /^(0|[1-9][0-9]*)$/.test(value))) throw Error("Invalid record selection");
     const before = Number(first.value), after = Number(last.value);
@@ -151,6 +158,20 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     completedComparison = { revision: state.revision, before: first.value, after: last.value, earlier: state.snapshots[before], later: state.snapshots[after] };
     saveComparison.disabled = false;
     status.textContent = "過去の2記録を比較しています。送金履歴や利益ではありません。";
+  }
+  const compare = button("history-compare", "選択した2件を比較", compareSelected);
+  const previous = button("history-compare-previous", "同じ対象の一つ前の記録と比較", () => {
+    clearComparison(); const selected = selectedAfter();
+    const group = history.groups().find(value => value.indices.includes(selected.index)), position = group?.indices.indexOf(selected.index);
+    if (!(position > 0)) { status.textContent = "同じアカウント・チェーン・サイトの、さらに前の記録はありません。"; return; }
+    first.value = String(group.indices[position - 1]); compareSelected();
+    status.textContent = "同じアカウント・チェーン・サイトの直前の保存記録と比較しました。間のブロックをすべて確認したという意味ではありません。";
+  });
+  const showRecord = button("history-show-record", "選択した後の記録の詳細を表示", id => {
+    clearComparison(); const { snapshot } = selectedAfter();
+    details.textContent = "過去の保存記録（現在の状態ではありません）\n" + describePortfolioObservation(snapshot);
+    status.textContent = "選択した1記録を表示しています。現在の確認結果・履歴・接続は変更していません。";
+    if (current(id)) { try { details.focus?.(); } catch {} }
   });
   const saveComparison = button("history-save-comparison", "この2件の比較を資料付きで保存", id => {
     const selected = completedComparison;
@@ -169,10 +190,8 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     changed("選択した記録を履歴から削除しました。");
   });
   const saveRecord = button("history-save-record", "選択した後の記録を単独で保存", id => {
-    const state = history.state(), value = last.value;
-    if (state.revision !== renderedRevision || !/^(0|[1-9][0-9]*)$/.test(value)) throw Error("Stale record selection");
-    const index = Number(value); if (!Number.isSafeInteger(index) || index >= state.size) throw Error("Invalid record selection");
-    const snapshot = checkAgent(state.snapshots[index]); if (!current(id)) return;
+    const { state, value, snapshot: selected } = selectedAfter();
+    const snapshot = checkAgent(selected); if (!current(id)) return;
     const prepared = { text: encodePortfolioReport(snapshot), filename: `ThreeCore-${agent}-portfolio-${snapshot.blockNumber}.json`, mimeType: "application/json;charset=utf-8", containsOriginalEvidence: true, restorable: false };
     if (history.state().revision !== state.revision || last.value !== value) return;
     const result = download({ document, prepared }), kind = observeCallbackResult(result);
@@ -208,7 +227,8 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
       }
     });
     if (state.size) last.value = String(state.size - 1);
-    first.disabled = last.disabled = compare.disabled = remove.disabled = saveRecord.disabled = !state.size;
+    first.disabled = last.disabled = compare.disabled = remove.disabled = saveRecord.disabled = showRecord.disabled = !state.size;
+    previous.disabled = state.size < 2;
     clear.disabled = !state.size;
     recoveryPanel?.refresh();
   }
@@ -224,7 +244,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   listen(json, "input", () => { filesPanel?.invalidate(); cancelReview(); status.textContent = "JSONが変わりました。再度プレビューしてください。"; });
   listen(replace, "change", () => { filesPanel?.invalidate(); cancelReview(); });
   section.append(heading, note, addCurrent, addReport, status, list,
-    label("前の記録", first), label("後の記録・削除対象", last), compare, saveComparison, remove, saveRecord, timeline,
+    label("前の記録", first), label("後の記録・削除対象", last), showRecord, compare, previous, saveComparison, remove, saveRecord, timeline,
     details, exportButton, label("保存・読み込み用の履歴JSON", json),
     label("既存履歴を置き換える（未選択なら追加）", replace), previewButton, previewText, apply,
     label("このカードの全履歴を消去することを確認", clearConfirm), clear);

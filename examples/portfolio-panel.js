@@ -2,7 +2,7 @@ import { mountHistoryPanel } from "./history-panel.js";
 import { mountComparisonPanel } from "./comparison-panel.js";
 import { mountTokenPlanPanel } from "./token-plan-panel.js";
 import { createPortfolioProgressTracker, portfolioFailureStatus } from "../src/portfolio-progress.js";
-import { encodePortfolioReport, decodePortfolioReport } from "../src/portfolio-report.js";
+import { encodePortfolioReport, decodePortfolioReport, describePortfolioObservation } from "../src/portfolio-report.js";
 import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { readSecurityFileText } from "../src/security-file.js";
@@ -97,19 +97,7 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
   }
   function show(snapshot, historical) {
     comparison.setTarget(snapshot);
-    const lines = [
-      historical ? "過去の保存記録（現在の状態ではありません）" : "今回の確認結果",
-      snapshot.agent + " / " + snapshot.account,
-      "チェーン: " + snapshot.chainId,
-      "参照ブロック: " + snapshot.blockNumber,
-      "ブロックハッシュ: " + snapshot.blockHash,
-      "ETH残高（wei）: " + snapshot.nativeBalanceBaseUnits,
-    ];
-    for (const row of snapshot.holdings) {
-      lines.push(row.address);
-      lines.push(row.hasCode ? "残高（最小単位）: " + row.balanceBaseUnits : "契約コードなし：残高は確認できません");
-    }
-    details.textContent = lines.join("\n");
+    details.textContent = (historical ? "過去の保存記録（現在の状態ではありません）" : "今回の確認結果") + "\n" + describePortfolioObservation(snapshot);
   }
   function invalidate(message = STATUS.idle, preserveTokenPlan = false) {
     if (disposed) return null;
