@@ -192,6 +192,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.wallet-saved-browser-batch.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v2": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v3": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
+  "threecore.wallet-saved-browser-batch.v4": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-batch-inspection.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.saved-file-comparison-bundle.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_ONLY"],
   "threecore.saved-file-comparison-bundle-review.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY"],
@@ -665,6 +666,7 @@ export function walletSavedBundleReviewText(value) {
 export const WALLET_SAVED_BROWSER_BATCH_LIMITS = Object.freeze({ files: 20, fileBytes: 16 * 1024 * 1024, totalBytes: 64 * 1024 * 1024 });
 export const WALLET_SAVED_BATCH_MANIFEST_LIMIT = 16384;
 const browserSavedBatchReceipts = new WeakSet();
+const browserSavedFileBatchSelections = new WeakMap();
 export function validateWalletSavedBatchSelection(input) {
   try {
     const names = new Set(); let totalBytes = 0;
@@ -723,7 +725,7 @@ async function inspectSavedBatchRow(row, { subtle, signal, timeoutMs, expectedSh
     ...(expectedSha256 !== undefined ? { expectedSha256, checksumMatches } : {}) });
 }
 
-function finishSavedBatch(rows, selection, completed, phase, referenceText, reference, referenceSha256, fileReads = false) {
+function finishSavedBatch(rows, selection, completed, phase, referenceText, reference, referenceSha256, fileReads = false, continuation = null) {
   const hasReference = reference !== null;
   const files = rows.map((row, i) => completed[i] ?? Object.freeze({ name: row.name, byteLength: fileReads ? null : row.byteLength,
     ...(fileReads ? { reportedByteLength: row.byteLength } : {}), sha256: null, status: "pending", code: null, inspection: null,
@@ -736,8 +738,9 @@ function finishSavedBatch(rows, selection, completed, phase, referenceText, refe
     ...(unknownSourceBytes ? { sourceUnavailable: count("source-unavailable"), selectedReportedBytes: selection.totalBytes, unreadSourceReportedBytes: files.reduce((total, row) => total + (row.reportedByteLength ?? 0), 0) } : {}),
     ...(count("validated-structure") ? { structureValidated: count("validated-structure") } : {}),
     ...(files.some(row => row.inspection?.simulationOnly === true) ? { simulationFiles: files.filter(row => row.inspection?.simulationOnly === true).length } : {}) });
-  const result = Object.freeze({ schema: "threecore.wallet-saved-browser-batch." + (unknownSourceBytes ? "v3" : hasReference ? "v2" : "v1"), readOnly: true, authenticatesOrigin: false, authorizesExecution: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, externalChecksumsCompared: hasReference && summary.checksumsCompared > 0,
+  const result = Object.freeze({ schema: "threecore.wallet-saved-browser-batch." + (continuation ? "v4" : unknownSourceBytes ? "v3" : hasReference ? "v2" : "v1"), readOnly: true, authenticatesOrigin: false, authorizesExecution: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, externalChecksumsCompared: hasReference && summary.checksumsCompared > 0,
     phase, complete: phase === "complete" && completed.length === rows.length, allOriginalsValidated: phase === "complete" && summary.validatedOriginals === rows.length, summary, files: Object.freeze(files),
+    ...(continuation ? { continuation: Object.freeze(continuation) } : {}),
     ...(hasReference ? { referenceProvided: true, reference: Object.freeze({ text: referenceText, sha256: referenceSha256, entries: reference }), allExternalChecksumsMatch: phase === "complete" && summary.checksumsMatching === rows.length } : {}) });
   browserSavedBatchReceipts.add(result); return result;
 }
@@ -794,21 +797,43 @@ function waitSavedBatchSource(read, signal) {
 /** Sequential trusted reader adapter: finish each file before starting the next. */
 export async function inspectWalletSavedFileBatch(input, readSource, options = {}) {
   const selection = validateWalletSavedBatchSelection(input);
+  return inspectSavedFileBatchCaptured(selection, readSource, options);
+}
+
+/** Only the current module's unfinished file reads can be continued, never uploaded claims. */
+export function canResumeWalletSavedFileBatch(previous) {
+  return browserSavedFileBatchSelections.has(previous) && ["cancelled", "timed-out"].includes(previous.phase) && previous.summary.pending > 0;
+}
+export async function resumeWalletSavedFileBatch(previous, readSource, options = {}) {
+  if (!canResumeWalletSavedFileBatch(previous)) savedInspectionFail("FILE_BATCH_RESUME");
+  try { options = captureOptionalDataFields(options, ["subtle", "signal", "timeoutMs", "onProgress", "manifestText"]); } catch { savedInspectionFail("FILE_BATCH_OPTIONS"); }
+  if (Object.hasOwn(options, "manifestText")) savedInspectionFail("FILE_BATCH_OPTIONS");
+  return inspectSavedFileBatchCaptured(browserSavedFileBatchSelections.get(previous), readSource,
+    { ...options, ...(previous.referenceProvided ? { manifestText: previous.reference.text } : {}) }, previous);
+}
+async function inspectSavedFileBatchCaptured(selection, readSource, options, previous = null) {
   try { options = captureOptionalDataFields(options, ["subtle", "signal", "timeoutMs", "onProgress", "manifestText"]); } catch { savedInspectionFail("FILE_BATCH_OPTIONS"); }
   const { subtle = globalThis.crypto?.subtle, signal, timeoutMs = 120000, onProgress } = options;
   if (typeof readSource !== "function" || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000 || (onProgress !== undefined && typeof onProgress !== "function")) savedInspectionFail("FILE_BATCH_OPTIONS");
   const reference = options.manifestText === undefined ? null : matchWalletSavedBatchManifest(selection.files, options.manifestText);
-  const completed = [], local = new AbortController(); let phase = "complete", timer, subscription, referenceSha256 = null;
+  const completed = previous ? previous.files.slice(0, previous.summary.checked) : [], startAt = completed.length, local = new AbortController();
+  let phase = "complete", timer, subscription, referenceSha256 = previous?.reference?.sha256 ?? null;
+  const continuation = previous ? { sequence: (previous.continuation?.sequence ?? 0) + 1, retainedChecks: startAt, previousPhase: previous.phase, previousBatchSha256: null } : null;
   const stop = reason => { if (!readAbortState(local.signal)) { phase = reason; local.abort(); } };
   const progress = () => consumeCallback(() => onProgress?.(Object.freeze({ selected: selection.files.length, checked: completed.length })));
   try {
     try { subscription = subscribeReadAbort(signal, () => stop("cancelled")); } catch { savedInspectionFail("FILE_BATCH_SIGNAL"); }
     timer = setTimeout(() => stop("timed-out"), timeoutMs); progress();
-    if (reference && !readAbortState(local.signal)) {
+    if (continuation && !readAbortState(local.signal)) {
+      try { continuation.previousBatchSha256 = await sha256Hex(new TextEncoder().encode(encodeWalletSavedTextBatch(previous)), subtle, { signal: local.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
+      catch { if (!readAbortState(local.signal)) savedInspectionFail("FILE_BATCH_RESUME_HASH_UNAVAILABLE"); }
+    }
+    if (reference && referenceSha256 === null && !readAbortState(local.signal)) {
       try { referenceSha256 = await sha256Hex(new TextEncoder().encode(options.manifestText), subtle, { signal: local.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
       catch { if (!readAbortState(local.signal)) savedInspectionFail("FILE_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
     }
     for (const [index, row] of selection.files.entries()) {
+      if (index < startAt) continue;
       if (readAbortState(local.signal)) break;
       let text;
       try {
@@ -826,7 +851,8 @@ export async function inspectWalletSavedFileBatch(input, readSource, options = {
       const checked = await inspectSavedBatchRow({ ...row, text }, { subtle, signal: local.signal, timeoutMs, expectedSha256: reference ? reference[index].expectedSha256 : undefined });
       if (readAbortState(local.signal) || !checked) break; completed.push(checked); progress();
     }
-    return finishSavedBatch(selection.files, selection, completed, phase, options.manifestText, reference, referenceSha256, true);
+    const result = finishSavedBatch(selection.files, selection, completed, phase, options.manifestText, reference, referenceSha256, true, continuation);
+    browserSavedFileBatchSelections.set(result, selection); return result;
   } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
 }
 export function encodeWalletSavedTextBatch(result) {
@@ -844,9 +870,13 @@ export function encodeWalletSavedTextBatchCsv(result) {
   if (!browserSavedBatchReceipts.has(result)) savedInspectionFail("FILE_BATCH_RESULT");
   const rows = [["readOnly", "authenticatesOrigin", "authorizesExecution", "restorable", "liveChainRechecked", "atomicSnapshot", "phase", "complete", "allOriginalsValidated", "referenceProvided", "referenceSha256", "allExternalChecksumsMatch", "selected", "checked", "pending", "name", "byteLength", "status", "code", "sha256", "expectedSha256", "checksumMatches", "sourceSchema", "internalChecksumVerified", "draftReferences", "incompleteDraftReferences", "restrictedEntryReferences", "agents", "repeatedReferencesMayExist"]];
   for (const row of result.files) { const i = row.inspection, s = i?.scope; rows.push([true, false, false, false, false, false, result.phase, result.complete, result.allOriginalsValidated, result.referenceProvided ?? false, result.reference?.sha256 ?? "", result.allExternalChecksumsMatch ?? "", result.summary.selected, result.summary.checked, result.summary.pending, row.name, row.byteLength ?? "", row.status, row.code ?? "", row.sha256 ?? "", row.expectedSha256 ?? "", row.checksumMatches ?? "", i?.sourceSchema ?? "", i?.checksumVerified ?? "", s?.draftReferences ?? "", s?.incompleteDraftReferences ?? "", s?.restrictedEntryReferences ?? "", s?.agents.join(" | ") ?? "", s?.repeatedReferencesMayExist ?? ""]); }
-  if (result.schema === "threecore.wallet-saved-browser-batch.v3") {
+  if (Object.hasOwn(result.summary, "sourceUnavailable")) {
     rows[0].push("reportedByteLength", "sourceUnavailable", "selectedReportedBytes", "unreadSourceReportedBytes");
     result.files.forEach((row, index) => rows[index + 1].push(row.reportedByteLength ?? "", result.summary.sourceUnavailable, result.summary.selectedReportedBytes, result.summary.unreadSourceReportedBytes));
+  }
+  if (result.continuation) {
+    rows[0].push("continuationSequence", "retainedChecks", "previousPhase", "previousBatchSha256");
+    for (const row of rows.slice(1)) row.push(result.continuation.sequence, result.continuation.retainedChecks, result.continuation.previousPhase, result.continuation.previousBatchSha256 ?? "");
   }
   const extraFields = [...WALLET_SAVED_OBSERVATION_SCOPE_FIELDS, ...WALLET_SAVED_REHEARSAL_SCOPE_FIELDS].filter(field => result.files.some(row => row.inspection?.scope && Object.hasOwn(row.inspection.scope, field)));
   if (extraFields.length) {
