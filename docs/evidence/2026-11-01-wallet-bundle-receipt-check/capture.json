@@ -1,0 +1,40 @@
+{
+  "source": "e826829",
+  "synthetic": true,
+  "captures": [
+    {
+      "name": "faithful",
+      "exitCode": 0,
+      "matchesRecomputation": true,
+      "expectedBundleComparisonMatches": true,
+      "expectedSourceFilesAvailable": true,
+      "exactAPIMatch": true,
+      "receiptTextDigest": "eff07728fe4ab470a886e1e7bd3715ff18662f22e23f70c4a34120cc80167d58"
+    },
+    {
+      "name": "altered",
+      "exitCode": 2,
+      "matchesRecomputation": false,
+      "expectedBundleComparisonMatches": true,
+      "expectedSourceFilesAvailable": true,
+      "exactAPIMatch": true,
+      "receiptTextDigest": "2934c20fd4591cb4c3b124688a447a50a2453c0fd173652f19c0cb96fc76636b"
+    },
+    {
+      "name": "faithful-negative",
+      "exitCode": 0,
+      "matchesRecomputation": true,
+      "expectedBundleComparisonMatches": false,
+      "expectedSourceFilesAvailable": false,
+      "exactAPIMatch": true,
+      "receiptTextDigest": "6bbed2f33a988a1dcdc69c52a10a00d059b98dd85a177be9676f3e28acfda102"
+    }
+  ],
+  "fullBrowserCoverage": false,
+  "lastFullBrowserSource": "ccbbbe3",
+  "lastFullBrowserCases": 959,
+  "nativeFocus": "file-read",
+  "nativeFocusedCases": 112,
+  "userTabConnectionVerified": false,
+  "realProviderCalls": 0
+}
