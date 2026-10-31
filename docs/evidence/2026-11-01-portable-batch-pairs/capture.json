@@ -1,0 +1,90 @@
+{
+  "source": "075f47a",
+  "captures": [
+    {
+      "kind": "wallet",
+      "commands": [
+        {
+          "mode": "comparison",
+          "exitCode": 0
+        },
+        {
+          "mode": "extract-comparison",
+          "role": "before",
+          "name": "same.json",
+          "exitCode": 0,
+          "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce"
+        },
+        {
+          "mode": "extract-comparison",
+          "role": "after",
+          "name": "same.json",
+          "exitCode": 0,
+          "sha256": "b5cd7d2f1272f82f7ad490593ebcb0cad02ee5af65ecc5c452370bad395e7315"
+        },
+        {
+          "mode": "extract-comparison",
+          "role": "before",
+          "name": "日本語.json",
+          "exitCode": 0,
+          "sha256": "0b13c4a616210003a7061b4a90c35cf1d76a86c7795b5019a9c124ca1c3b7b09"
+        },
+        {
+          "mode": "extract-comparison-altered",
+          "exitCode": 2,
+          "stdoutBytes": 0
+        }
+      ],
+      "visibleRows": 2,
+      "summary": "保存資料の比較元2件／比較先2件／全2行を表示しています。上の一覧と比較元は保持しています。",
+      "sourceStatus": "日本語.json の保存を開始しました。ダウンロード先をご確認ください。元資料の判定と現在の履歴は変わりません。",
+      "currentComparisonUnchanged": true,
+      "realPickerVerified": false
+    },
+    {
+      "kind": "rehearsal",
+      "commands": [
+        {
+          "mode": "comparison",
+          "exitCode": 0
+        },
+        {
+          "mode": "extract-comparison",
+          "role": "before",
+          "name": "same.json",
+          "exitCode": 0,
+          "sha256": "2e1081c79a8474507703cb2e3e73da073cf970ff1a70aff2adb02de9ceb67029"
+        },
+        {
+          "mode": "extract-comparison",
+          "role": "after",
+          "name": "same.json",
+          "exitCode": 0,
+          "sha256": "6cf98666c1b678b1c7474fc4492120ebaa4d09137c3bdfb380100ce69c2d493d"
+        },
+        {
+          "mode": "extract-comparison",
+          "role": "before",
+          "name": "日本語.json",
+          "exitCode": 0,
+          "sha256": "0b13c4a616210003a7061b4a90c35cf1d76a86c7795b5019a9c124ca1c3b7b09"
+        },
+        {
+          "mode": "extract-comparison-altered",
+          "exitCode": 2,
+          "stdoutBytes": 0
+        }
+      ],
+      "visibleRows": 2,
+      "summary": "保存資料の比較元2件／比較先2件／全2行を表示しています。上の一覧と比較元は保持しています。",
+      "sourceStatus": "日本語.json の保存を開始しました。ダウンロード先をご確認ください。元資料の判定と現在の履歴は変わりません。",
+      "currentComparisonUnchanged": true,
+      "realPickerVerified": false
+    }
+  ],
+  "synthetic": true,
+  "nativeBrowserCases": 122,
+  "fullBrowserRun": false,
+  "userTabConnectionVerified": false,
+  "externalRpcCalls": 0
+}
