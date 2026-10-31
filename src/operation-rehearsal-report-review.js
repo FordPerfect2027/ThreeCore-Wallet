@@ -444,7 +444,7 @@ export function encodeRehearsalBatchComparison(result, format = "json") {
   return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";
 }
 export const REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT = 32 * 1024 * 1024;
-const rehearsalBatchComparisonEvidenceReviews = new WeakSet();
+const rehearsalBatchComparisonEvidenceReviews = new WeakMap();
 function batchComparisonEvidenceDocument(before, after) {
   return { schema: "threecore.operation-rehearsal-batch-comparison-evidence.v1", simulationOnly: true,
     sourceVerified: false, authorizesExecution: false, recordedProcessVerified: false,
@@ -482,11 +482,20 @@ export async function reviewRehearsalBatchComparisonEvidence(text, input = {}) {
     allSourceReportsMatch: before.allRecomputationsMatch && after.allRecomputationsMatch,
     simulationOnly: true, sourceVerified: false, authorizesExecution: false, automaticallyImported: false,
     recordedProcessVerified: false, containsOriginalEvidence: false, restorable: false });
-  rehearsalBatchComparisonEvidenceReviews.add(result); return result;
+  rehearsalBatchComparisonEvidenceReviews.set(result, Object.freeze({ before: batchEvidenceReviews.get(beforeReview), after: batchEvidenceReviews.get(afterReview), comparison: expected.comparison, beforeReview, afterReview })); return result;
 }
 export function encodeRehearsalBatchComparisonEvidenceReview(result) {
   if (!rehearsalBatchComparisonEvidenceReviews.has(result)) fail("REVIEW_BATCH_COMPARISON_RESULT");
   return JSON.stringify(result, null, 2) + "\n";
+}
+export function openReviewedRehearsalBatchComparisonEvidence(review) {
+  if (!rehearsalBatchComparisonEvidenceReviews.has(review) || !review.matchesRecomputation) fail("REVIEW_BATCH_COMPARISON_UNVERIFIED");
+  const { before, after, comparison } = rehearsalBatchComparisonEvidenceReviews.get(review); return Object.freeze({ before, after, comparison });
+}
+export function extractRehearsalBatchComparisonEvidenceSource(review, role, name) {
+  openReviewedRehearsalBatchComparisonEvidence(review);
+  if (!["before", "after"].includes(role)) fail("REVIEW_BATCH_COMPARISON_ROLE");
+  return extractRehearsalBatchEvidenceSource(rehearsalBatchComparisonEvidenceReviews.get(review)[role + "Review"], name);
 }
 
 export function canPrepareRehearsalBatchEvidence(result) {

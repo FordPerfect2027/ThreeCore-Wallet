@@ -187,6 +187,8 @@ const walletSavedTargets = Object.freeze({
   "threecore.saved-file-inspection.v2": [null, "PERIOD_FILE_INSPECTION_ONLY"],
   "threecore.wallet-saved-local-batch-comparison.v1": [null, "PERIOD_FILE_LOCAL_BATCH_COMPARISON_ONLY"],
   "threecore.wallet-saved-batch-evidence.v1": [null, "FILE_WALLET_BATCH_EVIDENCE_ONLY"],
+  "threecore.wallet-batch-comparison-evidence.v1": [null, "FILE_WALLET_COMPARISON_EVIDENCE_ONLY"],
+  "threecore.wallet-batch-comparison-evidence-review.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
   "threecore.wallet-saved-batch-evidence-review.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
   "threecore.operation-rehearsal-batch-evidence.v1": [null, "FILE_REHEARSAL_BATCH_EVIDENCE_ONLY"],
   "threecore.operation-rehearsal-batch-evidence-review.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
@@ -262,6 +264,7 @@ const walletSavedMessages = Object.freeze({
   FILE_WALLET_BATCH_EVIDENCE_ONLY: "複数の元ファイルと確認結果をまとめる資料の形式です。ここでは中身や結論を検証していません。『このファイルを一括資料として再確認』から確認できます。元ファイル合計24 MiB、保存資料48 MiBまでです。この案内欄の上限16 MiBを超える資料は、一括確認欄の『まとめて保存した資料を再確認』で直接選んでください。",
   FILE_REHEARSAL_BATCH_EVIDENCE_ONLY: "運用リハーサルの元資料と確認結果をまとめる資料の形式です。ここでは中身や結論を検証していません。運用リハーサルの『資料の再確認』内にある『元資料と結果を一つにまとめて保存・再確認』で選んでください。実際の入出金の証明や履歴の復元には使いません。",
   FILE_REHEARSAL_BATCH_COMPARISON_EVIDENCE_ONLY: "二組の運用リハーサル資料と比較をまとめた形式です。ここでは中身や結論を検証していません。運用リハーサルの『前回と今回の資料確認を比較する』内にある『二組の元資料と比較をまとめて保存・再確認』で選んでください。元資料や履歴を自動で取り込みません。",
+  FILE_WALLET_COMPARISON_EVIDENCE_ONLY: "二組のウォレット保存ファイルと比較をまとめた形式です。ここでは中身や結論を検証していません。一括確認の『二組の保存ファイルの変化を比較する』内の『二組の元ファイルと比較をまとめて保存・再確認』で選んでください。現在の履歴は変更しません。",
   FILE_BATCH_EVIDENCE_REVIEW_ONLY: "これはまとめて保存した資料の照合結果の控えです。元ファイルの内容は含まれません。再確認には、この控えではなく元ファイルをまとめた資料を使ってください。",
   PERIOD_FILE_SAVED_BATCH_COMPARISON_REVIEW_ONLY: "これは二組の一括比較を照合した控えです。元記録は含まれず、復元には使えません。両方の元のJSONと元の比較JSONを保全し、『保存した一括比較JSONを照合する』で確認してください。",
   PERIOD_FILE_SAVED_BATCH_COMPARISON_ONLY: "これは二組の保存ファイルを比較した控えです。元記録は含まれず、復元には使えません。両方の元のJSONと照合値一覧を保全し、一括確認で比較し直してください。",
@@ -1409,4 +1412,63 @@ export async function reviewWalletSavedBatchComparison(before, after, text, file
 export function encodeWalletSavedBatchComparisonReview(result) {
   if (!savedBatchComparisonReviews.has(result)) savedInspectionFail("FILE_BATCH_COMPARISON_REVIEW_RESULT");
   return JSON.stringify(result, null, 2) + "\n";
+}
+
+export const WALLET_BATCH_COMPARISON_EVIDENCE_LIMIT = 96 * 1024 * 1024;
+const walletBatchComparisonEvidenceReviews = new WeakMap();
+function walletBatchComparisonEvidenceDocument(before, after) {
+  return { schema: "threecore.wallet-batch-comparison-evidence.v1", readOnly: true, authenticated: false,
+    authorizesExecution: false, recordedProcessVerified: false, liveChainRechecked: false, atomicSnapshot: false,
+    before: savedBatchEvidenceDocument(before, browserSavedBatchSources.get(before)),
+    after: savedBatchEvidenceDocument(after, browserSavedBatchSources.get(after)), comparison: compareWalletSavedTextBatches(before, after) };
+}
+function walletBatchComparisonBudget(input) {
+  const options = savedBatchEvidenceOptions(input), started = Date.now(), limit = options.timeoutMs ?? 120000;
+  return () => { const remaining = limit - (Date.now() - started);
+    if (remaining < 1 || readAbortState(options.signal)) savedInspectionFail("FILE_BATCH_COMPARISON_INCOMPLETE");
+    return { ...options, timeoutMs: remaining }; };
+}
+/** Capture both exact source groups, recomputing a fresh snapshot without asserting past processing chronology. */
+export async function prepareWalletBatchComparisonEvidence(before, after, input = {}) {
+  if (!canPrepareWalletSavedBatchEvidence(before) || !canPrepareWalletSavedBatchEvidence(after)) savedInspectionFail("FILE_BATCH_COMPARISON_UNAVAILABLE");
+  const budget = walletBatchComparisonBudget(input);
+  const recompute = source => inspectWalletSavedTextBatch(browserSavedBatchSources.get(source), { ...budget(), ...(source.referenceProvided ? { manifestText: source.reference.text } : {}) });
+  const left = await recompute(before), right = await recompute(after); budget();
+  if (!canPrepareWalletSavedBatchEvidence(left) || !canPrepareWalletSavedBatchEvidence(right)) savedInspectionFail("FILE_BATCH_COMPARISON_INCOMPLETE");
+  const text = JSON.stringify(walletBatchComparisonEvidenceDocument(left, right), null, 2) + "\n";
+  try { boundedUtf8Length(text, WALLET_BATCH_COMPARISON_EVIDENCE_LIMIT); } catch { savedInspectionFail("FILE_BATCH_COMPARISON_SIZE"); } budget();
+  return Object.freeze({ text, filename: "ThreeCore-wallet-batch-comparison-evidence.json", mimeType: "application/json;charset=utf-8",
+    containsOriginalEvidence: true, encrypted: false, authenticated: false, authorizesExecution: false, restorable: false,
+    liveChainRechecked: false, atomicSnapshot: false, recordedProcessVerified: false });
+}
+export async function reviewWalletBatchComparisonEvidence(text, input = {}) {
+  const budget = walletBatchComparisonBudget(input); let parsed;
+  try { parsed = parseSecurityJson(text, { bytes: WALLET_BATCH_COMPARISON_EVIDENCE_LIMIT, depth: 40, nodes: 250000,
+    keyCharacters: 256, stringCharacters: WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes }); } catch { savedInspectionFail("FILE_BATCH_COMPARISON_JSON"); }
+  if (parsed?.schema !== "threecore.wallet-batch-comparison-evidence.v1") savedInspectionFail("FILE_BATCH_COMPARISON_SCHEMA");
+  const beforeReview = await reviewWalletSavedBatchEvidence(JSON.stringify(parsed.before), budget()), afterReview = await reviewWalletSavedBatchEvidence(JSON.stringify(parsed.after), budget());
+  const before = savedBatchEvidenceReviews.get(beforeReview).result, after = savedBatchEvidenceReviews.get(afterReview).result;
+  const expected = walletBatchComparisonEvidenceDocument(before, after), differences = Object.keys(expected).filter(key => !Object.hasOwn(parsed, key) || !sameSavedJSON(expected[key], parsed[key]));
+  const unexpectedFields = Object.keys(parsed).filter(key => !Object.hasOwn(expected, key)).length, options = budget();
+  const textDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, { signal: options.signal, timeoutMs: Math.min(options.timeoutMs, 30000) }); budget();
+  const result = Object.freeze({ schema: "threecore.wallet-batch-comparison-evidence-review.v1", textDigest,
+    matchesRecomputation: differences.length === 0 && unexpectedFields === 0 && beforeReview.matchesRecomputation && afterReview.matchesRecomputation,
+    differences: Object.freeze(differences), unexpectedFields, beforeEvidenceMatches: beforeReview.matchesRecomputation, afterEvidenceMatches: afterReview.matchesRecomputation,
+    comparisonMatches: sameSavedJSON(expected.comparison, parsed.comparison), beforeSummary: before.summary, afterSummary: after.summary, comparisonSummary: expected.comparison.summary,
+    allOriginalsValidated: before.allOriginalsValidated && after.allOriginalsValidated, readOnly: true, authenticated: false,
+    containsOriginalEvidence: false, authorizesExecution: false, automaticallyImported: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, recordedProcessVerified: false });
+  walletBatchComparisonEvidenceReviews.set(result, Object.freeze({ before: savedBatchEvidenceReviews.get(beforeReview), after: savedBatchEvidenceReviews.get(afterReview), comparison: expected.comparison, beforeReview, afterReview })); return result;
+}
+export function encodeWalletBatchComparisonEvidenceReview(result) {
+  if (!walletBatchComparisonEvidenceReviews.has(result)) savedInspectionFail("FILE_BATCH_COMPARISON_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
+}
+export function openReviewedWalletBatchComparisonEvidence(review) {
+  if (!walletBatchComparisonEvidenceReviews.has(review) || !review.matchesRecomputation) savedInspectionFail("FILE_BATCH_COMPARISON_UNVERIFIED");
+  const { before, after, comparison } = walletBatchComparisonEvidenceReviews.get(review); return Object.freeze({ before, after, comparison });
+}
+export function extractWalletBatchComparisonEvidenceSource(review, role, name) {
+  openReviewedWalletBatchComparisonEvidence(review);
+  if (!["before", "after"].includes(role)) savedInspectionFail("FILE_BATCH_COMPARISON_ROLE");
+  return extractWalletSavedBatchEvidenceSource(walletBatchComparisonEvidenceReviews.get(review)[role + "Review"], name);
 }

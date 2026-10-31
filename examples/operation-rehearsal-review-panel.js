@@ -1,10 +1,11 @@
 import { createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
-import { createFileSelectionNotice, mountBatchSourceExportPanel, mountSavedBundleReceiptCheckPanel, batchEvidenceReceiptCheckText, batchSelectionReviewText } from "./file-read-panel.js";
+import { createFileSelectionNotice, mountBatchSourceExportPanel, mountSavedBundleReceiptCheckPanel, batchEvidenceReceiptCheckText, batchSelectionReviewText, mountReviewedBatchComparisonPanel } from "./file-read-panel.js";
 import { reviewRehearsalBatchEvidenceReceipt, encodeRehearsalBatchEvidenceReceiptCheck } from "../src/operation-rehearsal-report-review.js";
 import { queryRehearsalBatchFiles, encodeRehearsalBatchSelection } from "../src/operation-rehearsal-report-review.js";
 import { reviewRehearsalBatchSelection, encodeRehearsalBatchSelectionReview, extractRehearsalBatchSelectionQuery } from "../src/operation-rehearsal-report-review.js";
 import { compareRehearsalBatches, encodeRehearsalBatchComparison } from "../src/operation-rehearsal-report-review.js";
 import { prepareRehearsalBatchComparisonEvidence, reviewRehearsalBatchComparisonEvidence, encodeRehearsalBatchComparisonEvidenceReview, REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT } from "../src/operation-rehearsal-report-review.js";
+import { openReviewedRehearsalBatchComparisonEvidence, extractRehearsalBatchComparisonEvidenceSource } from "../src/operation-rehearsal-report-review.js";
 import { createFileReadScope, readFormatFileName, readSecurityFileText } from "../src/security-file.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -132,6 +133,8 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
   const stop = node("button", "evidence-stop", "まとめた比較資料の処理を中止", evidence); stop.type = "button";
   const evidenceStatus = node("p", "evidence-status", "", evidence); evidenceStatus.setAttribute("role", "status"); evidenceStatus.setAttribute("aria-live", "polite");
   const reviewSave = node("button", "evidence-review-save", "まとめた比較資料の照合結果を保存", evidence); reviewSave.type = "button";
+  const viewer = mountReviewedBatchComparisonPanel({ document, parent: evidence, open: openReviewedRehearsalBatchComparisonEvidence,
+    extract: extractRehearsalBatchComparisonEvidenceSource, encodeComparison: encodeRehearsalBatchComparison, download: prepared => download({ document, prepared }) });
   const kinds = { "only-before": "比較元だけに選択", "only-after": "今回だけに選択", "unchanged": "同じ内容の照合値・同じ確認結果", "bytes-changed": "内容の照合値が変化", "result-changed": "同じ内容の照合値・確認結果が変化", "uncompared": "照合値がなく比較できない" };
   const states = { matched: "再計算と一致", different: "再計算と相違", invalid: "内容を確認できない", unsupported: "対象外の形式", "hash-unavailable": "照合値を計算できない", "source-unavailable": "読み込めない", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
   function render() {
@@ -139,6 +142,7 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
     evidenceAck.disabled = disposed || Boolean(active) || !canPrepareRehearsalBatchEvidence(baseline) || !canPrepareRehearsalBatchEvidence(current);
     evidenceSave.disabled = evidenceAck.disabled || !evidenceAck.checked; evidenceFile.disabled = disposed || Boolean(active); stop.disabled = disposed || !active || active.signal.aborted;
     reviewSave.disabled = disposed || Boolean(active) || !evidenceReview; evidence.setAttribute("aria-busy", String(Boolean(active)));
+    viewer.updateReview(!disposed && !active && evidenceReview?.matchesRecomputation ? evidenceReview : null);
     baselineText.textContent = baseline ? `比較元: 全${baseline.summary.selected}件／未確認${baseline.summary.pending}件／再計算の相違${baseline.summary.differing}件／期待結果との差がある資料${baseline.summary.reportsWithFailedExpectations}件。` : "比較元はまだ保持していません。";
     summary.textContent = comparison ? `両方に選択${comparison.summary.bothSelected}件／比較元だけ${comparison.summary.onlyBefore}件／今回だけ${comparison.summary.onlyAfter}件。照合値の変化${comparison.summary.bytesChanged}件／同じ照合値で判定が変化${comparison.summary.resultChanged}件／比較できない${comparison.summary.uncompared}件。今回の再計算の相違${comparison.after.summary.differing}件／期待結果との差がある資料${comparison.after.summary.reportsWithFailedExpectations}件。` : baseline ? "比較元を保持しています。次の資料の確認結果を待っています。" : "上で資料を確認し、比較元として保持してください。";
     if (comparison) { const s = comparison.after.summary; summary.textContent += ` 今回の内容・形式・照合値・読み込みの問題${s.invalid + s.unsupported + s.hashUnavailable + (s.checksumMismatches ?? 0) + (s.sourceUnavailable ?? 0)}件／未確認${s.pending}件。表示で隠れた行も含む全体の件数です。`; }
@@ -169,7 +173,7 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
     finally { const cancelled = job.signal.aborted; job.abort(); if (!disposed && own === revision) { active = null; if (cancelled && /^(二組の元資料と保存された比較を再確認|二組の元資料から、新しい確認結果と比較を作って)/.test(evidenceStatus.textContent)) evidenceStatus.textContent = "まとめた比較資料の処理を中止しました。現在の一覧と比較元は保持しています。"; render(); } }
   }
   listen(evidenceSave, "click", () => { void evidenceJob(); });
-  listen(evidenceFile, "change", () => { if (!disposed && !active && evidenceFile.files?.length === 1) void evidenceJob(evidenceFile.files[0]); });
+  listen(evidenceFile, "change", () => { const chosen = evidenceFile.files?.length === 1 ? evidenceFile.files[0] : null; evidenceFile.value = ""; if (!disposed && !active && chosen) void evidenceJob(chosen); });
   listen(stop, "click", () => { if (!disposed && active) { active.abort(); render(); } });
   listen(reviewSave, "click", () => {
     if (disposed || active || !evidenceReview) return; const own = revision, review = evidenceReview;
@@ -184,7 +188,7 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
     } catch { if (!disposed && own === revision && captured === comparison) status.textContent = "比較結果を保存できませんでした。二組の結果は保持しています。"; }
   });
   render(); return Object.freeze({ updateCurrent(value) { if (disposed || value === current) return; if (value !== null) compareRehearsalBatches(value, value); current = value; refresh(); },
-    getState: () => Object.freeze({ baseline, current, comparison, evidenceReview, busy: Boolean(active), disposed }), dispose() { if (disposed) return; disposed = true; ++revision; const old = active; active = null; old?.abort(); baseline = current = comparison = evidenceReview = null; listeners.forEach(remove => remove()); host.remove(); } });
+    getState: () => Object.freeze({ baseline, current, comparison, evidenceReview, busy: Boolean(active), disposed }), dispose() { if (disposed) return; disposed = true; ++revision; const old = active; active = null; old?.abort(); baseline = current = comparison = evidenceReview = null; viewer.dispose(); listeners.forEach(remove => remove()); host.remove(); } });
 }
 
 /** Independent file-only review. It receives no live workspace writer. */
