@@ -1,0 +1,27 @@
+{
+  "source": "ac20b03",
+  "synthetic": true,
+  "providerCalls": 0,
+  "storageWrites": 0,
+  "reason": {
+    "allRecords": 6,
+    "matchedRecords": 1,
+    "exactReason": "WRONG_ACCOUNT",
+    "jsonAndCsvCliMatch": true
+  },
+  "reference": {
+    "allRelatedRows": 3,
+    "rejectedRows": 1,
+    "cliCsvMatches": true,
+    "unsafeIntegerConvertedToNumber": false
+  },
+  "recovery": {
+    "allThreeAgentsPreserved": true,
+    "matchedAndSharedOutputIdentical": true,
+    "originalWorkspaceUnchanged": true,
+    "alteredOutputBytes": 0,
+    "wrongChecksumOutputBytes": 0,
+    "ambiguousOutputBytes": 0,
+    "restoresLiveState": false
+  }
+}
