@@ -1,0 +1,21 @@
+{
+  "fromBlockExclusive": "10",
+  "toBlockInclusive": "20",
+  "expectedBlocks": "10",
+  "coveredBlocks": "2",
+  "missingBlocks": "8",
+  "ranges": [
+    {
+      "fromBlock": "11",
+      "toBlock": "12"
+    }
+  ],
+  "gaps": [
+    {
+      "fromBlock": "13",
+      "toBlock": "20"
+    }
+  ],
+  "queriedEveryBlock": false,
+  "provesCompleteHistory": false
+}

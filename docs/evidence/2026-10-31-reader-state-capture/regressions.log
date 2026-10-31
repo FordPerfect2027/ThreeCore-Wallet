@@ -1,0 +1,38 @@
+✔ history filters use their captured own values when a property trap offers another account (16.7833ms)
+✔ history filter reflection failure is a public query error (2.6161ms)
+✔ coverage rejects an array-provided map before it can substitute different ranges (1.4474ms)
+✔ coverage captures range fields without property-read traps (1.1194ms)
+✔ coverage rejects accessor slots, accessor endpoints and revoked arrays with public errors (1.1221ms)
+✔ portfolio rejects state field accessors before any provider call (8.7694ms)
+✔ portfolio uses captured capabilities instead of a misleading get trap (1.1365ms)
+✔ portfolio captures valid descriptors without executing property-read traps (5.5169ms)
+✔ portfolio maps a throwing state adapter to its public error (1.0569ms)
+✔ portfolio permits unrelated state metadata without reading its accessor (2.1084ms)
+✔ identity rejects state field accessors before any provider call (1.8238ms)
+✔ identity uses captured capabilities instead of a misleading get trap (0.654ms)
+✔ identity captures valid descriptors without executing property-read traps (6.9805ms)
+✔ identity maps a throwing state adapter to its public error (0.7598ms)
+✔ identity permits unrelated state metadata without reading its accessor (2.3593ms)
+✔ allowance rejects state field accessors before any provider call (2.0004ms)
+✔ allowance uses captured capabilities instead of a misleading get trap (0.7128ms)
+✔ allowance captures valid descriptors without executing property-read traps (4.846ms)
+✔ allowance maps a throwing state adapter to its public error (0.6897ms)
+✔ allowance permits unrelated state metadata without reading its accessor (5.8615ms)
+✔ transfer rejects state field accessors before any provider call (2.2394ms)
+✔ transfer uses captured capabilities instead of a misleading get trap (0.6931ms)
+✔ transfer captures valid descriptors without executing property-read traps (5.563ms)
+✔ transfer maps a throwing state adapter to its public error (0.6788ms)
+✔ transfer permits unrelated state metadata without reading its accessor (4.1035ms)
+✔ period rejects state field accessors before any provider call (4.0929ms)
+✔ period uses captured capabilities instead of a misleading get trap (1.1587ms)
+✔ period captures valid descriptors without executing property-read traps (61.4611ms)
+✔ period maps a throwing state adapter to its public error (0.5488ms)
+✔ period permits unrelated state metadata without reading its accessor (45.4291ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 617.588

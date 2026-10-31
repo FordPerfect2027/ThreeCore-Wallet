@@ -1,0 +1,44 @@
+{
+  "source": "b69f5e5",
+  "syntheticOnly": true,
+  "externalRpc": false,
+  "readers": [
+    {
+      "name": "portfolio",
+      "propertyGets": 0,
+      "syntheticReadCalls": 5
+    },
+    {
+      "name": "identity",
+      "propertyGets": 0,
+      "syntheticReadCalls": 6
+    },
+    {
+      "name": "allowance",
+      "propertyGets": 0,
+      "syntheticReadCalls": 11
+    },
+    {
+      "name": "transfer",
+      "propertyGets": 0,
+      "syntheticReadCalls": 9
+    },
+    {
+      "name": "period",
+      "propertyGets": 0,
+      "syntheticReadCalls": 48
+    }
+  ],
+  "queryPropertyGets": 0,
+  "rangePropertyGets": 0,
+  "existingEvidence": {
+    "manifests": 110,
+    "matchedManifests": 110,
+    "failedManifests": 0,
+    "files": 635,
+    "mismatchedFiles": 0,
+    "unreadableFiles": 0,
+    "verifiedBytes": 41623606,
+    "admittedBytes": 41623606
+  }
+}
