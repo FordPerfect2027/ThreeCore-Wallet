@@ -5,6 +5,7 @@ import { prepareReportSetComparisonEvidenceFile, reviewReportSetComparisonEviden
   prepareReportSetComparisonFile, REPORT_SET_COMPARISON_EVIDENCE_LIMIT } from "../src/report-set-export.js";
 import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-file.js";
 import { createReportSetController } from "../src/report-set-controller.js";
+import { setErrorText } from "../src/report-set-view.js";
 import { sequenceSet, demoSetHistory, historyMemory, sequenceHistory, clone, fileFrom, deferred } from "./helpers/report-set-fixtures.js";
 
 async function fixture() {
@@ -52,6 +53,16 @@ test("full source notes are preserved in evidence but excluded from the verifica
   const file = await prepareReportSetComparisonEvidenceFile(before, sequenceSet(demoSetHistory()));
   assert.match(file.text, /ORIGINAL_PRIVATE_NOTE/);
   assert.doesNotMatch(JSON.stringify(await reviewReportSetComparisonEvidence(file.text)), /ORIGINAL_PRIVATE_NOTE|balanceBaseUnits|transactionHash/);
+});
+test("misplaced embedded files describe a bundle-content error rather than redirecting the outer file", async () => {
+  const f = await fixture();
+  for (const field of ["beforeFileText", "afterFileText", "comparisonText"]) {
+    const data = JSON.parse(f.file.text); data[field] = JSON.stringify({ schema: "threecore.period-file.v1" });
+    await assert.rejects(reviewReportSetComparisonEvidence(JSON.stringify(data)), error => {
+      assert.equal(error.code, "PERIOD_SET_EVIDENCE_CONTENT"); assert.match(setErrorText(error.code), /一式に含まれる/);
+      assert.doesNotMatch(setErrorText(error.code), /控えの保存と復元/); return true;
+    });
+  }
 });
 test("the bundle, its review receipt and individual sources explain their different input destinations", async () => {
   const f = await fixture();

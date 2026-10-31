@@ -31,6 +31,7 @@ const ERRORS = Object.freeze({
   PERIOD_SET_QUEUE_DISJOINT: "このページの区間は連続していません。1区間ずつ保存対象に選んでください。",
   PERIOD_SET_EVIDENCE_SIZE: "比較の証拠一式は、空でない24 MiB以下のJSONを選んでください。出力が上限を超える場合は元資料を別々に保存してください。",
   PERIOD_SET_EVIDENCE_FORMAT: "比較の証拠一式として保存したJSONを選んでください。元資料と比較結果の両方が必要です。",
+  PERIOD_SET_EVIDENCE_CONTENT: "一式に含まれる元資料または比較結果が、必要なファイル形式と異なります。別の欄へこの一式を移す操作はせず、保存した元の証拠一式を選び直してください。",
   PERIOD_SET_EVIDENCE_READ: "比較の証拠一式を読み取れませんでした。",
   PERIOD_SET_EVIDENCE_ENCODING: "比較の証拠一式はUTF-8で保存されたJSONを選んでください。",
   PERIOD_SET_EVIDENCE_NO_REVIEW: "先に比較の証拠一式を確認してください。",

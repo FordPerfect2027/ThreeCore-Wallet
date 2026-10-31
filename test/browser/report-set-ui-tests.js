@@ -601,6 +601,10 @@ export function registerReportSetUITests(test) {
       assert(f.files[1].containsOriginalEvidence && f.mounted.getState().input === accepted);
       assert((await reviewReportSetComparisonEvidence(f.files[1].text)).comparisonReview.matchesRecomputation);
       await f.file((await prepareReportSetFile(after)).text); assert(!f.q("comparison-evidence-ack").checked && f.q("comparison-evidence-json").disabled);
+      const wrongInner = JSON.parse((await prepareReportSetComparisonEvidenceFile(before, after)).text);
+      wrongInner.beforeFileText = JSON.stringify({ schema: "threecore.period-file.v1" }); await choose(JSON.stringify(wrongInner));
+      assert(f.q("status").textContent.includes("一式に含まれる") && !f.q("status").textContent.includes("控えの保存と復元"));
+      assert(f.mounted.getState().input === accepted);
     } finally { f.dispose(); }
   });
 

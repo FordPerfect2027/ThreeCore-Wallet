@@ -1,4 +1,4 @@
-import { walletSavedFileTargetCode } from "./file-read-status.js";
+import { walletSavedFileTargetCode, walletSavedFileTargetMessage } from "./file-read-status.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
@@ -384,9 +384,9 @@ export async function reviewReportSetComparisonEvidence(text, fileOptions = {}) 
     boundedUtf8Length(evidence.afterFileText, REPORT_SET_COMPARISON_EVIDENCE_LIMIT);
     boundedUtf8Length(evidence.comparisonText, REPORT_SET_COMPARISON_LIMIT);
   } catch { periodFail("PERIOD_SET_EVIDENCE_FORMAT"); }
-  const before = await decodeReportSetFile(evidence.beforeFileText, options);
-  const after = await decodeReportSetFile(evidence.afterFileText, options);
-  const comparisonReview = await reviewReportSetComparisonFile(before.input, after.input, evidence.comparisonText, options);
+  const before = await checkEmbeddedComparisonEvidence(() => decodeReportSetFile(evidence.beforeFileText, options));
+  const after = await checkEmbeddedComparisonEvidence(() => decodeReportSetFile(evidence.afterFileText, options));
+  const comparisonReview = await checkEmbeddedComparisonEvidence(() => reviewReportSetComparisonFile(before.input, after.input, evidence.comparisonText, options));
   let evidenceTextSha256;
   try { evidenceTextSha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle,
     { signal: options.signal, timeoutMs: options.timeoutMs }); }
@@ -403,4 +403,13 @@ export async function readReportSetComparisonEvidenceText(file, { signal, timeou
   return readFormatFileText(file, { maxBytes: REPORT_SET_COMPARISON_EVIDENCE_LIMIT, fail: periodFail,
     sizeCode: "PERIOD_SET_EVIDENCE_SIZE", readCode: "PERIOD_SET_EVIDENCE_READ", encodingCode: "PERIOD_SET_EVIDENCE_ENCODING",
     signal, timeoutMs });
+}
+
+async function checkEmbeddedComparisonEvidence(check) {
+  try { return await check(); }
+  catch (error) {
+    // An inner file's destination is not a useful destination for the outer bundle.
+    if (walletSavedFileTargetMessage(error?.code)) periodFail("PERIOD_SET_EVIDENCE_CONTENT");
+    throw error;
+  }
 }
