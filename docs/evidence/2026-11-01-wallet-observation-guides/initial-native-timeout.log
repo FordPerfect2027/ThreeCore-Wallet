@@ -1,0 +1,167 @@
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:55
+    catch (error) { throw Error(error.message + "\nRecent browser diagnostics:\n" + errors); }
+                          ^
+
+Error: Browser did not report a completed suite
+Recent browser diagnostics:
+cess 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023744.063:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023744.671:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023744.764:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023745.487:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023745.768:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023746.500:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023746.787:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023747.507:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023747.809:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023748.513:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023748.824:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023749.527:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023749.825:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023750.539:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023750.835:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023751.552:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023751.849:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023752.556:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023752.854:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023753.561:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023753.858:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023754.578:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023754.875:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023755.594:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023755.892:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023756.608:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023756.906:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023757.609:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023757.907:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023758.458:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023758.613:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023758.659:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023759.064:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023759.624:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023759.671:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023800.485:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023800.627:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023801.488:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023801.628:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023802.505:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023802.629:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023803.516:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023803.643:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023804.531:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023804.657:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023805.547:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023805.671:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023806.549:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023806.673:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023807.562:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023807.687:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023808.578:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023808.701:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023809.579:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023809.704:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023810.594:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023810.718:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023811.596:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023811.722:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023812.600:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023812.724:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023813.607:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023814.620:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023815.646:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023816.668:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023817.676:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023818.718:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023819.724:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023820.728:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023821.744:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023822.761:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023823.774:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023824.794:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023825.845:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023826.869:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:14280:1101/023827.884:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 1576: アクセスが拒否されました。 (0x5)
+
+[23008:26888:1101/024009.662:ERROR:services\on_device_model\public\cpp\service_client.cc:37] Unexpected on_device_model service disconnect; reason: 1, description: Error loading backend.
+
+
+    at runBrowserPage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:55:27)
+    at async file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:104:18
+
+Node.js v24.19.0

@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.saved-file-inspection.v2",
+  "sourceSchema": "threecore-token-observation-file-v1",
+  "byteLength": 949,
+  "title": "トークンと残高の保存観測",
+  "target": "identity",
+  "destinationMessage": "トークンと残高の保存観測JSONです。該当トークンの確認画面で元のJSONを選んでください。現在の残高や契約の安全性を証明するものではありません。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "90a974a81537fc010a2c9c2d15796d875fe2426fc96040a31d63eba24929a010",
+  "textDigest": "c0445083e0a3308db664a54195cdcf30a40c9976dd593aef365090003a1dbe5f",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": false,
+    "archiveReferences": null,
+    "transferRecordReferences": null,
+    "eventReferences": null,
+    "identityObservationReferences": 1,
+    "allowanceTargetReferences": null,
+    "allowanceObservationReferences": null
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

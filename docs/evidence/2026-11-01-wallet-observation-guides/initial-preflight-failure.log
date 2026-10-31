@@ -1,0 +1,26 @@
+✔ demo serves production modules and gates browser fixtures (uiTest=false) (630.3291ms)
+✔ demo serves production modules and gates browser fixtures (uiTest=true) (544.1714ms)
+✔ preflight resolves multiline, relative, export and literal dynamic dependencies once without executing source (29.5885ms)
+✔ a missing or wrongly typed module fails before any browser can launch (4.0615ms)
+✔ preflight never requests nonloopback origins, cross-origin imports or RPC routes (8.0095ms)
+✖ the actual isolated test server serves the complete literal UI dependency graph (429.2953ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2483.0384
+
+✖ failing tests:
+
+test at test\browser-module-preflight.test.js:13:1
+✖ the actual isolated test server serves the complete literal UI dependency graph (429.2953ms)
+  Error: Unsupported browser module specifier:  + agent + 
+      at pathFor (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-module-preflight.js:14:106)
+      at checkBrowserModuleRoutes (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-module-preflight.js:26:76)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/browser-module-preflight.test.js:14:169)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

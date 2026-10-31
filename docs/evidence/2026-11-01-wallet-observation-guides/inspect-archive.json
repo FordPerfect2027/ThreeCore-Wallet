@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.saved-file-inspection.v2",
+  "sourceSchema": "threecore.transfer-archive-file.v1",
+  "byteLength": 1671,
+  "title": "複数区間の受信・送信履歴",
+  "target": "transfer-archive",
+  "destinationMessage": "複数区間の履歴をまとめたJSONです。履歴の保管画面で元のJSONを確認してください。取得済み区間の記録であり、全履歴を取得した証明ではありません。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "29e221b254d0a86331828ee0f44777f9d315b0203e69c42972ce8531fe18fbcc",
+  "textDigest": "cccb3ff0a0b73eac5ad51f05e27176594d27150de12cc4e200c65276500623b2",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "archiveReferences": 1,
+    "transferRecordReferences": 1,
+    "eventReferences": 1,
+    "identityObservationReferences": null,
+    "allowanceTargetReferences": null,
+    "allowanceObservationReferences": null
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

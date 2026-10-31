@@ -1,0 +1,38 @@
+✔ saved observation guide validates and summarizes transfer.json (159.6316ms)
+✔ saved observation guide refuses checksum and shape substitution transfer.json (21.6187ms)
+✔ saved observation original comparison and bundle preserve exact bytes transfer.json (53.2552ms)
+✔ saved observation guide validates and summarizes archive.json (4.8073ms)
+✔ saved observation guide refuses checksum and shape substitution archive.json (5.4242ms)
+✔ saved observation original comparison and bundle preserve exact bytes archive.json (33.6211ms)
+✔ saved observation guide validates and summarizes vault.json (9.8297ms)
+✔ saved observation guide refuses checksum and shape substitution vault.json (21.2464ms)
+✔ saved observation original comparison and bundle preserve exact bytes vault.json (44.5468ms)
+✔ saved observation guide validates and summarizes identity.json (10.983ms)
+✔ saved observation guide refuses checksum and shape substitution identity.json (4.665ms)
+✔ saved observation original comparison and bundle preserve exact bytes identity.json (23.1007ms)
+✔ saved observation guide validates and summarizes allowance-targets.json (5.7178ms)
+✔ saved observation guide refuses checksum and shape substitution allowance-targets.json (3.9359ms)
+✔ saved observation original comparison and bundle preserve exact bytes allowance-targets.json (17.7688ms)
+✔ saved observation guide validates and summarizes allowance-observation.json (8.8762ms)
+✔ saved observation guide refuses checksum and shape substitution allowance-observation.json (10.1385ms)
+✔ saved observation original comparison and bundle preserve exact bytes allowance-observation.json (24.7641ms)
+✔ saved observation guide validates and summarizes reconciliation.json (10.4876ms)
+✔ saved observation guide refuses checksum and shape substitution reconciliation.json (11.9578ms)
+✔ saved observation original comparison and bundle preserve exact bytes reconciliation.json (49.8199ms)
+✔ new original scopes keep absent values null and CSV blank while exports retain observed counts (32.2008ms)
+✔ new inspection receipt is a declaration, not reusable original evidence (6.6282ms)
+✔ archive text decoder is bounded and performs no file reads (54.2203ms)
+✔ changed historical values with unchanged counts remain content changes, not matching observations (26.0774ms)
+✔ an empty reconciliation source reports zero present references without inventing period progress (3.5846ms)
+✔ new guides cannot retain a result after cancellation while their checksum is waiting (18.3461ms)
+✔ actual selected observations open, compare and export through the shared file guide without exposing values (120.1446ms)
+✔ browser batch retains scope and guarded detail navigation for mixed observation originals (71.1475ms)
+✔ actual offline inspect and batch commands agree with the browser API and preserve every original byte (2973.5009ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5777.1442

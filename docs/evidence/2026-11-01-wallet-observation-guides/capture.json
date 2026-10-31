@@ -1,0 +1,246 @@
+{
+  "source": "9699e13",
+  "synthetic": true,
+  "fixtureSource": "test/helpers/saved-observation-fixtures.js",
+  "captures": [
+    {
+      "name": "transfer.json",
+      "target": "transfer",
+      "sha256": "af8cc1911d27dd7237b74583307ac28e20e9e35b3a936ad3bd8ddaa24569062a",
+      "scope": {
+        "reportCount": null,
+        "archivedReports": null,
+        "entryReferences": null,
+        "draftReferences": null,
+        "archivedEntryReferences": null,
+        "restrictedEntryReferences": null,
+        "incompleteDraftReferences": null,
+        "emptyDraftReferences": null,
+        "agents": [
+          "DAT"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": false,
+        "archiveReferences": null,
+        "transferRecordReferences": 1,
+        "eventReferences": 1,
+        "identityObservationReferences": null,
+        "allowanceTargetReferences": null,
+        "allowanceObservationReferences": null
+      },
+      "cliByteIdentical": true
+    },
+    {
+      "name": "archive.json",
+      "target": "transfer-archive",
+      "sha256": "cccb3ff0a0b73eac5ad51f05e27176594d27150de12cc4e200c65276500623b2",
+      "scope": {
+        "reportCount": null,
+        "archivedReports": null,
+        "entryReferences": null,
+        "draftReferences": null,
+        "archivedEntryReferences": null,
+        "restrictedEntryReferences": null,
+        "incompleteDraftReferences": null,
+        "emptyDraftReferences": null,
+        "agents": [
+          "DAT"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": true,
+        "archiveReferences": 1,
+        "transferRecordReferences": 1,
+        "eventReferences": 1,
+        "identityObservationReferences": null,
+        "allowanceTargetReferences": null,
+        "allowanceObservationReferences": null
+      },
+      "cliByteIdentical": true
+    },
+    {
+      "name": "vault.json",
+      "target": "transfer-vault",
+      "sha256": "c222429943bcba893ba5328d8d0b05ca3c9c3b0d90a0980db2e81a5885d21087",
+      "scope": {
+        "reportCount": null,
+        "archivedReports": null,
+        "entryReferences": null,
+        "draftReferences": null,
+        "archivedEntryReferences": null,
+        "restrictedEntryReferences": null,
+        "incompleteDraftReferences": null,
+        "emptyDraftReferences": null,
+        "agents": [
+          "DAT",
+          "EMA",
+          "CAWELON"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": true,
+        "archiveReferences": 3,
+        "transferRecordReferences": 3,
+        "eventReferences": 3,
+        "identityObservationReferences": null,
+        "allowanceTargetReferences": null,
+        "allowanceObservationReferences": null
+      },
+      "cliByteIdentical": true
+    },
+    {
+      "name": "identity.json",
+      "target": "identity",
+      "sha256": "c0445083e0a3308db664a54195cdcf30a40c9976dd593aef365090003a1dbe5f",
+      "scope": {
+        "reportCount": null,
+        "archivedReports": null,
+        "entryReferences": null,
+        "draftReferences": null,
+        "archivedEntryReferences": null,
+        "restrictedEntryReferences": null,
+        "incompleteDraftReferences": null,
+        "emptyDraftReferences": null,
+        "agents": [
+          "DAT"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": false,
+        "archiveReferences": null,
+        "transferRecordReferences": null,
+        "eventReferences": null,
+        "identityObservationReferences": 1,
+        "allowanceTargetReferences": null,
+        "allowanceObservationReferences": null
+      },
+      "cliByteIdentical": true
+    },
+    {
+      "name": "allowance-targets.json",
+      "target": "allowance",
+      "sha256": "58a70eeb27c8eb330f9f49df6a9df3af9c2a9521bc19f31582b8fee9405f90b2",
+      "scope": {
+        "reportCount": null,
+        "archivedReports": null,
+        "entryReferences": null,
+        "draftReferences": null,
+        "archivedEntryReferences": null,
+        "restrictedEntryReferences": null,
+        "incompleteDraftReferences": null,
+        "emptyDraftReferences": null,
+        "agents": [
+          "DAT"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": false,
+        "archiveReferences": null,
+        "transferRecordReferences": null,
+        "eventReferences": null,
+        "identityObservationReferences": null,
+        "allowanceTargetReferences": 2,
+        "allowanceObservationReferences": null
+      },
+      "cliByteIdentical": true
+    },
+    {
+      "name": "allowance-observation.json",
+      "target": "allowance",
+      "sha256": "9382ca9b733348169ed00db1c00a4a0fae31f733aa2951e6fd0ee699f137ad8e",
+      "scope": {
+        "reportCount": null,
+        "archivedReports": null,
+        "entryReferences": null,
+        "draftReferences": null,
+        "archivedEntryReferences": null,
+        "restrictedEntryReferences": null,
+        "incompleteDraftReferences": null,
+        "emptyDraftReferences": null,
+        "agents": [
+          "DAT"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": false,
+        "archiveReferences": null,
+        "transferRecordReferences": null,
+        "eventReferences": null,
+        "identityObservationReferences": 1,
+        "allowanceTargetReferences": 2,
+        "allowanceObservationReferences": 2
+      },
+      "cliByteIdentical": true
+    },
+    {
+      "name": "reconciliation.json",
+      "target": "reconciliation",
+      "sha256": "2b78f6088e443c900f24e6d775e20eac5a905d61b5a2911b2f34afdf147c4432",
+      "scope": {
+        "reportCount": null,
+        "archivedReports": null,
+        "entryReferences": null,
+        "draftReferences": null,
+        "archivedEntryReferences": null,
+        "restrictedEntryReferences": null,
+        "incompleteDraftReferences": null,
+        "emptyDraftReferences": null,
+        "agents": [
+          "DAT",
+          "EMA",
+          "CAWELON"
+        ],
+        "annotationValuesIncluded": false,
+        "repeatedReferencesMayExist": true,
+        "archiveReferences": 3,
+        "transferRecordReferences": 4,
+        "eventReferences": 6,
+        "identityObservationReferences": 6,
+        "allowanceTargetReferences": null,
+        "allowanceObservationReferences": null
+      },
+      "cliByteIdentical": true
+    }
+  ],
+  "opened": [
+    {
+      "name": "transfer.json",
+      "accepted": true,
+      "target": "transfer"
+    },
+    {
+      "name": "archive.json",
+      "accepted": true,
+      "target": "transfer-archive"
+    },
+    {
+      "name": "vault.json",
+      "accepted": true,
+      "target": "transfer-vault"
+    },
+    {
+      "name": "identity.json",
+      "accepted": true,
+      "target": "identity"
+    },
+    {
+      "name": "allowance-targets.json",
+      "accepted": true,
+      "target": "allowance"
+    },
+    {
+      "name": "allowance-observation.json",
+      "accepted": true,
+      "target": "allowance"
+    },
+    {
+      "name": "reconciliation.json",
+      "accepted": true,
+      "target": "reconciliation"
+    }
+  ],
+  "browserAndCliInspectionsIdentical": true,
+  "formatComparisonByteIdentical": true,
+  "embeddedOriginalBytesPreserved": true,
+  "corruptedAllowanceRefusedCode": "ALLOWANCE_CHECKSUM",
+  "originalsUnchanged": true,
+  "captureMethod": "real File objects and shared panels in Node, plus actual local CLI commands; native Chrome recorded separately",
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}

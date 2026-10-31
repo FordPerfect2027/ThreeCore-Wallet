@@ -1,0 +1,167 @@
+✔ saved observation guide validates and summarizes transfer.json (22.0534ms)
+✔ saved observation guide refuses checksum and shape substitution transfer.json (7.3005ms)
+✖ saved observation original comparison and bundle preserve exact bytes transfer.json (28.151ms)
+✔ saved observation guide validates and summarizes archive.json (10.9244ms)
+✔ saved observation guide refuses checksum and shape substitution archive.json (4.0013ms)
+✖ saved observation original comparison and bundle preserve exact bytes archive.json (17.6129ms)
+✔ saved observation guide validates and summarizes vault.json (5.8679ms)
+✔ saved observation guide refuses checksum and shape substitution vault.json (6.2019ms)
+✖ saved observation original comparison and bundle preserve exact bytes vault.json (26.9011ms)
+✔ saved observation guide validates and summarizes identity.json (7.9463ms)
+✔ saved observation guide refuses checksum and shape substitution identity.json (3.5677ms)
+✖ saved observation original comparison and bundle preserve exact bytes identity.json (11.164ms)
+✔ saved observation guide validates and summarizes allowance-targets.json (4.0966ms)
+✔ saved observation guide refuses checksum and shape substitution allowance-targets.json (3.2977ms)
+✖ saved observation original comparison and bundle preserve exact bytes allowance-targets.json (15.3665ms)
+✔ saved observation guide validates and summarizes allowance-observation.json (4.1305ms)
+✔ saved observation guide refuses checksum and shape substitution allowance-observation.json (5.2333ms)
+✖ saved observation original comparison and bundle preserve exact bytes allowance-observation.json (14.911ms)
+✔ saved observation guide validates and summarizes reconciliation.json (9.9912ms)
+✔ saved observation guide refuses checksum and shape substitution reconciliation.json (12.9109ms)
+✖ saved observation original comparison and bundle preserve exact bytes reconciliation.json (42.4166ms)
+✔ new original scopes keep absent values null and CSV blank while exports retain observed counts (41.8114ms)
+✔ new inspection receipt is a declaration, not reusable original evidence (4.4702ms)
+✔ archive text decoder is bounded and performs no file reads (67.432ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 17
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 915.8402
+
+✖ failing tests:
+
+test at test\wallet-saved-observation-guide.test.js:15:2
+✖ saved observation original comparison and bundle preserve exact bytes transfer.json (28.151ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-observation-guide.test.js:17:267)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-observation-guide.test.js:15:2
+✖ saved observation original comparison and bundle preserve exact bytes archive.json (17.6129ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-observation-guide.test.js:17:267)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-observation-guide.test.js:15:2
+✖ saved observation original comparison and bundle preserve exact bytes vault.json (26.9011ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-observation-guide.test.js:17:267)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-observation-guide.test.js:15:2
+✖ saved observation original comparison and bundle preserve exact bytes identity.json (11.164ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-observation-guide.test.js:17:267)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-observation-guide.test.js:15:2
+✖ saved observation original comparison and bundle preserve exact bytes allowance-targets.json (15.3665ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-observation-guide.test.js:17:267)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-observation-guide.test.js:15:2
+✖ saved observation original comparison and bundle preserve exact bytes allowance-observation.json (14.911ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-observation-guide.test.js:17:267)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-observation-guide.test.js:15:2
+✖ saved observation original comparison and bundle preserve exact bytes reconciliation.json (42.4166ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-observation-guide.test.js:17:267)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,14 @@
+✔ demo serves production modules and gates browser fixtures (uiTest=false) (1630.5525ms)
+✔ demo serves production modules and gates browser fixtures (uiTest=true) (449.5735ms)
+✔ preflight resolves static multiline, relative and export dependencies once without executing source (16.9375ms)
+✔ a missing or wrongly typed module fails before any browser can launch (3.6711ms)
+✔ preflight never requests nonloopback origins, cross-origin imports or RPC routes (6.1949ms)
+✔ the actual isolated test server serves the static startup UI dependency graph (3352.9069ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6558.8093

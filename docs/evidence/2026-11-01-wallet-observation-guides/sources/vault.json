@@ -1,0 +1,150 @@
+{
+  "schema": "threecore.transfer-vault-file.v1",
+  "algorithm": "SHA-256",
+  "digest": "39d31a2e0d431894c625fe33d8bccc6cc5420b1cbb1285cb82f544b2cf52087f",
+  "bundle": {
+    "schema": "threecore.transfer-vault-bundle.v1",
+    "slots": [
+      {
+        "agent": "DAT",
+        "archive": {
+          "schema": "threecore.transfer-archive.v1",
+          "records": [
+            {
+              "schema": "threecore.transfer-observation.v1",
+              "context": {
+                "agent": "DAT",
+                "chainId": 8453,
+                "account": "0x1111111111111111111111111111111111111111"
+              },
+              "tokenAddress": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+              "metadata": {
+                "name": "DATCORE",
+                "symbol": "DAT",
+                "decimals": 18,
+                "totalSupply": "1000000000000000000000000000"
+              },
+              "range": {
+                "fromBlock": "30",
+                "toBlock": "42"
+              },
+              "fromBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+              "toBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+              "events": [
+                {
+                  "blockNumber": "42",
+                  "blockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+                  "transactionHash": "0x000000000000000000000000000000000000000000000000000000000000a7f8",
+                  "transactionIndex": "0",
+                  "logIndex": "0",
+                  "from": "0x2222222222222222222222222222222222222222",
+                  "to": "0x1111111111111111111111111111111111111111",
+                  "amountBaseUnits": "1000000000000000001"
+                }
+              ],
+              "readOnly": true,
+              "completeHistory": false,
+              "independentVerification": false
+            }
+          ],
+          "readOnly": true,
+          "completeHistory": false
+        }
+      },
+      {
+        "agent": "EMA",
+        "archive": {
+          "schema": "threecore.transfer-archive.v1",
+          "records": [
+            {
+              "schema": "threecore.transfer-observation.v1",
+              "context": {
+                "agent": "EMA",
+                "chainId": 8453,
+                "account": "0x2222222222222222222222222222222222222222"
+              },
+              "tokenAddress": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+              "metadata": {
+                "name": "EMA CORE",
+                "symbol": "EMA",
+                "decimals": 18,
+                "totalSupply": "777000000000000000000000000"
+              },
+              "range": {
+                "fromBlock": "30",
+                "toBlock": "42"
+              },
+              "fromBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+              "toBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+              "events": [
+                {
+                  "blockNumber": "42",
+                  "blockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+                  "transactionHash": "0x000000000000000000000000000000000000000000000000000000000000a7f8",
+                  "transactionIndex": "0",
+                  "logIndex": "0",
+                  "from": "0x1111111111111111111111111111111111111111",
+                  "to": "0x2222222222222222222222222222222222222222",
+                  "amountBaseUnits": "1000000000000000001"
+                }
+              ],
+              "readOnly": true,
+              "completeHistory": false,
+              "independentVerification": false
+            }
+          ],
+          "readOnly": true,
+          "completeHistory": false
+        }
+      },
+      {
+        "agent": "CAWELON",
+        "archive": {
+          "schema": "threecore.transfer-archive.v1",
+          "records": [
+            {
+              "schema": "threecore.transfer-observation.v1",
+              "context": {
+                "agent": "CAWELON",
+                "chainId": 8453,
+                "account": "0x3333333333333333333333333333333333333333"
+              },
+              "tokenAddress": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+              "metadata": {
+                "name": "CAWELON CORE",
+                "symbol": "CAWELON",
+                "decimals": 18,
+                "totalSupply": "420000000000000000000000000000000"
+              },
+              "range": {
+                "fromBlock": "30",
+                "toBlock": "42"
+              },
+              "fromBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+              "toBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+              "events": [
+                {
+                  "blockNumber": "42",
+                  "blockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+                  "transactionHash": "0x000000000000000000000000000000000000000000000000000000000000a7f8",
+                  "transactionIndex": "0",
+                  "logIndex": "0",
+                  "from": "0x1111111111111111111111111111111111111111",
+                  "to": "0x3333333333333333333333333333333333333333",
+                  "amountBaseUnits": "1000000000000000001"
+                }
+              ],
+              "readOnly": true,
+              "completeHistory": false,
+              "independentVerification": false
+            }
+          ],
+          "readOnly": true,
+          "completeHistory": false
+        }
+      }
+    ],
+    "readOnly": true,
+    "completeHistory": false
+  }
+}
