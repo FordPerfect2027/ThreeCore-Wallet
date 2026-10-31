@@ -133,7 +133,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
   let sourceFile = null, comparisonSourceFile = null, bundlePanel = null, differencePanel = null;
   let handoffGeneration = null;
   const destinationCallbacks = Object.create(null);
-  for (const target of ["period", "library", "report", "history", "set", "workspace", "setup", "transfer-vault", "reconciliation", "token-plan", "portfolio", "portfolio-history", "portfolio-comparison"]) {
+  for (const target of ["period", "library", "report", "history", "set", "workspace", "setup", "transfer-vault", "reconciliation", "token-plan", "portfolio", "portfolio-history", "portfolio-comparison", "history-query"]) {
     try { const descriptor = Object.getOwnPropertyDescriptor(destinations, target); if (descriptor && Object.hasOwn(descriptor, "value") && typeof descriptor.value === "function") destinationCallbacks[target] = descriptor.value; } catch { /* Unknown destinations stay unavailable. */ }
   }
   const make = (tag, name, text, target = host) => {
