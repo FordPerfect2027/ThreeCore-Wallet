@@ -13,8 +13,8 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
   listeners.push(() => fileNotice.dispose());
   function reset(message){
-    fileNotice.clear();fileReader.cancel();revision++;pending=null;source="";sourceKind=null;for(const name of["source","summary","cases","workspace-details","export-status"])get(name).textContent="";
-    get("review").hidden=true;get("apply").disabled=true;get("status").textContent=message;get("status").setAttribute("aria-busy","false");}
+    const own=++revision;fileNotice.clear();pending=null;source="";sourceKind=null;for(const name of["source","summary","cases","workspace-details","export-status"])get(name).textContent="";
+    get("review").hidden=true;get("apply").disabled=true;get("status").textContent=message;get("status").setAttribute("aria-busy","false");fileReader.cancel();return disposed||own!==revision?null:own;}
   function available(){
     const state=checkpoint.inspect(session.snapshot());get("save").disabled=state.state==="empty";
     const message=state.state==="empty"?"保存する確定済みの履歴・比較ケースはありません。"
@@ -32,14 +32,14 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   const view=document.defaultView;
   view?.addEventListener("beforeunload",beforeUnload);
   const unsubscribe=session.subscribe(()=>{if(disposed)return;if(!pending||!session.isCurrentReview(pending))reset("履歴またはケースの操作がありました。まとめて復旧する場合は保存したファイルをもう一度確認してください。");available();});
-  function cancel(message){session.cancel();reset(message);}
+  function cancel(message){const own=interaction;session.cancel();if(disposed||own!==interaction)return null;return reset(message);}
   const describe=item=>item?item.label+" / "+item.before.agent+" / ネットワーク "+item.before.chainId+" / 口座 "+item.before.account+" / 資産 "+item.before.asset.symbol+" ("+item.before.asset.address+") / 元記録 "+item.before.events.length+"件":"なし";
-  function review(text,name,kind="paste"){const data=decodeRehearsalForPanel(text, "session", decodeRehearsalSession);
+  function review(text,name,kind="paste"){const own=revision,intent=interaction;const data=decodeRehearsalForPanel(text, "session", decodeRehearsalSession);
     if(data.workspace.ledgers.some(item=>item.asset.symbol!=="SIM"||item.asset.decimals!==6))throw Error("SIM required");
     pending=session.preview(data);source=name;sourceKind=kind;get("source").textContent="確認元: "+name;get("review").hidden=false;
     const comparison=pending.comparison;get("summary").textContent="作成済みの履歴 "+comparison.before.workspace.ledgers.length+" → "+comparison.after.workspace.ledgers.length+"対象 / 比較ケース "+comparison.before.cases.cases.length+" → "+comparison.after.cases.cases.length+"件。"+
       (comparison.changed?"まだ反映していません。履歴とケース集の両方を置き換え、両方の取り消し履歴をクリアします。":"入力内容は同じです。置き換えは不要です。");
-    renderWorkspaceComparison(comparison.workspace);
+    renderWorkspaceComparison(comparison.workspace);if(disposed||own!==revision||intent!==interaction)return;
     for(const item of comparison.cases){const tr=document.createElement("tr");const action={added:"追加",removed:"削除",replaced:"変更",unchanged:"同じ"}[item.action];
       for(const value of[item.id,action,describe(item.before),describe(item.after),[item.originalInputChanged?"元入力が変わる":"",item.hypotheticalInputChanged?"比較条件の入力が変わる":""].filter(Boolean).join(" / ")||"—"]){const td=document.createElement("td");td.textContent=value;tr.append(td);}get("cases").append(tr);}
     get("apply").disabled=!comparison.changed;get("status").textContent="変更する履歴とケース集を確認してください。まだ現在の記録は変わっていません。";
@@ -49,14 +49,14 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
   listen("save","click",()=>{if(disposed)return;const own=revision; try{const data=session.snapshot();if(!data.workspace.ledgers.length&&!data.cases.cases.length)return;
     offerDownload({document,prepared:{text:encodeRehearsalSession(data),filename:"ThreeCore-rehearsal-session.json",mimeType:"application/json"}});if(disposed||own!==revision)return;checkpoint.record(data,"download");available();get("export-status").textContent="3トークンの履歴と全比較ケースをまとめた保存を開始しました。";
   }catch{if(disposed||own!==revision)return;get("export-status").textContent="まとめた記録を保存できませんでした。画面の履歴とケース集は保持しています。";}});
-  listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file){fileNotice.noSelection();return;}cancel("まとめた記録を読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
+  listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file){fileNotice.noSelection();return;}const own=cancel("まとめた記録を読み込んでいます。");if(own===null)return;get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");
     try{const text = await fileReader.readText(file, { maxBytes: REHEARSAL_SESSION_LIMIT });if(disposed||own!==revision)return;
       const name = displayFileName(file, "まとめた記録");
       if (disposed || own !== revision) return;
       review(text,name,"file");
     }catch(error){if(!disposed&&own===revision)failed(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
-  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";cancel("貼り付けた記録を確認しています。");try{review(text,"貼り付けたまとめ記録");}catch(error){failed(error);}});
+  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";const own=cancel("貼り付けた記録を確認しています。");if(own===null)return;try{review(text,"貼り付けたまとめ記録");}catch(error){if(!disposed&&own===revision)failed(error);}});
   listen("text","input",()=>{if(!disposed)cancel("貼り付けたまとめ記録を確認してください。");});
   listen("apply","click",()=>{if(disposed||!pending)return;const reviewed=pending,name=source,kind=sourceKind,own=interaction;
     let restored;try{restored=session.commit(reviewed);}catch{if(!disposed&&own===interaction)failed();return;}
@@ -74,7 +74,7 @@ export function mountRehearsalSessionPanel(document,{session,download,onRestored
     available();
     get("status").focus?.();
   });
-  listen("cancel","click",()=>{if(disposed)return;cancel("まとめ復旧の確認を取り消しました。現在の履歴とケース集は保持しています。");get("text").value="";get("file").value="";});
+  listen("cancel","click",()=>{if(disposed)return;if(cancel("まとめ復旧の確認を取り消しました。現在の履歴とケース集は保持しています。")===null)return;get("text").value="";get("file").value="";});
   reset("履歴と比較ケースを一つのファイルに保存・復旧できます。保存済みの資料や期待結果の確認表示は含みません。");available();
-  return Object.freeze({dispose(){if(disposed)return;unsubscribe();session.cancel();reset("");checkpoint.clear();view?.removeEventListener("beforeunload",beforeUnload);get("save-state").textContent="";get("save-state").removeAttribute("data-state");get("receipt").textContent="";get("file").value="";get("text").value="";get("save").disabled=true;disposed=true;for(const remove of listeners)remove();}});
+  return Object.freeze({dispose(){if(disposed)return;disposed=true;unsubscribe();session.cancel();reset("");checkpoint.clear();view?.removeEventListener("beforeunload",beforeUnload);get("save-state").textContent="";get("save-state").removeAttribute("data-state");get("receipt").textContent="";get("file").value="";get("text").value="";get("save").disabled=true;for(const remove of listeners)remove();}});
 }

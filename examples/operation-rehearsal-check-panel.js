@@ -13,13 +13,12 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
   const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
   listeners.push(() => fileNotice.dispose());
   function reset(message="期待結果を記録したケース集を選んでください。現在の履歴やケース集は変更しません。"){
-    fileNotice.clear();
-    fileReader.cancel();
-    revision++;viewRevision++;input=null;report=null;detailOffset=0;differencePage=null;
+    const own=++revision;viewRevision++;fileNotice.clear();input=null;report=null;detailOffset=0;differencePage=null;
     get("filter").value="all";get("case").value="*";get("case").textContent="";
     for(const name of ["filter","case","previous","next"])get(name).disabled=true;
     get("visible-status").textContent="";get("difference-status").textContent="";for(const name of["rows","differences","summary","source","origin","export-status"])get(name).textContent="";
     get("save").disabled=true;get("results").hidden=true;get("status").textContent=message;get("status").className="";get("status").setAttribute("aria-busy","false");
+    fileReader.cancel();return disposed||own!==revision?null:own;
   }
   function row(target,values){const tr=document.createElement("tr");for(const value of values){const td=document.createElement("td");td.textContent=value;tr.append(td);}get(target).append(tr);return tr;}
   const labels={...SCENARIO_LABELS,openPositions:"未決済件数",allocationBlockers:"追加予約を止める理由",withinEnteredLimits:"記録の条件判定",reasons:"記録の見送り理由"};
@@ -66,7 +65,7 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
 
   const fail=error=>reset((describeFileReadError(error,"1 MiB")??"期待結果を確認できませんでした。1 MiB以内の期待結果ファイルを選んでください。")+" 元の履歴とケース集は保持しています。");
   listen("file","change",async()=>{if(disposed)return;const file=get("file").files?.[0];if(!file){fileNotice.noSelection();return;}
-    reset("期待結果のファイルを読み込んでいます。");get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");const own=revision;
+    const own=reset("期待結果のファイルを読み込んでいます。");if(own===null)return;get("file").value="";get("text").value="";get("status").setAttribute("aria-busy","true");
     try{
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_CHECK_SUITE_LIMIT });if(disposed||own!==revision)return;
       const name = displayFileName(file, "期待結果ファイル");
@@ -74,9 +73,9 @@ export function mountRehearsalCheckPanel(document,{download,reasons={}}){
       run(text,name);
     }catch(error){if(!disposed&&own===revision)fail(error);}finally{if(!disposed&&own===revision)get("status").setAttribute("aria-busy","false");}
   });
-  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";reset();try{run(text,"貼り付けた期待結果");}catch(error){fail(error);}});
+  listen("paste","click",()=>{if(disposed)return;const text=get("text").value;get("text").value="";const own=reset();if(own===null)return;try{run(text,"貼り付けた期待結果");}catch(error){if(!disposed&&own===revision)fail(error);}});
   listen("text","input",()=>{if(!disposed)reset("貼り付けた期待結果を確認してください。");});
-  listen("clear","click",()=>{if(disposed)return;reset();get("file").value="";get("text").value="";});
+  listen("clear","click",()=>{if(disposed||reset()===null)return;get("file").value="";get("text").value="";});
   listen("save","click",()=>{if(disposed||!input||!report)return;const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalCheckReport(input),filename:"ThreeCore-expected-outcome-report.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="期待結果の確認資料を保存し始めました。";}catch{if(disposed||own!==revision)return;get("export-status").textContent="確認資料を保存できませんでした。確認結果は保持しています。";}});
-  reset();return Object.freeze({dispose(){if(disposed)return;reset("");disposed=true;get("file").value="";get("text").value="";for(const remove of listeners)remove();}});
+  reset();return Object.freeze({dispose(){if(disposed)return;disposed=true;reset("");get("file").value="";get("text").value="";for(const remove of listeners)remove();}});
 }

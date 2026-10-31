@@ -2,7 +2,7 @@ import { mountOperationRehearsal } from "/examples/operation-rehearsal-page.js";
 import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "/src/operation-rehearsal-check-suite.js";
 import { REHEARSAL_SCENARIO_SET_SCHEMA } from "/src/operation-rehearsal-scenario-set.js";
 import { rehearsalExampleV2 } from "/src/operation-rehearsal-examples.js";
-import { createFileReadService } from "/src/file-read-service.js";
+import { createFileReadService,walletFileReadService } from "/src/file-read-service.js";
 import { mountFileReadPanel } from "/examples/file-read-panel.js";
 import { createWalletSetupFileReader, prepareWalletSetupFile } from "/src/wallet-setup-file.js";
 import { WALLET_SETUP_SCHEMA, WalletSetupError } from "/src/wallet-setup.js";
@@ -53,6 +53,26 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  for(const kind of ["check","cases","session","report","workspace"])test("file-read: "+kind+" keeps a newer review started during native file cancellation",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    let armed=false,entered=false,unsubscribe=()=>{};
+    try{
+      q("agent").value="EMA";q("agent").dispatchEvent(new Event("change"));q("example").click();q("overview-save").click();const report=downloads.pop().text;
+      q("agent").value="DAT";q("agent").dispatchEvent(new Event("change"));q("example").click();q("session-save").click();const before=downloads.pop().text;
+      const input=rehearsalExampleV2("EMA"),workspace={schema:"threecore.operation-rehearsal-workspace.v1",simulationOnly:true,activeAgent:"EMA",ledgers:[input]},cases={schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:"newer",label:"Newer review",before:input,after:input}]};
+      const sources={workspace:JSON.stringify(workspace),cases:JSON.stringify(cases),check:encodeRehearsalCheckSuite(captureRehearsalCheckSuite(cases)),report,session:JSON.stringify({schema:"threecore.operation-rehearsal-session.v1",simulationOnly:true,workspace,cases})};
+      const prefix={check:"check-suite-",cases:"scenario-set-",session:"session-",report:"report-review-",workspace:"workspace-"}[kind],field=name=>q(prefix+name),ready=()=>!field(["check","report"].includes(kind)?"save":"apply").disabled;
+      const baseline=walletFileReadService.state().cancelled;unsubscribe=walletFileReadService.subscribe(state=>{if(armed&&!entered&&state.cancelled>baseline){entered=true;field("text").value=sources[kind];field("text").dispatchEvent(new Event("input"));field(kind==="workspace"?"text-review":"paste").click();}});
+      const transfer=new DataTransfer();transfer.items.add(new File(["{}"],"older.json",{type:"application/json"}));field("file").files=transfer.files;field("file").dispatchEvent(new Event("change"));armed=true;
+      field(["check","report"].includes(kind)?"clear":"cancel").click();assert(entered,"Native cancellation observer ran");
+      for(let i=0;i<100&&!ready();i++)await tick();assert(ready(),"Newer review remains usable");assert(field("status").getAttribute("aria-busy")!=="true");
+      q("session-save").click();assert(downloads.pop().text===before,"Review never applies new source data");
+    }finally{armed=false;unsubscribe();page.dispose();host.remove();await tick();}
+  });
+
   test("file-read: recorded-account search saves and rechecks the exact new scope without changing the ledger",async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);

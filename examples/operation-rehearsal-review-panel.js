@@ -45,21 +45,21 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   const checksumNotice=createFileSelectionNotice(get("checksum-file"),get("checksum-file-note"));
   listeners.push(()=>checksumNotice.dispose());
   function invalidate(message) {
-    feedback.clear();
-    checksumRevision++;checksumReader.cancel();checksumNotice.clear();get("checksum-file").value="";
+    const own=++revision;checksumRevision++;
+    const previous=hashAbort;hashAbort=null;receipt=null;differenceOffset=0;
+    feedback.clear();checksumNotice.clear();get("checksum-file").value="";
     get("checksum-file-status").textContent="";get("checksum-file-status").setAttribute("aria-busy","false");
-    fileNotice.clear();
-    revision++; receipt = null; differenceOffset=0; get("previous").disabled=true;get("next").disabled=true;get("difference-status").textContent="";
-    const previous = hashAbort; hashAbort = null; previous?.abort();
-    fileReader.cancel();
-    for(const name of ["scope", "differences", "digest", "summary", "outcome", "export-status"]) get(name).textContent = "";
-    for(const name of ["save","source-save","checksum-save","evidence-save"])get(name).disabled=true; get("results").hidden = true;
-    get("status").textContent = message; get("status").className = "";
-    get("status").setAttribute("aria-busy", "false");
+    fileNotice.clear();get("previous").disabled=true;get("next").disabled=true;get("difference-status").textContent="";
+    for(const name of ["scope", "differences", "digest", "summary", "outcome", "export-status"])get(name).textContent="";
+    for(const name of ["save","source-save","checksum-save","evidence-save"])get(name).disabled=true;
+    get("results").hidden=true;get("status").textContent=message;get("status").className="";get("status").setAttribute("aria-busy","false");
+    previous?.abort();if(own!==revision)return null;
+    checksumReader.cancel();if(own!==revision)return null;
+    fileReader.cancel();return disposed||own!==revision?null:own;
   }
   function reset(message = "保存した確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を選んでください。現在の履歴には反映しません。") {
-    sourceText = null; invalidate(message); get("run").disabled = true;
-    get("source").textContent = ""; get("file").value = ""; get("text").value = "";
+    sourceText = null; get("run").disabled = true;
+    get("source").textContent = ""; get("file").value = ""; get("text").value = "";return invalidate(message);
   }
   function row(target, values) {
     const tr = document.createElement("tr");
@@ -77,8 +77,8 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   }
   async function run() {
     if(disposed || sourceText === null) return;
-    invalidate("資料を再計算しています。現在の履歴は保持しています。");
-    const own = revision, text = sourceText, expectedSha256 = get("expected").value.trim() || null;
+    const own=invalidate("資料を再計算しています。現在の履歴は保持しています。");if(own===null)return;
+    const text = sourceText, expectedSha256 = get("expected").value.trim() || null;
     const ownHash = new AbortController(); hashAbort = ownHash;
     get("status").setAttribute("aria-busy", "true");
     try {
@@ -107,8 +107,8 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
         REVIEW_HASH_UNAVAILABLE:"照合値を計算できませんでした。もう一度確認してください。",
         SCENARIO_CONTEXT_OR_EVENTS_CHANGED:"比較資料の口座・資産・元の記録が一致しないため、同じ履歴として比較できません。"}[error?.code]
         ?? "資料の形式や含まれる入力記録を確認できませんでした。2 MiB以内の保存済み資料を選んでください。";
-      invalidate(reason + " 現在の履歴は保持しています。");
-      if(!disposed&&Object.getOwnPropertyDescriptor(error,"code")?.value==="INVALID_EXPECTED_CHECKSUM")
+      const retired=invalidate(reason + " 現在の履歴は保持しています。");
+      if(retired!==null&&!disposed&&Object.getOwnPropertyDescriptor(error,"code")?.value==="INVALID_EXPECTED_CHECKSUM")
         feedback.field("report-review-expected","照合するSHA-256","64桁で入力してください。使える文字は0〜9とa〜fです。照合値がない場合は空欄にできます。");
     } finally {
       if(hashAbort === ownHash) hashAbort = null;
@@ -118,7 +118,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   listen("file", "change", async()=>{
     if(disposed) return;
     const file=get("file").files?.[0]; if(!file) { fileNotice.noSelection(); return; }
-    reset("選択した資料を読み込んでいます。"); const own=revision;
+    const own=reset("選択した資料を読み込んでいます。");if(own===null)return;
     get("status").setAttribute("aria-busy", "true");
     const name = displayFileName(file, "選択した資料");
     if (disposed || own !== revision) return;
@@ -132,7 +132,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   listen("paste", "click", async()=>{
     if(disposed) return;
     const text=get("text").value;
-    reset("貼り付けた資料を確認しています。"); sourceText=text;
+    const own=reset("貼り付けた資料を確認しています。");if(own===null)return;sourceText=text;
     get("source").textContent="確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）";
     get("run").disabled=false; await run();
   });
@@ -145,7 +145,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       const text=await checksumReader.readText(file,{maxBytes:1024});if(disposed||own!==checksumRevision||owner!==revision)return;
       const value=decodeRehearsalChecksumText(text),name=displayFileName(file,"照合値ファイル");
       if(disposed||own!==checksumRevision||owner!==revision)return;
-      get("expected").value=value;invalidate("照合値を読み込みました。「選択済みの資料を再確認」を押してください。資料が未選択の場合は先に資料を選んでください。");
+      get("expected").value=value;if(invalidate("照合値を読み込みました。「選択済みの資料を再確認」を押してください。資料が未選択の場合は先に資料を選んでください。")===null)return;
       get("checksum-file-status").textContent="読み込んだ照合値: "+name+"。再確認すると資料の照合値と比較します。";
     }catch(error){if(disposed||own!==checksumRevision||owner!==revision)return;
       get("checksum-file-status").textContent=(describeFileReadError(error,"1 KiB")??"64桁のSHA-256だけを含むテキストファイルを選んでください。")+" 現在の照合値と確認結果は変更していません。";
@@ -153,8 +153,8 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   });
   listen("expected", "input", ()=>{ if(!disposed) invalidate("照合値が変わりました。「選択済みの資料を再確認」を押してください。"); });
   listen("text", "input", ()=>{
-    if(disposed) return; sourceText=null; invalidate("貼り付けた内容を確認するボタンを押してください。");
-    get("run").disabled=true; get("source").textContent="";
+    if(disposed) return; sourceText=null;get("run").disabled=true;get("source").textContent="";
+    invalidate("貼り付けた内容を確認するボタンを押してください。");
   });
   listen("previous","click",()=>{if(disposed||!receipt)return;differenceOffset=Math.max(0,differenceOffset-40);renderDifferencePage();});
   listen("next","click",()=>{if(disposed||!receipt)return;differenceOffset+=40;renderDifferencePage();});
@@ -189,7 +189,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   });
   reset();
   const evidencePanel=mountRehearsalEvidencePanel(document,{download,subtle});
-  return Object.freeze({dispose(){if(disposed)return;evidencePanel.dispose();reset("");disposed=true;get("expected").value="";for(const remove of listeners)remove();}});
+  return Object.freeze({dispose(){if(disposed)return;disposed=true;evidencePanel.dispose();reset("");get("expected").value="";for(const remove of listeners)remove();}});
 }
 
 /** Inspect a portable evidence file independently of the active rehearsal and ordinary report. */

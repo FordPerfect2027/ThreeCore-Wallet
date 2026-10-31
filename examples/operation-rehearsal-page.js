@@ -63,7 +63,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   const sessionPanel = mountRehearsalSessionPanel(document, { session, download,
     renderWorkspaceComparison: comparison => renderComparisonDetails(comparison, get("session-workspace-details")),
     onRestored: () => {get("agent").value=ledger.state().activeAgent;const input=ledger.state().current;
-      if(input)show(input,true);else clear("選択中の対象は未作成です。",true);scenarioSetPanel.refresh();} });
+      const own=input?show(input,true):clear("選択中の対象は未作成です。",true);if(own!==null&&!disposed&&own===revision)scenarioSetPanel.refresh();} });
   let referenceChoices=new Set();
   if(!get("append-kind").value)get("append-kind").value="open";
   let appendReview = null, workspaceReview = null, workspaceComparison = null;
@@ -75,11 +75,12 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   };
   const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
   listeners.push(() => fileNotice.dispose());
-  function cancelAppend() {
+  function cancelAppend(closing=false) {
+    if(disposed&&closing!==true)return null;const own=++revision;
     appendFeedback.clear();
     fileNotice.clear();
-    fileReader.cancel(); get("file").setAttribute("aria-busy", "false");
-    revision++; workspaceReview = null; get("workspace-apply").disabled = true;
+    get("file").setAttribute("aria-busy", "false");
+    workspaceReview = null; get("workspace-apply").disabled = true;
     workspaceComparison = null; get("workspace-review-save").disabled = true;
     get("workspace-review-status").textContent = ""; get("workspace-details").textContent = "";
     get("workspace-preview").textContent = "";
@@ -87,8 +88,9 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     get("workspace-source").textContent = ""; workspaceSource = "";
     if (workspacePhase !== "idle") setWorkspaceStage("idle",
       "入力・表示が変わりました。復旧する場合は保存した記録をもう一度選んでください。");
-    appendReview = null; ledger.cancel(); get("append-confirm").disabled = true;
-    get("append-summary").textContent = "";
+    appendReview = null; get("append-confirm").disabled = true;get("append-summary").textContent = "";
+    ledger.cancel();if(own!==revision)return null;
+    fileReader.cancel();return own!==revision||(!closing&&disposed)?null:own;
   }
 
   function renderAppendControls(report=null){
@@ -126,18 +128,19 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     if (["review", "complete", "error"].includes(phase)) get("workspace-stage").focus?.();
   }
   function beginWorkspaceRead(source) {
-    cancelAppend(); candidate = null; get("apply").disabled = true; get("preview").textContent = "";
+    const own=cancelAppend();if(own===null)return null;candidate = null; get("apply").disabled = true; get("preview").textContent = "";
     workspaceSource = source; get("workspace-source").textContent = "確認する記録: " + source;
     get("workspace-file-note").textContent = "";
     setWorkspaceStage("reading", "現在の履歴を表示したまま確認しています。まだ置き換えていません。");
-    return revision;
+    return own;
   }
   function reviewWorkspaceText(text) {
+    const own=revision;
     const data = decodeRehearsalForPanel(text, "workspace", decodeRehearsalWorkspace);
     if (data.ledgers.some(item => item.asset.symbol !== "SIM" || item.asset.decimals !== 6))
       throw Object.assign(new Error("SIM required"), { code: "SIM_REQUIRED" });
-    workspaceComparison = compareRehearsalWorkspaces(ledger.snapshot(), data);
-    workspaceReview = ledger.previewRestore(data);
+    const comparison=compareRehearsalWorkspaces(ledger.snapshot(),data),reviewed=ledger.previewRestore(data);
+    if(disposed||own!==revision)return;workspaceComparison=comparison;workspaceReview=reviewed;
     get("workspace-changes").textContent = "";
     const count = row => row.present ? row.recordCount + "件" : "未作成";
     for (let i = 0; i < workspaceReview.after.rows.length; i++) {
@@ -234,14 +237,13 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       SIM_REQUIRED: "この画面で扱えるのは小数6桁の練習用SIMの記録です。",
       SIMULATION_REQUIRED: "一括試算の形式ではありません。単体の記録は下の「保存した記録を選ぶ」から読み込んでください。",
     }[error?.code] ?? "この一括試算の記録を確認できませんでした。一括保存した元のファイルを選び直してください。";
-    cancelAppend();
+    if(cancelAppend()===null)return;
     setWorkspaceStage("error", reason + " 現在の履歴は保持しています。");
   }
-  function clear(message = "入力が変わりました。もう一度試算してください。", keepLedger = false, editing = false) {
-    formFeedback.clear();
-    revision++; current = null; candidate = null;
-    scenarioPanel.refresh(null);
-    cancelAppend(); if (!keepLedger) ledger.clear();
+  function clear(message = "入力が変わりました。もう一度試算してください。", keepLedger = false, editing = false, closing=false) {
+    if(disposed&&!closing)return null;const initial=++revision;formFeedback.clear();current=null;candidate=null;
+    scenarioPanel.refresh(null);if(initial!==revision)return null;
+    const own=cancelAppend(closing);if(own===null)return null;if(!keepLedger)ledger.clear();if(own!==revision)return null;
     get("save").disabled = true; get("apply").disabled = true;
     for (const name of ["csv-save", "append-preview", "undo"]) get(name).disabled = true;
     for (const name of ["metrics", "rows", "allocation-note", "context", "preview", "ledger-details"]) get(name).textContent = "";
@@ -250,7 +252,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     get("form-draft-note").textContent=!editing?"":retained?"入力変更前の履歴と取り消し履歴は保持しています。一括保存は変更前の記録を含みます。入力が有効で試算が完了すると、新しい2件または1件の試算で置き換わります。":"入力した条件はまだ試算していません。";
     get("status").textContent = message;
     renderAppendControls();
-    renderWorkspace();
+    renderWorkspace();return own;
   }
   function renderWorkspace() {
     const report = reportRehearsalWorkspace(ledger.snapshot());
@@ -320,13 +322,12 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       : "この絞り込みに該当する記録は0件です。実行許可や安全性の判定ではありません。";
   }
   function show(data, keepLedger = false) {
-    const report = evaluateRehearsal(data);
+    if(disposed)return null;const report = evaluateRehearsal(data);
     encodeRehearsal(data);
     const formatted = value => formatRehearsalUnits(value, data.asset.decimals) + " " + data.asset.symbol;
-    clear(undefined, true);
-    if (!keepLedger) data = ledger.reset(data);
-    current = data;
-    scenarioPanel.refresh(data);
+    const own=clear(undefined,true);if(own===null||disposed)return null;
+    if(!keepLedger)data=ledger.reset(data);if(disposed||own!==revision)return null;current=data;
+    scenarioPanel.refresh(data);if(disposed||own!==revision)return null;
     get("agent").value = data.agent;
     get("opening").value = formatRehearsalUnits(data.openingBalance, data.asset.decimals);
     for (const [field, key] of Object.entries(FIELD_POLICY))
@@ -378,7 +379,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       "。予約ID: " + (report.reservations.map(item => item.reservationId + "=" + formatted(item.amount)).join(", ") || "なし") +
       "。取り消せる追記: " + ledger.state().undoCount + "件。";
     renderAppendControls(report);
-    renderWorkspace();
+    renderWorkspace();return own;
   }
   function fromFields(pending) {
     // Editable forms always create a fresh fictional six-decimal SIM scenario.
@@ -398,25 +399,24 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   function calculate(pending) {
     if (disposed) return;
     try { const data = fromFields(pending); show(data); }
-    catch (error) { clear("入力を確認してください。金額は0以上・小数6桁まで、還元割合は0〜100%です。",true,true); if(!disposed)formFeedback.report(error); }
+    catch (error) { if(clear("入力を確認してください。金額は0以上・小数6桁まで、還元割合は0〜100%です。",true,true)!==null&&!disposed)formFeedback.report(error); }
   }
   for (const name of ["opening", ...Object.keys(FIELD_POLICY), "allocation", "principal", "entry-fee", "returned", "exit-fee",
     "entry-limit", "exit-limit", "exit-reserve"])
     listen(name, "input", () => {if(!disposed)clear(undefined,true,true);});
   for (const name of ["paused", "scenario"]) listen(name, "change", () => {if(!disposed)clear(undefined,true,true);});
   listen("form-restore","click",()=>{
-    if(disposed||!formDraft)return;const retained=ledger.state().current;if(!retained)return;show(retained,true);
-    if(disposed||formDraft||current!==retained||ledger.state().current!==retained)return;
+    if(disposed||!formDraft)return;const retained=ledger.state().current;if(!retained)return;const own=show(retained,true);
+    if(own===null||disposed||own!==revision||formDraft||current!==retained||ledger.state().current!==retained)return;
     get("status").textContent="入力変更前の履歴を再表示しました。"+get("status").textContent;
     get("result-title").focus?.();
   });
   listen("agent", "change", () => {
     if (disposed) return;
     const name = get("agent").value;
-    clear("この対象にはまだ履歴がありません。例を表示するか、記録を読み込んでください。", true);
-    const data = ledger.select(name);
-    if (data) show(data, true);
-    renderWorkspace();
+    const own=clear("この対象にはまだ履歴がありません。例を表示するか、記録を読み込んでください。",true);if(own===null)return;
+    const data=ledger.select(name);if(disposed||own!==revision)return;
+    if(data&&show(data,true)===null)return;renderWorkspace();
   });
   listen("calculate", "click", () => calculate(false));
   listen("pending", "click", () => calculate(true));
@@ -440,14 +440,14 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   });
   for (const name of ["append-reference", "append-amount", "append-fee", "append-exit-reserve"])
     listen(name, "input", cancelAppend);
-  listen("append-kind", "change", () => {if(disposed)return;cancelAppend();renderAppendControls();});
+  listen("append-kind", "change", () => {if(disposed||cancelAppend()===null)return;renderAppendControls();});
   listen("append-reference-choice","change",()=>{
     if(disposed||get("append-reference-choice").disabled)return;
     const selected=get("append-reference-choice").value;if(!referenceChoices.has(selected))return;
-    cancelAppend();get("append-reference").value=selected;
+    if(cancelAppend()!==null)get("append-reference").value=selected;
   });
   listen("append-preview", "click", () => {
-    cancelAppend(); if (disposed || !current || current.schema !== REHEARSAL_SCHEMA_V2) return;
+    const own=cancelAppend();if(own===null||disposed||!current||current.schema!==REHEARSAL_SCHEMA_V2)return;
     if(current.events.length>=REHEARSAL_RECORD_LIMIT){renderAppendControls();return;}
     try {
       const kind = get("append-kind").value;
@@ -462,7 +462,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
       if (kind === "settle") Object.assign(event, { operationId: reference, grossReturn: units("append-amount"), fee: units("append-fee") });
       if (["deposit", "withdraw", "reserve"].includes(kind)) event.amount = units("append-amount");
       if (["reserve", "release"].includes(kind)) event.reservationId = reference;
-      appendReview = ledger.preview(event);
+      const reviewed=ledger.preview(event);if(disposed||own!==revision)return;appendReview=reviewed;
       const money = value => formatRehearsalUnits(value, 6) + " SIM";
       get("append-summary").textContent = KINDS[kind] + " / " + event.id + " — " +
         (appendReview.accepted ? "仮の条件内。" : "見送り: " + appendReview.reasons.map(code => REASONS[code]).join("・") +
@@ -472,25 +472,26 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
         "、予約済み還元 " + money(appendReview.before.reservedAllocations) + " → " + money(appendReview.after.reservedAllocations) +
         "。まだ履歴には反映していません。";
       get("append-confirm").disabled = false;
-    } catch (error) { cancelAppend(); get("append-summary").textContent = "追記内容を確認してください。履歴は200件までです。"; if(!disposed)appendFeedback.report(error); }
+    } catch (error) { if(disposed||own!==revision||cancelAppend()===null)return;get("append-summary").textContent="追記内容を確認してください。履歴は200件までです。";if(!disposed)appendFeedback.report(error); }
   });
   listen("append-confirm", "click", () => {
     if (disposed || !appendReview) return;
-    try { const next = ledger.commit(appendReview); show(next, true); }
-    catch { cancelAppend(); get("status").textContent = "追記内容をもう一度確認してください。"; }
+    const own=revision;try{const next=ledger.commit(appendReview);if(!disposed&&own===revision)show(next,true);}
+    catch{if(!disposed&&own===revision&&cancelAppend()!==null)get("status").textContent="追記内容をもう一度確認してください。";}
   });
   listen("append-cancel", "click", cancelAppend);
   listen("undo", "click", () => {
     if (disposed) return;
-    try { show(ledger.undo(), true); get("status").textContent = "直前の追記を取り消し、予約と損益も再計算しました。"; }
-    catch { get("status").textContent = "取り消せる追記がありません。"; }
+    let own=revision;try{const data=ledger.undo();if(disposed||own!==revision)return;own=show(data,true);
+      if(own!==null&&!disposed&&own===revision)get("status").textContent="直前の追記を取り消し、予約と損益も再計算しました。";
+    }catch{if(!disposed&&own===revision)get("status").textContent="取り消せる追記がありません。";}
   });
   listen("file", "change", async () => {
     if (disposed) return;
     const file = get("file").files?.[0];
     if (!file) { fileNotice.noSelection(); return; }
     get("file").value = "";
-    clear("ファイルを確認しています（最大30秒）。", true); const own = revision;
+    const own=clear("ファイルを確認しています（最大30秒）。",true);if(own===null)return;
     get("file").setAttribute("aria-busy", "true");
     try {
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_LIMIT });
@@ -510,10 +511,10 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   });
   listen("apply", "click", () => {
     if (disposed || !candidate) return;
-    const data = candidate; candidate = null; show(data);
-    if (!disposed && current === ledger.state().current && !formDraft) get("result-title").focus?.();
+    const data=candidate;candidate=null;const own=show(data);
+    if(own!==null&&!disposed&&own===revision&&current===ledger.state().current&&!formDraft) get("result-title").focus?.();
   });
-  listen("cancel", "click", () => { clear("読み込み・表示をクリアしました。"); get("file").value = ""; });
+  listen("cancel","click",()=>{if(!disposed&&clear("読み込み・表示をクリアしました。")!==null)get("file").value="";});
   listen("workspace-save", "click", () => {
     if (disposed) return;
     const data = ledger.snapshot(); if (!data.ledgers.length) return;
@@ -540,7 +541,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     const file = get("workspace-file").files?.[0];
     if (!file) return;
     get("workspace-file").value = ""; get("workspace-text").value = "";
-    const own = beginWorkspaceRead("一括ファイル");
+    const own=beginWorkspaceRead("一括ファイル");if(own===null)return;
     const name = displayFileName(file, "一括ファイル");
     if (disposed || own !== revision) return;
     workspaceSource = name; get("workspace-source").textContent = "確認する記録: " + name;
@@ -567,35 +568,34 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   });
   listen("workspace-text", "input", () => {
     if (disposed) return;
-    cancelAppend(); candidate = null; get("apply").disabled = true; get("preview").textContent = "";
+    if(cancelAppend()===null)return;candidate=null;get("apply").disabled=true;get("preview").textContent="";
   });
   listen("workspace-text-review", "click", () => {
     if (disposed) return;
     const text = get("workspace-text").value;
     get("workspace-text").value = ""; get("workspace-file").value = "";
-    beginWorkspaceRead("貼り付けた一括記録");
+    const own=beginWorkspaceRead("貼り付けた一括記録");if(own===null)return;
     try {
       if (!text.trim()) throw Object.assign(new Error("Empty input"), { code: "EMPTY_INPUT" });
       reviewWorkspaceText(text);
-    } catch (error) { workspaceReadFailed(error); }
+    } catch (error) { if(!disposed&&own===revision)workspaceReadFailed(error); }
   });
   listen("workspace-apply", "click", () => {
-    if (disposed || !workspaceReview) return;
+    if(disposed||!workspaceReview)return;let own=revision;
     try {
       const source = workspaceSource;
       const counts = workspaceReview.after.rows.map(row => row.agent + ": " + (row.present ? row.recordCount + "件" : "未作成")).join(" / ");
-      const data = ledger.restore(workspaceReview);
-      get("agent").value = ledger.state().activeAgent;
-      if (data) show(data, true); else clear("選択中の対象は未作成です。", true);
+      const data=ledger.restore(workspaceReview);if(disposed||own!==revision)return;get("agent").value=ledger.state().activeAgent;
+      own=data?show(data,true):clear("選択中の対象は未作成です。",true);if(own===null||disposed)return;
       get("workspace-text").value = "";
       get("workspace-receipt").textContent = "直前の復旧: " + source + " — " + counts + "。全記録を再計算しました。";
       setWorkspaceStage("complete", "上の一覧に復旧済みの履歴を表示しています。取り消し履歴は新しく開始します。必要な履歴は一括保存してください。");
-    } catch { cancelAppend(); get("workspace-status").textContent = "一括ファイルを再度選んで確認してください。"; }
+    }catch{if(!disposed&&own===revision&&cancelAppend()!==null)get("workspace-status").textContent="一括ファイルを再度選んで確認してください。";}
   });
   listen("workspace-cancel", "click", () => {
     if (disposed) return;
-    clear("一括読込を取り消しました。", true);
-    const data = ledger.state().current; if (data) show(data, true);
+    if(clear("一括読込を取り消しました。",true)===null)return;
+    const data=ledger.state().current;if(data&&show(data,true)===null)return;
     get("workspace-text").value = ""; get("workspace-file").value = "";
     setWorkspaceStage("idle", "一括読込を取り消しました。現在の履歴は保持しています。");
   });
@@ -603,7 +603,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   renderWorkspace();
   setWorkspaceStage("idle", "保存した記録を選ぶと、復旧前に変更内容を確認できます。自動保存は行いません。");
   return Object.freeze({ dispose() {
-    if (disposed) return; disposed = true; sessionPanel.dispose(); clear("表示を終了しました。"); ledger.dispose();
+    if (disposed) return; disposed = true; sessionPanel.dispose(); clear("表示を終了しました。",false,false,true); ledger.dispose();
     scenarioPanel.dispose();
     scenarioSetPanel.dispose();
     reportReviewPanel.dispose();
