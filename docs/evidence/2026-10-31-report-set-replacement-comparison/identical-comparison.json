@@ -1,0 +1,414 @@
+{
+  "schema": "threecore.report-set-comparison-file.v1",
+  "algorithm": "SHA-256",
+  "beforePayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+  "afterPayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+  "comparison": {
+    "schema": "threecore.report-set-comparison.v1",
+    "beforeTitle": "3期間の確認",
+    "afterTitle": "3期間の確認",
+    "beforeCount": 3,
+    "afterCount": 3,
+    "metadataChanges": [],
+    "orderChanged": false,
+    "beforeSummary": {
+      "allContinuous": true,
+      "issues": []
+    },
+    "afterSummary": {
+      "allContinuous": true,
+      "issues": []
+    },
+    "counts": {
+      "added": 0,
+      "removed": 0,
+      "changed": 0,
+      "metadata-only": 0,
+      "unchanged": 3
+    },
+    "rows": [
+      {
+        "id": "12345678-1234-4234-8234-000000000101",
+        "kind": "unchanged",
+        "beforeLabel": "報告 1",
+        "afterLabel": "報告 1",
+        "beforeStatus": "arithmetic-agreement",
+        "afterStatus": "arithmetic-agreement",
+        "metadataChanges": [],
+        "reportMetadataChanges": [],
+        "tokenChanges": [
+          {
+            "agent": "DAT",
+            "kind": "unchanged",
+            "sameContext": true,
+            "samePeriod": true,
+            "evidenceChanged": false,
+            "metadataChanges": [],
+            "beforeStatus": "arithmetic-agreement",
+            "afterStatus": "arithmetic-agreement",
+            "beforeSteps": 5,
+            "afterSteps": 5,
+            "eventChanges": {
+              "added": 0,
+              "removed": 0,
+              "changed": 0,
+              "unchanged": 2,
+              "before": 2,
+              "after": 2,
+              "denotesSavedEvidenceOnly": true
+            },
+            "endpointChanges": [
+              {
+                "part": "earlier",
+                "kind": "present",
+                "fields": []
+              },
+              {
+                "part": "later",
+                "kind": "present",
+                "fields": []
+              }
+            ],
+            "changedAnchorCount": 0,
+            "restrictionChange": "unchanged",
+            "archiveChange": "unchanged",
+            "needsAttention": false
+          },
+          {
+            "agent": "EMA",
+            "kind": "unchanged",
+            "sameContext": true,
+            "samePeriod": true,
+            "evidenceChanged": false,
+            "metadataChanges": [],
+            "beforeStatus": "arithmetic-agreement",
+            "afterStatus": "arithmetic-agreement",
+            "beforeSteps": 5,
+            "afterSteps": 5,
+            "eventChanges": {
+              "added": 0,
+              "removed": 0,
+              "changed": 0,
+              "unchanged": 2,
+              "before": 2,
+              "after": 2,
+              "denotesSavedEvidenceOnly": true
+            },
+            "endpointChanges": [
+              {
+                "part": "earlier",
+                "kind": "present",
+                "fields": []
+              },
+              {
+                "part": "later",
+                "kind": "present",
+                "fields": []
+              }
+            ],
+            "changedAnchorCount": 0,
+            "restrictionChange": "unchanged",
+            "archiveChange": "unchanged",
+            "needsAttention": false
+          },
+          {
+            "agent": "CAWELON",
+            "kind": "unchanged",
+            "sameContext": true,
+            "samePeriod": true,
+            "evidenceChanged": false,
+            "metadataChanges": [],
+            "beforeStatus": "arithmetic-agreement",
+            "afterStatus": "arithmetic-agreement",
+            "beforeSteps": 5,
+            "afterSteps": 5,
+            "eventChanges": {
+              "added": 0,
+              "removed": 0,
+              "changed": 0,
+              "unchanged": 2,
+              "before": 2,
+              "after": 2,
+              "denotesSavedEvidenceOnly": true
+            },
+            "endpointChanges": [
+              {
+                "part": "earlier",
+                "kind": "present",
+                "fields": []
+              },
+              {
+                "part": "later",
+                "kind": "present",
+                "fields": []
+              }
+            ],
+            "changedAnchorCount": 0,
+            "restrictionChange": "unchanged",
+            "archiveChange": "unchanged",
+            "needsAttention": false
+          }
+        ],
+        "needsAttention": false
+      },
+      {
+        "id": "12345678-1234-4234-8234-000000000102",
+        "kind": "unchanged",
+        "beforeLabel": "報告 2",
+        "afterLabel": "報告 2",
+        "beforeStatus": "arithmetic-agreement",
+        "afterStatus": "arithmetic-agreement",
+        "metadataChanges": [],
+        "reportMetadataChanges": [],
+        "tokenChanges": [
+          {
+            "agent": "DAT",
+            "kind": "unchanged",
+            "sameContext": true,
+            "samePeriod": true,
+            "evidenceChanged": false,
+            "metadataChanges": [],
+            "beforeStatus": "arithmetic-agreement",
+            "afterStatus": "arithmetic-agreement",
+            "beforeSteps": 5,
+            "afterSteps": 5,
+            "eventChanges": {
+              "added": 0,
+              "removed": 0,
+              "changed": 0,
+              "unchanged": 2,
+              "before": 2,
+              "after": 2,
+              "denotesSavedEvidenceOnly": true
+            },
+            "endpointChanges": [
+              {
+                "part": "earlier",
+                "kind": "present",
+                "fields": []
+              },
+              {
+                "part": "later",
+                "kind": "present",
+                "fields": []
+              }
+            ],
+            "changedAnchorCount": 0,
+            "restrictionChange": "unchanged",
+            "archiveChange": "unchanged",
+            "needsAttention": false
+          },
+          {
+            "agent": "EMA",
+            "kind": "unchanged",
+            "sameContext": true,
+            "samePeriod": true,
+            "evidenceChanged": false,
+            "metadataChanges": [],
+            "beforeStatus": "arithmetic-agreement",
+            "afterStatus": "arithmetic-agreement",
+            "beforeSteps": 5,
+            "afterSteps": 5,
+            "eventChanges": {
+              "added": 0,
+              "removed": 0,
+              "changed": 0,
+              "unchanged": 2,
+              "before": 2,
+              "after": 2,
+              "denotesSavedEvidenceOnly": true
+            },
+            "endpointChanges": [
+              {
+                "part": "earlier",
+                "kind": "present",
+                "fields": []
+              },
+              {
+                "part": "later",
+                "kind": "present",
+                "fields": []
+              }
+            ],
+            "changedAnchorCount": 0,
+            "restrictionChange": "unchanged",
+            "archiveChange": "unchanged",
+            "needsAttention": false
+          },
+          {
+            "agent": "CAWELON",
+            "kind": "unchanged",
+            "sameContext": true,
+            "samePeriod": true,
+            "evidenceChanged": false,
+            "metadataChanges": [],
+            "beforeStatus": "arithmetic-agreement",
+            "afterStatus": "arithmetic-agreement",
+            "beforeSteps": 5,
+            "afterSteps": 5,
+            "eventChanges": {
+              "added": 0,
+              "removed": 0,
+              "changed": 0,
+              "unchanged": 2,
+              "before": 2,
+              "after": 2,
+              "denotesSavedEvidenceOnly": true
+            },
+            "endpointChanges": [
+              {
+                "part": "earlier",
+                "kind": "present",
+                "fields": []
+              },
+              {
+                "part": "later",
+                "kind": "present",
+                "fields": []
+              }
+            ],
+            "changedAnchorCount": 0,
+            "restrictionChange": "unchanged",
+            "archiveChange": "unchanged",
+            "needsAttention": false
+          }
+        ],
+        "needsAttention": false
+      },
+      {
+        "id": "12345678-1234-4234-8234-000000000103",
+        "kind": "unchanged",
+        "beforeLabel": "報告 3",
+        "afterLabel": "報告 3",
+        "beforeStatus": "arithmetic-agreement",
+        "afterStatus": "arithmetic-agreement",
+        "metadataChanges": [],
+        "reportMetadataChanges": [],
+        "tokenChanges": [
+          {
+            "agent": "DAT",
+            "kind": "unchanged",
+            "sameContext": true,
+            "samePeriod": true,
+            "evidenceChanged": false,
+            "metadataChanges": [],
+            "beforeStatus": "arithmetic-agreement",
+            "afterStatus": "arithmetic-agreement",
+            "beforeSteps": 5,
+            "afterSteps": 5,
+            "eventChanges": {
+              "added": 0,
+              "removed": 0,
+              "changed": 0,
+              "unchanged": 2,
+              "before": 2,
+              "after": 2,
+              "denotesSavedEvidenceOnly": true
+            },
+            "endpointChanges": [
+              {
+                "part": "earlier",
+                "kind": "present",
+                "fields": []
+              },
+              {
+                "part": "later",
+                "kind": "present",
+                "fields": []
+              }
+            ],
+            "changedAnchorCount": 0,
+            "restrictionChange": "unchanged",
+            "archiveChange": "unchanged",
+            "needsAttention": false
+          },
+          {
+            "agent": "EMA",
+            "kind": "unchanged",
+            "sameContext": true,
+            "samePeriod": true,
+            "evidenceChanged": false,
+            "metadataChanges": [],
+            "beforeStatus": "arithmetic-agreement",
+            "afterStatus": "arithmetic-agreement",
+            "beforeSteps": 5,
+            "afterSteps": 5,
+            "eventChanges": {
+              "added": 0,
+              "removed": 0,
+              "changed": 0,
+              "unchanged": 2,
+              "before": 2,
+              "after": 2,
+              "denotesSavedEvidenceOnly": true
+            },
+            "endpointChanges": [
+              {
+                "part": "earlier",
+                "kind": "present",
+                "fields": []
+              },
+              {
+                "part": "later",
+                "kind": "present",
+                "fields": []
+              }
+            ],
+            "changedAnchorCount": 0,
+            "restrictionChange": "unchanged",
+            "archiveChange": "unchanged",
+            "needsAttention": false
+          },
+          {
+            "agent": "CAWELON",
+            "kind": "unchanged",
+            "sameContext": true,
+            "samePeriod": true,
+            "evidenceChanged": false,
+            "metadataChanges": [],
+            "beforeStatus": "arithmetic-agreement",
+            "afterStatus": "arithmetic-agreement",
+            "beforeSteps": 5,
+            "afterSteps": 5,
+            "eventChanges": {
+              "added": 0,
+              "removed": 0,
+              "changed": 0,
+              "unchanged": 2,
+              "before": 2,
+              "after": 2,
+              "denotesSavedEvidenceOnly": true
+            },
+            "endpointChanges": [
+              {
+                "part": "earlier",
+                "kind": "present",
+                "fields": []
+              },
+              {
+                "part": "later",
+                "kind": "present",
+                "fields": []
+              }
+            ],
+            "changedAnchorCount": 0,
+            "restrictionChange": "unchanged",
+            "archiveChange": "unchanged",
+            "needsAttention": false
+          }
+        ],
+        "needsAttention": false
+      }
+    ],
+    "needsAttention": false,
+    "sameContents": true,
+    "historicalOnly": true,
+    "liveChainRechecked": false,
+    "independentlyVerified": false,
+    "automaticMerge": false,
+    "deletesStoredReports": false
+  },
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false
+}
