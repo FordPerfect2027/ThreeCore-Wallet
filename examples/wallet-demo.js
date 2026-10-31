@@ -33,6 +33,21 @@ import { mountAllowanceBundlePanel } from "./allowance-bundle-panel.js";
 import { mountTransferPanel } from "./transfer-panel.js";
 
 /** Dependencies are explicit so browser tests never consult a real extension. */
+let navigationSequence=0;
+function mountWalletNavigation(document,entries){
+  const nav=document.createElement("nav");nav.className="wallet-navigation";nav.setAttribute("aria-label","ウォレットの各機能");
+  const prefix="threecore-navigation-"+(++navigationSequence)+"-",cleanups=[];let disposed=false;
+  for(const [key,label,target]of entries){
+    const attributes=["id","tabindex","aria-label"],before=attributes.map(name=>target.getAttribute(name));
+    const id=before[0]||prefix+key;target.setAttribute("id",id);target.setAttribute("tabindex","-1");target.setAttribute("aria-label",label);
+    const link=document.createElement("a");link.href="#"+id;link.textContent=label;
+    const jump=event=>{event.preventDefault();if(disposed)return;target.focus?.({preventScroll:true});target.scrollIntoView?.({block:"start",behavior:"auto"});};
+    link.addEventListener("click",jump);nav.append(link);
+    cleanups.push(()=>{link.removeEventListener("click",jump);attributes.forEach((name,index)=>{if(before[index]==null)target.removeAttribute(name);else target.setAttribute(name,before[index]);});});
+  }
+  return{element:nav,dispose(){if(disposed)return;disposed=true;for(const cleanup of cleanups)cleanup();nav.remove();}};
+}
+
 export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions, rpcSupervisor = walletRpcSupervisor, fileReadService = walletFileReadService, storageGuard = walletStorageGuard, exportGuard = getDocumentExportGuard(document) }) {
   const grid = document.querySelector("#grid");
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
@@ -417,6 +432,13 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   const reportSetHost = document.createElement("div");
   reconciliationHost.before(reportSetHost);
   const reportSet = mountReportSetPanel({ document, parent: reportSetHost });
+  const navigation=mountWalletNavigation(document,[
+    ["accounts","接続・残高",grid],["setup","口座の設定・保存",setupHost],["identity","3トークンの照合",identityHost],
+    ["allowances","承認額の確認",allowanceHost],["history","保存した送受信履歴",transferVaultHost],["period","過去の期間を読む",periodHost],
+    ["period-library","保存した期間",periodLibraryHost],["period-report","期間のレポート",periodReportHost],
+    ["report-history","保存したレポート",reportHistoryHost],["report-set","レポートの比較",reportSetHost],
+    ["reconciliation","残高と履歴の照合",reconciliationHost],["protection","保護・読み込み状況",securityHost],
+  ]);securityHost.before(navigation.element);
   for (const event of ["input", "change"]) listen(grid, event, () => periodPanel.invalidate());
   for (const event of ["input", "change", "click"]) listen(grid, event, () => {
     workspacePanel.invalidate();
@@ -450,6 +472,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   renderWalletProviders(registry.list());
   return Object.freeze({
     dispose() {
+      navigation.dispose();
       securityPanel.dispose();
       securityHost.remove();
       reportSet.dispose();
