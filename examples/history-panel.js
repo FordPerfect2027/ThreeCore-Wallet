@@ -9,9 +9,10 @@ import { decodePortfolioReport, validatePortfolioSnapshot, encodePortfolioReport
 import { describePortfolioComparison, encodePortfolioComparisonReport } from "../src/portfolio-comparison.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { observeCallbackResult } from "../src/security-callback.js";
+import { createTokenPlan } from "../src/token-plan.js";
 
 /** Local, card-scoped history. No automatic persistence or provider access. */
-export function mountHistoryPanel({ document, parent, agent, getSnapshot, getReport, download = offerHistoryDownload }) {
+export function mountHistoryPanel({ document, parent, agent, getSnapshot, getReport, download = offerHistoryDownload, onReuseTokens = null }) {
   const history = createPortfolioHistory();
   const recovery = createHistoryRecovery(history);
   const importer = createHistoryImportController({
@@ -200,6 +201,17 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     status.textContent = "選択した過去の1記録の保存を開始しました。全履歴のバックアップではありません。ダウンロード先をご確認ください。";
   });
   const clearConfirm = element("input", "history-clear-confirm");
+  const reuseTokens = button("history-reuse-tokens", "この記録の契約一覧を再利用する準備", id => {
+    const selected = selectedAfter();
+    if (typeof onReuseTokens !== "function") throw Error("Token list handoff unavailable");
+    const plan = createTokenPlan({ agent: selected.snapshot.agent, chainId: selected.snapshot.chainId }, selected.snapshot.holdings.map(row => row.address).join("\n"));
+    if (!current(id)) return;
+    const receipt = onReuseTokens(plan), kind = observeCallbackResult(receipt);
+    if (!current(id) || history.state().revision !== selected.state.revision || last.value !== selected.value) return;
+    if (kind !== "synchronous" || receipt !== true) { status.textContent = "契約一覧の準備を確認できませんでした。入力リスト欄のエージェント・チェーンを確認してください。"; return; }
+    status.textContent = "契約一覧を入力リストの確認欄へ準備しました。内容確認・反映が必要です。アカウント・残高は移していません。";
+  });
+  reuseTokens.hidden = typeof onReuseTokens !== "function";
   clearConfirm.type = "checkbox";
   const clear = button("history-clear", "このカードの履歴を全消去", () => {
     if (!clearConfirm.checked) throw Error("Confirm clearing");
@@ -229,6 +241,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     if (state.size) last.value = String(state.size - 1);
     first.disabled = last.disabled = compare.disabled = remove.disabled = saveRecord.disabled = showRecord.disabled = !state.size;
     previous.disabled = state.size < 2;
+    reuseTokens.disabled = !state.size || typeof onReuseTokens !== "function";
     clear.disabled = !state.size;
     recoveryPanel?.refresh();
   }
@@ -244,7 +257,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   listen(json, "input", () => { filesPanel?.invalidate(); cancelReview(); status.textContent = "JSONが変わりました。再度プレビューしてください。"; });
   listen(replace, "change", () => { filesPanel?.invalidate(); cancelReview(); });
   section.append(heading, note, addCurrent, addReport, status, list,
-    label("前の記録", first), label("後の記録・削除対象", last), showRecord, compare, previous, saveComparison, remove, saveRecord, timeline,
+    label("前の記録", first), label("後の記録・削除対象", last), showRecord, compare, previous, saveComparison, remove, saveRecord, reuseTokens, timeline,
     details, exportButton, label("保存・読み込み用の履歴JSON", json),
     label("既存履歴を置き換える（未選択なら追加）", replace), previewButton, previewText, apply,
     label("このカードの全履歴を消去することを確認", clearConfirm), clear);

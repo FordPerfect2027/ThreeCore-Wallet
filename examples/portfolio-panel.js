@@ -227,7 +227,8 @@ export function mountPortfolioPanel({ document, card, read, onCancel, getContext
     },
   });
   historyPanel = mountHistoryPanel({ document, parent: section, agent: card.dataset?.agent ?? getContext()?.agent,
-    getSnapshot: () => active ? null : current, getReport: () => report.value, download });
+    getSnapshot: () => active ? null : current, getReport: () => report.value, download,
+    onReuseTokens: plan => !disposed && tokenPlan.stagePlan(plan) });
   controls();
   return Object.freeze({
     exportHistory: () => historyPanel.exportArchive(),

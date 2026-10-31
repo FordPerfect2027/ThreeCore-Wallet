@@ -176,6 +176,20 @@ export function mountTokenPlanPanel({ document, parent, getContext, readLines, a
   listen(clear, "click", () => { generation++; text.value = ""; reset("保存・確認欄を消去しました。"); });
   reset();
   return Object.freeze({
+    stagePlan(value) {
+      if (disposed) return false;
+      const id = ++generation, previousText = text.value;
+      reset();
+      try {
+        const encoded = encodeTokenPlan(value); if (!current(id)) return false;
+        const plan = decodeTokenPlan(encoded); tokenPlanLinesForContext(plan, context());
+        if (!current(id)) return false; sameInput(previousText);
+        text.value = encoded;
+        status.textContent = "過去の記録から契約一覧を準備しました。内容を確認してから反映してください。接続・残高照会は行っていません。";
+        try { text.focus?.(); } catch {}
+        return current(id) && text.value === encoded;
+      } catch (value) { error(value, id); return false; }
+    },
     invalidate() { if (!disposed) { generation++; text.value = ""; reset(); } },
     dispose() {
       if (disposed) return;
