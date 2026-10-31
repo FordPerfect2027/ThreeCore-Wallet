@@ -1,0 +1,51 @@
+{
+  "schema": "threecore.wallet-batch-comparison-evidence-review.v1",
+  "textDigest": "4b9fed73b32f84497b5818f32e7e8e08f4bc4ccbdc2f5144cb1d5ee49277e053",
+  "matchesRecomputation": true,
+  "differences": [],
+  "unexpectedFields": 0,
+  "beforeEvidenceMatches": true,
+  "afterEvidenceMatches": true,
+  "comparisonMatches": true,
+  "beforeSummary": {
+    "selected": 2,
+    "checked": 2,
+    "pending": 0,
+    "validatedOriginals": 1,
+    "declaredOnly": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "totalBytes": 5871
+  },
+  "afterSummary": {
+    "selected": 2,
+    "checked": 2,
+    "pending": 0,
+    "validatedOriginals": 1,
+    "declaredOnly": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "totalBytes": 5872
+  },
+  "comparisonSummary": {
+    "files": 2,
+    "bothSelected": 2,
+    "onlyBefore": 0,
+    "onlyAfter": 0,
+    "identical": 0,
+    "formatOnly": 1,
+    "changedOriginal": 0,
+    "differentFormat": 0,
+    "unverified": 1
+  },
+  "allOriginalsValidated": false,
+  "readOnly": true,
+  "authenticated": false,
+  "containsOriginalEvidence": false,
+  "authorizesExecution": false,
+  "automaticallyImported": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "recordedProcessVerified": false
+}
