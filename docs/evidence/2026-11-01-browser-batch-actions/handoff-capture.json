@@ -1,0 +1,16 @@
+{
+  "source": "dec79bf",
+  "originalSource": "docs/evidence/2026-11-01-browser-report-batch/01-saved-report.json",
+  "originalSha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2",
+  "selectedSha256": "abad7511893e8a996ef0442767beb1d5b8eb5bf5e200ed447b1ce38ab1bfaca7",
+  "sameSourceBytesAfterHandoff": true,
+  "referenceSha256Retained": true,
+  "independentRecomputationMatched": false,
+  "checksumMatched": false,
+  "differenceCount": 1,
+  "focusMovedToReviewHeading": true,
+  "batchReceiptUnchanged": true,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false,
+  "realProviderCalls": 0
+}
