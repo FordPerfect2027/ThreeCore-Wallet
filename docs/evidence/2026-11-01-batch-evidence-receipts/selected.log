@@ -1,0 +1,36 @@
+✔ wallet extraction returns only the requested exact source and retains negative inspection status (298.8734ms)
+✔ wallet extraction command emits exact bytes only after verification and never writes destination files (3986.2521ms)
+✔ rehearsal extraction returns only the requested exact source and retains negative inspection status (49.926ms)
+✔ rehearsal extraction command emits exact bytes only after verification and never writes destination files (2451.3438ms)
+✔ wallet receipt verification binds every known claim and exact source bundle without promoting negatives (249.1433ms)
+✔ wallet receipt validation bounds inputs and observes cancellation/timeouts before releasing results (56.4298ms)
+✔ wallet receipt CLI returns faithful negative checks, rejects changed claims and leaves inputs unchanged (3257.5805ms)
+✔ wallet receipt panel opens faithful negative checks, exports exact checks and revokes them on source changes (68.8658ms)
+✔ rehearsal receipt verification binds every known claim and exact source bundle without promoting negatives (59.4604ms)
+✔ rehearsal receipt validation bounds inputs and observes cancellation/timeouts before releasing results (27.658ms)
+✔ rehearsal receipt CLI returns faithful negative checks, rejects changed claims and leaves inputs unchanged (1912.3402ms)
+✔ rehearsal receipt panel opens faithful negative checks, exports exact checks and revokes them on source changes (44.1939ms)
+✔ wallet source export retains exact negative bytes, requires fresh consent and clears obsolete choices (137.0411ms)
+✔ rehearsal source export retains exact negative bytes, requires fresh consent and clears obsolete choices (52.4686ms)
+✔ source export rejects forged owners, failed/asynchronous delivery and stale callback feedback (28.7549ms)
+✔ rehearsal source picker hands the same file to full batch verification and rejection preserves prior rows (62.9216ms)
+✔ rehearsal handoff prevents repeat submission and obsolete feedback after selecting another source (30.2456ms)
+✔ oversized individual source remains available to the bounded batch verifier without another picker (9.525ms)
+✔ offline saved receipt checks reproduce API output and distinguish faithful failure from altered claims (1873.3833ms)
+✔ saved bundle receipt checking requires its own acknowledgement and saves mismatches with no source values (113.5488ms)
+✔ receipt stop clears pending work before late reading completes (44.0266ms)
+✔ receipt replace clears pending work before late reading completes (30.2468ms)
+✔ receipt dispose clears pending work before late reading completes (31.6031ms)
+✔ invalid replacement and a source change during export cannot retain or publish old success (41.806ms)
+✔ V1/V2 saved receipts reproduce every field, including faithful negative bundle conclusions (155.8107ms)
+✔ changed bundle binding, nested comparisons, scope and authority claims are rejected without exposing unknown content (39.3693ms)
+✔ uploaded review authority, duplicate keys, incompatible schemas, invalid options and oversized receipts are refused (11.8833ms)
+✔ cancelled or timed-out receipt hashing cannot publish an accepted result (48.1224ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9419.5012

@@ -1,0 +1,31 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-evidence-receipt-check.v1",
+  "matchesRecomputation": false,
+  "bundleTextDigest": "6aa4a50768916a22526f9074dc9c4c842fc4a6564e9a4af5cebcae7d2f21dc99",
+  "bundleTextBindingMatches": true,
+  "receiptTextDigest": "2d88963fc3bb69676314994afcce61a455862ef94c90145ce769401524a187c9",
+  "expectedEvidenceMatches": false,
+  "expectedSummary": {
+    "selected": 2,
+    "reviewed": 2,
+    "pending": 0,
+    "matching": 1,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 6514
+  },
+  "differences": [
+    "authorizesExecution"
+  ],
+  "unexpectedFields": 0,
+  "readOnly": true,
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "automaticallyImported": false,
+  "containsOriginalEvidence": false,
+  "restorable": false
+}
