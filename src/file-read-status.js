@@ -274,7 +274,7 @@ const observationSavedTypes = Object.freeze({
 });
 export const WALLET_SAVED_OBSERVATION_SCOPE_FIELDS = Object.freeze(["archiveReferences", "transferRecordReferences", "eventReferences", "identityObservationReferences", "allowanceTargetReferences", "allowanceObservationReferences"]);
 const observationScopeLabels = Object.freeze({ archiveReferences: "履歴まとめの参照", transferRecordReferences: "取得区間の記録の参照", eventReferences: "履歴イベントの参照", identityObservationReferences: "トークン・残高観測の参照", allowanceTargetReferences: "利用許可の確認対象の参照", allowanceObservationReferences: "利用許可の観測行の参照" });
-async function inspectSavedObservation(text, schema, byteLength, options, checkpoint) {
+async function inspectSavedObservation(text, schema, byteLength, options, checkpoint, knownTextDigest) {
   let decoded, agents = [], archives = [], records = [], identities = null, targetCount = null, allowanceCount = null;
   const target = walletSavedTargets[schema][0];
   if (target === "transfer") { decoded = await (await import("./transfer-file.js")).decodeTransferFile(text, options); records = [decoded.snapshot]; agents = [decoded.snapshot.context.agent]; }
@@ -303,7 +303,7 @@ async function inspectSavedObservation(text, schema, byteLength, options, checkp
     archiveReferences: hasTransfers && target !== "transfer" ? archives.length : null,
     transferRecordReferences: hasTransfers ? records.length : null, eventReferences: hasTransfers ? records.reduce((count, row) => count + row.events.length, 0) : null,
     identityObservationReferences: identities?.length ?? null, allowanceTargetReferences: targetCount, allowanceObservationReferences: allowanceCount });
-  const textDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options); checkpoint();
+  const textDigest = knownTextDigest ?? await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options); checkpoint();
   return captureSavedInspection({ schema: "threecore.saved-file-inspection.v2", sourceSchema: schema, byteLength,
     title: observationSavedTypes[schema], target, destinationMessage: walletSavedMessages[walletSavedTargets[schema][1]],
     validation: "validated-original", checksumVerified: true, sourceDigest: decoded.digest, textDigest, scope,
@@ -313,6 +313,12 @@ function savedInspectionFail(code) { const error = new Error(code); error.code =
 
 /** Inspect one explicit saved file without handing evidence to a wallet or changing storage. */
 export async function inspectWalletSavedText(text, fileOptions = {}) {
+  return inspectWalletSavedTextCaptured(text, fileOptions);
+}
+
+// Only the local batch row can supply a digest of its captured immutable text.
+// Public callers and imported receipts cannot bypass hashing through options.
+async function inspectWalletSavedTextCaptured(text, fileOptions, knownTextDigest) {
   let options;
   try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
   catch { savedInspectionFail("FILE_INSPECTION_OPTIONS"); }
@@ -332,7 +338,7 @@ export async function inspectWalletSavedText(text, fileOptions = {}) {
   declared = null;
   if (typeof schema !== "string" || !Object.hasOwn(walletSavedTargets, schema)) savedInspectionFail("FILE_INSPECTION_UNSUPPORTED");
   const targetCode = walletSavedTargets[schema][1], definition = originalSavedTypes[schema];
-  if (Object.hasOwn(observationSavedTypes, schema)) return inspectSavedObservation(text, schema, byteLength, options, checkpoint);
+  if (Object.hasOwn(observationSavedTypes, schema)) return inspectSavedObservation(text, schema, byteLength, options, checkpoint, knownTextDigest);
   if (!definition) {
     checkpoint();
     return captureSavedInspection({ schema: "threecore.saved-file-inspection.v1", sourceSchema: schema, byteLength,
@@ -366,7 +372,7 @@ export async function inspectWalletSavedText(text, fileOptions = {}) {
     emptyDraftReferences: progress.filter(row => row.completed === 0).length,
     agents: Object.freeze(["DAT", "EMA", "CAWELON"].filter(agent => drafts.some(draft => draft.plan.context.agent === agent))),
     annotationValuesIncluded: false, repeatedReferencesMayExist: Boolean(reports) });
-  const textDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options);
+  const textDigest = knownTextDigest ?? await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options);
   checkpoint();
   return captureSavedInspection({ schema: "threecore.saved-file-inspection.v1", sourceSchema: schema, byteLength,
     title: definition[1], target: definition[0], destinationMessage: definition[2],
@@ -634,7 +640,7 @@ async function inspectSavedBatchRow(row, { subtle, signal, timeoutMs, expectedSh
   if (checksumMatches === false) { status = "checksum-mismatch"; code = "FILE_BATCH_CHECKSUM_MISMATCH"; }
   if (sha256 !== null && checksumMatches !== false) {
     try {
-      inspection = await inspectWalletSavedText(row.text, { subtle, signal, timeoutMs: Math.min(timeoutMs, 30000) });
+      inspection = await inspectWalletSavedTextCaptured(row.text, { subtle, signal, timeoutMs: Math.min(timeoutMs, 30000) }, sha256);
       if (inspection.validation === "validated-original" && (inspection.textDigest !== sha256 || !inspection.checksumVerified)) savedInspectionFail("FILE_BATCH_HASH_INCONSISTENT");
       status = inspection.validation;
     } catch (error) {
