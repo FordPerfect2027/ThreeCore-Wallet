@@ -200,6 +200,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.saved-file-comparison-review.v2": [null, "PERIOD_FILE_SAVED_REVIEW_ONLY"],
   "threecore.saved-file-comparison.v1": [null, "PERIOD_FILE_SAVED_COMPARISON_ONLY"],
   "threecore.saved-file-comparison.v2": [null, "PERIOD_FILE_SAVED_COMPARISON_ONLY"],
+  "threecore.saved-file-differences.v1": [null, "FILE_SAVED_DIFFERENCES_ONLY"],
   "threecore.saved-file-inspection.v1": [null, "PERIOD_FILE_INSPECTION_ONLY"],
   "threecore.report-history-import-inspection.v1": [null, "PERIOD_FILE_HISTORY_INSPECTION_ONLY"],
   "threecore.report-history-file.v1": ["history", "PERIOD_FILE_USE_HISTORY"],
@@ -221,6 +222,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  FILE_SAVED_DIFFERENCES_ONLY: "これは設定や練習用のJSONの相違箇所を記した資料です。再確認には、比較元と比較先の元のJSONを使ってください。この資料から元のファイルは復元できません。",
   FILE_USE_REHEARSAL_RECORD: "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
   FILE_USE_REHEARSAL_WORKSPACE: "運用リハーサルの練習用の3トークン履歴です。「保存した3トークンの履歴を戻す」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
   FILE_USE_REHEARSAL_SESSION: "運用リハーサルの練習用の履歴と比較ケースです。「履歴と比較ケースをまとめて保存・復旧」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
@@ -474,6 +476,10 @@ export function walletSavedInspectionText(value) {
 
 export function walletSavedInspectionErrorText(error) {
   let code; try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; } catch {}
+  if (code === "FILE_DIFFERENCE_SIZE") return "相違箇所の確認は、比較元・比較先それぞれ2 MiBまでです。大きなファイルは上の照合値による比較を使ってください。";
+  if (code === "FILE_DIFFERENCE_SOURCE_CHANGED") return "比較した時から元ファイルの内容が変わっています。両方のファイルを選び直して比較してください。";
+  if (code === "FILE_DIFFERENCE_TIMEOUT") return "相違箇所の確認が制限時間内に終わりませんでした。元ファイルは変更していません。";
+  if (code === "FILE_DIFFERENCE_FORMAT" || code === "FILE_DIFFERENCE_SOURCES_REQUIRED") return "この相違箇所の確認には、同じ形式の設定・残高記録・練習用記録を2つ選んでください。補助資料や内部チェックサム付きの形式には対応していません。";
   if (code === "FILE_BATCH_SOURCE_CHANGED") return "一括確認した時とファイルの内容が違うため、詳細を開く操作を止めました。元ファイルを保全し、選び直して一括確認してください。";
   if (code === "FILE_BATCH_MANIFEST") return "照合値一覧の書式を確認できません。SHA-256とJSONファイル名を記した、16 KiB以内・20行以内の元の一覧を使ってください。";
   if (code === "FILE_BATCH_REFERENCE_SELECTION") return "照合値一覧と、選択したJSONのファイル名が一致しません。大文字・小文字も含め、一覧の全ファイルを選んでください。";
@@ -517,6 +523,57 @@ export function compareWalletSavedTextInspections(before, after) {
   return Object.freeze({ ...originalComparison, schema: "threecore.saved-file-comparison.v2",
     sourceTextComparison: Object.freeze({ basis: "sha256-utf8", beforeSha256: before.textDigest,
       afterSha256: after.textDigest, sameText: before.textDigest === after.textDigest }) });
+}
+
+export const WALLET_SAVED_DIFFERENCE_SOURCE_LIMIT = 2097152;
+const savedDifferenceReceipts = new WeakSet();
+/** Compare bounded, validated plain sources; return locations, never source values. */
+export async function inspectWalletSavedTextDifferences(beforeText, afterText, fileOptions = {}) {
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs", "expectedBeforeSha256", "expectedAfterSha256"]); }
+  catch { savedInspectionFail("FILE_DIFFERENCE_OPTIONS"); }
+  const { subtle = globalThis.crypto?.subtle, signal, timeoutMs = 30000 } = options;
+  if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 30000) savedInspectionFail("FILE_DIFFERENCE_OPTIONS");
+  for (const field of ["expectedBeforeSha256", "expectedAfterSha256"]) if (Object.hasOwn(options, field) && (typeof options[field] !== "string" || !/^[a-f0-9]{64}$/.test(options[field]))) savedInspectionFail("FILE_DIFFERENCE_OPTIONS");
+  try { if (!boundedUtf8Length(beforeText, WALLET_SAVED_DIFFERENCE_SOURCE_LIMIT) || !boundedUtf8Length(afterText, WALLET_SAVED_DIFFERENCE_SOURCE_LIMIT)) throw Error(); }
+  catch { savedInspectionFail("FILE_DIFFERENCE_SIZE"); }
+  const local = new AbortController(); let subscription, timer, timedOut = false;
+  const checkpoint = () => { if (readAbortState(local.signal)) savedInspectionFail(timedOut ? "FILE_DIFFERENCE_TIMEOUT" : "FILE_CANCELLED"); };
+  try {
+    try { subscription = subscribeReadAbort(signal, () => local.abort()); } catch { savedInspectionFail("FILE_DIFFERENCE_OPTIONS"); }
+    checkpoint(); timer = setTimeout(() => { timedOut = true; local.abort(); }, timeoutMs);
+    const work = async () => {
+      const readOptions = { subtle, signal: local.signal, timeoutMs };
+      const before = await inspectWalletSavedText(beforeText, readOptions); checkpoint();
+      const after = await inspectWalletSavedText(afterText, readOptions); checkpoint();
+      if (before.validation !== "validated-structure" || after.validation !== "validated-structure") savedInspectionFail("FILE_DIFFERENCE_SOURCES_REQUIRED");
+      if (before.sourceSchema !== after.sourceSchema) savedInspectionFail("FILE_DIFFERENCE_FORMAT");
+      if ((Object.hasOwn(options, "expectedBeforeSha256") && before.textDigest !== options.expectedBeforeSha256) ||
+          (Object.hasOwn(options, "expectedAfterSha256") && after.textDigest !== options.expectedAfterSha256)) savedInspectionFail("FILE_DIFFERENCE_SOURCE_CHANGED");
+      const { compareBoundedSavedJSONTexts } = await import("./operation-rehearsal-report-review.js"); checkpoint();
+      const difference = compareBoundedSavedJSONTexts(beforeText, afterText); checkpoint();
+      const result = Object.freeze({ schema: "threecore.saved-file-differences.v1", readOnly: true,
+        before, after, sourceTextMatches: before.textDigest === after.textDigest, parsedJSONValuesMatch: difference.differenceCount === 0,
+        ...difference, listedDifferences: difference.differences.length, valuesIncluded: false, arrayMatching: "position",
+        containsOriginalEvidence: false, restorable: false, authenticated: false, liveChainRechecked: false, authorizesExecution: false });
+      savedDifferenceReceipts.add(result); return result;
+    };
+    try { return await waitSavedBatchSource(work, local.signal); } catch (error) { checkpoint(); throw error; }
+  } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
+}
+export function encodeWalletSavedTextDifferences(result) {
+  if (!savedDifferenceReceipts.has(result)) savedInspectionFail("FILE_DIFFERENCE_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
+}
+export function walletSavedTextDifferencesText(result) {
+  if (!savedDifferenceReceipts.has(result)) savedInspectionFail("FILE_DIFFERENCE_RESULT");
+  const kinds = { type: "種類の違い", value: "値の違い", "array-length": "行数の違い", missing: "比較先にない項目", unexpected: "比較先だけの項目" };
+  return [result.parsedJSONValuesMatch ? "JSONの値に相違はありません。" : `JSONの相違箇所は ${result.differenceCount}件です。先頭 ${result.listedDifferences}件を表示します。`,
+    result.sourceTextMatches ? "元JSONの文字列の照合値も一致しています。" : "元JSONの文字列の照合値は異なります。空白や項目の並びだけの違いも含みます。",
+    ...result.differences.map(row => row.path + " — " + kinds[row.kind]),
+    result.differencesTruncated ? "すべての相違箇所を表示した結果ではありません。" : "",
+    "行は位置で比較します。行数の変化は一覧の場所に示し、追加・削除した行の値は含めません。",
+    "アドレス・残高・設定値・メモ本文は表示しません。出所や元記録の正しさを認証する確認ではありません。"].filter(Boolean).join("\n");
 }
 
 export function walletSavedComparisonText(value) {

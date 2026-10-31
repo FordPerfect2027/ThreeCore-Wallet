@@ -49,6 +49,12 @@ function compareValues(expected, actual, offset = 0, onDifference = null) {
   return Object.freeze({ differenceCount: count, differences: Object.freeze(differences), differencesTruncated: count > differences.length });
 }
 
+/** Field locations only; bounded text input cannot expose object getters or values. */
+export function compareBoundedSavedJSONTexts(beforeText, afterText) {
+  const limits = { bytes: 2097152, depth: 32, nodes: 100000, keyCharacters: 256, stringCharacters: 1048576 };
+  return compareValues(parseSecurityJson(beforeText, limits), parseSecurityJson(afterText, limits));
+}
+
 /** A checksum-only text file, bounded independently from a report. */
 export function decodeRehearsalChecksumText(text){
   if(typeof text!=="string"||text.length>1024)fail("INVALID_EXPECTED_CHECKSUM");

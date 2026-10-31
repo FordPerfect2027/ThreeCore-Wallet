@@ -4,6 +4,7 @@ import { prepareWalletSavedBundle, reviewWalletSavedBundle, walletSavedBundleSou
 import { walletFileReadService } from "../src/file-read-service.js";
 import { describeFileReadStatus, describeFileReadError } from "../src/file-read-status.js";
 import { compareWalletSavedTextInspections } from "../src/file-read-status.js";
+import { inspectWalletSavedTextDifferences, encodeWalletSavedTextDifferences, walletSavedTextDifferencesText, WALLET_SAVED_DIFFERENCE_SOURCE_LIMIT } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -116,7 +117,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
   const host = document.createElement("details"); host.className = "saved-file-guide";
   parent.append(host); const nodes = {}, cleanup = [];
   let disposed = false, generation = 0, aborter = null, busy = false, result = null, comparison = null, comparisonReview = null, workKind = "source";
-  let sourceFile = null, comparisonSourceFile = null, bundlePanel = null;
+  let sourceFile = null, comparisonSourceFile = null, bundlePanel = null, differencePanel = null;
   const destinationCallbacks = Object.create(null);
   for (const target of ["period", "library", "report", "history", "set", "workspace", "setup", "transfer-vault", "reconciliation"]) {
     try { const descriptor = Object.getOwnPropertyDescriptor(destinations, target); if (descriptor && Object.hasOwn(descriptor, "value") && typeof descriptor.value === "function") destinationCallbacks[target] = descriptor.value; } catch { /* Unknown destinations stay unavailable. */ }
@@ -173,6 +174,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
     reviewSave.disabled = busy || !comparisonReview || !reviewAck.checked;
     reviewOutput.textContent = walletSavedComparisonReviewText(comparisonReview);
     bundlePanel?.updatePair();
+    differencePanel?.updatePair();
   }
   function cancel() {
     if (disposed) return;
@@ -320,11 +322,13 @@ export function mountSavedFileInspectionPanel({ document, parent,
   listen(compareFile, "change", () => { void compareSelected(); }); listen(compareAck, "change", render); listen(compareSave, "click", saveComparison);
   bundlePanel = mountSavedComparisonBundlePanel({ document, parent: compareBox, readText, download,
     getPair: () => !disposed && !busy && comparison && sourceFile && comparisonSourceFile ? { comparison, beforeFile: sourceFile, afterFile: comparisonSourceFile } : null });
+  differencePanel = mountSavedFileDifferencePanel({ document, parent: compareBox, readText, download,
+    getPair: () => !disposed && !busy && comparison && sourceFile && comparisonSourceFile ? { comparison, beforeFile: sourceFile, afterFile: comparisonSourceFile } : null });
   listen(reviewFile, "change", () => { void reviewSelected(); }); listen(reviewAck, "change", render); listen(reviewSave, "click", saveReview); render();
   return Object.freeze({ inspectFile, compareFile: inspectComparisonFile, getState: () => Object.freeze({ busy, result, comparison, comparisonReview, disposed }), dispose() {
     if (disposed) return;
     disposed = true; generation++; const previous = aborter; aborter = null; busy = false; result = null; comparison = null; comparisonReview = null;
-    sourceFile = null; comparisonSourceFile = null; bundlePanel.dispose();
+    sourceFile = null; comparisonSourceFile = null; bundlePanel.dispose(); differencePanel.dispose();
     previous?.abort(); selectionNotice.dispose(); comparisonNotice.dispose(); reviewNotice.dispose(); cleanup.forEach(remove => remove()); host.remove();
   } });
 }
@@ -333,6 +337,55 @@ async function readSavedGuideText(file, options) {
   const bytes = await readSecurityFileBytes(file, options);
   try { return new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes); }
   catch { const error = new Error("FILE_ENCODING"); error.code = "FILE_ENCODING"; throw error; }
+}
+
+/** Explicit, bounded re-read of plain sources. Only locations and hashes are exported. */
+export function mountSavedFileDifferencePanel({ document, parent, getPair = () => null,
+  readText = readSavedGuideText, download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
+  const host = document.createElement("details"); host.className = "saved-differences"; parent.append(host);
+  let disposed = false, busy = false, generation = 0, aborter = null, result = null, lastPair = null;
+  const cleanup = [];
+  function node(tag, name, text, target = host) { const value = document.createElement(tag); value.className = "saved-differences-" + name; if (text !== undefined) value.textContent = text; target.append(value); return value; }
+  node("summary", "heading", "設定や練習用JSONの、変わった箇所を調べる");
+  node("p", "intro", "上で比較した同じ形式の設定・残高記録・練習用記録を読み直します。各2 MiBまで。値は表示せず、相違箇所の合計と先頭40件の場所を表示します。");
+  const start = node("button", "start", "相違箇所を調べる"), stop = node("button", "stop", "相違箇所の確認を中止"); start.type = stop.type = "button";
+  const status = node("p", "status", "対応する2つの元ファイルを比較してから確認できます。"), output = node("pre", "output", ""); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  const label = node("label", "ack-label", "相違箇所と元ファイルの照合値を、暗号化せずPCに保存します"), ack = node("input", "ack", undefined, label); ack.type = "checkbox";
+  const save = node("button", "save", "相違箇所をJSON保存"); save.type = "button";
+  const current = () => { try { return getPair(); } catch { return null; } };
+  const usable = pair => Boolean(pair?.comparison?.before?.validation === "validated-structure" && pair?.comparison?.after?.validation === "validated-structure" && pair.comparison.before.sourceSchema === pair.comparison.after.sourceSchema && pair.beforeFile && pair.afterFile);
+  const same = own => !disposed && generation === own;
+  function render() { if (disposed) return; host.setAttribute("aria-busy", String(busy)); start.disabled = busy || !usable(current()); stop.disabled = !busy; ack.disabled = busy || !result; save.disabled = busy || !result || !ack.checked; output.textContent = result ? walletSavedTextDifferencesText(result) : ""; }
+  function cancel() { if (disposed) return; const own = ++generation, previous = aborter; aborter = null; busy = false; result = null; ack.checked = false; previous?.abort(); if (same(own)) { status.textContent = "相違箇所の確認を中止しました。元ファイルは変更していません。"; render(); } }
+  function updatePair() { if (disposed) return; const next = current()?.comparison ?? null; if (lastPair !== next) { lastPair = next; cancel(); status.textContent = "比較するファイルが変わりました。必要に応じて相違箇所を調べてください。"; } render(); }
+  async function inspectPair() {
+    if (disposed || busy) return false;
+    const captured = current(); if (!usable(captured)) return false;
+    const own = ++generation, local = new AbortController(); aborter = local; busy = true; result = null; ack.checked = false;
+    status.textContent = "両方の元ファイルを読み直して相違箇所を確認しています。"; render();
+    const unchanged = () => same(own) && current()?.comparison === captured.comparison;
+    try {
+      const options = { maxBytes: WALLET_SAVED_DIFFERENCE_SOURCE_LIMIT, signal: local.signal };
+      const beforeText = await readText(captured.beforeFile, options); if (!unchanged()) return false;
+      const afterText = await readText(captured.afterFile, options); if (!unchanged()) return false;
+      const checked = await inspectWalletSavedTextDifferences(beforeText, afterText, { signal: local.signal,
+        expectedBeforeSha256: captured.comparison.before.textDigest, expectedAfterSha256: captured.comparison.after.textDigest });
+      if (!unchanged()) return false;
+      result = checked; status.textContent = "相違箇所を確認しました。元ファイルの値や行を変更していません。"; return true;
+    } catch (error) { if (unchanged()) status.textContent = describeFileReadError(error, "各2 MiB") ?? walletSavedInspectionErrorText(error); return false; }
+    finally { if (same(own)) { aborter = null; busy = false; render(); } }
+  }
+  function saveResult() {
+    if (disposed || busy || !result || !ack.checked) return;
+    const own = generation, captured = result; ack.checked = false; render();
+    try { const prepared = Object.freeze({ text: encodeWalletSavedTextDifferences(captured), filename: "ThreeCore-saved-file-differences.json", mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false, encrypted: false });
+      const delivery = download(prepared), kind = observeCallbackResult(delivery); if (!same(own)) return;
+      status.textContent = kind === "synchronous" && delivery !== false ? "相違箇所の保存処理を開始しました。ダウンロード先をご確認ください。" : "相違箇所の保存を確認できませんでした。";
+    } catch { if (same(own)) status.textContent = "相違箇所の保存を確認できませんでした。"; }
+  }
+  function listen(element, event, action) { element.addEventListener(event, action); cleanup.push(() => element.removeEventListener(event, action)); }
+  listen(start, "click", () => { void inspectPair(); }); listen(stop, "click", cancel); listen(ack, "change", render); listen(save, "click", saveResult); updatePair();
+  return Object.freeze({ inspectPair, updatePair, getState: () => Object.freeze({ busy, result, disposed }), dispose() { if (disposed) return; disposed = true; generation++; const previous = aborter; aborter = null; result = null; busy = false; previous?.abort(); cleanup.forEach(remove => remove()); host.remove(); } });
 }
 
 /** Separate file-only inventory. No restore, account or storage callbacks exist. */
