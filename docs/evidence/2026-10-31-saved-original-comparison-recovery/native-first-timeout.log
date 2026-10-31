@@ -1,0 +1,140 @@
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:67
+  if (cleanupFailures.length) throw new AggregateError([...(failure ? [failure] : []), ...cleanupFailures],
+                                    ^
+
+AggregateError: Browser test did not finish cleanly; check isolated profile: C:\Users\aseet\AppData\Local\Temp\threecore-ui-test-BBFo7t
+    at runBrowserPage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:67:37)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:97:30 {
+  [errors]: [
+    Error: Browser did not report a completed suite
+    Recent browser diagnostics:
+    w", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215336.813:INFO:CONSOLE:1268] "PASS — history: duplicate saved report displays guidance and does not add another row", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215336.813:INFO:CONSOLE:1251] "Starting synthetic UI case: history: new report content invalidates old save review", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215336.910:INFO:CONSOLE:1268] "PASS — history: new report content invalidates old save review", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215336.911:INFO:CONSOLE:1251] "Starting synthetic UI case: history: annotations typed after review disable its apply button", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215336.995:INFO:CONSOLE:1268] "PASS — history: annotations typed after review disable its apply button", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215336.995:INFO:CONSOLE:1251] "Starting synthetic UI case: history: whole backup includes hidden records even under a restrictive filter", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215337.308:INFO:CONSOLE:1268] "PASS — history: whole backup includes hidden records even under a restrictive filter", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215337.309:INFO:CONSOLE:1251] "Starting synthetic UI case: history: filtered CSV is a catalog, not a replacement evidence archive", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215337.658:INFO:CONSOLE:1268] "PASS — history: filtered CSV is a catalog, not a replacement evidence archive", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215337.658:INFO:CONSOLE:1251] "Starting synthetic UI case: history: changed selection requires a fresh export acknowledgment", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215337.943:INFO:CONSOLE:1268] "PASS — history: changed selection requires a fresh export acknowledgment", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215337.943:INFO:CONSOLE:1251] "Starting synthetic UI case: history: native file control previews additions before committing", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215338.400:INFO:CONSOLE:1268] "PASS — history: native file control previews additions before committing", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215338.400:INFO:CONSOLE:1251] "Starting synthetic UI case: history: conflicting file keeps local evidence and requires explicit exclusion", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215338.836:INFO:CONSOLE:1268] "PASS — history: conflicting file keeps local evidence and requires explicit exclusion", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215338.836:INFO:CONSOLE:1251] "Starting synthetic UI case: history: duplicate import keeps local edited notes", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215339.032:INFO:CONSOLE:1268] "PASS — history: duplicate import keeps local edited notes", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215339.032:INFO:CONSOLE:1251] "Starting synthetic UI case: history: malformed JSON preserves existing records", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215339.274:INFO:CONSOLE:1268] "PASS — history: malformed JSON preserves existing records", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215339.274:INFO:CONSOLE:1251] "Starting synthetic UI case: history: labels resembling HTML cannot create elements or execute scripts", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215339.377:INFO:CONSOLE:1268] "PASS — history: labels resembling HTML cannot create elements or execute scripts", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215339.377:INFO:CONSOLE:1251] "Starting synthetic UI case: history: saved-report comparison identifies a hash mismatch", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215339.584:INFO:CONSOLE:1268] "PASS — history: saved-report comparison identifies a hash mismatch", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215339.584:INFO:CONSOLE:1251] "Starting synthetic UI case: history: native backup restore is idempotent across database connections", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215339.947:INFO:CONSOLE:1268] "PASS — history: native backup restore is idempotent across database connections", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215339.947:INFO:CONSOLE:1251] "Starting synthetic UI case: history: integrated report panel stages stored evidence then displays its origin", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215340.222:INFO:CONSOLE:1268] "PASS — history: integrated report panel stages stored evidence then displays its origin", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215340.222:INFO:CONSOLE:1251] "Starting synthetic UI case: history block scope keeps hidden selection and exports only matching rows", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215340.392:INFO:CONSOLE:1268] "PASS — history block scope keeps hidden selection and exports only matching rows", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215340.392:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: recover original annotated history without replacing the displayed set", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215341.381:INFO:CONSOLE:1268] "PASS — report set: recover original annotated history without replacing the displayed set", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215341.382:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: recover one token collection while retaining source restrictions and refusing conflicting IDs", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215342.025:INFO:CONSOLE:1268] "PASS — report set: recover one token collection while retaining source restrictions and refusing conflicting IDs", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215342.025:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: replacement comparison saves before applying and resets its acknowledgement for another candidate", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215343.029:INFO:CONSOLE:1268] "PASS — report set: replacement comparison saves before applying and resets its acknowledgement for another candidate", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215343.029:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: a contiguous page saves ten unread windows in one period file", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215343.393:INFO:CONSOLE:1268] "PASS — report set: a contiguous page saves ten unread windows in one period file", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215343.393:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: a proposed missing interval saves as an empty period draft after acknowledgement", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215343.649:INFO:CONSOLE:1268] "PASS — report set: a proposed missing interval saves as an empty period draft after acknowledgement", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215343.650:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: missing-history proposals show 2,000 blocks times ten without executing reads", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215343.732:INFO:CONSOLE:1268] "PASS — report set: missing-history proposals show 2,000 blocks times ten without executing reads", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215343.732:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: saved history coverage distinguishes a partial record from its plan", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215345.552:INFO:CONSOLE:1268] "PASS — report set: saved history coverage distinguishes a partial record from its plan", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215345.552:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: checklist CSV keeps global findings after filtering to zero", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215346.783:INFO:CONSOLE:1268] "PASS — report set: checklist CSV keeps global findings after filtering to zero", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215346.783:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: timeline cells expose report details and support keyboard navigation", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215347.835:INFO:CONSOLE:1268] "PASS — report set: timeline cells expose report details and support keyboard navigation", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215347.835:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: timeline gap selection describes neighbors without altering selection", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215348.235:INFO:CONSOLE:1268] "PASS — report set: timeline gap selection describes neighbors without altering selection", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215348.235:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: accepting a new set replaces old timeline controls cleanly", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215349.206:INFO:CONSOLE:1268] "PASS — report set: accepting a new set replaces old timeline controls cleanly", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215349.206:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: lazy mounting has labelled controls and requires explicit reading", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215349.604:INFO:CONSOLE:1268] "PASS — report set: lazy mounting has labelled controls and requires explicit reading", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215349.604:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: native checkbox selection preserves focused nodes", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215349.884:INFO:CONSOLE:1268] "PASS — report set: native checkbox selection preserves focused nodes", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215349.884:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: hidden choices remain selected and are disclosed before acceptance", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    [6508:4964:1031/215350.266:INFO:CONSOLE:1268] "PASS — report set: hidden choices remain selected and are disclosed before acceptance", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1268)
+
+    [6508:4964:1031/215350.267:INFO:CONSOLE:1251] "Starting synthetic UI case: report set: accepted continuous evidence renders three cards and tables", source: http://127.0.0.1:62034/test/browser/ui-tests.js (1251)
+
+    
+        at runBrowserPage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:50:27)
+        at async file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:97:30,
+    Error: Test browser did not exit; its temporary profile is preserved
+        at Timeout.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-runtime.js:50:37)
+        at listOnTimeout (node:internal/timers:635:17)
+        at process.processTimers (node:internal/timers:571:7)
+  ]
+}
+
+Node.js v24.19.0

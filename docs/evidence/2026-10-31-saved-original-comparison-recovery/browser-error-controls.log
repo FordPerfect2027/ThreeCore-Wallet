@@ -1,0 +1,5 @@
+Browser shard 1/2 completion received: 1 passing cases; isolated cleanup pending.
+Harness correctly rejected synthetic error despite 1 passing UI cases.
+Browser shard 1/2 completion received: 1 passing cases; isolated cleanup pending.
+Harness correctly rejected synthetic unhandledrejection despite 1 passing UI cases.
+2 browser error-detection controls passed.

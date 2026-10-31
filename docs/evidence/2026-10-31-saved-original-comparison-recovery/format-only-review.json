@@ -1,0 +1,22 @@
+{
+  "schema": "threecore.saved-file-comparison-review.v1",
+  "matchesRecomputation": true,
+  "expectedKind": "format-only",
+  "expectedSameOriginal": true,
+  "beforeSourceDigest": "b69b2183620e6095e236b84a1e7bef79bedab0e8766063dec50332a02bcb56cc",
+  "afterSourceDigest": "b69b2183620e6095e236b84a1e7bef79bedab0e8766063dec50332a02bcb56cc",
+  "beforeTextDigest": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+  "afterTextDigest": "90391c8d2c8498e2e4fff5af2fe514cb706a7bd1a1211baab1776418cdbb74ad",
+  "originalPairValidated": true,
+  "beforeBindingMatches": true,
+  "afterBindingMatches": true,
+  "comparisonTextDigest": "9eb85d41e62c84a6e4afb351ceca941faf168211a1aa2944c5a4f5cfee7236c9",
+  "differences": [],
+  "unexpectedFields": 0,
+  "containsOriginalEvidence": false,
+  "restorable": false,
+  "readOnly": true,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

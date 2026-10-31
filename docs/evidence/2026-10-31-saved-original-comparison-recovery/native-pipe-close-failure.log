@@ -1,0 +1,20 @@
+Browser shard 1/2 completion received: 453 passing cases; isolated cleanup pending.
+Browser shard 1/2: 453 cases passed.
+Browser shard 2/2 completion received: 453 passing cases; isolated cleanup pending.
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:72
+  if (cleanupFailures.length) throw new AggregateError([...(failure ? [failure] : []), ...cleanupFailures],
+                                    ^
+
+AggregateError: Browser test did not finish cleanly; check isolated profile: C:\Users\aseet\AppData\Local\Temp\threecore-ui-test-akDdBC
+    at runBrowserPage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:72:37)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:104:18 {
+  [errors]: [
+    Error: Test browser did not exit; its temporary profile is preserved
+        at Timeout.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-runtime.js:50:37)
+        at listOnTimeout (node:internal/timers:635:17)
+        at process.processTimers (node:internal/timers:571:7)
+  ]
+}
+
+Node.js v24.19.0
