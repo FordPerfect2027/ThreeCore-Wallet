@@ -5,6 +5,8 @@ import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
 import { captureDataRecord } from "../src/security-data.js";
 import { validateRehearsalReportBatchSelection, reviewRehearsalReportFileBatch,
+  canPrepareRehearsalBatchEvidence, prepareRehearsalBatchEvidence, reviewRehearsalBatchEvidence,
+  openReviewedRehearsalBatchEvidence, encodeRehearsalBatchEvidenceReview, REHEARSAL_BATCH_EVIDENCE_LIMIT,
   resumeRehearsalReportFileBatch, canResumeRehearsalReportFileBatch, retryRehearsalReportFileBatch, canRetryRehearsalReportFileBatch,
   encodeRehearsalBatchReview, encodeRehearsalBatchManifest,
   REHEARSAL_BATCH_REVIEW_FILES, decodeRehearsalBatchManifest, matchRehearsalBatchManifest,
@@ -106,7 +108,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   const get = id => document.getElementById("report-batch-" + id);
   const referenceReader = createFileReadScope(), listeners = [];
   let revision = 0, disposed = false, selection = null, active = null, result = null, sourceRows = [];
-  let referenceText, referenceValid = true, referenceBusy = false, viewRevision = 0;
+  let referenceText, referenceValid = true, referenceBusy = false, viewRevision = 0, evidenceReview = null;
   const current = id => !disposed && id === revision;
   function listen(id, event, callback) {
     const node = get(id); node.addEventListener(event, callback);
@@ -121,6 +123,10 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   }
   function buttons() {
     const referenceMatches = referenceReady();
+    get("evidence-ack").disabled = disposed || Boolean(active) || !canPrepareRehearsalBatchEvidence(result);
+    get("evidence-save").disabled = get("evidence-ack").disabled || !get("evidence-ack").checked;
+    get("evidence-file").disabled = disposed || Boolean(active) || referenceBusy;
+    get("evidence-review-save").disabled = disposed || Boolean(active) || !evidenceReview;
     for (const name of ["filter-name", "filter-status", "filter-clear"]) get(name).disabled = disposed || Boolean(active) || !result;
     get("run").disabled = disposed || !selection || Boolean(active) || !referenceMatches;
     get("resume").disabled = disposed || Boolean(active) || !canResumeRehearsalReportFileBatch(result);
@@ -151,6 +157,8 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     }
     referenceBusy = false;
     get("rows").replaceChildren(); get("summary").textContent = "";
+    evidenceReview = null; get("evidence-ack").checked = false; get("evidence-file").value = "";
+    get("evidence-status").textContent = "";
     get("filter-name").value = ""; get("filter-status").value = "all";
     get("filter-name").removeAttribute("aria-invalid"); get("filter-status").removeAttribute("aria-invalid");
     get("filter-summary").textContent = ""; ++viewRevision;
@@ -201,7 +209,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
       return tr;
     });
     if (!current(id)) return;
-    result = receipt; sourceRows = sources; get("rows").replaceChildren(...nodes);
+    result = receipt; sourceRows = sources; get("rows").replaceChildren(...nodes); get("evidence-ack").checked = false;
     applyView();
     if (!current(id)) return;
     const s = receipt.summary;
@@ -272,6 +280,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     const id = ++revision, chosen = selection, manifestText = referenceText, job = { controller: new AbortController() };
     const retainedSources = previous ? sourceRows.slice() : [];
     active = job; result = previous;
+    evidenceReview = null; get("evidence-status").textContent = ""; get("evidence-ack").checked = false;
     if (!previous) { get("results").hidden = true; get("rows").replaceChildren(); get("summary").textContent = ""; }
     get("export-status").textContent = ""; buttons();
     try {
@@ -299,6 +308,63 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     }
   }
   get("filter-name").value = ""; get("filter-status").value = "all";
+  listen("evidence-ack", "change", buttons);
+  async function evidenceJob(file = null) {
+    if (disposed || active || referenceBusy || (file ? get("evidence-file").disabled : get("evidence-save").disabled)) return;
+    const id = ++revision, previous = result, previousSources = sourceRows, job = { controller: new AbortController() };
+    active = job; get("evidence-ack").checked = false; evidenceReview = null; buttons();
+    let message = "";
+    try {
+      get("evidence-status").textContent = file ? "まとめて保存した資料を再確認しています。" : "元資料から新しい確認結果を計算し、保存の準備をしています。";
+      const options = { subtle, signal: job.controller.signal };
+      if (file) {
+        const text = await readSecurityFileText(file, { maxBytes: REHEARSAL_BATCH_EVIDENCE_LIMIT, signal: job.controller.signal });
+        const review = await reviewRehearsalBatchEvidence(text, options);
+        if (!current(id) || job.controller.signal.aborted) return;
+        evidenceReview = review;
+        if (review.matchesRecomputation) {
+          const opened = openReviewedRehearsalBatchEvidence(review);
+          selection = null; get("files").value = "";
+          referenceText = opened.result.referenceProvided ? opened.result.reference.text : undefined;
+          referenceValid = true; get("reference-text").value = referenceText ?? ""; get("reference-file").value = "";
+          get("filter-name").value = ""; get("filter-status").value = "all";
+          render(opened.result, id, opened.files);
+          message = "保存内容と再計算が一致しました。元資料の確認結果を下の一覧に開きました。実際の履歴は変更していません。";
+          if (!review.allSourceReportsMatch || review.expectedSummary.reportsWithFailedExpectations) message += " 元資料の相違・期待結果との差は、一覧の結果をご確認ください。";
+        } else {
+          if (previous) render(previous, id, previousSources);
+          message = `保存内容に再計算との相違が${review.differenceCount}箇所あります。現在の一覧は置き換えていません。照合結果の控えを保存できます。`;
+        }
+      } else {
+        const prepared = await prepareRehearsalBatchEvidence(previous, options);
+        if (!current(id) || result !== previous || job.controller.signal.aborted) return;
+        requireSyncExport(download({ document, prepared }));
+        if (current(id) && result === previous) render(previous, id, previousSources);
+        message = "全選択資料の元の内容と、新しい確認結果を一つのファイルで保存し始めました。再試行・中断の経過は、これまでの確認控えを別に保管してください。";
+      }
+    } catch (error) {
+      if (current(id) && previous) render(previous, id, previousSources);
+      message = job.controller.signal.aborted ? "まとめた資料の処理を停止しました。現在の一覧は保持しています。" :
+        "まとめた資料を処理できませんでした。16 MiB以内の対応ファイルか確認してください。現在の一覧は保持しています。";
+    } finally {
+      job.controller.abort();
+      if (current(id)) { active = null; get("evidence-status").textContent = message; buttons(); }
+    }
+  }
+  listen("evidence-save", "click", () => { void evidenceJob(); });
+  listen("evidence-file", "change", () => {
+    if (disposed || active) return;
+    const offered = get("evidence-file").files;
+    if (offered?.length === 1) void evidenceJob(offered[0]);
+  });
+  listen("evidence-review-save", "click", () => {
+    if (disposed || active || !evidenceReview) return;
+    const id = revision, own = evidenceReview;
+    try {
+      requireSyncExport(download({ document, prepared: { text: encodeRehearsalBatchEvidenceReview(own), filename: "ThreeCore-report-batch-evidence-review.json", mimeType: "application/json" } }));
+      if (current(id) && evidenceReview === own) get("evidence-status").textContent += " 照合結果の控えを保存し始めました。";
+    } catch { if (current(id) && evidenceReview === own) get("evidence-status").textContent = "照合結果の控えを保存できませんでした。確認結果は保持しています。"; }
+  });
   for (const [name, event] of [["name", "input"], ["status", "change"]]) listen("filter-" + name, event, () => {
     if (!disposed && !active && result) applyView();
   });

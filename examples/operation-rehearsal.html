@@ -342,6 +342,12 @@
       <p id="report-batch-csv-note" class="small">CSVは表計算ソフトで読むための一覧です。未確認の行、資料全体の確認範囲、照合値との不一致も含みます。取り込み時は全列を文字列に指定してください。復旧や再確認には元のJSON資料を使います。</p>
       <p class="small">保存する照合値一覧は、今回選んだ内容から計算した値です。以前の一覧を指定した場合は、区別できるようThreeCore-selected-content-SHA256SUMS.txtという名前で保存します。元資料と同じフォルダーへ置くと、一括確認用コマンドでも再確認できます。資料に相違や形式の問題があっても、計算できた照合値を記録します。</p>
       <p id="report-batch-export-status" class="small" role="status" aria-live="polite"></p>
+      <details><summary>元資料と結果を一つにまとめて保存・再確認</summary>
+        <p class="small">全件の読み込みと照合値の計算が終わったら、元資料から新しい確認結果を作って一緒に保存できます。元の記録・公開アドレス・注記も含まれます。表示の絞り込みに関係なく全件が対象です。中断や再試行の経過を残す場合は、上の確認控えも保管してください。</p>
+        <label><input id="report-batch-evidence-ack" type="checkbox" disabled>元資料の内容もまとめて保存する</label><button id="report-batch-evidence-save" type="button" disabled>元資料と新しい確認結果をまとめて保存</button>
+        <label class="file-label">まとめて保存した資料を再確認<input id="report-batch-evidence-file" type="file" accept=".json,application/json" aria-describedby="report-batch-evidence-status"></label>
+        <p id="report-batch-evidence-status" class="small" role="status" aria-live="polite"></p><button id="report-batch-evidence-review-save" type="button" disabled>まとめた資料の照合結果を保存</button>
+      </details>
     </details>
     <details>
       <summary id="report-evidence-title">まとめて保存した証拠を再確認する</summary>

@@ -162,6 +162,9 @@ export const REHEARSAL_BATCH_MANIFEST_LIMIT = 16384;
 export const REHEARSAL_BATCH_REFERENCE_REVIEW_SCHEMA = "threecore.operation-rehearsal-batch-review.v2";
 const batchReceipts = new WeakSet();
 const fileBatchSelections = new WeakMap();
+const batchSources = new WeakMap(), batchEvidenceReviews = new WeakMap();
+export const REHEARSAL_BATCH_EVIDENCE_SCHEMA = "threecore.operation-rehearsal-batch-evidence.v1";
+export const REHEARSAL_BATCH_EVIDENCE_LIMIT = 16 * 1024 * 1024;
 
 /** Portable unique basenames keep the exported manifest unambiguous. */
 export function validateRehearsalReportBatchSelection(input) {
@@ -288,6 +291,7 @@ async function reviewRehearsalBatchCaptured(rows, selection, options, readSource
   const reference = hasReference ? matchRehearsalBatchManifest(selection.files, options.manifestText) : null;
   let referenceSha256 = null;
   const retained = previous?.summary.reviewed ?? 0, completed = previous ? previous.files.slice(0, retained) : [], aborter = new AbortController();
+  const capturedSources = previous ? (batchSources.get(previous) ?? []).slice() : [];
   const targets = rows.map((_, index) => index).filter(index => retryFailed ? ["source-unavailable", "hash-unavailable"].includes(previous.files[index].status) : index >= retained), retried = [];
   let previousBatchSha256 = null;
   let cancellation, timer, phase = "complete";
@@ -333,7 +337,8 @@ async function reviewRehearsalBatchCaptured(rows, selection, options, readSource
         reference: Object.freeze({ text: options.manifestText, sha256: referenceSha256, entries: reference }),
         allExternalChecksumsMatch: phase === "complete" && referenceSummary.checksumsMatching === rows.length } : {}),
     });
-    batchReceipts.add(result); if (readSource) fileBatchSelections.set(result, selection); return result;
+    batchReceipts.add(result); batchSources.set(result, Object.freeze(capturedSources.slice()));
+    if (readSource) fileBatchSelections.set(result, selection); return result;
   }
   try {
     try { cancellation = subscribeReadAbort(signal, () => stop("cancelled")); }
@@ -378,6 +383,7 @@ async function reviewRehearsalBatchCaptured(rows, selection, options, readSource
         { signal: aborter.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
       catch { /* Hash failures remain per-file failures, never matching reports. */ }
       if (stopped()) break;
+      if (sha256 !== null) capturedSources[index] = Object.freeze({ name: row.name, text: row.text });
       if (hasReference && sha256 !== null) checksumMatches = expectedSha256 === sha256;
       if (checksumMatches === false) status = "checksum-mismatch";
       if (sha256 !== null && checksumMatches !== false) {
@@ -403,6 +409,69 @@ async function reviewRehearsalBatchCaptured(rows, selection, options, readSource
 export function encodeRehearsalBatchReview(result) {
   if (!batchReceipts.has(result)) fail("UNRECOGNIZED_REVIEW_BATCH");
   return JSON.stringify(result, null, 2) + "\n";
+}
+
+export function canPrepareRehearsalBatchEvidence(result) {
+  const sources = batchSources.get(result);
+  return Boolean(batchReceipts.has(result) && result.complete && sources?.length === result.files.length &&
+    result.files.every((row, index) => row.sha256 !== null && sources[index]?.name === row.name));
+}
+function batchEvidenceOptions(input) {
+  const options = captureRehearsalBatchOptions(input);
+  if (Object.hasOwn(options, "manifestText")) fail("INVALID_REVIEW_BATCH_OPTIONS");
+  return options;
+}
+function batchEvidenceDocument(result, sources) {
+  return { schema: REHEARSAL_BATCH_EVIDENCE_SCHEMA, simulationOnly: true, sourceVerified: false,
+    authorizesExecution: false, referenceText: result.referenceProvided ? result.reference.text : null,
+    files: sources, receipt: result };
+}
+/** Recompute a fresh complete snapshot; continuation/retry chronology is deliberately not asserted. */
+export async function prepareRehearsalBatchEvidence(previous, input = {}) {
+  if (!canPrepareRehearsalBatchEvidence(previous)) fail("REVIEW_BATCH_EVIDENCE_UNAVAILABLE");
+  const options = batchEvidenceOptions(input), sources = batchSources.get(previous);
+  const result = await reviewRehearsalReportBatch(sources, { ...options,
+    ...(previous.referenceProvided ? { manifestText: previous.reference.text } : {}) });
+  if (!canPrepareRehearsalBatchEvidence(result)) fail("REVIEW_BATCH_EVIDENCE_INCOMPLETE");
+  const text = JSON.stringify(batchEvidenceDocument(result, sources), null, 2) + "\n";
+  try { boundedUtf8Length(text, REHEARSAL_BATCH_EVIDENCE_LIMIT); } catch { fail("REVIEW_BATCH_EVIDENCE_SIZE"); }
+  if (readAbortState(options.signal)) fail("REVIEW_BATCH_EVIDENCE_INCOMPLETE");
+  return Object.freeze({ text, filename: "ThreeCore-report-batch-evidence.json", mimeType: "application/json",
+    containsOriginalEvidence: true, simulationOnly: true, authorizesExecution: false });
+}
+/** Verify the bundle's current claims from its exact embedded texts, never from a claimed pass. */
+export async function reviewRehearsalBatchEvidence(text, input = {}) {
+  const options = batchEvidenceOptions(input), started = Date.now();
+  let parsed;
+  try { parsed = parseSecurityJson(text, { bytes: REHEARSAL_BATCH_EVIDENCE_LIMIT, depth: 16, nodes: 10000,
+    keyCharacters: 256, stringCharacters: REHEARSAL_REPORT_REVIEW_LIMIT }); } catch { fail("INVALID_REVIEW_BATCH_EVIDENCE"); }
+  if (parsed?.schema !== REHEARSAL_BATCH_EVIDENCE_SCHEMA || !(parsed.referenceText === null || typeof parsed.referenceText === "string")) fail("INVALID_REVIEW_BATCH_EVIDENCE");
+  const result = await reviewRehearsalReportBatch(parsed.files, { ...options,
+    ...(parsed.referenceText !== null ? { manifestText: parsed.referenceText } : {}) });
+  if (!canPrepareRehearsalBatchEvidence(result)) fail("REVIEW_BATCH_EVIDENCE_INCOMPLETE");
+  const remaining = (options.timeoutMs ?? 120000) - (Date.now() - started);
+  if (remaining <= 0 || readAbortState(options.signal)) fail("REVIEW_BATCH_EVIDENCE_INCOMPLETE");
+  let sha256;
+  try { sha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle,
+    { signal: options.signal, timeoutMs: Math.min(remaining, 30000) }); } catch { fail("REVIEW_BATCH_EVIDENCE_HASH_UNAVAILABLE"); }
+  const sources = batchSources.get(result), comparison = compareValues(batchEvidenceDocument(result, sources), parsed);
+  const review = Object.freeze({ schema: "threecore.operation-rehearsal-batch-evidence-review.v1", simulationOnly: true,
+    sourceVerified: false, authorizesExecution: false, automaticallyImported: false, recordedProcessVerified: false,
+    sha256, byteLength: boundedUtf8Length(text, REHEARSAL_BATCH_EVIDENCE_LIMIT),
+    matchesRecomputation: comparison.differenceCount === 0, ...comparison,
+    allSourceReportsMatch: result.allRecomputationsMatch, expectedSummary: result.summary,
+    externalChecksumsCompared: result.externalChecksumsCompared,
+    allExternalChecksumsMatch: result.allExternalChecksumsMatch ?? null });
+  batchEvidenceReviews.set(review, Object.freeze({ result, files: sources })); return review;
+}
+export function encodeRehearsalBatchEvidenceReview(review) {
+  if (!batchEvidenceReviews.has(review)) fail("UNRECOGNIZED_BATCH_EVIDENCE_REVIEW");
+  return JSON.stringify(review, null, 2) + "\n";
+}
+/** Only a fully matching owned verification can expose the captured sources to a review panel. */
+export function openReviewedRehearsalBatchEvidence(review) {
+  if (!batchEvidenceReviews.has(review) || !review.matchesRecomputation) fail("UNVERIFIED_BATCH_EVIDENCE");
+  return batchEvidenceReviews.get(review);
 }
 
 /** Hashes identify selected bytes, including differing/unsupported reports. */
