@@ -83,6 +83,11 @@ export function mountReportSetPanel({ document, parent,
   select("status-filter", "状態で絞り込み", [["all", "すべて"], ["arithmetic-agreement", "計算一致"],
     ["attention", "確認が必要"], ["incomplete", "未完了"]], filters);
   field("search", "保存名・メモ・アドレスで探す", "search", filters).maxLength = 100;
+  select("agent-filter", "含まれるトークン", [["all", "すべて"], ["DAT", "DAT"], ["EMA", "EMA"], ["CAWELON", "CAWELON"]], filters);
+  field("block-filter", "含まれる履歴ブロック番号（空欄で解除）", "text", filters).maxLength = 78;
+  nodes["block-filter"].setAttribute("inputmode", "numeric");
+  select("block-scope", "ブロック番号を探す範囲", [["planned", "計画した履歴範囲"], ["saved", "実際に保存した履歴範囲"]], filters);
+  make("p", "block-help", "計画範囲は開始残高の次のブロックから終了ブロックまで。保存範囲は履歴の問い合わせ区間です。残高だけ取得したブロックは含まず、取引の有無・全履歴取得の保証ではありません。トークンを選ぶと、そのトークンの範囲だけを探します。", filters);
   make("p", "count", "一覧は未読込みです。", selectionSection);
   const choiceActions = make("div", "choice-actions", undefined, selectionSection);
   button("select-visible", "表示中の報告を選択に追加", choiceActions);
@@ -201,7 +206,8 @@ export function mountReportSetPanel({ document, parent,
   field("file", "確認セットのJSONを選ぶ（最大96 MiB）", "file", restore).accept = ".json,application/json";
   make("p", "restore-help", "JSONを検証し、元の記録から再計算します。適用前に確認できます。報告履歴への追加・上書きは行いません。", restore);
 
-  const query = () => ({ archive: nodes.archive.value, status: nodes["status-filter"].value, search: nodes.search.value });
+  const query = () => ({ archive: nodes.archive.value, status: nodes["status-filter"].value, search: nodes.search.value,
+    agent: nodes["agent-filter"].value, block: nodes["block-filter"].value, blockScope: nodes["block-scope"].value });
   function filtered() {
     const key = JSON.stringify(query());
     if (queryDocument !== state.document || queryKey !== key) {
@@ -438,7 +444,7 @@ export function mountReportSetPanel({ document, parent,
     nodes["comparison-evidence-json"].disabled = value.busy || !value.review?.comparison || !nodes["comparison-evidence-ack"].checked;
     nodes.refresh.disabled = value.busy;
     nodes.cancel.disabled = !value.busy && !value.review;
-    for (const name of ["archive", "status-filter", "search", "title"]) nodes[name].disabled = value.busy || !value.loaded;
+    for (const name of ["archive", "status-filter", "search", "title", "agent-filter", "block-filter", "block-scope"]) nodes[name].disabled = value.busy || !value.loaded;
     nodes["clear-selection"].disabled = value.busy || !value.loaded || !value.selection.length;
     nodes.prepare.disabled = value.busy || !value.loaded || !value.selection.length;
     nodes.apply.disabled = value.busy || !value.review;
@@ -483,7 +489,7 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes.refresh, "click", () => { void controller.refresh(); });
   listen(nodes.cancel, "click", controller.cancel);
   listen(nodes.title, "input", controller.invalidateReview);
-  for (const name of ["archive", "status-filter", "search"]) listen(nodes[name], name === "search" ? "input" : "change", showChoices);
+  for (const name of ["archive", "status-filter", "search", "agent-filter", "block-filter", "block-scope"]) listen(nodes[name], ["search", "block-filter"].includes(name) ? "input" : "change", showChoices);
   for (const name of ["check-agent", "check-severity", "check-search"]) {
     listen(nodes[name], name === "check-search" ? "input" : "change", showDiagnostics);
   }

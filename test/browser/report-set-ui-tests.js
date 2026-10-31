@@ -693,4 +693,22 @@ export function registerReportSetUITests(test) {
     } finally { f.dispose(); destination.dispose(); target.remove(); }
   });
 
+  test("set block scope keeps selected and accepted sources while filtering the same token", async () => {
+  const initial = sequenceHistory([0n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+  const f = fixture({ initial });
+  try {
+    await f.accept(); const accepted = f.mounted.getState().input, before = JSON.stringify(f.store.document);
+    f.set("agent-filter", "DAT"); f.set("block-filter", "36", "input"); f.set("block-scope", "saved");
+    assert(f.q("count").textContent.includes("0/1")); assert(f.q("select-visible").disabled);
+    assert(f.q("selection-count").textContent.includes("絞り込み対象外 1件"));
+    assert(f.mounted.getState().selection.length === 1 && f.mounted.getState().input === accepted);
+    f.set("agent-filter", "CAWELON"); assert(f.q("count").textContent.includes("1/1")); assert(!f.q("select-visible").disabled);
+    f.set("agent-filter", "DAT"); f.set("block-scope", "planned"); assert(f.q("count").textContent.includes("1/1"));
+    f.set("block-filter", "01", "input"); assert(f.q("count").textContent.includes("検索条件")); assert(f.q("select-visible").disabled);
+    f.set("block-filter", "", "input"); assert(f.q("count").textContent.includes("1/1"));
+    assert(f.mounted.getState().input === accepted && JSON.stringify(f.store.document) === before);
+    assert(f.files.length === 0 && f.store.calls.every(call => call[0] === "read"));
+  } finally { f.dispose(); }
+  });
+
 }

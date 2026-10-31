@@ -251,4 +251,22 @@ export function registerReportHistoryUITests(test) {
       assert(parent.querySelector(".period-report-result-meta").textContent.includes("PC内の報告履歴"));
     } finally { f.dispose(); report.dispose(); parent.remove(); }
   });
+  test("history block scope keeps hidden selection and exports only matching rows", async () => {
+  const initial = historyDocument([historyRecord(1, { report: reportInput({ counts: [3, 2, 5] }) })]);
+  const f = fixture({ initial });
+  try {
+    await f.load(); f.set("selected", id(101)); const before = JSON.stringify(f.store.document);
+    f.set("agent-filter", "DAT"); f.set("block-filter", "36", "input"); f.set("block-scope", "saved");
+    assert(f.q("count").textContent.includes("0/1")); assert(f.mounted.getState().selectedId === id(101));
+    assert(f.q("selected").value === id(101)); assert(f.q("selected-text").textContent.includes("DAT"));
+    f.check("export-ack"); f.click("csv"); await f.settled(); assert(f.files[0].rows === 0);
+    f.set("block-scope", "planned"); assert(f.q("count").textContent.includes("1/1"));
+    f.check("export-ack"); f.click("csv"); await f.settled(); assert(f.files[1].rows === 1 && f.files[1].text.includes(id(101)));
+    f.set("block-filter", "-1", "input"); assert(f.q("count").textContent.includes("検索条件"));
+    f.set("block-filter", "", "input"); assert(f.q("count").textContent.includes("1/1"));
+    assert(JSON.stringify(f.store.document) === before && f.deliveries.length === 0);
+    assert(f.store.calls.every(call => call[0] === "read"));
+  } finally { f.dispose(); }
+  });
+
 }

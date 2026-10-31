@@ -58,6 +58,10 @@ export function mountReportHistoryPanel({ document, parent, getReport, stageRepo
   chooser("order", "並び順", [["newest", "保存が新しい順"], ["oldest", "保存が古い順"], ["name", "保存名順"], ["created", "報告作成日時順"]], filters);
   field("search", "保存名・メモ・アドレスを検索", "search", filters).maxLength = 100;
   field("tag-filter", "タグで絞り込み（完全一致）", "text", filters).maxLength = 24;
+  field("block-filter", "含まれる履歴ブロック番号（空欄で解除）", "text", filters).maxLength = 78;
+  nodes["block-filter"].setAttribute("inputmode", "numeric");
+  chooser("block-scope", "ブロック番号を探す範囲", [["planned", "計画した履歴範囲"], ["saved", "実際に保存した履歴範囲"]], filters);
+  make("p", "block-help", "計画範囲は開始残高の次のブロックから終了ブロックまで。保存範囲は履歴の問い合わせ区間です。残高だけ取得したブロックは含まず、取引の有無・全履歴取得の保証ではありません。トークンを選ぶと、そのトークンの範囲だけを探します。", filters);
   make("p", "count");
   chooser("selected", "確認する報告", [["", "選択しない"]]);
   const selected = make("section", "selected-details");
@@ -108,7 +112,7 @@ export function mountReportHistoryPanel({ document, parent, getReport, stageRepo
 
   const query = () => ({ archive: nodes["archive-filter"].value, status: nodes["status-filter"].value,
     agent: nodes["agent-filter"].value, order: nodes.order.value,
-    search: nodes.search.value, tag: nodes["tag-filter"].value });
+    search: nodes.search.value, tag: nodes["tag-filter"].value, block: nodes["block-filter"].value, blockScope: nodes["block-scope"].value });
   const annotations = () => ({ label: nodes.label.value, note: nodes.note.value,
     tags: nodes.tags.value.trim() ? nodes.tags.value.split(",").map(value => value.trim()) : [] });
   function renderList() {
@@ -149,7 +153,7 @@ export function mountReportHistoryPanel({ document, parent, getReport, stageRepo
     nodes.refresh.disabled = value.busy;
     nodes.cancel.disabled = !value.busy && !value.review;
     for (const name of ["selected", "baseline", "save", "file", "label", "note", "tags"]) nodes[name].disabled = value.busy || !value.loaded;
-    for (const name of ["archive-filter", "status-filter", "agent-filter", "order", "search", "tag-filter"]) nodes[name].disabled = value.busy || !value.loaded;
+    for (const name of ["archive-filter", "status-filter", "agent-filter", "order", "search", "tag-filter", "block-filter", "block-scope"]) nodes[name].disabled = value.busy || !value.loaded;
     for (const name of ["open", "annotate"]) nodes[name].disabled = value.busy || !value.loaded || !entry;
     nodes.archive.disabled = value.busy || !value.loaded || !entry || entry.archived;
     nodes.restore.disabled = value.busy || !value.loaded || !entry || !entry.archived;
@@ -191,8 +195,8 @@ export function mountReportHistoryPanel({ document, parent, getReport, stageRepo
   listen("skip-conflicts", "change", () => controller.setSkipConflicts(nodes["skip-conflicts"].checked));
   listen("apply", "click", () => { void controller.applyReview(); });
   for (const name of ["label", "note", "tags"]) listen(name, "input", controller.invalidateReview);
-  for (const name of ["archive-filter", "status-filter", "agent-filter", "order", "search", "tag-filter"]) {
-    listen(name, ["search", "tag-filter"].includes(name) ? "input" : "change", renderList);
+  for (const name of ["archive-filter", "status-filter", "agent-filter", "order", "search", "tag-filter", "block-filter", "block-scope"]) {
+    listen(name, ["search", "tag-filter", "block-filter"].includes(name) ? "input" : "change", renderList);
   }
   listen("export-ack", "change", () => render(controller.state));
   for (const [name, format] of [["backup-json", "backup"], ["selected-json", "selected"], ["csv", "csv"]]) {
