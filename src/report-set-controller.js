@@ -6,23 +6,25 @@ import { validateSetSelection, validateReportSet, createReportSet, inspectSetSou
 import { analyzeReportSet } from "./report-set-engine.js";
 import { prepareReportSetFile, readReportSetFile } from "./report-set-file.js";
 import { diagnosticQuery } from "./report-set-diagnostics.js";
-import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile } from "./report-set-export.js";
+import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile,
+  readReportSetChecksText, reviewReportSetChecksFile } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
 /** Read-only storage consumer. Selected evidence is pinned before presentation. */
 export function createReportSetController({ storage, onChange = () => {},
   now = () => new Date().toISOString(), readFile = readReportSetFile,
-  prepareFile = prepareReportSetFile } = {}) {
-  if (!storage || ![storage.read, storage.close, onChange, now, readFile, prepareFile]
+  prepareFile = prepareReportSetFile, readChecksText = readReportSetChecksText } = {}) {
+  if (!storage || ![storage.read, storage.close, onChange, now, readFile, prepareFile, readChecksText]
     .every(value => typeof value === "function")) periodFail("PERIOD_SET_OPTIONS");
   let document = emptyReportHistory(), loaded = false, selection = Object.freeze([]);
   let input = null, result = null, review = null, inspection = null, origin = null;
+  let checkReview = null;
   let phase = "idle", error = null, generation = 0, disposed = false;
   let active = null;
   let message = "保存した報告を読み込み、まとめて確認する対象を選んでください。";
-  const busy = () => ["loading", "importing", "checking", "exporting", "inspecting"].includes(phase);
-  const state = () => Object.freeze({ document, loaded, selection, input, result, review, inspection,
+  const busy = () => ["loading", "importing", "checking", "exporting", "inspecting", "checking-details"].includes(phase);
+  const state = () => Object.freeze({ document, loaded, selection, input, result, review, inspection, checkReview,
     origin, phase, error, message, busy: busy(), disposed });
   let notificationRevision = 0;
   const observers = new Set([() => onChange(state())]);
@@ -152,7 +154,7 @@ export function createReportSetController({ storage, onChange = () => {},
         return { fresh, input: validateReportSet(pending.input), result: analyzeReportSet(pending.input) };
       }, value => {
         if (value.fresh) { document = value.fresh; loaded = true; }
-        input = value.input; result = value.result; origin = pending.origin; inspection = null;
+        input = value.input; result = value.result; origin = pending.origin; inspection = null; checkReview = null;
         message = "確認セットを作成しました。選択した時点の証拠を固定して表示しています。";
       });
     } catch (value) { return fail(value); }
@@ -168,6 +170,22 @@ export function createReportSetController({ storage, onChange = () => {},
       });
     } catch (value) { return fail(value); }
   }
+  async function reviewCheckFile(file) {
+    try {
+      if (!guard()) return false;
+      if (!input) periodFail("PERIOD_SET_NO_RESULT");
+      const snapshot = input; review = null;
+      return await run("checking-details", async (same, signal) => {
+        const text = await readChecksText(file, { signal });
+        if (!same()) return null;
+        return reviewReportSetChecksFile(snapshot, text, { signal });
+      }, value => {
+        checkReview = value;
+        message = value.matchesRecomputation ? "保存した確認箇所が、元資料からの再計算と一致しました。" :
+          "保存した確認箇所と再計算に食い違いがあります。元の資料は変更していません。";
+      });
+    } catch (value) { return fail(value); }
+  }
   async function exportFile(format, acknowledged, deliver, optionsValue = {}, queryValue = {}) {
     let token = generation;
     try {
@@ -175,13 +193,19 @@ export function createReportSetController({ storage, onChange = () => {},
       token = ++generation;
       if (!input) periodFail("PERIOD_SET_NO_RESULT");
       if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
-      if (!["json", "html", "csv", "checks-csv", "checks-json"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      if (!["json", "html", "csv", "checks-csv", "checks-json", "check-review"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      if (format === "check-review" && !checkReview) periodFail("PERIOD_SET_CHECKS_NO_REVIEW");
+      const checked = checkReview;
       const snapshot = input, options = validateSetExportOptions(optionsValue);
       const query = format.startsWith("checks-") ? diagnosticQuery(queryValue) : null;
       if (!sameGeneration(token)) return false;
       review = null;
       return await run("exporting", async (same, signal) => {
-        const file = format === "json" ? await prepareFile(snapshot, { signal }) : format === "html" ?
+        const checkText = format === "check-review" ? JSON.stringify(checked, null, 2) + "\n" : null;
+        const file = checkText !== null ? Object.freeze({ text: checkText, filename: "ThreeCore-report-set-check-review.json",
+          mimeType: "application/json;charset=utf-8", byteLength: new TextEncoder().encode(checkText).byteLength,
+          encrypted: false, restorable: false, containsOriginalEvidence: false }) :
+          format === "json" ? await prepareFile(snapshot, { signal }) : format === "html" ?
           reportSetHTML(snapshot, options) : format === "checks-csv" ? reportSetDiagnosticsCSV(snapshot, query, options) :
           format === "checks-json" ? await prepareReportSetChecksFile(snapshot, query, options, { signal }) : reportSetCSV(snapshot, options);
         if (!same()) return null;
@@ -196,11 +220,11 @@ export function createReportSetController({ storage, onChange = () => {},
   }
   function dispose() {
     if (disposed) return;
-    generation++; disposed = true; phase = "disposed"; review = null; inspection = null;
+    generation++; disposed = true; phase = "disposed"; review = null; inspection = null; checkReview = null;
     observers.clear();
     const previous = active; active = null; previous?.abort();
     consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,
-    inspectSources, exportFile, cancel, invalidateReview, dispose });
+    inspectSources, reviewCheckFile, exportFile, cancel, invalidateReview, dispose });
 }

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { Element } from "./helpers/panel-dom.js";
 import { mountReportSetPanel } from "../examples/report-set-panel.js";
 import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-file.js";
+import { prepareReportSetChecksFile } from "../src/report-set-export.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
   clone, id, AFTER, fileFrom, waitUntil, deferred } from "./helpers/report-set-fixtures.js";
 
@@ -316,5 +317,25 @@ test("check-detail JSON saves exact observations with the selected disclosure co
     assert.match(f.q("json-help").textContent, /保存値・ハッシュ/);
     f.set("check-search", "x".repeat(101), "input"); assert.equal(f.q("checks-json").disabled, true);
     assert.equal(f.mounted.getState().input, original);
+  } finally { f.dispose(); }
+});
+
+test("saved check details are compared on screen and the completed result can be saved", async () => {
+  const f = fixture(sequenceHistory([0n, 0n]));
+  try {
+    assert.equal(f.q("check-file").disabled, true); await f.accept(); const input = f.mounted.getState().input;
+    const file = await prepareReportSetChecksFile(input);
+    f.q("check-file").files = [fileFrom(file.text)]; f.q("check-file").dispatchEvent(new Event("change"));
+    await f.settled(); assert.match(f.q("check-review-output").textContent, /再計算と一致/);
+    assert.match(f.q("check-review-output").textContent, /確認が必要な箇所あり/);
+    assert.equal(f.q("check-review").disabled, true); f.check("ack"); f.click("check-review"); await f.settled();
+    assert.equal(JSON.parse(f.files[0].text).matchesRecomputation, true);
+    const changed = JSON.parse(file.text); changed.items = [];
+    f.q("check-file").files = [fileFrom(JSON.stringify(changed))]; f.q("check-file").dispatchEvent(new Event("change"));
+    await f.settled(); assert.match(f.q("check-review-output").textContent, /食い違い/);
+    assert.equal(f.mounted.getState().input, input); assert.equal(f.q("check-file").value, "");
+    f.q("check-file").files = [fileFrom("{")]; f.q("check-file").dispatchEvent(new Event("change"));
+    await f.settled(); assert.match(f.q("check-review-output").textContent, /最後に完了した/);
+    assert.equal(f.mounted.getState().checkReview.matchesRecomputation, false);
   } finally { f.dispose(); }
 });

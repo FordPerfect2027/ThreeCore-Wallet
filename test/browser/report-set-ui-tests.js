@@ -1,6 +1,7 @@
 import { mountReportSetPanel } from "/examples/report-set-panel.js";
 import { createReportHistoryStorage } from "/src/report-history-storage.js";
 import { prepareReportSetFile, decodeReportSetFile } from "/src/report-set-file.js";
+import { prepareReportSetChecksFile } from "/src/report-set-export.js";
 import { analyzeReportSet } from "/src/report-set-engine.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
   clone, id, AFTER, waitUntil, deferred } from "/test/helpers/report-set-fixtures.js";
@@ -411,6 +412,25 @@ export function registerReportSetUITests(test) {
       assert(data.sourcePayloadDigest === (await prepareReportSetFile(original)).digest);
       assert(data.restorable === false && f.mounted.getState().input === original);
       f.set("check-search", "x".repeat(101), "input"); assert(f.q("checks-json").disabled);
+    } finally { f.dispose(); }
+  });
+
+  test("report set: native file selection compares saved details and saves a bound result", async () => {
+    const f = fixture({ initial: sequenceHistory([0n, 0n]) });
+    const choose = async text => {
+      const transfer = new DataTransfer(); transfer.items.add(new File([text], "check-details.json", { type: "application/json" }));
+      f.q("check-file").files = transfer.files; f.q("check-file").dispatchEvent(new Event("change", { bubbles: true })); await f.settled();
+    };
+    try {
+      assert(f.q("check-file").disabled); await f.accept(); const input = f.mounted.getState().input;
+      const file = await prepareReportSetChecksFile(input); await choose(file.text);
+      assert(f.q("check-review-output").textContent.includes("再計算と一致"));
+      assert(f.q("check-review-output").textContent.includes("確認が必要な箇所あり"));
+      f.check("ack"); f.click("check-review"); await f.settled();
+      assert(JSON.parse(f.files[0].text).matchesRecomputation && f.mounted.getState().input === input);
+      const changed = JSON.parse(file.text); changed.items = []; await choose(JSON.stringify(changed));
+      assert(f.q("check-review-output").textContent.includes("食い違い"));
+      assert(f.mounted.getState().checkReview.matchesRecomputation === false && f.q("check-file").value === "");
     } finally { f.dispose(); }
   });
 }

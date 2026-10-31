@@ -1,5 +1,6 @@
 import { parseSecurityJson } from "./security-json.js";
 import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { validateReportSet, validateSetExportOptions, freezeSet } from "./report-set-model.js";
 import { periodFail } from "./period-plan.js";
 import { prepareReportSetFile } from "./report-set-file.js";
@@ -177,4 +178,12 @@ export async function reviewReportSetChecksFile(value, text, fileOptions = {}) {
     query, options, total: expected.total, matched: expected.matched,
     summary: expected.summary, differences, unexpectedFields,
     historicalOnly: true, readOnly: true, liveChainRechecked: false, authenticated: false, restorable: false });
+}
+
+/** Uses the same page-wide file budget and cancellation as other saved formats. */
+export async function readReportSetChecksText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_CHECKS_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_CHECKS_SIZE", readCode: "PERIOD_SET_CHECKS_READ", encodingCode: "PERIOD_SET_CHECKS_ENCODING",
+    signal, timeoutMs });
 }

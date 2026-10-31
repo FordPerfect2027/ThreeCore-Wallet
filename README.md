@@ -521,6 +521,8 @@ The [structured check-detail export](docs/REPORT_CHECK_DETAILS_2026-10-31.md) in
 
 [Independent checklist recomputation](docs/REPORT_CHECK_RECOMPUTATION_2026-10-31.md) compares a saved detail file with its verified original report set and reports altered counts, observations, claims or source identity.
 
+The same [check-detail comparison is available on screen](docs/REPORT_CHECK_SCREEN_REVIEW_2026-10-31.md): open the original report set, choose the detail JSON and save the completed comparison. File reading remains cancellable and neither source is overwritten.
+
 
 ### Resumable historical period collection (local development)
 

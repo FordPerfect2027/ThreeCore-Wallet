@@ -29,7 +29,12 @@ const ERRORS = Object.freeze({
   PERIOD_SET_BUSY: "確認セットの処理中です。完了を待つか中止してください。",
   PERIOD_SET_SIZE: "確認セットの上限は12報告・64 MiBです。",
   PERIOD_SET_FILE_SIZE: "ファイルの大きさが不正です。96 MiBまでのJSONを選んでください。",
-  PERIOD_SET_CHECKS_SIZE: "確認箇所JSONが4 MiBを超えました。トークンや種類で絞り込んでください。",
+  PERIOD_SET_CHECKS_SIZE: "確認箇所JSONは、空でない4 MiB以下のファイルを選んでください。出力が大きい場合はトークンや種類で絞り込んでください。",
+  PERIOD_SET_CHECKS_READ: "確認箇所JSONを読み込めませんでした。元の資料は変更していません。",
+  PERIOD_SET_CHECKS_ENCODING: "確認箇所JSONはUTF-8のテキストファイルを選んでください。",
+  PERIOD_SET_CHECKS_JSON: "確認箇所JSONの内容を読み取れません。保存した元のファイルを確認してください。",
+  PERIOD_SET_CHECKS_SCHEMA: "対応する確認箇所JSONではありません。確認セットJSONや照合結果JSONとは異なります。",
+  PERIOD_SET_CHECKS_NO_REVIEW: "先に確認箇所JSONを選んで照合してください。",
   PERIOD_SET_FILE_SCHEMA: "確認セット用のバックアップJSONではありません。",
   PERIOD_SET_ACK: "保存される情報の内容を確認してチェックを入れてください。",
   PERIOD_SET_EXPORT_OPTIONS: "説明用ファイルの出力設定が不正です。",
@@ -44,6 +49,20 @@ export function setErrorCode(value) {
   return code === "PERIOD_HISTORY_FAILED" ? "PERIOD_SET_FAILED" : code;
 }
 export function setErrorText(code) { return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code] : historyErrorText(code); }
+
+export function setCheckReviewText(value) {
+  if (!value) return "まだ確認箇所JSONを照合していません。";
+  const fields = { sourcePayloadDigest: "参照元資料", items: "確認箇所・ハッシュ・保存値", query: "検索条件",
+    options: "表示設定", summary: "元資料全体の確認結果", total: "全体件数", matched: "該当件数",
+    liveChainRechecked: "現在のチェーン確認の表示", authenticated: "出所認証の表示", restorable: "復元可否の表示" };
+  return ["最後に完了した照合結果", value.matchesRecomputation ? "元資料からの再計算と一致" : "再計算と食い違いがあります",
+    "参照元資料の識別値: " + (value.sourceDigestMatches ? "一致" : "不一致"),
+    "再計算した確認箇所: " + value.matched + " / " + value.total + "件",
+    "元資料全体: " + (value.summary.allContinuous ? "選択範囲の境界は一致" : "確認が必要な箇所あり"),
+    ...value.differences.map(field => "・食い違い: " + (fields[field] ?? "確認情報の項目")),
+    ...(value.unexpectedFields ? ["定義外の項目: " + value.unexpectedFields + "件"] : []),
+    "一致は出所の認証や、現在のチェーン状態の確認を意味しません。照合したテキストの識別値は結果JSONに残ります。"].join("\n");
+}
 export function shortSetAddress(value, shorten = true) {
   return !value ? "—" : shorten ? value.slice(0, 8) + "…" + value.slice(-6) : value;
 }
