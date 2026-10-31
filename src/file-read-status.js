@@ -199,6 +199,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.saved-file-comparison-bundle.v2": [null, "PERIOD_FILE_SAVED_BUNDLE_ONLY"],
   "threecore.saved-file-comparison-bundle-review.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY"],
   "threecore.saved-file-comparison-bundle-review.v2": [null, "PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY"],
+  "threecore.saved-file-bundle-receipt-check.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY"],
   "threecore.saved-file-comparison-review.v1": [null, "PERIOD_FILE_SAVED_REVIEW_ONLY"],
   "threecore.saved-file-comparison-review.v2": [null, "PERIOD_FILE_SAVED_REVIEW_ONLY"],
   "threecore.saved-file-comparison.v1": [null, "PERIOD_FILE_SAVED_COMPARISON_ONLY"],
@@ -831,6 +832,46 @@ export async function reviewWalletSavedBundle(text, fileOptions = {}) {
 export function encodeWalletSavedBundleReview(receipt) {
   if (!savedBundleReviews.has(receipt)) savedInspectionFail("FILE_BUNDLE_REVIEW_RESULT");
   return JSON.stringify(receipt, null, 2) + "\n";
+}
+
+export const WALLET_SAVED_BUNDLE_RECEIPT_LIMIT = 256 * 1024;
+const savedBundleReceiptChecks = new WeakSet();
+/** Verify a saved receipt against a freshly owned bundle review, never uploaded authority. */
+export async function reviewWalletSavedBundleReceipt(expected, text, fileOptions = {}) {
+  if (!savedBundleReviews.has(expected)) savedInspectionFail("FILE_BUNDLE_RECEIPT_SOURCE");
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); } catch { savedInspectionFail("FILE_BUNDLE_RECEIPT_OPTIONS"); }
+  let aborted; try { aborted = readAbortState(options.signal); } catch { savedInspectionFail("FILE_BUNDLE_RECEIPT_OPTIONS"); }
+  if (typeof aborted !== "boolean" || (Object.hasOwn(options, "timeoutMs") && (!Number.isInteger(options.timeoutMs) || options.timeoutMs < 1 || options.timeoutMs > 30000))) savedInspectionFail("FILE_BUNDLE_RECEIPT_OPTIONS");
+  if (aborted) savedInspectionFail("FILE_CANCELLED");
+  let supplied;
+  try { supplied = parseSecurityJson(text, { bytes: WALLET_SAVED_BUNDLE_RECEIPT_LIMIT, depth: 32, nodes: 10000 }); } catch { savedInspectionFail("FILE_BUNDLE_RECEIPT_JSON"); }
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== expected.schema) savedInspectionFail("FILE_BUNDLE_RECEIPT_SCHEMA");
+  const differences = Object.keys(expected).filter(field => !Object.hasOwn(supplied, field) || !sameSavedJSON(supplied[field], expected[field]));
+  const unexpectedFields = Object.keys(supplied).filter(field => !Object.hasOwn(expected, field)).length;
+  const receiptTextDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, options);
+  if (readAbortState(options.signal) !== false) savedInspectionFail("FILE_CANCELLED");
+  const result = Object.freeze({ schema: "threecore.saved-file-bundle-receipt-check.v1", readOnly: true,
+    matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    bundleTextDigest: expected.bundleTextDigest, bundleTextBindingMatches: supplied.bundleTextDigest === expected.bundleTextDigest,
+    receiptTextDigest, expectedBundleComparisonMatches: expected.comparisonMatchesRecomputation,
+    expectedSourceFilesAvailable: Boolean(expected.sourceFilesAvailable ?? expected.originalsAvailable),
+    differences: Object.freeze(differences), unexpectedFields, containsOriginalEvidence: false,
+    restorable: false, authenticated: false, liveChainRechecked: false, authorizesExecution: false });
+  savedBundleReceiptChecks.add(result); return result;
+}
+export function encodeWalletSavedBundleReceiptCheck(result) {
+  if (!savedBundleReceiptChecks.has(result)) savedInspectionFail("FILE_BUNDLE_RECEIPT_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
+}
+export function walletSavedBundleReceiptCheckText(result) {
+  if (!result) return "";
+  if (!savedBundleReceiptChecks.has(result)) savedInspectionFail("FILE_BUNDLE_RECEIPT_RESULT");
+  return [result.matchesRecomputation ? "保存した照合結果は、このまとめた資料からの再計算と一致しました。" : "保存した照合結果に、再計算と一致しない項目があります。",
+    "まとめた資料との結び付け: " + (result.bundleTextBindingMatches ? "一致" : "不一致"),
+    `不一致の項目 ${result.differences.length}個 / 仕様にない追加項目 ${result.unexpectedFields}個。`,
+    result.expectedBundleComparisonMatches ? "まとめた資料の中の比較結果も再計算と一致しています。" : "まとめた資料の中の比較結果には不一致があります。照合結果の一致は、この不一致を解消しません。",
+    "照合結果が一致しても、元ファイル同士の一致や出所・安全性を証明するものではありません。元資料は含まず、復元には使えません。"].join("\n");
 }
 
 /** Only a completed faithful review owned by this module can yield embedded source text. */

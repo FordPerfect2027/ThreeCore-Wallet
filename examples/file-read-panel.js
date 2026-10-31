@@ -8,6 +8,7 @@ import { inspectWalletSavedTextDifferences, encodeWalletSavedTextDifferences, WA
 import { reviewWalletSavedTextDifferences, encodeWalletSavedTextDifferenceReview, walletSavedTextDifferenceReviewText, WALLET_SAVED_DIFFERENCE_REVIEW_LIMIT } from "../src/file-read-status.js";
 import { queryWalletSavedTextDifferences, walletSavedTextDifferencePageText, encodeWalletSavedTextDifferencePage } from "../src/file-read-status.js";
 import { encodeWalletSavedBundleReview } from "../src/file-read-status.js";
+import { reviewWalletSavedBundleReceipt, encodeWalletSavedBundleReceiptCheck, walletSavedBundleReceiptCheckText, WALLET_SAVED_BUNDLE_RECEIPT_LIMIT } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -718,11 +719,49 @@ export function mountSavedBatchComparisonPanel({ document, parent,
   } });
 }
 
+/** Receipt validation has its own cancellation and acknowledgement; it cannot extract a source. */
+export function mountSavedBundleReceiptCheckPanel({ document, parent, getExpected = () => null, readText = readSavedGuideText,
+  review = reviewWalletSavedBundleReceipt, download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
+  const host = document.createElement("details"); host.className = "saved-bundle-receipt-check"; parent.append(host);
+  const cleanup = []; let disposed = false, revision = 0, expected = null, active = null, result = null;
+  function node(tag, name, text, target = host) { const value = document.createElement(tag); value.className = "saved-bundle-receipt-check-" + name; if (text !== undefined) value.textContent = text; target.append(value); return value; }
+  node("summary", "heading", "保存した照合結果を、この資料から再確認する");
+  node("p", "intro", "上でまとめた資料を読み込んでから、その資料の照合結果JSONを選んでください。元の資料との結び付けと全項目を再計算と比較します。256 KiBまでです。");
+  const label = node("label", "file-label", "以前保存した照合結果JSON"), file = node("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json";
+  const stop = node("button", "stop", "照合結果の再確認を中止"), status = node("p", "status", "先に、上でまとめた資料を読み込んでください。"), output = node("pre", "output", ""); stop.type = "button"; status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  const ackLabel = node("label", "ack-label", "再確認の結果と照合値を、暗号化せずPCに保存します"), ack = node("input", "ack", undefined, ackLabel); ack.type = "checkbox";
+  const save = node("button", "save", "再確認の結果をJSON保存"); save.type = "button";
+  function render() { file.disabled = disposed || !expected || Boolean(active); stop.disabled = disposed || !active; ack.disabled = disposed || Boolean(active) || !result; save.disabled = ack.disabled || !ack.checked; host.setAttribute("aria-busy", String(Boolean(active))); output.textContent = walletSavedBundleReceiptCheckText(result); }
+  function updateExpected() {
+    if (disposed) return; const next = getExpected(); if (next !== expected) { ++revision; const old = active; active = null; expected = next; result = null; ack.checked = false; old?.abort(); status.textContent = next ? "以前保存した照合結果JSONを選んでください。" : "先に、上でまとめた資料を読み込んでください。"; } render();
+  }
+  function listen(target, event, fn) { target.addEventListener(event, fn); cleanup.push(() => target.removeEventListener(event, fn)); }
+  listen(file, "change", async () => {
+    if (disposed || active || !expected) return; const chosen = file.files?.[0]; file.value = ""; if (!chosen) return;
+    const own = ++revision, captured = expected, local = new AbortController(); active = local; result = null; ack.checked = false; status.textContent = "保存した照合結果を再計算と比較しています。"; render();
+    const current = () => !disposed && own === revision && captured === expected && getExpected() === captured;
+    try { readFormatFileName(chosen, { maxLength: 180, code: "FILE_NAME", fail: code => { const error = new Error(code); error.code = code; throw error; } });
+      const text = await readText(chosen, { maxBytes: WALLET_SAVED_BUNDLE_RECEIPT_LIMIT, signal: local.signal }); if (!current()) return;
+      const checked = await review(captured, text, { signal: local.signal }); if (!current()) return; result = checked; status.textContent = "照合結果の再確認を終えました。下の判定をご確認ください。";
+    } catch { if (current()) status.textContent = "照合結果を確認できませんでした。256 KiB以内の、この資料から保存した照合結果JSONを選んでください。"; }
+    finally { local.abort(); if (!disposed && own === revision) { active = null; updateExpected(); } }
+  });
+  listen(stop, "click", () => { if (disposed || !active) return; ++revision; const old = active; active = null; result = null; ack.checked = false; old.abort(); status.textContent = "照合結果の再確認を中止しました。元資料は変更していません。"; render(); });
+  listen(ack, "change", render);
+  listen(save, "click", () => {
+    if (disposed || active || !result || !ack.checked || getExpected() !== expected) return; const own = revision, captured = result, source = expected; ack.checked = false; render();
+    try { const prepared = Object.freeze({ text: encodeWalletSavedBundleReceiptCheck(captured), filename: "ThreeCore-saved-bundle-receipt-check.json", mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false, encrypted: false }), delivered = download(prepared), kind = observeCallbackResult(delivered);
+      if (!disposed && own === revision && getExpected() === source) status.textContent = kind === "synchronous" && delivered !== false ? "再確認の結果の保存処理を開始しました。ダウンロード先をご確認ください。" : "再確認の結果の保存を確認できませんでした。";
+    } catch { if (!disposed && own === revision && getExpected() === source) status.textContent = "再確認の結果の保存を確認できませんでした。"; }
+  });
+  updateExpected(); return Object.freeze({ updateExpected, getState: () => Object.freeze({ busy: Boolean(active), result, disposed }), dispose() { if (disposed) return; disposed = true; ++revision; const old = active; active = null; expected = null; result = null; old?.abort(); cleanup.forEach(remove => remove()); host.remove(); } });
+}
+
 /** Owns a portable bundle review; has no wallet, import, or storage capability. */
 export function mountSavedComparisonBundlePanel({ document, parent, getPair = () => null,
   readText = readSavedGuideText, download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-bundle"; parent.append(host);
-  const nodes = {}, cleanup = []; let disposed = false, busy = false, generation = 0, aborter = null, receipt = null, workKind = null, lastPair = null;
+  const nodes = {}, cleanup = []; let disposed = false, busy = false, generation = 0, aborter = null, receipt = null, workKind = null, lastPair = null, receiptCheckPanel = null;
   function node(tag, name, text, target = host) { const value = document.createElement(tag); value.className = "saved-bundle-" + name; if (text !== undefined) value.textContent = text; target.append(value); nodes[name] = value; return value; }
   function checkbox(name, text) { const label = node("label", name + "-label", text), field = node("input", name, undefined, label); field.type = "checkbox"; return field; }
   function button(name, text) { const value = node("button", name, text); value.type = "button"; return value; }
@@ -740,6 +779,7 @@ export function mountSavedComparisonBundlePanel({ document, parent, getPair = ()
   const sourceAck = checkbox("source-ack", "確認済み資料から、元のアドレス・残高・履歴・メモを含むファイルを暗号化せず取り出します");
   const before = button("before", "比較元の元ファイルを取り出す"), after = button("after", "比較先の元ファイルを取り出す");
   node("p", "limits", "再計算と一致する資料だけから取り出せます。元ファイルの形式・制限を保ち、ウォレットへの接続や復元は自動で行いません。");
+  receiptCheckPanel = mountSavedBundleReceiptCheckPanel({ document, parent: host, getExpected: () => busy ? null : receipt, readText, download });
   const current = () => { try { return getPair(); } catch { return null; } };
   const usable = pair => Boolean(["validated-original", "validated-structure"].includes(pair?.comparison?.before?.validation) && ["validated-original", "validated-structure"].includes(pair?.comparison?.after?.validation) && pair.beforeFile && pair.afterFile);
   const sourcesAvailable = value => Boolean(value?.sourceFilesAvailable ?? value?.originalsAvailable);
@@ -751,6 +791,7 @@ export function mountSavedComparisonBundlePanel({ document, parent, getPair = ()
     before.disabled = after.disabled = busy || !sourcesAvailable(receipt) || !sourceAck.checked;
     reviewAck.disabled = busy || !receipt; reviewSave.disabled = busy || !receipt || !reviewAck.checked;
     output.textContent = walletSavedBundleReviewText(receipt);
+    receiptCheckPanel?.updateExpected();
   }
   function cancel() {
     if (disposed) return;
@@ -826,7 +867,7 @@ export function mountSavedComparisonBundlePanel({ document, parent, getPair = ()
   listen(before, "click", () => extract("before")); listen(after, "click", () => extract("after")); updatePair();
   return Object.freeze({ updatePair, getState: () => Object.freeze({ busy, receipt, disposed }), dispose() {
     if (disposed) return; disposed = true; generation++; const previous = aborter; aborter = null; busy = false; receipt = null;
-    previous?.abort(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); host.remove();
+    previous?.abort(); receiptCheckPanel.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); host.remove();
   } });
 
 }
