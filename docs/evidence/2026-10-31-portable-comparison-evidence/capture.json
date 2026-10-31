@@ -1,0 +1,52 @@
+{
+  "source": "a96dfeb",
+  "synthetic": true,
+  "captureEnvironment": "Node shared screen exporter/reviewer and standalone one-file CLI; actual native selection and download callbacks tested separately",
+  "rows": [
+    {
+      "name": "matching",
+      "exitCode": 0,
+      "sharedReviewExactlyEqual": true,
+      "errorCode": null,
+      "inputUnchanged": true,
+      "matches": true,
+      "imported": false
+    },
+    {
+      "name": "identical",
+      "exitCode": 0,
+      "sharedReviewExactlyEqual": true,
+      "errorCode": null,
+      "inputUnchanged": true,
+      "matches": true,
+      "imported": false
+    },
+    {
+      "name": "altered-comparison",
+      "exitCode": 2,
+      "sharedReviewExactlyEqual": true,
+      "errorCode": null,
+      "inputUnchanged": true,
+      "matches": false,
+      "imported": false
+    },
+    {
+      "name": "reversed-originals",
+      "exitCode": 2,
+      "sharedReviewExactlyEqual": true,
+      "errorCode": null,
+      "inputUnchanged": true,
+      "matches": false,
+      "imported": false
+    },
+    {
+      "name": "corrupt-original",
+      "exitCode": 1,
+      "sharedReviewExactlyEqual": false,
+      "errorCode": "PERIOD_CHECKSUM",
+      "inputUnchanged": true,
+      "matches": null,
+      "imported": null
+    }
+  ]
+}

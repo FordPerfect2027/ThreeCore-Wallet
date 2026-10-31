@@ -1,0 +1,5 @@
+PERIOD_CHECKSUM
+Usage: node scripts/verify-report-set-evidence.js evidence.json [--json]
+Checks both embedded original checksums and recomputes the saved comparison. No external source files, network, imports or input writes.
+Input contains full unencrypted original evidence. The returned review omits original notes, balances and events.
+Exit 0: comparison matches; 2: comparison differs; 1: invalid input/read failure. Matching does not authenticate the source or recheck the chain.

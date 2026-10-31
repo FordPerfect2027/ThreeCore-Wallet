@@ -523,7 +523,7 @@ The [structured check-detail export](docs/REPORT_CHECK_DETAILS_2026-10-31.md) in
 
 The same [check-detail comparison is available on screen](docs/REPORT_CHECK_SCREEN_REVIEW_2026-10-31.md): open the original report set, choose the detail JSON and save the completed comparison. File reading remains cancellable and neither source is overwritten.
 
-A proposed replacement now has a [saved-evidence comparison before applying it](docs/REPORT_SET_REPLACEMENT_COMPARISON_2026-10-31.md), with a source-linked JSON receipt reproducible from both original files. A [saved comparison can itself be checked](docs/REPORT_SET_COMPARISON_REVIEW_2026-10-31.md) against both originals on screen or offline.
+A proposed replacement now has a [saved-evidence comparison before applying it](docs/REPORT_SET_REPLACEMENT_COMPARISON_2026-10-31.md), with a source-linked JSON receipt reproducible from both original files. A [saved comparison can itself be checked](docs/REPORT_SET_COMPARISON_REVIEW_2026-10-31.md) against both originals on screen or offline. Both originals and their comparison can be [saved as one independently verifiable evidence file](docs/PORTABLE_COMPARISON_EVIDENCE_2026-10-31.md).
 
 A displayed set can also [export one original period report](docs/REPORT_SET_SOURCE_EXPORT_2026-10-31.md) in the existing reloadable report format, preserving its full evidence while leaving the set and saved history unchanged.
 
