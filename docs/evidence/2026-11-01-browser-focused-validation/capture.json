@@ -1,0 +1,19 @@
+{
+  "source": "a493ace",
+  "completedItemsBefore": 532,
+  "completedItemsAfter": 532,
+  "unitCases": 137,
+  "focusedBrowserCases": 99,
+  "focusedBrowserElapsedMs": 21283,
+  "focusedSuite": "file-read",
+  "fullBrowserCoverageRun": false,
+  "errorDetectionControls": 2,
+  "lastFullBrowserSource": "ef8f1a0",
+  "lastFullBrowserCases": 947,
+  "lastFullWalletSource": "d253e8d",
+  "lastFullWalletCases": 15720,
+  "externalRpcCalls": 0,
+  "userTabVerified": false,
+  "osFilePickerVerified": false,
+  "existing4231ServerRestarted": false
+}

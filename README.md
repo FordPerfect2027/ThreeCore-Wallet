@@ -313,6 +313,8 @@ Each card now owns its connection and visible operation through `createWalletCar
 
 Run `npm run test:demo-server` for HTTP routes and `npm run test:browser-ui` on Windows with Chrome or Microsoft Edge installed in a standard location, or on Linux with `google-chrome` installed. For manual reproduction, `npm run demo -- --ui-test` exposes `/test/browser/` on the displayed local address. Normal demo mode does not serve test fixtures. The automated browser suite uses its own temporary loopback server and browser profile with extensions disabled. It stops only its own browser process before removing that profile; if shutdown cannot be confirmed, it preserves the profile and reports the cleanup failure. `node scripts/test-browser-ui.js --verify-error-detection` also checks that browser errors and unhandled rejections make validation fail.
 
+For scoped saved-file/read-panel development, `node scripts/test-browser-ui.js --focus=file-read` runs that registered module only and explicitly reports partial coverage. [Coverage rules and measured run](docs/BROWSER_FOCUSED_VALIDATION_2026-11-01.md). Keep the ordinary full command for broad changes and release checkpoints.
+
 ### Token history response validation
 
 [Phase 6 validation](docs/VALIDATION_PHASE6_2026-10-21.md) extends the pinned token CI matrix with 91 read-only regressions and seven actual local-EVM history cases per token. The three token repositories reject removed or pending events, uint256 overflow and conflicting event identities. Their history reports retain block hashes and explicitly mark canonicality and completeness as unverified. The Wallet's 24 integration cases per token and synthetic browser tests remain enabled.
