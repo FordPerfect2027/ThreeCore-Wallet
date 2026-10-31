@@ -671,7 +671,7 @@ async function inspectSavedBatchRow(row, { subtle, signal, timeoutMs, expectedSh
   let sha256 = null, inspection = null, status = "hash-unavailable", code = null, checksumMatches = null;
   try { sha256 = await sha256Hex(new TextEncoder().encode(row.text), subtle, { signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
   catch { code = "FILE_BATCH_HASH_UNAVAILABLE"; }
-  if (signal.aborted) return null;
+  if (readAbortState(signal)) return null;
   if (expectedSha256 !== undefined && sha256 !== null) checksumMatches = sha256 === expectedSha256;
   if (checksumMatches === false) { status = "checksum-mismatch"; code = "FILE_BATCH_CHECKSUM_MISMATCH"; }
   if (sha256 !== null && checksumMatches !== false) {
@@ -685,7 +685,7 @@ async function inspectSavedBatchRow(row, { subtle, signal, timeoutMs, expectedSh
       if (typeof code !== "string" || !/^(FILE|PERIOD|TRANSFER|IDENTITY|ALLOWANCE|WORKSPACE|SETUP|HISTORY|RECONCILIATION)_[A-Z_]{1,64}$/.test(code)) code = "FILE_INSPECTION_FAILED";
     }
   }
-  if (signal.aborted) return null;
+  if (readAbortState(signal)) return null;
   return Object.freeze({ name: row.name, byteLength: row.byteLength, sha256, status, code, inspection,
     ...(expectedSha256 !== undefined ? { expectedSha256, checksumMatches } : {}) });
 }
@@ -724,19 +724,19 @@ export async function inspectWalletSavedTextBatch(input, options = {}) {
   const reference = hasReference ? matchWalletSavedBatchManifest(selection.files, options.manifestText) : null;
   let referenceSha256 = null;
   const local = new AbortController(), completed = []; let phase = "complete", timer, subscription;
-  const stop = reason => { if (!local.signal.aborted) { phase = reason; local.abort(); } };
+  const stop = reason => { if (!readAbortState(local.signal)) { phase = reason; local.abort(); } };
   const progress = () => consumeCallback(() => onProgress?.(Object.freeze({ selected: rows.length, checked: completed.length })));
   try {
     try { subscription = subscribeReadAbort(signal, () => stop("cancelled")); } catch { savedInspectionFail("FILE_BATCH_SIGNAL"); }
     timer = setTimeout(() => stop("timed-out"), timeoutMs); progress();
-    if (hasReference && !local.signal.aborted) {
+    if (hasReference && !readAbortState(local.signal)) {
       try { referenceSha256 = await sha256Hex(new TextEncoder().encode(options.manifestText), subtle, { signal: local.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
-      catch { if (!local.signal.aborted) savedInspectionFail("FILE_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
+      catch { if (!readAbortState(local.signal)) savedInspectionFail("FILE_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
     }
     for (const [index, row] of rows.entries()) {
-      if (local.signal.aborted) break;
+      if (readAbortState(local.signal)) break;
       const checked = await inspectSavedBatchRow(row, { subtle, signal: local.signal, timeoutMs, expectedSha256: hasReference ? reference[index].expectedSha256 : undefined });
-      if (local.signal.aborted || !checked) break;
+      if (readAbortState(local.signal) || !checked) break;
       completed.push(checked); progress();
     }
     return finishSavedBatch(rows, selection, completed, phase, options.manifestText, reference, referenceSha256);
@@ -765,32 +765,32 @@ export async function inspectWalletSavedFileBatch(input, readSource, options = {
   if (typeof readSource !== "function" || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000 || (onProgress !== undefined && typeof onProgress !== "function")) savedInspectionFail("FILE_BATCH_OPTIONS");
   const reference = options.manifestText === undefined ? null : matchWalletSavedBatchManifest(selection.files, options.manifestText);
   const completed = [], local = new AbortController(); let phase = "complete", timer, subscription, referenceSha256 = null;
-  const stop = reason => { if (!local.signal.aborted) { phase = reason; local.abort(); } };
+  const stop = reason => { if (!readAbortState(local.signal)) { phase = reason; local.abort(); } };
   const progress = () => consumeCallback(() => onProgress?.(Object.freeze({ selected: selection.files.length, checked: completed.length })));
   try {
     try { subscription = subscribeReadAbort(signal, () => stop("cancelled")); } catch { savedInspectionFail("FILE_BATCH_SIGNAL"); }
     timer = setTimeout(() => stop("timed-out"), timeoutMs); progress();
-    if (reference && !local.signal.aborted) {
+    if (reference && !readAbortState(local.signal)) {
       try { referenceSha256 = await sha256Hex(new TextEncoder().encode(options.manifestText), subtle, { signal: local.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
-      catch { if (!local.signal.aborted) savedInspectionFail("FILE_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
+      catch { if (!readAbortState(local.signal)) savedInspectionFail("FILE_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
     }
     for (const [index, row] of selection.files.entries()) {
-      if (local.signal.aborted) break;
+      if (readAbortState(local.signal)) break;
       let text;
       try {
         text = await waitSavedBatchSource(() => readSource(index, Object.freeze({ signal: local.signal, maxBytes: row.byteLength })), local.signal);
-        if (local.signal.aborted) break;
+        if (readAbortState(local.signal)) break;
         let byteLength; try { byteLength = boundedUtf8Length(text, row.byteLength); } catch { savedInspectionFail("FILE_SIZE"); }
         if (byteLength !== row.byteLength) savedInspectionFail("FILE_SIZE");
       } catch (error) {
-        if (local.signal.aborted) break;
+        if (readAbortState(local.signal)) break;
         let code; try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; observeCallbackResult(code); } catch {}
         if (!["FILE_READ", "FILE_SIZE", "FILE_ENCODING", "FILE_TIMEOUT", "FILE_CLOCK", "FILE_BUSY", "FILE_DISPOSED"].includes(code)) code = "FILE_READ";
         completed.push(Object.freeze({ name: row.name, byteLength: null, reportedByteLength: row.byteLength, sha256: null, status: "source-unavailable", code, inspection: null,
           ...(reference ? { expectedSha256: reference[index].expectedSha256, checksumMatches: null } : {}) })); progress(); continue;
       }
       const checked = await inspectSavedBatchRow({ ...row, text }, { subtle, signal: local.signal, timeoutMs, expectedSha256: reference ? reference[index].expectedSha256 : undefined });
-      if (local.signal.aborted || !checked) break; completed.push(checked); progress();
+      if (readAbortState(local.signal) || !checked) break; completed.push(checked); progress();
     }
     return finishSavedBatch(selection.files, selection, completed, phase, options.manifestText, reference, referenceSha256, true);
   } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
@@ -885,7 +885,7 @@ export async function reviewWalletSavedBatchComparison(before, after, text, file
   const { subtle = globalThis.crypto?.subtle, signal, timeoutMs = 30000 } = options;
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 30000) savedInspectionFail("FILE_BATCH_COMPARISON_REVIEW_OPTIONS");
   const local = new AbortController(); let subscription, timer, timedOut = false;
-  const checkpoint = () => { if (local.signal.aborted) savedInspectionFail(timedOut ? "FILE_BATCH_COMPARISON_REVIEW_TIMEOUT" : "FILE_CANCELLED"); };
+  const checkpoint = () => { if (readAbortState(local.signal)) savedInspectionFail(timedOut ? "FILE_BATCH_COMPARISON_REVIEW_TIMEOUT" : "FILE_CANCELLED"); };
   try {
     try { subscription = subscribeReadAbort(signal, () => local.abort()); } catch { savedInspectionFail("FILE_BATCH_COMPARISON_REVIEW_OPTIONS"); }
     checkpoint(); timer = setTimeout(() => { timedOut = true; local.abort(); }, timeoutMs);
