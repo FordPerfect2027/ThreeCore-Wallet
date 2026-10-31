@@ -57,6 +57,43 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("saved file comparison: identical originals with different formatting keep the baseline and require a separate save acknowledgement", async () => {
+    const parent = document.createElement("div"); document.body.append(parent); const files = [];
+    const guide = mountSavedFileInspectionPanel({ document, parent, download: file => files.push(file) });
+    const q = name => parent.querySelector(".saved-file-guide-" + name);
+    async function load(name, text) {
+      const transfer = new DataTransfer(); transfer.items.add(new File([text], "original.json", { type: "application/json" }));
+      q(name).files = transfer.files; q(name).dispatchEvent(new Event("change", { bubbles: true })); while (guide.getState().busy) await tick();
+    }
+    try {
+      parent.querySelector("details").open = true; q("comparison").open = true;
+      assert(q("compare-file").disabled); const source = (await prepareReportHistoryFile(sampleHistory())).text; await load("file", source);
+      const baseline = guide.getState().result; await load("compare-file", JSON.stringify(JSON.parse(source), null, 2));
+      assert(guide.getState().result === baseline && guide.getState().comparison.kind === "format-only");
+      assert(q("comparison-output").textContent.includes("書式に違い") && q("comparison-save").disabled);
+      q("comparison-ack").checked = true; q("comparison-ack").dispatchEvent(new Event("change", { bubbles: true })); q("comparison-save").click();
+      assert(files.length === 1 && JSON.parse(files[0].text).sameOriginal === true && files[0].restorable === false);
+      await load("file", source); assert(!guide.getState().comparison && q("comparison-output").textContent === "");
+    } finally { guide.dispose(); parent.remove(); }
+  });
+  test("saved file comparison: corruption cannot replace the baseline and auxiliary claims do not establish equality", async () => {
+    const parent = document.createElement("div"); document.body.append(parent);
+    const guide = mountSavedFileInspectionPanel({ document, parent }); const q = name => parent.querySelector(".saved-file-guide-" + name);
+    async function load(name, text) {
+      const transfer = new DataTransfer(); transfer.items.add(new File([text], "original.json"));
+      q(name).files = transfer.files; q(name).dispatchEvent(new Event("change", { bubbles: true })); while (guide.getState().busy) await tick();
+    }
+    try {
+      const source = (await prepareReportHistoryFile(sampleHistory())).text; await load("file", source); const baseline = guide.getState().result;
+      await load("compare-file", source); assert(guide.getState().comparison.kind === "identical");
+      const corrupt = JSON.parse(source); corrupt.digest = "0".repeat(64); await load("compare-file", JSON.stringify(corrupt));
+      assert(guide.getState().result === baseline && !guide.getState().comparison && q("comparison-save").disabled);
+      assert(q("status").textContent.includes("チェックサムが一致しません"));
+      await load("compare-file", JSON.stringify({ schema: "threecore.saved-file-comparison.v1", sameOriginal: true }));
+      assert(guide.getState().comparison.kind === "unverified" && guide.getState().comparison.sameOriginal === null);
+      assert(q("comparison-output").textContent.includes("一致を判断していません"));
+    } finally { guide.dispose(); parent.remove(); }
+  });
   test("saved file guide: verifies an original backup, gives its destination and saves only an inspection", async () => {
     const parent = document.createElement("div"); document.body.append(parent); const files = [];
     const guide = mountSavedFileInspectionPanel({ document, parent, download: file => files.push(file) });

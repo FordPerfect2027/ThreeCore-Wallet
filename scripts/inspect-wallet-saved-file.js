@@ -14,14 +14,17 @@ export function parseSavedInspectionArgs(args) {
       (args.length === 2 && args[1] !== "--json")) throw Error("FILE_INSPECTION_CLI_ARGUMENTS");
   return Object.freeze({ path: args[0], json: args.length === 2 });
 }
+export async function inspectSavedFilePath(path, options = {}) {
+  const bytes = await readBoundedLocalBytes(path, WALLET_SAVED_INSPECTION_LIMIT, {
+    fail: code => { throw Error(code); }, sizeCode: "FILE_INSPECTION_SIZE", changedCode: "FILE_INSPECTION_CHANGED", limitCode: "FILE_INSPECTION_LIMIT",
+  });
+  return inspectWalletSavedText(new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes), options);
+}
 export async function runSavedFileInspection(args, { stdout = process.stdout, stderr = process.stderr } = {}) {
   try {
     if (Array.isArray(args) && args.length === 1 && args[0] === "--help") { stdout.write(USAGE); return 0; }
     const options = parseSavedInspectionArgs(args);
-    const bytes = await readBoundedLocalBytes(options.path, WALLET_SAVED_INSPECTION_LIMIT, {
-      fail: code => { throw Error(code); }, sizeCode: "FILE_INSPECTION_SIZE", changedCode: "FILE_INSPECTION_CHANGED", limitCode: "FILE_INSPECTION_LIMIT",
-    });
-    const result = await inspectWalletSavedText(new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes));
+    const result = await inspectSavedFilePath(options.path);
     stdout.write(options.json ? JSON.stringify(result, null, 2) + "\n" : walletSavedInspectionText(result) + "\n");
     return result.validation === "validated-original" ? 0 : 2;
   } catch (error) {

@@ -79,3 +79,55 @@ test("an asynchronous save callback is not reported as successful and metadata c
     assert.equal(g.mounted.getState().result, null); assert.match(g.q("status").textContent, /中止/);
   } finally { g.dispose(); }
 });
+
+async function compareFile(f, text) {
+  f.q("compare-file").files = [fileFrom(text)]; f.q("compare-file").dispatchEvent(new Event("change"));
+  await waitUntil(() => !f.mounted.getState().busy);
+}
+function acknowledgeComparison(f) { f.q("comparison-ack").checked = true; f.q("comparison-ack").dispatchEvent(new Event("change")); }
+
+test("saved-file comparison keeps the first original and requires separate acknowledgement for its receipt", async () => {
+  const f = fixture();
+  try {
+    assert.equal(f.q("compare-file").disabled, true);
+    const original = (await prepareReportHistoryFile(sampleHistory())).text; await f.load(original); const base = f.mounted.getState().result;
+    f.check(); await compareFile(f, JSON.stringify(JSON.parse(original), null, 2));
+    assert.equal(f.mounted.getState().result, base); assert.equal(f.mounted.getState().comparison.kind, "format-only");
+    assert.match(f.q("comparison-output").textContent, /書式に違い/); assert.equal(f.q("comparison-save").disabled, true);
+    acknowledgeComparison(f); f.q("comparison-save").click();
+    assert.equal(JSON.parse(f.files[0].text).sameOriginal, true); assert.equal(f.files[0].restorable, false); assert.equal(f.q("comparison-ack").checked, false);
+    await f.load(original); assert.equal(f.mounted.getState().comparison, null); assert.equal(f.q("comparison-output").textContent, "");
+  } finally { f.dispose(); }
+});
+test("a corrupt comparison source clears the previous comparison while preserving the inspected baseline", async () => {
+  const f = fixture();
+  try {
+    const source = (await prepareReportHistoryFile(sampleHistory())).text; await f.load(source); const baseline = f.mounted.getState().result;
+    await compareFile(f, source); acknowledgeComparison(f);
+    const corrupt = JSON.parse(source); corrupt.digest = "0".repeat(64); await compareFile(f, JSON.stringify(corrupt));
+    assert.equal(f.mounted.getState().result, baseline); assert.equal(f.mounted.getState().comparison, null);
+    assert.equal(f.q("comparison-save").disabled, true); assert.equal(f.q("comparison-ack").checked, false);
+    assert.match(f.q("status").textContent, /チェックサムが一致しません/);
+  } finally { f.dispose(); }
+});
+test("cancelled comparison cannot replace the baseline or publish a delayed receipt", async () => {
+  const gate = deferred(); let delayed = false;
+  const f = fixture({ readText: file => delayed ? gate.promise : file.arrayBuffer().then(bytes => new TextDecoder("utf-8", { fatal: true }).decode(bytes)) });
+  try {
+    const source = (await prepareReportHistoryFile(sampleHistory())).text; await f.load(source); const baseline = f.mounted.getState().result;
+    delayed = true; const pending = compareFile(f, source); assert.equal(f.mounted.getState().busy, true);
+    f.q("stop").click(); gate.resolve(source); await pending;
+    assert.equal(f.mounted.getState().result, baseline); assert.equal(f.mounted.getState().comparison, null); assert.match(f.q("status").textContent, /中止/);
+    assert.equal(f.files.length, 0);
+  } finally { f.dispose(); }
+});
+test("auxiliary comparison cannot claim equality and asynchronous comparison save is not accepted", async () => {
+  const f = fixture({ download: () => Promise.reject(Error("PRIVATE")) });
+  try {
+    await f.load((await prepareReportHistoryFile(sampleHistory())).text);
+    await compareFile(f, JSON.stringify({ schema: "threecore.saved-file-comparison.v1", sameOriginal: true }));
+    assert.equal(f.mounted.getState().comparison.kind, "unverified"); assert.equal(f.mounted.getState().comparison.sameOriginal, null);
+    acknowledgeComparison(f); f.q("comparison-save").click(); assert.match(f.q("status").textContent, /保存を確認できません/);
+    assert.doesNotMatch(f.q("status").textContent, /PRIVATE/);
+  } finally { f.dispose(); }
+});

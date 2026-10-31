@@ -163,6 +163,7 @@ export function decodeRehearsalForPanel(text, target, decode) {
 
 // These routes describe a declared format only. They never validate or open a file.
 const walletSavedTargets = Object.freeze({
+  "threecore.saved-file-comparison.v1": [null, "PERIOD_FILE_SAVED_COMPARISON_ONLY"],
   "threecore.saved-file-inspection.v1": [null, "PERIOD_FILE_INSPECTION_ONLY"],
   "threecore.report-history-import-inspection.v1": [null, "PERIOD_FILE_HISTORY_INSPECTION_ONLY"],
   "threecore.report-history-file.v1": ["history", "PERIOD_FILE_USE_HISTORY"],
@@ -184,6 +185,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  PERIOD_FILE_SAVED_COMPARISON_ONLY: "これは2つの保存ファイルの比較結果です。元記録は含まれず、復元には使えません。比較した両方の元のJSONを使ってください。",
   PERIOD_FILE_INSPECTION_ONLY: "これは保存ファイルの形式や開く場所を調べた案内です。元記録は含まれず、復元には使えません。調べる前の元のJSONを選んでください。",
   PERIOD_FILE_HISTORY_INSPECTION_ONLY: "これは報告履歴の読込み前の比較結果です。元の報告やメモは含まれません。復元には報告履歴のバックアップJSONを使ってください。",
   PERIOD_FILE_USE_HISTORY: "ファイルの形式指定は報告履歴のバックアップです。「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で選んでください。内容の検証や既存の履歴への追加は行っていません。",
@@ -217,6 +219,8 @@ export function walletSavedFileTargetMessage(code) {
 }
 
 export const WALLET_SAVED_INSPECTION_LIMIT = 96 * 1024 * 1024;
+const savedInspectionCaptures = new WeakSet();
+function captureSavedInspection(value) { const result = Object.freeze(value); savedInspectionCaptures.add(result); return result; }
 const originalSavedTypes = Object.freeze({
   "threecore.period-file.v1": ["period", "期間取得の控え", "「控えの保存と復元」で、この元のファイルを選んで確認してください。"],
   "threecore.period-library-file.v1": ["library", "期間の保存一覧", "「途中の控えを、名前を付けて保管する」の「期間の保存一覧JSONを読み込む」で、この元のファイルを選んでください。"],
@@ -249,7 +253,7 @@ export async function inspectWalletSavedText(text, fileOptions = {}) {
   const targetCode = walletSavedTargets[schema][1], definition = originalSavedTypes[schema];
   if (!definition) {
     checkpoint();
-    return Object.freeze({ schema: "threecore.saved-file-inspection.v1", sourceSchema: schema, byteLength,
+    return captureSavedInspection({ schema: "threecore.saved-file-inspection.v1", sourceSchema: schema, byteLength,
       title: "補助資料の形式指定", target: walletSavedTargets[schema][0], destinationMessage: walletSavedMessages[targetCode],
       validation: "declared-only", checksumVerified: false, sourceDigest: null, textDigest: null,
       scope: null, originalEvidenceValidated: false, restorable: false,
@@ -282,7 +286,7 @@ export async function inspectWalletSavedText(text, fileOptions = {}) {
     annotationValuesIncluded: false, repeatedReferencesMayExist: Boolean(reports) });
   const textDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options);
   checkpoint();
-  return Object.freeze({ schema: "threecore.saved-file-inspection.v1", sourceSchema: schema, byteLength,
+  return captureSavedInspection({ schema: "threecore.saved-file-inspection.v1", sourceSchema: schema, byteLength,
     title: definition[1], target: definition[0], destinationMessage: definition[2],
     validation: "validated-original", checksumVerified: decoded.checksumVerified === true,
     sourceDigest: decoded.digest, textDigest, scope, originalEvidenceValidated: true, restorable: false,
@@ -314,4 +318,45 @@ export function walletSavedInspectionErrorText(error) {
   if (code === "FILE_INSPECTION_UNSUPPORTED") return "この案内では扱わない形式です。ThreeCoreの期間・報告・確認セットの元のJSONを選んでください。";
   if (code === "FILE_INSPECTION_JSON") return "JSONの形式を確認できません。元の保存ファイルを選び直してください。";
   return describeFileReadError(error, "96 MiB") ?? "ファイルの形式・内容を確認できませんでした。元のJSONを保全し、保存が完了しているか確認してください。";
+}
+
+/** Only inspections made by this module can establish a comparison, never imported claims. */
+export function compareWalletSavedInspections(before, after) {
+  if (!savedInspectionCaptures.has(before) || !savedInspectionCaptures.has(after)) savedInspectionFail("FILE_INSPECTION_COMPARISON");
+  const verified = before.validation === "validated-original" && after.validation === "validated-original";
+  const sameFormat = before.sourceSchema === after.sourceSchema;
+  const sameOriginal = verified && sameFormat ? before.sourceDigest === after.sourceDigest : null;
+  const sameText = verified ? before.textDigest === after.textDigest : null;
+  const kind = !verified ? "unverified" : !sameFormat ? "different-format" : !sameOriginal ? "changed-original" : !sameText ? "format-only" : "identical";
+  const scopeFields = ["reportCount", "archivedReports", "entryReferences", "draftReferences", "archivedEntryReferences",
+    "restrictedEntryReferences", "incompleteDraftReferences", "emptyDraftReferences", "agents"];
+  const scopeChanges = verified && sameFormat ? scopeFields.filter(field => JSON.stringify(before.scope[field]) !== JSON.stringify(after.scope[field]))
+    .map(field => Object.freeze({ field, before: before.scope[field], after: after.scope[field],
+      difference: typeof before.scope[field] === "number" && typeof after.scope[field] === "number" ? after.scope[field] - before.scope[field] : null })) : [];
+  return Object.freeze({ schema: "threecore.saved-file-comparison.v1", kind,
+    before, after, sameFormat, sameOriginal, sameText, byteDifference: after.byteLength - before.byteLength,
+    scopeChanges: Object.freeze(scopeChanges), unchangedScopeWithChangedOriginal: kind === "changed-original" && scopeChanges.length === 0,
+    containsOriginalEvidence: false, restorable: false, automaticallyImported: false,
+    liveChainRechecked: false, authenticated: false, authorizesExecution: false });
+}
+
+export function walletSavedComparisonText(value) {
+  if (!value) return "";
+  const titles = {
+    identical: "同じ形式・同じ元記録で、ファイルのテキストも一致しています。",
+    "format-only": "元記録のチェックサムは一致しています。空白や項目の並びなど、ファイルの書式に違いがあります。",
+    "changed-original": "同じ形式ですが、元記録の内容に違いがあります。どちらが正しいかは、この比較では判断しません。",
+    "different-format": "種類が異なるファイルです。元記録の一致・不一致としては比較しません。",
+    unverified: "元記録として検証できない補助資料が含まれるため、内容の一致を判断していません。",
+  };
+  const fields = { reportCount: "報告件数", archivedReports: "非表示保管の報告", entryReferences: "保存項目の参照数",
+    draftReferences: "取得控えの参照数", archivedEntryReferences: "非表示保管の保存項目", restrictedEntryReferences: "再取得の印がある保存項目",
+    incompleteDraftReferences: "未完了の控え", emptyDraftReferences: "工程が空の控え", agents: "含まれるトークン" };
+  const show = value => value === null ? "この形式には含まれません" : Array.isArray(value) ? value.join("、") || "なし" : String(value);
+  return [titles[value.kind], "比較元: " + value.before.title + " / 比較先: " + value.after.title,
+    "ファイルサイズ: " + value.before.byteLength + " → " + value.after.byteLength + " bytes（差 " + value.byteDifference + "）",
+    ...value.scopeChanges.map(row => fields[row.field] + ": " + show(row.before) + " → " + show(row.after)),
+    value.unchangedScopeWithChangedOriginal ? "上の件数が同じでも、元記録の内容は変わっています。" : "",
+    "比較するのは保存ファイルだけです。元ファイルの選び直し・置き換え・復元や現在のチェーンの確認は行いません。",
+    "この比較結果には元記録を含まず、復元には使えません。両方の元ファイルを保全してください。"].filter(Boolean).join("\n");
 }

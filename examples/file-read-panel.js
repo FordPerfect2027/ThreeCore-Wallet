@@ -1,6 +1,6 @@
 import { offerWalletDownload } from "./export-download.js";
 import { readSecurityFileBytes, readFormatFileName } from "../src/security-file.js";
-import { inspectWalletSavedText, walletSavedInspectionText, walletSavedInspectionErrorText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
+import { inspectWalletSavedText, compareWalletSavedInspections, walletSavedComparisonText, walletSavedInspectionText, walletSavedInspectionErrorText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
 import { walletFileReadService } from "../src/file-read-service.js";
 import { describeFileReadStatus } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
@@ -101,7 +101,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
   download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-file-guide";
   parent.append(host); const nodes = {}, cleanup = [];
-  let disposed = false, generation = 0, aborter = null, busy = false, result = null;
+  let disposed = false, generation = 0, aborter = null, busy = false, result = null, comparison = null, workKind = "source";
   const make = (tag, name, text, target = host) => {
     const node = document.createElement(tag); node.className = "saved-file-guide-" + name;
     if (text !== undefined) node.textContent = text;
@@ -118,16 +118,29 @@ export function mountSavedFileInspectionPanel({ document, parent,
   const ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
   const save = make("button", "save", "この案内をJSON保存"); save.type = "button";
   make("p", "limits", "この案内JSONに元の記録は含まれず、復元には使えません。元のファイルを別に保全してください。出所や現在のチェーンを保証する確認ではありません。");
+  const compareBox = make("details", "comparison");
+  make("summary", "comparison-heading", "このファイルと別の保存ファイルを比較する", compareBox);
+  make("p", "comparison-intro", "上で調べたファイルを比較元にします。次のファイルを選ぶと、同じ元記録・書式だけの違い・内容の変更を区別します。元ファイルを置き換えません。", compareBox);
+  const compareLabel = make("label", "compare-file-label", "比較先の元のJSON（最大96 MiB）", compareBox);
+  const compareFile = make("input", "compare-file", undefined, compareLabel); compareFile.type = "file"; compareFile.accept = ".json,application/json";
+  const comparisonOutput = make("pre", "comparison-output", "", compareBox);
+  const compareAckLabel = make("label", "comparison-ack-label", "この比較結果と照合用の値を、暗号化せずPCに保存します", compareBox);
+  const compareAck = make("input", "comparison-ack", undefined, compareAckLabel); compareAck.type = "checkbox";
+  const compareSave = make("button", "comparison-save", "2つの保存ファイルの比較をJSON保存", compareBox); compareSave.type = "button";
   const selectionNotice = createFileSelectionNotice(file, notice);
+  const comparisonNotice = createFileSelectionNotice(compareFile, notice);
   function render() {
     if (disposed) return;
     host.setAttribute("aria-busy", String(busy)); file.disabled = busy; stop.disabled = !busy;
     ack.disabled = busy || !result; save.disabled = busy || !result || !ack.checked;
     output.textContent = walletSavedInspectionText(result);
+    compareFile.disabled = busy || !result; compareAck.disabled = busy || !comparison;
+    compareSave.disabled = busy || !comparison || !compareAck.checked;
+    comparisonOutput.textContent = walletSavedComparisonText(comparison);
   }
   function cancel() {
     if (disposed) return;
-    const own = ++generation, previous = aborter; aborter = null; busy = false; result = null; ack.checked = false;
+    const own = ++generation, previous = aborter; aborter = null; busy = false; if (workKind === "source") result = null; comparison = null; ack.checked = false; compareAck.checked = false;
     previous?.abort(); if (disposed || generation !== own) return;
     status.textContent = "確認を中止しました。保存済みの元のファイルや履歴は変更していません。"; render();
   }
@@ -137,7 +150,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
     if (!chosen) { selectionNotice.noSelection(); return; }
     const own = ++generation, previous = aborter; aborter = null; previous?.abort();
     if (disposed || own !== generation) return;
-    const local = new AbortController(); aborter = local; busy = true; result = null; ack.checked = false; selectionNotice.clear();
+    const local = new AbortController(); aborter = local; busy = true; workKind = "source"; result = null; comparison = null; compareAck.checked = false; ack.checked = false; selectionNotice.clear();
     status.textContent = "選んだJSONの形式と内容を確認しています。"; render();
     try {
       readFormatFileName(chosen, { maxLength: 180, code: "FILE_INSPECTION_NAME", fail: code => { const error = new Error(code); error.code = code; throw error; } });
@@ -153,6 +166,38 @@ export function mountSavedFileInspectionPanel({ document, parent,
       status.textContent = walletSavedInspectionErrorText(error);
     } finally { if (!disposed && generation === own) { aborter = null; busy = false; render(); } }
   }
+  async function compareSelected() {
+    if (disposed || busy || !result) return;
+    const chosen = compareFile.files?.[0]; compareFile.value = "";
+    if (!chosen) { comparisonNotice.noSelection(); return; }
+    const own = ++generation, base = result, previous = aborter; aborter = null; previous?.abort();
+    if (disposed || generation !== own) return;
+    const local = new AbortController(); aborter = local; busy = true; workKind = "comparison";
+    comparison = null; compareAck.checked = false; ack.checked = false; comparisonNotice.clear();
+    status.textContent = "比較先のファイルを確認しています。比較元は保持しています。"; render();
+    try {
+      readFormatFileName(chosen, { maxLength: 180, code: "FILE_INSPECTION_NAME", fail: code => { const error = new Error(code); error.code = code; throw error; } });
+      if (disposed || generation !== own) return;
+      const text = await readText(chosen, { maxBytes: WALLET_SAVED_INSPECTION_LIMIT, signal: local.signal });
+      if (disposed || generation !== own) return;
+      const incoming = await inspect(text, { signal: local.signal });
+      if (disposed || generation !== own) return;
+      comparison = compareWalletSavedInspections(base, incoming);
+      status.textContent = "保存ファイル同士の比較を表示しました。元記録を置き換えたり復元したりしていません。";
+    } catch (error) { if (!disposed && generation === own) status.textContent = walletSavedInspectionErrorText(error); }
+    finally { if (!disposed && generation === own) { aborter = null; busy = false; render(); } }
+  }
+  function saveComparison() {
+    if (disposed || busy || !comparison || !compareAck.checked) return;
+    const own = ++generation, captured = comparison; compareAck.checked = false; render();
+    try {
+      const file = Object.freeze({ text: JSON.stringify(captured, null, 2) + "\n", filename: "ThreeCore-saved-file-comparison.json",
+        mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false, encrypted: false });
+      const delivered = download(file), kind = observeCallbackResult(delivered);
+      if (disposed || generation !== own) return;
+      status.textContent = kind === "synchronous" && delivered !== false ? "比較結果の保存処理を開始しました。ダウンロード先をご確認ください。" : "比較結果の保存を確認できませんでした。";
+    } catch { if (!disposed && generation === own) status.textContent = "比較結果の保存を確認できませんでした。"; }
+  }
   function saveResult() {
     if (disposed || busy || !result || !ack.checked) return;
     const own = ++generation, captured = result; ack.checked = false; render();
@@ -167,11 +212,12 @@ export function mountSavedFileInspectionPanel({ document, parent,
   }
   function listen(node, event, callback) { node.addEventListener(event, callback); cleanup.push(() => node.removeEventListener(event, callback)); }
   listen(file, "change", () => { void selected(); }); listen(stop, "click", cancel);
-  listen(ack, "change", render); listen(save, "click", saveResult); render();
-  return Object.freeze({ getState: () => Object.freeze({ busy, result, disposed }), dispose() {
+  listen(ack, "change", render); listen(save, "click", saveResult);
+  listen(compareFile, "change", () => { void compareSelected(); }); listen(compareAck, "change", render); listen(compareSave, "click", saveComparison); render();
+  return Object.freeze({ getState: () => Object.freeze({ busy, result, comparison, disposed }), dispose() {
     if (disposed) return;
-    disposed = true; generation++; const previous = aborter; aborter = null; busy = false; result = null;
-    previous?.abort(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); host.remove();
+    disposed = true; generation++; const previous = aborter; aborter = null; busy = false; result = null; comparison = null;
+    previous?.abort(); selectionNotice.dispose(); comparisonNotice.dispose(); cleanup.forEach(remove => remove()); host.remove();
   } });
 }
 
