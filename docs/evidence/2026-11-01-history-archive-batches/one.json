@@ -1,0 +1,54 @@
+{
+  "schema": "threecore-portfolio-history-v1",
+  "historicalObservation": true,
+  "reports": [
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "20",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "10",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    }
+  ]
+}

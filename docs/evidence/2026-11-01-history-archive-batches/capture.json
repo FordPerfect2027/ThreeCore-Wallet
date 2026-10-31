@@ -1,0 +1,14 @@
+{
+  "source": "4ee99df",
+  "status": "2ファイルから3件の履歴候補を入力欄へ準備しました（重複1件）。プレビュー後に適用してください。履歴はまだ変更していません。",
+  "sourceFiles": 2,
+  "sourceObservations": 4,
+  "uniqueCandidateObservations": 3,
+  "duplicateObservations": 1,
+  "originalObservationPreserved": true,
+  "previewAndApplyRequired": true,
+  "synthetic": true,
+  "nativeBrowserCases": 147,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}
