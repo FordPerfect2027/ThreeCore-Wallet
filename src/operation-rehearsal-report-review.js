@@ -1,4 +1,6 @@
-import { captureDataRecord, sha256Hex } from "./security-data.js";
+import { captureDataRecord, captureDataArray, captureOptionalDataFields, sha256Hex } from "./security-data.js";
+import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { RehearsalError, encodeRehearsal } from "./operation-rehearsal.js";
 import { encodeRehearsalWorkspace } from "./operation-rehearsal-workspace.js";
@@ -126,6 +128,116 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
 export function encodeRehearsalReviewReceipt(receipt) {
   // Receipts come only from reviewRehearsalReport; this is not an untrusted-receipt importer.
   return JSON.stringify(receipt, null, 2) + "\n";
+}
+
+export const REHEARSAL_BATCH_REVIEW_SCHEMA = "threecore.operation-rehearsal-batch-review.v1";
+export const REHEARSAL_BATCH_REVIEW_FILES = 20;
+export const REHEARSAL_BATCH_REVIEW_BYTES = 8 * 1024 * 1024;
+const batchReceipts = new WeakSet();
+
+/** Portable unique basenames keep the exported manifest unambiguous. */
+export function validateRehearsalReportBatchSelection(input) {
+  try {
+    const names = new Set(); let totalBytes = 0;
+    const files = captureDataArray(input, REHEARSAL_BATCH_REVIEW_FILES, 1).map(value => {
+      const row = captureDataRecord(value, ["name", "byteLength"]);
+      if (typeof row.name !== "string" || row.name.length > 180 || row.name !== row.name.trim() ||
+          !/\.json$/i.test(row.name) || /^[.]/.test(row.name) ||
+          /[/\\:*?"<>|\u0000-\u001f\u007f-\u009f\u200e\u200f\u202a-\u202e\u2066-\u2069]/.test(row.name) ||
+          /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(row.name) ||
+          !Number.isSafeInteger(row.byteLength) || row.byteLength < 1 || row.byteLength > REHEARSAL_REPORT_REVIEW_LIMIT) throw Error();
+      const key = row.name.normalize("NFC").toLowerCase();
+      if (names.has(key)) throw Error();
+      names.add(key); totalBytes += row.byteLength;
+      return Object.freeze({ name: row.name, byteLength: row.byteLength });
+    });
+    if (totalBytes > REHEARSAL_BATCH_REVIEW_BYTES) throw Error();
+    return Object.freeze({ files: Object.freeze(files), totalBytes });
+  } catch { fail("INVALID_REVIEW_BATCH_SELECTION"); }
+}
+
+/** Sequential recomputation of explicit text inputs. No restoration or I/O. */
+export async function reviewRehearsalReportBatch(input, options = {}) {
+  try { options = captureOptionalDataFields(options, ["subtle", "signal", "onProgress", "timeoutMs"]); }
+  catch { fail("INVALID_REVIEW_BATCH_OPTIONS"); }
+  const { subtle = globalThis.crypto?.subtle, signal, onProgress, timeoutMs = 120000 } = options;
+  if ((onProgress !== undefined && typeof onProgress !== "function") ||
+      !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000) fail("INVALID_REVIEW_BATCH_OPTIONS");
+  let rows;
+  try {
+    rows = captureDataArray(input, REHEARSAL_BATCH_REVIEW_FILES, 1).map(row => {
+      const value = captureDataRecord(row, ["name", "text"]);
+      return Object.freeze({ name: value.name, text: value.text,
+        byteLength: boundedUtf8Length(value.text, REHEARSAL_REPORT_REVIEW_LIMIT) });
+    });
+  } catch { fail("INVALID_REVIEW_BATCH_INPUT"); }
+  const selection = validateRehearsalReportBatchSelection(rows.map(({ name, byteLength }) => ({ name, byteLength })));
+  const completed = [], aborter = new AbortController();
+  let cancellation, timer, phase = "complete";
+  const stop = reason => { if (!aborter.signal.aborted) { phase = reason; aborter.abort(); } };
+  const notify = () => consumeCallback(() => onProgress?.(Object.freeze({
+    selected: rows.length, reviewed: completed.length, phase: aborter.signal.aborted ? phase : "reviewing",
+  })));
+  function finish() {
+    const files = rows.map((row, index) => completed[index] ?? Object.freeze({
+      name: row.name, byteLength: row.byteLength, status: "pending", sha256: null,
+      inputSchema: null, differenceCount: null, expectedOutcomes: null,
+    }));
+    const counts = status => files.filter(row => row.status === status).length;
+    const summary = Object.freeze({ selected: rows.length, reviewed: completed.length,
+      pending: counts("pending"), matching: counts("matched"), differing: counts("different"),
+      unsupported: counts("unsupported"), invalid: counts("invalid"), hashUnavailable: counts("hash-unavailable"),
+      reportsWithFailedExpectations: files.filter(row => row.expectedOutcomes?.differing > 0).length,
+      totalBytes: selection.totalBytes });
+    const result = Object.freeze({ schema: REHEARSAL_BATCH_REVIEW_SCHEMA, simulationOnly: true,
+      sourceVerified: false, authorizesExecution: false, externalChecksumsCompared: false,
+      phase, complete: phase === "complete" && completed.length === rows.length,
+      allRecomputationsMatch: phase === "complete" && summary.matching === rows.length,
+      summary, files: Object.freeze(files) });
+    batchReceipts.add(result); return result;
+  }
+  try {
+    try { cancellation = subscribeReadAbort(signal, () => stop("cancelled")); }
+    catch { fail("INVALID_REVIEW_BATCH_SIGNAL"); }
+    timer = setTimeout(() => stop("timed-out"), timeoutMs);
+    notify();
+    for (const row of rows) {
+      if (aborter.signal.aborted) break;
+      let sha256 = null, status = "hash-unavailable", inputSchema = null, differenceCount = null, expectedOutcomes = null;
+      try { sha256 = await sha256Hex(new TextEncoder().encode(row.text), subtle,
+        { signal: aborter.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
+      catch { /* Hash failures remain per-file failures, never matching reports. */ }
+      if (aborter.signal.aborted) break;
+      if (sha256 !== null) {
+        try {
+          const prepared = prepareRehearsalReview(row.text, null);
+          const comparison = compareValues(prepared.recomputed, prepared.parsed);
+          inputSchema = prepared.parsed.schema; differenceCount = comparison.differenceCount;
+          status = differenceCount === 0 ? "matched" : "different";
+          if (prepared.reportOutcome?.kind === "expected-outcomes") {
+            const { cases, matched, differing } = prepared.reportOutcome;
+            expectedOutcomes = Object.freeze({ cases, matched, differing });
+          }
+        } catch (error) { status = error?.code === "UNSUPPORTED_REVIEW_REPORT" ? "unsupported" : "invalid"; }
+      }
+      completed.push(Object.freeze({ name: row.name, byteLength: row.byteLength, status, sha256,
+        inputSchema, differenceCount, expectedOutcomes }));
+      notify();
+    }
+    return finish();
+  } finally { clearTimeout(timer); cancellation?.dispose(); aborter.abort(); }
+}
+
+export function encodeRehearsalBatchReview(result) {
+  if (!batchReceipts.has(result)) fail("UNRECOGNIZED_REVIEW_BATCH");
+  return JSON.stringify(result, null, 2) + "\n";
+}
+
+/** Hashes identify selected bytes, including differing/unsupported reports. */
+export function encodeRehearsalBatchManifest(result) {
+  if (!batchReceipts.has(result)) fail("UNRECOGNIZED_REVIEW_BATCH");
+  if (!result.complete || result.files.some(row => row.sha256 === null)) fail("REVIEW_BATCH_HASHES_INCOMPLETE");
+  return result.files.map(row => row.sha256 + "  " + row.name).join("\n") + "\n";
 }
 
 const workspaceSourceSchemas = new Set([REHEARSAL_OVERVIEW_SCHEMA,REHEARSAL_RECORD_REPORT_SCHEMA,

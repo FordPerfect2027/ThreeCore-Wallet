@@ -9,6 +9,7 @@ import {encodeRehearsalScenario} from '../src/operation-rehearsal-scenario.js';
 import {encodeRehearsalScenarioSetReport,REHEARSAL_SCENARIO_SET_SCHEMA} from '../src/operation-rehearsal-scenario-set.js';
 import {captureRehearsalCheckSuite,encodeRehearsalCheckReport} from '../src/operation-rehearsal-check-suite.js';
 import {encodeRehearsalRecordReport,REHEARSAL_RECORD_QUERY} from '../src/operation-rehearsal-records.js';
+import {encodeRehearsalReasonRecordReport} from '../src/operation-rehearsal-records.js';
 const source=' \r\n'+JSON.stringify(reportRehearsalOverview({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:'DAT',ledgers:[rehearsalExampleV2()]}),null,2).replaceAll('\n','\r\n')+'\r\n';
 const hash=text=>createHash('sha256').update(text).digest('hex');
 class Node extends Element{set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
@@ -18,6 +19,12 @@ function setup(options={}){const elements=new Map(),downloads=[];let action=()=>
  return{q,panel,edit,downloads,document,downloadAction:fn=>{action=fn;},paste:text=>{edit('text',text);q('paste').click();}};
 }
 async function finished(f){const end=Date.now()+5000;while(f.q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await new Promise(resolve=>setTimeout(resolve,5));assert.equal(f.q('status').getAttribute('aria-busy'),'false');}
+
+test('V3 query review describes stored, recorded and combined search scopes separately',async()=>{
+ for(const[searchScope,label]of[['stored','保存元の情報'],['recorded','記録に書かれた情報'],['both','保存元と記録の両方']]){
+  const f=setup();try{f.paste(encodeRehearsalReasonRecordReport(JSON.parse(source).inputs,{...REHEARSAL_RECORD_QUERY,searchScope,reason:'all'}));await finished(f);assert.match(f.q('outcome').textContent,new RegExp('検索場所: '+label));}finally{f.panel.dispose();}
+ }
+});
 
 const reusableQuery={...REHEARSAL_RECORD_QUERY,kind:'settle'},reusableSource=encodeRehearsalRecordReport(JSON.parse(source).inputs,reusableQuery);
 test('query handoff passes only verified normalized criteria and rejects checksum mismatches',async()=>{

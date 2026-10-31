@@ -23,6 +23,7 @@ import { workspaceFromDraft, WorkspaceError } from "/src/workspace-format.js";
 import { createPortfolioHistory } from "/src/portfolio-history.js";
 import { createHistoryFileReader } from "/src/history-file-reader.js";
 import { readSecurityFileBytes } from "/src/security-file.js";
+import { mountRehearsalBatchReviewPanel } from "/examples/operation-rehearsal-review-panel.js";
 
 const assert = (value, message = "File boundary UI assertion failed") => { if (!value) throw Error(message); };
 const bytes = text => new TextEncoder().encode(text);
@@ -63,6 +64,40 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('rehearsal batch: native multiple files retain exact hashes, failures and the original session',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{
+      q('example').click();q('session-save').click();const original=downloads.pop().text;
+      q('record-browser-save').click();const good=downloads.pop().text,changed=JSON.parse(good);changed.matchedRecords=999;
+      const before=rehearsalExampleV2(),suite=structuredClone(captureRehearsalCheckSuite({schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:'same',label:'Same',before,after:before}]}));
+      suite.expectationOrigin='manually-specified';suite.expected[0].before.metrics.cash='999';
+      const inputs=[['元資料.json',good],['changed.json',JSON.stringify(changed)],['invalid.json','{oops'],['expectations.json',encodeRehearsalCheckReport(suite)]];
+      const transfer=new DataTransfer();for(const[name,text]of inputs)transfer.items.add(new File([text],name,{type:'application/json'}));
+      q('report-batch-files').closest('details').open=true;q('report-batch-files').files=transfer.files;q('report-batch-files').dispatchEvent(new Event('change'));
+      assert(!q('report-batch-run').disabled&&q('report-batch-save').disabled);q('report-batch-run').click();const end=Date.now()+10000;
+      while(q('report-batch-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();
+      assert(!q('report-batch-save').disabled&&q('report-batch-rows').children.length===4);q('report-batch-save').click();const receipt=JSON.parse(downloads.pop().text);
+      assert(receipt.complete&&receipt.summary.matching===2&&receipt.summary.differing===1&&receipt.summary.invalid===1&&receipt.summary.reportsWithFailedExpectations===1);
+      q('report-batch-manifest').click();const manifest=downloads.pop();assert(manifest.filename==='SHA256SUMS.txt');
+      for(const[name,text]of inputs){const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)),hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');assert(manifest.text.includes(hex+'  '+name+'\n'));}
+      q('session-save').click();assert(downloads.pop().text===original);q('report-batch-clear').click();assert(q('report-batch-save').disabled&&q('report-batch-manifest').disabled);
+    }finally{page.dispose();host.remove();}
+  });
+  test('rehearsal batch: native cancel preserves checked rows and ignores a late digest',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[];let calls=0,release;
+    const panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared),subtle:{digest(...args){calls++;return calls===2?new Promise(resolve=>{release=resolve;}):crypto.subtle.digest(...args);}}}),q=id=>view.getElementById('report-batch-'+id);
+    try{
+      const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,{...input,policy:{...input.policy,paused:true}}),transfer=new DataTransfer();
+      transfer.items.add(new File([text],'first.json'));transfer.items.add(new File([text],'second.json'));q('files').closest('details').open=true;q('files').files=transfer.files;q('files').dispatchEvent(new Event('change'));q('run').click();let end=Date.now()+10000;
+      while(calls<2&&Date.now()<end)await tick();assert(calls===2);q('cancel').click();end=Date.now()+10000;
+      while(q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(!q('save').disabled&&q('manifest').disabled);
+      q('save').click();const result=JSON.parse(downloads.pop().text);assert(result.phase==='cancelled'&&result.summary.reviewed===1&&result.summary.pending===1);
+      const summary=q('summary').textContent;release(new Uint8Array(32).buffer);await tick();assert(q('summary').textContent===summary);
+    }finally{release?.(new Uint8Array(32).buffer);panel.dispose();host.remove();}
+  });
   test('rehearsal query reuse: verified older criteria search current inputs without restoring older settlements',async()=>{
     const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
     const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];

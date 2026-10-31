@@ -1,6 +1,11 @@
 import { createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
 import { createFileSelectionNotice } from "./file-read-panel.js";
-import { createFileReadScope } from "../src/security-file.js";
+import { createFileReadScope, readFormatFileName } from "../src/security-file.js";
+import { observeCallbackResult } from "../src/security-callback.js";
+import { boundedUtf8Length } from "../src/security-json.js";
+import { validateRehearsalReportBatchSelection, reviewRehearsalReportBatch,
+  encodeRehearsalBatchReview, encodeRehearsalBatchManifest, REHEARSAL_BATCH_REVIEW_BYTES,
+  REHEARSAL_BATCH_REVIEW_FILES } from "../src/operation-rehearsal-report-review.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { reviewedRehearsalInputChoices, exportReviewedRehearsalPart } from "../src/operation-rehearsal-report-review.js";
@@ -90,7 +95,125 @@ function outcomeText(outcome) {
   return (outcome.query.reason?"見送りの理由: "+(outcome.query.reason==="all"?"すべて":REHEARSAL_RECORD_REASON_LABELS[outcome.query.reason])+"。":"")+"検索対象の全記録 " + outcome.totalRecords + "件 / 条件に一致 " + outcome.matchedRecords +
     "件。対象: " + (outcome.query.agent === "all" ? "すべて" : outcome.query.agent) + " / 種類: " +
     kinds[outcome.query.kind] + " / 判定: " + decisions[outcome.query.decision] + " / 検索語: " +
-    (outcome.query.search || "指定なし") + "。"+(outcome.query.searchScope?"検索場所: "+(outcome.query.searchScope==="recorded"?"記録に書かれた情報":"保存元と記録の両方")+"。":"")+"件数は資料に含まれる試算記録の範囲です。";
+    (outcome.query.search || "指定なし") + "。"+(outcome.query.searchScope?"検索場所: "+(outcome.query.searchScope==="stored"?"保存元の情報":outcome.query.searchScope==="recorded"?"記録に書かれた情報":"保存元と記録の両方")+"。":"")+"件数は資料に含まれる試算記録の範囲です。";
+}
+
+/** Independent file-only review. It receives no live workspace writer. */
+export function mountRehearsalBatchReviewPanel(document, { download, subtle = globalThis.crypto?.subtle }) {
+  const get = id => document.getElementById("report-batch-" + id);
+  const reader = createFileReadScope(), listeners = [];
+  let revision = 0, disposed = false, selection = null, active = null, result = null;
+  const current = id => !disposed && id === revision;
+  function listen(id, event, callback) {
+    const node = get(id); node.addEventListener(event, callback);
+    listeners.push(() => node.removeEventListener(event, callback));
+  }
+  function buttons() {
+    get("run").disabled = disposed || !selection || Boolean(active);
+    get("cancel").disabled = disposed || !active || active.controller.signal.aborted;
+    get("save").disabled = disposed || Boolean(active) || !result;
+    get("manifest").disabled = disposed || Boolean(active) || !result?.complete || result.files.some(row => row.sha256 === null);
+    get("status").setAttribute("aria-busy", active ? "true" : "false");
+  }
+  function reset() {
+    const id = ++revision, old = active;
+    active = null; selection = null; result = null;
+    old?.controller.abort(); reader.cancel();
+    if (!current(id)) return id;
+    get("rows").replaceChildren(); get("summary").textContent = "";
+    get("export-status").textContent = ""; get("results").hidden = true;
+    get("status").textContent = ""; buttons(); return id;
+  }
+  function render(receipt, id) {
+    const labels = { matched: "再計算と一致", different: "再計算と相違あり", invalid: "資料の内容を確認できません",
+      unsupported: "この欄の対象外の形式", "hash-unavailable": "照合値を計算できません", pending: "未確認" };
+    const nodes = receipt.files.map(row => {
+      const tr = document.createElement("tr");
+      const fields = [row.name, labels[row.status] + (row.expectedOutcomes?.differing ? "／期待結果との差あり" : ""),
+        row.differenceCount === null ? "—" : String(row.differenceCount), row.sha256 ?? "未計算"];
+      for (const text of fields) { const td = document.createElement("td"); td.textContent = text; tr.append(td); }
+      return tr;
+    });
+    if (!current(id)) return;
+    result = receipt; get("rows").replaceChildren(...nodes);
+    if (!current(id)) return;
+    const s = receipt.summary;
+    get("summary").textContent = `${s.selected}件中、確認済み ${s.reviewed}件／未確認 ${s.pending}件。一致 ${s.matching}件、相違 ${s.differing}件、形式・照合値の問題 ${s.invalid + s.unsupported + s.hashUnavailable}件。期待結果との差が残る資料 ${s.reportsWithFailedExpectations}件。`;
+    get("status").textContent = receipt.phase === "complete" ? "選択した資料の確認を終えました。各行の結果をご確認ください。" :
+      receipt.phase === "timed-out" ? "時間の上限に達したため停止しました。確認できた分の控えを保存できます。" : "確認を停止しました。確認できた分の控えを保存できます。";
+    get("results").hidden = false;
+  }
+  listen("files", "change", () => {
+    const id = reset();
+    try {
+      const offered = get("files").files, count = offered?.length;
+      observeCallbackResult(count);
+      if (!Number.isInteger(count) || count < 1 || count > REHEARSAL_BATCH_REVIEW_FILES) throw Error();
+      const captured = [];
+      for (let i = 0; i < count; i++) {
+        const file = offered[i];
+        const name = readFormatFileName(file, { maxLength: 180, fail() { throw Error(); }, code: "BATCH_NAME" });
+        const byteLength = file.size; observeCallbackResult(byteLength);
+        captured.push({ file, name, byteLength });
+      }
+      const checked = validateRehearsalReportBatchSelection(captured.map(({ name, byteLength }) => ({ name, byteLength })));
+      if (!current(id)) return;
+      selection = Object.freeze(captured.map((row, i) => Object.freeze({ file: row.file, ...checked.files[i] })));
+      get("status").textContent = `${selection.length}件（合計 ${checked.totalBytes.toLocaleString("ja-JP")}バイト）を選びました。「まとめて再確認」で読み込みます。`;
+      buttons();
+    } catch { if (current(id)) get("status").textContent = "名前が重複しないJSONを1〜20個選んでください。1件2 MiB、合計8 MiB以内です。ファイル名に特殊な記号がある場合は名前を変更して選び直してください。"; }
+  });
+  listen("run", "click", async () => {
+    if (disposed || active || !selection || get("run").disabled) return;
+    const id = ++revision, chosen = selection, job = { controller: new AbortController() };
+    active = job; result = null;
+    get("results").hidden = true; get("rows").replaceChildren(); get("summary").textContent = ""; get("export-status").textContent = ""; buttons();
+    try {
+      const rows = []; let bytes = 0;
+      for (const entry of chosen) {
+        if (!current(id) || job.controller.signal.aborted) throw Error("CANCELLED");
+        get("status").textContent = `資料を読み込んでいます（${rows.length + 1} / ${chosen.length}）：${entry.name}`;
+        const remaining = REHEARSAL_BATCH_REVIEW_BYTES - bytes;
+        if (remaining < 1) throw Error("SIZE");
+        const text = await reader.readText(entry.file, { maxBytes: Math.min(REHEARSAL_REPORT_REVIEW_LIMIT, remaining) });
+        if (!current(id) || job.controller.signal.aborted) throw Error("CANCELLED");
+        bytes += boundedUtf8Length(text, REHEARSAL_REPORT_REVIEW_LIMIT); rows.push({ name: entry.name, text });
+      }
+      const receipt = await reviewRehearsalReportBatch(rows, { subtle, signal: job.controller.signal,
+        onProgress(progress) { if (current(id)) get("status").textContent = `資料を再計算しています（${progress.reviewed} / ${progress.selected}件）。`; } });
+      if (current(id)) render(receipt, id);
+    } catch (error) {
+      if (current(id)) get("status").textContent = job.controller.signal.aborted ?
+        "資料の読み込みを停止しました。再計算の結果はまだありません。" :
+        "資料をまとめて読み込めませんでした。" + describeFileReadError(error) + " 選択した資料と現在の履歴は変更していません。";
+    } finally {
+      job.controller.abort();
+      if (current(id)) { active = null; buttons(); }
+    }
+  });
+  listen("cancel", "click", () => {
+    if (disposed || !active) return;
+    active.controller.abort(); reader.cancel();
+    get("status").textContent = "停止しています。"; buttons();
+  });
+  listen("clear", "click", () => { if (disposed) return; reset(); get("files").value = ""; });
+  for (const [button, encode, filename, mimeType] of [
+    ["save", encodeRehearsalBatchReview, "ThreeCore-report-batch-review.json", "application/json"],
+    ["manifest", encodeRehearsalBatchManifest, "SHA256SUMS.txt", "text/plain"],
+  ]) listen(button, "click", () => {
+    if (disposed || active || !result || get(button).disabled) return;
+    const id = revision, own = result;
+    try {
+      const text = encode(own);
+      requireSyncExport(download({ document, prepared: { text, filename, mimeType } }));
+      if (current(id) && result === own) get("export-status").textContent = "確認用の控えを保存し始めました。元の資料も一緒に保管してください。";
+    } catch { if (current(id) && result === own) get("export-status").textContent = "控えを保存できませんでした。確認結果は保持しています。"; }
+  });
+  buttons();
+  return Object.freeze({ dispose() {
+    if (disposed) return;
+    reset(); disposed = true; ++revision; for (const remove of listeners) remove(); buttons();
+  } });
 }
 
 export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, getWorkspace = null, renderWorkspaceComparison = null, applyRecordQuery = null }) {

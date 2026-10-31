@@ -12,7 +12,7 @@ import { offerWalletDownload } from "./export-download.js";
 import { compareRehearsalWorkspaces, encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 import { reportRehearsalOverview, filterRehearsalOverview, encodeRehearsalOverview } from "../src/operation-rehearsal-overview.js";
 import { mountRehearsalScenarioPanel, createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
-import { mountRehearsalReviewPanel } from "./operation-rehearsal-review-panel.js";
+import { mountRehearsalReviewPanel, mountRehearsalBatchReviewPanel } from "./operation-rehearsal-review-panel.js";
 import { mountRehearsalScenarioSetPanel } from "./operation-rehearsal-scenario-set-panel.js";
 import { mountRehearsalCheckPanel } from "./operation-rehearsal-check-panel.js";
 import { mountRehearsalRecordsPanel } from "./operation-rehearsal-records-panel.js";
@@ -77,6 +77,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   scenarioSetPanel = mountRehearsalScenarioSetPanel(document, { download, store: session.cases, getComparison: () => scenarioPanel.comparison() });
   const reportReviewPanel = mountRehearsalReviewPanel(document, { download, getWorkspace:()=>ledger.snapshot(), applyRecordQuery:query=>recordsPanel.applyQuery(query),
     renderWorkspaceComparison:(comparison,root)=>renderComparisonDetails(comparison,root,true) });
+  const batchReviewPanel = mountRehearsalBatchReviewPanel(document, { download });
   const checkPanel = mountRehearsalCheckPanel(document, { download, reasons: REASONS });
   const recordsPanel = mountRehearsalRecordsPanel(document, { download, reasons: REASONS, kinds: KINDS });
   const sessionPanel = mountRehearsalSessionPanel(document, { session, download,
@@ -637,6 +638,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     scenarioPanel.dispose();
     scenarioSetPanel.dispose();
     reportReviewPanel.dispose();
+    batchReviewPanel.dispose();
     checkPanel.dispose();
     recordsPanel.dispose();
     session.dispose();
