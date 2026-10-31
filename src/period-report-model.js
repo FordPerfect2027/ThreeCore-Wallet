@@ -22,7 +22,10 @@ export function validateReportSelection(input) {
 }
 
 /** The portable input holds original evidence, never a trusted imported conclusion. */
+// Only snapshots produced here can skip repeated validation; frozen caller data still undergoes full capture.
+const validatedReportInputs = new WeakSet();
 export function validatePeriodReportInput(input) {
+  if (validatedReportInputs.has(input)) return input;
   input = periodShape(input, ["schema", "title", "createdAt", "slots", "historicalOnly", "independentlyVerified"]);
   if (input.schema !== PERIOD_REPORT_SCHEMA || input.historicalOnly !== true ||
       input.independentlyVerified !== false) periodFail("PERIOD_REPORT_SCHEMA");
@@ -48,6 +51,7 @@ export function validatePeriodReportInput(input) {
   if (new TextEncoder().encode(JSON.stringify(result)).byteLength > PERIOD_REPORT_INPUT_LIMIT) {
     periodFail("PERIOD_REPORT_SIZE");
   }
+  validatedReportInputs.add(result);
   return result;
 }
 

@@ -23,7 +23,10 @@ export function validateSetSelection(value, { allowEmpty = true } = {}) {
 }
 
 /** Input stores original evidence only. Imported conclusions are not accepted. */
+// Only snapshots produced here can skip repeated validation; frozen caller data still undergoes full capture.
+const validatedSets = new WeakSet();
 export function validateReportSet(value) {
+  if (validatedSets.has(value)) return value;
   value = periodShape(value, ["schema", "title", "createdAt", "sourceRevision", "entries", "historicalOnly"]);
   if (value.schema !== REPORT_SET_SCHEMA || value.historicalOnly !== true ||
       !Number.isSafeInteger(value.sourceRevision) || value.sourceRevision < 0) {
@@ -37,6 +40,7 @@ export function validateReportSet(value) {
   const result = Object.freeze({ schema: REPORT_SET_SCHEMA, title, createdAt,
     sourceRevision: value.sourceRevision, entries: history.entries, historicalOnly: true });
   if (new TextEncoder().encode(JSON.stringify(result)).byteLength > REPORT_SET_LIMIT) periodFail("PERIOD_SET_SIZE");
+  validatedSets.add(result);
   return result;
 }
 

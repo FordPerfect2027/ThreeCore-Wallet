@@ -24,7 +24,10 @@ export function emptyPeriodDraft(plan) {
 }
 
 /** Only a contiguous completed prefix is resumable; incomplete RPC results are absent. */
+// Only snapshots produced here can skip repeated validation; frozen caller data still undergoes full capture.
+const validatedDrafts = new WeakSet();
 export function validatePeriodDraft(input) {
+  if (validatedDrafts.has(input)) return input;
   input = periodShape(input, ["schema", "plan", "earlier", "later", "records", "readOnly", "independentlyVerified"]);
   if (input.schema !== PERIOD_DRAFT_SCHEMA || input.readOnly !== true || input.independentlyVerified !== false) {
     periodFail("PERIOD_DRAFT_SCHEMA");
@@ -53,6 +56,7 @@ export function validatePeriodDraft(input) {
   const result = Object.freeze({ schema: PERIOD_DRAFT_SCHEMA, plan, earlier, later,
     records: Object.freeze(records), readOnly: true, independentlyVerified: false });
   if (new TextEncoder().encode(JSON.stringify(result)).byteLength > PERIOD_DRAFT_LIMIT) periodFail("PERIOD_DRAFT_SIZE");
+  validatedDrafts.add(result);
   return result;
 }
 

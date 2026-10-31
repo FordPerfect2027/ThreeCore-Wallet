@@ -40,7 +40,10 @@ export function validateHistoryEntry(input) {
   return Object.freeze({ id, label, note, tags, savedAt, updatedAt, archived: input.archived, report });
 }
 
+// Only snapshots produced here can skip repeated validation; frozen caller data still undergoes full capture.
+const validatedHistories = new WeakSet();
 export function validateReportHistory(input) {
+  if (validatedHistories.has(input)) return input;
   input = periodShape(input, ["schema", "revision", "entries"]);
   if (input.schema !== REPORT_HISTORY_SCHEMA || !Number.isSafeInteger(input.revision) || input.revision < 0) {
     periodFail("PERIOD_HISTORY_SCHEMA");
@@ -55,6 +58,7 @@ export function validateReportHistory(input) {
   });
   const document = Object.freeze({ schema: REPORT_HISTORY_SCHEMA, revision: input.revision, entries: Object.freeze(entries) });
   if (encoder.encode(JSON.stringify(document)).byteLength > REPORT_HISTORY_BYTES) periodFail("PERIOD_HISTORY_CAPACITY");
+  validatedHistories.add(document);
   return document;
 }
 
