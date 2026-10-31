@@ -255,6 +255,20 @@ export async function resumeRehearsalReportFileBatch(previous, readSource, optio
     { ...options, ...(previous.referenceProvided ? { manifestText: previous.reference.text } : {}) }, readSource, previous);
 }
 
+export function canRetryRehearsalReportFileBatch(previous) {
+  return fileBatchSelections.has(previous) && previous.summary.pending === 0 && previous.files.some(row => ["source-unavailable", "hash-unavailable"].includes(row.status));
+}
+/** A retry retains all other reviewed rows and the original reference selection. */
+export async function retryRehearsalReportFileBatch(previous, readSource, options = {}) {
+  if (!canRetryRehearsalReportFileBatch(previous)) fail("INVALID_REVIEW_BATCH_RETRY");
+  if (typeof readSource !== "function") fail("INVALID_REVIEW_BATCH_READER");
+  options = captureRehearsalBatchOptions(options);
+  if (Object.hasOwn(options, "manifestText")) fail("INVALID_REVIEW_BATCH_OPTIONS");
+  const selection = fileBatchSelections.get(previous);
+  return reviewRehearsalBatchCaptured(selection.files, selection,
+    { ...options, ...(previous.referenceProvided ? { manifestText: previous.reference.text } : {}) }, readSource, previous, true);
+}
+
 function waitRehearsalBatchSource(read, signal) {
   return new Promise((resolve, reject) => {
     let settled = false, subscription;
@@ -268,19 +282,22 @@ function waitRehearsalBatchSource(read, signal) {
   });
 }
 
-async function reviewRehearsalBatchCaptured(rows, selection, options, readSource = null, previous = null) {
+async function reviewRehearsalBatchCaptured(rows, selection, options, readSource = null, previous = null, retryFailed = false) {
   const { subtle = globalThis.crypto?.subtle, signal, onProgress, timeoutMs = 120000 } = options;
   const hasReference = options.manifestText !== undefined;
   const reference = hasReference ? matchRehearsalBatchManifest(selection.files, options.manifestText) : null;
   let referenceSha256 = null;
   const retained = previous?.summary.reviewed ?? 0, completed = previous ? previous.files.slice(0, retained) : [], aborter = new AbortController();
+  const targets = rows.map((_, index) => index).filter(index => retryFailed ? ["source-unavailable", "hash-unavailable"].includes(previous.files[index].status) : index >= retained), retried = [];
   let previousBatchSha256 = null;
   let cancellation, timer, phase = "complete";
   const stopped = () => readAbortState(aborter.signal);
   const stop = reason => { if (!stopped()) { phase = reason; aborter.abort(); } };
   const notify = () => consumeCallback(() => onProgress?.(Object.freeze({
     selected: rows.length, reviewed: completed.length, phase: stopped() ? phase : "reviewing",
+    ...(retryFailed ? { retrySelected: targets.length, retryReviewed: retried.length } : {}),
   })));
+  const accept = (index, row) => { completed[index] = row; if (retryFailed) retried.push(index); notify(); };
   function finish() {
     const files = rows.map((row, index) => completed[index] ?? Object.freeze({
       name: row.name, byteLength: readSource ? null : row.byteLength, ...(readSource ? { reportedByteLength: row.byteLength } : {}), status: "pending", sha256: null,
@@ -301,15 +318,17 @@ async function reviewRehearsalBatchCaptured(rows, selection, options, readSource
       checksumsMatching: files.filter(row => row.checksumMatches === true).length,
       checksumMismatches: files.filter(row => row.checksumMatches === false).length,
     } : summary;
-    const result = Object.freeze({ schema: previous ? "threecore.operation-rehearsal-batch-review.v4" : unknownBytes ? "threecore.operation-rehearsal-batch-review.v3" : hasReference ? REHEARSAL_BATCH_REFERENCE_REVIEW_SCHEMA : REHEARSAL_BATCH_REVIEW_SCHEMA, simulationOnly: true,
+    const result = Object.freeze({ schema: retryFailed ? "threecore.operation-rehearsal-batch-review.v5" : previous ? "threecore.operation-rehearsal-batch-review.v4" : unknownBytes ? "threecore.operation-rehearsal-batch-review.v3" : hasReference ? REHEARSAL_BATCH_REFERENCE_REVIEW_SCHEMA : REHEARSAL_BATCH_REVIEW_SCHEMA, simulationOnly: true,
       sourceVerified: false, authorizesExecution: false,
       externalChecksumsCompared: hasReference && referenceSummary.checksumsCompared > 0,
       phase, complete: phase === "complete" && completed.length === rows.length,
       allRecomputationsMatch: phase === "complete" && summary.matching === rows.length,
       summary: Object.freeze(referenceSummary), files: Object.freeze(files),
       ...(unknownBytes && !hasReference ? { referenceProvided: false } : {}),
-      ...(previous ? { continuation: Object.freeze({ sequence: (previous.continuation?.sequence ?? 0) + 1,
+      ...(previous && !retryFailed ? { continuation: Object.freeze({ sequence: (previous.continuation?.sequence ?? 0) + 1,
         retainedReviews: retained, previousPhase: previous.phase, previousBatchSha256 }) } : {}),
+      ...(retryFailed ? { retry: Object.freeze({ sequence: (previous.retry?.sequence ?? 0) + 1, previousPhase: previous.phase, previousBatchSha256,
+        targetIndexes: Object.freeze(targets), completedIndexes: Object.freeze(retried), remainingIndexes: Object.freeze(targets.filter(index => !retried.includes(index))), retainedReviews: rows.length - retried.length }) } : {}),
       ...(hasReference ? { referenceProvided: true,
         reference: Object.freeze({ text: options.manifestText, sha256: referenceSha256, entries: reference }),
         allExternalChecksumsMatch: phase === "complete" && referenceSummary.checksumsMatching === rows.length } : {}),
@@ -324,15 +343,15 @@ async function reviewRehearsalBatchCaptured(rows, selection, options, readSource
     if (previous && !stopped()) {
       try { previousBatchSha256 = await sha256Hex(new TextEncoder().encode(encodeRehearsalBatchReview(previous)), subtle,
         { signal: aborter.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
-      catch { if (!stopped()) fail("REVIEW_BATCH_RESUME_HASH_UNAVAILABLE"); }
+      catch { if (!stopped()) fail(retryFailed ? "REVIEW_BATCH_RETRY_HASH_UNAVAILABLE" : "REVIEW_BATCH_RESUME_HASH_UNAVAILABLE"); }
     }
     if (hasReference && !stopped()) {
       try { referenceSha256 = await sha256Hex(new TextEncoder().encode(options.manifestText), subtle,
         { signal: aborter.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
       catch { if (!stopped()) fail("REVIEW_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
     }
-    for (const [index, selected] of rows.entries()) {
-      if (index < retained) continue;
+    for (const index of targets) {
+      const selected = rows[index];
       if (stopped()) break;
       let row = selected;
       if (readSource) {
@@ -346,10 +365,10 @@ async function reviewRehearsalBatchCaptured(rows, selection, options, readSource
           if (stopped()) break;
           let code; try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; } catch {}
           code = code === "JSON_SIZE" ? "FILE_SIZE" : ["FILE_ENCODING", "FILE_SIZE", "FILE_READ", "FILE_TIMEOUT", "FILE_CHANGED"].includes(code) ? code : "FILE_READ";
-          completed.push(Object.freeze({ name: selected.name, byteLength: null, reportedByteLength: selected.byteLength,
+          accept(index, Object.freeze({ name: selected.name, byteLength: null, reportedByteLength: selected.byteLength,
             status: "source-unavailable", code, sha256: null, inputSchema: null, differenceCount: null, expectedOutcomes: null,
             ...(hasReference ? { expectedSha256: reference[index].expectedSha256, checksumMatches: null } : {}) }));
-          notify(); continue;
+          continue;
         }
       }
       let sha256 = null, status = "hash-unavailable", inputSchema = null, differenceCount = null, expectedOutcomes = null;
@@ -373,10 +392,9 @@ async function reviewRehearsalBatchCaptured(rows, selection, options, readSource
           }
         } catch (error) { status = error?.code === "UNSUPPORTED_REVIEW_REPORT" ? "unsupported" : "invalid"; }
       }
-      completed.push(Object.freeze({ name: row.name, byteLength: row.byteLength, status, sha256,
+      accept(index, Object.freeze({ name: row.name, byteLength: row.byteLength, status, sha256,
         inputSchema, differenceCount, expectedOutcomes,
         ...(hasReference ? { expectedSha256, checksumMatches } : {}) }));
-      notify();
     }
     return finish();
   } finally { clearTimeout(timer); cancellation?.dispose(); aborter.abort(); }
@@ -404,6 +422,7 @@ export function encodeRehearsalBatchCsv(result) {
   const unknownBytes = Object.hasOwn(result.summary, "sourceUnavailable");
   if (unknownBytes) rows[0].push("reportedByteLength", "readError", "sourceUnavailable", "selectedReportedBytes", "unreadSourceReportedBytes");
   if (result.continuation) rows[0].push("continuationSequence", "retainedReviews", "previousPhase", "previousBatchSha256");
+  if (result.retry) rows[0].push("retrySequence", "retryPreviousPhase", "retryPreviousBatchSha256", "retryTargetIndexes", "retryCompletedIndexes", "retryRemainingIndexes", "retryRetainedReviews");
   for (const row of result.files) rows.push([result.schema,true,false,false,result.phase,result.complete,
     result.summary.selected,result.summary.reviewed,result.summary.pending,result.summary.totalBytes,
     result.allRecomputationsMatch,result.referenceProvided ?? false,result.reference?.sha256 ?? "",
@@ -411,7 +430,8 @@ export function encodeRehearsalBatchCsv(result) {
     row.sha256 ?? "",row.expectedSha256 ?? "",row.checksumMatches ?? "",row.inputSchema ?? "",row.differenceCount ?? "",
     row.expectedOutcomes?.cases ?? "",row.expectedOutcomes?.matched ?? "",row.expectedOutcomes?.differing ?? "",
     ...(unknownBytes ? [row.reportedByteLength ?? "", row.code ?? "", result.summary.sourceUnavailable, result.summary.selectedReportedBytes, result.summary.unreadSourceReportedBytes] : []),
-    ...(result.continuation ? [result.continuation.sequence, result.continuation.retainedReviews, result.continuation.previousPhase, result.continuation.previousBatchSha256 ?? ""] : [])]);
+    ...(result.continuation ? [result.continuation.sequence, result.continuation.retainedReviews, result.continuation.previousPhase, result.continuation.previousBatchSha256 ?? ""] : []),
+    ...(result.retry ? [result.retry.sequence, result.retry.previousPhase, result.retry.previousBatchSha256 ?? "", result.retry.targetIndexes.join(" | "), result.retry.completedIndexes.join(" | "), result.retry.remainingIndexes.join(" | "), result.retry.retainedReviews] : [])]);
   const cell = value => { let text = String(value); if (/^\s*[=+@-]/u.test(text)) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
   return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";
 }

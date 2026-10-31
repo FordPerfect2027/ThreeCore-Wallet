@@ -21,6 +21,17 @@ const manifest=(name="a.json",text=source)=>createHash("sha256").update(text).di
 const paste=(f,text)=>{f.q("reference-text").value=text;f.q("reference-text").dispatchEvent(new Event("input"));};
 const details=(f,index=0)=>f.q("rows").children[index].children.at(-1).children[0];
 
+test('failed-file retry reads only the failure and retains successful detail sources',async()=>{
+ const reads=[],opened=[],f=setup(fast,value=>opened.push(value));let recovered=false;const item=(name,index)=>({name,size:Buffer.byteLength(source),arrayBuffer(){reads.push(index);return index===1&&!recovered?Promise.reject(Error('temporary')):Promise.resolve(new TextEncoder().encode(source).buffer);}});
+ try{f.choose([item('a.json',0),item('b.json',1),item('c.json',2)]);f.q('run').click();await done(f);f.q('save').click();const previous=f.downloads.at(-1).text;assert(!f.q('retry').disabled);recovered=true;f.q('retry').click();await done(f);f.q('save').click();const next=JSON.parse(f.downloads.at(-1).text);assert(next.allRecomputationsMatch);assert.equal(next.retry.previousBatchSha256,createHash('sha256').update(previous).digest('hex'));assert.deepEqual(reads,[0,1,2,1]);assert.match(f.q('summary').textContent,/再試行済み 1件/);assert.match(f.q('summary').textContent,/前回の結果を保持 2件/);assert(f.q('retry').disabled);details(f,0).click();details(f,1).click();assert.deepEqual(opened.map(row=>row.name),['a.json','b.json']);assert(opened.every(row=>row.text===source));f.q('clear').click();assert(f.q('retry').disabled);}finally{f.panel.dispose();}
+});
+test('stopped retry keeps old failures and late completion cannot replace a newer selection',async()=>{
+ const f=setup();let retry=false,release;const failed={name:'b.json',size:Buffer.byteLength(source),arrayBuffer(){return retry?new Promise(resolve=>{release=resolve;}):Promise.reject(Error());}};
+ try{f.choose([file(),failed]);f.q('run').click();await done(f);retry=true;f.q('retry').click();await wait(()=>Boolean(release));f.q('cancel').click();await done(f);f.q('save').click();const receipt=JSON.parse(f.downloads.at(-1).text);assert.deepEqual(receipt.retry.remainingIndexes,[1]);assert.match(f.q('status').textContent,/前回の失敗結果を保持/);assert(!f.q('retry').disabled);release(new TextEncoder().encode(source).buffer);
+  release=null;f.q('retry').click();await wait(()=>Boolean(release));f.choose([file('new.json')]);assert(f.q('retry').disabled);assert(f.q('save').disabled);release(new TextEncoder().encode(source).buffer);await done(f);assert(f.q('save').disabled);
+ }finally{release?.(new TextEncoder().encode(source).buffer);f.panel.dispose();}
+});
+
 test("stopped file loading resumes only pending files and keeps earlier detail sources",async()=>{
  const opened=[],reads=[],f=setup(fast,value=>opened.push(value));let release,second=0;
  const item=(name,index)=>({name,size:Buffer.byteLength(source),arrayBuffer(){reads.push(index);if(index===1&&++second===1)return new Promise(resolve=>{release=resolve;});return Promise.resolve(new TextEncoder().encode(source).buffer);}});

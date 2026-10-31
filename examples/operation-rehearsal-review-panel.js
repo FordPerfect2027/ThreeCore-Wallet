@@ -5,7 +5,7 @@ import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
 import { captureDataRecord } from "../src/security-data.js";
 import { validateRehearsalReportBatchSelection, reviewRehearsalReportFileBatch,
-  resumeRehearsalReportFileBatch, canResumeRehearsalReportFileBatch,
+  resumeRehearsalReportFileBatch, canResumeRehearsalReportFileBatch, retryRehearsalReportFileBatch, canRetryRehearsalReportFileBatch,
   encodeRehearsalBatchReview, encodeRehearsalBatchManifest,
   REHEARSAL_BATCH_REVIEW_FILES, decodeRehearsalBatchManifest, matchRehearsalBatchManifest,
   REHEARSAL_BATCH_MANIFEST_LIMIT, encodeRehearsalBatchCsv } from "../src/operation-rehearsal-report-review.js";
@@ -123,6 +123,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     const referenceMatches = referenceReady();
     get("run").disabled = disposed || !selection || Boolean(active) || !referenceMatches;
     get("resume").disabled = disposed || Boolean(active) || !canResumeRehearsalReportFileBatch(result);
+    get("retry").disabled = disposed || Boolean(active) || !canRetryRehearsalReportFileBatch(result);
     get("cancel").disabled = disposed || !active || active.controller.signal.aborted;
     get("save").disabled = disposed || Boolean(active) || !result;
     get("csv").disabled = disposed || Boolean(active) || !result;
@@ -184,12 +185,14 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     get("summary").textContent = `${s.selected}件中、確認済み ${s.reviewed}件／未確認 ${s.pending}件。再計算の一致 ${s.matching}件、相違 ${s.differing}件、形式・照合値の問題 ${s.invalid + s.unsupported + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。期待結果との差が残る資料 ${s.reportsWithFailedExpectations}件。` +
       (receipt.referenceProvided ? ` 以前の照合値との一致 ${s.checksumsMatching}件、不一致 ${s.checksumMismatches}件、未比較 ${s.selected - s.checksumsCompared}件。` : "") +
       (Object.hasOwn(s, "sourceUnavailable") ? ` 読み込み失敗 ${s.sourceUnavailable}件。読み取れた内容 ${s.totalBytes}バイト。未読・失敗分の内容のバイト数は不明です。` : "") +
-      (receipt.continuation ? ` 前回の結果を保持 ${receipt.continuation.retainedReviews}件。保持分は今回読み直していません。続き ${receipt.continuation.sequence}回目。` : "");
+      (receipt.continuation ? ` 前回の結果を保持 ${receipt.continuation.retainedReviews}件。保持分は今回読み直していません。続き ${receipt.continuation.sequence}回目。` : "") +
+      (receipt.retry ? ` 失敗分の再試行 ${receipt.retry.sequence}回目：対象 ${receipt.retry.targetIndexes.length}件中、再試行済み ${receipt.retry.completedIndexes.length}件／今回まだ再試行していないもの ${receipt.retry.remainingIndexes.length}件。前回の結果を保持 ${receipt.retry.retainedReviews}件。` : "");
     get("reference-note").textContent = receipt.referenceProvided ?
       "読み込んだ一覧との比較は、上記の一致・不一致・未比較の件数をご確認ください。一覧の出所を証明するものではありません。再計算の一致と期待結果への一致も別に確認してください。" :
       "再計算の一致は、期待結果への一致や資料の出所・安全性の証明とは別です。照合値は今回選んだ内容から計算しており、外部の正解値とは比較していません。";
     get("status").textContent = receipt.phase === "complete" ? (s.sourceUnavailable ? "読み込めない資料があります。他の資料の確認結果は保持しています。各行の結果をご確認ください。" : "選択した資料の確認を終えました。各行の結果をご確認ください。") :
       receipt.phase === "timed-out" ? "時間の上限に達したため停止しました。確認できた分の控えを保存できます。" : "確認を停止しました。確認できた分の控えを保存できます。";
+    if (receipt.retry) get("status").textContent = receipt.complete ? "失敗分の再試行を終えました。各行の結果をご確認ください。対象外の結果は前回のものです。" : "再試行を中止・時間切れで止めました。まだ再試行していない行は、前回の失敗結果を保持しています。";
     get("results").hidden = false;
   }
   listen("files", "change", () => {
@@ -240,9 +243,9 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     finally { if (current(id)) { referenceBusy = false; buttons(); } }
   });
   listen("reference-clear", "click", () => { if (!disposed) reset({ keepSelection: true }); });
-  async function run(previous = null) {
+  async function run(previous = null, retryFailed = false) {
     if (disposed || active || !selection || !referenceReady() || get("run").disabled) return;
-    if (previous && (result !== previous || !canResumeRehearsalReportFileBatch(previous))) return;
+    if (previous && (result !== previous || !(retryFailed ? canRetryRehearsalReportFileBatch : canResumeRehearsalReportFileBatch)(previous))) return;
     const id = ++revision, chosen = selection, manifestText = referenceText, job = { controller: new AbortController() };
     const retainedSources = previous ? sourceRows.slice() : [];
     active = job; result = previous;
@@ -258,8 +261,8 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
         rows[index] = Object.freeze({ name: entry.name, text }); return text;
       };
       const options = { subtle, signal: job.controller.signal,
-        onProgress(progress) { if (current(id)) get("status").textContent = `資料を再計算しています（${progress.reviewed} / ${progress.selected}件）。`; } };
-      const receipt = previous ? await resumeRehearsalReportFileBatch(previous, read, options) :
+        onProgress(progress) { if (current(id)) get("status").textContent = progress.retrySelected !== undefined ? `失敗分を再試行しています（${progress.retryReviewed} / ${progress.retrySelected}件）。対象外の結果は保持しています。` : `資料を再計算しています（${progress.reviewed} / ${progress.selected}件）。`; } };
+      const receipt = previous ? await (retryFailed ? retryRehearsalReportFileBatch : resumeRehearsalReportFileBatch)(previous, read, options) :
         await reviewRehearsalReportFileBatch(chosen.map(({ name, byteLength }) => ({ name, byteLength })), read, { ...options, manifestText });
       if (current(id)) render(receipt, id, rows);
     } catch (error) {
@@ -274,6 +277,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   }
   listen("run", "click", () => { void run(); });
   listen("resume", "click", () => { if (!get("resume").disabled) void run(result); });
+  listen("retry", "click", () => { if (!get("retry").disabled) void run(result, true); });
   listen("cancel", "click", () => {
     if (disposed || !active) return;
     active.controller.abort();
