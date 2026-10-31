@@ -215,7 +215,7 @@ export function buildMissingHistoryDraft(value, query, number) {
   const draft = emptyPeriodDraft(createPeriodPlan({ context: queue.context,
     earlierBlock: (BigInt(window.fromBlock) - 1n).toString(), laterBlock: window.toBlock,
     windowSize: number === "page" ? queue.query.windowSize : Number(window.blocks) }));
-  return Object.freeze({ draft, selectedRange: window });
+  return Object.freeze({ draft, selectedRange: window, query: queue.query });
 }
 
 export async function prepareMissingHistoryDraftFile(value, query, number, fileOptions = {}) {

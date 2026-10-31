@@ -7,7 +7,7 @@ import { transferFail } from "./transfer-codec.js";
 import { VAULT_AGENTS, vaultBundle, validateVaultBundle, vaultKey, vaultHasRecords, reviewVaultReplacement,
   mergeVaultBundles, validateVaultDocument, vaultMetadata, vaultLabel, vaultId, vaultTime } from "./transfer-vault-model.js";
 import { prepareVaultFile, readVaultFile, readLegacyVaultInput } from "./transfer-vault-file.js";
-import { vaultActivityCsv, vaultActivityText, vaultFilteredActivityCsv } from "./transfer-vault-analytics.js";
+import { vaultActivityCsv, vaultActivityText, vaultFilteredActivityCsv, validateActivityQuery } from "./transfer-vault-analytics.js";
 
 /** Offline working copy + opt-in storage. Nothing opens, reads or saves at mount. */
 export function createVaultController({ storage, readCards, stageArchive, onChange = () => {},
@@ -261,6 +261,16 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
     });
   }
   async function prepare(kind = "json", stored = false, query) {
+    if (disposed || busy()) return null;
+    const own = sequence;
+    let capturedQuery;
+    try {
+      capturedQuery = kind === "filtered-csv" ? validateActivityQuery(query) : undefined;
+      if (disposed || sequence !== own || busy()) return null;
+    } catch (failure) {
+      if (!disposed && sequence === own && !busy()) report(failure, () => !disposed && sequence === own);
+      return null;
+    }
     let result = null;
     const completed = await operate("export", async token => {
       const source = stored ? (await freshSelection(token)).bundle : working;
@@ -269,7 +279,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
       if (kind === "json") result = await prepareVaultFile(source, { subtle, signal: active.aborter.signal });
       else if (kind === "filtered-csv") {
         if (stored) transferFail("TRANSFER_VAULT_FILE_KIND");
-        const report = vaultFilteredActivityCsv(source, query);
+        const report = vaultFilteredActivityCsv(source, capturedQuery);
         if (!report.matched) transferFail("TRANSFER_VAULT_NO_MATCHES");
         result = Object.freeze({ ...report, filename: "ThreeCore-filtered-transfer-activity.csv",
           mimeType: "text/csv;charset=utf-8", byteLength: new TextEncoder().encode(report.text).length });

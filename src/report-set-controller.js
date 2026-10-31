@@ -253,10 +253,11 @@ export function createReportSetController({ storage, onChange = () => {},
       if (!input) periodFail("PERIOD_SET_NO_RESULT");
       if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
       if (typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
-      const snapshot = input;
+      const snapshot = input, proposal = buildMissingHistoryDraft(snapshot, query, number);
+      if (!sameGeneration(token)) return false;
       review = null; comparisonReview = null;
       return await run("exporting", async (same, signal) => {
-        const file = await prepareMissingHistoryDraftFile(snapshot, query, number, { signal });
+        const file = await prepareMissingHistoryDraftFile(snapshot, proposal.query, number, { signal });
         if (!same()) return null;
         const delivery = deliver(file);
         if (observeCallbackResult(delivery) !== "synchronous") periodFail("PERIOD_ASYNC_DELIVERY");
