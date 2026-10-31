@@ -410,6 +410,84 @@ export function encodeRehearsalBatchReview(result) {
   if (!batchReceipts.has(result)) fail("UNRECOGNIZED_REVIEW_BATCH");
   return JSON.stringify(result, null, 2) + "\n";
 }
+const rehearsalBatchComparisons = new WeakSet();
+/** Compare owned observations of selected files; selection differences are not filesystem deletions. */
+export function compareRehearsalBatches(before, after) {
+  if (!batchReceipts.has(before) || !batchReceipts.has(after)) fail("INVALID_REVIEW_BATCH_COMPARISON");
+  const leftByName = new Map(before.files.map(row => [row.name, row])), rightByName = new Map(after.files.map(row => [row.name, row]));
+  const names = [...new Set([...leftByName.keys(), ...rightByName.keys()])];
+  const files = Object.freeze(names.map(name => {
+    const left = leftByName.get(name) ?? null, right = rightByName.get(name) ?? null;
+    const sameBytes = left?.sha256 && right?.sha256 ? left.sha256 === right.sha256 : null;
+    const sameRecordedResult = left && right ? compareValues(left, right).differenceCount === 0 : null;
+    const kind = !left ? "only-after" : !right ? "only-before" : sameBytes === null ? "uncompared" : !sameBytes ? "bytes-changed" : sameRecordedResult ? "unchanged" : "result-changed";
+    return Object.freeze({ name, kind, sameBytes, sameRecordedResult, before: left, after: right });
+  }));
+  const count = kind => files.filter(row => row.kind === kind).length;
+  const summary = Object.freeze({ files: files.length, bothSelected: files.filter(row => row.before && row.after).length,
+    onlyBefore: count("only-before"), onlyAfter: count("only-after"), unchanged: count("unchanged"),
+    bytesChanged: count("bytes-changed"), resultChanged: count("result-changed"), uncompared: count("uncompared") });
+  const result = Object.freeze({ schema: "threecore.operation-rehearsal-batch-comparison.v1", before, after, files, summary,
+    sameSelection: summary.onlyBefore === 0 && summary.onlyAfter === 0,
+    allSelectedBytesMatch: before.complete && after.complete && files.every(row => row.sameBytes === true),
+    simulationOnly: true, sourceVerified: false, authorizesExecution: false, containsOriginalEvidence: false,
+    automaticallyImported: false, restorable: false, reportsFilesystemDeletions: false, recordedProcessVerified: false });
+  rehearsalBatchComparisons.add(result); return result;
+}
+export function encodeRehearsalBatchComparison(result, format = "json") {
+  if (!rehearsalBatchComparisons.has(result) || !["json", "csv"].includes(format)) fail("INVALID_REVIEW_BATCH_COMPARISON");
+  if (format === "json") return JSON.stringify(result, null, 2) + "\n";
+  const rows = [["simulationOnly", "sourceVerified", "authorizesExecution", "reportsFilesystemDeletions", "beforePhase", "beforeComplete", "afterPhase", "afterComplete", "allSelectedBytesMatch", "name", "kind", "sameBytes", "sameRecordedResult", "beforeStatus", "afterStatus", "beforeSha256", "afterSha256", "beforeFailedExpectations", "afterFailedExpectations"]];
+  for (const row of result.files) rows.push([true, false, false, false, result.before.phase, result.before.complete, result.after.phase, result.after.complete, result.allSelectedBytesMatch,
+    row.name, row.kind, row.sameBytes ?? "", row.sameRecordedResult ?? "", row.before?.status ?? "", row.after?.status ?? "", row.before?.sha256 ?? "", row.after?.sha256 ?? "", row.before?.expectedOutcomes?.differing ?? "", row.after?.expectedOutcomes?.differing ?? ""]);
+  const cell = value => { let text = String(value); if (/^\s*[=+@-]/u.test(text)) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
+  return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";
+}
+export const REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT = 32 * 1024 * 1024;
+const rehearsalBatchComparisonEvidenceReviews = new WeakSet();
+function batchComparisonEvidenceDocument(before, after) {
+  return { schema: "threecore.operation-rehearsal-batch-comparison-evidence.v1", simulationOnly: true,
+    sourceVerified: false, authorizesExecution: false, recordedProcessVerified: false,
+    before: batchEvidenceDocument(before, batchSources.get(before)), after: batchEvidenceDocument(after, batchSources.get(after)),
+    comparison: compareRehearsalBatches(before, after) };
+}
+function batchEvidenceBudget(input) {
+  const options = batchEvidenceOptions(input), started = Date.now(), limit = options.timeoutMs ?? 120000;
+  return () => { const remaining = limit - (Date.now() - started); if (remaining < 1 || readAbortState(options.signal)) fail("REVIEW_BATCH_COMPARISON_INCOMPLETE"); return { ...options, timeoutMs: remaining }; };
+}
+export async function prepareRehearsalBatchComparisonEvidence(before, after, input = {}) {
+  if (!canPrepareRehearsalBatchEvidence(before) || !canPrepareRehearsalBatchEvidence(after)) fail("REVIEW_BATCH_COMPARISON_UNAVAILABLE");
+  const budget = batchEvidenceBudget(input);
+  const recompute = source => reviewRehearsalReportBatch(batchSources.get(source), { ...budget(), ...(source.referenceProvided ? { manifestText: source.reference.text } : {}) });
+  const left = await recompute(before), right = await recompute(after); budget();
+  if (!canPrepareRehearsalBatchEvidence(left) || !canPrepareRehearsalBatchEvidence(right)) fail("REVIEW_BATCH_COMPARISON_INCOMPLETE");
+  const text = JSON.stringify(batchComparisonEvidenceDocument(left, right), null, 2) + "\n";
+  try { boundedUtf8Length(text, REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT); } catch { fail("REVIEW_BATCH_COMPARISON_SIZE"); } budget();
+  return Object.freeze({ text, filename: "ThreeCore-rehearsal-batch-comparison-evidence.json", mimeType: "application/json", containsOriginalEvidence: true,
+    simulationOnly: true, sourceVerified: false, authorizesExecution: false, recordedProcessVerified: false });
+}
+export async function reviewRehearsalBatchComparisonEvidence(text, input = {}) {
+  const budget = batchEvidenceBudget(input); let parsed;
+  try { parsed = parseSecurityJson(text, { bytes: REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT, depth: 24, nodes: 50000, keyCharacters: 256, stringCharacters: REHEARSAL_REPORT_REVIEW_LIMIT }); } catch { fail("REVIEW_BATCH_COMPARISON_JSON"); }
+  if (parsed?.schema !== "threecore.operation-rehearsal-batch-comparison-evidence.v1") fail("REVIEW_BATCH_COMPARISON_SCHEMA");
+  const beforeReview = await reviewRehearsalBatchEvidence(JSON.stringify(parsed.before), budget()), afterReview = await reviewRehearsalBatchEvidence(JSON.stringify(parsed.after), budget());
+  const before = batchEvidenceReviews.get(beforeReview).result, after = batchEvidenceReviews.get(afterReview).result, expected = batchComparisonEvidenceDocument(before, after);
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(parsed, key) || compareValues(expected[key], parsed[key]).differenceCount !== 0), unexpectedFields = Object.keys(parsed).filter(key => !Object.hasOwn(expected, key)).length;
+  const options = budget(), sha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle, { signal: options.signal, timeoutMs: Math.min(options.timeoutMs, 30000) }); budget();
+  const result = Object.freeze({ schema: "threecore.operation-rehearsal-batch-comparison-evidence-review.v1", sha256,
+    matchesRecomputation: differences.length === 0 && unexpectedFields === 0 && beforeReview.matchesRecomputation && afterReview.matchesRecomputation,
+    differences: Object.freeze(differences), unexpectedFields, beforeEvidenceMatches: beforeReview.matchesRecomputation, afterEvidenceMatches: afterReview.matchesRecomputation,
+    comparisonMatches: compareValues(expected.comparison, parsed.comparison).differenceCount === 0,
+    beforeSummary: before.summary, afterSummary: after.summary, comparisonSummary: expected.comparison.summary,
+    allSourceReportsMatch: before.allRecomputationsMatch && after.allRecomputationsMatch,
+    simulationOnly: true, sourceVerified: false, authorizesExecution: false, automaticallyImported: false,
+    recordedProcessVerified: false, containsOriginalEvidence: false, restorable: false });
+  rehearsalBatchComparisonEvidenceReviews.add(result); return result;
+}
+export function encodeRehearsalBatchComparisonEvidenceReview(result) {
+  if (!rehearsalBatchComparisonEvidenceReviews.has(result)) fail("REVIEW_BATCH_COMPARISON_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
+}
 
 export function canPrepareRehearsalBatchEvidence(result) {
   const sources = batchSources.get(result);

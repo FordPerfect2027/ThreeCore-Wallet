@@ -3,6 +3,8 @@ import { createFileSelectionNotice, mountBatchSourceExportPanel, mountSavedBundl
 import { reviewRehearsalBatchEvidenceReceipt, encodeRehearsalBatchEvidenceReceiptCheck } from "../src/operation-rehearsal-report-review.js";
 import { queryRehearsalBatchFiles, encodeRehearsalBatchSelection } from "../src/operation-rehearsal-report-review.js";
 import { reviewRehearsalBatchSelection, encodeRehearsalBatchSelectionReview, extractRehearsalBatchSelectionQuery } from "../src/operation-rehearsal-report-review.js";
+import { compareRehearsalBatches, encodeRehearsalBatchComparison } from "../src/operation-rehearsal-report-review.js";
+import { prepareRehearsalBatchComparisonEvidence, reviewRehearsalBatchComparisonEvidence, encodeRehearsalBatchComparisonEvidenceReview, REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { createFileReadScope, readFormatFileName, readSecurityFileText } from "../src/security-file.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -106,6 +108,85 @@ function outcomeText(outcome) {
     (outcome.query.search || "指定なし") + "。"+(outcome.query.searchScope?"検索場所: "+(outcome.query.searchScope==="stored"?"保存元の情報":outcome.query.searchScope==="recorded"?"記録に書かれた情報":"保存元と記録の両方")+"。":"")+"件数は資料に含まれる試算記録の範囲です。";
 }
 
+/** Retain a read-only comparison baseline across subsequent source selections. */
+export function mountRehearsalBatchComparisonPanel(document, { parent, download }) {
+  const host = document.createElement("details"); host.className = "rehearsal-batch-comparison"; parent.append(host);
+  let disposed = false, current = null, baseline = null, comparison = null, revision = 0, active = null, evidenceReview = null; const listeners = [];
+  function node(tag, name, text, target = host) { const value = document.createElement(tag); value.className = "rehearsal-batch-comparison-" + name; if (text !== undefined) value.textContent = text; target.append(value); return value; }
+  function button(name, text) { const value = node("button", name, text); value.type = "button"; return value; }
+  function listen(element, type, fn) { element.addEventListener(type, fn); listeners.push(() => element.removeEventListener(type, fn)); }
+  node("summary", "heading", "前回と今回の資料確認を比較する");
+  node("p", "intro", "現在の一覧を比較元として保持し、次の組の資料を上で確認すると比較できます。名前が同じ行を対応付けます。比較元は『比較元を解除』までこの画面内に保持し、元資料や履歴を変更しません。");
+  const hold = button("hold", "現在の確認結果を比較元として保持"), clear = button("clear", "比較元を解除"), baselineText = node("p", "baseline"), summary = node("p", "summary"); summary.setAttribute("role", "status");
+  const label = node("label", "changed-label", "変化・選択差・比較できない行だけ表示"), changed = node("input", "changed", undefined, label); changed.type = "checkbox";
+  const tableWrap = node("div", "table-wrap"); tableWrap.className += " table-wrap";
+  const table = node("table", "table", undefined, tableWrap); node("caption", "caption", "同じファイル名ごとの前回と今回の比較", table); const head = node("thead", "head", undefined, table), tr = document.createElement("tr"); head.append(tr);
+  for (const text of ["名前", "比較", "前回の判定", "今回の判定", "前回のSHA-256", "今回のSHA-256", "期待結果との差（前回→今回）"]) { const th = document.createElement("th"); th.textContent = text; th.setAttribute("scope", "col"); tr.append(th); }
+  const rows = node("tbody", "rows", undefined, table), json = button("json", "全行の比較をJSON保存"), csv = button("csv", "全行の比較をCSV保存"), status = node("p", "status"); status.setAttribute("role", "status");
+  node("p", "limits", "同じ照合値でも元資料の妥当性や出所は別です。未確認・照合値を計算できない行は一致と扱いません。一方に選択されていないことはファイルの削除を意味しません。JSON・CSVは表示の絞り込みに関係なく全行です。元の二組の資料も保管してください。");
+  const evidence = node("details", "evidence"); node("summary", "evidence-heading", "二組の元資料と比較をまとめて保存・再確認", evidence);
+  node("p", "evidence-intro", "二組の全ファイルの元の内容を含むため、公開アドレス・記録・注記も暗号化せず保存します。32 MiBまでです。元資料から新しく確認結果を計算し、中断・再試行の経過は含めません。経過の控えは別に保管してください。", evidence);
+  const ackLabel = node("label", "evidence-ack-label", "二組の元資料の内容も含めて保存する", evidence), evidenceAck = node("input", "evidence-ack", undefined, ackLabel); evidenceAck.type = "checkbox";
+  const evidenceSave = node("button", "evidence-save", "二組の元資料と新しい比較をまとめて保存", evidence); evidenceSave.type = "button";
+  const fileLabel = node("label", "evidence-file-label", "まとめて保存した比較資料を再確認", evidence), evidenceFile = node("input", "evidence-file", undefined, fileLabel); evidenceFile.type = "file"; evidenceFile.accept = ".json,application/json";
+  const stop = node("button", "evidence-stop", "まとめた比較資料の処理を中止", evidence); stop.type = "button";
+  const evidenceStatus = node("p", "evidence-status", "", evidence); evidenceStatus.setAttribute("role", "status"); evidenceStatus.setAttribute("aria-live", "polite");
+  const reviewSave = node("button", "evidence-review-save", "まとめた比較資料の照合結果を保存", evidence); reviewSave.type = "button";
+  const kinds = { "only-before": "比較元だけに選択", "only-after": "今回だけに選択", "unchanged": "同じ内容の照合値・同じ確認結果", "bytes-changed": "内容の照合値が変化", "result-changed": "同じ内容の照合値・確認結果が変化", "uncompared": "照合値がなく比較できない" };
+  const states = { matched: "再計算と一致", different: "再計算と相違", invalid: "内容を確認できない", unsupported: "対象外の形式", "hash-unavailable": "照合値を計算できない", "source-unavailable": "読み込めない", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
+  function render() {
+    hold.disabled = disposed || Boolean(active) || !current; clear.disabled = disposed || !baseline; json.disabled = csv.disabled = changed.disabled = disposed || Boolean(active) || !comparison;
+    evidenceAck.disabled = disposed || Boolean(active) || !canPrepareRehearsalBatchEvidence(baseline) || !canPrepareRehearsalBatchEvidence(current);
+    evidenceSave.disabled = evidenceAck.disabled || !evidenceAck.checked; evidenceFile.disabled = disposed || Boolean(active); stop.disabled = disposed || !active || active.signal.aborted;
+    reviewSave.disabled = disposed || Boolean(active) || !evidenceReview; evidence.setAttribute("aria-busy", String(Boolean(active)));
+    baselineText.textContent = baseline ? `比較元: 全${baseline.summary.selected}件／未確認${baseline.summary.pending}件／再計算の相違${baseline.summary.differing}件／期待結果との差がある資料${baseline.summary.reportsWithFailedExpectations}件。` : "比較元はまだ保持していません。";
+    summary.textContent = comparison ? `両方に選択${comparison.summary.bothSelected}件／比較元だけ${comparison.summary.onlyBefore}件／今回だけ${comparison.summary.onlyAfter}件。照合値の変化${comparison.summary.bytesChanged}件／同じ照合値で判定が変化${comparison.summary.resultChanged}件／比較できない${comparison.summary.uncompared}件。今回の再計算の相違${comparison.after.summary.differing}件／期待結果との差がある資料${comparison.after.summary.reportsWithFailedExpectations}件。` : baseline ? "比較元を保持しています。次の資料の確認結果を待っています。" : "上で資料を確認し、比較元として保持してください。";
+    if (comparison) { const s = comparison.after.summary; summary.textContent += ` 今回の内容・形式・照合値・読み込みの問題${s.invalid + s.unsupported + s.hashUnavailable + (s.checksumMismatches ?? 0) + (s.sourceUnavailable ?? 0)}件／未確認${s.pending}件。表示で隠れた行も含む全体の件数です。`; }
+    rows.replaceChildren(...(comparison?.files ?? []).filter(row => !changed.checked || row.kind !== "unchanged").map(row => { const tr = document.createElement("tr"); for (const value of [row.name, kinds[row.kind], states[row.before?.status] ?? "選択なし", states[row.after?.status] ?? "選択なし", row.before?.sha256 ?? "未計算", row.after?.sha256 ?? "未計算", (row.before?.expectedOutcomes?.differing ?? "対象なし") + " → " + (row.after?.expectedOutcomes?.differing ?? "対象なし")]) { const td = document.createElement("td"); td.textContent = value; tr.append(td); } return tr; }));
+  }
+  function refresh() { ++revision; const old = active; active = null; old?.abort(); evidenceReview = null; evidenceAck.checked = false; evidenceStatus.textContent = ""; status.textContent = ""; comparison = baseline && current ? compareRehearsalBatches(baseline, current) : null; render(); }
+  listen(hold, "click", () => { if (disposed || !current) return; baseline = current; refresh(); });
+  listen(clear, "click", () => { if (disposed) return; baseline = null; refresh(); });
+  listen(changed, "change", () => { if (!disposed) render(); });
+  listen(evidenceAck, "change", render);
+  async function evidenceJob(file = null) {
+    if (disposed || active || (file ? evidenceFile.disabled : evidenceSave.disabled)) return;
+    const own = ++revision, left = baseline, right = current, job = new AbortController(); active = job; evidenceReview = null; evidenceAck.checked = false;
+    evidenceStatus.textContent = file ? "二組の元資料と保存された比較を再確認しています。" : "二組の元資料から、新しい確認結果と比較を作っています。"; render();
+    const owns = () => !disposed && own === revision && !job.signal.aborted;
+    try {
+      if (file) {
+        const text = await readSecurityFileText(file, { maxBytes: REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT, signal: job.signal });
+        const review = await reviewRehearsalBatchComparisonEvidence(text, { signal: job.signal }); if (!owns()) return; evidenceReview = review;
+        evidenceStatus.textContent = (review.matchesRecomputation ? "保存内容と二組の再計算・比較が一致しました。" : "保存内容と再計算・比較に相違があります。") +
+          ` 比較元${review.beforeSummary.selected}件／比較先${review.afterSummary.selected}件／照合値の変化${review.comparisonSummary.bytesChanged}件。` +
+          (review.allSourceReportsMatch ? "" : " 元資料自体に再計算の相違・形式・照合値の問題があります。照合結果の内訳をご確認ください。") + " 現在の一覧・比較元・履歴は置き換えていません。";
+      } else {
+        const prepared = await prepareRehearsalBatchComparisonEvidence(left, right, { signal: job.signal }); if (!owns()) return;
+        requireSyncExport(download({ document, prepared })); if (owns()) evidenceStatus.textContent = "二組の元資料と新しい比較の保存を開始しました。中断・再試行の経過は、元の確認控えを別に保管してください。";
+      }
+    } catch { if (!disposed && own === revision) evidenceStatus.textContent = job.signal.aborted ? "まとめた比較資料の処理を中止しました。現在の一覧と比較元は保持しています。" : "まとめた比較資料を処理できませんでした。32 MiB以内の対応資料か確認してください。現在の一覧と比較元は保持しています。"; }
+    finally { const cancelled = job.signal.aborted; job.abort(); if (!disposed && own === revision) { active = null; if (cancelled && /^(二組の元資料と保存された比較を再確認|二組の元資料から、新しい確認結果と比較を作って)/.test(evidenceStatus.textContent)) evidenceStatus.textContent = "まとめた比較資料の処理を中止しました。現在の一覧と比較元は保持しています。"; render(); } }
+  }
+  listen(evidenceSave, "click", () => { void evidenceJob(); });
+  listen(evidenceFile, "change", () => { if (!disposed && !active && evidenceFile.files?.length === 1) void evidenceJob(evidenceFile.files[0]); });
+  listen(stop, "click", () => { if (!disposed && active) { active.abort(); render(); } });
+  listen(reviewSave, "click", () => {
+    if (disposed || active || !evidenceReview) return; const own = revision, review = evidenceReview;
+    try { requireSyncExport(download({ document, prepared: { text: encodeRehearsalBatchComparisonEvidenceReview(review), filename: "ThreeCore-rehearsal-batch-comparison-evidence-review.json", mimeType: "application/json", containsOriginalEvidence: false, restorable: false } }));
+      if (!disposed && own === revision) evidenceStatus.textContent += " 照合結果の保存を開始しました。";
+    } catch { if (!disposed && own === revision) evidenceStatus.textContent = "照合結果を保存できませんでした。確認結果は保持しています。"; }
+  });
+  for (const [control, format] of [[json, "json"], [csv, "csv"]]) listen(control, "click", () => {
+    if (disposed || !comparison || control.disabled) return; const own = revision, captured = comparison;
+    try { requireSyncExport(download({ document, prepared: { text: encodeRehearsalBatchComparison(captured, format), filename: "ThreeCore-rehearsal-batch-comparison." + format, mimeType: format === "csv" ? "text/csv;charset=utf-8" : "application/json", containsOriginalEvidence: false, restorable: false } }));
+      if (!disposed && own === revision && captured === comparison) status.textContent = "全行の比較結果の保存を開始しました。表示で隠れた行も含みます。二組の元資料も保管してください。";
+    } catch { if (!disposed && own === revision && captured === comparison) status.textContent = "比較結果を保存できませんでした。二組の結果は保持しています。"; }
+  });
+  render(); return Object.freeze({ updateCurrent(value) { if (disposed || value === current) return; if (value !== null) compareRehearsalBatches(value, value); current = value; refresh(); },
+    getState: () => Object.freeze({ baseline, current, comparison, evidenceReview, busy: Boolean(active), disposed }), dispose() { if (disposed) return; disposed = true; ++revision; const old = active; active = null; old?.abort(); baseline = current = comparison = evidenceReview = null; listeners.forEach(remove => remove()); host.remove(); } });
+}
+
 /** Independent file-only review. It receives no live workspace writer. */
 export function mountRehearsalBatchReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, inspectSource = null }) {
   const get = id => document.getElementById("report-batch-" + id);
@@ -126,6 +207,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     heading: "保存した絞り込み結果を現在の一覧と比較する", sourcePrompt: "先に、比較する元資料をこの画面で確認してください。",
     intro: "条件付きで保存したJSONを選びます。現在の確認結果から同じ条件を再計算し、保存された行・件数・全体の範囲と比較します。256 KiBまでです。保存時の処理経過や、除外された元資料の内容までは証明しません。",
     apply: checked => { if (disposed || active || !result) return false; const query = extractRehearsalBatchSelectionQuery(checked); get("filter-name").value = query.name; get("filter-status").value = query.status; applyView(); return true; } });
+  const comparisonPanel = mountRehearsalBatchComparisonPanel(document, { parent: get("comparison"), download });
   const current = id => !disposed && id === revision;
   function listen(id, event, callback) {
     const node = get(id); node.addEventListener(event, callback);
@@ -142,6 +224,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     const referenceMatches = referenceReady();
     receiptCheck.updateExpected();
     selectionCheck.updateExpected();
+    comparisonPanel.updateCurrent(disposed || active || referenceBusy ? null : result);
     sourceExport.updateCurrent(disposed || active || referenceBusy ? null : openedEvidence);
     get("evidence-ack").disabled = disposed || Boolean(active) || !canPrepareRehearsalBatchEvidence(result);
     get("evidence-save").disabled = get("evidence-ack").disabled || !get("evidence-ack").checked;
@@ -440,7 +523,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     return evidenceJob(file);
   }, dispose() {
     if (disposed) return;
-    reset(); disposed = true; ++revision; for (const remove of listeners) remove(); sourceExport.dispose(); receiptCheck.dispose(); selectionCheck.dispose(); buttons();
+    reset(); disposed = true; ++revision; for (const remove of listeners) remove(); sourceExport.dispose(); receiptCheck.dispose(); selectionCheck.dispose(); comparisonPanel.dispose(); buttons();
   } });
 }
 
