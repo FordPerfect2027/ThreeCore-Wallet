@@ -1249,13 +1249,16 @@ const selectedTests = ["restore-confirmation", "storage-receipt", "adapter-bound
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
 const parameters = new URLSearchParams(location.search);
 const isSharded = parameters.has("shard-index") || parameters.has("shard-count");
+const controlOnly = parameters.has("harness-control");
+if (controlOnly && (!isSharded || !fault || parameters.getAll("harness-control").length !== 1 ||
+    parameters.get("harness-control") !== "1" || parameters.get("shard-index") !== "0")) throw Error("Invalid dedicated harness control");
 let executionTests = selectedTests;
 if (isSharded) {
   if (parameters.getAll("shard-index").length !== 1 || parameters.getAll("shard-count").length !== 1 ||
       parameters.get("shard-count") !== "2" || !["0", "1"].includes(parameters.get("shard-index")) || parameters.has("suite"))
     throw Error("Invalid or filtered browser shard request");
   const index = Number(parameters.get("shard-index"));
-  const indices = tests.map((_, i) => i).filter(i => i % 2 === index);
+  const indices = controlOnly ? [0] : tests.map((_, i) => i).filter(i => i % 2 === index);
   executionTests = indices.map(i => tests[i]);
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(tests.map(item => item.name))));
   document.body.dataset.shardIndex = String(index);
@@ -1264,6 +1267,7 @@ if (isSharded) {
   document.body.dataset.registeredDigest = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
   document.body.dataset.selectedIndices = indices.join(",");
   document.body.dataset.suiteFilter = "";
+  document.body.dataset.controlOnly = String(controlOnly);
 }
 for (const { name, run } of executionTests) {
   console.info("Starting synthetic UI case: " + name);

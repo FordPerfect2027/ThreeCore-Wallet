@@ -44,9 +44,12 @@ export async function stopTestBrowser(child, { platform = process.platform, time
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 30000) throw Error("Invalid browser shutdown deadline");
   let detach, timer;
   const exited = new Promise((resolve, reject) => {
-    const close = () => resolve();
-    child.once("close", close);
-    detach = () => child.removeListener("close", close);
+    // `exit` confirms the owned process ended. `close` additionally waits for
+    // inherited logging pipes, which can outlive Chrome's terminated PID tree.
+    const ended = () => resolve();
+    child.once("exit", ended);
+    child.once("close", ended);
+    detach = () => { child.removeListener("exit", ended); child.removeListener("close", ended); };
     timer = setTimeout(() => reject(Error("Test browser did not exit; its temporary profile is preserved")), timeoutMs);
   });
   // Attach a handler before invoking the platform stop operation.
@@ -55,7 +58,10 @@ export async function stopTestBrowser(child, { platform = process.platform, time
     ? Promise.resolve().then(() => killTree(child.pid))
     : Promise.resolve().then(() => { if (!child.kill("SIGKILL") && child.exitCode === null && child.signalCode == null) throw Error("Could not stop test browser"); }))
     .catch(error => { stopError = error; });
-  try { await Promise.all([exited, shutdown]); }
+  try {
+    await Promise.all([exited, shutdown]);
+    child.stderr?.destroy();
+  }
   catch (error) { throw stopError ? new AggregateError([error, stopError], error.message) : error; }
   finally { clearTimeout(timer); detach(); }
 }

@@ -38,6 +38,18 @@ test('Windows stops exactly its spawned child PID',async()=>{
   const c=child(),seen=[];await stopTestBrowser(c,{platform:'win32',timeoutMs:100,killTree:async pid=>{seen.push(pid);c.exitCode=0;c.emit('close',0);}});
   assert.deepEqual(seen,[43210]);assert.equal(c.listenerCount('close'),0);
 });
+
+test('confirmed process exit does not wait indefinitely for inherited logging pipes',async()=>{
+  const c=child();let destroyed=0;c.stderr={destroy(){destroyed++;}};
+  await stopTestBrowser(c,{platform:'win32',timeoutMs:100,killTree:async()=>{c.exitCode=0;c.emit('exit',0);}});
+  assert.equal(destroyed,1);assert.equal(c.listenerCount('exit'),0);assert.equal(c.listenerCount('close'),0);
+});
+
+test('logging pipes are retained when the owned process has not confirmed exit',async()=>{
+  const c=child();let destroyed=0;c.stderr={destroy(){destroyed++;}};
+  await assert.rejects(stopTestBrowser(c,{platform:'win32',timeoutMs:10,killTree:async()=>{}}),/profile is preserved/);
+  assert.equal(destroyed,0);assert.equal(c.listenerCount('exit'),0);assert.equal(c.listenerCount('close'),0);
+});
 test('Linux terminates its own child and detaches the observer',async()=>{
   const c=child();let signal;c.kill=value=>{signal=value;c.signalCode=value;c.emit('close');return true;};
   await stopTestBrowser(c,{platform:'linux',timeoutMs:100});assert.equal(signal,'SIGKILL');assert.equal(c.listenerCount('close'),0);

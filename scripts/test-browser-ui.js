@@ -7,7 +7,7 @@ import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createDemoServer } from "../examples/dev-server.js";
-import { checkBrowserShard, checkBrowserShards, readBrowserSummary } from "./browser-result.js";
+import { checkBrowserShard, checkBrowserShards, checkBrowserErrorControl, readBrowserSummary } from "./browser-result.js";
 import { installBrowserCompletion } from "./browser-completion.js";
 import { browserExecutable, browserArguments, stopTestBrowser, removeTestProfile } from "./browser-runtime.js";
 
@@ -39,7 +39,7 @@ async function runBrowserPage(index, fault) {
     receipt = installBrowserCompletion(server, { timeoutMs: 300_000 });
     const url = `http://127.0.0.1:${server.address().port}/test/browser/?ci-report=${receipt.nonce}` +
       "&shard-count=2&shard-index=" + index +
-      (fault ? "&harness-fault=" + fault : "");
+      (fault ? "&harness-control=1&harness-fault=" + fault : "");
     browser = spawn(executable, browserArguments(profile, url),
       { windowsHide: true, stdio: ["ignore", "ignore", "pipe"] });
     let errors = "";
@@ -76,7 +76,7 @@ async function runBrowserPage(index, fault) {
 }
 
 function checkResult(html, index, fault) {
-  try { return checkBrowserShard(html, index, fault); }
+  try { return fault ? checkBrowserErrorControl(html, fault) : checkBrowserShard(html, index); }
   catch (error) {
     try { process.stderr.write("Browser completion summary: " + JSON.stringify(readBrowserSummary(html)) + "\n"); }
     catch { /* The validator reports malformed completion separately. */ }

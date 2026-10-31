@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { checkBrowserShard, checkBrowserShards } from "../scripts/browser-result.js";
+import { checkBrowserShard, checkBrowserShards, checkBrowserErrorControl } from "../scripts/browser-result.js";
 
 function page(index, registered = 906, overrides = {}) {
   const indices = Array.from({ length: registered }, (_, i) => i).filter(i => i % 2 === index);
   const values = { "shard-index": index, "shard-count": 2, "registered-count": registered,
-    "registered-digest": "ab".repeat(32), "selected-indices": indices.join(","), "suite-filter": "",
+    "registered-digest": "ab".repeat(32), "selected-indices": indices.join(","), "suite-filter": "", "control-only": "false",
     "suite-status": "passed", "tests-count": indices.length, "tests-passed": indices.length,
     "tests-failed": 0, "unexpected-errors": 0, "error-kinds": "", "injected-fault": "", ...overrides };
   return '<body ' + Object.entries(values).map(([k, v]) => `data-${k}="${v}"`).join(" ") + '></body>';
@@ -50,4 +50,16 @@ for (const fault of ["error", "unhandledrejection"]) test("sharded control requi
   assert.throws(() => checkBrowserShards([html, page(1)]));
   assert.throws(() => checkBrowserShard(page(0, 906, { ...attributes, "unexpected-errors": 0 }), 0, fault));
   assert.throws(() => checkBrowserShard(page(0, 906, { ...attributes, "unexpected-errors": 2 }), 0, fault));
+});
+
+for (const fault of ["error", "unhandledrejection"]) test("one-case dedicated fault control cannot satisfy normal shard coverage: " + fault, () => {
+  const attributes = { "suite-status": "failed", "unexpected-errors": 1, "error-kinds": fault, "injected-fault": fault,
+    "control-only": "true", "selected-indices": "0", "tests-count": 1, "tests-passed": 1 };
+  const html = page(0, 906, attributes);
+  assert.equal(checkBrowserErrorControl(html, fault).passed, 1);
+  assert.throws(() => checkBrowserShard(html, 0, fault));
+  assert.throws(() => checkBrowserShards([html, page(1)]));
+  assert.throws(() => checkBrowserErrorControl(html));
+  assert.throws(() => checkBrowserErrorControl(page(0, 906, { ...attributes, "unexpected-errors": 0 }), fault));
+  assert.throws(() => checkBrowserErrorControl(page(0, 906, { ...attributes, "selected-indices": "2" }), fault));
 });

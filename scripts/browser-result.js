@@ -58,17 +58,27 @@ export function checkBrowserResult(html, fault, minimumCases = MIN_BROWSER_CASES
   return Object.freeze({ total, passed, failed, unexpectedErrors: errors, fault: fault ?? null });
 }
 
-const SHARD_ATTRIBUTES = ["shard-index", "shard-count", "registered-count", "registered-digest", "selected-indices", "suite-filter"];
+const SHARD_ATTRIBUTES = ["shard-index", "shard-count", "registered-count", "registered-digest", "selected-indices", "suite-filter", "control-only"];
 
 /** A half-suite is accepted only with its exact share of the full registry. */
 export function checkBrowserShard(html, index, fault) {
+  return checkShard(html, index, fault, false);
+}
+
+/** Dedicated fault detection does not masquerade as full feature coverage. */
+export function checkBrowserErrorControl(html, fault) {
+  if (!["error", "unhandledrejection"].includes(fault)) throw Error("An explicit control fault is required");
+  return checkShard(html, 0, fault, true);
+}
+
+function checkShard(html, index, fault, controlOnly) {
   if (index !== 0 && index !== 1) throw Error("Unknown browser shard");
   const summary = readAttributes(html, SHARD_ATTRIBUTES);
   const registered = count(summary, "registered-count");
   if (registered < MIN_BROWSER_CASES || registered > 10000 || summary["shard-count"] !== "2" ||
-      summary["shard-index"] !== String(index) || summary["suite-filter"] !== "" ||
+      summary["shard-index"] !== String(index) || summary["suite-filter"] !== "" || summary["control-only"] !== String(controlOnly) ||
       !/^[0-9a-f]{64}$/.test(summary["registered-digest"])) throw Error("Invalid full browser shard registry");
-  const indices = Array.from({ length: registered }, (_, i) => i).filter(i => i % 2 === index);
+  const indices = controlOnly ? [0] : Array.from({ length: registered }, (_, i) => i).filter(i => i % 2 === index);
   if (summary["selected-indices"] !== indices.join(",")) throw Error("Missing or overlapping browser shard cases");
   const result = checkBrowserResult(html, fault, indices.length);
   if (result.total !== indices.length) throw Error("Browser shard totals do not match its case indices");
