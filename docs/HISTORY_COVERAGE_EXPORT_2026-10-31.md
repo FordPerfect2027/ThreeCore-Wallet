@@ -25,3 +25,7 @@ Full wallet at 5c0a5a5: 15,097 passed, zero failures/skips/cancellations (302,73
 Eight [captures](evidence/2026-10-31-history-coverage-export/) cover partial acquisition, overlapping/conflicting evidence, an exact very large gap and full versus shortened addresses in both formats. Every CLI output is byte-identical to the shared screen export helper, and original source files remain unchanged. Sources, outputs, logs and SHA-256 manifest are retained. This complete coverage-export workflow counts as one item.
 
 No real signatures, transfers, approvals, secret access, publication or deployment occurred. The existing user server was left running. Counts of development items and tests are not mainnet-readiness percentages.
+
+## Evidence collection checkpoint
+
+At committed record 388797d, all 132 tracked manifests and all 890 referenced files matched their SHA-256 checksums (54,498,841 bytes). The read-only audit is retained as `prior-evidence-audit.log`. That observation predates adding this audit log itself to this folder and regenerating its manifest; it does not claim to authenticate authorship or current chain state. This record-only update adds no development item.
