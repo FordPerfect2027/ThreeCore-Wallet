@@ -162,7 +162,8 @@ test("comparison and separate candidate input exports agree and never change sou
 });
 for(const value of ["-1","0.0000001","1e2",""]) test("scenario amount rejects "+JSON.stringify(value)+" without discarding source",()=>{
   const f=setup(); f.field("example").click(); f.change("whatif-openingBalance",value); f.field("whatif-compare").click();
-  assert.match(f.field("whatif-status").textContent,/比較条件を確認/); assert.equal(f.field("whatif-save").disabled,true);
+  assert.match(f.field("whatif-status").textContent,/開始時の資金.*0以上/); assert.equal(f.field("whatif-save").disabled,true);
+  assert.equal(f.field("whatif-openingBalance").getAttribute("aria-invalid"),"true");
   assert.equal(f.field("rows").children.length,2); assert.equal(f.field("save").disabled,false);
 });
 test("percentage bounds and pause are checked independently of the source policy",()=>{

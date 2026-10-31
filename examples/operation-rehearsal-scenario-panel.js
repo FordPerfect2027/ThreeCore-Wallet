@@ -13,10 +13,42 @@ export const SCENARIO_LABELS = Object.freeze({ openingBalance: "開始時の資�
 const ROW_AMOUNTS = ["cash", "outstanding", "realizedPnl", "pnlChange", "reservedExitFees", "reservedAllocations", "availableCash"];
 const LABELS = SCENARIO_LABELS;
 
+
+/** Field-level guidance belongs to one form; original accessibility descriptions survive clearing. */
+export function createRehearsalFieldFeedback(document, statusId) {
+  const errors=new WeakMap(), marked=new Map();
+  const attributes=["aria-invalid","aria-errormessage","aria-describedby"];
+  function fail(id,label,message){const error=new Error("Invalid rehearsal field");errors.set(error,{id,message:label+"："+message});throw error;}
+  function clear(){for(const [control,values] of marked){attributes.forEach((name,i)=>{
+    if(values[i]==null)control.removeAttribute(name);else control.setAttribute(name,values[i]);
+  });}marked.clear();}
+  return Object.freeze({clear,
+    units(id,label,decimals,maximum=null){
+      let value;
+      try{value=parseRehearsalUnits(document.getElementById(id).value,decimals);}
+      catch{fail(id,label,"0以上の数値を入力してください。小数は"+decimals+"桁までです。桁数が大きすぎる数値・符号・区切り文字は使えません。");}
+      if(maximum!==null&&BigInt(value)>maximum)fail(id,label,"0〜100%で入力してください。");
+      return value;
+    },
+    identifier(id,label){const value=document.getElementById(id).value;
+      if(typeof value!=="string"||!/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(value))fail(id,label,"先頭は英数字、全体は英数字・ハイフン・下線で1〜64文字にしてください。");
+      return value;
+    },
+    report(error){const detail=errors.get(error);if(!detail)return false;
+      clear();const control=document.getElementById(detail.id),status=document.getElementById(statusId);
+      const values=attributes.map(name=>control.getAttribute(name));marked.set(control,values);
+      control.setAttribute("aria-invalid","true");control.setAttribute("aria-errormessage",statusId);
+      control.setAttribute("aria-describedby",[...new Set([...(values[2]||"").split(/\s+/).filter(Boolean),statusId])].join(" "));
+      status.textContent=detail.message;control.focus?.();return true;
+    }
+  });
+}
+
 /** Owns only a hypothetical comparison draft. Never commits to the workspace. */
 export function mountRehearsalScenarioPanel(document, { download, reasons, kinds, onChange = () => {} }) {
   const offerDownload = payload => requireSyncExport(download(payload));
   const get = name => document.getElementById("whatif-" + name);
+  const feedback=createRehearsalFieldFeedback(document,"whatif-status");
   let source = null, comparison = null, disposed = false, revision = 0;
   const listeners = [];
   function listen(name, type, handler) {
@@ -29,6 +61,7 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
     : field === "buybackBps" ? formatRehearsalUnits(String(value), 2) + "%" : money(value);
   function notifyChanged(){consumeCallback(()=>onChange());}
   function invalidate(message = "比較条件が変わりました。もう一度比較してください。元の履歴は保持しています。", notify = true) {
+    feedback.clear();
     const own=++revision;comparison=null;
     for(const name of ["parameters","metrics","rows","summary","export-status","row-status","blockers"])get(name).textContent="";
     get("results").hidden=true;get("save").disabled=true;get("input-save").disabled=true;
@@ -115,8 +148,7 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
         if(field==="paused")values[field]=get(field).checked;
         else if(base.schema!==REHEARSAL_SCHEMA_V2&&["maxEntryFee","maxExitFee"].includes(field))values[field]=null;
         else{
-          const value=parseRehearsalUnits(get(field).value,field==="buybackBps"?2:base.asset.decimals);
-          if(field==="buybackBps"&&BigInt(value)>10000n)throw new Error("Percentage");
+          const value=feedback.units("whatif-"+field,LABELS[field],field==="buybackBps"?2:base.asset.decimals,field==="buybackBps"?10000n:null);
           values[field]=field==="buybackBps"?Number(value):value;
         }
       }
@@ -125,9 +157,10 @@ export function mountRehearsalScenarioPanel(document, { download, reasons, kinds
       comparison=compareRehearsalScenario(base,candidate);render();
       if(disposed||own!==revision||source!==base)return;
       get("status").textContent="比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。";
-    }catch{
+    }catch(error){
       if(disposed||own!==revision||source!==base)return;
-      invalidate("比較条件を確認してください。金額は0以上・この資産の小数桁数まで、還元割合は0〜100%です。元の履歴は保持しています。");
+      const failed=invalidate("比較条件を確認してください。金額は0以上・この資産の小数桁数まで、還元割合は0〜100%です。元の履歴は保持しています。");
+      if(!disposed&&failed===revision&&source===base)feedback.report(error);
     }
   });
   for (const [name, inputOnly] of [["save", false], ["input-save", true]]) listen(name, "click", () => {

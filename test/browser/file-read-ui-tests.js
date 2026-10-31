@@ -51,6 +51,24 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: rehearsal invalid fields receive native focus and clear after correction", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html");
+    const host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    const edit=(id,value,type="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(type));};
+    const marked=(id,status)=>{assert(document.activeElement===q(id),"Focus must identify the failed field");assert(q(id).getAttribute("aria-invalid")==="true");assert(q(id).getAttribute("aria-errormessage")===status);assert(q(id).getAttribute("aria-describedby").split(" ").includes(status));};
+    try{
+      q("example").click();edit("principal","bad");q("calculate").click();marked("principal","status");
+      edit("principal","10");assert(!q("principal").hasAttribute("aria-invalid"));q("calculate").click();assert(!q("save").disabled);
+      const before=q("rows").innerHTML;
+      edit("whatif-buybackBps","101");q("whatif-compare").click();marked("whatif-buybackBps","whatif-status");
+      q("whatif-reset").click();assert(!q("whatif-buybackBps").hasAttribute("aria-invalid"));
+      edit("append-kind","deposit","change");edit("append-amount","bad");q("append-preview").click();marked("append-amount","append-summary");assert(q("append-confirm").disabled);
+      edit("append-amount","1");q("append-preview").click();assert(!q("append-confirm").disabled);assert(!q("append-amount").hasAttribute("aria-invalid"));assert(q("rows").innerHTML===before,"Invalid drafts and previews preserve committed rows");
+    }finally{page.dispose();host.remove();}
+  });
   test("file-read: rehearsal related navigation restores its search and focuses the detail chooser", async () => {
     const response=await fetch("/rehearsal/");
     assert(response.ok,"Rehearsal template must be served");

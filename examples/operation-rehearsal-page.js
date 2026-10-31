@@ -2,7 +2,7 @@ import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, decodeRehearsalForPanel } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
-import { decodeRehearsal, encodeRehearsal, evaluateRehearsal, parseRehearsalUnits,
+import { decodeRehearsal, encodeRehearsal, evaluateRehearsal,
   formatRehearsalUnits, REHEARSAL_LIMIT, REHEARSAL_SCHEMA_V2 } from "../src/operation-rehearsal.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { rehearsalCsv } from "../src/operation-rehearsal-ledger.js";
@@ -11,7 +11,7 @@ import { decodeRehearsalWorkspace, encodeRehearsalWorkspace,
 import { offerWalletDownload } from "./export-download.js";
 import { compareRehearsalWorkspaces, encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 import { reportRehearsalOverview, filterRehearsalOverview, encodeRehearsalOverview } from "../src/operation-rehearsal-overview.js";
-import { mountRehearsalScenarioPanel } from "./operation-rehearsal-scenario-panel.js";
+import { mountRehearsalScenarioPanel, createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
 import { mountRehearsalReviewPanel } from "./operation-rehearsal-review-panel.js";
 import { mountRehearsalScenarioSetPanel } from "./operation-rehearsal-scenario-set-panel.js";
 import { mountRehearsalCheckPanel } from "./operation-rehearsal-check-panel.js";
@@ -48,6 +48,8 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   const offerDownload = payload => requireSyncExport(download(payload));
   const fileReader = createFileReadScope();
   const get = name => document.getElementById(name);
+  const formFeedback=createRehearsalFieldFeedback(document,"status");
+  const appendFeedback=createRehearsalFieldFeedback(document,"append-summary");
   let current = null, candidate = null, revision = 0, disposed = false;
   const session = createRehearsalSession(get("agent").value), ledger = session.workspace;
   let scenarioSetPanel = null;
@@ -71,6 +73,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
   listeners.push(() => fileNotice.dispose());
   function cancelAppend() {
+    appendFeedback.clear();
     fileNotice.clear();
     fileReader.cancel(); get("file").setAttribute("aria-busy", "false");
     revision++; workspaceReview = null; get("workspace-apply").disabled = true;
@@ -208,6 +211,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     setWorkspaceStage("error", reason + " 現在の履歴は保持しています。");
   }
   function clear(message = "入力が変わりました。もう一度試算してください。", keepLedger = false) {
+    formFeedback.clear();
     revision++; current = null; candidate = null;
     scenarioPanel.refresh(null);
     cancelAppend(); if (!keepLedger) ledger.clear();
@@ -347,11 +351,11 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   function fromFields(pending) {
     // Editable forms always create a fresh fictional six-decimal SIM scenario.
     const data = JSON.parse(encodeRehearsal(rehearsalExampleV2(get("agent").value, pending ? "pending" : "profit")));
-    const units = name => parseRehearsalUnits(get(name).value, 6);
+    const labels={opening:"開始時の資金",maximum:"1回の元本上限","outstanding-limit":"未決済元本の上限",reserve:"予備資金","loss-limit":"損失上限",principal:"投入元本","entry-fee":"開始費用",returned:"戻った金額","exit-fee":"決済費用","entry-limit":"開始費用上限","exit-limit":"決済費用上限","exit-reserve":"確保する決済費用"};
+    const units = name => formFeedback.units(name,labels[name],6);
     data.openingBalance = units("opening");
     for (const [field, key] of Object.entries(FIELD_POLICY)) data.policy[key] = units(field);
-    const allocation = BigInt(parseRehearsalUnits(get("allocation").value, 2));
-    if (allocation > 10000n) throw new Error("Invalid allocation");
+    const allocation = BigInt(formFeedback.units("allocation","還元割合",2,10000n));
     data.policy.buybackBps = Number(allocation); data.policy.paused = get("paused").checked;
     data.policy.maxEntryFee = units("entry-limit"); data.policy.maxExitFee = units("exit-limit");
     data.events[0].principal = units("principal"); data.events[0].fee = units("entry-fee");
@@ -362,7 +366,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   function calculate(pending) {
     if (disposed) return;
     try { const data = fromFields(pending); show(data); }
-    catch { clear("入力を確認してください。金額は0以上・小数6桁まで、還元割合は0〜100%です。"); }
+    catch (error) { clear("入力を確認してください。金額は0以上・小数6桁まで、還元割合は0〜100%です。"); if(!disposed)formFeedback.report(error); }
   }
   for (const name of ["opening", ...Object.keys(FIELD_POLICY), "allocation", "principal", "entry-fee", "returned", "exit-fee",
     "entry-limit", "exit-limit", "exit-reserve"])
@@ -402,8 +406,10 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   listen("append-preview", "click", () => {
     cancelAppend(); if (disposed || !current || current.schema !== REHEARSAL_SCHEMA_V2) return;
     try {
-      const kind = get("append-kind").value, reference = get("append-reference").value;
-      const units = name => parseRehearsalUnits(get(name).value, 6);
+      const kind = get("append-kind").value;
+      const reference=["open","settle","reserve","release"].includes(kind)?appendFeedback.identifier("append-reference","操作または予約のID"):null;
+      const labels={"append-amount":"金額","append-fee":"費用","append-exit-reserve":"確保する決済費用"};
+      const units = name => appendFeedback.units(name,labels[name],6);
       let serial = current.events.length + 1;
       while (current.events.some(event => event.id === "step-" + serial)) serial++;
       const event = { id: "step-" + serial, kind, agent: current.agent, chainId: current.chainId, account: current.account };
@@ -422,7 +428,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
         "、予約済み還元 " + money(appendReview.before.reservedAllocations) + " → " + money(appendReview.after.reservedAllocations) +
         "。まだ履歴には反映していません。";
       get("append-confirm").disabled = false;
-    } catch { cancelAppend(); get("append-summary").textContent = "追記内容を確認してください。IDは英数字・ハイフン・下線で64文字まで、履歴は200件までです。"; }
+    } catch (error) { cancelAppend(); get("append-summary").textContent = "追記内容を確認してください。履歴は200件までです。"; if(!disposed)appendFeedback.report(error); }
   });
   listen("append-confirm", "click", () => {
     if (disposed || !appendReview) return;
