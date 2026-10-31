@@ -1,0 +1,57 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v3",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": false,
+  "phase": "complete",
+  "complete": true,
+  "allRecomputationsMatch": false,
+  "summary": {
+    "selected": 3,
+    "reviewed": 3,
+    "pending": 0,
+    "matching": 2,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 15332,
+    "sourceUnavailable": 1,
+    "selectedReportedBytes": 15333,
+    "unreadSourceReportedBytes": 1
+  },
+  "files": [
+    {
+      "name": "0.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "1.json",
+      "byteLength": null,
+      "reportedByteLength": 1,
+      "status": "source-unavailable",
+      "code": "FILE_ENCODING",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "2.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    }
+  ],
+  "referenceProvided": false
+}
