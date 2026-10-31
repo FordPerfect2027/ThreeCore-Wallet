@@ -10,6 +10,21 @@ import { draft, text, fileObject, gate, tick, until } from "./helpers/workspace-
 import { raw, setup } from "./helpers/setup-fixtures.js";
 import { memoryStorage } from "./helpers/checkpoint-fixtures.js";
 
+for (const kind of ["workspace", "setup"]) test(kind+" captures a live file selection before clearing the picker",async()=>{
+  const f=fixture(kind), file=f.field("file"), choices=[];
+  Object.defineProperty(file,"value",{configurable:true,get:()=>"",set(value){if(value==="")choices.length=0;}});
+  const source=kind==="workspace"
+    ? (await import("../src/workspace-file.js")).prepareWorkspaceFile((await import("../src/workspace-format.js")).workspaceFromDraft(draft({block:"20"})))
+    : Promise.resolve({text:encodeWalletSetup(setup())});
+  const prepared=await source;choices.push(fileObject(prepared.text));file.files=choices;
+  try {
+    file.dispatchEvent(new Event("change"));
+    await until(()=>f.root.getAttribute("aria-busy")==="false");
+    assert.equal(choices.length,0);assert.notEqual(f.field("json").value,"");
+    assert.match(f.field("status").textContent,/プレビュー/);assert.equal(f.writes.length,0);
+  }finally{f.panel.dispose();}
+});
+
 function fixture(kind) {
   const parent = new Element("main"), document = {createElement: tag => new Element(tag)}, writes = [];
   const panel = kind === "workspace"

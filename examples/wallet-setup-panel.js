@@ -205,6 +205,7 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
   listen(file, "change", () => {
     const selected = file.files;
     if (!selected?.length) return;
+    const count = selected.length, chosen = selected[0];
     const id = ++generation;
     busy = false;
     cancelPreview(false);
@@ -212,9 +213,9 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
     reader.cancel();
     if (!current(id)) return;
     file.value = "";
-    if (selected.length !== 1) {
+    if (count !== 1) {
       status.textContent = "設定ファイルは1つずつ選んでください。";
-    } else void reader.load(selected[0]);
+    } else void reader.load(chosen);
   });
   section.append(heading, note, readiness, refreshButton, exportButton, save,
     label("設定ファイルを選択", file), label("保存・読み込み用の設定JSON", text),

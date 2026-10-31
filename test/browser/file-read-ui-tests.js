@@ -81,7 +81,7 @@ export function registerFileReadUITests(test) {
 
   test("file-read: checkpoint replacement respects cancellation before admitting its file",async()=>{
     const host=document.createElement("div");document.body.append(host);
-    const source=emptyCheckpointDocument(),storage={async read(){return source;},close(){}};
+    const source=emptyCheckpointDocument(),storage={async read(){return source;},async change(){throw Error("Must not write");},close(){}};
     let entered=false,armed=false;
     const panel=mountCheckpointPanel({document,parent:host,storage,readDraft:()=>[],onStage(){throw Error("Must not stage");}});
     const field=name=>host.querySelector(".checkpoint-"+name);

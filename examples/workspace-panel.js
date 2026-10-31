@@ -356,6 +356,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   listen(file, "change", () => {
     const files = file.files;
     if (!files?.length) return;
+    const count = files.length, selected = files[0];
     const id = retireSave();
     if (!current(id)) return;
     reading = false;
@@ -364,9 +365,9 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     reader.cancel();
     if (!current(id)) return;
     file.value = "";
-    if (files.length !== 1) {
+    if (count !== 1) {
       status.textContent = "一括バックアップは1ファイルずつ選んでください。";
-    } else void reader.load(files[0]);
+    } else void reader.load(selected);
   });
   const secureHost = node("div", "secure-host");
   section.append(heading, note, inspect, saveSummary, overview, save, backupStatus, secureHost,
