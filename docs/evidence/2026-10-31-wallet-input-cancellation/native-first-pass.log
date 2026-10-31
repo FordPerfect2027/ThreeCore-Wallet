@@ -1,0 +1,22 @@
+Browser completion summary: {"suite-status":"failed","tests-count":"861","tests-passed":"850","tests-failed":"11","unexpected-errors":"0","error-kinds":"","injected-fault":""}
+FAIL — restore-confirmation: settings survive native File import into a new panel: native file decoded unchanged
+FAIL — file-read: settings input cancellation preserves a newer native preview: Cancellation observer ran
+FAIL — file-read: workspace input cancellation preserves a newer native preview: Cancellation observer ran
+FAIL — file-read: checkpoint replacement respects cancellation before admitting its file: CHECKPOINT_ADAPTER
+FAIL — file-read: settings inaccessible error cannot wedge the panel or overwrite its draft: fresh valid import offered
+FAIL — file-read: workspace inaccessible error cannot wedge the panel or overwrite its draft: fresh valid import offered
+FAIL — file-read: settings panel cancellation cannot open a file from cleanup: first file started
+FAIL — file-read: workspace panel cancellation cannot open a file from cleanup: first file started
+FAIL — workspace: file cancelled during undo inspection cannot revive old plaintext: Workspace UI did not settle
+FAIL — workspace: actual browser Blob save and file import preserve all observations: Workspace UI did not settle
+FAIL — workspace: browser file checksum failure leaves cards unchanged: Workspace UI did not settle
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-result.js:48
+  if (failed !== 0 || passed !== total) throw Error("Browser test cases failed");
+                                              ^
+
+Error: Browser test cases failed
+    at checkBrowserResult (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-result.js:48:47)
+    at checkResult (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:74:16)
+    at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:97:18
+
+Node.js v24.19.0

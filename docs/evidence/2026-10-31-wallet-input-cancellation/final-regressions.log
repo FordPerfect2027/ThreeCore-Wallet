@@ -1,0 +1,24 @@
+✔ workspace captures a live file selection before clearing the picker (71.9502ms)
+✔ setup captures a live file selection before clearing the picker (7.5871ms)
+✔ workspace input retains newer preview during read cancellation (54.8808ms)
+✔ workspace input retains newer dispose during read cancellation (6.3238ms)
+✔ workspace multiple retains newer preview during read cancellation (21.8526ms)
+✔ workspace multiple retains newer dispose during read cancellation (6.7778ms)
+✔ workspace replacement retains newer preview during read cancellation (27.5594ms)
+✔ workspace replacement retains newer dispose during read cancellation (4.9208ms)
+✔ setup input retains newer preview during read cancellation (3.2121ms)
+✔ setup input retains newer dispose during read cancellation (2.1976ms)
+✔ setup multiple retains newer preview during read cancellation (4.6191ms)
+✔ setup multiple retains newer dispose during read cancellation (2.4451ms)
+✔ setup replacement retains newer preview during read cancellation (3.463ms)
+✔ setup replacement retains newer dispose during read cancellation (1.7583ms)
+✔ checkpoint replacement stops after newer cancel (9.7464ms)
+✔ checkpoint replacement stops after newer dispose (2.367ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 678.7063

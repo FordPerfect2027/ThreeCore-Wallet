@@ -1,0 +1,160 @@
+✖ workspace input retains newer preview during read cancellation (106.7407ms)
+✔ workspace input retains newer dispose during read cancellation (11.5979ms)
+✖ workspace multiple retains newer preview during read cancellation (34.0273ms)
+✖ workspace multiple retains newer dispose during read cancellation (9.8881ms)
+✔ workspace replacement retains newer preview during read cancellation (35.7308ms)
+✔ workspace replacement retains newer dispose during read cancellation (8.5099ms)
+✖ setup input retains newer preview during read cancellation (7.4625ms)
+✖ setup input retains newer dispose during read cancellation (3.0368ms)
+✖ setup multiple retains newer preview during read cancellation (4.9791ms)
+✖ setup multiple retains newer dispose during read cancellation (3.9836ms)
+✔ setup replacement retains newer preview during read cancellation (3.5729ms)
+✔ setup replacement retains newer dispose during read cancellation (1.973ms)
+✖ checkpoint replacement stops after newer cancel (11.0691ms)
+✔ checkpoint replacement stops after newer dispose (5.3734ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 6
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 721.8633
+
+✖ failing tests:
+
+test at test\wallet-panel-cancellation.test.js:34:3
+✖ workspace input retains newer preview during read cancellation (106.7407ms)
+  AssertionError [ERR_ASSERTION]: The newer preview must remain visible
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-panel-cancellation.test.js:52:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: '',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-panel-cancellation.test.js:34:3
+✖ workspace multiple retains newer preview during read cancellation (34.0273ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /まだ/. Input:
+  
+  '一括バックアップは1ファイルずつ選んでください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-panel-cancellation.test.js:53:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '一括バックアップは1ファイルずつ選んでください。',
+    expected: /まだ/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\wallet-panel-cancellation.test.js:34:3
+✖ workspace multiple retains newer dispose during read cancellation (9.8881ms)
+  AssertionError [ERR_ASSERTION]: No writes after disposal
+  + actual - expected
+  
+  + '[["workspace-panel","","",false,[["aria-busy","true"]]],["","3ウォレットをまとめて保存・復元","",false,[]],["workspace-note","設定・トークン一覧・保存履歴を1ファイルにまとめます。公開アドレスと残高を含みます。秘密鍵・接続許可・承認先は保存しません。保存した履歴は現在の残高を証明しません。","",false,[]],["workspace-inspect","3ウォレットの保存状況を見る","",false,[]],["workspace-save-summary","保存状況をテキスト保存","",false,[]],["workspace-overview","","",false,[]],["workspace-save","3ウォレットの平文バックアップを保存","",true,[]],["workspace-backup-status","この画面からの一括バックアップ保存はまだ開始していません。","",false,[]],["workspace-secure-host","","",false,[]],["","保存した一括バックアップを選択","",false,[]],["workspace-file","","",true,[["aria-label","一括バックアップファイル"]]],["","読み込み用JSON（ファイル選択で入力されます）","",false,[]],["workspace-json","","",false,[["aria-label","一括復元のJSON"]]],["","設定とトークン一覧を復元する","",false,[]],["workspace-settings","","",false,[]],["","保存履歴を復元する","",false,[]],["workspace-histories","","",false,[]],["","既存の履歴を置き換える（未選択なら追加）","",false,[]],["workspace-replace","","",false,[]],["workspace-preview","一括復元の変更内容を確認","",true,[]],["workspace-detail","","",false,[]],["","変更する設定と履歴を確認しました","",false,[]],["workspace-confirmed","","",true,[]],["","プレビューに表示された既存記録の削除を確認しました","",false,[]],["workspace-removal","","",true,[]],["workspace-apply","確認した内容を一括復元","",true,[]],["workspace-cancel","読み込み・プレビューを取り消す","",false,[]],["workspace-undo-preview","直前の一括復元を戻す内容を確認","",true,[]],["workspace-undo-detail","","",false,[]],["","直前の一括復元を戻す内容を確認しました","",false,[]],["workspace-undo-confirmed","","",true,[]],["workspace-undo-apply","確認した操作前の状態へ戻す","",true,[]],["workspace-recovery","操作前の控えを保存","",true,[]],["workspace-status","一括バックアップは1ファイルずつ選んでください。","",false,[["role","status"]]]]'
+  - '[["workspace-panel","","",false,[["aria-busy","true"]]],["","3ウォレットをまとめて保存・復元","",false,[]],["workspace-note","設定・トークン一覧・保存履歴を1ファイルにまとめます。公開アドレスと残高を含みます。秘密鍵・接続許可・承認先は保存しません。保存した履歴は現在の残高を証明しません。","",false,[]],["workspace-inspect","3ウォレットの保存状況を見る","",false,[]],["workspace-save-summary","保存状況をテキスト保存","",false,[]],["workspace-overview","","",false,[]],["workspace-save","3ウォレットの平文バックアップを保存","",true,[]],["workspace-backup-status","この画面からの一括バックアップ保存はまだ開始していません。","",false,[]],["workspace-secure-host","","",false,[]],["","保存した一括バックアップを選択","",false,[]],["workspace-file","","",true,[["aria-label","一括バックアップファイル"]]],["","読み込み用JSON（ファイル選択で入力されます）","",false,[]],["workspace-json","","",false,[["aria-label","一括復元のJSON"]]],["","設定とトークン一覧を復元する","",false,[]],["workspace-settings","","",false,[]],["","保存履歴を復元する","",false,[]],["workspace-histories","","",false,[]],["","既存の履歴を置き換える（未選択なら追加）","",false,[]],["workspace-replace","","",false,[]],["workspace-preview","一括復元の変更内容を確認","",true,[]],["workspace-detail","","",false,[]],["","変更する設定と履歴を確認しました","",false,[]],["workspace-confirmed","","",true,[]],["","プレビューに表示された既存記録の削除を確認しました","",false,[]],["workspace-removal","","",true,[]],["workspace-apply","確認した内容を一括復元","",true,[]],["workspace-cancel","読み込み・プレビューを取り消す","",false,[]],["workspace-undo-preview","直前の一括復元を戻す内容を確認","",true,[]],["workspace-undo-detail","","",false,[]],["","直前の一括復元を戻す内容を確認しました","",false,[]],["workspace-undo-confirmed","","",true,[]],["workspace-undo-apply","確認した操作前の状態へ戻す","",true,[]],["workspace-recovery","操作前の控えを保存","",true,[]],["workspace-status","ファイルと破損確認を読み込んでいます。まだ変更していません。","",false,[["role","status"]]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-panel-cancellation.test.js:49:35)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '[["workspace-panel","","",false,[["aria-busy","true"]]],["","3ウォレットをまとめて保存・復元","",false,[]],["workspace-note","設定・トークン一覧・保存履歴を1ファイルにまとめます。公開アドレスと残高を含みます。秘密鍵・接続許可・承認先は保存しません。保存した履歴は現在の残高を証明しません。","",false,[]],["workspace-inspect","3ウォレットの保存状況を見る","",false,[]],["workspace-save-summary","保存状況をテキスト保存","",false,[]],["workspace-overview","","",false,[]],["workspace-save","3ウォレットの平文バックアップを保存","",true,[]],["workspace-backup-status","この画面からの一括バックアップ保存はまだ開始していません。","",false,[]],["workspace-secure-host","","",false,[]],["","保存した一括バックアップを選択","",false,[]],["workspace-file","","",true,[["aria-label","一括バックアップファイル"]]],["","読み込み用JSON（ファイル選択で入力されます）","",false,[]],["workspace-json","","",false,[["aria-label","一括復元のJSON"]]],["","設定とトークン一覧を復元する","",false,[]],["workspace-settings","","",false,[]],["","保存履歴を復元する","",false,[]],["workspace-histories","","",false,[]],["","既存の履歴を置き換える（未選択なら追加）","",false,[]],["workspace-replace","","",false,[]],["workspace-preview","一括復元の変更内容を確認","",true,[]],["workspace-detail","","",false,[]],["","変更する設定と履歴を確認しました","",false,[]],["workspace-confirmed","","",true,[]],["","プレビューに表示された既存記録の削除を確認しました","",false,[]],["workspace-removal","","",true,[]],["workspace-apply","確認した内容を一括復元","",true,[]],["workspace-cancel","読み込み・プレビューを取り消す","",false,[]],["workspace-undo-preview","直前の一括復元を戻す内容を確認","",true,[]],["workspace-undo-detail","","",false,[]],["","直前の一括復元を戻す内容を確認しました","",false,[]],["workspace-undo-confirmed","","",true,[]],["workspace-undo-apply","確認した操作前の状態へ戻す","",true,[]],["workspace-recovery","操作前の控えを保存","",true,[]],["workspace-status","一括バックアップは1ファイルずつ選んでください。","",false,[["role","status"]]]]',
+    expected: '[["workspace-panel","","",false,[["aria-busy","true"]]],["","3ウォレットをまとめて保存・復元","",false,[]],["workspace-note","設定・トークン一覧・保存履歴を1ファイルにまとめます。公開アドレスと残高を含みます。秘密鍵・接続許可・承認先は保存しません。保存した履歴は現在の残高を証明しません。","",false,[]],["workspace-inspect","3ウォレットの保存状況を見る","",false,[]],["workspace-save-summary","保存状況をテキスト保存","",false,[]],["workspace-overview","","",false,[]],["workspace-save","3ウォレットの平文バックアップを保存","",true,[]],["workspace-backup-status","この画面からの一括バックアップ保存はまだ開始していません。","",false,[]],["workspace-secure-host","","",false,[]],["","保存した一括バックアップを選択","",false,[]],["workspace-file","","",true,[["aria-label","一括バックアップファイル"]]],["","読み込み用JSON（ファイル選択で入力されます）","",false,[]],["workspace-json","","",false,[["aria-label","一括復元のJSON"]]],["","設定とトークン一覧を復元する","",false,[]],["workspace-settings","","",false,[]],["","保存履歴を復元する","",false,[]],["workspace-histories","","",false,[]],["","既存の履歴を置き換える（未選択なら追加）","",false,[]],["workspace-replace","","",false,[]],["workspace-preview","一括復元の変更内容を確認","",true,[]],["workspace-detail","","",false,[]],["","変更する設定と履歴を確認しました","",false,[]],["workspace-confirmed","","",true,[]],["","プレビューに表示された既存記録の削除を確認しました","",false,[]],["workspace-removal","","",true,[]],["workspace-apply","確認した内容を一括復元","",true,[]],["workspace-cancel","読み込み・プレビューを取り消す","",false,[]],["workspace-undo-preview","直前の一括復元を戻す内容を確認","",true,[]],["workspace-undo-detail","","",false,[]],["","直前の一括復元を戻す内容を確認しました","",false,[]],["workspace-undo-confirmed","","",true,[]],["workspace-undo-apply","確認した操作前の状態へ戻す","",true,[]],["workspace-recovery","操作前の控えを保存","",true,[]],["workspace-status","ファイルと破損確認を読み込んでいます。まだ変更していません。","",false,[["role","status"]]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-panel-cancellation.test.js:34:3
+✖ setup input retains newer preview during read cancellation (7.4625ms)
+  AssertionError [ERR_ASSERTION]: The newer preview must remain visible
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-panel-cancellation.test.js:52:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: '',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-panel-cancellation.test.js:34:3
+✖ setup input retains newer dispose during read cancellation (3.0368ms)
+  AssertionError [ERR_ASSERTION]: No writes after disposal
+  + actual - expected
+  
+  + '[["wallet-setup-panel","","",false,[["aria-busy","true"]]],["","3ウォレットの設定を保存・復元","",false,[]],["notice","保存するのは各カードの公開アドレスとネットワークです。秘密鍵・接続許可・残高履歴は含みません。設定の復元だけでWalletは接続されません。","",false,[]],["wallet-setup-readiness","別アドレスの設定: 0 / 3\\nDAT: 未設定 / Base Sepolia\\nEMA: 未設定 / Base Sepolia\\nCAWELON: 未設定 / Base Sepolia","",false,[["aria-live","polite"]]],["wallet-setup-refresh","カードの設定状況を確認","",false,[]],["wallet-setup-export","現在の設定をJSONにする","",false,[]],["wallet-setup-save","現在の設定ファイルをダウンロード","",false,[]],["","設定ファイルを選択","",false,[]],["wallet-setup-file","","",true,[["aria-label","読み込むウォレット設定ファイル"]]],["","保存・読み込み用の設定JSON","",false,[]],["wallet-setup-json","","{}",false,[["aria-label","3ウォレットの設定JSON"]]],["wallet-setup-preview","設定JSONの変更内容をプレビュー","",true,[]],["wallet-setup-details","","",false,[]],["","変更対象の切断・残高表示の消去を確認しました（保存履歴は残ります）","",false,[]],["wallet-setup-confirm","","",true,[]],["wallet-setup-apply","確認した設定をカードへ反映","",true,[]],["wallet-setup-cancel","プレビューを取り消す","",false,[]],["wallet-setup-status","JSONが変わりました。もう一度プレビューしてください。","",false,[["role","status"]]]]'
+  - '[["wallet-setup-panel","","",false,[["aria-busy","true"]]],["","3ウォレットの設定を保存・復元","",false,[]],["notice","保存するのは各カードの公開アドレスとネットワークです。秘密鍵・接続許可・残高履歴は含みません。設定の復元だけでWalletは接続されません。","",false,[]],["wallet-setup-readiness","別アドレスの設定: 0 / 3\\nDAT: 未設定 / Base Sepolia\\nEMA: 未設定 / Base Sepolia\\nCAWELON: 未設定 / Base Sepolia","",false,[["aria-live","polite"]]],["wallet-setup-refresh","カードの設定状況を確認","",false,[]],["wallet-setup-export","現在の設定をJSONにする","",false,[]],["wallet-setup-save","現在の設定ファイルをダウンロード","",false,[]],["","設定ファイルを選択","",false,[]],["wallet-setup-file","","",true,[["aria-label","読み込むウォレット設定ファイル"]]],["","保存・読み込み用の設定JSON","",false,[]],["wallet-setup-json","","{}",false,[["aria-label","3ウォレットの設定JSON"]]],["wallet-setup-preview","設定JSONの変更内容をプレビュー","",true,[]],["wallet-setup-details","","",false,[]],["","変更対象の切断・残高表示の消去を確認しました（保存履歴は残ります）","",false,[]],["wallet-setup-confirm","","",true,[]],["wallet-setup-apply","確認した設定をカードへ反映","",true,[]],["wallet-setup-cancel","プレビューを取り消す","",false,[]],["wallet-setup-status","設定ファイルを読み込んでいます。カード設定は変更していません。","",false,[["role","status"]]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-panel-cancellation.test.js:49:35)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '[["wallet-setup-panel","","",false,[["aria-busy","true"]]],["","3ウォレットの設定を保存・復元","",false,[]],["notice","保存するのは各カードの公開アドレスとネットワークです。秘密鍵・接続許可・残高履歴は含みません。設定の復元だけでWalletは接続されません。","",false,[]],["wallet-setup-readiness","別アドレスの設定: 0 / 3\\nDAT: 未設定 / Base Sepolia\\nEMA: 未設定 / Base Sepolia\\nCAWELON: 未設定 / Base Sepolia","",false,[["aria-live","polite"]]],["wallet-setup-refresh","カードの設定状況を確認","",false,[]],["wallet-setup-export","現在の設定をJSONにする","",false,[]],["wallet-setup-save","現在の設定ファイルをダウンロード","",false,[]],["","設定ファイルを選択","",false,[]],["wallet-setup-file","","",true,[["aria-label","読み込むウォレット設定ファイル"]]],["","保存・読み込み用の設定JSON","",false,[]],["wallet-setup-json","","{}",false,[["aria-label","3ウォレットの設定JSON"]]],["wallet-setup-preview","設定JSONの変更内容をプレビュー","",true,[]],["wallet-setup-details","","",false,[]],["","変更対象の切断・残高表示の消去を確認しました（保存履歴は残ります）","",false,[]],["wallet-setup-confirm","","",true,[]],["wallet-setup-apply","確認した設定をカードへ反映","",true,[]],["wallet-setup-cancel","プレビューを取り消す","",false,[]],["wallet-setup-status","JSONが変わりました。もう一度プレビューしてください。","",false,[["role","status"]]]]',
+    expected: '[["wallet-setup-panel","","",false,[["aria-busy","true"]]],["","3ウォレットの設定を保存・復元","",false,[]],["notice","保存するのは各カードの公開アドレスとネットワークです。秘密鍵・接続許可・残高履歴は含みません。設定の復元だけでWalletは接続されません。","",false,[]],["wallet-setup-readiness","別アドレスの設定: 0 / 3\\nDAT: 未設定 / Base Sepolia\\nEMA: 未設定 / Base Sepolia\\nCAWELON: 未設定 / Base Sepolia","",false,[["aria-live","polite"]]],["wallet-setup-refresh","カードの設定状況を確認","",false,[]],["wallet-setup-export","現在の設定をJSONにする","",false,[]],["wallet-setup-save","現在の設定ファイルをダウンロード","",false,[]],["","設定ファイルを選択","",false,[]],["wallet-setup-file","","",true,[["aria-label","読み込むウォレット設定ファイル"]]],["","保存・読み込み用の設定JSON","",false,[]],["wallet-setup-json","","{}",false,[["aria-label","3ウォレットの設定JSON"]]],["wallet-setup-preview","設定JSONの変更内容をプレビュー","",true,[]],["wallet-setup-details","","",false,[]],["","変更対象の切断・残高表示の消去を確認しました（保存履歴は残ります）","",false,[]],["wallet-setup-confirm","","",true,[]],["wallet-setup-apply","確認した設定をカードへ反映","",true,[]],["wallet-setup-cancel","プレビューを取り消す","",false,[]],["wallet-setup-status","設定ファイルを読み込んでいます。カード設定は変更していません。","",false,[["role","status"]]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-panel-cancellation.test.js:34:3
+✖ setup multiple retains newer preview during read cancellation (4.9791ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /まだ/. Input:
+  
+  '設定ファイルは1つずつ選んでください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-panel-cancellation.test.js:53:16)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '設定ファイルは1つずつ選んでください。',
+    expected: /まだ/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\wallet-panel-cancellation.test.js:34:3
+✖ setup multiple retains newer dispose during read cancellation (3.9836ms)
+  AssertionError [ERR_ASSERTION]: No writes after disposal
+  + actual - expected
+  
+  + '[["wallet-setup-panel","","",false,[["aria-busy","true"]]],["","3ウォレットの設定を保存・復元","",false,[]],["notice","保存するのは各カードの公開アドレスとネットワークです。秘密鍵・接続許可・残高履歴は含みません。設定の復元だけでWalletは接続されません。","",false,[]],["wallet-setup-readiness","別アドレスの設定: 0 / 3\\nDAT: 未設定 / Base Sepolia\\nEMA: 未設定 / Base Sepolia\\nCAWELON: 未設定 / Base Sepolia","",false,[["aria-live","polite"]]],["wallet-setup-refresh","カードの設定状況を確認","",false,[]],["wallet-setup-export","現在の設定をJSONにする","",false,[]],["wallet-setup-save","現在の設定ファイルをダウンロード","",false,[]],["","設定ファイルを選択","",false,[]],["wallet-setup-file","","",true,[["aria-label","読み込むウォレット設定ファイル"]]],["","保存・読み込み用の設定JSON","",false,[]],["wallet-setup-json","","",false,[["aria-label","3ウォレットの設定JSON"]]],["wallet-setup-preview","設定JSONの変更内容をプレビュー","",true,[]],["wallet-setup-details","","",false,[]],["","変更対象の切断・残高表示の消去を確認しました（保存履歴は残ります）","",false,[]],["wallet-setup-confirm","","",true,[]],["wallet-setup-apply","確認した設定をカードへ反映","",true,[]],["wallet-setup-cancel","プレビューを取り消す","",false,[]],["wallet-setup-status","設定ファイルは1つずつ選んでください。","",false,[["role","status"]]]]'
+  - '[["wallet-setup-panel","","",false,[["aria-busy","true"]]],["","3ウォレットの設定を保存・復元","",false,[]],["notice","保存するのは各カードの公開アドレスとネットワークです。秘密鍵・接続許可・残高履歴は含みません。設定の復元だけでWalletは接続されません。","",false,[]],["wallet-setup-readiness","別アドレスの設定: 0 / 3\\nDAT: 未設定 / Base Sepolia\\nEMA: 未設定 / Base Sepolia\\nCAWELON: 未設定 / Base Sepolia","",false,[["aria-live","polite"]]],["wallet-setup-refresh","カードの設定状況を確認","",false,[]],["wallet-setup-export","現在の設定をJSONにする","",false,[]],["wallet-setup-save","現在の設定ファイルをダウンロード","",false,[]],["","設定ファイルを選択","",false,[]],["wallet-setup-file","","",true,[["aria-label","読み込むウォレット設定ファイル"]]],["","保存・読み込み用の設定JSON","",false,[]],["wallet-setup-json","","",false,[["aria-label","3ウォレットの設定JSON"]]],["wallet-setup-preview","設定JSONの変更内容をプレビュー","",true,[]],["wallet-setup-details","","",false,[]],["","変更対象の切断・残高表示の消去を確認しました（保存履歴は残ります）","",false,[]],["wallet-setup-confirm","","",true,[]],["wallet-setup-apply","確認した設定をカードへ反映","",true,[]],["wallet-setup-cancel","プレビューを取り消す","",false,[]],["wallet-setup-status","設定ファイルを読み込んでいます。カード設定は変更していません。","",false,[["role","status"]]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-panel-cancellation.test.js:49:35)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '[["wallet-setup-panel","","",false,[["aria-busy","true"]]],["","3ウォレットの設定を保存・復元","",false,[]],["notice","保存するのは各カードの公開アドレスとネットワークです。秘密鍵・接続許可・残高履歴は含みません。設定の復元だけでWalletは接続されません。","",false,[]],["wallet-setup-readiness","別アドレスの設定: 0 / 3\\nDAT: 未設定 / Base Sepolia\\nEMA: 未設定 / Base Sepolia\\nCAWELON: 未設定 / Base Sepolia","",false,[["aria-live","polite"]]],["wallet-setup-refresh","カードの設定状況を確認","",false,[]],["wallet-setup-export","現在の設定をJSONにする","",false,[]],["wallet-setup-save","現在の設定ファイルをダウンロード","",false,[]],["","設定ファイルを選択","",false,[]],["wallet-setup-file","","",true,[["aria-label","読み込むウォレット設定ファイル"]]],["","保存・読み込み用の設定JSON","",false,[]],["wallet-setup-json","","",false,[["aria-label","3ウォレットの設定JSON"]]],["wallet-setup-preview","設定JSONの変更内容をプレビュー","",true,[]],["wallet-setup-details","","",false,[]],["","変更対象の切断・残高表示の消去を確認しました（保存履歴は残ります）","",false,[]],["wallet-setup-confirm","","",true,[]],["wallet-setup-apply","確認した設定をカードへ反映","",true,[]],["wallet-setup-cancel","プレビューを取り消す","",false,[]],["wallet-setup-status","設定ファイルは1つずつ選んでください。","",false,[["role","status"]]]]',
+    expected: '[["wallet-setup-panel","","",false,[["aria-busy","true"]]],["","3ウォレットの設定を保存・復元","",false,[]],["notice","保存するのは各カードの公開アドレスとネットワークです。秘密鍵・接続許可・残高履歴は含みません。設定の復元だけでWalletは接続されません。","",false,[]],["wallet-setup-readiness","別アドレスの設定: 0 / 3\\nDAT: 未設定 / Base Sepolia\\nEMA: 未設定 / Base Sepolia\\nCAWELON: 未設定 / Base Sepolia","",false,[["aria-live","polite"]]],["wallet-setup-refresh","カードの設定状況を確認","",false,[]],["wallet-setup-export","現在の設定をJSONにする","",false,[]],["wallet-setup-save","現在の設定ファイルをダウンロード","",false,[]],["","設定ファイルを選択","",false,[]],["wallet-setup-file","","",true,[["aria-label","読み込むウォレット設定ファイル"]]],["","保存・読み込み用の設定JSON","",false,[]],["wallet-setup-json","","",false,[["aria-label","3ウォレットの設定JSON"]]],["wallet-setup-preview","設定JSONの変更内容をプレビュー","",true,[]],["wallet-setup-details","","",false,[]],["","変更対象の切断・残高表示の消去を確認しました（保存履歴は残ります）","",false,[]],["wallet-setup-confirm","","",true,[]],["wallet-setup-apply","確認した設定をカードへ反映","",true,[]],["wallet-setup-cancel","プレビューを取り消す","",false,[]],["wallet-setup-status","設定ファイルを読み込んでいます。カード設定は変更していません。","",false,[["role","status"]]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-panel-cancellation.test.js:61:41
+✖ checkpoint replacement stops after newer cancel (11.0691ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-panel-cancellation.test.js:77:52)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
