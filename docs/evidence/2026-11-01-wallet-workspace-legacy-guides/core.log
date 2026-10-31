@@ -1,0 +1,20 @@
+✔ stored public configuration/history is validated with its actual checksum scope: workspace.json (23.98ms)
+✔ unsupported extra fields cannot be silently accepted by saved configuration/history guide: workspace.json (3.9434ms)
+✔ stored public configuration/history is validated with its actual checksum scope: portfolio.json (6.377ms)
+✔ unsupported extra fields cannot be silently accepted by saved configuration/history guide: portfolio.json (1.6697ms)
+✔ stored public configuration/history is validated with its actual checksum scope: portfolio-history.json (3.9955ms)
+✔ unsupported extra fields cannot be silently accepted by saved configuration/history guide: portfolio-history.json (1.5532ms)
+✔ stored public configuration/history is validated with its actual checksum scope: setup.json (5.6486ms)
+✔ unsupported extra fields cannot be silently accepted by saved configuration/history guide: setup.json (1.304ms)
+✔ plain historical records remain structure-only through comparisons, bundles and mixed batch exports (32.5894ms)
+✔ workspace checksum and saved observation conflicts remain authoritative (14.1952ms)
+✔ empty workspace histories have zero observations while absent observations in settings stay null (5.8827ms)
+✔ prior original-family JSON and CSV receipts retain their exact saved bytes (149.365ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 615.125

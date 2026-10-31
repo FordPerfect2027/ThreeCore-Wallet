@@ -1,0 +1,84 @@
+{
+  "source": "e199796",
+  "synthetic": true,
+  "fixtureSource": "test/helpers/workspace-fixtures.js#savedWorkspaceGuideFixtures",
+  "files": [
+    {
+      "name": "workspace.json",
+      "sha256": "5a0908039849dcf2dcb586c256f884d5e03591cded0d251e3e9f0cb0132ff4e8",
+      "validation": "validated-original"
+    },
+    {
+      "name": "portfolio.json",
+      "sha256": "6a83d77406088f7861325b276c8e2fe645d9b19a82f4e314830f4f56627de346",
+      "validation": "validated-structure"
+    },
+    {
+      "name": "portfolio-history.json",
+      "sha256": "c39b496d7d5af4e91cbc8ac650380d68c210b3feb48d35a39208719b889d2232",
+      "validation": "validated-structure"
+    },
+    {
+      "name": "setup.json",
+      "sha256": "a126f16b849d177d4ec1c7916b9ab01e3ff667997aab10fb8ce155706ce4afd1",
+      "validation": "validated-structure"
+    }
+  ],
+  "commands": [
+    {
+      "script": "scripts/inspect-wallet-saved-file.js",
+      "exit": 0
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-file.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-file.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-file.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-batch.js",
+      "exit": 2
+    },
+    {
+      "script": "scripts/inspect-wallet-saved-batch.js",
+      "exit": 2
+    }
+  ],
+  "opened": [
+    {
+      "name": "workspace.json",
+      "accepted": true,
+      "validation": "validated-original"
+    },
+    {
+      "name": "portfolio.json",
+      "accepted": true,
+      "validation": "validated-structure"
+    },
+    {
+      "name": "portfolio-history.json",
+      "accepted": true,
+      "validation": "validated-structure"
+    },
+    {
+      "name": "setup.json",
+      "accepted": true,
+      "validation": "validated-structure"
+    }
+  ],
+  "allExternalHashesMatch": true,
+  "allInternalOriginalsValidated": false,
+  "plainBundleRefused": "FILE_BUNDLE_ORIGINALS_REQUIRED",
+  "browserAndCliInspectionsIdentical": true,
+  "originalsUnchanged": true,
+  "captureMethod": "shared panels with real File objects in Node and actual local CLI commands; isolated native browser recorded separately",
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}
