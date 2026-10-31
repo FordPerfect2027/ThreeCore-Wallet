@@ -55,6 +55,37 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: narrow discrepancy previews wrap exact values and remain keyboard scrollable",async()=>{
+    const [html,css]=await Promise.all([fetch("/rehearsal/").then(r=>r.text()),fetch("/examples/operation-rehearsal.css").then(r=>r.text())]);
+    const parsed=new DOMParser().parseFromString(html,"text/html"),host=document.createElement("div");host.style.width="360px";document.body.append(host);
+    const shadow=host.attachShadow({mode:"open"}),style=document.createElement("style");style.textContent=css;shadow.append(style);
+    const main=document.createElement("main"),section=document.createElement("section");main.append(section);shadow.append(main);
+    try{
+      for(const target of ["review","evidence"]){
+        const detail=document.importNode(parsed.getElementById("report-"+target+"-difference-detail"),true);detail.hidden=false;section.append(detail);
+        const text="<img src=x>"+"long-value-".repeat(190)+"\n"+"比較する値\n".repeat(100);detail.textContent=text;detail.focus();
+        assert(shadow.activeElement===detail,"Detail focus is retained");assert(detail.textContent===text&&!detail.querySelector("img"),"Long value remains exact plain text");
+        assert(detail.clientWidth>0&&detail.scrollWidth<=detail.clientWidth+1,"Long value must not cause horizontal overflow");
+        assert(detail.getBoundingClientRect().right<=section.getBoundingClientRect().right,"Preview remains inside its section");
+        assert(detail.scrollHeight>detail.clientHeight,"Long detail can scroll vertically");detail.scrollTop=detail.scrollHeight;assert(detail.scrollTop>0);detail.remove();
+      }
+    }finally{host.remove();}
+  });
+  test("file-read: rehearsal navigation focuses every destination and opens evidence without changing records",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),querySelectorAll:selector=>host.querySelectorAll(selector),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      const links=[...host.querySelectorAll("a[data-rehearsal-target]")];assert(links.length>=18);
+      for(const link of links){link.addEventListener("click",event=>event.preventDefault());link.click();assert(document.activeElement===q(link.dataset.rehearsalTarget),"Link must move keyboard focus to its own destination");}
+      const summary=q("report-evidence-title");assert(summary.parentElement.open,"Evidence disclosure opens");assert(!summary.hasAttribute("tabindex"),"Evidence summary remains a normal Tab stop");
+      q("session-save").click();assert(downloads.pop().text===before,"Navigation preserves rehearsal data");
+      page.dispose();q("example").focus();const prior=document.activeElement;links[0].click();assert(document.activeElement===prior,"Retired navigation does not move focus");
+    }finally{page.dispose();host.remove();}
+  });
+
+
   test("file-read: native discrepancy filters retain full totals and select the original value",async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);

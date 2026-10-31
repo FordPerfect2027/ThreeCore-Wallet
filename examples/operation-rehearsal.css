@@ -28,3 +28,5 @@ details{margin-top:24px;border-top:1px solid #34455e;padding-top:16px}summary{cu
 @media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:20px 14px}.fields{gap:12px}section{padding:18px}h1{font-size:30px}}
 
 input[aria-invalid="true"]{border:2px solid #ffb5a5;background:#30202b}
+
+.rehearsal-difference-detail{white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;max-height:28rem;overflow:auto;padding:14px;border:1px solid #52647f;border-radius:8px;background:#0e1828;line-height:1.6}

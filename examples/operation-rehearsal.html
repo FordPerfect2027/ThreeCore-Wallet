@@ -14,7 +14,7 @@
     <p>資金を動かす前に、利用上限と損益の計算を試します。</p>
     <p class="notice"><strong>すべて仮の記録による試算です。</strong> Wallet接続・署名・送金・外部サービスへの通信は行いません。例の数値は運用方針ではありません。</p>
   </header>
-  <nav class="actions" aria-label="リハーサルの各機能"><a href="#session-title">まとめて保存・復旧</a><a href="#workspace-title">履歴の保存・復旧</a><a href="#whatif-title">条件の比較</a><a href="#scenario-set-title">比較ケース</a><a href="#record-browser-title">記録を探す</a><a href="#ledger-title">記録を追記</a><a href="#check-suite-title">期待結果の確認</a><a href="#report-review-title">資料の再確認</a></nav>
+  <nav class="actions" aria-label="リハーサルの各機能"><a href="#session-title" data-rehearsal-target="session-title">まとめて保存・復旧</a><a href="#workspace-title" data-rehearsal-target="workspace-title">履歴の保存・復旧</a><a href="#whatif-title" data-rehearsal-target="whatif-title">条件の比較</a><a href="#scenario-set-title" data-rehearsal-target="scenario-set-title">比較ケース</a><a href="#record-browser-title" data-rehearsal-target="record-browser-title">記録を探す</a><a href="#ledger-title" data-rehearsal-target="ledger-title">記録を追記</a><a href="#check-suite-title" data-rehearsal-target="check-suite-title">期待結果の確認</a><a href="#report-review-title" data-rehearsal-target="report-review-title">資料の再確認</a><a href="#report-evidence-title" data-rehearsal-target="report-evidence-title">証拠の再確認</a></nav>
   <details class="file-format-guide">
     <summary>保存したファイルをどこで開くか確認する</summary>
     <p class="small">ファイル名は保存時の例です。名前を変えたファイルも、読み込んだ内容から形式を確認します。下のリンクで使う欄へ移動できます。</p>
@@ -22,22 +22,22 @@
       <caption>保存したファイルと開く欄</caption>
       <thead><tr><th scope="col">保存したもの・ファイル名の例</th><th scope="col">できること</th><th scope="col">開く欄</th></tr></thead>
       <tbody>
-        <tr><td>履歴とケース集<br>ThreeCore-rehearsal-session.json</td><td>3トークンの履歴と比較ケースをまとめて復旧</td><td><a href="#session-title">まとめて保存・復旧</a></td></tr>
-        <tr><td>3トークンの履歴<br>ThreeCore-operation-workspace.json</td><td>3トークンの履歴を復旧。比較ケースは含みません。</td><td><a href="#workspace-title">履歴の保存・復旧</a></td></tr>
-        <tr><td>1トークンの入力記録<br>ThreeCore-DAT-operation-rehearsal.json</td><td>保存した対象の試算を表示。EMA・CAWELONも同じ欄です。</td><td><a href="#record-save-title">記録を保存・再確認</a></td></tr>
-        <tr><td>比較ケース集<br>ThreeCore-scenario-set.json</td><td>名前付きの比較ケースを復旧</td><td><a href="#scenario-set-title">比較ケース</a></td></tr>
-        <tr><td>期待結果<br>ThreeCore-expected-outcomes.json</td><td>保存時の期待結果と再計算を比較</td><td><a href="#check-suite-title">期待結果の確認</a></td></tr>
-        <tr><td>確認一覧・比較・検索の資料<br>例：ThreeCore-workspace-overview.json</td><td>資料を再計算して確認。履歴の復旧には使いません。</td><td><a href="#report-review-title">資料の再確認</a></td></tr>
-        <tr><td>資料の確認結果の控え<br>ThreeCore-report-review-receipt.json</td><td>確認結果を保管。再確認には控えと一緒に保存した元の資料を使います。</td><td>元の資料は<a href="#report-review-title">資料の再確認</a>へ</td></tr>
-        <tr><td>元資料と確認結果をまとめた証拠<br>ThreeCore-review-evidence.json</td><td>元資料と控えを再計算して確認。現在の履歴には反映しません。</td><td><a href="#report-evidence-title">証拠の再確認</a></td></tr>
-        <tr><td>証拠の再確認結果<br>ThreeCore-evidence-verification.json</td><td>今回の再確認結果を保管。再確認には元の証拠ファイルを使います。</td><td>元の証拠は<a href="#report-evidence-title">証拠の再確認</a>へ</td></tr>
+        <tr><td>履歴とケース集<br>ThreeCore-rehearsal-session.json</td><td>3トークンの履歴と比較ケースをまとめて復旧</td><td><a href="#session-title" data-rehearsal-target="session-title">まとめて保存・復旧</a></td></tr>
+        <tr><td>3トークンの履歴<br>ThreeCore-operation-workspace.json</td><td>3トークンの履歴を復旧。比較ケースは含みません。</td><td><a href="#workspace-title" data-rehearsal-target="workspace-title">履歴の保存・復旧</a></td></tr>
+        <tr><td>1トークンの入力記録<br>ThreeCore-DAT-operation-rehearsal.json</td><td>保存した対象の試算を表示。EMA・CAWELONも同じ欄です。</td><td><a href="#record-save-title" data-rehearsal-target="record-save-title">記録を保存・再確認</a></td></tr>
+        <tr><td>比較ケース集<br>ThreeCore-scenario-set.json</td><td>名前付きの比較ケースを復旧</td><td><a href="#scenario-set-title" data-rehearsal-target="scenario-set-title">比較ケース</a></td></tr>
+        <tr><td>期待結果<br>ThreeCore-expected-outcomes.json</td><td>保存時の期待結果と再計算を比較</td><td><a href="#check-suite-title" data-rehearsal-target="check-suite-title">期待結果の確認</a></td></tr>
+        <tr><td>確認一覧・比較・検索の資料<br>例：ThreeCore-workspace-overview.json</td><td>資料を再計算して確認。履歴の復旧には使いません。</td><td><a href="#report-review-title" data-rehearsal-target="report-review-title">資料の再確認</a></td></tr>
+        <tr><td>資料の確認結果の控え<br>ThreeCore-report-review-receipt.json</td><td>確認結果を保管。再確認には控えと一緒に保存した元の資料を使います。</td><td>元の資料は<a href="#report-review-title" data-rehearsal-target="report-review-title">資料の再確認</a>へ</td></tr>
+        <tr><td>元資料と確認結果をまとめた証拠<br>ThreeCore-review-evidence.json</td><td>元資料と控えを再計算して確認。現在の履歴には反映しません。</td><td><a href="#report-evidence-title" data-rehearsal-target="report-evidence-title">証拠の再確認</a></td></tr>
+        <tr><td>証拠の再確認結果<br>ThreeCore-evidence-verification.json</td><td>今回の再確認結果を保管。再確認には元の証拠ファイルを使います。</td><td>元の証拠は<a href="#report-evidence-title" data-rehearsal-target="report-evidence-title">証拠の再確認</a>へ</td></tr>
         <tr><td>計算の流れのCSV<br>ThreeCore-DAT-rehearsal-ledger.csv</td><td>表計算ソフトなどで読むための資料。復旧にはJSONファイルを使います。</td><td>この画面への読み込み対象外</td></tr>
         <tr><td>検索に一致する全記録のCSV<br>ThreeCore-record-query.csv</td><td>表計算ソフトで閲覧。元入力や未作成対象の情報を含む資料には検索結果JSONを使います。</td><td>この画面への読み込み対象外</td></tr>
       </tbody>
     </table></div>
   </details>
   <section aria-labelledby="session-title">
-    <h2 id="session-title">履歴と比較ケースをまとめて保存・復旧</h2>
+    <h2 id="session-title" tabindex="-1">履歴と比較ケースをまとめて保存・復旧</h2>
     <p>3トークンの試算履歴と全比較ケースを、一つのファイルで保存できます。個別の保存ファイルも引き続き使えます。</p>
     <p id="session-save-state" role="status" aria-live="polite" class="notice"></p>
     <div class="actions"><button id="session-save" type="button" disabled>履歴とケース集をまとめて保存</button><label class="file-label">まとめた記録を選ぶ<input id="session-file" type="file" accept=".json,application/json" aria-describedby="session-file-note session-status"></label><button id="session-cancel" type="button">まとめ復旧の確認を取り消す</button></div>
@@ -58,7 +58,7 @@
       <option value="pending">まだ決済していない例</option><option value="deposit">追加資金だけの例</option>
     </select></label><button id="example" type="button">この例を表示</button>
   </section>
-  <section aria-labelledby="workspace-title"><h2 id="workspace-title">3トークンの試算履歴</h2>
+  <section aria-labelledby="workspace-title"><h2 id="workspace-title" tabindex="-1">3トークンの試算履歴</h2>
     <p>対象を切り替えても、それぞれの履歴と取り消し履歴をこのページ内で保持します。数値は対象ごとに表示し、合算しません。未作成は残高0を意味しません。</p>
     <div class="table-wrap"><table><caption>対象ごとの確定した試算</caption><thead><tr><th>対象</th><th>履歴</th><th>累計損益</th><th>予約済み還元</th><th>追加予約可能額</th></tr></thead><tbody id="workspace-rows"></tbody></table></div>
     <p class="small">ページを閉じる・再読込すると消えます。必要な履歴は一括保存してください。入力条件の変更・別の例の表示・「読み込み・表示をクリア」は選択中の対象だけを変更します。未確定の追記は切替時に取り消します。</p>
@@ -99,7 +99,7 @@
   </section>
   <div class="layout">
     <section class="scenario-panel" aria-labelledby="whatif-title">
-      <h2 id="whatif-title">履歴を残して別の条件と比較</h2>
+      <h2 id="whatif-title" tabindex="-1">履歴を残して別の条件と比較</h2>
       <p>同じ記録を最初から別の条件で再計算します。途中からの方針変更や将来の予測ではありません。元の履歴を残したまま比較できます。</p>
       <p id="whatif-context" class="small"></p><p id="whatif-version" class="small"></p>
       <div class="fields">
@@ -165,7 +165,7 @@
     </section>
   </div>
   <section aria-labelledby="scenario-set-title">
-    <h2 id="scenario-set-title">比較ケースを名前付きで残す</h2>
+    <h2 id="scenario-set-title" tabindex="-1">比較ケースを名前付きで残す</h2>
     <p>上で確認した条件比較を、最大12件・合計1 MiBのケース集にまとめられます。元の履歴と比較条件の両方を保持します。ページを閉じる前に保存してください。</p>
     <div class="fields">
       <label>ケースID<input id="scenario-set-id" maxlength="64" spellcheck="false" placeholder="dat-limit-50"></label>
@@ -192,7 +192,7 @@
     <details><summary>ケース集ファイルを選べない場合</summary><p class="small">1 MiB以内のケース集JSONを貼り付けて、置き換わる内容を確認できます。外部へ送信しません。</p><label>ケース集の内容<textarea id="scenario-set-text" rows="7" maxlength="1048577" spellcheck="false"></textarea></label><button id="scenario-set-paste" type="button">貼り付けたケース集を確認</button></details>
   </section>
   <section aria-labelledby="record-browser-title">
-    <h2 id="record-browser-title">3トークンの記録を探す</h2>
+    <h2 id="record-browser-title" tabindex="-1">3トークンの記録を探す</h2>
     <p>確定した試算履歴を読み取り専用で確認します。並び順はDAT・EMA・CAWELONごとの記録順で、共通の時系列やチェーン上の履歴を意味しません。</p>
     <p id="record-browser-scope" class="small"></p>
     <div class="fields"><label>検索する保存元<select id="record-browser-agent"><option value="all">すべて</option><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label>
@@ -213,7 +213,7 @@
     <p id="record-browser-related-status" class="small"></p><div class="table-wrap"><table><caption>同じ保存元の関連する記録</caption><thead><tr><th>順番・ID</th><th>種類</th><th>条件判定</th><th>詳細への移動</th></tr></thead><tbody id="record-browser-related"></tbody></table></div>
     <button id="record-browser-save" type="button" disabled>検索結果と元入力を保存</button> <button id="record-browser-csv-save" type="button" disabled aria-describedby="record-browser-csv-note">全一致記録をCSV保存</button><p id="record-browser-csv-note" class="small">CSVは表計算ソフトで読むための資料です。金額は最小単位の文字列です。桁数を保つには、表計算ソフトへの取り込みで全列を文字列に指定してください。履歴の復旧や資料の再確認にはJSONを使います。</p><p id="record-browser-export-status" class="small" role="status" aria-live="polite"></p>
   </section>
-  <section aria-labelledby="ledger-title"><h2 id="ledger-title">いまの履歴に1件追記</h2>
+  <section aria-labelledby="ledger-title"><h2 id="ledger-title" tabindex="-1">いまの履歴に1件追記</h2>
     <p>新形式の試算に、仮の記録を順番に追加できます。条件外の記録は見送りとして残ります。予約は資金を動かさず、他の用途に重ねて計上しないための仮の確保です。</p>
     <p id="ledger-details" class="small"></p>
     <p id="append-capacity" role="status" aria-live="polite"></p>
@@ -232,7 +232,7 @@
     <p id="append-summary" role="status" aria-live="polite"></p>
     <p class="small">追記の取り消しは対象ごとに最大10件です。対象の切替では保持します。別の例の表示、単発の再試算の完了、ファイル読込の確定で選択中の対象の取り消し履歴は消えます。入力条件の編集中や入力ミスの間は、変更前の履歴を保持します。一括復旧・ページを閉じる操作ではすべて消えます。旧形式は表示・保存でき、追記のために自動変換されません。</p>
   </section>
-  <section aria-labelledby="record-save-title"><h2 id="record-save-title">記録を保存・再確認</h2>
+  <section aria-labelledby="record-save-title"><h2 id="record-save-title" tabindex="-1">記録を保存・再確認</h2>
     <p>入力条件と仮の記録をJSONファイルで保存できます。読み込み後に再計算するため、保存済みの結果をそのまま信用しません。</p>
     <div class="actions"><button id="save" type="button" disabled>この試算の入力記録を保存</button>
       <button id="csv-save" type="button" disabled>計算の流れをCSV保存</button>
@@ -243,7 +243,7 @@
     <p id="preview" role="status" aria-live="polite"></p>
   </section>
   <section aria-labelledby="check-suite-title">
-    <h2 id="check-suite-title">保存した期待結果との比較</h2>
+    <h2 id="check-suite-title" tabindex="-1">保存した期待結果との比較</h2>
     <p>ケース集から保存した期待結果を再計算して照合します。元の条件・比較条件それぞれの最終金額9項目、未決済件数、予約を止める理由、各記録の判定と理由を確認します。</p>
     <label class="file-label">期待結果のファイル<input id="check-suite-file" type="file" accept=".json,application/json" aria-describedby="check-suite-file-note check-suite-status"></label>
     <button id="check-suite-clear" type="button">期待結果の確認をクリア</button>
@@ -263,7 +263,7 @@
     <p class="small">一致は期待結果の指定が正しいことや実際の残高、安全性を証明しません。相違がある場合も、原因を確認するための資料を保存できます。</p>
   </section>
   <section aria-labelledby="report-review-title">
-    <h2 id="report-review-title">保存した資料を再計算して確認</h2>
+    <h2 id="report-review-title" tabindex="-1">保存した資料を再計算して確認</h2>
     <p>確認一覧・復旧前の照合資料・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を読み取り専用で確認します。含まれる入力から再計算し、資料内の結果と照合します。現在の履歴には反映しません。</p>
     <label class="file-label">確認する資料ファイル<input id="report-review-file" type="file" accept=".json,application/json" aria-describedby="report-review-file-note report-review-status"></label>
     <p id="report-review-file-note" class="small" role="status" aria-live="polite"></p>
@@ -286,7 +286,7 @@
 <p id="report-review-difference-status" role="status" aria-live="polite"></p>
       <div class="actions"><button id="report-review-previous" type="button" disabled>前の40箇所</button><button id="report-review-next" type="button" disabled>次の40箇所</button></div>
       <div class="table-wrap"><table><caption>再計算と異なる項目（40箇所ずつ）</caption><thead><tr><th scope="col">資料内の場所</th><th scope="col">違い</th><th scope="col">値の確認</th></tr></thead><tbody id="report-review-differences"></tbody></table></div>
-      <pre id="report-review-difference-detail" tabindex="-1" aria-label="選んだ相違の値" hidden></pre>
+      <pre class="rehearsal-difference-detail" id="report-review-difference-detail" tabindex="-1" aria-label="選んだ相違の値" hidden></pre>
       <button id="report-review-difference-query-save" type="button" disabled>絞り込みに一致した相違をまとめて保存</button>
       <button id="report-review-difference-save" type="button" disabled>選んだ相違の値を省略せず保存</button>
     </div>
@@ -319,7 +319,7 @@
 <p id="report-evidence-difference-status" role="status" aria-live="polite"></p>
         <div class="actions"><button id="report-evidence-previous" type="button" disabled>前の40箇所</button><button id="report-evidence-next" type="button" disabled>次の40箇所</button></div>
         <div class="table-wrap"><table><caption>今回の再計算と異なる項目（40箇所ずつ）</caption><thead><tr><th scope="col">対象</th><th scope="col">場所</th><th scope="col">違い</th><th scope="col">値の確認</th></tr></thead><tbody id="report-evidence-differences"></tbody></table></div>
-        <pre id="report-evidence-difference-detail" tabindex="-1" aria-label="証拠から選んだ相違の値" hidden></pre>
+        <pre class="rehearsal-difference-detail" id="report-evidence-difference-detail" tabindex="-1" aria-label="証拠から選んだ相違の値" hidden></pre>
       <button id="report-evidence-difference-query-save" type="button" disabled>絞り込みに一致した相違をまとめて保存</button>
       <button id="report-evidence-difference-save" type="button" disabled>選んだ相違の値を省略せず保存</button>
       </div>

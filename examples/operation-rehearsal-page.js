@@ -44,7 +44,25 @@ const REVIEW_FIELDS = Object.freeze({ chainId: "ネットワーク番号", accou
 const REVIEW_ACTIONS = Object.freeze({ absent: "未作成のまま", added: "復旧する", removed: "履歴を消去する",
   unchanged: "内容は同じ", replaced: "置き換える" });
 
+/** Keep the existing fragment links, adding visible keyboard focus at their destinations. */
+export function mountRehearsalNavigation(document) {
+  let disposed=false;const listeners=[];
+  const allowed=new Set(["session-title","workspace-title","whatif-title","scenario-set-title","record-browser-title","ledger-title","check-suite-title","report-review-title","record-save-title","report-evidence-title"]);
+  for(const link of document.querySelectorAll?.("a[data-rehearsal-target]")??[]){
+    const id=link.getAttribute("data-rehearsal-target"),target=document.getElementById(id);
+    if(!allowed.has(id)||link.getAttribute("href")!=="#"+id||!target)continue;
+    const navigate=event=>{
+      if(disposed||event.defaultPrevented||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey||(event.button!==undefined&&event.button!==0))return;
+      for(let ancestor=target.parentElement;ancestor;ancestor=ancestor.parentElement)if(ancestor.tagName==="DETAILS")ancestor.open=true;
+      target.focus?.();
+    };
+    link.addEventListener("click",navigate);listeners.push(()=>link.removeEventListener("click",navigate));
+  }
+  return Object.freeze({dispose(){if(disposed)return;disposed=true;for(const remove of listeners)remove();}});
+}
+
 export function mountOperationRehearsal(document, download = offerWalletDownload) {
+  const navigation=mountRehearsalNavigation(document);
   const offerDownload = payload => requireSyncExport(download(payload));
   const fileReader = createFileReadScope();
   const get = name => document.getElementById(name);
@@ -603,7 +621,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   renderWorkspace();
   setWorkspaceStage("idle", "保存した記録を選ぶと、復旧前に変更内容を確認できます。自動保存は行いません。");
   return Object.freeze({ dispose() {
-    if (disposed) return; disposed = true; sessionPanel.dispose(); clear("表示を終了しました。",false,false,true); ledger.dispose();
+    if (disposed) return; disposed = true; navigation.dispose(); sessionPanel.dispose(); clear("表示を終了しました。",false,false,true); ledger.dispose();
     scenarioPanel.dispose();
     scenarioSetPanel.dispose();
     reportReviewPanel.dispose();
