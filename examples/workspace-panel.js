@@ -345,16 +345,28 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   }
   for (const item of [settings.item, histories.item, replace.item]) listen(item, "change", clearReview);
   for (const item of [confirmed.item, removal.item, undoConfirmed.item]) listen(item, "change", controls);
-  listen(json, "input", () => { reader.cancel(); clearReview(); });
+  listen(json, "input", () => {
+    const id = retireSave();
+    if (!current(id)) return;
+    reading = false;
+    clearReview();
+    if (!current(id)) return;
+    reader.cancel();
+  });
   listen(file, "change", () => {
     const files = file.files;
     if (!files?.length) return;
+    const id = retireSave();
+    if (!current(id)) return;
+    reading = false;
     clearReview();
+    if (!current(id)) return;
+    reader.cancel();
+    if (!current(id)) return;
+    file.value = "";
     if (files.length !== 1) {
-      reader.cancel();
       status.textContent = "一括バックアップは1ファイルずつ選んでください。";
     } else void reader.load(files[0]);
-    file.value = "";
   });
   const secureHost = node("div", "secure-host");
   section.append(heading, note, inspect, saveSummary, overview, save, backupStatus, secureHost,

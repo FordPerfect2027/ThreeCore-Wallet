@@ -142,14 +142,15 @@ export function mountCheckpointPanel({ document, parent, readDraft, onStage,
     void controller.applyImport(importText);
   });
   const importCancel = button("import-cancel", "控え一覧の読み込みを取り消す", () => {
-    readSequence++;
+    const token = ++readSequence;
     reading = false;
-    reader.cancel();
     importText = "";
     importConfirmed.checked = false;
     controller.cancelImport();
+    if (disposed || token !== readSequence) return;
     render(controller.state());
     status.textContent = "控え一覧の読み込みを取り消しました。";
+    reader.cancel();
   });
   function list(state) {
     const entries = state.metadata?.entries.filter(entry => entry.archived === !!filter.checked) ?? [];
@@ -219,7 +220,9 @@ export function mountCheckpointPanel({ document, parent, readDraft, onStage,
     if (!files?.length) return;
     const token = ++readSequence;
     reader.cancel();
+    if (disposed || token !== readSequence) return;
     controller.cancelImport();
+    if (disposed || token !== readSequence) return;
     importConfirmed.checked = false;
     importText = "";
     reading = true;

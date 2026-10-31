@@ -195,19 +195,26 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
   }
   listen(confirmed, "change", controls);
   listen(text, "input", () => {
-    reader.cancel();
-    cancelPreview();
+    const id = ++generation;
+    busy = false;
+    cancelPreview(false);
+    if (!current(id)) return;
     status.textContent = "JSONが変わりました。もう一度プレビューしてください。";
+    reader.cancel();
   });
   listen(file, "change", () => {
     const selected = file.files;
     if (!selected?.length) return;
-    cancelPreview();
+    const id = ++generation;
+    busy = false;
+    cancelPreview(false);
+    if (!current(id)) return;
+    reader.cancel();
+    if (!current(id)) return;
+    file.value = "";
     if (selected.length !== 1) {
-      reader.cancel();
       status.textContent = "設定ファイルは1つずつ選んでください。";
     } else void reader.load(selected[0]);
-    file.value = "";
   });
   section.append(heading, note, readiness, refreshButton, exportButton, save,
     label("設定ファイルを選択", file), label("保存・読み込み用の設定JSON", text),

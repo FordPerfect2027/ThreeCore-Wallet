@@ -1,3 +1,5 @@
+import { mountCheckpointPanel } from "/examples/checkpoint-panel.js";
+import { emptyCheckpointDocument } from "/src/checkpoint-model.js";
 import { mountOperationRehearsal } from "/examples/operation-rehearsal-page.js";
 import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "/src/operation-rehearsal-check-suite.js";
 import { REHEARSAL_SCENARIO_SET_SCHEMA } from "/src/operation-rehearsal-scenario-set.js";
@@ -53,6 +55,51 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  for (const kind of ["settings", "workspace"]) test("file-read: "+kind+" input cancellation preserves a newer native preview", async () => {
+    const host=document.createElement("div");document.body.append(host);
+    const fields=["DAT","EMA","CAWELON"].map((agent,index)=>({agent,account:"0x"+String(index+1).repeat(40),chainId:84532}));
+    const draft=fields.map(row=>({...row,tokenAddress:"",tokens:"",history:createPortfolioHistory().exportText()}));
+    const source=kind==="settings"?JSON.stringify({schema:WALLET_SETUP_SCHEMA,entries:fields}):JSON.stringify(workspaceFromDraft(draft));
+    let writes=0,entered=false,armed=false;
+    const panel=kind==="settings"?mountWalletSetupPanel({document,parent:host,readFields:()=>fields,applyPlan(){writes++;}})
+      :mountWorkspacePanel({document,parent:host,readDraft:()=>draft,writeDraft(){writes++;}});
+    const prefix=kind==="settings"?"wallet-setup-":"workspace-",field=name=>host.querySelector("."+prefix+name);
+    const baseline=walletFileReadService.state().cancelled,off=walletFileReadService.subscribe(state=>{
+      if(!armed||entered||state.cancelled<=baseline)return;entered=true;
+      field("json").value=source;field("json").dispatchEvent(new Event("input"));field("preview").click();
+    });
+    try {
+      const transfer=new DataTransfer();transfer.items.add(new File(["{}"],"older.json",{type:"application/json"}));
+      field("file").files=transfer.files;field("file").dispatchEvent(new Event("change"));armed=true;
+      field("json").value="{}";field("json").dispatchEvent(new Event("input"));await tick();
+      assert(entered,"Cancellation observer ran");
+      assert(field(kind==="settings"?"details":"detail").textContent.length>0,"New preview survives");
+      assert(!field(kind==="settings"?"confirm":"confirmed").disabled,"New preview remains confirmable");
+      assert(field("status").textContent.includes("まだ")&&writes===0,"Preview only, no writes");
+    }finally{armed=false;off();panel.dispose();host.remove();await tick();}
+  });
+
+  test("file-read: checkpoint replacement respects cancellation before admitting its file",async()=>{
+    const host=document.createElement("div");document.body.append(host);
+    const source=emptyCheckpointDocument(),storage={async read(){return source;},close(){}};
+    let entered=false,armed=false;
+    const panel=mountCheckpointPanel({document,parent:host,storage,readDraft:()=>[],onStage(){throw Error("Must not stage");}});
+    const field=name=>host.querySelector(".checkpoint-"+name);
+    const choose=name=>{const transfer=new DataTransfer();transfer.items.add(new File(["{}"],name,{type:"application/json"}));field("import-file").files=transfer.files;field("import-file").dispatchEvent(new Event("change"));};
+    const baseline=walletFileReadService.state().cancelled,off=walletFileReadService.subscribe(state=>{
+      if(!armed||entered||state.cancelled<=baseline)return;entered=true;field("import-cancel").click();
+    });
+    try{
+      field("refresh").click();await tick();
+      choose("older.json");armed=true;choose("replacement.json");await tick();
+      assert(entered,"Cancellation observer ran");
+      assert(field("panel").getAttribute("aria-busy")==="false","Cancelled replacement does not start another read");
+      assert(field("status").textContent.includes("取り消しました"),"Newer cancellation guidance survives");
+      assert(source.entries.length===0,"No checkpoint writes");
+    }finally{armed=false;off();panel.dispose();host.remove();await tick();}
+  });
+
+
   for(const kind of ["check","cases","session","report","workspace"])test("file-read: "+kind+" keeps a newer review started during native file cancellation",async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
