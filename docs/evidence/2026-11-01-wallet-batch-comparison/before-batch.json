@@ -1,0 +1,303 @@
+{
+  "schema": "threecore.wallet-saved-browser-batch.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "externalChecksumsCompared": false,
+  "phase": "complete",
+  "complete": true,
+  "allOriginalsValidated": false,
+  "summary": {
+    "selected": 7,
+    "checked": 7,
+    "pending": 0,
+    "validatedOriginals": 6,
+    "declaredOnly": 1,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "totalBytes": 311652
+  },
+  "files": [
+    {
+      "name": "same.json",
+      "byteLength": 51930,
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-history-file.v1",
+        "byteLength": 51930,
+        "title": "報告履歴のバックアップ",
+        "target": "history",
+        "destinationMessage": "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "b69b2183620e6095e236b84a1e7bef79bedab0e8766063dec50332a02bcb56cc",
+        "textDigest": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+        "scope": {
+          "reportCount": 4,
+          "archivedReports": 1,
+          "entryReferences": 12,
+          "draftReferences": 12,
+          "archivedEntryReferences": 0,
+          "restrictedEntryReferences": 0,
+          "incompleteDraftReferences": 1,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "name": "format.json",
+      "byteLength": 51930,
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-history-file.v1",
+        "byteLength": 51930,
+        "title": "報告履歴のバックアップ",
+        "target": "history",
+        "destinationMessage": "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "b69b2183620e6095e236b84a1e7bef79bedab0e8766063dec50332a02bcb56cc",
+        "textDigest": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+        "scope": {
+          "reportCount": 4,
+          "archivedReports": 1,
+          "entryReferences": 12,
+          "draftReferences": 12,
+          "archivedEntryReferences": 0,
+          "restrictedEntryReferences": 0,
+          "incompleteDraftReferences": 1,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "name": "changed.json",
+      "byteLength": 51930,
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-history-file.v1",
+        "byteLength": 51930,
+        "title": "報告履歴のバックアップ",
+        "target": "history",
+        "destinationMessage": "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "b69b2183620e6095e236b84a1e7bef79bedab0e8766063dec50332a02bcb56cc",
+        "textDigest": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+        "scope": {
+          "reportCount": 4,
+          "archivedReports": 1,
+          "entryReferences": 12,
+          "draftReferences": 12,
+          "archivedEntryReferences": 0,
+          "restrictedEntryReferences": 0,
+          "incompleteDraftReferences": 1,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "name": "different.json",
+      "byteLength": 51930,
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-history-file.v1",
+        "byteLength": 51930,
+        "title": "報告履歴のバックアップ",
+        "target": "history",
+        "destinationMessage": "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "b69b2183620e6095e236b84a1e7bef79bedab0e8766063dec50332a02bcb56cc",
+        "textDigest": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+        "scope": {
+          "reportCount": 4,
+          "archivedReports": 1,
+          "entryReferences": 12,
+          "draftReferences": 12,
+          "archivedEntryReferences": 0,
+          "restrictedEntryReferences": 0,
+          "incompleteDraftReferences": 1,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "name": "omitted.json",
+      "byteLength": 51930,
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-history-file.v1",
+        "byteLength": 51930,
+        "title": "報告履歴のバックアップ",
+        "target": "history",
+        "destinationMessage": "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "b69b2183620e6095e236b84a1e7bef79bedab0e8766063dec50332a02bcb56cc",
+        "textDigest": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+        "scope": {
+          "reportCount": 4,
+          "archivedReports": 1,
+          "entryReferences": 12,
+          "draftReferences": 12,
+          "archivedEntryReferences": 0,
+          "restrictedEntryReferences": 0,
+          "incompleteDraftReferences": 1,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "name": "unverified.json",
+      "byteLength": 72,
+      "sha256": "73ff18c17d8bf28dd9c2ac3c4341989d6935f545017d9bd46ad9c4c9b3d2dfe6",
+      "status": "declared-only",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.saved-file-inspection.v1",
+        "byteLength": 72,
+        "title": "補助資料の形式指定",
+        "target": null,
+        "destinationMessage": "これは保存ファイルの形式や開く場所を調べた案内です。元記録は含まれず、復元には使えません。調べる前の元のJSONを選んでください。",
+        "validation": "declared-only",
+        "checksumVerified": false,
+        "sourceDigest": null,
+        "textDigest": null,
+        "scope": null,
+        "originalEvidenceValidated": false,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "name": "=escaped.json",
+      "byteLength": 51930,
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-history-file.v1",
+        "byteLength": 51930,
+        "title": "報告履歴のバックアップ",
+        "target": "history",
+        "destinationMessage": "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "b69b2183620e6095e236b84a1e7bef79bedab0e8766063dec50332a02bcb56cc",
+        "textDigest": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae",
+        "scope": {
+          "reportCount": 4,
+          "archivedReports": 1,
+          "entryReferences": 12,
+          "draftReferences": 12,
+          "archivedEntryReferences": 0,
+          "restrictedEntryReferences": 0,
+          "incompleteDraftReferences": 1,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    }
+  ]
+}

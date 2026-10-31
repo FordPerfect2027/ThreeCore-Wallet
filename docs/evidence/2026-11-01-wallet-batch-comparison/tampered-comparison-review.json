@@ -1,0 +1,35 @@
+{
+  "schema": "threecore.wallet-saved-batch-comparison-review.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "containsOriginalEvidence": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "matchesRecomputation": false,
+  "beforeBindingMatches": true,
+  "afterBindingMatches": true,
+  "bothBatchesComplete": true,
+  "allSelectedOriginalsIdentical": false,
+  "expectedSummary": {
+    "files": 8,
+    "bothSelected": 6,
+    "onlyBefore": 1,
+    "onlyAfter": 1,
+    "identical": 2,
+    "formatOnly": 1,
+    "changedOriginal": 1,
+    "differentFormat": 1,
+    "unverified": 1
+  },
+  "comparisonTextDigest": "4d3763394e8d5ee49061c2e9cf6041d2ff79cf583e5368445bd4fd97e6bddcd3",
+  "beforeBatchDigest": "ec171c914ec91d22e7f64c9a685b4cc4595e035ad252f46dfb52aaff8816aaa3",
+  "afterBatchDigest": "f27b2b268c14659991d4f5d7be196ec409be8ef0bdfa594dca27d4fbcb4f8fab",
+  "expectedComparisonDigest": "d6662ccfabfc1a362e605257a03016b909a6c1fc3a55189c26031e5b682bd62b",
+  "differences": [
+    "allSelectedOriginalsIdentical",
+    "summary"
+  ],
+  "unexpectedFields": 0
+}
