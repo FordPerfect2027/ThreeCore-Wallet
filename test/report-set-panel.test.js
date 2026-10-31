@@ -5,6 +5,7 @@ import { mountReportSetPanel } from "../examples/report-set-panel.js";
 import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-file.js";
 import { prepareReportSetChecksFile } from "../src/report-set-export.js";
 import { decodePeriodReportFile } from "../src/period-report-file.js";
+import { decodePeriodFile } from "../src/period-file.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
   clone, id, AFTER, fileFrom, waitUntil, deferred } from "./helpers/report-set-fixtures.js";
 
@@ -35,6 +36,43 @@ function fixture(initial = sequenceHistory(), options = {}) {
   };
   return f;
 }
+
+test("choosing a proposed window exports an unread draft and changes clear selection and acknowledgement", async () => {
+  const initial = sequenceHistory([0n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+  const f = fixture(initial);
+  try {
+    await f.accept(); const before = f.mounted.getState().input;
+    f.click("history-queue-show"); f.set("history-queue-window", "1"); f.click("history-queue-choose");
+    assert.match(f.q("queue-window-selection").textContent, /36 ～ 42/); assert.equal(f.q("queue-window-json").disabled, true);
+    f.check("ack"); f.click("queue-window-json");
+    assert.equal(f.q("history-queue-size").disabled, true); assert.equal(f.q("history-queue-window").disabled, true);
+    await f.settled(); assert.equal(f.files.length, 1);
+    const decoded = await decodePeriodFile(f.files[0].text); assert.equal(decoded.draft.plan.earlierBlock, "35"); assert.equal(decoded.draft.plan.laterBlock, "42");
+    assert.equal(decoded.draft.earlier, null); assert.equal(decoded.draft.records.length, 0);
+    f.set("history-queue-size", "3", "input"); assert.equal(f.q("queue-window-json").disabled, true); assert.equal(f.q("ack").checked, false);
+    f.click("history-queue-show"); f.set("history-queue-window", "2"); f.click("history-queue-choose");
+    assert.match(f.q("queue-window-selection").textContent, /37 ～ 39/);
+    assert.equal(f.mounted.getState().input, before);
+    const oldChoose = f.q("history-queue-choose");
+    await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled(); oldChoose.click();
+    assert.match(f.q("queue-window-selection").textContent, /選択なし/); assert.equal(f.q("queue-window-json").disabled, true);
+  } finally { f.dispose(); }
+});
+
+test("whole-page draft selection is offered only for contiguous windows and keeps the saved span exact", async () => {
+  const transform = report => { const draft = report.slots[0].entry.draft; draft.earlier = null; draft.later = null; draft.records = []; };
+  const f = fixture(sequenceHistory([0n], transform));
+  try {
+    await f.accept(); f.set("history-queue-size", "1", "input"); f.click("history-queue-show");
+    assert.ok(f.q("history-queue-window").children.some(option => option.value === "page"));
+    f.set("history-queue-window", "page"); f.click("history-queue-choose"); f.check("ack"); f.click("queue-window-json"); await f.settled();
+    const decoded = await decodePeriodFile(f.files[0].text); assert.equal(decoded.draft.plan.earlierBlock, "32"); assert.equal(decoded.draft.plan.laterBlock, "42");
+    await f.file((await prepareReportSetFile(sequenceSet(sequenceHistory([0n, 24n], transform)))).text);
+    f.click("apply"); await f.settled(); f.click("history-queue-show");
+    assert.ok(!f.q("history-queue-window").children.some(option => option.value === "page"));
+    f.set("history-queue-window", "page"); assert.equal(f.q("history-queue-choose").disabled, true);
+  } finally { f.dispose(); }
+});
 
 test("set panel mounts with accessible labels and no reads or wallet calls", () => {
   const f = fixture();

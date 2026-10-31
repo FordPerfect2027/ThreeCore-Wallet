@@ -263,3 +263,11 @@ export function missingHistoryQueueText(value) {
     "予定の表示のみです。読み取りは実行していません。対象外の期間や保存記録の完全性は確認していません。");
   return lines.join("\n");
 }
+
+/** The whole page is one period only when no omitted interval lies between its rows. */
+export function missingHistoryPageRange(queue) {
+  if (!queue.items.length || !queue.items.every((row, index) => index === 0 ||
+      BigInt(row.toBlock) + 1n === BigInt(queue.items[index - 1].fromBlock))) return null;
+  return freezeSet({ number: "page", fromBlock: queue.items.at(-1).fromBlock, toBlock: queue.items[0].toBlock,
+    blocks: queue.pageBlocks, plannedReportIds: [...new Set(queue.items.flatMap(row => row.plannedReportIds))].sort() });
+}

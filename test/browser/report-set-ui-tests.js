@@ -3,6 +3,7 @@ import { createReportHistoryStorage } from "/src/report-history-storage.js";
 import { prepareReportSetFile, decodeReportSetFile } from "/src/report-set-file.js";
 import { prepareReportSetChecksFile } from "/src/report-set-export.js";
 import { decodePeriodReportFile } from "/src/period-report-file.js";
+import { decodePeriodFile } from "/src/period-file.js";
 import { analyzeReportSet } from "/src/report-set-engine.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
   clone, id, AFTER, waitUntil, deferred } from "/test/helpers/report-set-fixtures.js";
@@ -84,6 +85,37 @@ async function withDatabase(run) {
 }
 
 export function registerReportSetUITests(test) {
+  test("report set: a contiguous page saves ten unread windows in one period file", async () => {
+    const initial = sequenceHistory([0n], report => {
+      const draft = report.slots[0].entry.draft; draft.plan.laterBlock = "24030"; draft.plan.windowSize = 2000;
+      draft.earlier = null; draft.later = null; draft.records = [];
+    });
+    const f = fixture({ initial });
+    try {
+      await f.accept(); f.parent.querySelector(".report-set-history-coverage summary").click(); f.click("history-queue-show");
+      f.set("history-queue-window", "page"); f.click("history-queue-choose"); f.check("ack"); f.click("queue-window-json"); await f.settled();
+      const decoded = await decodePeriodFile(f.files[0].text);
+      assert(decoded.draft.plan.earlierBlock === "4030" && decoded.draft.plan.laterBlock === "24030" && decoded.draft.plan.windowSize === 2000);
+      assert(decoded.draft.earlier === null && decoded.draft.records.length === 0);
+      assert(f.q("queue-window-order").textContent.includes("古いブロックから順"));
+    } finally { f.dispose(); }
+  });
+  test("report set: a proposed missing interval saves as an empty period draft after acknowledgement", async () => {
+    const initial = sequenceHistory([0n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+    const f = fixture({ initial });
+    try {
+      await f.accept(); const before = f.mounted.getState().input;
+      f.parent.querySelector(".report-set-history-coverage summary").click();
+      f.click("history-queue-show"); f.set("history-queue-window", "1"); f.click("history-queue-choose");
+      assert(f.q("queue-window-selection").textContent.includes("36 ～ 42") && f.q("queue-window-json").disabled);
+      f.check("ack"); f.click("queue-window-json"); assert(f.q("history-queue-window").disabled); await f.settled();
+      const decoded = await decodePeriodFile(f.files[0].text);
+      assert(decoded.draft.plan.earlierBlock === "35" && decoded.draft.plan.laterBlock === "42");
+      assert(decoded.draft.earlier === null && decoded.draft.later === null && decoded.draft.records.length === 0);
+      f.set("history-queue-size", "3", "input");
+      assert(f.q("queue-window-json").disabled && !f.q("ack").checked && f.mounted.getState().input === before);
+    } finally { f.dispose(); }
+  });
   test("report set: missing-history proposals show 2,000 blocks times ten without executing reads", async () => {
     const initial = sequenceHistory([0n], report => {
       const draft = report.slots[0].entry.draft;

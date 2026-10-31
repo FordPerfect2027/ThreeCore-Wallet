@@ -15,6 +15,7 @@ export function mountReportSetPanel({ document, parent,
   let queryDocument = null, queryKey = null, queryRows = [];
   let diagnosticInput = null, diagnosticKey = null, diagnosticRows = null;
   let timelinePanel = null;
+  let queueSelection = null;
   const host = document.createElement("section");
   host.className = "report-set-panel";
   host.setAttribute("aria-label", "複数の保存報告の期間確認");
@@ -135,6 +136,10 @@ export function mountReportSetPanel({ document, parent,
   select("source-report", "個別に取り出す元レポート", [["", "元レポートを選んでください"]], exports);
   button("source-report-json", "選んだ元レポートをJSON保存", exports);
   make("p", "source-report-help", "元レポートJSONは期間レポート画面で再読込みできます。レポート内の全アドレス・履歴・メモを含み、上のメモ・短縮設定は適用されません。確認セットや保存一覧の付随情報は含めません。", exports);
+  make("p", "queue-window-selection", "", exports);
+  button("queue-window-json", "選んだ範囲を未取得の期間控えとして保存", exports);
+  make("p", "queue-window-help", "予定の1区間、または連続したページ全体を保存対象に選べます。ファイルにはアカウントの全アドレスと期間が入り、残高・履歴は未取得です。期間読み取り画面で開くための新しい控えで、元の証拠は含みません。", exports);
+  make("p", "queue-window-order", "期間読み取り画面では、開始・終了の残高を確認してから、古いブロックから順に履歴を読みます。ページ全体をまとめる場合、先頭から指定ブロック数ずつ区切り直すため、上の予定とは並び順や区切りが変わることがあります。読み取り開始は別の操作です。", exports);
 
   const checkReviewSection = make("section", "saved-check-review", undefined, result);
   make("h4", "saved-check-heading", "保存した確認箇所JSONを元資料と照合", checkReviewSection);
@@ -254,6 +259,7 @@ export function mountReportSetPanel({ document, parent,
   function buildResult(value) {
     timelinePanel?.dispose();
     timelinePanel = null;
+    queueSelection = null;
     cards.replaceChildren();
     ranges.replaceChildren();
     nodes["source-report"].replaceChildren();
@@ -262,7 +268,14 @@ export function mountReportSetPanel({ document, parent,
     }
     nodes["source-report"].value = "";
     if (!value) return;
-    timelinePanel = mountReportSetTimeline({ document, parent: timelineHost, input: state.input });
+    timelinePanel = mountReportSetTimeline({ document, parent: timelineHost, input: state.input,
+      onQueueSelection(selection, groupId) {
+        if (disposed) return;
+        if (selection === null && queueSelection?.query.groupId !== groupId) return;
+        queueSelection = selection;
+        nodes.ack.checked = false;
+        render(controller.state);
+      } });
     for (const token of value.tokens) {
       const card = document.createElement("article");
       card.className = "report-set-card";
@@ -332,6 +345,11 @@ export function mountReportSetPanel({ document, parent,
     nodes["check-review"].disabled = value.busy || !value.checkReview || !nodes.ack.checked;
     nodes["source-report"].disabled = value.busy || !value.input;
     nodes["source-report-json"].disabled = value.busy || !nodes.ack.checked || !value.input?.entries.some(entry => entry.id === nodes["source-report"].value);
+    nodes["queue-window-json"].disabled = value.busy || !value.input || !nodes.ack.checked || !queueSelection;
+    nodes["queue-window-selection"].textContent = queueSelection ? "未取得の控えの保存対象: " + queueSelection.context.agent +
+      " / Chain " + queueSelection.context.chainId + " / " + queueSelection.context.account + " / " +
+      queueSelection.window.fromBlock + " ～ " + queueSelection.window.toBlock : "未取得の控えの保存対象: 選択なし";
+    timelinePanel?.setBusy(value.busy);
     review.hidden = !value.review;
     nodes["review-text"].textContent = value.review ? [
       "出所: " + (value.review.origin === "file" ? "確認セットJSON" : "PC内の保存履歴"),
@@ -372,6 +390,9 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });
   listen(nodes["source-report"], "change", () => render(controller.state));
   listen(nodes["source-report-json"], "click", () => { void controller.exportSourceReport(nodes["source-report"].value, nodes.ack.checked, download); });
+  listen(nodes["queue-window-json"], "click", () => {
+    if (queueSelection) void controller.exportMissingDraft(queueSelection.query, queueSelection.window.number, nodes.ack.checked, download);
+  });
   for (const format of ["json", "html", "csv", "checks-csv", "checks-json"]) {
     listen(nodes[format], "click", () => { void controller.exportFile(format, nodes.ack.checked, download,
       { includeNotes: nodes.notes.checked, shortAddresses: nodes["short-addresses"].checked }, format.startsWith("checks-") ? checkQuery() : undefined); });

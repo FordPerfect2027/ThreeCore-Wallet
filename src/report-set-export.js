@@ -2,9 +2,12 @@ import { parseSecurityJson } from "./security-json.js";
 import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { validateReportSet, validateSetExportOptions, validateSetSelection, freezeSet } from "./report-set-model.js";
-import { periodFail } from "./period-plan.js";
+import { periodFail, createPeriodPlan } from "./period-plan.js";
 import { prepareReportSetFile } from "./report-set-file.js";
 import { preparePeriodReportFile } from "./period-report-file.js";
+import { preparePeriodFile } from "./period-file.js";
+import { emptyPeriodDraft } from "./period-draft.js";
+import { reportSetMissingHistoryQueue, missingHistoryPageRange } from "./report-set-timeline.js";
 import { analyzeReportSet } from "./report-set-engine.js";
 import { reportSetDiagnostics, querySetDiagnostics, diagnosticQuery, diagnosticText } from "./report-set-diagnostics.js";
 import { escapeReportHTML } from "./period-report-export.js";
@@ -197,4 +200,22 @@ export async function prepareReportSetSourceFile(value, idValue, fileOptions = {
   const file = await preparePeriodReportFile(entry.report, fileOptions);
   return Object.freeze({ ...file, filename: "ThreeCore-period-report-" + id + ".json",
     sourceReportId: id, sourceReportLabel: entry.label, containsOriginalEvidence: true });
+}
+
+/** A new empty draft for a proposed window or contiguous page. No original evidence is copied. */
+export async function prepareMissingHistoryDraftFile(value, query, number, fileOptions = {}) {
+  const queue = reportSetMissingHistoryQueue(value, query);
+  if (typeof number !== "string") periodFail("PERIOD_SET_QUEUE_WINDOW");
+  const window = number === "page" ? missingHistoryPageRange(queue) : queue.items.find(row => row.number === number);
+  if (number === "page" && queue.items.length && !window) periodFail("PERIOD_SET_QUEUE_DISJOINT");
+  if (!window) periodFail("PERIOD_SET_QUEUE_WINDOW");
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const draft = emptyPeriodDraft(createPeriodPlan({ context: queue.context,
+    earlierBlock: (BigInt(window.fromBlock) - 1n).toString(), laterBlock: window.toBlock,
+    windowSize: number === "page" ? queue.query.windowSize : Number(window.blocks) }));
+  const file = await preparePeriodFile(draft, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-unread-period-" + queue.context.agent + ".json",
+    encrypted: false, containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: window });
 }
