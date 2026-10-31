@@ -1,0 +1,40 @@
+✔ shared detail-file reading accepts UTF-8 and rejects oversized, misnamed or malformed encodings (12.4776ms)
+✔ screen review requires an accepted original and never writes report storage (545.1414ms)
+✔ screen review reports altered observations as differences without repairing either source (242.8711ms)
+✔ review receipt needs acknowledgement, preserves exact completed result and retries refused delivery (212.8687ms)
+✔ invalid follow-up detail file preserves the last completed comparison (215.0077ms)
+✔ a cancelled old read cannot replace a newer completed comparison (242.2634ms)
+✔ accepting a different original clears its predecessor's comparison and receipt (235.4037ms)
+✔ disposal during file reading cannot publish a comparison afterwards (115.0252ms)
+✔ set panel mounts with accessible labels and no reads or wallet calls (211.3316ms)
+✔ loading retains explicit empty selection and native checkboxes (255.0319ms)
+✔ selection changes keep focused checkbox nodes and do not duplicate handlers (166.4341ms)
+✔ filtering never silently deselects hidden reports (180.4863ms)
+✔ clearing selection clears hidden choices too (183.2333ms)
+✔ archive filtering adds an archived report explicitly without restoring it (423.8557ms)
+✔ invalid filter input shows a useful message and preserves selected evidence (144.5516ms)
+✔ review and application are separate actions with three token cards (228.3269ms)
+✔ editing the name invalidates a pending review (69.1213ms)
+✔ source change during review is shown and never overwrites old accepted evidence (196.0035ms)
+✔ source inspection keeps the frozen set and describes later metadata changes (187.2068ms)
+✔ new result clears export acknowledgement; selection editing does not replace that result (160.8787ms)
+✔ privacy controls apply to explanation files while JSON retains complete evidence (221.9993ms)
+✔ JSON import stages a review before display and never inserts history rows (133.4818ms)
+✔ tampered file keeps previous output visible and reports checksum failure (213.5299ms)
+✔ diagnostic filtering narrows visible checks without changing the result (423.1372ms)
+✔ diagnostic malformed query never reports zero unresolved checks (325.5667ms)
+✔ all untrusted names are rendered as text nodes, including diagnostics (85.9297ms)
+✔ busy state disables edits and cancelling suppresses a late read (105.6624ms)
+✔ panel disposal removes listeners and closes only its own storage adapter (73.0703ms)
+✔ filtered checklist CSV preserves source summary on zero matches and respects export controls (538.7591ms)
+✔ visible check references can be searched and exported without changing source conclusions (126.0559ms)
+✔ check-detail JSON saves exact observations with the selected disclosure controls (131.119ms)
+✔ saved check details are compared on screen and the completed result can be saved (189.4622ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5537.8609

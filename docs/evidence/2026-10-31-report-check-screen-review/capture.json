@@ -1,0 +1,25 @@
+{
+  "source": "aa114b2",
+  "synthetic": true,
+  "captureEnvironment": "Node executing the shared screen controller with synthetic File adapters; native UI is verified separately",
+  "rows": [
+    {
+      "name": "matching",
+      "details": "full-details.json",
+      "matches": true,
+      "sharedFieldsMatchPriorCLI": true,
+      "sourceUnchanged": true,
+      "bytes": 854,
+      "restorable": false
+    },
+    {
+      "name": "changed",
+      "details": "changed-details.json",
+      "matches": false,
+      "sharedFieldsMatchPriorCLI": true,
+      "sourceUnchanged": true,
+      "bytes": 870,
+      "restorable": false
+    }
+  ]
+}
