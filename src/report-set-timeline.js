@@ -74,9 +74,13 @@ export function historyCoverageCellText(cell) {
   return lines.join("\n");
 }
 
+const timelines = new WeakMap();
+
 /** Discrete ordered cells avoid losing tiny intervals beside very large gaps. */
 export function reportSetTimeline(value) {
   const input = validateReportSet(value);
+  const previous = timelines.get(input);
+  if (previous) return Object.freeze({ ...previous });
   const analysis = analyzeReportSet(input);
   const reports = new Map(input.entries.map(entry => [entry.id, entry]));
   const groups = [];
@@ -145,7 +149,7 @@ export function reportSetTimeline(value) {
     });
   }
 
-  return freezeSet({
+  const result = freezeSet({
     groups,
     groupCount: groups.length,
     cellCount: groups.reduce((sum, group) => sum + group.cells.length, 0),
@@ -155,6 +159,8 @@ export function reportSetTimeline(value) {
     liveChainRechecked: false,
     tokenAmountsSummed: false,
   });
+  timelines.set(input, result);
+  return Object.freeze({ ...result });
 }
 
 export function timelineCellLabel(cell) {

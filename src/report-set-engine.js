@@ -95,9 +95,13 @@ function summarizeGroup(rows, entriesById) {
   };
 }
 
+const analyses = new WeakMap();
+
 /** Group by full token/chain/contract/account context. No cross-context arithmetic. */
 export function analyzeReportSet(value) {
   const input = validateReportSet(value);
+  const previous = analyses.get(input);
+  if (previous) return Object.freeze({ ...previous });
   const entriesById = new Map(input.entries.map(entry => [entry.id, entry]));
   const reports = input.entries.map(entry => ({ entry, analysis: analyzePeriodReport(entry.report) }));
   const allRows = [];
@@ -142,7 +146,7 @@ export function analyzeReportSet(value) {
   if (anchors.conflicts.length || anchors.invalid.length) issues.push("HASH_CONFLICTS");
   if (reports.some(row => !row.analysis.allArithmeticAgreement)) issues.push("REPORTS_NEED_REVIEW");
   const allContinuous = issues.length === 0 && tokens.every(token => token.continuous);
-  return freezeSet({ title: input.title, createdAt: input.createdAt, reportCount: input.entries.length,
+  const result = freezeSet({ title: input.title, createdAt: input.createdAt, reportCount: input.entries.length,
     sourceRevision: input.sourceRevision, archivedCount: input.entries.filter(entry => entry.archived).length,
     reports: reports.map(({ entry, analysis }) => ({ id: entry.id, label: entry.label,
       title: entry.report.title, status: analysis.status, savedAt: entry.savedAt,
@@ -150,4 +154,6 @@ export function analyzeReportSet(value) {
     tokens, anchors, issues, allContinuous, status: allContinuous ? "continuous" : "review-needed",
     eventsCombined: false, tokenAmountsSummed: false, liveChainRechecked: false,
     independentlyVerified: false, provesProfit: false });
+  analyses.set(input, result);
+  return Object.freeze({ ...result });
 }
