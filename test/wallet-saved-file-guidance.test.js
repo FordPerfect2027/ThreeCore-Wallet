@@ -5,7 +5,7 @@ import { preparePeriodFile, decodePeriodFile } from "../src/period-file.js";
 import { preparePeriodReportFile, decodePeriodReportFile } from "../src/period-report-file.js";
 import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-file.js";
 import { prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareReportSetCoverageFile,
-  reviewReportSetChecksFile, reviewReportSetComparisonFile } from "../src/report-set-export.js";
+  reviewReportSetChecksFile, reviewReportSetComparisonFile, prepareReportSetEventComparisonFile, reviewReportSetEventComparisonFile } from "../src/report-set-export.js";
 import { periodMessage } from "../src/period-view.js";
 import { reportErrorText } from "../src/period-report-view.js";
 import { setErrorText } from "../src/report-set-view.js";
@@ -13,6 +13,8 @@ import { sequenceSet, demoSetHistory } from "./helpers/report-set-fixtures.js";
 
 const source = sequenceSet(), after = sequenceSet(demoSetHistory());
 const routes = [
+  ["threecore.saved-event-comparison-file.v1", "event-comparison", "PERIOD_FILE_EVENT_COMPARISON_ONLY", "保存した履歴比較JSONを元資料と照合"],
+  ["threecore.saved-event-comparison-review.v1", null, "PERIOD_FILE_EVENT_REVIEW_ONLY", "元の確認セットJSONと履歴比較JSON"],
   ["threecore.period-file.v1", "period", "PERIOD_FILE_USE_PERIOD", "控えの保存と復元"],
   ["threecore.period-report-file.v1", "report", "PERIOD_FILE_USE_REPORT", "3つの記録を、一つの報告に"],
   ["threecore.report-set-file.v1", "set", "PERIOD_FILE_USE_SET", "保存した確認セットを開く"],
@@ -24,6 +26,7 @@ const routes = [
   ["threecore.missing-history-queue.v1", null, "PERIOD_FILE_QUEUE_ONLY", "未取得の期間控え"],
 ];
 const decoders = {
+  "event-comparison": text => reviewReportSetEventComparisonFile(source, text),
   period: decodePeriodFile, report: decodePeriodReportFile, set: decodeReportSetFile,
   checks: text => reviewReportSetChecksFile(source, text), comparison: text => reviewReportSetComparisonFile(source, after, text),
 };
@@ -45,6 +48,8 @@ test("all existing supported artifacts still undergo their complete successful v
   const checks = await prepareReportSetChecksFile(source), comparison = await prepareReportSetComparisonFile(source, after);
   assert.equal((await reviewReportSetChecksFile(source, checks.text)).matchesRecomputation, true);
   assert.equal((await reviewReportSetComparisonFile(source, after, comparison.text)).matchesRecomputation, true);
+  const events = await prepareReportSetEventComparisonFile(source, { beforeId: source.entries[0].id, afterId: source.entries[1].id, agent: "DAT" });
+  assert.equal((await reviewReportSetEventComparisonFile(source, events.text)).matchesRecomputation, true);
 });
 test("real exported explanation files receive guidance instead of being treated as restorable sources", async () => {
   const files = [await prepareReportSetChecksFile(source), await prepareReportSetComparisonFile(source, after), await prepareReportSetCoverageFile(source)];

@@ -444,7 +444,7 @@ export async function prepareReportSetEventComparisonFile(value, query, fileOpti
   const source = await prepareReportSetFile(input, options);
   const text = JSON.stringify({ schema: "threecore.saved-event-comparison-file.v1", sourcePayloadDigest: source.digest,
     comparison, encrypted: false, authenticated: false, restorable: false, authorizesExecution: false }, null, 2) + "\n";
-  try { boundedUtf8Length(text, 24 * 1024 * 1024); } catch { periodFail("PERIOD_SET_EVENT_SIZE"); }
+  try { boundedUtf8Length(text, REPORT_SET_EVENT_COMPARISON_LIMIT); } catch { periodFail("PERIOD_SET_EVENT_SIZE"); }
   return Object.freeze({ ...resultFile(text, "json", "application/json"), filename: "ThreeCore-saved-event-comparison.json",
     sourcePayloadDigest: source.digest, containsOriginalEvidence: true });
 }
@@ -464,4 +464,41 @@ export async function prepareReportSetEventRecheckFile(value, query, selection, 
   const file = await preparePeriodFile(prepared.draft, options);
   return Object.freeze({ ...file, filename: "ThreeCore-unread-event-recheck-" + prepared.draft.plan.context.agent + ".json",
     containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: prepared.selectedRange, executed: false });
+}
+
+export const REPORT_SET_EVENT_COMPARISON_LIMIT = 24 * 1024 * 1024;
+
+/** Recompute the saved comparison from its declared pair in the accepted source. */
+export async function reviewReportSetEventComparisonFile(value, text, fileOptions = {}) {
+  const input = validateReportSet(value);
+  let options, supplied;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_EVENT_COMPARISON_LIMIT }); }
+  catch { periodFail("PERIOD_SET_EVENT_FILE_JSON"); }
+  const targetCode = walletSavedFileTargetCode(supplied?.schema, "event-comparison");
+  if (targetCode) periodFail(targetCode);
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== "threecore.saved-event-comparison-file.v1") periodFail("PERIOD_SET_EVENT_FILE_SCHEMA");
+  const query = compareReportSetEvents(input, supplied.comparison?.query).query;
+  const expected = JSON.parse((await prepareReportSetEventComparisonFile(input, query, options)).text);
+  let comparisonTextSha256;
+  try { comparisonTextSha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle, { signal: options.signal, timeoutMs: options.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || !sameCheckJSON(supplied[key], expected[key]));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  const comparison = expected.comparison;
+  return freezeSet({ schema: "threecore.saved-event-comparison-review.v1",
+    matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    sourcePayloadDigest: expected.sourcePayloadDigest, sourceDigestMatches: supplied.sourcePayloadDigest === expected.sourcePayloadDigest,
+    comparisonTextSha256, query, differences, unexpectedFields,
+    comparisonStatus: comparison.status, comparedBlocks: comparison.comparedBlocks,
+    counts: comparison.counts, sharedAnchorCount: comparison.sharedAnchorCount, anchorDifferenceCount: comparison.anchorDifferences.length,
+    readOnly: true, historicalOnly: true, liveChainRechecked: false, authenticated: false,
+    encrypted: false, restorable: false, containsOriginalEvidence: false, authorizesExecution: false });
+}
+
+export async function readReportSetEventComparisonText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_EVENT_COMPARISON_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_EVENT_SIZE", readCode: "PERIOD_SET_EVENT_FILE_READ", encodingCode: "PERIOD_SET_EVENT_FILE_ENCODING", signal, timeoutMs });
 }

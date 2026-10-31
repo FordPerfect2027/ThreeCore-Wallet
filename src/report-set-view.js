@@ -18,6 +18,11 @@ export const SET_ISSUES = Object.freeze({
 export const SET_SEGMENTS = Object.freeze({ single: "計画1件", gap: "計画の抜け", overlap: "計画の重複", repeated: "同じ証拠の重複" });
 export const SET_SOURCE_STATUS = Object.freeze({ exact: "保存内容と一致", metadata: "名前・メモ・保管状態が変更", changed: "報告の証拠が変更", missing: "保存番号が見つからない" });
 const ERRORS = Object.freeze({
+  PERIOD_SET_EVENT_FILE_JSON: "履歴比較のJSONを読み取れませんでした。保存した元のファイルを確認してください。",
+  PERIOD_SET_EVENT_FILE_SCHEMA: "保存済み履歴の比較JSONを選んでください。",
+  PERIOD_SET_EVENT_FILE_READ: "履歴比較ファイルを読み込めませんでした。",
+  PERIOD_SET_EVENT_FILE_ENCODING: "履歴比較はUTF-8のJSONを選んでください。",
+  PERIOD_SET_EVENT_NO_REVIEW: "先に保存した履歴比較ファイルを元資料と照合してください。",
   PERIOD_SET_EMPTY: "確認する報告を1件以上選んでください。",
   PERIOD_SET_SCHEMA: "対応する確認セットの形式ではありません。",
   PERIOD_SET_TITLE: "確認名を確認してください。",
@@ -220,4 +225,18 @@ export function setEventComparisonText(value, page = 0) {
   }
   lines.push("", "保存資料同士の比較です。片方に記録がない理由や正しい取得元は確定できません。現在のチェーン照合・履歴の統合・送金は行いません。");
   return lines.join("\n");
+}
+
+export function setEventComparisonReviewText(value) {
+  if (!value) return "元の確認セットを開き、保存した履歴比較JSONを選んで再計算と照合します。ファイルに記載された資料A・B・トークンを使います。";
+  const meanings = { "saved-observations-match": "共通範囲の保存観測は一致", differences: "保存観測に食い違いあり", "no-common-coverage": "共通取得範囲がなく比較未成立" };
+  return ["最後に完了した履歴比較ファイルの照合:",
+    value.matchesRecomputation ? "ファイルの内容は再計算と一致しました。" : "ファイルの内容に再計算との食い違いがあります。",
+    "元資料の検査値: " + (value.sourceDigestMatches ? "一致" : "不一致"),
+    "資料A: " + value.query.beforeId, "資料B: " + value.query.afterId, "トークン: " + value.query.agent,
+    "再計算した履歴比較: " + meanings[value.comparisonStatus] + " / 共通範囲 " + value.comparedBlocks + "ブロック",
+    "同一 " + value.counts.matching + " / 内容違い " + value.counts.changed + " / Aだけ " + value.counts.onlyBefore + " / Bだけ " + value.counts.onlyAfter + " / ブロックハッシュ不一致 " + value.anchorDifferenceCount,
+    "異なる項目: " + (value.differences.join(", ") || "なし") + " / 余分な項目: " + value.unexpectedFields,
+    "履歴比較ファイルのテキスト SHA-256: " + value.comparisonTextSha256,
+    "ファイルと再計算の一致は、A・Bの履歴が一致したという意味とは別です。出所や現在のチェーン状態を認証せず、資料の差し替え・履歴の統合も行いません。"].join("\n");
 }

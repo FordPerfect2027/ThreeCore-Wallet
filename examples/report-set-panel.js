@@ -6,7 +6,7 @@ import { queryReportHistory } from "../src/report-history-query.js";
 import { querySetDiagnostics, diagnosticText } from "../src/report-set-diagnostics.js";
 import { mountReportSetTimeline } from "./report-set-timeline-panel.js";
 import { SET_LIMITATION, SET_SEGMENTS, setErrorText, setSummaryText,
-  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText, setEventComparisonText } from "../src/report-set-view.js";
+  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText, setEventComparisonText, setEventComparisonReviewText } from "../src/report-set-view.js";
 
 export function mountReportSetPanel({ document, parent,
   storage = createReportHistoryStorage(), now, stagePeriodProposal = null,
@@ -19,7 +19,7 @@ export function mountReportSetPanel({ document, parent,
   let queueSelection = null;
   let eventComparison = null, eventPage = 0;
   let eventRecheck = null, recheckModel = null, recheckPage = null;
-  let lastReview = null, lastEvidenceReview = null;
+  let lastReview = null, lastEvidenceReview = null, lastEventReview = null;
   const host = document.createElement("section");
   host.className = "report-set-panel";
   host.setAttribute("aria-label", "複数の保存報告の期間確認");
@@ -181,6 +181,13 @@ export function mountReportSetPanel({ document, parent,
   make("p", "proposal-help", typeof stagePeriodProposal === "function" ? "選んだ予定は、読み取り画面の確認欄へ直接渡せます。現在の控えへの反映・読み取り開始は、その画面で確認してから行います。" : "この単独画面では直接受け渡しを利用できません。未取得の控えをJSON保存し、期間読み取り画面で開いてください。", exports);
   make("p", "queue-window-help", "予定の1区間、または連続したページ全体を保存対象に選べます。ファイルにはアカウントの全アドレスと期間が入り、残高・履歴は未取得です。期間読み取り画面で開くための新しい控えで、元の証拠は含みません。", exports);
   make("p", "queue-window-order", "期間読み取り画面では、開始・終了の残高を確認してから、古いブロックから順に履歴を読みます。ページ全体をまとめる場合、先頭から指定ブロック数ずつ区切り直すため、上の予定とは並び順や区切りが変わることがあります。読み取り開始は別の操作です。", exports);
+
+  const eventReviewSection = make("section", "event-review-section", undefined, result);
+  make("h4", "event-review-heading", "保存した履歴比較JSONを元資料と照合", eventReviewSection);
+  field("event-review-file", "履歴比較JSONを選ぶ（最大24 MiB）", "file", eventReviewSection).accept = ".json,application/json";
+  make("pre", "event-review-output", setEventComparisonReviewText(null), eventReviewSection);
+  field("event-review-ack", "照合結果に元資料の識別値・件数・検査値が含まれ、暗号化されないことを確認しました", "checkbox", eventReviewSection);
+  button("event-review-json", "最後に完了した履歴比較の照合結果を保存", eventReviewSection);
 
   const checkReviewSection = make("section", "saved-check-review", undefined, result);
   make("h4", "saved-check-heading", "保存した確認箇所JSONを元資料と照合", checkReviewSection);
@@ -449,6 +456,11 @@ export function mountReportSetPanel({ document, parent,
     nodes.prepare.disabled = value.busy || !value.loaded || !value.selection.length;
     nodes.apply.disabled = value.busy || !value.review;
     nodes.file.disabled = value.busy;
+    if (lastEventReview !== value.eventComparisonReview) { lastEventReview = value.eventComparisonReview; nodes["event-review-ack"].checked = false; }
+    nodes["event-review-file"].disabled = value.busy || !value.input;
+    nodes["event-review-output"].textContent = setEventComparisonReviewText(value.eventComparisonReview);
+    nodes["event-review-ack"].disabled = value.busy || !value.eventComparisonReview;
+    nodes["event-review-json"].disabled = value.busy || !value.eventComparisonReview || !nodes["event-review-ack"].checked;
     nodes["check-file"].disabled = value.busy || !value.input;
     nodes["check-review-output"].textContent = setCheckReviewText(value.checkReview);
     nodes["check-review"].disabled = value.busy || !value.checkReview || !nodes.ack.checked;
@@ -558,6 +570,12 @@ export function mountReportSetPanel({ document, parent,
     const file = nodes.file.files?.[0];
     nodes.file.value = "";
     if (file) void controller.importFile(file);
+  });
+  listen(nodes["event-review-ack"], "change", () => render(controller.state));
+  listen(nodes["event-review-json"], "click", () => { void controller.exportEventComparisonReview(nodes["event-review-ack"].checked, download); });
+  listen(nodes["event-review-file"], "change", () => {
+    const file = nodes["event-review-file"].files?.[0]; nodes["event-review-file"].value = "";
+    if (file) void controller.reviewEventComparisonFile(file);
   });
   listen(nodes["check-file"], "change", () => {
     const file = nodes["check-file"].files?.[0];

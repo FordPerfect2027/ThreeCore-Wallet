@@ -9,24 +9,24 @@ import { diagnosticQuery } from "./report-set-diagnostics.js";
 import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile,
   readReportSetChecksText, reviewReportSetChecksFile, prepareReportSetSourceFile, prepareMissingHistoryDraftFile,
   prepareReportSetComparisonFile, prepareReportSetCoverageFile, readReportSetComparisonText, reviewReportSetComparisonFile, prepareReportSetComparisonEvidenceFile,
-  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence, prepareComparisonEvidenceSourceFile, prepareReportSetEventComparisonFile, prepareReportSetEventRecheckFile, buildMissingHistoryDraft, buildEventRecheckDraft } from "./report-set-export.js";
+  readReportSetComparisonEvidenceText, reviewReportSetComparisonEvidence, prepareComparisonEvidenceSourceFile, prepareReportSetEventComparisonFile, prepareReportSetEventRecheckFile, buildMissingHistoryDraft, buildEventRecheckDraft, reviewReportSetEventComparisonFile, readReportSetEventComparisonText } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
 /** Read-only storage consumer. Selected evidence is pinned before presentation. */
 export function createReportSetController({ storage, onChange = () => {},
   now = () => new Date().toISOString(), readFile = readReportSetFile,
-  prepareFile = prepareReportSetFile, readChecksText = readReportSetChecksText, readComparisonText = readReportSetComparisonText, readEvidenceText = readReportSetComparisonEvidenceText } = {}) {
-  if (!storage || ![storage.read, storage.close, onChange, now, readFile, prepareFile, readChecksText, readComparisonText, readEvidenceText]
+  prepareFile = prepareReportSetFile, readChecksText = readReportSetChecksText, readComparisonText = readReportSetComparisonText, readEvidenceText = readReportSetComparisonEvidenceText, readEventComparisonText = readReportSetEventComparisonText } = {}) {
+  if (!storage || ![storage.read, storage.close, onChange, now, readFile, prepareFile, readChecksText, readComparisonText, readEvidenceText, readEventComparisonText]
     .every(value => typeof value === "function")) periodFail("PERIOD_SET_OPTIONS");
   let document = emptyReportHistory(), loaded = false, selection = Object.freeze([]);
   let input = null, result = null, review = null, inspection = null, origin = null;
-  let checkReview = null, comparisonReview = null, evidenceReview = null;
+  let checkReview = null, comparisonReview = null, evidenceReview = null, eventComparisonReview = null;
   let phase = "idle", error = null, generation = 0, disposed = false;
   let active = null;
   let message = "保存した報告を読み込み、まとめて確認する対象を選んでください。";
-  const busy = () => ["loading", "importing", "checking", "exporting", "inspecting", "checking-details", "checking-comparison", "checking-evidence"].includes(phase);
-  const state = () => Object.freeze({ document, loaded, selection, input, result, review, inspection, checkReview, comparisonReview, evidenceReview,
+  const busy = () => ["loading", "importing", "checking", "exporting", "inspecting", "checking-details", "checking-comparison", "checking-evidence", "checking-events"].includes(phase);
+  const state = () => Object.freeze({ document, loaded, selection, input, result, review, inspection, checkReview, comparisonReview, evidenceReview, eventComparisonReview,
     origin, phase, error, message, busy: busy(), disposed });
   let notificationRevision = 0;
   const observers = new Set([() => onChange(state())]);
@@ -158,7 +158,7 @@ export function createReportSetController({ storage, onChange = () => {},
         return { fresh, input: validateReportSet(pending.input), result: analyzeReportSet(pending.input) };
       }, value => {
         if (value.fresh) { document = value.fresh; loaded = true; }
-        input = value.input; result = value.result; origin = pending.origin; inspection = null; checkReview = null;
+        input = value.input; result = value.result; origin = pending.origin; inspection = null; checkReview = null; eventComparisonReview = null;
         message = "確認セットを作成しました。選択した時点の証拠を固定して表示しています。";
       });
     } catch (value) { return fail(value); }
@@ -465,13 +465,51 @@ export function createReportSetController({ storage, onChange = () => {},
     } catch (value) { return fail(value, token); }
   }
 
+  async function reviewEventComparisonFile(file) {
+    try {
+      if (!guard()) return false;
+      if (!input) periodFail("PERIOD_SET_NO_RESULT");
+      const snapshot = input;
+      return await run("checking-events", async (same, signal) => {
+        const text = await readEventComparisonText(file, { signal });
+        if (!same()) return null;
+        return reviewReportSetEventComparisonFile(snapshot, text, { signal });
+      }, value => {
+        eventComparisonReview = value; phase = review ? "review" : "ready";
+        message = value.matchesRecomputation ? "保存した履歴比較が、元資料からの再計算と一致しました。" : "保存した履歴比較と元資料からの再計算に食い違いがあります。元資料は変更していません。";
+      });
+    } catch (value) { return fail(value); }
+  }
+  async function exportEventComparisonReview(acknowledged, deliver) {
+    let token = generation;
+    try {
+      if (!guard()) return false;
+      token = ++generation;
+      if (!eventComparisonReview) periodFail("PERIOD_SET_EVENT_NO_REVIEW");
+      if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
+      if (typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      const checked = eventComparisonReview;
+      return await run("exporting", async same => {
+        const text = JSON.stringify(checked, null, 2) + "\n";
+        const file = Object.freeze({ text, filename: "ThreeCore-saved-event-comparison-review.json",
+          mimeType: "application/json;charset=utf-8", byteLength: new TextEncoder().encode(text).byteLength,
+          encrypted: false, authenticated: false, restorable: false, containsOriginalEvidence: false });
+        if (!same()) return null;
+        const delivery = deliver(file);
+        if (observeCallbackResult(delivery) !== "synchronous") periodFail("PERIOD_ASYNC_DELIVERY");
+        if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
+        return file;
+      }, () => { phase = review ? "review" : "ready"; message = "最後に完了した履歴比較の照合結果を保存しました。元資料は変更していません。"; });
+    } catch (value) { return fail(value, token); }
+  }
+
   function dispose() {
     if (disposed) return;
-    generation++; disposed = true; phase = "disposed"; review = null; comparisonReview = null; inspection = null; checkReview = null; evidenceReview = null;
+    generation++; disposed = true; phase = "disposed"; review = null; comparisonReview = null; inspection = null; checkReview = null; evidenceReview = null; eventComparisonReview = null;
     observers.clear();
     const previous = active; active = null; previous?.abort();
     consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare, importFile, applyReview,
-    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, exportEvidenceSource, exportEventComparison, exportEventRecheck, stagePeriodProposal, cancel, invalidateReview, dispose });
+    inspectSources, reviewCheckFile, exportFile, exportSourceReport, exportMissingDraft, exportReviewComparison, reviewComparisonFile, exportComparisonReview, exportComparisonEvidence, reviewComparisonEvidenceFile, exportEvidenceReview, exportEvidenceSource, exportEventComparison, exportEventRecheck, stagePeriodProposal, reviewEventComparisonFile, exportEventComparisonReview, cancel, invalidateReview, dispose });
 }

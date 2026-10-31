@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { Element } from "./helpers/panel-dom.js";
 import { mountReportSetPanel } from "../examples/report-set-panel.js";
 import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-file.js";
-import { prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareReportSetCoverageFile, prepareReportSetComparisonEvidenceFile, reviewReportSetComparisonEvidence } from "../src/report-set-export.js";
+import { prepareReportSetEventComparisonFile, prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareReportSetCoverageFile, prepareReportSetComparisonEvidenceFile, reviewReportSetComparisonEvidence } from "../src/report-set-export.js";
 import { decodePeriodReportFile } from "../src/period-report-file.js";
 import { decodePeriodFile, preparePeriodFile } from "../src/period-file.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument, historyRecord,
@@ -602,3 +602,21 @@ test("set block scope keeps selected and accepted sources while filtering the sa
     assert.ok(f.files.length === 0 && f.store.calls.every(call => call[0] === "read"));
   } finally { f.dispose(); }
 });
+
+  test("saved event comparison review distinguishes file fidelity and observed differences", async () => {
+  const initial = sequenceHistory([0n, 0n], (report, index) => { if (index) report.slots[0].entry.draft.records[0].events[0].amountBaseUnits = "1"; });
+  const f = fixture(initial);
+  try {
+    await f.accept(); const before = f.mounted.getState().input;
+    const comparison = await prepareReportSetEventComparisonFile(before, { beforeId: id(101), afterId: id(102), agent: "DAT" });
+    f.q("event-review-file").files = [fileFrom(comparison.text)]; f.q("event-review-file").dispatchEvent(new Event("change"));
+    await f.settled(); assert.ok(f.q("event-review-output").textContent.includes("ファイルの内容は再計算と一致"));
+    assert.ok(f.q("event-review-output").textContent.includes("保存観測に食い違いあり"));
+    assert.ok(f.q("event-review-json").disabled); f.check("event-ack"); assert.ok(f.q("event-review-json").disabled);
+    f.check("event-review-ack"); f.click("event-review-json"); await f.settled();
+    assert.ok(f.files.length === 1 && JSON.parse(f.files[0].text).matchesRecomputation);
+    assert.ok(f.mounted.getState().input === before && f.store.calls.every(row => row[0] === "read"));
+    await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled();
+    assert.ok(f.mounted.getState().eventComparisonReview === null && f.q("event-review-json").disabled && !f.q("event-review-ack").checked);
+  } finally { f.dispose(); }
+  });
