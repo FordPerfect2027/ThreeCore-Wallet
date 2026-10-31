@@ -336,6 +336,7 @@ export function walletSavedInspectionText(value) {
 
 export function walletSavedInspectionErrorText(error) {
   let code; try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; } catch {}
+  if (code === "FILE_BATCH_SOURCE_CHANGED") return "一括確認した時とファイルの内容が違うため、詳細を開く操作を止めました。元ファイルを保全し、選び直して一括確認してください。";
   if (code === "FILE_BATCH_MANIFEST") return "照合値一覧の書式を確認できません。SHA-256とJSONファイル名を記した、16 KiB以内・20行以内の元の一覧を使ってください。";
   if (code === "FILE_BATCH_REFERENCE_SELECTION") return "照合値一覧と、選択したJSONのファイル名が一致しません。大文字・小文字も含め、一覧の全ファイルを選んでください。";
   if (code === "FILE_BATCH_CHECKSUM_MISMATCH") return "以前の照合値と一致しません。この内容を元記録として確認する処理は行っていません。以前の資料を保全して調べてください。";

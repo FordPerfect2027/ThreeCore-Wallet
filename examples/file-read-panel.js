@@ -6,6 +6,7 @@ import { describeFileReadStatus, describeFileReadError } from "../src/file-read-
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
+import { sha256Hex } from "../src/security-data.js";
 import { validateWalletSavedBatchSelection, inspectWalletSavedTextBatch, encodeWalletSavedTextBatch,
   walletSavedTextBatchManifest, WALLET_SAVED_BROWSER_BATCH_LIMITS, matchWalletSavedBatchManifest,
   WALLET_SAVED_BATCH_MANIFEST_LIMIT, encodeWalletSavedTextBatchCsv, compareWalletSavedTextBatches,
@@ -36,7 +37,9 @@ export function mountFileReadPanel({ document, parent, service = walletFileReadS
   action.setAttribute("role", "status");
   parent.append(section);
   const savedGuide = mountSavedFileInspectionPanel({ document, parent: section });
-  const savedBatch = mountSavedFileBatchPanel({ document, parent: section });
+  const savedBatch = mountSavedFileBatchPanel({ document, parent: section,
+    inspectOriginal: (file, digest) => savedGuide.inspectFile(file, digest),
+    compareOriginal: (file, digest) => savedGuide.compareFile(file, digest) });
   let disposed = false;
   let observing = true, renderGeneration = 0, actionGeneration = 0;
   let unsubscribe = () => {};
@@ -116,7 +119,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
     if (text !== undefined) node.textContent = text;
     target.append(node); nodes[name] = node; return node;
   };
-  make("summary", "heading", "保存したJSONの種類と開く場所を調べる");
+  const heading = make("summary", "heading", "保存したJSONの種類と開く場所を調べる"); heading.setAttribute("tabindex", "-1");
   make("p", "intro", "ThreeCoreの期間・保存一覧・報告・報告履歴・確認セットのJSONを1つ選んでください。元記録の形式とチェックサムを調べ、開く欄を案内します。ここでは履歴への追加や画面への復元は行いません。");
   const label = make("label", "file-label", "調べる元のJSON（最大96 MiB）");
   const file = make("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json";
@@ -171,45 +174,74 @@ export function mountSavedFileInspectionPanel({ document, parent,
     if (disposed) return;
     const chosen = file.files?.[0]; file.value = "";
     if (!chosen) { selectionNotice.noSelection(); return; }
+    return inspectFile(chosen);
+  }
+  async function inspectFile(chosen, expectedDigest) {
+    if (disposed) return false;
+    if (expectedDigest !== undefined && (typeof expectedDigest !== "string" || !/^[0-9a-f]{64}$/.test(expectedDigest))) return false;
     const own = ++generation, previous = aborter; aborter = null; previous?.abort();
-    if (disposed || own !== generation) return;
+    if (disposed || own !== generation) return false;
     const local = new AbortController(); aborter = local; busy = true; workKind = "source"; result = null; comparison = null; comparisonReview = null; reviewAck.checked = false; compareAck.checked = false; ack.checked = false; selectionNotice.clear();
     sourceFile = null; comparisonSourceFile = null;
-    status.textContent = "選んだJSONの形式と内容を確認しています。"; render();
+    host.open = true; try { heading.focus?.(); } catch { /* Focus is advisory, not inspection authority. */ }
+    if (disposed || own !== generation) return false;
+    status.textContent = expectedDigest === undefined ? "選んだJSONの形式と内容を確認しています。" : "一括確認したファイルの内容が変わっていないか確認してから、詳細を開きます。"; render();
     try {
       readFormatFileName(chosen, { maxLength: 180, code: "FILE_INSPECTION_NAME", fail: code => { const error = new Error(code); error.code = code; throw error; } });
       if (disposed || generation !== own) return;
       const text = await readText(chosen, { maxBytes: WALLET_SAVED_INSPECTION_LIMIT, signal: local.signal });
       if (disposed || generation !== own) return;
+      if (expectedDigest !== undefined) {
+        boundedUtf8Length(text, WALLET_SAVED_INSPECTION_LIMIT);
+        const actualDigest = await sha256Hex(new TextEncoder().encode(text), globalThis.crypto?.subtle, { signal: local.signal, timeoutMs: 30000 });
+        if (disposed || generation !== own) return false;
+        if (actualDigest !== expectedDigest) { const error = new Error("FILE_BATCH_SOURCE_CHANGED"); error.code = "FILE_BATCH_SOURCE_CHANGED"; throw error; }
+      }
       const value = await inspect(text, { signal: local.signal });
       if (disposed || generation !== own) return;
       sourceFile = chosen; result = value; status.textContent = value.validation === "validated-original" ? "元記録の形式とチェックサムを確認しました。開く欄は下の案内をご覧ください。" :
         "形式の指定だけを判別しました。補助資料の中身は検証していません。";
+      return true;
     } catch (error) {
       if (disposed || generation !== own) return;
       status.textContent = walletSavedInspectionErrorText(error);
+      return false;
     } finally { if (!disposed && generation === own) { aborter = null; busy = false; render(); } }
   }
   async function compareSelected() {
     if (disposed || busy || !result) return;
     const chosen = compareFile.files?.[0]; compareFile.value = "";
     if (!chosen) { comparisonNotice.noSelection(); return; }
+    return inspectComparisonFile(chosen);
+  }
+  async function inspectComparisonFile(chosen, expectedDigest) {
+    if (disposed || busy || !result) return false;
+    if (expectedDigest !== undefined && (typeof expectedDigest !== "string" || !/^[0-9a-f]{64}$/.test(expectedDigest))) return false;
     const own = ++generation, base = result, previous = aborter; aborter = null; previous?.abort();
     if (disposed || generation !== own) return;
     const local = new AbortController(); aborter = local; busy = true; workKind = "comparison";
     comparison = null; comparisonReview = null; reviewAck.checked = false; compareAck.checked = false; ack.checked = false; comparisonNotice.clear();
     comparisonSourceFile = null;
+    host.open = true; compareBox.open = true; try { heading.focus?.(); } catch {}
+    if (disposed || generation !== own) return false;
     status.textContent = "比較先のファイルを確認しています。比較元は保持しています。"; render();
     try {
       readFormatFileName(chosen, { maxLength: 180, code: "FILE_INSPECTION_NAME", fail: code => { const error = new Error(code); error.code = code; throw error; } });
       if (disposed || generation !== own) return;
       const text = await readText(chosen, { maxBytes: WALLET_SAVED_INSPECTION_LIMIT, signal: local.signal });
       if (disposed || generation !== own) return;
+      if (expectedDigest !== undefined) {
+        boundedUtf8Length(text, WALLET_SAVED_INSPECTION_LIMIT);
+        const actualDigest = await sha256Hex(new TextEncoder().encode(text), globalThis.crypto?.subtle, { signal: local.signal, timeoutMs: 30000 });
+        if (disposed || generation !== own) return false;
+        if (actualDigest !== expectedDigest) { const error = new Error("FILE_BATCH_SOURCE_CHANGED"); error.code = "FILE_BATCH_SOURCE_CHANGED"; throw error; }
+      }
       const incoming = await inspect(text, { signal: local.signal });
       if (disposed || generation !== own) return;
       comparison = compareWalletSavedInspections(base, incoming); comparisonSourceFile = chosen;
       status.textContent = "保存ファイル同士の比較を表示しました。元記録を置き換えたり復元したりしていません。";
-    } catch (error) { if (!disposed && generation === own) status.textContent = walletSavedInspectionErrorText(error); }
+      return true;
+    } catch (error) { if (!disposed && generation === own) status.textContent = walletSavedInspectionErrorText(error); return false; }
     finally { if (!disposed && generation === own) { aborter = null; busy = false; render(); } }
   }
   async function reviewSelected() {
@@ -272,7 +304,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
   bundlePanel = mountSavedComparisonBundlePanel({ document, parent: compareBox, readText, download,
     getPair: () => !disposed && !busy && comparison && sourceFile && comparisonSourceFile ? { comparison, beforeFile: sourceFile, afterFile: comparisonSourceFile } : null });
   listen(reviewFile, "change", () => { void reviewSelected(); }); listen(reviewAck, "change", render); listen(reviewSave, "click", saveReview); render();
-  return Object.freeze({ getState: () => Object.freeze({ busy, result, comparison, comparisonReview, disposed }), dispose() {
+  return Object.freeze({ inspectFile, compareFile: inspectComparisonFile, getState: () => Object.freeze({ busy, result, comparison, comparisonReview, disposed }), dispose() {
     if (disposed) return;
     disposed = true; generation++; const previous = aborter; aborter = null; busy = false; result = null; comparison = null; comparisonReview = null;
     sourceFile = null; comparisonSourceFile = null; bundlePanel.dispose();
@@ -289,6 +321,7 @@ async function readSavedGuideText(file, options) {
 /** Separate file-only inventory. No restore, account or storage callbacks exist. */
 export function mountSavedFileBatchPanel({ document, parent, readText = readSavedGuideText,
   inspect = inspectWalletSavedTextBatch, subtle = globalThis.crypto?.subtle,
+  inspectOriginal = null, compareOriginal = null,
   download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-file-batch"; parent.append(host);
   let disposed = false, generation = 0, selection = null, active = null, result = null;
@@ -314,7 +347,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   const notice = make("p", "notice"), selectionNotice = createFileSelectionNotice(file, notice), summary = make("p", "summary");
   const table = make("table", "table"); make("caption", "caption", "選択した保存ファイルの確認結果", table);
   const header = make("thead", "thead", undefined, table), heading = make("tr", "head-row", undefined, header);
-  for (const text of ["ファイル名", "確認結果", "開く場所・確認範囲", "内容のSHA-256", "以前の照合値との比較"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); heading.append(cell); }
+  for (const text of ["ファイル名", "確認結果", "開く場所・確認範囲", "内容のSHA-256", "以前の照合値との比較", "詳細確認"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); heading.append(cell); }
   const rows = make("tbody", "rows", undefined, table);
   const ackLabel = make("label", "ack-label", "ファイル名・確認結果・照合値を、暗号化せずPCに保存します"), ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
   const save = button("save", "一括確認の控えをJSON保存"), csv = button("csv", "全ファイルの確認結果をCSV保存"), manifest = button("manifest", "今回の内容の照合値一覧を保存");
@@ -372,11 +405,25 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   });
   function render(receipt, id) {
     const labels = { "validated-original": "元記録の形式・内部チェックサムを確認", "declared-only": "補助資料の形式指定だけ", invalid: "元記録を確認できません", "hash-unavailable": "照合値を計算できません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
-    const elements = receipt.files.map(row => {
+    const sourceSelection = selection;
+    const elements = receipt.files.map((row, index) => {
       const tr = document.createElement("tr"), scope = row.inspection?.scope;
       const detail = row.inspection ? row.inspection.destinationMessage + (scope ? ` 元の控えの参照 ${scope.draftReferences}件／未完了 ${scope.incompleteDraftReferences}件。` : " 中身や結論は未検証です。") : row.code ? errorText({ code: row.code }) : "処理していません。";
       const referenceResult = !receipt.referenceProvided ? "指定なし" : (row.checksumMatches === null ? "未比較" : row.checksumMatches ? "一致" : "不一致") + "：" + row.expectedSha256;
       for (const value of [row.name, labels[row.status], detail, row.sha256 ?? "未計算", referenceResult]) { const cell = document.createElement("td"); cell.textContent = value; tr.append(cell); }
+      const action = document.createElement("td");
+      for (const [name, label, callback] of [["open", "この元記録の詳細を開く", inspectOriginal], ["compare", "開いている元記録と比較", compareOriginal]]) {
+        const open = document.createElement("button"); open.className = "saved-file-batch-" + name; open.type = "button"; open.textContent = label;
+        open.disabled = row.status !== "validated-original" || !row.sha256 || typeof callback !== "function";
+        open.addEventListener("click", async () => {
+          if (disposed || active || !current(id) || result !== receipt || open.disabled) return;
+          open.disabled = true;
+          try { const accepted = await callback(sourceSelection[index].file, row.sha256);
+            if (current(id) && result === receipt) exportStatus.textContent = accepted === true ? "元記録の詳細確認を上の案内欄に開きました。一括確認の結果は保持しています。" : "詳細確認を完了できませんでした。比較する場合は、先に比較元の詳細を開いてください。上の案内欄をご確認ください。一括確認の結果は保持しています。";
+          } catch { if (current(id) && result === receipt) exportStatus.textContent = "詳細確認を開けませんでした。一括確認の結果は保持しています。"; }
+          finally { if (current(id) && result === receipt) open.disabled = false; }
+        }); action.append(open);
+      } tr.append(action);
       return tr;
     });
     if (!current(id)) return; result = receipt; rows.replaceChildren(...elements);
