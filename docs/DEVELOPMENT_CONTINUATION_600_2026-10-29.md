@@ -32,3 +32,7 @@ Current continuation: **457 / 600 complete**. [Item 457: locating report checks 
 Later work will be selected from evidence and product needs: saved comparison collections, reproducible replay cases, record provenance and navigation, input/recovery robustness, accessible interaction, CLI workflows and wallet integration checks. Unnecessary features will not be invented just to fill the requested count.
 
 Persistent boundaries: local development and fictional/read-only operations; no wallet signatures, transfers, approvals or private-key retrieval. No new publication or deployment authorization is inferred. Progress reporting is kept brief at the user's request.
+
+## October 31 maintenance follow-up
+
+[Diagnostic cancellation lifecycle repair](PUBLIC_DIAGNOSTIC_SIGNAL_REPAIR_2026-10-31.md) closes registration and cleanup failure paths in item 445 at `b56237a`. It passed 107 related cases and adds no new completed item; the count remains 457 / 600.

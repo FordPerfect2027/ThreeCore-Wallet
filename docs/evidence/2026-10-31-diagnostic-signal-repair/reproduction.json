@@ -1,0 +1,16 @@
+{
+  "synthetic": true,
+  "before": {
+    "source": "8440316",
+    "code": null,
+    "message": "PRIVATE_SIGNAL_REGISTRATION",
+    "calls": 0,
+    "record": "Observed direct probe output before repair"
+  },
+  "after": {
+    "source": "b56237a",
+    "code": "INVALID_SIGNAL",
+    "message": "Diagnostic cancellation listener could not be installed",
+    "calls": 0
+  }
+}
