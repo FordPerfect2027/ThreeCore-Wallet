@@ -16,26 +16,30 @@ const evidenceReceipts = new WeakMap();
 const fail = code => { throw new RehearsalError(code); };
 const pointer = key => String(key).replace(/~/g, "~0").replace(/\//g, "~1");
 
-function compareValues(expected, actual, offset = 0) {
+function compareValues(expected, actual, offset = 0, onDifference = null) {
   let count = 0; const differences = [];
-  const add = (path, kind) => { count++; if (count > offset && differences.length < REHEARSAL_REPORT_DIFFERENCE_LIMIT)
-    differences.push(Object.freeze({ path: path || "/", kind })); };
+  const add = (path, kind, left, right, expectedPresent = true, actualPresent = true) => {
+    count++;
+    const difference = Object.freeze({ path: path || "/", kind });
+    if (count > offset && differences.length < REHEARSAL_REPORT_DIFFERENCE_LIMIT) differences.push(difference);
+    onDifference?.(count - 1, difference, left, right, expectedPresent, actualPresent);
+  };
   function visit(left, right, path) {
     if (left === right) return;
     if (left === null || right === null || typeof left !== typeof right || Array.isArray(left) !== Array.isArray(right)) {
-      add(path, "type"); return;
+      add(path, "type", left, right); return;
     }
-    if (typeof left !== "object") { add(path, "value"); return; }
+    if (typeof left !== "object") { add(path, "value", left, right); return; }
     if (Array.isArray(left)) {
-      if (left.length !== right.length) add(path, "array-length");
+      if (left.length !== right.length) add(path, "array-length", left, right);
       for (let i = 0; i < Math.min(left.length, right.length); i++) visit(left[i], right[i], path + "/" + i);
       return;
     }
     for (const key of Object.keys(left)) {
       const next = path + "/" + pointer(key);
-      if (!Object.hasOwn(right, key)) add(next, "missing"); else visit(left[key], right[key], next);
+      if (!Object.hasOwn(right, key)) add(next, "missing", left[key], undefined, true, false); else visit(left[key], right[key], next);
     }
-    for (const key of Object.keys(right).sort()) if (!Object.hasOwn(left, key)) add(path + "/" + pointer(key), "unexpected");
+    for (const key of Object.keys(right).sort()) if (!Object.hasOwn(left, key)) add(path + "/" + pointer(key), "unexpected", undefined, right[key], false, true);
   }
   visit(expected, actual, "");
   return Object.freeze({ differenceCount: count, differences: Object.freeze(differences), differencesTruncated: count > differences.length });
@@ -184,4 +188,42 @@ export function pageRehearsalEvidenceReceiptDifferences(review, offset = 0) {
   const receipt = evidenceReceipts.get(review);
   if (receipt === undefined) fail("UNRECOGNIZED_EVIDENCE_REVIEW");
   return reviewDifferencePage(review.reportReview, receipt, offset);
+}
+
+export const REHEARSAL_DIFFERENCE_VALUE_PREVIEW_LIMIT = 2048;
+function differenceValue(value, present) {
+  if (!present) return Object.freeze({ present: false, type: "absent", json: null, characters: 0, truncated: false, arrayLength: null });
+  const type = value === null ? "null" : Array.isArray(value) ? "array" : typeof value;
+  const json = JSON.stringify(value).replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, character => "\\u" + character.charCodeAt(0).toString(16).padStart(4, "0"));
+  const limit = REHEARSAL_DIFFERENCE_VALUE_PREVIEW_LIMIT;
+  let end = Math.min(json.length, limit);
+  // Keep the preview boundary outside a UTF-16 surrogate pair.
+  if (end < json.length && /[\uD800-\uDBFF]/.test(json[end - 1]) && /[\uDC00-\uDFFF]/.test(json[end])) end--;
+  return Object.freeze({ present: true, type, json: json.slice(0, end), characters: json.length,
+    truncated: end < json.length, arrayLength: Array.isArray(value) ? value.length : null });
+}
+function inspectDifference(expected, actual, index) {
+  if (!Number.isSafeInteger(index) || index < 0) fail("INVALID_REVIEW_DIFFERENCE_INDEX");
+  let selected = null;
+  const comparison = compareValues(expected, actual, 0, (number, difference, left, right, leftPresent, rightPresent) => {
+    if (number === index) selected = Object.freeze({ ...difference, expected: differenceValue(left, leftPresent), actual: differenceValue(right, rightPresent) });
+  });
+  if (!selected) fail("REVIEW_DIFFERENCE_NOT_FOUND");
+  return Object.freeze({ index, number: index + 1, totalDifferences: comparison.differenceCount,
+    previewLimit: REHEARSAL_DIFFERENCE_VALUE_PREVIEW_LIMIT, ...selected });
+}
+
+/** Read-only value previews bound to the exact source of a completed review. */
+export function inspectReviewedRehearsalDifference(receipt, index) {
+  const text = reviewSources.get(receipt);
+  if (text === undefined) fail("UNRECOGNIZED_REVIEW_RECEIPT");
+  const { parsed, recomputed } = prepareRehearsalReview(text, receipt.expectedSha256);
+  return inspectDifference(recomputed, parsed, index);
+}
+
+/** Receipt values and source values have separate verification identities. */
+export function inspectRehearsalEvidenceReceiptDifference(review, index) {
+  const recorded = evidenceReceipts.get(review);
+  if (recorded === undefined) fail("UNRECOGNIZED_EVIDENCE_REVIEW");
+  return inspectDifference(review.reportReview, recorded, index);
 }

@@ -3,7 +3,7 @@ import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
-import { reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, pageReviewedRehearsalDifferences, pageRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
+import { inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, pageReviewedRehearsalDifferences, pageRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
 import { REHEARSAL_RECORD_REPORT_SCHEMA, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 
@@ -16,6 +16,22 @@ const reportNames = {
   "threecore.operation-rehearsal-record-query.v1": "記録の検索資料",
   "threecore.operation-rehearsal-record-query.v2": "検索する情報を指定した記録資料"
 };
+function addDifferenceDetailButton(document, row, index, inspect, current, output, actualLabel) {
+  const cell=document.createElement("td"),button=document.createElement("button");button.type="button";
+  button.textContent="値を比べる";button.setAttribute("aria-label","相違 "+(index+1)+" の再計算値と保存値を比べる");
+  button.addEventListener("click",()=>{
+    if(!current())return;const detail=inspect();if(!current())return;
+    const value=(label,item)=>label+": "+(!item.present?"項目なし":item.json)+
+      (item.arrayLength===null?"":"\n配列の件数: "+item.arrayLength)+
+      (item.truncated?"\n表示を省略しています（全"+item.characters+"文字）。元資料も確認してください。":"");
+    output.textContent="相違 "+detail.number+" / "+detail.totalDifferences+"\n場所: "+detail.path+"\n\n"+
+      value("再計算で得た値",detail.expected)+"\n\n"+value(actualLabel+"にある値",detail.actual)+
+      "\n\n表示は確認用です。元資料や現在の履歴は変更しません。";
+    output.hidden=false;output.focus?.();
+  });
+  cell.append(button);row.append(cell);
+}
+
 function outcomeText(outcome) {
   if (!outcome) return "";
   if (outcome.kind === "expected-outcomes") return "含まれる期待結果: " + outcome.cases + "ケース中、一致 " +
@@ -33,7 +49,7 @@ function outcomeText(outcome) {
 export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle }) {
   const offerDownload = payload => requireSyncExport(download(payload));
   const fileReader = createFileReadScope(), checksumReader=createFileReadScope();
-  let checksumRevision=0,differenceOffset=0;
+  let checksumRevision=0,differenceOffset=0,differenceView=0;
   const get = name => document.getElementById("report-review-" + name);
   const feedback=createRehearsalFieldFeedback(document,"report-review-status");
   let revision = 0, disposed = false, sourceText = null, receipt = null;
@@ -45,7 +61,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   const checksumNotice=createFileSelectionNotice(get("checksum-file"),get("checksum-file-note"));
   listeners.push(()=>checksumNotice.dispose());
   function invalidate(message) {
-    const own=++revision;checksumRevision++;
+    const own=++revision;checksumRevision++;differenceView++;get("difference-detail").hidden=true;get("difference-detail").textContent="";
     const previous=hashAbort;hashAbort=null;receipt=null;differenceOffset=0;
     feedback.clear();checksumNotice.clear();get("checksum-file").value="";
     get("checksum-file-status").textContent="";get("checksum-file-status").setAttribute("aria-busy","false");
@@ -64,14 +80,20 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   function row(target, values) {
     const tr = document.createElement("tr");
     for(const value of values) {const td=document.createElement("td");td.textContent=value;tr.append(td);}
-    get(target).append(tr);
+    get(target).append(tr); return tr;
   }
   function renderDifferencePage() {
     get("differences").textContent="";
+    const view=++differenceView, owner=revision, reviewed=receipt;
+    get("difference-detail").hidden=true;get("difference-detail").textContent="";
     if(!receipt)return;
     const page=pageReviewedRehearsalDifferences(receipt,differenceOffset);differenceOffset=page.offset;
     const labels={missing:"項目が不足",unexpected:"余分な項目",type:"値の種類が異なる",value:"値が異なる","array-length":"件数が異なる"};
-    for(const diff of page.differences)row("differences",[diff.path,labels[diff.kind]]);
+    for(const [index,diff] of page.differences.entries()){
+      const tr=row("differences",[diff.path,labels[diff.kind]]);
+      addDifferenceDetailButton(document,tr,page.offset+index,()=>inspectReviewedRehearsalDifference(reviewed,page.offset+index),
+        ()=>!disposed&&revision===owner&&differenceView===view&&receipt===reviewed,get("difference-detail"),"保存資料");
+    }
     get("difference-status").textContent=page.totalDifferences?"全"+page.totalDifferences+"箇所の相違のうち "+(page.offset+1)+"〜"+(page.offset+page.differences.length)+"箇所を表示（"+page.page+" / "+page.totalPages+"ページ）。":"再計算との相違はありません。";
     get("previous").disabled=!page.hasPrevious;get("next").disabled=!page.hasNext;
   }
@@ -195,11 +217,11 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
 /** Inspect a portable evidence file independently of the active rehearsal and ordinary report. */
 export function mountRehearsalEvidencePanel(document, { download, subtle = globalThis.crypto?.subtle }) {
   const get = name => document.getElementById("report-evidence-" + name), reader = createFileReadScope();
-  const listeners = []; let revision = 0, disposed = false, hashAbort = null, result = null, sourceText = null, differenceOffset = 0;
+  const listeners = []; let revision = 0, disposed = false, hashAbort = null, result = null, sourceText = null, differenceOffset = 0, differenceView = 0;
   const notice = createFileSelectionNotice(get("file"), get("file-note"));
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(() => get(name).removeEventListener(event, fn)); }
   function reset(message) {
-    const own=++revision; result=null; sourceText=null; differenceOffset=0;get("previous").disabled=true;get("next").disabled=true;get("difference-kind").disabled=true;get("difference-status").textContent="";
+    const own=++revision; result=null; sourceText=null; differenceOffset=0;differenceView++;get("difference-detail").hidden=true;get("difference-detail").textContent="";get("previous").disabled=true;get("next").disabled=true;get("difference-kind").disabled=true;get("difference-status").textContent="";
     const previous=hashAbort; hashAbort=null; previous?.abort();
     if(own!==revision)return null;
     reader.cancel();
@@ -219,12 +241,18 @@ export function mountRehearsalEvidencePanel(document, { download, subtle = globa
     reset(reason + " 現在の履歴や別欄の確認結果は変更していません。");
   }
   function renderDifferencePage() {
-    get("differences").textContent="";if(!result)return;
+    get("differences").textContent="";
+    const view=++differenceView,owner=revision,reviewed=result;
+    get("difference-detail").hidden=true;get("difference-detail").textContent="";if(!result)return;
     const source=get("difference-kind").value==="source";
     const page=source?pageReviewedRehearsalDifferences(result.reportReview,differenceOffset):pageRehearsalEvidenceReceiptDifferences(result,differenceOffset);
     differenceOffset=page.offset;const label=source?"元資料":"確認結果の控え";
     const labels={missing:"項目が不足",unexpected:"余分な項目",type:"値の種類が異なる",value:"値が異なる","array-length":"件数が異なる"};
-    for(const diff of page.differences){const row=document.createElement("tr");for(const value of [label,diff.path,labels[diff.kind]]){const cell=document.createElement("td");cell.textContent=value;row.append(cell);}get("differences").append(row);}
+    for(const [index,diff] of page.differences.entries()){
+      const row=document.createElement("tr");for(const value of [label,diff.path,labels[diff.kind]]){const cell=document.createElement("td");cell.textContent=value;row.append(cell);}get("differences").append(row);
+      addDifferenceDetailButton(document,row,page.offset+index,()=>source?inspectReviewedRehearsalDifference(reviewed.reportReview,page.offset+index):inspectRehearsalEvidenceReceiptDifference(reviewed,page.offset+index),
+        ()=>!disposed&&revision===owner&&differenceView===view&&result===reviewed,get("difference-detail"),source?"元資料":"保存された確認結果の控え");
+    }
     get("difference-status").textContent=page.totalDifferences?label+": 全"+page.totalDifferences+"箇所のうち "+(page.offset+1)+"〜"+(page.offset+page.differences.length)+"箇所を表示（"+page.page+" / "+page.totalPages+"ページ）。":label+"との相違はありません。";
     get("previous").disabled=!page.hasPrevious;get("next").disabled=!page.hasNext;
   }

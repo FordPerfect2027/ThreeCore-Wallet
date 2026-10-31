@@ -62,3 +62,27 @@ test('consistent reports have one empty page while their failing expected outcom
   const result = await run([file]); assert.equal(result.code, 0); const page = JSON.parse(result.output);
   assert.equal(page.totalDifferences, 0); assert.equal(page.totalPages, 1); assert.equal(page.summary.reportOutcome.allMatched, false);
 }));
+
+test('offline individual differences use one-based numbering with exact recorded values', () => fixture(async ({ file, text }) => {
+  for(const number of [1,40,41,103]){
+    const result=await run([file,'--difference',String(number)]);assert.equal(result.code,2);assert.equal(result.errors,'');
+    const detail=JSON.parse(result.output);assert.equal(detail.schema,'threecore.operation-rehearsal-difference-detail.v1');
+    assert.equal(detail.number,number);assert.equal(detail.index,number-1);assert.equal(detail.actual.json,String(number-1));
+    assert.equal(detail.expected.present,false);assert.equal(detail.summary.matchesRecomputation,false);
+  }
+  assert.equal(await readFile(file,'utf8'),text);
+}));
+test('offline receipt and source details retain all verification outcomes', () => fixture(async ({ evidenceFile,evidence }) => {
+  for(const kind of ['receipt','source']){
+    const result=await run([evidenceFile,'--difference','41','--evidence',kind]);assert.equal(result.code,2);
+    const detail=JSON.parse(result.output);assert.equal(detail.target,'evidence-'+kind);assert.equal(detail.actual.json,'40');
+    assert.equal(detail.summary.matchesReceipt,false);assert.equal(detail.summary.matchesRecomputation,false);
+  }
+  assert.equal(await readFile(evidenceFile,'utf8'),evidence);
+}));
+test('invalid detail selections never output partial evidence or silently choose page one', () => fixture(async ({ file,evidenceFile }) => {
+  for(const args of [[file,'--difference','0'],[file,'--difference','01'],[file,'--difference','-1'],[file,'--difference','1.1'],
+    [file,'--difference','104'],[file,'--difference','1','--page','1'],[evidenceFile,'--difference','88','--evidence','receipt']]){
+    const result=await run(args);assert.equal(result.code,1);assert.equal(result.output,'');assert.notEqual(result.errors,'');
+  }
+}));

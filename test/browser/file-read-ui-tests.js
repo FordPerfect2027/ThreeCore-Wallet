@@ -55,6 +55,34 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: discrepancy values remain exact, readable and tied to the current native review",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,event="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(event));};
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("overview-save").click();const source=JSON.parse(downloads.pop().text);
+      source.extra="<img src=x>"+"x".repeat(3000);edit("report-review-text",JSON.stringify(source));q("report-review-paste").click();await finish("report-review-status");
+      const old=q("report-review-differences").querySelector("button");old.click();
+      const detail=q("report-review-difference-detail");assert(document.activeElement===detail&&!detail.hidden);
+      assert(detail.textContent.includes("<img src=x>")&&detail.textContent.includes("表示を省略")&&!detail.querySelector("img"));
+      q("report-review-evidence-save").click();const evidence=JSON.parse(downloads.pop().text);evidence.receipt.differenceCount=81;
+      edit("report-evidence-text",JSON.stringify(evidence));q("report-evidence-paste").click();await finish("report-evidence-status");
+      const receiptButton=q("report-evidence-differences").querySelector("button");receiptButton.click();
+      assert(q("report-evidence-difference-detail").textContent.includes("再計算で得た値: 1"));
+      assert(q("report-evidence-difference-detail").textContent.includes("控えにある値: 81"));
+      edit("report-evidence-difference-kind","source","change");receiptButton.click();assert(q("report-evidence-difference-detail").hidden);
+      q("report-evidence-differences").querySelector("button").click();assert(q("report-evidence-difference-detail").textContent.includes("<img src=x>"));
+      edit("report-review-text","{}");old.click();assert(detail.hidden);
+      q("session-save").click();assert(downloads.pop().text===before,"Inspection keeps current rehearsal exactly unchanged");
+    }finally{page.dispose();host.remove();}
+  });
+
+
+
   for (const kind of ["settings", "workspace"]) test("file-read: "+kind+" input cancellation preserves a newer native preview", async () => {
     const host=document.createElement("div");document.body.append(host);
     const fields=["DAT","EMA","CAWELON"].map((agent,index)=>({agent,account:"0x"+String(index+1).repeat(40),chainId:84532}));
