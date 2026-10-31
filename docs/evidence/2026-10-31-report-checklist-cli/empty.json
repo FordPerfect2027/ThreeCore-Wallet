@@ -1,0 +1,35 @@
+{
+  "schema": "threecore.filtered-report-checks.v1",
+  "sourcePayloadDigest": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e",
+  "checksumVerified": true,
+  "authenticated": false,
+  "encrypted": false,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "automaticRepairs": false,
+  "restorable": false,
+  "query": {
+    "agent": "all",
+    "severity": "all",
+    "search": "no matching record"
+  },
+  "options": {
+    "includeNotes": false,
+    "shortAddresses": true
+  },
+  "total": 15,
+  "matched": 0,
+  "scope": "all-matches",
+  "summaryRow": true,
+  "summary": {
+    "counts": {
+      "conflict": 8,
+      "missing": 0,
+      "review": 6,
+      "information": 1
+    },
+    "allContinuous": false,
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "csv": "﻿\"row_type\",\"query_agent\",\"query_severity\",\"query_search\",\"total_checks\",\"matched_checks\",\"source_conflicts\",\"source_missing\",\"source_review\",\"source_information\",\"all_continuous\",\"historical_only\",\"live_chain_rechecked\",\"automatic_repairs\",\"structured_addresses_shortened\",\"notes_included\",\"check_id\",\"kind\",\"severity\",\"title\",\"action\",\"agents\",\"chain_id\",\"account\",\"from_block\",\"to_block\",\"blocks\",\"range_notation\",\"report_ids\",\"report_labels\",\"notes\"\r\n\"summary\",\"all\",\"all\",\"no matching record\",\"15\",\"0\",\"8\",\"0\",\"6\",\"1\",\"false\",\"true\",\"false\",\"false\",\"true\",\"false\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n"
+}
