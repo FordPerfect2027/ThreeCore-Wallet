@@ -158,3 +158,38 @@ export function decodeRehearsalForPanel(text, target, decode) {
     throw failure;
   }
 }
+
+// These routes describe a declared format only. They never validate or open a file.
+const walletSavedTargets = Object.freeze({
+  "threecore.period-file.v1": ["period", "PERIOD_FILE_USE_PERIOD"],
+  "threecore.period-report-file.v1": ["report", "PERIOD_FILE_USE_REPORT"],
+  "threecore.report-set-file.v1": ["set", "PERIOD_FILE_USE_SET"],
+  "threecore.report-set-check-details.v1": ["checks", "PERIOD_FILE_USE_CHECKS"],
+  "threecore.report-set-comparison-file.v1": ["comparison", "PERIOD_FILE_USE_COMPARISON"],
+  "threecore.report-set-check-review.v1": [null, "PERIOD_FILE_CHECK_REVIEW_ONLY"],
+  "threecore.report-set-comparison-review.v1": [null, "PERIOD_FILE_COMPARISON_REVIEW_ONLY"],
+  "threecore.report-set-history-coverage.v1": [null, "PERIOD_FILE_COVERAGE_ONLY"],
+  "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
+});
+const walletSavedMessages = Object.freeze({
+  PERIOD_FILE_USE_PERIOD: "ファイルの形式指定は期間取得の控えです。「期間を選んで、残高の変化を確かめる」の「控えの保存と復元」で選んでください。内容の検証や読み取り開始は行っていません。",
+  PERIOD_FILE_USE_REPORT: "ファイルの形式指定は3トークンの期間報告です。「3つの記録を、一つの報告に」のファイル読込みで選んでください。内容の検証や反映は行っていません。",
+  PERIOD_FILE_USE_SET: "ファイルの形式指定は確認セットです。「複数の報告を、期間で見渡す」の「保存した確認セットを開く」で選んでください。内容の検証や反映は行っていません。",
+  PERIOD_FILE_USE_CHECKS: "ファイルの形式指定は確認箇所の説明用JSONです。元の確認セットを表示してから「保存した確認箇所JSONを元資料と照合」で選んでください。元の証拠を復元するファイルではありません。",
+  PERIOD_FILE_USE_COMPARISON: "ファイルの形式指定は差し替え前後の比較です。差し替え前の確認セットを表示し、候補の確認セットを読み込んでから「保存した比較JSONを照合」で選んでください。比較だけでは元の証拠を復元できません。",
+  PERIOD_FILE_CHECK_REVIEW_ONLY: "これは確認箇所JSONの照合結果を記した控えの形式です。再確認には、元の確認セットJSONと確認箇所JSONを使ってください。この控えから元の履歴は復元できません。",
+  PERIOD_FILE_COMPARISON_REVIEW_ONLY: "これは比較ファイルの照合結果を記した控えの形式です。再確認には、差し替え前と候補の確認セットJSON、および元の比較JSONを使ってください。",
+  PERIOD_FILE_COVERAGE_ONLY: "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、履歴範囲を再計算してください。",
+  PERIOD_FILE_QUEUE_ONLY: "これは未取得範囲の予定を示す資料の形式です。読み取りの再開用ファイルではありません。元の確認セットから範囲を選び「未取得の期間控え」として保存してください。",
+});
+
+export function walletSavedFileTargetCode(schema, currentTarget) {
+  if (typeof schema !== "string" || typeof currentTarget !== "string" ||
+      !["period", "report", "set", "checks", "comparison"].includes(currentTarget) || !Object.hasOwn(walletSavedTargets, schema)) return null;
+  const [target, code] = walletSavedTargets[schema];
+  return target === currentTarget ? null : code;
+}
+
+export function walletSavedFileTargetMessage(code) {
+  return typeof code === "string" && Object.hasOwn(walletSavedMessages, code) ? walletSavedMessages[code] : null;
+}

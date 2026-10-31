@@ -50,7 +50,7 @@ test("malformed, duplicate-key, unsafe, oversized and wrong-schema comparison fi
   const f = await fixture();
   for (const text of ["{", "null", "[]", '{"schema":"threecore.report-set-comparison-file.v1","schema":"threecore.report-set-comparison-file.v1"}',
     '{"__proto__":{}}', JSON.stringify({ schema: "threecore.report-set-comparison-review.v1" }), " ".repeat(REPORT_SET_COMPARISON_LIMIT + 1)]) {
-    await assert.rejects(reviewReportSetComparisonFile(f.before, f.after, text), error => /^PERIOD_SET_COMPARISON_(JSON|SCHEMA)$/.test(error.code));
+    await assert.rejects(reviewReportSetComparisonFile(f.before, f.after, text), error => /^(PERIOD_SET_COMPARISON_(JSON|SCHEMA)|PERIOD_FILE_COMPARISON_REVIEW_ONLY)$/.test(error.code));
   }
 });
 test("review captures both originals before asynchronous digest work and observes cancellation", async () => {

@@ -3,9 +3,9 @@ import assert from "node:assert/strict";
 import { Element } from "./helpers/panel-dom.js";
 import { mountReportSetPanel } from "../examples/report-set-panel.js";
 import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-file.js";
-import { prepareReportSetChecksFile, prepareReportSetComparisonFile } from "../src/report-set-export.js";
+import { prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareReportSetCoverageFile } from "../src/report-set-export.js";
 import { decodePeriodReportFile } from "../src/period-report-file.js";
-import { decodePeriodFile } from "../src/period-file.js";
+import { decodePeriodFile, preparePeriodFile } from "../src/period-file.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
   clone, id, AFTER, fileFrom, waitUntil, deferred } from "./helpers/report-set-fixtures.js";
 
@@ -445,5 +445,21 @@ test("saved-history coverage exports all groups independently of check filters",
     assert.match(f.files[1].text, /"group-summary"/); assert.ok(f.files[1].text.includes(before.entries[0].report.slots[0].entry.draft.plan.context.account));
     assert.match(f.q("coverage-export-help").textContent, /イベント本体は含めません/); assert.equal(f.mounted.getState().input, before);
     const control = f.q("coverage-json"); f.dispose(); control.click(); assert.equal(f.files.length, 2);
+  } finally { f.dispose(); }
+});
+
+test("wrong saved-artifact inputs explain the correct destination without replacing current evidence", async () => {
+  const f = fixture();
+  try {
+    await f.accept(); const original = f.mounted.getState().input, saved = JSON.stringify(f.store.document);
+    const period = await preparePeriodFile(original.entries[0].report.slots[0].entry.draft);
+    await f.file(period.text); assert.match(f.q("status").textContent, /控えの保存と復元/);
+    assert.equal(f.mounted.getState().input, original); assert.equal(f.q("apply").disabled, true);
+    const coverage = await prepareReportSetCoverageFile(original); await f.file(coverage.text);
+    assert.match(f.q("status").textContent, /元の履歴を復元するファイルではありません/);
+    const comparison = await prepareReportSetComparisonFile(original, sequenceSet(demoSetHistory())); await f.file(comparison.text);
+    assert.match(f.q("status").textContent, /保存した比較JSONを照合/);
+    assert.equal(f.mounted.getState().input, original); assert.equal(JSON.stringify(f.store.document), saved);
+    assert.ok(f.store.calls.every(row => row[0] === "read"));
   } finally { f.dispose(); }
 });

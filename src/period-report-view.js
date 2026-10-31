@@ -1,3 +1,4 @@
+import { walletSavedFileTargetMessage } from "./file-read-status.js";
 import { readOwnErrorCode } from "./provider-error.js";
 import { formatReconciliationAmount } from "./reconciliation-engine.js";
 
@@ -66,7 +67,7 @@ export function reportErrorCode(error) {
 }
 
 export function reportErrorText(code) {
-  return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code] : "処理を完了できませんでした。元の記録は変更されていません。";
+  return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code] : walletSavedFileTargetMessage(code) ?? "処理を完了できませんでした。元の記録は変更されていません。";
 }
 
 export function reportStatusText(status) {

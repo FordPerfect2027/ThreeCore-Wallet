@@ -1,3 +1,4 @@
+import { walletSavedFileTargetCode } from "./file-read-status.js";
 import { parseSecurityJson } from "./security-json.js";
 import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
@@ -169,6 +170,8 @@ export async function reviewReportSetChecksFile(value, text, fileOptions = {}) {
   let supplied;
   try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_CHECKS_LIMIT }); }
   catch { periodFail("PERIOD_SET_CHECKS_JSON"); }
+  const targetCode = walletSavedFileTargetCode(supplied?.schema, "checks");
+  if (targetCode) periodFail(targetCode);
   if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== REPORT_SET_CHECKS_SCHEMA) periodFail("PERIOD_SET_CHECKS_SCHEMA");
   const query = diagnosticQuery(supplied.query), options = validateSetExportOptions(supplied.options);
   const expected = JSON.parse((await prepareReportSetChecksFile(input, query, options, cryptoOptions)).text);
@@ -248,6 +251,8 @@ export async function reviewReportSetComparisonFile(beforeValue, afterValue, tex
   let supplied;
   try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_COMPARISON_LIMIT }); }
   catch { periodFail("PERIOD_SET_COMPARISON_JSON"); }
+  const targetCode = walletSavedFileTargetCode(supplied?.schema, "comparison");
+  if (targetCode) periodFail(targetCode);
   if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) ||
       supplied.schema !== "threecore.report-set-comparison-file.v1") periodFail("PERIOD_SET_COMPARISON_SCHEMA");
   const expected = JSON.parse((await prepareReportSetComparisonFile(before, after, options)).text);

@@ -1,9 +1,9 @@
 import { mountReportSetPanel } from "/examples/report-set-panel.js";
 import { createReportHistoryStorage } from "/src/report-history-storage.js";
 import { prepareReportSetFile, decodeReportSetFile } from "/src/report-set-file.js";
-import { prepareReportSetChecksFile, prepareReportSetComparisonFile } from "/src/report-set-export.js";
+import { prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareReportSetCoverageFile } from "/src/report-set-export.js";
 import { decodePeriodReportFile } from "/src/period-report-file.js";
-import { decodePeriodFile } from "/src/period-file.js";
+import { decodePeriodFile, preparePeriodFile } from "/src/period-file.js";
 import { analyzeReportSet } from "/src/report-set-engine.js";
 import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
   clone, id, AFTER, waitUntil, deferred } from "/test/helpers/report-set-fixtures.js";
@@ -565,6 +565,21 @@ export function registerReportSetUITests(test) {
       assert(f.files[1].text.includes('"group-summary"'));
       assert(f.files[1].text.includes(before.entries[0].report.slots[0].entry.draft.plan.context.account));
       assert(f.mounted.getState().input === before && f.files.every(file => file.restorable === false));
+    } finally { f.dispose(); }
+  });
+
+
+  test("report set: native wrong-format selection provides destination guidance without applying data", async () => {
+    const f = fixture();
+    try {
+      await f.accept(); const original = f.mounted.getState().input;
+      await f.file((await preparePeriodFile(original.entries[0].report.slots[0].entry.draft)).text);
+      assert(f.q("status").textContent.includes("控えの保存と復元") && f.q("apply").disabled);
+      await f.file((await prepareReportSetCoverageFile(original)).text);
+      assert(f.q("status").textContent.includes("元の履歴を復元するファイルではありません"));
+      await f.file((await prepareReportSetComparisonFile(original, sequenceSet(demoSetHistory()))).text);
+      assert(f.q("status").textContent.includes("保存した比較JSONを照合"));
+      assert(f.mounted.getState().input === original && f.mounted.getState().review === null);
     } finally { f.dispose(); }
   });
 

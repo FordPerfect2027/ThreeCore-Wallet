@@ -1,3 +1,4 @@
+import { walletSavedFileTargetCode } from "./file-read-status.js";
 import { sha256Hex } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
@@ -32,6 +33,8 @@ export async function decodePeriodReportFile(text, { subtle = globalThis.crypto?
   bounded(text);
   let value;
   try { value = parseSecurityJson(text); } catch { periodFail("PERIOD_FILE_JSON"); }
+  const targetCode = walletSavedFileTargetCode(value?.schema, "report");
+  if (targetCode) periodFail(targetCode);
   periodShape(value, ["schema", "algorithm", "digest", "input"]);
   if (value.schema !== PERIOD_REPORT_FILE_SCHEMA || value.algorithm !== "SHA-256" ||
       typeof value.digest !== "string" || !/^[0-9a-f]{64}$/.test(value.digest)) periodFail("PERIOD_REPORT_FILE_SCHEMA");
