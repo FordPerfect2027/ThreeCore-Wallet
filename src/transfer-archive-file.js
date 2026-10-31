@@ -32,6 +32,13 @@ export async function readTransferArchive(file, { subtle = globalThis.crypto?.su
   const text = await readFormatFileText(file, { maxBytes: TRANSFER_ARCHIVE_FILE_LIMIT, fail: transferFail,
     sizeCode: "TRANSFER_ARCHIVE_FILE_SIZE", readCode: "TRANSFER_FILE_READ",
     encodingCode: "TRANSFER_FILE_ENCODING", signal, timeoutMs });
+  return decodeTransferArchiveFile(text, { subtle, signal, timeoutMs });
+}
+
+/** Validate saved text without manufacturing a File or performing another read. */
+export async function decodeTransferArchiveFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
+  if (typeof text !== "string" || !text.length || text.length > TRANSFER_ARCHIVE_FILE_LIMIT ||
+      encoder.encode(text).byteLength > TRANSFER_ARCHIVE_FILE_LIMIT) transferFail("TRANSFER_ARCHIVE_FILE_SIZE");
   let envelope;
   try { envelope = parseSecurityJson(text); }
   catch { transferFail("TRANSFER_FILE_JSON"); }

@@ -120,7 +120,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
     target.append(node); nodes[name] = node; return node;
   };
   const heading = make("summary", "heading", "保存したJSONの種類と開く場所を調べる"); heading.setAttribute("tabindex", "-1");
-  make("p", "intro", "ThreeCoreの期間・保存一覧・報告・報告履歴・確認セットのJSONを1つ選んでください。元記録の形式とチェックサムを調べ、開く欄を案内します。ここでは履歴への追加や画面への復元は行いません。");
+  make("p", "intro", "ThreeCoreの期間・報告・受信送信履歴・トークンと残高の観測・利用許可の確認・残高照合など、チェックサム付きの元の保存JSONを1つ選んでください。形式とチェックサムを調べ、開く欄を案内します。ここでは履歴への追加や画面への復元は行いません。");
   const label = make("label", "file-label", "調べる元のJSON（最大96 MiB）");
   const file = make("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json";
   const stop = make("button", "stop", "このファイルの確認を中止"); stop.type = "button";
@@ -334,7 +334,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   const current = id => !disposed && id === generation;
   const errorText = error => describeFileReadError(error, "1件16 MiB、合計64 MiB") ?? walletSavedInspectionErrorText(error);
   make("summary", "heading", "複数の保存ファイルをまとめて確認する");
-  make("p", "intro", "期間・保存一覧・報告・報告履歴・確認セットのJSONを1〜20個選び、確認を開始します。1件ずつ読み込みと確認を行い、読めないファイルがあっても、ほかの結果を残します。1件16 MiB、合計64 MiB、開始後120秒までです。履歴への追加や復元は行いません。");
+  make("p", "intro", "期間・報告・受信送信履歴・残高観測など、元の保存JSONを1〜20個選び、確認を開始します。1件ずつ読み込みと確認を行い、読めないファイルがあっても、ほかの結果を残します。1件16 MiB、合計64 MiB、開始後120秒までです。履歴への追加や復元は行いません。");
   const label = make("label", "file-label", "まとめて確認する元のJSON"), file = make("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json"; file.multiple = true;
   const referenceBox = make("details", "reference"); make("summary", "reference-heading", "以前の照合値一覧と比較する（任意）", referenceBox);
   make("p", "reference-intro", "以前保存したSHA256SUMS一覧を選ぶか、その全文を貼り付けてください。16 KiB・20行までです。一覧にある全ファイルを、同じ名前で選んで確認します。比較しない場合は『以前の一覧を外す』を押してください。", referenceBox);
@@ -408,7 +408,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     const sourceSelection = selection;
     const elements = receipt.files.map((row, index) => {
       const tr = document.createElement("tr"), scope = row.inspection?.scope;
-      const detail = row.inspection ? row.inspection.destinationMessage + (scope ? ` 元の控えの参照 ${scope.draftReferences}件／未完了 ${scope.incompleteDraftReferences}件。` : " 中身や結論は未検証です。") : row.code ? errorText({ code: row.code }) : "処理していません。";
+      const detail = row.inspection ? row.inspection.destinationMessage + (scope ? scope.draftReferences !== null ? ` 元の控えの参照 ${scope.draftReferences}件／未完了 ${scope.incompleteDraftReferences}件。` : " 件数の内訳は元記録の詳細から確認できます。" : " 中身や結論は未検証です。") : row.code ? errorText({ code: row.code }) : "処理していません。";
       const referenceResult = !receipt.referenceProvided ? "指定なし" : (row.checksumMatches === null ? "未比較" : row.checksumMatches ? "一致" : "不一致") + "：" + row.expectedSha256;
       for (const value of [row.name, labels[row.status], detail, row.sha256 ?? "未計算", referenceResult]) { const cell = document.createElement("td"); cell.textContent = value; tr.append(cell); }
       const action = document.createElement("td");

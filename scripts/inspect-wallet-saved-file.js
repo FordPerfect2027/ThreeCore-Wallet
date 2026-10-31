@@ -4,7 +4,7 @@ import { pathToFileURL } from "node:url";
 import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { inspectWalletSavedText, walletSavedInspectionText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
 const USAGE = "Usage: node scripts/inspect-wallet-saved-file.js source.json [--json]\n" +
-  "Identifies period, period-library, report, report-history and report-set originals, validates them and verifies their checksums.\n" +
+  "Validates checksummed period/report originals, transfer snapshots/archives/vaults, identity/balance observations, allowance targets/observations and reconciliation sources.\n" +
   "Known auxiliary files receive declared-format guidance only; their contents and conclusions are not verified.\n" +
   "Output contains guidance and counts, not original addresses, balances or note values. It is not a restorable backup.\n" +
   "No network, import or source writes. Exit 0: validated original; 2: auxiliary declaration only; 1: invalid/unsupported input.\n";
@@ -29,7 +29,7 @@ export async function runSavedFileInspection(args, { stdout = process.stdout, st
     return result.validation === "validated-original" ? 0 : 2;
   } catch (error) {
     const code = error?.code ?? error?.message;
-    const safe = typeof code === "string" && /^(FILE|PERIOD|TRANSFER|IDENTITY|RECONCILIATION|VAULT_CLI)_[A-Z_]+$/.test(code) ? code : "FILE_INSPECTION_CLI_FAILED";
+    const safe = typeof code === "string" && /^(FILE|PERIOD|TRANSFER|IDENTITY|ALLOWANCE|RECONCILIATION|VAULT_CLI)_[A-Z_]+$/.test(code) ? code : "FILE_INSPECTION_CLI_FAILED";
     stderr.write(safe + "\n" + USAGE); return 1;
   }
 }

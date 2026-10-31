@@ -25,6 +25,7 @@ import { createPortfolioHistory } from "/src/portfolio-history.js";
 import { createHistoryFileReader } from "/src/history-file-reader.js";
 import { readSecurityFileBytes } from "/src/security-file.js";
 import { mountRehearsalBatchReviewPanel } from "/examples/operation-rehearsal-review-panel.js";
+import { savedObservationFixtures } from "/test/helpers/saved-observation-fixtures.js";
 
 const assert = (value, message = "File boundary UI assertion failed") => { if (!value) throw Error(message); };
 const bytes = text => new TextEncoder().encode(text);
@@ -65,6 +66,16 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('wallet observation originals: native file guide handles transfer, balance, allowance and reconciliation sources',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name);
+    try{for(const fixture of await savedObservationFixtures()){const files=new DataTransfer();files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.validation==='validated-original'&&result.target===fixture.target);assert(!q('output').textContent.includes('null件')&&!q('output').textContent.includes('undefined')&&!q('output').textContent.includes('0x111111'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.at(-1).text).sourceDigest===JSON.parse(fixture.text).digest);}}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet observation batch: native selected originals retain per-type scope in saved JSON and CSV',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-batch-'+name);
+    try{const fixtures=await savedObservationFixtures(),files=new DataTransfer();for(const fixture of fixtures)files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.allOriginalsValidated&&result.summary.validatedOriginals===7);assert(result.files.find(row=>row.name==='reconciliation.json').inspection.scope.eventReferences===6);assert(!q('rows').textContent.includes('null件'));for(const name of ['save','csv']){q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q(name).click();}assert(JSON.parse(downloads[0].text).files[4].inspection.scope.allowanceObservationReferences===null);assert(downloads[1].text.includes('"identityObservationReferences"')&&!downloads[1].text.includes('"null"'));}
+    finally{panel.dispose();host.remove();}
+  });
   test('wallet streaming batch: native undecodable File does not discard other checked originals',async()=>{
     const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-batch-'+name);
     try{const original=(await prepareReportHistoryFile(sampleHistory())).text,files=new DataTransfer();files.items.add(new File([original],'first.json'));files.items.add(new File([Uint8Array.of(255)],'bad.json'));files.items.add(new File([original],'last.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);const result=panel.getState().result;assert(result.schema==='threecore.wallet-saved-browser-batch.v3'&&result.summary.validatedOriginals===2&&result.summary.sourceUnavailable===1);assert(result.files[1].code==='FILE_ENCODING'&&result.files[1].byteLength===null&&result.files[1].reportedByteLength===1);q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));assert(q('manifest').disabled);q('save').click();assert(JSON.parse(downloads.pop().text).files[2].status==='validated-original');q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('csv').click();assert(downloads.pop().text.includes('"bad.json","","source-unavailable"'));}
