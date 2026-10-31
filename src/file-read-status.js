@@ -202,6 +202,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.saved-file-comparison.v2": [null, "PERIOD_FILE_SAVED_COMPARISON_ONLY"],
   "threecore.saved-file-differences.v1": [null, "FILE_SAVED_DIFFERENCES_ONLY"],
   "threecore.saved-file-differences-review.v1": [null, "FILE_SAVED_DIFFERENCE_REVIEW_ONLY"],
+  "threecore.saved-file-difference-page.v1": [null, "FILE_SAVED_DIFFERENCE_PAGE_ONLY"],
   "threecore.saved-file-inspection.v1": [null, "PERIOD_FILE_INSPECTION_ONLY"],
   "threecore.report-history-import-inspection.v1": [null, "PERIOD_FILE_HISTORY_INSPECTION_ONLY"],
   "threecore.report-history-file.v1": ["history", "PERIOD_FILE_USE_HISTORY"],
@@ -223,6 +224,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  FILE_SAVED_DIFFERENCE_PAGE_ONLY: "これは相違箇所の表示範囲を保存した資料です。再確認には両方の元JSONを使って相違箇所を調べ、同じ絞り込みと表示位置で確認してください。全相違箇所を含むとは限らず、復元にも使えません。",
   FILE_SAVED_DIFFERENCE_REVIEW_ONLY: "これは保存した相違箇所を照合した結果です。再確認には、両方の元のJSONと、元の相違箇所JSONを使ってください。復元用のファイルではありません。",
   FILE_SAVED_DIFFERENCES_ONLY: "これは設定や練習用のJSONの相違箇所を記した資料です。再確認には、比較元と比較先の元のJSONを使ってください。この資料から元のファイルは復元できません。",
   FILE_USE_REHEARSAL_RECORD: "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
@@ -530,6 +532,7 @@ export function compareWalletSavedTextInspections(before, after) {
 
 export const WALLET_SAVED_DIFFERENCE_SOURCE_LIMIT = 2097152;
 const savedDifferenceReceipts = new WeakSet();
+const savedDifferenceSources = new WeakMap(), savedDifferencePages = new WeakSet();
 /** Compare bounded, validated plain sources; return locations, never source values. */
 export async function inspectWalletSavedTextDifferences(beforeText, afterText, fileOptions = {}) {
   let options;
@@ -553,13 +556,14 @@ export async function inspectWalletSavedTextDifferences(beforeText, afterText, f
       if (before.sourceSchema !== after.sourceSchema) savedInspectionFail("FILE_DIFFERENCE_FORMAT");
       if ((Object.hasOwn(options, "expectedBeforeSha256") && before.textDigest !== options.expectedBeforeSha256) ||
           (Object.hasOwn(options, "expectedAfterSha256") && after.textDigest !== options.expectedAfterSha256)) savedInspectionFail("FILE_DIFFERENCE_SOURCE_CHANGED");
-      const { compareBoundedSavedJSONTexts } = await import("./operation-rehearsal-report-review.js"); checkpoint();
+      const { compareBoundedSavedJSONTexts, queryBoundedSavedJSONDifferences } = await import("./operation-rehearsal-report-review.js"); checkpoint();
       const difference = compareBoundedSavedJSONTexts(beforeText, afterText); checkpoint();
       const result = Object.freeze({ schema: "threecore.saved-file-differences.v1", readOnly: true,
         before, after, sourceTextMatches: before.textDigest === after.textDigest, parsedJSONValuesMatch: difference.differenceCount === 0,
         ...difference, listedDifferences: difference.differences.length, valuesIncluded: false, arrayMatching: "position",
         containsOriginalEvidence: false, restorable: false, authenticated: false, liveChainRechecked: false, authorizesExecution: false });
-      savedDifferenceReceipts.add(result); return result;
+      savedDifferenceReceipts.add(result);
+      savedDifferenceSources.set(result, query => queryBoundedSavedJSONDifferences(beforeText, afterText, query)); return result;
     };
     try { return await waitSavedBatchSource(work, local.signal); } catch (error) { checkpoint(); throw error; }
   } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
@@ -577,6 +581,37 @@ export function walletSavedTextDifferencesText(result) {
     result.differencesTruncated ? "すべての相違箇所を表示した結果ではありません。" : "",
     "行は位置で比較します。行数の変化は一覧の場所に示し、追加・削除した行の値は含めません。",
     "アドレス・残高・設定値・メモ本文は表示しません。出所や元記録の正しさを認証する確認ではありません。"].filter(Boolean).join("\n");
+}
+
+/** Page only a calculation's private source pair; imported receipts cannot supply it. */
+export function queryWalletSavedTextDifferences(result, options = {}) {
+  if (!savedDifferenceSources.has(result)) savedInspectionFail("FILE_DIFFERENCE_RESULT");
+  let page;
+  try { page = savedDifferenceSources.get(result)(options); } catch { savedInspectionFail("FILE_DIFFERENCE_QUERY"); }
+  const value = Object.freeze({ schema: "threecore.saved-file-difference-page.v1", readOnly: true,
+    sourceSchema: result.before.sourceSchema, beforeTextDigest: result.before.textDigest, afterTextDigest: result.after.textDigest,
+    ...page, valuesIncluded: false, containsOriginalEvidence: false, restorable: false, authenticated: false,
+    liveChainRechecked: false, authorizesExecution: false });
+  savedDifferencePages.add(value); return value;
+}
+export function walletSavedTextDifferencePageText(page) {
+  if (!savedDifferencePages.has(page)) savedInspectionFail("FILE_DIFFERENCE_RESULT");
+  const kinds = { type: "種類の違い", value: "値の違い", "array-length": "行数の違い", missing: "比較先にない項目", unexpected: "比較先だけの項目" };
+  return [`全体の相違 ${page.totalDifferences}件 / 絞り込み該当 ${page.matchedDifferences}件 / 今回の表示 ${page.shownDifferences}件。`,
+    page.query.pathIncludes ? "場所に含む文字: " + page.query.pathIncludes + "（大文字・小文字を区別）" : "場所の絞り込みはありません。",
+    page.shownDifferences ? `該当する箇所の ${page.offset + 1}〜${page.offset + page.shownDifferences}件目。番号は全体での順序です。` : "この条件に当てはまる相違箇所はありません。全体の一致を意味しません。",
+    ...page.differences.map(row => `${row.ordinal}. ${row.path} — ${kinds[row.kind]}`),
+    "値は含みません。行は位置で比較し、追加・削除した行の値は表示しません。表示範囲の控えは復元に使えません。"].join("\n");
+}
+export function encodeWalletSavedTextDifferencePage(page, format = "json") {
+  if (!savedDifferencePages.has(page) || !["json", "csv"].includes(format)) savedInspectionFail("FILE_DIFFERENCE_RESULT");
+  if (format === "json") return JSON.stringify(page, null, 2) + "\n";
+  const fields = ["schema", "sourceSchema", "beforeTextDigest", "afterTextDigest", "pathIncludes", "offset", "limit", "totalDifferences", "matchedDifferences", "shownDifferences", "hasPrevious", "hasNext", "valuesIncluded", "containsOriginalEvidence", "restorable", "authenticated", "liveChainRechecked", "authorizesExecution", "rowType", "ordinal", "path", "kind"];
+  const prefix = [page.schema, page.sourceSchema, page.beforeTextDigest, page.afterTextDigest, page.query.pathIncludes, page.offset, page.limit,
+    page.totalDifferences, page.matchedDifferences, page.shownDifferences, page.hasPrevious, page.hasNext, false, false, false, false, false, false];
+  const rows = [fields, [...prefix, "scope", "", "", ""], ...page.differences.map(row => [...prefix, "difference", row.ordinal, row.path, row.kind])];
+  const cell = value => { let text = String(value); if (/^\s*[=+@-]/u.test(text)) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
+  return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";
 }
 
 export const WALLET_SAVED_DIFFERENCE_REVIEW_LIMIT = 262144;

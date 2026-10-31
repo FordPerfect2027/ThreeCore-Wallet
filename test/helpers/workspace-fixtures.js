@@ -81,6 +81,13 @@ export function gate() {
   return { promise, resolve, reject };
 }
 
+export function savedDifferencePageFixtures() {
+  const example = rehearsalExampleV2("DAT", "deposit");
+  const before = { ...example, events: Array.from({ length: 85 }, (_, i) => ({ ...example.events[0], id: "deposit-" + i, amount: "1" })) };
+  const after = { ...before, policy: { ...before.policy, paused: true }, events: before.events.map(event => ({ ...event, amount: "2" })) };
+  return { before: encodeRehearsal(before), after: encodeRehearsal(after) };
+}
+
 export async function until(predicate) {
   const limit = Date.now() + 2000;
   while (!predicate()) {

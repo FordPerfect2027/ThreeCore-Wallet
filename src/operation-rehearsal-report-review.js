@@ -55,6 +55,25 @@ export function compareBoundedSavedJSONTexts(beforeText, afterText) {
   return compareValues(parseSecurityJson(beforeText, limits), parseSecurityJson(afterText, limits));
 }
 
+/** Page field locations without retaining all matches or returning values. */
+export function queryBoundedSavedJSONDifferences(beforeText, afterText, input = {}) {
+  let options; try { options = captureOptionalDataFields(input, ["offset", "pathIncludes"]); } catch { fail("INVALID_SAVED_DIFFERENCE_QUERY"); }
+  const { offset = 0, pathIncludes = "" } = options;
+  if (!Number.isSafeInteger(offset) || offset < 0 || offset > 200000 || offset % REHEARSAL_REPORT_DIFFERENCE_LIMIT !== 0 ||
+      typeof pathIncludes !== "string" || pathIncludes.length > 128 || /[\u0000-\u001f\u007f-\u009f\u200e\u200f\u202a-\u202e\u2066-\u2069]/.test(pathIncludes)) fail("INVALID_SAVED_DIFFERENCE_QUERY");
+  const limits = { bytes: 2097152, depth: 32, nodes: 100000, keyCharacters: 256, stringCharacters: 1048576 }, differences = [];
+  let matched = 0;
+  const full = compareValues(parseSecurityJson(beforeText, limits), parseSecurityJson(afterText, limits), 0, (index, location) => {
+    if (!location.path.includes(pathIncludes)) return;
+    if (matched >= offset && differences.length < REHEARSAL_REPORT_DIFFERENCE_LIMIT) differences.push(Object.freeze({ ordinal: index + 1, ...location }));
+    matched++;
+  });
+  if (offset > 0 && offset >= matched) fail("INVALID_SAVED_DIFFERENCE_QUERY");
+  return Object.freeze({ query: Object.freeze({ pathIncludes }), offset, limit: REHEARSAL_REPORT_DIFFERENCE_LIMIT,
+    totalDifferences: full.differenceCount, matchedDifferences: matched, shownDifferences: differences.length,
+    differences: Object.freeze(differences), hasPrevious: offset > 0, hasNext: offset + differences.length < matched });
+}
+
 /** A checksum-only text file, bounded independently from a report. */
 export function decodeRehearsalChecksumText(text){
   if(typeof text!=="string"||text.length>1024)fail("INVALID_EXPECTED_CHECKSUM");
