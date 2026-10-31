@@ -1,0 +1,17 @@
+{
+  "schema": "threecore.report-set-token-library-inspection.v1",
+  "agent": "DAT",
+  "reportCount": 3,
+  "missingReports": 3,
+  "duplicateReferences": 0,
+  "entryCount": 0,
+  "conflicts": [],
+  "sourceRows": [],
+  "error": "PERIOD_SET_LIBRARY_EMPTY",
+  "containsOriginalEvidence": false,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "automaticallyImported": false,
+  "authorizesExecution": false,
+  "restorable": false
+}

@@ -15,3 +15,7 @@ The command `node scripts/inspect-period-library-import.js current.json incoming
 [Five reproducible captures](evidence/2026-10-31-period-library-import-inspection/) cover mixed additions/duplicates/metadata changes, removed restriction with a shorter draft, compatible addition, empty incoming collection and 13-entry combined capacity. Standalone CLI outputs and controller inspections exactly match the shared model. Both original files remain byte-identical; imports are only inspected and no synthetic or real storage writes occur in these captures. Existing checks also cover malformed original data, strict argument/UTF-8/checksum failures and late cancellation.
 
 Latest full checkpoint remains 15,227 tests at 5cc20fe (item 479). No real signatures, transfers, approvals, secrets, publication, deployment or restart of the user's server occurred.
+
+## Subsequent uncounted correction
+
+The original portable-revision size estimate and maximum-revision compatibility preview were corrected at `209af71`. The [recovery update](REPORT_SET_TOKEN_LIBRARY_2026-10-31.md) retains before/after reproductions and regression evidence; no additional development item was counted for this correction.

@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.report-set-token-library-inspection.v1",
+  "agent": "DAT",
+  "reportCount": 3,
+  "missingReports": 0,
+  "duplicateReferences": 1,
+  "entryCount": 2,
+  "conflicts": [],
+  "sourceRows": [
+    {
+      "reportId": "12345678-1234-4234-8234-000000000101",
+      "entryId": "12345678-1234-4234-8234-000000001000",
+      "reportArchived": false,
+      "entryArchived": false,
+      "requiresNewPlan": false
+    },
+    {
+      "reportId": "12345678-1234-4234-8234-000000000102",
+      "entryId": "12345678-1234-4234-8234-000000001000",
+      "reportArchived": false,
+      "entryArchived": false,
+      "requiresNewPlan": false
+    },
+    {
+      "reportId": "12345678-1234-4234-8234-000000000103",
+      "entryId": "12345678-1234-4234-8234-000000001006",
+      "reportArchived": false,
+      "entryArchived": false,
+      "requiresNewPlan": false
+    }
+  ],
+  "error": null,
+  "containsOriginalEvidence": false,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "automaticallyImported": false,
+  "authorizesExecution": false,
+  "restorable": false
+}
