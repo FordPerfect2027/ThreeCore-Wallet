@@ -47,7 +47,11 @@ async function runBrowserPage(index, fault) {
     browser.stderr.on("data", data => { errors = (errors + data).slice(-12000); });
     browser.on("error", error => receipt.fail(error));
     browser.once("close", code => receipt.fail(Error("Test browser exited before completion: " + code)));
-    try { result = await receipt.result; }
+    try {
+      result = await receipt.result;
+      const checked = checkResult(result, index, fault);
+      console.log("Browser shard " + (index + 1) + "/2 completion received: " + checked.passed + " passing cases; isolated cleanup pending.");
+    }
     catch (error) { throw Error(error.message + "\nRecent browser diagnostics:\n" + errors); }
   } catch (error) {
     failure = error;

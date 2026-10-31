@@ -32,12 +32,12 @@ export function browserArguments(profile, url) {
 function killWindowsTree(pid) {
   return new Promise((resolve, reject) => {
     execFile("taskkill.exe", ["/PID", String(pid), "/T", "/F"],
-      { windowsHide: true, timeout: 5000 }, error => error ? reject(error) : resolve());
+      { windowsHide: true, timeout: 20000 }, error => error ? reject(error) : resolve());
   });
 }
 
 /** Stop only the child created by this test run; never match a browser by name. */
-export async function stopTestBrowser(child, { platform = process.platform, timeoutMs = 6000,
+export async function stopTestBrowser(child, { platform = process.platform, timeoutMs = 25000,
   killTree = killWindowsTree } = {}) {
   if (!child || child.exitCode !== null || child.signalCode != null) return;
   if (!Number.isSafeInteger(child.pid) || child.pid < 1) return; // Failed spawn has no running child.
