@@ -1,0 +1,25 @@
+✔ a 24,000-block missing range is proposed as 2,000 by 10 then the remaining two windows (124.5091ms)
+✔ partial saved prefixes are skipped and small final windows retain exact inclusive endpoints (40.2307ms)
+✔ planning gaps require an explicit mode and huge offsets do not enumerate earlier pages (166.8632ms)
+✔ adjacent missing cells merge across plan boundaries without scheduling saved windows (94.6468ms)
+✔ complete but conflicting evidence is not silently proposed as missing or verified (451.6299ms)
+✔ unknown groups, malformed options and out-of-range pages fail without invoking getters (38.3277ms)
+✔ missing queues remain attached to the selected token and do not sum different contexts (28.5784ms)
+✔ queue panel advances ten windows at a time and invalidates stale plans after editing (66.6822ms)
+✔ mounted queue uses captured evidence and retained buttons cannot act after disposal (49.1132ms)
+✔ queue CLI requires an explicit group, validates flags and converts one-based pages exactly (11.5168ms)
+✔ help explains grouping, planning-only scope and strict exit semantics without reading a file (0.8356ms)
+✔ standalone JSON equals shared queue fields and binds the verified original without modifying it (634.262ms)
+✔ second-page strict output retains all-page missing counts and text matches the UI proposal (130.8998ms)
+✔ an empty selected queue preserves whole-source conflicts and excluded recorded review ranges (620.143ms)
+✔ an explicit unplanned gap can be queried on its final huge-offset page (215.1386ms)
+✔ missing groups and out-of-range pages have no partial stdout (73.3099ms)
+✔ corrupt checksums, wrong formats, malformed bytes and missing paths produce safe errors (61.3746ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2384.1919

@@ -527,6 +527,8 @@ A displayed set can also [export one original period report](docs/REPORT_SET_SOU
 
 The timeline separately displays [saved Transfer-query coverage and missing ranges](docs/REPORT_HISTORY_COVERAGE_2026-10-31.md), without counting duplicate windows twice or treating planned ranges as acquired evidence.
 
+The same [ten-window missing-history proposals can be reproduced offline](docs/MISSING_HISTORY_QUEUE_CLI_2026-10-31.md) from a checksummed source file, with explicit account/chain context and source-wide findings retained.
+
 
 ### Resumable historical period collection (local development)
 

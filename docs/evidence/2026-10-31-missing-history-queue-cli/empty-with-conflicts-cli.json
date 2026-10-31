@@ -1,0 +1,49 @@
+{
+  "schema": "threecore.missing-history-queue.v1",
+  "groupId": "DAT-1",
+  "context": {
+    "agent": "DAT",
+    "chainId": 84532,
+    "account": "0x1111111111111111111111111111111111111111"
+  },
+  "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+  "query": {
+    "groupId": "DAT-1",
+    "kind": "pending",
+    "windowSize": 2000,
+    "page": "0"
+  },
+  "pageSize": 10,
+  "pageCount": "0",
+  "totalWindows": "0",
+  "totalBlocks": "0",
+  "pageBlocks": "0",
+  "items": [],
+  "recordedUniqueBlocks": "60",
+  "reviewRecordedBlocks": "19",
+  "rangeNotation": "inclusive",
+  "newestFirst": true,
+  "readOnly": true,
+  "executed": false,
+  "automaticRetry": false,
+  "includesRecordedReviewRanges": false,
+  "completeHistory": false,
+  "liveChainRechecked": false,
+  "sourcePayloadDigest": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e",
+  "sourceChecksumVerified": true,
+  "sourceSummary": {
+    "allContinuous": false,
+    "status": "review-needed",
+    "issues": [
+      "OVERLAPS",
+      "REPEATED_EVIDENCE",
+      "INCOMPLETE_EVIDENCE",
+      "HASH_CONFLICTS",
+      "REPORTS_NEED_REVIEW"
+    ],
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false
+}
