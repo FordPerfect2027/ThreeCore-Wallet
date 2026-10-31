@@ -1,0 +1,475 @@
+✖ an exported check ID locates the same check without changing global findings (454.3141ms)
+✖ source report IDs find every referencing check even when the display name differs (363.8795ms)
+✖ a complete stored hash locates contradictory observations with case-insensitive literal search (278.2034ms)
+✖ exact integer text in a conflicting stored balance is searchable without conversion (79.0281ms)
+✖ reference search still respects token and severity and treats punctuation literally (181.7003ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1725.6973
+
+✖ failing tests:
+
+test at test\report-check-reference-search.test.js:7:1
+✖ an exported check ID locates the same check without changing global findings (454.3141ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/report-check-reference-search.test.js:11:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\report-check-reference-search.test.js:15:1
+✖ source report IDs find every referencing check even when the display name differs (363.8795ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   {
+  -     account: null,
+  -     action: '取得元・チェーン・取得日時を確認してください。チェーン再編成などの原因はこの保存データだけでは確定できません。',
+  -     agents: [
+  -       'DAT',
+  -       'EMA',
+  -       'CAWELON'
+  -     ],
+  -     blocks: null,
+  -     chainId: 84532,
+  -     fromBlock: '42',
+  -     id: 'check-8',
+  -     kind: 'hash-conflict',
+  -     observations: [
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000101',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000102',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000105',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000106',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000101',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000102',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000105',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000606',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000106',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000101',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000102',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000105',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000106',
+  -         value: null
+  -       }
+  -     ],
+  -     reportIds: [
+  -       '12345678-1234-4234-8234-000000000101',
+  -       '12345678-1234-4234-8234-000000000102',
+  -       '12345678-1234-4234-8234-000000000105',
+  -       '12345678-1234-4234-8234-000000000106'
+  -     ],
+  -     reportLabels: [
+  -       '報告 1',
+  -       '報告 2',
+  -       '同じ証拠の再報告',
+  -       'EMAのハッシュ確認'
+  -     ],
+  -     severity: 'conflict',
+  -     severityLabel: '証拠の食い違い',
+  -     title: '同じチェーン・ブロックのハッシュが異なります',
+  -     toBlock: '42'
+  -   }
+  - ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/report-check-reference-search.test.js:18:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { id: 'check-8', kind: 'hash-conflict', severity: 'conflict', severityLabel: '証拠の食い違い', title: '同じチェーン・ブロックのハッシュが異なります', action: '取得元・チェーン・取得日時を確認してください。チェーン再編成などの原因はこの保存データだけでは確定できません。', agents: [Array], chainId: 84532, account: null, fromBlock: '42', toBlock: '42', blocks: null, reportIds: [Array], reportLabels: [Array], observations: [Array] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\report-check-reference-search.test.js:20:1
+✖ a complete stored hash locates contradictory observations with case-insensitive literal search (278.2034ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   {
+  -     account: null,
+  -     action: '取得元・チェーン・取得日時を確認してください。チェーン再編成などの原因はこの保存データだけでは確定できません。',
+  -     agents: [
+  -       'DAT',
+  -       'EMA',
+  -       'CAWELON'
+  -     ],
+  -     blocks: null,
+  -     chainId: 84532,
+  -     fromBlock: '42',
+  -     id: 'check-8',
+  -     kind: 'hash-conflict',
+  -     observations: [
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000101',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000102',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000105',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000106',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000101',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000102',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000105',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000606',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000106',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000101',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000102',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000105',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000106',
+  -         value: null
+  -       }
+  -     ],
+  -     reportIds: [
+  -       '12345678-1234-4234-8234-000000000101',
+  -       '12345678-1234-4234-8234-000000000102',
+  -       '12345678-1234-4234-8234-000000000105',
+  -       '12345678-1234-4234-8234-000000000106'
+  -     ],
+  -     reportLabels: [
+  -       '報告 1',
+  -       '報告 2',
+  -       '同じ証拠の再報告',
+  -       'EMAのハッシュ確認'
+  -     ],
+  -     severity: 'conflict',
+  -     severityLabel: '証拠の食い違い',
+  -     title: '同じチェーン・ブロックのハッシュが異なります',
+  -     toBlock: '42'
+  -   }
+  - ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/report-check-reference-search.test.js:24:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { id: 'check-8', kind: 'hash-conflict', severity: 'conflict', severityLabel: '証拠の食い違い', title: '同じチェーン・ブロックのハッシュが異なります', action: '取得元・チェーン・取得日時を確認してください。チェーン再編成などの原因はこの保存データだけでは確定できません。', agents: [Array], chainId: 84532, account: null, fromBlock: '42', toBlock: '42', blocks: null, reportIds: [Array], reportLabels: [Array], observations: [Array] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\report-check-reference-search.test.js:26:1
+✖ exact integer text in a conflicting stored balance is searchable without conversion (79.0281ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(result.items.some(item => item.id === target.id))
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/report-check-reference-search.test.js:31:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\report-check-reference-search.test.js:33:1
+✖ reference search still respects token and severity and treats punctuation literally (181.7003ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   {
+  -     account: null,
+  -     action: '取得元・チェーン・取得日時を確認してください。チェーン再編成などの原因はこの保存データだけでは確定できません。',
+  -     agents: [
+  -       'DAT',
+  -       'EMA',
+  -       'CAWELON'
+  -     ],
+  -     blocks: null,
+  -     chainId: 84532,
+  -     fromBlock: '42',
+  -     id: 'check-8',
+  -     kind: 'hash-conflict',
+  -     observations: [
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000101',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000102',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000105',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'DAT',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000106',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000101',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000102',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000105',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'EMA',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000606',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000106',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000101',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000102',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000105',
+  -         value: null
+  -       },
+  -       {
+  -         agent: 'CAWELON',
+  -         hash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  -         position: null,
+  -         reportId: '12345678-1234-4234-8234-000000000106',
+  -         value: null
+  -       }
+  -     ],
+  -     reportIds: [
+  -       '12345678-1234-4234-8234-000000000101',
+  -       '12345678-1234-4234-8234-000000000102',
+  -       '12345678-1234-4234-8234-000000000105',
+  -       '12345678-1234-4234-8234-000000000106'
+  -     ],
+  -     reportLabels: [
+  -       '報告 1',
+  -       '報告 2',
+  -       '同じ証拠の再報告',
+  -       'EMAのハッシュ確認'
+  -     ],
+  -     severity: 'conflict',
+  -     severityLabel: '証拠の食い違い',
+  -     title: '同じチェーン・ブロックのハッシュが異なります',
+  -     toBlock: '42'
+  -   }
+  - ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/report-check-reference-search.test.js:37:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { id: 'check-8', kind: 'hash-conflict', severity: 'conflict', severityLabel: '証拠の食い違い', title: '同じチェーン・ブロックのハッシュが異なります', action: '取得元・チェーン・取得日時を確認してください。チェーン再編成などの原因はこの保存データだけでは確定できません。', agents: [Array], chainId: 84532, account: null, fromBlock: '42', toBlock: '42', blocks: null, reportIds: [Array], reportLabels: [Array], observations: [Array] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
