@@ -492,6 +492,10 @@ export async function reviewReportSetEventComparisonFile(value, text, fileOption
     sourcePayloadDigest: expected.sourcePayloadDigest, sourceDigestMatches: supplied.sourcePayloadDigest === expected.sourcePayloadDigest,
     comparisonTextSha256, query, differences, unexpectedFields,
     comparisonStatus: comparison.status, comparedBlocks: comparison.comparedBlocks,
+    sources: Object.fromEntries(["before", "after"].map(role => [role, {
+      restricted: comparison[role].restricted, archivedReport: comparison[role].archivedReport,
+      archivedSource: comparison[role].archivedSource, internallyConsistentHashes: comparison[role].internallyConsistentHashes,
+    }])),
     counts: comparison.counts, sharedAnchorCount: comparison.sharedAnchorCount, anchorDifferenceCount: comparison.anchorDifferences.length,
     readOnly: true, historicalOnly: true, liveChainRechecked: false, authenticated: false,
     encrypted: false, restorable: false, containsOriginalEvidence: false, authorizesExecution: false });

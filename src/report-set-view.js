@@ -235,6 +235,12 @@ export function setEventComparisonReviewText(value) {
     "元資料の検査値: " + (value.sourceDigestMatches ? "一致" : "不一致"),
     "資料A: " + value.query.beforeId, "資料B: " + value.query.afterId, "トークン: " + value.query.agent,
     "再計算した履歴比較: " + meanings[value.comparisonStatus] + " / 共通範囲 " + value.comparedBlocks + "ブロック",
+    ...Object.entries(value.sources).flatMap(([role, source]) => {
+      const name = role === "before" ? "A" : "B";
+      return [source.restricted ? name + "には再取得が必要という印があります。" : "",
+        source.archivedReport || source.archivedSource ? name + "には非表示保管の記録を含みます。" : "",
+        !source.internallyConsistentHashes ? name + "の元資料内にブロック情報の矛盾があります。" : ""].filter(Boolean);
+    }),
     "同一 " + value.counts.matching + " / 内容違い " + value.counts.changed + " / Aだけ " + value.counts.onlyBefore + " / Bだけ " + value.counts.onlyAfter + " / ブロックハッシュ不一致 " + value.anchorDifferenceCount,
     "異なる項目: " + (value.differences.join(", ") || "なし") + " / 余分な項目: " + value.unexpectedFields,
     "履歴比較ファイルのテキスト SHA-256: " + value.comparisonTextSha256,

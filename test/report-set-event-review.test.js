@@ -30,6 +30,19 @@ test("verification ignores JSON key order but binds its receipt to the exact sup
   assert.notEqual(review.comparisonTextSha256, createHash("sha256").update(f.file.text).digest("hex"));
 });
 
+test("verification receipts retain source restrictions and reject inconsistent original block anchors", async () => {
+  const input = clone(changed()); input.entries[0].archived = true;
+  const entry = input.entries[0].report.slots[0].entry; entry.archived = true; entry.requiresNewPlan = true;
+  const file = await prepareReportSetEventComparisonFile(input, query), review = await reviewReportSetEventComparisonFile(input, file.text);
+  assert.equal(review.matchesRecomputation, true); assert.equal(review.comparisonStatus, "differences");
+  assert.deepEqual(review.sources.before, { restricted: true, archivedReport: true, archivedSource: true, internallyConsistentHashes: true });
+  assert.ok(Object.isFrozen(review.sources.before));
+  const display = setEventComparisonReviewText(review);
+  for (const phrase of ["再取得が必要", "非表示保管"]) assert.ok(display.includes(phrase));
+  entry.draft.later.blockHash = "0x" + "a".repeat(64);
+  await assert.rejects(reviewReportSetEventComparisonFile(input, file.text), error => error.code === "PERIOD_ANCHOR_CONFLICT");
+});
+
 test("altered event values, counts, statuses, unknown fields and execution claims cannot pass recomputation", async () => {
   const f = await fixture();
   for (const change of [data => { data.comparison.counts.changed = 0; }, data => { data.comparison.differences[0].after.event.amountBaseUnits = "999"; },
