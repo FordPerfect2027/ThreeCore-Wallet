@@ -1,0 +1,41 @@
+{
+  "source": "ced7ce0",
+  "synthetic": true,
+  "providerCalls": 0,
+  "appliesToLiveState": false,
+  "summary": {
+    "scope": "matched-record-contributions",
+    "query": {
+      "agent": "all",
+      "kind": "settle",
+      "decision": "all",
+      "search": "",
+      "searchScope": "stored",
+      "reason": "all"
+    },
+    "matched": 2,
+    "accepted": 1,
+    "rejected": 1,
+    "datCashChangeUnits": "129000000",
+    "emaCashChangeUnits": "0",
+    "missingCawelonCashChangeUnits": null,
+    "independentReviewMatches": true
+  },
+  "prefix": {
+    "storedAgent": "DAT",
+    "throughRecordId": "open-one",
+    "included": 1,
+    "omittedLater": 2,
+    "otherAgentsExcludedFromExtractedInput": true,
+    "fullWorkspacePreservedInReport": true,
+    "independentReviewMatches": true,
+    "tamperingDetected": true
+  },
+  "refusals": {
+    "missingRecordExit": 1,
+    "missingRecordOutputBytes": 0,
+    "badViewExit": 1,
+    "badViewOutputBytes": 0
+  },
+  "sourceUnchanged": true
+}

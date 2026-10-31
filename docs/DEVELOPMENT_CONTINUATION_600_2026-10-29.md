@@ -4,7 +4,9 @@ The user explicitly clarified that the next continuation is **20 × 30 = 600 ite
 
 Only completed, evidenced work counts. Repeated executions of the same check, renamed copies of a feature and individual test assertions do not create additional development items. Batch records will link source commits, relevant validation and artifacts; running totals must follow those records.
 
-Current continuation: **503 / 600 complete**.
+Current continuation: **505 / 600 complete**.
+
+[Items 504–505: summarize matched records per agent and extract source-backed replay prefixes](REHEARSAL_RECORD_SUMMARY_AND_PREFIX_2026-10-31.md) are complete with 1606 related checks and 919 native Chrome UI cases at `ced7ce0`.
 
 [Items 501–503: recover explicit comparison sides, named cases and unchanged expectations](REHEARSAL_REVIEWED_REPORT_PARTS_2026-10-31.md) are complete with 1593 related checks and 917 native Chrome UI cases at `e6ef7a1`.
 
@@ -280,7 +282,7 @@ Current continuation: **503 / 600 complete**.
 
 [Item 205: period review lifecycle](PERIOD_REVIEW_LIFECYCLE_2026-10-30.md) is complete with 111 targeted and 231 related passing tests at `964f5da`.
 
-[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–503. Remaining work follows concrete product gaps and integration findings.
+[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–505. Remaining work follows concrete product gaps and integration findings.
 
 ## Completed first group: saved-report verification (items 1–20)
 
