@@ -1,0 +1,32 @@
+{
+  "source": "f711092",
+  "provenance": {
+    "path": "docs/evidence/2026-11-01-wallet-saved-batch/period-source.json",
+    "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce"
+  },
+  "calls": [
+    {
+      "operation": "inspect",
+      "name": "period-source.json",
+      "digest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "accepted": true
+    },
+    {
+      "operation": "compare",
+      "name": "formatted-source.json",
+      "digest": "fd83a7b296f88d983a5379eac2d94189fecd7981d3cc230444cc53f9902ae7bb",
+      "accepted": true
+    }
+  ],
+  "changedSource": {
+    "accepted": false,
+    "inspectionCalls": 0
+  },
+  "sameOriginalDifferentFormatting": true,
+  "guideAndCliByteIdentical": true,
+  "originalsUnchanged": true,
+  "captureMethod": "real File objects and shared panels with Node test DOM; native Chrome checked separately",
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}

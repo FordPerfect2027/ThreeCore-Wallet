@@ -1,0 +1,105 @@
+{
+  "schema": "threecore.wallet-saved-browser-batch.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "externalChecksumsCompared": false,
+  "phase": "complete",
+  "complete": true,
+  "allOriginalsValidated": true,
+  "summary": {
+    "selected": 2,
+    "checked": 2,
+    "pending": 0,
+    "validatedOriginals": 2,
+    "declaredOnly": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "totalBytes": 10121
+  },
+  "files": [
+    {
+      "name": "period-source.json",
+      "byteLength": 5847,
+      "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-file.v1",
+        "byteLength": 5847,
+        "title": "期間取得の控え",
+        "target": "period",
+        "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+        "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": 0,
+          "draftReferences": 1,
+          "archivedEntryReferences": null,
+          "restrictedEntryReferences": null,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "name": "formatted-source.json",
+      "byteLength": 4274,
+      "sha256": "fd83a7b296f88d983a5379eac2d94189fecd7981d3cc230444cc53f9902ae7bb",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-file.v1",
+        "byteLength": 4274,
+        "title": "期間取得の控え",
+        "target": "period",
+        "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+        "textDigest": "fd83a7b296f88d983a5379eac2d94189fecd7981d3cc230444cc53f9902ae7bb",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": 0,
+          "draftReferences": 1,
+          "archivedEntryReferences": null,
+          "restrictedEntryReferences": null,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    }
+  ]
+}

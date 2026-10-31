@@ -1,0 +1,11 @@
+# Open and compare verified originals directly from a saved-file batch
+
+Item 524. Source: `f711092`.
+
+Validated original rows now offer two shortcuts: open the single-file detail guide, or compare against its already open original. They pass the actual selected File and its captured exact SHA-256, avoiding another file-picker selection. The guide rereads bounded UTF-8 bytes and checks that hash before original validation. Changed content is refused; auxiliary, invalid, pending and external-checksum-mismatch rows cannot use the shortcuts. A comparison requires an existing guide baseline and preserves it when the candidate fails. Details open and receive focus while the batch remains intact. Clear/replacement/disposal prevents detached row buttons from opening stale inputs; late callback results cannot claim navigation success. No restore, storage or wallet operation is introduced.
+
+58 focused checks passed (4615.4023 ms); 247 related guide, comparison, bundle, batch-panel and file-status checks passed (12686.8819 ms), with zero failures/skips/cancellations. Native Chrome passed 939 cases across two reconciled isolated profiles with cleanup. The new native case selects originals once with File/DataTransfer, opens detail, compares the second original, checks focus and disabled auxiliary actions, and preserves guide comparison after clearing the batch. This does not claim OS-picker operation or control of the user's existing tab.
+
+[Evidence](evidence/2026-11-01-wallet-batch-navigation/) records Node shared-panel navigation with real File objects, exact original/formatted source hashes, preserved batch state and rejection of a changed source before inspection. The separate actual comparison CLI produces a byte-identical result from the saved originals. Native execution is recorded separately; the shared-panel capture is not described as a user-tab capture. Original bytes and committed evidence hashes are checked unchanged. Both shortcuts form one complete navigation capability and count as one item.
+
+Last full-wallet checkpoint remains d253e8d (15,720 tests). No signatures, transfers, approvals, keys, external RPC, publication, deployment or existing-server restart occurred. Counts do not measure mainnet readiness.
