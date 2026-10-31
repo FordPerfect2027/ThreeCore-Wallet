@@ -292,6 +292,23 @@ export function encodeRehearsalBatchManifest(result) {
   return result.files.map(row => row.sha256 + "  " + row.name).join("\n") + "\n";
 }
 
+/** Viewing summary only. Retain partial scope on every row and never infer a pass. */
+export function encodeRehearsalBatchCsv(result) {
+  if (!batchReceipts.has(result)) fail("UNRECOGNIZED_REVIEW_BATCH");
+  const rows = [["receiptSchema","simulationOnly","sourceVerified","authorizesExecution","phase","complete",
+    "selected","reviewed","pending","totalBytes","allRecomputationsMatch","referenceProvided","referenceSha256",
+    "externalChecksumsCompared","allExternalChecksumsMatch","name","status","byteLength","sha256",
+    "expectedSha256","checksumMatches","inputSchema","differenceCount","expectedCases","expectationsMatched","expectationsDiffering"]];
+  for (const row of result.files) rows.push([result.schema,true,false,false,result.phase,result.complete,
+    result.summary.selected,result.summary.reviewed,result.summary.pending,result.summary.totalBytes,
+    result.allRecomputationsMatch,result.referenceProvided ?? false,result.reference?.sha256 ?? "",
+    result.externalChecksumsCompared,result.allExternalChecksumsMatch ?? "",row.name,row.status,row.byteLength,
+    row.sha256 ?? "",row.expectedSha256 ?? "",row.checksumMatches ?? "",row.inputSchema ?? "",row.differenceCount ?? "",
+    row.expectedOutcomes?.cases ?? "",row.expectedOutcomes?.matched ?? "",row.expectedOutcomes?.differing ?? ""]);
+  const cell = value => { let text = String(value); if (/^\s*[=+@-]/u.test(text)) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
+  return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";
+}
+
 const workspaceSourceSchemas = new Set([REHEARSAL_OVERVIEW_SCHEMA,REHEARSAL_RECORD_REPORT_SCHEMA,
   REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA,REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_REFERENCE_REPORT_SCHEMA,REHEARSAL_RECORD_SUMMARY_SCHEMA]);
 

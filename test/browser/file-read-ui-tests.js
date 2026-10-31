@@ -64,6 +64,28 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('rehearsal batch detail: native selection hands exact source and earlier checksum to independent review',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const idle=async id=>{const end=Date.now()+10000;while(q(id).getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q(id).getAttribute('aria-busy')==='false');};
+    try{
+      q('example').click();q('session-save').click();const original=downloads.pop().text;q('record-browser-save').click();const good=downloads.pop().text,changed=JSON.parse(good);changed.matchedRecords=999;const text=JSON.stringify(changed,null,2).replaceAll('\n','\r\n')+'\r\n';
+      const files=new DataTransfer();files.items.add(new File([text],'detail.json'));q('report-batch-files').closest('details').open=true;q('report-batch-files').files=files.files;q('report-batch-files').dispatchEvent(new Event('change'));
+      const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes(good))),b=>b.toString(16).padStart(2,'0')).join('');q('report-batch-reference-text').value=hash+'  detail.json\n';q('report-batch-reference-text').dispatchEvent(new Event('input'));q('report-batch-run').click();await idle('report-batch-status');const summary=q('report-batch-summary').textContent;
+      q('report-batch-rows').querySelector('button').click();await idle('report-review-status');assert(document.activeElement===q('report-review-title'));assert(q('report-review-summary').textContent.includes('照合値: 不一致'));assert(!q('report-review-differences').textContent.includes('undefined'));assert(q('report-review-differences').textContent.includes('/matchedRecords'));assert(q('report-review-workspace-save').disabled);assert(q('report-batch-summary').textContent===summary);
+      q('report-review-source-save').click();assert(downloads.pop().text===text);q('session-save').click();assert(downloads.pop().text===original);
+      q('report-batch-clear').click();assert(!q('report-review-source-save').disabled);
+    }finally{page.dispose();host.remove();}
+  });
+  test('rehearsal batch CSV: native download keeps every selected filename and original receipt scope',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[];
+    const panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared)}),q=id=>view.getElementById('report-batch-'+id);
+    try{const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,input),files=new DataTransfer();files.items.add(new File([text],'=source.json'));files.items.add(new File(['{}'],'形式外.json'));q('files').closest('details').open=true;q('files').files=files.files;q('files').dispatchEvent(new Event('change'));q('run').click();const end=Date.now()+10000;while(q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();
+      q('csv').click();const csv=downloads.pop();assert(csv.filename==='ThreeCore-report-batch-summary.csv'&&csv.text.startsWith('\ufeff')&&csv.text.split('\r\n').length===4);assert(csv.text.includes("'=source.json")&&csv.text.includes('形式外.json')&&csv.text.includes('"unsupported"'));q('save').click();const saved=JSON.parse(downloads.pop().text);assert(saved.summary.selected===2&&saved.files[0].name==='=source.json');
+    }finally{panel.dispose();host.remove();}
+  });
   test('rehearsal batch: previous native checksum file detects changed bytes without replacing the reference',async()=>{
     const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
     const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[];

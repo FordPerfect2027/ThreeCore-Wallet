@@ -8,10 +8,10 @@ import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { REHEARSAL_WORKSPACE_SCHEMA } from "../src/operation-rehearsal-workspace.js";
 const source=JSON.stringify(reportRehearsalOverview({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:"DAT",ledgers:[rehearsalExampleV2()]}));
 const fast={digest:async(_,bytes)=>Uint8Array.from(createHash("sha256").update(bytes).digest()).buffer};
-function setup(subtle=fast){const nodes=new Map(),downloads=[];let action=()=>{};
+function setup(subtle=fast,inspectSource=null){const nodes=new Map(),downloads=[];let action=()=>{};
   const document={getElementById(id){if(!nodes.has(id))nodes.set(id,new Element("div"));return nodes.get(id);},createElement:tag=>new Element(tag)};
   const q=id=>document.getElementById("report-batch-"+id);
-  const panel=mountRehearsalBatchReviewPanel(document,{subtle,download:({prepared})=>{const result=action();downloads.push(prepared);return result;}});
+  const panel=mountRehearsalBatchReviewPanel(document,{subtle,inspectSource,download:({prepared})=>{const result=action();downloads.push(prepared);return result;}});
   return {q,panel,downloads,action:fn=>{action=fn;},choose(files){q("files").files=files;q("files").dispatchEvent(new Event("change"));}};
 }
 const file=(name="a.json",text=source)=>new File([text],name);
@@ -19,6 +19,35 @@ const wait=async predicate=>{const end=Date.now()+5000;while(!predicate()&&Date.
 const done=f=>wait(()=>f.q("status").getAttribute("aria-busy")==="false");
 const manifest=(name="a.json",text=source)=>createHash("sha256").update(text).digest("hex")+"  "+name+"\n";
 const paste=(f,text)=>{f.q("reference-text").value=text;f.q("reference-text").dispatchEvent(new Event("input"));};
+const details=(f,index=0)=>f.q("rows").children[index].children.at(-1).children[0];
+
+test("batch detail handoff retains original bytes and reference instead of substituting its actual hash",async()=>{
+  const calls=[],f=setup(fast,row=>{calls.push(row);return true;});try{
+    f.choose([file("a.json",source+"\r\n")]);paste(f,manifest());f.q("run").click();await done(f);const before=f.q("summary").textContent;
+    details(f).click();assert.deepEqual(calls,[{name:"a.json",text:source+"\r\n",expectedSha256:createHash("sha256").update(source).digest("hex")}]);assert(Object.isFrozen(calls[0]));assert.equal(f.q("summary").textContent,before);assert.equal(f.q("save").disabled,false);
+    const old=details(f);f.q("clear").click();old.click();assert.equal(calls.length,1);
+    f.choose([file()]);f.q("run").click();await done(f);details(f).click();assert.equal(calls[1].expectedSha256,null);
+  }finally{f.panel.dispose();}
+});
+test("stopped batches expose only completed sources and CSV retains pending scope",async()=>{
+  let release,calls=0;const opened=[],f=setup({digest(...args){return ++calls===2?new Promise(r=>{release=r;}):fast.digest(...args);}},row=>{opened.push(row);return true;});
+  try{f.choose([file(),file("b.json")]);f.q("run").click();await wait(()=>calls===2);f.q("cancel").click();await done(f);assert.equal(details(f).disabled,false);assert.equal(details(f,1).disabled,true);details(f,1).click();assert.equal(opened.length,0);
+    f.q("csv").click();assert.equal(f.downloads.at(-1).filename,"ThreeCore-report-batch-summary.csv");assert.match(f.downloads.at(-1).text,/"cancelled","false","2","1","1"/);assert.match(f.downloads.at(-1).text,/"b.json","pending"/);
+    f.q("clear").click();assert.equal(f.q("csv").disabled,true);
+  }finally{release?.(new Uint8Array(32).buffer);f.panel.dispose();}
+});
+for(const mode of ["throws","false","async","clears","disposes"])test("detail handoff failure or stale completion preserves honest state "+mode,async()=>{
+  let f;f=setup(fast,()=>{if(mode==="throws")throw Error("private");if(mode==="false")return false;if(mode==="async")return Promise.reject(Error("private"));if(mode==="clears")f.q("clear").click();if(mode==="disposes")f.panel.dispose();return true;});
+  try{f.choose([file()]);f.q("run").click();await done(f);details(f).click();await new Promise(r=>setTimeout(r,0));
+    if(["clears","disposes"].includes(mode)){assert.equal(f.q("export-status").textContent,"");assert.equal(f.q("save").disabled,true);}else{assert.match(f.q("export-status").textContent,/渡せません/);assert.equal(f.q("save").disabled,false);}assert(!f.q("export-status").textContent.includes("private"));
+  }finally{f.panel.dispose();}
+});
+test("CSV failed delivery retains the owned result for retry",async()=>{
+  const f=setup();try{f.choose([file()]);f.q("run").click();await done(f);f.action(()=>false);f.q("csv").click();assert.match(f.q("export-status").textContent,/保存できません/);assert.equal(f.q("csv").disabled,false);f.action(()=>{});f.q("csv").click();assert.match(f.q("export-status").textContent,/CSVで保存し始め/);}finally{f.panel.dispose();}
+});
+test("reference digest failure displays useful retry guidance without null or undefined",async()=>{
+ const f=setup({digest(){throw Error("private");}});try{f.choose([file()]);paste(f,manifest());f.q("run").click();await done(f);assert.match(f.q("status").textContent,/照合値/);for(const value of ["null","undefined","private"])assert(!f.q("status").textContent.includes(value));assert.equal(f.q("save").disabled,true);}finally{f.panel.dispose();}
+});
 
 test("previous checksum paste binds exact files and preserves the reference when the selected bytes differ",async()=>{
   const f=setup(),reference=manifest();try{

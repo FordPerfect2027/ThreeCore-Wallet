@@ -3,10 +3,11 @@ import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope, readFormatFileName } from "../src/security-file.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
+import { captureDataRecord } from "../src/security-data.js";
 import { validateRehearsalReportBatchSelection, reviewRehearsalReportBatch,
   encodeRehearsalBatchReview, encodeRehearsalBatchManifest, REHEARSAL_BATCH_REVIEW_BYTES,
   REHEARSAL_BATCH_REVIEW_FILES, decodeRehearsalBatchManifest, matchRehearsalBatchManifest,
-  REHEARSAL_BATCH_MANIFEST_LIMIT } from "../src/operation-rehearsal-report-review.js";
+  REHEARSAL_BATCH_MANIFEST_LIMIT, encodeRehearsalBatchCsv } from "../src/operation-rehearsal-report-review.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { reviewedRehearsalInputChoices, exportReviewedRehearsalPart } from "../src/operation-rehearsal-report-review.js";
@@ -100,7 +101,7 @@ function outcomeText(outcome) {
 }
 
 /** Independent file-only review. It receives no live workspace writer. */
-export function mountRehearsalBatchReviewPanel(document, { download, subtle = globalThis.crypto?.subtle }) {
+export function mountRehearsalBatchReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, inspectSource = null }) {
   const get = id => document.getElementById("report-batch-" + id);
   const reader = createFileReadScope(), referenceReader = createFileReadScope(), listeners = [];
   let revision = 0, disposed = false, selection = null, active = null, result = null;
@@ -122,6 +123,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     get("run").disabled = disposed || !selection || Boolean(active) || !referenceMatches;
     get("cancel").disabled = disposed || !active || active.controller.signal.aborted;
     get("save").disabled = disposed || Boolean(active) || !result;
+    get("csv").disabled = disposed || Boolean(active) || !result;
     get("manifest").disabled = disposed || Boolean(active) || !result?.complete || result.files.some(row => row.sha256 === null);
     get("status").setAttribute("aria-busy", active ? "true" : "false");
     get("reference-status").setAttribute("aria-busy", referenceBusy ? "true" : "false");
@@ -148,16 +150,29 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     get("export-status").textContent = ""; get("results").hidden = true;
     get("status").textContent = ""; buttons(); return id;
   }
-  function render(receipt, id) {
+  function render(receipt, id, sources) {
     const labels = { matched: "再計算と一致", different: "再計算と相違あり", invalid: "資料の内容を確認できません",
       unsupported: "この欄の対象外の形式", "hash-unavailable": "照合値を計算できません", pending: "未確認",
       "checksum-mismatch": "以前の照合値と不一致（再計算は未実施）" };
-    const nodes = receipt.files.map(row => {
+    const nodes = receipt.files.map((row, index) => {
       const tr = document.createElement("tr");
       const fields = [row.name, labels[row.status] + (row.expectedOutcomes?.differing ? "／期待結果との差あり" : ""),
         row.differenceCount === null ? "—" : String(row.differenceCount), (row.sha256 ?? "未計算") +
           (receipt.referenceProvided ? " ／ 基準: " + row.expectedSha256 : "")];
       for (const text of fields) { const td = document.createElement("td"); td.textContent = text; tr.append(td); }
+      const cell = document.createElement("td"), button = document.createElement("button");
+      button.type = "button"; button.textContent = "この資料を詳しく確認";
+      button.setAttribute("aria-label", row.name + "を個別に再確認");
+      button.disabled = typeof inspectSource !== "function" || row.sha256 === null;
+      button.addEventListener("click", () => {
+        if (!current(id) || result !== receipt || active || button.disabled) return;
+        try {
+          requireSyncExport(inspectSource(Object.freeze({ name: row.name, text: sources[index].text,
+            expectedSha256: row.expectedSha256 ?? null })));
+          if (current(id) && result === receipt) get("export-status").textContent = "個別の確認欄に同じ資料を渡しました。再確認の結果はそちらに表示します。一括確認の結果は保持しています。";
+        } catch { if (current(id) && result === receipt) get("export-status").textContent = "個別の確認欄に渡せませんでした。一括確認の結果は保持しています。"; }
+      });
+      cell.append(button); tr.append(cell);
       return tr;
     });
     if (!current(id)) return;
@@ -239,11 +254,11 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
       }
       const receipt = await reviewRehearsalReportBatch(rows, { subtle, signal: job.controller.signal, manifestText,
         onProgress(progress) { if (current(id)) get("status").textContent = `資料を再計算しています（${progress.reviewed} / ${progress.selected}件）。`; } });
-      if (current(id)) render(receipt, id);
+      if (current(id)) render(receipt, id, rows);
     } catch (error) {
       if (current(id)) get("status").textContent = job.controller.signal.aborted ?
         "資料の読み込みを停止しました。再計算の結果はまだありません。" :
-        "資料をまとめて読み込めませんでした。" + describeFileReadError(error) + " 選択した資料と現在の履歴は変更していません。";
+        "資料をまとめて読み込めませんでした。" + (describeFileReadError(error, "1件2 MiB") ?? "形式・照合値・読み込み条件を確認してから、もう一度実行してください。") + " 選択した資料と現在の履歴は変更していません。";
     } finally {
       job.controller.abort();
       if (current(id)) { active = null; buttons(); }
@@ -257,6 +272,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   listen("clear", "click", () => { if (disposed) return; reset(); get("files").value = ""; });
   for (const [button, encode, filename, mimeType] of [
     ["save", encodeRehearsalBatchReview, "ThreeCore-report-batch-review.json", "application/json"],
+    ["csv", encodeRehearsalBatchCsv, "ThreeCore-report-batch-summary.csv", "text/csv;charset=utf-8"],
     ["manifest", encodeRehearsalBatchManifest, "SHA256SUMS.txt", "text/plain"],
   ]) listen(button, "click", () => {
     if (disposed || active || !result || get(button).disabled) return;
@@ -265,7 +281,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
       const text = encode(own);
       const name = button === "manifest" && own.referenceProvided ? "ThreeCore-selected-content-SHA256SUMS.txt" : filename;
       requireSyncExport(download({ document, prepared: { text, filename: name, mimeType } }));
-      if (current(id) && result === own) get("export-status").textContent = "確認用の控えを保存し始めました。元の資料も一緒に保管してください。";
+      if (current(id) && result === own) get("export-status").textContent = button === "csv" ? "全選択資料の一覧をCSVで保存し始めました。未確認の行も含みます。再確認には元資料・JSONの控え・以前の照合値一覧を保管してください。" : "確認用の控えを保存し始めました。元の資料も一緒に保管してください。";
     } catch { if (current(id) && result === own) get("export-status").textContent = "控えを保存できませんでした。確認結果は保持しています。"; }
   });
   buttons();
@@ -542,7 +558,24 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   });
   reset();
   const evidencePanel=mountRehearsalEvidencePanel(document,{download,subtle});
-  return Object.freeze({workspaceChanged,dispose(){if(disposed)return;disposed=true;evidencePanel.dispose();reset("");get("expected").value="";for(const remove of listeners)remove();}});
+  function inspectSource(input) {
+    if (disposed) return false;
+    let value;
+    try {
+      value = captureDataRecord(input, ["name", "text", "expectedSha256"]);
+      validateRehearsalReportBatchSelection([{ name: value.name, byteLength: boundedUtf8Length(value.text, REHEARSAL_REPORT_REVIEW_LIMIT) }]);
+      if (value.expectedSha256 !== null && (typeof value.expectedSha256 !== "string" || !/^[a-fA-F0-9]{64}$/.test(value.expectedSha256))) return false;
+    } catch { return false; }
+    const own = reset("一括確認で選んだ資料を個別に再確認します。");
+    if (own === null || disposed) return false;
+    sourceText = value.text; get("expected").value = value.expectedSha256 ?? "";
+    get("source").textContent = "一括確認から受け取った元資料: " + value.name;
+    get("run").disabled = false;
+    observeCallbackResult(run());
+    if (!disposed) { get("title").scrollIntoView?.({ block: "start", behavior: "auto" }); get("title").focus?.(); }
+    return !disposed;
+  }
+  return Object.freeze({workspaceChanged,inspectSource,dispose(){if(disposed)return;disposed=true;evidencePanel.dispose();reset("");get("expected").value="";for(const remove of listeners)remove();}});
 }
 
 /** Inspect a portable evidence file independently of the active rehearsal and ordinary report. */

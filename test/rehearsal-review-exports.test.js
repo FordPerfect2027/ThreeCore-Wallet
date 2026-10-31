@@ -20,6 +20,25 @@ function setup(options={}){const elements=new Map(),downloads=[];let action=()=>
 }
 async function finished(f){const end=Date.now()+5000;while(f.q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await new Promise(resolve=>setTimeout(resolve,5));assert.equal(f.q('status').getAttribute('aria-busy'),'false');}
 
+test('batch source handoff uses exact owned text, clears stale checksum and focuses the review heading',async()=>{
+ const f=setup();try{f.edit('expected','0'.repeat(64));const text=source;assert.equal(f.panel.inspectSource({name:'元資料.json',text,expectedSha256:null}),true);await finished(f);
+  assert.equal(f.q('expected').value,'');assert.equal(f.document.activeElement,f.q('title'));assert.match(f.q('source').textContent,/元資料.json/);f.q('source-save').click();assert.equal(f.downloads.at(-1).text,text);
+  assert.equal(f.panel.inspectSource({name:'元資料.json',text,expectedSha256:'0'.repeat(64)}),true);await finished(f);assert.match(f.q('summary').textContent,/照合値: 不一致/);assert.equal(f.q('workspace-save').disabled,true);assert.equal(f.q('input-save').disabled,true);
+ }finally{f.panel.dispose();}
+});
+test('invalid handoff arguments leave the previous independent review intact without invoking accessors',async()=>{
+ const f=setup();try{f.paste(source);await finished(f);const previous=f.q('summary').textContent;let calls=0;
+  const invalid=[null,{}, {name:'../a.json',text:source,expectedSha256:null},{name:'a.json',text:source,expectedSha256:'bad'}, {name:'a.json',get text(){calls++;return source;},expectedSha256:null}];
+  for(const row of invalid){assert.equal(f.panel.inspectSource(row),false);assert.equal(f.q('summary').textContent,previous);assert.equal(f.q('save').disabled,false);}assert.equal(calls,0);
+  f.panel.dispose();assert.equal(f.panel.inspectSource({name:'a.json',text:source,expectedSha256:null}),false);
+ }finally{f.panel.dispose();}
+});
+test('batch handoff replaces an older pending individual read without allowing a late result',async()=>{
+ let release,calls=0;const f=setup({subtle:{digest:async(_,bytes)=>++calls===1?new Promise(r=>{release=r;}):Uint8Array.from(createHash('sha256').update(bytes).digest()).buffer}});
+ try{f.paste(source);while(!release)await new Promise(r=>setTimeout(r,0));assert(f.panel.inspectSource({name:'new.json',text:source+'\n',expectedSha256:null}));await finished(f);const current=f.q('digest').textContent;release(new Uint8Array(32).buffer);await new Promise(r=>setTimeout(r,10));assert.equal(f.q('digest').textContent,current);f.q('source-save').click();assert.equal(f.downloads.at(-1).text,source+'\n');}
+ finally{release?.(new Uint8Array(32).buffer);f.panel.dispose();}
+});
+
 test('V3 query review describes stored, recorded and combined search scopes separately',async()=>{
  for(const[searchScope,label]of[['stored','保存元の情報'],['recorded','記録に書かれた情報'],['both','保存元と記録の両方']]){
   const f=setup();try{f.paste(encodeRehearsalReasonRecordReport(JSON.parse(source).inputs,{...REHEARSAL_RECORD_QUERY,searchScope,reason:'all'}));await finished(f);assert.match(f.q('outcome').textContent,new RegExp('検索場所: '+label));}finally{f.panel.dispose();}
