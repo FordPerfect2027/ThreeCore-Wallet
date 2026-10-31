@@ -471,28 +471,38 @@ function batchComparisonEvidenceDocument(before, after) {
     comparison: compareRehearsalBatches(before, after) };
 }
 function batchEvidenceBudget(input) {
-  const options = batchEvidenceOptions(input), started = Date.now(), limit = options.timeoutMs ?? 120000;
-  return () => { const remaining = limit - (Date.now() - started); if (remaining < 1 || readAbortState(options.signal)) fail("REVIEW_BATCH_COMPARISON_INCOMPLETE"); return { ...options, timeoutMs: remaining }; };
+  let captured; try { captured = captureOptionalDataFields(input, ["subtle", "signal", "timeoutMs", "onProgress", "onStage", "manifestText"]); } catch { fail("INVALID_REVIEW_BATCH_OPTIONS"); }
+  const { onStage, ...rest } = captured; if (onStage !== undefined && typeof onStage !== "function") fail("INVALID_REVIEW_BATCH_OPTIONS");
+  const options = batchEvidenceOptions(rest), started = Date.now(), limit = options.timeoutMs ?? 120000;
+  const budget = () => { const remaining = limit - (Date.now() - started); if (remaining < 1 || readAbortState(options.signal)) fail("REVIEW_BATCH_COMPARISON_INCOMPLETE"); return { ...options, timeoutMs: remaining }; };
+  budget.stage = value => { budget(); consumeCallback(() => onStage?.(Object.freeze(value))); budget(); };
+  budget.sources = side => ({ ...budget(), onProgress: progress => { consumeCallback(() => options.onProgress?.(progress));
+    budget.stage({ phase: "sources", side, checked: progress.reviewed, selected: progress.selected }); } });
+  return Object.freeze(budget);
 }
 export async function prepareRehearsalBatchComparisonEvidence(before, after, input = {}) {
   if (!canPrepareRehearsalBatchEvidence(before) || !canPrepareRehearsalBatchEvidence(after)) fail("REVIEW_BATCH_COMPARISON_UNAVAILABLE");
   const budget = batchEvidenceBudget(input);
-  const recompute = source => reviewRehearsalReportBatch(batchSources.get(source), { ...budget(), ...(source.referenceProvided ? { manifestText: source.reference.text } : {}) });
-  const left = await recompute(before), right = await recompute(after); budget();
+  const recompute = (source, side) => reviewRehearsalReportBatch(batchSources.get(source), { ...budget.sources(side), ...(source.referenceProvided ? { manifestText: source.reference.text } : {}) });
+  const left = await recompute(before, "before"), right = await recompute(after, "after"); budget();
   if (!canPrepareRehearsalBatchEvidence(left) || !canPrepareRehearsalBatchEvidence(right)) fail("REVIEW_BATCH_COMPARISON_INCOMPLETE");
+  budget.stage({ phase: "serializing" });
   const text = JSON.stringify(batchComparisonEvidenceDocument(left, right), null, 2) + "\n";
   try { boundedUtf8Length(text, REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT); } catch { fail("REVIEW_BATCH_COMPARISON_SIZE"); } budget();
+  budget.stage({ phase: "complete" });
   return Object.freeze({ text, filename: "ThreeCore-rehearsal-batch-comparison-evidence.json", mimeType: "application/json", containsOriginalEvidence: true,
     simulationOnly: true, sourceVerified: false, authorizesExecution: false, recordedProcessVerified: false });
 }
 export async function reviewRehearsalBatchComparisonEvidence(text, input = {}) {
   const budget = batchEvidenceBudget(input); let parsed;
+  budget.stage({ phase: "parsing" });
   try { parsed = parseSecurityJson(text, { bytes: REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT, depth: 24, nodes: 50000, keyCharacters: 256, stringCharacters: REHEARSAL_REPORT_REVIEW_LIMIT }); } catch { fail("REVIEW_BATCH_COMPARISON_JSON"); }
   if (parsed?.schema !== "threecore.operation-rehearsal-batch-comparison-evidence.v1") fail("REVIEW_BATCH_COMPARISON_SCHEMA");
-  const beforeReview = await reviewRehearsalBatchEvidence(JSON.stringify(parsed.before), budget()), afterReview = await reviewRehearsalBatchEvidence(JSON.stringify(parsed.after), budget());
+  const beforeReview = await reviewRehearsalBatchEvidence(JSON.stringify(parsed.before), budget.sources("before")), afterReview = await reviewRehearsalBatchEvidence(JSON.stringify(parsed.after), budget.sources("after"));
+  budget.stage({ phase: "comparing" });
   const before = batchEvidenceReviews.get(beforeReview).result, after = batchEvidenceReviews.get(afterReview).result, expected = batchComparisonEvidenceDocument(before, after);
   const differences = Object.keys(expected).filter(key => !Object.hasOwn(parsed, key) || compareValues(expected[key], parsed[key]).differenceCount !== 0), unexpectedFields = Object.keys(parsed).filter(key => !Object.hasOwn(expected, key)).length;
-  const options = budget(), sha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle, { signal: options.signal, timeoutMs: Math.min(options.timeoutMs, 30000) }); budget();
+  budget.stage({ phase: "hashing" }); const options = budget(), sha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle, { signal: options.signal, timeoutMs: Math.min(options.timeoutMs, 30000) }); budget();
   const result = Object.freeze({ schema: "threecore.operation-rehearsal-batch-comparison-evidence-review.v1", sha256,
     matchesRecomputation: differences.length === 0 && unexpectedFields === 0 && beforeReview.matchesRecomputation && afterReview.matchesRecomputation,
     differences: Object.freeze(differences), unexpectedFields, beforeEvidenceMatches: beforeReview.matchesRecomputation, afterEvidenceMatches: afterReview.matchesRecomputation,
@@ -501,7 +511,7 @@ export async function reviewRehearsalBatchComparisonEvidence(text, input = {}) {
     allSourceReportsMatch: before.allRecomputationsMatch && after.allRecomputationsMatch,
     simulationOnly: true, sourceVerified: false, authorizesExecution: false, automaticallyImported: false,
     recordedProcessVerified: false, containsOriginalEvidence: false, restorable: false });
-  rehearsalBatchComparisonEvidenceReviews.set(result, Object.freeze({ before: batchEvidenceReviews.get(beforeReview), after: batchEvidenceReviews.get(afterReview), comparison: expected.comparison, beforeReview, afterReview })); return result;
+  rehearsalBatchComparisonEvidenceReviews.set(result, Object.freeze({ before: batchEvidenceReviews.get(beforeReview), after: batchEvidenceReviews.get(afterReview), comparison: expected.comparison, beforeReview, afterReview })); budget.stage({ phase: "complete" }); return result;
 }
 export function encodeRehearsalBatchComparisonEvidenceReview(result) {
   if (!rehearsalBatchComparisonEvidenceReviews.has(result)) fail("REVIEW_BATCH_COMPARISON_RESULT");

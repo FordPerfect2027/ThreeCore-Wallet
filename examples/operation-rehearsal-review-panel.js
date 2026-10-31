@@ -1,5 +1,5 @@
 import { createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
-import { createFileSelectionNotice, mountBatchSourceExportPanel, mountSavedBundleReceiptCheckPanel, batchEvidenceReceiptCheckText, batchSelectionReviewText, mountReviewedBatchComparisonPanel } from "./file-read-panel.js";
+import { createFileSelectionNotice, mountBatchSourceExportPanel, mountSavedBundleReceiptCheckPanel, batchEvidenceReceiptCheckText, batchSelectionReviewText, mountReviewedBatchComparisonPanel, comparisonEvidenceProgressText } from "./file-read-panel.js";
 import { reviewRehearsalBatchEvidenceReceipt, encodeRehearsalBatchEvidenceReceiptCheck } from "../src/operation-rehearsal-report-review.js";
 import { queryRehearsalBatchFiles, encodeRehearsalBatchSelection } from "../src/operation-rehearsal-report-review.js";
 import { reviewRehearsalBatchSelection, encodeRehearsalBatchSelectionReview, extractRehearsalBatchSelectionQuery } from "../src/operation-rehearsal-report-review.js";
@@ -160,20 +160,21 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
     const own = ++revision, left = baseline, right = current, job = new AbortController(); active = job; evidenceReview = null; evidenceAck.checked = false;
     evidenceStatus.textContent = file ? "二組の元資料と保存された比較を再確認しています。" : "二組の元資料から、新しい確認結果と比較を作っています。"; render();
     const owns = () => !disposed && own === revision && !job.signal.aborted;
+    const onStage = stage => { if (owns()) evidenceStatus.textContent = comparisonEvidenceProgressText(stage); };
     try {
       if (file) {
         const text = await readSecurityFileText(file, { maxBytes: REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT, signal: job.signal });
-        const review = await reviewRehearsalBatchComparisonEvidence(text, { signal: job.signal }); if (!owns()) return; evidenceReview = review;
+        const review = await reviewRehearsalBatchComparisonEvidence(text, { signal: job.signal, onStage }); if (!owns()) return; evidenceReview = review;
         evidenceStatus.textContent = (review.matchesRecomputation ? "保存内容と二組の再計算・比較が一致しました。" : "保存内容と再計算・比較に相違があります。") +
           ` 比較元${review.beforeSummary.selected}件／比較先${review.afterSummary.selected}件／照合値の変化${review.comparisonSummary.bytesChanged}件。` +
           (review.allSourceReportsMatch ? "" : " 元資料自体に再計算の相違・形式・照合値の問題があります。照合結果の内訳をご確認ください。") + " 現在の一覧・比較元・履歴は置き換えていません。";
       } else {
-        const prepared = await prepareRehearsalBatchComparisonEvidence(left, right, { signal: job.signal }); if (!owns()) return;
+        const prepared = await prepareRehearsalBatchComparisonEvidence(left, right, { signal: job.signal, onStage }); if (!owns()) return;
         requireSyncExport(download({ document, prepared })); if (owns()) evidenceStatus.textContent = "二組の元資料と新しい比較の保存を開始しました。中断・再試行の経過は、元の確認控えを別に保管してください。";
       }
       return owns();
     } catch { if (!disposed && own === revision) evidenceStatus.textContent = job.signal.aborted ? "まとめた比較資料の処理を中止しました。現在の一覧と比較元は保持しています。" : "まとめた比較資料を処理できませんでした。32 MiB以内の対応資料か確認してください。現在の一覧と比較元は保持しています。"; return false; }
-    finally { const cancelled = job.signal.aborted; job.abort(); if (!disposed && own === revision) { active = null; if (cancelled && /^(二組の元資料と保存された比較を再確認|二組の元資料から、新しい確認結果と比較を作って)/.test(evidenceStatus.textContent)) evidenceStatus.textContent = "まとめた比較資料の処理を中止しました。現在の一覧と比較元は保持しています。"; render(); } }
+    finally { const cancelled = job.signal.aborted; job.abort(); if (!disposed && own === revision) { active = null; if (cancelled) evidenceStatus.textContent = "まとめた比較資料の処理を中止しました。現在の一覧と比較元は保持しています。"; render(); } }
   }
   listen(evidenceSave, "click", () => { void evidenceJob(); });
   listen(evidenceFile, "change", () => { const chosen = evidenceFile.files?.length === 1 ? evidenceFile.files[0] : null; evidenceFile.value = ""; if (!disposed && !active && chosen) void evidenceJob(chosen); });

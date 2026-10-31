@@ -1000,6 +1000,13 @@ export function mountReviewedBatchComparisonPanel({ document, parent, open, extr
   buttons(); return Object.freeze({ updateReview, getState: () => Object.freeze({ review, pair, disposed }), dispose() { if (disposed) return; disposed = true; ++revision; review = pair = null; sources.dispose(); differences?.dispose(); cleanup.forEach(remove => remove()); host.remove(); } });
 }
 
+export function comparisonEvidenceProgressText(stage) {
+  if (stage.phase === "sources") return `${stage.side === "before" ? "比較元" : "比較先"}: ${stage.checked}／${stage.selected}件の確認を処理しました。判定は最終結果で確認できます。`;
+  return ({ parsing: "比較資料の形式と大きさを確認しています。", comparing: "二組の結果と保存された比較を照合しています。",
+    hashing: "比較資料全体の照合値を計算しています。", serializing: "二組の元ファイルと比較を保存資料にまとめています。",
+    complete: "計算が終わりました。結果の表示・保存を準備しています。" })[stage.phase] ?? "比較資料を処理しています。";
+}
+
 export function mountWalletBatchComparisonEvidencePanel({ document, parent, getPair, download }) {
   const host = document.createElement("details"); host.className = "wallet-comparison-evidence"; parent.append(host);
   let disposed = false, revision = 0, active = null, reviewed = null; const cleanup = [];
@@ -1021,12 +1028,13 @@ export function mountWalletBatchComparisonEvidencePanel({ document, parent, getP
     if (disposed || active || (chosen ? file.disabled : save.disabled)) return false;
     const own = ++revision, pair = getPair(), local = new AbortController(); active = local; reviewed = null; viewer.updateReview(null); ack.checked = false; status.textContent = "二組の元ファイルと比較を確認しています。"; controls();
     const owns = () => !disposed && own === revision && !local.signal.aborted;
+    const onStage = stage => { if (owns()) status.textContent = comparisonEvidenceProgressText(stage); };
     try {
       if (chosen) { const text = await readSavedGuideText(chosen, { maxBytes: WALLET_BATCH_COMPARISON_EVIDENCE_LIMIT, signal: local.signal }); if (!owns()) return;
-        const result = await reviewWalletBatchComparisonEvidence(text, { signal: local.signal }); if (!owns()) return false; reviewed = result;
+        const result = await reviewWalletBatchComparisonEvidence(text, { signal: local.signal, onStage }); if (!owns()) return false; reviewed = result;
         viewer.updateReview(result.matchesRecomputation ? result : null);
         status.textContent = (result.matchesRecomputation ? "保存内容と二組の再計算・比較が一致しました。" : "保存内容と再計算・比較に相違があります。") + (result.allOriginalsValidated ? "" : " 元記録を確認できない資料も含まれます。") + " 現在の一覧・比較元・履歴は変更していません。";
-      } else { const prepared = await prepareWalletBatchComparisonEvidence(pair.before, pair.after, { signal: local.signal }); if (!owns()) return;
+      } else { const prepared = await prepareWalletBatchComparisonEvidence(pair.before, pair.after, { signal: local.signal, onStage }); if (!owns()) return;
         const delivered = download(prepared); if (observeCallbackResult(delivered) !== "synchronous" || delivered === false) throw Error();
         if (owns()) status.textContent = "二組の元ファイルと比較の保存を開始しました。ダウンロード先をご確認ください。"; }
       return owns();
