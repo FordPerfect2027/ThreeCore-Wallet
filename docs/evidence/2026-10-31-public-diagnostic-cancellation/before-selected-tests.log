@@ -1,0 +1,283 @@
+✖ pre-aborted diagnostic signals prevent transport even if aborted is shadowed (9.806ms)
+✖ invalid signal and accessor options fail before transport (2.1514ms)
+✖ network pre-aborted diagnostics do not start a read (2.1826ms)
+✖ network cancellation at the first response prevents subsequent requests (87.0304ms)
+✖ network options are captured without running input getters (3.543ms)
+✖ contracts pre-aborted diagnostics do not start a read (2.1973ms)
+✖ contracts cancellation at the first response prevents subsequent requests (9.7916ms)
+✖ contracts options are captured without running input getters (1.0268ms)
+✖ pools pre-aborted diagnostics do not start a read (2.6736ms)
+✖ pools cancellation at the first response prevents subsequent requests (4.9845ms)
+✖ pools options are captured without running input getters (1.5198ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 0
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 516.4874
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:9:1
+✖ pre-aborted diagnostic signals prevent transport even if aborted is shadowed (9.806ms)
+  AssertionError [ERR_ASSERTION]: The "cancelled" validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  PublicBaseRpcError: Base RPC transport failed
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:12:2)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PublicBaseRpcError: Base RPC transport failed
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/public-base-rpc.js:19:38)
+        at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/public-base-rpc.js:123:7)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:12:2)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:46:1
+✖ invalid signal and accessor options fail before transport (2.1514ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:47:98)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_SIGNAL' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:51:2
+✖ network pre-aborted diagnostics do not start a read (2.1826ms)
+  AssertionError [ERR_ASSERTION]: The "cancelled" validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  BaseRpcProbeError: Base RPC transport failed
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:52:62)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: BaseRpcProbeError: Base RPC transport failed
+        at request (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/base-rpc-probe.js:70:13)
+        at async probeBaseRpc (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/base-rpc-probe.js:74:25)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:52:62)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:54:2
+✖ network cancellation at the first response prevents subsequent requests (87.0304ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection (cancelled).
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:55:48)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:57:2
+✖ network options are captured without running input getters (3.543ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'INVALID_OPTIONS'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:58:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE
+        at get fetchImpl (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:58:79)
+        at probeBaseRpc (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/base-rpc-probe.js:51:3)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:58:35)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:51:2
+✖ contracts pre-aborted diagnostics do not start a read (2.1973ms)
+  AssertionError [ERR_ASSERTION]: The "cancelled" validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  AerodromeReadError: Base RPC transport failed
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:52:62)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: AerodromeReadError: Base RPC transport failed
+        at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-readonly.js:88:13)
+        at async inspectAerodromeBase (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-readonly.js:92:45)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:52:62)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:54:2
+✖ contracts cancellation at the first response prevents subsequent requests (9.7916ms)
+  AssertionError [ERR_ASSERTION]: The "cancelled" validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  AerodromeReadError: Base RPC returned an invalid or mismatched block header
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:55:48)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: AerodromeReadError: Base RPC returned an invalid or mismatched block header
+        at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-readonly.js:88:13)
+        at async inspectAerodromeBase (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-readonly.js:98:24)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:55:48)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:57:2
+✖ contracts options are captured without running input getters (1.0268ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'INVALID_OPTIONS'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:58:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE
+        at get fetchImpl (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:58:79)
+        at inspectAerodromeBase (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-readonly.js:71:3)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:58:35)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:51:2
+✖ pools pre-aborted diagnostics do not start a read (2.6736ms)
+  AssertionError [ERR_ASSERTION]: The "cancelled" validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  AerodromePoolReadError: Base RPC transport failed
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:52:62)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: AerodromePoolReadError: Base RPC transport failed
+        at rpc (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-pools.js:76:13)
+        at async inspectAerodromePools (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-pools.js:80:28)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:52:62)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:54:2
+✖ pools cancellation at the first response prevents subsequent requests (4.9845ms)
+  AssertionError [ERR_ASSERTION]: The "cancelled" validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  AerodromePoolReadError: Base RPC returned an invalid or mismatched block header
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:55:48)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: AerodromePoolReadError: Base RPC returned an invalid or mismatched block header
+        at rpc (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-pools.js:76:13)
+        at async inspectAerodromePools (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-pools.js:84:24)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:55:48)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-before.test.mjs:57:2
+✖ pools options are captured without running input getters (1.5198ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'INVALID_OPTIONS'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:58:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE
+        at get fetchImpl (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:58:79)
+        at inspectAerodromePools (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/aerodrome-pools.js:61:3)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-before.test.mjs:58:35)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'INVALID_OPTIONS' },
+    operator: 'rejects',
+    diff: 'simple'
+  }

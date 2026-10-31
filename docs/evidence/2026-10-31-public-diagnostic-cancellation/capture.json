@@ -1,0 +1,49 @@
+{
+  "source": "2c7a03c",
+  "syntheticOnly": true,
+  "externalRpc": false,
+  "results": [
+    {
+      "name": "network",
+      "timing": "before",
+      "syntheticCalls": 0,
+      "errorCode": "RPC_CANCELLED",
+      "remainingAbortListeners": 0
+    },
+    {
+      "name": "network",
+      "timing": "first-response",
+      "syntheticCalls": 1,
+      "errorCode": "RPC_CANCELLED",
+      "remainingAbortListeners": 0
+    },
+    {
+      "name": "contracts",
+      "timing": "before",
+      "syntheticCalls": 0,
+      "errorCode": "RPC_CANCELLED",
+      "remainingAbortListeners": 0
+    },
+    {
+      "name": "contracts",
+      "timing": "first-response",
+      "syntheticCalls": 1,
+      "errorCode": "RPC_CANCELLED",
+      "remainingAbortListeners": 0
+    },
+    {
+      "name": "pools",
+      "timing": "before",
+      "syntheticCalls": 0,
+      "errorCode": "RPC_CANCELLED",
+      "remainingAbortListeners": 0
+    },
+    {
+      "name": "pools",
+      "timing": "first-response",
+      "syntheticCalls": 1,
+      "errorCode": "RPC_CANCELLED",
+      "remainingAbortListeners": 0
+    }
+  ]
+}
