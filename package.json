@@ -9,6 +9,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "portfolio-history:prepare": "node scripts/prepare-portfolio-history.js",
     "report-set:recover-history": "node scripts/recover-report-set-history.js",
     "report-set:recover-token-library": "node scripts/recover-report-set-token-library.js",
     "period-library:inspect-import": "node scripts/inspect-period-library-import.js",
