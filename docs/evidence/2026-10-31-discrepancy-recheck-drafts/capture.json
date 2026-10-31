@@ -1,0 +1,175 @@
+{
+  "source": "4d27b1b",
+  "synthetic": true,
+  "captureEnvironment": "Shared screen draft exporter and existing standalone period checker; native display/download callbacks tested separately",
+  "rows": [
+    {
+      "name": "changed-value",
+      "query": {
+        "beforeId": "12345678-1234-4234-8234-000000000101",
+        "afterId": "12345678-1234-4234-8234-000000000102",
+        "agent": "DAT"
+      },
+      "selection": "e:1",
+      "selectedRange": {
+        "selection": "e:1",
+        "query": {
+          "beforeId": "12345678-1234-4234-8234-000000000101",
+          "afterId": "12345678-1234-4234-8234-000000000102",
+          "agent": "DAT"
+        },
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "fromBlock": "35",
+        "toBlock": "35",
+        "blocks": "1",
+        "windowSize": 1,
+        "reason": "changed",
+        "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000835",
+        "logIndex": "1",
+        "includesInterveningBlocks": false,
+        "historicalOnly": true,
+        "executed": false,
+        "originalEvidenceCopied": false
+      },
+      "checksumVerified": true,
+      "completed": 0,
+      "total": 3,
+      "cliExitCode": 2,
+      "newEmptyDraft": true,
+      "originalEvidenceCopied": false,
+      "executed": false,
+      "inputUnchanged": true
+    },
+    {
+      "name": "missing-event",
+      "query": {
+        "beforeId": "12345678-1234-4234-8234-000000000101",
+        "afterId": "12345678-1234-4234-8234-000000000102",
+        "agent": "DAT"
+      },
+      "selection": "e:1",
+      "selectedRange": {
+        "selection": "e:1",
+        "query": {
+          "beforeId": "12345678-1234-4234-8234-000000000101",
+          "afterId": "12345678-1234-4234-8234-000000000102",
+          "agent": "DAT"
+        },
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "fromBlock": "40",
+        "toBlock": "40",
+        "blocks": "1",
+        "windowSize": 1,
+        "reason": "onlyBefore",
+        "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000836",
+        "logIndex": "2",
+        "includesInterveningBlocks": false,
+        "historicalOnly": true,
+        "executed": false,
+        "originalEvidenceCopied": false
+      },
+      "checksumVerified": true,
+      "completed": 0,
+      "total": 3,
+      "cliExitCode": 2,
+      "newEmptyDraft": true,
+      "originalEvidenceCopied": false,
+      "executed": false,
+      "inputUnchanged": true
+    },
+    {
+      "name": "moved-event",
+      "query": {
+        "beforeId": "12345678-1234-4234-8234-000000000101",
+        "afterId": "12345678-1234-4234-8234-000000000102",
+        "agent": "DAT"
+      },
+      "selection": "e:1",
+      "selectedRange": {
+        "selection": "e:1",
+        "query": {
+          "beforeId": "12345678-1234-4234-8234-000000000101",
+          "afterId": "12345678-1234-4234-8234-000000000102",
+          "agent": "DAT"
+        },
+        "context": {
+          "agent": "DAT",
+          "chainId": 8453,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "fromBlock": "35",
+        "toBlock": "6030",
+        "blocks": "5996",
+        "windowSize": 2000,
+        "reason": "changed",
+        "transactionHash": "0x000000000000000000000000000000000000000000000000000000000000044d",
+        "logIndex": "1",
+        "includesInterveningBlocks": true,
+        "historicalOnly": true,
+        "executed": false,
+        "originalEvidenceCopied": false
+      },
+      "checksumVerified": true,
+      "completed": 0,
+      "total": 5,
+      "cliExitCode": 2,
+      "newEmptyDraft": true,
+      "originalEvidenceCopied": false,
+      "executed": false,
+      "inputUnchanged": true
+    },
+    {
+      "name": "zero-events-fork",
+      "query": {
+        "beforeId": "12345678-1234-4234-8234-000000000101",
+        "afterId": "12345678-1234-4234-8234-000000000102",
+        "agent": "DAT"
+      },
+      "selection": "b:1",
+      "selectedRange": {
+        "selection": "b:1",
+        "query": {
+          "beforeId": "12345678-1234-4234-8234-000000000101",
+          "afterId": "12345678-1234-4234-8234-000000000102",
+          "agent": "DAT"
+        },
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "fromBlock": "31",
+        "toBlock": "31",
+        "blocks": "1",
+        "windowSize": 1,
+        "reason": "block-hash-disagreement",
+        "transactionHash": null,
+        "logIndex": null,
+        "includesInterveningBlocks": false,
+        "historicalOnly": true,
+        "executed": false,
+        "originalEvidenceCopied": false
+      },
+      "checksumVerified": true,
+      "completed": 0,
+      "total": 3,
+      "cliExitCode": 2,
+      "newEmptyDraft": true,
+      "originalEvidenceCopied": false,
+      "executed": false,
+      "inputUnchanged": true
+    }
+  ],
+  "invalidSelection": {
+    "code": "PERIOD_SET_EVENT_RECHECK_SELECTION",
+    "outputProduced": false
+  }
+}
