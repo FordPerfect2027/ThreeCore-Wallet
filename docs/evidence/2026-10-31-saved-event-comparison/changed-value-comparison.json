@@ -1,0 +1,107 @@
+{
+  "schema": "threecore.saved-event-comparison-file.v1",
+  "sourcePayloadDigest": "f8b1af192bbbe47803f2367b3fe9135da938fa6fed786d6689dd2e598971a9bc",
+  "comparison": {
+    "schema": "threecore.saved-event-comparison.v1",
+    "query": {
+      "beforeId": "12345678-1234-4234-8234-000000000101",
+      "afterId": "12345678-1234-4234-8234-000000000102",
+      "agent": "DAT"
+    },
+    "context": {
+      "agent": "DAT",
+      "chainId": 84532,
+      "account": "0x1111111111111111111111111111111111111111"
+    },
+    "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+    "before": {
+      "reportId": "12345678-1234-4234-8234-000000000101",
+      "label": "報告 1",
+      "archivedReport": false,
+      "archivedSource": false,
+      "restricted": false,
+      "internallyConsistentHashes": true,
+      "savedQueryRecords": 3,
+      "totalSavedEvents": 2,
+      "comparedEvents": 2,
+      "excludedEvents": 0
+    },
+    "after": {
+      "reportId": "12345678-1234-4234-8234-000000000102",
+      "label": "報告 2",
+      "archivedReport": false,
+      "archivedSource": false,
+      "restricted": false,
+      "internallyConsistentHashes": true,
+      "savedQueryRecords": 3,
+      "totalSavedEvents": 2,
+      "comparedEvents": 2,
+      "excludedEvents": 0
+    },
+    "commonRanges": [
+      {
+        "fromBlock": "31",
+        "toBlock": "42"
+      }
+    ],
+    "comparedBlocks": "12",
+    "counts": {
+      "matching": 1,
+      "changed": 1,
+      "onlyBefore": 0,
+      "onlyAfter": 0
+    },
+    "differences": [
+      {
+        "kind": "changed",
+        "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000835",
+        "logIndex": "1",
+        "changedFields": [
+          "amountBaseUnits"
+        ],
+        "before": {
+          "recordIndex": 0,
+          "eventIndex": 0,
+          "event": {
+            "blockNumber": "35",
+            "blockHash": "0x000000000000000000000000000000000000000000000000000000000000040b",
+            "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000835",
+            "transactionIndex": "1",
+            "logIndex": "1",
+            "from": "0x2222222222222222222222222222222222222222",
+            "to": "0x1111111111111111111111111111111111111111",
+            "amountBaseUnits": "10000000000000000000"
+          }
+        },
+        "after": {
+          "recordIndex": 0,
+          "eventIndex": 0,
+          "event": {
+            "blockNumber": "35",
+            "blockHash": "0x000000000000000000000000000000000000000000000000000000000000040b",
+            "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000835",
+            "transactionIndex": "1",
+            "logIndex": "1",
+            "from": "0x2222222222222222222222222222222222222222",
+            "to": "0x1111111111111111111111111111111111111111",
+            "amountBaseUnits": "1"
+          }
+        }
+      }
+    ],
+    "sharedAnchorCount": 6,
+    "anchorDifferences": [],
+    "status": "differences",
+    "rangeNotation": "inclusive",
+    "eventsCombined": false,
+    "absenceProvesNoTransfer": false,
+    "historicalOnly": true,
+    "liveChainRechecked": false,
+    "authenticated": false,
+    "authorizesExecution": false
+  },
+  "encrypted": false,
+  "authenticated": false,
+  "restorable": false,
+  "authorizesExecution": false
+}

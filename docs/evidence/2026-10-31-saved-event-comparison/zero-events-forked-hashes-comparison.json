@@ -1,0 +1,101 @@
+{
+  "schema": "threecore.saved-event-comparison-file.v1",
+  "sourcePayloadDigest": "94969b4f31fcb09e3135430bc19701680ec922050215561c1f63d04a59acf616",
+  "comparison": {
+    "schema": "threecore.saved-event-comparison.v1",
+    "query": {
+      "beforeId": "12345678-1234-4234-8234-000000000101",
+      "afterId": "12345678-1234-4234-8234-000000000102",
+      "agent": "DAT"
+    },
+    "context": {
+      "agent": "DAT",
+      "chainId": 84532,
+      "account": "0x1111111111111111111111111111111111111111"
+    },
+    "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+    "before": {
+      "reportId": "12345678-1234-4234-8234-000000000101",
+      "label": "報告 1",
+      "archivedReport": false,
+      "archivedSource": false,
+      "restricted": false,
+      "internallyConsistentHashes": true,
+      "savedQueryRecords": 3,
+      "totalSavedEvents": 0,
+      "comparedEvents": 0,
+      "excludedEvents": 0
+    },
+    "after": {
+      "reportId": "12345678-1234-4234-8234-000000000102",
+      "label": "報告 2",
+      "archivedReport": false,
+      "archivedSource": false,
+      "restricted": false,
+      "internallyConsistentHashes": true,
+      "savedQueryRecords": 3,
+      "totalSavedEvents": 0,
+      "comparedEvents": 0,
+      "excludedEvents": 0
+    },
+    "commonRanges": [
+      {
+        "fromBlock": "31",
+        "toBlock": "42"
+      }
+    ],
+    "comparedBlocks": "12",
+    "counts": {
+      "matching": 0,
+      "changed": 0,
+      "onlyBefore": 0,
+      "onlyAfter": 0
+    },
+    "differences": [],
+    "sharedAnchorCount": 6,
+    "anchorDifferences": [
+      {
+        "blockNumber": "31",
+        "beforeHash": "0x0000000000000000000000000000000000000000000000000000000000000407",
+        "afterHash": "0x000000000000000000000000000000000000000000000000000000000000078b"
+      },
+      {
+        "blockNumber": "35",
+        "beforeHash": "0x000000000000000000000000000000000000000000000000000000000000040b",
+        "afterHash": "0x000000000000000000000000000000000000000000000000000000000000078f"
+      },
+      {
+        "blockNumber": "36",
+        "beforeHash": "0x000000000000000000000000000000000000000000000000000000000000040c",
+        "afterHash": "0x0000000000000000000000000000000000000000000000000000000000000790"
+      },
+      {
+        "blockNumber": "40",
+        "beforeHash": "0x0000000000000000000000000000000000000000000000000000000000000410",
+        "afterHash": "0x0000000000000000000000000000000000000000000000000000000000000794"
+      },
+      {
+        "blockNumber": "41",
+        "beforeHash": "0x0000000000000000000000000000000000000000000000000000000000000411",
+        "afterHash": "0x0000000000000000000000000000000000000000000000000000000000000795"
+      },
+      {
+        "blockNumber": "42",
+        "beforeHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+        "afterHash": "0x0000000000000000000000000000000000000000000000000000000000000796"
+      }
+    ],
+    "status": "differences",
+    "rangeNotation": "inclusive",
+    "eventsCombined": false,
+    "absenceProvesNoTransfer": false,
+    "historicalOnly": true,
+    "liveChainRechecked": false,
+    "authenticated": false,
+    "authorizesExecution": false
+  },
+  "encrypted": false,
+  "authenticated": false,
+  "restorable": false,
+  "authorizesExecution": false
+}
