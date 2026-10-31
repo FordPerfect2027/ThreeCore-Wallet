@@ -192,3 +192,18 @@ test("selected source changes are explained without constructing a stale report"
   assert.equal(f.q("review").hidden, true);
   f.dispose();
 });
+
+test("filtered event CSV saves every matching page under the existing acknowledgement",async()=>{
+  const f=fixture();
+  try{
+    await f.import(manyEventsInput());f.click("apply");await f.settled();const original=f.mounted.getInput();
+    assert.equal(f.q("event-csv").disabled,true);f.acknowledge();f.click("next");f.click("event-csv");await f.settled();
+    assert.equal(f.files.length,1);assert.equal(f.files[0].matched,57);
+    assert.equal(f.files[0].text.trimEnd().split("\r\n").length,58);
+    f.set("direction","outgoing");f.click("event-csv");await f.settled();assert.equal(f.files[1].matched,0);
+    f.set("search","x".repeat(101),"input");assert.equal(f.q("event-csv").disabled,true);
+    f.set("search","","input");f.q("export-ack").checked=false;f.q("export-ack").dispatchEvent(new Event("change"));
+    assert.equal(f.q("event-csv").disabled,true);assert.equal(f.mounted.getInput(),original);
+    const button=f.q("event-csv");f.dispose();button.click();assert.equal(f.files.length,2);
+  }finally{f.dispose();}
+});

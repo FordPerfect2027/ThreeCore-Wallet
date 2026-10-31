@@ -6,10 +6,11 @@ import {
   reconciliationAgent, reconciliationPart, reconciliationFail, replaceReconciliationPart,
   clearReconciliationSlot, reviewReconciliationReplacement,
 } from "./reconciliation-model.js";
+import { validateReconciliationQuery } from "./reconciliation-query.js";
 import { reconcileWorkspace } from "./reconciliation-engine.js";
 import { prepareReconciliationFile, readReconciliationInput } from "./reconciliation-file.js";
 import {
-  reconciliationErrorMessage, reconciliationText, reconciliationSummaryCsv, reconciliationEventsCsv,
+  reconciliationErrorMessage, reconciliationText, reconciliationSummaryCsv, reconciliationEventsCsv, reconciliationFilteredEventsCSV,
 } from "./reconciliation-view.js";
 
 export const RECONCILIATION_UNDO_LIMIT = 8;
@@ -274,17 +275,19 @@ export function createReconciliationController({
     } catch (value) { return fail(value); }
   }
 
-  async function exportFile(kind, deliver) {
+  async function exportFile(kind, deliver, queryInput) {
     let current = operation;
     let localAborter;
     try {
       if (!available()) return false;
-      if (!["json", "summary", "events", "text", "ledger", "windows"].includes(kind) || typeof deliver !== "function") {
+      if (!["json", "summary", "events", "text", "ledger", "windows", "filtered-events"].includes(kind) || typeof deliver !== "function") {
         reconciliationFail("RECONCILIATION_FILE_KIND");
       }
       if (kind !== "json" && !report) reconciliationFail("RECONCILIATION_NO_REPORT");
       current = ++operation;
       const before = workspace;
+      const query = kind === "filtered-events" ? validateReconciliationQuery(queryInput) : null;
+      if (!owns(current)) return false;
       busy = true;
       error = null;
       message = "保存ファイルを準備しています。";
@@ -292,7 +295,8 @@ export function createReconciliationController({
       if (!owns(current)) return false;
       localAborter = new AbortController(); aborter = localAborter;
       try {
-        const file = kind === "json" ? await prepareFile(before, { signal: localAborter.signal }) : Object.freeze({
+        const file = kind === "json" ? await prepareFile(before, { signal: localAborter.signal }) :
+          kind === "filtered-events" ? reconciliationFilteredEventsCSV(before, query) : Object.freeze({
           text: kind === "ledger" ? reconciliationLedgerCsv(before) : kind === "windows" ? reconciliationWindowsCsv(before) :
             kind === "text" ? reconciliationText(before) : kind === "summary"
             ? reconciliationSummaryCsv(before) : reconciliationEventsCsv(before),

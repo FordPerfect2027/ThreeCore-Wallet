@@ -1,4 +1,5 @@
 import { reconcileWorkspace, formatReconciliationAmount } from "./reconciliation-engine.js";
+import { reconciliationMatchingEvents } from "./reconciliation-query.js";
 import { describeReconciliationPart } from "./reconciliation-model.js";
 import { readOwnErrorCode } from "./provider-error.js";
 
@@ -166,4 +167,22 @@ export function reconciliationEventsCsv(input) {
       event.direction, event.from, event.to, event.amountBaseUnits, event.deltaBaseUnits,
       event.cumulativeBaseUnits, event.impliedBalanceBaseUnits, false])),
   ]);
+}
+
+/** Viewing-only export of every match; the page does not restrict saved rows. */
+export function reconciliationFilteredEventsCSV(input, queryInput) {
+  const found = reconciliationMatchingEvents(input, queryInput);
+  const { query } = found;
+  const columns = ["query_agent", "query_direction", "query_search", "total_events", "matched_events",
+    "agent", "account", "chain_id", "status", "block", "block_hash", "transaction_hash", "transaction_index", "log_index",
+    "direction", "from", "to", "amount_base_units", "delta_base_units", "cumulative_delta_base_units", "implied_balance_base_units",
+    "independently_verified", "complete_history"];
+  const rows = found.rows.map(row => [query.agent, query.direction, query.search, found.total, found.matched,
+    row.agent, row.account, row.chainId, row.status, row.blockNumber, row.blockHash, row.transactionHash,
+    row.transactionIndex, row.logIndex, row.direction, row.from, row.to, row.amountBaseUnits, row.deltaBaseUnits,
+    row.cumulativeBaseUnits, row.impliedBalanceBaseUnits, false, false]);
+  const text = csv([columns, ...rows]);
+  return Object.freeze({ text, filename: "ThreeCore-reconciliation-filtered-events.csv", mimeType: "text/csv;charset=utf-8",
+    byteLength: new TextEncoder().encode(text).byteLength, query, total: found.total, matched: found.matched,
+    scope: "all-matches", restorable: false, completeHistory: false });
 }

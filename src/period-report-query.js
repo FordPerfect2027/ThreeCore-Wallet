@@ -16,17 +16,23 @@ export function validateReportEventQuery(input) {
 }
 
 /** Filters are presentation only: totals and conclusions still describe all original evidence. */
-export function queryPeriodReportEvents(input, queryInput) {
+export function matchingPeriodReportEvents(input, queryInput) {
   const query = validateReportEventQuery(queryInput), report = analyzePeriodReport(input);
   const slot = report.slots.find(row => row.agent === query.agent);
   const all = slot.arithmetic.events;
   const filtered = all.filter(row => (query.direction === "all" || row.direction === query.direction) &&
     (!query.search || [row.transactionHash, row.from, row.to, row.blockNumber]
       .some(value => value.toLowerCase().includes(query.search))));
+  return Object.freeze({ query, report, slot, total: all.length, matched: filtered.length,
+    rows: Object.freeze(filtered), scope: "all-matches", totalsAreUnfiltered: true });
+}
+
+export function queryPeriodReportEvents(input, queryInput) {
+  const { query, slot, total, rows: filtered } = matchingPeriodReportEvents(input, queryInput);
   const pages = Math.max(1, Math.ceil(filtered.length / REPORT_PAGE_SIZE));
   const page = Math.min(query.page, pages - 1);
   return Object.freeze({ agent: query.agent, status: slot.status, page, pages,
-    pageSize: REPORT_PAGE_SIZE, total: all.length, matched: filtered.length,
+    pageSize: REPORT_PAGE_SIZE, total, matched: filtered.length,
     rows: Object.freeze(filtered.slice(page * REPORT_PAGE_SIZE, (page + 1) * REPORT_PAGE_SIZE)),
     totalsAreUnfiltered: true });
 }

@@ -13,15 +13,22 @@ export function validateReconciliationQuery(input) {
   return Object.freeze({ ...input, search: input.search.trim().toLowerCase() });
 }
 
-export function queryReconciliationEvents(input, queryInput) {
-  const report = reconcileWorkspace(input);
+export function reconciliationMatchingEvents(input, queryInput) {
   const query = validateReconciliationQuery(queryInput);
+  const report = reconcileWorkspace(input);
   const matching = report.slots.filter(row => query.agent === "all" || row.agent === query.agent)
     .flatMap(row => row.events.map(event => ({ ...event, agent: row.agent, account: row.account, chainId: row.chainId,
       decimals: row.totals.decimals, symbol: row.totals.symbol, status: row.status })))
     .filter(event => query.direction === "all" || event.direction === query.direction)
     .filter(event => !query.search || [event.transactionHash, event.blockHash, event.from, event.to, event.blockNumber]
       .some(value => value.toLowerCase().includes(query.search)));
+  return Object.freeze({ query, total: report.slots.reduce((sum, row) => sum + row.events.length, 0),
+    matched: matching.length, rows: Object.freeze(matching.map(Object.freeze)), scope: "all-matches",
+    includesUnverifiedHistory: true, completeHistory: false });
+}
+
+export function queryReconciliationEvents(input, queryInput) {
+  const { query, rows: matching } = reconciliationMatchingEvents(input, queryInput);
   // Token order remains DAT/EMA/CAWELON, then chronological chain order within each.
   const pages = Math.max(1, Math.ceil(matching.length / RECONCILIATION_PAGE_SIZE));
   const page = Math.min(query.page, pages - 1);

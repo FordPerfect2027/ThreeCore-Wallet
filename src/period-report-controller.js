@@ -6,7 +6,8 @@ import { emptyReportSelection, reportAgent, createPeriodReportInput, validatePer
   assertReportSourcesUnchanged } from "./period-report-model.js";
 import { analyzePeriodReport } from "./period-report-engine.js";
 import { preparePeriodReportFile, readPeriodReportFile } from "./period-report-file.js";
-import { periodReportCSV, periodReportHTML } from "./period-report-export.js";
+import { validateReportEventQuery } from "./period-report-query.js";
+import { periodReportCSV, periodReportHTML, periodReportEventsCSV } from "./period-report-export.js";
 import { reportErrorCode } from "./period-report-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -181,17 +182,21 @@ export function createPeriodReportController({ storage, onChange = () => {},
       });
     } catch (value) { return fail(value); }
   }
-  async function exportFile(format, acknowledged, deliver) {
+  async function exportFile(format, acknowledged, deliver, queryInput) {
+    const own = generation;
     try {
       if (!guard()) return false;
       if (!input) periodFail("PERIOD_REPORT_NO_RESULT");
       if (acknowledged !== true) periodFail("PERIOD_REPORT_ACK");
-      if (!["json", "csv", "html"].includes(format)) periodFail("PERIOD_REPORT_FORMAT");
+      if (!["json", "csv", "html", "events"].includes(format)) periodFail("PERIOD_REPORT_FORMAT");
       if (typeof deliver !== "function") periodFail("PERIOD_REPORT_DELIVERY");
-      const source = input; review = null;
+      const source = input;
+      const query = format === "events" ? validateReportEventQuery(queryInput) : null;
+      if (!sameGeneration(own) || input !== source) return false;
+      review = null;
       return await run("exporting", async (same, signal) => {
         const file = format === "json" ? await prepareFile(source, { signal }) :
-          format === "csv" ? periodReportCSV(source) : periodReportHTML(source);
+          format === "csv" ? periodReportCSV(source) : format === "events" ? periodReportEventsCSV(source, query) : periodReportHTML(source);
         if (!same()) return null;
         const delivery = deliver(file);
         // Browser download initiation must be synchronous; late async callbacks cannot report success.
@@ -201,7 +206,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
         if (delivery === false) periodFail("PERIOD_REPORT_DELIVERY");
         return file;
       }, () => { message = "保存処理を開始しました。ダウンロード先でファイルをご確認ください。"; });
-    } catch (value) { return fail(value); }
+    } catch (value) { return fail(value, own); }
   }
   function dispose() {
     if (disposed) return;

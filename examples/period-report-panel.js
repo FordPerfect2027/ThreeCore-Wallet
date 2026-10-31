@@ -99,18 +99,21 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
   const exportActions = make("div", "export-actions", undefined, exports);
   button("json", "元の記録を含む報告JSON", exportActions);
   button("csv", "3トークンの要約CSV", exportActions);
+  button("event-csv", "絞り込んだ履歴を全件CSV保存", exportActions);
   button("html", "印刷用の報告HTML", exportActions);
-  make("p", "export-note", "JSONは再読込み用、CSV・HTMLは要約です。暗号化されていません。チェックサムは破損確認用です。", exports);
+  make("p", "export-note", "JSONは再読込み用です。履歴CSVは表示条件に合う全ページ、要約CSV・HTMLは全体の要約を保存します。暗号化されていません。チェックサムは破損確認用です。", exports);
   const imports = make("section", "imports");
   field("file", "保存した報告JSONを開く（最大64 MiB）", "file", imports).accept = ".json,application/json";
   make("p", "import-note", "読み込んだ元データから再計算し、確認後に表示します。保存一覧への追加や現在のウォレットへの接続は行いません。", imports);
 
+  const eventQuery = () => ({ agent: nodes["event-agent"].value, direction: nodes.direction.value, search: nodes.search.value, page });
   function renderEvents() {
     nodes.rows.replaceChildren();
+    nodes["event-csv"].disabled = true;
     if (!state?.input) return;
     try {
-      const data = queryPeriodReportEvents(state.input, { agent: nodes["event-agent"].value,
-        direction: nodes.direction.value, search: nodes.search.value, page });
+      const data = queryPeriodReportEvents(state.input, eventQuery());
+      nodes["event-csv"].disabled = state.busy || !nodes["export-ack"].checked;
       page = data.page;
       nodes["event-count"].textContent = `${data.matched}/${data.total}件 · ${data.page + 1}/${data.pages}ページ`;
       nodes.previous.disabled = state.busy || data.page === 0;
@@ -193,7 +196,7 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
         ].join("\n\n");
       }
     }
-    for (const name of ["json", "csv", "html"]) nodes[name].disabled = value.busy || !value.input || !nodes["export-ack"].checked;
+    for (const name of ["json", "csv", "html", "event-csv"]) nodes[name].disabled = value.busy || !value.input || !nodes["export-ack"].checked;
     for (const name of ["event-agent", "direction", "search", "export-ack"]) nodes[name].disabled = value.busy || !value.input;
     renderEvents();
   }
@@ -212,7 +215,7 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
     if (file) void controller.importFile(file);
   });
   listen("export-ack", "change", () => render(controller.state));
-  for (const name of ["json", "csv", "html"]) listen(name, "click", () => { void controller.exportFile(name, nodes["export-ack"].checked, download); });
+  for (const name of ["json", "csv", "html", "event-csv"]) listen(name, "click", () => { void controller.exportFile(name === "event-csv" ? "events" : name, nodes["export-ack"].checked, download, name === "event-csv" ? eventQuery() : undefined); });
   for (const name of ["event-agent", "direction", "search"]) listen(name, name === "search" ? "input" : "change", () => { page = 0; renderEvents(); });
   listen("previous", "click", () => { page = Math.max(0, page - 1); renderEvents(); });
   listen("next", "click", () => { page++; renderEvents(); });

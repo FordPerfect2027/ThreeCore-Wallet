@@ -57,6 +57,18 @@ async function seed(storage, source = reportLibrary()) {
 }
 
 export function registerPeriodReportUITests(test) {
+  test("period report: filtered event CSV respects acknowledgement and saves all matching pages",async()=>{
+    const f=fixture();
+    try{
+      await f.import(manyEventsInput());f.click("apply");await f.settled();const original=f.mounted.getInput();
+      assert(f.q("event-csv").disabled);f.acknowledge();f.click("next");f.click("event-csv");await f.settled();
+      assert(f.files.length===1&&f.files[0].matched===57&&f.files[0].text.trimEnd().split("\r\n").length===58);
+      f.set("direction","outgoing");f.click("event-csv");await f.settled();assert(f.files[1].matched===0);
+      f.set("search","x".repeat(101),"input");assert(f.q("event-csv").disabled);
+      assert(f.mounted.getInput()===original);
+    }finally{f.dispose();}
+  });
+
   test("period report: replacement review shows less complete incoming evidence", async () => {
     const f = fixture();
     try {
