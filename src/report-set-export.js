@@ -9,7 +9,7 @@ import { preparePeriodReportFile } from "./period-report-file.js";
 import { preparePeriodFile } from "./period-file.js";
 import { emptyPeriodDraft } from "./period-draft.js";
 import { reportSetTimeline, reportSetMissingHistoryQueue, missingHistoryPageRange } from "./report-set-timeline.js";
-import { analyzeReportSet, compareReportSets } from "./report-set-engine.js";
+import { analyzeReportSet, compareReportSets, compareReportSetEvents } from "./report-set-engine.js";
 import { reportSetDiagnostics, querySetDiagnostics, diagnosticQuery, diagnosticText } from "./report-set-diagnostics.js";
 import { escapeReportHTML } from "./period-report-export.js";
 import { reportStatusText } from "./period-report-view.js";
@@ -429,4 +429,17 @@ export function prepareComparisonEvidenceSourceFile(receipt, role) {
     evidenceTextSha256: receipt.evidenceTextSha256, role,
     comparisonMatchesRecomputation: receipt.comparisonReview.matchesRecomputation,
     authenticated: false, encrypted: false, containsOriginalEvidence: true, restorable: true });
+}
+
+export async function prepareReportSetEventComparisonFile(value, query, fileOptions = {}) {
+  const input = validateReportSet(value), comparison = compareReportSetEvents(input, query);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const source = await prepareReportSetFile(input, options);
+  const text = JSON.stringify({ schema: "threecore.saved-event-comparison-file.v1", sourcePayloadDigest: source.digest,
+    comparison, encrypted: false, authenticated: false, restorable: false, authorizesExecution: false }, null, 2) + "\n";
+  try { boundedUtf8Length(text, 24 * 1024 * 1024); } catch { periodFail("PERIOD_SET_EVENT_SIZE"); }
+  return Object.freeze({ ...resultFile(text, "json", "application/json"), filename: "ThreeCore-saved-event-comparison.json",
+    sourcePayloadDigest: source.digest, containsOriginalEvidence: true });
 }

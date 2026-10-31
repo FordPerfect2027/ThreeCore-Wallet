@@ -1,5 +1,5 @@
 import { validateReportSet, freezeSet, REPORT_SET_AGENTS } from "./report-set-model.js";
-import { periodContextKey } from "./period-plan.js";
+import { periodContextKey, periodShape, periodFail } from "./period-plan.js";
 import { periodDraftKey, periodDraftAnchors } from "./period-draft.js";
 import { analyzePeriodReport } from "./period-report-engine.js";
 import { inspectReportContinuity } from "./report-history-continuity.js";
@@ -201,4 +201,73 @@ export function compareReportSets(beforeValue, afterValue) {
       JSON.stringify(before.entries.map(row => row.id)) === JSON.stringify(after.entries.map(row => row.id)) &&
       rows.every(row => row.kind === "unchanged"),
     historicalOnly: true, liveChainRechecked: false, independentlyVerified: false, automaticMerge: false, deletesStoredReports: false });
+}
+
+/** Compare two explicitly selected saved event lists only where both actually saved a query. */
+export function compareReportSetEvents(value, queryValue) {
+  const input = validateReportSet(value);
+  let query;
+  try { query = periodShape(queryValue, ["beforeId", "afterId", "agent"]); }
+  catch { periodFail("PERIOD_SET_EVENT_QUERY"); }
+  if (typeof query.beforeId !== "string" || typeof query.afterId !== "string" ||
+      query.beforeId === query.afterId || !REPORT_SET_AGENTS.includes(query.agent)) periodFail("PERIOD_SET_EVENT_QUERY");
+  const selected = [query.beforeId, query.afterId].map(id => input.entries.find(row => row.id === id));
+  if (selected.some(row => !row)) periodFail("PERIOD_SET_EVENT_SOURCE");
+  const sources = selected.map(row => row.report.slots.find(slot => slot.agent === query.agent).entry);
+  if (sources.some(row => !row)) periodFail("PERIOD_SET_EVENT_SLOT");
+  const drafts = sources.map(row => row.draft);
+  if (periodContextKey(drafts[0].plan.context) !== periodContextKey(drafts[1].plan.context)) periodFail("PERIOD_SET_EVENT_CONTEXT");
+  const ranges = [];
+  for (const left of drafts[0].records) for (const right of drafts[1].records) {
+    const from = BigInt(left.range.fromBlock) > BigInt(right.range.fromBlock) ? left.range.fromBlock : right.range.fromBlock;
+    const to = BigInt(left.range.toBlock) < BigInt(right.range.toBlock) ? left.range.toBlock : right.range.toBlock;
+    if (BigInt(from) <= BigInt(to)) ranges.push({ fromBlock: from, toBlock: to });
+  }
+  ranges.sort((a, b) => compareBlocks(a.fromBlock, b.fromBlock));
+  const commonRanges = [];
+  for (const row of ranges) {
+    const previous = commonRanges.at(-1);
+    if (previous && BigInt(row.fromBlock) <= BigInt(previous.toBlock) + 1n) {
+      if (BigInt(row.toBlock) > BigInt(previous.toBlock)) previous.toBlock = row.toBlock;
+    } else commonRanges.push({ ...row });
+  }
+  const inside = block => commonRanges.some(range => BigInt(block) >= BigInt(range.fromBlock) && BigInt(block) <= BigInt(range.toBlock));
+  const observed = drafts.map(draft => draft.records.flatMap((record, recordIndex) => record.events.map((event, eventIndex) => ({ recordIndex, eventIndex, event }))));
+  const included = observed.map(rows => rows.filter(row => inside(row.event.blockNumber)));
+  const key = row => row.event.transactionHash + ":" + row.event.logIndex;
+  const maps = included.map(rows => new Map(rows.map(row => [key(row), row])));
+  const counts = { matching: 0, changed: 0, onlyBefore: 0, onlyAfter: 0 };
+  const differences = [];
+  const fields = ["blockNumber", "blockHash", "transactionIndex", "from", "to", "amountBaseUnits"];
+  for (const id of new Set([...maps[0].keys(), ...maps[1].keys()])) {
+    const before = maps[0].get(id) ?? null, after = maps[1].get(id) ?? null;
+    const changedFields = before && after ? fields.filter(field => before.event[field] !== after.event[field]) : [];
+    const kind = !before ? "onlyAfter" : !after ? "onlyBefore" : changedFields.length ? "changed" : "matching";
+    counts[kind]++;
+    if (kind !== "matching") differences.push({ kind, transactionHash: (before ?? after).event.transactionHash,
+      logIndex: (before ?? after).event.logIndex, changedFields, before, after });
+  }
+  differences.sort((a, b) => compareBlocks((a.before ?? a.after).event.blockNumber, (b.before ?? b.after).event.blockNumber) ||
+    a.transactionHash.localeCompare(b.transactionHash) || compareBlocks(a.logIndex, b.logIndex));
+  const anchorSets = drafts.map(draft => {
+    try { return { valid: true, rows: periodDraftAnchors(draft) }; }
+    catch { return { valid: false, rows: [] }; }
+  });
+  const afterAnchors = new Map(anchorSets[1].rows.filter(row => inside(row.number)).map(row => [row.number, row.hash]));
+  const sharedAnchors = anchorSets[0].rows.filter(row => inside(row.number) && afterAnchors.has(row.number));
+  const anchorDifferences = sharedAnchors.filter(row => afterAnchors.get(row.number) !== row.hash)
+    .map(row => ({ blockNumber: row.number, beforeHash: row.hash, afterHash: afterAnchors.get(row.number) }));
+  const source = index => ({ reportId: selected[index].id, label: selected[index].label,
+    archivedReport: selected[index].archived, archivedSource: sources[index].archived,
+    restricted: sources[index].requiresNewPlan, internallyConsistentHashes: anchorSets[index].valid,
+    savedQueryRecords: drafts[index].records.length, totalSavedEvents: observed[index].length,
+    comparedEvents: included[index].length, excludedEvents: observed[index].length - included[index].length });
+  return freezeSet({ schema: "threecore.saved-event-comparison.v1", query: { ...query }, context: drafts[0].plan.context,
+    tokenAddress: catalogToken({ agent: query.agent, chainId: drafts[0].plan.context.chainId }).address, before: source(0), after: source(1),
+    commonRanges, comparedBlocks: commonRanges.reduce((n, row) => n + BigInt(row.toBlock) - BigInt(row.fromBlock) + 1n, 0n).toString(),
+    counts, differences, sharedAnchorCount: sharedAnchors.length, anchorDifferences,
+    status: !commonRanges.length ? "no-common-coverage" : differences.length || anchorDifferences.length || anchorSets.some(row => !row.valid)
+      ? "differences" : "saved-observations-match",
+    rangeNotation: "inclusive", eventsCombined: false, absenceProvesNoTransfer: false,
+    historicalOnly: true, liveChainRechecked: false, authenticated: false, authorizesExecution: false });
 }

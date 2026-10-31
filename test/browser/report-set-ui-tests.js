@@ -1,3 +1,4 @@
+import { manyEventsInput } from "/test/helpers/period-report-fixtures.js";
 import { mountReportSetPanel } from "/examples/report-set-panel.js";
 import { createReportHistoryStorage } from "/src/report-history-storage.js";
 import { prepareReportSetFile, decodeReportSetFile } from "/src/report-set-file.js";
@@ -5,7 +6,7 @@ import { prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareRepo
 import { decodePeriodReportFile } from "/src/period-report-file.js";
 import { decodePeriodFile, preparePeriodFile } from "/src/period-file.js";
 import { analyzeReportSet } from "/src/report-set-engine.js";
-import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
+import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument, historyRecord,
   clone, id, AFTER, waitUntil, deferred } from "/test/helpers/report-set-fixtures.js";
 
 const assert = (condition, message = "Report set UI assertion failed") => {
@@ -632,6 +633,24 @@ export function registerReportSetUITests(test) {
       f.set("evidence-source-role", "before"); f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
       assert(f.files[2].comparisonMatchesRecomputation === false && f.files[2].text === changed.beforeFileText);
       assert(f.mounted.getState().input === accepted && f.q("comparison-evidence-output").textContent.includes("食い違い"));
+    } finally { f.dispose(); }
+  });
+
+  test("report set: native event comparison limits paging but exports every difference without changing sources", async () => {
+    const report = manyEventsInput(57), changed = clone(report);
+    for (const row of changed.slots[0].entry.draft.records[0].events) row.amountBaseUnits = "2";
+    const f = fixture({ initial: historyDocument([historyRecord(1, { report }), historyRecord(2, { report: changed })]) });
+    try {
+      await f.accept(); const accepted = f.mounted.getState().input;
+      f.set("event-before", id(101)); f.set("event-after", id(102)); f.click("event-compare");
+      assert(f.q("event-output").textContent.includes("内容違い 57") && f.q("event-output").textContent.includes("1/2ページ"));
+      f.click("event-next"); assert(f.q("event-output").textContent.includes("2/2ページ") && f.q("event-next").disabled);
+      f.check("ack"); assert(f.q("event-json").disabled); f.check("event-ack"); f.click("event-json"); await f.settled();
+      assert(JSON.parse(f.files[0].text).comparison.differences.length === 57 && f.mounted.getState().input === accepted);
+      f.set("event-agent", "EMA"); assert(!f.q("event-ack").checked && f.q("event-json").disabled);
+      f.click("event-compare"); assert(f.q("event-output").textContent.includes("一致しています"));
+      await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled();
+      assert(f.q("event-before").value === "" && f.q("event-json").disabled);
     } finally { f.dispose(); }
   });
 

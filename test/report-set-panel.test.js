@@ -1,3 +1,4 @@
+import { manyEventsInput } from "./helpers/period-report-fixtures.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { Element } from "./helpers/panel-dom.js";
@@ -6,7 +7,7 @@ import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-fil
 import { prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareReportSetCoverageFile, prepareReportSetComparisonEvidenceFile, reviewReportSetComparisonEvidence } from "../src/report-set-export.js";
 import { decodePeriodReportFile } from "../src/period-report-file.js";
 import { decodePeriodFile, preparePeriodFile } from "../src/period-file.js";
-import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
+import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument, historyRecord,
   clone, id, AFTER, fileFrom, waitUntil, deferred } from "./helpers/report-set-fixtures.js";
 
 function fixture(initial = sequenceHistory(), options = {}) {
@@ -505,5 +506,25 @@ test("verified source recovery resets disclosure on side changes and never repla
     f.set("evidence-source-role", "before"); f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
     assert.equal(f.mounted.getState().input, accepted); assert.ok(f.store.calls.every(row => row[0] === "read"));
     const control = f.q("evidence-source-json"); f.dispose(); control.click(); assert.equal(f.files.length, 3);
+  } finally { f.dispose(); }
+});
+
+test("saved-event comparison pages differences but saves all of them and invalidates edited selections", async () => {
+  const report = manyEventsInput(57), changed = clone(report);
+  for (const row of changed.slots[0].entry.draft.records[0].events) row.amountBaseUnits = "2";
+  const f = fixture(historyDocument([historyRecord(1, { label: "<img src=x>", report }), historyRecord(2, { report: changed })]));
+  try {
+    assert.equal(f.q("event-compare").disabled, true); await f.accept(); const accepted = f.mounted.getState().input;
+    f.set("event-before", id(101)); f.set("event-after", id(102)); f.click("event-compare");
+    assert.match(f.q("event-output").textContent, /内容違い 57/); assert.match(f.q("event-output").textContent, /1\/2ページ/);
+    assert.match(f.q("event-output").textContent, /<img src=x>/); assert.equal(f.q("event-output").children.length, 0);
+    f.click("event-next"); assert.match(f.q("event-output").textContent, /2\/2ページ/); assert.equal(f.q("event-next").disabled, true);
+    f.check("ack"); assert.equal(f.q("event-json").disabled, true); f.check("event-ack"); f.click("event-json"); await f.settled();
+    assert.equal(JSON.parse(f.files[0].text).comparison.differences.length, 57); assert.equal(f.mounted.getState().input, accepted);
+    f.set("event-agent", "EMA"); assert.equal(f.q("event-ack").checked, false); assert.equal(f.q("event-json").disabled, true);
+    f.click("event-compare"); assert.match(f.q("event-output").textContent, /一致しています/);
+    await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled();
+    assert.equal(f.q("event-before").value, ""); assert.equal(f.q("event-json").disabled, true);
+    const old = f.q("event-compare"); f.dispose(); old.disabled = false; old.click(); assert.equal(f.files.length, 1);
   } finally { f.dispose(); }
 });

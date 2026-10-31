@@ -34,6 +34,11 @@ const ERRORS = Object.freeze({
   PERIOD_SET_EVIDENCE_CONTENT: "一式に含まれる元資料または比較結果が、必要なファイル形式と異なります。別の欄へこの一式を移す操作はせず、保存した元の証拠一式を選び直してください。",
   PERIOD_SET_EVIDENCE_READ: "比較の証拠一式を読み取れませんでした。",
   PERIOD_SET_EVIDENCE_ENCODING: "比較の証拠一式はUTF-8で保存されたJSONを選んでください。",
+  PERIOD_SET_EVENT_QUERY: "異なる2つの報告と、比較するトークンを選んでください。",
+  PERIOD_SET_EVENT_SOURCE: "選んだ報告が現在の確認セットにありません。選び直してください。",
+  PERIOD_SET_EVENT_SLOT: "選んだ報告の片方に、このトークンの期間控えがありません。",
+  PERIOD_SET_EVENT_CONTEXT: "アカウントまたはチェーンが違うため、履歴を比較できません。同じ対象の報告を選んでください。",
+  PERIOD_SET_EVENT_SIZE: "履歴の比較ファイルが24 MiBを超えました。省略せず保存を中止しました。",
   PERIOD_SET_EVIDENCE_SOURCE_REVIEW: "先に元の比較の証拠一式JSONを、この画面で検証してください。検証結果の控えだけでは元資料を取り出せません。",
   PERIOD_SET_EVIDENCE_SOURCE_ROLE: "差し替え前か候補か、取り出す元資料を選んでください。",
   PERIOD_SET_EVIDENCE_NO_REVIEW: "先に比較の証拠一式を確認してください。",
@@ -173,4 +178,42 @@ export function setComparisonEvidenceReviewText(value) {
     "証拠一式のテキスト SHA-256: " + value.evidenceTextSha256,
     setComparisonReviewText(value.comparisonReview),
     "検証した一式は表示中の確認セットとは別です。元資料の取り込み・署名・送金は行っていません。"].join("\n");
+}
+
+export function setEventComparisonText(value, page = 0) {
+  if (!value) return "同じトークン・アカウント・チェーンの報告を2つ選んでください。両方に保存した履歴範囲だけを比較します。";
+  const labels = { "no-common-coverage": "両方が履歴を保存した共通範囲はありません。比較は未成立です。",
+    differences: "保存したイベントまたはブロック情報に食い違いがあります。",
+    "saved-observations-match": "共通範囲に保存したイベントと共有ブロック情報は一致しています。" };
+  const counts = value.counts, limit = 50, pages = Math.max(1, Math.ceil(value.differences.length / limit));
+  if (!Number.isInteger(page) || page < 0 || page >= pages) return "表示ページを確認してください。";
+  const lines = [labels[value.status], value.context.agent + " / Chain " + value.context.chainId + " / " + value.context.account,
+    "資料A: " + value.before.label + " / " + value.before.reportId,
+    "資料B: " + value.after.label + " / " + value.after.reportId,
+    "共通取得範囲: " + (value.commonRanges.map(row => row.fromBlock + " ～ " + row.toBlock).join("、") || "なし") + " / " + value.comparedBlocks + "ブロック（両端を含む）",
+    "同一 " + counts.matching + " / 内容違い " + counts.changed + " / Aだけ " + counts.onlyBefore + " / Bだけ " + counts.onlyAfter,
+    "共通範囲外として除外: A " + value.before.excludedEvents + " / B " + value.after.excludedEvents + "件",
+    "両資料で照合できたブロック情報 " + value.sharedAnchorCount + " / ハッシュ不一致 " + value.anchorDifferences.length];
+  for (const [name, source] of [["A", value.before], ["B", value.after]]) {
+    if (!source.internallyConsistentHashes) lines.push(name + "の元資料内にブロック情報の矛盾があります。");
+    if (source.restricted) lines.push(name + "には再取得が必要という印があります。");
+    if (source.archivedReport || source.archivedSource) lines.push(name + "には非表示保管の記録を含みます。");
+  }
+  for (const row of value.anchorDifferences) lines.push("Block " + row.blockNumber + " / A " + row.beforeHash + " / B " + row.afterHash);
+  lines.push("イベントの差 " + (page + 1) + "/" + pages + "ページ（最大50件ずつ。JSON保存は全件です）");
+  const kinds = { onlyBefore: "Aだけに保存", onlyAfter: "Bだけに保存", changed: "同じ取引・ログ番号で内容違い" };
+  const fields = { blockNumber: "ブロック番号", blockHash: "ブロックハッシュ", transactionIndex: "取引の位置", from: "送信元", to: "受信先", amountBaseUnits: "数量（最小単位）" };
+  for (const row of value.differences.slice(page * limit, (page + 1) * limit)) {
+    lines.push("", kinds[row.kind] + " / " + row.transactionHash + " / log " + row.logIndex);
+    if (row.changedFields.length) lines.push("異なる値: " + row.changedFields.map(field => fields[field]).join("、"));
+    for (const [name, source] of [["A", row.before], ["B", row.after]]) {
+      if (!source) { lines.push(name + ": 共通範囲の保存記録にはありません"); continue; }
+      const event = source.event;
+      lines.push(name + ": 保存区間 " + (source.recordIndex + 1) + " / イベント " + (source.eventIndex + 1),
+        "  Block " + event.blockNumber + " / hash " + event.blockHash + " / 取引の位置 " + event.transactionIndex,
+        "  " + event.from + " → " + event.to + " / 数量（最小単位） " + event.amountBaseUnits);
+    }
+  }
+  lines.push("", "保存資料同士の比較です。片方に記録がない理由や正しい取得元は確定できません。現在のチェーン照合・履歴の統合・送金は行いません。");
+  return lines.join("\n");
 }

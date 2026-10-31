@@ -1,3 +1,4 @@
+import { compareReportSetEvents } from "../src/report-set-engine.js";
 import { offerWalletDownload } from "./export-download.js";
 import { createReportHistoryStorage } from "../src/report-history-storage.js";
 import { createReportSetController } from "../src/report-set-controller.js";
@@ -5,7 +6,7 @@ import { queryReportHistory } from "../src/report-history-query.js";
 import { querySetDiagnostics, diagnosticText } from "../src/report-set-diagnostics.js";
 import { mountReportSetTimeline } from "./report-set-timeline-panel.js";
 import { SET_LIMITATION, SET_SEGMENTS, setErrorText, setSummaryText,
-  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText } from "../src/report-set-view.js";
+  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText, setEventComparisonText } from "../src/report-set-view.js";
 
 export function mountReportSetPanel({ document, parent,
   storage = createReportHistoryStorage(), now,
@@ -16,6 +17,7 @@ export function mountReportSetPanel({ document, parent,
   let diagnosticInput = null, diagnosticKey = null, diagnosticRows = null;
   let timelinePanel = null;
   let queueSelection = null;
+  let eventComparison = null, eventPage = 0;
   let lastReview = null, lastEvidenceReview = null;
   const host = document.createElement("section");
   host.className = "report-set-panel";
@@ -111,6 +113,17 @@ export function mountReportSetPanel({ document, parent,
   make("p", "origin", "", result);
   const cards = make("div", "cards", undefined, result);
   const timelineHost = make("div", "timeline-host", undefined, result);
+  const eventSection = make("section", "event-comparison", undefined, result);
+  make("h4", "event-comparison-heading", "2つの報告の保存済み履歴を比較", eventSection);
+  select("event-before", "資料A", [["", "報告を選んでください"]], eventSection);
+  select("event-after", "資料B", [["", "別の報告を選んでください"]], eventSection);
+  select("event-agent", "比較するトークン", [["DAT", "DAT"], ["EMA", "EMA"], ["CAWELON", "CAWELON"]], eventSection);
+  button("event-compare", "両方が取得した範囲の履歴を比較", eventSection);
+  make("pre", "event-output", setEventComparisonText(null), eventSection);
+  button("event-previous", "前の50件", eventSection); button("event-next", "次の50件", eventSection);
+  field("event-ack", "比較の全アドレス・イベントの値・ハッシュが暗号化されずに保存されることを確認しました", "checkbox", eventSection);
+  button("event-json", "履歴の比較を全件JSON保存", eventSection);
+  make("p", "event-help", "資料A・Bは選んだ順序です。新旧や信頼性の順ではありません。両方に保存した範囲だけを比較し、取得していない範囲を取引なしとは扱いません。保存メモ本文は含めません。下のアドレス短縮設定は使いません。", eventSection);
   const checks = make("section", "checks", undefined, result);
   make("h4", "checks-heading", "次に確認する箇所", checks);
   make("p", "checks-help", "どの報告の、どの範囲を調べるかを表示します。元の証拠を自動修正する操作はありません。", checks);
@@ -282,6 +295,16 @@ export function mountReportSetPanel({ document, parent,
       choices.set(entry.id, { label, checkbox });
     }
   }
+  function renderEventComparison() {
+    for (const name of ["event-before", "event-after", "event-agent"]) nodes[name].disabled = !!state?.busy || !state?.input;
+    nodes["event-compare"].disabled = !!state?.busy || !state?.input || !nodes["event-before"].value || !nodes["event-after"].value || nodes["event-before"].value === nodes["event-after"].value;
+    nodes["event-previous"].disabled = !!state?.busy || !eventComparison || eventPage === 0;
+    nodes["event-next"].disabled = !!state?.busy || !eventComparison || (eventPage + 1) * 50 >= eventComparison.differences.length;
+    nodes["event-ack"].disabled = !!state?.busy || !eventComparison;
+    nodes["event-json"].disabled = !!state?.busy || !eventComparison || !nodes["event-ack"].checked;
+    nodes["event-output"].textContent = setEventComparisonText(eventComparison, eventPage);
+  }
+  function clearEventComparison() { eventComparison = null; eventPage = 0; nodes["event-ack"].checked = false; renderEventComparison(); }
   function buildResult(value) {
     timelinePanel?.dispose();
     timelinePanel = null;
@@ -293,6 +316,14 @@ export function mountReportSetPanel({ document, parent,
       const option = document.createElement("option"); option.value = id; option.textContent = label; nodes["source-report"].append(option);
     }
     nodes["source-report"].value = "";
+    for (const name of ["event-before", "event-after"]) {
+      nodes[name].replaceChildren();
+      for (const [id, label] of [["", "報告を選んでください"], ...(value?.reports ?? []).map(row => [row.id, row.label + " / " + row.id])]) {
+        const option = document.createElement("option"); option.value = id; option.textContent = label; nodes[name].append(option);
+      }
+      nodes[name].value = "";
+    }
+    clearEventComparison();
     if (!value) return;
     timelinePanel = mountReportSetTimeline({ document, parent: timelineHost, input: state.input,
       onQueueSelection(selection, groupId) {
@@ -364,6 +395,7 @@ export function mountReportSetPanel({ document, parent,
     nodes["evidence-source-role"].disabled = value.busy || !value.evidenceReview;
     nodes["evidence-source-ack"].disabled = value.busy || !value.evidenceReview || !["before", "after"].includes(nodes["evidence-source-role"].value);
     nodes["evidence-source-json"].disabled = value.busy || !value.evidenceReview || !["before", "after"].includes(nodes["evidence-source-role"].value) || !nodes["evidence-source-ack"].checked;
+    renderEventComparison();
     nodes["comparison-evidence-file"].disabled = value.busy;
     nodes["comparison-evidence-output"].textContent = setComparisonEvidenceReviewText(value.evidenceReview);
     nodes["comparison-evidence-review-ack"].disabled = value.busy || !value.evidenceReview;
@@ -446,6 +478,17 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes["evidence-source-role"], "change", () => { nodes["evidence-source-ack"].checked = false; render(controller.state); });
   listen(nodes["evidence-source-ack"], "change", () => render(controller.state));
   listen(nodes["evidence-source-json"], "click", () => { void controller.exportEvidenceSource(nodes["evidence-source-role"].value, nodes["evidence-source-ack"].checked, download); });
+  for (const name of ["event-before", "event-after", "event-agent"]) listen(nodes[name], "change", clearEventComparison);
+  listen(nodes["event-compare"], "click", () => {
+    if (disposed || state.busy || !state.input) return;
+    clearEventComparison();
+    try { eventComparison = compareReportSetEvents(state.input, { beforeId: nodes["event-before"].value, afterId: nodes["event-after"].value, agent: nodes["event-agent"].value }); renderEventComparison(); }
+    catch (error) { nodes["event-output"].textContent = setErrorText(error.code); }
+  });
+  listen(nodes["event-previous"], "click", () => { if (disposed || state.busy || !eventComparison || eventPage === 0) return; eventPage--; renderEventComparison(); });
+  listen(nodes["event-next"], "click", () => { if (disposed || state.busy || !eventComparison || (eventPage + 1) * 50 >= eventComparison.differences.length) return; eventPage++; renderEventComparison(); });
+  listen(nodes["event-ack"], "change", renderEventComparison);
+  listen(nodes["event-json"], "click", () => { if (eventComparison) void controller.exportEventComparison(eventComparison.query, nodes["event-ack"].checked, download); });
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });
