@@ -168,6 +168,8 @@ export function decodeRehearsalForPanel(text, target, decode) {
 
 // These routes describe a declared format only. They never validate or open a file.
 const walletSavedTargets = Object.freeze({
+  "threecore.wallet-saved-batch-comparison-review.v1": [null, "PERIOD_FILE_SAVED_BATCH_COMPARISON_REVIEW_ONLY"],
+  "threecore.wallet-saved-batch-comparison.v1": [null, "PERIOD_FILE_SAVED_BATCH_COMPARISON_ONLY"],
   "threecore.wallet-saved-browser-batch.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v2": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-batch-inspection.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
@@ -196,6 +198,8 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  PERIOD_FILE_SAVED_BATCH_COMPARISON_REVIEW_ONLY: "これは二組の一括比較を照合した控えです。元記録は含まれず、復元には使えません。両方の元のJSONと元の比較JSONを保全し、『保存した一括比較JSONを照合する』で確認してください。",
+  PERIOD_FILE_SAVED_BATCH_COMPARISON_ONLY: "これは二組の保存ファイルを比較した控えです。元記録は含まれず、復元には使えません。両方の元のJSONと照合値一覧を保全し、一括確認で比較し直してください。",
   PERIOD_FILE_SAVED_BATCH_ONLY: "これは複数の保存ファイルを確認した控えです。元記録は含まれず、復元には使えません。確認に使った元のJSONと照合値一覧を保全し、『複数の保存ファイルをまとめて確認する』で確認してください。",
   PERIOD_FILE_SAVED_BUNDLE_ONLY: "これは比較と両方の元資料をまとめたJSONです。ファイル読み込みの保護にある『まとめた資料を読み取り専用で確認する』で確認し、必要な元ファイルを取り出してください。直接の復元は行いません。",
   PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY: "これはまとめた比較資料の照合結果です。元資料は含まれません。両方の元資料をまとめた元のJSONを使ってください。",
@@ -633,4 +637,89 @@ export function encodeWalletSavedTextBatchCsv(result) {
   for (const row of result.files) { const i = row.inspection, s = i?.scope; rows.push([true, false, false, false, false, false, result.phase, result.complete, result.allOriginalsValidated, result.referenceProvided ?? false, result.reference?.sha256 ?? "", result.allExternalChecksumsMatch ?? "", result.summary.selected, result.summary.checked, result.summary.pending, row.name, row.byteLength, row.status, row.code ?? "", row.sha256 ?? "", row.expectedSha256 ?? "", row.checksumMatches ?? "", i?.sourceSchema ?? "", i?.checksumVerified ?? "", s?.draftReferences ?? "", s?.incompleteDraftReferences ?? "", s?.restrictedEntryReferences ?? "", s?.agents.join(" | ") ?? "", s?.repeatedReferencesMayExist ?? ""]); }
   const cell = value => { let text = String(value); if (/^\s*[=+@-]/u.test(text)) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
   return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";
+}
+
+const savedBatchComparisons = new WeakSet();
+/** Compare two owned observations; a missing selection is not a deleted file. */
+export function compareWalletSavedTextBatches(before, after) {
+  if (!browserSavedBatchReceipts.has(before) || !browserSavedBatchReceipts.has(after)) savedInspectionFail("FILE_BATCH_COMPARISON");
+  const beforeByName = new Map(before.files.map(row => [row.name, row]));
+  const afterByName = new Map(after.files.map(row => [row.name, row]));
+  const names = [...beforeByName.keys(), ...afterByName.keys()].filter((name, index, all) => all.indexOf(name) === index);
+  const files = names.map(name => {
+    const left = beforeByName.get(name) ?? null, right = afterByName.get(name) ?? null;
+    const selection = !left ? "only-after" : !right ? "only-before" : "both";
+    const sameBytes = left?.sha256 && right?.sha256 ? left.sha256 === right.sha256 : null;
+    const comparison = left?.status === "validated-original" && right?.status === "validated-original"
+      ? compareWalletSavedInspections(left.inspection, right.inspection) : null;
+    return Object.freeze({ name, selection, before: left, after: right, sameBytes, comparison,
+      kind: selection !== "both" ? selection : comparison?.kind ?? "unverified" });
+  });
+  const count = kind => files.filter(row => row.kind === kind).length;
+  const summary = Object.freeze({ files: files.length, bothSelected: files.filter(row => row.selection === "both").length,
+    onlyBefore: count("only-before"), onlyAfter: count("only-after"), identical: count("identical"),
+    formatOnly: count("format-only"), changedOriginal: count("changed-original"), differentFormat: count("different-format"), unverified: count("unverified") });
+  const result = Object.freeze({ schema: "threecore.wallet-saved-batch-comparison.v1", readOnly: true,
+    authenticatesOrigin: false, authorizesExecution: false, containsOriginalEvidence: false, restorable: false,
+    liveChainRechecked: false, atomicSnapshot: false, reportsFilesystemDeletions: false,
+    before, after, sameSelection: summary.onlyBefore === 0 && summary.onlyAfter === 0,
+    allSelectedOriginalsIdentical: before.complete && after.complete && summary.identical === files.length,
+    summary, files: Object.freeze(files) });
+  savedBatchComparisons.add(result); return result;
+}
+
+export function encodeWalletSavedBatchComparison(result, format = "json") {
+  if (!savedBatchComparisons.has(result) || !["json", "csv"].includes(format)) savedInspectionFail("FILE_BATCH_COMPARISON");
+  if (format === "json") return JSON.stringify(result, null, 2) + "\n";
+  const rows = [["readOnly", "authenticatesOrigin", "authorizesExecution", "restorable", "liveChainRechecked", "atomicSnapshot", "reportsFilesystemDeletions", "beforePhase", "beforeComplete", "afterPhase", "afterComplete", "sameSelection", "allSelectedOriginalsIdentical", "name", "selection", "kind", "sameBytes", "beforeStatus", "afterStatus", "beforeSha256", "afterSha256", "beforeExpectedSha256", "afterExpectedSha256", "beforeChecksumMatches", "afterChecksumMatches", "sameOriginal", "byteDifference", "scopeChangeFields", "unchangedScopeWithChangedOriginal"]];
+  for (const row of result.files) rows.push([true, false, false, false, false, false, false,
+    result.before.phase, result.before.complete, result.after.phase, result.after.complete,
+    result.sameSelection, result.allSelectedOriginalsIdentical, row.name, row.selection, row.kind, row.sameBytes ?? "",
+    row.before?.status ?? "", row.after?.status ?? "", row.before?.sha256 ?? "", row.after?.sha256 ?? "",
+    row.before?.expectedSha256 ?? "", row.after?.expectedSha256 ?? "", row.before?.checksumMatches ?? "", row.after?.checksumMatches ?? "",
+    row.comparison?.sameOriginal ?? "", row.comparison?.byteDifference ?? "", row.comparison?.scopeChanges.map(change => change.field).join(" | ") ?? "", row.comparison?.unchangedScopeWithChangedOriginal ?? ""]);
+  const cell = value => { let text = String(value); if (/^\s*[=+@-]/u.test(text)) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
+  return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";
+}
+
+export function walletSavedBatchComparisonText(result) {
+  if (result == null) return "";
+  if (!savedBatchComparisons.has(result)) savedInspectionFail("FILE_BATCH_COMPARISON");
+  const s = result.summary;
+  return `両方に選択 ${s.bothSelected}件／比較元だけ ${s.onlyBefore}件／今回だけ ${s.onlyAfter}件。` +
+    ` 同じ元記録・同じ書式 ${s.identical}件／書式だけの違い ${s.formatOnly}件／元記録の変化 ${s.changedOriginal}件／異なる形式 ${s.differentFormat}件／元記録を比較できない ${s.unverified}件。` +
+    " 選択されなかったファイルが削除されたとは判断しません。未確認や照合値の不一致を含む行は、元記録の一致と扱いません。";
+}
+
+export const WALLET_SAVED_BATCH_COMPARISON_REVIEW_LIMIT = 1024 * 1024;
+const savedBatchComparisonReviews = new WeakSet();
+/** A saved comparison is checked against newly owned batches, never imported as authority. */
+export async function reviewWalletSavedBatchComparison(before, after, text, fileOptions = {}) {
+  const expected = compareWalletSavedTextBatches(before, after);
+  let options; try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { savedInspectionFail("FILE_BATCH_COMPARISON_REVIEW_OPTIONS"); }
+  const { subtle = globalThis.crypto?.subtle, signal, timeoutMs = 30000 } = options;
+  if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 30000) savedInspectionFail("FILE_BATCH_COMPARISON_REVIEW_OPTIONS");
+  const local = new AbortController(); let subscription, timer, timedOut = false;
+  const checkpoint = () => { if (local.signal.aborted) savedInspectionFail(timedOut ? "FILE_BATCH_COMPARISON_REVIEW_TIMEOUT" : "FILE_CANCELLED"); };
+  try {
+    try { subscription = subscribeReadAbort(signal, () => local.abort()); } catch { savedInspectionFail("FILE_BATCH_COMPARISON_REVIEW_OPTIONS"); }
+    checkpoint(); timer = setTimeout(() => { timedOut = true; local.abort(); }, timeoutMs);
+    let supplied; try { supplied = parseSecurityJson(text, { bytes: WALLET_SAVED_BATCH_COMPARISON_REVIEW_LIMIT }); } catch { savedInspectionFail("FILE_BATCH_COMPARISON_REVIEW_JSON"); }
+    if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== expected.schema) savedInspectionFail("FILE_BATCH_COMPARISON_REVIEW_SCHEMA");
+    const differences = Object.keys(expected).filter(field => !Object.hasOwn(supplied, field) || !sameSavedJSON(supplied[field], expected[field]));
+    const unexpectedFields = Object.keys(supplied).filter(field => !Object.hasOwn(expected, field)).length;
+    const digest = async value => { try { const result = await sha256Hex(new TextEncoder().encode(value), subtle, { signal: local.signal, timeoutMs }); checkpoint(); return result; } catch (error) { checkpoint(); throw error; } };
+    const comparisonTextDigest = await digest(text), beforeBatchDigest = await digest(encodeWalletSavedTextBatch(before)), afterBatchDigest = await digest(encodeWalletSavedTextBatch(after)), expectedComparisonDigest = await digest(encodeWalletSavedBatchComparison(expected));
+    checkpoint(); const result = Object.freeze({ schema: "threecore.wallet-saved-batch-comparison-review.v1", readOnly: true, authenticatesOrigin: false, authorizesExecution: false, containsOriginalEvidence: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false,
+      matchesRecomputation: differences.length === 0 && unexpectedFields === 0, beforeBindingMatches: sameSavedJSON(supplied.before, before), afterBindingMatches: sameSavedJSON(supplied.after, after),
+      bothBatchesComplete: before.complete && after.complete, allSelectedOriginalsIdentical: expected.allSelectedOriginalsIdentical,
+      expectedSummary: expected.summary, comparisonTextDigest, beforeBatchDigest, afterBatchDigest, expectedComparisonDigest, differences: Object.freeze(differences), unexpectedFields });
+    savedBatchComparisonReviews.add(result); return result;
+  } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
+}
+
+export function encodeWalletSavedBatchComparisonReview(result) {
+  if (!savedBatchComparisonReviews.has(result)) savedInspectionFail("FILE_BATCH_COMPARISON_REVIEW_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
 }

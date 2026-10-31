@@ -8,7 +8,9 @@ import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
 import { validateWalletSavedBatchSelection, inspectWalletSavedTextBatch, encodeWalletSavedTextBatch,
   walletSavedTextBatchManifest, WALLET_SAVED_BROWSER_BATCH_LIMITS, matchWalletSavedBatchManifest,
-  WALLET_SAVED_BATCH_MANIFEST_LIMIT, encodeWalletSavedTextBatchCsv } from "../src/file-read-status.js";
+  WALLET_SAVED_BATCH_MANIFEST_LIMIT, encodeWalletSavedTextBatchCsv, compareWalletSavedTextBatches,
+  encodeWalletSavedBatchComparison, walletSavedBatchComparisonText, reviewWalletSavedBatchComparison,
+  encodeWalletSavedBatchComparisonReview, WALLET_SAVED_BATCH_COMPARISON_REVIEW_LIMIT } from "../src/file-read-status.js";
 
 /** Aggregate file-read protection and a separate, read-only saved-file guide. */
 export function mountFileReadPanel({ document, parent, service = walletFileReadService }) {
@@ -291,6 +293,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   const host = document.createElement("details"); host.className = "saved-file-batch"; parent.append(host);
   let disposed = false, generation = 0, selection = null, active = null, result = null;
   let referenceText;
+  let comparisonPanel;
   const cleanup = [], nodes = {};
   function make(tag, name, text, target = host) { const element = document.createElement(tag); element.className = "saved-file-batch-" + name; if (text !== undefined) element.textContent = text; target.append(element); nodes[name] = element; return element; }
   function button(name, text) { const element = make("button", name, text); element.type = "button"; return element; }
@@ -318,6 +321,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   make("p", "limits", "以前の一覧を指定した場合だけ、その値と比較します。一覧の出所は保証しません。今回の照合値一覧を保存しても、以前の値が正しいことの証明にはなりません。補助資料は形式の案内だけです。この控えに元記録は含まれず、復元には使えません。元ファイルと同じ名前のまま一緒に保管してください。同じ記録が複数の報告に含まれる場合があります。");
   const exportStatus = make("p", "export-status"); exportStatus.setAttribute("role", "status"); exportStatus.setAttribute("aria-live", "polite");
   function buttons() {
+    comparisonPanel?.updateCurrent(!disposed && !active ? result : null);
     host.setAttribute("aria-busy", active ? "true" : "false"); start.disabled = disposed || Boolean(active) || !selection;
     if (referenceText !== undefined && selection) {
       try { matchWalletSavedBatchManifest(selection.map(({ name, byteLength }) => ({ name, byteLength })), referenceText); referenceStatus.textContent = "以前の一覧と、選択した全ファイルの名前が対応しています。開始すると内容を比較します。"; }
@@ -412,10 +416,113 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
       if (current(own) && result === receipt) exportStatus.textContent = kind === "synchronous" && delivered !== false ? "確認用の控えの保存処理を開始しました。ダウンロード先をご確認ください。" : "保存を確認できませんでした。結果は保持しています。";
     } catch { if (current(own) && result === receipt) exportStatus.textContent = "保存を確認できませんでした。結果は保持しています。"; }
   });
+  comparisonPanel = mountSavedBatchComparisonPanel({ document, parent: host, download, readText });
   buttons();
   return Object.freeze({ getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
     if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; referenceText = undefined; referenceInput.value = ""; ack.checked = false;
-    old?.abort(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
+    old?.abort(); comparisonPanel.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
+  } });
+}
+
+/** Holds two owned observations without keeping original file bodies or importing them. */
+export function mountSavedBatchComparisonPanel({ document, parent,
+  readText = readSavedGuideText, review = reviewWalletSavedBatchComparison,
+  download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
+  const host = document.createElement("details"); host.className = "saved-batch-comparison"; parent.append(host);
+  let disposed = false, revision = 0, baseline = null, current = null, comparison = null;
+  let reviewed = null, reviewActive = null;
+  const cleanup = [];
+  function make(tag, name, text, target = host) { const element = document.createElement(tag); element.className = "saved-batch-comparison-" + name; if (text !== undefined) element.textContent = text; target.append(element); return element; }
+  function button(name, text) { const element = make("button", name, text); element.type = "button"; return element; }
+  function listen(node, event, callback) { node.addEventListener(event, callback); cleanup.push(() => node.removeEventListener(event, callback)); }
+  make("summary", "heading", "二組の保存ファイルの変化を比較する");
+  make("p", "intro", "上の確認結果を比較元として保持し、別の組のファイルを選んで確認してください。同じファイル名同士を比較します。比較元はこのページ内で保持されます。取り除く場合は『比較元をクリア』を押してください。");
+  const hold = button("hold", "現在の一括確認を比較元として保持"), clear = button("clear", "比較元をクリア");
+  const baselineText = make("p", "baseline"), summary = make("p", "summary"); summary.setAttribute("role", "status"); summary.setAttribute("aria-live", "polite");
+  const table = make("table", "table"); make("caption", "caption", "二組の選択ファイルの比較", table);
+  const head = make("thead", "head", undefined, table), headings = make("tr", "headings", undefined, head);
+  for (const text of ["ファイル名", "比較結果", "比較元 → 今回の状態", "比較元のSHA-256", "今回のSHA-256", "元記録の変化"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); headings.append(cell); }
+  const rows = make("tbody", "rows", undefined, table);
+  const ackLabel = make("label", "ack-label", "二組の確認結果とファイル名・照合値を、暗号化せずPCに保存します"), ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
+  const json = button("json", "二組の比較をJSON保存"), csv = button("csv", "二組の比較をCSV保存"), saveStatus = make("p", "save-status"); saveStatus.setAttribute("role", "status");
+  make("p", "limits", "ファイルが選択されていないことと、PCから削除されたことは別です。同じ内容でも出所や現在のチェーンは保証しません。この比較には元記録の本文は含まれず、復元には使えません。両方の元ファイルを別に保全してください。");
+  const reviewBox = make("details", "review"); make("summary", "review-heading", "保存した一括比較JSONを照合する", reviewBox);
+  make("p", "review-intro", "現在の比較元と今回の確認結果を使い、以前保存した比較JSONの結論を再計算します。照合の一致と、元のファイル同士の一致は別の判定です。", reviewBox);
+  const reviewLabel = make("label", "review-file-label", "照合する一括比較JSON（最大1 MiB）", reviewBox), reviewFile = make("input", "review-file", undefined, reviewLabel); reviewFile.type = "file"; reviewFile.accept = ".json,application/json";
+  const reviewStop = make("button", "review-stop", "比較JSONの照合を中止", reviewBox); reviewStop.type = "button";
+  const reviewStatus = make("p", "review-status", "比較する二組を確認してから、保存した比較JSONを選んでください。", reviewBox); reviewStatus.setAttribute("role", "status"); reviewStatus.setAttribute("aria-live", "polite");
+  const reviewAckLabel = make("label", "review-ack-label", "比較JSONの照合結果と照合値を、暗号化せずPCに保存します", reviewBox), reviewAck = make("input", "review-ack", undefined, reviewAckLabel); reviewAck.type = "checkbox";
+  const reviewSave = make("button", "review-save", "比較JSONの照合結果を保存", reviewBox); reviewSave.type = "button";
+  const reviewSaveStatus = make("p", "review-save-status", "", reviewBox); reviewSaveStatus.setAttribute("role", "status");
+  const labels = { identical: "同じ元記録・同じ書式", "format-only": "書式だけの違い", "changed-original": "元記録が変化", "different-format": "異なる形式", unverified: "元記録を比較できません", "only-before": "比較元だけに選択", "only-after": "今回だけに選択" };
+  const statusLabels = { "validated-original": "元記録を確認", "declared-only": "補助資料の形式だけ", invalid: "形式・内部照合の問題", "hash-unavailable": "照合値を計算できません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
+  function controls() {
+    hold.disabled = disposed || !current || Boolean(reviewActive); clear.disabled = disposed || !baseline; ack.disabled = disposed || !comparison; json.disabled = csv.disabled = ack.disabled || !ack.checked;
+    reviewBox.setAttribute("aria-busy", reviewActive ? "true" : "false"); reviewFile.disabled = disposed || !comparison || Boolean(reviewActive); reviewStop.disabled = disposed || !reviewActive;
+    reviewAck.disabled = disposed || Boolean(reviewActive) || !reviewed; reviewSave.disabled = reviewAck.disabled || !reviewAck.checked;
+  }
+  function render() {
+    baselineText.textContent = baseline ? `比較元を保持しています：${baseline.summary.selected}件、確認済み ${baseline.summary.checked}件、未確認 ${baseline.summary.pending}件。` : "比較元はまだ保持していません。";
+    summary.textContent = comparison ? walletSavedBatchComparisonText(comparison) : baseline ? "比較元を保持しています。別の組のファイルを上で確認すると比較します。" : "上で元のファイルを確認してから、比較元として保持してください。";
+    rows.replaceChildren(...(comparison?.files ?? []).map(row => {
+      const tr = document.createElement("tr");
+      const states = (statusLabels[row.before?.status] ?? "選択なし") + " → " + (statusLabels[row.after?.status] ?? "選択なし");
+      const details = row.comparison ? walletSavedComparisonText(row.comparison) : "元記録の内容の一致や変化は判断していません。";
+      for (const value of [row.name, labels[row.kind], states, row.before?.sha256 ?? "未計算・選択なし", row.after?.sha256 ?? "未計算・選択なし", details]) { const cell = document.createElement("td"); cell.textContent = value; tr.append(cell); }
+      return tr;
+    })); controls();
+  }
+  function changed() {
+    const own = ++revision, old = reviewActive; reviewActive = null; reviewed = null; reviewAck.checked = false; ack.checked = false; saveStatus.textContent = ""; reviewSaveStatus.textContent = "";
+    old?.abort(); if (disposed || own !== revision) return;
+    comparison = baseline && current ? compareWalletSavedTextBatches(baseline, current) : null;
+    reviewStatus.textContent = "比較する二組を確認してから、保存した比較JSONを選んでください。"; render();
+  }
+  listen(hold, "click", () => { if (disposed || !current) return; baseline = current; changed(); });
+  listen(clear, "click", () => { if (disposed) return; baseline = null; changed(); });
+  listen(ack, "change", controls);
+  listen(reviewAck, "change", controls);
+  listen(reviewFile, "change", async () => {
+    if (disposed || !comparison || reviewActive) return;
+    const chosen = reviewFile.files?.[0]; reviewFile.value = ""; if (!chosen) return;
+    const own = ++revision, pair = comparison, local = new AbortController(); reviewActive = local; reviewed = null; reviewAck.checked = false; reviewSaveStatus.textContent = "";
+    reviewStatus.textContent = "保存した一括比較JSONを再計算と照合しています。"; controls();
+    try {
+      const text = await readText(chosen, { maxBytes: WALLET_SAVED_BATCH_COMPARISON_REVIEW_LIMIT, signal: local.signal });
+      if (disposed || own !== revision) return;
+      const value = await review(pair.before, pair.after, text, { signal: local.signal });
+      if (disposed || own !== revision) return; reviewed = value;
+      reviewStatus.textContent = value.matchesRecomputation ? "保存した比較JSONは、この二組から再計算した結果と一致しました。" : `保存した比較JSONに不一致があります。異なる項目 ${value.differences.length}件、余分な項目 ${value.unexpectedFields}件。`;
+      reviewStatus.textContent += value.allSelectedOriginalsIdentical ? " 元のファイル同士も、選択した全件が同じ元記録・同じ書式です。" : " 元のファイル同士が全件一致したという意味ではありません。上の比較結果をご確認ください。";
+    } catch { if (!disposed && own === revision) reviewStatus.textContent = "比較JSONを照合できませんでした。1 MiB以内の元の一括比較JSONを選び直してください。二組の確認結果は保持しています。"; }
+    finally { local.abort(); if (!disposed && own === revision) { reviewActive = null; controls(); } }
+  });
+  listen(reviewStop, "click", () => {
+    if (disposed || !reviewActive) return; const own = ++revision, old = reviewActive; reviewActive = null; reviewed = null; reviewAck.checked = false; old.abort();
+    if (disposed || own !== revision) return; reviewStatus.textContent = "比較JSONの照合を中止しました。二組の確認結果は保持しています。"; controls();
+  });
+  listen(reviewSave, "click", () => {
+    if (disposed || reviewActive || !reviewed || !reviewAck.checked || reviewSave.disabled) return;
+    const own = revision, value = reviewed; reviewAck.checked = false; controls();
+    try { const prepared = Object.freeze({ text: encodeWalletSavedBatchComparisonReview(value), filename: "ThreeCore-wallet-saved-batch-comparison-review.json", mimeType: "application/json;charset=utf-8", restorable: false, containsOriginalEvidence: false, encrypted: false }), delivered = download(prepared), kind = observeCallbackResult(delivered);
+      if (!disposed && own === revision && reviewed === value) reviewSaveStatus.textContent = kind === "synchronous" && delivered !== false ? "照合結果の保存処理を開始しました。ダウンロード先をご確認ください。" : "照合結果の保存を確認できませんでした。結果は保持しています。";
+    } catch { if (!disposed && own === revision && reviewed === value) reviewSaveStatus.textContent = "照合結果の保存を確認できませんでした。結果は保持しています。"; }
+  });
+  for (const [button, format] of [[json, "json"], [csv, "csv"]]) listen(button, "click", () => {
+    if (disposed || button.disabled || !comparison || !ack.checked) return;
+    const own = revision, value = comparison; ack.checked = false; controls();
+    try { const prepared = Object.freeze({ text: encodeWalletSavedBatchComparison(value, format), filename: "ThreeCore-wallet-saved-batch-comparison." + format, mimeType: format === "json" ? "application/json;charset=utf-8" : "text/csv;charset=utf-8", restorable: false, containsOriginalEvidence: false, encrypted: false });
+      const delivered = download(prepared), kind = observeCallbackResult(delivered);
+      if (!disposed && own === revision && comparison === value) saveStatus.textContent = kind === "synchronous" && delivered !== false ? "比較の保存処理を開始しました。ダウンロード先をご確認ください。" : "比較の保存を確認できませんでした。結果は保持しています。";
+    } catch { if (!disposed && own === revision && comparison === value) saveStatus.textContent = "比較の保存を確認できませんでした。結果は保持しています。"; }
+  });
+  render();
+  return Object.freeze({ updateCurrent(value) {
+    if (disposed || current === value) return;
+    if (value !== null) compareWalletSavedTextBatches(value, value); // Validate ownership before changing the retained pair.
+    current = value; changed();
+  }, getState: () => Object.freeze({ baseline, current, comparison, reviewed, reviewing: Boolean(reviewActive), disposed }), dispose() {
+    if (disposed) return; disposed = true; ++revision; baseline = null; current = null; comparison = null; reviewed = null; const old = reviewActive; reviewActive = null; old?.abort(); ack.checked = false; reviewAck.checked = false; cleanup.forEach(remove => remove()); controls(); host.remove();
   } });
 }
 
