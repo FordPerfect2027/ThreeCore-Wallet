@@ -10,6 +10,7 @@ import { createDemoServer } from "../examples/dev-server.js";
 import { checkBrowserShard, checkBrowserShards, checkBrowserErrorControl, readBrowserSummary } from "./browser-result.js";
 import { installBrowserCompletion } from "./browser-completion.js";
 import { browserExecutable, browserArguments, stopTestBrowser, removeTestProfile } from "./browser-runtime.js";
+import { checkBrowserModuleRoutes } from "./browser-module-preflight.js";
 
 const options = process.argv.slice(2);
 if (options.length > 1 || options.some(value => value !== "--verify-error-detection")) throw Error("Unknown browser test option");
@@ -34,6 +35,10 @@ async function runBrowserPage(index, fault) {
       server.once("error", reject);
       server.listen(0, "127.0.0.1", resolve);
     });
+    if (index === 0) {
+      const checked = await checkBrowserModuleRoutes(`http://127.0.0.1:${server.address().port}/`);
+      console.log("Browser module preflight passed: " + checked.modules + " local modules.");
+    }
     // Two sequential fresh profiles bound resource use without dropping cases.
     // Each half retains the finite five-minute deadline.
     receipt = installBrowserCompletion(server, { timeoutMs: 300_000 });

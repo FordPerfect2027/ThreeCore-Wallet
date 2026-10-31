@@ -167,6 +167,9 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
     paths.set("/test/browser/export-guard-demo.js", { file: resolve(here, "../test/browser/export-guard-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/export-guard-ui-tests.js", { file: resolve(here, "../test/browser/export-guard-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/file-read-ui-tests.js", { file: resolve(here, "../test/browser/file-read-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    for (const name of ["saved-observation-fixtures", "identity-fixtures", "allowance-fixtures"]) {
+      paths.set("/test/helpers/" + name + ".js", { file: resolve(here, "../test/helpers/" + name + ".js"), mime: "text/javascript; charset=utf-8" });
+    }
     paths.set("/test/browser/rpc-supervisor-ui-tests.js", { file: resolve(here, "../test/browser/rpc-supervisor-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/tab-guard-ui-tests.js", { file: resolve(here, "../test/browser/tab-guard-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/security-demo/", { file: resolve(here, "../test/browser/security-demo.html"), mime: "text/html; charset=utf-8" });

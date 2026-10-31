@@ -23,6 +23,7 @@ for (const uiTest of [false, true]) {
         await response.text();
       }
       for (const path of ["/test/browser/", "/test/browser/ui-tests.js",
+        "/test/helpers/saved-observation-fixtures.js", "/test/helpers/identity-fixtures.js", "/test/helpers/allowance-fixtures.js",
         "/test/browser/wallet-setup-ui-tests.js",
         "/test/browser/progress-demo/", "/test/browser/progress-demo.js",
         "/test/browser/?harness-fault=error", "/test/browser/?harness-fault=unhandledrejection"]) {
