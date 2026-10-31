@@ -2,7 +2,10 @@ import {createHash} from 'node:crypto';
 import {open,lstat,realpath} from 'node:fs/promises';
 import {resolve,dirname,relative,isAbsolute,sep} from 'node:path';
 import {parseEvidenceManifest,EvidenceManifestError,EVIDENCE_MANIFEST_LIMIT} from './evidence-manifest.js';
-import {inspectWalletSavedText} from '../src/file-read-status.js';
+import {inspectWalletSavedText,compareWalletSavedInspections} from '../src/file-read-status.js';
+import {readBoundedLocalBytes} from './read-bounded-local-file.js';
+import {parseSecurityJson} from '../src/security-json.js';
+import {isDeepStrictEqual} from 'node:util';
 
 export const WALLET_SAVED_BATCH_LIMITS=Object.freeze({maxFiles:50,maxFileBytes:16*1024*1024,maxTotalBytes:64*1024*1024});
 export class WalletSavedBatchError extends Error{constructor(code){super(code);this.name='WalletSavedBatchError';this.code=code;}}
@@ -63,3 +66,36 @@ export function encodeWalletSavedBatch(result,format='json'){
  for(const row of result.files){const i=row.inspection,s=i?.scope;rows.push([true,false,false,false,false,false,result.manifestSha256,result.allOriginalsValidated,result.allChecksumsMatch,result.summary.files,row.path,row.status,row.code??'',row.byteLength??'',row.expectedSha256,row.actualSha256??'',i?.sourceSchema??'',i?.target??'',i?.checksumVerified??'',s?.draftReferences??'',s?.incompleteDraftReferences??'',s?.restrictedEntryReferences??'',s?.agents.join(' | ')??'',s?.repeatedReferencesMayExist??'']);}
  const cell=value=>{let text=String(value);if(/^\s*[=+@-]/u.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';};return '\uFEFF'+rows.map(row=>row.map(cell).join(',')).join('\r\n')+'\r\n';
 }
+
+const comparisons=new WeakSet(),reviews=new WeakSet();
+export const WALLET_LOCAL_BATCH_COMPARISON_SCHEMA='threecore.wallet-saved-local-batch-comparison.v1';
+export const WALLET_LOCAL_BATCH_REVIEW_LIMIT=4*1024*1024;
+/** Compare only receipts produced by this local file inspector. */
+export function compareWalletSavedBatches(before,after){
+ if(!receipts.has(before)||!receipts.has(after))fail('INVALID_BATCH_COMPARISON');
+ const left=new Map(before.files.map(row=>[row.path,row])),right=new Map(after.files.map(row=>[row.path,row])),paths=[...new Set([...left.keys(),...right.keys()])];
+ const files=paths.map(path=>{const a=left.get(path)??null,b=right.get(path)??null,selection=!a?'only-after':!b?'only-before':'both',sameBytes=a?.actualSha256&&b?.actualSha256?a.actualSha256===b.actualSha256:null,comparison=a?.status==='validated-original'&&b?.status==='validated-original'?compareWalletSavedInspections(a.inspection,b.inspection):null;return Object.freeze({path,selection,before:a,after:b,sameBytes,comparison,kind:selection!=='both'?selection:comparison?.kind??'unverified'});});
+ const count=kind=>files.filter(row=>row.kind===kind).length,summary=Object.freeze({files:files.length,bothSelected:files.filter(row=>row.selection==='both').length,onlyBefore:count('only-before'),onlyAfter:count('only-after'),identical:count('identical'),formatOnly:count('format-only'),changedOriginal:count('changed-original'),differentFormat:count('different-format'),unverified:count('unverified')});
+ const result=Object.freeze({schema:WALLET_LOCAL_BATCH_COMPARISON_SCHEMA,readOnly:true,authenticatesOrigin:false,authorizesExecution:false,restorable:false,containsOriginalEvidence:false,liveChainRechecked:false,atomicSnapshot:false,reportsFilesystemDeletions:false,before,after,sameSelection:summary.onlyBefore===0&&summary.onlyAfter===0,allSelectedOriginalsIdentical:summary.identical===files.length,summary,files:Object.freeze(files)});comparisons.add(result);return result;
+}
+export async function compareWalletSavedBatchManifests(beforeManifest,afterManifest){
+ const before=await inspectWalletSavedBatch(beforeManifest),after=await inspectWalletSavedBatch(afterManifest);return compareWalletSavedBatches(before,after);
+}
+export function encodeWalletSavedLocalBatchComparison(result,format='json'){
+ if(!comparisons.has(result)||!['json','csv'].includes(format))fail('INVALID_BATCH_COMPARISON');if(format==='json')return JSON.stringify(result,null,2)+'\n';
+ const rows=[['readOnly','authenticatesOrigin','authorizesExecution','restorable','liveChainRechecked','atomicSnapshot','reportsFilesystemDeletions','beforeManifestSha256','afterManifestSha256','sameSelection','allSelectedOriginalsIdentical','path','selection','kind','sameBytes','beforeStatus','afterStatus','beforeExpectedSha256','afterExpectedSha256','beforeActualSha256','afterActualSha256','sameOriginal','byteDifference','scopeChangeFields','unchangedScopeWithChangedOriginal']];
+ for(const row of result.files)rows.push([true,false,false,false,false,false,false,result.before.manifestSha256,result.after.manifestSha256,result.sameSelection,result.allSelectedOriginalsIdentical,row.path,row.selection,row.kind,row.sameBytes??'',row.before?.status??'',row.after?.status??'',row.before?.expectedSha256??'',row.after?.expectedSha256??'',row.before?.actualSha256??'',row.after?.actualSha256??'',row.comparison?.sameOriginal??'',row.comparison?.byteDifference??'',row.comparison?.scopeChanges.map(change=>change.field).join(' | ')??'',row.comparison?.unchangedScopeWithChangedOriginal??'']);
+ const cell=value=>{let text=String(value);if(/^\s*[=+@-]/u.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';};return '\uFEFF'+rows.map(row=>row.map(cell).join(',')).join('\r\n')+'\r\n';
+}
+/** Read the supplied comparison as untrusted data, then recompute from both local manifests. */
+export async function reviewWalletSavedLocalBatchComparison(beforeManifest,afterManifest,comparisonPath){
+ if(typeof comparisonPath!=='string'||!comparisonPath||comparisonPath.includes('\0'))fail('INVALID_BATCH_COMPARISON_PATH');
+ const requested=resolve(comparisonPath),info=await lstat(requested);if(!info.isFile())fail('BATCH_COMPARISON_NOT_REGULAR');const actual=await realpath(requested);
+ const unchanged=async()=>{if(await realpath(requested)!==actual||!same(info,await lstat(actual)))fail('BATCH_COMPARISON_CHANGED');};
+ const bytes=await readBoundedLocalBytes(actual,WALLET_LOCAL_BATCH_REVIEW_LIMIT,{fail,sizeCode:'BATCH_COMPARISON_SIZE',changedCode:'BATCH_COMPARISON_CHANGED'});await unchanged();let supplied;
+ try{supplied=parseSecurityJson(decode(bytes),{bytes:WALLET_LOCAL_BATCH_REVIEW_LIMIT});}catch{fail('BATCH_COMPARISON_JSON');}
+ if(!supplied||typeof supplied!=='object'||Array.isArray(supplied)||supplied.schema!==WALLET_LOCAL_BATCH_COMPARISON_SCHEMA)fail('BATCH_COMPARISON_SCHEMA');
+ const expected=await compareWalletSavedBatchManifests(beforeManifest,afterManifest),differences=Object.keys(expected).filter(field=>!Object.hasOwn(supplied,field)||!isDeepStrictEqual(supplied[field],expected[field])),unexpectedFields=Object.keys(supplied).filter(field=>!Object.hasOwn(expected,field)).length;await unchanged();
+ const result=Object.freeze({schema:'threecore.wallet-saved-local-batch-comparison-review.v1',readOnly:true,authenticatesOrigin:false,authorizesExecution:false,restorable:false,containsOriginalEvidence:false,liveChainRechecked:false,atomicSnapshot:false,matchesRecomputation:differences.length===0&&unexpectedFields===0,beforeBindingMatches:isDeepStrictEqual(supplied.before,expected.before),afterBindingMatches:isDeepStrictEqual(supplied.after,expected.after),beforeManifestSha256:expected.before.manifestSha256,afterManifestSha256:expected.after.manifestSha256,comparisonTextDigest:hash(bytes),expectedComparisonDigest:hash(encodeWalletSavedLocalBatchComparison(expected)),allSelectedOriginalsIdentical:expected.allSelectedOriginalsIdentical,expectedSummary:expected.summary,differences:Object.freeze(differences),unexpectedFields});reviews.add(result);return result;
+}
+export function encodeWalletSavedLocalBatchComparisonReview(result){if(!reviews.has(result))fail('INVALID_BATCH_COMPARISON_REVIEW');return JSON.stringify(result,null,2)+'\n';}

@@ -168,6 +168,8 @@ export function decodeRehearsalForPanel(text, target, decode) {
 
 // These routes describe a declared format only. They never validate or open a file.
 const walletSavedTargets = Object.freeze({
+  "threecore.wallet-saved-local-batch-comparison.v1": [null, "PERIOD_FILE_LOCAL_BATCH_COMPARISON_ONLY"],
+  "threecore.wallet-saved-local-batch-comparison-review.v1": [null, "PERIOD_FILE_LOCAL_BATCH_COMPARISON_ONLY"],
   "threecore.wallet-saved-batch-comparison-review.v1": [null, "PERIOD_FILE_SAVED_BATCH_COMPARISON_REVIEW_ONLY"],
   "threecore.wallet-saved-batch-comparison.v1": [null, "PERIOD_FILE_SAVED_BATCH_COMPARISON_ONLY"],
   "threecore.wallet-saved-browser-batch.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
@@ -198,6 +200,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  PERIOD_FILE_LOCAL_BATCH_COMPARISON_ONLY: "これはコマンドで二組の保存ファイルを比較・照合した控えです。元記録は含まれず、復元には使えません。元の二組と照合値一覧を保全し、比較・検証コマンドで確認し直してください。",
   PERIOD_FILE_SAVED_BATCH_COMPARISON_REVIEW_ONLY: "これは二組の一括比較を照合した控えです。元記録は含まれず、復元には使えません。両方の元のJSONと元の比較JSONを保全し、『保存した一括比較JSONを照合する』で確認してください。",
   PERIOD_FILE_SAVED_BATCH_COMPARISON_ONLY: "これは二組の保存ファイルを比較した控えです。元記録は含まれず、復元には使えません。両方の元のJSONと照合値一覧を保全し、一括確認で比較し直してください。",
   PERIOD_FILE_SAVED_BATCH_ONLY: "これは複数の保存ファイルを確認した控えです。元記録は含まれず、復元には使えません。確認に使った元のJSONと照合値一覧を保全し、『複数の保存ファイルをまとめて確認する』で確認してください。",
