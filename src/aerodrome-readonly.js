@@ -1,3 +1,4 @@
+import { captureOptionalDataFields } from "./security-data.js";
 /**
  * Read-only Aerodrome / ThreeCore integration preflight on Base Mainnet.
  * Addresses must be independently cross-checked against official published
@@ -66,11 +67,10 @@ function decodeUint256Word(result) {
  * this says nothing about UniversalRouter, Slipstream, Permit2 or other routers.
  * The data is a point-in-time observation, not a DEX trade recommendation.
  */
-export async function inspectAerodromeBase({
-  publicWalletAddress,
-  fetchImpl = globalThis.fetch,
-  timeoutMs = 12000,
-} = {}) {
+export async function inspectAerodromeBase(input = {}) {
+  let options;try { options=captureOptionalDataFields(input,["publicWalletAddress","fetchImpl","timeoutMs","signal"]); }
+  catch { fail("INVALID_OPTIONS","Diagnostic options must contain own data fields"); }
+  const {publicWalletAddress,fetchImpl=globalThis.fetch,timeoutMs=12000,signal}=options;
   // Validate everything before network access; no wallet is connected here.
   const wallet = publicWalletAddress == null ? null : address(publicWalletAddress);
   if (typeof fetchImpl !== "function") fail("NO_TRANSPORT", "No JSON-RPC transport");
@@ -78,7 +78,9 @@ export async function inspectAerodromeBase({
     fail("INVALID_TIMEOUT", "Timeout must be between 100 and 30000 milliseconds");
   }
 
-  const reader = createPublicBaseRpcReader({ rpcUrl: AERODROME_BASE.rpcUrl, fetchImpl, timeoutMs });
+  let reader;
+  try { reader=createPublicBaseRpcReader({rpcUrl:AERODROME_BASE.rpcUrl,fetchImpl,timeoutMs,signal}); }
+  catch(error){if(error instanceof PublicBaseRpcError)fail(error.code,error.message);throw error;}
   async function read(method, params = []) {
     try { return await reader(method, params); }
     catch (error) {

@@ -1,3 +1,4 @@
+import { captureOptionalDataFields } from "./security-data.js";
 /**
  * Read-only public Base JSON-RPC connectivity checks for ThreeCore.
  * This module does NOT access browser wallets, ask for account permissions,
@@ -45,12 +46,10 @@ function rpcUint(value) {
   return BigInt(value);
 }
 
-export async function probeBaseRpc({
-  network = "sepolia",
-  contractAddress,
-  fetchImpl = globalThis.fetch,
-  timeoutMs = 10000,
-} = {}) {
+export async function probeBaseRpc(input = {}) {
+  let options;try { options=captureOptionalDataFields(input,["network","contractAddress","fetchImpl","timeoutMs","signal"]); }
+  catch { fail("INVALID_OPTIONS","Diagnostic options must contain own data fields"); }
+  const {network="sepolia",contractAddress,fetchImpl=globalThis.fetch,timeoutMs=10000,signal}=options;
   if (typeof network !== "string" || !Object.hasOwn(BASE_NETWORKS, network))
     fail("UNSUPPORTED_NETWORK", "Only Base and Base Sepolia are supported");
   const target = BASE_NETWORKS[network];
@@ -61,7 +60,9 @@ export async function probeBaseRpc({
     fail("INVALID_TIMEOUT", "Timeout must be 100–30000 milliseconds");
   }
 
-  const reader = createPublicBaseRpcReader({ rpcUrl: target.rpcUrl, fetchImpl, timeoutMs });
+  let reader;
+  try { reader=createPublicBaseRpcReader({rpcUrl:target.rpcUrl,fetchImpl,timeoutMs,signal}); }
+  catch(error){if(error instanceof PublicBaseRpcError)fail(error.code,error.message);throw error;}
   async function request(method, params = []) {
     try { return await reader(method, params); }
     catch (error) {

@@ -1,3 +1,4 @@
+import { captureOptionalDataFields } from "./security-data.js";
 /**
  * Read-only Aerodrome Classic v2 pool discovery on Base Mainnet.
  * Checks published PoolFactory.getPool(token, USDC, stable) at one block.
@@ -57,16 +58,18 @@ function toHexBlock(value) {
  * Return stable + volatile Classic v2 pool locations for all 3 tokens vs native
  * Base USDC, and existing reserves if contracts are found and match the pair.
  */
-export async function inspectAerodromePools({
-  fetchImpl = globalThis.fetch,
-  timeoutMs = 12000,
-} = {}) {
+export async function inspectAerodromePools(input = {}) {
+  let options;try { options=captureOptionalDataFields(input,["fetchImpl","timeoutMs","signal"]); }
+  catch { fail("INVALID_OPTIONS","Diagnostic options must contain own data fields"); }
+  const {fetchImpl=globalThis.fetch,timeoutMs=12000,signal}=options;
   if (typeof fetchImpl !== "function") fail("NO_TRANSPORT", "Fetch is required");
   if (!Number.isInteger(timeoutMs) || timeoutMs < 100 || timeoutMs > 30000) {
     fail("INVALID_TIMEOUT", "Timeout must be between 100 and 30000 milliseconds");
   }
 
-  const reader = createPublicBaseRpcReader({ rpcUrl: AERODROME_BASE.rpcUrl, fetchImpl, timeoutMs });
+  let reader;
+  try { reader=createPublicBaseRpcReader({rpcUrl:AERODROME_BASE.rpcUrl,fetchImpl,timeoutMs,signal}); }
+  catch(error){if(error instanceof PublicBaseRpcError)fail(error.code,error.message);throw error;}
   async function rpc(method, params = []) {
     try { return await reader(method, params); }
     catch (error) {

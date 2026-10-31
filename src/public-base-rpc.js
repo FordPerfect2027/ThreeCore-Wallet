@@ -1,7 +1,7 @@
 import { consumeCallback } from "./security-callback.js";
 import { readStateRpcJson } from "./state-rpc-http.js";
 import { RPC_SECURITY_LIMITS } from "./security-rpc.js";
-import { captureDataRecord, captureDataArray } from "./security-data.js";
+import { captureDataRecord, captureDataArray, captureOptionalDataFields } from "./security-data.js";
 
 const ENDPOINTS = new Set(["https://mainnet.base.org", "https://sepolia.base.org"]);
 const ADDRESS = /^0x[0-9a-fA-F]{40}$/;
@@ -66,38 +66,58 @@ function validateRequest(method, params) {
   return [call, selector];
 }
 
-/** Bounded, per-request deadline transport for fixed public Base diagnostics. */
-export function createPublicBaseRpcReader({ rpcUrl, fetchImpl = globalThis.fetch, timeoutMs = 10000 } = {}) {
+/** Bounded per-request deadlines and caller cancellation for fixed public Base diagnostics. */
+export function createPublicBaseRpcReader(input = {}) {
+  let options;
+  try { options=captureOptionalDataFields(input,["rpcUrl","fetchImpl","timeoutMs","signal"]); }
+  catch { fail("INVALID_OPTIONS","Diagnostic options must contain own data fields"); }
+  const {rpcUrl,fetchImpl=globalThis.fetch,timeoutMs=10000,signal}=options;
   if (!ENDPOINTS.has(rpcUrl)) fail("UNSUPPORTED_ENDPOINT", "Only fixed public Base endpoints are supported");
   if (typeof fetchImpl !== "function") fail("INVALID_TRANSPORT", "Fetch transport is missing");
   if (!Number.isInteger(timeoutMs) || timeoutMs < 100 || timeoutMs > 30000)
     fail("INVALID_TIMEOUT", "Timeout must be 100–30000 milliseconds");
+  // Genuine AbortSignal state and event methods remain authoritative when shadowed.
+  const nativeAborted=Object.getOwnPropertyDescriptor(AbortSignal.prototype,"aborted").get;
+  const isAborted=()=>{
+    if(signal===undefined)return false;
+    try{return Reflect.apply(nativeAborted,signal,[]);}
+    catch{fail("INVALID_SIGNAL","Expected an AbortSignal");}
+  };
+  isAborted();
   let id = 0;
   return async function read(method, params = []) {
+    if(isAborted())fail("RPC_CANCELLED","Public diagnostic read was cancelled");
     params = validateRequest(method, params);
+    if(isAborted())fail("RPC_CANCELLED","Public diagnostic read was cancelled");
     const requestId = ++id;
     const body = JSON.stringify({ jsonrpc: "2.0", id: requestId, method, params });
     const controller = new AbortController();
-    let timedOut = false, timer;
-    const deadline = new Promise((_, reject) => {
-      timer = setTimeout(() => {
-        timedOut = true; controller.abort();
-        reject(new PublicBaseRpcError("RPC_TIMEOUT", "Base RPC did not finish within the per-request time limit"));
-      }, timeoutMs);
-    });
+    let stopCode=null,timer,attached=false,rejectStop;
+    const interruption=new Promise((_,reject)=>{rejectStop=reject;});
+    const stop=code=>{
+      if(stopCode)return;
+      stopCode=code;rejectStop(new PublicBaseRpcError(code,code==="RPC_TIMEOUT"?"Base RPC did not finish within the per-request time limit":"Public diagnostic read was cancelled"));
+      controller.abort();
+    };
+    const onAbort=()=>stop("RPC_CANCELLED");
+    if(signal!==undefined){EventTarget.prototype.addEventListener.call(signal,"abort",onAbort,{once:true});attached=true;}
+    if(isAborted())onAbort();
+    if(!stopCode)timer=setTimeout(()=>stop("RPC_TIMEOUT"),timeoutMs);
     const work = (async () => {
+      if(stopCode)fail(stopCode,"Public diagnostic read stopped before transport");
       const response = await fetchImpl(rpcUrl, {
         method: "POST", headers: { "content-type": "application/json" }, body,
         credentials: "omit", redirect: "error", cache: "no-store", referrerPolicy: "no-referrer",
         signal: controller.signal,
       });
-      if (timedOut || !response?.ok || response.redirected) {
+      if (stopCode || !response?.ok || response.redirected) {
         cancel(response?.body);
-        fail(timedOut ? "RPC_TIMEOUT" : "HTTP_ERROR", "Base RPC did not return an accepted HTTP response");
+        fail(stopCode??"HTTP_ERROR", "Base RPC did not return an accepted HTTP response");
       }
       let json;
       try { json = await readStateRpcJson(response, { signal: controller.signal }); }
-      catch { fail("INVALID_RPC_RESPONSE", "Base RPC returned an invalid or oversized response"); }
+      catch { fail(stopCode??"INVALID_RPC_RESPONSE", "Base RPC returned an invalid or oversized response"); }
+      if(stopCode)fail(stopCode,"Public diagnostic read stopped before result delivery");
       if (!json || json.jsonrpc !== "2.0" || json.id !== requestId ||
           !Object.hasOwn(json, "result") || Object.hasOwn(json, "error"))
         fail("INVALID_RPC_RESPONSE", "Unexpected or failed Base JSON-RPC response");
@@ -116,11 +136,17 @@ export function createPublicBaseRpcReader({ rpcUrl, fetchImpl = globalThis.fetch
         fail("INVALID_RPC_RESPONSE", "Invalid contract-code RPC result");
       return json.result;
     })();
-    try { return await Promise.race([work, deadline]); }
-    catch (error) {
-      if (timedOut) fail("RPC_TIMEOUT", "Base RPC did not finish within the per-request time limit");
+    try {
+      const result=await Promise.race([work,interruption]);
+      if(stopCode)fail(stopCode,"Public diagnostic read stopped before result delivery");
+      return result;
+    } catch (error) {
+      if(stopCode)fail(stopCode,stopCode==="RPC_TIMEOUT"?"Base RPC did not finish within the per-request time limit":"Public diagnostic read was cancelled");
       if (error instanceof PublicBaseRpcError) throw error;
       fail("RPC_TRANSPORT", "Base RPC transport failed");
-    } finally { clearTimeout(timer); controller.abort(); }
+    } finally {
+      clearTimeout(timer);if(attached)EventTarget.prototype.removeEventListener.call(signal,"abort",onAbort);
+      controller.abort();
+    }
   };
 }
