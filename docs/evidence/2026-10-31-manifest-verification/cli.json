@@ -1,0 +1,76 @@
+{
+  "schema": "threecore.local-evidence-verification.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "manifestSha256": "d549eb9d9976d817fe8b455f3adee1038f6025b92dbbee1ed72e4dcd79535ae5",
+  "allMatched": true,
+  "limits": {
+    "maxFileBytes": 67108864,
+    "maxTotalBytes": 536870912
+  },
+  "summary": {
+    "files": 8,
+    "matched": 8,
+    "mismatched": 0,
+    "unreadable": 0,
+    "verifiedBytes": 1289538
+  },
+  "files": [
+    {
+      "path": "browser-ui.log",
+      "expectedSha256": "795dc690bfc5e40017638c876737738f317a6e60640afe9c083ea6972b86168d",
+      "status": "matched",
+      "bytes": 76,
+      "actualSha256": "795dc690bfc5e40017638c876737738f317a6e60640afe9c083ea6972b86168d"
+    },
+    {
+      "path": "existing-server-assets.log",
+      "expectedSha256": "47ba3dce5470440e1dfa4a0f224075be1ed5292132c692ae35cb4a9e51a3e873",
+      "status": "matched",
+      "bytes": 1012,
+      "actualSha256": "47ba3dce5470440e1dfa4a0f224075be1ed5292132c692ae35cb4a9e51a3e873"
+    },
+    {
+      "path": "full-wallet.log",
+      "expectedSha256": "4e1eaa6361e851c38202e579d370e1668c7058e9cb25cd5b7dcef087f12d625a",
+      "status": "matched",
+      "bytes": 1153906,
+      "actualSha256": "4e1eaa6361e851c38202e579d370e1668c7058e9cb25cd5b7dcef087f12d625a"
+    },
+    {
+      "path": "panels.log",
+      "expectedSha256": "68dbf1f9d440754472a791f0a6e543d5cab8bfe3e02e75fa0f763bc441daecde",
+      "status": "matched",
+      "bytes": 7116,
+      "actualSha256": "68dbf1f9d440754472a791f0a6e543d5cab8bfe3e02e75fa0f763bc441daecde"
+    },
+    {
+      "path": "prior-evidence-integrity.json",
+      "expectedSha256": "523aec325ac0bf0405112fb2a092e46658e9c01ab632d2e6083bf24452b2c2f4",
+      "status": "matched",
+      "bytes": 13315,
+      "actualSha256": "523aec325ac0bf0405112fb2a092e46658e9c01ab632d2e6083bf24452b2c2f4"
+    },
+    {
+      "path": "related.log",
+      "expectedSha256": "e7bf4e27b270897ee7e3fd9d7d7e9870369815b6de2c129c6bbf02355dd592f6",
+      "status": "matched",
+      "bytes": 97880,
+      "actualSha256": "e7bf4e27b270897ee7e3fd9d7d7e9870369815b6de2c129c6bbf02355dd592f6"
+    },
+    {
+      "path": "targeted-initial-limit.log",
+      "expectedSha256": "e3f4a9945b18eb5fdf2a4bf9f68dac7a40240562ab7335c72d147fc5f48315af",
+      "status": "matched",
+      "bytes": 10784,
+      "actualSha256": "e3f4a9945b18eb5fdf2a4bf9f68dac7a40240562ab7335c72d147fc5f48315af"
+    },
+    {
+      "path": "targeted.log",
+      "expectedSha256": "0f1c817066cf0c3a460d50bfc4da80eb612e6b679176c2f373d2b10d22f8c4c4",
+      "status": "matched",
+      "bytes": 5449,
+      "actualSha256": "0f1c817066cf0c3a460d50bfc4da80eb612e6b679176c2f373d2b10d22f8c4c4"
+    }
+  ]
+}
