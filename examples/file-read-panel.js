@@ -9,7 +9,7 @@ import { reviewWalletSavedTextDifferences, encodeWalletSavedTextDifferenceReview
 import { queryWalletSavedTextDifferences, walletSavedTextDifferencePageText, encodeWalletSavedTextDifferencePage } from "../src/file-read-status.js";
 import { encodeWalletSavedBundleReview } from "../src/file-read-status.js";
 import { canPrepareWalletSavedBatchEvidence, prepareWalletSavedBatchEvidence, reviewWalletSavedBatchEvidence,
-  encodeWalletSavedBatchEvidenceReview, openReviewedWalletSavedBatchEvidence, WALLET_SAVED_BATCH_EVIDENCE_LIMIT } from "../src/file-read-status.js";
+  encodeWalletSavedBatchEvidenceReview, openReviewedWalletSavedBatchEvidence, extractWalletSavedBatchEvidenceSource, WALLET_SAVED_BATCH_EVIDENCE_LIMIT } from "../src/file-read-status.js";
 import { reviewWalletSavedBundleReceipt, encodeWalletSavedBundleReceiptCheck, walletSavedBundleReceiptCheckText, WALLET_SAVED_BUNDLE_RECEIPT_LIMIT } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
@@ -482,6 +482,46 @@ export function mountSavedFileDifferenceReviewPanel({ document, parent, getResul
 }
 
 /** Separate file-only inventory. No restore, account or storage callbacks exist. */
+/** Download one selected source from a previously verified batch, without re-reading or importing it. */
+export function mountBatchSourceExportPanel({ document, parent, list, extract, download }) {
+  const host = document.createElement("details"); host.className = "batch-source-export"; parent.append(host);
+  const cleanups = []; let disposed = false, review = null, names = [], generation = 0;
+  function make(tag, name, text, target = host) { const node = document.createElement(tag); node.className = "batch-source-export-" + name; if (text !== undefined) node.textContent = text; target.append(node); return node; }
+  function listen(node, event, fn) { node.addEventListener(event, fn); cleanups.push(() => node.removeEventListener(event, fn)); }
+  make("summary", "heading", "確認済みのまとめ資料から元ファイルを取り出す");
+  make("p", "intro", "まとめた資料の再確認が一致した後、取り出すファイルを選びます。内容を変更せず、暗号化せずに保存します。元資料が不正・不一致でも、確認用に取り出せます。その判定は変わりません。");
+  const label = make("label", "label", "取り出す元ファイル"), choice = make("select", "choice", undefined, label);
+  const status = make("p", "status", "まとめた資料を再確認すると選べます。"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  const ackLabel = make("label", "ack-label", "選んだ元ファイルの内容を暗号化せず保存する"), ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
+  const save = make("button", "save", "選んだ元ファイルを保存"); save.type = "button";
+  function selected() { return review && names.includes(choice.value); }
+  const sourceLabels = { invalid: "内容を確認できない", unsupported: "対象外の形式", matched: "再計算と一致", different: "再計算と相違あり", "validated-original": "元記録・内部チェックサム確認済み", "validated-structure": "形式確認済み・内部チェックサムなし", "declared-only": "形式指定だけ", "checksum-mismatch": "以前の照合値と不一致" };
+  function buttons() { choice.disabled = disposed || !review; ack.disabled = disposed || !selected(); save.disabled = ack.disabled || !ack.checked; }
+  listen(choice, "change", () => {
+    if (disposed) return; ack.checked = false;
+    try { const prepared = selected() ? extract(review, choice.value) : null; status.textContent = prepared ?
+      "選択: " + prepared.filename + " ／ 元資料の確認結果: " + (sourceLabels[prepared.sourceStatus] ?? "元の一覧を確認してください") + " ／ SHA-256: " + prepared.sourceTextDigest + "。取り出しても判定や現在の履歴は変わりません。" : "取り出す元ファイルを選んでください。";
+    } catch { status.textContent = "元ファイルを確認できませんでした。まとめた資料を再確認してください。"; choice.value = ""; }
+    buttons();
+  });
+  listen(ack, "change", buttons);
+  listen(save, "click", () => {
+    if (disposed || save.disabled || !ack.checked || !selected()) return;
+    const owner = generation, current = review, name = choice.value; ack.checked = false; buttons();
+    try { const prepared = extract(current, name), delivered = download(prepared); if (observeCallbackResult(delivered) !== "synchronous" || delivered === false) throw Error();
+      if (!disposed && generation === owner && review === current && choice.value === name) status.textContent = name + " の保存を開始しました。ダウンロード先をご確認ください。元資料の判定と現在の履歴は変わりません。";
+    } catch { if (!disposed && generation === owner && review === current && choice.value === name) status.textContent = "保存を確認できませんでした。元資料は保持しています。もう一度選択内容を確認して保存できます。"; }
+  });
+  function updateCurrent(next) {
+    if (disposed || next === review) return; ++generation; review = null; names = []; choice.replaceChildren(); choice.value = ""; ack.checked = false;
+    const option = document.createElement("option"); option.value = ""; option.textContent = "元ファイルを選んでください"; choice.append(option);
+    if (next) try { const rows = list(next); names = rows.map(row => row.name); for (const name of names) { const option = document.createElement("option"); option.value = name; option.textContent = name; choice.append(option); } review = next; } catch { names = []; }
+    status.textContent = review ? names.length + "件の元ファイルから、保存するものを選んでください。" : "まとめた資料を再確認すると選べます。"; buttons();
+  }
+  buttons();
+  return Object.freeze({ updateCurrent, dispose() { if (disposed) return; disposed = true; ++generation; review = null; names = []; cleanups.forEach(remove => remove()); buttons(); host.remove(); } });
+}
+
 export function mountSavedFileBatchPanel({ document, parent, readText = readSavedGuideText,
   inspectFiles = inspectWalletSavedFileBatch, resumeFiles = resumeWalletSavedFileBatch, retryFiles = retryWalletSavedFileBatch, subtle = globalThis.crypto?.subtle,
   inspectOriginal = null, compareOriginal = null,
@@ -489,7 +529,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   const host = document.createElement("details"); host.className = "saved-file-batch"; parent.append(host);
   let disposed = false, generation = 0, selection = null, active = null, result = null, viewRevision = 0;
   let referenceText;
-  let comparisonPanel, evidenceReview = null;
+  let comparisonPanel, evidenceReview = null, openedEvidence = null;
   const cleanup = [], nodes = {};
   function make(tag, name, text, target = host) { const element = document.createElement(tag); element.className = "saved-file-batch-" + name; if (text !== undefined) element.textContent = text; target.append(element); nodes[name] = element; return element; }
   function button(name, text) { const element = make("button", name, text); element.type = "button"; return element; }
@@ -538,7 +578,11 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   const evidenceFileLabel = make("label", "evidence-file-label", "まとめて保存した資料を再確認", evidenceBox), evidenceFile = make("input", "evidence-file", undefined, evidenceFileLabel); evidenceFile.type = "file"; evidenceFile.accept = ".json,application/json";
   const evidenceStatus = make("p", "evidence-status", "", evidenceBox); evidenceStatus.setAttribute("role", "status"); evidenceStatus.setAttribute("aria-live", "polite");
   const evidenceReviewSave = make("button", "evidence-review-save", "まとめた資料の照合結果を保存", evidenceBox); evidenceReviewSave.type = "button";
+  const sourceExport = mountBatchSourceExportPanel({ document, parent: evidenceBox, download,
+    list: review => openReviewedWalletSavedBatchEvidence(review).files,
+    extract: extractWalletSavedBatchEvidenceSource });
   function buttons() {
+    sourceExport.updateCurrent(disposed || active ? null : openedEvidence);
     evidenceAck.disabled = disposed || Boolean(active) || !canPrepareWalletSavedBatchEvidence(result);
     evidenceSave.disabled = evidenceAck.disabled || !evidenceAck.checked;
     evidenceFile.disabled = disposed || Boolean(active);
@@ -561,7 +605,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   function reset(keepSelection = false) {
     const id = ++generation, old = active; active = null; if (!keepSelection) selection = null; result = null; ack.checked = false;
     old?.abort(); if (!current(id)) return id;
-    evidenceReview = null; evidenceAck.checked = false; evidenceFile.value = ""; evidenceStatus.textContent = "";
+    evidenceReview = null; openedEvidence = null; evidenceAck.checked = false; evidenceFile.value = ""; evidenceStatus.textContent = "";
     rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; selectionNotice.clear(); filterName.value = ""; filterStatus.value = "all"; applyView(); buttons(); return id;
   }
   listen(referenceInput, "input", () => {
@@ -634,7 +678,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   async function run(previous = null, retryFailed = false) {
     if (disposed || active || !selection || (retryFailed ? retry.disabled : previous ? resume.disabled : start.disabled)) return;
     const id = ++generation, chosen = selection, manifestText = referenceText, local = new AbortController(); active = local; result = previous; ack.checked = false;
-    evidenceReview = null; evidenceAck.checked = false; evidenceStatus.textContent = "";
+    evidenceReview = null; openedEvidence = null; evidenceAck.checked = false; evidenceStatus.textContent = "";
     if (!previous) { rows.replaceChildren(); summary.textContent = ""; } exportStatus.textContent = ""; buttons();
     try {
       if (manifestText !== undefined) matchWalletSavedBatchManifest(chosen.map(({ name, byteLength }) => ({ name, byteLength })), manifestText);
@@ -667,6 +711,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
           referenceText = opened.result.referenceProvided ? opened.result.reference.text : undefined;
           referenceInput.value = referenceText ?? ""; referenceFile.value = ""; file.value = "";
           filterName.value = ""; filterStatus.value = "all"; render(opened.result, id);
+          openedEvidence = review;
           accepted = true;
           message = "保存内容と再確認の結果が一致しました。元ファイルを確認一覧に開きました。ウォレットの履歴や設定への取り込みは行っていません。";
           if (!review.allOriginalsValidated) message += " 内部チェックサムのない資料・補助資料・確認できない資料は、各行で区別しています。";
@@ -725,9 +770,9 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     try { evidenceFile.focus?.(); } catch { /* Focus is advisory. */ }
     return evidenceJob(chosen);
   }, getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
-    if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; evidenceReview = null;
+    if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; evidenceReview = null; openedEvidence = null;
     referenceText = undefined; referenceInput.value = ""; ack.checked = false; evidenceAck.checked = false; evidenceFile.value = ""; evidenceStatus.textContent = "";
-    old?.abort(); comparisonPanel.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
+    old?.abort(); comparisonPanel.dispose(); sourceExport.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
   } });
 }
 

@@ -1,12 +1,12 @@
 import { createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
-import { createFileSelectionNotice } from "./file-read-panel.js";
+import { createFileSelectionNotice, mountBatchSourceExportPanel } from "./file-read-panel.js";
 import { createFileReadScope, readFormatFileName, readSecurityFileText } from "../src/security-file.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
 import { captureDataRecord } from "../src/security-data.js";
 import { validateRehearsalReportBatchSelection, reviewRehearsalReportFileBatch,
   canPrepareRehearsalBatchEvidence, prepareRehearsalBatchEvidence, reviewRehearsalBatchEvidence,
-  openReviewedRehearsalBatchEvidence, encodeRehearsalBatchEvidenceReview, REHEARSAL_BATCH_EVIDENCE_LIMIT,
+  openReviewedRehearsalBatchEvidence, extractRehearsalBatchEvidenceSource, encodeRehearsalBatchEvidenceReview, REHEARSAL_BATCH_EVIDENCE_LIMIT,
   resumeRehearsalReportFileBatch, canResumeRehearsalReportFileBatch, retryRehearsalReportFileBatch, canRetryRehearsalReportFileBatch,
   encodeRehearsalBatchReview, encodeRehearsalBatchManifest,
   REHEARSAL_BATCH_REVIEW_FILES, decodeRehearsalBatchManifest, matchRehearsalBatchManifest,
@@ -108,7 +108,10 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   const get = id => document.getElementById("report-batch-" + id);
   const referenceReader = createFileReadScope(), listeners = [];
   let revision = 0, disposed = false, selection = null, active = null, result = null, sourceRows = [];
-  let referenceText, referenceValid = true, referenceBusy = false, viewRevision = 0, evidenceReview = null;
+  let referenceText, referenceValid = true, referenceBusy = false, viewRevision = 0, evidenceReview = null, openedEvidence = null;
+  const sourceExport = mountBatchSourceExportPanel({ document, parent: get("source-export"),
+    download: prepared => download({ document, prepared }), list: review => openReviewedRehearsalBatchEvidence(review).files,
+    extract: extractRehearsalBatchEvidenceSource });
   const current = id => !disposed && id === revision;
   function listen(id, event, callback) {
     const node = get(id); node.addEventListener(event, callback);
@@ -123,6 +126,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   }
   function buttons() {
     const referenceMatches = referenceReady();
+    sourceExport.updateCurrent(disposed || active || referenceBusy ? null : openedEvidence);
     get("evidence-ack").disabled = disposed || Boolean(active) || !canPrepareRehearsalBatchEvidence(result);
     get("evidence-save").disabled = get("evidence-ack").disabled || !get("evidence-ack").checked;
     get("evidence-file").disabled = disposed || Boolean(active) || referenceBusy;
@@ -157,7 +161,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     }
     referenceBusy = false;
     get("rows").replaceChildren(); get("summary").textContent = "";
-    evidenceReview = null; get("evidence-ack").checked = false; get("evidence-file").value = "";
+    evidenceReview = null; openedEvidence = null; get("evidence-ack").checked = false; get("evidence-file").value = "";
     get("evidence-status").textContent = "";
     get("filter-name").value = ""; get("filter-status").value = "all";
     get("filter-name").removeAttribute("aria-invalid"); get("filter-status").removeAttribute("aria-invalid");
@@ -280,7 +284,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     const id = ++revision, chosen = selection, manifestText = referenceText, job = { controller: new AbortController() };
     const retainedSources = previous ? sourceRows.slice() : [];
     active = job; result = previous;
-    evidenceReview = null; get("evidence-status").textContent = ""; get("evidence-ack").checked = false;
+    evidenceReview = null; openedEvidence = null; get("evidence-status").textContent = ""; get("evidence-ack").checked = false;
     if (!previous) { get("results").hidden = true; get("rows").replaceChildren(); get("summary").textContent = ""; }
     get("export-status").textContent = ""; buttons();
     try {
@@ -313,7 +317,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     if (disposed || active || referenceBusy || (file ? get("evidence-file").disabled : get("evidence-save").disabled)) return;
     const id = ++revision, previous = result, previousSources = sourceRows, job = { controller: new AbortController() };
     active = job; get("evidence-ack").checked = false; evidenceReview = null; buttons();
-    let message = "";
+    let message = "", accepted = false;
     try {
       get("evidence-status").textContent = file ? "まとめて保存した資料を再確認しています。" : "元資料から新しい確認結果を計算し、保存の準備をしています。";
       const options = { subtle, signal: job.controller.signal };
@@ -329,6 +333,8 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
           referenceValid = true; get("reference-text").value = referenceText ?? ""; get("reference-file").value = "";
           get("filter-name").value = ""; get("filter-status").value = "all";
           render(opened.result, id, opened.files);
+          openedEvidence = review;
+          accepted = true;
           message = "保存内容と再計算が一致しました。元資料の確認結果を下の一覧に開きました。実際の履歴は変更していません。";
           if (!review.allSourceReportsMatch || review.expectedSummary.reportsWithFailedExpectations) message += " 元資料の相違・期待結果との差は、一覧の結果をご確認ください。";
         } else {
@@ -350,6 +356,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
       job.controller.abort();
       if (current(id)) { active = null; get("evidence-status").textContent = message; buttons(); }
     }
+    return accepted && current(id);
   }
   listen("evidence-save", "click", () => { void evidenceJob(); });
   listen("evidence-file", "change", () => {
@@ -396,13 +403,19 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     } catch { if (current(id) && result === own) get("export-status").textContent = "控えを保存できませんでした。確認結果は保持しています。"; }
   });
   buttons();
-  return Object.freeze({ dispose() {
+  return Object.freeze({ inspectEvidenceFile(file) {
+    if (disposed || active || referenceBusy || !file) return Promise.resolve(false);
+    let section = get("evidence-file").closest?.("details");
+    while (section) { section.open = true; section = section.parentElement?.closest("details"); }
+    try { get("evidence-file").focus?.(); } catch { /* Focus is advisory. */ }
+    return evidenceJob(file);
+  }, dispose() {
     if (disposed) return;
-    reset(); disposed = true; ++revision; for (const remove of listeners) remove(); buttons();
+    reset(); disposed = true; ++revision; for (const remove of listeners) remove(); sourceExport.dispose(); buttons();
   } });
 }
 
-export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, getWorkspace = null, renderWorkspaceComparison = null, applyRecordQuery = null }) {
+export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, getWorkspace = null, renderWorkspaceComparison = null, applyRecordQuery = null, reviewBatchEvidence = null }) {
   const offerDownload = payload => requireSyncExport(download(payload));
   const fileReader = createFileReadScope(), checksumReader=createFileReadScope();
   let checksumRevision=0,differenceOffset=0,differenceView=0,selectedDifference=null;
@@ -410,8 +423,19 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   const feedback=createRehearsalFieldFeedback(document,"report-review-status");
   let revision = 0, disposed = false, sourceText = null, receipt = null;
   let hashAbort = null;
+  let sourceFile = null, pendingHandoff = null, sourceLoad = null;
   const listeners = [];
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
+  function refreshBatchHandoff() { get("batch-evidence").disabled = disposed || !sourceFile || typeof reviewBatchEvidence !== "function" || Boolean(hashAbort) || Boolean(sourceLoad) || pendingHandoff?.revision === revision; }
+  listen("batch-evidence", "click", async () => {
+    if (disposed || get("batch-evidence").disabled || !sourceFile || typeof reviewBatchEvidence !== "function") return;
+    const job = { revision, file: sourceFile }; pendingHandoff = job; refreshBatchHandoff();
+    get("batch-evidence-status").textContent = "同じファイルを、まとめ資料の確認欄で再確認しています。";
+    try { const accepted = await reviewBatchEvidence(job.file);
+      if (!disposed && revision === job.revision && sourceFile === job.file) get("batch-evidence-status").textContent = accepted === true ? "まとめ資料の再確認を終えました。一括確認欄に結果を開きました。現在の履歴は変更していません。" : "再確認の完了を確認できませんでした。一括確認欄の表示をご確認ください。選んだファイルは保持しています。";
+    } catch { if (!disposed && revision === job.revision && sourceFile === job.file) get("batch-evidence-status").textContent = "まとめ資料の確認欄に渡せませんでした。選んだファイルは保持しています。"; }
+    finally { if (pendingHandoff === job) pendingHandoff = null; refreshBatchHandoff(); }
+  });
   function refreshQueryAction(result){
     const enabled=typeof applyRecordQuery==="function"&&canReuseReviewedRehearsalQuery(result);
     get("query-apply").hidden=!enabled;get("query-apply").disabled=!enabled;get("query-status").textContent="";
@@ -500,6 +524,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   function invalidate(message) {
     const own=++revision;checksumRevision++;differenceView++;setDifferenceFilters(get,false,true);selectedDifference=null;get("difference-save").disabled=true;get("difference-detail").hidden=true;get("difference-detail").textContent="";
     const previous=hashAbort;hashAbort=null;receipt=null;differenceOffset=0;resetWorkspaceComparison();refreshAgentExtraction(null);refreshPartChoices(null);refreshQueryAction(null);
+    get("batch-evidence-status").textContent = ""; refreshBatchHandoff();
     feedback.clear();checksumNotice.clear();get("checksum-file").value="";
     get("checksum-file-status").textContent="";get("checksum-file-status").setAttribute("aria-busy","false");
     fileNotice.clear();get("previous").disabled=true;get("next").disabled=true;get("difference-status").textContent="";
@@ -511,7 +536,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     fileReader.cancel();return disposed||own!==revision?null:own;
   }
   function reset(message = "保存した確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録検索・操作別の資料を選んでください。現在の履歴には反映しません。") {
-    sourceText = null; get("run").disabled = true;
+    sourceText = null; sourceFile = null; sourceLoad = null; get("run").disabled = true;
     get("source").textContent = ""; get("file").value = ""; get("text").value = "";return invalidate(message);
   }
   function row(target, values) {
@@ -538,7 +563,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     if(disposed || sourceText === null) return;
     const own=invalidate("資料を再計算しています。現在の履歴は保持しています。");if(own===null)return;
     const text = sourceText, expectedSha256 = get("expected").value.trim() || null;
-    const ownHash = new AbortController(); hashAbort = ownHash;
+    const ownHash = new AbortController(); hashAbort = ownHash; refreshBatchHandoff();
     get("status").setAttribute("aria-busy", "true");
     try {
       const result = await reviewRehearsalReport(text, { expectedSha256, subtle, signal: ownHash.signal });
@@ -572,6 +597,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
         feedback.field("report-review-expected","照合するSHA-256","64桁で入力してください。使える文字は0〜9とa〜fです。照合値がない場合は空欄にできます。");
     } finally {
       if(hashAbort === ownHash) hashAbort = null;
+      refreshBatchHandoff();
       if(!disposed && own === revision) get("status").setAttribute("aria-busy", "false");
     }
   }
@@ -579,6 +605,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     if(disposed) return;
     const file=get("file").files?.[0]; if(!file) { fileNotice.noSelection(); return; }
     const own=reset("選択した資料を読み込んでいます。");if(own===null)return;
+    const load = {}; sourceLoad = load; sourceFile = file; refreshBatchHandoff();
     get("status").setAttribute("aria-busy", "true");
     const name = displayFileName(file, "選択した資料");
     if (disposed || own !== revision) return;
@@ -587,7 +614,8 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       const text = await fileReader.readText(file, { maxBytes: REHEARSAL_REPORT_REVIEW_LIMIT }); if(disposed||own!==revision) return;
       sourceText=text; get("run").disabled=false;
       await run();
-    } catch(error) { if(!disposed&&own===revision) reset((describeFileReadError(error,"2 MiB")??"ファイルを読み込めませんでした。2 MiB以内のUTF-8の資料を選んでください。")+" 現在の履歴は保持しています。"); }
+    } catch(error) { if(!disposed&&own===revision) { const cleared = reset((describeFileReadError(error,"2 MiB")??"ファイルを読み込めませんでした。2 MiB以内のUTF-8の資料を選んでください。")+" まとめ資料の場合は、下の『まとめた資料として再確認』を使えます。現在の履歴は保持しています。"); if (cleared !== null && !disposed && cleared === revision) { sourceFile = file; get("source").textContent = "まとめ資料として再確認できるファイル: " + (name || "選択した資料"); refreshBatchHandoff(); } } }
+    finally { if (sourceLoad === load) { sourceLoad = null; refreshBatchHandoff(); } }
   });
   listen("paste", "click", async()=>{
     if(disposed) return;

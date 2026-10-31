@@ -278,6 +278,9 @@
     <label class="file-label">確認する資料ファイル<input id="report-review-file" type="file" accept=".json,application/json" aria-describedby="report-review-file-note report-review-status"></label>
     <p id="report-review-file-note" class="small" role="status" aria-live="polite"></p>
     <p id="report-review-source" class="small"></p>
+    <button id="report-review-batch-evidence" type="button" disabled>同じファイルをまとめた資料として再確認</button>
+    <p class="small">複数の元資料を一つにした保存ファイルは、このボタンで一括確認欄へ渡せます。選び直す必要はありません。16 MiBまで対応し、内容を確認してから一覧を開きます。</p>
+    <p id="report-review-batch-evidence-status" class="small" role="status" aria-live="polite"></p>
     <label>照合するSHA-256（任意）<input id="report-review-expected" maxlength="64" spellcheck="false" placeholder="元の資料の照合値がある場合だけ入力"></label>
     <label class="file-label">保存した照合値を選ぶ（任意）<input id="report-review-checksum-file" type="file" accept=".txt,.sha256,text/plain" aria-describedby="report-review-checksum-file-note report-review-checksum-file-status"></label>
     <p id="report-review-checksum-file-note" class="small" role="status" aria-live="polite"></p>
@@ -347,6 +350,7 @@
         <label><input id="report-batch-evidence-ack" type="checkbox" disabled>元資料の内容もまとめて保存する</label><button id="report-batch-evidence-save" type="button" disabled>元資料と新しい確認結果をまとめて保存</button>
         <label class="file-label">まとめて保存した資料を再確認<input id="report-batch-evidence-file" type="file" accept=".json,application/json" aria-describedby="report-batch-evidence-status"></label>
         <p id="report-batch-evidence-status" class="small" role="status" aria-live="polite"></p><button id="report-batch-evidence-review-save" type="button" disabled>まとめた資料の照合結果を保存</button>
+        <div id="report-batch-source-export"></div>
       </details>
     </details>
     <details>
