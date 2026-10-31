@@ -4,7 +4,9 @@ The user explicitly clarified that the next continuation is **20 × 30 = 600 ite
 
 Only completed, evidenced work counts. Repeated executions of the same check, renamed copies of a feature and individual test assertions do not create additional development items. Batch records will link source commits, relevant validation and artifacts; running totals must follow those records.
 
-Current continuation: **567 / 600 complete**.
+Current continuation: **568 / 600 complete**.
+
+[Item 568: inspect and export bounded JSON difference locations inside verified source comparisons](COMPARISON_SOURCE_DIFFERENCES_2026-11-01.md) is complete with 46 selected checks, 123 focused native browser cases and exact UI/API/offline pages covering 86 differences at `0fb437b`.
 
 [Items 566–567: preserve wallet comparison sources and independently inspect both verified source groups](PORTABLE_BATCH_PAIRS_2026-11-01.md) are complete with 62 selected checks, 122 focused native browser cases and exact UI/API/offline source extraction at `075f47a`.
 
@@ -372,7 +374,7 @@ Shared local-reader follow-up at `d1fc0d8` extends item 552 without incrementing
 
 [Item 205: period review lifecycle](PERIOD_REVIEW_LIFECYCLE_2026-10-30.md) is complete with 111 targeted and 231 related passing tests at `964f5da`.
 
-[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–567. Remaining work follows concrete product gaps and integration findings.
+[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–568. Remaining work follows concrete product gaps and integration findings.
 
 ## Completed first group: saved-report verification (items 1–20)
 

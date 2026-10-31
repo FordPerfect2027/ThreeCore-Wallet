@@ -1,0 +1,232 @@
+{
+  "schema": "threecore.batch-comparison-difference-page.v1",
+  "family": "wallet",
+  "name": "source.json",
+  "comparisonEvidenceDigest": "df33080e43a8f29fb9c7791260c625518e7ee7ff7f72ceb64cb5d0c0e89be19a",
+  "beforeTextDigest": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+  "afterTextDigest": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1",
+  "beforeStatus": "validated-structure",
+  "afterStatus": "validated-structure",
+  "sourceTextMatches": false,
+  "query": {
+    "pathIncludes": ""
+  },
+  "offset": 40,
+  "limit": 40,
+  "totalDifferences": 86,
+  "matchedDifferences": 86,
+  "shownDifferences": 40,
+  "differences": [
+    {
+      "ordinal": 41,
+      "path": "/events/39/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 42,
+      "path": "/events/40/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 43,
+      "path": "/events/41/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 44,
+      "path": "/events/42/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 45,
+      "path": "/events/43/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 46,
+      "path": "/events/44/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 47,
+      "path": "/events/45/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 48,
+      "path": "/events/46/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 49,
+      "path": "/events/47/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 50,
+      "path": "/events/48/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 51,
+      "path": "/events/49/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 52,
+      "path": "/events/50/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 53,
+      "path": "/events/51/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 54,
+      "path": "/events/52/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 55,
+      "path": "/events/53/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 56,
+      "path": "/events/54/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 57,
+      "path": "/events/55/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 58,
+      "path": "/events/56/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 59,
+      "path": "/events/57/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 60,
+      "path": "/events/58/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 61,
+      "path": "/events/59/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 62,
+      "path": "/events/60/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 63,
+      "path": "/events/61/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 64,
+      "path": "/events/62/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 65,
+      "path": "/events/63/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 66,
+      "path": "/events/64/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 67,
+      "path": "/events/65/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 68,
+      "path": "/events/66/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 69,
+      "path": "/events/67/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 70,
+      "path": "/events/68/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 71,
+      "path": "/events/69/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 72,
+      "path": "/events/70/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 73,
+      "path": "/events/71/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 74,
+      "path": "/events/72/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 75,
+      "path": "/events/73/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 76,
+      "path": "/events/74/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 77,
+      "path": "/events/75/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 78,
+      "path": "/events/76/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 79,
+      "path": "/events/77/amount",
+      "kind": "value"
+    },
+    {
+      "ordinal": 80,
+      "path": "/events/78/amount",
+      "kind": "value"
+    }
+  ],
+  "hasPrevious": true,
+  "hasNext": true,
+  "sourceLimitBytes": 2097152,
+  "arrayMatching": "position",
+  "valuesIncluded": false,
+  "containsOriginalEvidence": false,
+  "validatesOriginals": false,
+  "authenticated": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "automaticallyImported": false
+}
