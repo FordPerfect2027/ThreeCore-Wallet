@@ -7,7 +7,8 @@ import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
 import { validateWalletSavedBatchSelection, inspectWalletSavedTextBatch, encodeWalletSavedTextBatch,
-  walletSavedTextBatchManifest, WALLET_SAVED_BROWSER_BATCH_LIMITS } from "../src/file-read-status.js";
+  walletSavedTextBatchManifest, WALLET_SAVED_BROWSER_BATCH_LIMITS, matchWalletSavedBatchManifest,
+  WALLET_SAVED_BATCH_MANIFEST_LIMIT, encodeWalletSavedTextBatchCsv } from "../src/file-read-status.js";
 
 /** Aggregate file-read protection and a separate, read-only saved-file guide. */
 export function mountFileReadPanel({ document, parent, service = walletFileReadService }) {
@@ -289,6 +290,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-file-batch"; parent.append(host);
   let disposed = false, generation = 0, selection = null, active = null, result = null;
+  let referenceText;
   const cleanup = [], nodes = {};
   function make(tag, name, text, target = host) { const element = document.createElement(tag); element.className = "saved-file-batch-" + name; if (text !== undefined) element.textContent = text; target.append(element); nodes[name] = element; return element; }
   function button(name, text) { const element = make("button", name, text); element.type = "button"; return element; }
@@ -298,29 +300,58 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   make("summary", "heading", "複数の保存ファイルをまとめて確認する");
   make("p", "intro", "期間・保存一覧・報告・報告履歴・確認セットのJSONを1〜20個選び、確認を開始します。1件16 MiB、合計64 MiBまでです。元記録の形式と内部のチェックサムを調べます。履歴への追加や復元は行いません。");
   const label = make("label", "file-label", "まとめて確認する元のJSON"), file = make("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json"; file.multiple = true;
+  const referenceBox = make("details", "reference"); make("summary", "reference-heading", "以前の照合値一覧と比較する（任意）", referenceBox);
+  make("p", "reference-intro", "以前保存したSHA256SUMS一覧を選ぶか、その全文を貼り付けてください。16 KiB・20行までです。一覧にある全ファイルを、同じ名前で選んで確認します。比較しない場合は『以前の一覧を外す』を押してください。", referenceBox);
+  const referenceLabel = make("label", "reference-file-label", "以前保存した照合値一覧", referenceBox), referenceFile = make("input", "reference-file", undefined, referenceLabel); referenceFile.type = "file"; referenceFile.accept = ".txt,text/plain";
+  const pasteLabel = make("label", "reference-text-label", "照合値一覧の全文を貼り付け", referenceBox), referenceInput = make("textarea", "reference-text", undefined, pasteLabel); referenceInput.maxLength = WALLET_SAVED_BATCH_MANIFEST_LIMIT;
+  const referenceClear = make("button", "reference-clear", "以前の一覧を外す", referenceBox); referenceClear.type = "button";
+  const referenceStatus = make("p", "reference-status", "以前の一覧は指定されていません。", referenceBox); referenceStatus.setAttribute("role", "status");
   const start = button("start", "選んだファイルをまとめて確認"), stop = button("stop", "一括確認を中止"), clear = button("clear", "選択と確認結果をクリア");
   const status = make("p", "status", "ファイルを選び、開始するまで読み込みません。"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const notice = make("p", "notice"), selectionNotice = createFileSelectionNotice(file, notice), summary = make("p", "summary");
   const table = make("table", "table"); make("caption", "caption", "選択した保存ファイルの確認結果", table);
   const header = make("thead", "thead", undefined, table), heading = make("tr", "head-row", undefined, header);
-  for (const text of ["ファイル名", "確認結果", "開く場所・確認範囲", "内容のSHA-256"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); heading.append(cell); }
+  for (const text of ["ファイル名", "確認結果", "開く場所・確認範囲", "内容のSHA-256", "以前の照合値との比較"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); heading.append(cell); }
   const rows = make("tbody", "rows", undefined, table);
   const ackLabel = make("label", "ack-label", "ファイル名・確認結果・照合値を、暗号化せずPCに保存します"), ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
-  const save = button("save", "一括確認の控えをJSON保存"), manifest = button("manifest", "選んだ元資料の照合値一覧を保存");
-  make("p", "limits", "照合値は今回選んだ内容から計算します。以前の一覧や外部の正解値との比較はしていません。補助資料は形式の案内だけです。この控えに元記録は含まれず、復元には使えません。元ファイルと同じ名前のまま一緒に保管してください。同じ記録が複数の報告に含まれる場合があります。");
+  const save = button("save", "一括確認の控えをJSON保存"), csv = button("csv", "全ファイルの確認結果をCSV保存"), manifest = button("manifest", "今回の内容の照合値一覧を保存");
+  make("p", "limits", "以前の一覧を指定した場合だけ、その値と比較します。一覧の出所は保証しません。今回の照合値一覧を保存しても、以前の値が正しいことの証明にはなりません。補助資料は形式の案内だけです。この控えに元記録は含まれず、復元には使えません。元ファイルと同じ名前のまま一緒に保管してください。同じ記録が複数の報告に含まれる場合があります。");
   const exportStatus = make("p", "export-status"); exportStatus.setAttribute("role", "status"); exportStatus.setAttribute("aria-live", "polite");
   function buttons() {
     host.setAttribute("aria-busy", active ? "true" : "false"); start.disabled = disposed || Boolean(active) || !selection;
+    if (referenceText !== undefined && selection) {
+      try { matchWalletSavedBatchManifest(selection.map(({ name, byteLength }) => ({ name, byteLength })), referenceText); referenceStatus.textContent = "以前の一覧と、選択した全ファイルの名前が対応しています。開始すると内容を比較します。"; }
+      catch (error) { start.disabled = true; referenceStatus.textContent = walletSavedInspectionErrorText(error); }
+    } else referenceStatus.textContent = referenceText === undefined ? "以前の一覧は指定されていません。" : "以前の一覧を指定しました。対応する元のJSONをすべて選んでください。";
     stop.disabled = disposed || !active || active.signal.aborted;
     ack.disabled = disposed || Boolean(active) || !result;
     save.disabled = ack.disabled || !ack.checked;
+    csv.disabled = save.disabled;
     manifest.disabled = save.disabled || !result?.complete || result.files.some(row => row.sha256 === null);
   }
-  function reset() {
-    const id = ++generation, old = active; active = null; selection = null; result = null; ack.checked = false;
+  function reset(keepSelection = false) {
+    const id = ++generation, old = active; active = null; if (!keepSelection) selection = null; result = null; ack.checked = false;
     old?.abort(); if (!current(id)) return id;
     rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; selectionNotice.clear(); buttons(); return id;
   }
+  listen(referenceInput, "input", () => {
+    if (disposed) return; const text = referenceInput.value, id = reset(true); if (!current(id)) return;
+    referenceText = text; referenceFile.value = ""; status.textContent = "以前の一覧を変更しました。選択した元ファイルは保持しています。"; buttons();
+  });
+  listen(referenceClear, "click", () => {
+    if (disposed) return; const id = reset(true); if (!current(id)) return;
+    referenceText = undefined; referenceInput.value = ""; referenceFile.value = ""; status.textContent = "以前の一覧を外しました。次の確認では外部の照合値を比較しません。"; buttons();
+  });
+  listen(referenceFile, "change", async () => {
+    if (disposed) return; const chosen = referenceFile.files?.[0]; referenceFile.value = ""; if (!chosen) return;
+    const id = reset(true); if (!current(id)) return; referenceText = ""; referenceInput.value = "";
+    const local = new AbortController(); active = local; status.textContent = "以前の照合値一覧を読み込んでいます。"; buttons();
+    try { const text = await readText(chosen, { signal: local.signal, maxBytes: WALLET_SAVED_BATCH_MANIFEST_LIMIT });
+      if (!current(id) || local.signal.aborted) return;
+      boundedUtf8Length(text, WALLET_SAVED_BATCH_MANIFEST_LIMIT); referenceText = text; referenceInput.value = text; status.textContent = "以前の一覧を読み込みました。元ファイルの確認は開始していません。";
+    } catch { if (current(id)) status.textContent = "以前の一覧を読み込めませんでした。16 KiB以内の元の一覧を選ぶか、全文を貼り付けてください。比較なしに切り替えてはいません。"; }
+    finally { local.abort(); if (current(id)) { active = null; if (status.textContent.startsWith("中止しています")) status.textContent = "以前の一覧の読み込みを中止しました。比較なしには切り替えていません。"; buttons(); } }
+  });
   listen(file, "change", () => {
     if (disposed) return;
     const offered = file.files, count = offered?.length;
@@ -336,21 +367,24 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     } catch { if (current(id)) status.textContent = "名前が重複しないJSONを1〜20個選んでください。1件16 MiB、合計64 MiBまでです。ファイル名に特殊な記号がある場合は名前を変えて選び直してください。"; }
   });
   function render(receipt, id) {
-    const labels = { "validated-original": "元記録の形式・内部チェックサムを確認", "declared-only": "補助資料の形式指定だけ", invalid: "元記録を確認できません", "hash-unavailable": "照合値を計算できません", pending: "未確認" };
+    const labels = { "validated-original": "元記録の形式・内部チェックサムを確認", "declared-only": "補助資料の形式指定だけ", invalid: "元記録を確認できません", "hash-unavailable": "照合値を計算できません", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
     const elements = receipt.files.map(row => {
       const tr = document.createElement("tr"), scope = row.inspection?.scope;
       const detail = row.inspection ? row.inspection.destinationMessage + (scope ? ` 元の控えの参照 ${scope.draftReferences}件／未完了 ${scope.incompleteDraftReferences}件。` : " 中身や結論は未検証です。") : row.code ? errorText({ code: row.code }) : "処理していません。";
-      for (const value of [row.name, labels[row.status], detail, row.sha256 ?? "未計算"]) { const cell = document.createElement("td"); cell.textContent = value; tr.append(cell); }
+      const referenceResult = !receipt.referenceProvided ? "指定なし" : (row.checksumMatches === null ? "未比較" : row.checksumMatches ? "一致" : "不一致") + "：" + row.expectedSha256;
+      for (const value of [row.name, labels[row.status], detail, row.sha256 ?? "未計算", referenceResult]) { const cell = document.createElement("td"); cell.textContent = value; tr.append(cell); }
       return tr;
     });
     if (!current(id)) return; result = receipt; rows.replaceChildren(...elements);
-    const s = receipt.summary; summary.textContent = `${s.selected}件中、確認済み ${s.checked}件／未確認 ${s.pending}件。元記録 ${s.validatedOriginals}件、補助資料 ${s.declaredOnly}件、形式・照合値の問題 ${s.invalid + s.hashUnavailable}件。`;
+    const s = receipt.summary; summary.textContent = `${s.selected}件中、確認済み ${s.checked}件／未確認 ${s.pending}件。元記録 ${s.validatedOriginals}件、補助資料 ${s.declaredOnly}件、形式・照合値の問題 ${s.invalid + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。`;
+    if (receipt.referenceProvided) summary.textContent += ` 以前の照合値との一致 ${s.checksumsMatching}件／不一致 ${s.checksumMismatches}件／未比較 ${s.selected - s.checksumsCompared}件。`;
     status.textContent = receipt.complete ? "一括確認を終えました。各ファイルの結果をご確認ください。" : "一括確認を止めました。確認できた分の控えを保存できます。未確認の行も含みます。";
   }
   listen(start, "click", async () => {
     if (disposed || active || !selection || start.disabled) return;
-    const id = ++generation, chosen = selection, local = new AbortController(); active = local; result = null; ack.checked = false; rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; buttons();
+    const id = ++generation, chosen = selection, manifestText = referenceText, local = new AbortController(); active = local; result = null; ack.checked = false; rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; buttons();
     try {
+      if (manifestText !== undefined) matchWalletSavedBatchManifest(chosen.map(({ name, byteLength }) => ({ name, byteLength })), manifestText);
       const texts = []; let totalBytes = 0;
       for (const entry of chosen) {
         if (!current(id) || local.signal.aborted) return;
@@ -361,26 +395,26 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
         totalBytes += boundedUtf8Length(text, WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes); if (totalBytes > WALLET_SAVED_BROWSER_BATCH_LIMITS.totalBytes) throw Error();
         texts.push({ name: entry.name, text });
       }
-      const receipt = await inspect(texts, { signal: local.signal, subtle, onProgress: p => { if (current(id)) status.textContent = `元記録を確認しています（${p.checked} / ${p.selected}件）。`; } });
+      const receipt = await inspect(texts, { signal: local.signal, subtle, manifestText, onProgress: p => { if (current(id)) status.textContent = `元記録を確認しています（${p.checked} / ${p.selected}件）。`; } });
       if (current(id)) render(receipt, id);
     } catch (error) { if (current(id)) status.textContent = local.signal.aborted ? "ファイルの読み込みを中止しました。確認結果はまだありません。" : "まとめて読み込めませんでした。" + errorText(error); }
     finally { local.abort(); if (current(id)) { active = null; if (!result && local.signal.aborted && status.textContent.startsWith("中止しています")) status.textContent = "ファイルの読み込みを中止しました。確認結果はまだありません。"; buttons(); } }
   });
   listen(stop, "click", () => { if (disposed || !active) return; const own = generation, controller = active; controller.abort(); if (!current(own) || active !== controller) return; status.textContent = "中止しています。確認できた分を残します。"; buttons(); });
-  listen(clear, "click", () => { if (disposed) return; const own = reset(); if (!current(own)) return; file.value = ""; status.textContent = "選択と確認結果をクリアしました。"; });
+  listen(clear, "click", () => { if (disposed) return; const own = reset(); if (!current(own)) return; referenceText = undefined; referenceInput.value = ""; referenceFile.value = ""; file.value = ""; status.textContent = "選択と確認結果をクリアしました。"; buttons(); });
   listen(ack, "change", () => { if (!disposed) buttons(); });
-  for (const [button, encode, filename, mimeType] of [[save, encodeWalletSavedTextBatch, "ThreeCore-wallet-saved-batch.json", "application/json;charset=utf-8"], [manifest, walletSavedTextBatchManifest, "SHA256SUMS.txt", "text/plain;charset=utf-8"]]) listen(button, "click", () => {
+  for (const [button, encode, filename, mimeType] of [[save, encodeWalletSavedTextBatch, "ThreeCore-wallet-saved-batch.json", "application/json;charset=utf-8"], [csv, encodeWalletSavedTextBatchCsv, "ThreeCore-wallet-saved-batch.csv", "text/csv;charset=utf-8"], [manifest, walletSavedTextBatchManifest, "SHA256SUMS.txt", "text/plain;charset=utf-8"]]) listen(button, "click", () => {
     if (disposed || active || !result || button.disabled || !ack.checked) return;
     const own = generation, receipt = result; ack.checked = false; buttons();
     try {
-      const prepared = Object.freeze({ text: encode(receipt), filename, mimeType, restorable: false, containsOriginalEvidence: false, encrypted: false });
+      const prepared = Object.freeze({ text: encode(receipt), filename: button === manifest && receipt.referenceProvided ? "ThreeCore-selected-content-SHA256SUMS.txt" : filename, mimeType, restorable: false, containsOriginalEvidence: false, encrypted: false });
       const delivered = download(prepared), kind = observeCallbackResult(delivered);
       if (current(own) && result === receipt) exportStatus.textContent = kind === "synchronous" && delivered !== false ? "確認用の控えの保存処理を開始しました。ダウンロード先をご確認ください。" : "保存を確認できませんでした。結果は保持しています。";
     } catch { if (current(own) && result === receipt) exportStatus.textContent = "保存を確認できませんでした。結果は保持しています。"; }
   });
   buttons();
   return Object.freeze({ getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
-    if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; ack.checked = false;
+    if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; referenceText = undefined; referenceInput.value = ""; ack.checked = false;
     old?.abort(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
   } });
 }
