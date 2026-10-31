@@ -1,0 +1,145 @@
+{
+  "schema": "threecore.wallet-saved-browser-batch.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "externalChecksumsCompared": false,
+  "phase": "cancelled",
+  "complete": false,
+  "allOriginalsValidated": false,
+  "summary": {
+    "selected": 7,
+    "checked": 2,
+    "pending": 5,
+    "validatedOriginals": 2,
+    "declaredOnly": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "totalBytes": 146849
+  },
+  "files": [
+    {
+      "name": "period-source.json",
+      "byteLength": 5847,
+      "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-file.v1",
+        "byteLength": 5847,
+        "title": "期間取得の控え",
+        "target": "period",
+        "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+        "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": 0,
+          "draftReferences": 1,
+          "archivedEntryReferences": null,
+          "restrictedEntryReferences": null,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "name": "library-source.json",
+      "byteLength": 4551,
+      "sha256": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-library-file.v1",
+        "byteLength": 4551,
+        "title": "期間の保存一覧",
+        "target": "library",
+        "destinationMessage": "「途中の控えを、名前を付けて保管する」の「期間の保存一覧JSONを読み込む」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "94a72fa1997466939ad83bdc8e687add2a9f5839ee48fbc7017071e42ac3bc72",
+        "textDigest": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": 1,
+          "draftReferences": 1,
+          "archivedEntryReferences": 1,
+          "restrictedEntryReferences": 1,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "name": "report-source.json",
+      "byteLength": 13491,
+      "sha256": null,
+      "status": "pending",
+      "code": null,
+      "inspection": null
+    },
+    {
+      "name": "history-source.json",
+      "byteLength": 40882,
+      "sha256": null,
+      "status": "pending",
+      "code": null,
+      "inspection": null
+    },
+    {
+      "name": "set-source.json",
+      "byteLength": 40965,
+      "sha256": null,
+      "status": "pending",
+      "code": null,
+      "inspection": null
+    },
+    {
+      "name": "corrupt-set-source.json",
+      "byteLength": 40965,
+      "sha256": null,
+      "status": "pending",
+      "code": null,
+      "inspection": null
+    },
+    {
+      "name": "auxiliary-declaration-source.json",
+      "byteLength": 148,
+      "sha256": null,
+      "status": "pending",
+      "code": null,
+      "inspection": null
+    }
+  ]
+}
