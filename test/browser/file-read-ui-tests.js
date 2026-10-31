@@ -53,6 +53,37 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: saved checksum text uses a native file picker and retains its selected source", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("overview-save").click();const source=downloads.pop().text;
+      q("report-review-text").value=source;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();await finish("report-review-status");
+      q("report-review-checksum-save").click();const checksum=downloads.pop().text;
+      const transfer=new DataTransfer();transfer.items.add(new File([checksum],"saved-checksum.txt",{type:"text/plain"}));
+      q("report-review-checksum-file").files=transfer.files;q("report-review-checksum-file").dispatchEvent(new Event("change"));await finish("report-review-checksum-file-status");
+      assert(q("report-review-expected").value===checksum.trim());assert(!q("report-review-run").disabled&&q("report-review-save").disabled);
+      q("report-review-run").click();await finish("report-review-status");assert(q("report-review-summary").textContent.includes("照合値: 一致"));
+      q("report-review-checksum-file").dispatchEvent(new Event("cancel"));assert(!q("report-review-save").disabled);assert(q("report-review-checksum-file-note").textContent.includes("変更していません"));
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: unfinished numeric edits retain the saved ledger and restore native undo", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,type="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(type));};
+    try{
+      q("example").click();edit("append-kind","reserve","change");edit("append-reference","reward");edit("append-amount","1");q("append-preview").click();q("append-confirm").click();
+      q("workspace-save").click();const before=downloads.pop().text;assert(!q("undo").disabled);
+      edit("principal","invalid");q("calculate").click();assert(!q("form-draft-note").hidden&&!q("form-restore").disabled);assert(q("save").disabled);
+      q("workspace-save").click();assert(downloads.pop().text===before);q("form-restore").click();
+      assert(q("rows").children.length===3&&!q("undo").disabled&&q("form-draft-note").hidden);q("undo").click();assert(q("rows").children.length===2);
+    }finally{page.dispose();host.remove();}
+  });
   test("file-read: expected-result filters expose later differences in a native browser", async () => {
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);

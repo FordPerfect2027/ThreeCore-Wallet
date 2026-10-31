@@ -473,10 +473,12 @@ test("three-agent switching preserves records, allocation and agent-specific und
   assert.equal(f.field("undo").disabled, true);
   const saved = savedWorkspace(f); assert.equal(saved.ledgers.length, 3); assert.equal(saved.activeAgent, "EMA");
 });
-test("editing one agent removes only that result; other records remain exportable", () => {
+test("editing one agent retains its prior committed input alongside the other saved agents", () => {
   const f = setup(); f.field("example").click(); selectAgent(f, "EMA"); f.field("example").click();
   f.change("opening", "900"); const data = savedWorkspace(f);
-  assert.deepEqual(data.ledgers.map(x => x.agent), ["DAT"]); assert.equal(data.activeAgent, "EMA");
+  assert.deepEqual(data.ledgers.map(x => x.agent), ["DAT","EMA"]); assert.equal(data.activeAgent, "EMA");
+  assert.equal(data.ledgers.find(x=>x.agent==="EMA").openingBalance,"1000000000");
+  assert.equal(f.field("form-restore").disabled,false);
   selectAgent(f, "DAT"); assert.equal(f.field("save").disabled, false);
 });
 test("single-agent import never discards another agent's applied ledger", async () => {

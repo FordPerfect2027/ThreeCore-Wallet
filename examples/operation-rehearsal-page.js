@@ -50,7 +50,8 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   const get = name => document.getElementById(name);
   const formFeedback=createRehearsalFieldFeedback(document,"status");
   const appendFeedback=createRehearsalFieldFeedback(document,"append-summary");
-  let current = null, candidate = null, revision = 0, disposed = false;
+  let current = null, candidate = null, revision = 0, disposed = false, formDraft=false;
+  get("form-restore").disabled=true;get("form-draft-note").hidden=true;
   const session = createRehearsalSession(get("agent").value), ledger = session.workspace;
   let scenarioSetPanel = null;
   const scenarioPanel = mountRehearsalScenarioPanel(document, { download, reasons: REASONS, kinds: KINDS,
@@ -236,7 +237,7 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     cancelAppend();
     setWorkspaceStage("error", reason + " 現在の履歴は保持しています。");
   }
-  function clear(message = "入力が変わりました。もう一度試算してください。", keepLedger = false) {
+  function clear(message = "入力が変わりました。もう一度試算してください。", keepLedger = false, editing = false) {
     formFeedback.clear();
     revision++; current = null; candidate = null;
     scenarioPanel.refresh(null);
@@ -244,6 +245,9 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     get("save").disabled = true; get("apply").disabled = true;
     for (const name of ["csv-save", "append-preview", "undo"]) get(name).disabled = true;
     for (const name of ["metrics", "rows", "allocation-note", "context", "preview", "ledger-details"]) get(name).textContent = "";
+    formDraft=editing;get("form-draft-note").hidden=!editing;
+    const retained=editing&&ledger.state().current;get("form-restore").disabled=!retained;
+    get("form-draft-note").textContent=!editing?"":retained?"入力変更前の履歴と取り消し履歴は保持しています。一括保存は変更前の記録を含みます。入力が有効で試算が完了すると、新しい2件または1件の試算で置き換わります。":"入力した条件はまだ試算していません。";
     get("status").textContent = message;
     renderAppendControls();
     renderWorkspace();
@@ -394,12 +398,13 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
   function calculate(pending) {
     if (disposed) return;
     try { const data = fromFields(pending); show(data); }
-    catch (error) { clear("入力を確認してください。金額は0以上・小数6桁まで、還元割合は0〜100%です。"); if(!disposed)formFeedback.report(error); }
+    catch (error) { clear("入力を確認してください。金額は0以上・小数6桁まで、還元割合は0〜100%です。",true,true); if(!disposed)formFeedback.report(error); }
   }
   for (const name of ["opening", ...Object.keys(FIELD_POLICY), "allocation", "principal", "entry-fee", "returned", "exit-fee",
     "entry-limit", "exit-limit", "exit-reserve"])
-    listen(name, "input", () => clear());
-  for (const name of ["paused", "scenario"]) listen(name, "change", () => clear());
+    listen(name, "input", () => {if(!disposed)clear(undefined,true,true);});
+  for (const name of ["paused", "scenario"]) listen(name, "change", () => {if(!disposed)clear(undefined,true,true);});
+  listen("form-restore","click",()=>{if(disposed||!formDraft)return;const retained=ledger.state().current;if(retained)show(retained,true);});
   listen("agent", "change", () => {
     if (disposed) return;
     const name = get("agent").value;

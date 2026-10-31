@@ -3,7 +3,7 @@ import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
-import { reviewRehearsalReport, encodeRehearsalReviewReceipt, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
+import { reviewRehearsalReport, encodeRehearsalReviewReceipt, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { REHEARSAL_OVERVIEW_SCHEMA } from "../src/operation-rehearsal-overview.js";
 import { REHEARSAL_RECORD_REPORT_SCHEMA } from "../src/operation-rehearsal-records.js";
 
@@ -31,7 +31,8 @@ function outcomeText(outcome) {
 
 export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle }) {
   const offerDownload = payload => requireSyncExport(download(payload));
-  const fileReader = createFileReadScope();
+  const fileReader = createFileReadScope(), checksumReader=createFileReadScope();
+  let checksumRevision=0;
   const get = name => document.getElementById("report-review-" + name);
   const feedback=createRehearsalFieldFeedback(document,"report-review-status");
   let revision = 0, disposed = false, sourceText = null, receipt = null;
@@ -40,8 +41,12 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
   const fileNotice = createFileSelectionNotice(get("file"), get("file-note"));
   listeners.push(() => fileNotice.dispose());
+  const checksumNotice=createFileSelectionNotice(get("checksum-file"),get("checksum-file-note"));
+  listeners.push(()=>checksumNotice.dispose());
   function invalidate(message) {
     feedback.clear();
+    checksumRevision++;checksumReader.cancel();checksumNotice.clear();get("checksum-file").value="";
+    get("checksum-file-status").textContent="";get("checksum-file-status").setAttribute("aria-busy","false");
     fileNotice.clear();
     revision++; receipt = null;
     const previous = hashAbort; hashAbort = null; previous?.abort();
@@ -121,6 +126,21 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     reset("貼り付けた資料を確認しています。"); sourceText=text;
     get("source").textContent="確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）";
     get("run").disabled=false; await run();
+  });
+  listen("checksum-file","change",async()=>{
+    if(disposed)return;const file=get("checksum-file").files?.[0];if(!file){checksumNotice.noSelection();return;}
+    get("checksum-file").value="";const own=++checksumRevision,owner=revision;checksumReader.cancel();
+    if(disposed||own!==checksumRevision||owner!==revision)return;checksumNotice.clear();
+    get("checksum-file-status").textContent="照合値のファイルを読み込んでいます。";get("checksum-file-status").setAttribute("aria-busy","true");
+    try{
+      const text=await checksumReader.readText(file,{maxBytes:1024});if(disposed||own!==checksumRevision||owner!==revision)return;
+      const value=decodeRehearsalChecksumText(text),name=displayFileName(file,"照合値ファイル");
+      if(disposed||own!==checksumRevision||owner!==revision)return;
+      get("expected").value=value;invalidate("照合値を読み込みました。「選択済みの資料を再確認」を押してください。資料が未選択の場合は先に資料を選んでください。");
+      get("checksum-file-status").textContent="読み込んだ照合値: "+name+"。再確認すると資料の照合値と比較します。";
+    }catch(error){if(disposed||own!==checksumRevision||owner!==revision)return;
+      get("checksum-file-status").textContent=(describeFileReadError(error,"1 KiB")??"64桁のSHA-256だけを含むテキストファイルを選んでください。")+" 現在の照合値と確認結果は変更していません。";
+    }finally{if(!disposed&&own===checksumRevision&&owner===revision)get("checksum-file-status").setAttribute("aria-busy","false");}
   });
   listen("expected", "input", ()=>{ if(!disposed) invalidate("照合値が変わりました。「選択済みの資料を再確認」を押してください。"); });
   listen("text", "input", ()=>{

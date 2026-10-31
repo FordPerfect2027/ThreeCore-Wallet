@@ -39,6 +39,13 @@ function compareValues(expected, actual) {
   return Object.freeze({ differenceCount: count, differences: Object.freeze(differences), differencesTruncated: count > differences.length });
 }
 
+/** A checksum-only text file, bounded independently from a report. */
+export function decodeRehearsalChecksumText(text){
+  if(typeof text!=="string"||text.length>1024)fail("INVALID_EXPECTED_CHECKSUM");
+  const value=text.trim();if(!/^[a-fA-F0-9]{64}$/.test(value))fail("INVALID_EXPECTED_CHECKSUM");
+  return value.toLowerCase();
+}
+
 /** Review untrusted derived data by recomputation. Does not import its inputs into live state. */
 export async function reviewRehearsalReport(text, { expectedSha256 = null, subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   let byteLength, parsed;

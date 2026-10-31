@@ -147,7 +147,8 @@
         <label>決済時の費用<input id="exit-fee" inputmode="decimal" value="1" maxlength="100"></label>
         <label>先に確保する決済費用<input id="exit-reserve" inputmode="decimal" value="2" maxlength="100"></label>
       </div>
-      <div class="actions"><button id="pending" type="button">未決済として試算</button><button id="calculate" type="button">決済結果まで試算</button></div>
+      <div class="actions"><button id="pending" type="button">未決済として試算</button><button id="calculate" type="button">決済結果まで試算</button><button id="form-restore" type="button" disabled>入力変更前の履歴を再表示</button></div>
+      <p id="form-draft-note" class="notice" role="status" aria-live="polite" hidden></p>
     </section>
     <section aria-labelledby="result-title"><h2 id="result-title">確認結果</h2>
       <p id="status" role="status" aria-live="polite">ケースを選ぶか、入力して試算してください。</p>
@@ -225,7 +226,7 @@
     <p class="small">金額は、投入時は元本、決済時は元本を含む戻り額、予約時は予約額です。費用は投入・決済だけ、決済費用の確保は投入だけに使います。決済・取消には、上に表示された未決済ID・予約IDを指定してください。</p>
     <div class="actions"><button id="append-preview" type="button" disabled>追記前に確認</button><button id="append-confirm" type="button" disabled>確認した記録を追記</button><button id="append-cancel" type="button">追記確認を取り消す</button><button id="undo" type="button" disabled>直前の追記を取り消す</button></div>
     <p id="append-summary" role="status" aria-live="polite"></p>
-    <p class="small">追記の取り消しは対象ごとに最大10件です。対象の切替では保持します。別の例の表示、単発の再試算、ファイル読込の確定、入力条件の変更で選択中の対象の取り消し履歴は消えます。一括復旧・ページを閉じる操作ではすべて消えます。旧形式は表示・保存でき、追記のために自動変換されません。</p>
+    <p class="small">追記の取り消しは対象ごとに最大10件です。対象の切替では保持します。別の例の表示、単発の再試算の完了、ファイル読込の確定で選択中の対象の取り消し履歴は消えます。入力条件の編集中や入力ミスの間は、変更前の履歴を保持します。一括復旧・ページを閉じる操作ではすべて消えます。旧形式は表示・保存でき、追記のために自動変換されません。</p>
   </section>
   <section aria-labelledby="record-save-title"><h2 id="record-save-title">記録を保存・再確認</h2>
     <p>入力条件と仮の記録をJSONファイルで保存できます。読み込み後に再計算するため、保存済みの結果をそのまま信用しません。</p>
@@ -264,6 +265,9 @@
     <p id="report-review-file-note" class="small" role="status" aria-live="polite"></p>
     <p id="report-review-source" class="small"></p>
     <label>照合するSHA-256（任意）<input id="report-review-expected" maxlength="64" spellcheck="false" placeholder="元の資料の照合値がある場合だけ入力"></label>
+    <label class="file-label">保存した照合値を選ぶ（任意）<input id="report-review-checksum-file" type="file" accept=".txt,.sha256,text/plain" aria-describedby="report-review-checksum-file-note report-review-checksum-file-status"></label>
+    <p id="report-review-checksum-file-note" class="small" role="status" aria-live="polite"></p>
+    <p id="report-review-checksum-file-status" class="small" role="status" aria-live="polite"></p>
     <div class="actions"><button id="report-review-run" type="button" disabled>選択済みの資料を再確認</button><button id="report-review-clear" type="button">資料の確認をクリア</button></div>
     <p id="report-review-status" role="status" aria-live="polite"></p>
     <div id="report-review-results" hidden>
