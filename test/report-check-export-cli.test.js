@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 import { parseReportCheckArgs, runReportCheckExport } from "../scripts/export-report-checks.js";
 import { prepareReportSetFile } from "../src/report-set-file.js";
 import { preparePeriodReportFile } from "../src/period-report-file.js";
-import { reportSetDiagnosticsCSV } from "../src/report-set-export.js";
+import { reportSetDiagnosticsCSV, prepareReportSetChecksFile } from "../src/report-set-export.js";
 import { sequenceSet, demoSetHistory, clone } from "./helpers/report-set-fixtures.js";
 
 async function sourceFile(t, source = sequenceSet(demoSetHistory())) {
@@ -44,6 +44,13 @@ test("an exported check reference can be located again through the offline comma
   assert.equal(result.exitCode, 0); const data = JSON.parse(result.output);
   assert.equal(data.matched, 1); assert.equal(data.total, 15); assert.equal(data.query.search, "check-8");
   assert.match(data.csv, /"check-8"/); assert.equal(data.summary.allContinuous, false);
+});
+
+test("details format reproduces the browser file and retains strict source-wide continuity", async t => {
+  const file = await sourceFile(t), result = await run([file.path, "--search", "CHECK-8", "--format", "details", "--require-continuous"]);
+  assert.equal(result.exitCode, 2); assert.equal(result.output, (await prepareReportSetChecksFile(file.source, { search: "CHECK-8" })).text);
+  const data = JSON.parse(result.output); assert.equal(data.items.length, 1); assert.equal(data.sourcePayloadDigest, file.digest);
+  assert.equal(await readFile(file.path, "utf8"), file.text);
 });
 test("standalone command reproduces all matching browser CSV bytes without changing source", async t => {
   const file = await sourceFile(t), args = [file.path, "--agent", "EMA", "--severity", "conflict"];

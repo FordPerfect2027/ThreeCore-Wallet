@@ -304,3 +304,17 @@ test("visible check references can be searched and exported without changing sou
     f.set("check-search", "", "input"); assert.equal(f.q("check-list").children.length, 3);
   } finally { f.dispose(); }
 });
+
+test("check-detail JSON saves exact observations with the selected disclosure controls", async () => {
+  const f = fixture(sequenceHistory([0n, 0n]));
+  try {
+    await f.accept(); const original = f.mounted.getState().input;
+    assert.equal(f.q("checks-json").disabled, true); f.check("ack"); f.set("check-severity", "conflict");
+    f.click("checks-json"); await f.settled(); const data = JSON.parse(f.files[0].text);
+    assert.ok(data.items.some(item => item.observations.length > 0)); assert.equal(data.options.includeNotes, false);
+    assert.equal(data.sourcePayloadDigest, (await prepareReportSetFile(original)).digest);
+    assert.match(f.q("json-help").textContent, /保存値・ハッシュ/);
+    f.set("check-search", "x".repeat(101), "input"); assert.equal(f.q("checks-json").disabled, true);
+    assert.equal(f.mounted.getState().input, original);
+  } finally { f.dispose(); }
+});

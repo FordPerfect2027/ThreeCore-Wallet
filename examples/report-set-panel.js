@@ -120,16 +120,17 @@ export function mountReportSetPanel({ document, parent,
 
   const exports = make("section", "export-section", undefined, result);
   make("h4", "export-heading", "確認セットをPCへ保存", exports);
-  field("notes", "説明用HTML・CSVに保存メモを含める", "checkbox", exports);
-  field("short-addresses", "説明用HTML・CSVのアドレスを短縮する", "checkbox", exports).checked = true;
+  field("notes", "説明用HTML・CSV・確認箇所JSONに保存メモを含める", "checkbox", exports);
+  field("short-addresses", "説明用HTML・CSV・確認箇所JSONのアドレスを短縮する", "checkbox", exports).checked = true;
   make("p", "privacy", "HTML・CSVは説明用の要約です。短縮表示は匿名化ではありません。保存名は常に含みます。", exports);
-  field("ack", "JSONには全アドレス・残高・履歴・メモが含まれ、暗号化されないことを確認しました", "checkbox", exports);
-  make("p", "json-help", "上のメモ・短縮設定はJSONには適用されません。JSONは元の証拠を含む再読込み用です。", exports);
+  field("ack", "保存ファイルに含まれる情報と、暗号化されないことを確認しました", "checkbox", exports);
+  make("p", "json-help", "確認セットJSONは再読込み用で、全アドレス・残高・履歴・メモを含みます。上のメモ・短縮設定は適用されません。確認箇所JSONは説明用で、絞り込んだ箇所の保存値・ハッシュと元資料のチェックサムを含みます。", exports);
   const exportButtons = make("div", "export-actions", undefined, exports);
   button("json", "確認セットJSONを保存", exportButtons);
   button("html", "説明用HTMLを保存", exportButtons);
   button("csv", "計画範囲CSVを保存", exportButtons);
   button("checks-csv", "絞り込んだ確認箇所をCSV保存", exportButtons);
+  button("checks-json", "確認箇所と根拠の値をJSON保存", exportButtons);
   make("p", "checks-export-help", "確認箇所CSVには全体の件数を示す要約行と、条件に合う確認項目が入ります。該当0件でも全体の食い違いは残します。再読込み用の証拠ではありません。", exports);
 
   const restore = make("section", "restore");
@@ -152,7 +153,7 @@ export function mountReportSetPanel({ document, parent,
   let diagnosticQueryValid = false;
   const checkQuery = () => ({ agent: nodes["check-agent"].value, severity: nodes["check-severity"].value, search: nodes["check-search"].value });
   function showDiagnostics() {
-    diagnosticQueryValid = false; nodes["checks-csv"].disabled = true;
+    diagnosticQueryValid = false; nodes["checks-csv"].disabled = true; nodes["checks-json"].disabled = true;
     if (!state?.input) {
       checkList.replaceChildren();
       nodes["check-count"].textContent = "";
@@ -166,7 +167,8 @@ export function mountReportSetPanel({ document, parent,
         diagnosticInput = state.input;
         diagnosticKey = key;
       }
-      diagnosticQueryValid = true; nodes["checks-csv"].disabled = state.busy || !nodes.ack.checked;
+      diagnosticQueryValid = true;
+      nodes["checks-csv"].disabled = nodes["checks-json"].disabled = state.busy || !nodes.ack.checked;
       checkList.replaceChildren();
       nodes["check-count"].textContent = diagnosticRows.count === 0 ?
         "この選択内では追加確認箇所は見つかりませんでした。現在のチェーン状態の保証ではありません。" :
@@ -326,7 +328,7 @@ export function mountReportSetPanel({ document, parent,
     nodes.inspect.disabled = value.busy || !value.result;
     for (const name of ["ack", "notes", "short-addresses"]) nodes[name].disabled = value.busy || !value.result;
     for (const name of ["check-agent", "check-severity", "check-search"]) nodes[name].disabled = value.busy || !value.result;
-    for (const name of ["json", "html", "csv", "checks-csv"]) nodes[name].disabled = value.busy || !value.result || !nodes.ack.checked || (name === "checks-csv" && !diagnosticQueryValid);
+    for (const name of ["json", "html", "csv", "checks-csv", "checks-json"]) nodes[name].disabled = value.busy || !value.result || !nodes.ack.checked || (name.startsWith("checks-") && !diagnosticQueryValid);
     showChoices();
   }
 
@@ -347,9 +349,9 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes.apply, "click", () => { void controller.applyReview(); });
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
-  for (const format of ["json", "html", "csv", "checks-csv"]) {
+  for (const format of ["json", "html", "csv", "checks-csv", "checks-json"]) {
     listen(nodes[format], "click", () => { void controller.exportFile(format, nodes.ack.checked, download,
-      { includeNotes: nodes.notes.checked, shortAddresses: nodes["short-addresses"].checked }, format === "checks-csv" ? checkQuery() : undefined); });
+      { includeNotes: nodes.notes.checked, shortAddresses: nodes["short-addresses"].checked }, format.startsWith("checks-") ? checkQuery() : undefined); });
   }
   listen(nodes.file, "change", () => {
     const file = nodes.file.files?.[0];

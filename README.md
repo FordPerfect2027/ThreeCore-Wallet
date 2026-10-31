@@ -517,6 +517,8 @@ The reconciliation and period-report screens can also save every filtered event 
 
 Saved report-set checklists have a separate [offline export command](docs/REPORT_CHECKLIST_EXPORT_CLI_2026-10-31.md). It reproduces the browser CSV with token, severity and search filters while retaining the unfiltered summary, including when no checks match.
 
+The [structured check-detail export](docs/REPORT_CHECK_DETAILS_2026-10-31.md) includes contradictory stored values and hashes plus the canonical source digest. Save it from the screen or use `--format details` with the offline command. Keep the original report-set JSON separately for reproduction.
+
 
 ### Resumable historical period collection (local development)
 

@@ -6,7 +6,7 @@ import { validateSetSelection, validateReportSet, createReportSet, inspectSetSou
 import { analyzeReportSet } from "./report-set-engine.js";
 import { prepareReportSetFile, readReportSetFile } from "./report-set-file.js";
 import { diagnosticQuery } from "./report-set-diagnostics.js";
-import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV } from "./report-set-export.js";
+import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -175,14 +175,15 @@ export function createReportSetController({ storage, onChange = () => {},
       token = ++generation;
       if (!input) periodFail("PERIOD_SET_NO_RESULT");
       if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
-      if (!["json", "html", "csv", "checks-csv"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      if (!["json", "html", "csv", "checks-csv", "checks-json"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
       const snapshot = input, options = validateSetExportOptions(optionsValue);
-      const query = format === "checks-csv" ? diagnosticQuery(queryValue) : null;
+      const query = format.startsWith("checks-") ? diagnosticQuery(queryValue) : null;
       if (!sameGeneration(token)) return false;
       review = null;
       return await run("exporting", async (same, signal) => {
         const file = format === "json" ? await prepareFile(snapshot, { signal }) : format === "html" ?
-          reportSetHTML(snapshot, options) : format === "checks-csv" ? reportSetDiagnosticsCSV(snapshot, query, options) : reportSetCSV(snapshot, options);
+          reportSetHTML(snapshot, options) : format === "checks-csv" ? reportSetDiagnosticsCSV(snapshot, query, options) :
+          format === "checks-json" ? await prepareReportSetChecksFile(snapshot, query, options, { signal }) : reportSetCSV(snapshot, options);
         if (!same()) return null;
         const delivery = deliver(file);
         if (observeCallbackResult(delivery) !== "synchronous") {

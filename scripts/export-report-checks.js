@@ -5,12 +5,13 @@ import { readBoundedVaultPath } from "./check-transfer-vault.js";
 import { decodeReportSetFile, REPORT_SET_FILE_LIMIT } from "../src/report-set-file.js";
 import { diagnosticQuery, querySetDiagnostics } from "../src/report-set-diagnostics.js";
 import { validateSetExportOptions } from "../src/report-set-model.js";
-import { reportSetDiagnosticsCSV } from "../src/report-set-export.js";
+import { reportSetDiagnosticsCSV, prepareReportSetChecksFile } from "../src/report-set-export.js";
 import { analyzeReportSet } from "../src/report-set-engine.js";
 
-const USAGE = "Usage: node scripts/export-report-checks.js file.json [--agent all|DAT|EMA|CAWELON] [--severity all|conflict|missing|review|information] [--search text] [--format csv|json] [--include-notes] [--full-addresses] [--require-continuous]\n" +
+const USAGE = "Usage: node scripts/export-report-checks.js file.json [--agent all|DAT|EMA|CAWELON] [--severity all|conflict|missing|review|information] [--search text] [--format csv|json|details] [--include-notes] [--full-addresses] [--require-continuous]\n" +
   "Exports all matching checks plus an unfiltered summary, including on zero matches. No network or input-file writes.\n" +
   "Literal search includes check/report IDs, recorded hashes and exact stored integer values. Check IDs are local to the selected set.\n" +
+  "The details format saves structured check observations and the source digest; it includes raw stored values and hashes.\n" +
   "Unencrypted viewing output, not a restorable backup. Notes are omitted and structured addresses shortened by default; names/search may still contain addresses.\n";
 const fail = () => { throw Error("REPORT_CHECKS_CLI_ARGUMENTS"); };
 export function parseReportCheckArgs(args) {
@@ -25,7 +26,7 @@ export function parseReportCheckArgs(args) {
     flags.set(flag, args[i++]);
   }
   const format = flags.get("--format") ?? "csv";
-  if (!["csv", "json"].includes(format)) fail();
+  if (!["csv", "json", "details"].includes(format)) fail();
   const query = diagnosticQuery({ agent: flags.get("--agent") ?? "all", severity: flags.get("--severity") ?? "all", search: flags.get("--search") ?? "" });
   const options = validateSetExportOptions({ includeNotes: flags.has("--include-notes"), shortAddresses: !flags.has("--full-addresses") });
   return Object.freeze({ path: args[0], query, options, format, requireContinuous: flags.has("--require-continuous") });
@@ -35,19 +36,22 @@ async function inspectReportChecks(request) {
   const decoded = await decodeReportSetFile(await readBoundedVaultPath(request.path, REPORT_SET_FILE_LIMIT));
   const file = reportSetDiagnosticsCSV(decoded.input, request.query, request.options);
   const found = querySetDiagnostics(decoded.input, request.query), report = analyzeReportSet(decoded.input);
-  return Object.freeze({ schema: "threecore.filtered-report-checks.v1", sourcePayloadDigest: decoded.digest,
+  const result = Object.freeze({ schema: "threecore.filtered-report-checks.v1", sourcePayloadDigest: decoded.digest,
     checksumVerified: true, authenticated: false, encrypted: false, historicalOnly: true,
     liveChainRechecked: false, automaticRepairs: false, restorable: false,
     query: file.query, options: file.options, total: file.total, matched: file.matched, scope: "all-matches", summaryRow: true,
     summary: Object.freeze({ counts: found.counts, allContinuous: report.allContinuous, conclusionsUseAllSourceEvidence: true }), csv: file.text });
+  const output = request.format === "details" ? (await prepareReportSetChecksFile(decoded.input, request.query, request.options)).text :
+    request.format === "csv" ? result.csv : JSON.stringify(result, null, 2) + "\n";
+  return Object.freeze({ output, allContinuous: report.allContinuous });
 }
 
 export async function runReportCheckExport(args, { stdout = process.stdout, stderr = process.stderr } = {}) {
   try {
     if (Array.isArray(args) && args.length === 1 && args[0] === "--help") { stdout.write(USAGE); return 0; }
     const request = parseReportCheckArgs(args), result = await inspectReportChecks(request);
-    stdout.write(request.format === "csv" ? result.csv : JSON.stringify(result, null, 2) + "\n");
-    if (request.requireContinuous && !result.summary.allContinuous) {
+    stdout.write(result.output);
+    if (request.requireContinuous && !result.allContinuous) {
       stderr.write("REPORT_CHECKS_CLI_NOT_CONTINUOUS\n"); return 2;
     }
     return 0;

@@ -29,6 +29,7 @@ const ERRORS = Object.freeze({
   PERIOD_SET_BUSY: "確認セットの処理中です。完了を待つか中止してください。",
   PERIOD_SET_SIZE: "確認セットの上限は12報告・64 MiBです。",
   PERIOD_SET_FILE_SIZE: "ファイルの大きさが不正です。96 MiBまでのJSONを選んでください。",
+  PERIOD_SET_CHECKS_SIZE: "確認箇所JSONが4 MiBを超えました。トークンや種類で絞り込んでください。",
   PERIOD_SET_FILE_SCHEMA: "確認セット用のバックアップJSONではありません。",
   PERIOD_SET_ACK: "保存される情報の内容を確認してチェックを入れてください。",
   PERIOD_SET_EXPORT_OPTIONS: "説明用ファイルの出力設定が不正です。",

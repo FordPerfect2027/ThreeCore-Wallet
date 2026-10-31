@@ -400,4 +400,17 @@ export function registerReportSetUITests(test) {
       f.set("check-search", "", "input"); assert(f.q("check-list").children.length === 3);
     } finally { f.dispose(); }
   });
+
+  test("report set: structured check download retains the source digest and raw observations", async () => {
+    const f = fixture({ initial: sequenceHistory([0n, 0n]) });
+    try {
+      await f.accept(); const original = f.mounted.getState().input;
+      assert(f.q("checks-json").disabled); f.check("ack"); f.set("check-severity", "conflict");
+      f.click("checks-json"); await f.settled(); const data = JSON.parse(f.files[0].text);
+      assert(data.items.some(item => item.observations.length > 0)); assert(data.options.includeNotes === false);
+      assert(data.sourcePayloadDigest === (await prepareReportSetFile(original)).digest);
+      assert(data.restorable === false && f.mounted.getState().input === original);
+      f.set("check-search", "x".repeat(101), "input"); assert(f.q("checks-json").disabled);
+    } finally { f.dispose(); }
+  });
 }

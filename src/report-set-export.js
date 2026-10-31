@@ -1,6 +1,8 @@
-import { validateReportSet, validateSetExportOptions } from "./report-set-model.js";
+import { validateReportSet, validateSetExportOptions, freezeSet } from "./report-set-model.js";
+import { periodFail } from "./period-plan.js";
+import { prepareReportSetFile } from "./report-set-file.js";
 import { analyzeReportSet } from "./report-set-engine.js";
-import { reportSetDiagnostics, querySetDiagnostics, diagnosticText } from "./report-set-diagnostics.js";
+import { reportSetDiagnostics, querySetDiagnostics, diagnosticQuery, diagnosticText } from "./report-set-diagnostics.js";
 import { escapeReportHTML } from "./period-report-export.js";
 import { reportStatusText } from "./period-report-view.js";
 import { SET_LIMITATION, SET_SEGMENTS, setIssueText, setStatusText, shortSetAddress } from "./report-set-view.js";
@@ -117,4 +119,29 @@ export function reportSetDiagnosticsCSV(value, queryValue = {}, optionsValue = {
   const text = "\ufeff" + [columns, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
   return Object.freeze({ ...resultFile(text, "csv", "text/csv"), filename: "ThreeCore-report-set-checks.csv",
     query: found.query, options, total: found.count, matched: found.matched, summaryRow: true, scope: "all-matches" });
+}
+
+export const REPORT_SET_CHECKS_SCHEMA = "threecore.report-set-check-details.v1";
+export const REPORT_SET_CHECKS_LIMIT = 4 * 1024 * 1024;
+
+/** A bounded, source-linked viewing artifact. Original evidence is kept separately. */
+export async function prepareReportSetChecksFile(value, queryValue = {}, optionsValue = {}, fileOptions = {}) {
+  const input = validateReportSet(value), query = diagnosticQuery(queryValue), options = validateSetExportOptions(optionsValue);
+  const source = await prepareReportSetFile(input, fileOptions);
+  const found = querySetDiagnostics(input, query), report = analyzeReportSet(input);
+  const byId = new Map(input.entries.map(entry => [entry.id, entry]));
+  const items = found.items.map(item => ({ ...item,
+    account: item.account === null ? null : shortSetAddress(item.account, options.shortAddresses),
+    rangeNotation: item.fromBlock === null ? null : item.fromBlock === item.toBlock ? "single-block" : "(start,end]",
+    notes: options.includeNotes ? item.reportIds.map(id => ({ reportId: id, text: byId.get(id).note })) : [],
+  }));
+  const payload = freezeSet({ schema: REPORT_SET_CHECKS_SCHEMA, sourcePayloadDigest: source.digest, digestAlgorithm: "SHA-256",
+    query, options, total: found.count, matched: found.matched, scope: "all-matches",
+    summary: { counts: found.counts, allContinuous: report.allContinuous, conclusionsUseAllSourceEvidence: true },
+    items, historicalOnly: true, liveChainRechecked: false, automaticRepairs: false,
+    authenticated: false, encrypted: false, restorable: false, containsOriginalEvidence: false });
+  const text = JSON.stringify(payload, null, 2) + "\n";
+  if (new TextEncoder().encode(text).byteLength > REPORT_SET_CHECKS_LIMIT) periodFail("PERIOD_SET_CHECKS_SIZE");
+  return Object.freeze({ ...resultFile(text, "json", "application/json"), filename: "ThreeCore-report-set-checks.json",
+    sourcePayloadDigest: source.digest, query, options, total: found.count, matched: found.matched, scope: "all-matches" });
 }
