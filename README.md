@@ -1,6 +1,6 @@
 # ThreeCore Wallet
 
-**October 31, 2026 continuation checkpoint — 466 of 600 completed items:** [The evidence ledger](docs/DEVELOPMENT_CONTINUATION_600_2026-10-29.md) records completed, evidenced changes. [The latest fixed-source validation](docs/IMMUTABLE_REPORT_ANALYSIS_2026-10-31.md) passed 15,052 wallet tests with zero failures, skips or cancellations at 77e103a, plus 876 native Chrome UI cases. Six repeated-analysis outputs stayed byte-identical while local warm-call timings improved. Recent work adds missing-range coverage, ten-window proposals, offline reproduction and unread period-draft handoff. This is a local development checkpoint; it does not publish or deploy changes.
+**October 31, 2026 continuation checkpoint — 469 of 600 completed items:** [The evidence ledger](docs/DEVELOPMENT_CONTINUATION_600_2026-10-29.md) records completed, evidenced changes. [The latest fixed-source validation](docs/HISTORY_COVERAGE_EXPORT_2026-10-31.md) passed 15,097 wallet tests with zero failures, skips or cancellations at 5c0a5a5, plus 879 native Chrome UI cases. Recent work adds replacement comparisons, saved-comparison verification and source-linked history-coverage exports. This is a local development checkpoint; it does not publish or deploy changes.
 
 **October 30, 2026 local continuation:** [Progress and completed work](docs/DEVELOPMENT_CONTINUATION_600_2026-10-29.md) cover comparison collections, expected-result checks, record search, combined recovery and saved-report review. [Capacity findings](docs/OPERATION_CAPACITY_2026-10-30.md) include individual expectation export without deleting cases; its browser capacity check now confirms 600-record export, individual baseline saving and exact original-session restoration. [RPC diagnostic hardening](docs/RPC_DIAGNOSTIC_HARDENING_2026-10-30.md) adds bounded responses, deadline handling and stalled-body cleanup. [Public diagnostic reads](docs/PUBLIC_DIAGNOSTIC_READS_2026-10-30.md), [liquidity input checks](docs/LIQUIDITY_INPUT_VALIDATION_2026-10-30.md), [state-fetch cancellation](docs/STATE_FETCH_CANCELLATION_2026-10-30.md) and [canonical observations](docs/PUBLIC_CANONICAL_READS_2026-10-30.md) record the subsequent local work and its validation scope.
 
@@ -530,6 +530,8 @@ A displayed set can also [export one original period report](docs/REPORT_SET_SOU
 The timeline separately displays [saved Transfer-query coverage and missing ranges](docs/REPORT_HISTORY_COVERAGE_2026-10-31.md), without counting duplicate windows twice or treating planned ranges as acquired evidence.
 
 The same [ten-window missing-history proposals can be reproduced offline](docs/MISSING_HISTORY_QUEUE_CLI_2026-10-31.md) from a checksummed source file, with explicit account/chain context and source-wide findings retained.
+
+Saved, pending and unplanned history ranges can also be [exported with their original-record references](docs/HISTORY_COVERAGE_EXPORT_2026-10-31.md) as source-linked JSON or CSV, with exact offline reproduction.
 
 A selected missing window or contiguous page can become a [new unread period draft](docs/MISSING_HISTORY_DRAFT_2026-10-31.md), ready for the existing import/review workflow without starting any provider reads.
 

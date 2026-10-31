@@ -1,0 +1,195 @@
+{
+  "source": "5c0a5a5",
+  "synthetic": true,
+  "captureEnvironment": "Node shared screen export helper versus standalone CLI bytes; native UI download callback tested separately",
+  "rows": [
+    {
+      "name": "partial-short.json",
+      "sourceFile": "partial-source.json",
+      "format": "json",
+      "shortAddresses": true,
+      "bytes": 7303,
+      "sourcePayloadDigest": "3016ab5ba4565d48987714826098ec7a91dbc4d2236732e250bfdd2ffb9e95e5",
+      "groupCount": 3,
+      "allContinuous": false,
+      "exactSharedFileMatch": true,
+      "sourceUnchanged": true,
+      "groups": [
+        {
+          "id": "DAT-1",
+          "recorded": "0",
+          "pending": "12",
+          "unplanned": "0",
+          "review": "0"
+        },
+        {
+          "id": "EMA-1",
+          "recorded": "5",
+          "pending": "7",
+          "unplanned": "0",
+          "review": "5"
+        },
+        {
+          "id": "CAWELON-1",
+          "recorded": "12",
+          "pending": "0",
+          "unplanned": "0",
+          "review": "0"
+        }
+      ]
+    },
+    {
+      "name": "partial-short.csv",
+      "sourceFile": "partial-source.json",
+      "format": "csv",
+      "shortAddresses": true,
+      "bytes": 6573,
+      "sourcePayloadDigest": "3016ab5ba4565d48987714826098ec7a91dbc4d2236732e250bfdd2ffb9e95e5",
+      "groupCount": 3,
+      "allContinuous": false,
+      "exactSharedFileMatch": true,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "demo-short.json",
+      "sourceFile": "demo-source.json",
+      "format": "json",
+      "shortAddresses": true,
+      "bytes": 50809,
+      "sourcePayloadDigest": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e",
+      "groupCount": 3,
+      "allContinuous": false,
+      "exactSharedFileMatch": true,
+      "sourceUnchanged": true,
+      "groups": [
+        {
+          "id": "DAT-1",
+          "recorded": "60",
+          "pending": "0",
+          "unplanned": "0",
+          "review": "19"
+        },
+        {
+          "id": "EMA-1",
+          "recorded": "60",
+          "pending": "0",
+          "unplanned": "0",
+          "review": "19"
+        },
+        {
+          "id": "CAWELON-1",
+          "recorded": "53",
+          "pending": "7",
+          "unplanned": "0",
+          "review": "24"
+        }
+      ]
+    },
+    {
+      "name": "demo-short.csv",
+      "sourceFile": "demo-source.json",
+      "format": "csv",
+      "shortAddresses": true,
+      "bytes": 44977,
+      "sourcePayloadDigest": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e",
+      "groupCount": 3,
+      "allContinuous": false,
+      "exactSharedFileMatch": true,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "large-gap-short.json",
+      "sourceFile": "large-gap-source.json",
+      "format": "json",
+      "shortAddresses": true,
+      "bytes": 20374,
+      "sourcePayloadDigest": "ca761f5895ee29304260452b65aea1ddcf26bd3ecc4c305e83ac1523a645368a",
+      "groupCount": 3,
+      "allContinuous": false,
+      "exactSharedFileMatch": true,
+      "sourceUnchanged": true,
+      "groups": [
+        {
+          "id": "DAT-1",
+          "recorded": "24",
+          "pending": "0",
+          "unplanned": "9007199254740999",
+          "review": "0"
+        },
+        {
+          "id": "EMA-1",
+          "recorded": "24",
+          "pending": "0",
+          "unplanned": "9007199254740999",
+          "review": "0"
+        },
+        {
+          "id": "CAWELON-1",
+          "recorded": "24",
+          "pending": "0",
+          "unplanned": "9007199254740999",
+          "review": "0"
+        }
+      ]
+    },
+    {
+      "name": "large-gap-short.csv",
+      "sourceFile": "large-gap-source.json",
+      "format": "csv",
+      "shortAddresses": true,
+      "bytes": 17306,
+      "sourcePayloadDigest": "ca761f5895ee29304260452b65aea1ddcf26bd3ecc4c305e83ac1523a645368a",
+      "groupCount": 3,
+      "allContinuous": false,
+      "exactSharedFileMatch": true,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "demo-full.json",
+      "sourceFile": "demo-source.json",
+      "format": "json",
+      "shortAddresses": false,
+      "bytes": 50960,
+      "sourcePayloadDigest": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e",
+      "groupCount": 3,
+      "allContinuous": false,
+      "exactSharedFileMatch": true,
+      "sourceUnchanged": true,
+      "groups": [
+        {
+          "id": "DAT-1",
+          "recorded": "60",
+          "pending": "0",
+          "unplanned": "0",
+          "review": "19"
+        },
+        {
+          "id": "EMA-1",
+          "recorded": "60",
+          "pending": "0",
+          "unplanned": "0",
+          "review": "19"
+        },
+        {
+          "id": "CAWELON-1",
+          "recorded": "53",
+          "pending": "7",
+          "unplanned": "0",
+          "review": "24"
+        }
+      ]
+    },
+    {
+      "name": "demo-full.csv",
+      "sourceFile": "demo-source.json",
+      "format": "csv",
+      "shortAddresses": false,
+      "bytes": 47375,
+      "sourcePayloadDigest": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e",
+      "groupCount": 3,
+      "allContinuous": false,
+      "exactSharedFileMatch": true,
+      "sourceUnchanged": true
+    }
+  ]
+}
