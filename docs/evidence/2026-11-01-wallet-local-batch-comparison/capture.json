@@ -1,0 +1,151 @@
+{
+  "source": "122e1ea",
+  "provenance": [
+    {
+      "path": "before/same.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    },
+    {
+      "path": "before/format.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    },
+    {
+      "path": "before/changed.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    },
+    {
+      "path": "before/different.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    },
+    {
+      "path": "before/omitted.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    },
+    {
+      "path": "before/unverified.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/auxiliary.json",
+      "sha256": "73ff18c17d8bf28dd9c2ac3c4341989d6935f545017d9bd46ad9c4c9b3d2dfe6"
+    },
+    {
+      "path": "before/=escaped.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    },
+    {
+      "path": "after/same.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    },
+    {
+      "path": "after/format.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/after-format-history.json",
+      "sha256": "90391c8d2c8498e2e4fff5af2fe514cb706a7bd1a1211baab1776418cdbb74ad"
+    },
+    {
+      "path": "after/changed.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/after-history.json",
+      "sha256": "4be81406af89bb689dbc0c8e304e97d783f936bd8ae5bdb7279f1ad2860e37ca"
+    },
+    {
+      "path": "after/different.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/after-report.json",
+      "sha256": "712f800dcfe01bbfdd180d289c863f11a539c28a5e3e53f39a593a5216d5be15"
+    },
+    {
+      "path": "after/added.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    },
+    {
+      "path": "after/unverified.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/auxiliary.json",
+      "sha256": "73ff18c17d8bf28dd9c2ac3c4341989d6935f545017d9bd46ad9c4c9b3d2dfe6"
+    },
+    {
+      "path": "after/=escaped.json",
+      "from": "docs/evidence/2026-11-01-wallet-batch-comparison/before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    }
+  ],
+  "captures": [
+    {
+      "script": "compare-wallet-saved-batches.js",
+      "args": [
+        "before/SHA256SUMS.txt",
+        "after/SHA256SUMS.txt"
+      ],
+      "exit": 2,
+      "output": "comparison.json"
+    },
+    {
+      "script": "compare-wallet-saved-batches.js",
+      "args": [
+        "before/SHA256SUMS.txt",
+        "after/SHA256SUMS.txt",
+        "--format",
+        "csv"
+      ],
+      "exit": 2,
+      "output": "comparison.csv"
+    },
+    {
+      "script": "verify-wallet-saved-batch-comparison.js",
+      "args": [
+        "before/SHA256SUMS.txt",
+        "after/SHA256SUMS.txt",
+        "comparison.json"
+      ],
+      "exit": 0,
+      "output": "review.json"
+    },
+    {
+      "script": "verify-wallet-saved-batch-comparison.js",
+      "args": [
+        "before/SHA256SUMS.txt",
+        "after/SHA256SUMS.txt",
+        "tampered-comparison.json"
+      ],
+      "exit": 2,
+      "output": "tampered-review.json"
+    },
+    {
+      "script": "compare-wallet-saved-batches.js",
+      "args": [
+        "before/ORIGINALS.txt",
+        "before/ORIGINALS.txt"
+      ],
+      "exit": 0,
+      "output": "identical-comparison.json"
+    },
+    {
+      "script": "verify-wallet-saved-batch-comparison.js",
+      "args": [
+        "before/ORIGINALS.txt",
+        "before/ORIGINALS.txt",
+        "identical-comparison.json"
+      ],
+      "exit": 0,
+      "output": "identical-review.json"
+    },
+    {
+      "script": "verify-wallet-saved-batch-comparison.js",
+      "args": [
+        "after/SHA256SUMS.txt",
+        "before/SHA256SUMS.txt",
+        "comparison.json"
+      ],
+      "exit": 2,
+      "output": "reversed-review.json"
+    }
+  ],
+  "originalsUnchanged": true,
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "lastNativeSource": "2fab027",
+  "lastNativeCases": 938
+}
