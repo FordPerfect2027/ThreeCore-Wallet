@@ -14,7 +14,7 @@ import { assessHistoryMerge, describeHistoryMergeAssessment } from "../src/histo
 import { prepareHistoryPrune } from "../src/history-query.js";
 
 /** Local, card-scoped history. No automatic persistence or provider access. */
-export function mountHistoryPanel({ document, parent, agent, getSnapshot, getReport, download = offerHistoryDownload, onReuseTokens = null }) {
+export function mountHistoryPanel({ document, parent, agent, getSnapshot, getReport, download = offerHistoryDownload, onReuseTokens = null, onUseBaseline = null }) {
   const history = createPortfolioHistory();
   const recovery = createHistoryRecovery(history);
   const importer = createHistoryImportController({
@@ -185,6 +185,13 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     status.textContent = "選択した1記録を表示しています。現在の確認結果・履歴・接続は変更していません。";
     if (current(id)) { try { details.focus?.(); } catch {} }
   });
+  const useBaseline = button("history-use-baseline", "選択した履歴を残高比較の元に使う", id => {
+    const selected = selectedAfter(); if (typeof onUseBaseline !== "function") throw Error("Comparison unavailable");
+    const receipt = onUseBaseline(selected.snapshot), kind = observeCallbackResult(receipt);
+    if (!current(id) || history.state().revision !== selected.state.revision || last.value !== selected.value) return;
+    if (kind !== "synchronous" || receipt !== true) { status.textContent = "比較元への準備を確認できませんでした。上の残高比較欄で、対象とブロックを確認してください。"; return; }
+    status.textContent = "選んだ履歴を上の残高比較欄へ準備しました。比較ボタンで確認してください。今回の結果・履歴は変更していません。";
+  });
   const saveComparison = button("history-save-comparison", "この2件の比較を資料付きで保存", id => {
     const selected = completedComparison;
     const matches = () => current(id) && selected && completedComparison === selected && history.state().revision === selected.revision && first.value === selected.before && last.value === selected.after;
@@ -260,6 +267,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     first.disabled = last.disabled = compare.disabled = remove.disabled = saveRecord.disabled = showRecord.disabled = filterIdentity.disabled = !state.size;
     previous.disabled = state.size < 2;
     reuseTokens.disabled = !state.size || typeof onReuseTokens !== "function";
+    useBaseline.disabled = !state.size || typeof onUseBaseline !== "function";
     clear.disabled = !state.size;
     recoveryPanel?.refresh();
   }
@@ -275,7 +283,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   listen(json, "input", () => { filesPanel?.invalidate(); cancelReview(); status.textContent = "JSONが変わりました。再度プレビューしてください。"; });
   listen(replace, "change", () => { filesPanel?.invalidate(); cancelReview(); });
   section.append(heading, note, addCurrent, addReport, status, list,
-    label("前の記録", first), label("後の記録・削除対象", last), showRecord, filterIdentity, compare, previous, saveComparison, remove, saveRecord, reuseTokens, timeline,
+    label("前の記録", first), label("後の記録・削除対象", last), showRecord, useBaseline, filterIdentity, compare, previous, saveComparison, remove, saveRecord, reuseTokens, timeline,
     details, exportButton, label("保存・読み込み用の履歴JSON", json),
     label("既存履歴を置き換える（未選択なら追加）", replace), previewButton, previewText, apply,
     label("このカードの全履歴を消去することを確認", clearConfirm), clear);

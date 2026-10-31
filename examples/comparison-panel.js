@@ -1,4 +1,4 @@
-import { decodePortfolioReport, validatePortfolioSnapshot } from "../src/portfolio-report.js";
+import { decodePortfolioReport, validatePortfolioSnapshot, encodePortfolioReport } from "../src/portfolio-report.js";
 import { describePortfolioComparison, encodePortfolioComparisonReport, decodePortfolioComparisonReport, PORTFOLIO_COMPARISON_REPORT_LIMIT } from "../src/portfolio-comparison.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { readSecurityFileText } from "../src/security-file.js";
@@ -137,6 +137,24 @@ export function mountComparisonPanel({ document, parent, download = offerWalletD
   clear.addEventListener("click", clearInput);
   reset();
   return Object.freeze({
+    stageBaseline(snapshot) {
+      if (disposed) return false;
+      const id = ++generation; retireRead(); reset();
+      try {
+        const captured = validatePortfolioSnapshot(snapshot), text = encodePortfolioReport(captured);
+        if (!owns(id)) return false;
+        if (target) describePortfolioComparison(captured, target);
+        if (!owns(id) || new TextEncoder().encode(text).byteLength > 65536) return false;
+        baseline.value = text;
+        reset(target ? "選んだ履歴を比較元へ準備しました。「保存記録と比較する」で確認してください。" : "選んだ履歴を比較元へ準備しました。比較先の結果を先に表示してください。");
+        try { baseline.focus?.(); } catch {}
+        return owns(id) && baseline.value === text;
+      } catch (error) {
+        if (!owns(id)) return false; const code = readOwnErrorCode(error);
+        if (owns(id)) reset(typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code] : "履歴を比較元にできませんでした。記録を確認してください。元の入力は保持しています。");
+        return false;
+      }
+    },
     setTarget(snapshot) {
       if (disposed) return;
       const id = ++generation;
