@@ -2,9 +2,12 @@ import { offerWalletDownload } from "./export-download.js";
 import { readSecurityFileBytes, readFormatFileName } from "../src/security-file.js";
 import { prepareWalletSavedBundle, reviewWalletSavedBundle, walletSavedBundleSourceFile, walletSavedBundleReviewText, WALLET_SAVED_BUNDLE_LIMIT, WALLET_SAVED_BUNDLE_SOURCE_LIMIT, inspectWalletSavedText, compareWalletSavedInspections, walletSavedComparisonText, reviewWalletSavedComparison, walletSavedComparisonReviewText, WALLET_SAVED_COMPARISON_REVIEW_LIMIT, walletSavedInspectionText, walletSavedInspectionErrorText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
 import { walletFileReadService } from "../src/file-read-service.js";
-import { describeFileReadStatus } from "../src/file-read-status.js";
+import { describeFileReadStatus, describeFileReadError } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
+import { boundedUtf8Length } from "../src/security-json.js";
+import { validateWalletSavedBatchSelection, inspectWalletSavedTextBatch, encodeWalletSavedTextBatch,
+  walletSavedTextBatchManifest, WALLET_SAVED_BROWSER_BATCH_LIMITS } from "../src/file-read-status.js";
 
 /** Aggregate file-read protection and a separate, read-only saved-file guide. */
 export function mountFileReadPanel({ document, parent, service = walletFileReadService }) {
@@ -30,6 +33,7 @@ export function mountFileReadPanel({ document, parent, service = walletFileReadS
   action.setAttribute("role", "status");
   parent.append(section);
   const savedGuide = mountSavedFileInspectionPanel({ document, parent: section });
+  const savedBatch = mountSavedFileBatchPanel({ document, parent: section });
   let disposed = false;
   let observing = true, renderGeneration = 0, actionGeneration = 0;
   let unsubscribe = () => {};
@@ -73,6 +77,7 @@ export function mountFileReadPanel({ document, parent, service = walletFileReadS
     consumeCleanup(() => unsubscribe());
     stop.removeEventListener("click", cancel);
     savedGuide.dispose();
+    savedBatch.dispose();
     section.remove();
   } });
 }
@@ -276,6 +281,108 @@ async function readSavedGuideText(file, options) {
   const bytes = await readSecurityFileBytes(file, options);
   try { return new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes); }
   catch { const error = new Error("FILE_ENCODING"); error.code = "FILE_ENCODING"; throw error; }
+}
+
+/** Separate file-only inventory. No restore, account or storage callbacks exist. */
+export function mountSavedFileBatchPanel({ document, parent, readText = readSavedGuideText,
+  inspect = inspectWalletSavedTextBatch, subtle = globalThis.crypto?.subtle,
+  download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
+  const host = document.createElement("details"); host.className = "saved-file-batch"; parent.append(host);
+  let disposed = false, generation = 0, selection = null, active = null, result = null;
+  const cleanup = [], nodes = {};
+  function make(tag, name, text, target = host) { const element = document.createElement(tag); element.className = "saved-file-batch-" + name; if (text !== undefined) element.textContent = text; target.append(element); nodes[name] = element; return element; }
+  function button(name, text) { const element = make("button", name, text); element.type = "button"; return element; }
+  function listen(node, event, callback) { node.addEventListener(event, callback); cleanup.push(() => node.removeEventListener(event, callback)); }
+  const current = id => !disposed && id === generation;
+  const errorText = error => describeFileReadError(error, "1件16 MiB、合計64 MiB") ?? walletSavedInspectionErrorText(error);
+  make("summary", "heading", "複数の保存ファイルをまとめて確認する");
+  make("p", "intro", "期間・保存一覧・報告・報告履歴・確認セットのJSONを1〜20個選び、確認を開始します。1件16 MiB、合計64 MiBまでです。元記録の形式と内部のチェックサムを調べます。履歴への追加や復元は行いません。");
+  const label = make("label", "file-label", "まとめて確認する元のJSON"), file = make("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json"; file.multiple = true;
+  const start = button("start", "選んだファイルをまとめて確認"), stop = button("stop", "一括確認を中止"), clear = button("clear", "選択と確認結果をクリア");
+  const status = make("p", "status", "ファイルを選び、開始するまで読み込みません。"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  const notice = make("p", "notice"), selectionNotice = createFileSelectionNotice(file, notice), summary = make("p", "summary");
+  const table = make("table", "table"); make("caption", "caption", "選択した保存ファイルの確認結果", table);
+  const header = make("thead", "thead", undefined, table), heading = make("tr", "head-row", undefined, header);
+  for (const text of ["ファイル名", "確認結果", "開く場所・確認範囲", "内容のSHA-256"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); heading.append(cell); }
+  const rows = make("tbody", "rows", undefined, table);
+  const ackLabel = make("label", "ack-label", "ファイル名・確認結果・照合値を、暗号化せずPCに保存します"), ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
+  const save = button("save", "一括確認の控えをJSON保存"), manifest = button("manifest", "選んだ元資料の照合値一覧を保存");
+  make("p", "limits", "照合値は今回選んだ内容から計算します。以前の一覧や外部の正解値との比較はしていません。補助資料は形式の案内だけです。この控えに元記録は含まれず、復元には使えません。元ファイルと同じ名前のまま一緒に保管してください。同じ記録が複数の報告に含まれる場合があります。");
+  const exportStatus = make("p", "export-status"); exportStatus.setAttribute("role", "status"); exportStatus.setAttribute("aria-live", "polite");
+  function buttons() {
+    host.setAttribute("aria-busy", active ? "true" : "false"); start.disabled = disposed || Boolean(active) || !selection;
+    stop.disabled = disposed || !active || active.signal.aborted;
+    ack.disabled = disposed || Boolean(active) || !result;
+    save.disabled = ack.disabled || !ack.checked;
+    manifest.disabled = save.disabled || !result?.complete || result.files.some(row => row.sha256 === null);
+  }
+  function reset() {
+    const id = ++generation, old = active; active = null; selection = null; result = null; ack.checked = false;
+    old?.abort(); if (!current(id)) return id;
+    rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; selectionNotice.clear(); buttons(); return id;
+  }
+  listen(file, "change", () => {
+    if (disposed) return;
+    const offered = file.files, count = offered?.length;
+    if (count === 0) { selectionNotice.noSelection(); return; }
+    const id = reset(); if (!current(id)) return;
+    try {
+      if (!Number.isInteger(count) || count < 1 || count > WALLET_SAVED_BROWSER_BATCH_LIMITS.files) throw Error();
+      const captured = [];
+      for (let i = 0; i < count; i++) { const chosen = offered[i], name = readFormatFileName(chosen, { maxLength: 180, code: "FILE_BATCH_SELECTION", fail: () => { throw Error(); } }), byteLength = chosen.size; observeCallbackResult(byteLength); captured.push({ file: chosen, name, byteLength }); }
+      const checked = validateWalletSavedBatchSelection(captured.map(({ name, byteLength }) => ({ name, byteLength })));
+      if (!current(id)) return; selection = Object.freeze(captured.map((row, i) => Object.freeze({ file: row.file, ...checked.files[i] })));
+      status.textContent = `${selection.length}件を選びました。「選んだファイルをまとめて確認」を押すと読み込みます。`; buttons();
+    } catch { if (current(id)) status.textContent = "名前が重複しないJSONを1〜20個選んでください。1件16 MiB、合計64 MiBまでです。ファイル名に特殊な記号がある場合は名前を変えて選び直してください。"; }
+  });
+  function render(receipt, id) {
+    const labels = { "validated-original": "元記録の形式・内部チェックサムを確認", "declared-only": "補助資料の形式指定だけ", invalid: "元記録を確認できません", "hash-unavailable": "照合値を計算できません", pending: "未確認" };
+    const elements = receipt.files.map(row => {
+      const tr = document.createElement("tr"), scope = row.inspection?.scope;
+      const detail = row.inspection ? row.inspection.destinationMessage + (scope ? ` 元の控えの参照 ${scope.draftReferences}件／未完了 ${scope.incompleteDraftReferences}件。` : " 中身や結論は未検証です。") : row.code ? errorText({ code: row.code }) : "処理していません。";
+      for (const value of [row.name, labels[row.status], detail, row.sha256 ?? "未計算"]) { const cell = document.createElement("td"); cell.textContent = value; tr.append(cell); }
+      return tr;
+    });
+    if (!current(id)) return; result = receipt; rows.replaceChildren(...elements);
+    const s = receipt.summary; summary.textContent = `${s.selected}件中、確認済み ${s.checked}件／未確認 ${s.pending}件。元記録 ${s.validatedOriginals}件、補助資料 ${s.declaredOnly}件、形式・照合値の問題 ${s.invalid + s.hashUnavailable}件。`;
+    status.textContent = receipt.complete ? "一括確認を終えました。各ファイルの結果をご確認ください。" : "一括確認を止めました。確認できた分の控えを保存できます。未確認の行も含みます。";
+  }
+  listen(start, "click", async () => {
+    if (disposed || active || !selection || start.disabled) return;
+    const id = ++generation, chosen = selection, local = new AbortController(); active = local; result = null; ack.checked = false; rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; buttons();
+    try {
+      const texts = []; let totalBytes = 0;
+      for (const entry of chosen) {
+        if (!current(id) || local.signal.aborted) return;
+        status.textContent = `ファイルを読み込んでいます（${texts.length + 1} / ${chosen.length}）：${entry.name}`;
+        const remaining = WALLET_SAVED_BROWSER_BATCH_LIMITS.totalBytes - totalBytes; if (remaining < 1) throw Error();
+        const text = await readText(entry.file, { signal: local.signal, maxBytes: Math.min(remaining, WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes) });
+        if (!current(id) || local.signal.aborted) return;
+        totalBytes += boundedUtf8Length(text, WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes); if (totalBytes > WALLET_SAVED_BROWSER_BATCH_LIMITS.totalBytes) throw Error();
+        texts.push({ name: entry.name, text });
+      }
+      const receipt = await inspect(texts, { signal: local.signal, subtle, onProgress: p => { if (current(id)) status.textContent = `元記録を確認しています（${p.checked} / ${p.selected}件）。`; } });
+      if (current(id)) render(receipt, id);
+    } catch (error) { if (current(id)) status.textContent = local.signal.aborted ? "ファイルの読み込みを中止しました。確認結果はまだありません。" : "まとめて読み込めませんでした。" + errorText(error); }
+    finally { local.abort(); if (current(id)) { active = null; if (!result && local.signal.aborted && status.textContent.startsWith("中止しています")) status.textContent = "ファイルの読み込みを中止しました。確認結果はまだありません。"; buttons(); } }
+  });
+  listen(stop, "click", () => { if (disposed || !active) return; const own = generation, controller = active; controller.abort(); if (!current(own) || active !== controller) return; status.textContent = "中止しています。確認できた分を残します。"; buttons(); });
+  listen(clear, "click", () => { if (disposed) return; const own = reset(); if (!current(own)) return; file.value = ""; status.textContent = "選択と確認結果をクリアしました。"; });
+  listen(ack, "change", () => { if (!disposed) buttons(); });
+  for (const [button, encode, filename, mimeType] of [[save, encodeWalletSavedTextBatch, "ThreeCore-wallet-saved-batch.json", "application/json;charset=utf-8"], [manifest, walletSavedTextBatchManifest, "SHA256SUMS.txt", "text/plain;charset=utf-8"]]) listen(button, "click", () => {
+    if (disposed || active || !result || button.disabled || !ack.checked) return;
+    const own = generation, receipt = result; ack.checked = false; buttons();
+    try {
+      const prepared = Object.freeze({ text: encode(receipt), filename, mimeType, restorable: false, containsOriginalEvidence: false, encrypted: false });
+      const delivered = download(prepared), kind = observeCallbackResult(delivered);
+      if (current(own) && result === receipt) exportStatus.textContent = kind === "synchronous" && delivered !== false ? "確認用の控えの保存処理を開始しました。ダウンロード先をご確認ください。" : "保存を確認できませんでした。結果は保持しています。";
+    } catch { if (current(own) && result === receipt) exportStatus.textContent = "保存を確認できませんでした。結果は保持しています。"; }
+  });
+  buttons();
+  return Object.freeze({ getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
+    if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; ack.checked = false;
+    old?.abort(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
+  } });
 }
 
 /** Owns a portable bundle review; has no wallet, import, or storage capability. */

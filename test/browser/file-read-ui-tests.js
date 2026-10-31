@@ -11,7 +11,8 @@ import { encodeRehearsalScenario } from "/src/operation-rehearsal-scenario.js";
 import { encodeRehearsalScenarioSet,encodeRehearsalScenarioSetReport } from "/src/operation-rehearsal-scenario-set.js";
 import { encodeRehearsalCheckReport } from "/src/operation-rehearsal-check-suite.js";
 import { createFileReadService,walletFileReadService } from "/src/file-read-service.js";
-import { mountFileReadPanel, mountSavedFileInspectionPanel } from "/examples/file-read-panel.js";
+import { mountFileReadPanel, mountSavedFileInspectionPanel, mountSavedFileBatchPanel } from "/examples/file-read-panel.js";
+import { inspectWalletSavedTextBatch } from "/src/file-read-status.js";
 import { prepareReportHistoryFile } from "/src/report-history-file.js";
 import { sampleHistory } from "/test/helpers/report-history-fixtures.js";
 import { createWalletSetupFileReader, prepareWalletSetupFile } from "/src/wallet-setup-file.js";
@@ -64,6 +65,18 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('wallet saved batch: native multiple originals keep auxiliary declarations separate and export compatible hashes',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:prepared=>downloads.push(prepared)}),q=name=>host.querySelector('.saved-file-batch-'+name),key='threecore-saved-batch-'+crypto.randomUUID();localStorage.setItem(key,'unchanged');
+    try{const original=await prepareReportHistoryFile(sampleHistory()),inputs=[['history.json',original.text],['auxiliary.json','{"schema":"threecore.saved-file-inspection.v1","checksumVerified":true}'],['broken.json','{']],files=new DataTransfer();for(const[name,text]of inputs)files.items.add(new File([text],name));host.querySelector('details').open=true;q('file').files=files.files;q('file').dispatchEvent(new Event('change'));assert(panel.getState().result===null,'explicit start');q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy,'batch finished');const result=panel.getState().result;assert(result.summary.validatedOriginals===1&&result.summary.declaredOnly===1&&result.summary.invalid===1);assert(q('rows').children.length===3&&q('rows').textContent.includes('補助資料'));
+      q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.pop().text).externalChecksumsCompared===false);assert(!q('ack').checked);q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('manifest').click();const manifest=downloads.pop();assert(manifest.filename==='SHA256SUMS.txt');for(const[name,text]of inputs){const digest=await crypto.subtle.digest('SHA-256',bytes(text)),hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');assert(manifest.text.includes(hex+'  '+name+'\n'));}assert(localStorage.getItem(key)==='unchanged');q('clear').click();assert(q('save').disabled&&q('rows').children.length===0);
+    }finally{panel.dispose();host.remove();localStorage.removeItem(key);}
+  });
+  test('wallet saved batch: native stop keeps a partial JSON receipt and refuses an incomplete checksum list',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[];let panel;const q=name=>host.querySelector('.saved-file-batch-'+name);
+    panel=mountSavedFileBatchPanel({document,parent:host,download:prepared=>downloads.push(prepared),inspect:(rows,options)=>inspectWalletSavedTextBatch(rows,{...options,onProgress:p=>{options.onProgress(p);if(p.checked===1)q('stop').click();}})});
+    try{const original=await prepareReportHistoryFile(sampleHistory()),files=new DataTransfer();files.items.add(new File([original.text],'first.json'));files.items.add(new File([original.text],'second.json'));host.querySelector('details').open=true;q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);const result=panel.getState().result;assert(result.phase==='cancelled'&&result.summary.checked===1&&result.summary.pending===1);q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));assert(!q('save').disabled&&q('manifest').disabled);q('save').click();assert(JSON.parse(downloads.pop().text).files[1].status==='pending');}
+    finally{panel.dispose();host.remove();}
+  });
   test('rehearsal batch detail: native selection hands exact source and earlier checksum to independent review',async()=>{
     const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
     const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];

@@ -1,7 +1,8 @@
-import { captureOptionalDataFields, sha256Hex } from "./security-data.js";
+import { captureDataArray, captureDataRecord, captureOptionalDataFields, sha256Hex } from "./security-data.js";
 import { readAbortState } from "./security-abort.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
-import { observeCallbackResult } from "./security-callback.js";
+import { observeCallbackResult, consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
 import { FILE_READ_CONCURRENCY, FILE_READ_RESERVED_LIMIT } from "./file-read-policy.js";
 
 const counters = ["active", "waiting", "retained", "reservedBytes", "maxActive", "maxReservedBytes",
@@ -508,4 +509,80 @@ export function walletSavedBundleReviewText(value) {
       "保存された比較結果に不一致があるため、この資料から元記録を取り出す操作はできません。",
     walletSavedComparisonText(value.comparison), walletSavedComparisonReviewText(value.comparisonReview),
     "元記録を取り出しても、ウォレットへの接続・復元・取得開始は行いません。各形式の読込み欄で改めて確認してください。"].join("\n");
+}
+
+export const WALLET_SAVED_BROWSER_BATCH_LIMITS = Object.freeze({ files: 20, fileBytes: 16 * 1024 * 1024, totalBytes: 64 * 1024 * 1024 });
+const browserSavedBatchReceipts = new WeakSet();
+export function validateWalletSavedBatchSelection(input) {
+  try {
+    const names = new Set(); let totalBytes = 0;
+    const files = captureDataArray(input, WALLET_SAVED_BROWSER_BATCH_LIMITS.files, 1).map(input => {
+      const row = captureDataRecord(input, ["name", "byteLength"]);
+      if (typeof row.name !== "string" || row.name.length > 180 || row.name !== row.name.trim() ||
+          !/\.json$/i.test(row.name) || /^[.]/.test(row.name) ||
+          /[/\\:*?"<>|\u0000-\u001f\u007f-\u009f\u200e\u200f\u202a-\u202e\u2066-\u2069]/.test(row.name) ||
+          /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(row.name) ||
+          !Number.isSafeInteger(row.byteLength) || row.byteLength < 1 || row.byteLength > WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes) throw Error();
+      const key = row.name.normalize("NFC").toLowerCase(); if (names.has(key)) throw Error(); names.add(key); totalBytes += row.byteLength;
+      return Object.freeze({ name: row.name, byteLength: row.byteLength });
+    });
+    if (totalBytes > WALLET_SAVED_BROWSER_BATCH_LIMITS.totalBytes) throw Error();
+    return Object.freeze({ files: Object.freeze(files), totalBytes });
+  } catch { savedInspectionFail("FILE_BATCH_SELECTION"); }
+}
+
+/** Text-only inspection: no filesystem, import, wallet or storage capability. */
+export async function inspectWalletSavedTextBatch(input, options = {}) {
+  try { options = captureOptionalDataFields(options, ["subtle", "signal", "timeoutMs", "onProgress"]); }
+  catch { savedInspectionFail("FILE_BATCH_OPTIONS"); }
+  const { subtle = globalThis.crypto?.subtle, signal, timeoutMs = 120000, onProgress } = options;
+  if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000 || (onProgress !== undefined && typeof onProgress !== "function")) savedInspectionFail("FILE_BATCH_OPTIONS");
+  let rows;
+  try { rows = captureDataArray(input, WALLET_SAVED_BROWSER_BATCH_LIMITS.files, 1).map(input => {
+    const row = captureDataRecord(input, ["name", "text"]);
+    return Object.freeze({ name: row.name, text: row.text, byteLength: boundedUtf8Length(row.text, WALLET_SAVED_BROWSER_BATCH_LIMITS.fileBytes) });
+  }); } catch { savedInspectionFail("FILE_BATCH_INPUT"); }
+  const selection = validateWalletSavedBatchSelection(rows.map(({ name, byteLength }) => ({ name, byteLength })));
+  const local = new AbortController(), completed = []; let phase = "complete", timer, subscription;
+  const stop = reason => { if (!local.signal.aborted) { phase = reason; local.abort(); } };
+  const progress = () => consumeCallback(() => onProgress?.(Object.freeze({ selected: rows.length, checked: completed.length })));
+  try {
+    try { subscription = subscribeReadAbort(signal, () => stop("cancelled")); } catch { savedInspectionFail("FILE_BATCH_SIGNAL"); }
+    timer = setTimeout(() => stop("timed-out"), timeoutMs); progress();
+    for (const row of rows) {
+      if (local.signal.aborted) break;
+      let sha256 = null, inspection = null, status = "hash-unavailable", code = null;
+      try { sha256 = await sha256Hex(new TextEncoder().encode(row.text), subtle, { signal: local.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
+      catch { code = "FILE_BATCH_HASH_UNAVAILABLE"; }
+      if (local.signal.aborted) break;
+      if (sha256 !== null) {
+        try {
+          inspection = await inspectWalletSavedText(row.text, { subtle, signal: local.signal, timeoutMs: Math.min(timeoutMs, 30000) });
+          if (inspection.validation === "validated-original" && (inspection.textDigest !== sha256 || !inspection.checksumVerified)) savedInspectionFail("FILE_BATCH_HASH_INCONSISTENT");
+          status = inspection.validation;
+        } catch (error) {
+          status = "invalid"; inspection = null;
+          try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; } catch {}
+          if (typeof code !== "string" || !/^(FILE|PERIOD|TRANSFER|IDENTITY|RECONCILIATION)_[A-Z_]{1,64}$/.test(code)) code = "FILE_INSPECTION_FAILED";
+        }
+      }
+      if (local.signal.aborted) break;
+      completed.push(Object.freeze({ name: row.name, byteLength: row.byteLength, sha256, status, code, inspection })); progress();
+    }
+    const files = rows.map((row, i) => completed[i] ?? Object.freeze({ name: row.name, byteLength: row.byteLength, sha256: null, status: "pending", code: null, inspection: null }));
+    const count = status => files.filter(row => row.status === status).length;
+    const summary = Object.freeze({ selected: files.length, checked: completed.length, pending: count("pending"), validatedOriginals: count("validated-original"), declaredOnly: count("declared-only"), invalid: count("invalid"), hashUnavailable: count("hash-unavailable"), totalBytes: selection.totalBytes });
+    const result = Object.freeze({ schema: "threecore.wallet-saved-browser-batch.v1", readOnly: true, authenticatesOrigin: false, authorizesExecution: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, externalChecksumsCompared: false,
+      phase, complete: phase === "complete" && completed.length === rows.length, allOriginalsValidated: phase === "complete" && summary.validatedOriginals === rows.length, summary, files: Object.freeze(files) });
+    browserSavedBatchReceipts.add(result); return result;
+  } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
+}
+export function encodeWalletSavedTextBatch(result) {
+  if (!browserSavedBatchReceipts.has(result)) savedInspectionFail("FILE_BATCH_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
+}
+export function walletSavedTextBatchManifest(result) {
+  if (!browserSavedBatchReceipts.has(result)) savedInspectionFail("FILE_BATCH_RESULT");
+  if (!result.complete || result.files.some(row => row.sha256 === null)) savedInspectionFail("FILE_BATCH_HASHES_INCOMPLETE");
+  return result.files.map(row => row.sha256 + "  " + row.name).join("\n") + "\n";
 }
