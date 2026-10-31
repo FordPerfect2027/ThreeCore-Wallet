@@ -38,3 +38,5 @@ Persistent boundaries: local development and fictional/read-only operations; no 
 [Diagnostic cancellation lifecycle repair](PUBLIC_DIAGNOSTIC_SIGNAL_REPAIR_2026-10-31.md) closes registration and cleanup failure paths in item 445 at `b56237a`. It passed 107 related cases and adds no new completed item; the count remains 457 / 600.
 
 [Export scope stability repair](EXPORT_SCOPE_STABILITY_REPAIR_2026-10-31.md) retains missing-history and activity export queries across callbacks. 1634 related checks passed at `6bb6fb8`; before/after reproductions are saved. This repair adds zero items; completed count remains 478 / 600.
+
+[Library file guidance repair](LIBRARY_FILE_GUIDANCE_REPAIR_2026-10-31.md) improves destination guidance for existing workflows without adding an item. 15249 full tests and 892 native Chrome cases passed at `3069815`; the count remains 481.

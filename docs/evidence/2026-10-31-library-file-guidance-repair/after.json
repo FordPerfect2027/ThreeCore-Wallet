@@ -1,0 +1,32 @@
+{
+  "source": "3069815",
+  "synthetic": true,
+  "storageWrites": 0,
+  "providerCalls": 0,
+  "rows": [
+    {
+      "name": "entry-in-period-reader",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_LIBRARY",
+      "message": "ファイルの形式指定は期間の保存一覧です。1件だけの元の控えも、この形式です。「途中の控えを、名前を付けて保管する」の「期間の保存一覧JSONを読み込む」で選んでください。内容の検証や保存先への追加は行っていません。"
+    },
+    {
+      "name": "report-in-library-reader",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_REPORT",
+      "message": "ファイルの形式指定は3トークンの期間報告です。「3つの記録を、一つの報告に」のファイル読込みで選んでください。内容の検証や反映は行っていません。"
+    },
+    {
+      "name": "inspection-in-library-reader",
+      "accepted": false,
+      "code": "PERIOD_FILE_IMPORT_INSPECTION_ONLY",
+      "message": "これは期間の保存一覧の読込み前の比較結果です。元の控えは含まれていません。再確認には、比較に使った現在側と読込側の期間の保存一覧JSONを使ってください。"
+    },
+    {
+      "name": "corrupt-library-in-correct-reader",
+      "accepted": false,
+      "code": "PERIOD_CHECKSUM",
+      "message": "ファイルの検査値が一致しません。別の保存ファイルを確認してください。"
+    }
+  ]
+}
