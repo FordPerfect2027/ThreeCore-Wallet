@@ -342,6 +342,8 @@
         <p id="report-batch-reference-note" class="small"></p>
       </div>
       <div class="actions"><button id="report-batch-save" type="button" disabled>一括確認の控えを保存</button><button id="report-batch-csv" type="button" disabled aria-describedby="report-batch-csv-note">全選択資料の一覧をCSV保存</button><button id="report-batch-manifest" type="button" disabled>選んだ資料の照合値一覧を保存</button></div>
+      <button id="report-batch-selection-save" type="button" disabled>表示条件に一致した結果だけをJSON保存</button>
+      <p class="small">条件付きの保存には、一致した行・条件・全体の件数を記録します。元資料や全件の控えは含みません。再確認には元資料と全件の控えを保管してください。</p>
       <p id="report-batch-csv-note" class="small">CSVは表計算ソフトで読むための一覧です。未確認の行、資料全体の確認範囲、照合値との不一致も含みます。取り込み時は全列を文字列に指定してください。復旧や再確認には元のJSON資料を使います。</p>
       <p class="small">保存する照合値一覧は、今回選んだ内容から計算した値です。以前の一覧を指定した場合は、区別できるようThreeCore-selected-content-SHA256SUMS.txtという名前で保存します。元資料と同じフォルダーへ置くと、一括確認用コマンドでも再確認できます。資料に相違や形式の問題があっても、計算できた照合値を記録します。</p>
       <p id="report-batch-export-status" class="small" role="status" aria-live="polite"></p>

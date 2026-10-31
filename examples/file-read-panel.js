@@ -12,6 +12,7 @@ import { canPrepareWalletSavedBatchEvidence, prepareWalletSavedBatchEvidence, re
   encodeWalletSavedBatchEvidenceReview, openReviewedWalletSavedBatchEvidence, extractWalletSavedBatchEvidenceSource, WALLET_SAVED_BATCH_EVIDENCE_LIMIT } from "../src/file-read-status.js";
 import { reviewWalletSavedBundleReceipt, encodeWalletSavedBundleReceiptCheck, walletSavedBundleReceiptCheckText, WALLET_SAVED_BUNDLE_RECEIPT_LIMIT } from "../src/file-read-status.js";
 import { reviewWalletSavedBatchEvidenceReceipt, encodeWalletSavedBatchEvidenceReceiptCheck } from "../src/file-read-status.js";
+import { queryWalletSavedBatchFiles, encodeWalletSavedBatchSelection } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -563,13 +564,16 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   for (const text of ["ファイル名", "確認結果", "開く場所・確認範囲", "内容のSHA-256", "以前の照合値との比較", "詳細確認"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); heading.append(cell); }
   const rows = make("tbody", "rows", undefined, table);
   function applyView() {
-    ++viewRevision; const name = filterName.value ?? "", state = filterStatus.value, valid = name.length <= 80 && !/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(name) && Object.hasOwn(filterLabels, state); let shown = 0;
+    ++viewRevision; exportStatus.textContent = ""; const name = filterName.value ?? "", state = filterStatus.value, valid = name.length <= 80 && !/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(name) && Object.hasOwn(filterLabels, state); let shown = 0;
     filterName.setAttribute("aria-invalid", String(!valid));
     for (const [index, row] of Array.from(rows.children).entries()) { const source = result?.files[index], visible = Boolean(valid && source && (state === "all" || source.status === state) && source.name.toLowerCase().includes(name.toLowerCase())); row.hidden = !visible; if (visible) shown++; }
     filterSummary.textContent = !result ? "確認が終わると、表示する行を絞り込めます。" : !valid ? "名前の条件は80文字以内で、改行や制御文字を含めないでください。確認結果と全件保存は保持しています。" : `表示 ${shown}件 / 選択した全 ${result.files.length}件。絞り込みは表示だけです。JSON・CSV・照合値一覧の保存は全件が対象です。`;
+    buttons();
   }
   const ackLabel = make("label", "ack-label", "ファイル名・確認結果・照合値を、暗号化せずPCに保存します"), ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
   const save = button("save", "一括確認の控えをJSON保存"), csv = button("csv", "全ファイルの確認結果をCSV保存"), manifest = button("manifest", "今回の内容の照合値一覧を保存");
+  const selectionSave = button("selection-save", "表示条件に一致した結果だけをJSON保存");
+  make("p", "selection-scope", "条件付きの保存には、一致した行・条件・全体の件数を記録します。元ファイルの内容や全件の控えは含みません。再確認には元資料と全件の控えを保管してください。");
   make("p", "limits", "以前の一覧を指定した場合だけ、その値と比較します。一覧の出所は保証しません。今回の照合値一覧を保存しても、以前の値が正しいことの証明にはなりません。補助資料は形式の案内だけです。この控えに元記録は含まれず、復元には使えません。元ファイルと同じ名前のまま一緒に保管してください。同じ記録が複数の報告に含まれる場合があります。");
   const exportStatus = make("p", "export-status"); exportStatus.setAttribute("role", "status"); exportStatus.setAttribute("aria-live", "polite");
   const evidenceBox = make("details", "evidence"); make("summary", "evidence-heading", "元ファイルと確認結果を一つにまとめる", evidenceBox);
@@ -605,6 +609,8 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     filterName.disabled = filterStatus.disabled = filterClear.disabled = disposed || Boolean(active) || !result;
     ack.disabled = disposed || Boolean(active) || !result;
     save.disabled = ack.disabled || !ack.checked;
+    let validFilter = false; try { if (result) { queryWalletSavedBatchFiles(result, { name: filterName.value, status: filterStatus.value }); validFilter = true; } } catch { /* Invalid conditions cannot be exported. */ }
+    selectionSave.disabled = save.disabled || !validFilter;
     csv.disabled = save.disabled;
     manifest.disabled = save.disabled || !result?.complete || result.files.some(row => row.sha256 === null);
   }
@@ -759,6 +765,14 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   listen(stop, "click", () => { if (disposed || !active) return; const own = generation, controller = active; controller.abort(); if (!current(own) || active !== controller) return; status.textContent = "中止しています。確認できた分を残します。"; buttons(); });
   listen(clear, "click", () => { if (disposed) return; const own = reset(); if (!current(own)) return; referenceText = undefined; referenceInput.value = ""; referenceFile.value = ""; file.value = ""; status.textContent = "選択と確認結果をクリアしました。"; buttons(); });
   listen(ack, "change", () => { if (!disposed) buttons(); });
+  listen(selectionSave, "click", () => {
+    if (disposed || active || !result || selectionSave.disabled || !ack.checked) return;
+    const owner = generation, view = viewRevision, receipt = result; ack.checked = false; buttons();
+    try { const prepared = Object.freeze({ text: encodeWalletSavedBatchSelection(receipt, { name: filterName.value, status: filterStatus.value }), filename: "ThreeCore-wallet-matching-file-results.json", mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false }), delivered = download(prepared);
+      if (observeCallbackResult(delivered) !== "synchronous" || delivered === false) throw Error();
+      if (current(owner) && result === receipt && viewRevision === view) exportStatus.textContent = "条件に一致した行と、対象全体の件数・条件を保存し始めました。元資料と全件の控えも保管してください。";
+    } catch { if (current(owner) && result === receipt && viewRevision === view) exportStatus.textContent = "条件に一致した結果を保存できませんでした。一覧と全件の結果は保持しています。"; }
+  });
   for (const [button, encode, filename, mimeType] of [[save, encodeWalletSavedTextBatch, "ThreeCore-wallet-saved-batch.json", "application/json;charset=utf-8"], [csv, encodeWalletSavedTextBatchCsv, "ThreeCore-wallet-saved-batch.csv", "text/csv;charset=utf-8"], [manifest, walletSavedTextBatchManifest, "SHA256SUMS.txt", "text/plain;charset=utf-8"]]) listen(button, "click", () => {
     if (disposed || active || !result || button.disabled || !ack.checked) return;
     const own = generation, receipt = result; ack.checked = false; buttons();

@@ -196,6 +196,8 @@ const walletSavedTargets = Object.freeze({
   "threecore.wallet-saved-batch-comparison-review.v1": [null, "PERIOD_FILE_SAVED_BATCH_COMPARISON_REVIEW_ONLY"],
   "threecore.wallet-saved-batch-comparison.v1": [null, "PERIOD_FILE_SAVED_BATCH_COMPARISON_ONLY"],
   "threecore.wallet-saved-browser-batch.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
+  "threecore.wallet-saved-batch-selection.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
+  "threecore.operation-rehearsal-batch-selection.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v2": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v3": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v4": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
@@ -1128,6 +1130,22 @@ async function inspectSavedFileBatchCaptured(selection, readSource, options, pre
 export function encodeWalletSavedTextBatch(result) {
   if (!browserSavedBatchReceipts.has(result)) savedInspectionFail("FILE_BATCH_RESULT");
   return JSON.stringify(result, null, 2) + "\n";
+}
+export function queryWalletSavedBatchFiles(result, input = {}) {
+  if (!browserSavedBatchReceipts.has(result)) savedInspectionFail("FILE_BATCH_RESULT");
+  let query; try { query = captureOptionalDataFields(input, ["name", "status"]); } catch { savedInspectionFail("FILE_BATCH_FILTER"); }
+  const name = query.name === undefined ? "" : query.name, status = query.status === undefined ? "all" : query.status;
+  if (typeof name !== "string" || name.length > 80 || /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(name) ||
+      !["all", "validated-original", "validated-structure", "declared-only", "invalid", "hash-unavailable", "source-unavailable", "checksum-mismatch", "pending"].includes(status)) savedInspectionFail("FILE_BATCH_FILTER");
+  const files = Object.freeze(result.files.filter(row => row.name.toLowerCase().includes(name.toLowerCase()) && (status === "all" || row.status === status)));
+  return Object.freeze({ schema: "threecore.wallet-saved-batch-selection.v1", query: Object.freeze({ name, status }),
+    selectedBatchFiles: result.files.length, matchedFiles: files.length, fullBatchSummary: result.summary,
+    sourcePhase: result.phase, sourceComplete: result.complete, files, sourceReceiptRequiredForRecheck: true,
+    fullBatchResultIncluded: false, containsOriginalEvidence: false, readOnly: true, authenticated: false,
+    restorable: false, automaticallyImported: false, authorizesExecution: false });
+}
+export function encodeWalletSavedBatchSelection(result, query = {}) {
+  return JSON.stringify(queryWalletSavedBatchFiles(result, query), null, 2) + "\n";
 }
 
 export function canPrepareWalletSavedBatchEvidence(result) {

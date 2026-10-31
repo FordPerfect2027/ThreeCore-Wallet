@@ -468,6 +468,23 @@ export function encodeRehearsalBatchEvidenceReview(review) {
   if (!batchEvidenceReviews.has(review)) fail("UNRECOGNIZED_BATCH_EVIDENCE_REVIEW");
   return JSON.stringify(review, null, 2) + "\n";
 }
+export function queryRehearsalBatchFiles(result, input = {}) {
+  if (!batchReceipts.has(result)) fail("UNRECOGNIZED_BATCH_REVIEW");
+  let query; try { query = captureOptionalDataFields(input, ["name", "status"]); } catch { fail("INVALID_REVIEW_BATCH_FILTER"); }
+  const name = query.name === undefined ? "" : query.name, status = query.status === undefined ? "all" : query.status;
+  if (typeof name !== "string" || name.length > 80 || /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(name) ||
+      !["all", "matched", "different", "invalid", "unsupported", "hash-unavailable", "source-unavailable", "checksum-mismatch", "pending", "expected-differences"].includes(status)) fail("INVALID_REVIEW_BATCH_FILTER");
+  const files = Object.freeze(result.files.filter(row => row.name.toLowerCase().includes(name.toLowerCase()) &&
+    (status === "all" || (status === "expected-differences" ? row.expectedOutcomes?.differing > 0 : row.status === status))));
+  return Object.freeze({ schema: "threecore.operation-rehearsal-batch-selection.v1", query: Object.freeze({ name, status }),
+    selectedBatchFiles: result.files.length, matchedFiles: files.length, fullBatchSummary: result.summary,
+    sourcePhase: result.phase, sourceComplete: result.complete, files, sourceReceiptRequiredForRecheck: true,
+    fullBatchResultIncluded: false, containsOriginalEvidence: false, readOnly: true, simulationOnly: true, sourceVerified: false,
+    restorable: false, automaticallyImported: false, authorizesExecution: false });
+}
+export function encodeRehearsalBatchSelection(result, query = {}) {
+  return JSON.stringify(queryRehearsalBatchFiles(result, query), null, 2) + "\n";
+}
 const batchEvidenceReceiptChecks = new WeakSet();
 export async function reviewRehearsalBatchEvidenceReceipt(expected, text, input = {}) {
   if (!batchEvidenceReviews.has(expected)) fail("REVIEW_BATCH_RECEIPT_SOURCE");

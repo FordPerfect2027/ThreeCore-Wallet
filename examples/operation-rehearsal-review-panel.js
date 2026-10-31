@@ -1,6 +1,7 @@
 import { createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
 import { createFileSelectionNotice, mountBatchSourceExportPanel, mountSavedBundleReceiptCheckPanel, batchEvidenceReceiptCheckText } from "./file-read-panel.js";
 import { reviewRehearsalBatchEvidenceReceipt, encodeRehearsalBatchEvidenceReceiptCheck } from "../src/operation-rehearsal-report-review.js";
+import { queryRehearsalBatchFiles, encodeRehearsalBatchSelection } from "../src/operation-rehearsal-report-review.js";
 import { createFileReadScope, readFormatFileName, readSecurityFileText } from "../src/security-file.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -143,6 +144,8 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     get("retry").disabled = disposed || Boolean(active) || !canRetryRehearsalReportFileBatch(result);
     get("cancel").disabled = disposed || !active || active.controller.signal.aborted;
     get("save").disabled = disposed || Boolean(active) || !result;
+    let validFilter = false; try { if (result) { queryRehearsalBatchFiles(result, { name: get("filter-name").value, status: get("filter-status").value }); validFilter = true; } } catch { /* Invalid conditions cannot be exported. */ }
+    get("selection-save").disabled = disposed || Boolean(active) || !validFilter;
     get("csv").disabled = disposed || Boolean(active) || !result;
     get("manifest").disabled = disposed || Boolean(active) || !result?.complete || result.files.some(row => row.sha256 === null);
     get("status").setAttribute("aria-busy", active ? "true" : "false");
@@ -180,6 +183,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     const name = get("filter-name").value, status = get("filter-status").value;
     const validName = typeof name === "string" && name.length <= 80 && !/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(name);
     const validStatus = ["all", "matched", "different", "invalid", "unsupported", "hash-unavailable", "pending", "checksum-mismatch", "source-unavailable", "expected-differences"].includes(status);
+    get("selection-save").disabled = disposed || Boolean(active) || !result || !validName || !validStatus;
     get("filter-name").setAttribute("aria-invalid", String(!validName));
     get("filter-status").setAttribute("aria-invalid", String(!validStatus));
     let shown = 0;
@@ -237,6 +241,8 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     get("results").hidden = false;
   }
   listen("files", "change", () => {
+    if (disposed) return;
+    if (get("files").files?.length === 0) { get("status").textContent = "ファイルの選択を取り消しました。前の選択・確認結果と進行中の処理は保持しています。"; return; }
     const id = reset({ keepReference: true });
     try {
       const offered = get("files").files, count = offered?.length;
@@ -270,6 +276,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   listen("reference-file", "change", async () => {
     if (disposed) return;
     const offered = get("reference-file").files, file = offered?.[0], count = offered?.length;
+    if (count === 0) { get("reference-status").textContent = "照合値一覧の選択を取り消しました。前の指定・確認結果と進行中の処理は保持しています。"; return; }
     const id = reset({ keepSelection: true });
     if (!current(id)) return;
     referenceValid = false;
@@ -394,6 +401,13 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     get("status").textContent = "停止しています。"; buttons();
   });
   listen("clear", "click", () => { if (disposed) return; reset(); get("files").value = ""; });
+  listen("selection-save", "click", () => {
+    if (disposed || active || !result || get("selection-save").disabled) return;
+    const owner = revision, view = viewRevision, receipt = result;
+    try { requireSyncExport(download({ document, prepared: { text: encodeRehearsalBatchSelection(receipt, { name: get("filter-name").value, status: get("filter-status").value }), filename: "ThreeCore-report-matching-file-results.json", mimeType: "application/json", containsOriginalEvidence: false, restorable: false } }));
+      if (current(owner) && result === receipt && viewRevision === view) get("export-status").textContent = "条件に一致した行と、対象全体の件数・条件を保存し始めました。元資料と全件の控えも保管してください。";
+    } catch { if (current(owner) && result === receipt && viewRevision === view) get("export-status").textContent = "条件に一致した結果を保存できませんでした。一覧と全件の結果は保持しています。"; }
+  });
   for (const [button, encode, filename, mimeType] of [
     ["save", encodeRehearsalBatchReview, "ThreeCore-report-batch-review.json", "application/json"],
     ["csv", encodeRehearsalBatchCsv, "ThreeCore-report-batch-summary.csv", "text/csv;charset=utf-8"],
