@@ -1247,7 +1247,25 @@ let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");
 const selectedTests = ["restore-confirmation", "storage-receipt", "adapter-boundary", "backup timer", "backup cleanup", "observer", "setup", "workspace", "acceptance", "access-lifecycle", "storage-guard", "history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
-for (const { name, run } of selectedTests) {
+const parameters = new URLSearchParams(location.search);
+const isSharded = parameters.has("shard-index") || parameters.has("shard-count");
+let executionTests = selectedTests;
+if (isSharded) {
+  if (parameters.getAll("shard-index").length !== 1 || parameters.getAll("shard-count").length !== 1 ||
+      parameters.get("shard-count") !== "2" || !["0", "1"].includes(parameters.get("shard-index")) || parameters.has("suite"))
+    throw Error("Invalid or filtered browser shard request");
+  const index = Number(parameters.get("shard-index"));
+  const indices = tests.map((_, i) => i).filter(i => i % 2 === index);
+  executionTests = indices.map(i => tests[i]);
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(tests.map(item => item.name))));
+  document.body.dataset.shardIndex = String(index);
+  document.body.dataset.shardCount = "2";
+  document.body.dataset.registeredCount = String(tests.length);
+  document.body.dataset.registeredDigest = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+  document.body.dataset.selectedIndices = indices.join(",");
+  document.body.dataset.suiteFilter = "";
+}
+for (const { name, run } of executionTests) {
   console.info("Starting synthetic UI case: " + name);
   const fixtures = [];
   const item = document.createElement("li");
@@ -1272,7 +1290,7 @@ for (const { name, run } of selectedTests) {
 await new Promise(resolve => setTimeout(resolve, 0));
 publishSummary = () => {
   document.querySelector("#summary").textContent = `${passed} passed / ${failed} failed / ${unexpectedErrors.length} unexpected browser errors`;
-  document.body.dataset.testsCount = String(selectedTests.length);
+  document.body.dataset.testsCount = String(executionTests.length);
   document.body.dataset.testsPassed = String(passed);
   document.body.dataset.testsFailed = String(failed);
   document.body.dataset.unexpectedErrors = String(unexpectedErrors.length);

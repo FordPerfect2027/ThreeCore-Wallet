@@ -7,7 +7,7 @@ import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createDemoServer } from "../examples/dev-server.js";
-import { checkBrowserResult, readBrowserSummary } from "./browser-result.js";
+import { checkBrowserShard, checkBrowserShards, readBrowserSummary } from "./browser-result.js";
 import { installBrowserCompletion } from "./browser-completion.js";
 import { browserExecutable, browserArguments, stopTestBrowser, removeTestProfile } from "./browser-runtime.js";
 
@@ -23,7 +23,7 @@ for (const entry of readdirSync(testRoot, { withFileTypes: true }).filter(item =
 }
 const executable = browserExecutable();
 
-async function runBrowserPage(fault) {
+async function runBrowserPage(index, fault) {
   const server = createDemoServer({ uiTest: true });
   const profileRoot = resolve(tmpdir());
   let browser, profile, receipt, result, failure;
@@ -34,10 +34,11 @@ async function runBrowserPage(fault) {
       server.once("error", reject);
       server.listen(0, "127.0.0.1", resolve);
     });
-    // The growing real-DOM suite includes native storage and file tasks. Keep a
-    // finite five-minute deadline rather than the former 90-second CI budget.
+    // Two sequential fresh profiles bound resource use without dropping cases.
+    // Each half retains the finite five-minute deadline.
     receipt = installBrowserCompletion(server, { timeoutMs: 300_000 });
     const url = `http://127.0.0.1:${server.address().port}/test/browser/?ci-report=${receipt.nonce}` +
+      "&shard-count=2&shard-index=" + index +
       (fault ? "&harness-fault=" + fault : "");
     browser = spawn(executable, browserArguments(profile, url),
       { windowsHide: true, stdio: ["ignore", "ignore", "pipe"] });
@@ -70,8 +71,8 @@ async function runBrowserPage(fault) {
   return result;
 }
 
-function checkResult(html, fault) {
-  try { return checkBrowserResult(html, fault); }
+function checkResult(html, index, fault) {
+  try { return checkBrowserShard(html, index, fault); }
   catch (error) {
     try { process.stderr.write("Browser completion summary: " + JSON.stringify(readBrowserSummary(html)) + "\n"); }
     catch { /* The validator reports malformed completion separately. */ }
@@ -87,13 +88,20 @@ if (options[0] === "--verify-error-detection") {
   const failures = [];
   for (const fault of ["error", "unhandledrejection"]) {
     try {
-      const result = checkResult(await runBrowserPage(fault), fault);
+      const result = checkResult(await runBrowserPage(0, fault), 0, fault);
       console.log("Harness correctly rejected synthetic " + fault + " despite " + result.passed + " passing UI cases.");
     } catch (error) { failures.push(error); }
   }
   if (failures.length) throw new AggregateError(failures, "Browser error-detection controls did not all pass");
   console.log("2 browser error-detection controls passed.");
 } else {
-  const result = checkResult(await runBrowserPage());
+  const pages = [];
+  for (const index of [0, 1]) {
+    const html = await runBrowserPage(index);
+    const part = checkResult(html, index);
+    pages.push(html);
+    console.log("Browser shard " + (index + 1) + "/2: " + part.passed + " cases passed.");
+  }
+  const result = checkBrowserShards(pages);
   console.log(result.passed + " browser UI tests passed with a synthetic provider and no external RPC.");
 }
