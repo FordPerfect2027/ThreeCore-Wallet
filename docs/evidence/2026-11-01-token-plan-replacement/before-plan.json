@@ -1,0 +1,9 @@
+{
+  "schema": "threecore-token-plan-v1",
+  "agent": "DAT",
+  "chainId": 84532,
+  "tokens": [
+    "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  ]
+}

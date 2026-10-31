@@ -1,0 +1,10 @@
+現在2件 → 反映後2件 / 追加1件・削除1件・維持1件
+追加する契約:
+0xcccccccccccccccccccccccccccccccccccccccc
+削除する契約:
+0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+反映後の順序は下の一覧です。
+入力リストだけの変更です。保有資産の追加・削除や送金ではありません。
+DAT / チェーン: 84532 / 2件
+0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+0xcccccccccccccccccccccccccccccccccccccccc

@@ -1,0 +1,18 @@
+{
+  "agent": "DAT",
+  "chainId": 84532,
+  "currentInputValid": true,
+  "currentCount": 2,
+  "targetCount": 2,
+  "added": [
+    "0xcccccccccccccccccccccccccccccccccccccccc"
+  ],
+  "removed": [
+    "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ],
+  "retainedCount": 1,
+  "sameOrder": false,
+  "configurationOnly": true,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false
+}
