@@ -69,14 +69,17 @@ export function registerFileReadUITests(test) {
       const old=q("report-review-differences").querySelector("button");old.click();
       const detail=q("report-review-difference-detail");assert(document.activeElement===detail&&!detail.hidden);
       assert(detail.textContent.includes("<img src=x>")&&detail.textContent.includes("表示を省略")&&!detail.querySelector("img"));
+      q("report-review-difference-save").click();const fullReport=JSON.parse(downloads.pop().text);assert(fullReport.valuesComplete&&fullReport.actual.value===source.extra);
       q("report-review-evidence-save").click();const evidence=JSON.parse(downloads.pop().text);evidence.receipt.differenceCount=81;
       edit("report-evidence-text",JSON.stringify(evidence));q("report-evidence-paste").click();await finish("report-evidence-status");
       const receiptButton=q("report-evidence-differences").querySelector("button");receiptButton.click();
       assert(q("report-evidence-difference-detail").textContent.includes("再計算で得た値: 1"));
       assert(q("report-evidence-difference-detail").textContent.includes("控えにある値: 81"));
+      q("report-evidence-difference-save").click();const fullReceipt=JSON.parse(downloads.pop().text);assert(fullReceipt.target==="evidence-receipt"&&fullReceipt.actual.value===81&&fullReceipt.expected.value===1);
       edit("report-evidence-difference-kind","source","change");receiptButton.click();assert(q("report-evidence-difference-detail").hidden);
       q("report-evidence-differences").querySelector("button").click();assert(q("report-evidence-difference-detail").textContent.includes("<img src=x>"));
-      edit("report-review-text","{}");old.click();assert(detail.hidden);
+      q("report-evidence-difference-save").click();const fullSource=JSON.parse(downloads.pop().text);assert(fullSource.target==="evidence-source"&&fullSource.actual.value===source.extra&&!fullSource.summary.matchesReceipt);
+      edit("report-review-text","{}");old.click();assert(detail.hidden&&q("report-review-difference-save").disabled);
       q("session-save").click();assert(downloads.pop().text===before,"Inspection keeps current rehearsal exactly unchanged");
     }finally{page.dispose();host.remove();}
   });

@@ -86,3 +86,25 @@ test('invalid detail selections never output partial evidence or silently choose
     const result=await run(args);assert.equal(result.code,1);assert.equal(result.output,'');assert.notEqual(result.errors,'');
   }
 }));
+
+test('offline full values retain complete inspection data without changing sources', () => fixture(async ({file,text})=>{
+  const input=JSON.parse(text);input.extra102="x".repeat(3000)+"🚀";const updated=JSON.stringify(input);await writeFile(file,updated);
+  const result=await run([file,'--full-values','103']);assert.equal(result.code,2);assert.equal(result.errors,'');
+  const detail=JSON.parse(result.output);assert.equal(detail.schema,'threecore.operation-rehearsal-difference-values.v1');
+  assert.equal(detail.valuesComplete,true);assert.equal(detail.actual.value,input.extra102);assert.equal(detail.summary.matchesRecomputation,false);
+  assert.equal(await readFile(file,'utf8'),updated);
+}));
+test('offline full evidence values distinguish receipt and source while keeping both outcomes', () => fixture(async ({evidenceFile,evidence})=>{
+  for(const kind of ['receipt','source']){
+    const result=await run([evidenceFile,'--full-values','41','--evidence',kind]);assert.equal(result.code,2);
+    const detail=JSON.parse(result.output);assert.equal(detail.target,'evidence-'+kind);assert.equal(detail.actual.value,40);
+    assert.equal(detail.summary.matchesReceipt,false);assert.equal(detail.summary.matchesRecomputation,false);
+  }
+  assert.equal(await readFile(evidenceFile,'utf8'),evidence);
+}));
+test('offline invalid full-value requests produce no partial artifact', () => fixture(async({file,evidenceFile})=>{
+  for(const args of [[file,'--full-values','0'],[file,'--full-values','104'],[file,'--full-values','1','--difference','1'],
+    [evidenceFile,'--full-values','88','--evidence','receipt']]){
+    const result=await run(args);assert.equal(result.code,1);assert.equal(result.output,'');assert.notEqual(result.errors,'');
+  }
+}));

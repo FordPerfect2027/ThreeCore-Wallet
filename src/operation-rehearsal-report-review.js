@@ -227,3 +227,45 @@ export function inspectRehearsalEvidenceReceiptDifference(review, index) {
   if (recorded === undefined) fail("UNRECOGNIZED_EVIDENCE_REVIEW");
   return inspectDifference(review.reportReview, recorded, index);
 }
+
+export const REHEARSAL_DIFFERENCE_VALUES_SCHEMA = "threecore.operation-rehearsal-difference-values.v1";
+/** Complete selected values, for inspection only. Never exposes private source references. */
+export function encodeRehearsalDifferenceValues(review, index, target = "report") {
+  if (!["report", "evidence-source", "evidence-receipt"].includes(target)) fail("INVALID_REVIEW_DIFFERENCE_TARGET");
+  let expected, actual, report, matchesReceipt = null;
+  if (target === "report") {
+    const text = reviewSources.get(review);
+    if (text === undefined) fail("UNRECOGNIZED_REVIEW_RECEIPT");
+    report = review;
+    ({ recomputed: expected, parsed: actual } = prepareRehearsalReview(text, report.expectedSha256));
+  } else {
+    const recorded = evidenceReceipts.get(review);
+    if (recorded === undefined) fail("UNRECOGNIZED_EVIDENCE_REVIEW");
+    report = review.reportReview;
+    matchesReceipt = review.matchesReceipt;
+    if (target === "evidence-receipt") { expected = report; actual = recorded; }
+    else {
+      const text = reviewSources.get(report);
+      if (text === undefined) fail("UNRECOGNIZED_REVIEW_RECEIPT");
+      ({ recomputed: expected, parsed: actual } = prepareRehearsalReview(text, report.expectedSha256));
+    }
+  }
+  if (!Number.isSafeInteger(index) || index < 0) fail("INVALID_REVIEW_DIFFERENCE_INDEX");
+  const value = (item, present) => present
+    ? { present: true, type: item === null ? "null" : Array.isArray(item) ? "array" : typeof item, value: item }
+    : { present: false, type: "absent" };
+  let selected = null;
+  const comparison = compareValues(expected, actual, 0, (number, difference, left, right, leftPresent, rightPresent) => {
+    if (number === index) selected = { ...difference, expected: value(left, leftPresent), actual: value(right, rightPresent) };
+  });
+  if (!selected) fail("REVIEW_DIFFERENCE_NOT_FOUND");
+  const text = JSON.stringify({ schema: REHEARSAL_DIFFERENCE_VALUES_SCHEMA, simulationOnly: true,
+    sourceVerified: false, authorizesExecution: false, target, sourceSha256: report.sha256,
+    summary: { matchesReceipt, matchesRecomputation: report.matchesRecomputation, checksumMatches: report.checksumMatches,
+      reportOutcome: report.reportOutcome ?? null },
+    index, number: index + 1, totalDifferences: comparison.differenceCount, valuesComplete: true, ...selected }, null, 2)
+    .replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, character => "\\u" + character.charCodeAt(0).toString(16).padStart(4, "0")) + "\n";
+  try { boundedUtf8Length(text, REHEARSAL_REVIEW_EVIDENCE_LIMIT); }
+  catch { fail("DIFFERENCE_VALUES_TOO_LARGE"); }
+  return text;
+}
