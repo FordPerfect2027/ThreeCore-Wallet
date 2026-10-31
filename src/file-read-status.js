@@ -161,6 +161,8 @@ export function decodeRehearsalForPanel(text, target, decode) {
 
 // These routes describe a declared format only. They never validate or open a file.
 const walletSavedTargets = Object.freeze({
+  "threecore.report-set-comparison-evidence.v1": ["evidence", "PERIOD_FILE_USE_EVIDENCE"],
+  "threecore.report-set-comparison-evidence-review.v1": [null, "PERIOD_FILE_EVIDENCE_REVIEW_ONLY"],
   "threecore.period-file.v1": ["period", "PERIOD_FILE_USE_PERIOD"],
   "threecore.period-report-file.v1": ["report", "PERIOD_FILE_USE_REPORT"],
   "threecore.report-set-file.v1": ["set", "PERIOD_FILE_USE_SET"],
@@ -172,6 +174,8 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  PERIOD_FILE_USE_EVIDENCE: "ファイルの形式指定は比較の証拠一式です。「保存した比較の証拠一式を検証する」で選んでください。元資料を自動で取り込む操作ではありません。",
+  PERIOD_FILE_EVIDENCE_REVIEW_ONLY: "これは比較の証拠一式の検証結果を記した控えの形式です。再確認には、元の証拠一式JSONを「保存した比較の証拠一式を検証する」で選んでください。",
   PERIOD_FILE_USE_PERIOD: "ファイルの形式指定は期間取得の控えです。「期間を選んで、残高の変化を確かめる」の「控えの保存と復元」で選んでください。内容の検証や読み取り開始は行っていません。",
   PERIOD_FILE_USE_REPORT: "ファイルの形式指定は3トークンの期間報告です。「3つの記録を、一つの報告に」のファイル読込みで選んでください。内容の検証や反映は行っていません。",
   PERIOD_FILE_USE_SET: "ファイルの形式指定は確認セットです。「複数の報告を、期間で見渡す」の「保存した確認セットを開く」で選んでください。内容の検証や反映は行っていません。",
@@ -185,7 +189,7 @@ const walletSavedMessages = Object.freeze({
 
 export function walletSavedFileTargetCode(schema, currentTarget) {
   if (typeof schema !== "string" || typeof currentTarget !== "string" ||
-      !["period", "report", "set", "checks", "comparison"].includes(currentTarget) || !Object.hasOwn(walletSavedTargets, schema)) return null;
+      !["period", "report", "set", "checks", "comparison", "evidence"].includes(currentTarget) || !Object.hasOwn(walletSavedTargets, schema)) return null;
   const [target, code] = walletSavedTargets[schema];
   return target === currentTarget ? null : code;
 }

@@ -1,7 +1,7 @@
 import { mountReportSetPanel } from "/examples/report-set-panel.js";
 import { createReportHistoryStorage } from "/src/report-history-storage.js";
 import { prepareReportSetFile, decodeReportSetFile } from "/src/report-set-file.js";
-import { prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareReportSetCoverageFile } from "/src/report-set-export.js";
+import { prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareReportSetCoverageFile, prepareReportSetComparisonEvidenceFile, reviewReportSetComparisonEvidence } from "/src/report-set-export.js";
 import { decodePeriodReportFile } from "/src/period-report-file.js";
 import { decodePeriodFile, preparePeriodFile } from "/src/period-file.js";
 import { analyzeReportSet } from "/src/report-set-engine.js";
@@ -580,6 +580,27 @@ export function registerReportSetUITests(test) {
       await f.file((await prepareReportSetComparisonFile(original, sequenceSet(demoSetHistory()))).text);
       assert(f.q("status").textContent.includes("保存した比較JSONを照合"));
       assert(f.mounted.getState().input === original && f.mounted.getState().review === null);
+    } finally { f.dispose(); }
+  });
+
+
+  test("report set: native portable evidence review works without a displayed set and source export has its own acknowledgement", async () => {
+    const f = fixture(), before = sequenceSet(), after = sequenceSet(demoSetHistory());
+    const choose = async text => {
+      const transfer = new DataTransfer(); transfer.items.add(new File([text], "comparison-evidence.json", { type: "application/json" }));
+      f.q("comparison-evidence-file").files = transfer.files; f.q("comparison-evidence-file").dispatchEvent(new Event("change", { bubbles: true })); await f.settled();
+    };
+    try {
+      assert(!f.q("comparison-evidence-file").disabled); await choose((await prepareReportSetComparisonEvidenceFile(before, after)).text);
+      assert(f.mounted.getState().input === null && f.q("comparison-evidence-output").textContent.includes("再計算と一致"));
+      f.check("comparison-evidence-review-ack"); f.click("comparison-evidence-review-json"); await f.settled();
+      assert(JSON.parse(f.files[0].text).imported === false);
+      await f.accept(); const accepted = f.mounted.getState().input; await f.file((await prepareReportSetFile(after)).text);
+      f.check("ack"); f.check("comparison-ack"); assert(f.q("comparison-evidence-json").disabled);
+      f.check("comparison-evidence-ack"); f.click("comparison-evidence-json"); await f.settled();
+      assert(f.files[1].containsOriginalEvidence && f.mounted.getState().input === accepted);
+      assert((await reviewReportSetComparisonEvidence(f.files[1].text)).comparisonReview.matchesRecomputation);
+      await f.file((await prepareReportSetFile(after)).text); assert(!f.q("comparison-evidence-ack").checked && f.q("comparison-evidence-json").disabled);
     } finally { f.dispose(); }
   });
 

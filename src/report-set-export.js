@@ -1,10 +1,10 @@
 import { walletSavedFileTargetCode } from "./file-read-status.js";
-import { parseSecurityJson } from "./security-json.js";
+import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { validateReportSet, validateSetExportOptions, validateSetSelection, freezeSet } from "./report-set-model.js";
 import { periodFail, createPeriodPlan } from "./period-plan.js";
-import { prepareReportSetFile } from "./report-set-file.js";
+import { prepareReportSetFile, decodeReportSetFile } from "./report-set-file.js";
 import { preparePeriodReportFile } from "./period-report-file.js";
 import { preparePeriodFile } from "./period-file.js";
 import { emptyPeriodDraft } from "./period-draft.js";
@@ -232,6 +232,10 @@ export async function prepareReportSetComparisonFile(beforeValue, afterValue, fi
   catch { periodFail("PERIOD_SET_OPTIONS"); }
   const { digest: beforePayloadDigest } = await prepareReportSetFile(before, options);
   const { digest: afterPayloadDigest } = await prepareReportSetFile(after, options);
+  return comparisonReceiptFile(beforePayloadDigest, afterPayloadDigest, comparison);
+}
+
+function comparisonReceiptFile(beforePayloadDigest, afterPayloadDigest, comparison) {
   const text = JSON.stringify({ schema: "threecore.report-set-comparison-file.v1", algorithm: "SHA-256",
     beforePayloadDigest, afterPayloadDigest, comparison, authenticated: false, encrypted: false, restorable: false }, null, 2) + "\n";
   const byteLength = new TextEncoder().encode(text).byteLength;
@@ -338,4 +342,65 @@ export async function prepareReportSetCoverageFile(value, format = "json", optio
   return Object.freeze({ ...resultFile(text, format, format === "json" ? "application/json" : "text/csv"),
     filename: "ThreeCore-saved-history-coverage." + format, sourcePayloadDigest: source.digest,
     groupCount: groups.length, allContinuous: analysis.allContinuous, options: Object.freeze({ shortAddresses }) });
+}
+
+export const REPORT_SET_COMPARISON_EVIDENCE_LIMIT = 24 * 1024 * 1024;
+
+/** A portable pair of canonical originals and their derived comparison, never an apply request. */
+export async function prepareReportSetComparisonEvidenceFile(beforeValue, afterValue, fileOptions = {}) {
+  const before = validateReportSet(beforeValue), after = validateReportSet(afterValue), comparison = compareReportSets(before, after);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const beforeFile = await prepareReportSetFile(before, options), afterFile = await prepareReportSetFile(after, options);
+  const comparisonFile = comparisonReceiptFile(beforeFile.digest, afterFile.digest, comparison);
+  const text = JSON.stringify({ schema: "threecore.report-set-comparison-evidence.v1",
+    beforeFileText: beforeFile.text, afterFileText: afterFile.text, comparisonText: comparisonFile.text,
+    authenticated: false, encrypted: false, authorizesExecution: false }, null, 2) + "\n";
+  try { boundedUtf8Length(text, REPORT_SET_COMPARISON_EVIDENCE_LIMIT); }
+  catch { periodFail("PERIOD_SET_EVIDENCE_SIZE"); }
+  return Object.freeze({ ...resultFile(text, "json", "application/json"),
+    filename: "ThreeCore-report-set-comparison-evidence.json", containsOriginalEvidence: true,
+    beforePayloadDigest: beforeFile.digest, afterPayloadDigest: afterFile.digest, authenticated: false,
+    sourceTextFormat: "canonical-export-not-original-upload-bytes" });
+}
+
+/** Verify both embedded wrappers and regenerate the comparison; never import either source. */
+export async function reviewReportSetComparisonEvidence(text, fileOptions = {}) {
+  let options, evidence;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  try {
+    evidence = parseSecurityJson(text, { bytes: REPORT_SET_COMPARISON_EVIDENCE_LIMIT, stringCharacters: REPORT_SET_COMPARISON_EVIDENCE_LIMIT });
+  } catch { periodFail("PERIOD_SET_EVIDENCE_FORMAT"); }
+  const targetCode = walletSavedFileTargetCode(evidence?.schema, "evidence");
+  if (targetCode) periodFail(targetCode);
+  try {
+    if (!evidence || typeof evidence !== "object" || Array.isArray(evidence) ||
+        Object.keys(evidence).sort().join(",") !== "afterFileText,authenticated,authorizesExecution,beforeFileText,comparisonText,encrypted,schema" ||
+        evidence.schema !== "threecore.report-set-comparison-evidence.v1" || evidence.authenticated !== false ||
+        evidence.encrypted !== false || evidence.authorizesExecution !== false) throw Error();
+    boundedUtf8Length(evidence.beforeFileText, REPORT_SET_COMPARISON_EVIDENCE_LIMIT);
+    boundedUtf8Length(evidence.afterFileText, REPORT_SET_COMPARISON_EVIDENCE_LIMIT);
+    boundedUtf8Length(evidence.comparisonText, REPORT_SET_COMPARISON_LIMIT);
+  } catch { periodFail("PERIOD_SET_EVIDENCE_FORMAT"); }
+  const before = await decodeReportSetFile(evidence.beforeFileText, options);
+  const after = await decodeReportSetFile(evidence.afterFileText, options);
+  const comparisonReview = await reviewReportSetComparisonFile(before.input, after.input, evidence.comparisonText, options);
+  let evidenceTextSha256;
+  try { evidenceTextSha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle,
+    { signal: options.signal, timeoutMs: options.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  return freezeSet({ schema: "threecore.report-set-comparison-evidence-review.v1", evidenceTextSha256,
+    beforeChecksumVerified: true, afterChecksumVerified: true, comparisonReview,
+    beforeReportCount: before.input.entries.length, afterReportCount: after.input.entries.length,
+    readOnly: true, imported: false, historicalOnly: true, liveChainRechecked: false,
+    authenticated: false, encrypted: false, restorable: false, authorizesExecution: false });
+}
+
+export async function readReportSetComparisonEvidenceText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_COMPARISON_EVIDENCE_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_EVIDENCE_SIZE", readCode: "PERIOD_SET_EVIDENCE_READ", encodingCode: "PERIOD_SET_EVIDENCE_ENCODING",
+    signal, timeoutMs });
 }

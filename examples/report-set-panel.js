@@ -5,7 +5,7 @@ import { queryReportHistory } from "../src/report-history-query.js";
 import { querySetDiagnostics, diagnosticText } from "../src/report-set-diagnostics.js";
 import { mountReportSetTimeline } from "./report-set-timeline-panel.js";
 import { SET_LIMITATION, SET_SEGMENTS, setErrorText, setSummaryText,
-  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText } from "../src/report-set-view.js";
+  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText } from "../src/report-set-view.js";
 
 export function mountReportSetPanel({ document, parent,
   storage = createReportHistoryStorage(), now,
@@ -16,7 +16,7 @@ export function mountReportSetPanel({ document, parent,
   let diagnosticInput = null, diagnosticKey = null, diagnosticRows = null;
   let timelinePanel = null;
   let queueSelection = null;
-  let lastReview = null;
+  let lastReview = null, lastEvidenceReview = null;
   const host = document.createElement("section");
   host.className = "report-set-panel";
   host.setAttribute("aria-label", "複数の保存報告の期間確認");
@@ -101,6 +101,9 @@ export function mountReportSetPanel({ document, parent,
   nodes["comparison-file"].accept = ".json,application/json";
   make("pre", "comparison-review-output", "", review);
   button("comparison-review-json", "比較ファイルの照合結果を保存", review);
+  field("comparison-evidence-ack", "証拠一式に両方の元資料の全アドレス・残高・履歴・メモが入り、暗号化されないことを確認しました", "checkbox", review);
+  button("comparison-evidence-json", "両方の元資料と比較結果を一式で保存", review);
+  make("p", "comparison-evidence-help", "一式は最大24 MiBです。上の表示用アドレス短縮・メモ設定は使いません。元資料は共通形式で書き直して保存するため、読み込んだファイルの空白などの並びは保持しません。", review);
   button("apply", "確認したセットを表示", review);
   const result = make("section", "result");
   make("h3", "result-heading", "3. 期間と証拠の確認結果", result);
@@ -158,6 +161,13 @@ export function mountReportSetPanel({ document, parent,
   field("check-file", "照合する確認箇所JSONを選ぶ（最大4 MiB）", "file", checkReviewSection).accept = ".json,application/json";
   make("pre", "check-review-output", "", checkReviewSection);
   button("check-review", "最後に完了した照合結果をJSON保存", checkReviewSection);
+
+  const evidenceSection = make("section", "comparison-evidence-section");
+  make("h3", "comparison-evidence-heading", "保存した比較の証拠一式を検証する", evidenceSection);
+  field("comparison-evidence-file", "比較の証拠一式JSONを選ぶ（最大24 MiB）", "file", evidenceSection).accept = ".json,application/json";
+  make("pre", "comparison-evidence-output", "", evidenceSection);
+  field("comparison-evidence-review-ack", "検証結果に元資料の識別値・件数・確認結果が入り、暗号化されないことを確認しました", "checkbox", evidenceSection);
+  button("comparison-evidence-review-json", "最後に完了した証拠一式の検証結果を保存", evidenceSection);
 
   const restore = make("section", "restore");
   make("h3", "restore-heading", "保存した確認セットを開く", restore);
@@ -344,7 +354,14 @@ export function mountReportSetPanel({ document, parent,
       nodes.ack.checked = false;
       showDiagnostics();
     }
-    if (lastReview !== value.review) { lastReview = value.review; nodes["comparison-ack"].checked = false; }
+    if (lastReview !== value.review) { lastReview = value.review; nodes["comparison-ack"].checked = false; nodes["comparison-evidence-ack"].checked = false; }
+    if (lastEvidenceReview !== value.evidenceReview) { lastEvidenceReview = value.evidenceReview; nodes["comparison-evidence-review-ack"].checked = false; }
+    nodes["comparison-evidence-file"].disabled = value.busy;
+    nodes["comparison-evidence-output"].textContent = setComparisonEvidenceReviewText(value.evidenceReview);
+    nodes["comparison-evidence-review-ack"].disabled = value.busy || !value.evidenceReview;
+    nodes["comparison-evidence-review-json"].disabled = value.busy || !value.evidenceReview || !nodes["comparison-evidence-review-ack"].checked;
+    nodes["comparison-evidence-ack"].disabled = value.busy || !value.review?.comparison;
+    nodes["comparison-evidence-json"].disabled = value.busy || !value.review?.comparison || !nodes["comparison-evidence-ack"].checked;
     nodes.refresh.disabled = value.busy;
     nodes.cancel.disabled = !value.busy && !value.review;
     for (const name of ["archive", "status-filter", "search", "title"]) nodes[name].disabled = value.busy || !value.loaded;
@@ -410,6 +427,14 @@ export function mountReportSetPanel({ document, parent,
     if (file) void controller.reviewComparisonFile(file);
   });
   listen(nodes["comparison-review-json"], "click", () => { void controller.exportComparisonReview(nodes["comparison-ack"].checked, download); });
+  listen(nodes["comparison-evidence-ack"], "change", () => render(controller.state));
+  listen(nodes["comparison-evidence-json"], "click", () => { void controller.exportComparisonEvidence(nodes["comparison-evidence-ack"].checked, download); });
+  listen(nodes["comparison-evidence-file"], "change", () => {
+    const file = nodes["comparison-evidence-file"].files?.[0]; nodes["comparison-evidence-file"].value = "";
+    if (file) void controller.reviewComparisonEvidenceFile(file);
+  });
+  listen(nodes["comparison-evidence-review-ack"], "change", () => render(controller.state));
+  listen(nodes["comparison-evidence-review-json"], "click", () => { void controller.exportEvidenceReview(nodes["comparison-evidence-review-ack"].checked, download); });
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
   listen(nodes["check-review"], "click", () => { void controller.exportFile("check-review", nodes.ack.checked, download); });

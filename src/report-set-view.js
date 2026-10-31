@@ -29,6 +29,11 @@ const ERRORS = Object.freeze({
   PERIOD_SET_QUEUE_GROUP: "表示中の確認セットに、そのアカウントの区間はありません。",
   PERIOD_SET_QUEUE_PAGE: "指定したページには予定がありません。最初のページから選び直してください。",
   PERIOD_SET_QUEUE_DISJOINT: "このページの区間は連続していません。1区間ずつ保存対象に選んでください。",
+  PERIOD_SET_EVIDENCE_SIZE: "比較の証拠一式は、空でない24 MiB以下のJSONを選んでください。出力が上限を超える場合は元資料を別々に保存してください。",
+  PERIOD_SET_EVIDENCE_FORMAT: "比較の証拠一式として保存したJSONを選んでください。元資料と比較結果の両方が必要です。",
+  PERIOD_SET_EVIDENCE_READ: "比較の証拠一式を読み取れませんでした。",
+  PERIOD_SET_EVIDENCE_ENCODING: "比較の証拠一式はUTF-8で保存されたJSONを選んでください。",
+  PERIOD_SET_EVIDENCE_NO_REVIEW: "先に比較の証拠一式を確認してください。",
   PERIOD_SET_COVERAGE_SIZE: "保存済み履歴範囲の説明ファイルが上限4 MiBを超えています。元の確認セットJSONを保管してください。",
   PERIOD_SET_COMPARISON_JSON: "比較ファイルのJSONを読み取れません。",
   PERIOD_SET_COMPARISON_SCHEMA: "差し替え比較のJSONを選んでください。",
@@ -156,4 +161,13 @@ export function setComparisonReviewText(value) {
     "比較ファイルのテキスト SHA-256: " + value.comparisonTextSha256,
     "読み取ったテキストと元資料からの再計算を照合した結果です。出所の認証や現在のチェーン確認ではありません。",
     "資料の差し替え・保存履歴の変更は行っていません。"].join("\n");
+}
+
+export function setComparisonEvidenceReviewText(value) {
+  if (!value) return "保存した証拠一式に含まれる2つの元資料と比較結果を検証します。表示中の確認セットには取り込みません。";
+  return ["最後に完了した証拠一式の確認:",
+    "元資料の検査値: 両方とも一致 / 報告数 " + value.beforeReportCount + " → " + value.afterReportCount,
+    "証拠一式のテキスト SHA-256: " + value.evidenceTextSha256,
+    setComparisonReviewText(value.comparisonReview),
+    "検証した一式は表示中の確認セットとは別です。元資料の取り込み・署名・送金は行っていません。"].join("\n");
 }
