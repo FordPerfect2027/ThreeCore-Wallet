@@ -554,4 +554,19 @@ export function registerReportSetUITests(test) {
   });
 
 
+  test("report set: native coverage exports include every group despite a zero-match check filter", async () => {
+    const f = fixture({ initial: demoSetHistory() });
+    try {
+      assert(f.q("coverage-json").disabled); await f.accept(); const before = f.mounted.getState().input;
+      assert(f.q("coverage-csv").disabled); f.check("ack"); f.set("check-search", "not in any check", "input");
+      f.click("coverage-json"); await f.settled(); const data = JSON.parse(f.files[0].text);
+      assert(data.groupCount === 3 && data.summary.allContinuous === false && data.options.shortAddresses === true);
+      f.check("short-addresses", false); f.click("coverage-csv"); await f.settled();
+      assert(f.files[1].text.includes('"group-summary"'));
+      assert(f.files[1].text.includes(before.entries[0].report.slots[0].entry.draft.plan.context.account));
+      assert(f.mounted.getState().input === before && f.files.every(file => file.restorable === false));
+    } finally { f.dispose(); }
+  });
+
+
 }

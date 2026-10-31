@@ -8,7 +8,7 @@ import { prepareReportSetFile, readReportSetFile } from "./report-set-file.js";
 import { diagnosticQuery } from "./report-set-diagnostics.js";
 import { reportSetHTML, reportSetCSV, reportSetDiagnosticsCSV, prepareReportSetChecksFile,
   readReportSetChecksText, reviewReportSetChecksFile, prepareReportSetSourceFile, prepareMissingHistoryDraftFile,
-  prepareReportSetComparisonFile, readReportSetComparisonText, reviewReportSetComparisonFile } from "./report-set-export.js";
+  prepareReportSetComparisonFile, prepareReportSetCoverageFile, readReportSetComparisonText, reviewReportSetComparisonFile } from "./report-set-export.js";
 import { setErrorCode } from "./report-set-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -196,7 +196,7 @@ export function createReportSetController({ storage, onChange = () => {},
       token = ++generation;
       if (!input) periodFail("PERIOD_SET_NO_RESULT");
       if (acknowledged !== true) periodFail("PERIOD_SET_ACK");
-      if (!["json", "html", "csv", "checks-csv", "checks-json", "check-review"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
+      if (!["json", "html", "csv", "checks-csv", "checks-json", "check-review", "coverage-json", "coverage-csv"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_SET_FORMAT");
       if (format === "check-review" && !checkReview) periodFail("PERIOD_SET_CHECKS_NO_REVIEW");
       const checked = checkReview;
       const snapshot = input, options = validateSetExportOptions(optionsValue);
@@ -208,6 +208,7 @@ export function createReportSetController({ storage, onChange = () => {},
         const file = checkText !== null ? Object.freeze({ text: checkText, filename: "ThreeCore-report-set-check-review.json",
           mimeType: "application/json;charset=utf-8", byteLength: new TextEncoder().encode(checkText).byteLength,
           encrypted: false, restorable: false, containsOriginalEvidence: false }) :
+          format.startsWith("coverage-") ? await prepareReportSetCoverageFile(snapshot, format.slice(9), options, { signal }) :
           format === "json" ? await prepareFile(snapshot, { signal }) : format === "html" ?
           reportSetHTML(snapshot, options) : format === "checks-csv" ? reportSetDiagnosticsCSV(snapshot, query, options) :
           format === "checks-json" ? await prepareReportSetChecksFile(snapshot, query, options, { signal }) : reportSetCSV(snapshot, options);

@@ -129,8 +129,8 @@ export function mountReportSetPanel({ document, parent,
 
   const exports = make("section", "export-section", undefined, result);
   make("h4", "export-heading", "確認セットをPCへ保存", exports);
-  field("notes", "説明用HTML・CSV・確認箇所JSONに保存メモを含める", "checkbox", exports);
-  field("short-addresses", "説明用HTML・CSV・確認箇所JSONのアドレスを短縮する", "checkbox", exports).checked = true;
+  field("notes", "説明用HTML・計画範囲CSV・確認箇所に保存メモを含める", "checkbox", exports);
+  field("short-addresses", "説明用HTML・CSV・確認箇所JSON・履歴範囲JSONのアドレスを短縮する", "checkbox", exports).checked = true;
   make("p", "privacy", "HTML・CSVは説明用の要約です。短縮表示は匿名化ではありません。保存名は常に含みます。", exports);
   field("ack", "保存ファイルに含まれる情報と、暗号化されないことを確認しました", "checkbox", exports);
   make("p", "json-help", "確認セットJSONは再読込み用で、全アドレス・残高・履歴・メモを含みます。上のメモ・短縮設定は適用されません。確認箇所JSONは説明用で、絞り込んだ箇所の保存値・ハッシュと元資料のチェックサムを含みます。", exports);
@@ -138,6 +138,9 @@ export function mountReportSetPanel({ document, parent,
   button("json", "確認セットJSONを保存", exportButtons);
   button("html", "説明用HTMLを保存", exportButtons);
   button("csv", "計画範囲CSVを保存", exportButtons);
+  button("coverage-json", "保存済み履歴範囲をJSON保存", exportButtons);
+  button("coverage-csv", "保存済み履歴範囲をCSV保存", exportButtons);
+  make("p", "coverage-export-help", "保存済み・未取得・計画外の範囲と、元記録の参照を保存します。アドレスの短縮設定を使い、メモ本文・残高・イベント本体は含めません。範囲の有無を示す説明用の資料で、全履歴の取得や取引がなかったことの証明ではありません。", exports);
   button("checks-csv", "絞り込んだ確認箇所をCSV保存", exportButtons);
   button("checks-json", "確認箇所と根拠の値をJSON保存", exportButtons);
   make("p", "checks-export-help", "確認箇所CSVには全体の件数を示す要約行と、条件に合う確認項目が入ります。該当0件でも全体の食い違いは残します。再読込み用の証拠ではありません。", exports);
@@ -381,7 +384,7 @@ export function mountReportSetPanel({ document, parent,
     nodes.inspect.disabled = value.busy || !value.result;
     for (const name of ["ack", "notes", "short-addresses"]) nodes[name].disabled = value.busy || !value.result;
     for (const name of ["check-agent", "check-severity", "check-search"]) nodes[name].disabled = value.busy || !value.result;
-    for (const name of ["json", "html", "csv", "checks-csv", "checks-json"]) nodes[name].disabled = value.busy || !value.result || !nodes.ack.checked || (name.startsWith("checks-") && !diagnosticQueryValid);
+    for (const name of ["json", "html", "csv", "checks-csv", "checks-json", "coverage-json", "coverage-csv"]) nodes[name].disabled = value.busy || !value.result || !nodes.ack.checked || (name.startsWith("checks-") && !diagnosticQueryValid);
     showChoices();
   }
 
@@ -415,7 +418,7 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes["queue-window-json"], "click", () => {
     if (queueSelection) void controller.exportMissingDraft(queueSelection.query, queueSelection.window.number, nodes.ack.checked, download);
   });
-  for (const format of ["json", "html", "csv", "checks-csv", "checks-json"]) {
+  for (const format of ["json", "html", "csv", "checks-csv", "checks-json", "coverage-json", "coverage-csv"]) {
     listen(nodes[format], "click", () => { void controller.exportFile(format, nodes.ack.checked, download,
       { includeNotes: nodes.notes.checked, shortAddresses: nodes["short-addresses"].checked }, format.startsWith("checks-") ? checkQuery() : undefined); });
   }

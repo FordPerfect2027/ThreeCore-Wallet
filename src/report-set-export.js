@@ -7,7 +7,7 @@ import { prepareReportSetFile } from "./report-set-file.js";
 import { preparePeriodReportFile } from "./period-report-file.js";
 import { preparePeriodFile } from "./period-file.js";
 import { emptyPeriodDraft } from "./period-draft.js";
-import { reportSetMissingHistoryQueue, missingHistoryPageRange } from "./report-set-timeline.js";
+import { reportSetTimeline, reportSetMissingHistoryQueue, missingHistoryPageRange } from "./report-set-timeline.js";
 import { analyzeReportSet, compareReportSets } from "./report-set-engine.js";
 import { reportSetDiagnostics, querySetDiagnostics, diagnosticQuery, diagnosticText } from "./report-set-diagnostics.js";
 import { escapeReportHTML } from "./period-report-export.js";
@@ -274,4 +274,63 @@ export async function readReportSetComparisonText(file, { signal, timeoutMs } = 
   return readFormatFileText(file, { maxBytes: REPORT_SET_COMPARISON_LIMIT, fail: periodFail,
     sizeCode: "PERIOD_SET_COMPARISON_SIZE", readCode: "PERIOD_SET_COMPARISON_READ",
     encodingCode: "PERIOD_SET_COMPARISON_ENCODING", signal, timeoutMs });
+}
+
+export const REPORT_SET_COVERAGE_LIMIT = 4 * 1024 * 1024;
+
+/** Portable saved-query coverage with source references; no cross-token totals. */
+export async function prepareReportSetCoverageFile(value, format = "json", optionsValue = {}, fileOptions = {}) {
+  if (!["json", "csv"].includes(format)) periodFail("PERIOD_SET_FORMAT");
+  const input = validateReportSet(value), { shortAddresses } = validateSetExportOptions(optionsValue);
+  const timeline = reportSetTimeline(input), analysis = analyzeReportSet(input);
+  const source = await prepareReportSetFile(input, fileOptions);
+  const groups = timeline.groups.map(group => ({ id: group.id,
+    context: { ...group.context, account: shortSetAddress(group.context.account, shortAddresses) },
+    tokenAddress: shortSetAddress(group.tokenAddress, shortAddresses),
+    ...group.historyCoverage,
+    cells: group.historyCoverage.cells.map(cell => ({ ...cell,
+      records: cell.records.map(row => ({ reportId: row.reportId, label: row.label, recordIndex: row.recordIndex,
+        fromBlock: (BigInt(row.start) + 1n).toString(), toBlock: row.end, sourceStatus: row.sourceStatus,
+        requiresNewPlan: row.restricted, archivedReport: row.archivedReport, archivedSource: row.archivedSource,
+        eventsInOriginalWindow: row.eventCount })) })) }));
+  const payload = { schema: "threecore.report-set-history-coverage.v1", sourcePayloadDigest: source.digest,
+    digestAlgorithm: "SHA-256", options: { shortAddresses }, groupCount: groups.length,
+    summary: { reportCount: analysis.reportCount, allContinuous: analysis.allContinuous, issues: analysis.issues,
+      conclusionsUseAllSourceEvidence: true },
+    missingAgents: timeline.missingAgents,
+    missingReportsByAgent: analysis.tokens.map(token => ({ agent: token.agent, reportIds: token.missingReportIds })),
+    groups, rangeNotation: "inclusive", recordIndexBase: 0, eventCountScope: "original-query-window-not-split-cell",
+    blockCountsCombinedAcrossGroups: false, savedQueryPresenceOnly: true,
+    historicalOnly: true, completeHistory: false, liveChainRechecked: false,
+    authenticated: false, encrypted: false, restorable: false, containsOriginalEvidence: false };
+  let text;
+  if (format === "json") text = JSON.stringify(payload, null, 2) + "\n";
+  else {
+    const columns = ["row_type", "source_payload_sha256", "source_all_continuous", "source_issues", "missing_agents",
+      "missing_reports_by_agent", "group_id", "agent", "chain_id", "account", "token_address", "from_inclusive", "to_inclusive",
+      "blocks", "range_kind", "needs_review", "planned_report_ids", "saved_record_refs", "hash_conflict_blocks", "balance_conflict_blocks", "internal_conflict",
+      "span_blocks", "planned_unique_blocks", "recorded_unique_blocks", "pending_planned_blocks", "unplanned_blocks",
+      "multiple_record_blocks", "review_recorded_blocks", "saved_query_records",
+      "historical_only", "complete_history", "live_chain_rechecked", "evidence_backup", "structured_addresses_shortened"];
+    const globals = type => [type, source.digest, analysis.allContinuous, JSON.stringify(analysis.issues),
+      JSON.stringify(timeline.missingAgents), JSON.stringify(payload.missingReportsByAgent)];
+    const tail = [true, false, false, false, shortAddresses];
+    const rows = [[...globals("source-summary"), ...Array(23).fill(""), ...tail]];
+    for (const group of groups) {
+      const identity = [group.id, group.context.agent, group.context.chainId, group.context.account, group.tokenAddress];
+      rows.push([...globals("group-summary"), ...identity, group.fromBlock, group.toBlock, ...Array(8).fill(""),
+        group.spanBlocks, group.plannedUniqueBlocks, group.recordedUniqueBlocks, group.pendingPlannedBlocks,
+        group.unplannedBlocks, group.multipleRecordBlocks, group.reviewRecordedBlocks, group.savedQueryRecords, ...tail]);
+      for (const cell of group.cells) rows.push([...globals("range"), ...identity, cell.fromBlock, cell.toBlock,
+        cell.blocks, cell.kind, cell.needsReview, JSON.stringify(cell.plannedReportIds), JSON.stringify(cell.records),
+        JSON.stringify(cell.hashConflictBlocks), JSON.stringify(cell.balanceConflictBlocks), cell.internalConflict,
+        ...Array(8).fill(""), ...tail]);
+    }
+    text = "\ufeff" + [columns, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
+  }
+  const byteLength = new TextEncoder().encode(text).byteLength;
+  if (byteLength > REPORT_SET_COVERAGE_LIMIT) periodFail("PERIOD_SET_COVERAGE_SIZE");
+  return Object.freeze({ ...resultFile(text, format, format === "json" ? "application/json" : "text/csv"),
+    filename: "ThreeCore-saved-history-coverage." + format, sourcePayloadDigest: source.digest,
+    groupCount: groups.length, allContinuous: analysis.allContinuous, options: Object.freeze({ shortAddresses }) });
 }

@@ -29,6 +29,7 @@ const ERRORS = Object.freeze({
   PERIOD_SET_QUEUE_GROUP: "表示中の確認セットに、そのアカウントの区間はありません。",
   PERIOD_SET_QUEUE_PAGE: "指定したページには予定がありません。最初のページから選び直してください。",
   PERIOD_SET_QUEUE_DISJOINT: "このページの区間は連続していません。1区間ずつ保存対象に選んでください。",
+  PERIOD_SET_COVERAGE_SIZE: "保存済み履歴範囲の説明ファイルが上限4 MiBを超えています。元の確認セットJSONを保管してください。",
   PERIOD_SET_COMPARISON_JSON: "比較ファイルのJSONを読み取れません。",
   PERIOD_SET_COMPARISON_SCHEMA: "差し替え比較のJSONを選んでください。",
   PERIOD_SET_COMPARISON_READ: "比較ファイルを読み取れませんでした。",

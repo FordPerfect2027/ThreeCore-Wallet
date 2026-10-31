@@ -433,3 +433,17 @@ test("saved comparisons are reviewed against the pending pair and saved without 
     assert.equal(f.files.length, 1);
   } finally { f.dispose(); }
 });
+
+test("saved-history coverage exports all groups independently of check filters", async () => {
+  const f = fixture(demoSetHistory());
+  try {
+    assert.equal(f.q("coverage-json").disabled, true); await f.accept(); const before = f.mounted.getState().input;
+    assert.equal(f.q("coverage-csv").disabled, true); f.check("ack"); f.set("check-search", "not in any check", "input");
+    f.click("coverage-json"); await f.settled(); const data = JSON.parse(f.files[0].text);
+    assert.equal(data.groupCount, 3); assert.equal(data.summary.allContinuous, false); assert.equal(data.options.shortAddresses, true);
+    f.check("short-addresses", false); f.click("coverage-csv"); await f.settled();
+    assert.match(f.files[1].text, /"group-summary"/); assert.ok(f.files[1].text.includes(before.entries[0].report.slots[0].entry.draft.plan.context.account));
+    assert.match(f.q("coverage-export-help").textContent, /イベント本体は含めません/); assert.equal(f.mounted.getState().input, before);
+    const control = f.q("coverage-json"); f.dispose(); control.click(); assert.equal(f.files.length, 2);
+  } finally { f.dispose(); }
+});
