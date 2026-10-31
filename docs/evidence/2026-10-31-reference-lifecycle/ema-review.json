@@ -1,0 +1,58 @@
+{
+  "schema": "threecore.operation-rehearsal-report-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "inputSchema": "threecore.operation-rehearsal-reference.v1",
+  "byteLength": 8191,
+  "sha256": "48a8b5658befe85350646b7fd982aad71305df800660495d4facb1029ff4ba69",
+  "expectedSha256": null,
+  "checksumMatches": null,
+  "matchesRecomputation": true,
+  "differenceCount": 0,
+  "differences": [],
+  "differencesTruncated": false,
+  "scope": [
+    {
+      "agent": "DAT",
+      "beforeRecords": 2,
+      "afterRecords": null
+    },
+    {
+      "agent": "EMA",
+      "beforeRecords": 1,
+      "afterRecords": null
+    },
+    {
+      "agent": "CAWELON",
+      "beforeRecords": 2,
+      "afterRecords": null
+    }
+  ],
+  "reportOutcome": {
+    "kind": "record-reference",
+    "agent": "EMA",
+    "reference": {
+      "kind": "operation",
+      "id": "one"
+    },
+    "recordCount": 1,
+    "summary": {
+      "phase": "open",
+      "openingRecordId": "open-one",
+      "closingRecordId": null,
+      "acceptedRecords": 1,
+      "rejectedRecords": 0,
+      "principalUnits": "100000000",
+      "pendingPrincipalUnits": "100000000",
+      "grossReturnUnits": null,
+      "entryFeeUnits": "1000000",
+      "exitFeeUnits": "0",
+      "totalFeeUnits": "1000000",
+      "realizedPnlUnits": "-1000000",
+      "reservedAmountUnits": null,
+      "releasedAmountUnits": null,
+      "pendingReservedAmountUnits": null
+    }
+  }
+}

@@ -1,0 +1,17 @@
+# Overview destinations and complete reference lifecycles
+
+Items 493–495. Source: `441bc1a`.
+
+493. Open an exact original record directly from an overview row. The record browser switches to that stored agent, selects the correct page and focuses the record chooser. Back restores the former query, search scope, page size, page and selection, including an empty search result. Detached overview buttons cannot change a newer source. Missing, disposed or invalid destinations do not change the current view.
+
+494. Show the complete operation or reservation associated with a selected record, even if the current search hides its other records. Recompute accepted opening and closing records, pending/closed/not-started state, principal, gross return, entry/exit fees and realized profit or loss using exact atomic units. Rejected attempts never contribute amounts; identical IDs in another agent or another reference kind are separate. A pending gross return remains absent, while a completed zero return is zero. Reservations show their reserved, released and pending amounts, without presenting them as transfers. The panel explains that the whole lifecycle may extend beyond the selected record's point in history and excludes unrealized valuation.
+
+495. Save a focused reference report with the full original workspace needed for independent reproduction. Recheck it in the existing report panel, CLI verifier or portable evidence workflow. Changed financial results and execution claims are detected. The dedicated offline command emits the same bytes as the shared browser-facing encoder: `node scripts/inspect-rehearsal-reference.js workspace.json DAT:open-one`. Input files remain unchanged. Invalid input emits no partial report; a refused browser save keeps the original history and current view. The report is an explanatory simulation artifact, not a workspace backup or authorization.
+
+## Validation
+
+Focused checks: 200 passed, zero failed/skipped/cancelled (17650.1824 ms). Related rehearsal and local HTTP checks: 1530 passed, zero failed/skipped/cancelled (197031.2091 ms). Native Chrome: all 908 cases passed across two independently cleaned profiles with strictly reconciled registry indices. The added real-DOM cases verify overview navigation/back, stale buttons, complete lifecycle values under a narrow filter, independently rechecked exports, altered-profit detection and byte-identical original session export.
+
+[Evidence](evidence/2026-10-31-reference-lifecycle/) contains a synthetic DAT/EMA/CAWELON workspace, closed profit, pending and closed loss reports, independent reviews, portable evidence and a deliberately altered report. Shared and CLI output match exactly. SHA-256 covers every retained artifact. Download checks capture callbacks and do not prove the user's OS file dialog or browser-control connection is working.
+
+These three workflows add three development items. Test assertions, repeated runs, fixture cases and harness maintenance do not add items. The previous checkpoint's incomplete full-suite runs remain documented in [saved-original comparison](SAVED_ORIGINAL_COMPARISON_AND_RECOVERY_2026-10-31.md); this batch does not claim a new clean full-wallet run. No real signatures, transfers, approvals, private keys, external RPC, publication, deployment or restart of the user's existing server occurred. This count is not a mainnet-readiness percentage.

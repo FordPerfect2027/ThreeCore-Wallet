@@ -1,0 +1,34 @@
+{
+  "source": "441bc1a",
+  "synthetic": true,
+  "rows": [
+    {
+      "agent": "DAT",
+      "phase": "closed",
+      "realizedPnlUnits": "28000000",
+      "grossReturnUnits": "130000000",
+      "cliMatches": true,
+      "portableEvidenceRecomputed": true
+    },
+    {
+      "agent": "EMA",
+      "phase": "open",
+      "realizedPnlUnits": "-1000000",
+      "grossReturnUnits": null,
+      "cliMatches": true,
+      "portableEvidenceRecomputed": true
+    },
+    {
+      "agent": "CAWELON",
+      "phase": "closed",
+      "realizedPnlUnits": "-42000000",
+      "grossReturnUnits": "60000000",
+      "cliMatches": true,
+      "portableEvidenceRecomputed": true
+    }
+  ],
+  "alteredProfitRefused": true,
+  "originalWorkspaceUnchanged": true,
+  "providerCalls": 0,
+  "storageWrites": 0
+}
