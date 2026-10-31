@@ -18,6 +18,12 @@ export const SET_ISSUES = Object.freeze({
 export const SET_SEGMENTS = Object.freeze({ single: "計画1件", gap: "計画の抜け", overlap: "計画の重複", repeated: "同じ証拠の重複" });
 export const SET_SOURCE_STATUS = Object.freeze({ exact: "保存内容と一致", metadata: "名前・メモ・保管状態が変更", changed: "報告の証拠が変更", missing: "保存番号が見つからない" });
 const ERRORS = Object.freeze({
+  PERIOD_SET_COVERAGE_JSON: "履歴範囲のJSONを読み取れませんでした。保存した元ファイルを確認してください。",
+  PERIOD_SET_COVERAGE_SCHEMA: "保存した履歴範囲JSONを選んでください。CSVはこの照合欄では読み込めません。",
+  PERIOD_SET_COVERAGE_OPTIONS: "履歴範囲JSONのアドレス表示設定が正しくありません。保存した元ファイルを確認してください。",
+  PERIOD_SET_COVERAGE_READ: "履歴範囲ファイルを読み込めませんでした。",
+  PERIOD_SET_COVERAGE_ENCODING: "履歴範囲はUTF-8のJSONを選んでください。",
+  PERIOD_SET_COVERAGE_NO_REVIEW: "先に保存した履歴範囲JSONを元資料と照合してください。",
   PERIOD_SET_EVENT_FILE_JSON: "履歴比較のJSONを読み取れませんでした。保存した元のファイルを確認してください。",
   PERIOD_SET_EVENT_FILE_SCHEMA: "保存済み履歴の比較JSONを選んでください。",
   PERIOD_SET_EVENT_FILE_READ: "履歴比較ファイルを読み込めませんでした。",
@@ -245,4 +251,19 @@ export function setEventComparisonReviewText(value) {
     "異なる項目: " + (value.differences.join(", ") || "なし") + " / 余分な項目: " + value.unexpectedFields,
     "履歴比較ファイルのテキスト SHA-256: " + value.comparisonTextSha256,
     "ファイルと再計算の一致は、A・Bの履歴が一致したという意味とは別です。出所や現在のチェーン状態を認証せず、資料の差し替え・履歴の統合も行いません。"].join("\n");
+}
+
+export function setCoverageReviewText(value) {
+  if (!value) return "保存した履歴範囲JSONを、表示中の元資料から再計算して照合します。ファイルに記載されたアドレス表示設定を使います。";
+  return ["最後に完了した履歴範囲JSONの照合:",
+    value.matchesRecomputation ? "ファイルの内容は再計算と一致しました。" : "ファイルの内容に再計算との食い違いがあります。",
+    "元資料の検査値: " + (value.sourceDigestMatches ? "一致" : "不一致"),
+    "再計算した資料全体: " + (value.summary.allContinuous ? "この保存資料内では連続条件に一致" : "追加確認が必要"),
+    "含まれないトークン: " + (value.missingAgents.join(", ") || "なし"),
+    "グループ別に " + value.groupCount + "件（ブロック数はグループをまたいで合算しません）",
+    ...value.groups.flatMap(group => [group.id + " / " + group.agent + " / Chain " + group.chainId + " / " + group.fromBlock + " ～ " + group.toBlock,
+      "  計画内 " + group.plannedUniqueBlocks + " / 保存済み " + group.recordedUniqueBlocks + " / 計画内で履歴記録なし " + group.pendingPlannedBlocks + " / 計画外 " + group.unplannedBlocks + " / 保存済みのうち要確認 " + group.reviewRecordedBlocks]),
+    "異なる項目: " + (value.differences.join(", ") || "なし") + " / 余分な項目: " + value.unexpectedFields,
+    "履歴範囲ファイルのテキスト SHA-256: " + value.coverageTextSha256,
+    "ファイルと再計算の一致は、全履歴の取得完了を意味しません。保存された問い合わせ区間の存在を照合しています。元資料の変更・履歴の統合・チェーンへの読み取りは行いません。"].join("\n");
 }

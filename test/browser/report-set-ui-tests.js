@@ -729,4 +729,27 @@ export function registerReportSetUITests(test) {
   } finally { f.dispose(); }
   });
 
+  test("saved coverage review keeps pending ranges visible and detects changed coverage", async () => {
+  const initial = sequenceHistory([0n, 24n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+  const f = fixture({ initial });
+  try {
+    assert(f.q("coverage-review-file").disabled); await f.accept(); const before = f.mounted.getState().input;
+    f.q("coverage-review-heading").click();
+    const file = await prepareReportSetCoverageFile(before);
+    const feed = async text => { const transfer = new DataTransfer(); transfer.items.add(new File([text], "coverage.json", { type: "application/json" })); f.q("coverage-review-file").files = transfer.files; f.q("coverage-review-file").dispatchEvent(new Event("change", { bubbles: true })); await f.settled(); };
+    await feed(file.text); assert(f.q("coverage-review-output").textContent.includes("ファイルの内容は再計算と一致"));
+    assert(f.q("coverage-review-output").textContent.includes("計画内で履歴記録なし 14"));
+    assert(f.q("coverage-review-output").textContent.includes("合算しません"));
+    assert(f.q("coverage-review-json").disabled); f.check("ack"); assert(f.q("coverage-review-json").disabled);
+    f.check("coverage-review-ack"); f.click("coverage-review-json"); await f.settled();
+    assert(f.files.length === 1 && JSON.parse(f.files[0].text).groups[0].pendingPlannedBlocks === "14");
+    const altered = JSON.parse(file.text); altered.groups[0].recordedUniqueBlocks = "900";
+    await feed(JSON.stringify(altered)); assert(f.q("coverage-review-output").textContent.includes("再計算との食い違い"));
+    assert(f.q("coverage-review-json").disabled && !f.q("coverage-review-ack").checked);
+    assert(f.mounted.getState().input === before && f.store.calls.every(row => row[0] === "read"));
+    await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled();
+    assert(f.mounted.getState().coverageReview === null && f.q("coverage-review-json").disabled);
+  } finally { f.dispose(); }
+  });
+
 }

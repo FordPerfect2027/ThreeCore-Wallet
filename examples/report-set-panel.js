@@ -6,7 +6,7 @@ import { queryReportHistory } from "../src/report-history-query.js";
 import { querySetDiagnostics, diagnosticText } from "../src/report-set-diagnostics.js";
 import { mountReportSetTimeline } from "./report-set-timeline-panel.js";
 import { SET_LIMITATION, SET_SEGMENTS, setErrorText, setSummaryText,
-  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText, setEventComparisonText, setEventComparisonReviewText } from "../src/report-set-view.js";
+  setTokenText, setSourcesText, setCheckReviewText, setComparisonText, setComparisonReviewText, setComparisonEvidenceReviewText, setEventComparisonText, setEventComparisonReviewText, setCoverageReviewText } from "../src/report-set-view.js";
 
 export function mountReportSetPanel({ document, parent,
   storage = createReportHistoryStorage(), now, stagePeriodProposal = null,
@@ -19,7 +19,7 @@ export function mountReportSetPanel({ document, parent,
   let queueSelection = null;
   let eventComparison = null, eventPage = 0;
   let eventRecheck = null, recheckModel = null, recheckPage = null;
-  let lastReview = null, lastEvidenceReview = null, lastEventReview = null;
+  let lastReview = null, lastEvidenceReview = null, lastEventReview = null, lastCoverageReview = null;
   const host = document.createElement("section");
   host.className = "report-set-panel";
   host.setAttribute("aria-label", "複数の保存報告の期間確認");
@@ -188,6 +188,13 @@ export function mountReportSetPanel({ document, parent,
   make("pre", "event-review-output", setEventComparisonReviewText(null), eventReviewSection);
   field("event-review-ack", "照合結果に元資料の識別値・件数・検査値が含まれ、暗号化されないことを確認しました", "checkbox", eventReviewSection);
   button("event-review-json", "最後に完了した履歴比較の照合結果を保存", eventReviewSection);
+
+  const coverageReviewSection = make("details", "coverage-review-section", undefined, result);
+  make("summary", "coverage-review-heading", "保存した履歴範囲JSONを元資料と照合", coverageReviewSection);
+  field("coverage-review-file", "履歴範囲JSONを選ぶ（最大4 MiB）", "file", coverageReviewSection).accept = ".json,application/json";
+  make("pre", "coverage-review-output", setCoverageReviewText(null), coverageReviewSection);
+  field("coverage-review-ack", "照合結果に元資料の識別値・グループ別の範囲と件数・検査値が含まれ、暗号化されないことを確認しました", "checkbox", coverageReviewSection);
+  button("coverage-review-json", "最後に完了した履歴範囲の照合結果を保存", coverageReviewSection);
 
   const checkReviewSection = make("section", "saved-check-review", undefined, result);
   make("h4", "saved-check-heading", "保存した確認箇所JSONを元資料と照合", checkReviewSection);
@@ -461,6 +468,11 @@ export function mountReportSetPanel({ document, parent,
     nodes["event-review-output"].textContent = setEventComparisonReviewText(value.eventComparisonReview);
     nodes["event-review-ack"].disabled = value.busy || !value.eventComparisonReview;
     nodes["event-review-json"].disabled = value.busy || !value.eventComparisonReview || !nodes["event-review-ack"].checked;
+    if (lastCoverageReview !== value.coverageReview) { lastCoverageReview = value.coverageReview; nodes["coverage-review-ack"].checked = false; }
+    nodes["coverage-review-file"].disabled = value.busy || !value.input;
+    nodes["coverage-review-output"].textContent = setCoverageReviewText(value.coverageReview);
+    nodes["coverage-review-ack"].disabled = value.busy || !value.coverageReview;
+    nodes["coverage-review-json"].disabled = value.busy || !value.coverageReview || !nodes["coverage-review-ack"].checked;
     nodes["check-file"].disabled = value.busy || !value.input;
     nodes["check-review-output"].textContent = setCheckReviewText(value.checkReview);
     nodes["check-review"].disabled = value.busy || !value.checkReview || !nodes.ack.checked;
@@ -576,6 +588,12 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes["event-review-file"], "change", () => {
     const file = nodes["event-review-file"].files?.[0]; nodes["event-review-file"].value = "";
     if (file) void controller.reviewEventComparisonFile(file);
+  });
+  listen(nodes["coverage-review-ack"], "change", () => render(controller.state));
+  listen(nodes["coverage-review-json"], "click", () => { void controller.exportCoverageReview(nodes["coverage-review-ack"].checked, download); });
+  listen(nodes["coverage-review-file"], "change", () => {
+    const file = nodes["coverage-review-file"].files?.[0]; nodes["coverage-review-file"].value = "";
+    if (file) void controller.reviewCoverageFile(file);
   });
   listen(nodes["check-file"], "change", () => {
     const file = nodes["check-file"].files?.[0];

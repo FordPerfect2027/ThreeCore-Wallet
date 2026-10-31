@@ -506,3 +506,41 @@ export async function readReportSetEventComparisonText(file, { signal, timeoutMs
   return readFormatFileText(file, { maxBytes: REPORT_SET_EVENT_COMPARISON_LIMIT, fail: periodFail,
     sizeCode: "PERIOD_SET_EVENT_SIZE", readCode: "PERIOD_SET_EVENT_FILE_READ", encodingCode: "PERIOD_SET_EVENT_FILE_ENCODING", signal, timeoutMs });
 }
+
+/** Compare saved coverage with all ranges recomputed from the accepted source. */
+export async function reviewReportSetCoverageFile(value, text, fileOptions = {}) {
+  const input = validateReportSet(value);
+  let cryptoOptions, supplied;
+  try { cryptoOptions = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_COVERAGE_LIMIT }); }
+  catch { periodFail("PERIOD_SET_COVERAGE_JSON"); }
+  const targetCode = walletSavedFileTargetCode(supplied?.schema, "coverage");
+  if (targetCode) periodFail(targetCode);
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== "threecore.report-set-history-coverage.v1") periodFail("PERIOD_SET_COVERAGE_SCHEMA");
+  if (!supplied.options || typeof supplied.options !== "object" || Array.isArray(supplied.options) ||
+      Object.keys(supplied.options).join(",") !== "shortAddresses" || typeof supplied.options.shortAddresses !== "boolean") periodFail("PERIOD_SET_COVERAGE_OPTIONS");
+  const options = Object.freeze({ shortAddresses: supplied.options.shortAddresses });
+  const expected = JSON.parse((await prepareReportSetCoverageFile(input, "json", options, cryptoOptions)).text);
+  let coverageTextSha256;
+  try { coverageTextSha256 = await sha256Hex(new TextEncoder().encode(text), cryptoOptions.subtle, { signal: cryptoOptions.signal, timeoutMs: cryptoOptions.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || !sameCheckJSON(supplied[key], expected[key]));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  return freezeSet({ schema: "threecore.report-set-history-coverage-review.v1", matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    sourcePayloadDigest: expected.sourcePayloadDigest, sourceDigestMatches: supplied.sourcePayloadDigest === expected.sourcePayloadDigest,
+    coverageTextSha256, options, differences, unexpectedFields, summary: expected.summary, missingAgents: expected.missingAgents,
+    groupCount: expected.groupCount, groups: expected.groups.map(group => ({ id: group.id, agent: group.context.agent, chainId: group.context.chainId,
+      fromBlock: group.fromBlock, toBlock: group.toBlock, plannedUniqueBlocks: group.plannedUniqueBlocks, recordedUniqueBlocks: group.recordedUniqueBlocks,
+      pendingPlannedBlocks: group.pendingPlannedBlocks, unplannedBlocks: group.unplannedBlocks, multipleRecordBlocks: group.multipleRecordBlocks,
+      reviewRecordedBlocks: group.reviewRecordedBlocks, savedQueryRecords: group.savedQueryRecords })),
+    blockCountsCombinedAcrossGroups: false, savedQueryPresenceOnly: true, completeHistory: false,
+    readOnly: true, historicalOnly: true, liveChainRechecked: false, authenticated: false,
+    encrypted: false, restorable: false, containsOriginalEvidence: false, authorizesExecution: false });
+}
+
+export async function readReportSetCoverageText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_COVERAGE_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_COVERAGE_SIZE", readCode: "PERIOD_SET_COVERAGE_READ", encodingCode: "PERIOD_SET_COVERAGE_ENCODING", signal, timeoutMs });
+}

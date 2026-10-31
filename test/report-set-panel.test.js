@@ -620,3 +620,26 @@ test("set block scope keeps selected and accepted sources while filtering the sa
     assert.ok(f.mounted.getState().eventComparisonReview === null && f.q("event-review-json").disabled && !f.q("event-review-ack").checked);
   } finally { f.dispose(); }
   });
+
+  test("saved coverage review keeps pending ranges visible and detects changed coverage", async () => {
+  const initial = sequenceHistory([0n, 24n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+  const f = fixture(initial);
+  try {
+    assert.ok(f.q("coverage-review-file").disabled); await f.accept(); const before = f.mounted.getState().input;
+    f.q("coverage-review-heading").click();
+    const file = await prepareReportSetCoverageFile(before);
+    const feed = async text => { f.q("coverage-review-file").files = [fileFrom(text)]; f.q("coverage-review-file").dispatchEvent(new Event("change")); await f.settled(); };
+    await feed(file.text); assert.ok(f.q("coverage-review-output").textContent.includes("ファイルの内容は再計算と一致"));
+    assert.ok(f.q("coverage-review-output").textContent.includes("計画内で履歴記録なし 14"));
+    assert.ok(f.q("coverage-review-output").textContent.includes("合算しません"));
+    assert.ok(f.q("coverage-review-json").disabled); f.check("ack"); assert.ok(f.q("coverage-review-json").disabled);
+    f.check("coverage-review-ack"); f.click("coverage-review-json"); await f.settled();
+    assert.ok(f.files.length === 1 && JSON.parse(f.files[0].text).groups[0].pendingPlannedBlocks === "14");
+    const altered = JSON.parse(file.text); altered.groups[0].recordedUniqueBlocks = "900";
+    await feed(JSON.stringify(altered)); assert.ok(f.q("coverage-review-output").textContent.includes("再計算との食い違い"));
+    assert.ok(f.q("coverage-review-json").disabled && !f.q("coverage-review-ack").checked);
+    assert.ok(f.mounted.getState().input === before && f.store.calls.every(row => row[0] === "read"));
+    await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled();
+    assert.ok(f.mounted.getState().coverageReview === null && f.q("coverage-review-json").disabled);
+  } finally { f.dispose(); }
+  });
