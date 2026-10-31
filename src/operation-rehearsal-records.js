@@ -45,3 +45,27 @@ export function relatedRehearsalRecords(index,key){validIndex(index);if(typeof k
 export function encodeRehearsalRecordReport(input,query=REHEARSAL_RECORD_QUERY){const text=JSON.stringify(queryRehearsalRecords(indexRehearsalRecords(input),query),null,2)+"\n";
   try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
 }
+
+/** Viewing-only CSV. Recompute every matched record, regardless of UI paging.
+ * Atomic unit values remain decimal text; import columns as text in spreadsheets.
+ * The JSON report retains missing-agent scope and remains the reproducible artifact.
+ */
+export function rehearsalRecordCsv(input,query=REHEARSAL_RECORD_QUERY){
+  const report=queryRehearsalRecords(indexRehearsalRecords(input),query);
+  const fields=["simulationOnly","sourceVerified","authorizesExecution","queryAgent","queryKind","queryDecision","querySearch","totalRecords","matchedRecords",
+    "agent","recordNumber","recordId","eventKind","withinEnteredLimits","reasons","chainId","account","assetAddress","assetSymbol","assetDecimals",
+    "eventAgent","eventChainId","eventAccount","eventOrigin","eventSpender","referenceKind","referenceId",
+    "principalUnits","feeUnits","grossReturnUnits","amountUnits","exitFeeReserveUnits",
+    ...REHEARSAL_RECORD_BALANCES.flatMap(field=>[field+"BeforeUnits",field+"AfterUnits",field+"ChangeUnits"])];
+  const cell=value=>{let text=String(value);if(/^\s*[=+@-]/u.test(text)&&!/^-[0-9]+$/.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';};
+  const lines=[fields];
+  for(const row of report.rows){const event=row.event;
+    lines.push([true,false,false,report.query.agent,report.query.kind,report.query.decision,report.query.search,report.totalRecords,report.matchedRecords,
+      row.agent,row.recordNumber,event.id,event.kind,row.result.withinEnteredLimits,row.result.reasons.join("|"),row.chainId,row.account,row.asset.address,row.asset.symbol,row.asset.decimals,
+      event.agent,event.chainId,event.account,event.origin??"",event.spender??"",row.reference?.kind??"",row.reference?.id??"",
+      ...["principal","fee","grossReturn","amount","exitFeeReserve"].map(field=>event[field]??""),
+      ...row.changes.flatMap(change=>[change.before,change.after,change.delta])]);
+  }
+  const text="\uFEFF"+lines.map(line=>line.map(cell).join(",")).join("\r\n")+"\r\n";
+  try{boundedUtf8Length(text,2097152);}catch{fail("FILE_TOO_LARGE");}return text;
+}

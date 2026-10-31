@@ -32,6 +32,7 @@
         <tr><td>元資料と確認結果をまとめた証拠<br>ThreeCore-review-evidence.json</td><td>元資料と控えを再計算して確認。現在の履歴には反映しません。</td><td><a href="#report-evidence-title">証拠の再確認</a></td></tr>
         <tr><td>証拠の再確認結果<br>ThreeCore-evidence-verification.json</td><td>今回の再確認結果を保管。再確認には元の証拠ファイルを使います。</td><td>元の証拠は<a href="#report-evidence-title">証拠の再確認</a>へ</td></tr>
         <tr><td>計算の流れのCSV<br>ThreeCore-DAT-rehearsal-ledger.csv</td><td>表計算ソフトなどで読むための資料。復旧にはJSONファイルを使います。</td><td>この画面への読み込み対象外</td></tr>
+        <tr><td>検索に一致する全記録のCSV<br>ThreeCore-record-query.csv</td><td>表計算ソフトで閲覧。元入力や未作成対象の情報を含む資料には検索結果JSONを使います。</td><td>この画面への読み込み対象外</td></tr>
       </tbody>
     </table></div>
   </details>
@@ -209,7 +210,7 @@
     <div class="table-wrap"><table><caption>選択した記録に含まれる入力</caption><thead><tr><th>項目</th><th>記録された値</th></tr></thead><tbody id="record-browser-event"></tbody></table></div>
     <div class="table-wrap"><table><caption>この記録を評価した前後の金額</caption><thead><tr><th>項目</th><th>直前</th><th>評価後</th><th>差額</th></tr></thead><tbody id="record-browser-balances"></tbody></table></div>
     <p id="record-browser-related-status" class="small"></p><div class="table-wrap"><table><caption>同じ保存元の関連する記録</caption><thead><tr><th>順番・ID</th><th>種類</th><th>条件判定</th><th>詳細への移動</th></tr></thead><tbody id="record-browser-related"></tbody></table></div>
-    <button id="record-browser-save" type="button" disabled>検索結果と元入力を保存</button><p id="record-browser-export-status" class="small" role="status" aria-live="polite"></p>
+    <button id="record-browser-save" type="button" disabled>検索結果と元入力を保存</button> <button id="record-browser-csv-save" type="button" disabled aria-describedby="record-browser-csv-note">全一致記録をCSV保存</button><p id="record-browser-csv-note" class="small">CSVは表計算ソフトで読むための資料です。金額は最小単位の文字列です。桁数を保つには、表計算ソフトへの取り込みで全列を文字列に指定してください。履歴の復旧や資料の再確認にはJSONを使います。</p><p id="record-browser-export-status" class="small" role="status" aria-live="polite"></p>
   </section>
   <section aria-labelledby="ledger-title"><h2 id="ledger-title">いまの履歴に1件追記</h2>
     <p>新形式の試算に、仮の記録を順番に追加できます。条件外の記録は見送りとして残ります。予約は資金を動かさず、他の用途に重ねて計上しないための仮の確保です。</p>

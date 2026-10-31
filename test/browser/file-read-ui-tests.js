@@ -53,6 +53,24 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: search CSV exports all 600 matching rows and retains the original session",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{
+      const input={schema:"threecore.operation-rehearsal-workspace.v1",simulationOnly:true,activeAgent:"DAT",ledgers:["DAT","EMA","CAWELON"].map(agent=>{
+        const source=rehearsalExampleV2(agent,"deposit");return {...source,events:Array.from({length:200},(_,i)=>({...source.events[0],id:"deposit-"+i,amount:"1"}))};})};
+      q("workspace-text").value=JSON.stringify(input);q("workspace-text").dispatchEvent(new Event("input"));q("workspace-text-review").click();assert(!q("workspace-apply").disabled);q("workspace-apply").click();
+      q("session-save").click();const before=downloads.pop().text;q("record-browser-next").click();assert(q("record-browser-rows").rows.length===10);
+      q("record-browser-csv-save").click();const csv=downloads.pop();assert(csv.filename==="ThreeCore-record-query.csv");assert(csv.text.startsWith("\uFEFF"));assert(csv.text.split("\r\n").length===602);
+      assert(q("record-browser-export-status").textContent.includes("全600件"));assert(q("record-browser-status").textContent.includes("11～20"));
+      q("record-browser-search").value="absent";q("record-browser-search").dispatchEvent(new Event("input"));q("record-browser-csv-save").click();assert(downloads.pop().text.split("\r\n").length===2);
+      assert(q("record-browser-export-status").textContent.includes("列名だけ"));
+      q("session-save").click();assert(downloads.pop().text===before);
+    }finally{page.dispose();host.remove();}
+  });
+
   test("file-read: confirmed restores keep keyboard focus on their completed outcomes",async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);

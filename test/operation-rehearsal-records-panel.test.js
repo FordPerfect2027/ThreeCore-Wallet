@@ -4,7 +4,7 @@ import { Element } from "./helpers/panel-dom.js";
 import { mountRehearsalRecordsPanel } from "../examples/operation-rehearsal-records-panel.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { REHEARSAL_WORKSPACE_SCHEMA } from "../src/operation-rehearsal-workspace.js";
-import { encodeRehearsalRecordReport } from "../src/operation-rehearsal-records.js";
+import { encodeRehearsalRecordReport,rehearsalRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
 const workspace=(...ledgers)=>({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:"DAT",ledgers});
 class Node extends Element{set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
 const rendered=n=>[n.textContent,...n.children.map(rendered)].join(" ");
@@ -71,5 +71,26 @@ test('a focus observer that replaces the record source retains its newer detail'
   const f=setup();try{f.panel.refresh(workspace(rehearsalExampleV2()));const pick=rowButton(f,1);
     f.field('select').focus=()=>f.panel.refresh(workspace(rehearsalExampleV2('DAT','pending')));pick.click();
     assert.equal(f.field('select').value,'DAT:open-one');assert.match(f.field('detail').textContent,/1番目.*open-one/);assert.equal(f.field('rows').children.length,1);
+  }finally{f.panel.dispose();}
+});
+
+test("CSV export includes matches beyond the visible page and preserves JSON inputs",()=>{
+  const f=setup(),input=many();try{assert.equal(f.field("csv-save").disabled,true);f.panel.refresh(input);f.field("next").click();
+    f.field("csv-save").click();const saved=f.downloads.pop();assert.equal(saved.filename,"ThreeCore-record-query.csv");assert.equal(saved.mimeType,"text/csv;charset=utf-8");
+    assert.equal(saved.text,rehearsalRecordCsv(input));assert.match(f.field("export-status").textContent,/全27件/);assert.match(f.field("status").textContent,/11～20/);
+    f.field("save").click();assert.equal(f.downloads.pop().text,encodeRehearsalRecordReport(input));
+  }finally{f.panel.dispose();}
+});
+test("no-match CSV is explicitly header-only while invalid queries disable the action",()=>{
+  const f=setup(),input=many();try{f.panel.refresh(input);f.change("search","absent");f.field("csv-save").click();
+    assert.equal(f.downloads.pop().text,rehearsalRecordCsv(input,{...REHEARSAL_RECORD_QUERY,search:"absent"}));assert.match(f.field("export-status").textContent,/全0件.*列名だけ/);
+    f.change("search","x".repeat(81));assert.equal(f.field("csv-save").disabled,true);f.field("csv-save").click();assert.equal(f.downloads.length,0);
+    f.change("search","");assert.equal(f.field("csv-save").disabled,false);
+  }finally{f.panel.dispose();assert.equal(f.field("csv-save").disabled,true);}
+});
+test("CSV delivery failure preserves the selected query and rows for a retry",()=>{
+  const f=setup();try{f.panel.refresh(many());f.change("search","deposit-2");f.failDownload();f.field("csv-save").click();
+    assert.match(f.field("export-status").textContent,/CSVを保存できません/);assert.equal(f.field("rows").children.length,8);assert.equal(f.field("search").value,"deposit-2");
+    assert.equal(f.field("csv-save").disabled,false);
   }finally{f.panel.dispose();}
 });

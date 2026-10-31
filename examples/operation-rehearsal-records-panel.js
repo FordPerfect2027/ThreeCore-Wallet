@@ -1,5 +1,5 @@
 import { requireSyncExport } from "../src/export-policy.js";
-import { indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
+import { indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,rehearsalRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
 export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
@@ -44,7 +44,7 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   function render(){revision++;
     for(const name of["rows","select","detail","event","balances","related","related-status","export-status"])get(name).textContent="";
     get("back").disabled=!backView||backView.index!==index;
-    get("save").disabled=true;get("prev").disabled=true;get("next").disabled=true;get("select").disabled=true;
+    get("save").disabled=true;get("csv-save").disabled=true;get("prev").disabled=true;get("next").disabled=true;get("select").disabled=true;
     if(!index){get("status").textContent="履歴を作成または復旧すると、ここから記録を探せます。";get("scope").textContent="";return;}
     try{report=queryRehearsalRecords(index,Object.fromEntries(Object.keys(REHEARSAL_RECORD_QUERY).map(key=>[key,get(key).value||REHEARSAL_RECORD_QUERY[key]])));}
     catch{report=null;selected="";get("status").textContent="検索条件を確認してください。検索語は80文字以内です。";return;}
@@ -62,7 +62,7 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
       });cell.append(pick);tr.append(cell);
       const option=document.createElement("option");option.value=item.key;option.textContent=item.agent+" / "+item.recordNumber+"番目 / "+item.event.id;get("select").append(option);}
     get("select").value=selected;get("select").disabled=!shown.length;get("prev").disabled=offset===0;get("next").disabled=offset+size>=report.rows.length;
-    get("save").disabled=!index.inputs.ledgers.length;
+    get("save").disabled=!index.inputs.ledgers.length;get("csv-save").disabled=get("save").disabled;
     get("status").textContent="一致 "+report.matchedRecords+"件 / 全 "+report.totalRecords+"件。"+(shown.length?(offset+1)+"～"+(offset+shown.length)+"件目を表示。":"一致する記録はありません。")+"保存はページをまたぐ全一致記録と元入力が対象です。";detail();
   }
   for(const name of["agent","kind","decision","size"])listen(name,"change",()=>{if(disposed)return;backView=null;offset=0;render();});
@@ -80,6 +80,11 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   listen("save","click",()=>{if(disposed||!index||!report||!index.inputs.ledgers.length)return;
     const own=revision; try{offerDownload({document,prepared:{text:encodeRehearsalRecordReport(index.inputs,report.query),filename:"ThreeCore-record-query.json",mimeType:"application/json"}});if(disposed||own!==revision)return;get("export-status").textContent="検索条件・全一致記録・元入力の保存を開始しました。";}
     catch{if(disposed||own!==revision)return;get("export-status").textContent="検索結果を保存できませんでした。現在の履歴は保持しています。";}
+  });
+  listen("csv-save","click",()=>{if(disposed||!index||!report||!index.inputs.ledgers.length)return;
+    const own=revision;try{const matched=report.matchedRecords;offerDownload({document,prepared:{text:rehearsalRecordCsv(index.inputs,report.query),filename:"ThreeCore-record-query.csv",mimeType:"text/csv;charset=utf-8"}});if(disposed||own!==revision)return;
+      get("export-status").textContent="検索に一致する全"+matched+"件のCSV保存を開始しました。"+(matched?"":"一致する記録がないため列名だけを含みます。")+"CSVは閲覧用です。元入力を含む検証資料にはJSON保存を使ってください。";
+    }catch{if(disposed||own!==revision)return;get("export-status").textContent="CSVを保存できませんでした。現在の履歴と検索条件は保持しています。";}
   });
   function refresh(input) {
     if(disposed)return;

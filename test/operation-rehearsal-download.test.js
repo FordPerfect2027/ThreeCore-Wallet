@@ -20,6 +20,7 @@ const FORMATS = [
   ["scenario-set-case-save", "scenario-set-export-status"], ["scenario-set-baseline-save", "scenario-set-export-status"],
   ["scenario-set-case-baseline-save", "scenario-set-export-status"], ["session-save", "session-export-status"],
   ["record-browser-save", "record-browser-export-status"], ["check-suite-save", "check-suite-export-status"],
+  ["record-browser-csv-save", "record-browser-export-status"],
   ["report-review-save", "report-review-export-status"],
 ];
 const workspace = source => ({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:source.agent,ledgers:[source]});
