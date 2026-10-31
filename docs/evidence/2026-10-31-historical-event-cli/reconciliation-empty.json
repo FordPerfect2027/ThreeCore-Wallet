@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.filtered-history-events.v1",
+  "sourceKind": "reconciliation",
+  "sourcePayloadDigest": "626722e6d2e52e84a452b9e2c8b4fa323596d0953838ca0f909e7fab90e3522c",
+  "checksumVerified": true,
+  "authenticated": false,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "completeHistory": false,
+  "restorable": false,
+  "query": {
+    "agent": "DAT",
+    "direction": "all",
+    "search": "no result",
+    "page": 0
+  },
+  "total": 61,
+  "matched": 0,
+  "scope": "all-matches",
+  "summary": {
+    "allArithmeticAgreement": false,
+    "statuses": [
+      {
+        "agent": "DAT",
+        "status": "unexplained-difference"
+      },
+      {
+        "agent": "EMA",
+        "status": "missing-input"
+      },
+      {
+        "agent": "CAWELON",
+        "status": "missing-input"
+      }
+    ],
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "csv": "﻿\"query_agent\",\"query_direction\",\"query_search\",\"total_events\",\"matched_events\",\"agent\",\"account\",\"chain_id\",\"status\",\"block\",\"block_hash\",\"transaction_hash\",\"transaction_index\",\"log_index\",\"direction\",\"from\",\"to\",\"amount_base_units\",\"delta_base_units\",\"cumulative_delta_base_units\",\"implied_balance_base_units\",\"independently_verified\",\"complete_history\"\r\n"
+}

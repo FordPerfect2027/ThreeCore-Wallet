@@ -513,6 +513,7 @@ The wallet demo now compares saved DAT, EMA and CAWELON balances with saved Tran
 It includes interval-gap diagnostics, exact residuals, block summaries, reviewed JSON recovery, and CSV exports.
 See [the Japanese user guide](docs/BALANCE_RECONCILIATION_JA.md) and [the design and test notes](docs/RECONCILIATION_DESIGN.md).
 Run `npm run reconciliation:check -- saved.json --json` to inspect a backup without wallet access.
+The reconciliation and period-report screens can also save every filtered event across all pages. [Offline reproduction](docs/HISTORICAL_EVENT_EXPORT_CLI_2026-10-31.md) generates the same CSV from verified saved JSON and can retain query metadata for empty selections.
 
 
 ### Resumable historical period collection (local development)

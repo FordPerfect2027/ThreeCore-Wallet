@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.filtered-history-events.v1",
+  "sourceKind": "period",
+  "sourcePayloadDigest": "830b6ba41df67388361453cc282310bfcbfcfc30b465963e180b152138c2bf50",
+  "checksumVerified": true,
+  "authenticated": false,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "completeHistory": false,
+  "restorable": false,
+  "query": {
+    "agent": "DAT",
+    "direction": "all",
+    "search": "no result",
+    "page": 0
+  },
+  "total": 57,
+  "matched": 0,
+  "scope": "all-matches",
+  "summary": {
+    "allArithmeticAgreement": true,
+    "statuses": [
+      {
+        "agent": "DAT",
+        "status": "arithmetic-agreement"
+      },
+      {
+        "agent": "EMA",
+        "status": "arithmetic-agreement"
+      },
+      {
+        "agent": "CAWELON",
+        "status": "arithmetic-agreement"
+      }
+    ],
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "csv": "﻿\"query_agent\",\"query_direction\",\"query_search\",\"total_events\",\"matched_events\",\"report_status\",\"source_status\",\"source_id\",\"source_label\",\"chain_id\",\"account\",\"token_address\",\"block\",\"block_hash\",\"transaction_hash\",\"transaction_index\",\"log_index\",\"direction\",\"from\",\"to\",\"amount_base_units\",\"delta_base_units\",\"cumulative_delta_base_units\",\"implied_balance_base_units\",\"historical_only\",\"live_chain_rechecked\",\"independently_verified\"\r\n"
+}
