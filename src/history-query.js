@@ -1,6 +1,6 @@
 import { captureDataRecord } from "./security-data.js";
 import { createPortfolioHistory } from "./portfolio-history.js";
-import { normalizeAddress } from "./wallet-session.js";
+import { normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
 
 export class HistoryQueryError extends Error {
   constructor(message) {
@@ -18,7 +18,7 @@ function height(value) {
 }
 /** Strict, primitive-only filters. No regex, arbitrary search expressions or code. */
 export function validateHistoryQuery(query = {}) {
-  const allowed = ["account", "chainId", "minimumBlock", "maximumBlock", "order", "tokenAddress", "tokenStatus"];
+  const allowed = ["account", "chainId", "minimumBlock", "maximumBlock", "order", "tokenAddress", "tokenStatus", "siteOrigin"];
   try {
     const keys=Reflect.ownKeys(query);if(keys.some(key=>!allowed.includes(key)))fail();
     query=captureDataRecord(query,keys);
@@ -38,7 +38,9 @@ export function validateHistoryQuery(query = {}) {
   if (tokenAddress !== "") { try { tokenAddress = normalizeAddress(tokenAddress); } catch { fail(); } }
   const tokenStatus = query.tokenStatus ?? "any";
   if (!["any", "known", "unknown", "not-observed"].includes(tokenStatus) || (!tokenAddress && tokenStatus !== "any")) fail();
-  return Object.freeze({ account, chainId, minimumBlock, maximumBlock, order, tokenAddress, tokenStatus });
+  let siteOrigin = query.siteOrigin ?? "";
+  if (siteOrigin !== "") { try { siteOrigin = validateSiteOrigin(siteOrigin); } catch { fail(); } }
+  return Object.freeze({ account, chainId, minimumBlock, maximumBlock, order, tokenAddress, tokenStatus, siteOrigin });
 }
 
 /** Query a copied archive; retained source indices are local to this archive. */
@@ -50,6 +52,7 @@ export function queryPortfolioHistory(text, input = {}) {
   const rows = state.snapshots.map((snapshot, index) => ({ snapshot, index })).filter(({ snapshot }) => {
     if (query.account && snapshot.account !== query.account) return false;
     if (query.chainId !== "" && snapshot.chainId !== query.chainId) return false;
+    if (query.siteOrigin && snapshot.siteOrigin !== query.siteOrigin) return false;
     const block = BigInt(snapshot.blockNumber);
     if (query.minimumBlock !== null && block < BigInt(query.minimumBlock)) return false;
     if (query.maximumBlock !== null && block > BigInt(query.maximumBlock)) return false;

@@ -9,7 +9,7 @@ import { encodePortfolioComparisonReport } from "../src/portfolio-comparison.js"
 import { describePortfolioHistory } from "../src/portfolio-history-summary.js";
 
 const USAGE = "Usage: node scripts/inspect-portfolio-history.js query|subset history.json [filters]\n" +
-  "  Filters: --account ADDRESS --chain ID --min-block DECIMAL --max-block DECIMAL\n" +
+  "  Filters: --account ADDRESS --chain ID --origin ORIGIN --min-block DECIMAL --max-block DECIMAL\n" +
   "           --order oldest|newest --token CONTRACT --token-state any|known|unknown|not-observed\n" +
   "  subset requires at least one filter and exports whole matching observations, including other holdings.\n" +
   "  record history.json --index INDEX\n" +
@@ -20,7 +20,7 @@ const USAGE = "Usage: node scripts/inspect-portfolio-history.js query|subset his
   "No network, wallet connection, import or source writes. Output goes only to stdout.\n" +
   "Exit 0: requested local analysis/export completed; 1: invalid input, incompatible pair or empty subset.\n" +
   "Structure and arithmetic checks do not authenticate observations, establish current balances or prove transfers/profit.\n";
-const filters = Object.freeze({ "--account": "account", "--chain": "chainId", "--min-block": "minimumBlock", "--max-block": "maximumBlock", "--order": "order", "--token": "tokenAddress", "--token-state": "tokenStatus" });
+const filters = Object.freeze({ "--account": "account", "--chain": "chainId", "--origin": "siteOrigin", "--min-block": "minimumBlock", "--max-block": "maximumBlock", "--order": "order", "--token": "tokenAddress", "--token-state": "tokenStatus" });
 function fail(code = "PORTFOLIO_HISTORY_CLI_ARGUMENTS") { throw Error(code); }
 function index(value) { if (!/^(0|[1-9][0-9]?)$/.test(value) || Number(value) >= HISTORY_LIMIT) fail(); return Number(value); }
 export function parsePortfolioHistoryArgs(args) {

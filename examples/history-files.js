@@ -3,6 +3,7 @@ import { readSecurityFileBytes, readFormatFileName } from "../src/security-file.
 import { createHistoryFileReader } from "../src/history-file-reader.js";
 import { prepareHistoryDownload, createHistoryBackupTracker, preparePortfolioReportsHistory, HISTORY_REPORT_FILE_LIMIT, HISTORY_REPORT_BATCH_LIMIT } from "../src/history-file.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
+import { validatePortfolioSnapshot } from "../src/portfolio-report.js";
 import { exportFilteredHistory, queryPortfolioHistory } from "../src/history-query.js";
 import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
 
@@ -231,6 +232,8 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   chain.inputMode = "numeric";
   chain.maxLength = 16;
   chain.setAttribute("aria-label", "履歴を絞るチェーンID");
+  const origin = node("input", "history-filter-origin"); origin.type = "text"; origin.maxLength = 65536; origin.spellcheck = false;
+  origin.setAttribute("aria-label", "履歴を絞るサイトのオリジン（URLの先頭部分）");
   const minimum = node("input", "history-filter-minimum");
   minimum.type = "text";
   minimum.inputMode = "numeric";
@@ -249,13 +252,14 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   }
   order.value = "oldest";
   const results = node("pre", "history-filter-results");
+  results.setAttribute("tabindex", "-1"); results.setAttribute("aria-label", "絞り込んだ保存履歴");
   const rowActions = node("ol", "history-filter-actions"); rowActions.hidden = typeof onSelectRecord !== "function";
   let rowCleanup = [];
   function clearRows() { for (const stop of rowCleanup) stop(); rowCleanup = []; rowActions.replaceChildren(); }
   function renderRows(selected, rows) {
     clearRows(); if (typeof onSelectRecord !== "function") return;
     for (const { snapshot, index } of rows) {
-      const item = node("li", "history-filter-action-row", snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / block " + snapshot.blockNumber);
+      const item = node("li", "history-filter-action-row", snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / " + snapshot.siteOrigin + " / block " + snapshot.blockNumber);
       for (const [side, caption] of [["before", "前の記録に選ぶ"], ["after", "後の記録・削除対象に選ぶ"]]) {
         const control = node("button", "history-filter-select-" + side + " secondary", caption); control.type = "button";
         const action = () => {
@@ -282,6 +286,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
       maximumBlock: maximum.value.trim(),
       order: order.value,
       tokenAddress: tokenAddress.value.trim(), tokenStatus: tokenStatus.value,
+      siteOrigin: origin.value.trim(),
     };
   }
   function invalidateView() {
@@ -290,7 +295,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     results.textContent = "";
     saveSubset.disabled = true;
   }
-  const search = button("history-filter-run", "条件に合う履歴を表示", id => {
+  function searchHistory(id) {
     invalidateView();
     const criteria = query();
     const captured = capture(id);
@@ -299,9 +304,10 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     view = { ...captured, criteria };
     renderRows(view, result.rows);
     results.textContent = result.matchCount + " / " + result.totalCount + "件\n" + result.rows.map(({ snapshot }) =>
-      snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / block " + snapshot.blockNumber).join("\n");
+      snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / " + snapshot.siteOrigin + " / block " + snapshot.blockNumber).join("\n");
     saveSubset.disabled = result.matchCount === 0;
-  });
+  }
+  const search = button("history-filter-run", "条件に合う履歴を表示", searchHistory);
   const saveSubset = button("history-file-save-subset", "表示した履歴だけダウンロード", id => {
     const selected = view;
     if (!selected || !matches(selected, id) || JSON.stringify(selected.criteria) !== JSON.stringify(query())) throw Error("Review changed history");
@@ -313,13 +319,13 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   });
   saveSubset.disabled = true;
   const resetFilters = button("history-filter-reset", "絞り込み条件を消去", () => {
-    for (const input of [account, chain, minimum, maximum, tokenAddress]) input.value = "";
+    for (const input of [account, chain, minimum, maximum, tokenAddress, origin]) input.value = "";
     order.value = "oldest";
     tokenStatus.value = "any";
     invalidateView();
   });
   const changedFilter = () => { stopReportBatch(); generation++; invalidateView(); };
-  for (const input of [account, chain, minimum, maximum, tokenAddress]) listen(input, "input", changedFilter);
+  for (const input of [account, chain, minimum, maximum, tokenAddress, origin]) listen(input, "input", changedFilter);
   listen(order, "change", changedFilter);
   listen(tokenStatus, "change", changedFilter);
   section.append(heading, explanation, save, backupState,
@@ -327,6 +333,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     labelled("個別の確認記録をまとめて履歴候補にする（最大64件・各64 KiB・合計1 MiB）", reportFiles), reportCancel,
     filterHeading, labelled("公開アドレス（空欄ならすべて）", account),
     labelled("チェーンID（空欄ならすべて）", chain),
+    labelled("サイト（例 https://example.com または http://localhost:4231・空欄ならすべて）", origin),
     labelled("トークン契約アドレス（空欄なら絞り込まない）", tokenAddress), labelled("その契約の確認状態（契約アドレスが必要）", tokenStatus),
     node("p", "notice", "条件に合う記録全体を選びます。保存ファイルには、その記録内の他の契約も含まれます。未確認や残高不明は残高0とは異なります。"),
     labelled("最小ブロック（空欄なら制限なし）", minimum),
@@ -335,6 +342,19 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   parent.append(section);
   updateBackup();
   return Object.freeze({
+    filterIdentity(input) {
+      if (disposed) return false; stopReportBatch(); const id = ++generation; reader.reset();
+      try {
+        if (!current(id)) return false; invalidateView(); const snapshot = validatePortfolioSnapshot(input); if (!current(id)) return false;
+        if (snapshot.agent !== agent) throw Error("Different card");
+        account.value = snapshot.account; chain.value = String(snapshot.chainId); origin.value = snapshot.siteOrigin;
+        minimum.value = maximum.value = tokenAddress.value = ""; tokenStatus.value = "any"; order.value = "oldest";
+        searchHistory(id); if (!current(id)) return false;
+        status.textContent = "選択した記録と同じアカウント・チェーン・サイトで絞り込みました。履歴は変更していません。";
+        try { results.focus?.(); } catch {}
+        return current(id) && view !== null;
+      } catch { if (current(id)) { invalidateView(); status.textContent = "同じ対象の検索を確認できませんでした。履歴を確認してください。"; } return false; }
+    },
     invalidate() {
       if (disposed) return;
       stopReportBatch();

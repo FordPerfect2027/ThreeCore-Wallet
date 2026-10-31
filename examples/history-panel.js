@@ -196,6 +196,12 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     status.textContent = "比較と元の2記録の保存を開始しました。残高比較欄で再計算できます。全履歴のバックアップではありません。";
   });
   saveComparison.disabled = true;
+  const filterIdentity = button("history-filter-identity", "選択した記録と同じ対象の履歴を検索", id => {
+    const selected = selectedAfter(), result = filesPanel.filterIdentity(selected.snapshot);
+    if (!current(id) || history.state().revision !== selected.state.revision || last.value !== selected.value) return;
+    if (result !== true) throw Error("Identity search unconfirmed");
+    status.textContent = "同じアカウント・チェーン・サイトの記録を検索欄に表示しました。履歴は変更していません。";
+  });
   const remove = button("history-remove", "選択した後の記録を削除", () => {
     recovery.remove(Number(last.value), renderedRevision);
     changed("選択した記録を履歴から削除しました。");
@@ -240,7 +246,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     first.replaceChildren();
     last.replaceChildren();
     state.snapshots.forEach((snapshot, index) => {
-      const text = snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / block " + snapshot.blockNumber;
+      const text = snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / " + snapshot.siteOrigin + " / block " + snapshot.blockNumber;
       list.append(element("li", "", text));
       for (const select of [first, last]) {
         const option = element("option", "", text);
@@ -249,7 +255,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
       }
     });
     if (state.size) last.value = String(state.size - 1);
-    first.disabled = last.disabled = compare.disabled = remove.disabled = saveRecord.disabled = showRecord.disabled = !state.size;
+    first.disabled = last.disabled = compare.disabled = remove.disabled = saveRecord.disabled = showRecord.disabled = filterIdentity.disabled = !state.size;
     previous.disabled = state.size < 2;
     reuseTokens.disabled = !state.size || typeof onReuseTokens !== "function";
     clear.disabled = !state.size;
@@ -267,7 +273,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
   listen(json, "input", () => { filesPanel?.invalidate(); cancelReview(); status.textContent = "JSONが変わりました。再度プレビューしてください。"; });
   listen(replace, "change", () => { filesPanel?.invalidate(); cancelReview(); });
   section.append(heading, note, addCurrent, addReport, status, list,
-    label("前の記録", first), label("後の記録・削除対象", last), showRecord, compare, previous, saveComparison, remove, saveRecord, reuseTokens, timeline,
+    label("前の記録", first), label("後の記録・削除対象", last), showRecord, filterIdentity, compare, previous, saveComparison, remove, saveRecord, reuseTokens, timeline,
     details, exportButton, label("保存・読み込み用の履歴JSON", json),
     label("既存履歴を置き換える（未選択なら追加）", replace), previewButton, previewText, apply,
     label("このカードの全履歴を消去することを確認", clearConfirm), clear);
