@@ -189,6 +189,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.wallet-saved-batch-evidence.v1": [null, "FILE_WALLET_BATCH_EVIDENCE_ONLY"],
   "threecore.wallet-batch-comparison-evidence.v1": [null, "FILE_WALLET_COMPARISON_EVIDENCE_ONLY"],
   "threecore.wallet-batch-comparison-evidence-review.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
+  "threecore.batch-comparison-difference-page.v1": [null, "FILE_SAVED_DIFFERENCE_PAGE_ONLY"],
   "threecore.wallet-saved-batch-evidence-review.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
   "threecore.operation-rehearsal-batch-evidence.v1": [null, "FILE_REHEARSAL_BATCH_EVIDENCE_ONLY"],
   "threecore.operation-rehearsal-batch-evidence-review.v1": [null, "FILE_BATCH_EVIDENCE_REVIEW_ONLY"],
@@ -1451,13 +1452,14 @@ export async function reviewWalletBatchComparisonEvidence(text, input = {}) {
   const expected = walletBatchComparisonEvidenceDocument(before, after), differences = Object.keys(expected).filter(key => !Object.hasOwn(parsed, key) || !sameSavedJSON(expected[key], parsed[key]));
   const unexpectedFields = Object.keys(parsed).filter(key => !Object.hasOwn(expected, key)).length, options = budget();
   const textDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, { signal: options.signal, timeoutMs: Math.min(options.timeoutMs, 30000) }); budget();
+  const { queryBoundedSavedJSONDifferences } = await import("./operation-rehearsal-report-review.js"); budget();
   const result = Object.freeze({ schema: "threecore.wallet-batch-comparison-evidence-review.v1", textDigest,
     matchesRecomputation: differences.length === 0 && unexpectedFields === 0 && beforeReview.matchesRecomputation && afterReview.matchesRecomputation,
     differences: Object.freeze(differences), unexpectedFields, beforeEvidenceMatches: beforeReview.matchesRecomputation, afterEvidenceMatches: afterReview.matchesRecomputation,
     comparisonMatches: sameSavedJSON(expected.comparison, parsed.comparison), beforeSummary: before.summary, afterSummary: after.summary, comparisonSummary: expected.comparison.summary,
     allOriginalsValidated: before.allOriginalsValidated && after.allOriginalsValidated, readOnly: true, authenticated: false,
     containsOriginalEvidence: false, authorizesExecution: false, automaticallyImported: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, recordedProcessVerified: false });
-  walletBatchComparisonEvidenceReviews.set(result, Object.freeze({ before: savedBatchEvidenceReviews.get(beforeReview), after: savedBatchEvidenceReviews.get(afterReview), comparison: expected.comparison, beforeReview, afterReview })); return result;
+  walletBatchComparisonEvidenceReviews.set(result, Object.freeze({ before: savedBatchEvidenceReviews.get(beforeReview), after: savedBatchEvidenceReviews.get(afterReview), comparison: expected.comparison, beforeReview, afterReview, queryDifferences: queryBoundedSavedJSONDifferences })); return result;
 }
 export function encodeWalletBatchComparisonEvidenceReview(result) {
   if (!walletBatchComparisonEvidenceReviews.has(result)) savedInspectionFail("FILE_BATCH_COMPARISON_RESULT");
@@ -1471,4 +1473,20 @@ export function extractWalletBatchComparisonEvidenceSource(review, role, name) {
   openReviewedWalletBatchComparisonEvidence(review);
   if (!["before", "after"].includes(role)) savedInspectionFail("FILE_BATCH_COMPARISON_ROLE");
   return extractWalletSavedBatchEvidenceSource(walletBatchComparisonEvidenceReviews.get(review)[role + "Review"], name);
+}
+const walletBatchComparisonDifferencePages = new WeakSet();
+/** JSON locations only, from the exact two embedded sources; a JSON difference is not source validation. */
+export function queryWalletBatchComparisonDifferences(review, name, input = {}) {
+  const before = extractWalletBatchComparisonEvidenceSource(review, "before", name), after = extractWalletBatchComparisonEvidenceSource(review, "after", name); let page;
+  try { page = walletBatchComparisonEvidenceReviews.get(review).queryDifferences(before.text, after.text, input); } catch { savedInspectionFail("FILE_BATCH_COMPARISON_DIFFERENCE"); }
+  const result = Object.freeze({ schema: "threecore.batch-comparison-difference-page.v1", family: "wallet", name,
+    comparisonEvidenceDigest: review.textDigest, beforeTextDigest: before.sourceTextDigest, afterTextDigest: after.sourceTextDigest,
+    beforeStatus: before.sourceStatus, afterStatus: after.sourceStatus, sourceTextMatches: before.sourceTextDigest === after.sourceTextDigest,
+    ...page, sourceLimitBytes: WALLET_SAVED_DIFFERENCE_SOURCE_LIMIT, arrayMatching: "position", valuesIncluded: false,
+    containsOriginalEvidence: false, validatesOriginals: false, authenticated: false, authorizesExecution: false, restorable: false, automaticallyImported: false });
+  walletBatchComparisonDifferencePages.add(result); return result;
+}
+export function encodeWalletBatchComparisonDifferences(result) {
+  if (!walletBatchComparisonDifferencePages.has(result)) savedInspectionFail("FILE_BATCH_COMPARISON_DIFFERENCE_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
 }

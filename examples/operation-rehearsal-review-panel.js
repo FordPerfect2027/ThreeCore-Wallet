@@ -6,6 +6,7 @@ import { reviewRehearsalBatchSelection, encodeRehearsalBatchSelectionReview, ext
 import { compareRehearsalBatches, encodeRehearsalBatchComparison } from "../src/operation-rehearsal-report-review.js";
 import { prepareRehearsalBatchComparisonEvidence, reviewRehearsalBatchComparisonEvidence, encodeRehearsalBatchComparisonEvidenceReview, REHEARSAL_BATCH_COMPARISON_EVIDENCE_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { openReviewedRehearsalBatchComparisonEvidence, extractRehearsalBatchComparisonEvidenceSource } from "../src/operation-rehearsal-report-review.js";
+import { queryRehearsalBatchComparisonDifferences, encodeRehearsalBatchComparisonDifferences } from "../src/operation-rehearsal-report-review.js";
 import { createFileReadScope, readFormatFileName, readSecurityFileText } from "../src/security-file.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -134,7 +135,8 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
   const evidenceStatus = node("p", "evidence-status", "", evidence); evidenceStatus.setAttribute("role", "status"); evidenceStatus.setAttribute("aria-live", "polite");
   const reviewSave = node("button", "evidence-review-save", "まとめた比較資料の照合結果を保存", evidence); reviewSave.type = "button";
   const viewer = mountReviewedBatchComparisonPanel({ document, parent: evidence, open: openReviewedRehearsalBatchComparisonEvidence,
-    extract: extractRehearsalBatchComparisonEvidenceSource, encodeComparison: encodeRehearsalBatchComparison, download: prepared => download({ document, prepared }) });
+    extract: extractRehearsalBatchComparisonEvidenceSource, encodeComparison: encodeRehearsalBatchComparison, queryDifferences: queryRehearsalBatchComparisonDifferences,
+    encodeDifferences: encodeRehearsalBatchComparisonDifferences, download: prepared => download({ document, prepared }) });
   const kinds = { "only-before": "比較元だけに選択", "only-after": "今回だけに選択", "unchanged": "同じ内容の照合値・同じ確認結果", "bytes-changed": "内容の照合値が変化", "result-changed": "同じ内容の照合値・確認結果が変化", "uncompared": "照合値がなく比較できない" };
   const states = { matched: "再計算と一致", different: "再計算と相違", invalid: "内容を確認できない", unsupported: "対象外の形式", "hash-unavailable": "照合値を計算できない", "source-unavailable": "読み込めない", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
   function render() {

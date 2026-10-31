@@ -16,6 +16,7 @@ import { queryWalletSavedBatchFiles, encodeWalletSavedBatchSelection } from "../
 import { reviewWalletSavedBatchSelection, encodeWalletSavedBatchSelectionReview, extractWalletSavedBatchSelectionQuery } from "../src/file-read-status.js";
 import { prepareWalletBatchComparisonEvidence, reviewWalletBatchComparisonEvidence, encodeWalletBatchComparisonEvidenceReview,
   openReviewedWalletBatchComparisonEvidence, extractWalletBatchComparisonEvidenceSource, WALLET_BATCH_COMPARISON_EVIDENCE_LIMIT } from "../src/file-read-status.js";
+import { queryWalletBatchComparisonDifferences, encodeWalletBatchComparisonDifferences } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -910,8 +911,44 @@ export function mountSavedBatchComparisonPanel({ document, parent,
   } });
 }
 
+export function mountBatchComparisonDifferencePanel({ document, parent, open, query, encode, download }) {
+  const host = document.createElement("details"); host.className = "batch-comparison-differences"; parent.append(host);
+  let disposed = false, revision = 0, review = null, names = [], page = null, dirty = false; const cleanup = [];
+  function make(tag, name, text, target = host) { const node = document.createElement(tag); node.className = "batch-comparison-differences-" + name; if (text !== undefined) node.textContent = text; target.append(node); return node; }
+  function listen(node, event, fn) { node.addEventListener(event, fn); cleanup.push(() => node.removeEventListener(event, fn)); }
+  make("summary", "heading", "同じ名前の元ファイルで変わった項目を調べる");
+  make("p", "intro", "確認済みのまとめ資料から、両方に含まれる同名のJSONを比較します。各2 MiBまで、1ページ40件です。項目の場所だけを表示し、金額や注記などの値は表示しません。元資料の妥当性はこの比較では判定しません。");
+  const nameLabel = make("label", "name-label", "比較する同名の元ファイル"), choice = make("select", "choice", undefined, nameLabel);
+  const pathLabel = make("label", "path-label", "項目の場所に含まれる文字"), path = make("input", "path", undefined, pathLabel); path.type = "text"; path.maxLength = 128;
+  const run = make("button", "run", "この条件で相違箇所を調べる"), clear = make("button", "clear", "絞り込みを解除"), previous = make("button", "previous", "前の40件"), next = make("button", "next", "次の40件"); for (const node of [run, clear, previous, next]) node.type = "button";
+  const status = make("p", "status", "まとめ資料を再確認してから、元ファイルを選んでください。"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  const output = make("pre", "output", "");
+  const label = make("label", "ack-label", "項目の場所・ファイル名・照合値を暗号化せず保存する"), ack = make("input", "ack", undefined, label); ack.type = "checkbox";
+  const save = make("button", "save", "表示範囲の相違箇所をJSON保存"); save.type = "button";
+  const ready = () => review && names.includes(choice.value);
+  function buttons() { choice.disabled = disposed || !review; run.disabled = path.disabled = clear.disabled = disposed || !ready(); previous.disabled = disposed || dirty || !page?.hasPrevious; next.disabled = disposed || dirty || !page?.hasNext; ack.disabled = disposed || dirty || !page; save.disabled = ack.disabled || !ack.checked; }
+  function show(offset = 0, filter = path.value) {
+    if (disposed || !ready()) return; ++revision; ack.checked = false;
+    try { page = query(review, choice.value, { offset, pathIncludes: filter }); dirty = false;
+      status.textContent = `全体の相違${page.totalDifferences}件／この条件に一致${page.matchedDifferences}件／表示${page.shownDifferences}件。` + (page.shownDifferences ? ` ${page.offset + 1}〜${page.offset + page.shownDifferences}件目。` : " この条件の0件は、元ファイル全体の一致を意味しません。") + (page.totalDifferences === 0 && !page.sourceTextMatches ? " JSONの値は同じですが、元の文字や書式の照合値は異なります。" : "") + " 元資料の判定は上の一覧に残っています。";
+      const kinds = { value: "値の相違", type: "種類の相違", missing: "比較元にだけある項目", unexpected: "比較先にだけある項目", "array-length": "配列の長さの相違" };
+      output.textContent = page.differences.map(row => `${row.ordinal}. ${row.path} — ${kinds[row.kind]}`).join("\n");
+    } catch { page = null; dirty = true; output.textContent = ""; status.textContent = "比較できませんでした。両方が各2 MiB以内のJSONで、場所の条件が128文字以内か確認してください。元資料と上の一覧は保持しています。"; }
+    buttons();
+  }
+  listen(choice, "change", () => { if (disposed) return; ++revision; page = null; dirty = false; path.value = ""; ack.checked = false; output.textContent = ""; status.textContent = ready() ? "同名の二つの元ファイルを選びました。「この条件で相違箇所を調べる」を押してください。" : "両方にある元ファイルを選んでください。"; buttons(); });
+  listen(path, "input", () => { if (disposed) return; ++revision; dirty = true; ack.checked = false; status.textContent = "入力した条件は未適用です。「この条件で相違箇所を調べる」を押してください。"; buttons(); });
+  listen(run, "click", () => show()); listen(clear, "click", () => { path.value = ""; show(0, ""); });
+  listen(previous, "click", () => { if (!previous.disabled) show(page.offset - page.limit, page.query.pathIncludes); }); listen(next, "click", () => { if (!next.disabled) show(page.offset + page.limit, page.query.pathIncludes); }); listen(ack, "change", buttons);
+  listen(save, "click", () => { if (disposed || save.disabled || !ack.checked || !page || dirty) return; const own = revision, captured = page; ack.checked = false; buttons();
+    try { const delivered = download({ text: encode(captured), filename: "ThreeCore-batch-comparison-differences-" + captured.offset + ".json", mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false }); if (observeCallbackResult(delivered) !== "synchronous" || delivered === false) throw Error(); if (!disposed && revision === own && captured === page) status.textContent = "表示範囲の相違箇所の保存を開始しました。範囲外の相違と元資料の判定は変わりません。"; }
+    catch { if (!disposed && revision === own && captured === page) status.textContent = "相違箇所を保存できませんでした。確認結果は保持しています。"; } });
+  function updateReview(value) { if (disposed || value === review) return; const pair = value ? open(value) : null; ++revision; review = value; names = pair ? pair.before.files.map(row => row.name).filter(name => pair.after.files.some(row => row.name === name)) : []; page = null; dirty = false; path.value = ""; ack.checked = false; output.textContent = ""; choice.replaceChildren(); const first = document.createElement("option"); first.value = ""; first.textContent = "両方にある元ファイルを選択"; choice.append(first); for (const name of names) { const option = document.createElement("option"); option.value = name; option.textContent = name; choice.append(option); } choice.value = ""; status.textContent = review ? `両方に含まれる同名のファイルは${names.length}件です。元ファイルを選んでください。` : "まとめ資料を再確認してから、元ファイルを選んでください。"; buttons(); }
+  buttons(); return Object.freeze({ updateReview, getState: () => Object.freeze({ review, page, dirty, disposed }), dispose() { if (disposed) return; disposed = true; ++revision; review = page = null; names = []; cleanup.forEach(remove => remove()); host.remove(); } });
+}
+
 /** A verified portable comparison is displayed separately from any current selection or retained baseline. */
-export function mountReviewedBatchComparisonPanel({ document, parent, open, extract, encodeComparison, download }) {
+export function mountReviewedBatchComparisonPanel({ document, parent, open, extract, encodeComparison, queryDifferences, encodeDifferences, download }) {
   const host = document.createElement("details"); host.className = "reviewed-batch-comparison"; parent.append(host);
   let disposed = false, revision = 0, review = null, pair = null; const cleanup = [];
   function make(tag, name, text, target = host) { const node = document.createElement(tag); node.className = "reviewed-batch-comparison-" + name; if (text !== undefined) node.textContent = text; target.append(node); return node; }
@@ -931,6 +968,7 @@ export function mountReviewedBatchComparisonPanel({ document, parent, open, extr
   const sources = mountBatchSourceExportPanel({ document, parent: host, classPrefix: "comparison-source-export", download,
     list: value => { const source = open(value)[role.value]; if (!source) throw Error(); return source.result.files; },
     extract: (value, name) => extract(value, role.value, name) });
+  const differences = queryDifferences && encodeDifferences ? mountBatchComparisonDifferencePanel({ document, parent: host, open, query: queryDifferences, encode: encodeDifferences, download }) : null;
   const labels = { matched: "再計算と一致", different: "再計算と相違", invalid: "内容を確認できない", unsupported: "対象外の形式",
     "validated-original": "元記録・内部チェックサム確認済み", "validated-structure": "形式確認済み・内部チェックサムなし", "declared-only": "形式指定だけ", "checksum-mismatch": "以前の照合値と不一致" };
   function buttons() { ack.disabled = role.disabled = disposed || !pair; save.disabled = ack.disabled || !ack.checked; }
@@ -945,12 +983,12 @@ export function mountReviewedBatchComparisonPanel({ document, parent, open, extr
   });
   function updateReview(value) {
     if (disposed || value === review) return; const next = value ? open(value) : null; ++revision; review = value; pair = next; ack.checked = false; role.value = "before";
-    sources.updateCurrent(null); sources.updateCurrent(review);
+    sources.updateCurrent(null); sources.updateCurrent(review); differences?.updateReview(review);
     rows.replaceChildren(...(pair?.comparison.files ?? []).map(row => { const tr = document.createElement("tr"); for (const text of [row.name, labels[row.before?.status] ?? "選択なし・未確認", labels[row.after?.status] ?? "選択なし・未確認", row.sameBytes === true ? "同じ内容の照合値" : row.sameBytes === false ? "内容の照合値が異なる" : "比較できない", row.before?.sha256 ?? "なし", row.after?.sha256 ?? "なし"]) { const td = document.createElement("td"); td.textContent = text; tr.append(td); } return tr; }));
     status.textContent = pair ? `保存資料の比較元${pair.before.result.files.length}件／比較先${pair.after.result.files.length}件／全${pair.comparison.files.length}行を表示しています。上の一覧と比較元は保持しています。` : "まとめ資料の照合が一致すると、二組の全行をここで確認できます。";
     buttons();
   }
-  buttons(); return Object.freeze({ updateReview, getState: () => Object.freeze({ review, pair, disposed }), dispose() { if (disposed) return; disposed = true; ++revision; review = pair = null; sources.dispose(); cleanup.forEach(remove => remove()); host.remove(); } });
+  buttons(); return Object.freeze({ updateReview, getState: () => Object.freeze({ review, pair, disposed }), dispose() { if (disposed) return; disposed = true; ++revision; review = pair = null; sources.dispose(); differences?.dispose(); cleanup.forEach(remove => remove()); host.remove(); } });
 }
 
 export function mountWalletBatchComparisonEvidencePanel({ document, parent, getPair, download }) {
@@ -966,7 +1004,8 @@ export function mountWalletBatchComparisonEvidencePanel({ document, parent, getP
   const stop = make("button", "stop", "処理を中止"); stop.type = "button";
   const status = make("p", "status", ""); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const receipt = make("button", "receipt", "比較資料の照合結果を保存"); receipt.type = "button";
-  const viewer = mountReviewedBatchComparisonPanel({ document, parent: host, open: openReviewedWalletBatchComparisonEvidence, extract: extractWalletBatchComparisonEvidenceSource, encodeComparison: encodeWalletSavedBatchComparison, download });
+  const viewer = mountReviewedBatchComparisonPanel({ document, parent: host, open: openReviewedWalletBatchComparisonEvidence, extract: extractWalletBatchComparisonEvidenceSource, encodeComparison: encodeWalletSavedBatchComparison,
+    queryDifferences: queryWalletBatchComparisonDifferences, encodeDifferences: encodeWalletBatchComparisonDifferences, download });
   function controls() { const pair = getPair(); ack.disabled = disposed || Boolean(active) || !canPrepareWalletSavedBatchEvidence(pair?.before) || !canPrepareWalletSavedBatchEvidence(pair?.after); save.disabled = ack.disabled || !ack.checked; file.disabled = disposed || Boolean(active); stop.disabled = disposed || !active; receipt.disabled = disposed || Boolean(active) || !reviewed; host.setAttribute("aria-busy", String(Boolean(active))); }
   function sourceChanged() { if (disposed) return; ++revision; const old = active; active = null; reviewed = null; viewer.updateReview(null); ack.checked = false; status.textContent = ""; old?.abort(); controls(); }
   async function run(chosen = null) {

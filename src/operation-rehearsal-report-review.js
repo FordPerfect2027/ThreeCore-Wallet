@@ -497,6 +497,21 @@ export function extractRehearsalBatchComparisonEvidenceSource(review, role, name
   if (!["before", "after"].includes(role)) fail("REVIEW_BATCH_COMPARISON_ROLE");
   return extractRehearsalBatchEvidenceSource(rehearsalBatchComparisonEvidenceReviews.get(review)[role + "Review"], name);
 }
+const rehearsalBatchComparisonDifferencePages = new WeakSet();
+export function queryRehearsalBatchComparisonDifferences(review, name, input = {}) {
+  const before = extractRehearsalBatchComparisonEvidenceSource(review, "before", name), after = extractRehearsalBatchComparisonEvidenceSource(review, "after", name); let page;
+  try { page = queryBoundedSavedJSONDifferences(before.text, after.text, input); } catch { fail("REVIEW_BATCH_COMPARISON_DIFFERENCE"); }
+  const result = Object.freeze({ schema: "threecore.batch-comparison-difference-page.v1", family: "rehearsal", name,
+    comparisonEvidenceDigest: review.sha256, beforeTextDigest: before.sourceTextDigest, afterTextDigest: after.sourceTextDigest,
+    beforeStatus: before.sourceStatus, afterStatus: after.sourceStatus, sourceTextMatches: before.sourceTextDigest === after.sourceTextDigest,
+    ...page, sourceLimitBytes: REHEARSAL_REPORT_REVIEW_LIMIT, arrayMatching: "position", valuesIncluded: false,
+    containsOriginalEvidence: false, validatesOriginals: false, authenticated: false, authorizesExecution: false, restorable: false, automaticallyImported: false });
+  rehearsalBatchComparisonDifferencePages.add(result); return result;
+}
+export function encodeRehearsalBatchComparisonDifferences(result) {
+  if (!rehearsalBatchComparisonDifferencePages.has(result)) fail("REVIEW_BATCH_COMPARISON_DIFFERENCE_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
+}
 
 export function canPrepareRehearsalBatchEvidence(result) {
   const sources = batchSources.get(result);
