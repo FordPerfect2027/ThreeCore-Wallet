@@ -1,0 +1,59 @@
+{
+  "source": "7181885",
+  "input": "docs/evidence/2026-11-01-history-comparison-token-scope/history.json",
+  "captures": [
+    {
+      "mode": "query",
+      "args": [
+        "--token",
+        "0xabababababababababababababababababababab",
+        "--token-state",
+        "unknown"
+      ],
+      "exit": 0,
+      "exactApi": true
+    },
+    {
+      "mode": "subset",
+      "args": [
+        "--token",
+        "0xabababababababababababababababababababab",
+        "--token-state",
+        "known"
+      ],
+      "exit": 0,
+      "exactApi": true
+    },
+    {
+      "mode": "record",
+      "args": [
+        "--index",
+        "2"
+      ],
+      "exit": 0,
+      "exactApi": true
+    },
+    {
+      "mode": "compare",
+      "args": [
+        "--before",
+        "1",
+        "--after",
+        "0"
+      ],
+      "exit": 0,
+      "exactApi": true
+    },
+    {
+      "mode": "timeline",
+      "args": [],
+      "exit": 0,
+      "exactApi": true
+    }
+  ],
+  "emptySubsetExit": 1,
+  "sourceUnchanged": true,
+  "externalRpcCalls": 0,
+  "realWalletConnectionVerified": false,
+  "cliStdoutOnly": true
+}

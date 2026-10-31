@@ -1,0 +1,41 @@
+{
+  "totalCount": 3,
+  "matchCount": 1,
+  "query": {
+    "account": "",
+    "chainId": "",
+    "minimumBlock": null,
+    "maximumBlock": null,
+    "order": "oldest",
+    "tokenAddress": "0xabababababababababababababababababababab",
+    "tokenStatus": "unknown"
+  },
+  "rows": [
+    {
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "10",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0xabababababababababababababababababababab",
+            "hasCode": false,
+            "balanceBaseUnits": null,
+            "notice": "TOKEN_CODE_MISSING"
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      },
+      "index": 1
+    }
+  ],
+  "historicalObservation": true,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false
+}
