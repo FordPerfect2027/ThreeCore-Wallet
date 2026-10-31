@@ -1,3 +1,5 @@
+import { preparePeriodReportFile } from "/src/period-report-file.js";
+import { reportInput } from "/test/helpers/period-report-fixtures.js";
 import { createPeriodLibraryStorage } from "/src/period-library-storage.js";
 import { mountPeriodLibraryPanel } from "/examples/period-library-panel.js";
 import { mountPeriodPanel } from "/examples/period-panel.js";
@@ -87,6 +89,16 @@ function fixture(options = {}) {
 }
 
 export function registerPeriodLibraryUITests(test) {
+  test("period library: misplaced report points to the report reader without importing", async () => {
+    const f = fixture({ initial: sampleLibrary() });
+    try {
+      await f.open(); const original = f.mounted.getDocument();
+      await f.file((await preparePeriodReportFile(reportInput())).text);
+      assert(f.q("status").textContent.includes("3つの記録を、一つの報告に"));
+      assert(f.q("review").hidden && f.mounted.getDocument() === original);
+      assert(!f.store.calls.some(row => row[0] === "change"));
+    } finally { f.dispose(); }
+  });
   test("period library: show why an import conflicts without replacing stored evidence", async () => {
     const f = fixture({ initial: library([entry(1, { requiresNewPlan: true }), entry(2)]) });
     try {

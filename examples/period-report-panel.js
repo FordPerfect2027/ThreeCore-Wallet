@@ -108,7 +108,7 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
   for (const agent of PERIOD_REPORT_AGENTS) option(entryAgent, agent, agent);
   entryAgent.value = "DAT";
   make("pre", "entry-description", "", extraction);
-  make("p", "entry-note", "元の控えと再取得・非表示保管の印をそのまま保存します。3トークン間の比較結果は含みません。保存したJSONは「期間の控え一覧」で確認してから追加できます。", extraction);
+  make("p", "entry-note", "元の控えと再取得・非表示保管の印をそのまま保存します。3トークン間の比較結果は含みません。保存したJSONは「期間の保存一覧JSONを読み込む」で確認してから追加できます。", extraction);
   field("entry-ack", "選んだトークンの公開アドレス・残高・履歴を含む元の控えをPCに保存します", "checkbox", extraction);
   button("entry-json", "選んだ元の控えをJSON保存", extraction);
   const imports = make("section", "imports");

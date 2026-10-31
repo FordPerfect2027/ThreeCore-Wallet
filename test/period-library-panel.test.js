@@ -1,3 +1,5 @@
+import { preparePeriodReportFile } from "../src/period-report-file.js";
+import { reportInput } from "./helpers/period-report-fixtures.js";
 import { library } from "./helpers/period-library-fixtures.js";
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -338,5 +340,16 @@ test("conflicting file inspection explains removed restriction and retained entr
     assert.equal(f.q("apply").disabled, false); assert.match(f.q("import-inspection-text").textContent, /追加可能な構成/);
     f.q("apply").click(); await f.settled(); assert.equal(f.q("import-inspection").hidden, true);
     assert.equal(f.mounted.getDocument().entries.length, 3);
+  } finally { f.mounted.dispose(); }
+});
+
+test("misplaced period report explains its actual destination without changing the library", async () => {
+  const f = fixture({ initial: sampleLibrary() });
+  try {
+    await f.open(); const original = f.mounted.getDocument();
+    await f.file((await preparePeriodReportFile(reportInput())).text);
+    assert.match(f.q("status").textContent, /3つの記録を、一つの報告に/);
+    assert.equal(f.q("review").hidden, true); assert.equal(f.mounted.getDocument(), original);
+    assert.equal(f.store.calls.filter(row => row[0] === "change").length, 0);
   } finally { f.mounted.dispose(); }
 });

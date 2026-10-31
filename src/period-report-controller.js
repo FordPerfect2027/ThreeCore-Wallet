@@ -226,7 +226,7 @@ export function createPeriodReportController({ storage, onChange = () => {},
         return file;
       }, () => {
         if (review) phase = "review";
-        message = "選んだトークンの元の控えを保存します。保存したJSONは「期間の控え一覧」で内容を確認できます。";
+        message = "選んだトークンの元の控えを保存します。保存したJSONは「期間の保存一覧JSONを読み込む」で内容を確認できます。";
       });
     } catch (value) { return fail(value, own); }
   }

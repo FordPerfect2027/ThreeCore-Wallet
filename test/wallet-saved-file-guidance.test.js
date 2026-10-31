@@ -1,3 +1,6 @@
+import { preparePeriodLibraryFile, decodePeriodLibraryFile } from "../src/period-library-file.js";
+import { libraryErrorText } from "../src/period-library-view.js";
+import { periodReportEntryLibrary } from "../src/period-report-model.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { walletSavedFileTargetCode, walletSavedFileTargetMessage } from "../src/file-read-status.js";
@@ -13,6 +16,8 @@ import { sequenceSet, demoSetHistory } from "./helpers/report-set-fixtures.js";
 
 const source = sequenceSet(), after = sequenceSet(demoSetHistory());
 const routes = [
+  ["threecore.period-library-file.v1", "library", "PERIOD_FILE_USE_LIBRARY", "期間の保存一覧JSONを読み込む"],
+  ["threecore.period-library-import-inspection.v1", null, "PERIOD_FILE_IMPORT_INSPECTION_ONLY", "現在側と読込側"],
   ["threecore.saved-event-comparison-file.v1", "event-comparison", "PERIOD_FILE_EVENT_COMPARISON_ONLY", "保存した履歴比較JSONを元資料と照合"],
   ["threecore.saved-event-comparison-review.v1", null, "PERIOD_FILE_EVENT_REVIEW_ONLY", "元の確認セットJSONと履歴比較JSON"],
   ["threecore.period-file.v1", "period", "PERIOD_FILE_USE_PERIOD", "控えの保存と復元"],
@@ -27,6 +32,7 @@ const routes = [
   ["threecore.missing-history-queue.v1", null, "PERIOD_FILE_QUEUE_ONLY", "未取得の期間控え"],
 ];
 const decoders = {
+  library: decodePeriodLibraryFile,
   coverage: text => reviewReportSetCoverageFile(source, text),
   "event-comparison": text => reviewReportSetEventComparisonFile(source, text),
   period: decodePeriodFile, report: decodePeriodReportFile, set: decodeReportSetFile,
@@ -38,12 +44,14 @@ for (const [schema, target, code, label] of routes) test("declared wallet artifa
     if (target === current) continue;
     await assert.rejects(decode(JSON.stringify({ schema, privateText: "DO_NOT_DISPLAY" })), error => error.code === code);
   }
-  for (const view of [periodMessage, reportErrorText, setErrorText]) {
+  for (const view of [periodMessage, reportErrorText, setErrorText, libraryErrorText]) {
     const message = view(code); assert.ok(message.includes(label)); assert.doesNotMatch(message, /DO_NOT_DISPLAY/);
   }
 });
 test("all existing supported artifacts still undergo their complete successful validation", async () => {
   const period = source.entries[0].report.slots[0].entry.draft, report = source.entries[0].report;
+  const library = periodReportEntryLibrary(report, "DAT");
+  assert.deepEqual((await decodePeriodLibraryFile((await preparePeriodLibraryFile(library)).text)).document, library);
   assert.deepEqual((await decodePeriodFile((await preparePeriodFile(period)).text)).draft, period);
   assert.deepEqual((await decodePeriodReportFile((await preparePeriodReportFile(report)).text)).input, report);
   assert.deepEqual((await decodeReportSetFile((await prepareReportSetFile(source)).text)).input, source);
@@ -70,7 +78,7 @@ test("unknown, duplicate, unsafe or malformed declarations never receive a guess
   }
 });
 test("destination hints cannot mask checksum corruption in the correct reader", async () => {
-  for (const [prepare, decode, value] of [[preparePeriodFile, decodePeriodFile, source.entries[0].report.slots[0].entry.draft],
+  for (const [prepare, decode, value] of [[preparePeriodLibraryFile, decodePeriodLibraryFile, periodReportEntryLibrary(source.entries[0].report, "DAT")], [preparePeriodFile, decodePeriodFile, source.entries[0].report.slots[0].entry.draft],
     [preparePeriodReportFile, decodePeriodReportFile, source.entries[0].report], [prepareReportSetFile, decodeReportSetFile, source]]) {
     const data = JSON.parse((await prepare(value)).text); data.digest = "0".repeat(64);
     await assert.rejects(decode(JSON.stringify(data)), error => error.code === "PERIOD_CHECKSUM");
