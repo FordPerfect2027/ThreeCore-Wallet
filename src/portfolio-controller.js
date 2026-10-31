@@ -2,6 +2,7 @@ import { readPortfolioSnapshot } from "./portfolio-snapshot.js";
 import { createStateNotifier } from "./state-notifier.js";
 import { captureDataArray, captureOptionalDataFields } from "./security-data.js";
 import { readOwnErrorCode } from "./provider-error.js";
+import { subscribeReadAbort } from "./security-abort.js";
 
 /**
  * Local-only operation controller. Connecting remains a separate explicit UI
@@ -60,57 +61,62 @@ export function createPortfolioController({ reader = readPortfolioSnapshot } = {
     if (disposed || epoch !== initialEpoch) {
       return Object.freeze({ accepted: false, result: null });
     }
-    const external = plan.signal;
-    if (external !== undefined && !(external instanceof AbortSignal)) {
-      throw TypeError("Expected an AbortSignal");
-    }
-    const current = invalidate();
-    if (disposed || epoch !== current) return Object.freeze({ accepted: false, result: null });
     const controller = new AbortController();
-    active = controller;
-    const forwardAbort = () => controller.abort();
-    if (external?.aborted) controller.abort();
-    else external?.addEventListener("abort", forwardAbort, { once: true });
+    const cancelled = Object.freeze({ accepted: false, result: null });
+    let finishWaiting, externalCancellation, current;
+    const interrupted = new Promise(resolve => { finishWaiting = () => resolve(null); });
+    const localCancellation = subscribeReadAbort(controller.signal, finishWaiting);
     const isCurrent = () => !disposed && current === epoch && active === controller;
-    emit({ status: "loading", result: null, errorCode: null });
+    const wasCancelled = () => {
+      if (!localCancellation.aborted()) return false;
+      if (isCurrent()) emit({ status: "cancelled", result: null, errorCode: null });
+      return true;
+    };
     try {
-      // A subscriber may synchronously cancel or dispose during notification.
-      if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
-      const result = await reader(session, { ...plan, signal: controller.signal });
-      if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
-      if (controller.signal.aborted) {
-        emit({ status: "cancelled", result: null, errorCode: null });
+      // Validate before invalidating an existing successful view. Native state
+      // and captured listeners ignore instance overrides and artificial events.
+      try { externalCancellation = subscribeReadAbort(plan.signal, () => controller.abort()); }
+      catch { throw TypeError("Expected a native AbortSignal"); }
+      if (disposed || epoch !== initialEpoch) return cancelled;
+      current = invalidate();
+      if (disposed || epoch !== current) return cancelled;
+      active = controller;
+      try {
+        emit({ status: "loading", result: null, errorCode: null });
+        // A subscriber may synchronously cancel or dispose during notification.
+        if (!isCurrent() || wasCancelled()) return cancelled;
+        // The local waiter can finish even if a custom reader ignores its signal.
+        // Promise.race still observes that reader's later resolution or rejection.
+        const result = await Promise.race([reader(session, { ...plan, signal: controller.signal }), interrupted]);
+        if (!isCurrent() || wasCancelled()) return cancelled;
+        // Readers are trusted application dependencies. This guard prevents an
+        // accidentally substituted non-snapshot object from appearing as ready.
+        let fields;
+        try { fields = captureOptionalDataFields(result, ["readOnly", "securityAudit", "holdings"]); }
+        catch { throw Object.assign(Error("Invalid snapshot result"), { code: "INVALID_SNAPSHOT" }); }
+        if (!isCurrent() || wasCancelled()) return cancelled;
+        if (fields.readOnly !== true || fields.securityAudit !== false ||
+            !Array.isArray(fields.holdings) || !Object.isFrozen(result)) {
+          throw Object.assign(Error("Invalid snapshot result"), { code: "INVALID_SNAPSHOT" });
+        }
+        if (!isCurrent() || wasCancelled()) return cancelled;
+        emit({ status: "ready", result, errorCode: null });
+        if (!isCurrent() || wasCancelled()) return cancelled;
+        return Object.freeze({ accepted: true, result });
+      } catch (error) {
+        if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
+        if (!wasCancelled()) {
+          // Avoid leaking provider payloads, arbitrary messages, or stack traces
+          // into a display/export. Known string codes are enough for a UI label.
+          const rawCode = readOwnErrorCode(error);
+          if (!isCurrent() || wasCancelled()) return cancelled;
+          const code = typeof rawCode === "string" && /^[A-Z_]{1,64}$/.test(rawCode) ? rawCode : "SNAPSHOT_FAILED";
+          emit({ status: "error", result: null, errorCode: code });
+        }
         return Object.freeze({ accepted: false, result: null });
       }
-      // Readers are trusted application dependencies. This guard prevents an
-      // accidentally substituted non-snapshot object from appearing as ready.
-      let fields;
-      try { fields = captureOptionalDataFields(result, ["readOnly", "securityAudit", "holdings"]); }
-      catch { throw Object.assign(Error("Invalid snapshot result"), { code: "INVALID_SNAPSHOT" }); }
-      if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
-      if (fields.readOnly !== true || fields.securityAudit !== false ||
-          !Array.isArray(fields.holdings) || !Object.isFrozen(result)) {
-        throw Object.assign(Error("Invalid snapshot result"), { code: "INVALID_SNAPSHOT" });
-      }
-      if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
-      emit({ status: "ready", result, errorCode: null });
-      if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
-      return Object.freeze({ accepted: true, result });
-    } catch (error) {
-      if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
-      if (controller.signal.aborted) {
-        emit({ status: "cancelled", result: null, errorCode: null });
-      } else {
-        // Avoid leaking provider payloads, arbitrary messages, or stack traces
-        // into a display/export. Known string codes are enough for a UI label.
-        const rawCode = readOwnErrorCode(error);
-        if (!isCurrent()) return Object.freeze({ accepted: false, result: null });
-        const code = typeof rawCode === "string" && /^[A-Z_]{1,64}$/.test(rawCode) ? rawCode : "SNAPSHOT_FAILED";
-        emit({ status: "error", result: null, errorCode: code });
-      }
-      return Object.freeze({ accepted: false, result: null });
     } finally {
-      external?.removeEventListener("abort", forwardAbort);
+      externalCancellation?.dispose(); localCancellation.dispose();
       if (active === controller) active = null;
     }
   }

@@ -35,6 +35,7 @@ import { registerHistoryUITests } from "/test/browser/history-ui-tests.js";
 import { mountWalletDemo } from "/examples/wallet-demo.js";
 import { readErrorMessage } from "/src/provider-error.js";
 import { ThreeCoreWalletSession } from "/src/wallet-session.js";
+import { createPortfolioController } from "/src/portfolio-controller.js";
 
 const A = "0x1111111111111111111111111111111111111111";
 const B = "0x2222222222222222222222222222222222222222";
@@ -495,6 +496,15 @@ test("throwing listener cleanup cannot keep a disconnected card active", async u
   await f.connect();
   f.field(".read").click();
   await waitFor(() => f.output().includes("ETH残高"));
+});
+
+test("portfolio controller native cancellation releases an ignored wait and rejects a late value", async () => {
+  const gate=deferred(),external=new AbortController();let signal,settled=false,gets=0;
+  for(const name of ['aborted','addEventListener','removeEventListener'])Object.defineProperty(external.signal,name,{get(){gets++;throw Error('unused override');}});
+  const controller=createPortfolioController({reader(_session,options){signal=options.signal;return gate.promise;}});
+  const pending=controller.refresh({}, {signal:external.signal}).then(value=>{settled=true;return value;});
+  try{external.signal.dispatchEvent(new Event('abort'));assert(!signal.aborted,'artificial event ignored');external.abort();await waitFor(()=>settled);assert((await pending).accepted===false,'wait released');assert(gets===0,'native state used');const state=controller.state;gate.resolve(Object.freeze({readOnly:true,securityAudit:false,holdings:Object.freeze([])}));await new Promise(resolve=>setTimeout(resolve,0));assert(controller.state===state&&state.status==='cancelled','late result ignored');}
+  finally{gate.resolve(null);await pending.catch(()=>{});controller.dispose();}
 });
 
 test("portfolio panel reads two token balances pinned to one block", async make => {
