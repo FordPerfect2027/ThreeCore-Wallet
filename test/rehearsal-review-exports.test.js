@@ -4,6 +4,10 @@ import {mountRehearsalReviewPanel} from '../examples/operation-rehearsal-review-
 import {rehearsalExampleV2} from '../src/operation-rehearsal-examples.js';
 import {reportRehearsalOverview} from '../src/operation-rehearsal-overview.js';
 import {REHEARSAL_WORKSPACE_SCHEMA} from '../src/operation-rehearsal-workspace.js';
+import {encodeRehearsalComparison} from '../src/operation-rehearsal-comparison.js';
+import {encodeRehearsalScenario} from '../src/operation-rehearsal-scenario.js';
+import {encodeRehearsalScenarioSetReport,REHEARSAL_SCENARIO_SET_SCHEMA} from '../src/operation-rehearsal-scenario-set.js';
+import {captureRehearsalCheckSuite,encodeRehearsalCheckReport} from '../src/operation-rehearsal-check-suite.js';
 const source=' \r\n'+JSON.stringify(reportRehearsalOverview({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:'DAT',ledgers:[rehearsalExampleV2()]}),null,2).replaceAll('\n','\r\n')+'\r\n';
 const hash=text=>createHash('sha256').update(text).digest('hex');
 class Node extends Element{set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
@@ -13,6 +17,42 @@ function setup(options={}){const elements=new Map(),downloads=[];let action=()=>
  return{q,panel,edit,downloads,document,downloadAction:fn=>{action=fn;},paste:text=>{edit('text',text);q('paste').click();}};
 }
 async function finished(f){const end=Date.now()+5000;while(f.q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await new Promise(resolve=>setTimeout(resolve,5));assert.equal(f.q('status').getAttribute('aria-busy'),'false');}
+
+const partInput=rehearsalExampleV2(),partAfter={...partInput,policy:{...partInput.policy,paused:true}};
+const partSet={schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:'paused',label:'停止条件',before:partInput,after:partAfter}]};
+const failedSuite=structuredClone(captureRehearsalCheckSuite(partSet));failedSuite.expectationOrigin='manually-specified';failedSuite.expected[0].before.metrics.cash='999';
+const partSamples=[
+ [encodeRehearsalComparison(JSON.parse(source).inputs,{...JSON.parse(source).inputs,ledgers:[]}),['workspace-before','workspace-after'],'3トークンの履歴の復旧欄'],
+ [encodeRehearsalScenario(partInput,partAfter),['scenario-before','scenario-after'],'記録を保存・再確認'],
+ [encodeRehearsalScenarioSetReport(partSet),['scenario-set'],'比較ケースを名前付きで残す'],
+ [encodeRehearsalCheckReport(failedSuite),['check-suite'],'保存した期待結果との比較']
+];
+function selectPart(f,value){f.q('input-part').value=value;f.q('input-part').dispatchEvent(new Event('change'));}
+for(const [text,parts,destination]of partSamples)test('report input choice '+parts[0]+' is explicit and explains its destination',async()=>{
+ const f=setup();try{f.paste(text);await finished(f);assert.equal(f.q('input-recovery').hidden,false);assert.equal(f.q('input-part').value,'');assert.equal(f.q('input-save').disabled,true);
+  assert.deepEqual(f.q('input-part').children.map(n=>n.value),['',...parts]);f.q('input-save').dispatchEvent(new Event('click'));assert.equal(f.downloads.length,0);
+  for(const part of parts){selectPart(f,part);assert.match(f.q('input-note').textContent,new RegExp(destination));f.q('input-save').click();assert.equal(f.downloads.at(-1).filename,'ThreeCore-recovered-'+part+'.json');}
+  if(parts[0]==='check-suite'){assert.deepEqual(JSON.parse(f.downloads[0].text),failedSuite);assert.match(f.q('status').textContent,/期待結果との差/);assert.match(f.q('input-note').textContent,/期待値を変更せず/);}
+  selectPart(f,'forged');assert.equal(f.q('input-save').disabled,true);assert.equal(f.q('input-note').textContent,'');
+ }finally{f.panel.dispose();}
+});
+for(const change of ['clear','edit','checksum','dispose','selection'])test('recovered input save retires on '+change+' during delivery',async()=>{
+ const f=setup();try{f.paste(partSamples[0][0]);await finished(f);selectPart(f,'workspace-before');
+  f.downloadAction(()=>{if(change==='clear')f.q('clear').click();if(change==='edit')f.edit('text','{}');if(change==='checksum')f.edit('expected','0'.repeat(64));if(change==='dispose')f.panel.dispose();if(change==='selection')selectPart(f,'workspace-after');});
+  f.q('input-save').click();assert.equal(f.q('export-status').textContent,'');if(change!=='selection'){assert.equal(f.q('input-save').disabled,true);assert.equal(f.q('input-recovery').hidden,true);}
+ }finally{f.panel.dispose();}
+});
+for(const failure of [()=>false,()=>{throw Error('private marker');},()=>Promise.reject(Error('private marker'))])test('recovered input save failure retains verified inputs and permits retry',async()=>{
+ const f=setup();try{f.paste(partSamples[1][0]);await finished(f);selectPart(f,'scenario-after');f.downloadAction(failure);f.q('input-save').click();await new Promise(resolve=>setTimeout(resolve,0));
+  assert.match(f.q('export-status').textContent,/保存できません/);assert.ok(!f.q('export-status').textContent.includes('private marker'));assert.equal(f.q('input-save').disabled,false);
+  f.downloadAction(()=>{});f.q('input-save').click();assert.match(f.q('export-status').textContent,/保存し始め/);
+ }finally{f.panel.dispose();}
+});
+test('wrong expected checksum and altered report cannot show any part recovery choices',async()=>{
+ const f=setup();try{f.edit('expected','0'.repeat(64));f.paste(partSamples[2][0]);await finished(f);assert.equal(f.q('input-recovery').hidden,true);
+  f.edit('expected','');const altered=JSON.parse(partSamples[2][0]);altered.rows[0].label='changed';f.paste(JSON.stringify(altered));await finished(f);assert.equal(f.q('input-recovery').hidden,true);assert.equal(f.q('input-save').disabled,true);
+ }finally{f.panel.dispose();}
+});
 
 test('agent export offers present zero-record inputs and keeps the chosen input separate from workspace restoration',async()=>{
  const f=setup();try{const workspace={schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:'DAT',ledgers:[rehearsalExampleV2(),{...rehearsalExampleV2('EMA'),events:[]}]};

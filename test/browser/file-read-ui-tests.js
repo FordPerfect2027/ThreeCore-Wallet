@@ -4,6 +4,12 @@ import { mountOperationRehearsal } from "/examples/operation-rehearsal-page.js";
 import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "/src/operation-rehearsal-check-suite.js";
 import { REHEARSAL_SCENARIO_SET_SCHEMA } from "/src/operation-rehearsal-scenario-set.js";
 import { rehearsalExampleV2 } from "/src/operation-rehearsal-examples.js";
+import { encodeRehearsal } from "/src/operation-rehearsal.js";
+import { REHEARSAL_WORKSPACE_SCHEMA,encodeRehearsalWorkspace } from "/src/operation-rehearsal-workspace.js";
+import { encodeRehearsalComparison } from "/src/operation-rehearsal-comparison.js";
+import { encodeRehearsalScenario } from "/src/operation-rehearsal-scenario.js";
+import { encodeRehearsalScenarioSet,encodeRehearsalScenarioSetReport } from "/src/operation-rehearsal-scenario-set.js";
+import { encodeRehearsalCheckReport } from "/src/operation-rehearsal-check-suite.js";
 import { createFileReadService,walletFileReadService } from "/src/file-read-service.js";
 import { mountFileReadPanel, mountSavedFileInspectionPanel } from "/examples/file-read-panel.js";
 import { prepareReportHistoryFile } from "/src/report-history-file.js";
@@ -57,6 +63,26 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  for(const kind of ['workspace','scenario','scenario-set','check-suite'])test('rehearsal source parts: '+kind+' requires explicit selection and preserves current session',async()=>{
+    const before=rehearsalExampleV2(),after={...before,policy:{...before.policy,paused:true}},workspace={schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:'DAT',ledgers:[before]},nextWorkspace={...workspace,ledgers:[after]};
+    const cases={schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:'paused',label:'停止条件',before,after}]};
+    const suite=structuredClone(captureRehearsalCheckSuite(cases));suite.expectationOrigin='manually-specified';suite.expected[0].before.metrics.cash='999';
+    const sample={workspace:{text:encodeRehearsalComparison(workspace,nextWorkspace),part:'workspace-after',output:encodeRehearsalWorkspace(nextWorkspace)},
+      scenario:{text:encodeRehearsalScenario(before,after),part:'scenario-after',output:encodeRehearsal(after)},
+      'scenario-set':{text:encodeRehearsalScenarioSetReport(cases),part:'scenario-set',output:encodeRehearsalScenarioSet(cases)},
+      'check-suite':{text:encodeRehearsalCheckReport(suite),part:'check-suite',output:encodeRehearsalCheckSuite(suite)}}[kind];
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{q('example').click();q('session-save').click();const current=downloads.pop().text;
+      q('report-review-text').value=sample.text;q('report-review-text').dispatchEvent(new Event('input'));q('report-review-paste').click();
+      const end=Date.now()+10000;while(q('report-review-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q('report-review-status').getAttribute('aria-busy')==='false');
+      assert(q('report-review-input-part').value===''&&q('report-review-input-save').disabled);q('report-review-input-part').value=sample.part;q('report-review-input-part').dispatchEvent(new Event('change'));
+      assert(!q('report-review-input-save').disabled&&q('report-review-input-note').textContent.includes('読み込む場所'));q('report-review-input-save').click();const file=downloads.pop();assert(file.text===sample.output&&file.filename==='ThreeCore-recovered-'+sample.part+'.json');
+      if(kind==='check-suite'){assert(q('report-review-status').textContent.includes('期待結果との差'));assert(JSON.parse(file.text).expected[0].before.metrics.cash==='999');}
+      q('session-save').click();assert(downloads.pop().text===current);q('report-review-clear').click();assert(q('report-review-input-recovery').hidden&&q('report-review-input-save').disabled);
+    }finally{page.dispose();host.remove();}
+  });
   for(const mode of ['agent','comparison'])test('rehearsal reviewed inputs: '+mode+' action leaves newer current session unchanged',async()=>{
     const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
     const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];

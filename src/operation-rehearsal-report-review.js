@@ -5,8 +5,8 @@ import { encodeRehearsalWorkspace } from "./operation-rehearsal-workspace.js";
 import { reportRehearsalOverview, REHEARSAL_OVERVIEW_SCHEMA } from "./operation-rehearsal-overview.js";
 import { compareRehearsalWorkspaces, REHEARSAL_COMPARISON_SCHEMA } from "./operation-rehearsal-comparison.js";
 import { compareRehearsalScenario, REHEARSAL_SCENARIO_SCHEMA } from "./operation-rehearsal-scenario.js";
-import { reportRehearsalScenarioSet, REHEARSAL_SCENARIO_SET_REPORT_SCHEMA } from "./operation-rehearsal-scenario-set.js";
-import { runRehearsalCheckSuite, REHEARSAL_CHECK_REPORT_SCHEMA } from "./operation-rehearsal-check-suite.js";
+import { encodeRehearsalScenarioSet, reportRehearsalScenarioSet, REHEARSAL_SCENARIO_SET_REPORT_SCHEMA } from "./operation-rehearsal-scenario-set.js";
+import { encodeRehearsalCheckSuite, runRehearsalCheckSuite, REHEARSAL_CHECK_REPORT_SCHEMA } from "./operation-rehearsal-check-suite.js";
 import { REHEARSAL_REASON_RECORD_REPORT_SCHEMA,queryRehearsalReasonRecords,reportRehearsalReference, REHEARSAL_REFERENCE_REPORT_SCHEMA, indexRehearsalRecords, queryRehearsalRecords, validateRehearsalRecordQuery, queryRehearsalContextRecords, validateRehearsalContextRecordQuery, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA } from "./operation-rehearsal-records.js";
 
 export const REHEARSAL_REPORT_REVIEW_SCHEMA = "threecore.operation-rehearsal-report-review.v1";
@@ -149,6 +149,36 @@ export function exportReviewedRehearsalAgent(receipt,agent) {
 /** The direction is current workspace -> report inputs; this never applies either side. */
 export function compareReviewedRehearsalWorkspace(receipt,currentInputs) {
   return compareRehearsalWorkspaces(currentInputs,reviewedWorkspaceInputs(receipt));
+}
+
+const reviewedParts = Object.freeze([
+  {part:"workspace-before",label:"比較前の3トークン入力",schema:REHEARSAL_COMPARISON_SCHEMA,destination:"3トークンの履歴の復旧欄",note:"比較後の入力は含みません。"},
+  {part:"workspace-after",label:"比較後の3トークン入力",schema:REHEARSAL_COMPARISON_SCHEMA,destination:"3トークンの履歴の復旧欄",note:"比較前の入力は含みません。"},
+  {part:"scenario-before",label:"条件変更前の単体入力",schema:REHEARSAL_SCENARIO_SCHEMA,destination:"記録を保存・再確認",note:"仮の条件比較の、変更前の入力です。"},
+  {part:"scenario-after",label:"条件変更後の単体入力",schema:REHEARSAL_SCENARIO_SCHEMA,destination:"記録を保存・再確認",note:"仮の条件比較の、変更後の入力です。実際に実行した履歴ではありません。"},
+  {part:"scenario-set",label:"名前付きの比較ケース集",schema:REHEARSAL_SCENARIO_SET_REPORT_SCHEMA,destination:"比較ケースを名前付きで残す",note:"ケースの名前・順序・比較前後の入力を含みます。"},
+  {part:"check-suite",label:"元の期待結果と比較ケース",schema:REHEARSAL_CHECK_REPORT_SCHEMA,destination:"保存した期待結果との比較",note:"期待値を変更せず取り出します。期待結果との差がある場合も、そのまま含みます。"}
+].map(Object.freeze));
+
+/** Choices require a receipt owned by this module; a comparison has no implicit side. */
+export function reviewedRehearsalInputChoices(receipt) {
+  if(!reviewSources.has(receipt)||!receipt.matchesRecomputation||receipt.checksumMatches===false)return Object.freeze([]);
+  return Object.freeze(reviewedParts.filter(item=>item.schema===receipt.inputSchema));
+}
+
+/** Recover canonical source values; neither import nor recapture expected results. */
+export function exportReviewedRehearsalPart(receipt,part) {
+  if(typeof part!=="string"||!reviewedParts.some(item=>item.part===part))fail("INVALID_REVIEW_PART");
+  const choice=reviewedRehearsalInputChoices(receipt).find(item=>item.part===part);
+  if(!choice)fail("REVIEW_PART_UNAVAILABLE");
+  const {recomputed}=prepareRehearsalReview(reviewSources.get(receipt),receipt.expectedSha256),input=recomputed.inputs;
+  let text;
+  if(part==="workspace-before"||part==="workspace-after")text=encodeRehearsalWorkspace(input[part.slice(10)]);
+  else if(part==="scenario-before"||part==="scenario-after")text=encodeRehearsal(input[part.slice(9)]);
+  else if(part==="scenario-set")text=encodeRehearsalScenarioSet(input);
+  else text=encodeRehearsalCheckSuite(input);
+  return Object.freeze({part,label:choice.label,destination:choice.destination,note:choice.note,
+    filename:"ThreeCore-recovered-"+part+".json",mimeType:"application/json",text});
 }
 
 export const REHEARSAL_REVIEW_EVIDENCE_SCHEMA = "threecore.operation-rehearsal-review-evidence.v1";

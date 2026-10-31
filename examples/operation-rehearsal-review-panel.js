@@ -3,6 +3,7 @@ import { createFileSelectionNotice } from "./file-read-panel.js";
 import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
+import { reviewedRehearsalInputChoices, exportReviewedRehearsalPart } from "../src/operation-rehearsal-report-review.js";
 import {canExportReviewedRehearsalWorkspace,exportReviewedRehearsalWorkspace,exportReviewedRehearsalAgent,compareReviewedRehearsalWorkspace, encodeRehearsalDifferenceQuery, encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { encodeRehearsalWorkspace } from "../src/operation-rehearsal-workspace.js";
 import { encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
@@ -96,6 +97,26 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   let hashAbort = null;
   const listeners = [];
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
+  let partGeneration=0,partChoices=[];
+  function refreshPartChoices(result){
+    partGeneration++;partChoices=reviewedRehearsalInputChoices(result);const select=get("input-part");select.textContent="";select.value="";
+    const placeholder=document.createElement("option");placeholder.value="";placeholder.textContent="取り出す入力を明示して選んでください";select.append(placeholder);
+    for(const choice of partChoices){const option=document.createElement("option");option.value=choice.part;option.textContent=choice.label;select.append(option);}
+    select.value="";select.disabled=!partChoices.length;get("input-recovery").hidden=!partChoices.length;get("input-save").disabled=true;get("input-note").textContent="";
+  }
+  listen("input-part","change",()=>{
+    if(disposed)return;partGeneration++;const choice=partChoices.find(item=>item.part===get("input-part").value);
+    get("input-save").disabled=!choice;get("input-note").textContent=choice?choice.note+" 読み込む場所: 「"+choice.destination+"」。現在の履歴・ケース集は変わりません。":"";
+  });
+  listen("input-save","click",()=>{
+    if(disposed||!receipt||get("input-save").disabled)return;
+    const own=revision,generation=partGeneration,reviewed=receipt,part=get("input-part").value;
+    const current=()=>!disposed&&revision===own&&partGeneration===generation&&receipt===reviewed&&get("input-part").value===part;
+    try{const recovered=exportReviewedRehearsalPart(reviewed,part);
+      requireSyncExport(download({document,prepared:{text:recovered.text,filename:recovered.filename,mimeType:recovered.mimeType}}));
+      if(current())get("export-status").textContent=recovered.label+"を保存し始めました。読み込む場所: 「"+recovered.destination+"」。現在の履歴・ケース集は変更していません。";
+    }catch{if(current())get("export-status").textContent="選んだ元入力を保存できませんでした。資料と現在の履歴・ケース集は保持しています。";}
+  });
   let workspaceGeneration=0,workspaceComparison=null;
   const workspaceToolsAvailable=()=>!disposed&&canExportReviewedRehearsalWorkspace(receipt)&&typeof getWorkspace==="function"&&typeof renderWorkspaceComparison==="function";
   function resetWorkspaceComparison(message="") {
@@ -152,7 +173,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   listeners.push(()=>checksumNotice.dispose());
   function invalidate(message) {
     const own=++revision;checksumRevision++;differenceView++;setDifferenceFilters(get,false,true);selectedDifference=null;get("difference-save").disabled=true;get("difference-detail").hidden=true;get("difference-detail").textContent="";
-    const previous=hashAbort;hashAbort=null;receipt=null;differenceOffset=0;resetWorkspaceComparison();refreshAgentExtraction(null);
+    const previous=hashAbort;hashAbort=null;receipt=null;differenceOffset=0;resetWorkspaceComparison();refreshAgentExtraction(null);refreshPartChoices(null);
     feedback.clear();checksumNotice.clear();get("checksum-file").value="";
     get("checksum-file-status").textContent="";get("checksum-file-status").setAttribute("aria-busy","false");
     fileNotice.clear();get("previous").disabled=true;get("next").disabled=true;get("difference-status").textContent="";
@@ -197,7 +218,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       const result = await reviewRehearsalReport(text, { expectedSha256, subtle, signal: ownHash.signal });
       if(disposed || own !== revision) return;
       receipt = result;setDifferenceFilters(get,true); get("results").hidden = false; for(const name of ["save","source-save","checksum-save","evidence-save"])get(name).disabled=false;
-      const recoverable=canExportReviewedRehearsalWorkspace(result);get("workspace-save").disabled=!recoverable;get("workspace-save").hidden=!recoverable;refreshAgentExtraction(result);resetWorkspaceComparison();
+      const recoverable=canExportReviewedRehearsalWorkspace(result);get("workspace-save").disabled=!recoverable;get("workspace-save").hidden=!recoverable;refreshAgentExtraction(result);resetWorkspaceComparison();refreshPartChoices(result);
       const matches = result.matchesRecomputation && result.checksumMatches !== false;
       const expectedDifferences = result.reportOutcome?.kind === "expected-outcomes" && !result.reportOutcome.allMatched;
       get("status").className = matches && !expectedDifferences ? "passed" : "blocked";
