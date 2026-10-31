@@ -21,6 +21,19 @@ const manifest=(name="a.json",text=source)=>createHash("sha256").update(text).di
 const paste=(f,text)=>{f.q("reference-text").value=text;f.q("reference-text").dispatchEvent(new Event("input"));};
 const details=(f,index=0)=>f.q("rows").children[index].children.at(-1).children[0];
 
+test("stopped file loading resumes only pending files and keeps earlier detail sources",async()=>{
+ const opened=[],reads=[],f=setup(fast,value=>opened.push(value));let release,second=0;
+ const item=(name,index)=>({name,size:Buffer.byteLength(source),arrayBuffer(){reads.push(index);if(index===1&&++second===1)return new Promise(resolve=>{release=resolve;});return Promise.resolve(new TextEncoder().encode(source).buffer);}});
+ try{f.choose([item('first.json',0),item('second.json',1),item('third.json',2)]);f.q('run').click();await wait(()=>Boolean(release));f.q('cancel').click();await done(f);f.q('save').click();const previous=JSON.parse(f.downloads.at(-1).text);assert.equal(previous.summary.reviewed,1);assert.equal(f.q('resume').disabled,false);f.q('resume').click();await done(f);f.q('save').click();const next=JSON.parse(f.downloads.at(-1).text);assert.equal(next.complete,true);assert.equal(next.continuation.retainedReviews,1);assert.deepEqual(reads,[0,1,1,2]);assert.match(f.q('summary').textContent,/保持 1件/);details(f).click();assert.equal(opened[0].text,source);assert.equal(opened[0].name,'first.json');release(new TextEncoder().encode(source).buffer);await new Promise(resolve=>setTimeout(resolve,5));assert.equal(f.q('resume').disabled,true);f.q('clear').click();assert.equal(f.q('resume').disabled,true);}finally{release?.(new TextEncoder().encode(source).buffer);f.panel.dispose();}
+});
+test("unreadable middle file does not erase prior or later report reviews",async()=>{
+ const f=setup();try{f.choose([file('first.json'),new File([Uint8Array.of(255)],'unreadable.json'),file('last.json')]);f.q('run').click();await done(f);f.q('save').click();const result=JSON.parse(f.downloads.at(-1).text);assert.deepEqual(result.files.map(row=>row.status),['matched','source-unavailable','matched']);assert.match(f.q('summary').textContent,/読み込み失敗 1件/);assert.equal(f.q('manifest').disabled,true);assert.equal(details(f,1).disabled,true);f.q('csv').click();assert.match(f.downloads.at(-1).text,/sourceUnavailable/);}finally{f.panel.dispose();}
+});
+test("failed continuation linkage retains a saveable prior result",async()=>{
+ let fail=false,release,calls=0;const f=setup({digest(...args){if(fail)throw Error('PRIVATE');if(++calls===2)return new Promise(resolve=>{release=resolve;});return fast.digest(...args);}});
+ try{f.choose([file(),file('second.json')]);f.q('run').click();await wait(()=>Boolean(release));f.q('cancel').click();await done(f);f.q('save').click();const previous=f.downloads.at(-1).text;fail=true;f.q('resume').click();await done(f);assert.match(f.q('status').textContent,/前回の確認結果は保持/);assert.doesNotMatch(f.q('status').textContent,/PRIVATE/);assert.equal(f.q('resume').disabled,false);f.q('save').click();assert.equal(f.downloads.at(-1).text,previous);}finally{release?.(new ArrayBuffer(32));f.panel.dispose();}
+});
+
 test("batch detail handoff retains original bytes and reference instead of substituting its actual hash",async()=>{
   const calls=[],f=setup(fast,row=>{calls.push(row);return true;});try{
     f.choose([file("a.json",source+"\r\n")]);paste(f,manifest());f.q("run").click();await done(f);const before=f.q("summary").textContent;
@@ -129,13 +142,13 @@ for(const change of ["clear","replace","dispose"])test("pending digest cannot ov
 test("loading cancellation does not claim any recomputation and permits explicit retry",async()=>{
   let release,calls=0;const f=setup();
   try{f.choose([{name:"a.json",size:1,arrayBuffer(){calls++;return new Promise(r=>{release=r;});}}]);f.q("run").click();await wait(()=>calls===1);
-    f.q("cancel").click();await done(f);assert.match(f.q("status").textContent,/結果はまだありません/);assert.equal(f.q("save").disabled,true);
+    f.q("cancel").click();await done(f);assert.match(f.q("summary").textContent,/確認済み 0件／未確認 1件/);assert.equal(f.q("save").disabled,false);assert.equal(f.q("resume").disabled,false);
     f.choose([file()]);f.q("run").click();await done(f);assert.match(f.q("summary").textContent,/一致 1件/);
   }finally{release?.(new Uint8Array([65]).buffer);f.panel.dispose();}
 });
 test("unreadable file is not reported as an empty or matching report",async()=>{
   const f=setup();try{f.choose([{name:"a.json",size:1,arrayBuffer(){throw Error("private marker");}}]);f.q("run").click();await done(f);
-    assert.match(f.q("status").textContent,/読み込めません/);assert(!f.q("status").textContent.includes("private marker"));assert.equal(f.q("save").disabled,true);
+    assert.match(f.q("status").textContent,/読み込めない資料/);assert(!f.q("status").textContent.includes("private marker"));assert.equal(f.q("save").disabled,false);f.q("save").click();assert.equal(JSON.parse(f.downloads.at(-1).text).files[0].status,"source-unavailable");
   }finally{f.panel.dispose();}
 });
 for(const failure of [()=>false,()=>{throw Error("private marker");},()=>Promise.reject(Error("private marker"))])test("batch export failure keeps results for retry "+failure.toString(),async()=>{

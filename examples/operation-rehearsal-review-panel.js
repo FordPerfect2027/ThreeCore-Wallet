@@ -1,11 +1,12 @@
 import { createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
 import { createFileSelectionNotice } from "./file-read-panel.js";
-import { createFileReadScope, readFormatFileName } from "../src/security-file.js";
+import { createFileReadScope, readFormatFileName, readSecurityFileText } from "../src/security-file.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
 import { captureDataRecord } from "../src/security-data.js";
-import { validateRehearsalReportBatchSelection, reviewRehearsalReportBatch,
-  encodeRehearsalBatchReview, encodeRehearsalBatchManifest, REHEARSAL_BATCH_REVIEW_BYTES,
+import { validateRehearsalReportBatchSelection, reviewRehearsalReportFileBatch,
+  resumeRehearsalReportFileBatch, canResumeRehearsalReportFileBatch,
+  encodeRehearsalBatchReview, encodeRehearsalBatchManifest,
   REHEARSAL_BATCH_REVIEW_FILES, decodeRehearsalBatchManifest, matchRehearsalBatchManifest,
   REHEARSAL_BATCH_MANIFEST_LIMIT, encodeRehearsalBatchCsv } from "../src/operation-rehearsal-report-review.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
@@ -103,8 +104,8 @@ function outcomeText(outcome) {
 /** Independent file-only review. It receives no live workspace writer. */
 export function mountRehearsalBatchReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, inspectSource = null }) {
   const get = id => document.getElementById("report-batch-" + id);
-  const reader = createFileReadScope(), referenceReader = createFileReadScope(), listeners = [];
-  let revision = 0, disposed = false, selection = null, active = null, result = null;
+  const referenceReader = createFileReadScope(), listeners = [];
+  let revision = 0, disposed = false, selection = null, active = null, result = null, sourceRows = [];
   let referenceText, referenceValid = true, referenceBusy = false;
   const current = id => !disposed && id === revision;
   function listen(id, event, callback) {
@@ -121,6 +122,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   function buttons() {
     const referenceMatches = referenceReady();
     get("run").disabled = disposed || !selection || Boolean(active) || !referenceMatches;
+    get("resume").disabled = disposed || Boolean(active) || !canResumeRehearsalReportFileBatch(result);
     get("cancel").disabled = disposed || !active || active.controller.signal.aborted;
     get("save").disabled = disposed || Boolean(active) || !result;
     get("csv").disabled = disposed || Boolean(active) || !result;
@@ -136,8 +138,8 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   }
   function reset({ keepSelection = false, keepReference = false } = {}) {
     const id = ++revision, old = active;
-    active = null; if (!keepSelection) selection = null; result = null;
-    old?.controller.abort(); reader.cancel(); referenceReader.cancel();
+    active = null; if (!keepSelection) selection = null; result = null; sourceRows = [];
+    old?.controller.abort(); referenceReader.cancel();
     if (!current(id)) return id;
     if (!keepReference) {
       referenceText = undefined; referenceValid = true;
@@ -153,7 +155,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   function render(receipt, id, sources) {
     const labels = { matched: "再計算と一致", different: "再計算と相違あり", invalid: "資料の内容を確認できません",
       unsupported: "この欄の対象外の形式", "hash-unavailable": "照合値を計算できません", pending: "未確認",
-      "checksum-mismatch": "以前の照合値と不一致（再計算は未実施）" };
+      "checksum-mismatch": "以前の照合値と不一致（再計算は未実施）", "source-unavailable": "ファイルを読み込めません（再計算は未実施）" };
     const nodes = receipt.files.map((row, index) => {
       const tr = document.createElement("tr");
       const fields = [row.name, labels[row.status] + (row.expectedOutcomes?.differing ? "／期待結果との差あり" : ""),
@@ -176,15 +178,17 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
       return tr;
     });
     if (!current(id)) return;
-    result = receipt; get("rows").replaceChildren(...nodes);
+    result = receipt; sourceRows = sources; get("rows").replaceChildren(...nodes);
     if (!current(id)) return;
     const s = receipt.summary;
     get("summary").textContent = `${s.selected}件中、確認済み ${s.reviewed}件／未確認 ${s.pending}件。再計算の一致 ${s.matching}件、相違 ${s.differing}件、形式・照合値の問題 ${s.invalid + s.unsupported + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。期待結果との差が残る資料 ${s.reportsWithFailedExpectations}件。` +
-      (receipt.referenceProvided ? ` 以前の照合値との一致 ${s.checksumsMatching}件、不一致 ${s.checksumMismatches}件、未比較 ${s.selected - s.checksumsCompared}件。` : "");
+      (receipt.referenceProvided ? ` 以前の照合値との一致 ${s.checksumsMatching}件、不一致 ${s.checksumMismatches}件、未比較 ${s.selected - s.checksumsCompared}件。` : "") +
+      (Object.hasOwn(s, "sourceUnavailable") ? ` 読み込み失敗 ${s.sourceUnavailable}件。読み取れた内容 ${s.totalBytes}バイト。未読・失敗分の内容のバイト数は不明です。` : "") +
+      (receipt.continuation ? ` 前回の結果を保持 ${receipt.continuation.retainedReviews}件。保持分は今回読み直していません。続き ${receipt.continuation.sequence}回目。` : "");
     get("reference-note").textContent = receipt.referenceProvided ?
       "読み込んだ一覧との比較は、上記の一致・不一致・未比較の件数をご確認ください。一覧の出所を証明するものではありません。再計算の一致と期待結果への一致も別に確認してください。" :
       "再計算の一致は、期待結果への一致や資料の出所・安全性の証明とは別です。照合値は今回選んだ内容から計算しており、外部の正解値とは比較していません。";
-    get("status").textContent = receipt.phase === "complete" ? "選択した資料の確認を終えました。各行の結果をご確認ください。" :
+    get("status").textContent = receipt.phase === "complete" ? (s.sourceUnavailable ? "読み込めない資料があります。他の資料の確認結果は保持しています。各行の結果をご確認ください。" : "選択した資料の確認を終えました。各行の結果をご確認ください。") :
       receipt.phase === "timed-out" ? "時間の上限に達したため停止しました。確認できた分の控えを保存できます。" : "確認を停止しました。確認できた分の控えを保存できます。";
     get("results").hidden = false;
   }
@@ -236,37 +240,43 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     finally { if (current(id)) { referenceBusy = false; buttons(); } }
   });
   listen("reference-clear", "click", () => { if (!disposed) reset({ keepSelection: true }); });
-  listen("run", "click", async () => {
+  async function run(previous = null) {
     if (disposed || active || !selection || !referenceReady() || get("run").disabled) return;
+    if (previous && (result !== previous || !canResumeRehearsalReportFileBatch(previous))) return;
     const id = ++revision, chosen = selection, manifestText = referenceText, job = { controller: new AbortController() };
-    active = job; result = null;
-    get("results").hidden = true; get("rows").replaceChildren(); get("summary").textContent = ""; get("export-status").textContent = ""; buttons();
+    const retainedSources = previous ? sourceRows.slice() : [];
+    active = job; result = previous;
+    if (!previous) { get("results").hidden = true; get("rows").replaceChildren(); get("summary").textContent = ""; }
+    get("export-status").textContent = ""; buttons();
     try {
-      const rows = []; let bytes = 0;
-      for (const entry of chosen) {
+      const rows = retainedSources.slice();
+      const read = async (index, options) => {
         if (!current(id) || job.controller.signal.aborted) throw Error("CANCELLED");
-        get("status").textContent = `資料を読み込んでいます（${rows.length + 1} / ${chosen.length}）：${entry.name}`;
-        const remaining = REHEARSAL_BATCH_REVIEW_BYTES - bytes;
-        if (remaining < 1) throw Error("SIZE");
-        const text = await reader.readText(entry.file, { maxBytes: Math.min(REHEARSAL_REPORT_REVIEW_LIMIT, remaining) });
+        const entry = chosen[index]; get("status").textContent = `資料を読み込んでいます（${index + 1} / ${chosen.length}）：${entry.name}`;
+        const text = await readSecurityFileText(entry.file, options);
         if (!current(id) || job.controller.signal.aborted) throw Error("CANCELLED");
-        bytes += boundedUtf8Length(text, REHEARSAL_REPORT_REVIEW_LIMIT); rows.push({ name: entry.name, text });
-      }
-      const receipt = await reviewRehearsalReportBatch(rows, { subtle, signal: job.controller.signal, manifestText,
-        onProgress(progress) { if (current(id)) get("status").textContent = `資料を再計算しています（${progress.reviewed} / ${progress.selected}件）。`; } });
+        rows[index] = Object.freeze({ name: entry.name, text }); return text;
+      };
+      const options = { subtle, signal: job.controller.signal,
+        onProgress(progress) { if (current(id)) get("status").textContent = `資料を再計算しています（${progress.reviewed} / ${progress.selected}件）。`; } };
+      const receipt = previous ? await resumeRehearsalReportFileBatch(previous, read, options) :
+        await reviewRehearsalReportFileBatch(chosen.map(({ name, byteLength }) => ({ name, byteLength })), read, { ...options, manifestText });
       if (current(id)) render(receipt, id, rows);
     } catch (error) {
+      if (current(id) && previous) render(previous, id, retainedSources);
       if (current(id)) get("status").textContent = job.controller.signal.aborted ?
         "資料の読み込みを停止しました。再計算の結果はまだありません。" :
-        "資料をまとめて読み込めませんでした。" + (describeFileReadError(error, "1件2 MiB") ?? "形式・照合値・読み込み条件を確認してから、もう一度実行してください。") + " 選択した資料と現在の履歴は変更していません。";
+        "資料をまとめて読み込めませんでした。" + (describeFileReadError(error, "1件2 MiB") ?? "形式・照合値・読み込み条件を確認してから、もう一度実行してください。") + " 選択した資料と現在の履歴は変更していません。" + (previous ? " 前回の確認結果は保持しています。" : "");
     } finally {
       job.controller.abort();
       if (current(id)) { active = null; buttons(); }
     }
-  });
+  }
+  listen("run", "click", () => { void run(); });
+  listen("resume", "click", () => { if (!get("resume").disabled) void run(result); });
   listen("cancel", "click", () => {
     if (disposed || !active) return;
-    active.controller.abort(); reader.cancel();
+    active.controller.abort();
     get("status").textContent = "停止しています。"; buttons();
   });
   listen("clear", "click", () => { if (disposed) return; reset(); get("files").value = ""; });

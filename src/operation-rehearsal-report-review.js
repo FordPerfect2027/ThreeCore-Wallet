@@ -1,6 +1,6 @@
 import { captureDataRecord, captureDataArray, captureOptionalDataFields, sha256Hex } from "./security-data.js";
-import { consumeCallback } from "./security-callback.js";
-import { subscribeReadAbort } from "./security-abort.js";
+import { consumeCallback, observeCallbackResult } from "./security-callback.js";
+import { subscribeReadAbort, readAbortState } from "./security-abort.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { RehearsalError, encodeRehearsal } from "./operation-rehearsal.js";
 import { encodeRehearsalWorkspace } from "./operation-rehearsal-workspace.js";
@@ -142,6 +142,7 @@ export const REHEARSAL_BATCH_REVIEW_BYTES = 8 * 1024 * 1024;
 export const REHEARSAL_BATCH_MANIFEST_LIMIT = 16384;
 export const REHEARSAL_BATCH_REFERENCE_REVIEW_SCHEMA = "threecore.operation-rehearsal-batch-review.v2";
 const batchReceipts = new WeakSet();
+const fileBatchSelections = new WeakMap();
 
 /** Portable unique basenames keep the exported manifest unambiguous. */
 export function validateRehearsalReportBatchSelection(input) {
@@ -190,13 +191,18 @@ export function matchRehearsalBatchManifest(selectionInput, text) {
   return Object.freeze(selection.files.map(row => byName.get(row.name)));
 }
 
-/** Sequential recomputation of explicit text inputs. No restoration or I/O. */
-export async function reviewRehearsalReportBatch(input, options = {}) {
+function captureRehearsalBatchOptions(options) {
   try { options = captureOptionalDataFields(options, ["subtle", "signal", "onProgress", "timeoutMs", "manifestText"]); }
   catch { fail("INVALID_REVIEW_BATCH_OPTIONS"); }
-  const { subtle = globalThis.crypto?.subtle, signal, onProgress, timeoutMs = 120000 } = options;
+  const { onProgress, timeoutMs = 120000 } = options;
   if ((onProgress !== undefined && typeof onProgress !== "function") ||
       !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000) fail("INVALID_REVIEW_BATCH_OPTIONS");
+  return options;
+}
+
+/** Sequential recomputation of explicit text inputs. No restoration or I/O. */
+export async function reviewRehearsalReportBatch(input, options = {}) {
+  options = captureRehearsalBatchOptions(options);
   let rows;
   try {
     rows = captureDataArray(input, REHEARSAL_BATCH_REVIEW_FILES, 1).map(row => {
@@ -206,63 +212,134 @@ export async function reviewRehearsalReportBatch(input, options = {}) {
     });
   } catch { fail("INVALID_REVIEW_BATCH_INPUT"); }
   const selection = validateRehearsalReportBatchSelection(rows.map(({ name, byteLength }) => ({ name, byteLength })));
+  return reviewRehearsalBatchCaptured(rows, selection, options);
+}
+
+/** Read and finish each explicitly selected source before starting the next. */
+export async function reviewRehearsalReportFileBatch(input, readSource, options = {}) {
+  const selection = validateRehearsalReportBatchSelection(input);
+  if (typeof readSource !== "function") fail("INVALID_REVIEW_BATCH_READER");
+  return reviewRehearsalBatchCaptured(selection.files, selection, captureRehearsalBatchOptions(options), readSource);
+}
+
+export function canResumeRehearsalReportFileBatch(previous) {
+  return fileBatchSelections.has(previous) && ["cancelled", "timed-out"].includes(previous.phase) && previous.summary.pending > 0;
+}
+/** Keep the original selection/reference and completed prefix; re-read pending files only. */
+export async function resumeRehearsalReportFileBatch(previous, readSource, options = {}) {
+  if (!canResumeRehearsalReportFileBatch(previous)) fail("INVALID_REVIEW_BATCH_RESUME");
+  if (typeof readSource !== "function") fail("INVALID_REVIEW_BATCH_READER");
+  options = captureRehearsalBatchOptions(options);
+  if (Object.hasOwn(options, "manifestText")) fail("INVALID_REVIEW_BATCH_OPTIONS");
+  const selection = fileBatchSelections.get(previous);
+  return reviewRehearsalBatchCaptured(selection.files, selection,
+    { ...options, ...(previous.referenceProvided ? { manifestText: previous.reference.text } : {}) }, readSource, previous);
+}
+
+function waitRehearsalBatchSource(read, signal) {
+  return new Promise((resolve, reject) => {
+    let settled = false, subscription;
+    const finish = (callback, value) => { if (callback === reject) observeCallbackResult(value); if (settled) return; settled = true; subscription?.dispose(); callback(value); };
+    subscription = subscribeReadAbort(signal, () => { const error = new Error("FILE_CANCELLED"); error.code = "FILE_CANCELLED"; finish(reject, error); });
+    if (settled) return;
+    try { const value = read(); if (typeof value === "string") finish(resolve, value);
+      else try { Reflect.apply(Promise.prototype.then, value, [value => finish(resolve, value), error => finish(reject, error)]); }
+      catch { observeCallbackResult(value); const error = new Error("FILE_READ"); error.code = "FILE_READ"; finish(reject, error); }
+    } catch (error) { finish(reject, error); }
+  });
+}
+
+async function reviewRehearsalBatchCaptured(rows, selection, options, readSource = null, previous = null) {
+  const { subtle = globalThis.crypto?.subtle, signal, onProgress, timeoutMs = 120000 } = options;
   const hasReference = options.manifestText !== undefined;
   const reference = hasReference ? matchRehearsalBatchManifest(selection.files, options.manifestText) : null;
   let referenceSha256 = null;
-  const completed = [], aborter = new AbortController();
+  const retained = previous?.summary.reviewed ?? 0, completed = previous ? previous.files.slice(0, retained) : [], aborter = new AbortController();
+  let previousBatchSha256 = null;
   let cancellation, timer, phase = "complete";
-  const stop = reason => { if (!aborter.signal.aborted) { phase = reason; aborter.abort(); } };
+  const stopped = () => readAbortState(aborter.signal);
+  const stop = reason => { if (!stopped()) { phase = reason; aborter.abort(); } };
   const notify = () => consumeCallback(() => onProgress?.(Object.freeze({
-    selected: rows.length, reviewed: completed.length, phase: aborter.signal.aborted ? phase : "reviewing",
+    selected: rows.length, reviewed: completed.length, phase: stopped() ? phase : "reviewing",
   })));
   function finish() {
     const files = rows.map((row, index) => completed[index] ?? Object.freeze({
-      name: row.name, byteLength: row.byteLength, status: "pending", sha256: null,
+      name: row.name, byteLength: readSource ? null : row.byteLength, ...(readSource ? { reportedByteLength: row.byteLength } : {}), status: "pending", sha256: null,
       inputSchema: null, differenceCount: null, expectedOutcomes: null,
       ...(hasReference ? { expectedSha256: reference[index].expectedSha256, checksumMatches: null } : {}),
     }));
     const counts = status => files.filter(row => row.status === status).length;
+    const unknownBytes = files.some(row => row.byteLength === null);
     const summary = Object.freeze({ selected: rows.length, reviewed: completed.length,
       pending: counts("pending"), matching: counts("matched"), differing: counts("different"),
       unsupported: counts("unsupported"), invalid: counts("invalid"), hashUnavailable: counts("hash-unavailable"),
       reportsWithFailedExpectations: files.filter(row => row.expectedOutcomes?.differing > 0).length,
-      totalBytes: selection.totalBytes });
+      totalBytes: unknownBytes ? files.reduce((total, row) => total + (row.byteLength ?? 0), 0) : selection.totalBytes,
+      ...(unknownBytes ? { sourceUnavailable: counts("source-unavailable"), selectedReportedBytes: selection.totalBytes,
+        unreadSourceReportedBytes: files.reduce((total, row) => total + (row.reportedByteLength ?? 0), 0) } : {}) });
     const referenceSummary = hasReference ? {
       ...summary, checksumsCompared: files.filter(row => row.checksumMatches !== null).length,
       checksumsMatching: files.filter(row => row.checksumMatches === true).length,
       checksumMismatches: files.filter(row => row.checksumMatches === false).length,
     } : summary;
-    const result = Object.freeze({ schema: hasReference ? REHEARSAL_BATCH_REFERENCE_REVIEW_SCHEMA : REHEARSAL_BATCH_REVIEW_SCHEMA, simulationOnly: true,
+    const result = Object.freeze({ schema: previous ? "threecore.operation-rehearsal-batch-review.v4" : unknownBytes ? "threecore.operation-rehearsal-batch-review.v3" : hasReference ? REHEARSAL_BATCH_REFERENCE_REVIEW_SCHEMA : REHEARSAL_BATCH_REVIEW_SCHEMA, simulationOnly: true,
       sourceVerified: false, authorizesExecution: false,
       externalChecksumsCompared: hasReference && referenceSummary.checksumsCompared > 0,
       phase, complete: phase === "complete" && completed.length === rows.length,
       allRecomputationsMatch: phase === "complete" && summary.matching === rows.length,
       summary: Object.freeze(referenceSummary), files: Object.freeze(files),
+      ...(unknownBytes && !hasReference ? { referenceProvided: false } : {}),
+      ...(previous ? { continuation: Object.freeze({ sequence: (previous.continuation?.sequence ?? 0) + 1,
+        retainedReviews: retained, previousPhase: previous.phase, previousBatchSha256 }) } : {}),
       ...(hasReference ? { referenceProvided: true,
         reference: Object.freeze({ text: options.manifestText, sha256: referenceSha256, entries: reference }),
         allExternalChecksumsMatch: phase === "complete" && referenceSummary.checksumsMatching === rows.length } : {}),
     });
-    batchReceipts.add(result); return result;
+    batchReceipts.add(result); if (readSource) fileBatchSelections.set(result, selection); return result;
   }
   try {
     try { cancellation = subscribeReadAbort(signal, () => stop("cancelled")); }
     catch { fail("INVALID_REVIEW_BATCH_SIGNAL"); }
     timer = setTimeout(() => stop("timed-out"), timeoutMs);
     notify();
-    if (hasReference && !aborter.signal.aborted) {
+    if (previous && !stopped()) {
+      try { previousBatchSha256 = await sha256Hex(new TextEncoder().encode(encodeRehearsalBatchReview(previous)), subtle,
+        { signal: aborter.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
+      catch { if (!stopped()) fail("REVIEW_BATCH_RESUME_HASH_UNAVAILABLE"); }
+    }
+    if (hasReference && !stopped()) {
       try { referenceSha256 = await sha256Hex(new TextEncoder().encode(options.manifestText), subtle,
         { signal: aborter.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
-      catch { if (!aborter.signal.aborted) fail("REVIEW_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
+      catch { if (!stopped()) fail("REVIEW_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
     }
-    for (const [index, row] of rows.entries()) {
-      if (aborter.signal.aborted) break;
+    for (const [index, selected] of rows.entries()) {
+      if (index < retained) continue;
+      if (stopped()) break;
+      let row = selected;
+      if (readSource) {
+        try {
+          const text = await waitRehearsalBatchSource(() => readSource(index, Object.freeze({ signal: aborter.signal, maxBytes: selected.byteLength })), aborter.signal);
+          if (stopped()) break;
+          const byteLength = boundedUtf8Length(text, selected.byteLength);
+          if (byteLength !== selected.byteLength) { const error = new Error("FILE_SIZE"); error.code = "FILE_SIZE"; throw error; }
+          row = Object.freeze({ ...selected, text, byteLength });
+        } catch (error) {
+          if (stopped()) break;
+          let code; try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; } catch {}
+          code = code === "JSON_SIZE" ? "FILE_SIZE" : ["FILE_ENCODING", "FILE_SIZE", "FILE_READ", "FILE_TIMEOUT", "FILE_CHANGED"].includes(code) ? code : "FILE_READ";
+          completed.push(Object.freeze({ name: selected.name, byteLength: null, reportedByteLength: selected.byteLength,
+            status: "source-unavailable", code, sha256: null, inputSchema: null, differenceCount: null, expectedOutcomes: null,
+            ...(hasReference ? { expectedSha256: reference[index].expectedSha256, checksumMatches: null } : {}) }));
+          notify(); continue;
+        }
+      }
       let sha256 = null, status = "hash-unavailable", inputSchema = null, differenceCount = null, expectedOutcomes = null;
       const expectedSha256 = hasReference ? reference[index].expectedSha256 : null;
       let checksumMatches = null;
       try { sha256 = await sha256Hex(new TextEncoder().encode(row.text), subtle,
         { signal: aborter.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
       catch { /* Hash failures remain per-file failures, never matching reports. */ }
-      if (aborter.signal.aborted) break;
+      if (stopped()) break;
       if (hasReference && sha256 !== null) checksumMatches = expectedSha256 === sha256;
       if (checksumMatches === false) status = "checksum-mismatch";
       if (sha256 !== null && checksumMatches !== false) {
@@ -305,12 +382,17 @@ export function encodeRehearsalBatchCsv(result) {
     "selected","reviewed","pending","totalBytes","allRecomputationsMatch","referenceProvided","referenceSha256",
     "externalChecksumsCompared","allExternalChecksumsMatch","name","status","byteLength","sha256",
     "expectedSha256","checksumMatches","inputSchema","differenceCount","expectedCases","expectationsMatched","expectationsDiffering"]];
+  const unknownBytes = Object.hasOwn(result.summary, "sourceUnavailable");
+  if (unknownBytes) rows[0].push("reportedByteLength", "readError", "sourceUnavailable", "selectedReportedBytes", "unreadSourceReportedBytes");
+  if (result.continuation) rows[0].push("continuationSequence", "retainedReviews", "previousPhase", "previousBatchSha256");
   for (const row of result.files) rows.push([result.schema,true,false,false,result.phase,result.complete,
     result.summary.selected,result.summary.reviewed,result.summary.pending,result.summary.totalBytes,
     result.allRecomputationsMatch,result.referenceProvided ?? false,result.reference?.sha256 ?? "",
-    result.externalChecksumsCompared,result.allExternalChecksumsMatch ?? "",row.name,row.status,row.byteLength,
+    result.externalChecksumsCompared,result.allExternalChecksumsMatch ?? "",row.name,row.status,row.byteLength ?? "",
     row.sha256 ?? "",row.expectedSha256 ?? "",row.checksumMatches ?? "",row.inputSchema ?? "",row.differenceCount ?? "",
-    row.expectedOutcomes?.cases ?? "",row.expectedOutcomes?.matched ?? "",row.expectedOutcomes?.differing ?? ""]);
+    row.expectedOutcomes?.cases ?? "",row.expectedOutcomes?.matched ?? "",row.expectedOutcomes?.differing ?? "",
+    ...(unknownBytes ? [row.reportedByteLength ?? "", row.code ?? "", result.summary.sourceUnavailable, result.summary.selectedReportedBytes, result.summary.unreadSourceReportedBytes] : []),
+    ...(result.continuation ? [result.continuation.sequence, result.continuation.retainedReviews, result.continuation.previousPhase, result.continuation.previousBatchSha256 ?? ""] : [])]);
   const cell = value => { let text = String(value); if (/^\s*[=+@-]/u.test(text)) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
   return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";
 }
