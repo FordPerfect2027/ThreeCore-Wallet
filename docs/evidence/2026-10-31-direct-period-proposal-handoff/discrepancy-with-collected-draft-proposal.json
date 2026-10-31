@@ -1,0 +1,24 @@
+{
+  "schema": "threecore.period-file.v1",
+  "algorithm": "SHA-256",
+  "digest": "958c5fdf842196f3b32f10e69285f4eab35838d55e72edccf8675ca1743055ed",
+  "draft": {
+    "schema": "threecore.period-draft.v1",
+    "plan": {
+      "schema": "threecore.period-plan.v1",
+      "context": {
+        "agent": "DAT",
+        "chainId": 84532,
+        "account": "0x1111111111111111111111111111111111111111"
+      },
+      "earlierBlock": "34",
+      "laterBlock": "35",
+      "windowSize": 1
+    },
+    "earlier": null,
+    "later": null,
+    "records": [],
+    "readOnly": true,
+    "independentlyVerified": false
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "source": "3d2fc3d",
+  "synthetic": true,
+  "captureEnvironment": "Real shared controllers under Node; native panel interaction is separately verified",
+  "rows": [
+    {
+      "name": "discrepancy-with-collected-draft",
+      "kind": "discrepancy",
+      "q": {
+        "beforeId": "12345678-1234-4234-8234-000000000101",
+        "afterId": "12345678-1234-4234-8234-000000000102",
+        "agent": "DAT"
+      },
+      "selection": "e:1",
+      "handedToReview": true,
+      "oldDraftPreservedBeforeApply": true,
+      "requiresReplacementAcknowledgement": true,
+      "unacknowledgedApply": false,
+      "appliedAfterAppropriateReview": true,
+      "proposalSource": "proposal",
+      "originAfterApply": "new",
+      "earlierBlock": "34",
+      "laterBlock": "35",
+      "windowSize": 1,
+      "contextLookups": 0,
+      "providerReads": 0,
+      "sourceStorageCalls": 0,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "missing-prefix-with-empty-destination",
+      "kind": "missing",
+      "q": {
+        "groupId": "DAT-1",
+        "windowSize": 2,
+        "page": "0"
+      },
+      "selection": "page",
+      "handedToReview": true,
+      "oldDraftPreservedBeforeApply": true,
+      "requiresReplacementAcknowledgement": false,
+      "unacknowledgedApply": true,
+      "appliedAfterAppropriateReview": true,
+      "proposalSource": "proposal",
+      "originAfterApply": "new",
+      "earlierBlock": "35",
+      "laterBlock": "42",
+      "windowSize": 2,
+      "contextLookups": 0,
+      "providerReads": 0,
+      "sourceStorageCalls": 0,
+      "sourceUnchanged": true
+    }
+  ],
+  "nonemptyProposal": {
+    "accepted": false,
+    "pendingReviewPreserved": true,
+    "code": "PERIOD_PROPOSAL_NOT_EMPTY"
+  },
+  "existingFileExports": [
+    {
+      "name": "changed-value",
+      "previousArtifact": "../2026-10-31-discrepancy-recheck-drafts/changed-value-unread.json",
+      "exactBytesUnchanged": true
+    },
+    {
+      "name": "missing-event",
+      "previousArtifact": "../2026-10-31-discrepancy-recheck-drafts/missing-event-unread.json",
+      "exactBytesUnchanged": true
+    },
+    {
+      "name": "moved-event",
+      "previousArtifact": "../2026-10-31-discrepancy-recheck-drafts/moved-event-unread.json",
+      "exactBytesUnchanged": true
+    },
+    {
+      "name": "zero-events-fork",
+      "previousArtifact": "../2026-10-31-discrepancy-recheck-drafts/zero-events-fork-unread.json",
+      "exactBytesUnchanged": true
+    }
+  ]
+}
