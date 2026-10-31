@@ -10,6 +10,7 @@ import { describePortfolioComparison, encodePortfolioComparisonReport } from "..
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { createTokenPlan } from "../src/token-plan.js";
+import { assessHistoryMerge, describeHistoryMergeAssessment } from "../src/history-review.js";
 
 /** Local, card-scoped history. No automatic persistence or provider access. */
 export function mountHistoryPanel({ document, parent, agent, getSnapshot, getReport, download = offerHistoryDownload, onReuseTokens = null }) {
@@ -124,11 +125,20 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     json.value = history.exportText();
     status.textContent = "履歴JSONを作成しました。公開アドレスと残高が含まれます。コピーして保存してください。";
   });
-  const previewButton = button("history-preview", "履歴JSONの読み込みをプレビュー", () => {
+  const previewButton = button("history-preview", "履歴JSONの読み込みをプレビュー", id => {
     cancelReview();
     const candidate = createPortfolioHistory();
     candidate.importText(json.value);
     candidate.state().snapshots.forEach(checkAgent);
+    if (!replace.checked) {
+      const original = history.exportText(), incoming = candidate.exportText(), diagnosis = assessHistoryMerge(original, incoming);
+      if (!current(id)) return;
+      if (!diagnosis.admissible) {
+        previewText.textContent = describeHistoryMergeAssessment(original, incoming);
+        status.textContent = "追加を保留しました。空き容量と矛盾の診断を確認してください。入力欄と履歴は保持しています。";
+        return;
+      }
+    }
     review = importer.preview(json.value, { replace: replace.checked });
     previewText.textContent = (review.mode === "replace" ? "置き換え" : "追加") +
       " / 現在 " + review.previousSize + "件 → " + review.resultingSize +
