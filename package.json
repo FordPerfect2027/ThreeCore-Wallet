@@ -62,6 +62,7 @@
     "rehearsal:recover-workspace": "node scripts/recover-rehearsal-workspace.js",
     "rehearsal:recover-report-inputs": "node scripts/recover-rehearsal-report-inputs.js",
     "rehearsal:prefix": "node scripts/inspect-rehearsal-prefix.js",
-    "rehearsal:replay-query": "node scripts/replay-rehearsal-query.js"
+    "rehearsal:replay-query": "node scripts/replay-rehearsal-query.js",
+    "rehearsal:verify-batch": "node scripts/verify-rehearsal-report-batch.js"
   }
 }
