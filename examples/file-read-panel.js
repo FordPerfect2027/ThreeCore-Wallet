@@ -461,7 +461,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   inspectOriginal = null, compareOriginal = null,
   download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-file-batch"; parent.append(host);
-  let disposed = false, generation = 0, selection = null, active = null, result = null;
+  let disposed = false, generation = 0, selection = null, active = null, result = null, viewRevision = 0;
   let referenceText;
   let comparisonPanel;
   const cleanup = [], nodes = {};
@@ -485,10 +485,22 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   make("p", "retry-intro", "全ファイルを一度確認した後、読み込みや照合値の計算に失敗したものだけを再試行できます。ほかの結果は以前のまま保持します。内容が不正なものや以前の照合値と異なるものは対象にしません。");
   const status = make("p", "status", "ファイルを選び、開始するまで読み込みません。"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const notice = make("p", "notice"), selectionNotice = createFileSelectionNotice(file, notice), summary = make("p", "summary");
+  const filterBox = make("div", "filters"), filterNameLabel = make("label", "filter-name-label", "名前に含む文字（80文字まで）", filterBox), filterName = make("input", "filter-name", undefined, filterNameLabel); filterName.type = "text"; filterName.maxLength = 80;
+  const filterStatusLabel = make("label", "filter-status-label", "表示する確認結果", filterBox), filterStatus = make("select", "filter-status", undefined, filterStatusLabel);
+  const filterLabels = { all: "すべて", "validated-original": "元記録・内部チェックサム確認済み", "validated-structure": "形式確認済み・内部チェックサムなし", "declared-only": "補助資料の形式指定だけ", invalid: "内容を確認できない", "hash-unavailable": "照合値を計算できない", "source-unavailable": "読み込めない", "checksum-mismatch": "以前の照合値と不一致", pending: "未確認" };
+  for (const [value, label] of Object.entries(filterLabels)) { const option = document.createElement("option"); option.value = value; option.textContent = label; filterStatus.append(option); } filterStatus.value = "all";
+  const filterClear = make("button", "filter-clear", "一覧の絞り込みを解除", filterBox); filterClear.type = "button";
+  const filterSummary = make("p", "filter-summary", "確認が終わると、表示する行を絞り込めます。"); filterSummary.setAttribute("role", "status"); filterSummary.setAttribute("aria-live", "polite");
   const table = make("table", "table"); make("caption", "caption", "選択した保存ファイルの確認結果", table);
   const header = make("thead", "thead", undefined, table), heading = make("tr", "head-row", undefined, header);
   for (const text of ["ファイル名", "確認結果", "開く場所・確認範囲", "内容のSHA-256", "以前の照合値との比較", "詳細確認"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); heading.append(cell); }
   const rows = make("tbody", "rows", undefined, table);
+  function applyView() {
+    ++viewRevision; const name = filterName.value ?? "", state = filterStatus.value, valid = name.length <= 80 && !/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(name) && Object.hasOwn(filterLabels, state); let shown = 0;
+    filterName.setAttribute("aria-invalid", String(!valid));
+    for (const [index, row] of Array.from(rows.children).entries()) { const source = result?.files[index], visible = Boolean(valid && source && (state === "all" || source.status === state) && source.name.toLowerCase().includes(name.toLowerCase())); row.hidden = !visible; if (visible) shown++; }
+    filterSummary.textContent = !result ? "確認が終わると、表示する行を絞り込めます。" : !valid ? "名前の条件は80文字以内で、改行や制御文字を含めないでください。確認結果と全件保存は保持しています。" : `表示 ${shown}件 / 選択した全 ${result.files.length}件。絞り込みは表示だけです。JSON・CSV・照合値一覧の保存は全件が対象です。`;
+  }
   const ackLabel = make("label", "ack-label", "ファイル名・確認結果・照合値を、暗号化せずPCに保存します"), ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
   const save = button("save", "一括確認の控えをJSON保存"), csv = button("csv", "全ファイルの確認結果をCSV保存"), manifest = button("manifest", "今回の内容の照合値一覧を保存");
   make("p", "limits", "以前の一覧を指定した場合だけ、その値と比較します。一覧の出所は保証しません。今回の照合値一覧を保存しても、以前の値が正しいことの証明にはなりません。補助資料は形式の案内だけです。この控えに元記録は含まれず、復元には使えません。元ファイルと同じ名前のまま一緒に保管してください。同じ記録が複数の報告に含まれる場合があります。");
@@ -503,6 +515,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     stop.disabled = disposed || !active || active.signal.aborted;
     resume.disabled = disposed || Boolean(active) || !selection || !canResumeWalletSavedFileBatch(result);
     retry.disabled = disposed || Boolean(active) || !selection || !canRetryWalletSavedFileBatch(result);
+    filterName.disabled = filterStatus.disabled = filterClear.disabled = disposed || Boolean(active) || !result;
     ack.disabled = disposed || Boolean(active) || !result;
     save.disabled = ack.disabled || !ack.checked;
     csv.disabled = save.disabled;
@@ -511,7 +524,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   function reset(keepSelection = false) {
     const id = ++generation, old = active; active = null; if (!keepSelection) selection = null; result = null; ack.checked = false;
     old?.abort(); if (!current(id)) return id;
-    rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; selectionNotice.clear(); buttons(); return id;
+    rows.replaceChildren(); summary.textContent = ""; exportStatus.textContent = ""; selectionNotice.clear(); filterName.value = ""; filterStatus.value = "all"; applyView(); buttons(); return id;
   }
   listen(referenceInput, "input", () => {
     if (disposed) return; const text = referenceInput.value, id = reset(true); if (!current(id)) return;
@@ -558,17 +571,18 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
         const open = document.createElement("button"); open.className = "saved-file-batch-" + name; open.type = "button"; open.textContent = label;
         open.disabled = !["validated-original", "validated-structure"].includes(row.status) || !row.sha256 || typeof callback !== "function";
         open.addEventListener("click", async () => {
-          if (disposed || active || !current(id) || result !== receipt || open.disabled) return;
+          if (disposed || active || !current(id) || result !== receipt || open.disabled || tr.hidden) return;
+          const ownView = viewRevision;
           open.disabled = true;
           try { const accepted = await callback(sourceSelection[index].file, row.sha256);
-            if (current(id) && result === receipt) exportStatus.textContent = accepted === true ? "元記録の詳細確認を上の案内欄に開きました。一括確認の結果は保持しています。" : "詳細確認を完了できませんでした。比較する場合は、先に比較元の詳細を開いてください。上の案内欄をご確認ください。一括確認の結果は保持しています。";
-          } catch { if (current(id) && result === receipt) exportStatus.textContent = "詳細確認を開けませんでした。一括確認の結果は保持しています。"; }
+            if (current(id) && result === receipt && ownView === viewRevision) exportStatus.textContent = accepted === true ? "元記録の詳細確認を上の案内欄に開きました。一括確認の結果は保持しています。" : "詳細確認を完了できませんでした。比較する場合は、先に比較元の詳細を開いてください。上の案内欄をご確認ください。一括確認の結果は保持しています。";
+          } catch { if (current(id) && result === receipt && ownView === viewRevision) exportStatus.textContent = "詳細確認を開けませんでした。一括確認の結果は保持しています。"; }
           finally { if (current(id) && result === receipt) open.disabled = false; }
         }); action.append(open);
       } tr.append(action);
       return tr;
     });
-    if (!current(id)) return; result = receipt; rows.replaceChildren(...elements);
+    if (!current(id)) return; result = receipt; rows.replaceChildren(...elements); applyView();
     const s = receipt.summary; summary.textContent = `${s.selected}件中、確認済み ${s.checked}件／未確認 ${s.pending}件。元記録 ${s.validatedOriginals}件、補助資料 ${s.declaredOnly}件、形式・照合値の問題 ${s.invalid + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。`;
     if (s.simulationFiles) summary.textContent += ` 練習用 ${s.simulationFiles}件（実際の入出金の証拠ではありません）。`;
     if (receipt.continuation) summary.textContent += ` 続きの確認 ${receipt.continuation.sequence}回目：前回の結果を保持 ${receipt.continuation.retainedChecks}件（再確認していません）。`;
@@ -597,6 +611,9 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   }
   listen(start, "click", () => { void run(); }); listen(resume, "click", () => { void run(result); });
   listen(retry, "click", () => { void run(result, true); });
+  listen(filterName, "input", () => { if (!disposed && !active) applyView(); });
+  listen(filterStatus, "change", () => { if (!disposed && !active) applyView(); });
+  listen(filterClear, "click", () => { if (disposed || active) return; filterName.value = ""; filterStatus.value = "all"; applyView(); });
   listen(stop, "click", () => { if (disposed || !active) return; const own = generation, controller = active; controller.abort(); if (!current(own) || active !== controller) return; status.textContent = "中止しています。確認できた分を残します。"; buttons(); });
   listen(clear, "click", () => { if (disposed) return; const own = reset(); if (!current(own)) return; referenceText = undefined; referenceInput.value = ""; referenceFile.value = ""; file.value = ""; status.textContent = "選択と確認結果をクリアしました。"; buttons(); });
   listen(ack, "change", () => { if (!disposed) buttons(); });
