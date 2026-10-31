@@ -4,6 +4,7 @@ import { createFileReadScope } from "../src/security-file.js";
 import { describeFileReadError, displayFileName, describeRehearsalFileTarget } from "../src/file-read-status.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { reviewedRehearsalInputChoices, exportReviewedRehearsalPart } from "../src/operation-rehearsal-report-review.js";
+import { canReuseReviewedRehearsalQuery,extractReviewedRehearsalQuery } from "../src/operation-rehearsal-report-review.js";
 import {canExportReviewedRehearsalWorkspace,exportReviewedRehearsalWorkspace,exportReviewedRehearsalAgent,compareReviewedRehearsalWorkspace, encodeRehearsalDifferenceQuery, encodeRehearsalDifferenceValues, inspectReviewedRehearsalDifference, inspectRehearsalEvidenceReceiptDifference, reviewRehearsalReport, encodeRehearsalReviewReceipt, encodeRehearsalReviewEvidence, queryReviewedRehearsalDifferences, queryRehearsalEvidenceReceiptDifferences, reviewRehearsalEvidence, decodeRehearsalReviewEvidence, REHEARSAL_REVIEW_EVIDENCE_LIMIT, decodeRehearsalChecksumText, REHEARSAL_REPORT_REVIEW_LIMIT } from "../src/operation-rehearsal-report-review.js";
 import { encodeRehearsalWorkspace } from "../src/operation-rehearsal-workspace.js";
 import { encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
@@ -92,7 +93,7 @@ function outcomeText(outcome) {
     (outcome.query.search || "指定なし") + "。"+(outcome.query.searchScope?"検索場所: "+(outcome.query.searchScope==="recorded"?"記録に書かれた情報":"保存元と記録の両方")+"。":"")+"件数は資料に含まれる試算記録の範囲です。";
 }
 
-export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, getWorkspace = null, renderWorkspaceComparison = null }) {
+export function mountRehearsalReviewPanel(document, { download, subtle = globalThis.crypto?.subtle, getWorkspace = null, renderWorkspaceComparison = null, applyRecordQuery = null }) {
   const offerDownload = payload => requireSyncExport(download(payload));
   const fileReader = createFileReadScope(), checksumReader=createFileReadScope();
   let checksumRevision=0,differenceOffset=0,differenceView=0,selectedDifference=null;
@@ -102,6 +103,17 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   let hashAbort = null;
   const listeners = [];
   function listen(name, event, fn) { get(name).addEventListener(event, fn); listeners.push(()=>get(name).removeEventListener(event, fn)); }
+  function refreshQueryAction(result){
+    const enabled=typeof applyRecordQuery==="function"&&canReuseReviewedRehearsalQuery(result);
+    get("query-apply").hidden=!enabled;get("query-apply").disabled=!enabled;get("query-status").textContent="";
+  }
+  listen("query-apply","click",()=>{
+    if(disposed||get("query-apply").disabled||typeof applyRecordQuery!=="function"||!canReuseReviewedRehearsalQuery(receipt))return;
+    const own=revision,reviewed=receipt;
+    try{const query=extractReviewedRehearsalQuery(reviewed);requireSyncExport(applyRecordQuery(query));
+      if(!disposed&&own===revision&&receipt===reviewed)get("query-status").textContent="資料の検索条件を現在の履歴に設定しました。件数・内容は現在の履歴から再計算しています。資料内の過去の履歴は復旧していません。";
+    }catch{if(!disposed&&own===revision&&receipt===reviewed)get("query-status").textContent="検索結果への移動を確認できませんでした。元資料と現在の履歴は保持しています。";}
+  });
   let partGeneration=0,partChoices=[];
   function refreshPartChoices(result){
     partGeneration++;partChoices=reviewedRehearsalInputChoices(result);const select=get("input-part");select.textContent="";select.value="";
@@ -178,7 +190,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
   listeners.push(()=>checksumNotice.dispose());
   function invalidate(message) {
     const own=++revision;checksumRevision++;differenceView++;setDifferenceFilters(get,false,true);selectedDifference=null;get("difference-save").disabled=true;get("difference-detail").hidden=true;get("difference-detail").textContent="";
-    const previous=hashAbort;hashAbort=null;receipt=null;differenceOffset=0;resetWorkspaceComparison();refreshAgentExtraction(null);refreshPartChoices(null);
+    const previous=hashAbort;hashAbort=null;receipt=null;differenceOffset=0;resetWorkspaceComparison();refreshAgentExtraction(null);refreshPartChoices(null);refreshQueryAction(null);
     feedback.clear();checksumNotice.clear();get("checksum-file").value="";
     get("checksum-file-status").textContent="";get("checksum-file-status").setAttribute("aria-busy","false");
     fileNotice.clear();get("previous").disabled=true;get("next").disabled=true;get("difference-status").textContent="";
@@ -223,7 +235,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
       const result = await reviewRehearsalReport(text, { expectedSha256, subtle, signal: ownHash.signal });
       if(disposed || own !== revision) return;
       receipt = result;setDifferenceFilters(get,true); get("results").hidden = false; for(const name of ["save","source-save","checksum-save","evidence-save"])get(name).disabled=false;
-      const recoverable=canExportReviewedRehearsalWorkspace(result);get("workspace-save").disabled=!recoverable;get("workspace-save").hidden=!recoverable;refreshAgentExtraction(result);resetWorkspaceComparison();refreshPartChoices(result);
+      const recoverable=canExportReviewedRehearsalWorkspace(result);get("workspace-save").disabled=!recoverable;get("workspace-save").hidden=!recoverable;refreshAgentExtraction(result);resetWorkspaceComparison();refreshPartChoices(result);refreshQueryAction(result);
       const matches = result.matchesRecomputation && result.checksumMatches !== false;
       const expectedDifferences = result.reportOutcome?.kind === "expected-outcomes" && !result.reportOutcome.allMatched;
       get("status").className = matches && !expectedDifferences ? "passed" : "blocked";
@@ -242,7 +254,7 @@ export function mountRehearsalReviewPanel(document, { download, subtle = globalT
     } catch(error) {
       if(disposed || own !== revision) return;
       const reason = describeRehearsalFileTarget(text, "report") ?? {INVALID_EXPECTED_CHECKSUM:"照合値はSHA-256の64桁で入力してください。使える文字は0〜9とa〜fです。",
-        UNSUPPORTED_REVIEW_REPORT:"この形式には対応していません。確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録検索・操作別の資料を選んでください。",
+        UNSUPPORTED_REVIEW_REPORT:"この形式には対応していません。確認一覧・比較・ケース集の集計・期待結果・記録検索・操作別・検索集計・途中までの再現資料を選んでください。",
         REVIEW_HASH_UNAVAILABLE:"照合値を計算できませんでした。もう一度確認してください。",
         SCENARIO_CONTEXT_OR_EVENTS_CHANGED:"比較資料の口座・資産・元の記録が一致しないため、同じ履歴として比較できません。"}[error?.code]
         ?? "資料の形式や含まれる入力記録を確認できませんでした。2 MiB以内の保存済み資料を選んでください。";

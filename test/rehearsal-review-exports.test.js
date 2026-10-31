@@ -8,15 +8,34 @@ import {encodeRehearsalComparison} from '../src/operation-rehearsal-comparison.j
 import {encodeRehearsalScenario} from '../src/operation-rehearsal-scenario.js';
 import {encodeRehearsalScenarioSetReport,REHEARSAL_SCENARIO_SET_SCHEMA} from '../src/operation-rehearsal-scenario-set.js';
 import {captureRehearsalCheckSuite,encodeRehearsalCheckReport} from '../src/operation-rehearsal-check-suite.js';
+import {encodeRehearsalRecordReport,REHEARSAL_RECORD_QUERY} from '../src/operation-rehearsal-records.js';
 const source=' \r\n'+JSON.stringify(reportRehearsalOverview({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:'DAT',ledgers:[rehearsalExampleV2()]}),null,2).replaceAll('\n','\r\n')+'\r\n';
 const hash=text=>createHash('sha256').update(text).digest('hex');
 class Node extends Element{set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
 function setup(options={}){const elements=new Map(),downloads=[];let action=()=>{};const document={activeElement:null,getElementById(id){if(!elements.has(id)){const n=new Node('div');n.focus=()=>{document.activeElement=n;};elements.set(id,n);}return elements.get(id);},createElement:tag=>new Node(tag)};
- const q=id=>document.getElementById('report-review-'+id);const panel=mountRehearsalReviewPanel(document,{getWorkspace:options.getWorkspace,renderWorkspaceComparison:options.renderWorkspaceComparison,subtle:options.subtle??{digest:async(_algorithm,bytes)=>Uint8Array.from(createHash('sha256').update(bytes).digest()).buffer},download:({prepared})=>{const result=action();downloads.push(prepared);return result;}});
+ const q=id=>document.getElementById('report-review-'+id);const panel=mountRehearsalReviewPanel(document,{applyRecordQuery:options.applyRecordQuery,getWorkspace:options.getWorkspace,renderWorkspaceComparison:options.renderWorkspaceComparison,subtle:options.subtle??{digest:async(_algorithm,bytes)=>Uint8Array.from(createHash('sha256').update(bytes).digest()).buffer},download:({prepared})=>{const result=action();downloads.push(prepared);return result;}});
  const edit=(id,value)=>{q(id).value=value;q(id).dispatchEvent(new Event('input'));};
  return{q,panel,edit,downloads,document,downloadAction:fn=>{action=fn;},paste:text=>{edit('text',text);q('paste').click();}};
 }
 async function finished(f){const end=Date.now()+5000;while(f.q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await new Promise(resolve=>setTimeout(resolve,5));assert.equal(f.q('status').getAttribute('aria-busy'),'false');}
+
+const reusableQuery={...REHEARSAL_RECORD_QUERY,kind:'settle'},reusableSource=encodeRehearsalRecordReport(JSON.parse(source).inputs,reusableQuery);
+test('query handoff passes only verified normalized criteria and rejects checksum mismatches',async()=>{
+ const calls=[],f=setup({applyRecordQuery:query=>{calls.push(query);return true;}});try{f.paste(reusableSource);await finished(f);assert.equal(f.q('query-apply').disabled,false);f.q('query-apply').click();
+  assert.deepEqual(calls,[{...reusableQuery,searchScope:'stored',reason:'all'}]);assert.match(f.q('query-status').textContent,/現在の履歴から再計算/);assert.equal(f.q('source-save').disabled,false);
+  f.edit('expected','0'.repeat(64));assert.equal(f.q('query-apply').disabled,true);f.q('run').click();await finished(f);assert.equal(f.q('query-apply').hidden,true);f.q('query-apply').dispatchEvent(new Event('click'));assert.equal(calls.length,1);
+ }finally{f.panel.dispose();}
+});
+for(const change of ['clear','dispose','false','reject','throw'])test('query handoff '+change+' cannot claim stale success',async()=>{
+ const f=setup({applyRecordQuery:()=>{if(change==='clear')f.q('clear').click();if(change==='dispose')f.panel.dispose();if(change==='false')return false;if(change==='reject')return Promise.reject(Error('private marker'));if(change==='throw')throw Error('private marker');return true;}});
+ try{f.paste(reusableSource);await finished(f);f.q('query-apply').click();await new Promise(resolve=>setTimeout(resolve,0));
+  if(['clear','dispose'].includes(change)){assert.equal(f.q('query-status').textContent,'');assert.equal(f.q('query-apply').disabled,true);}
+  else{assert.match(f.q('query-status').textContent,/確認できません/);assert.ok(!f.q('query-status').textContent.includes('private marker'));assert.equal(f.q('query-apply').disabled,false);}
+ }finally{f.panel.dispose();}
+});
+test('query reuse is unavailable without a consumer or with an overview source',async()=>{
+ for(const options of [{},{applyRecordQuery:()=>true}]){const f=setup(options);try{f.paste(options.applyRecordQuery?source:reusableSource);await finished(f);assert.equal(f.q('query-apply').disabled,true);assert.equal(f.q('query-apply').hidden,true);}finally{f.panel.dispose();}}
+});
 
 const partInput=rehearsalExampleV2(),partAfter={...partInput,policy:{...partInput.policy,paused:true}};
 const partSet={schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:'paused',label:'停止条件',before:partInput,after:partAfter}]};

@@ -18,6 +18,20 @@ function setup(){const elements=new Map(),downloads=[];let throwDownload=false,d
 }
 const many=()=>{const source=rehearsalExampleV2();return workspace({...source,events:Array.from({length:27},(_,i)=>({id:"deposit-"+i,kind:"deposit",agent:source.agent,chainId:source.chainId,account:source.account,amount:"1"}))});};
 
+test('query reuse resets paging and matches current history without restoring another input',()=>{
+ const f=setup(),input=many();try{f.panel.refresh(input);f.field('next').click();let focus=0;f.field('select').focus=()=>{focus++;};
+  assert.equal(f.panel.applyQuery({...REHEARSAL_SUMMARY_QUERY,agent:'DAT',search:'deposit-26'}),true);assert.equal(f.field('select').value,'DAT:deposit-26');assert.equal(f.field('back').disabled,true);assert.match(f.field('status').textContent,/1～1/);assert.equal(focus,1);
+  f.field('save').click();assert.deepEqual(JSON.parse(f.downloads.pop().text).inputs,input);
+  f.field('search').focus=()=>{focus++;};assert.equal(f.panel.applyQuery({...REHEARSAL_SUMMARY_QUERY,kind:'settle',reason:'WRONG_ACCOUNT'}),true);assert.match(f.field('status').textContent,/一致 0件/);assert.equal(f.field('reason').value,'WRONG_ACCOUNT');assert.equal(focus,2);
+ }finally{f.panel.dispose();}
+});
+test('invalid reused criteria preserve existing filters and a focus replacement cannot report old success',()=>{
+ const f=setup();try{assert.equal(f.panel.applyQuery(REHEARSAL_SUMMARY_QUERY),false);f.panel.refresh(many());f.change('search','deposit-26');const detail=f.field('detail').textContent;
+  assert.equal(f.panel.applyQuery({...REHEARSAL_SUMMARY_QUERY,reason:'invalid'}),false);assert.equal(f.field('search').value,'deposit-26');assert.equal(f.field('detail').textContent,detail);
+  f.field('select').focus=()=>f.panel.refresh(workspace(rehearsalExampleV2()));assert.equal(f.panel.applyQuery(REHEARSAL_SUMMARY_QUERY),false);assert.match(f.field('detail').textContent,/open-one/);
+ }finally{f.panel.dispose();}assert.equal(f.panel.applyQuery(REHEARSAL_SUMMARY_QUERY),false);
+});
+
 test('summary counts and exports all matches independent of the displayed page',()=>{
  const f=setup(),input=many();try{f.panel.refresh(input);f.field('next').click();assert.match(f.field('summary').textContent,/DAT: 一致 27件/);assert.match(f.field('summary').textContent,/EMA: 未作成/);
   for(const [name,encode]of [['summary-save',encodeRehearsalRecordSummary],['summary-csv-save',rehearsalRecordSummaryCsv]]){f.field(name).click();assert.equal(f.downloads.pop().text,encode(input));}

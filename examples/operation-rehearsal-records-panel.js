@@ -1,5 +1,5 @@
 import { requireSyncExport } from "../src/export-policy.js";
-import {summarizeRehearsalRecords,encodeRehearsalRecordSummary,rehearsalRecordSummaryCsv,encodeRehearsalRecordPrefix,extractRehearsalRecordPrefix} from "../src/operation-rehearsal-records.js";
+import {validateRehearsalReasonRecordQuery,summarizeRehearsalRecords,encodeRehearsalRecordSummary,rehearsalRecordSummaryCsv,encodeRehearsalRecordPrefix,extractRehearsalRecordPrefix} from "../src/operation-rehearsal-records.js";
 import { REHEARSAL_RECORD_REASON_LABELS,queryRehearsalReasonRecords,encodeRehearsalReasonRecordReport,rehearsalReasonRecordCsv,reportRehearsalReference,encodeRehearsalReferenceReport,rehearsalReferenceCsv,indexRehearsalRecords,queryRehearsalRecords,relatedRehearsalRecords,encodeRehearsalRecordReport,rehearsalRecordCsv,queryRehearsalContextRecords,encodeRehearsalContextRecordReport,rehearsalContextRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
 import { SCENARIO_LABELS } from "./operation-rehearsal-scenario-panel.js";
@@ -144,6 +144,18 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
       get("export-status").textContent="検索に一致する全"+matched+"件のCSV保存を開始しました。"+(matched?"":"一致する記録がないため列名だけを含みます。")+"CSVは閲覧用です。元入力を含む検証資料にはJSON保存を使ってください。";
     }catch{if(disposed||own!==revision)return;get("export-status").textContent="CSVを保存できませんでした。現在の履歴と検索条件は保持しています。";}
   });
+  /** Validate all criteria before replacing the current browsing filter; never import history. */
+  function applyQuery(input){
+    if(disposed||!index)return false;const own=revision,source=index;let query;
+    try{query=validateRehearsalReasonRecordQuery(input);}catch{return false;}
+    if(disposed||own!==revision||source!==index)return false;
+    backView=null;selected="";offset=0;
+    for(const name of ["agent","kind","decision","search","reason"])get(name).value=query[name];
+    get("search-scope").value=query.searchScope;render();const after=revision;
+    if(disposed||source!==index)return false;
+    (get("select").disabled?get("search"):get("select")).focus?.();
+    return !disposed&&after===revision&&source===index;
+  }
   /** Select a current original record, preserving the previous browsing view for Back. */
   function openRecord(key) {
     if(disposed||!index||typeof key!=="string")return false;
@@ -179,7 +191,7 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     if(!next){selected="";offset=0;}
     render();
   }
-  render();return Object.freeze({refresh,openRecord,dispose(){
+  render();return Object.freeze({refresh,openRecord,applyQuery,dispose(){
     if(disposed)return;
     disposed=true;revision++;index=null;report=null;backView=null;selected="";render();
     for(const remove of listeners)remove();

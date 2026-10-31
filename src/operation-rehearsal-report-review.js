@@ -7,7 +7,7 @@ import { compareRehearsalWorkspaces, REHEARSAL_COMPARISON_SCHEMA } from "./opera
 import { compareRehearsalScenario, REHEARSAL_SCENARIO_SCHEMA } from "./operation-rehearsal-scenario.js";
 import { encodeRehearsalScenarioSet, reportRehearsalScenarioSet, REHEARSAL_SCENARIO_SET_REPORT_SCHEMA } from "./operation-rehearsal-scenario-set.js";
 import { encodeRehearsalCheckSuite, runRehearsalCheckSuite, REHEARSAL_CHECK_REPORT_SCHEMA } from "./operation-rehearsal-check-suite.js";
-import { summarizeRehearsalRecords, reportRehearsalRecordPrefix, REHEARSAL_RECORD_SUMMARY_SCHEMA, REHEARSAL_PREFIX_REPORT_SCHEMA } from "./operation-rehearsal-records.js";
+import { validateRehearsalReasonRecordQuery, summarizeRehearsalRecords, reportRehearsalRecordPrefix, REHEARSAL_RECORD_SUMMARY_SCHEMA, REHEARSAL_PREFIX_REPORT_SCHEMA } from "./operation-rehearsal-records.js";
 import { REHEARSAL_REASON_RECORD_REPORT_SCHEMA,queryRehearsalReasonRecords,reportRehearsalReference, REHEARSAL_REFERENCE_REPORT_SCHEMA, indexRehearsalRecords, queryRehearsalRecords, validateRehearsalRecordQuery, queryRehearsalContextRecords, validateRehearsalContextRecordQuery, REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA, REHEARSAL_RECORD_REPORT_SCHEMA } from "./operation-rehearsal-records.js";
 
 export const REHEARSAL_REPORT_REVIEW_SCHEMA = "threecore.operation-rehearsal-report-review.v1";
@@ -158,6 +158,17 @@ export function exportReviewedRehearsalAgent(receipt,agent) {
 /** The direction is current workspace -> report inputs; this never applies either side. */
 export function compareReviewedRehearsalWorkspace(receipt,currentInputs) {
   return compareRehearsalWorkspaces(currentInputs,reviewedWorkspaceInputs(receipt));
+}
+
+const querySourceSchemas=new Set([REHEARSAL_RECORD_REPORT_SCHEMA,REHEARSAL_CONTEXT_RECORD_REPORT_SCHEMA,REHEARSAL_REASON_RECORD_REPORT_SCHEMA,REHEARSAL_RECORD_SUMMARY_SCHEMA]);
+export function canReuseReviewedRehearsalQuery(receipt){
+  return reviewSources.has(receipt)&&receipt.matchesRecomputation===true&&receipt.checksumMatches!==false&&querySourceSchemas.has(receipt.inputSchema);
+}
+/** Reuse only search criteria. The original report's history is never returned here. */
+export function extractReviewedRehearsalQuery(receipt){
+  if(!canReuseReviewedRehearsalQuery(receipt))fail("REVIEW_QUERY_UNAVAILABLE");
+  const {recomputed}=prepareRehearsalReview(reviewSources.get(receipt),receipt.expectedSha256),query=recomputed.query;
+  return validateRehearsalReasonRecordQuery({...query,searchScope:query.searchScope??"stored",reason:query.reason??"all"});
 }
 
 const reviewedParts = Object.freeze([

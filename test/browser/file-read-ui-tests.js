@@ -63,6 +63,21 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('rehearsal query reuse: verified older criteria search current inputs without restoring older settlements',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{q('example').click();q('agent').value='EMA';q('agent').dispatchEvent(new Event('change'));q('example').click();
+      q('record-browser-agent').value='EMA';q('record-browser-agent').dispatchEvent(new Event('change'));q('record-browser-kind').value='settle';q('record-browser-kind').dispatchEvent(new Event('change'));q('record-browser-save').click();const old=downloads.pop().text;assert(JSON.parse(old).matchedRecords===1);
+      q('scenario').value='pending';q('example').click();q('record-browser-clear').click();q('session-save').click();const current=downloads.pop().text;
+      q('report-review-text').value=old;q('report-review-text').dispatchEvent(new Event('input'));q('report-review-paste').click();const end=Date.now()+10000;
+      while(q('report-review-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(!q('report-review-query-apply').disabled);
+      q('report-review-query-apply').click();assert(q('record-browser-agent').value==='EMA'&&q('record-browser-kind').value==='settle');assert(q('record-browser-status').textContent.includes('一致 0件'));
+      assert(q('report-review-query-status').textContent.includes('現在の履歴から再計算'));assert(document.activeElement===q('record-browser-search'));
+      q('record-browser-save').click();const fresh=JSON.parse(downloads.pop().text);assert(fresh.matchedRecords===0&&fresh.inputs.ledgers.find(row=>row.agent==='EMA').events.length===1);
+      q('session-save').click();assert(downloads.pop().text===current);q('report-review-clear').click();assert(q('report-review-query-apply').disabled);
+    }finally{page.dispose();host.remove();}
+  });
   for(const mode of ['summary','prefix'])test('rehearsal record analysis: '+mode+' exports recomputable data without changing the session',async()=>{
     const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
     const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
