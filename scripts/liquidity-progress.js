@@ -11,6 +11,7 @@
 import { inspectAerodromePools } from "../src/aerodrome-pools.js";
 import { assessLiquidityTargets } from "../src/liquidity-target.js";
 import { parsePublicDiagnosticArgs } from "./public-diagnostic-options.js";
+import { withDiagnosticInterrupt, DiagnosticInterruptError } from "./public-diagnostic-interrupt.js";
 
 const parsed = parsePublicDiagnosticArgs("liquidity", process.argv.slice(2));
 if (!parsed.ok || parsed.help) {
@@ -20,7 +21,7 @@ if (!parsed.ok || parsed.help) {
 
 try {
   // Exactly one live snapshot; the target is a governance/planning metric.
-  const observation = await inspectAerodromePools();
+  const observation = await withDiagnosticInterrupt(signal => inspectAerodromePools({ signal }));
   const result = assessLiquidityTargets(observation);
   if (parsed.options.json) {
     process.stdout.write(JSON.stringify(result, null, 2) + "\n");
@@ -56,5 +57,5 @@ try {
     (error?.code ?? "RPC_ERROR") + " " +
     (error?.message ?? String(error)) + "\n",
   );
-  process.exitCode = 1;
+  process.exitCode = error instanceof DiagnosticInterruptError ? error.exitCode : 1;
 }

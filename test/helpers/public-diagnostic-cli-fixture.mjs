@@ -6,7 +6,30 @@ const pool = "0x" + "a".repeat(40);
 const HASH = "0x" + "ab".repeat(32);
 const word = value => BigInt(value).toString(16).padStart(64, "0");
 const address = value => "0x" + value.slice(2).padStart(64, "0");
+const interruptCase = ["interrupt-fetch", "interrupt-body", "terminate-fetch"].includes(scenario);
+const initialSignals = Object.fromEntries(["SIGINT", "SIGTERM"].map(name => [name, process.listenerCount(name)]));
+let calls = 0;
+if (interruptCase) process.on("exit", () => {
+  if (calls !== 1) process.stderr.write("UNEXPECTED_CALL_COUNT\n");
+  for (const name of Object.keys(initialSignals)) {
+    if (process.listenerCount(name) !== initialSignals[name]) process.stderr.write("UNREMOVED_SIGNAL_HANDLER\n");
+  }
+});
+function interrupt(reject) {
+  const name = scenario === "terminate-fetch" ? "SIGTERM" : "SIGINT";
+  if (!process.emit(name)) reject(new Error("UNEXPECTED_UNHANDLED_INTERRUPT"));
+  else process.emit(name); // repeated Ctrl+C must not initiate another operation
+}
+
 globalThis.fetch = async (url, options) => {
+  calls++;
+  if (interruptCase) {
+    if (calls !== 1) throw new Error("UNEXPECTED_LATER_CALL");
+    if (scenario === "interrupt-body") return new Response(new ReadableStream({
+      start(controller) { queueMicrotask(() => interrupt(error => controller.error(error))); },
+    }));
+    return new Promise((_resolve, reject) => queueMicrotask(() => interrupt(reject)));
+  }
   if (scenario === "no-network") {
     process.stderr.write("UNEXPECTED_NETWORK_CALL\n");
     throw new Error("RPC must not run");

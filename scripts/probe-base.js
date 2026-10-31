@@ -10,6 +10,7 @@
  */
 import { probeBaseRpc } from "../src/base-rpc-probe.js";
 import { parsePublicDiagnosticArgs } from "./public-diagnostic-options.js";
+import { withDiagnosticInterrupt, DiagnosticInterruptError } from "./public-diagnostic-interrupt.js";
 
 const parsed = parsePublicDiagnosticArgs("base", process.argv.slice(2));
 if (!parsed.ok || parsed.help) {
@@ -17,12 +18,12 @@ if (!parsed.ok || parsed.help) {
   process.exit(parsed.ok ? 0 : 2);
 }
 try {
-  const result = await probeBaseRpc(parsed.options);
+  const result = await withDiagnosticInterrupt(signal => probeBaseRpc({ ...parsed.options, signal }));
   process.stdout.write(JSON.stringify(result, null, 2) + "\n");
 } catch (error) {
   process.stderr.write(
     "Base public RPC check failed: " + (error?.code ?? "RPC_ERROR") +
     " " + (error?.message ?? String(error)) + "\n",
   );
-  process.exitCode = 1;
+  process.exitCode = error instanceof DiagnosticInterruptError ? error.exitCode : 1;
 }
