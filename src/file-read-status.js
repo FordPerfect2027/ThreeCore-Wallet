@@ -197,7 +197,9 @@ const walletSavedTargets = Object.freeze({
   "threecore.saved-file-comparison-bundle.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_ONLY"],
   "threecore.saved-file-comparison-bundle-review.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY"],
   "threecore.saved-file-comparison-review.v1": [null, "PERIOD_FILE_SAVED_REVIEW_ONLY"],
+  "threecore.saved-file-comparison-review.v2": [null, "PERIOD_FILE_SAVED_REVIEW_ONLY"],
   "threecore.saved-file-comparison.v1": [null, "PERIOD_FILE_SAVED_COMPARISON_ONLY"],
+  "threecore.saved-file-comparison.v2": [null, "PERIOD_FILE_SAVED_COMPARISON_ONLY"],
   "threecore.saved-file-inspection.v1": [null, "PERIOD_FILE_INSPECTION_ONLY"],
   "threecore.report-history-import-inspection.v1": [null, "PERIOD_FILE_HISTORY_INSPECTION_ONLY"],
   "threecore.report-history-file.v1": ["history", "PERIOD_FILE_USE_HISTORY"],
@@ -508,6 +510,15 @@ export function compareWalletSavedInspections(before, after) {
     liveChainRechecked: false, authenticated: false, authorizesExecution: false });
 }
 
+/** Exact current text hashes are useful even when a format has no internal checksum. */
+export function compareWalletSavedTextInspections(before, after) {
+  const originalComparison = compareWalletSavedInspections(before, after);
+  if (originalComparison.kind !== "unverified" || !before.textDigest || !after.textDigest) return originalComparison;
+  return Object.freeze({ ...originalComparison, schema: "threecore.saved-file-comparison.v2",
+    sourceTextComparison: Object.freeze({ basis: "sha256-utf8", beforeSha256: before.textDigest,
+      afterSha256: after.textDigest, sameText: before.textDigest === after.textDigest }) });
+}
+
 export function walletSavedComparisonText(value) {
   if (!value) return "";
   const titles = {
@@ -521,7 +532,9 @@ export function walletSavedComparisonText(value) {
     draftReferences: "取得控えの参照数", archivedEntryReferences: "非表示保管の保存項目", restrictedEntryReferences: "再取得の印がある保存項目",
     incompleteDraftReferences: "未完了の控え", emptyDraftReferences: "工程が空の控え", agents: "含まれるトークン" };
   const show = value => value === null ? "この形式には含まれません" : Array.isArray(value) ? value.join("、") || "なし" : String(value);
-  return [titles[value.kind], "比較元: " + value.before.title + " / 比較先: " + value.after.title,
+  return [value.sourceTextComparison ? "内部チェックサム付きの元記録としての一致・不一致は判定しません。" : titles[value.kind],
+    value.sourceTextComparison ? (value.sourceTextComparison.sameText ? "今回選んだ2つの元JSONは、UTF-8の内容のSHA-256が一致しています。" : "今回選んだ2つの元JSONは、UTF-8の内容のSHA-256が異なります。空白や書式だけの違いも含みます。") : "",
+    "比較元: " + value.before.title + " / 比較先: " + value.after.title,
     "ファイルサイズ: " + value.before.byteLength + " → " + value.after.byteLength + " bytes（差 " + value.byteDifference + "）",
     ...value.scopeChanges.map(row => (fields[row.field] ?? observationScopeLabels[row.field]) + ": " + show(row.before) + " → " + show(row.after)),
     value.unchangedScopeWithChangedOriginal ? "上の件数が同じでも、元記録の内容は変わっています。" : "",
@@ -539,7 +552,7 @@ function sameSavedJSON(left, right) {
 
 /** Recompute from owned inspections; a saved comparison is evidence to check, never authority. */
 export async function reviewWalletSavedComparison(before, after, text, fileOptions = {}) {
-  const expected = compareWalletSavedInspections(before, after);
+  let expected = compareWalletSavedInspections(before, after);
   let options;
   try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
   catch { savedInspectionFail("FILE_COMPARISON_REVIEW_OPTIONS"); }
@@ -549,12 +562,14 @@ export async function reviewWalletSavedComparison(before, after, text, fileOptio
   let supplied;
   try { supplied = parseSecurityJson(text, { bytes: WALLET_SAVED_COMPARISON_REVIEW_LIMIT }); }
   catch { savedInspectionFail("FILE_COMPARISON_REVIEW_JSON"); }
-  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== "threecore.saved-file-comparison.v1") savedInspectionFail("FILE_COMPARISON_REVIEW_SCHEMA");
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || !["threecore.saved-file-comparison.v1", "threecore.saved-file-comparison.v2"].includes(supplied.schema)) savedInspectionFail("FILE_COMPARISON_REVIEW_SCHEMA");
+  if (supplied.schema === "threecore.saved-file-comparison.v2") expected = compareWalletSavedTextInspections(before, after);
+  if (supplied.schema !== expected.schema) savedInspectionFail("FILE_COMPARISON_REVIEW_SCHEMA");
   const differences = Object.keys(expected).filter(field => !Object.hasOwn(supplied, field) || !sameSavedJSON(supplied[field], expected[field]));
   const unexpectedFields = Object.keys(supplied).filter(field => !Object.hasOwn(expected, field)).length;
   const comparisonTextDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, options);
   if (readAbortState(options.signal) !== false) savedInspectionFail("FILE_CANCELLED");
-  return Object.freeze({ schema: "threecore.saved-file-comparison-review.v1",
+  return Object.freeze({ schema: expected.sourceTextComparison ? "threecore.saved-file-comparison-review.v2" : "threecore.saved-file-comparison-review.v1",
     matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
     expectedKind: expected.kind, expectedSameOriginal: expected.sameOriginal,
     beforeSourceDigest: before.sourceDigest, afterSourceDigest: after.sourceDigest,
@@ -562,6 +577,10 @@ export async function reviewWalletSavedComparison(before, after, text, fileOptio
     originalPairValidated: before.validation === "validated-original" && after.validation === "validated-original",
     beforeBindingMatches: before.validation === "validated-original" ? supplied.before?.sourceSchema === before.sourceSchema && supplied.before?.sourceDigest === before.sourceDigest && supplied.before?.textDigest === before.textDigest : null,
     afterBindingMatches: after.validation === "validated-original" ? supplied.after?.sourceSchema === after.sourceSchema && supplied.after?.sourceDigest === after.sourceDigest && supplied.after?.textDigest === after.textDigest : null,
+    ...(expected.sourceTextComparison ? { sourceTextComparisonReviewed: true,
+      beforeTextBindingMatches: supplied.before?.sourceSchema === before.sourceSchema && supplied.before?.textDigest === before.textDigest,
+      afterTextBindingMatches: supplied.after?.sourceSchema === after.sourceSchema && supplied.after?.textDigest === after.textDigest,
+      expectedSourceTextMatches: expected.sourceTextComparison.sameText } : {}),
     comparisonTextDigest, differences: Object.freeze(differences), unexpectedFields,
     containsOriginalEvidence: false, restorable: false, readOnly: true,
     liveChainRechecked: false, authenticated: false, authorizesExecution: false });
@@ -573,10 +592,11 @@ export function walletSavedComparisonReviewText(value) {
     sameFormat: "同じ形式か", sameOriginal: "元記録が同じか", sameText: "テキストが同じか", byteDifference: "ファイルサイズの差",
     scopeChanges: "件数等の変化", unchangedScopeWithChangedOriginal: "件数が同じ内容変更", containsOriginalEvidence: "元記録の有無",
     restorable: "復元に使えるか", automaticallyImported: "自動取込の主張", liveChainRechecked: "現在のチェーン確認の主張",
-    authenticated: "出所の認証の主張", authorizesExecution: "実行許可の主張" };
+    authenticated: "出所の認証の主張", authorizesExecution: "実行許可の主張", sourceTextComparison: "元JSONの文字列の照合" };
   return [value.matchesRecomputation ? "保存した比較結果は、この2つの記録からの再計算と一致しています。" : "保存した比較結果に、再計算と一致しない箇所があります。",
     value.originalPairValidated ? "両方の元記録の形式とチェックサムを確認しています。" : "内部チェックサム付きの元記録として両方を確認できないため、元記録同士の一致は判断していません。",
     "比較元との結び付け: " + (value.beforeBindingMatches === null ? "未検証" : value.beforeBindingMatches ? "一致" : "不一致") + " / 比較先との結び付け: " + (value.afterBindingMatches === null ? "未検証" : value.afterBindingMatches ? "一致" : "不一致"),
+    value.sourceTextComparisonReviewed ? "元JSONの文字列との結び付け: 比較元 " + (value.beforeTextBindingMatches ? "一致" : "不一致") + " / 比較先 " + (value.afterTextBindingMatches ? "一致" : "不一致") + "。内部チェックサムや出所の認証ではありません。" : "",
     ...value.differences.map(field => "不一致: " + fields[field]),
     value.unexpectedFields ? "仕様にない追加項目: " + value.unexpectedFields + "個" : "",
     "再計算との一致は、2つの元ファイルの内容が同じという意味ではありません。現在のチェーンや記録の正しさを証明するものでもありません。",

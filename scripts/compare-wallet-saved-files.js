@@ -2,10 +2,11 @@
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { inspectSavedFilePath } from "./inspect-wallet-saved-file.js";
-import { compareWalletSavedInspections, walletSavedComparisonText } from "../src/file-read-status.js";
+import { compareWalletSavedTextInspections, walletSavedComparisonText } from "../src/file-read-status.js";
 const USAGE = "Usage: node scripts/compare-wallet-saved-files.js before.json after.json [--json]\n" +
   "Validates both supported originals and distinguishes identical text, formatting-only changes, changed originals and different formats.\n" +
   "Auxiliary declarations remain unverified. Output includes source hashes and scope counts, not original addresses, balances or notes.\n" +
+  "Validated structure-only files can be compared by exact UTF-8 source hashes without claiming an internal-checksum match.\n" +
   "No network, import or source writes. Exit 0: same verified original; 2: different or unverified; 1: invalid input.\n";
 export function parseSavedComparisonArgs(args) {
   if (!Array.isArray(args) || ![2,3].includes(args.length) || args.some(value => typeof value !== "string") ||
@@ -18,7 +19,7 @@ export async function runSavedFileComparison(args, { stdout = process.stdout, st
     if (Array.isArray(args) && args.length === 1 && args[0] === "--help") { stdout.write(USAGE); return 0; }
     const request = parseSavedComparisonArgs(args);
     const before = await inspectSavedFilePath(request.before), after = await inspectSavedFilePath(request.after);
-    const result = compareWalletSavedInspections(before, after);
+    const result = compareWalletSavedTextInspections(before, after);
     stdout.write(request.json ? JSON.stringify(result, null, 2) + "\n" : walletSavedComparisonText(result) + "\n");
     return result.sameOriginal === true ? 0 : 2;
   } catch (error) {

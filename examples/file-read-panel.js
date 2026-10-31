@@ -1,8 +1,9 @@
 import { offerWalletDownload } from "./export-download.js";
 import { readSecurityFileBytes, readFormatFileName } from "../src/security-file.js";
-import { prepareWalletSavedBundle, reviewWalletSavedBundle, walletSavedBundleSourceFile, walletSavedBundleReviewText, WALLET_SAVED_BUNDLE_LIMIT, WALLET_SAVED_BUNDLE_SOURCE_LIMIT, inspectWalletSavedText, compareWalletSavedInspections, walletSavedComparisonText, reviewWalletSavedComparison, walletSavedComparisonReviewText, WALLET_SAVED_COMPARISON_REVIEW_LIMIT, walletSavedInspectionText, walletSavedInspectionErrorText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
+import { prepareWalletSavedBundle, reviewWalletSavedBundle, walletSavedBundleSourceFile, walletSavedBundleReviewText, WALLET_SAVED_BUNDLE_LIMIT, WALLET_SAVED_BUNDLE_SOURCE_LIMIT, inspectWalletSavedText, walletSavedComparisonText, reviewWalletSavedComparison, walletSavedComparisonReviewText, WALLET_SAVED_COMPARISON_REVIEW_LIMIT, walletSavedInspectionText, walletSavedInspectionErrorText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
 import { walletFileReadService } from "../src/file-read-service.js";
 import { describeFileReadStatus, describeFileReadError } from "../src/file-read-status.js";
+import { compareWalletSavedTextInspections } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -133,7 +134,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
   make("p", "limits", "この案内JSONに元の記録は含まれず、復元には使えません。元のファイルを別に保全してください。出所や現在のチェーンを保証する確認ではありません。");
   const compareBox = make("details", "comparison");
   make("summary", "comparison-heading", "このファイルと別の保存ファイルを比較する", compareBox);
-  make("p", "comparison-intro", "上で調べたファイルを比較元にします。次のファイルを選ぶと、同じ元記録・書式だけの違い・内容の変更を区別します。元ファイルを置き換えません。", compareBox);
+  make("p", "comparison-intro", "上で調べたファイルを比較元にします。内部チェックサム付きの記録は、同じ元記録・書式だけの違い・内容の変更を区別します。設定や練習用記録など内部チェックサムのない形式は、今回の元JSONの文字列を照合します。元ファイルを置き換えません。", compareBox);
   const compareLabel = make("label", "compare-file-label", "比較先の元のJSON（最大96 MiB）", compareBox);
   const compareFile = make("input", "compare-file", undefined, compareLabel); compareFile.type = "file"; compareFile.accept = ".json,application/json";
   const comparisonOutput = make("pre", "comparison-output", "", compareBox);
@@ -239,7 +240,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
       }
       const incoming = await inspect(text, { signal: local.signal });
       if (disposed || generation !== own) return;
-      comparison = compareWalletSavedInspections(base, incoming); comparisonSourceFile = chosen;
+      comparison = compareWalletSavedTextInspections(base, incoming); comparisonSourceFile = chosen;
       status.textContent = "保存ファイル同士の比較を表示しました。元記録を置き換えたり復元したりしていません。";
       return true;
     } catch (error) { if (!disposed && generation === own) status.textContent = walletSavedInspectionErrorText(error); return false; }
