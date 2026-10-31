@@ -128,6 +128,8 @@ export function mountReportSetPanel({ document, parent,
   button("json", "確認セットJSONを保存", exportButtons);
   button("html", "説明用HTMLを保存", exportButtons);
   button("csv", "計画範囲CSVを保存", exportButtons);
+  button("checks-csv", "絞り込んだ確認箇所をCSV保存", exportButtons);
+  make("p", "checks-export-help", "確認箇所CSVには全体の件数を示す要約行と、条件に合う確認項目が入ります。該当0件でも全体の食い違いは残します。再読込み用の証拠ではありません。", exports);
 
   const restore = make("section", "restore");
   make("h3", "restore-heading", "保存した確認セットを開く", restore);
@@ -146,14 +148,16 @@ export function mountReportSetPanel({ document, parent,
     return queryRows;
   }
 
+  let diagnosticQueryValid = false;
+  const checkQuery = () => ({ agent: nodes["check-agent"].value, severity: nodes["check-severity"].value, search: nodes["check-search"].value });
   function showDiagnostics() {
+    diagnosticQueryValid = false; nodes["checks-csv"].disabled = true;
     if (!state?.input) {
       checkList.replaceChildren();
       nodes["check-count"].textContent = "";
       return;
     }
-    const options = { agent: nodes["check-agent"].value,
-      severity: nodes["check-severity"].value, search: nodes["check-search"].value };
+    const options = checkQuery();
     const key = JSON.stringify(options);
     try {
       if (diagnosticInput !== state.input || diagnosticKey !== key) {
@@ -161,6 +165,7 @@ export function mountReportSetPanel({ document, parent,
         diagnosticInput = state.input;
         diagnosticKey = key;
       }
+      diagnosticQueryValid = true; nodes["checks-csv"].disabled = state.busy || !nodes.ack.checked;
       checkList.replaceChildren();
       nodes["check-count"].textContent = diagnosticRows.count === 0 ?
         "この選択内では追加確認箇所は見つかりませんでした。現在のチェーン状態の保証ではありません。" :
@@ -319,7 +324,7 @@ export function mountReportSetPanel({ document, parent,
     nodes.inspect.disabled = value.busy || !value.result;
     for (const name of ["ack", "notes", "short-addresses"]) nodes[name].disabled = value.busy || !value.result;
     for (const name of ["check-agent", "check-severity", "check-search"]) nodes[name].disabled = value.busy || !value.result;
-    for (const name of ["json", "html", "csv"]) nodes[name].disabled = value.busy || !value.result || !nodes.ack.checked;
+    for (const name of ["json", "html", "csv", "checks-csv"]) nodes[name].disabled = value.busy || !value.result || !nodes.ack.checked || (name === "checks-csv" && !diagnosticQueryValid);
     showChoices();
   }
 
@@ -340,9 +345,9 @@ export function mountReportSetPanel({ document, parent,
   listen(nodes.apply, "click", () => { void controller.applyReview(); });
   listen(nodes.inspect, "click", () => { void controller.inspectSources(); });
   listen(nodes.ack, "change", () => render(controller.state));
-  for (const format of ["json", "html", "csv"]) {
+  for (const format of ["json", "html", "csv", "checks-csv"]) {
     listen(nodes[format], "click", () => { void controller.exportFile(format, nodes.ack.checked, download,
-      { includeNotes: nodes.notes.checked, shortAddresses: nodes["short-addresses"].checked }); });
+      { includeNotes: nodes.notes.checked, shortAddresses: nodes["short-addresses"].checked }, format === "checks-csv" ? checkQuery() : undefined); });
   }
   listen(nodes.file, "change", () => {
     const file = nodes.file.files?.[0];

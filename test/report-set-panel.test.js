@@ -271,3 +271,19 @@ test("panel disposal removes listeners and closes only its own storage adapter",
   assert.equal(f.store.closed, true);
   assert.equal(f.mounted.getState().disposed, true);
 });
+
+test("filtered checklist CSV preserves source summary on zero matches and respects export controls",async()=>{
+  const f=fixture(demoSetHistory());
+  try{
+    await f.accept();const original=f.mounted.getState().input;
+    assert.equal(f.q("checks-csv").disabled,true);f.check("ack");
+    f.set("check-severity","conflict");f.click("checks-csv");await f.settled();
+    assert.equal(f.files.length,1);assert.ok(f.files[0].matched>0);assert.equal(f.files[0].summaryRow,true);
+    assert.equal(f.files[0].query.severity,"conflict");
+    f.set("check-search","no matching check","input");f.click("checks-csv");await f.settled();
+    assert.equal(f.files[1].matched,0);assert.ok(f.files[1].total>0);assert.equal(f.files[1].text.trimEnd().split("\r\n").length,2);
+    f.set("check-search","x".repeat(101),"input");assert.equal(f.q("checks-csv").disabled,true);
+    assert.equal(f.mounted.getState().input,original);
+    const button=f.q("checks-csv");f.dispose();button.click();assert.equal(f.files.length,2);
+  }finally{f.dispose();}
+});

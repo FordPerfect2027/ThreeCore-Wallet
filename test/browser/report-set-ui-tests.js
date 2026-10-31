@@ -82,6 +82,19 @@ async function withDatabase(run) {
 }
 
 export function registerReportSetUITests(test) {
+  test("report set: checklist CSV keeps global findings after filtering to zero",async()=>{
+    const f=fixture({initial:demoSetHistory()});
+    try{
+      await f.accept();const original=f.mounted.getState().input;assert(f.q("checks-csv").disabled);f.check("ack");
+      f.set("check-severity","conflict");f.click("checks-csv");await f.settled();
+      assert(f.files.length===1&&f.files[0].matched>0&&f.files[0].query.severity==="conflict");
+      f.set("check-search","no matching check","input");f.click("checks-csv");await f.settled();
+      assert(f.files[1].matched===0&&f.files[1].total>0&&f.files[1].text.trimEnd().split("\r\n").length===2);
+      f.set("check-search","x".repeat(101),"input");assert(f.q("checks-csv").disabled);
+      assert(f.mounted.getState().input===original);
+    }finally{f.dispose();}
+  });
+
   test("report set: timeline cells expose report details and support keyboard navigation", async () => {
     const f = fixture();
     try {

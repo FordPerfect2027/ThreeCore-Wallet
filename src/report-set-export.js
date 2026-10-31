@@ -1,6 +1,6 @@
 import { validateReportSet, validateSetExportOptions } from "./report-set-model.js";
 import { analyzeReportSet } from "./report-set-engine.js";
-import { reportSetDiagnostics, diagnosticText } from "./report-set-diagnostics.js";
+import { reportSetDiagnostics, querySetDiagnostics, diagnosticText } from "./report-set-diagnostics.js";
 import { escapeReportHTML } from "./period-report-export.js";
 import { reportStatusText } from "./period-report-view.js";
 import { SET_LIMITATION, SET_SEGMENTS, setIssueText, setStatusText, shortSetAddress } from "./report-set-view.js";
@@ -93,4 +93,28 @@ ${tokens}
 <section><h2>ブロックハッシュの照合</h2><p>不一致 ${result.anchors.conflicts.length}件 / 個別記録内の矛盾 ${result.anchors.invalid.length}件</p><ul>${conflicts}</ul></section>
 <footer><small>Historical evidence only. No independent audit, live-chain verification, combined token valuation or profit calculation.</small></footer>
 </main></body></html>\n`, "html", "text/html");
+}
+
+/** A summary row retains source-wide findings even when no checks match. */
+export function reportSetDiagnosticsCSV(value, queryValue = {}, optionsValue = {}) {
+  const input = validateReportSet(value), options = validateSetExportOptions(optionsValue);
+  const found = querySetDiagnostics(input, queryValue), result = analyzeReportSet(input);
+  const byId = new Map(input.entries.map(entry => [entry.id, entry]));
+  const columns = ["row_type", "query_agent", "query_severity", "query_search", "total_checks", "matched_checks",
+    "source_conflicts", "source_missing", "source_review", "source_information", "all_continuous",
+    "historical_only", "live_chain_rechecked", "automatic_repairs", "structured_addresses_shortened", "notes_included",
+    "check_id", "kind", "severity", "title", "action", "agents", "chain_id", "account",
+    "from_block", "to_block", "blocks", "range_notation", "report_ids", "report_labels", "notes"];
+  const prefix = type => [type, found.query.agent, found.query.severity, found.query.search, found.count, found.matched,
+    found.counts.conflict, found.counts.missing, found.counts.review, found.counts.information, result.allContinuous,
+    true, false, false, options.shortAddresses, options.includeNotes];
+  const rows = [[...prefix("summary"), ...Array(15).fill("")]];
+  for (const item of found.items) rows.push([...prefix("check"), item.id, item.kind, item.severity, item.title, item.action,
+    item.agents.join(" "), item.chainId, shortSetAddress(item.account, options.shortAddresses),
+    item.fromBlock, item.toBlock, item.blocks, item.fromBlock === null ? "" : item.fromBlock === item.toBlock ? "single-block" : "(start,end]",
+    JSON.stringify(item.reportIds), JSON.stringify(item.reportLabels),
+    options.includeNotes ? JSON.stringify(item.reportIds.map(id => byId.get(id).note)) : ""]);
+  const text = "\ufeff" + [columns, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
+  return Object.freeze({ ...resultFile(text, "csv", "text/csv"), filename: "ThreeCore-report-set-checks.csv",
+    query: found.query, options, total: found.count, matched: found.matched, summaryRow: true, scope: "all-matches" });
 }
