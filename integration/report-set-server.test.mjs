@@ -61,7 +61,9 @@ for (const uiTest of [false, true]) {
 test("report set: main wallet mounts and disposes the panel with no synthetic imports", async () => {
   await served(false, async base => {
     const script = await (await fetch(base + "/examples/wallet-demo.js")).text();
-    assert.match(script, /mountReportSetPanel\(\{ document, parent: reportSetHost \}\)/);
+    assert.match(script, /mountReportSetPanel\(\{ document, parent: reportSetHost,\s+stagePeriodProposal: draft => \{/);
+    assert.match(script, /const accepted = periodPanel\.stageProposed\(draft\);/);
+    assert.match(script, /return accepted;\s+\} \}\)/);
     assert.match(script, /reportSet\.dispose\(\)/);
     assert.ok(!script.includes("report-set-fixtures"));
     const html = await (await fetch(base)).text();

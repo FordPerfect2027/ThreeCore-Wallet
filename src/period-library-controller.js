@@ -4,7 +4,7 @@ import { validatePeriodDraft, periodDraftKey } from "./period-draft.js";
 import { emptyPeriodLibrary, validatePeriodLibrary, validateLibraryEntry, libraryId, libraryLabel,
   libraryTime, compareLibraryDrafts } from "./period-library-model.js";
 import { preparePeriodLibraryFile, readPeriodLibraryFile, reviewPeriodLibraryImport } from "./period-library-file.js";
-import { periodLibraryCSV } from "./period-library-query.js";
+import { periodLibraryCSV, libraryQuery } from "./period-library-query.js";
 import { libraryErrorCode, libraryComparisonText } from "./period-library-view.js";
 import { createStateNotifier } from "./state-notifier.js";
 
@@ -224,16 +224,20 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
     } catch (value) { if (sameGeneration(id)) comparison = ""; return fail(value, id); }
   }
   async function exportFile(kind, deliver, query) {
+    let id;
     try {
       if (!guard()) return false;
+      id = generation;
       if (!["all", "selected", "csv"].includes(kind) || typeof deliver !== "function") periodFail("PERIOD_FILE_KIND");
+      const capturedQuery = kind === "csv" ? libraryQuery(query) : undefined;
+      if (!sameGeneration(id)) return false;
       const selectedKey = kind === "selected" ? selected().id : null;
       review = null;
       return await run("exporting", async ({ same, signal }) => {
         const fresh = validatePeriodLibrary(await storage.read({ signal }));
         if (!same()) return null;
         let file;
-        if (kind === "csv") file = periodLibraryCSV(fresh, query);
+        if (kind === "csv") file = periodLibraryCSV(fresh, capturedQuery);
         else {
           const entries = kind === "all" ? fresh.entries : fresh.entries.filter(row => row.id === selectedKey);
           if (kind === "selected" && !entries.length) periodFail("PERIOD_LIBRARY_NOT_FOUND");
@@ -247,7 +251,7 @@ export function createPeriodLibraryController({ storage, getCheckpoint, stageChe
         if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
         return fresh;
       }, (fresh, same) => { if (adopt(fresh, same)) message = "ダウンロードを開始しました。保存先でファイルを確認してください。"; });
-    } catch (value) { return fail(value); }
+    } catch (value) { return fail(value, id); }
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepareSave, prepareRestore,
     importFile, applyReview, edit, compare, exportFile, cancel,

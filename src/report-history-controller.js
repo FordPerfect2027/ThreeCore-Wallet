@@ -7,7 +7,7 @@ import { emptyReportHistory, validateReportHistory, validateHistoryEntry, histor
   historyNote, historyTags, planHistoryMerge, mutateReportHistory } from "./report-history-model.js";
 import { prepareReportHistoryFile, readReportHistoryFile } from "./report-history-file.js";
 import { preparePeriodReportFile } from "./period-report-file.js";
-import { reportHistoryCSV } from "./report-history-query.js";
+import { reportHistoryCSV, historyQuery } from "./report-history-query.js";
 import { historyErrorCode } from "./report-history-view.js";
 import { inspectReportSources } from "./report-history-sources.js";
 import { inspectReportContinuity } from "./report-history-continuity.js";
@@ -291,10 +291,14 @@ export function createReportHistoryController({ storage, getReport, stageReport,
     } catch (value) { return fail(value); }
   }
   async function exportFile(format, acknowledged, deliver, query) {
+    let id;
     try {
       if (!guard()) return false;
+      id = generation;
       if (acknowledged !== true) periodFail("PERIOD_HISTORY_ACK");
       if (!["backup", "selected", "csv"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_HISTORY_FORMAT");
+      const capturedQuery = format === "csv" ? historyQuery(query) : undefined;
+      if (!sameGeneration(id)) return false;
       const selected = format === "selected" ? historyEntry(document, selectedId) : null;
       review = null;
       return await run("exporting", async ({ same, signal }) => {
@@ -302,7 +306,7 @@ export function createReportHistoryController({ storage, getReport, stageReport,
         if (!same()) return null;
         if (selected && JSON.stringify(historyEntry(fresh, selected.id)) !== JSON.stringify(selected)) periodFail("PERIOD_HISTORY_STALE");
         const file = format === "backup" ? await prepareFile(fresh, { signal }) : format === "selected" ?
-          await preparePeriodReportFile(selected.report, { signal }) : reportHistoryCSV(fresh, query);
+          await preparePeriodReportFile(selected.report, { signal }) : reportHistoryCSV(fresh, capturedQuery);
         if (!same()) return null;
         const delivery = deliver(file);
         if (observeCallbackResult(delivery) !== "synchronous") {
@@ -311,7 +315,7 @@ export function createReportHistoryController({ storage, getReport, stageReport,
         if (delivery === false) periodFail("PERIOD_EXPORT_REFUSED");
         return fresh;
       }, (fresh, same) => { if (adopt(fresh, same)) message = "保存処理を開始しました。ダウンロード先をご確認ください。"; });
-    } catch (value) { return fail(value); }
+    } catch (value) { return fail(value, id); }
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepareSave, prepareOpen,
     importFile, setSkipConflicts, applyReview, annotate, archive, compare, inspectSources, exportFile, cancel, invalidateReview,
