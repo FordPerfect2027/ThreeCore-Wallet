@@ -26,7 +26,7 @@ import { createHistoryFileReader } from "/src/history-file-reader.js";
 import { readSecurityFileBytes } from "/src/security-file.js";
 import { mountRehearsalBatchReviewPanel } from "/examples/operation-rehearsal-review-panel.js";
 import { savedObservationFixtures } from "/test/helpers/saved-observation-fixtures.js";
-import { savedWorkspaceGuideFixtures } from "/test/helpers/workspace-fixtures.js";
+import { savedWorkspaceGuideFixtures, savedRehearsalGuideFixtures } from "/test/helpers/workspace-fixtures.js";
 
 const assert = (value, message = "File boundary UI assertion failed") => { if (!value) throw Error(message); };
 const bytes = text => new TextEncoder().encode(text);
@@ -67,6 +67,16 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('rehearsal saved-file guide: native selection distinguishes simulated sources and recalculates rejected records',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name);
+    try{for(const fixture of savedRehearsalGuideFixtures()){const files=new DataTransfer();files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.validation==='validated-structure'&&result.target===fixture.target&&result.simulationOnly===true);assert(result.scope.rehearsalRejectedRecordReferences===fixture.counts[2]);assert(q('output').textContent.includes('実際の入出金の証拠ではありません'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.at(-1).text).simulationOnly===true);}}
+    finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal saved-file batch: native exports retain simulation labels and hash-bound guidance navigation',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],guide=mountSavedFileInspectionPanel({document,parent:host}),opened=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value),inspectOriginal:async(file,digest)=>{const value=await guide.inspectFile(file,digest);opened.push(value);return value;}}),q=name=>host.querySelector('.saved-file-batch-'+name);
+    try{const fixtures=savedRehearsalGuideFixtures(),files=new DataTransfer();for(const fixture of fixtures)files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();let end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.summary.simulationFiles===5&&result.summary.structureValidated===5&&!result.allOriginalsValidated);assert(q('summary').textContent.includes('練習用 5件'));q('rows').children[4].querySelector('.saved-file-batch-open').click();end=Date.now()+10000;while(!opened.length&&Date.now()<end)await tick();assert(opened[0]===true&&guide.getState().result.scope.rehearsalRejectedRecordReferences===3);for(const name of ['save','csv']){q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q(name).click();}assert(JSON.parse(downloads[0].text).summary.simulationFiles===5);assert(downloads[1].text.includes('"simulationOnly"')&&downloads[1].text.includes('"rehearsalRejectedRecordReferences"'));}
+    finally{panel.dispose();guide.dispose();host.remove();}
+  });
   test('wallet backup guide: native files keep checksummed workspace and plain history validation distinct',async()=>{
     const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name);
     try{for(const fixture of await savedWorkspaceGuideFixtures()){const files=new DataTransfer();files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.validation===fixture.validation&&result.target===fixture.target);assert(!q('output').textContent.includes('null件'));if(fixture.validation==='validated-structure')assert(q('output').textContent.includes('内部チェックサムはなく'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.at(-1).text).checksumVerified===(fixture.validation==='validated-original'));}}

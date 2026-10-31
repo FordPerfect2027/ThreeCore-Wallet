@@ -120,7 +120,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
     target.append(node); nodes[name] = node; return node;
   };
   const heading = make("summary", "heading", "保存したJSONの種類と開く場所を調べる"); heading.setAttribute("tabindex", "-1");
-  make("p", "intro", "ThreeCoreの元の保存JSONを1つ選んでください。期間・報告・受信送信履歴・残高・利用許可の観測・設定と履歴のバックアップなどに対応しています。形式と内部チェックサムの有無を分けて確認し、開く欄を案内します。ここでは履歴への追加や画面への復元は行いません。");
+  make("p", "intro", "ThreeCoreの元の保存JSONを1つ選んでください。期間・報告・受信送信履歴・残高・利用許可の観測・設定と履歴のバックアップ・運用リハーサルの練習用記録などに対応しています。形式と内部チェックサムの有無を分けて確認し、開く欄を案内します。ここでは履歴への追加や画面への復元は行いません。");
   const label = make("label", "file-label", "調べる元のJSON（最大96 MiB）");
   const file = make("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json";
   const stop = make("button", "stop", "このファイルの確認を中止"); stop.type = "button";
@@ -428,6 +428,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     });
     if (!current(id)) return; result = receipt; rows.replaceChildren(...elements);
     const s = receipt.summary; summary.textContent = `${s.selected}件中、確認済み ${s.checked}件／未確認 ${s.pending}件。元記録 ${s.validatedOriginals}件、補助資料 ${s.declaredOnly}件、形式・照合値の問題 ${s.invalid + s.hashUnavailable + (s.checksumMismatches ?? 0)}件。`;
+    if (s.simulationFiles) summary.textContent += ` 練習用 ${s.simulationFiles}件（実際の入出金の証拠ではありません）。`;
     if (s.structureValidated) summary.textContent += ` データ形式を確認・内部チェックサムなし ${s.structureValidated}件。内部チェックサム付きの元記録とは分けています。`;
     if (s.sourceUnavailable) summary.textContent += ` ファイルを読み込めなかったもの ${s.sourceUnavailable}件。ほかのファイルの確認結果は残しています。`;
     if (receipt.referenceProvided) summary.textContent += ` 以前の照合値との一致 ${s.checksumsMatching}件／不一致 ${s.checksumMismatches}件／未比較 ${s.selected - s.checksumsCompared}件。`;

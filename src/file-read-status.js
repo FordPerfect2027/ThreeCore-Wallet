@@ -168,6 +168,11 @@ export function decodeRehearsalForPanel(text, target, decode) {
 
 // These routes describe a declared format only. They never validate or open a file.
 const walletSavedTargets = Object.freeze({
+  "threecore.operation-rehearsal.v1": ["rehearsal-record", "FILE_USE_REHEARSAL_RECORD"],
+  "threecore.operation-rehearsal.v2": ["rehearsal-record", "FILE_USE_REHEARSAL_RECORD"],
+  "threecore.operation-rehearsal-workspace.v1": ["rehearsal-workspace", "FILE_USE_REHEARSAL_WORKSPACE"],
+  "threecore.operation-rehearsal-session.v1": ["rehearsal-session", "FILE_USE_REHEARSAL_SESSION"],
+  "threecore.operation-rehearsal-scenario-set.v1": ["rehearsal-cases", "FILE_USE_REHEARSAL_CASES"],
   "threecore-workspace-file-v1": ["workspace", "FILE_USE_WORKSPACE"],
   "threecore-portfolio-snapshot-v1": ["portfolio", "FILE_USE_PORTFOLIO"],
   "threecore-portfolio-history-v1": ["portfolio-history", "FILE_USE_PORTFOLIO_HISTORY"],
@@ -213,6 +218,10 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  FILE_USE_REHEARSAL_RECORD: "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+  FILE_USE_REHEARSAL_WORKSPACE: "運用リハーサルの練習用の3トークン履歴です。「保存した3トークンの履歴を戻す」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+  FILE_USE_REHEARSAL_SESSION: "運用リハーサルの練習用の履歴と比較ケースです。「履歴と比較ケースをまとめて保存・復旧」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+  FILE_USE_REHEARSAL_CASES: "運用リハーサルの仮想条件を比べるケース集です。「比較ケースを名前付きで残す」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
   FILE_USE_WORKSPACE: "3ウォレットの設定と保存記録をまとめたバックアップです。「3ウォレットをまとめて保存・復元」で元のJSONを選んで確認してください。ここでは設定や履歴を反映しません。",
   FILE_USE_PORTFOLIO: "過去の複数トークン残高の記録です。「複数トークンの残高確認」の「過去の記録を表示」で元のJSONを確認してください。この形式には内部チェックサムがありません。",
   FILE_USE_PORTFOLIO_HISTORY: "過去の複数トークン残高の保存履歴です。「保存記録の履歴管理」で元のJSONを確認してください。この形式には内部チェックサムがありません。",
@@ -283,6 +292,9 @@ const observationSavedTypes = Object.freeze({
   "threecore.reconciliation-file.v1": "残高と履歴の照合用保存資料",
 });
 export const WALLET_SAVED_OBSERVATION_SCOPE_FIELDS = Object.freeze(["archiveReferences", "transferRecordReferences", "eventReferences", "identityObservationReferences", "allowanceTargetReferences", "allowanceObservationReferences", "configurationReferences", "configuredAccountReferences", "configuredTokenReferences", "portfolioObservationReferences", "holdingReferences", "unknownHoldingReferences"]);
+export const WALLET_SAVED_REHEARSAL_SCOPE_FIELDS = Object.freeze(["rehearsalLedgerReferences", "rehearsalRecordReferences", "rehearsalRejectedRecordReferences", "rehearsalScenarioReferences"]);
+const rehearsalScopeLabels = Object.freeze({ rehearsalLedgerReferences: "練習用の履歴の参照", rehearsalRecordReferences: "練習用の記録の参照", rehearsalRejectedRecordReferences: "入力された仮想条件に合わない記録の参照", rehearsalScenarioReferences: "仮想条件の比較ケース" });
+const rehearsalSavedTypes = Object.freeze({ "threecore.operation-rehearsal.v1": "運用リハーサルの旧形式の記録", "threecore.operation-rehearsal.v2": "運用リハーサルの記録", "threecore.operation-rehearsal-workspace.v1": "運用リハーサルの3トークン履歴", "threecore.operation-rehearsal-session.v1": "運用リハーサルの履歴と比較ケース", "threecore.operation-rehearsal-scenario-set.v1": "運用リハーサルの比較ケース集" });
 const observationScopeLabels = Object.freeze({ archiveReferences: "履歴まとめの参照", transferRecordReferences: "取得区間の記録の参照", eventReferences: "履歴イベントの参照", identityObservationReferences: "トークン・残高観測の参照", allowanceTargetReferences: "利用許可の確認対象の参照", allowanceObservationReferences: "利用許可の観測行の参照", configurationReferences: "ウォレット設定の行", configuredAccountReferences: "設定済み公開アドレスの参照", configuredTokenReferences: "設定済みトークン契約の参照", portfolioObservationReferences: "複数トークン残高記録の参照", holdingReferences: "トークン残高の行の参照", unknownHoldingReferences: "残高が不明な行の参照" });
 const legacySavedTypes = Object.freeze({ "threecore-portfolio-snapshot-v1": "過去の複数トークン残高記録", "threecore-portfolio-history-v1": "複数トークン残高の保存履歴", "threecore-wallet-setup-v1": "3ウォレットの公開設定" });
 function savedPortfolioScope(observations, configuration) {
@@ -294,6 +306,23 @@ function savedPortfolioScope(observations, configuration) {
 }
 function emptySavedPeriodScope(agents) { return { reportCount: null, archivedReports: null, entryReferences: null, draftReferences: null, archivedEntryReferences: null, restrictedEntryReferences: null, incompleteDraftReferences: null, emptyDraftReferences: null,
   agents: Object.freeze(["DAT", "EMA", "CAWELON"].filter(agent => agents.includes(agent))), annotationValuesIncluded: false, repeatedReferencesMayExist: true }; }
+async function inspectRehearsalSaved(text, schema, byteLength, options, checkpoint, knownTextDigest) {
+  let ledgers = [], cases = null;
+  const { decodeRehearsal, evaluateRehearsal } = await import("./operation-rehearsal.js"); checkpoint();
+  if (["threecore.operation-rehearsal.v1", "threecore.operation-rehearsal.v2"].includes(schema)) ledgers = [decodeRehearsal(text)];
+  else if (schema === "threecore.operation-rehearsal-workspace.v1") ledgers = (await import("./operation-rehearsal-workspace.js")).decodeRehearsalWorkspace(text).ledgers;
+  else if (schema === "threecore.operation-rehearsal-scenario-set.v1") cases = (await import("./operation-rehearsal-scenario-set.js")).decodeRehearsalScenarioSet(text).cases;
+  else { const session = (await import("./operation-rehearsal-session.js")).decodeRehearsalSession(text); ledgers = session.workspace.ledgers; cases = session.cases.cases; }
+  checkpoint();
+  const references = [...ledgers, ...(cases ?? []).flatMap(row => [row.before, row.after])];
+  const reports = references.map(ledger => evaluateRehearsal(ledger)); checkpoint();
+  const scope = Object.freeze({ ...emptySavedPeriodScope(references.map(row => row.agent)),
+    rehearsalLedgerReferences: references.length, rehearsalRecordReferences: references.reduce((total, row) => total + row.events.length, 0),
+    rehearsalRejectedRecordReferences: reports.reduce((total, row) => total + row.rows.filter(event => !event.withinEnteredLimits).length, 0), rehearsalScenarioReferences: cases?.length ?? null });
+  const textDigest = knownTextDigest ?? await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options); checkpoint();
+  return captureSavedInspection({ schema: "threecore.saved-file-inspection.v3", sourceSchema: schema, byteLength, title: rehearsalSavedTypes[schema], target: walletSavedTargets[schema][0], destinationMessage: walletSavedMessages[walletSavedTargets[schema][1]],
+    validation: "validated-structure", simulationOnly: true, checksumVerified: false, sourceDigest: null, textDigest, scope, originalEvidenceValidated: false, restorable: false, automaticallyImported: false, liveChainRechecked: false, authenticated: false, authorizesExecution: false });
+}
 async function inspectLegacySaved(text, schema, byteLength, options, checkpoint, knownTextDigest) {
   let observations = null, configuration = null;
   if (schema === "threecore-portfolio-snapshot-v1") observations = [(await import("./portfolio-report.js")).decodePortfolioReport(text).snapshot];
@@ -373,6 +402,7 @@ async function inspectWalletSavedTextCaptured(text, fileOptions, knownTextDigest
   declared = null;
   if (typeof schema !== "string" || !Object.hasOwn(walletSavedTargets, schema)) savedInspectionFail("FILE_INSPECTION_UNSUPPORTED");
   const targetCode = walletSavedTargets[schema][1], definition = originalSavedTypes[schema];
+  if (Object.hasOwn(rehearsalSavedTypes, schema)) return inspectRehearsalSaved(text, schema, byteLength, options, checkpoint, knownTextDigest);
   if (Object.hasOwn(legacySavedTypes, schema)) return inspectLegacySaved(text, schema, byteLength, options, checkpoint, knownTextDigest);
   if (Object.hasOwn(observationSavedTypes, schema)) return inspectSavedObservation(text, schema, byteLength, options, checkpoint, knownTextDigest);
   if (!definition) {
@@ -423,6 +453,7 @@ export function walletSavedInspectionText(value) {
     value.validation === "validated-original" ? "元記録の形式とチェックサムを確認しました。まだ読み込み先へ反映していません。" : value.validation === "validated-structure" ? "データ形式を確認しました。この形式に内部チェックサムはなく、変更前との一致は確認していません。まだ読み込み先へ反映していません。" :
       "形式の指定だけを判別しました。中身・チェックサム・記載された結論は検証していません。",
     value.destinationMessage];
+  if (value.simulationOnly === true) summary.push("練習用の入力から記録を再計算しました。仮想条件に合わない記録が0件でも、実際の運用の許可や安全性の証明にはなりません。");
   if (value.scope) {
     const scope = value.scope;
     if (scope.reportCount !== null) summary.push("報告 " + scope.reportCount + "件" + (scope.archivedReports !== null ? " / 非表示保管 " + scope.archivedReports + "件" : ""));
@@ -431,6 +462,7 @@ export function walletSavedInspectionText(value) {
       scope.restrictedEntryReferences === null ? "この控えの形式には、保存一覧の保管状態と再取得の印は含まれません。" :
         "再取得の印がある保存項目の参照 " + scope.restrictedEntryReferences + "件 / 非表示保管の保存項目の参照 " + scope.archivedEntryReferences + "件");
     for (const field of WALLET_SAVED_OBSERVATION_SCOPE_FIELDS) if (scope[field] !== null && scope[field] !== undefined) summary.push(observationScopeLabels[field] + " " + scope[field] + "件");
+    for (const field of WALLET_SAVED_REHEARSAL_SCOPE_FIELDS) if (scope[field] !== null && scope[field] !== undefined) summary.push(rehearsalScopeLabels[field] + " " + scope[field] + "件");
     if (scope.repeatedReferencesMayExist) summary.push("同じ記録やイベントが複数の箇所に含まれる場合があるため、参照数は独立した検証回数や重複を除いた履歴件数ではありません。");
   }
   summary.push("アドレス・残高・メモ本文はこの案内には表示しません。現在のチェーン、出所、完全性、安全性を証明する確認ではありません。");
@@ -450,7 +482,7 @@ export function walletSavedInspectionErrorText(error) {
   if (typeof code === "string" && code.startsWith("FILE_BUNDLE_")) return "まとめた資料の形式や比較結果を確認できませんでした。元のJSONを保全して、確認し直してください。";
   if (typeof code === "string" && code.startsWith("FILE_COMPARISON_REVIEW_")) return "保存した比較JSONを確認できませんでした。比較先の元資料ではなく、2つのファイルの比較結果を選んでください。";
   if (code === "PERIOD_CHECKSUM") return "チェックサムが一致しません。保存が完了した元のJSONを選び直してください。内容は取り込んでいません。";
-  if (code === "FILE_INSPECTION_UNSUPPORTED") return "この案内では扱わない形式です。ThreeCoreの期間・報告・履歴・残高観測など、チェックサム付きの元の保存JSONを選んでください。";
+  if (code === "FILE_INSPECTION_UNSUPPORTED") return "この案内では扱わない形式です。ThreeCoreの期間・報告・履歴・残高観測・設定・運用リハーサルなどの元の保存JSONを選んでください。";
   if (code === "FILE_INSPECTION_JSON") return "JSONの形式を確認できません。元の保存ファイルを選び直してください。";
   return describeFileReadError(error, "96 MiB") ?? "ファイルの形式・内容を確認できませんでした。元のJSONを保全し、保存が完了しているか確認してください。";
 }
@@ -702,7 +734,8 @@ function finishSavedBatch(rows, selection, completed, phase, referenceText, refe
     totalBytes: unknownSourceBytes ? files.reduce((total, row) => total + (row.byteLength ?? 0), 0) : selection.totalBytes,
     ...(hasReference ? { checksumsCompared: files.filter(row => row.checksumMatches !== null).length, checksumsMatching: files.filter(row => row.checksumMatches === true).length, checksumMismatches: count("checksum-mismatch") } : {}),
     ...(unknownSourceBytes ? { sourceUnavailable: count("source-unavailable"), selectedReportedBytes: selection.totalBytes, unreadSourceReportedBytes: files.reduce((total, row) => total + (row.reportedByteLength ?? 0), 0) } : {}),
-    ...(count("validated-structure") ? { structureValidated: count("validated-structure") } : {}) });
+    ...(count("validated-structure") ? { structureValidated: count("validated-structure") } : {}),
+    ...(files.some(row => row.inspection?.simulationOnly === true) ? { simulationFiles: files.filter(row => row.inspection?.simulationOnly === true).length } : {}) });
   const result = Object.freeze({ schema: "threecore.wallet-saved-browser-batch." + (unknownSourceBytes ? "v3" : hasReference ? "v2" : "v1"), readOnly: true, authenticatesOrigin: false, authorizesExecution: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, externalChecksumsCompared: hasReference && summary.checksumsCompared > 0,
     phase, complete: phase === "complete" && completed.length === rows.length, allOriginalsValidated: phase === "complete" && summary.validatedOriginals === rows.length, summary, files: Object.freeze(files),
     ...(hasReference ? { referenceProvided: true, reference: Object.freeze({ text: referenceText, sha256: referenceSha256, entries: reference }), allExternalChecksumsMatch: phase === "complete" && summary.checksumsMatching === rows.length } : {}) });
@@ -815,11 +848,12 @@ export function encodeWalletSavedTextBatchCsv(result) {
     rows[0].push("reportedByteLength", "sourceUnavailable", "selectedReportedBytes", "unreadSourceReportedBytes");
     result.files.forEach((row, index) => rows[index + 1].push(row.reportedByteLength ?? "", result.summary.sourceUnavailable, result.summary.selectedReportedBytes, result.summary.unreadSourceReportedBytes));
   }
-  const extraFields = WALLET_SAVED_OBSERVATION_SCOPE_FIELDS.filter(field => result.files.some(row => row.inspection?.scope && Object.hasOwn(row.inspection.scope, field)));
+  const extraFields = [...WALLET_SAVED_OBSERVATION_SCOPE_FIELDS, ...WALLET_SAVED_REHEARSAL_SCOPE_FIELDS].filter(field => result.files.some(row => row.inspection?.scope && Object.hasOwn(row.inspection.scope, field)));
   if (extraFields.length) {
     rows[0].push(...extraFields);
     result.files.forEach((row, index) => rows[index + 1].push(...extraFields.map(field => row.inspection?.scope?.[field] ?? "")));
   }
+  if (result.files.some(row => row.inspection?.simulationOnly === true)) { rows[0].push("simulationOnly"); result.files.forEach((row, index) => rows[index + 1].push(row.inspection?.simulationOnly ?? "")); }
   const cell = value => { let text = String(value); if (/^\s*[=+@-]/u.test(text)) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
   return "\uFEFF" + rows.map(row => row.map(cell).join(",")).join("\r\n") + "\r\n";
 }
