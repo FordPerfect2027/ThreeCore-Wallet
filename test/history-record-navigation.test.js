@@ -13,3 +13,9 @@ test('no matching predecessor, invalid selection and replaced history cannot ret
 test('record details retire after invalidation and disposal and malformed snapshot accessors are never displayed',()=>{
  for(const ending of['invalidate','dispose']){const f=fixture(),show=f.q('show-record'),details=f.q('details');f.q('show-record').click();f.panel[ending]();assert.equal(details.textContent,'');if(ending==='dispose'){show.click();assert.equal(details.textContent,'');}f.panel.dispose();}let calls=0;assert.throws(()=>describePortfolioObservation(Object.defineProperty({...rows[0]},'siteOrigin',{get(){calls++;return 'https://secret.example';}})));assert.equal(calls,0);
 });
+test('history recovery save uses the card download adapter and preserves exact pre-removal history',()=>{
+ const parent=new Element('div'),saved=[],panel=mountHistoryPanel({document:{createElement:tag=>new Element(tag)},parent,agent:'DAT',getSnapshot:()=>null,getReport:()=>'',download:({prepared})=>saved.push(prepared)}),q=name=>parent.find('history-'+name);try{panel.replaceArchive(archive(rows));const original=panel.exportArchive();q('last').value='1';q('remove').click();q('recovery-save').click();assert.equal(saved.length,1);assert.equal(saved[0].text,original);assert(saved[0].filename.endsWith('-before-change.json'));assert.equal(JSON.parse(panel.exportArchive()).reports.length,rows.length-1);}finally{panel.dispose();}
+});
+test('missing or noncanonical removal selection cannot coerce to the first record or create a recovery slot',()=>{
+ for(const value of['',' ','00','0e0','-0','0x0','99']){const f=fixture();try{const original=f.panel.exportArchive();f.q('last').value=value;f.q('remove').click();assert.equal(f.panel.exportArchive(),original,value);assert(f.q('recovery-preview').disabled);assert(!f.q('status').textContent.includes('削除しました'));}finally{f.panel.dispose();}}
+});

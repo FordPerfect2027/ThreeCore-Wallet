@@ -203,7 +203,8 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     status.textContent = "同じアカウント・チェーン・サイトの記録を検索欄に表示しました。履歴は変更していません。";
   });
   const remove = button("history-remove", "選択した後の記録を削除", () => {
-    recovery.remove(Number(last.value), renderedRevision);
+    const selected = selectedAfter();
+    recovery.remove(selected.index, selected.state.revision);
     changed("選択した記録を履歴から削除しました。");
   });
   const saveRecord = button("history-save-record", "選択した後の記録を単独で保存", id => {
@@ -294,7 +295,7 @@ export function mountHistoryPanel({ document, parent, agent, getSnapshot, getRep
     getArchive: () => history.exportText(), getRevision: () => history.state().revision,
     getIncoming: () => json.value, getReplace: () => replace.checked,
   });
-  recoveryPanel = mountHistoryRecovery({ document, parent: section, agent, recovery,
+  recoveryPanel = mountHistoryRecovery({ document, parent: section, agent, recovery, download,
     onRestore: () => changed("履歴を復元しました。"),
     onCopyArchive: text => { filesPanel.invalidate(); cancelReview(); replace.checked = false; json.value = text; },
   });

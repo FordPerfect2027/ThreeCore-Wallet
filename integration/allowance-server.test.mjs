@@ -49,13 +49,20 @@ for (const uiTest of [false, true]) {
   test("allowance server: local files and mutation methods unavailable " + uiTest, async () => {
     await served(uiTest, async base => {
       for (const path of [
-        "/scripts/check-allowance-file.js", "/test/helpers/allowance-fixtures.js",
+        "/scripts/check-allowance-file.js",
         "/test/allowance-controller.test.js", "/src/allowance-file.js/extra",
         "/wallet-allowance-baseline-20261023/", "/.git/config",
       ]) assert.equal((await fetch(base + path)).status, 404, path);
       for (const method of ["POST", "PUT", "DELETE", "PATCH"]) {
         assert.equal((await fetch(base + modules[0], { method })).status, 404, method);
       }
+    });
+  });
+  test("allowance server: shared fictional observation fixtures require explicit UI-test mode " + uiTest, async () => {
+    await served(uiTest, async base => {
+      const response = await fetch(base + "/test/helpers/allowance-fixtures.js");
+      assert.equal(response.status, uiTest ? 200 : 404);
+      if (uiTest) { assert((await response.text()).includes("export function record(")); assert.equal(response.headers.get("cache-control"), "no-store"); }
     });
   });
 }
