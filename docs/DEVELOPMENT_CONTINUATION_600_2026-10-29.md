@@ -4,7 +4,9 @@ The user explicitly clarified that the next continuation is **20 × 30 = 600 ite
 
 Only completed, evidenced work counts. Repeated executions of the same check, renamed copies of a feature and individual test assertions do not create additional development items. Batch records will link source commits, relevant validation and artifacts; running totals must follow those records.
 
-Current continuation: **510 / 600 complete**.
+Current continuation: **511 / 600 complete**.
+
+[Item 511: review multiple saved reports in the browser with partial results and portable checksums](BROWSER_REPORT_BATCH_2026-11-01.md) is complete with 1750 related checks and 928 native Chrome cases at `567b7fa`.
 
 [Items 509–510: capture coordinated account plans and card period inputs before callbacks](COMPOSITE_READ_INPUTS_2026-11-01.md) are complete with 15581 full-wallet checks and 926 native Chrome cases at `db69d73`.
 
@@ -290,7 +292,7 @@ Current continuation: **510 / 600 complete**.
 
 [Item 205: period review lifecycle](PERIOD_REVIEW_LIFECYCLE_2026-10-30.md) is complete with 111 targeted and 231 related passing tests at `964f5da`.
 
-[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–510. Remaining work follows concrete product gaps and integration findings.
+[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–511. Remaining work follows concrete product gaps and integration findings.
 
 ## Completed first group: saved-report verification (items 1–20)
 
