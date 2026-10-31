@@ -1,0 +1,38 @@
+{
+  "baselineSource": "0fb437b",
+  "baselineFragmentSha256": "433e5d4dff40fb3d94d7fc9fcec52017906c344724e00bc05ed6e627a9365326",
+  "node": "v24.19.0",
+  "synthetic": true,
+  "rowsPerSource": 6000,
+  "beforeBytes": 208934,
+  "afterBytes": 208937,
+  "queries": [
+    {
+      "offset": 0
+    },
+    {
+      "offset": 40
+    },
+    {
+      "offset": 80
+    },
+    {
+      "pathIncludes": "/rows/1",
+      "offset": 0
+    }
+  ],
+  "iterations": 160,
+  "baselineRun": {
+    "milliseconds": 10605.3678,
+    "outputSha256": "7073b47296d765d369da5ad61a92c866052d8176336a753d259d36800558a131"
+  },
+  "currentRun": {
+    "milliseconds": 105.24099999999999,
+    "outputSha256": "7073b47296d765d369da5ad61a92c866052d8176336a753d259d36800558a131"
+  },
+  "creationMilliseconds": 117.55999999999949,
+  "currentIncludingCreationMilliseconds": 222.80099999999948,
+  "outputsIdentical": true,
+  "scope": "Repeated browsing of the same bounded JSON pair only. This is not an overall wallet, file loading, cryptographic verification or blockchain benchmark.",
+  "networkCalls": 0
+}
