@@ -112,7 +112,7 @@ function fixture(override = () => undefined, { legacy = true, announced = false,
   };
 }
 const tests = [];
-function test(name, run) { tests.push({ name, run }); }
+function test(name, run, group = "general") { tests.push({ name, run, group }); }
 
 test("wallet-navigation: task links focus existing sections without wallet requests", async use => {
   const f=use(),nav=document.querySelector(".wallet-navigation");assert(nav?.getAttribute("aria-label")==="ウォレットの各機能","Named task navigation");
@@ -1225,7 +1225,7 @@ registerStorageReceiptUITests(test);
 registerAdapterBoundaryUITests(test);
 registerObserverUITests(test);
 registerRpcSupervisorUITests(test);
-registerFileReadUITests(test);
+registerFileReadUITests((name, run) => test(name, run, "file-read"));
 registerExportGuardUITests(test);
 registerSecurityUITests(test);
 registerTabGuardUITests(test);
@@ -1263,7 +1263,22 @@ const controlOnly = parameters.has("harness-control");
 if (controlOnly && (!isSharded || !fault || parameters.getAll("harness-control").length !== 1 ||
     parameters.get("harness-control") !== "1" || parameters.get("shard-index") !== "0")) throw Error("Invalid dedicated harness control");
 let executionTests = selectedTests;
-if (isSharded) {
+if (parameters.has("focus")) {
+  if (parameters.getAll("focus").length !== 1 || parameters.get("focus") !== "file-read" ||
+      isSharded || parameters.has("suite") || controlOnly || fault) throw Error("Invalid focused browser request");
+  const indices = tests.flatMap((item, index) => item.group === "file-read" ? [index] : []);
+  if (!indices.length) throw Error("No focused browser cases registered");
+  executionTests = indices.map(index => tests[index]);
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(tests.map(item => item.name))));
+  document.body.dataset.shardIndex = "0";
+  document.body.dataset.shardCount = "1";
+  document.body.dataset.registeredCount = String(tests.length);
+  document.body.dataset.registeredDigest = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+  document.body.dataset.registeredGroups = tests.map(item => item.group).join(",");
+  document.body.dataset.selectedIndices = indices.join(",");
+  document.body.dataset.suiteFilter = "focus:file-read";
+  document.body.dataset.controlOnly = "false";
+} else if (isSharded) {
   if (parameters.getAll("shard-index").length !== 1 || parameters.getAll("shard-count").length !== 1 ||
       parameters.get("shard-count") !== "2" || !["0", "1"].includes(parameters.get("shard-index")) || parameters.has("suite"))
     throw Error("Invalid or filtered browser shard request");

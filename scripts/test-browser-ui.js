@@ -7,13 +7,14 @@ import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { createDemoServer } from "../examples/dev-server.js";
-import { checkBrowserShard, checkBrowserShards, checkBrowserErrorControl, readBrowserSummary } from "./browser-result.js";
+import { checkBrowserShard, checkBrowserShards, checkBrowserErrorControl, checkBrowserFocus, readBrowserSummary } from "./browser-result.js";
 import { installBrowserCompletion } from "./browser-completion.js";
 import { browserExecutable, browserArguments, stopTestBrowser, removeTestProfile } from "./browser-runtime.js";
 import { checkBrowserModuleRoutes } from "./browser-module-preflight.js";
 
 const options = process.argv.slice(2);
-if (options.length > 1 || options.some(value => value !== "--verify-error-detection")) throw Error("Unknown browser test option");
+if (options.length > 1 || options.some(value => !["--verify-error-detection", "--focus=file-read"].includes(value))) throw Error("Unknown browser test option");
+const focus = options[0] === "--focus=file-read" ? "file-read" : undefined;
 // A parse failure in a statically imported test module prevents the browser
 // harness from reporting anything. Fail before launching its five-minute run.
 const testRoot = new URL("../test/browser/", import.meta.url);
@@ -43,7 +44,7 @@ async function runBrowserPage(index, fault) {
     // Each half retains the finite five-minute deadline.
     receipt = installBrowserCompletion(server, { timeoutMs: 300_000 });
     const url = `http://127.0.0.1:${server.address().port}/test/browser/?ci-report=${receipt.nonce}` +
-      "&shard-count=2&shard-index=" + index +
+      (focus ? "&focus=" + focus : "&shard-count=2&shard-index=" + index) +
       (fault ? "&harness-control=1&harness-fault=" + fault : "");
     browser = spawn(executable, browserArguments(profile, url),
       { windowsHide: true, stdio: ["ignore", "ignore", "pipe"] });
@@ -55,7 +56,7 @@ async function runBrowserPage(index, fault) {
     try {
       result = await receipt.result;
       const checked = checkResult(result, index, fault);
-      console.log("Browser shard " + (index + 1) + "/2 completion received: " + checked.passed + " passing cases; isolated cleanup pending.");
+      console.log((focus ? "Focused browser " + focus : "Browser shard " + (index + 1) + "/2") + " completion received: " + checked.passed + " passing cases; isolated cleanup pending.");
     }
     catch (error) { throw Error(error.message + "\nRecent browser diagnostics:\n" + errors); }
   } catch (error) {
@@ -81,7 +82,7 @@ async function runBrowserPage(index, fault) {
 }
 
 function checkResult(html, index, fault) {
-  try { return fault ? checkBrowserErrorControl(html, fault) : checkBrowserShard(html, index); }
+  try { return focus ? checkBrowserFocus(html, focus) : fault ? checkBrowserErrorControl(html, fault) : checkBrowserShard(html, index); }
   catch (error) {
     try { process.stderr.write("Browser completion summary: " + JSON.stringify(readBrowserSummary(html)) + "\n"); }
     catch { /* The validator reports malformed completion separately. */ }
@@ -103,6 +104,10 @@ if (options[0] === "--verify-error-detection") {
   }
   if (failures.length) throw new AggregateError(failures, "Browser error-detection controls did not all pass");
   console.log("2 browser error-detection controls passed.");
+} else if (focus) {
+  const started = performance.now();
+  const result = checkResult(await runBrowserPage(0), 0);
+  console.log(result.passed + " focused browser UI tests passed (" + focus + ") in " + Math.round(performance.now() - started) + " ms; full browser coverage was not run.");
 } else {
   const pages = [];
   for (const index of [0, 1]) {

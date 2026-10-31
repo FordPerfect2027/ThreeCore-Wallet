@@ -60,6 +60,22 @@ export function checkBrowserResult(html, fault, minimumCases = MIN_BROWSER_CASES
 
 const SHARD_ATTRIBUTES = ["shard-index", "shard-count", "registered-count", "registered-digest", "selected-indices", "suite-filter", "control-only"];
 
+/** Explicit development coverage only; a focused receipt never satisfies a full shard. */
+export function checkBrowserFocus(html, suite) {
+  if (suite !== "file-read") throw Error("Unknown focused browser suite");
+  const summary = readAttributes(html, [...SHARD_ATTRIBUTES, "registered-groups"]);
+  const registered = count(summary, "registered-count"), groups = summary["registered-groups"].split(",");
+  if (registered < MIN_BROWSER_CASES || registered > 10000 || groups.length !== registered ||
+      groups.some(group => !["general", "file-read"].includes(group)) || summary["shard-count"] !== "1" ||
+      summary["shard-index"] !== "0" || summary["suite-filter"] !== "focus:" + suite ||
+      summary["control-only"] !== "false" || !/^[0-9a-f]{64}$/.test(summary["registered-digest"])) throw Error("Invalid focused browser registry");
+  const indices = groups.flatMap((group, index) => group === suite ? [index] : []);
+  if (!indices.length || summary["selected-indices"] !== indices.join(",")) throw Error("Missing or extra focused browser cases");
+  const result = checkBrowserResult(html, undefined, indices.length);
+  if (result.total !== indices.length) throw Error("Focused browser totals do not match its case indices");
+  return Object.freeze({ ...result, suite, registered, digest: summary["registered-digest"], fullCoverage: false });
+}
+
 /** A half-suite is accepted only with its exact share of the full registry. */
 export function checkBrowserShard(html, index, fault) {
   return checkShard(html, index, fault, false);
