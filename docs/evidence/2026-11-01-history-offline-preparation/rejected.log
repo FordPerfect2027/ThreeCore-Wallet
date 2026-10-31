@@ -1,0 +1,11 @@
+INVALID_HISTORY_QUERY
+Usage: node scripts/prepare-portfolio-history.js combine DAT|EMA|CAWELON first.json [more.json ...]
+       node scripts/prepare-portfolio-history.js prune history.json [filters]
+Combine: 1-16 archives, each <= 1 MiB, total <= 4 MiB, at most 64 unique observations.
+Prune filters: --account ADDRESS --chain ID --origin ORIGIN --min-block N --max-block N
+               --token CONTRACT --token-state any|known|unknown|not-observed --order oldest|newest
+Prune prepares the complement of an explicit nonempty proper subset; order alone is not a scope.
+OUTPUT ONLY: writes a candidate history JSON to stdout. Never deletes, overwrites or imports any file or live history.
+Review the candidate before importing. Keep the original files for recovery. Output includes public addresses and balances.
+Exit 0: complete local candidate; 1: rejected arguments, input, conflict, capacity or scope. No partial stdout on failure.
+No network or wallet access. Structural agreement is not authentication, current balance verification or a security audit.
