@@ -1,0 +1,129 @@
+{
+  "source": "ecb8bc1",
+  "synthetic": true,
+  "matrix": [
+    {
+      "name": "portfolio.json",
+      "sourceSchema": "threecore-portfolio-snapshot-v1",
+      "beforeSha256": "6a83d77406088f7861325b276c8e2fe645d9b19a82f4e314830f4f56627de346",
+      "afterSha256": "f42a394fc187fa34217a61c15eab0aba4393857ebb70886ef824c03764908b86",
+      "exactBothSources": true,
+      "internalChecksumVerified": false,
+      "sourceFilesAvailable": true,
+      "originalsAvailable": false
+    },
+    {
+      "name": "portfolio-history.json",
+      "sourceSchema": "threecore-portfolio-history-v1",
+      "beforeSha256": "c39b496d7d5af4e91cbc8ac650380d68c210b3feb48d35a39208719b889d2232",
+      "afterSha256": "ad17ce4fef406db460b582bf0bdd2a3f71408d51c9b671dab018206128525235",
+      "exactBothSources": true,
+      "internalChecksumVerified": false,
+      "sourceFilesAvailable": true,
+      "originalsAvailable": false
+    },
+    {
+      "name": "setup.json",
+      "sourceSchema": "threecore-wallet-setup-v1",
+      "beforeSha256": "a126f16b849d177d4ec1c7916b9ab01e3ff667997aab10fb8ce155706ce4afd1",
+      "afterSha256": "77675004497dc41bbe49a92d32c302e07f8eabd8ba1dac8bfbb20fbf2f1664da",
+      "exactBothSources": true,
+      "internalChecksumVerified": false,
+      "sourceFilesAvailable": true,
+      "originalsAvailable": false
+    },
+    {
+      "name": "rehearsal-v1.json",
+      "sourceSchema": "threecore.operation-rehearsal.v1",
+      "beforeSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "afterSha256": "2c4137d11f7d5d6eb0767a81c8a56f05199599ce8c8910cf79290afe3a69f25e",
+      "exactBothSources": true,
+      "internalChecksumVerified": false,
+      "sourceFilesAvailable": true,
+      "originalsAvailable": false
+    },
+    {
+      "name": "rehearsal-v2.json",
+      "sourceSchema": "threecore.operation-rehearsal.v2",
+      "beforeSha256": "afb36e2d9e8f46d5478e3291937abe6c97babc3ad46855c1bd13031ac9c8eb5f",
+      "afterSha256": "6af4609c7c47610071b392783445cd27351c2d60ed90951411d273076d2c83aa",
+      "exactBothSources": true,
+      "internalChecksumVerified": false,
+      "sourceFilesAvailable": true,
+      "originalsAvailable": false
+    },
+    {
+      "name": "rehearsal-workspace.json",
+      "sourceSchema": "threecore.operation-rehearsal-workspace.v1",
+      "beforeSha256": "f933386f4367458cfb8cdaf64e0f2c1d433ce5eeb318f49b82d1ef66b34a92c7",
+      "afterSha256": "21c3c93dd1bd8cb237b516b8f35a7ff0d61a71a39b5783dba90ca2a373d86c4e",
+      "exactBothSources": true,
+      "internalChecksumVerified": false,
+      "sourceFilesAvailable": true,
+      "originalsAvailable": false
+    },
+    {
+      "name": "rehearsal-cases.json",
+      "sourceSchema": "threecore.operation-rehearsal-scenario-set.v1",
+      "beforeSha256": "b64a20a28e090d3d23a5b519430a726741634bc556eda80010f7c55403a3fe7b",
+      "afterSha256": "4869c3111634d08f032f4c28c0fdec9fa0cb5938acc6f20c89107d142ceeb49e",
+      "exactBothSources": true,
+      "internalChecksumVerified": false,
+      "sourceFilesAvailable": true,
+      "originalsAvailable": false
+    },
+    {
+      "name": "rehearsal-session.json",
+      "sourceSchema": "threecore.operation-rehearsal-session.v1",
+      "beforeSha256": "491b17dc86b8790213e20d7472eb82e58004d01b33bbd06f69316e55a3921a47",
+      "afterSha256": "73a3bf6f732e4f5c8a92fda7196a78bbeb0e939f7bd8735d3697aa4fe12703e2",
+      "exactBothSources": true,
+      "internalChecksumVerified": false,
+      "sourceFilesAvailable": true,
+      "originalsAvailable": false
+    }
+  ],
+  "v1PreparedOutputUnchanged": true,
+  "cli": [
+    {
+      "name": "create",
+      "exitCode": 0,
+      "exactExpectedOutput": true
+    },
+    {
+      "name": "check",
+      "exitCode": 0,
+      "exactExpectedOutput": true
+    },
+    {
+      "name": "extract-before",
+      "exitCode": 0,
+      "exactExpectedOutput": true
+    },
+    {
+      "name": "extract-after",
+      "exitCode": 0,
+      "exactExpectedOutput": true
+    },
+    {
+      "name": "mismatch-check",
+      "exitCode": 2,
+      "exactExpectedOutput": true
+    },
+    {
+      "name": "mismatch-extract",
+      "exitCode": 2,
+      "exactExpectedOutput": true
+    }
+  ],
+  "receiptExcludesSourceAddressesAndEmbeddedBodies": true,
+  "mismatchExtractionBlocked": true,
+  "nativeFocus": "file-read",
+  "nativeFocusedCases": 109,
+  "fullBrowserCoverage": false,
+  "lastFullBrowserSource": "a2eb7e5",
+  "lastFullBrowserCases": 950,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false,
+  "realProviderCalls": 0
+}
