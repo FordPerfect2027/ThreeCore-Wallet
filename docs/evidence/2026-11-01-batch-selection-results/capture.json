@@ -1,0 +1,38 @@
+{
+  "source": "0fae24b",
+  "synthetic": true,
+  "captures": [
+    {
+      "kind": "wallet",
+      "fullReceiptSha256": "59d7220cfb8d9dfd48932cff739e4333bd9bd803b92554b467c2b9e93af83c98",
+      "selectedScope": {
+        "name": "",
+        "status": "invalid"
+      },
+      "selectedRows": 1,
+      "totalRows": 2,
+      "emptyRows": 0,
+      "fullReceiptUnchanged": true,
+      "cancelledPickersPreserved": []
+    },
+    {
+      "kind": "rehearsal",
+      "fullReceiptSha256": "3ae37a391e62d1aa15b1077118365aa0afa67d9618abf5d861152d116e3d12ed",
+      "selectedScope": {
+        "name": "",
+        "status": "invalid"
+      },
+      "selectedRows": 1,
+      "totalRows": 2,
+      "emptyRows": 0,
+      "fullReceiptUnchanged": true,
+      "cancelledPickersPreserved": [
+        "files",
+        "reference-file"
+      ]
+    }
+  ],
+  "userTabConnectionVerified": false,
+  "realFilePickerVerified": false,
+  "externalRpcCalls": 0
+}

@@ -1,0 +1,11 @@
+# Preserve cancelled selections and export explicitly filtered result scopes
+
+Items 560–561. Source: 0fae24b.
+
+560: Cancelling either rehearsal batch file picker now preserves the current selection, optional reference, completed results and in-progress work. An empty selection previously reset those states. Explicit Clear still clears them, and non-empty invalid replacements still follow normal validation. Regression coverage includes completed/reference-bound receipts and a pending source read that must finish without being restarted or aborted.
+
+561: Wallet and rehearsal batch panels can save only rows matching their current name/status filters. The JSON includes the exact filter, matched and full counts, full summary, original phase/completion scope and selected rows. Zero matches are represented explicitly. It contains neither original source texts nor the full batch receipt and cannot restore history; the original sources and full receipt remain necessary for rechecking. Rehearsal failed-expectation filtering remains distinct from recomputation status. Owned-result APIs reject forged sources, getters, unsupported filters, null fields and control characters. UI exports reject failed/asynchronous delivery and suppress obsolete feedback after view changes. Wallet view changes now also clear stale prior save messages.
+
+70 selected checks passed (6691.4054 ms), and 119 scoped native browser cases passed (29392 ms). Two initial failures are retained: an inappropriate rehearsal-report fixture was corrected for the wallet panel, then a real stale export-feedback regression was fixed. Neither adds another completed item. The [captured evidence](evidence/2026-11-01-batch-selection-results/) retains full, selected and empty receipts for both panels and verifies unchanged full receipts across filtering/cancelled picker events. Native tests use File/DataTransfer and captured downloads; they do not establish interaction with the user's OS picker or current tab.
+
+Last full browser checkpoint: f9856c3 (965 cases). Last full-wallet Node checkpoint: d253e8d (15,720 tests). No signature, transfer, approval, private-key retrieval, external RPC, publication, deployment or existing-server restart occurred.
