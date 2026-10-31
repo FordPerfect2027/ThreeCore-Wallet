@@ -1,0 +1,23 @@
+✔ each captured original is raw-hashed once while retaining its full independent content check: transfer.json (42.0545ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: archive.json (10.642ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: vault.json (27.8584ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: identity.json (12.6238ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: allowance-targets.json (8.5451ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: allowance-observation.json (9.2106ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: reconciliation.json (23.7722ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: period.json (66.6384ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: library.json (39.0603ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: report.json (49.6641ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: history.json (148.7139ms)
+✔ each captured original is raw-hashed once while retaining its full independent content check: set.json (124.7183ms)
+✔ public options and extra arguments cannot inject a precomputed text digest (9.5604ms)
+✔ reuse is bound to captured text and does not trust progress callback mutations or a prior checksum mismatch (5.1479ms)
+✔ raw-hash reuse cannot bypass an altered internal checksum (132.3228ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1492.878
