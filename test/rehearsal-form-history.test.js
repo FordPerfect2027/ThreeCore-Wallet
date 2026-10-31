@@ -12,3 +12,11 @@ test('editing without an existing ledger does not create a retained or saveable 
 test('old-format input remains old when editing is cancelled without recalculation',()=>{const f=setup();try{const source=rehearsalExample();f.edit('workspace-text',encodeRehearsalWorkspace({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:'DAT',ledgers:[source]}));f.q('workspace-text-review').click();f.q('workspace-apply').click();const before=f.save();f.edit('principal','1');assert.equal(f.save(),before);f.q('form-restore').click();assert.match(f.q('ledger-details').textContent,/旧形式/);assert.equal(f.q('append-preview').disabled,true);assert.equal(f.save(),before);}finally{f.page.dispose();}});
 test('form editing still retires pending append and combined recovery authority',()=>{const f=setup();try{f.q('example').click();f.q('session-save').click();const saved=f.downloads.at(-1).text;f.edit('append-kind','deposit','change');f.edit('append-amount','1');f.q('append-preview').click();assert.equal(f.q('append-confirm').disabled,false);f.edit('opening','900');assert.equal(f.q('append-confirm').disabled,true);f.q('form-restore').click();f.edit('agent','EMA','change');f.q('example').click();f.edit('session-text',saved);f.q('session-paste').click();assert.equal(f.q('session-apply').disabled,false);f.edit('principal','2');assert.equal(f.q('session-apply').disabled,true);}finally{f.page.dispose();}});
 test('disposal removes the retained-history action and cannot revive a closed view',()=>{const f=setup();f.q('example').click();f.edit('opening','900');f.page.dispose();assert.equal(f.q('form-restore').disabled,true);f.q('form-restore').dispatchEvent(new Event('click'));assert.equal(f.q('rows').children.length,0);assert.equal(f.q('save').disabled,true);});
+
+test('redisplaying the retained history identifies restoration and focuses its result heading',()=>{
+  const f=setup();let focused=0;f.q('result-title').focus=()=>{focused++;};
+  try{f.q('example').click();f.append();const before=f.save();f.edit('principal','invalid');f.q('form-restore').click();
+    assert.equal(f.save(),before);assert.equal(focused,1);assert.match(f.q('status').textContent,/^入力変更前の履歴を再表示しました。/);
+    assert.equal(f.q('form-restore').disabled,true);assert.equal(f.q('undo').disabled,false);assert.equal(f.q('rows').children.length,3);
+  }finally{f.page.dispose();}
+});

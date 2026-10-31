@@ -50,3 +50,26 @@ test("invalid query disables export until fixed and download failure preserves r
 test("dispose removes records and prevents later refresh or retained listeners from exposing them",()=>{
   const f=setup();f.panel.refresh(workspace(rehearsalExampleV2()));f.panel.dispose();f.panel.refresh(many());f.field("next").click();assert.equal(f.field("rows").children.length,0);assert.equal(f.field("save").disabled,true);
 });
+
+const rowButton=(f,index)=>f.field('rows').children[index].children[5].children[0];
+test('a record row opens its exact detail and moves focus without changing the query export',()=>{
+  const f=setup(),input=many();let focus=0;f.field('select').focus=()=>{focus++;};
+  try{f.panel.refresh(input);f.field('next').click();f.field('save').click();const before=f.downloads.pop().text;
+    const pick=rowButton(f,7);assert.match(pick.getAttribute('aria-label'),/DAT.*18番目.*deposit-17/);pick.click();
+    assert.equal(f.field('select').value,'DAT:deposit-17');assert.match(f.field('detail').textContent,/18番目.*deposit-17/);assert.equal(focus,1);
+    assert.match(f.field('status').textContent,/11～20/);f.field('save').click();assert.equal(f.downloads.pop().text,before);
+  }finally{f.panel.dispose();}
+});
+for(const change of ['filter','page','size','refresh','dispose'])test('detached record row cannot undo '+change,()=>{
+  const f=setup();try{f.panel.refresh(many());const old=rowButton(f,3);
+    if(change==='filter')f.change('search','deposit-26');if(change==='page')f.field('next').click();if(change==='size')f.change('size','25');
+    if(change==='refresh')f.panel.refresh(workspace(rehearsalExampleV2()));if(change==='dispose')f.panel.dispose();
+    const selection=f.field('select').value,detail=f.field('detail').textContent;old.click();assert.equal(f.field('select').value,selection);assert.equal(f.field('detail').textContent,detail);
+  }finally{f.panel.dispose();}
+});
+test('a focus observer that replaces the record source retains its newer detail',()=>{
+  const f=setup();try{f.panel.refresh(workspace(rehearsalExampleV2()));const pick=rowButton(f,1);
+    f.field('select').focus=()=>f.panel.refresh(workspace(rehearsalExampleV2('DAT','pending')));pick.click();
+    assert.equal(f.field('select').value,'DAT:open-one');assert.match(f.field('detail').textContent,/1番目.*open-one/);assert.equal(f.field('rows').children.length,1);
+  }finally{f.panel.dispose();}
+});

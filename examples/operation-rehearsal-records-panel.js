@@ -52,7 +52,14 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     offset=Math.max(0,Math.min(offset,Math.max(0,Math.ceil(report.rows.length/size)-1)*size));
     const shown=report.rows.slice(offset,offset+size);if(!shown.some(row=>row.key===selected))selected=shown[0]?.key??"";
     get("scope").textContent=index.subjects.map(item=>item.agent+": "+(item.present?item.recordCount+"件":"未作成")).join(" / ");
-    for(const item of shown){row("rows",[item.agent,item.recordNumber+"番目: "+item.event.id,kinds[item.event.kind],decision(item),item.reference?.id??"なし"]);
+    const listOwn=revision,sourceIndex=index,sourceReport=report;
+    for(const item of shown){const tr=row("rows",[item.agent,item.recordNumber+"番目: "+item.event.id,kinds[item.event.kind],decision(item),item.reference?.id??"なし"]);
+      const cell=document.createElement("td"),pick=document.createElement("button");pick.type="button";pick.textContent="詳しく見る";
+      pick.setAttribute("aria-label",item.agent+" の "+item.recordNumber+"番目、"+item.event.id+" を詳しく見る");
+      pick.addEventListener("click",()=>{
+        if(disposed||listOwn!==revision||sourceIndex!==index||sourceReport!==report)return;
+        selected=item.key;get("select").value=selected;detail();get("select").focus?.();
+      });cell.append(pick);tr.append(cell);
       const option=document.createElement("option");option.value=item.key;option.textContent=item.agent+" / "+item.recordNumber+"番目 / "+item.event.id;get("select").append(option);}
     get("select").value=selected;get("select").disabled=!shown.length;get("prev").disabled=offset===0;get("next").disabled=offset+size>=report.rows.length;
     get("save").disabled=!index.inputs.ledgers.length;

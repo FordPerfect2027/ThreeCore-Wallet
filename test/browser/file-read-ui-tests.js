@@ -53,6 +53,21 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: each searched record row opens its own detail without changing saved history",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      const row=q("record-browser-rows").rows[1],pick=row.querySelector("button");assert(pick.getAttribute("aria-label").includes("settle-one"));pick.click();
+      assert(q("record-browser-select").value==="DAT:settle-one");assert(document.activeElement===q("record-browser-select"));assert(q("record-browser-detail").textContent.includes("2番目"));
+      q("session-save").click();assert(downloads.pop().text===before);
+      q("record-browser-search").value="open-one";q("record-browser-search").dispatchEvent(new Event("input"));pick.click();
+      assert(q("record-browser-select").value==="DAT:open-one");assert(q("record-browser-detail").textContent.includes("1番目"));
+    }finally{page.dispose();host.remove();}
+  });
+
   test("file-read: report and evidence difference pages expose the complete native DOM result",async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
@@ -129,7 +144,8 @@ export function registerFileReadUITests(test) {
       q("example").click();edit("append-kind","reserve","change");edit("append-reference","reward");edit("append-amount","1");q("append-preview").click();q("append-confirm").click();
       q("workspace-save").click();const before=downloads.pop().text;assert(!q("undo").disabled);
       edit("principal","invalid");q("calculate").click();assert(!q("form-draft-note").hidden&&!q("form-restore").disabled);assert(q("save").disabled);
-      q("workspace-save").click();assert(downloads.pop().text===before);q("form-restore").click();
+      q("workspace-save").click();assert(downloads.pop().text===before);q("form-restore").focus();q("form-restore").click();
+      assert(document.activeElement===q("result-title"));assert(q("status").textContent.startsWith("入力変更前の履歴を再表示しました。"));
       assert(q("rows").children.length===3&&!q("undo").disabled&&q("form-draft-note").hidden);q("undo").click();assert(q("rows").children.length===2);
     }finally{page.dispose();host.remove();}
   });

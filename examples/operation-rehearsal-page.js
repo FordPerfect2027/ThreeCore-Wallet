@@ -404,7 +404,12 @@ export function mountOperationRehearsal(document, download = offerWalletDownload
     "entry-limit", "exit-limit", "exit-reserve"])
     listen(name, "input", () => {if(!disposed)clear(undefined,true,true);});
   for (const name of ["paused", "scenario"]) listen(name, "change", () => {if(!disposed)clear(undefined,true,true);});
-  listen("form-restore","click",()=>{if(disposed||!formDraft)return;const retained=ledger.state().current;if(retained)show(retained,true);});
+  listen("form-restore","click",()=>{
+    if(disposed||!formDraft)return;const retained=ledger.state().current;if(!retained)return;show(retained,true);
+    if(disposed||formDraft||current!==retained||ledger.state().current!==retained)return;
+    get("status").textContent="入力変更前の履歴を再表示しました。"+get("status").textContent;
+    get("result-title").focus?.();
+  });
   listen("agent", "change", () => {
     if (disposed) return;
     const name = get("agent").value;

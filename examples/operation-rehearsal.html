@@ -152,7 +152,7 @@
       <div class="actions"><button id="pending" type="button">未決済として試算</button><button id="calculate" type="button">決済結果まで試算</button><button id="form-restore" type="button" disabled>入力変更前の履歴を再表示</button></div>
       <p id="form-draft-note" class="notice" role="status" aria-live="polite" hidden></p>
     </section>
-    <section aria-labelledby="result-title"><h2 id="result-title">確認結果</h2>
+    <section aria-labelledby="result-title"><h2 id="result-title" tabindex="-1">確認結果</h2>
       <p id="status" role="status" aria-live="polite">ケースを選ぶか、入力して試算してください。</p>
       <div id="metrics" class="metrics"></div>
       <p id="allocation-note"></p><p id="context" class="small"></p>
@@ -203,7 +203,7 @@
     <button id="record-browser-clear" type="button">記録の検索条件をリセット</button>
     <div class="actions"><label>1ページの表示件数<select id="record-browser-size"><option>10</option><option>25</option><option>50</option></select></label><button id="record-browser-prev" type="button" disabled>前の記録ページ</button><button id="record-browser-next" type="button" disabled>次の記録ページ</button></div>
     <p id="record-browser-status" role="status" aria-live="polite"></p>
-    <div class="table-wrap"><table><caption>検索した確定済みの記録</caption><thead><tr><th>保存元</th><th>順番・ID</th><th>種類</th><th>条件判定</th><th>操作・予約ID</th></tr></thead><tbody id="record-browser-rows"></tbody></table></div>
+    <div class="table-wrap"><table><caption>検索した確定済みの記録</caption><thead><tr><th>保存元</th><th>順番・ID</th><th>種類</th><th>条件判定</th><th>操作・予約ID</th><th scope="col">詳細</th></tr></thead><tbody id="record-browser-rows"></tbody></table></div>
     <button id="record-browser-back" type="button" disabled>関連記録へ移動する前の表示に戻る</button>
     <label>詳しく見る記録<select id="record-browser-select" disabled></select></label><p id="record-browser-detail" class="small"></p>
     <div class="table-wrap"><table><caption>選択した記録に含まれる入力</caption><thead><tr><th>項目</th><th>記録された値</th></tr></thead><tbody id="record-browser-event"></tbody></table></div>
