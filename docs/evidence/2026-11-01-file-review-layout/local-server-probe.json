@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-31T22:10:00.190Z",
+  "probes": [
+    {
+      "path": "/rehearsal/",
+      "status": 200,
+      "bytes": 60494,
+      "expectedMarkerFound": true
+    },
+    {
+      "path": "/examples/security.css",
+      "status": 200,
+      "bytes": 7016,
+      "expectedMarkerFound": true
+    },
+    {
+      "path": "/examples/file-read-panel.js",
+      "status": 200,
+      "bytes": 143513,
+      "expectedMarkerFound": true
+    }
+  ],
+  "serverRestarted": false,
+  "browserWalletConnectionVerified": false
+}
