@@ -1,0 +1,15 @@
+{
+  "source": "f0f871a",
+  "navigations": 1,
+  "status": "読み込み欄へ移動しました。元のJSONはまだ読み込んでいません。案内した欄で元のファイルを選んでください。",
+  "cliExit": 2,
+  "exactCliApi": true,
+  "exactUiApi": true,
+  "structureOnly": true,
+  "balancesIncluded": false,
+  "automaticImports": 0,
+  "synthetic": true,
+  "nativeBrowserCases": 134,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}
