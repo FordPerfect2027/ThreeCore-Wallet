@@ -82,3 +82,11 @@ export function assertReportSourcesUnchanged(input, freshInput) {
   }
   return fresh;
 }
+
+/** Recover one original entry without dropping archive or requires-new-plan markers. */
+export function periodReportEntryLibrary(inputValue, agentValue) {
+  const input = validatePeriodReportInput(inputValue), agent = reportAgent(agentValue);
+  const entry = input.slots.find(slot => slot.agent === agent).entry;
+  if (!entry) periodFail("PERIOD_REPORT_ENTRY_MISSING");
+  return validatePeriodLibrary({ schema: "threecore.period-library.v1", revision: 0, entries: [entry] });
+}

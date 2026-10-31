@@ -35,6 +35,7 @@ const ERRORS = Object.freeze({
   PERIOD_REPORT_BUSY: "処理中です。完了を待つか中止してください。",
   PERIOD_REPORT_NOT_LOADED: "先にPC内の保存一覧を読み込んでください。",
   PERIOD_REPORT_EMPTY: "少なくとも1つの控えを選択してください。",
+  PERIOD_REPORT_ENTRY_MISSING: "この報告には選んだトークンの元の控えがありません。",
   PERIOD_REPORT_SOURCE_MISSING: "選んだ控えが見つかりません。一覧を再読み込みしてください。",
   PERIOD_REPORT_SOURCE_CHANGED: "確認中に選んだ控えが変更されました。一覧を再読み込みし、もう一度確認してください。",
   PERIOD_REPORT_AGENT: "トークンと控えの組み合わせが一致しません。",

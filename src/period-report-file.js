@@ -1,9 +1,10 @@
 import { walletSavedFileTargetCode } from "./file-read-status.js";
-import { sha256Hex } from "./security-data.js";
+import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { periodFail, periodShape } from "./period-plan.js";
-import { validatePeriodReportInput } from "./period-report-model.js";
+import { validatePeriodReportInput, periodReportEntryLibrary } from "./period-report-model.js";
+import { preparePeriodLibraryFile } from "./period-library-file.js";
 
 export const PERIOD_REPORT_FILE_SCHEMA = "threecore.period-report-file.v1";
 export const PERIOD_REPORT_FILE_LIMIT = 64 * 1024 * 1024;
@@ -51,4 +52,17 @@ export async function readPeriodReportFile(file, options) {
     sizeCode: "PERIOD_REPORT_FILE_SIZE", readCode: "PERIOD_FILE_READ", encodingCode: "PERIOD_FILE_ENCODING",
     signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodePeriodReportFile(text, options);
+}
+
+/** Portable library format retains the complete selected entry and its restrictions. */
+export async function preparePeriodReportEntryFile(inputValue, agent, fileOptions = {}) {
+  const document = periodReportEntryLibrary(inputValue, agent), entry = document.entries[0];
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_REPORT_OPTIONS"); }
+  const file = await preparePeriodLibraryFile(document, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-period-entry-" + entry.draft.plan.context.agent + ".json",
+    agent: entry.draft.plan.context.agent, entryId: entry.id, archived: entry.archived,
+    requiresNewPlan: entry.requiresNewPlan, containsOriginalEvidence: true, historicalOnly: true,
+    liveChainRechecked: false, authorizesExecution: false });
 }

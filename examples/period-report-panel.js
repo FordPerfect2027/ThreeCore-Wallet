@@ -102,6 +102,15 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
   button("event-csv", "絞り込んだ履歴を全件CSV保存", exportActions);
   button("html", "印刷用の報告HTML", exportActions);
   make("p", "export-note", "JSONは再読込み用です。履歴CSVは表示条件に合う全ページ、要約CSV・HTMLは全体の要約を保存します。暗号化されていません。チェックサムは破損確認用です。", exports);
+  const extraction = make("details", "entry-export", undefined, result);
+  make("summary", "entry-export-heading", "1トークンの元の控えを取り出す", extraction);
+  const entryAgent = chooser("entry-agent", "取り出すトークン", extraction);
+  for (const agent of PERIOD_REPORT_AGENTS) option(entryAgent, agent, agent);
+  entryAgent.value = "DAT";
+  make("pre", "entry-description", "", extraction);
+  make("p", "entry-note", "元の控えと再取得・非表示保管の印をそのまま保存します。3トークン間の比較結果は含みません。保存したJSONは「期間の控え一覧」で確認してから追加できます。", extraction);
+  field("entry-ack", "選んだトークンの公開アドレス・残高・履歴を含む元の控えをPCに保存します", "checkbox", extraction);
+  button("entry-json", "選んだ元の控えをJSON保存", extraction);
   const imports = make("section", "imports");
   field("file", "保存した報告JSONを開く（最大64 MiB）", "file", imports).accept = ".json,application/json";
   make("p", "import-note", "読み込んだ元データから再計算し、確認後に表示します。保存一覧への追加や現在のウォレットへの接続は行いません。", imports);
@@ -132,6 +141,18 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
       nodes["event-count"].textContent = "検索条件を確認してください。";
       nodes.previous.disabled = true; nodes.next.disabled = true;
     }
+  }
+  function renderEntry() {
+    const entry = state?.input?.slots.find(slot => slot.agent === nodes["entry-agent"].value)?.entry;
+    nodes["entry-description"].textContent = entry ? [entry.label,
+      entry.draft.plan.context.agent + " · chain " + entry.draft.plan.context.chainId,
+      entry.draft.plan.context.account,
+      entry.draft.plan.earlierBlock + "→" + entry.draft.plan.laterBlock,
+      "再取得が必要: " + (entry.requiresNewPlan ? "はい" : "いいえ"),
+      "非表示保管: " + (entry.archived ? "はい" : "いいえ")].join("\n") : "このトークンの元の控えは含まれていません。";
+    nodes["entry-agent"].disabled = state.busy || !state.input;
+    nodes["entry-ack"].disabled = state.busy || !entry;
+    nodes["entry-json"].disabled = state.busy || !entry || !nodes["entry-ack"].checked;
   }
   function render(value) {
     if (disposed) return;
@@ -171,7 +192,7 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
     ].join("\n") : "";
     result.hidden = !value.report;
     if (value.input !== lastInput) {
-      lastInput = value.input; page = 0; nodes["export-ack"].checked = false;
+      lastInput = value.input; page = 0; nodes["export-ack"].checked = false; nodes["entry-ack"].checked = false;
       if (value.report) {
         const report = value.report;
         nodes["result-title"].textContent = report.title;
@@ -198,7 +219,7 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
     }
     for (const name of ["json", "csv", "html", "event-csv"]) nodes[name].disabled = value.busy || !value.input || !nodes["export-ack"].checked;
     for (const name of ["event-agent", "direction", "search", "export-ack"]) nodes[name].disabled = value.busy || !value.input;
-    renderEvents();
+    renderEvents(); renderEntry();
   }
   const controller = createPeriodReportController({ storage, onChange: render, ...(now ? { now } : {}) });
   function listen(name, event, action) {
@@ -214,6 +235,9 @@ export function mountPeriodReportPanel({ document, parent, storage = createPerio
     const file = nodes.file.files?.[0]; nodes.file.value = "";
     if (file) void controller.importFile(file);
   });
+  listen("entry-agent", "change", () => { nodes["entry-ack"].checked = false; renderEntry(); });
+  listen("entry-ack", "change", renderEntry);
+  listen("entry-json", "click", () => { void controller.exportEntryFile(nodes["entry-agent"].value, nodes["entry-ack"].checked, download); });
   listen("export-ack", "change", () => render(controller.state));
   for (const name of ["json", "csv", "html", "event-csv"]) listen(name, "click", () => { void controller.exportFile(name === "event-csv" ? "events" : name, nodes["export-ack"].checked, download, name === "event-csv" ? eventQuery() : undefined); });
   for (const name of ["event-agent", "direction", "search"]) listen(name, name === "search" ? "input" : "change", () => { page = 0; renderEvents(); });

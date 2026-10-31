@@ -3,9 +3,9 @@ import { comparePeriodReports } from "./period-report-comparison.js";
 import { periodFail } from "./period-plan.js";
 import { emptyPeriodLibrary, validatePeriodLibrary, libraryId } from "./period-library-model.js";
 import { emptyReportSelection, reportAgent, createPeriodReportInput, validatePeriodReportInput,
-  assertReportSourcesUnchanged } from "./period-report-model.js";
+  assertReportSourcesUnchanged, periodReportEntryLibrary } from "./period-report-model.js";
 import { analyzePeriodReport } from "./period-report-engine.js";
-import { preparePeriodReportFile, readPeriodReportFile } from "./period-report-file.js";
+import { preparePeriodReportFile, readPeriodReportFile, preparePeriodReportEntryFile } from "./period-report-file.js";
 import { validateReportEventQuery } from "./period-report-query.js";
 import { periodReportCSV, periodReportHTML, periodReportEventsCSV } from "./period-report-export.js";
 import { reportErrorCode } from "./period-report-view.js";
@@ -14,8 +14,8 @@ import { createStateNotifier } from "./state-notifier.js";
 /** Read-only consumer of the period library. There is intentionally no storage.change call. */
 export function createPeriodReportController({ storage, onChange = () => {},
   now = () => new Date().toISOString(), readFile = readPeriodReportFile,
-  prepareFile = preparePeriodReportFile } = {}) {
-  if (!storage || ![storage.read, storage.close, onChange, now, readFile, prepareFile]
+  prepareFile = preparePeriodReportFile, prepareEntryFile = preparePeriodReportEntryFile } = {}) {
+  if (!storage || ![storage.read, storage.close, onChange, now, readFile, prepareFile, prepareEntryFile]
     .every(value => typeof value === "function")) periodFail("PERIOD_REPORT_OPTIONS");
   let document = emptyPeriodLibrary(), selection = emptyReportSelection(), loaded = false;
   let input = null, report = null, review = null, origin = null, phase = "idle", error = null;
@@ -208,6 +208,28 @@ export function createPeriodReportController({ storage, onChange = () => {},
       }, () => { message = "保存処理を開始しました。ダウンロード先でファイルをご確認ください。"; });
     } catch (value) { return fail(value, own); }
   }
+  async function exportEntryFile(agent, acknowledged, deliver) {
+    const own = generation;
+    try {
+      if (!guard()) return false;
+      if (!input) periodFail("PERIOD_REPORT_NO_RESULT");
+      if (acknowledged !== true) periodFail("PERIOD_REPORT_ACK");
+      if (typeof deliver !== "function") periodFail("PERIOD_REPORT_DELIVERY");
+      const source = input, selected = reportAgent(agent);
+      periodReportEntryLibrary(source, selected);
+      if (!sameGeneration(own) || source !== input) return false;
+      return await run("exporting", async (same, signal) => {
+        const file = await prepareEntryFile(source, selected, { signal });
+        if (!same()) return null;
+        const delivery = deliver(file);
+        if (observeCallbackResult(delivery) !== "synchronous" || delivery === false) periodFail("PERIOD_REPORT_DELIVERY");
+        return file;
+      }, () => {
+        if (review) phase = "review";
+        message = "選んだトークンの元の控えを保存します。保存したJSONは「期間の控え一覧」で内容を確認できます。";
+      });
+    } catch (value) { return fail(value, own); }
+  }
   function dispose() {
     if (disposed) return;
     disposed = true; generation++; phase = "disposed"; review = null;
@@ -216,5 +238,5 @@ export function createPeriodReportController({ storage, onChange = () => {},
     consumeCallback(() => storage.close());
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepare,
-    invalidateReview, importFile, stageHistory, applyReview, exportFile, cancel, dispose });
+    invalidateReview, importFile, stageHistory, applyReview, exportFile, exportEntryFile, cancel, dispose });
 }
