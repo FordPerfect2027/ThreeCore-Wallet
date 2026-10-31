@@ -193,6 +193,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.wallet-saved-browser-batch.v2": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v3": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v4": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
+  "threecore.wallet-saved-browser-batch.v5": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-batch-inspection.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.saved-file-comparison-bundle.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_ONLY"],
   "threecore.saved-file-comparison-bundle.v2": [null, "PERIOD_FILE_SAVED_BUNDLE_ONLY"],
@@ -915,7 +916,7 @@ async function inspectSavedBatchRow(row, { subtle, signal, timeoutMs, expectedSh
     ...(expectedSha256 !== undefined ? { expectedSha256, checksumMatches } : {}) });
 }
 
-function finishSavedBatch(rows, selection, completed, phase, referenceText, reference, referenceSha256, fileReads = false, continuation = null) {
+function finishSavedBatch(rows, selection, completed, phase, referenceText, reference, referenceSha256, fileReads = false, continuation = null, retry = null) {
   const hasReference = reference !== null;
   const files = rows.map((row, i) => completed[i] ?? Object.freeze({ name: row.name, byteLength: fileReads ? null : row.byteLength,
     ...(fileReads ? { reportedByteLength: row.byteLength } : {}), sha256: null, status: "pending", code: null, inspection: null,
@@ -928,9 +929,10 @@ function finishSavedBatch(rows, selection, completed, phase, referenceText, refe
     ...(unknownSourceBytes ? { sourceUnavailable: count("source-unavailable"), selectedReportedBytes: selection.totalBytes, unreadSourceReportedBytes: files.reduce((total, row) => total + (row.reportedByteLength ?? 0), 0) } : {}),
     ...(count("validated-structure") ? { structureValidated: count("validated-structure") } : {}),
     ...(files.some(row => row.inspection?.simulationOnly === true) ? { simulationFiles: files.filter(row => row.inspection?.simulationOnly === true).length } : {}) });
-  const result = Object.freeze({ schema: "threecore.wallet-saved-browser-batch." + (continuation ? "v4" : unknownSourceBytes ? "v3" : hasReference ? "v2" : "v1"), readOnly: true, authenticatesOrigin: false, authorizesExecution: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, externalChecksumsCompared: hasReference && summary.checksumsCompared > 0,
+  const result = Object.freeze({ schema: "threecore.wallet-saved-browser-batch." + (retry ? "v5" : continuation ? "v4" : unknownSourceBytes ? "v3" : hasReference ? "v2" : "v1"), readOnly: true, authenticatesOrigin: false, authorizesExecution: false, restorable: false, liveChainRechecked: false, atomicSnapshot: false, externalChecksumsCompared: hasReference && summary.checksumsCompared > 0,
     phase, complete: phase === "complete" && completed.length === rows.length, allOriginalsValidated: phase === "complete" && summary.validatedOriginals === rows.length, summary, files: Object.freeze(files),
     ...(continuation ? { continuation: Object.freeze(continuation) } : {}),
+    ...(retry ? { retry: Object.freeze(retry) } : {}),
     ...(hasReference ? { referenceProvided: true, reference: Object.freeze({ text: referenceText, sha256: referenceSha256, entries: reference }), allExternalChecksumsMatch: phase === "complete" && summary.checksumsMatching === rows.length } : {}) });
   browserSavedBatchReceipts.add(result); return result;
 }
@@ -1001,29 +1003,43 @@ export async function resumeWalletSavedFileBatch(previous, readSource, options =
   return inspectSavedFileBatchCaptured(browserSavedFileBatchSelections.get(previous), readSource,
     { ...options, ...(previous.referenceProvided ? { manifestText: previous.reference.text } : {}) }, previous);
 }
-async function inspectSavedFileBatchCaptured(selection, readSource, options, previous = null) {
+/** Retry only read/hash failures from the same owned selection, after all initial rows were attempted. */
+export function canRetryWalletSavedFileBatch(previous) {
+  return browserSavedFileBatchSelections.has(previous) && previous.summary.pending === 0 && previous.files.some(row => ["source-unavailable", "hash-unavailable"].includes(row.status));
+}
+export async function retryWalletSavedFileBatch(previous, readSource, options = {}) {
+  if (!canRetryWalletSavedFileBatch(previous)) savedInspectionFail("FILE_BATCH_RETRY");
+  try { options = captureOptionalDataFields(options, ["subtle", "signal", "timeoutMs", "onProgress", "manifestText"]); } catch { savedInspectionFail("FILE_BATCH_OPTIONS"); }
+  if (Object.hasOwn(options, "manifestText")) savedInspectionFail("FILE_BATCH_OPTIONS");
+  return inspectSavedFileBatchCaptured(browserSavedFileBatchSelections.get(previous), readSource,
+    { ...options, ...(previous.referenceProvided ? { manifestText: previous.reference.text } : {}) }, previous, true);
+}
+async function inspectSavedFileBatchCaptured(selection, readSource, options, previous = null, retryFailed = false) {
   try { options = captureOptionalDataFields(options, ["subtle", "signal", "timeoutMs", "onProgress", "manifestText"]); } catch { savedInspectionFail("FILE_BATCH_OPTIONS"); }
   const { subtle = globalThis.crypto?.subtle, signal, timeoutMs = 120000, onProgress } = options;
   if (typeof readSource !== "function" || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000 || (onProgress !== undefined && typeof onProgress !== "function")) savedInspectionFail("FILE_BATCH_OPTIONS");
   const reference = options.manifestText === undefined ? null : matchWalletSavedBatchManifest(selection.files, options.manifestText);
   const completed = previous ? previous.files.slice(0, previous.summary.checked) : [], startAt = completed.length, local = new AbortController();
+  const targets = selection.files.map((_, index) => index).filter(index => retryFailed ? ["source-unavailable", "hash-unavailable"].includes(previous.files[index].status) : index >= startAt), retried = [];
   let phase = "complete", timer, subscription, referenceSha256 = previous?.reference?.sha256 ?? null;
-  const continuation = previous ? { sequence: (previous.continuation?.sequence ?? 0) + 1, retainedChecks: startAt, previousPhase: previous.phase, previousBatchSha256: null } : null;
+  const continuation = previous && !retryFailed ? { sequence: (previous.continuation?.sequence ?? 0) + 1, retainedChecks: startAt, previousPhase: previous.phase, previousBatchSha256: null } : null;
+  const retry = retryFailed ? { sequence: (previous.retry?.sequence ?? 0) + 1, previousPhase: previous.phase, previousBatchSha256: null } : null;
   const stop = reason => { if (!readAbortState(local.signal)) { phase = reason; local.abort(); } };
-  const progress = () => consumeCallback(() => onProgress?.(Object.freeze({ selected: selection.files.length, checked: completed.length })));
+  const progress = () => consumeCallback(() => onProgress?.(Object.freeze({ selected: selection.files.length, checked: completed.length, ...(retry ? { retrySelected: targets.length, retryChecked: retried.length } : {}) })));
+  const accept = (index, row) => { completed[index] = row; if (retry) retried.push(index); progress(); };
   try {
     try { subscription = subscribeReadAbort(signal, () => stop("cancelled")); } catch { savedInspectionFail("FILE_BATCH_SIGNAL"); }
     timer = setTimeout(() => stop("timed-out"), timeoutMs); progress();
-    if (continuation && !readAbortState(local.signal)) {
-      try { continuation.previousBatchSha256 = await sha256Hex(new TextEncoder().encode(encodeWalletSavedTextBatch(previous)), subtle, { signal: local.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
-      catch { if (!readAbortState(local.signal)) savedInspectionFail("FILE_BATCH_RESUME_HASH_UNAVAILABLE"); }
+    if ((continuation || retry) && !readAbortState(local.signal)) {
+      try { (continuation || retry).previousBatchSha256 = await sha256Hex(new TextEncoder().encode(encodeWalletSavedTextBatch(previous)), subtle, { signal: local.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
+      catch { if (!readAbortState(local.signal)) savedInspectionFail(retry ? "FILE_BATCH_RETRY_HASH_UNAVAILABLE" : "FILE_BATCH_RESUME_HASH_UNAVAILABLE"); }
     }
     if (reference && referenceSha256 === null && !readAbortState(local.signal)) {
       try { referenceSha256 = await sha256Hex(new TextEncoder().encode(options.manifestText), subtle, { signal: local.signal, timeoutMs: Math.min(timeoutMs, 30000) }); }
       catch { if (!readAbortState(local.signal)) savedInspectionFail("FILE_BATCH_REFERENCE_HASH_UNAVAILABLE"); }
     }
-    for (const [index, row] of selection.files.entries()) {
-      if (index < startAt) continue;
+    for (const index of targets) {
+      const row = selection.files[index];
       if (readAbortState(local.signal)) break;
       let text;
       try {
@@ -1035,13 +1051,14 @@ async function inspectSavedFileBatchCaptured(selection, readSource, options, pre
         if (readAbortState(local.signal)) break;
         let code; try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; observeCallbackResult(code); } catch {}
         if (!["FILE_READ", "FILE_SIZE", "FILE_ENCODING", "FILE_TIMEOUT", "FILE_CLOCK", "FILE_BUSY", "FILE_DISPOSED"].includes(code)) code = "FILE_READ";
-        completed.push(Object.freeze({ name: row.name, byteLength: null, reportedByteLength: row.byteLength, sha256: null, status: "source-unavailable", code, inspection: null,
-          ...(reference ? { expectedSha256: reference[index].expectedSha256, checksumMatches: null } : {}) })); progress(); continue;
+        accept(index, Object.freeze({ name: row.name, byteLength: null, reportedByteLength: row.byteLength, sha256: null, status: "source-unavailable", code, inspection: null,
+          ...(reference ? { expectedSha256: reference[index].expectedSha256, checksumMatches: null } : {}) })); continue;
       }
       const checked = await inspectSavedBatchRow({ ...row, text }, { subtle, signal: local.signal, timeoutMs, expectedSha256: reference ? reference[index].expectedSha256 : undefined });
-      if (readAbortState(local.signal) || !checked) break; completed.push(checked); progress();
+      if (readAbortState(local.signal) || !checked) break; accept(index, checked);
     }
-    const result = finishSavedBatch(selection.files, selection, completed, phase, options.manifestText, reference, referenceSha256, true, continuation);
+    if (retry) Object.assign(retry, { targetIndexes: Object.freeze(targets), completedIndexes: Object.freeze(retried), remainingIndexes: Object.freeze(targets.filter(index => !retried.includes(index))), retainedChecks: selection.files.length - retried.length });
+    const result = finishSavedBatch(selection.files, selection, completed, phase, options.manifestText, reference, referenceSha256, true, continuation, retry);
     browserSavedFileBatchSelections.set(result, selection); return result;
   } finally { clearTimeout(timer); subscription?.dispose(); local.abort(); }
 }
@@ -1067,6 +1084,10 @@ export function encodeWalletSavedTextBatchCsv(result) {
   if (result.continuation) {
     rows[0].push("continuationSequence", "retainedChecks", "previousPhase", "previousBatchSha256");
     for (const row of rows.slice(1)) row.push(result.continuation.sequence, result.continuation.retainedChecks, result.continuation.previousPhase, result.continuation.previousBatchSha256 ?? "");
+  }
+  if (result.retry) {
+    rows[0].push("retrySequence", "retryPreviousPhase", "retryPreviousBatchSha256", "retryTargetIndexes", "retryCompletedIndexes", "retryRemainingIndexes", "retryRetainedChecks");
+    for (const row of rows.slice(1)) row.push(result.retry.sequence, result.retry.previousPhase, result.retry.previousBatchSha256 ?? "", result.retry.targetIndexes.join(" | "), result.retry.completedIndexes.join(" | "), result.retry.remainingIndexes.join(" | "), result.retry.retainedChecks);
   }
   const extraFields = [...WALLET_SAVED_OBSERVATION_SCOPE_FIELDS, ...WALLET_SAVED_REHEARSAL_SCOPE_FIELDS].filter(field => result.files.some(row => row.inspection?.scope && Object.hasOwn(row.inspection.scope, field)));
   if (extraFields.length) {

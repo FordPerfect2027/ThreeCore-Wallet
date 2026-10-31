@@ -719,6 +719,13 @@ export function registerFileReadUITests(test) {
     }finally{page.dispose();host.remove();}
   });
 
+  test('file-read: retry reopens only a previously unreadable selected file and saves its linked receipt',async()=>{
+    const host=document.createElement('div');document.body.append(host);const text=savedRehearsalGuideFixtures()[0].text,downloads=[],calls=[];let retry=false;
+    const panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value),readText:async(file,options)=>{calls.push(file.name);if(file.name==='b.json'&&!retry)throw Error('temporary read failure');return new TextDecoder('utf-8',{fatal:true}).decode(await readSecurityFileBytes(file,options));}}),q=name=>host.querySelector('.saved-file-batch-'+name),done=async()=>{const until=Date.now()+10000;while(panel.getState().busy&&Date.now()<until)await tick();assert(!panel.getState().busy);};
+    try{const chosen=new DataTransfer();for(const name of['a.json','b.json','c.json'])chosen.items.add(new File([text],name));q('file').files=chosen.files;q('file').dispatchEvent(new Event('change'));q('start').click();await done();const previous=panel.getState().result;assert(previous.summary.sourceUnavailable===1&&!q('retry').disabled);retry=true;q('retry').click();await done();assert(JSON.stringify(calls)===JSON.stringify(['a.json','b.json','c.json','b.json']));assert(panel.getState().result.files[0]===previous.files[0]);assert(q('retry').disabled&&q('save').disabled);assert(q('summary').textContent.includes('再試行済み 1件'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();const receipt=JSON.parse(downloads[0].text);assert(receipt.schema.endsWith('.v5')&&receipt.retry.retainedChecks===2&&receipt.retry.completedIndexes[0]===1);assert(receipt.retry.previousBatchSha256.length===64);q('clear').click();assert(q('retry').disabled&&panel.getState().result===null);
+    }finally{panel.dispose();host.remove();}
+  });
+
   test("file-read: search CSV exports all 600 matching rows and retains the original session",async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
