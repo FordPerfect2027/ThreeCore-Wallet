@@ -1,6 +1,7 @@
 import { captureWalletReadState } from "./wallet-read-scope.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
 import { captureOptionalDataFields } from "./security-data.js";
 import { identityUnits } from "./token-identity-codec.js";
 import { allowanceFail, allowanceObject, AllowanceError, validateAllowanceTargets, assertAllowanceContext } from "./allowance-targets.js";
@@ -26,12 +27,11 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
   const key = sessionKey(session, targets);
   const timeoutMs = options.timeoutMs ?? 60000;
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000) allowanceFail("ALLOWANCE_TIMEOUT_OPTION");
-  if (options.signal !== undefined && !(options.signal instanceof AbortSignal)) allowanceFail("ALLOWANCE_SIGNAL");
   if (options.onProgress !== undefined && typeof options.onProgress !== "function") allowanceFail("ALLOWANCE_OBSERVER");
   const observer = options.onProgress;
-  const signal = options.signal;
   const aborter = new AbortController();
   let stopped = false;
+  let cancellation;
   let timer;
   let interrupt;
   let stopReason = "ALLOWANCE_CANCELLED";
@@ -44,7 +44,7 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
     interrupt(new AllowanceError(code));
   }
   function guard() {
-    if (stopped || signal?.aborted) allowanceFail(stopReason);
+    if (stopped || cancellation?.aborted()) allowanceFail(stopReason);
     let current;
     try { current = sessionKey(session); }
     catch { allowanceFail("ALLOWANCE_SESSION_CHANGED"); }
@@ -72,9 +72,7 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
     catch { return { value: null, error: "INVALID_RESPONSE" }; }
   }
   const cancel = () => stop("ALLOWANCE_CANCELLED");
-  if (signal?.aborted) allowanceFail("ALLOWANCE_CANCELLED");
-  signal?.addEventListener("abort", cancel, { once: true });
-  timer = setTimeout(() => stop("ALLOWANCE_TIMEOUT"), timeoutMs);
+
   async function collect() {
     progress("token", 0);
     const identity = await readTokenIdentity(session, {
@@ -122,11 +120,19 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
     progress("complete", rows.length);
     return result;
   }
-  try { return await Promise.race([collect(), interrupted]); }
+  // Observe interruption before registration can synchronously cancel or fail.
+  interrupted.catch(() => {});
+  try {
+    try { cancellation = subscribeReadAbort(options.signal, cancel); }
+    catch { allowanceFail("ALLOWANCE_SIGNAL"); }
+    guard();
+    timer = setTimeout(() => stop("ALLOWANCE_TIMEOUT"), timeoutMs);
+    return await Promise.race([collect(), interrupted]);
+  }
   finally {
     stopped = true;
     aborter.abort();
     clearTimeout(timer);
-    signal?.removeEventListener("abort", cancel);
+    cancellation?.dispose();
   }
 }

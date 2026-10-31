@@ -1,6 +1,7 @@
 import { captureWalletReadState } from "./wallet-read-scope.js";
 import { catalogToken } from "./token-catalog.js";
 import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
 import { captureOptionalDataFields } from "./security-data.js";
 import {
   captureTransferEvents, TRANSFER_SCHEMA, TransferError, hexQuantity,
@@ -49,10 +50,9 @@ export async function readTransferSnapshot(session, input, options = {}) {
   const token = catalogToken({ agent: context.agent, chainId: context.chainId });
   const timeoutMs = options.timeoutMs ?? 60000;
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000) transferFail("TRANSFER_TIMEOUT_OPTION");
-  if (options.signal !== undefined && !(options.signal instanceof AbortSignal)) transferFail("TRANSFER_SIGNAL");
   if (options.onProgress !== undefined && typeof options.onProgress !== "function") transferFail("TRANSFER_OBSERVER");
-  if (options.signal?.aborted) transferFail("TRANSFER_CANCELLED");
   let stopped = false;
+  let cancellation;
   let reason = "TRANSFER_CANCELLED";
   let rejectInterrupt;
   const interrupted = new Promise((resolve, reject) => { rejectInterrupt = reject; });
@@ -63,7 +63,7 @@ export async function readTransferSnapshot(session, input, options = {}) {
     rejectInterrupt(new TransferError(code));
   }
   function guard() {
-    if (stopped) transferFail(reason);
+    if (stopped || cancellation?.aborted()) transferFail(reason);
     let current;
     try { current = binding(session).key; }
     catch { transferFail("TRANSFER_SESSION_CHANGED"); }
@@ -89,8 +89,7 @@ export async function readTransferSnapshot(session, input, options = {}) {
     return value;
   }
   const cancel = () => stop("TRANSFER_CANCELLED");
-  options.signal?.addEventListener("abort", cancel, { once: true });
-  const timer = setTimeout(() => stop("TRANSFER_TIMEOUT"), timeoutMs);
+  let timer;
   async function collect() {
     progress("range");
     const latest = header(await read(() => session.getBlockSnapshot()));
@@ -153,10 +152,18 @@ export async function readTransferSnapshot(session, input, options = {}) {
     progress("complete", completed, blocks.size);
     return snapshot;
   }
-  try { return await Promise.race([collect(), interrupted]); }
+  // Observe interruption before registration can synchronously cancel or fail.
+  interrupted.catch(() => {});
+  try {
+    try { cancellation = subscribeReadAbort(options.signal, cancel); }
+    catch { transferFail("TRANSFER_SIGNAL"); }
+    guard();
+    timer = setTimeout(() => stop("TRANSFER_TIMEOUT"), timeoutMs);
+    return await Promise.race([collect(), interrupted]);
+  }
   finally {
     stopped = true;
     clearTimeout(timer);
-    options.signal?.removeEventListener("abort", cancel);
+    cancellation?.dispose();
   }
 }

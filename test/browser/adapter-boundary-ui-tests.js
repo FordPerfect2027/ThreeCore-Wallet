@@ -6,6 +6,12 @@ import { mountFileReadPanel } from "/examples/file-read-panel.js";
 import { mountExportGuardPanel } from "/examples/export-guard-panel.js";
 import { mountTabGuardPanel } from "/examples/tab-guard-panel.js";
 import { manualTime, microtasks } from "/test/helpers/secure-lifecycle-time.js";
+import { readTokenIdentity } from "/src/token-identity-reader.js";
+import { readTransferSnapshot } from "/src/transfer-reader.js";
+import { readAllowanceSnapshot } from "/src/allowance-reader.js";
+import { ALLOWANCE_TARGET_SCHEMA } from "/src/allowance-targets.js";
+import { collectPeriod } from "/src/period-reader.js";
+import { periodSession, plan } from "/test/helpers/period-fixtures.js";
 
 const assert = (value, message) => { if (!value) throw Error(message); };
 const outcome = promise => promise.then(value => ({ value }), error => ({ code: error.code }));
@@ -29,6 +35,40 @@ function host() {
 }
 
 export function registerAdapterBoundaryUITests(test) {
+  for (const [name, run] of [
+    ["IDENTITY", (f, options) => readTokenIdentity(f.session, options)],
+    ["TRANSFER", (f, options) => readTransferSnapshot(f.session, { fromBlock: "31", toBlock: "42", lookback: 12 }, options)],
+    ["ALLOWANCE", (f, options) => {
+      f.session.getTokenAllowance = async () => 0n;
+      return readAllowanceSnapshot(f.session, { schema: ALLOWANCE_TARGET_SCHEMA, agent: "DAT", chainId: 8453,
+        tokenAddress: f.token.address, targets: [{ address: "0x" + "55".repeat(20), label: "Synthetic target" }] }, options);
+    }],
+    ["PERIOD", (f, options) => collectPeriod(f.session, plan(), options)],
+  ]) {
+    test(`read-cancellation: ${name} native state survives overrides and artificial events`, async () => {
+      const f = periodSession(), controller = new AbortController();
+      let touched = 0, stages = 0;
+      for (const field of ["aborted", "addEventListener", "removeEventListener"]) {
+        Object.defineProperty(controller.signal, field, { get() { touched++; throw Error("Synthetic override"); } });
+      }
+      const first = await outcome(run(f, { signal: controller.signal, onProgress() {
+        stages++; controller.signal.dispatchEvent(new Event("abort"));
+      } }));
+      assert(first.value && stages > 1 && touched === 0, "Genuine state must preserve the complete successful read");
+      const before = f.calls.length;
+      controller.abort();
+      assert((await outcome(run(f, { signal: controller.signal }))).code === name + "_CANCELLED", "Hidden native abort must reject");
+      assert(f.calls.length === before, "Already cancelled input cannot read");
+      const second = new AbortController();
+      stages = 0;
+      const cancelled = await outcome(run(periodSession(), { signal: second.signal, onProgress() {
+        stages++;
+        if (stages === 1) second.signal.dispatchEvent(new Event("abort"));
+        else second.abort();
+      } }));
+      assert(cancelled.code === name + "_CANCELLED" && stages === 2, "Artificial event cannot consume genuine cancellation");
+    });
+  }
   for (const agent of ["DAT", "EMA", "CAWELON"]) {
     test(`adapter-boundary: ${agent} refuses connection with asynchronous RPC timer`, async fixture => {
       const time = manualTime();

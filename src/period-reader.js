@@ -2,6 +2,7 @@ import { captureWalletReadState } from "./wallet-read-scope.js";
 import { readOwnErrorCode } from "./provider-error.js";
 import { validateSiteOrigin } from "./wallet-session.js";
 import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
 import { captureOptionalDataFields } from "./security-data.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { readTransferSnapshot } from "./transfer-reader.js";
@@ -64,13 +65,12 @@ export async function collectPeriod(session, planInput, options = {}) {
   for (const value of [timeoutMs, stepTimeoutMs]) {
     if (!Number.isInteger(value) || value < 1 || value > 120000) periodFail("PERIOD_TIMEOUT_OPTION");
   }
-  if (options.signal !== undefined && !(options.signal instanceof AbortSignal)) periodFail("PERIOD_SIGNAL");
   for (const callback of [options.onProgress, options.onCheckpoint]) {
     if (callback !== undefined && typeof callback !== "function") periodFail("PERIOD_OBSERVER");
   }
-  if (options.signal?.aborted) periodFail("PERIOD_CANCELLED");
   const aborter = new AbortController();
   let stopped = false;
+  let cancellation;
   let reason = "PERIOD_CANCELLED";
   let rejectInterrupt;
   const interrupted = new Promise((resolve, reject) => { rejectInterrupt = reject; });
@@ -82,7 +82,7 @@ export async function collectPeriod(session, planInput, options = {}) {
     rejectInterrupt(new PeriodError(code));
   }
   function guard() {
-    if (stopped) periodFail(reason);
+    if (stopped || cancellation?.aborted()) periodFail(reason);
     try { if (binding(session, plan) !== initial) periodFail("PERIOD_SESSION_CHANGED"); }
     catch { periodFail("PERIOD_SESSION_CHANGED"); }
   }
@@ -114,8 +114,7 @@ export async function collectPeriod(session, planInput, options = {}) {
     }
   }
   const cancel = () => stop("PERIOD_CANCELLED");
-  options.signal?.addEventListener("abort", cancel, { once: true });
-  const timer = setTimeout(() => stop("PERIOD_TIMEOUT"), timeoutMs);
+  let timer;
   const stepOptions = { signal: aborter.signal, timeoutMs: stepTimeoutMs };
   async function recheck(stage) {
     const anchors = periodDraftAnchors(draft);
@@ -157,11 +156,19 @@ export async function collectPeriod(session, planInput, options = {}) {
     progress("complete");
     return draft;
   }
-  try { return await Promise.race([collect(), interrupted]); }
+  // Observe interruption before registration can synchronously cancel or fail.
+  interrupted.catch(() => {});
+  try {
+    try { cancellation = subscribeReadAbort(options.signal, cancel); }
+    catch { periodFail("PERIOD_SIGNAL"); }
+    guard();
+    timer = setTimeout(() => stop("PERIOD_TIMEOUT"), timeoutMs);
+    return await Promise.race([collect(), interrupted]);
+  }
   finally {
     stopped = true;
     aborter.abort();
     clearTimeout(timer);
-    options.signal?.removeEventListener("abort", cancel);
+    cancellation?.dispose();
   }
 }

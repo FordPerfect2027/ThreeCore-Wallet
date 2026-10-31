@@ -4,6 +4,7 @@ import { catalogToken, TOKEN_CATALOG_VERSION, reviewCatalogAddress } from "./tok
 import { identityAddress, identityFail, identityObject, identityUnits, validateTokenMetadata, TokenIdentityError } from "./token-identity-codec.js";
 import { TOKEN_IDENTITY_SCHEMA, validateTokenObservation } from "./token-identity-model.js";
 import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
 import { captureOptionalDataFields } from "./security-data.js";
 
 function sessionIdentity(session) {
@@ -53,7 +54,6 @@ export async function readTokenIdentity(session, options = {}) {
   const timeoutMs = options.timeoutMs ?? 30000;
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000) identityFail("IDENTITY_TIMEOUT_OPTION");
   const signal = options.signal;
-  if (signal !== undefined && !(signal instanceof AbortSignal)) identityFail("IDENTITY_SIGNAL");
   const observer = options.onProgress;
   if (observer !== undefined && typeof observer !== "function") identityFail("IDENTITY_OBSERVER");
   // Explicit historical reads keep the same hash-pinned subread contract as latest.
@@ -61,9 +61,18 @@ export async function readTokenIdentity(session, options = {}) {
   if (requestedBlock !== undefined) identityUnits(requestedBlock);
   let stopped = false;
   let timer;
-  let abort;
+  let cancellation;
+  let rejectInterrupt;
+  let reason = "IDENTITY_CANCELLED";
+  const interruption = new Promise((resolve, reject) => { rejectInterrupt = reject; });
+  function stop(code) {
+    if (stopped) return;
+    stopped = true;
+    reason = code;
+    rejectInterrupt(new TokenIdentityError(code));
+  }
   function guard() {
-    if (stopped || signal?.aborted) identityFail("IDENTITY_CANCELLED");
+    if (stopped || cancellation?.aborted()) identityFail(reason);
     let current;
     try { current = sessionIdentity(session); }
     catch { identityFail("IDENTITY_SESSION_CHANGED"); }
@@ -82,20 +91,6 @@ export async function readTokenIdentity(session, options = {}) {
     guard();
     return result;
   }
-  guard();
-  const interruption = new Promise((resolve, reject) => {
-    timer = setTimeout(() => {
-      stopped = true;
-      reject(new TokenIdentityError("IDENTITY_TIMEOUT"));
-    }, timeoutMs);
-    if (signal) {
-      abort = () => {
-        stopped = true;
-        reject(new TokenIdentityError("IDENTITY_CANCELLED"));
-      };
-      signal.addEventListener("abort", abort, { once: true });
-    }
-  });
   async function collect() {
     const block = header(await read("block", () => session.getBlockSnapshot(
       requestedBlock === undefined ? undefined : "0x" + BigInt(requestedBlock).toString(16))));
@@ -132,10 +127,17 @@ export async function readTokenIdentity(session, options = {}) {
     progress("complete");
     return result;
   }
-  try { return await Promise.race([collect(), interruption]); }
+  interruption.catch(() => {});
+  try {
+    try { cancellation = subscribeReadAbort(signal, () => stop("IDENTITY_CANCELLED")); }
+    catch { identityFail("IDENTITY_SIGNAL"); }
+    guard();
+    timer = setTimeout(() => stop("IDENTITY_TIMEOUT"), timeoutMs);
+    return await Promise.race([collect(), interruption]);
+  }
   finally {
     stopped = true;
     clearTimeout(timer);
-    if (abort) signal.removeEventListener("abort", abort);
+    cancellation?.dispose();
   }
 }
