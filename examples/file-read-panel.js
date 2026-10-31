@@ -45,7 +45,8 @@ export function mountFileReadPanel({ document, parent, service = walletFileReadS
   const action = node("p", "action");
   action.setAttribute("role", "status");
   parent.append(section);
-  const savedGuide = mountSavedFileInspectionPanel({ document, parent: section, destinations: savedFileDestinations });
+  const savedGuide = mountSavedFileInspectionPanel({ document, parent: section, destinations: savedFileDestinations,
+    reviewBatchEvidence: file => savedBatch.inspectEvidenceFile(file) });
   const savedBatch = mountSavedFileBatchPanel({ document, parent: section,
     inspectOriginal: (file, digest) => savedGuide.inspectFile(file, digest),
     compareOriginal: (file, digest) => savedGuide.compareFile(file, digest) });
@@ -118,12 +119,13 @@ export function createFileSelectionNotice(input, note) {
 /** A separate, explicitly selected file is inspected only; no import callbacks exist. */
 export function mountSavedFileInspectionPanel({ document, parent,
   readText = readSavedGuideText, inspect = inspectWalletSavedText,
-  destinations = {},
+  destinations = {}, reviewBatchEvidence = null,
   download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-file-guide";
   parent.append(host); const nodes = {}, cleanup = [];
   let disposed = false, generation = 0, aborter = null, busy = false, result = null, comparison = null, comparisonReview = null, workKind = "source";
   let sourceFile = null, comparisonSourceFile = null, bundlePanel = null, differencePanel = null;
+  let handoffGeneration = null;
   const destinationCallbacks = Object.create(null);
   for (const target of ["period", "library", "report", "history", "set", "workspace", "setup", "transfer-vault", "reconciliation"]) {
     try { const descriptor = Object.getOwnPropertyDescriptor(destinations, target); if (descriptor && Object.hasOwn(descriptor, "value") && typeof descriptor.value === "function") destinationCallbacks[target] = descriptor.value; } catch { /* Unknown destinations stay unavailable. */ }
@@ -142,6 +144,8 @@ export function mountSavedFileInspectionPanel({ document, parent,
   const notice = make("p", "notice"), output = make("pre", "output");
   const destination = make("button", "destination", "このページの読み込み欄へ移動"); destination.type = "button";
   const destinationStatus = make("p", "destination-status", ""); destinationStatus.setAttribute("role", "status");
+  const batchEvidence = make("button", "batch-evidence", "このファイルを一括資料として再確認"); batchEvidence.type = "button";
+  const batchEvidenceStatus = make("p", "batch-evidence-status", ""); batchEvidenceStatus.setAttribute("role", "status"); batchEvidenceStatus.setAttribute("aria-live", "polite");
   const ackLabel = make("label", "ack-label", "形式の案内と照合用の値を、暗号化せずPCに保存します");
   const ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
   const save = make("button", "save", "この案内をJSON保存"); save.type = "button";
@@ -172,6 +176,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
     ack.disabled = busy || !result; save.disabled = busy || !result || !ack.checked;
     output.textContent = walletSavedInspectionText(result);
     destination.disabled = disposed || busy || !result || !["validated-original", "validated-structure"].includes(result.validation) || !destinationCallbacks[result.target];
+    batchEvidence.disabled = disposed || busy || handoffGeneration === generation || !sourceFile || result?.sourceSchema !== "threecore.wallet-saved-batch-evidence.v1" || typeof reviewBatchEvidence !== "function";
     if (!result) destinationStatus.textContent = "";
     compareFile.disabled = busy || !result; compareAck.disabled = busy || !comparison;
     compareSave.disabled = busy || !comparison || !compareAck.checked;
@@ -202,6 +207,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
     if (disposed || own !== generation) return false;
     const local = new AbortController(); aborter = local; busy = true; workKind = "source"; result = null; comparison = null; comparisonReview = null; reviewAck.checked = false; compareAck.checked = false; ack.checked = false; selectionNotice.clear();
     sourceFile = null; comparisonSourceFile = null;
+    handoffGeneration = null; batchEvidenceStatus.textContent = "";
     host.open = true; try { heading.focus?.(); } catch { /* Focus is advisory, not inspection authority. */ }
     if (disposed || own !== generation) return false;
     status.textContent = expectedDigest === undefined ? "選んだJSONの形式と内容を確認しています。" : "一括確認したファイルの内容が変わっていないか確認してから、詳細を開きます。"; render();
@@ -318,6 +324,24 @@ export function mountSavedFileInspectionPanel({ document, parent,
   }
   function listen(node, event, callback) { node.addEventListener(event, callback); cleanup.push(() => node.removeEventListener(event, callback)); }
   listen(file, "change", () => { void selected(); }); listen(stop, "click", cancel);
+  listen(batchEvidence, "click", async () => {
+    if (disposed || busy || batchEvidence.disabled || !sourceFile) return;
+    const own = generation, captured = result, file = sourceFile;
+    handoffGeneration = own; batchEvidenceStatus.textContent = "同じファイルを一括資料の再確認へ渡しています。形式の案内だけでは、内容の一致を判断しません。"; render();
+    try {
+      const accepted = await reviewBatchEvidence(file);
+      if (!disposed && generation === own && result === captured) batchEvidenceStatus.textContent = accepted === true ?
+        "同じファイルの再確認を終えました。一括資料の欄で結果をご確認ください。履歴や設定の復元は行っていません。" :
+        "再確認の完了を確認できませんでした。一括資料の欄の結果をご確認ください。この案内は保持しています。";
+    } catch { if (!disposed && generation === own && result === captured) batchEvidenceStatus.textContent = "一括資料の再確認へ渡せませんでした。この案内は保持しています。"; }
+    finally {
+      if (!disposed && handoffGeneration === own) {
+        handoffGeneration = null;
+        if (generation !== own || result !== captured) batchEvidenceStatus.textContent = "";
+        render();
+      }
+    }
+  });
   listen(destination, "click", () => {
     if (disposed || busy || !result || destination.disabled) return;
     const own = generation, captured = result; let accepted = false;
@@ -334,7 +358,7 @@ export function mountSavedFileInspectionPanel({ document, parent,
   return Object.freeze({ inspectFile, compareFile: inspectComparisonFile, getState: () => Object.freeze({ busy, result, comparison, comparisonReview, disposed }), dispose() {
     if (disposed) return;
     disposed = true; generation++; const previous = aborter; aborter = null; busy = false; result = null; comparison = null; comparisonReview = null;
-    sourceFile = null; comparisonSourceFile = null; bundlePanel.dispose(); differencePanel.dispose();
+    sourceFile = null; comparisonSourceFile = null; handoffGeneration = null; bundlePanel.dispose(); differencePanel.dispose();
     previous?.abort(); selectionNotice.dispose(); comparisonNotice.dispose(); reviewNotice.dispose(); cleanup.forEach(remove => remove()); host.remove();
   } });
 }
@@ -627,7 +651,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   async function evidenceJob(chosenFile = null) {
     if (disposed || active || (chosenFile ? evidenceFile.disabled : evidenceSave.disabled)) return;
     const id = ++generation, previous = result, local = new AbortController(); active = local;
-    evidenceReview = null; evidenceAck.checked = false; ack.checked = false; buttons(); let message = "";
+    evidenceReview = null; evidenceAck.checked = false; ack.checked = false; buttons(); let message = "", accepted = false;
     try {
       evidenceStatus.textContent = chosenFile ? "まとめた資料を読み込み、元ファイルを再確認しています。" : "元ファイルから新しい確認結果を作っています。";
       const options = { subtle, signal: local.signal, onProgress: p => { if (current(id)) evidenceStatus.textContent = `元ファイルを確認しています（${p.checked} / ${p.selected}件）。`; } };
@@ -643,6 +667,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
           referenceText = opened.result.referenceProvided ? opened.result.reference.text : undefined;
           referenceInput.value = referenceText ?? ""; referenceFile.value = ""; file.value = "";
           filterName.value = ""; filterStatus.value = "all"; render(opened.result, id);
+          accepted = true;
           message = "保存内容と再確認の結果が一致しました。元ファイルを確認一覧に開きました。ウォレットの履歴や設定への取り込みは行っていません。";
           if (!review.allOriginalsValidated) message += " 内部チェックサムのない資料・補助資料・確認できない資料は、各行で区別しています。";
         } else {
@@ -661,6 +686,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
       if (current(id) && previous) render(previous, id);
       message = local.signal.aborted ? "まとめた資料の処理を中止しました。現在の一覧は保持しています。" : "まとめた資料を処理できませんでした。元ファイル合計24 MiB、保存資料48 MiB以内の対応形式か確認してください。現在の一覧は保持しています。";
     } finally { local.abort(); if (current(id)) { active = null; evidenceStatus.textContent = message; buttons(); } }
+    return accepted && current(id);
   }
   listen(evidenceAck, "change", () => { if (!disposed) buttons(); });
   listen(evidenceSave, "click", () => { void evidenceJob(); });
@@ -693,7 +719,12 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   });
   comparisonPanel = mountSavedBatchComparisonPanel({ document, parent: host, download, readText });
   buttons();
-  return Object.freeze({ getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
+  return Object.freeze({ inspectEvidenceFile(chosen) {
+    if (disposed || active || !chosen) return Promise.resolve(false);
+    host.open = true; evidenceBox.open = true;
+    try { evidenceFile.focus?.(); } catch { /* Focus is advisory. */ }
+    return evidenceJob(chosen);
+  }, getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
     if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; evidenceReview = null;
     referenceText = undefined; referenceInput.value = ""; ack.checked = false; evidenceAck.checked = false; evidenceFile.value = ""; evidenceStatus.textContent = "";
     old?.abort(); comparisonPanel.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
