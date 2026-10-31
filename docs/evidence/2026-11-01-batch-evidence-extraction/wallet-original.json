@@ -1,0 +1,166 @@
+{
+  "schema": "threecore.period-file.v1",
+  "algorithm": "SHA-256",
+  "digest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+  "draft": {
+    "schema": "threecore.period-draft.v1",
+    "plan": {
+      "schema": "threecore.period-plan.v1",
+      "context": {
+        "agent": "DAT",
+        "chainId": 84532,
+        "account": "0x1111111111111111111111111111111111111111"
+      },
+      "earlierBlock": "30",
+      "laterBlock": "42",
+      "windowSize": 5
+    },
+    "earlier": {
+      "schema": "threecore-token-observation-v1",
+      "catalogVersion": "threecore-erc20-2026-10-23",
+      "agent": "DAT",
+      "account": "0x1111111111111111111111111111111111111111",
+      "chainId": 84532,
+      "siteOrigin": "http://127.0.0.1:4192",
+      "connectionEpoch": 1,
+      "blockNumber": "30",
+      "blockHash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+      "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+      "hasCode": true,
+      "metadata": {
+        "name": "DATCORE",
+        "symbol": "DAT",
+        "decimals": 18,
+        "totalSupply": "1000000000000000000000000000"
+      },
+      "balanceBaseUnits": "100000000000000000000",
+      "nativeBalanceBaseUnits": "1000000000000000000",
+      "readOnly": true,
+      "securityAudit": false
+    },
+    "later": {
+      "schema": "threecore-token-observation-v1",
+      "catalogVersion": "threecore-erc20-2026-10-23",
+      "agent": "DAT",
+      "account": "0x1111111111111111111111111111111111111111",
+      "chainId": 84532,
+      "siteOrigin": "http://127.0.0.1:4192",
+      "connectionEpoch": 1,
+      "blockNumber": "42",
+      "blockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+      "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+      "hasCode": true,
+      "metadata": {
+        "name": "DATCORE",
+        "symbol": "DAT",
+        "decimals": 18,
+        "totalSupply": "1000000000000000000000000000"
+      },
+      "balanceBaseUnits": "107000000000000000000",
+      "nativeBalanceBaseUnits": "1000000000000000000",
+      "readOnly": true,
+      "securityAudit": false
+    },
+    "records": [
+      {
+        "schema": "threecore.transfer-observation.v1",
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+        "metadata": {
+          "name": "DATCORE",
+          "symbol": "DAT",
+          "decimals": 18,
+          "totalSupply": "1000000000000000000000000000"
+        },
+        "range": {
+          "fromBlock": "31",
+          "toBlock": "35"
+        },
+        "fromBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000407",
+        "toBlockHash": "0x000000000000000000000000000000000000000000000000000000000000040b",
+        "events": [
+          {
+            "blockNumber": "35",
+            "blockHash": "0x000000000000000000000000000000000000000000000000000000000000040b",
+            "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000835",
+            "transactionIndex": "1",
+            "logIndex": "1",
+            "from": "0x2222222222222222222222222222222222222222",
+            "to": "0x1111111111111111111111111111111111111111",
+            "amountBaseUnits": "10000000000000000000"
+          }
+        ],
+        "readOnly": true,
+        "completeHistory": false,
+        "independentVerification": false
+      },
+      {
+        "schema": "threecore.transfer-observation.v1",
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+        "metadata": {
+          "name": "DATCORE",
+          "symbol": "DAT",
+          "decimals": 18,
+          "totalSupply": "1000000000000000000000000000"
+        },
+        "range": {
+          "fromBlock": "36",
+          "toBlock": "40"
+        },
+        "fromBlockHash": "0x000000000000000000000000000000000000000000000000000000000000040c",
+        "toBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000410",
+        "events": [
+          {
+            "blockNumber": "40",
+            "blockHash": "0x0000000000000000000000000000000000000000000000000000000000000410",
+            "transactionHash": "0x0000000000000000000000000000000000000000000000000000000000000836",
+            "transactionIndex": "2",
+            "logIndex": "2",
+            "from": "0x1111111111111111111111111111111111111111",
+            "to": "0x2222222222222222222222222222222222222222",
+            "amountBaseUnits": "3000000000000000000"
+          }
+        ],
+        "readOnly": true,
+        "completeHistory": false,
+        "independentVerification": false
+      },
+      {
+        "schema": "threecore.transfer-observation.v1",
+        "context": {
+          "agent": "DAT",
+          "chainId": 84532,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+        "metadata": {
+          "name": "DATCORE",
+          "symbol": "DAT",
+          "decimals": 18,
+          "totalSupply": "1000000000000000000000000000"
+        },
+        "range": {
+          "fromBlock": "41",
+          "toBlock": "42"
+        },
+        "fromBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000411",
+        "toBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+        "events": [],
+        "readOnly": true,
+        "completeHistory": false,
+        "independentVerification": false
+      }
+    ],
+    "readOnly": true,
+    "independentlyVerified": false
+  }
+}

@@ -1,0 +1,35 @@
+✔ wallet extraction returns only the requested exact source and retains negative inspection status (319.1707ms)
+✔ wallet extraction command emits exact bytes only after verification and never writes destination files (4070.9839ms)
+✔ rehearsal extraction returns only the requested exact source and retains negative inspection status (42.2581ms)
+✔ rehearsal extraction command emits exact bytes only after verification and never writes destination files (2321.3061ms)
+✔ portable batch keeps exact source bytes and faithfully records negative results without certifying them (47.6825ms)
+✔ saved reference bytes and negative checksum outcomes survive fresh evidence recomputation (8.816ms)
+✔ changed source, receipt, authority and unexpected fields cannot open an apparently verified batch (47.2621ms)
+✔ only owned complete source captures authorize bundles; recovered batches emit a fresh snapshot (22.467ms)
+✔ malformed, over-limit, duplicate and executable options cannot become evidence (27.274ms)
+✔ cancellation, hash failure and stalled hashing never release an incomplete bundle (123.1595ms)
+✔ offline command reports faithful negative evidence and edited claims distinctly without source writes (2323.7795ms)
+✔ guide recognizes bundle type without trusting claims: threecore.wallet-saved-batch-evidence.v1 (6.297ms)
+✔ guide recognizes bundle type without trusting claims: threecore.wallet-saved-batch-evidence-review.v1 (0.6331ms)
+✔ guide recognizes bundle type without trusting claims: threecore.operation-rehearsal-batch-evidence.v1 (0.6588ms)
+✔ guide recognizes bundle type without trusting claims: threecore.operation-rehearsal-batch-evidence-review.v1 (0.503ms)
+✔ composite guide hands the same selected bundle to its verifier without another file selection (117.8077ms)
+✔ a declared bundle with false saved claims is rechecked instead of receiving navigation authority (9.4285ms)
+✔ handoff cannot double-submit and a new guide selection suppresses obsolete completion text (15.248ms)
+✔ unavailable handoff is disabled and thrown handoffs preserve the source guide for retry (16.0138ms)
+✔ another guide operation cannot leave a finished handoff displayed as still running (10.4897ms)
+✔ wallet bundle preserves exact originals, plain inputs and negative inspections with separate scope (123.5642ms)
+✔ wallet bundle preserves a bad external reference as a faithful negative result (11.3879ms)
+✔ altered contents and claims cannot authorize reopening; unknown values are not echoed (46.8646ms)
+✔ recovered file batches retain exact captured sources but produce a fresh inspection snapshot (34.271ms)
+✔ oversized source totals and duplicate names are rejected before hashing (1058.8635ms)
+✔ invalid options, cancellation and stalled hashing cannot release source evidence (38.8632ms)
+✔ wallet evidence CLI distinguishes faithful plain/negative outcomes from altered claims and preserves inputs (1032.0368ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7257.9064

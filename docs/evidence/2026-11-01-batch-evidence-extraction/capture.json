@@ -1,0 +1,73 @@
+{
+  "source": "f9856c3",
+  "captures": [
+    {
+      "kind": "wallet",
+      "name": "Original.json",
+      "output": "wallet-original.json",
+      "exitCode": 0,
+      "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "exactOriginalBytes": true,
+      "originalValidationPromoted": false
+    },
+    {
+      "kind": "wallet",
+      "name": "日本語.json",
+      "output": "wallet-negative.json",
+      "exitCode": 0,
+      "sha256": "18557e86b065ed5ba2046f180803aa034a8e623e112645d9d2cc1e00dd78a71c",
+      "exactOriginalBytes": true,
+      "originalValidationPromoted": false
+    },
+    {
+      "kind": "wallet",
+      "control": "altered",
+      "exitCode": 2,
+      "stdoutBytes": 0,
+      "error": "FILE_BATCH_EVIDENCE_UNVERIFIED\n"
+    },
+    {
+      "kind": "wallet",
+      "control": "missing",
+      "exitCode": 1,
+      "stdoutBytes": 0,
+      "error": "FILE_BATCH_EVIDENCE_SOURCE_NAME\n"
+    },
+    {
+      "kind": "rehearsal",
+      "name": "Original.json",
+      "output": "rehearsal-original.json",
+      "exitCode": 0,
+      "sha256": "2e1081c79a8474507703cb2e3e73da073cf970ff1a70aff2adb02de9ceb67029",
+      "exactOriginalBytes": true,
+      "originalValidationPromoted": false
+    },
+    {
+      "kind": "rehearsal",
+      "name": "日本語.json",
+      "output": "rehearsal-negative.json",
+      "exitCode": 0,
+      "sha256": "18557e86b065ed5ba2046f180803aa034a8e623e112645d9d2cc1e00dd78a71c",
+      "exactOriginalBytes": true,
+      "originalValidationPromoted": false
+    },
+    {
+      "kind": "rehearsal",
+      "control": "altered",
+      "exitCode": 2,
+      "stdoutBytes": 0,
+      "error": "REVIEW_BATCH_EVIDENCE_UNVERIFIED\n"
+    },
+    {
+      "kind": "rehearsal",
+      "control": "missing",
+      "exitCode": 1,
+      "stdoutBytes": 0,
+      "error": "Rehearsal batch evidence failed: REVIEW_BATCH_EVIDENCE_SOURCE_NAME\n"
+    }
+  ],
+  "fullBrowserCases": 965,
+  "syntheticProvider": true,
+  "userTabConnectionVerified": false,
+  "externalRpcCalls": 0
+}
