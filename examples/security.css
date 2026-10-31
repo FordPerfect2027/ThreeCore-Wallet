@@ -73,3 +73,26 @@
 .storage-guard-panel[data-level="review"], .storage-guard-panel[data-level="limited"],
 .storage-guard-panel[data-level="stopped"], .storage-guard-panel[data-level="unavailable"] { border-color: #f0bb68; }
 @media (max-width: 600px) { .storage-guard-panel { padding: 12px; } .storage-guard-counts { font-size: 12px; } }
+
+/* File review remains usable in narrow panes; long digests stay inside their named scroll regions. */
+:is(.saved-file-guide,.saved-file-batch,.saved-batch-comparison,.rehearsal-batch-comparison,.reviewed-batch-comparison,.batch-comparison-differences,.file-review-surface) {
+  min-width: 0; max-width: 100%; overflow-wrap: anywhere;
+}
+:is(.saved-file-guide,.saved-file-batch,.saved-batch-comparison,.rehearsal-batch-comparison,.reviewed-batch-comparison,.batch-comparison-differences,.file-review-surface) :is(input,select,textarea,button) {
+  box-sizing: border-box; min-width: 0; max-width: 100%;
+}
+:is(.saved-file-guide,.saved-file-batch,.saved-batch-comparison,.rehearsal-batch-comparison,.reviewed-batch-comparison,.batch-comparison-differences,.file-review-surface) button {
+  white-space: normal; overflow-wrap: anywhere; min-height: 44px;
+}
+:is(.saved-file-guide,.saved-file-batch,.saved-batch-comparison,.rehearsal-batch-comparison,.reviewed-batch-comparison,.batch-comparison-differences,.file-review-surface) input[type=checkbox] {
+  display: inline-block; width: auto; align-self: flex-start;
+}
+:is(.saved-file-guide,.saved-file-batch,.saved-batch-comparison,.rehearsal-batch-comparison,.reviewed-batch-comparison,.batch-comparison-differences,.file-review-surface) pre {
+  white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; max-height: 28rem; overflow: auto;
+}
+.file-review-table-wrap { box-sizing: border-box; max-width: 100%; max-height: 28rem; overflow: auto; margin: 16px 0; }
+.file-review-table-wrap table { width: 100%; min-width: 48rem; border-collapse: collapse; font-size: 13px; }
+.file-review-table-wrap :is(th,td) { text-align: left; vertical-align: top; padding: 10px; border-bottom: 1px solid #52647f; overflow-wrap: anywhere; }
+.file-review-table-wrap caption { text-align: left; font-weight: 700; padding-bottom: 10px; }
+.file-review-table-wrap:focus-visible,
+:is(.saved-file-guide,.saved-file-batch,.saved-batch-comparison,.rehearsal-batch-comparison,.reviewed-batch-comparison,.batch-comparison-differences,.file-review-surface) :focus-visible { outline: 3px solid #ffd369; outline-offset: 2px; }

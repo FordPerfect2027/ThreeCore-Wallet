@@ -121,7 +121,7 @@ export function mountRehearsalBatchComparisonPanel(document, { parent, download 
   node("p", "intro", "現在の一覧を比較元として保持し、次の組の資料を上で確認すると比較できます。名前が同じ行を対応付けます。比較元は『比較元を解除』までこの画面内に保持し、元資料や履歴を変更しません。");
   const hold = button("hold", "現在の確認結果を比較元として保持"), clear = button("clear", "比較元を解除"), baselineText = node("p", "baseline"), summary = node("p", "summary"); summary.setAttribute("role", "status");
   const label = node("label", "changed-label", "変化・選択差・比較できない行だけ表示"), changed = node("input", "changed", undefined, label); changed.type = "checkbox";
-  const tableWrap = node("div", "table-wrap"); tableWrap.className += " table-wrap";
+  const tableWrap = node("div", "table-wrap"); tableWrap.className += " table-wrap file-review-table-wrap"; tableWrap.setAttribute("tabindex", "0"); tableWrap.setAttribute("role", "region"); tableWrap.setAttribute("aria-label", "前回と今回の資料確認の比較。横方向にスクロールできます");
   const table = node("table", "table", undefined, tableWrap); node("caption", "caption", "同じファイル名ごとの前回と今回の比較", table); const head = node("thead", "head", undefined, table), tr = document.createElement("tr"); head.append(tr);
   for (const text of ["名前", "比較", "前回の判定", "今回の判定", "前回のSHA-256", "今回のSHA-256", "期待結果との差（前回→今回）"]) { const th = document.createElement("th"); th.textContent = text; th.setAttribute("scope", "col"); tr.append(th); }
   const rows = node("tbody", "rows", undefined, table), json = button("json", "全行の比較をJSON保存"), csv = button("csv", "全行の比較をCSV保存"), status = node("p", "status"); status.setAttribute("role", "status");

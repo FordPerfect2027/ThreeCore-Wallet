@@ -6,6 +6,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>運用リハーサル — ThreeCore Wallet</title>
   <link rel="stylesheet" href="/examples/operation-rehearsal.css">
+  <link rel="stylesheet" href="/examples/security.css">
 </head>
 <body>
 <main>
@@ -320,7 +321,7 @@
       <label>確認する資料の内容<textarea id="report-review-text" rows="7" maxlength="2097153" spellcheck="false"></textarea></label>
       <button id="report-review-paste" type="button">貼り付けた資料を確認</button>
     </details>
-    <details>
+    <details class="file-review-surface">
       <summary>複数の資料をまとめて再確認する</summary>
       <p>資料JSONを1〜20個、1件2 MiB・合計8 MiB以内で選べます。現在の履歴に取り込まず、順番に再計算します。途中で停止した場合は確認済みと未確認を分けて残します。</p>
       <label class="file-label">まとめて確認する資料<input id="report-batch-files" type="file" multiple accept=".json,application/json" aria-describedby="report-batch-status"></label>

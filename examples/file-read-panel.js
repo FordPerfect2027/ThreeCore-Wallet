@@ -386,6 +386,7 @@ export function mountSavedFileDifferencePanel({ document, parent, getPair = () =
   node("p", "intro", "上で比較した同じ形式の設定・残高記録・練習用記録を読み直します。各2 MiBまで。値は表示せず、相違箇所の合計と先頭40件の場所を表示します。");
   const start = node("button", "start", "相違箇所を調べる"), stop = node("button", "stop", "相違箇所の確認を中止"); start.type = stop.type = "button";
   const status = node("p", "status", "対応する2つの元ファイルを比較してから確認できます。"), output = node("pre", "output", ""); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  output.setAttribute("tabindex", "0"); output.setAttribute("role", "region"); output.setAttribute("aria-label", "保存ファイルの相違箇所");
   const pathLabel = node("label", "path-label", "項目の場所に含まれる文字で絞り込む"), path = node("input", "path", undefined, pathLabel); path.type = "text"; path.maxLength = 128; path.placeholder = "例: /policy や /events";
   const apply = node("button", "apply", "この条件で絞り込む"), clear = node("button", "clear-query", "絞り込みを解除"), previous = node("button", "previous", "前の40件"), next = node("button", "next", "次の40件"); for (const button of [apply, clear, previous, next]) button.type = "button";
   node("p", "page-scope", "今回読み取った元JSONから、表示範囲を選びます。ファイルを読み直すには、上の「相違箇所を調べる」を押してください。場所の絞り込みは値の検索ではありません。");
@@ -563,7 +564,8 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   for (const [value, label] of Object.entries(filterLabels)) { const option = document.createElement("option"); option.value = value; option.textContent = label; filterStatus.append(option); } filterStatus.value = "all";
   const filterClear = make("button", "filter-clear", "一覧の絞り込みを解除", filterBox); filterClear.type = "button";
   const filterSummary = make("p", "filter-summary", "確認が終わると、表示する行を絞り込めます。"); filterSummary.setAttribute("role", "status"); filterSummary.setAttribute("aria-live", "polite");
-  const table = make("table", "table"); make("caption", "caption", "選択した保存ファイルの確認結果", table);
+  const tableWrap = make("div", "table-wrap"); tableWrap.className += " file-review-table-wrap"; tableWrap.setAttribute("tabindex", "0"); tableWrap.setAttribute("role", "region"); tableWrap.setAttribute("aria-label", "選択した保存ファイルの確認結果。横方向にスクロールできます");
+  const table = make("table", "table", undefined, tableWrap); make("caption", "caption", "選択した保存ファイルの確認結果", table);
   const header = make("thead", "thead", undefined, table), heading = make("tr", "head-row", undefined, header);
   for (const text of ["ファイル名", "確認結果", "開く場所・確認範囲", "内容のSHA-256", "以前の照合値との比較", "詳細確認"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); heading.append(cell); }
   const rows = make("tbody", "rows", undefined, table);
@@ -823,7 +825,8 @@ export function mountSavedBatchComparisonPanel({ document, parent,
   make("p", "intro", "上の確認結果を比較元として保持し、別の組のファイルを選んで確認してください。同じファイル名同士を比較します。比較元はこのページ内で保持されます。取り除く場合は『比較元をクリア』を押してください。");
   const hold = button("hold", "現在の一括確認を比較元として保持"), clear = button("clear", "比較元をクリア");
   const baselineText = make("p", "baseline"), summary = make("p", "summary"); summary.setAttribute("role", "status"); summary.setAttribute("aria-live", "polite");
-  const table = make("table", "table"); make("caption", "caption", "二組の選択ファイルの比較", table);
+  const tableWrap = make("div", "table-wrap"); tableWrap.className += " file-review-table-wrap"; tableWrap.setAttribute("tabindex", "0"); tableWrap.setAttribute("role", "region"); tableWrap.setAttribute("aria-label", "二組の保存ファイルの比較。横方向にスクロールできます");
+  const table = make("table", "table", undefined, tableWrap); make("caption", "caption", "二組の選択ファイルの比較", table);
   const head = make("thead", "head", undefined, table), headings = make("tr", "headings", undefined, head);
   for (const text of ["ファイル名", "比較結果", "比較元 → 今回の状態", "比較元のSHA-256", "今回のSHA-256", "元記録の変化"]) { const cell = document.createElement("th"); cell.textContent = text; cell.setAttribute("scope", "col"); headings.append(cell); }
   const rows = make("tbody", "rows", undefined, table);
@@ -923,6 +926,7 @@ export function mountBatchComparisonDifferencePanel({ document, parent, open, qu
   const run = make("button", "run", "この条件で相違箇所を調べる"), clear = make("button", "clear", "絞り込みを解除"), previous = make("button", "previous", "前の40件"), next = make("button", "next", "次の40件"); for (const node of [run, clear, previous, next]) node.type = "button";
   const status = make("p", "status", "まとめ資料を再確認してから、元ファイルを選んでください。"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const output = make("pre", "output", "");
+  output.setAttribute("tabindex", "0"); output.setAttribute("role", "region"); output.setAttribute("aria-label", "表示範囲の相違箇所");
   const label = make("label", "ack-label", "項目の場所・ファイル名・照合値を暗号化せず保存する"), ack = make("input", "ack", undefined, label); ack.type = "checkbox";
   const save = make("button", "save", "表示範囲の相違箇所をJSON保存"); save.type = "button";
   const ready = () => review && names.includes(choice.value);
@@ -956,7 +960,7 @@ export function mountReviewedBatchComparisonPanel({ document, parent, open, extr
   make("summary", "heading", "保存資料から確認した二組を別に表示");
   const status = make("p", "status", "まとめ資料の照合が一致すると、二組の全行をここで確認できます。"); status.setAttribute("role", "status");
   make("p", "limits", "ここは保存資料の確認用の表示です。上で選んだ資料・比較元・現在の履歴は変更しません。不正・未確認の元資料は、その判定のまま表示します。");
-  const wrap = make("div", "table-wrap"); wrap.className += " table-wrap";
+  const wrap = make("div", "table-wrap"); wrap.className += " table-wrap file-review-table-wrap"; wrap.setAttribute("tabindex", "0"); wrap.setAttribute("role", "region"); wrap.setAttribute("aria-label", "保存資料に含まれる二組の全ファイル。横方向にスクロールできます");
   const table = make("table", "table", undefined, wrap); make("caption", "caption", "保存資料に含まれる二組の全ファイル", table);
   const head = make("thead", "head", undefined, table), tr = make("tr", "head-row", undefined, head);
   for (const label of ["ファイル名", "比較元の判定", "比較先の判定", "内容の照合値", "比較元のSHA-256", "比較先のSHA-256"]) { const th = document.createElement("th"); th.textContent = label; th.setAttribute("scope", "col"); tr.append(th); }
