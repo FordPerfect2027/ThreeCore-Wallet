@@ -114,7 +114,7 @@ export async function verifyEvidenceManifest(file, options = {}) {
   await manifestUnchanged();
   const summary = Object.freeze({ files: entries.length, matched: results.filter(row => row.status === 'matched').length,
     mismatched: results.filter(row => row.status === 'mismatch').length, unreadable: results.filter(row => row.status === 'unreadable').length,
-    verifiedBytes });
+    verifiedBytes, admittedBytes: reservedBytes });
   return Object.freeze({ schema: 'threecore.local-evidence-verification.v1', readOnly: true, authenticatesOrigin: false,
     manifestSha256, allMatched: summary.matched === summary.files, limits, summary, files: Object.freeze(results) });
 }

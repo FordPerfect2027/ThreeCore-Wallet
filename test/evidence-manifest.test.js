@@ -50,7 +50,7 @@ test('verification reads exact binary, empty and Unicode artifacts without modif
   const text = values.map(([name, data]) => line(name, data)).join('\n') + '\n'; await writeFile(manifest, text);
   const names = await readdir(evidence), result = await verifyEvidenceManifest(manifest);
   assert.equal(result.allMatched, true); assert.equal(result.manifestSha256, hash(text));
-  assert.deepEqual(result.summary, { files: 3, matched: 3, mismatched: 0, unreadable: 0, verifiedBytes: 3 + Buffer.byteLength('検証\r\n') });
+  assert.deepEqual(result.summary, { files: 3, matched: 3, mismatched: 0, unreadable: 0, verifiedBytes: 3 + Buffer.byteLength('検証\r\n'), admittedBytes: 3 + Buffer.byteLength('検証\r\n') });
   assert.equal(result.readOnly, true); assert.equal(result.authenticatesOrigin, false);
   assert.equal(await readFile(manifest, 'utf8'), text); assert.deepEqual(await readdir(evidence), names);
   for (const [name, data] of values) assert.deepEqual(await readFile(join(evidence, name)), Buffer.from(data));
