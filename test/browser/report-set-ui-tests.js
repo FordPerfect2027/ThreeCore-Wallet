@@ -84,6 +84,26 @@ async function withDatabase(run) {
 }
 
 export function registerReportSetUITests(test) {
+  test("report set: missing-history proposals show 2,000 blocks times ten without executing reads", async () => {
+    const initial = sequenceHistory([0n], report => {
+      const draft = report.slots[0].entry.draft;
+      draft.plan.laterBlock = "24030"; draft.plan.windowSize = 2000;
+      draft.earlier = null; draft.later = null; draft.records = [];
+    });
+    const f = fixture({ initial });
+    try {
+      await f.accept(); const before = f.mounted.getState().input;
+      const coverage = f.parent.querySelector(".report-set-history-coverage"); coverage.querySelector("summary").click();
+      const q = name => coverage.querySelector(".report-set-history-queue-" + name);
+      q("show").click(); assert(q("output").textContent.includes("20000ブロック / 10回分"));
+      q("next").click(); assert(q("page").value === "2" && q("output").textContent.includes("4000ブロック / 2回分"));
+      assert(q("next").disabled); q("previous").click(); assert(q("page").value === "1");
+      q("size").value = "1000"; q("size").dispatchEvent(new Event("input", { bubbles: true }));
+      assert(q("next").disabled && q("output").textContent.includes("表示し直して"));
+      q("show").click(); assert(q("output").textContent.includes("10000ブロック / 10回分"));
+      assert(f.mounted.getState().input === before && f.files.length === 0);
+    } finally { f.dispose(); }
+  });
   test("report set: saved history coverage distinguishes a partial record from its plan", async () => {
     const f = fixture({ initial: demoSetHistory() });
     try {

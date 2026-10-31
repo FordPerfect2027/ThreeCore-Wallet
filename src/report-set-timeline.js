@@ -1,4 +1,6 @@
 import { validateReportSet, freezeSet } from "./report-set-model.js";
+import { captureOptionalDataFields } from "./security-data.js";
+import { periodBlock, periodFail } from "./period-plan.js";
 import { analyzeReportSet } from "./report-set-engine.js";
 import { SET_SEGMENTS, shortSetAddress } from "./report-set-view.js";
 import { reportStatusText } from "./period-report-view.js";
@@ -192,5 +194,72 @@ export function timelineCellText(cell) {
   }
   if (cell.internalConflict) lines.push("元の期間控えの中にブロック情報の矛盾があります。");
   lines.push("保存済みの証拠の説明です。現在のチェーンに対する再検証ではありません。");
+  return lines.join("\n");
+}
+
+
+export const HISTORY_QUEUE_PAGE_SIZE = 10;
+
+/** A bounded page of proposed reads. No provider request or draft mutation occurs. */
+export function reportSetMissingHistoryQueue(value, queryValue = {}) {
+  const input = validateReportSet(value);
+  let options;
+  try { options = captureOptionalDataFields(queryValue, ["groupId", "kind", "windowSize", "page"]); }
+  catch { periodFail("PERIOD_SET_QUEUE_QUERY"); }
+  const { groupId, kind = "pending", windowSize = 2000, page = "0" } = options;
+  if (typeof groupId !== "string" || !/^(DAT|EMA|CAWELON)-[1-9][0-9]?$/.test(groupId) ||
+      !["pending", "unplanned"].includes(kind) || !Number.isInteger(windowSize) || windowSize < 1 || windowSize > 2000 ||
+      typeof page !== "string") periodFail("PERIOD_SET_QUEUE_QUERY");
+  try { periodBlock(page); } catch { periodFail("PERIOD_SET_QUEUE_QUERY"); }
+  const group = reportSetTimeline(input).groups.find(row => row.id === groupId);
+  if (!group) periodFail("PERIOD_SET_QUEUE_GROUP");
+  const ranges = [];
+  for (const cell of group.historyCoverage.cells.filter(row => row.kind === kind)) {
+    const previous = ranges.at(-1);
+    if (previous && BigInt(previous.toBlock) + 1n === BigInt(cell.fromBlock)) previous.toBlock = cell.toBlock;
+    else ranges.push({ fromBlock: cell.fromBlock, toBlock: cell.toBlock });
+  }
+  ranges.reverse();
+  const width = BigInt(windowSize), pageIndex = BigInt(page);
+  const blocks = range => BigInt(range.toBlock) - BigInt(range.fromBlock) + 1n;
+  const count = range => (blocks(range) + width - 1n) / width;
+  const totalWindows = ranges.reduce((total, range) => total + count(range), 0n);
+  const totalBlocks = ranges.reduce((total, range) => total + blocks(range), 0n);
+  const pageCount = (totalWindows + BigInt(HISTORY_QUEUE_PAGE_SIZE) - 1n) / BigInt(HISTORY_QUEUE_PAGE_SIZE);
+  if (pageIndex !== 0n && pageIndex >= pageCount) periodFail("PERIOD_SET_QUEUE_PAGE");
+  let skip = pageIndex * BigInt(HISTORY_QUEUE_PAGE_SIZE);
+  const items = [];
+  for (const range of ranges) {
+    const windows = count(range);
+    if (skip >= windows) { skip -= windows; continue; }
+    for (let index = skip; index < windows && items.length < HISTORY_QUEUE_PAGE_SIZE; index++) {
+      const end = BigInt(range.toBlock) - index * width;
+      const start = end - width + 1n < BigInt(range.fromBlock) ? BigInt(range.fromBlock) : end - width + 1n;
+      const plannedReportIds = [...new Set(group.historyCoverage.cells.filter(cell =>
+        BigInt(cell.fromBlock) <= end && BigInt(cell.toBlock) >= start).flatMap(cell => cell.plannedReportIds))].sort();
+      items.push({ number: (pageIndex * BigInt(HISTORY_QUEUE_PAGE_SIZE) + BigInt(items.length) + 1n).toString(),
+        fromBlock: start.toString(), toBlock: end.toString(), blocks: (end - start + 1n).toString(), plannedReportIds });
+    }
+    if (items.length === HISTORY_QUEUE_PAGE_SIZE) break;
+    skip = 0n;
+  }
+  return freezeSet({ schema: "threecore.missing-history-queue.v1", groupId, context: group.context, tokenAddress: group.tokenAddress,
+    query: { groupId, kind, windowSize, page }, pageSize: HISTORY_QUEUE_PAGE_SIZE, pageCount: pageCount.toString(),
+    totalWindows: totalWindows.toString(), totalBlocks: totalBlocks.toString(),
+    pageBlocks: items.reduce((total, row) => total + BigInt(row.blocks), 0n).toString(), items,
+    recordedUniqueBlocks: group.historyCoverage.recordedUniqueBlocks, reviewRecordedBlocks: group.historyCoverage.reviewRecordedBlocks,
+    rangeNotation: "inclusive", newestFirst: true, readOnly: true, executed: false, automaticRetry: false,
+    includesRecordedReviewRanges: false, completeHistory: false, liveChainRechecked: false });
+}
+
+export function missingHistoryQueueText(value) {
+  const lines = [value.context.agent + " / Chain " + value.context.chainId + " / " + value.context.account,
+    (value.query.kind === "pending" ? "計画内で履歴記録がない範囲" : "計画と計画の間で、計画自体がない範囲") + " / 新しいブロックから順に表示",
+    "対象全体: " + value.totalBlocks + "ブロック / " + value.totalWindows + "回分",
+    "このページ: " + value.pageBlocks + "ブロック / " + value.items.length + "回分 / " +
+      (value.pageCount === "0" ? "該当なし" : (BigInt(value.query.page) + 1n) + " / " + value.pageCount + "ページ")];
+  for (const row of value.items) lines.push(row.number + ". " + row.fromBlock + " ～ " + row.toBlock + "（両端を含む " + row.blocks + "ブロック）");
+  lines.push("保存済み履歴範囲のうち要確認: " + value.reviewRecordedBlocks + "ブロック。この予定には含めていません。",
+    "予定の表示のみです。読み取りは実行していません。対象外の期間や保存記録の完全性は確認していません。");
   return lines.join("\n");
 }
