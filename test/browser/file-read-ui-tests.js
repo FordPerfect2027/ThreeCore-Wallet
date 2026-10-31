@@ -53,6 +53,28 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("file-read: report and evidence difference pages expose the complete native DOM result",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("overview-save").click();const source=JSON.parse(downloads.pop().text);for(let i=0;i<103;i++)source["extra"+i]=i;
+      q("report-review-text").value=JSON.stringify(source);q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();await finish("report-review-status");
+      assert(q("report-review-differences").children.length===40);q("report-review-next").click();q("report-review-next").click();
+      assert(q("report-review-differences").children.length===23&&q("report-review-next").disabled);assert(q("report-review-difference-status").textContent.includes("81〜103"));
+      q("report-review-evidence-save").click();const evidence=JSON.parse(downloads.pop().text);for(let i=0;i<87;i++)evidence.receipt["extra"+i]=i;
+      q("report-evidence-text").value=JSON.stringify(evidence);q("report-evidence-text").dispatchEvent(new Event("input"));q("report-evidence-paste").click();await finish("report-evidence-status");
+      assert(q("report-evidence-difference-kind").value==="receipt");q("report-evidence-next").click();q("report-evidence-next").click();
+      assert(q("report-evidence-differences").children.length===7&&q("report-evidence-next").disabled);
+      q("report-evidence-difference-kind").value="source";q("report-evidence-difference-kind").dispatchEvent(new Event("change"));
+      assert(q("report-evidence-previous").disabled&&q("report-evidence-differences").children.length===40);q("report-evidence-next").click();q("report-evidence-next").click();
+      assert(q("report-evidence-differences").children.length===23);q("report-evidence-save").click();const result=JSON.parse(downloads.pop().text);
+      assert(result.differenceCount===87&&result.reportReview.differenceCount===103&&result.reportReview.differences.length===40);
+    }finally{page.dispose();host.remove();}
+  });
+
   for(const altered of [false,true])test("file-read: portable evidence native round trip"+(altered?" detects a changed receipt":" preserves independent views"),async()=>{
     const response=await fetch("/rehearsal/");assert(response.ok);
     const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);

@@ -12,12 +12,13 @@ export const REHEARSAL_REPORT_REVIEW_SCHEMA = "threecore.operation-rehearsal-rep
 export const REHEARSAL_REPORT_REVIEW_LIMIT = 2097152;
 export const REHEARSAL_REPORT_DIFFERENCE_LIMIT = 40;
 const reviewSources = new WeakMap();
+const evidenceReceipts = new WeakMap();
 const fail = code => { throw new RehearsalError(code); };
 const pointer = key => String(key).replace(/~/g, "~0").replace(/\//g, "~1");
 
-function compareValues(expected, actual) {
+function compareValues(expected, actual, offset = 0) {
   let count = 0; const differences = [];
-  const add = (path, kind) => { count++; if (differences.length < REHEARSAL_REPORT_DIFFERENCE_LIMIT)
+  const add = (path, kind) => { count++; if (count > offset && differences.length < REHEARSAL_REPORT_DIFFERENCE_LIMIT)
     differences.push(Object.freeze({ path: path || "/", kind })); };
   function visit(left, right, path) {
     if (left === right) return;
@@ -48,7 +49,7 @@ export function decodeRehearsalChecksumText(text){
 }
 
 /** Review untrusted derived data by recomputation. Does not import its inputs into live state. */
-export async function reviewRehearsalReport(text, { expectedSha256 = null, subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
+function prepareRehearsalReview(text, expectedSha256) {
   let byteLength, parsed;
   try {
     byteLength = boundedUtf8Length(text, REHEARSAL_REPORT_REVIEW_LIMIT);
@@ -85,6 +86,11 @@ export async function reviewRehearsalReport(text, { expectedSha256 = null, subtl
     reportOutcome = Object.freeze({ kind: "record-query", query: recomputed.query,
       totalRecords: recomputed.totalRecords, matchedRecords: recomputed.matchedRecords });
   } else fail("UNSUPPORTED_REVIEW_REPORT");
+  return { byteLength, parsed, recomputed, scope, reportOutcome };
+}
+
+export async function reviewRehearsalReport(text, { expectedSha256 = null, subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
+  const { byteLength, parsed, recomputed, scope, reportOutcome } = prepareRehearsalReview(text, expectedSha256);
   const comparison = compareValues(recomputed, parsed);
   let sha256;
   try { sha256 = await sha256Hex(new TextEncoder().encode(text), subtle, { signal, timeoutMs }); }
@@ -146,7 +152,36 @@ export async function reviewRehearsalEvidence(text, { subtle = globalThis.crypto
   const reportReview = await reviewRehearsalReport(evidence.sourceText,
     { expectedSha256: evidence.receipt.expectedSha256, subtle, signal, timeoutMs });
   const comparison = compareValues(reportReview, evidence.receipt);
-  return Object.freeze({ schema: REHEARSAL_EVIDENCE_REVIEW_SCHEMA, simulationOnly: true,
+  const review = Object.freeze({ schema: REHEARSAL_EVIDENCE_REVIEW_SCHEMA, simulationOnly: true,
     sourceVerified: false, authorizesExecution: false,
     matchesReceipt: comparison.differenceCount === 0, ...comparison, reportReview });
+  evidenceReceipts.set(review, evidence.receipt);
+  return review;
+}
+
+function reviewDifferencePage(expected, actual, requestedOffset) {
+  if (!Number.isSafeInteger(requestedOffset) || requestedOffset < 0) fail("INVALID_REVIEW_DIFFERENCE_OFFSET");
+  const size = REHEARSAL_REPORT_DIFFERENCE_LIMIT, requested = Math.floor(requestedOffset / size) * size;
+  let comparison = compareValues(expected, actual, requested);
+  const totalPages = Math.max(1, Math.ceil(comparison.differenceCount / size));
+  const offset = Math.min(requested, (totalPages - 1) * size);
+  if (offset !== requested) comparison = compareValues(expected, actual, offset);
+  return Object.freeze({ offset, limit: size, page: offset / size + 1, totalPages,
+    totalDifferences: comparison.differenceCount, differences: comparison.differences,
+    hasPrevious: offset > 0, hasNext: offset + size < comparison.differenceCount });
+}
+
+/** Page only the exact source of a completed review; no new hash or wallet request. */
+export function pageReviewedRehearsalDifferences(receipt, offset = 0) {
+  const text = reviewSources.get(receipt);
+  if (text === undefined) fail("UNRECOGNIZED_REVIEW_RECEIPT");
+  const { parsed, recomputed } = prepareRehearsalReview(text, receipt.expectedSha256);
+  return reviewDifferencePage(recomputed, parsed, offset);
+}
+
+/** The recorded receipt is retained privately alongside its completed verification. */
+export function pageRehearsalEvidenceReceiptDifferences(review, offset = 0) {
+  const receipt = evidenceReceipts.get(review);
+  if (receipt === undefined) fail("UNRECOGNIZED_EVIDENCE_REVIEW");
+  return reviewDifferencePage(review.reportReview, receipt, offset);
 }

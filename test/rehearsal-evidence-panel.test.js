@@ -122,3 +122,42 @@ for (const action of ['source-save', 'save']) test(action + ' failure and observ
     assert.equal(f.q(action).disabled, true);
   } finally { f.panel.dispose(); }
 });
+
+import { walletFileReadService } from '../src/file-read-service.js';
+for(const action of ['clear','paste','file'])test('a file-cancellation observer keeps its newer evidence over an older '+action,async()=>{
+  const f=setup(),gate=deferred();let armed=false,entered=false,olderReads=0;
+  const baseline=walletFileReadService.state().cancelled;
+  const unsubscribe=walletFileReadService.subscribe(state=>{if(armed&&!entered&&state.cancelled>baseline){entered=true;f.paste(evidence);}});
+  try{
+    f.select(file(evidence,{arrayBuffer:()=>gate.promise}));await tick();armed=true;
+    if(action==='clear')f.q('clear').click();
+    if(action==='paste'){f.q('text').value='{}';f.q('paste').click();}
+    if(action==='file')f.select(file('{}',{arrayBuffer:async()=>{olderReads++;return new TextEncoder().encode('{}').buffer;}}));
+    assert.equal(entered,true);await finished(f);assert.equal(f.q('status').className,'passed');assert.equal(f.q('save').disabled,false);
+    assert.equal(olderReads,0);f.q('source-save').click();assert.equal(f.downloads.pop().text,source);
+  }finally{armed=false;unsubscribe();gate.resolve(new TextEncoder().encode(evidence).buffer);f.panel.dispose();await tick();}
+});
+test('disposal closes evidence input before cancellation observers can start a replacement',async()=>{
+  const gate=deferred();let armed=false,calls=0;
+  const f=setup({subtle:{digest(...args){calls++;return webcrypto.subtle.digest(...args);}}}),baseline=walletFileReadService.state().cancelled;
+  const unsubscribe=walletFileReadService.subscribe(state=>{if(armed&&state.cancelled>baseline){armed=false;f.paste(evidence);}});
+  try{f.select(file(evidence,{arrayBuffer:()=>gate.promise}));await tick();armed=true;f.panel.dispose();await tick();
+    assert.equal(calls,0);assert.equal(f.q('status').textContent,'');assert.equal(f.q('save').disabled,true);
+  }finally{armed=false;unsubscribe();gate.resolve(new TextEncoder().encode(evidence).buffer);f.panel.dispose();await tick();}
+});
+
+test('receipt and source difference browsing keep separate totals and reset page when switching', async () => {
+  const input = JSON.parse(source); for (let i = 0; i < 103; i++) input['extra' + String(i).padStart(3, '0')] = i;
+  const packageValue = JSON.parse(encodeRehearsalReviewEvidence(await reviewRehearsalReport(JSON.stringify(input), options)));
+  for (let i = 0; i < 87; i++) packageValue.receipt['extra' + String(i).padStart(3, '0')] = i;
+  const f = setup(); try {
+    f.paste(JSON.stringify(packageValue)); await finished(f); assert.equal(f.q('difference-kind').value, 'receipt');
+    const paths = []; for (let page = 0; page < 3; page++) { paths.push(...f.q('differences').children.map(row => row.children[1].textContent)); if (page < 2) f.q('next').click(); }
+    assert.equal(paths.length, 87); assert.equal(new Set(paths).size, 87); assert.equal(f.q('next').disabled, true); assert.match(f.q('difference-status').textContent, /81〜87/);
+    f.q('difference-kind').value = 'source'; f.q('difference-kind').dispatchEvent(new Event('change'));
+    assert.equal(f.q('previous').disabled, true); assert.match(f.q('difference-status').textContent, /全103箇所/);
+    f.q('next').click(); f.q('next').click(); assert.equal(f.q('differences').children.length, 23);
+    f.q('save').click(); const result = JSON.parse(f.downloads.pop().text); assert.equal(result.differenceCount, 87); assert.equal(result.reportReview.differenceCount, 103);
+    f.q('clear').click(); assert.equal(f.q('difference-kind').disabled, true); f.q('next').dispatchEvent(new Event('click')); assert.equal(f.q('difference-status').textContent, '');
+  } finally { f.panel.dispose(); }
+});

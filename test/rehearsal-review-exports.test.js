@@ -47,3 +47,20 @@ test('combined evidence export cannot overwrite a newer cleared view',async()=>{
     assert.equal(f.q('export-status').textContent,'');assert.equal(f.q('evidence-save').disabled,true);
   }finally{f.panel.dispose();}
 });
+
+test('ordinary review exposes every difference page without changing exported evidence',async()=>{
+  const f=setup();try{const data=JSON.parse(source);for(let i=0;i<103;i++)data['extra'+String(i).padStart(3,'0')]=i;
+    f.paste(JSON.stringify(data));await finished(f);f.q('save').click();const before=f.downloads.pop().text;
+    const paths=[];for(let page=0;page<3;page++){paths.push(...f.q('differences').children.map(row=>row.children[0].textContent));if(page<2)f.q('next').click();}
+    assert.equal(paths.length,103);assert.equal(new Set(paths).size,103);assert.equal(f.q('next').disabled,true);assert.equal(f.q('previous').disabled,false);
+    assert.match(f.q('difference-status').textContent,/81〜103/);f.q('save').click();assert.equal(f.downloads.pop().text,before);
+    f.q('previous').click();assert.match(f.q('difference-status').textContent,/41〜80/);f.q('previous').click();assert.equal(f.q('previous').disabled,true);
+  }finally{f.panel.dispose();}
+});
+test('source or expected-hash editing retires report pagination',async()=>{
+  const f=setup();try{const data=JSON.parse(source);for(let i=0;i<50;i++)data['extra'+i]=i;f.paste(JSON.stringify(data));await finished(f);assert.equal(f.q('next').disabled,false);
+    f.edit('expected','0'.repeat(64));assert.equal(f.q('next').disabled,true);f.q('next').dispatchEvent(new Event('click'));assert.equal(f.q('differences').children.length,0);assert.equal(f.q('difference-status').textContent,'');
+    f.q('run').click();await finished(f);assert.equal(f.q('previous').disabled,true);assert.equal(f.q('differences').children.length,40);
+    f.q('clear').click();f.q('previous').dispatchEvent(new Event('click'));assert.equal(f.q('difference-status').textContent,'');
+  }finally{f.panel.dispose();}
+});
