@@ -19,6 +19,7 @@ import { sequenceSet, demoSetHistory } from "./helpers/report-set-fixtures.js";
 
 const source = sequenceSet(), after = sequenceSet(demoSetHistory());
 const routes = [
+  ["threecore.report-history-import-inspection.v1", null, "PERIOD_FILE_HISTORY_INSPECTION_ONLY", "元の報告やメモは含まれません"],
   ["threecore.report-history-file.v1", "history", "PERIOD_FILE_USE_HISTORY", "報告履歴のバックアップJSONから追加復元"],
   ["threecore.period-library-file.v1", "library", "PERIOD_FILE_USE_LIBRARY", "期間の保存一覧JSONを読み込む"],
   ["threecore.period-library-import-inspection.v1", null, "PERIOD_FILE_IMPORT_INSPECTION_ONLY", "現在側と読込側"],

@@ -1,9 +1,9 @@
 import { walletSavedFileTargetCode } from "./file-read-status.js";
-import { sha256Hex } from "./security-data.js";
+import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
 import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { periodShape, periodFail } from "./period-plan.js";
-import { validateReportHistory } from "./report-history-model.js";
+import { validateReportHistory, inspectReportHistoryImport } from "./report-history-model.js";
 
 export const REPORT_HISTORY_FILE_SCHEMA = "threecore.report-history-file.v1";
 export const REPORT_HISTORY_FILE_LIMIT = 96 * 1024 * 1024;
@@ -56,4 +56,21 @@ export async function readReportHistoryFile(file, options) {
     sizeCode: "PERIOD_HISTORY_FILE_SIZE", readCode: "PERIOD_FILE_READ", encodingCode: "PERIOD_FILE_ENCODING",
     signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeReportHistoryFile(text, options);
+}
+
+/** Portable inspection receipt. Hashes bind captured sources; this is not an evidence backup. */
+export async function prepareHistoryImportInspectionFile(beforeValue, incomingValue, fileOptions = {}) {
+  const before = validateReportHistory(beforeValue), incoming = validateReportHistory(incomingValue);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_HISTORY_OPTIONS"); }
+  const inspection = inspectReportHistoryImport(before, incoming);
+  const beforeFile = await prepareReportHistoryFile(before, options), incomingFile = await prepareReportHistoryFile(incoming, options);
+  const value = Object.freeze({ ...inspection, beforeRevision: before.revision,
+    beforeDigest: beforeFile.digest, incomingDigest: incomingFile.digest,
+    sourcesCaptured: true, authenticated: false });
+  const text = JSON.stringify(value, null, 2) + "\n";
+  return Object.freeze({ text, filename: "ThreeCore-history-import-inspection.json", mimeType: "application/json;charset=utf-8",
+    byteLength: encoder.encode(text).byteLength, encrypted: false, authenticated: false,
+    containsOriginalEvidence: false, restorable: false });
 }

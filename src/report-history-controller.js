@@ -4,10 +4,10 @@ import { libraryId, libraryLabel, libraryTime } from "./period-library-model.js"
 import { validatePeriodReportInput, periodReportInputKey } from "./period-report-model.js";
 import { comparePeriodReports, periodReportComparisonText } from "./period-report-comparison.js";
 import { emptyReportHistory, validateReportHistory, validateHistoryEntry, historyEntry,
-  historyNote, historyTags, planHistoryMerge, mutateReportHistory } from "./report-history-model.js";
-import { prepareReportHistoryFile, readReportHistoryFile } from "./report-history-file.js";
+  historyNote, historyTags, planHistoryMerge, mutateReportHistory, selectHistoryEntries, inspectReportHistoryImport } from "./report-history-model.js";
+import { prepareReportHistoryFile, readReportHistoryFile, prepareHistoryImportInspectionFile } from "./report-history-file.js";
 import { preparePeriodReportFile } from "./period-report-file.js";
-import { reportHistoryCSV, historyQuery } from "./report-history-query.js";
+import { reportHistoryCSV, historyQuery, filteredReportHistory } from "./report-history-query.js";
 import { historyErrorCode } from "./report-history-view.js";
 import { inspectReportSources } from "./report-history-sources.js";
 import { inspectReportContinuity } from "./report-history-continuity.js";
@@ -167,10 +167,45 @@ export function createReportHistoryController({ storage, getReport, stageReport,
         const checksumVerified = decoded.checksumVerified === true;
         if (!same()) return;
         review = Object.freeze({ kind: "merge", expectedRevision: before.revision, incoming, plan,
-          skipConflicts: false, checksumVerified });
+          skipConflicts: false, checksumVerified, selectedIncoming: incoming,
+          inspection: inspectReportHistoryImport(before, incoming) });
         phase = "review"; message = "追加される報告、重複、競合を確認してください。";
       });
     } catch (value) { return fail(value); }
+  }
+  function setImportSelection(ids) {
+    let id = generation;
+    try {
+      if (!guard()) return false;
+      id = ++generation;
+      if (review?.kind !== "merge") periodFail("PERIOD_HISTORY_REVIEW");
+      const pending = review, selectedIncoming = selectHistoryEntries(pending.incoming, ids);
+      const plan = planHistoryMerge(document, selectedIncoming), inspection = inspectReportHistoryImport(document, selectedIncoming);
+      if (!sameGeneration(id)) return false;
+      review = Object.freeze({ ...pending, selectedIncoming, plan, inspection });
+      error = null; phase = "review"; emit(); return sameGeneration(id);
+    } catch (value) { return fail(value, id); }
+  }
+  async function exportImportInspection(acknowledged, deliver) {
+    let id = generation;
+    try {
+      if (!guard()) return false;
+      id = ++generation;
+      if (acknowledged !== true) periodFail("PERIOD_HISTORY_ACK");
+      if (review?.kind !== "merge" || typeof deliver !== "function") periodFail("PERIOD_HISTORY_REVIEW");
+      const pending = review, before = document;
+      return await run("exporting", async ({ same, signal }) => {
+        const fresh = validateReportHistory(await storage.read({ signal }));
+        if (!same()) return null;
+        if (JSON.stringify(fresh) !== JSON.stringify(before)) { review = null; loaded = false; periodFail("PERIOD_HISTORY_STALE"); }
+        const file = await prepareHistoryImportInspectionFile(before, pending.selectedIncoming, { signal });
+        if (!same()) return null;
+        const delivered = deliver(file);
+        if (observeCallbackResult(delivered) !== "synchronous") periodFail("PERIOD_ASYNC_DELIVERY");
+        if (delivered === false) periodFail("PERIOD_EXPORT_REFUSED");
+        return file;
+      }, () => { phase = "review"; message = "選択した読込対象と既存の報告の比較結果を保存します。復元用の元記録は含まれません。"; });
+    } catch (value) { return fail(value, id); }
   }
   function setSkipConflicts(value) {
     try {
@@ -194,6 +229,7 @@ export function createReportHistoryController({ storage, getReport, stageReport,
         if (key !== pending.sourceKey) { review = null; periodFail("PERIOD_HISTORY_SOURCE_CHANGED"); }
       }
       if (pending.kind === "merge") {
+        if (!pending.selectedIncoming.entries.length && pending.incoming.entries.length) periodFail("PERIOD_HISTORY_EMPTY_SELECTION");
         if (pending.plan.revisionLimited) periodFail("PERIOD_HISTORY_REVISION_LIMIT");
         if (pending.plan.capacityExceeded) periodFail("PERIOD_HISTORY_CAPACITY");
         if (pending.plan.conflicts.length && !pending.skipConflicts) periodFail("PERIOD_HISTORY_CONFLICT");
@@ -216,7 +252,7 @@ export function createReportHistoryController({ storage, getReport, stageReport,
         });
       }
       const operation = pending.kind === "save" ? { kind: "save", entry: pending.entry } :
-        { kind: "merge", document: pending.incoming, skipConflicts: pending.skipConflicts };
+        { kind: "merge", document: pending.selectedIncoming, skipConflicts: pending.skipConflicts };
       return await run("saving", config => storage.change(pending.expectedRevision, operation, {
         ...config, canCommit: () => {
           if (!config.same()) return false;
@@ -297,16 +333,24 @@ export function createReportHistoryController({ storage, getReport, stageReport,
       if (!guard()) return false;
       id = generation;
       if (acknowledged !== true) periodFail("PERIOD_HISTORY_ACK");
-      if (!["backup", "selected", "csv"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_HISTORY_FORMAT");
-      const capturedQuery = format === "csv" ? historyQuery(query) : undefined;
+      if (!["backup", "selected", "csv", "filtered-backup", "selected-backup"].includes(format) || typeof deliver !== "function") periodFail("PERIOD_HISTORY_FORMAT");
+      const capturedQuery = ["csv", "filtered-backup"].includes(format) ? historyQuery(query) : undefined;
       if (!sameGeneration(id)) return false;
-      const selected = format === "selected" ? historyEntry(document, selectedId) : null;
+      const selected = ["selected", "selected-backup"].includes(format) ? historyEntry(document, selectedId) : null;
+      const capturedDocument = document;
       review = null;
       return await run("exporting", async ({ same, signal }) => {
         const fresh = validateReportHistory(await storage.read({ signal }));
         if (!same()) return null;
         if (selected && JSON.stringify(historyEntry(fresh, selected.id)) !== JSON.stringify(selected)) periodFail("PERIOD_HISTORY_STALE");
-        const file = format === "backup" ? await prepareFile(fresh, { signal }) : format === "selected" ?
+        let file;
+        if (["filtered-backup", "selected-backup"].includes(format)) {
+          if (JSON.stringify(fresh) !== JSON.stringify(capturedDocument)) periodFail("PERIOD_HISTORY_STALE");
+          const subset = format === "selected-backup" ? selectHistoryEntries(fresh, [selected.id]) : filteredReportHistory(fresh, capturedQuery);
+          if (!subset.entries.length) periodFail("PERIOD_HISTORY_EMPTY_SELECTION");
+          file = Object.freeze({ ...await prepareFile(subset, { signal }),
+            filename: format === "selected-backup" ? "ThreeCore-selected-history-backup.json" : "ThreeCore-filtered-history-backup.json" });
+        } else file = format === "backup" ? await prepareFile(fresh, { signal }) : format === "selected" ?
           await preparePeriodReportFile(selected.report, { signal }) : reportHistoryCSV(fresh, capturedQuery);
         if (!same()) return null;
         const delivery = deliver(file);
@@ -319,7 +363,7 @@ export function createReportHistoryController({ storage, getReport, stageReport,
     } catch (value) { return fail(value, id); }
   }
   return Object.freeze({ get state() { return state(); }, refresh, select, prepareSave, prepareOpen,
-    importFile, setSkipConflicts, applyReview, annotate, archive, compare, inspectSources, exportFile, cancel, invalidateReview,
+    importFile, setImportSelection, exportImportInspection, setSkipConflicts, applyReview, annotate, archive, compare, inspectSources, exportFile, cancel, invalidateReview,
     dispose() {
       if (disposed) return;
       disposed = true; generation++; phase = "disposed"; review = null; comparison = null;

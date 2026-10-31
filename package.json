@@ -40,6 +40,8 @@
     "period-library:check": "node scripts/check-period-library.js",
     "period-report:check": "node scripts/check-period-report.js",
     "report-history:check": "node scripts/check-report-history.js",
+    "report-history:export-subset": "node scripts/export-report-history-subset.js",
+    "report-history:inspect-import": "node scripts/inspect-report-history-import.js",
     "report-set:check": "node scripts/check-report-set.js",
     "report-checks:export": "node scripts/export-report-checks.js",
     "report-checks:verify": "node scripts/verify-report-checks.js",

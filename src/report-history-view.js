@@ -21,6 +21,8 @@ const ERRORS = Object.freeze({
   PERIOD_HISTORY_TIME_ORDER: "PCの時刻が前の更新より過去になっています。時計を確認してください。",
   PERIOD_HISTORY_REVIEW: "先に操作内容を確認してください。",
   PERIOD_HISTORY_ACK: "公開アドレス・残高・メモを含む保存内容を確認してください。",
+  PERIOD_HISTORY_SELECTION: "復元する報告の選択を確認してください。保存内容は変更していません。",
+  PERIOD_HISTORY_EMPTY_SELECTION: "該当する報告がありません。選択や絞り込み条件を確認してください。",
   PERIOD_HISTORY_QUERY: "検索条件を確認してください。",
   PERIOD_HISTORY_COMPARE: "比較する2つの異なる報告を選んでください。",
   PERIOD_HISTORY_SOURCES_UNAVAILABLE: "元の期間の保存一覧を利用できません。報告そのものは履歴から開けます。",
@@ -68,4 +70,26 @@ export function historyReviewText(review) {
     "タグ: " + (review.entry.tags.join(", ") || "なし"),
     review.entry.archived ? "非表示保管に移した報告です。" : "",
     historyReportText(review.entry.report), review.comparisonText ?? ""].filter(Boolean).join("\n");
+}
+
+export function historyImportInspectionText(value) {
+  if (!value) return "";
+  const metadata = { id: "保存番号", label: "報告名", note: "メモ", tags: "タグ", savedAt: "保存時刻", updatedAt: "更新時刻", archived: "非表示保管" };
+  const report = { title: "報告の題名", createdAt: "報告作成時刻", slots: "トークンの元記録" };
+  const kinds = { addition: "追加候補", duplicate: "同じ報告（既存を保持）", conflict: "同じ保存番号で別の報告（競合）" };
+  return ["読み込む報告と既存の報告の違い（この表示では保存しません）",
+    `追加 ${value.additions}件 / 同じ報告 ${value.duplicates}件 / 競合 ${value.conflicts}件`,
+    `既存のメモなどをそのまま使う報告: ${value.metadataKept}件`,
+    `今回の読込対象と対応せず、そのまま残る既存の報告: ${value.retainedIds.length}件`,
+    value.revisionLimited ? "更新番号が上限に達しているため追加できません。" :
+      `競合を除いて追加する場合: ${value.capacity.entriesAfter}/${value.capacity.maxEntries}件 · ${value.capacity.bytesAfter}/${value.capacity.maxBytes} bytes`,
+    value.capacity.fits ? "件数と容量は上限内です。" : "件数・容量・更新番号のいずれかが上限に合わず、追加できません。",
+    ...value.rows.flatMap(row => [row.incomingId + " · " + kinds[row.kind],
+      row.retainedId && row.retainedId !== row.incomingId ? "保持する既存の保存番号: " + row.retainedId : "",
+      row.changedMetadata.length ? "名前・メモ等の違い: " + row.changedMetadata.map(field => metadata[field]).join("、") + "（既存を保持）" : "",
+      row.changedReportFields.length ? "報告の違い: " + row.changedReportFields.map(field => report[field]).join("、") : "",
+      row.changedAgents.length ? "元記録が異なるトークン: " + row.changedAgents.join("、") : "",
+      row.removedRestrictions.length ? "読込側では再取得の印が外れています: " + row.removedRestrictions.join("、") + "。解除の妥当性は未確認です。" : ""]),
+    "同じ報告でも保存番号・名前・メモが違う場合は、既存の値を保持します。競合の証拠は置き換えません。",
+    "記録の正しさや現在のチェーンを確認した結果ではありません。"].filter(Boolean).join("\n");
 }

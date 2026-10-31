@@ -144,3 +144,44 @@ export function mutateReportHistory(input, expectedRevision, operation) {
   if (document.revision === Number.MAX_SAFE_INTEGER) periodFail("PERIOD_HISTORY_REVISION_LIMIT");
   return validateReportHistory({ schema: REPORT_HISTORY_SCHEMA, revision: document.revision + 1, entries });
 }
+
+/** Select explicit original records without merging evidence or changing local metadata. */
+export function selectHistoryEntries(value, selectedIds) {
+  const document = validateReportHistory(value), ids = libraryArray(selectedIds).map(libraryId);
+  if (new Set(ids).size !== ids.length || ids.some(id => !document.entries.some(row => row.id === id))) periodFail("PERIOD_HISTORY_SELECTION");
+  return validateReportHistory({ schema: REPORT_HISTORY_SCHEMA, revision: 0,
+    entries: ids.map(id => document.entries.find(row => row.id === id)) });
+}
+
+/** Explain exact add-only import behavior without exposing annotation values or addresses. */
+export function inspectReportHistoryImport(beforeValue, incomingValue) {
+  const before = validateReportHistory(beforeValue), incoming = validateReportHistory(incomingValue);
+  const plan = planHistoryMerge(before, incoming);
+  const metadata = ["id", "label", "note", "tags", "savedAt", "updatedAt", "archived"];
+  const rows = incoming.entries.map(entry => {
+    const conflict = plan.conflicts.some(row => row.id === entry.id), duplicate = plan.duplicates.find(row => row.incomingId === entry.id);
+    const previous = conflict ? before.entries.find(row => row.id === entry.id) : duplicate ? before.entries.find(row => row.id === duplicate.retainedId) : null;
+    const changedMetadata = previous ? metadata.filter(field => JSON.stringify(previous[field]) !== JSON.stringify(entry[field])) : [];
+    const reportFields = previous ? ["title", "createdAt", "slots"].filter(field => JSON.stringify(previous.report[field]) !== JSON.stringify(entry.report[field])) : [];
+    const changedAgents = previous ? entry.report.slots.filter(slot => JSON.stringify(slot.entry) !== JSON.stringify(previous.report.slots.find(row => row.agent === slot.agent).entry)).map(slot => slot.agent) : [];
+    const removedRestrictions = previous ? entry.report.slots.filter(slot => previous.report.slots.find(row => row.agent === slot.agent).entry?.requiresNewPlan && slot.entry && !slot.entry.requiresNewPlan).map(slot => slot.agent) : [];
+    return Object.freeze({ incomingId: entry.id, retainedId: previous?.id ?? null,
+      kind: conflict ? "conflict" : duplicate ? "duplicate" : "addition",
+      changedMetadata: Object.freeze(changedMetadata), changedReportFields: Object.freeze(reportFields),
+      changedAgents: Object.freeze(changedAgents), removedRestrictions: Object.freeze(removedRestrictions),
+      incomingArchived: entry.archived, retainedArchived: previous?.archived ?? null,
+      localMetadataKept: Boolean(duplicate && changedMetadata.length) });
+  });
+  return Object.freeze({ schema: "threecore.report-history-import-inspection.v1",
+    beforeCount: before.entries.length, incomingCount: incoming.entries.length,
+    additions: plan.additions.length, duplicates: plan.duplicates.length, conflicts: plan.conflicts.length,
+    metadataKept: plan.metadataKept.length,
+    retainedIds: Object.freeze(before.entries.filter(entry => !rows.some(row => row.retainedId === entry.id)).map(entry => entry.id)),
+    rows: Object.freeze(rows), revisionLimited: plan.revisionLimited, resultingRevision: plan.resultingRevision,
+    capacity: Object.freeze({ entriesAfter: plan.resultingCount, maxEntries: REPORT_HISTORY_LIMIT,
+      bytesAfter: plan.resultingBytes, maxBytes: REPORT_HISTORY_BYTES, fits: !plan.capacityExceeded && !plan.revisionLimited }),
+    compatible: !plan.conflicts.length && !plan.capacityExceeded && !plan.revisionLimited,
+    compatibleSkippingConflicts: !plan.capacityExceeded && !plan.revisionLimited,
+    addOnly: true, localEvidenceKept: true, historicalOnly: true, containsOriginalEvidence: false,
+    restorable: false, automaticallyApplied: false, liveChainRechecked: false, authorizesExecution: false });
+}

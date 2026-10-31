@@ -1,5 +1,5 @@
 import { periodShape, periodFail, periodBlock } from "./period-plan.js";
-import { validateReportHistory, REPORT_HISTORY_LIMIT } from "./report-history-model.js";
+import { validateReportHistory, REPORT_HISTORY_LIMIT, selectHistoryEntries } from "./report-history-model.js";
 import { analyzePeriodReport } from "./period-report-engine.js";
 
 export function historyQuery(input = {}) {
@@ -92,4 +92,10 @@ export function reportHistoryCSV(input, options) {
   return Object.freeze({ text: [header, ...rows].map(row => row.map(cell).join(",")).join("\r\n") + "\r\n",
     filename: "ThreeCore-report-history-index.csv", mimeType: "text/csv;charset=utf-8",
     rows: result.matched, restorable: false, containsEvidence: false });
+}
+
+/** Recoverable subset of original history entries, not the lossy CSV catalog. */
+export function filteredReportHistory(input, options) {
+  const document = validateReportHistory(input), result = queryReportHistory(document, options);
+  return selectHistoryEntries(document, result.rows.map(row => row.id));
 }

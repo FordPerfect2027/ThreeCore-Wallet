@@ -27,6 +27,57 @@ function fixture(initial = sampleHistory(), options = {}) {
   return f;
 }
 
+test("filtered history backup has its own scope acknowledgement and keeps complete annotated records", async () => {
+  const f = fixture();
+  try {
+    await f.load(); f.check("export-ack"); assert.equal(f.q("filtered-backup").disabled, true);
+    f.set("archive-filter", "archived"); assert.match(f.q("subset-scope").textContent, /絞り込んだ報告: 1件/);
+    f.check("subset-ack"); f.click("filtered-backup"); await f.settled();
+    const decoded = await decodeReportHistoryFile(f.files[0].text);
+    assert.deepEqual(decoded.document.entries, [sampleHistory().entries[3]]);
+    f.check("subset-ack"); f.set("search", "no match", "input"); assert.equal(f.q("subset-ack").checked, false);
+    f.check("subset-ack"); assert.equal(f.q("filtered-backup").disabled, true); assert.equal(f.store.calls.some(row => row[0] === "change"), false);
+  } finally { f.dispose(); }
+});
+
+test("one annotated report can be preserved even when it is outside the visible filter", async () => {
+  const f = fixture();
+  try {
+    await f.load(); f.set("archive-filter", "all"); f.set("selected", id(104)); f.set("archive-filter", "active");
+    f.check("subset-ack"); f.click("selected-backup"); await f.settled();
+    const decoded = await decodeReportHistoryFile(f.files[0].text);
+    assert.deepEqual(decoded.document.entries, [sampleHistory().entries[3]]); assert.equal(decoded.document.entries[0].archived, true);
+    assert.equal(f.deliveries.length, 0);
+  } finally { f.dispose(); }
+});
+
+test("history import inspection exposes retained metadata and saves only the selected review without applying it", async () => {
+  const f = fixture(), initial = sampleHistory(), duplicate = { ...initial.entries[0], id: id(201), note: "Private changed note" };
+  try {
+    await f.load(); await f.file((await prepareReportHistoryFile(historyDocument([duplicate, historyRecord(9)]))).text);
+    assert.match(f.q("import-inspection-text").textContent, /保存番号、メモ/);
+    assert.doesNotMatch(f.q("import-inspection-text").textContent, /Private changed note/);
+    assert.equal(f.q("inspection-json").disabled, true); f.check("inspection-ack");
+    f.check("import-choice-0", false); assert.equal(f.q("inspection-ack").checked, false);
+    f.check("inspection-ack"); f.click("inspection-json"); await f.settled();
+    const receipt = JSON.parse(f.files[0].text); assert.equal(receipt.incomingCount, 1); assert.equal(receipt.additions, 1);
+    assert.equal(f.mounted.getState().review.selectedIncoming.entries[0].id, id(109));
+    assert.deepEqual(f.store.document, initial); assert.equal(f.q("review").hidden, false);
+  } finally { f.dispose(); }
+});
+
+test("selecting only the report that fits resolves an over-capacity import without deleting existing history", async () => {
+  const initial = historyDocument(Array.from({ length: 11 }, (_, index) => historyRecord(index + 1))), f = fixture(initial);
+  try {
+    await f.load(); await f.file((await prepareReportHistoryFile(historyDocument([historyRecord(20), historyRecord(21)]))).text);
+    assert.equal(f.q("apply").disabled, true); f.check("import-choice-1", false); assert.equal(f.q("apply").disabled, false);
+    assert.match(f.q("import-selection-count").textContent, /対象 1\/2件/);
+    f.check("import-choice-0", false); assert.equal(f.q("apply").disabled, true);
+    f.check("import-choice-0"); f.click("apply"); await f.settled();
+    assert.deepEqual(f.store.document.entries, [...initial.entries, historyRecord(20)]);
+  } finally { f.dispose(); }
+});
+
 test("history panel starts lazy, labelled, and with write controls disabled", () => {
   const f = fixture(); assert.deepEqual(f.store.calls, []);
   assert.equal(f.q("panel").getAttribute("aria-label"), "PC内の報告履歴");
