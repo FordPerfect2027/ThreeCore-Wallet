@@ -1,0 +1,61 @@
+{
+  "source": "e6ef7a1",
+  "synthetic": true,
+  "providerCalls": 0,
+  "appliesToLiveState": false,
+  "capture": [
+    {
+      "kind": "workspace",
+      "parts": [
+        "workspace-before",
+        "workspace-after"
+      ],
+      "verified": true,
+      "canonicalOutputsMatch": true,
+      "wrongChecksumExit": 2,
+      "wrongChecksumOutputBytes": 0,
+      "sourceUnchanged": true
+    },
+    {
+      "kind": "scenario",
+      "parts": [
+        "scenario-before",
+        "scenario-after"
+      ],
+      "verified": true,
+      "canonicalOutputsMatch": true,
+      "wrongChecksumExit": 2,
+      "wrongChecksumOutputBytes": 0,
+      "sourceUnchanged": true
+    },
+    {
+      "kind": "case-collection",
+      "parts": [
+        "scenario-set"
+      ],
+      "verified": true,
+      "canonicalOutputsMatch": true,
+      "wrongChecksumExit": 2,
+      "wrongChecksumOutputBytes": 0,
+      "sourceUnchanged": true
+    },
+    {
+      "kind": "failing-expectations",
+      "parts": [
+        "check-suite"
+      ],
+      "verified": true,
+      "canonicalOutputsMatch": true,
+      "wrongChecksumExit": 2,
+      "wrongChecksumOutputBytes": 0,
+      "sourceUnchanged": true
+    }
+  ],
+  "failedExpectedValuesPreserved": true,
+  "recomputedExpectedSummary": {
+    "cases": 1,
+    "matched": 0,
+    "differing": 1,
+    "allMatched": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "threecore.operation-rehearsal-report-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+  "byteLength": 7773,
+  "sha256": "eb6449e70186f5f810cab3957f3a07fdab66042cf8eaf5b3167466f025c455b1",
+  "expectedSha256": null,
+  "checksumMatches": null,
+  "matchesRecomputation": true,
+  "differenceCount": 0,
+  "differences": [],
+  "differencesTruncated": false,
+  "scope": [
+    {
+      "agent": "DAT",
+      "beforeRecords": 2,
+      "afterRecords": 2
+    }
+  ]
+}
