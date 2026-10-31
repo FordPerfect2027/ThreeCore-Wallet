@@ -195,6 +195,8 @@ All checks use an EIP-1193 browser wallet already selected in the local demo, an
 
 ## Public Base RPC live diagnostics (read-only)
 
+The four public diagnostic commands (Base probe, Aerodrome inspection, pool inspection and liquidity progress) accept Ctrl+C while a read is active. Cancellation prints no partial report and exits 130; SIGTERM exits 143. See [interrupt behavior and verification](docs/PUBLIC_DIAGNOSTIC_INTERRUPT_2026-10-31.md).
+
 `src/base-rpc-probe.js` and `scripts/probe-base.js` provide a repeatable **live-chain connectivity check** through the Base team's rate-limited public JSON-RPC endpoints. This is a separate diagnostic from the browser-Wallet connector and does not request accounts or connect to an external dApp.
 
 ```bash
