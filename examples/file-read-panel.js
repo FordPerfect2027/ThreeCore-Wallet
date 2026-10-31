@@ -13,6 +13,7 @@ import { canPrepareWalletSavedBatchEvidence, prepareWalletSavedBatchEvidence, re
 import { reviewWalletSavedBundleReceipt, encodeWalletSavedBundleReceiptCheck, walletSavedBundleReceiptCheckText, WALLET_SAVED_BUNDLE_RECEIPT_LIMIT } from "../src/file-read-status.js";
 import { reviewWalletSavedBatchEvidenceReceipt, encodeWalletSavedBatchEvidenceReceiptCheck } from "../src/file-read-status.js";
 import { queryWalletSavedBatchFiles, encodeWalletSavedBatchSelection } from "../src/file-read-status.js";
+import { reviewWalletSavedBatchSelection, encodeWalletSavedBatchSelectionReview, extractWalletSavedBatchSelectionQuery } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -590,8 +591,16 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
     getExpected: () => disposed || active ? null : evidenceReview, review: reviewWalletSavedBatchEvidenceReceipt,
     encode: encodeWalletSavedBatchEvidenceReceiptCheck, describe: batchEvidenceReceiptCheckText,
     filename: "ThreeCore-wallet-batch-evidence-receipt-check.json" });
+  const selectionCheck = mountSavedBundleReceiptCheckPanel({ document, parent: evidenceBox, download, readText,
+    getExpected: () => disposed || active ? null : result, review: reviewWalletSavedBatchSelection,
+    encode: encodeWalletSavedBatchSelectionReview, describe: batchSelectionReviewText,
+    filename: "ThreeCore-wallet-selection-review.json", recordLabel: "条件付きの保存結果",
+    heading: "保存した絞り込み結果を現在の一覧と比較する", sourcePrompt: "先に、比較する元ファイルをこの画面で確認してください。",
+    intro: "条件付きで保存したJSONを選びます。現在の確認結果から同じ条件を再計算し、保存された行・件数・全体の範囲と比較します。256 KiBまでです。保存時の処理経過や、除外された元ファイルの内容までは証明しません。",
+    apply: checked => { if (disposed || active || !result) return false; const query = extractWalletSavedBatchSelectionQuery(checked); filterName.value = query.name; filterStatus.value = query.status; applyView(); return true; } });
   function buttons() {
     receiptCheck.updateExpected();
+    selectionCheck.updateExpected();
     sourceExport.updateCurrent(disposed || active ? null : openedEvidence);
     evidenceAck.disabled = disposed || Boolean(active) || !canPrepareWalletSavedBatchEvidence(result);
     evidenceSave.disabled = evidenceAck.disabled || !evidenceAck.checked;
@@ -792,7 +801,7 @@ export function mountSavedFileBatchPanel({ document, parent, readText = readSave
   }, getState: () => Object.freeze({ busy: Boolean(active), result, selected: selection?.length ?? 0, disposed }), dispose() {
     if (disposed) return; disposed = true; ++generation; const old = active; active = null; selection = null; result = null; evidenceReview = null; openedEvidence = null;
     referenceText = undefined; referenceInput.value = ""; ack.checked = false; evidenceAck.checked = false; evidenceFile.value = ""; evidenceStatus.textContent = "";
-    old?.abort(); comparisonPanel.dispose(); sourceExport.dispose(); receiptCheck.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
+    old?.abort(); comparisonPanel.dispose(); sourceExport.dispose(); receiptCheck.dispose(); selectionCheck.dispose(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); buttons(); host.remove();
   } });
 }
 
@@ -907,35 +916,53 @@ export function batchEvidenceReceiptCheckText(result) {
     result.expectedEvidenceMatches ? "まとめた資料の保存内容も再計算と一致しています。" : "まとめた資料の保存内容には相違があります。控えの一致で、その相違は解消しません。",
     "元資料ごとの判定は上の一覧で別に確認してください。控えの一致は出所や実際の残高を証明せず、履歴への取り込みも行いません。"].join("\n");
 }
+export function batchSelectionReviewText(result) {
+  if (!result) return "";
+  return [result.matchesRecomputation ? "条件付きの保存結果は、現在の確認結果からの再計算と全項目が一致しました。" : "条件付きの保存結果に、現在の再計算との相違があります。",
+    `元の対象 ${result.selectedBatchFiles}件 ／ 条件に一致 ${result.matchedFiles}件。相違の項目 ${result.differences.length}個／追加項目 ${result.unexpectedFields}個。`,
+    "元の確認控えのSHA-256: " + result.sourceBatchTextDigest,
+    "保存時の読み込み・再試行の経過や、除外された元ファイルの内容まで証明する結果ではありません。元資料の判定と保存の完全性は全件の控えで別に確認してください。"].join("\n");
+}
 export function mountSavedBundleReceiptCheckPanel({ document, parent, getExpected = () => null, readText = readSavedGuideText,
   review = reviewWalletSavedBundleReceipt, encode = encodeWalletSavedBundleReceiptCheck, describe = walletSavedBundleReceiptCheckText,
+  recordLabel = "照合結果", heading = "保存した照合結果を、この資料から再確認する", sourcePrompt = "先に、上でまとめた資料を読み込んでください。",
+  intro = "上でまとめた資料を読み込んでから、その資料の照合結果JSONを選んでください。元の資料との結び付けと全項目を再計算と比較します。256 KiBまでです。", apply = null,
   filename = "ThreeCore-saved-bundle-receipt-check.json", download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-bundle-receipt-check"; parent.append(host);
   const cleanup = []; let disposed = false, revision = 0, expected = null, active = null, result = null;
   function node(tag, name, text, target = host) { const value = document.createElement(tag); value.className = "saved-bundle-receipt-check-" + name; if (text !== undefined) value.textContent = text; target.append(value); return value; }
-  node("summary", "heading", "保存した照合結果を、この資料から再確認する");
-  node("p", "intro", "上でまとめた資料を読み込んでから、その資料の照合結果JSONを選んでください。元の資料との結び付けと全項目を再計算と比較します。256 KiBまでです。");
-  const label = node("label", "file-label", "以前保存した照合結果JSON"), file = node("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json";
-  const stop = node("button", "stop", "照合結果の再確認を中止"), status = node("p", "status", "先に、上でまとめた資料を読み込んでください。"), output = node("pre", "output", ""); stop.type = "button"; status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  node("summary", "heading", heading);
+  node("p", "intro", intro);
+  const label = node("label", "file-label", "以前保存した" + recordLabel + "JSON"), file = node("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json";
+  const stop = node("button", "stop", recordLabel + "の再確認を中止"), status = node("p", "status", sourcePrompt), output = node("pre", "output", ""); stop.type = "button"; status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const ackLabel = node("label", "ack-label", "再確認の結果と照合値を、暗号化せずPCに保存します"), ack = node("input", "ack", undefined, ackLabel); ack.type = "checkbox";
   const save = node("button", "save", "再確認の結果をJSON保存"); save.type = "button";
-  function render() { file.disabled = disposed || !expected || Boolean(active); stop.disabled = disposed || !active; ack.disabled = disposed || Boolean(active) || !result; save.disabled = ack.disabled || !ack.checked; host.setAttribute("aria-busy", String(Boolean(active))); output.textContent = describe(result); }
+  const applyButton = node("button", "apply", "確認済みの条件で現在の一覧を絞り込む"); applyButton.type = "button"; applyButton.hidden = typeof apply !== "function";
+  if (typeof apply === "function") host.className += " batch-selection-check";
+  function render() { file.disabled = disposed || !expected || Boolean(active); stop.disabled = disposed || !active; ack.disabled = disposed || Boolean(active) || !result; save.disabled = ack.disabled || !ack.checked; applyButton.disabled = disposed || Boolean(active) || typeof apply !== "function" || !result?.matchesRecomputation; host.setAttribute("aria-busy", String(Boolean(active))); output.textContent = describe(result); }
   function updateExpected() {
-    if (disposed) return; const next = getExpected(); if (next !== expected) { ++revision; const old = active; active = null; expected = next; result = null; ack.checked = false; old?.abort(); status.textContent = next ? "以前保存した照合結果JSONを選んでください。" : "先に、上でまとめた資料を読み込んでください。"; } render();
+    if (disposed) return; const next = getExpected(); if (next !== expected) { ++revision; const old = active; active = null; expected = next; result = null; ack.checked = false; old?.abort(); status.textContent = next ? "以前保存した" + recordLabel + "JSONを選んでください。" : sourcePrompt; } render();
   }
   function listen(target, event, fn) { target.addEventListener(event, fn); cleanup.push(() => target.removeEventListener(event, fn)); }
   listen(file, "change", async () => {
     if (disposed || active || !expected) return; const chosen = file.files?.[0]; file.value = ""; if (!chosen) return;
-    const own = ++revision, captured = expected, local = new AbortController(); active = local; result = null; ack.checked = false; status.textContent = "保存した照合結果を再計算と比較しています。"; render();
+    const own = ++revision, captured = expected, local = new AbortController(); active = local; result = null; ack.checked = false; status.textContent = "保存した" + recordLabel + "を再計算と比較しています。"; render();
     const current = () => !disposed && own === revision && captured === expected && getExpected() === captured;
     try { readFormatFileName(chosen, { maxLength: 180, code: "FILE_NAME", fail: code => { const error = new Error(code); error.code = code; throw error; } });
       const text = await readText(chosen, { maxBytes: WALLET_SAVED_BUNDLE_RECEIPT_LIMIT, signal: local.signal }); if (!current()) return;
-      const checked = await review(captured, text, { signal: local.signal }); if (!current()) return; result = checked; status.textContent = "照合結果の再確認を終えました。下の判定をご確認ください。";
-    } catch { if (current()) status.textContent = "照合結果を確認できませんでした。256 KiB以内の、この資料から保存した照合結果JSONを選んでください。"; }
+      const checked = await review(captured, text, { signal: local.signal }); if (!current()) return; result = checked; status.textContent = recordLabel + "の再確認を終えました。下の判定をご確認ください。";
+    } catch { if (current()) status.textContent = recordLabel + "を確認できませんでした。256 KiB以内の、この資料から保存した" + recordLabel + "JSONを選んでください。"; }
     finally { local.abort(); if (!disposed && own === revision) { active = null; updateExpected(); } }
   });
-  listen(stop, "click", () => { if (disposed || !active) return; ++revision; const old = active; active = null; result = null; ack.checked = false; old.abort(); status.textContent = "照合結果の再確認を中止しました。元資料は変更していません。"; render(); });
+  listen(stop, "click", () => { if (disposed || !active) return; ++revision; const old = active; active = null; result = null; ack.checked = false; old.abort(); status.textContent = recordLabel + "の再確認を中止しました。元資料は変更していません。"; render(); });
   listen(ack, "change", render);
+  listen(applyButton, "click", () => {
+    if (disposed || active || applyButton.disabled || !result || getExpected() !== expected) return;
+    const own = revision, checked = result, source = expected;
+    try { const accepted = apply(checked); if (observeCallbackResult(accepted) !== "synchronous" || accepted === false) throw Error();
+      if (!disposed && own === revision && getExpected() === source) status.textContent = "確認済みの条件を現在の一覧に設定しました。表示件数は現在の結果から計算し、元資料や履歴は変更していません。";
+    } catch { if (!disposed && own === revision && getExpected() === source) status.textContent = "条件の設定を確認できませんでした。元資料と現在の結果は保持しています。"; }
+  });
   listen(save, "click", () => {
     if (disposed || active || !result || !ack.checked || getExpected() !== expected) return; const own = revision, captured = result, source = expected; ack.checked = false; render();
     try { const prepared = Object.freeze({ text: encode(captured), filename, mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false, encrypted: false }), delivered = download(prepared), kind = observeCallbackResult(delivered);

@@ -482,6 +482,41 @@ export function queryRehearsalBatchFiles(result, input = {}) {
     fullBatchResultIncluded: false, containsOriginalEvidence: false, readOnly: true, simulationOnly: true, sourceVerified: false,
     restorable: false, automaticallyImported: false, authorizesExecution: false });
 }
+const rehearsalBatchSelectionChecks = new WeakMap();
+export async function reviewRehearsalBatchSelection(source, text, input = {}) {
+  if (!batchReceipts.has(source)) fail("REVIEW_BATCH_SELECTION_SOURCE");
+  let supplied, options;
+  try { options = captureOptionalDataFields(input, ["subtle", "signal", "timeoutMs"]); } catch { fail("REVIEW_BATCH_SELECTION_OPTIONS"); }
+  const timeoutMs = options.timeoutMs ?? 30000, started = Date.now();
+  if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 30000 || readAbortState(options.signal)) fail("REVIEW_BATCH_SELECTION_OPTIONS");
+  try { supplied = parseSecurityJson(text, { bytes: 256 * 1024, depth: 32, nodes: 10000 }); } catch { fail("REVIEW_BATCH_SELECTION_JSON"); }
+  if (!supplied || Array.isArray(supplied)) fail("REVIEW_BATCH_SELECTION_JSON");
+  const expected = queryRehearsalBatchFiles(source, supplied.query);
+  if (supplied.schema !== expected.schema) fail("REVIEW_BATCH_SELECTION_SCHEMA");
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || !(compareValues(expected[key], supplied[key]).differenceCount === 0));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  const digest = async value => {
+    const remaining = timeoutMs - (Date.now() - started);
+    if (remaining < 1 || readAbortState(options.signal)) fail("REVIEW_BATCH_SELECTION_CANCELLED");
+    return sha256Hex(new TextEncoder().encode(value), options.subtle, { signal: options.signal, timeoutMs: remaining });
+  };
+  const selectionTextDigest = await digest(text), sourceBatchTextDigest = await digest(encodeRehearsalBatchReview(source));
+  if (readAbortState(options.signal)) fail("REVIEW_BATCH_SELECTION_CANCELLED");
+  const result = Object.freeze({ schema: "threecore.operation-rehearsal-batch-selection-review.v1", matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    selectionTextDigest, sourceBatchTextDigest, query: expected.query, selectedBatchFiles: expected.selectedBatchFiles, matchedFiles: expected.matchedFiles,
+    differences: Object.freeze(differences), unexpectedFields, sourceComplete: source.complete, sourcePhase: source.phase,
+    unselectedSourceContentsCompared: false, recordedProcessVerified: false, readOnly: true, authorizesExecution: false,
+    automaticallyImported: false, containsOriginalEvidence: false, restorable: false });
+  rehearsalBatchSelectionChecks.set(result, source); return result;
+}
+export function encodeRehearsalBatchSelectionReview(result) {
+  if (!rehearsalBatchSelectionChecks.has(result)) fail("REVIEW_BATCH_SELECTION_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
+}
+export function extractRehearsalBatchSelectionQuery(result) {
+  if (!rehearsalBatchSelectionChecks.has(result) || !result.matchesRecomputation) fail("REVIEW_BATCH_SELECTION_UNVERIFIED");
+  return result.query;
+}
 export function encodeRehearsalBatchSelection(result, query = {}) {
   return JSON.stringify(queryRehearsalBatchFiles(result, query), null, 2) + "\n";
 }

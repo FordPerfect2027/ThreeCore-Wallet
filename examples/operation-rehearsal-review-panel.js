@@ -1,7 +1,8 @@
 import { createRehearsalFieldFeedback } from "./operation-rehearsal-scenario-panel.js";
-import { createFileSelectionNotice, mountBatchSourceExportPanel, mountSavedBundleReceiptCheckPanel, batchEvidenceReceiptCheckText } from "./file-read-panel.js";
+import { createFileSelectionNotice, mountBatchSourceExportPanel, mountSavedBundleReceiptCheckPanel, batchEvidenceReceiptCheckText, batchSelectionReviewText } from "./file-read-panel.js";
 import { reviewRehearsalBatchEvidenceReceipt, encodeRehearsalBatchEvidenceReceiptCheck } from "../src/operation-rehearsal-report-review.js";
 import { queryRehearsalBatchFiles, encodeRehearsalBatchSelection } from "../src/operation-rehearsal-report-review.js";
+import { reviewRehearsalBatchSelection, encodeRehearsalBatchSelectionReview, extractRehearsalBatchSelectionQuery } from "../src/operation-rehearsal-report-review.js";
 import { createFileReadScope, readFormatFileName, readSecurityFileText } from "../src/security-file.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { boundedUtf8Length } from "../src/security-json.js";
@@ -118,6 +119,13 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     download: prepared => download({ document, prepared }), getExpected: () => disposed || active || referenceBusy ? null : evidenceReview,
     review: reviewRehearsalBatchEvidenceReceipt, encode: encodeRehearsalBatchEvidenceReceiptCheck,
     describe: batchEvidenceReceiptCheckText, filename: "ThreeCore-report-batch-evidence-receipt-check.json" });
+  const selectionCheck = mountSavedBundleReceiptCheckPanel({ document, parent: get("source-export"),
+    download: prepared => download({ document, prepared }), getExpected: () => disposed || active || referenceBusy ? null : result,
+    review: reviewRehearsalBatchSelection, encode: encodeRehearsalBatchSelectionReview, describe: batchSelectionReviewText,
+    filename: "ThreeCore-report-selection-review.json", recordLabel: "条件付きの保存結果",
+    heading: "保存した絞り込み結果を現在の一覧と比較する", sourcePrompt: "先に、比較する元資料をこの画面で確認してください。",
+    intro: "条件付きで保存したJSONを選びます。現在の確認結果から同じ条件を再計算し、保存された行・件数・全体の範囲と比較します。256 KiBまでです。保存時の処理経過や、除外された元資料の内容までは証明しません。",
+    apply: checked => { if (disposed || active || !result) return false; const query = extractRehearsalBatchSelectionQuery(checked); get("filter-name").value = query.name; get("filter-status").value = query.status; applyView(); return true; } });
   const current = id => !disposed && id === revision;
   function listen(id, event, callback) {
     const node = get(id); node.addEventListener(event, callback);
@@ -133,6 +141,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
   function buttons() {
     const referenceMatches = referenceReady();
     receiptCheck.updateExpected();
+    selectionCheck.updateExpected();
     sourceExport.updateCurrent(disposed || active || referenceBusy ? null : openedEvidence);
     get("evidence-ack").disabled = disposed || Boolean(active) || !canPrepareRehearsalBatchEvidence(result);
     get("evidence-save").disabled = get("evidence-ack").disabled || !get("evidence-ack").checked;
@@ -431,7 +440,7 @@ export function mountRehearsalBatchReviewPanel(document, { download, subtle = gl
     return evidenceJob(file);
   }, dispose() {
     if (disposed) return;
-    reset(); disposed = true; ++revision; for (const remove of listeners) remove(); sourceExport.dispose(); receiptCheck.dispose(); buttons();
+    reset(); disposed = true; ++revision; for (const remove of listeners) remove(); sourceExport.dispose(); receiptCheck.dispose(); selectionCheck.dispose(); buttons();
   } });
 }
 

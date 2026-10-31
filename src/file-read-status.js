@@ -198,6 +198,8 @@ const walletSavedTargets = Object.freeze({
   "threecore.wallet-saved-browser-batch.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-batch-selection.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.operation-rehearsal-batch-selection.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
+  "threecore.wallet-batch-selection-review.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
+  "threecore.operation-rehearsal-batch-selection-review.v1": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v2": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v3": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
   "threecore.wallet-saved-browser-batch.v4": [null, "PERIOD_FILE_SAVED_BATCH_ONLY"],
@@ -1143,6 +1145,41 @@ export function queryWalletSavedBatchFiles(result, input = {}) {
     sourcePhase: result.phase, sourceComplete: result.complete, files, sourceReceiptRequiredForRecheck: true,
     fullBatchResultIncluded: false, containsOriginalEvidence: false, readOnly: true, authenticated: false,
     restorable: false, automaticallyImported: false, authorizesExecution: false });
+}
+const savedBatchSelectionChecks = new WeakMap();
+export async function reviewWalletSavedBatchSelection(source, text, input = {}) {
+  if (!browserSavedBatchReceipts.has(source)) savedInspectionFail("FILE_BATCH_SELECTION_SOURCE");
+  let supplied, options;
+  try { options = captureOptionalDataFields(input, ["subtle", "signal", "timeoutMs"]); } catch { savedInspectionFail("FILE_BATCH_SELECTION_OPTIONS"); }
+  const timeoutMs = options.timeoutMs ?? 30000, started = Date.now();
+  if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 30000 || readAbortState(options.signal)) savedInspectionFail("FILE_BATCH_SELECTION_OPTIONS");
+  try { supplied = parseSecurityJson(text, { bytes: 256 * 1024, depth: 32, nodes: 10000 }); } catch { savedInspectionFail("FILE_BATCH_SELECTION_JSON"); }
+  if (!supplied || Array.isArray(supplied)) savedInspectionFail("FILE_BATCH_SELECTION_JSON");
+  const expected = queryWalletSavedBatchFiles(source, supplied.query);
+  if (supplied.schema !== expected.schema) savedInspectionFail("FILE_BATCH_SELECTION_SCHEMA");
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || !(sameSavedJSON(expected[key], supplied[key])));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  const digest = async value => {
+    const remaining = timeoutMs - (Date.now() - started);
+    if (remaining < 1 || readAbortState(options.signal)) savedInspectionFail("FILE_BATCH_SELECTION_CANCELLED");
+    return sha256Hex(new TextEncoder().encode(value), options.subtle, { signal: options.signal, timeoutMs: remaining });
+  };
+  const selectionTextDigest = await digest(text), sourceBatchTextDigest = await digest(encodeWalletSavedTextBatch(source));
+  if (readAbortState(options.signal)) savedInspectionFail("FILE_BATCH_SELECTION_CANCELLED");
+  const result = Object.freeze({ schema: "threecore.wallet-batch-selection-review.v1", matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    selectionTextDigest, sourceBatchTextDigest, query: expected.query, selectedBatchFiles: expected.selectedBatchFiles, matchedFiles: expected.matchedFiles,
+    differences: Object.freeze(differences), unexpectedFields, sourceComplete: source.complete, sourcePhase: source.phase,
+    unselectedSourceContentsCompared: false, recordedProcessVerified: false, readOnly: true, authorizesExecution: false,
+    automaticallyImported: false, containsOriginalEvidence: false, restorable: false });
+  savedBatchSelectionChecks.set(result, source); return result;
+}
+export function encodeWalletSavedBatchSelectionReview(result) {
+  if (!savedBatchSelectionChecks.has(result)) savedInspectionFail("FILE_BATCH_SELECTION_RESULT");
+  return JSON.stringify(result, null, 2) + "\n";
+}
+export function extractWalletSavedBatchSelectionQuery(result) {
+  if (!savedBatchSelectionChecks.has(result) || !result.matchesRecomputation) savedInspectionFail("FILE_BATCH_SELECTION_UNVERIFIED");
+  return result.query;
 }
 export function encodeWalletSavedBatchSelection(result, query = {}) {
   return JSON.stringify(queryWalletSavedBatchFiles(result, query), null, 2) + "\n";
