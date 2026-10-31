@@ -1,3 +1,4 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
 import { AGENT_IDS, normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
 import { captureDataArray, captureDataRecord, captureOptionalDataFields } from "./security-data.js";
 import { consumeCallback } from "./security-callback.js";
@@ -19,7 +20,7 @@ function fail(code, message) {
 }
 
 function identity(session) {
-  const state = session?.state;
+  let state;try { state=captureWalletReadState(session); } catch { fail("INVALID_SESSION", "Expected own-data session state"); }
   if (!state || !AGENT_IDS.includes(state.agent) ||
       !Number.isSafeInteger(state.chainId) || state.chainId < 1 ||
       !Number.isSafeInteger(state.connectionEpoch) || state.connectionEpoch < 0 ||

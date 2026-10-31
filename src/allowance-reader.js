@@ -1,3 +1,4 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { consumeCallback } from "./security-callback.js";
 import { captureOptionalDataFields } from "./security-data.js";
@@ -5,14 +6,15 @@ import { identityUnits } from "./token-identity-codec.js";
 import { allowanceFail, allowanceObject, AllowanceError, validateAllowanceTargets, assertAllowanceContext } from "./allowance-targets.js";
 import { ALLOWANCE_OBSERVATION_SCHEMA, validateAllowanceObservation } from "./allowance-observation.js";
 
-function sessionKey(session) {
-  const state = session?.state;
+function sessionKey(session, targets = null) {
+  let state;try { state=captureWalletReadState(session); } catch { allowanceFail("ALLOWANCE_SESSION"); }
   if (!state || state.connected !== true || !state.account) allowanceFail("ALLOWANCE_NOT_CONNECTED");
   if (state.canSign !== false || state.canSendTransactions !== false || state.canBridge !== false) {
     allowanceFail("ALLOWANCE_CAPABILITIES");
   }
   if (!Number.isSafeInteger(state.connectionEpoch) || state.connectionEpoch < 0 ||
       typeof session.getTokenAllowance !== "function") allowanceFail("ALLOWANCE_SESSION");
+  if(targets)assertAllowanceContext(targets,state);
   return JSON.stringify([state.agent, state.account, state.chainId, state.siteOrigin, state.connectionEpoch]);
 }
 
@@ -21,8 +23,7 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
   try { options = captureOptionalDataFields(options, ["timeoutMs", "signal", "onProgress"]); }
   catch { allowanceFail("ALLOWANCE_OPTIONS"); }
   const targets = validateAllowanceTargets(input);
-  const key = sessionKey(session);
-  assertAllowanceContext(targets, session.state);
+  const key = sessionKey(session, targets);
   const timeoutMs = options.timeoutMs ?? 60000;
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000) allowanceFail("ALLOWANCE_TIMEOUT_OPTION");
   if (options.signal !== undefined && !(options.signal instanceof AbortSignal)) allowanceFail("ALLOWANCE_SIGNAL");

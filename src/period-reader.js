@@ -1,3 +1,4 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
 import { readOwnErrorCode } from "./provider-error.js";
 import { validateSiteOrigin } from "./wallet-session.js";
 import { consumeCallback } from "./security-callback.js";
@@ -11,7 +12,7 @@ import { emptyPeriodDraft, validatePeriodDraft, periodDraftAnchors, periodDraftP
 const METHODS = ["getBlockSnapshot", "getContractCode", "getNativeBalance", "getTokenMetadata", "getTokenBalance", "getTransferEvents"];
 
 function binding(session, plan) {
-  const state = session?.state;
+  let state;try { state=captureWalletReadState(session); } catch { periodFail("PERIOD_SESSION"); }
   if (!state || state.connected !== true) periodFail("PERIOD_NOT_CONNECTED");
   if (state.canSign !== false || state.canSendTransactions !== false || state.canBridge !== false) {
     periodFail("PERIOD_CAPABILITIES");

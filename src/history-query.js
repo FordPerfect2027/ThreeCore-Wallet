@@ -1,3 +1,4 @@
+import { captureDataRecord } from "./security-data.js";
 import { createPortfolioHistory } from "./portfolio-history.js";
 import { normalizeAddress } from "./wallet-session.js";
 
@@ -17,13 +18,11 @@ function height(value) {
 }
 /** Strict, primitive-only filters. No regex, arbitrary search expressions or code. */
 export function validateHistoryQuery(query = {}) {
-  if (!query || typeof query !== "object" || Array.isArray(query) ||
-      ![Object.prototype, null].includes(Object.getPrototypeOf(query))) fail();
   const allowed = ["account", "chainId", "minimumBlock", "maximumBlock", "order"];
-  for (const key of Reflect.ownKeys(query)) {
-    if (!allowed.includes(key)) fail();
-    if (!("value" in Object.getOwnPropertyDescriptor(query, key))) fail();
-  }
+  try {
+    const keys=Reflect.ownKeys(query);if(keys.some(key=>!allowed.includes(key)))fail();
+    query=captureDataRecord(query,keys);
+  } catch { fail(); }
   let account = query.account ?? "";
   if (account !== "") {
     try { account = normalizeAddress(account); } catch { fail(); }

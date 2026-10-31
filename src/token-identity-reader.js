@@ -1,3 +1,4 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
 import { validateSiteOrigin } from "./wallet-session.js";
 import { catalogToken, TOKEN_CATALOG_VERSION, reviewCatalogAddress } from "./token-catalog.js";
 import { identityAddress, identityFail, identityObject, identityUnits, validateTokenMetadata, TokenIdentityError } from "./token-identity-codec.js";
@@ -6,7 +7,7 @@ import { consumeCallback } from "./security-callback.js";
 import { captureOptionalDataFields } from "./security-data.js";
 
 function sessionIdentity(session) {
-  const state = session?.state;
+  let state;try { state=captureWalletReadState(session); } catch { identityFail("IDENTITY_SESSION"); }
   if (!state || state.connected !== true) identityFail("IDENTITY_NOT_CONNECTED");
   const expected = catalogToken({ agent: state.agent, chainId: state.chainId });
   if (state.canSign !== false || state.canSendTransactions !== false || state.canBridge !== false) {

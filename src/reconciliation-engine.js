@@ -1,3 +1,4 @@
+import { captureDataArray, captureDataRecord } from "./security-data.js";
 import { assessTokenObservation } from "./token-identity-model.js";
 import { identityUnits } from "./token-identity-codec.js";
 import { catalogToken } from "./token-catalog.js";
@@ -34,7 +35,8 @@ export function reconciliationCoverage(earlierBlock, laterBlock, ranges) {
   const earlier = BigInt(identityUnits(earlierBlock));
   const later = BigInt(identityUnits(laterBlock));
   if (earlier > later) reconciliationFail("RECONCILIATION_ORDER");
-  if (!Array.isArray(ranges) || ranges.length > 12) reconciliationFail("RECONCILIATION_RANGES");
+  try { ranges=captureDataArray(ranges,12).map(range=>captureDataRecord(range,["fromBlock","toBlock"])); }
+  catch { reconciliationFail("RECONCILIATION_RANGES"); }
   const candidates = ranges.map(range => {
     const from = BigInt(identityUnits(range.fromBlock));
     const to = BigInt(identityUnits(range.toBlock));

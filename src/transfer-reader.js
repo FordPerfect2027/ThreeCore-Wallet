@@ -1,3 +1,4 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
 import { catalogToken } from "./token-catalog.js";
 import { consumeCallback } from "./security-callback.js";
 import { captureOptionalDataFields } from "./security-data.js";
@@ -8,7 +9,7 @@ import {
 } from "./transfer-codec.js";
 
 function binding(session) {
-  const state = session?.state;
+  let state;try { state=captureWalletReadState(session); } catch { transferFail("TRANSFER_SESSION"); }
   if (!state || state.connected !== true) transferFail("TRANSFER_NOT_CONNECTED");
   if (state.canSign !== false || state.canBridge !== false || state.canSendTransactions !== false) {
     transferFail("TRANSFER_CAPABILITIES");
