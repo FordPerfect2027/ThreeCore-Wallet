@@ -731,8 +731,16 @@ export function registerFileReadUITests(test) {
       q("session-save").click();const before=downloads.pop().text;q("record-browser-next").click();assert(q("record-browser-rows").rows.length===10);
       q("record-browser-csv-save").click();const csv=downloads.pop();assert(csv.filename==="ThreeCore-record-query.csv");assert(csv.text.startsWith("\uFEFF"));assert(csv.text.split("\r\n").length===602);
       assert(q("record-browser-export-status").textContent.includes("全600件"));assert(q("record-browser-status").textContent.includes("11～20"));
+      q('record-browser-last').click();assert(q('record-browser-page').value==='60');assert(q('record-browser-select').value==='CAWELON:deposit-190');assert(document.activeElement===q('record-browser-select'));
+      q('record-browser-page').value='21';q('record-browser-page').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));assert(q('record-browser-select').value==='EMA:deposit-0');
+      q('record-browser-detail-prev').click();assert(q('record-browser-select').value==='DAT:deposit-199');assert(q('record-browser-page').value==='20');assert(q('record-browser-detail-position').textContent.includes('全600件中、200件目'));
+      q('record-browser-detail-next').click();assert(q('record-browser-select').value==='EMA:deposit-0');assert(q('record-browser-page').value==='21');
+      q('record-browser-page').value='61';q('record-browser-go').click();assert(q('record-browser-select').value==='EMA:deposit-0');assert(q('record-browser-page').getAttribute('aria-invalid')==='true');
+      q('record-browser-first').click();assert(q('record-browser-select').value==='DAT:deposit-0');assert(q('record-browser-page').getAttribute('aria-invalid')==='false');
+      q('record-browser-search').value='deposit-199';q('record-browser-search').dispatchEvent(new Event('input'));assert(q('record-browser-select').value==='DAT:deposit-199');q('record-browser-detail-next').click();assert(q('record-browser-select').value==='EMA:deposit-199');q('record-browser-detail-next').click();assert(q('record-browser-select').value==='CAWELON:deposit-199');assert(q('record-browser-detail-next').disabled);assert(q('record-browser-search').value==='deposit-199');
       q("record-browser-search").value="absent";q("record-browser-search").dispatchEvent(new Event("input"));q("record-browser-csv-save").click();assert(downloads.pop().text.split("\r\n").length===2);
       assert(q("record-browser-export-status").textContent.includes("列名だけ"));
+      for(const name of['first','last','page','go','detail-prev','detail-next'])assert(q('record-browser-'+name).disabled);
       q("session-save").click();assert(downloads.pop().text===before);
     }finally{page.dispose();host.remove();}
   });

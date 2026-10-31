@@ -206,12 +206,16 @@
     </div>
     <p class="small">従来の検索はID、保存元の口座・資産アドレス、見送り理由のコードが対象です。「記録に書かれた情報」では記録上の対象・ネットワーク・口座・サイト・利用先契約も探せます。保存元の絞り込みは変わりません。空白で区切るとすべての語を含む記録に絞ります。</p>
     <button id="record-browser-clear" type="button">記録の検索条件をリセット</button>
-    <div class="actions"><label>1ページの表示件数<select id="record-browser-size"><option>10</option><option>25</option><option>50</option></select></label><button id="record-browser-prev" type="button" disabled>前の記録ページ</button><button id="record-browser-next" type="button" disabled>次の記録ページ</button></div>
+    <div class="actions"><label>1ページの表示件数<select id="record-browser-size"><option>10</option><option>25</option><option>50</option></select></label><button id="record-browser-first" type="button" disabled>最初のページ</button><button id="record-browser-prev" type="button" disabled>前の記録ページ</button><button id="record-browser-next" type="button" disabled>次の記録ページ</button><button id="record-browser-last" type="button" disabled>最後のページ</button></div>
+    <div class="actions"><label>移動するページ<input id="record-browser-page" type="text" inputmode="numeric" maxlength="3" size="3" aria-describedby="record-browser-page-count record-browser-page-status" disabled></label><span id="record-browser-page-count"></span><button id="record-browser-go" type="button" disabled>このページへ移動</button></div>
+    <p id="record-browser-page-status" role="status" aria-live="polite"></p>
     <p id="record-browser-status" role="status" aria-live="polite"></p>
     <details><summary>検索に一致した記録のトークン別集計</summary><p class="small">ページをまたぐ全一致記録を集計します。金額はその記録による増減で、最終残高や期間全体の損益ではありません。異なるトークンの金額は合算しません。1件に理由が複数あるため、見送り理由の件数合計は見送り記録数と異なる場合があります。</p><pre id="record-browser-summary" class="rehearsal-difference-detail small" tabindex="0" aria-label="全一致記録のトークン別集計"></pre><button id="record-browser-summary-save" type="button" disabled>集計と元入力をJSON保存</button> <button id="record-browser-summary-csv-save" type="button" disabled aria-describedby="record-browser-csv-note">トークン別集計をCSV保存</button></details>
     <div class="table-wrap"><table><caption>検索した確定済みの記録</caption><thead><tr><th>保存元</th><th>順番・ID</th><th>種類</th><th>条件判定</th><th>操作・予約ID</th><th scope="col">詳細</th></tr></thead><tbody id="record-browser-rows"></tbody></table></div>
     <button id="record-browser-back" type="button" disabled>関連記録へ移動する前の表示に戻る</button>
-    <label>詳しく見る記録<select id="record-browser-select" disabled></select></label><p id="record-browser-detail" class="small"></p>
+    <label>詳しく見る記録<select id="record-browser-select" disabled></select></label>
+    <div class="actions"><button id="record-browser-detail-prev" type="button" disabled>前の一致記録を詳しく見る</button><button id="record-browser-detail-next" type="button" disabled>次の一致記録を詳しく見る</button></div>
+    <p id="record-browser-detail-position" role="status" aria-live="polite"></p><p id="record-browser-detail" class="small"></p>
     <details><summary>この記録までの履歴を切り出して再確認</summary><p id="record-browser-prefix-note" class="small"></p><button id="record-browser-prefix-save" type="button" disabled>この記録までの単体入力を別保存</button> <button id="record-browser-prefix-report-save" type="button" disabled>元履歴も含む再現資料を保存</button></details>
     <div class="table-wrap"><table><caption>選択した記録に含まれる入力</caption><thead><tr><th>項目</th><th>記録された値</th></tr></thead><tbody id="record-browser-event"></tbody></table></div>
     <div class="table-wrap"><table><caption>この記録を評価した前後の金額</caption><thead><tr><th>項目</th><th>直前</th><th>評価後</th><th>差額</th></tr></thead><tbody id="record-browser-balances"></tbody></table></div>

@@ -18,6 +18,31 @@ function setup(){const elements=new Map(),downloads=[];let throwDownload=false,d
 }
 const many=()=>{const source=rehearsalExampleV2();return workspace({...source,events:Array.from({length:27},(_,i)=>({id:"deposit-"+i,kind:"deposit",agent:source.agent,chainId:source.chainId,account:source.account,amount:"1"}))});};
 
+test('direct page navigation preserves full exports and supports first, last and Enter without invalid jumps',()=>{
+ const f=setup(),input=many();try{f.panel.refresh(input);f.field('save').click();const original=f.downloads.pop().text;assert.equal(f.field('page').value,'1');assert.match(f.field('page-count').textContent,/全3ページ/);
+  f.field('last').click();assert.equal(f.field('select').value,'DAT:deposit-20');assert(f.field('last').disabled);assert.equal(f.field('rows').children.length,7);
+  for(const invalid of ['','0','4','2.0','-1','1e0',' 2','２']){const selected=f.field('select').value;f.field('page').value=invalid;f.field('go').click();assert.equal(f.field('select').value,selected);assert.match(f.field('page-status').textContent,/現在の表示/);}
+  f.field('page').value='2';const event=new Event('keydown',{cancelable:true});Object.defineProperty(event,'key',{value:'Enter'});f.field('page').dispatchEvent(event);assert(event.defaultPrevented);assert.equal(f.field('select').value,'DAT:deposit-10');assert.equal(f.field('page-status').textContent,'');
+  f.field('first').click();assert.equal(f.field('select').value,'DAT:deposit-0');assert(f.field('first').disabled);f.field('save').click();assert.equal(f.downloads.pop().text,original);
+  f.change('size','25');assert.match(f.field('page-count').textContent,/全2ページ/);f.field('last').click();assert.equal(f.field('select').value,'DAT:deposit-25');
+ }finally{f.panel.dispose();}
+});
+
+test('adjacent detail navigation crosses pages and stays within matched records in both directions',()=>{
+ const f=setup();try{f.panel.refresh(many());f.change('search','deposit-1');assert.match(f.field('status').textContent,/一致 11件/);assert(f.field('detail-prev').disabled);
+  for(let i=0;i<10;i++)f.field('detail-next').click();assert.equal(f.field('select').value,'DAT:deposit-19');assert.equal(f.field('page').value,'2');assert.match(f.field('detail-position').textContent,/全11件中、11件目/);assert(f.field('detail-next').disabled);
+  f.field('detail-prev').click();assert.equal(f.field('select').value,'DAT:deposit-18');assert.equal(f.field('page').value,'1');assert.equal(f.field('search').value,'deposit-1');
+  f.field('save').click();assert.equal(JSON.parse(f.downloads.pop().text).matchedRecords,11);
+  f.change('search','absent');for(const name of['first','last','page','go','detail-prev','detail-next'])assert(f.field(name).disabled,name);assert.equal(f.field('detail-position').textContent,'');assert.match(f.field('page-count').textContent,/該当ページなし/);
+ }finally{f.panel.dispose();}
+});
+
+test('navigation resets on invalid filters, respects replacement sources and is inert after disposal',()=>{
+ const f=setup();f.panel.refresh(many());f.field('last').click();f.change('search','x'.repeat(81));for(const name of['first','last','page','go','detail-prev','detail-next'])assert(f.field(name).disabled,name);
+ f.change('search','');f.field('last').click();f.panel.refresh(workspace(rehearsalExampleV2()));assert.equal(f.field('page').value,'1');assert.match(f.field('page-count').textContent,/全1ページ/);f.field('detail-next').click();assert.equal(f.field('select').value,'DAT:settle-one');
+ const controls=['last','go','detail-next'].map(name=>f.field(name));f.panel.dispose();controls.forEach(node=>node.click());assert.equal(f.field('detail').textContent,'');assert.equal(f.field('page').value,'');
+});
+
 test('query reuse resets paging and matches current history without restoring another input',()=>{
  const f=setup(),input=many();try{f.panel.refresh(input);f.field('next').click();let focus=0;f.field('select').focus=()=>{focus++;};
   assert.equal(f.panel.applyQuery({...REHEARSAL_SUMMARY_QUERY,agent:'DAT',search:'deposit-26'}),true);assert.equal(f.field('select').value,'DAT:deposit-26');assert.equal(f.field('back').disabled,true);assert.match(f.field('status').textContent,/1～1/);assert.equal(focus,1);

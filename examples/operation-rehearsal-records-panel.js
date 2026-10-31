@@ -50,6 +50,9 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   }
   function detail(){const detailOwn=++detailRevision;for(const name of["detail","event","balances","related","related-status"])get(name).textContent="";
     const item=report?.rows.find(row=>row.key===selected);referenceDetail(item);
+    const position=item?report.rows.indexOf(item):-1;
+    get("detail-prev").disabled=position<=0;get("detail-next").disabled=position<0||position+1>=report.rows.length;
+    get("detail-position").textContent=item?"一致する全"+report.rows.length+"件中、"+(position+1)+"件目の詳細です。前後への移動も現在の検索条件を保ちます。":"";
     get("prefix-save").disabled=!item;get("prefix-report-save").disabled=!item;get("prefix-note").textContent="";if(!item)return;
     const fullCount=index.subjects.find(subject=>subject.agent===item.agent).recordCount;
     get("prefix-note").textContent=item.agent+" の全"+fullCount+"件中、先頭からこの記録を含む"+item.recordNumber+"件を切り出します。後続"+(fullCount-item.recordNumber)+"件と他のトークンは再現入力に含みません。現在の履歴は変更しません。";
@@ -83,6 +86,8 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     }
   }
   function render(){revision++;
+    for(const name of["first","last","page","go","detail-prev","detail-next"])get(name).disabled=true;
+    for(const name of["page-count","page-status","detail-position"])get(name).textContent="";get("page").value="";get("page").setAttribute("aria-invalid","false");
     get("summary").textContent="";get("summary-save").disabled=true;get("summary-csv-save").disabled=true;get("prefix-note").textContent="";get("prefix-save").disabled=true;get("prefix-report-save").disabled=true;
     for(const name of["rows","select","detail","event","balances","related","related-status","export-status"])get(name).textContent="";
     get("reference-summary").textContent="";get("reference-summary").hidden=true;get("reference-save").disabled=true;get("reference-csv-save").disabled=true;
@@ -93,6 +98,9 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
     catch{report=null;selected="";get("status").textContent="検索条件を確認してください。検索語は80文字以内です。";return;}
     const size=Number(get("size").value||"10");if(![10,25,50].includes(size))return;
     offset=Math.max(0,Math.min(offset,Math.max(0,Math.ceil(report.rows.length/size)-1)*size));
+    const pages=Math.ceil(report.rows.length/size);get("page").value=pages?String(offset/size+1):"";
+    get("page-count").textContent=pages?"/ 全"+pages+"ページ（現在の検索条件）":"該当ページなし";
+    get("page").disabled=get("go").disabled=!pages;get("first").disabled=!pages||offset===0;get("last").disabled=!pages||offset/size+1===pages;
     const shown=report.rows.slice(offset,offset+size);if(!shown.some(row=>row.key===selected))selected=shown[0]?.key??"";
     get("scope").textContent=index.subjects.map(item=>item.agent+": "+(item.present?item.recordCount+"件":"未作成")).join(" / ");
     const listOwn=revision,sourceIndex=index,sourceReport=report;
@@ -112,6 +120,21 @@ export function mountRehearsalRecordsPanel(document,{download,reasons,kinds}){
   listen("search","input",()=>{if(disposed)return;backView=null;offset=0;render();});
   listen("clear","click",()=>{if(disposed)return;backView=null;for(const [name,value]of Object.entries(REHEARSAL_RECORD_QUERY))get(name).value=value;get("search-scope").value="stored";get("reason").value="all";offset=0;render();});
   for(const [name,direction]of[["prev",-1],["next",1]])listen(name,"click",()=>{if(disposed||!report)return;offset+=direction*Number(get("size").value||"10");render();});
+  function goToPage(page){
+    if(disposed||!report)return;const size=Number(get("size").value||"10"),pages=Math.ceil(report.rows.length/size);
+    if(![10,25,50].includes(size)||typeof page!=="string"||!/^[1-9][0-9]{0,2}$/.test(page)||Number(page)>pages){get("page").setAttribute("aria-invalid","true");get("page-status").textContent="1〜"+pages+"のページ番号を入力してください。現在の表示と検索条件は保持しています。";return;}
+    offset=(Number(page)-1)*size;render();get("select").focus?.();
+  }
+  listen("go","click",()=>{if(!get("go").disabled)goToPage(get("page").value);});
+  listen("page","keydown",event=>{if(event.key==="Enter"&&!get("page").disabled){event.preventDefault();goToPage(get("page").value);}});
+  for(const name of["first","last"])listen(name,"click",()=>{if(disposed||!report||get(name).disabled)return;goToPage(name==="first"?"1":String(Math.ceil(report.rows.length/Number(get("size").value||"10"))));});
+  for(const[name,direction]of[["detail-prev",-1],["detail-next",1]])listen(name,"click",()=>{
+    if(disposed||!report||get(name).disabled)return;const position=report.rows.findIndex(row=>row.key===selected),item=report.rows[position+direction],size=Number(get("size").value||"10");
+    if(position<0||!item||![10,25,50].includes(size))return;selected=item.key;
+    const nextOffset=Math.floor((position+direction)/size)*size;
+    if(nextOffset!==offset){offset=nextOffset;render();}else{get("select").value=selected;detail();}
+    get("select").focus?.();
+  });
   listen("back","click",()=>{
     if(disposed||!backView||backView.index!==index)return;
     const previous=backView;backView=null;
