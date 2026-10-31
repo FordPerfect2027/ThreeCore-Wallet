@@ -1,4 +1,6 @@
-import { parseSecurityJson } from "./security-json.js";
+import { captureOptionalDataFields, sha256Hex } from "./security-data.js";
+import { readAbortState } from "./security-abort.js";
+import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 import { observeCallbackResult } from "./security-callback.js";
 import { FILE_READ_CONCURRENCY, FILE_READ_RESERVED_LIMIT } from "./file-read-policy.js";
 
@@ -161,6 +163,7 @@ export function decodeRehearsalForPanel(text, target, decode) {
 
 // These routes describe a declared format only. They never validate or open a file.
 const walletSavedTargets = Object.freeze({
+  "threecore.saved-file-inspection.v1": [null, "PERIOD_FILE_INSPECTION_ONLY"],
   "threecore.report-history-import-inspection.v1": [null, "PERIOD_FILE_HISTORY_INSPECTION_ONLY"],
   "threecore.report-history-file.v1": ["history", "PERIOD_FILE_USE_HISTORY"],
   "threecore.period-library-file.v1": ["library", "PERIOD_FILE_USE_LIBRARY"],
@@ -181,6 +184,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  PERIOD_FILE_INSPECTION_ONLY: "これは保存ファイルの形式や開く場所を調べた案内です。元記録は含まれず、復元には使えません。調べる前の元のJSONを選んでください。",
   PERIOD_FILE_HISTORY_INSPECTION_ONLY: "これは報告履歴の読込み前の比較結果です。元の報告やメモは含まれません。復元には報告履歴のバックアップJSONを使ってください。",
   PERIOD_FILE_USE_HISTORY: "ファイルの形式指定は報告履歴のバックアップです。「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で選んでください。内容の検証や既存の履歴への追加は行っていません。",
   PERIOD_FILE_USE_LIBRARY: "ファイルの形式指定は期間の保存一覧です。1件だけの元の控えも、この形式です。「途中の控えを、名前を付けて保管する」の「期間の保存一覧JSONを読み込む」で選んでください。内容の検証や保存先への追加は行っていません。",
@@ -210,4 +214,104 @@ export function walletSavedFileTargetCode(schema, currentTarget) {
 
 export function walletSavedFileTargetMessage(code) {
   return typeof code === "string" && Object.hasOwn(walletSavedMessages, code) ? walletSavedMessages[code] : null;
+}
+
+export const WALLET_SAVED_INSPECTION_LIMIT = 96 * 1024 * 1024;
+const originalSavedTypes = Object.freeze({
+  "threecore.period-file.v1": ["period", "期間取得の控え", "「控えの保存と復元」で、この元のファイルを選んで確認してください。"],
+  "threecore.period-library-file.v1": ["library", "期間の保存一覧", "「途中の控えを、名前を付けて保管する」の「期間の保存一覧JSONを読み込む」で、この元のファイルを選んでください。"],
+  "threecore.period-report-file.v1": ["report", "3トークンの期間レポート", "「3つの記録を、一つの報告に」で、この元のファイルを選んで確認してください。"],
+  "threecore.report-history-file.v1": ["history", "報告履歴のバックアップ", "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。"],
+  "threecore.report-set-file.v1": ["set", "報告の確認セット", "「保存した確認セットを開く」で、この元のファイルを選んで確認してください。"],
+});
+function savedInspectionFail(code) { const error = new Error(code); error.code = code; throw error; }
+
+/** Inspect one explicit saved file without handing evidence to a wallet or changing storage. */
+export async function inspectWalletSavedText(text, fileOptions = {}) {
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { savedInspectionFail("FILE_INSPECTION_OPTIONS"); }
+  const checkpoint = () => {
+    let aborted; try { aborted = readAbortState(options.signal); } catch { savedInspectionFail("FILE_INSPECTION_OPTIONS"); }
+    if (typeof aborted !== "boolean") savedInspectionFail("FILE_INSPECTION_OPTIONS");
+    if (aborted) savedInspectionFail("FILE_CANCELLED");
+  };
+  checkpoint();
+  let byteLength;
+  try { byteLength = boundedUtf8Length(text, WALLET_SAVED_INSPECTION_LIMIT); }
+  catch { savedInspectionFail("FILE_SIZE"); }
+  if (!byteLength) savedInspectionFail("FILE_SIZE");
+  let declared;
+  try { declared = parseSecurityJson(text); } catch { savedInspectionFail("FILE_INSPECTION_JSON"); }
+  const schema = declared?.schema;
+  declared = null;
+  if (typeof schema !== "string" || !Object.hasOwn(walletSavedTargets, schema)) savedInspectionFail("FILE_INSPECTION_UNSUPPORTED");
+  const targetCode = walletSavedTargets[schema][1], definition = originalSavedTypes[schema];
+  if (!definition) {
+    checkpoint();
+    return Object.freeze({ schema: "threecore.saved-file-inspection.v1", sourceSchema: schema, byteLength,
+      title: "補助資料の形式指定", target: walletSavedTargets[schema][0], destinationMessage: walletSavedMessages[targetCode],
+      validation: "declared-only", checksumVerified: false, sourceDigest: null, textDigest: null,
+      scope: null, originalEvidenceValidated: false, restorable: false,
+      automaticallyImported: false, liveChainRechecked: false, authenticated: false, authorizesExecution: false });
+  }
+  let decoded;
+  // Static module paths only. No destination is taken from imported data.
+  if (definition[0] === "period") decoded = await (await import("./period-file.js")).decodePeriodFile(text, options);
+  else if (definition[0] === "library") decoded = await (await import("./period-library-file.js")).decodePeriodLibraryFile(text, options);
+  else if (definition[0] === "report") decoded = await (await import("./period-report-file.js")).decodePeriodReportFile(text, options);
+  else if (definition[0] === "history") decoded = await (await import("./report-history-file.js")).decodeReportHistoryFile(text, options);
+  else decoded = await (await import("./report-set-file.js")).decodeReportSetFile(text, options);
+  checkpoint();
+  const reports = definition[0] === "history" ? decoded.document.entries : definition[0] === "set" ? decoded.input.entries : null;
+  const entries = reports ? reports.flatMap(row => row.report.slots.map(slot => slot.entry).filter(Boolean)) :
+    definition[0] === "report" ? decoded.input.slots.map(slot => slot.entry).filter(Boolean) :
+    definition[0] === "library" ? decoded.document.entries : [];
+  const drafts = definition[0] === "period" ? [decoded.draft] : entries.map(row => row.draft);
+  const { periodDraftProgress } = await import("./period-draft.js");
+  checkpoint();
+  const progress = drafts.map(draft => periodDraftProgress(draft));
+  const scope = Object.freeze({ reportCount: reports?.length ?? (definition[0] === "report" ? 1 : null),
+    archivedReports: reports ? reports.filter(row => row.archived).length : null,
+    entryReferences: entries.length, draftReferences: drafts.length,
+    archivedEntryReferences: definition[0] === "period" ? null : entries.filter(row => row.archived).length,
+    restrictedEntryReferences: definition[0] === "period" ? null : entries.filter(row => row.requiresNewPlan).length,
+    incompleteDraftReferences: progress.filter(row => !row.complete).length,
+    emptyDraftReferences: progress.filter(row => row.completed === 0).length,
+    agents: Object.freeze(["DAT", "EMA", "CAWELON"].filter(agent => drafts.some(draft => draft.plan.context.agent === agent))),
+    annotationValuesIncluded: false, repeatedReferencesMayExist: Boolean(reports) });
+  const textDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options);
+  checkpoint();
+  return Object.freeze({ schema: "threecore.saved-file-inspection.v1", sourceSchema: schema, byteLength,
+    title: definition[1], target: definition[0], destinationMessage: definition[2],
+    validation: "validated-original", checksumVerified: decoded.checksumVerified === true,
+    sourceDigest: decoded.digest, textDigest, scope, originalEvidenceValidated: true, restorable: false,
+    automaticallyImported: false, liveChainRechecked: false, authenticated: false, authorizesExecution: false });
+}
+
+export function walletSavedInspectionText(value) {
+  if (!value) return "";
+  const summary = [value.title + " · " + value.byteLength + " bytes",
+    value.validation === "validated-original" ? "元記録の形式とチェックサムを確認しました。まだ読み込み先へ反映していません。" :
+      "形式の指定だけを判別しました。中身・チェックサム・記載された結論は検証していません。",
+    value.destinationMessage];
+  if (value.scope) {
+    const scope = value.scope;
+    if (scope.reportCount !== null) summary.push("報告 " + scope.reportCount + "件" + (scope.archivedReports !== null ? " / 非表示保管 " + scope.archivedReports + "件" : ""));
+    summary.push("含まれるトークン: " + (scope.agents.join("、") || "なし"),
+      "元の控えの参照 " + scope.draftReferences + "件 / 取得工程が未完了 " + scope.incompleteDraftReferences + "件 / 取得工程が空 " + scope.emptyDraftReferences + "件",
+      scope.restrictedEntryReferences === null ? "この控えの形式には、保存一覧の保管状態と再取得の印は含まれません。" :
+        "再取得の印がある保存項目の参照 " + scope.restrictedEntryReferences + "件 / 非表示保管の保存項目の参照 " + scope.archivedEntryReferences + "件");
+    if (scope.repeatedReferencesMayExist) summary.push("同じ元記録を複数の報告が参照している場合があるため、参照数は独立した検証回数ではありません。");
+  }
+  summary.push("アドレス・残高・メモ本文はこの案内には表示しません。現在のチェーン、出所、完全性、安全性を証明する確認ではありません。");
+  return summary.join("\n");
+}
+
+export function walletSavedInspectionErrorText(error) {
+  let code; try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; } catch {}
+  if (code === "PERIOD_CHECKSUM") return "チェックサムが一致しません。保存が完了した元のJSONを選び直してください。内容は取り込んでいません。";
+  if (code === "FILE_INSPECTION_UNSUPPORTED") return "この案内では扱わない形式です。ThreeCoreの期間・報告・確認セットの元のJSONを選んでください。";
+  if (code === "FILE_INSPECTION_JSON") return "JSONの形式を確認できません。元の保存ファイルを選び直してください。";
+  return describeFileReadError(error, "96 MiB") ?? "ファイルの形式・内容を確認できませんでした。元のJSONを保全し、保存が完了しているか確認してください。";
 }

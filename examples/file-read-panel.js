@@ -1,9 +1,12 @@
+import { offerWalletDownload } from "./export-download.js";
+import { readSecurityFileBytes, readFormatFileName } from "../src/security-file.js";
+import { inspectWalletSavedText, walletSavedInspectionText, walletSavedInspectionErrorText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
 import { walletFileReadService } from "../src/file-read-service.js";
 import { describeFileReadStatus } from "../src/file-read-status.js";
 import { consumeCleanup } from "../src/file-read-policy.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 
-/** Aggregate observation and explicit cancellation; cannot import or save data. */
+/** Aggregate file-read protection and a separate, read-only saved-file guide. */
 export function mountFileReadPanel({ document, parent, service = walletFileReadService }) {
   const section = document.createElement("section");
   section.className = "file-read-panel";
@@ -26,6 +29,7 @@ export function mountFileReadPanel({ document, parent, service = walletFileReadS
   const action = node("p", "action");
   action.setAttribute("role", "status");
   parent.append(section);
+  const savedGuide = mountSavedFileInspectionPanel({ document, parent: section });
   let disposed = false;
   let observing = true, renderGeneration = 0, actionGeneration = 0;
   let unsubscribe = () => {};
@@ -68,6 +72,7 @@ export function mountFileReadPanel({ document, parent, service = walletFileReadS
     observing = false; renderGeneration++; actionGeneration++;
     consumeCleanup(() => unsubscribe());
     stop.removeEventListener("click", cancel);
+    savedGuide.dispose();
     section.remove();
   } });
 }
@@ -88,4 +93,90 @@ export function createFileSelectionNotice(input, note) {
       input.removeEventListener("cancel", noSelection);
     },
   });
+}
+
+/** A separate, explicitly selected file is inspected only; no import callbacks exist. */
+export function mountSavedFileInspectionPanel({ document, parent,
+  readText = readSavedGuideText, inspect = inspectWalletSavedText,
+  download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
+  const host = document.createElement("details"); host.className = "saved-file-guide";
+  parent.append(host); const nodes = {}, cleanup = [];
+  let disposed = false, generation = 0, aborter = null, busy = false, result = null;
+  const make = (tag, name, text, target = host) => {
+    const node = document.createElement(tag); node.className = "saved-file-guide-" + name;
+    if (text !== undefined) node.textContent = text;
+    target.append(node); nodes[name] = node; return node;
+  };
+  make("summary", "heading", "保存したJSONの種類と開く場所を調べる");
+  make("p", "intro", "ThreeCoreの期間・保存一覧・報告・報告履歴・確認セットのJSONを1つ選んでください。元記録の形式とチェックサムを調べ、開く欄を案内します。ここでは履歴への追加や画面への復元は行いません。");
+  const label = make("label", "file-label", "調べる元のJSON（最大96 MiB）");
+  const file = make("input", "file", undefined, label); file.type = "file"; file.accept = ".json,application/json";
+  const stop = make("button", "stop", "このファイルの確認を中止"); stop.type = "button";
+  const status = make("p", "status", "ファイルを選ぶまで読み込みません。"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
+  const notice = make("p", "notice"), output = make("pre", "output");
+  const ackLabel = make("label", "ack-label", "形式の案内と照合用の値を、暗号化せずPCに保存します");
+  const ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
+  const save = make("button", "save", "この案内をJSON保存"); save.type = "button";
+  make("p", "limits", "この案内JSONに元の記録は含まれず、復元には使えません。元のファイルを別に保全してください。出所や現在のチェーンを保証する確認ではありません。");
+  const selectionNotice = createFileSelectionNotice(file, notice);
+  function render() {
+    if (disposed) return;
+    host.setAttribute("aria-busy", String(busy)); file.disabled = busy; stop.disabled = !busy;
+    ack.disabled = busy || !result; save.disabled = busy || !result || !ack.checked;
+    output.textContent = walletSavedInspectionText(result);
+  }
+  function cancel() {
+    if (disposed) return;
+    const own = ++generation, previous = aborter; aborter = null; busy = false; result = null; ack.checked = false;
+    previous?.abort(); if (disposed || generation !== own) return;
+    status.textContent = "確認を中止しました。保存済みの元のファイルや履歴は変更していません。"; render();
+  }
+  async function selected() {
+    if (disposed) return;
+    const chosen = file.files?.[0]; file.value = "";
+    if (!chosen) { selectionNotice.noSelection(); return; }
+    const own = ++generation, previous = aborter; aborter = null; previous?.abort();
+    if (disposed || own !== generation) return;
+    const local = new AbortController(); aborter = local; busy = true; result = null; ack.checked = false; selectionNotice.clear();
+    status.textContent = "選んだJSONの形式と内容を確認しています。"; render();
+    try {
+      readFormatFileName(chosen, { maxLength: 180, code: "FILE_INSPECTION_NAME", fail: code => { const error = new Error(code); error.code = code; throw error; } });
+      if (disposed || generation !== own) return;
+      const text = await readText(chosen, { maxBytes: WALLET_SAVED_INSPECTION_LIMIT, signal: local.signal });
+      if (disposed || generation !== own) return;
+      const value = await inspect(text, { signal: local.signal });
+      if (disposed || generation !== own) return;
+      result = value; status.textContent = value.validation === "validated-original" ? "元記録の形式とチェックサムを確認しました。開く欄は下の案内をご覧ください。" :
+        "形式の指定だけを判別しました。補助資料の中身は検証していません。";
+    } catch (error) {
+      if (disposed || generation !== own) return;
+      status.textContent = walletSavedInspectionErrorText(error);
+    } finally { if (!disposed && generation === own) { aborter = null; busy = false; render(); } }
+  }
+  function saveResult() {
+    if (disposed || busy || !result || !ack.checked) return;
+    const own = ++generation, captured = result; ack.checked = false; render();
+    try {
+      const prepared = Object.freeze({ text: JSON.stringify(captured, null, 2) + "\n",
+        filename: "ThreeCore-saved-file-inspection.json", mimeType: "application/json;charset=utf-8",
+        containsOriginalEvidence: false, restorable: false, encrypted: false });
+      const delivery = download(prepared), kind = observeCallbackResult(delivery);
+      if (disposed || generation !== own) return;
+      status.textContent = kind === "synchronous" && delivery !== false ? "案内の保存処理を開始しました。ダウンロード先をご確認ください。" : "案内の保存を確認できませんでした。";
+    } catch { if (!disposed && generation === own) status.textContent = "案内の保存を確認できませんでした。"; }
+  }
+  function listen(node, event, callback) { node.addEventListener(event, callback); cleanup.push(() => node.removeEventListener(event, callback)); }
+  listen(file, "change", () => { void selected(); }); listen(stop, "click", cancel);
+  listen(ack, "change", render); listen(save, "click", saveResult); render();
+  return Object.freeze({ getState: () => Object.freeze({ busy, result, disposed }), dispose() {
+    if (disposed) return;
+    disposed = true; generation++; const previous = aborter; aborter = null; busy = false; result = null;
+    previous?.abort(); selectionNotice.dispose(); cleanup.forEach(remove => remove()); host.remove();
+  } });
+}
+
+async function readSavedGuideText(file, options) {
+  const bytes = await readSecurityFileBytes(file, options);
+  try { return new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes); }
+  catch { const error = new Error("FILE_ENCODING"); error.code = "FILE_ENCODING"; throw error; }
 }

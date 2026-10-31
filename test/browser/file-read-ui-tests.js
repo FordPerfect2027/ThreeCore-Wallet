@@ -5,7 +5,9 @@ import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "/src/oper
 import { REHEARSAL_SCENARIO_SET_SCHEMA } from "/src/operation-rehearsal-scenario-set.js";
 import { rehearsalExampleV2 } from "/src/operation-rehearsal-examples.js";
 import { createFileReadService,walletFileReadService } from "/src/file-read-service.js";
-import { mountFileReadPanel } from "/examples/file-read-panel.js";
+import { mountFileReadPanel, mountSavedFileInspectionPanel } from "/examples/file-read-panel.js";
+import { prepareReportHistoryFile } from "/src/report-history-file.js";
+import { sampleHistory } from "/test/helpers/report-history-fixtures.js";
 import { createWalletSetupFileReader, prepareWalletSetupFile } from "/src/wallet-setup-file.js";
 import { WALLET_SETUP_SCHEMA, WalletSetupError } from "/src/wallet-setup.js";
 import { mountWalletSetupPanel } from "/examples/wallet-setup-panel.js";
@@ -55,6 +57,43 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("saved file guide: verifies an original backup, gives its destination and saves only an inspection", async () => {
+    const parent = document.createElement("div"); document.body.append(parent); const files = [];
+    const guide = mountSavedFileInspectionPanel({ document, parent, download: file => files.push(file) });
+    const q = name => parent.querySelector(".saved-file-guide-" + name);
+    async function load(text) {
+      const transfer = new DataTransfer(); transfer.items.add(new File([text], "history.json", { type: "application/json" }));
+      q("file").files = transfer.files; q("file").dispatchEvent(new Event("change", { bubbles: true }));
+      while (guide.getState().busy) await tick();
+    }
+    try {
+      parent.querySelector("details").open = true;
+      assert(!guide.getState().result && q("save").disabled);
+      const source = (await prepareReportHistoryFile(sampleHistory())).text; await load(source);
+      assert(guide.getState().result.checksumVerified && guide.getState().result.scope.reportCount === 4);
+      assert(q("output").textContent.includes("報告履歴のバックアップJSONから追加復元")); assert(!q("output").textContent.includes("担当メモ"));
+      q("ack").checked = true; q("ack").dispatchEvent(new Event("change", { bubbles: true })); q("save").click();
+      assert(files.length === 1 && JSON.parse(files[0].text).restorable === false && !q("ack").checked);
+      const bad = JSON.parse(source); bad.digest = "0".repeat(64); await load(JSON.stringify(bad));
+      assert(!guide.getState().result && q("save").disabled && q("status").textContent.includes("チェックサムが一致しません"));
+    } finally { guide.dispose(); parent.remove(); }
+  });
+  test("saved file guide: auxiliary claims remain unverified and stopped reads cannot replace the result", async () => {
+    const parent = document.createElement("div"); document.body.append(parent); const gate = deferred(); let delayed = false;
+    const guide = mountSavedFileInspectionPanel({ document, parent, readText: async file => delayed ? gate.promise : file.text() });
+    const q = name => parent.querySelector(".saved-file-guide-" + name);
+    function choose(text) { const transfer = new DataTransfer(); transfer.items.add(new File([text], "guide.json")); q("file").files = transfer.files; q("file").dispatchEvent(new Event("change", { bubbles: true })); }
+    try {
+      parent.querySelector("details").open = true;
+      choose(JSON.stringify({ schema: "threecore.report-set-history-coverage.v1", checksumVerified: true, privateText: "PRIVATE" }));
+      while (guide.getState().busy) await tick();
+      assert(guide.getState().result.validation === "declared-only" && !guide.getState().result.checksumVerified);
+      assert(q("output").textContent.includes("検証していません") && !q("output").textContent.includes("PRIVATE"));
+      delayed = true; choose("{}"); assert(guide.getState().busy); q("stop").click();
+      gate.resolve((await prepareReportHistoryFile(sampleHistory())).text); await tick(); await tick();
+      assert(!guide.getState().result && !guide.getState().busy && q("status").textContent.includes("中止"));
+    } finally { guide.dispose(); parent.remove(); }
+  });
   test("file-read: narrow discrepancy previews wrap exact values and remain keyboard scrollable",async()=>{
     const [html,css]=await Promise.all([fetch("/rehearsal/").then(r=>r.text()),fetch("/examples/operation-rehearsal.css").then(r=>r.text())]);
     const parsed=new DOMParser().parseFromString(html,"text/html"),host=document.createElement("div");host.style.width="360px";document.body.append(host);
