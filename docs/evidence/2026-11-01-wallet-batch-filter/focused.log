@@ -1,0 +1,44 @@
+✔ name and exact-status filters intersect without changing full result or exports (98.0741ms)
+✔ hidden actions cannot open the wrong source and changed views suppress stale detail feedback (93.8386ms)
+✔ invalid filter input is explicit, replacement clears it and disposed controls are inert (17.0523ms)
+✔ retry refreshes the current status filter without replaying retained successful rows (20.2366ms)
+✔ batch detail navigation uses the actual selected File and captured hash without restoring anything (390.1625ms)
+✔ changed bytes are rejected before single-file inspection can treat them as the previously checked original (26.5846ms)
+✔ two batch originals can be compared without a second picker and both exact fingerprints are preserved (92.9519ms)
+✔ comparison shortcut requires a baseline and rejects changed bytes while retaining that baseline (35.2268ms)
+✔ invalid expected hashes preserve the previous guide; source objects cannot coerce into text (27.9595ms)
+✔ cancelled or replaced detail reads cannot overwrite a newer guide result (46.5712ms)
+✔ detached batch row cannot open a stale file after clear (46.7603ms)
+✔ detached batch row cannot open a stale file after replace (52.3993ms)
+✔ detached batch row cannot open a stale file after dispose (74.1654ms)
+✔ external checksum mismatch blocks the shortcut rather than dropping its warning in the guide (81.249ms)
+✔ detail callback throws cannot claim a completed navigation (55.2285ms)
+✔ detail callback false cannot claim a completed navigation (52.4524ms)
+✔ detail callback reject cannot claim a completed navigation (31.4194ms)
+✔ detail callback clears cannot claim a completed navigation (62.1346ms)
+✔ batch UI requires explicit start and acknowledged exports and retains each exact source fingerprint (247.4884ms)
+✔ invalid UI selection duplicate cannot start a file read (1.6721ms)
+✔ invalid UI selection unsafe cannot start a file read (4.7778ms)
+✔ invalid UI selection count cannot start a file read (3.8311ms)
+✔ invalid UI selection large cannot start a file read (2.6528ms)
+✔ cancelled verification preserves one checked and one unchecked row for a JSON receipt (37.6898ms)
+✔ late file read cannot overwrite clear (14.6705ms)
+✔ late file read cannot overwrite replace (73.4743ms)
+✔ late file read cannot overwrite dispose (21.442ms)
+✔ picker dismissal preserves the current result and incomplete loading never becomes a successful empty batch (43.7125ms)
+✔ batch read size failures explain the batch limit rather than the single-file guide limit (21.2716ms)
+✔ save callback throws cannot claim a completed download (45.7411ms)
+✔ save callback false cannot claim a completed download (45.8472ms)
+✔ save callback async cannot claim a completed download (66.4597ms)
+✔ save callback clears cannot claim a completed download (79.5827ms)
+✔ explicit retry preserves successful files, clears save acknowledgement and exports linked outcomes (61.7628ms)
+✔ stop and selection replacement cannot turn a late retry into a new result (21.1388ms)
+✔ retry failure retains its prior receipt and remains available for another attempt (11.8304ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2354.2678
