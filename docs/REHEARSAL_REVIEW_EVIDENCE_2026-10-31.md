@@ -37,3 +37,5 @@ Inspect `matchesReceipt`, `reportReview.matchesRecomputation`, `reportReview.che
 - Logs and SHA-256 manifest: `evidence/2026-10-31-rehearsal-review-evidence/`.
 
 The ledger is **407 / 600**. Tests, reruns, integrity checks and regression repairs do not add development items. Local synthetic data only; no real signatures, transfers, approvals, keys, external RPC, publication or deployment. This checkpoint does not establish a mainnet-readiness percentage.
+
+Follow-up: [Complete difference inspection and a cancellation-observer correction](REHEARSAL_REVIEW_DIFFERENCE_PAGES_2026-10-31.md) records later changes at 9f93f32. The inspector's observer correction is covered there and is not counted as a new development item.

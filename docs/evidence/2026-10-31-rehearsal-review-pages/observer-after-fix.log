@@ -1,0 +1,27 @@
+✔ evidence file verification exports exact source and a reproducible result (55.5599ms)
+✔ pasting clears raw input and evaluates receipt differences as text (19.7727ms)
+✔ faithfully recorded calculation discrepancy is not shown as success (15.4655ms)
+✔ faithfully recorded checksum discrepancy is not shown as success (30.6108ms)
+✔ faithfully recorded expectation discrepancy is not shown as success (30.9891ms)
+✔ late evidence hash completion cannot undo clear (31.2568ms)
+✔ late evidence hash completion cannot undo edit (31.5749ms)
+✔ late evidence hash completion cannot undo dispose (31.612ms)
+✔ a newer input wins over a late file read (62.2062ms)
+✔ filename capture cannot continue after clear (14.832ms)
+✔ picker dismissal preserves a completed verification (15.808ms)
+✔ picker dismissal does not cancel an in-flight verification (20.9184ms)
+✔ oversized and invalidly encoded files fail before result export (26.6981ms)
+✔ source-save failure and observer cancellation retain correct ownership (15.7768ms)
+✔ save failure and observer cancellation retain correct ownership (15.8359ms)
+✔ a file-cancellation observer keeps its newer evidence over an older clear (47.3929ms)
+✔ a file-cancellation observer keeps its newer evidence over an older paste (46.0299ms)
+✔ a file-cancellation observer keeps its newer evidence over an older file (47.0776ms)
+✔ disposal closes evidence input before cancellation observers can start a replacement (46.7542ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1064.5977
