@@ -116,7 +116,7 @@ function test(name, run, group = "general") { tests.push({ name, run, group }); 
 
 test("wallet-navigation: task links focus existing sections without wallet requests", async use => {
   const f=use(),nav=document.querySelector(".wallet-navigation");assert(nav?.getAttribute("aria-label")==="ウォレットの各機能","Named task navigation");
-  const links=[...nav.querySelectorAll("a")],ids=links.map(link=>link.getAttribute("href").slice(1));assert(links.length===12&&new Set(ids).size===12,"Distinct navigation destinations");
+  const links=[...nav.querySelectorAll("a")],ids=links.map(link=>link.getAttribute("href").slice(1));assert(links.length===13&&new Set(ids).size===13,"Distinct navigation destinations");
   const before=f.calls.length;
   for(const link of links){const target=document.getElementById(link.getAttribute("href").slice(1));assert(target,"Destination exists");link.click();assert(document.activeElement===target,"Focus reaches "+link.textContent);}
   assert(f.calls.length===before&&before===0,"Navigation never requests accounts or data");assert(document.getElementById("grid"),"Stable wallet grid remains available");

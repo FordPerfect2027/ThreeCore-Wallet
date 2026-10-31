@@ -16,7 +16,7 @@ import { validateWalletSavedBatchSelection, encodeWalletSavedTextBatch,
   resumeWalletSavedFileBatch, canResumeWalletSavedFileBatch } from "../src/file-read-status.js";
 
 /** Aggregate file-read protection and a separate, read-only saved-file guide. */
-export function mountFileReadPanel({ document, parent, service = walletFileReadService }) {
+export function mountFileReadPanel({ document, parent, service = walletFileReadService, savedFileDestinations = {} }) {
   const section = document.createElement("section");
   section.className = "file-read-panel";
   function node(tag, name, text) {
@@ -38,7 +38,7 @@ export function mountFileReadPanel({ document, parent, service = walletFileReadS
   const action = node("p", "action");
   action.setAttribute("role", "status");
   parent.append(section);
-  const savedGuide = mountSavedFileInspectionPanel({ document, parent: section });
+  const savedGuide = mountSavedFileInspectionPanel({ document, parent: section, destinations: savedFileDestinations });
   const savedBatch = mountSavedFileBatchPanel({ document, parent: section,
     inspectOriginal: (file, digest) => savedGuide.inspectFile(file, digest),
     compareOriginal: (file, digest) => savedGuide.compareFile(file, digest) });
@@ -111,11 +111,16 @@ export function createFileSelectionNotice(input, note) {
 /** A separate, explicitly selected file is inspected only; no import callbacks exist. */
 export function mountSavedFileInspectionPanel({ document, parent,
   readText = readSavedGuideText, inspect = inspectWalletSavedText,
+  destinations = {},
   download = prepared => offerWalletDownload({ document, prepared }) } = {}) {
   const host = document.createElement("details"); host.className = "saved-file-guide";
   parent.append(host); const nodes = {}, cleanup = [];
   let disposed = false, generation = 0, aborter = null, busy = false, result = null, comparison = null, comparisonReview = null, workKind = "source";
   let sourceFile = null, comparisonSourceFile = null, bundlePanel = null;
+  const destinationCallbacks = Object.create(null);
+  for (const target of ["period", "library", "report", "history", "set", "workspace", "setup", "transfer-vault", "reconciliation"]) {
+    try { const descriptor = Object.getOwnPropertyDescriptor(destinations, target); if (descriptor && Object.hasOwn(descriptor, "value") && typeof descriptor.value === "function") destinationCallbacks[target] = descriptor.value; } catch { /* Unknown destinations stay unavailable. */ }
+  }
   const make = (tag, name, text, target = host) => {
     const node = document.createElement(tag); node.className = "saved-file-guide-" + name;
     if (text !== undefined) node.textContent = text;
@@ -128,6 +133,8 @@ export function mountSavedFileInspectionPanel({ document, parent,
   const stop = make("button", "stop", "このファイルの確認を中止"); stop.type = "button";
   const status = make("p", "status", "ファイルを選ぶまで読み込みません。"); status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const notice = make("p", "notice"), output = make("pre", "output");
+  const destination = make("button", "destination", "このページの読み込み欄へ移動"); destination.type = "button";
+  const destinationStatus = make("p", "destination-status", ""); destinationStatus.setAttribute("role", "status");
   const ackLabel = make("label", "ack-label", "形式の案内と照合用の値を、暗号化せずPCに保存します");
   const ack = make("input", "ack", undefined, ackLabel); ack.type = "checkbox";
   const save = make("button", "save", "この案内をJSON保存"); save.type = "button";
@@ -157,6 +164,8 @@ export function mountSavedFileInspectionPanel({ document, parent,
     host.setAttribute("aria-busy", String(busy)); file.disabled = busy; stop.disabled = !busy;
     ack.disabled = busy || !result; save.disabled = busy || !result || !ack.checked;
     output.textContent = walletSavedInspectionText(result);
+    destination.disabled = disposed || busy || !result || !["validated-original", "validated-structure"].includes(result.validation) || !destinationCallbacks[result.target];
+    if (!result) destinationStatus.textContent = "";
     compareFile.disabled = busy || !result; compareAck.disabled = busy || !comparison;
     compareSave.disabled = busy || !comparison || !compareAck.checked;
     comparisonOutput.textContent = walletSavedComparisonText(comparison);
@@ -301,6 +310,12 @@ export function mountSavedFileInspectionPanel({ document, parent,
   }
   function listen(node, event, callback) { node.addEventListener(event, callback); cleanup.push(() => node.removeEventListener(event, callback)); }
   listen(file, "change", () => { void selected(); }); listen(stop, "click", cancel);
+  listen(destination, "click", () => {
+    if (disposed || busy || !result || destination.disabled) return;
+    const own = generation, captured = result; let accepted = false;
+    try { const value = destinationCallbacks[captured.target](); accepted = observeCallbackResult(value) === "synchronous" && value === true; } catch {}
+    if (!disposed && generation === own && result === captured) destinationStatus.textContent = accepted ? "読み込み欄へ移動しました。元のJSONはまだ読み込んでいません。案内した欄で元のファイルを選んでください。" : "このページの読み込み欄へ移動できませんでした。上の案内にある欄を確認してください。";
+  });
   listen(ack, "change", render); listen(save, "click", saveResult);
   listen(compareFile, "change", () => { void compareSelected(); }); listen(compareAck, "change", render); listen(compareSave, "click", saveComparison);
   bundlePanel = mountSavedComparisonBundlePanel({ document, parent: compareBox, readText, download,

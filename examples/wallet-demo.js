@@ -37,16 +37,18 @@ import { mountTransferPanel } from "./transfer-panel.js";
 let navigationSequence=0;
 function mountWalletNavigation(document,entries){
   const nav=document.createElement("nav");nav.className="wallet-navigation";nav.setAttribute("aria-label","ウォレットの各機能");
-  const prefix="threecore-navigation-"+(++navigationSequence)+"-",cleanups=[];let disposed=false;
+  const prefix="threecore-navigation-"+(++navigationSequence)+"-",cleanups=[],destinations=new Map();let disposed=false;
+  const goTo=key=>{if(disposed||!destinations.has(key))return false;const target=destinations.get(key);target.focus?.({preventScroll:true});target.scrollIntoView?.({block:"start",behavior:"auto"});return true;};
   for(const [key,label,target]of entries){
     const attributes=["id","tabindex","aria-label"],before=attributes.map(name=>target.getAttribute(name));
     const id=before[0]||prefix+key;target.setAttribute("id",id);target.setAttribute("tabindex","-1");target.setAttribute("aria-label",label);
+    destinations.set(key,target);
     const link=document.createElement("a");link.href="#"+id;link.textContent=label;
-    const jump=event=>{event.preventDefault();if(disposed)return;target.focus?.({preventScroll:true});target.scrollIntoView?.({block:"start",behavior:"auto"});};
+    const jump=event=>{event.preventDefault();goTo(key);};
     link.addEventListener("click",jump);nav.append(link);
     cleanups.push(()=>{link.removeEventListener("click",jump);attributes.forEach((name,index)=>{if(before[index]==null)target.removeAttribute(name);else target.setAttribute(name,before[index]);});});
   }
-  return{element:nav,dispose(){if(disposed)return;disposed=true;for(const cleanup of cleanups)cleanup();nav.remove();}};
+  return{element:nav,goTo,dispose(){if(disposed)return;disposed=true;destinations.clear();for(const cleanup of cleanups)cleanup();nav.remove();}};
 }
 
 export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions, rpcSupervisor = walletRpcSupervisor, fileReadService = walletFileReadService, storageGuard = walletStorageGuard, exportGuard = getDocumentExportGuard(document) }) {
@@ -82,7 +84,11 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   cleanup.push(() => rpcStatusPanel.dispose());
   const storagePanel = mountStorageGuardPanel({ document, parent: securityHost, guard: storageGuard });
   cleanup.push(() => storagePanel.dispose());
-  const fileReadPanel = mountFileReadPanel({ document, parent: securityHost, service: fileReadService });
+  const savedFileDestinations = Object.freeze(Object.fromEntries(Object.entries({ setup: "setup", workspace: "workspace",
+    "transfer-vault": "history", period: "period", library: "period-library", report: "period-report",
+    history: "report-history", set: "report-set", reconciliation: "reconciliation" })
+    .map(([target, key]) => [target, () => navigation.goTo(key)])));
+  const fileReadPanel = mountFileReadPanel({ document, parent: securityHost, service: fileReadService, savedFileDestinations });
   cleanup.push(() => fileReadPanel.dispose());
   const exportPanel = mountExportGuardPanel({ document, parent: securityHost, guard: exportGuard });
   cleanup.push(() => exportPanel.dispose());
@@ -440,6 +446,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     } });
   const navigation=mountWalletNavigation(document,[
     ["accounts","接続・残高",grid],["setup","口座の設定・保存",setupHost],["identity","3トークンの照合",identityHost],
+    ["workspace","3ウォレットの保存・復元",setupHost.querySelector(".workspace-panel")],
     ["allowances","承認額の確認",allowanceHost],["history","保存した送受信履歴",transferVaultHost],["period","過去の期間を読む",periodHost],
     ["period-library","保存した期間",periodLibraryHost],["period-report","期間のレポート",periodReportHost],
     ["report-history","保存したレポート",reportHistoryHost],["report-set","レポートの比較",reportSetHost],
