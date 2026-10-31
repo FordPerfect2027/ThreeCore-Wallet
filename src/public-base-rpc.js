@@ -94,49 +94,55 @@ export function createPublicBaseRpcReader(input = {}) {
     const controller = new AbortController();
     let stopCode=null,timer,attached=false,rejectStop;
     const interruption=new Promise((_,reject)=>{rejectStop=reject;});
+    // Registration can abort and then throw before a transport race is installed.
+    interruption.catch(() => {});
     const stop=code=>{
       if(stopCode)return;
       stopCode=code;rejectStop(new PublicBaseRpcError(code,code==="RPC_TIMEOUT"?"Base RPC did not finish within the per-request time limit":"Public diagnostic read was cancelled"));
       controller.abort();
     };
     const onAbort=()=>stop("RPC_CANCELLED");
-    if(signal!==undefined){EventTarget.prototype.addEventListener.call(signal,"abort",onAbort,{once:true});attached=true;}
-    if(isAborted())onAbort();
-    if(!stopCode)timer=setTimeout(()=>stop("RPC_TIMEOUT"),timeoutMs);
-    const work = (async () => {
-      if(stopCode)fail(stopCode,"Public diagnostic read stopped before transport");
-      const response = await fetchImpl(rpcUrl, {
-        method: "POST", headers: { "content-type": "application/json" }, body,
-        credentials: "omit", redirect: "error", cache: "no-store", referrerPolicy: "no-referrer",
-        signal: controller.signal,
-      });
-      if (stopCode || !response?.ok || response.redirected) {
-        cancel(response?.body);
-        fail(stopCode??"HTTP_ERROR", "Base RPC did not return an accepted HTTP response");
-      }
-      let json;
-      try { json = await readStateRpcJson(response, { signal: controller.signal }); }
-      catch { fail(stopCode??"INVALID_RPC_RESPONSE", "Base RPC returned an invalid or oversized response"); }
-      if(stopCode)fail(stopCode,"Public diagnostic read stopped before result delivery");
-      if (!json || json.jsonrpc !== "2.0" || json.id !== requestId ||
-          !Object.hasOwn(json, "result") || Object.hasOwn(json, "error"))
-        fail("INVALID_RPC_RESPONSE", "Unexpected or failed Base JSON-RPC response");
-      if (method === "eth_getBlockByNumber") {
-        const header = json.result;
-        if (!header || typeof header.number !== "string" || !QUANTITY.test(header.number) ||
-            BigInt(header.number) !== BigInt(params[0]) || typeof header.hash !== "string" || !HASH.test(header.hash))
-          fail("INVALID_RPC_RESPONSE", "Base RPC returned an invalid or mismatched block header");
-        return Object.freeze({ number: "0x" + BigInt(header.number).toString(16), hash: header.hash.toLowerCase() });
-      }
-      if (typeof json.result !== "string") fail("INVALID_RPC_RESPONSE", "Expected a diagnostic string result");
-      if ((method === "eth_chainId" || method === "eth_blockNumber") && !QUANTITY.test(json.result))
-        fail("INVALID_RPC_RESPONSE", "Expected a canonical hexadecimal EVM quantity");
-      if (method === "eth_getCode" && (json.result.length > RPC_SECURITY_LIMITS.contractCodeCharacters ||
-          !/^0x(?:[0-9a-fA-F]{2})*$/.test(json.result)))
-        fail("INVALID_RPC_RESPONSE", "Invalid contract-code RPC result");
-      return json.result;
-    })();
     try {
+      if(signal!==undefined){
+        attached=true;
+        try { EventTarget.prototype.addEventListener.call(signal,"abort",onAbort,{once:true}); }
+        catch { fail("INVALID_SIGNAL","Diagnostic cancellation listener could not be installed"); }
+      }
+      if(isAborted())onAbort();
+      if(!stopCode)timer=setTimeout(()=>stop("RPC_TIMEOUT"),timeoutMs);
+      const work = (async () => {
+        if(stopCode)fail(stopCode,"Public diagnostic read stopped before transport");
+        const response = await fetchImpl(rpcUrl, {
+          method: "POST", headers: { "content-type": "application/json" }, body,
+          credentials: "omit", redirect: "error", cache: "no-store", referrerPolicy: "no-referrer",
+          signal: controller.signal,
+        });
+        if (stopCode || !response?.ok || response.redirected) {
+          cancel(response?.body);
+          fail(stopCode??"HTTP_ERROR", "Base RPC did not return an accepted HTTP response");
+        }
+        let json;
+        try { json = await readStateRpcJson(response, { signal: controller.signal }); }
+        catch { fail(stopCode??"INVALID_RPC_RESPONSE", "Base RPC returned an invalid or oversized response"); }
+        if(stopCode)fail(stopCode,"Public diagnostic read stopped before result delivery");
+        if (!json || json.jsonrpc !== "2.0" || json.id !== requestId ||
+            !Object.hasOwn(json, "result") || Object.hasOwn(json, "error"))
+          fail("INVALID_RPC_RESPONSE", "Unexpected or failed Base JSON-RPC response");
+        if (method === "eth_getBlockByNumber") {
+          const header = json.result;
+          if (!header || typeof header.number !== "string" || !QUANTITY.test(header.number) ||
+              BigInt(header.number) !== BigInt(params[0]) || typeof header.hash !== "string" || !HASH.test(header.hash))
+            fail("INVALID_RPC_RESPONSE", "Base RPC returned an invalid or mismatched block header");
+          return Object.freeze({ number: "0x" + BigInt(header.number).toString(16), hash: header.hash.toLowerCase() });
+        }
+        if (typeof json.result !== "string") fail("INVALID_RPC_RESPONSE", "Expected a diagnostic string result");
+        if ((method === "eth_chainId" || method === "eth_blockNumber") && !QUANTITY.test(json.result))
+          fail("INVALID_RPC_RESPONSE", "Expected a canonical hexadecimal EVM quantity");
+        if (method === "eth_getCode" && (json.result.length > RPC_SECURITY_LIMITS.contractCodeCharacters ||
+            !/^0x(?:[0-9a-fA-F]{2})*$/.test(json.result)))
+          fail("INVALID_RPC_RESPONSE", "Invalid contract-code RPC result");
+        return json.result;
+      })();
       const result=await Promise.race([work,interruption]);
       if(stopCode)fail(stopCode,"Public diagnostic read stopped before result delivery");
       return result;
@@ -145,7 +151,8 @@ export function createPublicBaseRpcReader(input = {}) {
       if (error instanceof PublicBaseRpcError) throw error;
       fail("RPC_TRANSPORT", "Base RPC transport failed");
     } finally {
-      clearTimeout(timer);if(attached)EventTarget.prototype.removeEventListener.call(signal,"abort",onAbort);
+      clearTimeout(timer);
+      if(attached)consumeCallback(() => EventTarget.prototype.removeEventListener.call(signal,"abort",onAbort));
       controller.abort();
     }
   };
