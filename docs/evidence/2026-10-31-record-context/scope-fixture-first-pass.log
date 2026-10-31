@@ -1,0 +1,48 @@
+✔ V1 search and replay retain their original stored-account semantics (40.3512ms)
+✔ recorded context locates a rejected foreign account without changing storage ownership (2.5547ms)
+✔ recorded context searches agent, network, site and spender using all literal terms (2.0651ms)
+✖ both scope can intersect stored and recorded accounts; recorded scope cannot invent a stored value (1.4807ms)
+✔ agent filter continues to mean the saved ledger and intersects kind and decision (2.8286ms)
+✖ new scope report, review evidence and CSV preserve the selected search semantics (19.6176ms)
+✔ tampered V2 derived rows are detected, and version/shape mismatches are rejected (10.5765ms)
+✔ invalid V2 scope undefined is rejected (0.858ms)
+✔ invalid V2 scope null is rejected (0.574ms)
+✔ invalid V2 scope stored is rejected (0.593ms)
+✔ invalid V2 scope all is rejected (0.3469ms)
+✔ invalid V2 scope [object Object] is rejected (0.2969ms)
+✔ invalid V2 scope constructor is rejected (0.2038ms)
+✔ scope capture rejects getters without invoking them and freezes the normalized query (0.6007ms)
+✔ wrong-field guidance recognizes the new report without applying its contents (4.1082ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 13
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 403.7695
+
+✖ failing tests:
+
+test at test\rehearsal-context-record-search.test.js:28:1
+✖ both scope can intersect stored and recorded accounts; recorded scope cannot invent a stored value (1.4807ms)
+  Error [RehearsalError]: INVALID_RECORD_QUERY
+      at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-records.js:10:25)
+      at validateRehearsalRecordQuery (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-records.js:14:134)
+      at validateRehearsalContextRecordQuery (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-records.js:19:15)
+      at queryRehearsalContextRecords (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-records.js:36:103)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-context-record-search.test.js:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12) {
+    code: 'INVALID_RECORD_QUERY'
+  }
+
+test at test\rehearsal-context-record-search.test.js:39:1
+✖ new scope report, review evidence and CSV preserve the selected search semantics (19.6176ms)
+  TypeError: Cannot read properties of undefined (reading 'differenceCount')
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-context-record-search.test.js:42:128)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
