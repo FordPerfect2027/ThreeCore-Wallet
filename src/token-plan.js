@@ -91,3 +91,22 @@ export function tokenPlanLinesForContext(input, identity) {
   }
   return plan.tokens.join("\n");
 }
+
+/** Describe replacement of configuration only. Invalid old input is unknown, never an empty list. */
+export function previewTokenPlanReplacement(input, identity, currentLines) {
+  const plan = validateTokenPlan(input); tokenPlanLinesForContext(plan, identity);
+  if (typeof currentLines !== "string") fail("INVALID_TOKENS", "Expected local input text");
+  let previous = null;
+  if (currentLines.length <= LIMIT) {
+    if (!currentLines.trim()) previous = [];
+    else { try { previous = createTokenPlan(identity, currentLines).tokens; } catch { /* Invalid current text cannot support a change count. */ } }
+  }
+  const before = previous && new Set(previous), after = new Set(plan.tokens);
+  return Object.freeze({ agent: plan.agent, chainId: plan.chainId, currentInputValid: previous !== null,
+    currentCount: previous?.length ?? null, targetCount: plan.tokens.length,
+    added: previous ? Object.freeze(plan.tokens.filter(address => !before.has(address))) : null,
+    removed: previous ? Object.freeze(previous.filter(address => !after.has(address))) : null,
+    retainedCount: previous ? previous.filter(address => after.has(address)).length : null,
+    sameOrder: previous ? previous.join("\n") === plan.tokens.join("\n") : null,
+    configurationOnly: true, canAuthorizeConnection: false, canAuthorizeTransaction: false });
+}

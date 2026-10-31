@@ -1,4 +1,4 @@
-import { createTokenPlan, encodeTokenPlan, decodeTokenPlan, tokenPlanLinesForContext, TokenPlanError } from "../src/token-plan.js";
+import { createTokenPlan, encodeTokenPlan, decodeTokenPlan, tokenPlanLinesForContext, previewTokenPlanReplacement, TokenPlanError } from "../src/token-plan.js";
 
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { observeCallbackResult } from "../src/security-callback.js";
@@ -59,6 +59,7 @@ export function mountTokenPlanPanel({ document, parent, getContext, readLines, a
   parent.append(section);
   let candidate = null;
   let candidateText = null;
+  let candidateBaseline = null;
   let disposed = false;
   let generation = 0;
   let reading = null;
@@ -75,6 +76,7 @@ export function mountTokenPlanPanel({ document, parent, getContext, readLines, a
     retireRead();
     candidate = null;
     candidateText = null;
+    candidateBaseline = null;
     apply.disabled = true;
     details.textContent = "";
     status.textContent = message;
@@ -145,12 +147,24 @@ export function mountTokenPlanPanel({ document, parent, getContext, readLines, a
     reset();
     try {
       const plan = decodeTokenPlan(source);
+      const identity = context(); if (!current(id)) return;
+      const baseline = syncSource(readLines, "INVALID_TOKENS"); if (!current(id)) return;
+      const impact = previewTokenPlanReplacement(plan, identity, baseline);
       tokenPlanLinesForContext(plan, context());
       if (!current(id)) return;
+      const capturedAgain = syncSource(readLines, "INVALID_TOKENS"); if (!current(id)) return;
+      if (capturedAgain !== baseline) throw new TokenPlanError("PLAN_CHANGED", "Current input changed during preview");
       sameInput(source);
-      details.textContent = plan.agent + " / チェーン: " + plan.chainId + " / " + plan.tokens.length + "件\n" + plan.tokens.join("\n");
+      const changes = impact.currentInputValid
+        ? `現在${impact.currentCount}件 → 反映後${impact.targetCount}件 / 追加${impact.added.length}件・削除${impact.removed.length}件・維持${impact.retainedCount}件\n` +
+          (impact.added.length ? "追加する契約:\n" + impact.added.join("\n") + "\n" : "") +
+          (impact.removed.length ? "削除する契約:\n" + impact.removed.join("\n") + "\n" : "") +
+          (impact.sameOrder ? "現在と同じ契約・順序です。\n" : "反映後の順序は下の一覧です。\n")
+        : "現在の入力形式を確認できないため、追加・削除件数は算出していません。反映すると下の一覧で置き換えます。\n";
+      details.textContent = changes + "入力リストだけの変更です。保有資産の追加・削除や送金ではありません。\n" + plan.agent + " / チェーン: " + plan.chainId + " / " + plan.tokens.length + "件\n" + plan.tokens.join("\n");
       candidate = plan;
       candidateText = source;
+      candidateBaseline = baseline;
       apply.disabled = false;
       status.textContent = "内容を確認し、反映する場合だけ次のボタンを押してください。";
     } catch (value) { error(value, id); }
@@ -163,6 +177,12 @@ export function mountTokenPlanPanel({ document, parent, getContext, readLines, a
       sameInput(source);
       const lines = tokenPlanLinesForContext(plan, context());
       if (!current(id)) return;
+      sameInput(source);
+      const baseline = syncSource(readLines, "INVALID_TOKENS"); if (!current(id)) return;
+      if (baseline !== candidateBaseline) throw new TokenPlanError("PLAN_CHANGED", "Preview the changed current list again");
+      tokenPlanLinesForContext(plan, context()); if (!current(id)) return;
+      const capturedAgain = syncSource(readLines, "INVALID_TOKENS"); if (!current(id)) return;
+      if (capturedAgain !== baseline) throw new TokenPlanError("PLAN_CHANGED", "Current input changed during apply");
       sameInput(source);
       reset(); // Consume the candidate before invoking application code.
       handedOff = true;
