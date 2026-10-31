@@ -1,0 +1,14 @@
+✔ wallet source export retains exact negative bytes, requires fresh consent and clears obsolete choices (589.4559ms)
+✔ rehearsal source export retains exact negative bytes, requires fresh consent and clears obsolete choices (278.7096ms)
+✔ source export rejects forged owners, failed/asynchronous delivery and stale callback feedback (26.6009ms)
+✔ rehearsal source picker hands the same file to full batch verification and rejection preserves prior rows (243.6599ms)
+✔ rehearsal handoff prevents repeat submission and obsolete feedback after selecting another source (39.5584ms)
+✔ oversized individual source remains available to the bounded batch verifier without another picker (11.2821ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1933.2154

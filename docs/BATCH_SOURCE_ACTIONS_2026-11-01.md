@@ -1,0 +1,11 @@
+# Download original batch sources and avoid selecting rehearsal bundles twice
+
+Items 557–558. Source: 52d21ec.
+
+557: The wallet and rehearsal batch panels now offer a shared source-export control after a complete, matching bundle review. Users explicitly choose one original filename, see its source result and SHA-256, acknowledge the unencrypted source content and start a download. Exact Unicode/BOM/CRLF text is preserved, including negative evidence without promoting its validation status. Consent is consumed per attempt; source changes, clearing, active jobs and disposal revoke stale choices. Failed or asynchronous download delivery cannot claim success. A rejected new bundle preserves the previous verified list and its original sources.
+
+558: The rehearsal individual-file review now offers a direct handoff of the same selected File to the complete batch-bundle verifier. The individual report reader retains its 2 MiB bound, while the explicit batch action uses the existing 16 MiB verifier. The filename remains visible after individual size rejection. Repeated submissions are blocked and old callback feedback is suppressed after another selection. Matching evidence opens the batch section; changed claims preserve previous rows. No second picker or history restoration is needed.
+
+104 selected Node checks passed (4885.8541 ms) and 119 scoped native browser cases passed (28496 ms). After restoring the visible filename on individual size rejection, all six source-action checks passed again (1933.2154 ms). Native File/DataTransfer tests cover both panels and the rehearsal handoff. The [captured evidence](evidence/2026-11-01-batch-source-actions/) includes exact downloaded negative-source bytes, source-bundle hashes, status/consent checks and logs. Captured downloads and synthetic file selection do not establish real OS-picker interaction or a connection to the user's current tab.
+
+The last full browser checkpoint remains f9856c3 (965 cases); the last full-wallet Node checkpoint remains d253e8d (15,720 tests). These are two independently useful UI capabilities, not counts of test cases or supported formats. No signature, transfer, approval, private-key retrieval, external RPC, publication, deployment or existing-server restart occurred.
