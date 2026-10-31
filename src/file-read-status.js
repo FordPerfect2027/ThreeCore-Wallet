@@ -676,7 +676,8 @@ async function inspectSavedBatchRow(row, { subtle, signal, timeoutMs, expectedSh
   if (checksumMatches === false) { status = "checksum-mismatch"; code = "FILE_BATCH_CHECKSUM_MISMATCH"; }
   if (sha256 !== null && checksumMatches !== false) {
     try {
-      inspection = await inspectWalletSavedTextCaptured(row.text, { subtle, signal, timeoutMs: Math.min(timeoutMs, 30000) }, sha256);
+      // A decoder's lazy module import can stall before its own abort-aware work starts.
+      inspection = await waitSavedBatchSource(() => inspectWalletSavedTextCaptured(row.text, { subtle, signal, timeoutMs: Math.min(timeoutMs, 30000) }, sha256), signal);
       if (inspection.validation === "validated-original" && (inspection.textDigest !== sha256 || !inspection.checksumVerified)) savedInspectionFail("FILE_BATCH_HASH_INCONSISTENT");
       status = inspection.validation;
     } catch (error) {
