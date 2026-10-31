@@ -1,0 +1,79 @@
+{
+  "source": "2e3078b",
+  "synthetic": true,
+  "captureEnvironment": "Node shared screen-review helper and standalone CLI; actual native File/DataTransfer path and download callback checked in separate browser suite",
+  "rows": [
+    {
+      "name": "matching",
+      "before": "before-source.json",
+      "after": "membership-source.json",
+      "comparison": "membership-comparison.json",
+      "exitCode": 0,
+      "sharedFieldsExactlyEqual": true,
+      "inputsUnchanged": true,
+      "matches": true,
+      "sameContents": false,
+      "differences": [],
+      "unexpectedFields": 0
+    },
+    {
+      "name": "regressed",
+      "before": "before-source.json",
+      "after": "regressed-source.json",
+      "comparison": "regressed-comparison.json",
+      "exitCode": 0,
+      "sharedFieldsExactlyEqual": true,
+      "inputsUnchanged": true,
+      "matches": true,
+      "sameContents": false,
+      "differences": [],
+      "unexpectedFields": 0
+    },
+    {
+      "name": "altered",
+      "before": "before-source.json",
+      "after": "membership-source.json",
+      "comparison": "altered-comparison.json",
+      "exitCode": 2,
+      "sharedFieldsExactlyEqual": true,
+      "inputsUnchanged": true,
+      "matches": false,
+      "sameContents": false,
+      "differences": [
+        "comparison",
+        "authenticated"
+      ],
+      "unexpectedFields": 0
+    },
+    {
+      "name": "extra-field",
+      "before": "before-source.json",
+      "after": "membership-source.json",
+      "comparison": "extra-field-comparison.json",
+      "exitCode": 2,
+      "sharedFieldsExactlyEqual": true,
+      "inputsUnchanged": true,
+      "matches": false,
+      "sameContents": false,
+      "differences": [],
+      "unexpectedFields": 1
+    },
+    {
+      "name": "reversed",
+      "before": "membership-source.json",
+      "after": "before-source.json",
+      "comparison": "membership-comparison.json",
+      "exitCode": 2,
+      "sharedFieldsExactlyEqual": true,
+      "inputsUnchanged": true,
+      "matches": false,
+      "sameContents": false,
+      "differences": [
+        "beforePayloadDigest",
+        "afterPayloadDigest",
+        "comparison"
+      ],
+      "unexpectedFields": 0
+    }
+  ]
+}

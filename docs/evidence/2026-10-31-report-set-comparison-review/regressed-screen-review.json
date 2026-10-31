@@ -1,0 +1,36 @@
+{
+  "schema": "threecore.report-set-comparison-review.v1",
+  "matchesRecomputation": true,
+  "beforePayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+  "afterPayloadDigest": "6b211d82303b0141852ac13b76e6e522083497384a3ca2eaec0732052f226f19",
+  "beforeDigestMatches": true,
+  "afterDigestMatches": true,
+  "comparisonTextSha256": "d519b812481c285fb72fee6c85272e7d0f6ff335d26de345bd425d4db4b6400c",
+  "differences": [],
+  "unexpectedFields": 0,
+  "counts": {
+    "added": 0,
+    "removed": 0,
+    "changed": 1,
+    "metadata-only": 0,
+    "unchanged": 2
+  },
+  "sameContents": false,
+  "beforeSummary": {
+    "allContinuous": true,
+    "issues": []
+  },
+  "afterSummary": {
+    "allContinuous": false,
+    "issues": [
+      "INCOMPLETE_EVIDENCE",
+      "REPORTS_NEED_REVIEW"
+    ]
+  },
+  "historicalOnly": true,
+  "readOnly": true,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false
+}
