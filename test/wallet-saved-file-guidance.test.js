@@ -19,6 +19,9 @@ import { sequenceSet, demoSetHistory } from "./helpers/report-set-fixtures.js";
 
 const source = sequenceSet(), after = sequenceSet(demoSetHistory());
 const routes = [
+  ["threecore.saved-file-comparison-review.v1",null,"PERIOD_FILE_SAVED_REVIEW_ONLY","保存ファイル比較の照合結果"],
+  ["threecore.saved-file-comparison-bundle.v1",null,"PERIOD_FILE_SAVED_BUNDLE_ONLY","両方の元資料をまとめたJSON"],
+  ["threecore.saved-file-comparison-bundle-review.v1",null,"PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY","元資料は含まれません"],
   ["threecore.saved-file-comparison.v1", null, "PERIOD_FILE_SAVED_COMPARISON_ONLY", "比較した両方の元のJSON"],
   ["threecore.saved-file-inspection.v1", null, "PERIOD_FILE_INSPECTION_ONLY", "元記録は含まれず"],
   ["threecore.report-history-import-inspection.v1", null, "PERIOD_FILE_HISTORY_INSPECTION_ONLY", "元の報告やメモは含まれません"],

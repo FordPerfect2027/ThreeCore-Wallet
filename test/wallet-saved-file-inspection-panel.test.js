@@ -131,3 +131,27 @@ test("auxiliary comparison cannot claim equality and asynchronous comparison sav
     assert.doesNotMatch(f.q("status").textContent, /PRIVATE/);
   } finally { f.dispose(); }
 });
+
+async function reviewFile(f,text){f.q("review-file").files=[fileFrom(text)];f.q("review-file").dispatchEvent(new Event("change"));await waitUntil(()=>!f.mounted.getState().busy);}
+test("comparison receipt review is tied to both current originals and needs a distinct save acknowledgement",async()=>{
+  const f=fixture();try{
+    const source=(await prepareReportHistoryFile(sampleHistory())).text;await f.load(source);await compareFile(f,source);
+    const comparison=f.mounted.getState().comparison;await reviewFile(f,JSON.stringify(comparison));
+    assert.equal(f.mounted.getState().comparisonReview.matchesRecomputation,true);assert.equal(f.q("review-save").disabled,true);
+    f.q("review-ack").checked=true;f.q("review-ack").dispatchEvent(new Event("change"));f.q("review-save").click();
+    assert.equal(JSON.parse(f.files[0].text).matchesRecomputation,true);assert.equal(f.files[0].restorable,false);
+    await reviewFile(f,JSON.stringify({...comparison,sameOriginal:false}));assert.equal(f.mounted.getState().comparisonReview.matchesRecomputation,false);
+    assert.equal(f.mounted.getState().comparison,comparison);assert.equal(f.q("review-ack").checked,false);
+    await compareFile(f,source);assert.equal(f.mounted.getState().comparisonReview,null);assert.equal(f.q("review-output").textContent,"");
+  }finally{f.dispose();}
+});
+test("cancelled comparison receipt review preserves the current originals and ignores late data",async()=>{
+  const gate=deferred();let delayed=false;
+  const f=fixture({readText:file=>delayed?gate.promise:file.arrayBuffer().then(bytes=>new TextDecoder().decode(bytes))});
+  try{
+    const source=(await prepareReportHistoryFile(sampleHistory())).text;await f.load(source);await compareFile(f,source);
+    const comparison=f.mounted.getState().comparison;delayed=true;const pending=reviewFile(f,JSON.stringify(comparison));
+    f.q("stop").click();gate.resolve(JSON.stringify(comparison));await pending;
+    assert.equal(f.mounted.getState().comparison,comparison);assert.equal(f.mounted.getState().comparisonReview,null);assert.equal(f.files.length,0);
+  }finally{f.dispose();}
+});

@@ -57,6 +57,47 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test("saved comparison review: rechecks both current originals and detects altered claims before any receipt save",async()=>{
+    const parent=document.createElement("div");document.body.append(parent);const files=[];
+    const guide=mountSavedFileInspectionPanel({document,parent,download:file=>files.push(file)}),q=name=>parent.querySelector(".saved-file-guide-"+name);
+    async function load(name,text){const transfer=new DataTransfer();transfer.items.add(new File([text],"synthetic.json"));q(name).files=transfer.files;q(name).dispatchEvent(new Event("change",{bubbles:true}));while(guide.getState().busy)await tick();}
+    try{
+      const source=(await prepareReportHistoryFile(sampleHistory())).text;await load("file",source);await load("compare-file",JSON.stringify(JSON.parse(source),null,2));
+      const comparison=guide.getState().comparison;await load("review-file",JSON.stringify(comparison));
+      assert(guide.getState().comparisonReview.matchesRecomputation&&q("review-save").disabled);
+      q("review-ack").checked=true;q("review-ack").dispatchEvent(new Event("change",{bubbles:true}));q("review-save").click();
+      assert(files.length===1&&JSON.parse(files[0].text).matchesRecomputation&&!files[0].restorable);
+      await load("review-file",JSON.stringify({...comparison,sameOriginal:false}));
+      assert(!guide.getState().comparisonReview.matchesRecomputation&&guide.getState().comparison===comparison&&!q("review-ack").checked);
+    }finally{guide.dispose();parent.remove();}
+  });
+  test("saved bundle: original File bytes survive acknowledged bundle export and two separately acknowledged extractions",async()=>{
+    const parent=document.createElement("div");document.body.append(parent);const files=[];
+    const guide=mountSavedFileInspectionPanel({document,parent,download:file=>files.push(file)}),q=name=>parent.querySelector(".saved-file-guide-"+name),b=name=>parent.querySelector(".saved-bundle-"+name);
+    async function load(field,text){const transfer=new DataTransfer();transfer.items.add(new File([text],"synthetic.json"));field.files=transfer.files;field.dispatchEvent(new Event("change",{bubbles:true}));while(guide.getState().busy||!b("stop").disabled)await tick();}
+    function ack(field){field.checked=true;field.dispatchEvent(new Event("change",{bubbles:true}));}
+    try{
+      const before=(await prepareReportHistoryFile(sampleHistory())).text,after=JSON.stringify(JSON.parse(before),null,2)+"\r\n";
+      await load(q("file"),before);await load(q("compare-file"),after);assert(b("export").disabled);ack(b("export-ack"));b("export").click();while(!b("stop").disabled)await tick();
+      assert(files.length===1&&JSON.parse(files[0].text).afterFileText===after&&!b("export-ack").checked);
+      await load(b("file"),files[0].text);assert(b("before").disabled);ack(b("source-ack"));b("before").click();assert(files[1].text===before&&b("after").disabled);
+      ack(b("source-ack"));b("after").click();assert(files[2].text===after&&files[2].automaticallyImported===false);
+      await load(q("file"),before);assert(b("export").disabled&&b("output").textContent.includes("再計算と一致"));
+    }finally{guide.dispose();parent.remove();}
+  });
+  test("saved bundle: substituted comparison claims disable extraction and corrupt new files clear old results",async()=>{
+    const parent=document.createElement("div");document.body.append(parent);const files=[];
+    const guide=mountSavedFileInspectionPanel({document,parent,download:file=>files.push(file)}),q=name=>parent.querySelector(".saved-file-guide-"+name),b=name=>parent.querySelector(".saved-bundle-"+name);
+    async function load(field,text){const transfer=new DataTransfer();transfer.items.add(new File([text],"synthetic.json"));field.files=transfer.files;field.dispatchEvent(new Event("change",{bubbles:true}));while(guide.getState().busy||!b("stop").disabled)await tick();}
+    try{
+      const source=(await prepareReportHistoryFile(sampleHistory())).text;await load(q("file"),source);await load(q("compare-file"),source);
+      b("export-ack").checked=true;b("export-ack").dispatchEvent(new Event("change",{bubbles:true}));b("export").click();while(!b("stop").disabled)await tick();
+      const bundle=JSON.parse(files[0].text),comparison=JSON.parse(bundle.comparisonText);comparison.sameOriginal=false;bundle.comparisonText=JSON.stringify(comparison);
+      await load(b("file"),JSON.stringify(bundle));assert(b("source-ack").disabled&&b("before").disabled&&b("output").textContent.includes("不一致"));assert(files.length===1);
+      await load(b("file"),"{}");assert(b("before").disabled&&b("output").textContent==="");
+    }finally{guide.dispose();parent.remove();}
+  });
+
   test("saved file comparison: identical originals with different formatting keep the baseline and require a separate save acknowledgement", async () => {
     const parent = document.createElement("div"); document.body.append(parent); const files = [];
     const guide = mountSavedFileInspectionPanel({ document, parent, download: file => files.push(file) });

@@ -163,6 +163,9 @@ export function decodeRehearsalForPanel(text, target, decode) {
 
 // These routes describe a declared format only. They never validate or open a file.
 const walletSavedTargets = Object.freeze({
+  "threecore.saved-file-comparison-bundle.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_ONLY"],
+  "threecore.saved-file-comparison-bundle-review.v1": [null, "PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY"],
+  "threecore.saved-file-comparison-review.v1": [null, "PERIOD_FILE_SAVED_REVIEW_ONLY"],
   "threecore.saved-file-comparison.v1": [null, "PERIOD_FILE_SAVED_COMPARISON_ONLY"],
   "threecore.saved-file-inspection.v1": [null, "PERIOD_FILE_INSPECTION_ONLY"],
   "threecore.report-history-import-inspection.v1": [null, "PERIOD_FILE_HISTORY_INSPECTION_ONLY"],
@@ -185,6 +188,9 @@ const walletSavedTargets = Object.freeze({
   "threecore.missing-history-queue.v1": [null, "PERIOD_FILE_QUEUE_ONLY"],
 });
 const walletSavedMessages = Object.freeze({
+  PERIOD_FILE_SAVED_BUNDLE_ONLY: "これは比較と両方の元資料をまとめたJSONです。ファイル読み込みの保護にある『まとめた資料を読み取り専用で確認する』で確認し、必要な元ファイルを取り出してください。直接の復元は行いません。",
+  PERIOD_FILE_SAVED_BUNDLE_REVIEW_ONLY: "これはまとめた比較資料の照合結果です。元資料は含まれません。両方の元資料をまとめた元のJSONを使ってください。",
+  PERIOD_FILE_SAVED_REVIEW_ONLY: "これは保存ファイル比較の照合結果です。元記録は含まれず、復元には使えません。両方の元のJSONと、保存した比較JSONを使ってください。",
   PERIOD_FILE_SAVED_COMPARISON_ONLY: "これは2つの保存ファイルの比較結果です。元記録は含まれず、復元には使えません。比較した両方の元のJSONを使ってください。",
   PERIOD_FILE_INSPECTION_ONLY: "これは保存ファイルの形式や開く場所を調べた案内です。元記録は含まれず、復元には使えません。調べる前の元のJSONを選んでください。",
   PERIOD_FILE_HISTORY_INSPECTION_ONLY: "これは報告履歴の読込み前の比較結果です。元の報告やメモは含まれません。復元には報告履歴のバックアップJSONを使ってください。",
@@ -314,6 +320,11 @@ export function walletSavedInspectionText(value) {
 
 export function walletSavedInspectionErrorText(error) {
   let code; try { code = Object.getOwnPropertyDescriptor(error, "code")?.value; } catch {}
+  if (code === "FILE_BUNDLE_SIZE") return "まとめる元資料の合計は24 MiB、まとめた資料は48 MiBまでです。大きい場合は両方の元ファイルを別々に保全してください。";
+  if (code === "FILE_BUNDLE_SOURCE_CHANGED") return "比較した後に元資料が変わったため保存を中止しました。両方の元ファイルを選び直して比較してください。";
+  if (code === "FILE_BUNDLE_ORIGINALS_REQUIRED") return "両方の検証済み元記録が必要です。案内や比較結果だけでは、元資料をまとめられません。";
+  if (typeof code === "string" && code.startsWith("FILE_BUNDLE_")) return "まとめた資料の形式や比較結果を確認できませんでした。元のJSONを保全して、確認し直してください。";
+  if (typeof code === "string" && code.startsWith("FILE_COMPARISON_REVIEW_")) return "保存した比較JSONを確認できませんでした。比較先の元資料ではなく、2つのファイルの比較結果を選んでください。";
   if (code === "PERIOD_CHECKSUM") return "チェックサムが一致しません。保存が完了した元のJSONを選び直してください。内容は取り込んでいません。";
   if (code === "FILE_INSPECTION_UNSUPPORTED") return "この案内では扱わない形式です。ThreeCoreの期間・報告・確認セットの元のJSONを選んでください。";
   if (code === "FILE_INSPECTION_JSON") return "JSONの形式を確認できません。元の保存ファイルを選び直してください。";
@@ -359,4 +370,138 @@ export function walletSavedComparisonText(value) {
     value.unchangedScopeWithChangedOriginal ? "上の件数が同じでも、元記録の内容は変わっています。" : "",
     "比較するのは保存ファイルだけです。元ファイルの選び直し・置き換え・復元や現在のチェーンの確認は行いません。",
     "この比較結果には元記録を含まず、復元には使えません。両方の元ファイルを保全してください。"].filter(Boolean).join("\n");
+}
+
+export const WALLET_SAVED_COMPARISON_REVIEW_LIMIT = 256 * 1024;
+function sameSavedJSON(left, right) {
+  if (Object.is(left, right)) return true;
+  if (!left || !right || typeof left !== "object" || typeof right !== "object" || Array.isArray(left) !== Array.isArray(right)) return false;
+  const keys = Object.keys(left);
+  return keys.length === Object.keys(right).length && keys.every(key => Object.hasOwn(right, key) && sameSavedJSON(left[key], right[key]));
+}
+
+/** Recompute from owned inspections; a saved comparison is evidence to check, never authority. */
+export async function reviewWalletSavedComparison(before, after, text, fileOptions = {}) {
+  const expected = compareWalletSavedInspections(before, after);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { savedInspectionFail("FILE_COMPARISON_REVIEW_OPTIONS"); }
+  let aborted; try { aborted = readAbortState(options.signal); } catch { savedInspectionFail("FILE_COMPARISON_REVIEW_OPTIONS"); }
+  if (typeof aborted !== "boolean") savedInspectionFail("FILE_COMPARISON_REVIEW_OPTIONS");
+  if (aborted) savedInspectionFail("FILE_CANCELLED");
+  let supplied;
+  try { supplied = parseSecurityJson(text, { bytes: WALLET_SAVED_COMPARISON_REVIEW_LIMIT }); }
+  catch { savedInspectionFail("FILE_COMPARISON_REVIEW_JSON"); }
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== "threecore.saved-file-comparison.v1") savedInspectionFail("FILE_COMPARISON_REVIEW_SCHEMA");
+  const differences = Object.keys(expected).filter(field => !Object.hasOwn(supplied, field) || !sameSavedJSON(supplied[field], expected[field]));
+  const unexpectedFields = Object.keys(supplied).filter(field => !Object.hasOwn(expected, field)).length;
+  const comparisonTextDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, options);
+  if (readAbortState(options.signal) !== false) savedInspectionFail("FILE_CANCELLED");
+  return Object.freeze({ schema: "threecore.saved-file-comparison-review.v1",
+    matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    expectedKind: expected.kind, expectedSameOriginal: expected.sameOriginal,
+    beforeSourceDigest: before.sourceDigest, afterSourceDigest: after.sourceDigest,
+    beforeTextDigest: before.textDigest, afterTextDigest: after.textDigest,
+    originalPairValidated: before.validation === "validated-original" && after.validation === "validated-original",
+    beforeBindingMatches: before.validation === "validated-original" ? supplied.before?.sourceSchema === before.sourceSchema && supplied.before?.sourceDigest === before.sourceDigest && supplied.before?.textDigest === before.textDigest : null,
+    afterBindingMatches: after.validation === "validated-original" ? supplied.after?.sourceSchema === after.sourceSchema && supplied.after?.sourceDigest === after.sourceDigest && supplied.after?.textDigest === after.textDigest : null,
+    comparisonTextDigest, differences: Object.freeze(differences), unexpectedFields,
+    containsOriginalEvidence: false, restorable: false, readOnly: true,
+    liveChainRechecked: false, authenticated: false, authorizesExecution: false });
+}
+
+export function walletSavedComparisonReviewText(value) {
+  if (!value) return "";
+  const fields = { schema: "ファイル形式", kind: "比較の判定", before: "比較元の記録", after: "比較先の記録",
+    sameFormat: "同じ形式か", sameOriginal: "元記録が同じか", sameText: "テキストが同じか", byteDifference: "ファイルサイズの差",
+    scopeChanges: "件数等の変化", unchangedScopeWithChangedOriginal: "件数が同じ内容変更", containsOriginalEvidence: "元記録の有無",
+    restorable: "復元に使えるか", automaticallyImported: "自動取込の主張", liveChainRechecked: "現在のチェーン確認の主張",
+    authenticated: "出所の認証の主張", authorizesExecution: "実行許可の主張" };
+  return [value.matchesRecomputation ? "保存した比較結果は、この2つの記録からの再計算と一致しています。" : "保存した比較結果に、再計算と一致しない箇所があります。",
+    value.originalPairValidated ? "両方の元記録の形式とチェックサムを確認しています。" : "補助資料が含まれるため、元記録同士としての一致は判断していません。",
+    "比較元との結び付け: " + (value.beforeBindingMatches === null ? "未検証" : value.beforeBindingMatches ? "一致" : "不一致") + " / 比較先との結び付け: " + (value.afterBindingMatches === null ? "未検証" : value.afterBindingMatches ? "一致" : "不一致"),
+    ...value.differences.map(field => "不一致: " + fields[field]),
+    value.unexpectedFields ? "仕様にない追加項目: " + value.unexpectedFields + "個" : "",
+    "再計算との一致は、2つの元ファイルの内容が同じという意味ではありません。現在のチェーンや記録の正しさを証明するものでもありません。",
+    "この照合結果には元記録を含まず、復元には使えません。"].filter(Boolean).join("\n");
+}
+
+export const WALLET_SAVED_BUNDLE_SOURCE_LIMIT = 24 * 1024 * 1024;
+export const WALLET_SAVED_BUNDLE_LIMIT = 48 * 1024 * 1024;
+const savedBundleSources = new WeakMap();
+function savedBundleOptions(value) {
+  try { return captureOptionalDataFields(value, ["subtle", "signal", "timeoutMs"]); }
+  catch { savedInspectionFail("FILE_BUNDLE_OPTIONS"); }
+}
+function boundedSavedPair(beforeText, afterText) {
+  try {
+    const beforeBytes = boundedUtf8Length(beforeText, WALLET_SAVED_BUNDLE_SOURCE_LIMIT);
+    const afterBytes = boundedUtf8Length(afterText, WALLET_SAVED_BUNDLE_SOURCE_LIMIT);
+    if (!beforeBytes || !afterBytes || beforeBytes + afterBytes > WALLET_SAVED_BUNDLE_SOURCE_LIMIT) throw Error();
+  } catch { savedInspectionFail("FILE_BUNDLE_SIZE"); }
+}
+function checkSavedBundleAbort(options) {
+  let aborted; try { aborted = readAbortState(options.signal); } catch { savedInspectionFail("FILE_BUNDLE_OPTIONS"); }
+  if (typeof aborted !== "boolean") savedInspectionFail("FILE_BUNDLE_OPTIONS");
+  if (aborted) savedInspectionFail("FILE_CANCELLED");
+}
+
+/** Keep exact original UTF-8 text, including formatting, with a reproducible comparison. */
+export async function prepareWalletSavedBundle(beforeText, afterText, fileOptions = {}) {
+  const options = savedBundleOptions(fileOptions); checkSavedBundleAbort(options); boundedSavedPair(beforeText, afterText);
+  const before = await inspectWalletSavedText(beforeText, options); checkSavedBundleAbort(options);
+  const after = await inspectWalletSavedText(afterText, options); checkSavedBundleAbort(options);
+  if (before.validation !== "validated-original" || after.validation !== "validated-original") savedInspectionFail("FILE_BUNDLE_ORIGINALS_REQUIRED");
+  const comparison = compareWalletSavedInspections(before, after);
+  const text = JSON.stringify({ schema: "threecore.saved-file-comparison-bundle.v1", beforeFileText: beforeText,
+    afterFileText: afterText, comparisonText: JSON.stringify(comparison, null, 2) + "\n",
+    authenticated: false, encrypted: false, authorizesExecution: false }) + "\n";
+  try { boundedUtf8Length(text, WALLET_SAVED_BUNDLE_LIMIT); } catch { savedInspectionFail("FILE_BUNDLE_SIZE"); }
+  checkSavedBundleAbort(options);
+  return Object.freeze({ text, filename: "ThreeCore-saved-file-comparison-bundle.json", mimeType: "application/json;charset=utf-8",
+    comparison, sourceTextPreserved: true, containsOriginalEvidence: true, authenticated: false, encrypted: false, authorizesExecution: false });
+}
+
+/** Validate both originals and compare the supplied result with a fresh computation. */
+export async function reviewWalletSavedBundle(text, fileOptions = {}) {
+  const options = savedBundleOptions(fileOptions); checkSavedBundleAbort(options);
+  let bundle;
+  try { bundle = parseSecurityJson(text, { bytes: WALLET_SAVED_BUNDLE_LIMIT, stringCharacters: WALLET_SAVED_BUNDLE_SOURCE_LIMIT }); }
+  catch { savedInspectionFail("FILE_BUNDLE_JSON"); }
+  if (!bundle || typeof bundle !== "object" || Array.isArray(bundle) ||
+      Object.keys(bundle).sort().join(",") !== "afterFileText,authenticated,authorizesExecution,beforeFileText,comparisonText,encrypted,schema" ||
+      bundle.schema !== "threecore.saved-file-comparison-bundle.v1" || bundle.authenticated !== false || bundle.encrypted !== false || bundle.authorizesExecution !== false) savedInspectionFail("FILE_BUNDLE_SCHEMA");
+  boundedSavedPair(bundle.beforeFileText, bundle.afterFileText);
+  const before = await inspectWalletSavedText(bundle.beforeFileText, options); checkSavedBundleAbort(options);
+  const after = await inspectWalletSavedText(bundle.afterFileText, options); checkSavedBundleAbort(options);
+  if (before.validation !== "validated-original" || after.validation !== "validated-original") savedInspectionFail("FILE_BUNDLE_ORIGINALS_REQUIRED");
+  const comparison = compareWalletSavedInspections(before, after);
+  const comparisonReview = await reviewWalletSavedComparison(before, after, bundle.comparisonText, options);
+  const bundleTextDigest = await sha256Hex(new TextEncoder().encode(text), options.subtle, options); checkSavedBundleAbort(options);
+  const result = Object.freeze({ schema: "threecore.saved-file-comparison-bundle-review.v1", bundleTextDigest,
+    before, after, comparison, comparisonReview, originalsValidated: true,
+    comparisonMatchesRecomputation: comparisonReview.matchesRecomputation,
+    originalsAvailable: comparisonReview.matchesRecomputation,
+    containsOriginalEvidence: false, restorable: false, automaticallyImported: false,
+    liveChainRechecked: false, authenticated: false, authorizesExecution: false });
+  if (result.originalsAvailable) savedBundleSources.set(result, Object.freeze({ before: bundle.beforeFileText, after: bundle.afterFileText }));
+  return result;
+}
+
+/** Only a completed faithful review owned by this module can yield embedded source text. */
+export function walletSavedBundleSourceFile(receipt, role) {
+  if (!["before", "after"].includes(role) || !savedBundleSources.has(receipt)) savedInspectionFail("FILE_BUNDLE_SOURCE");
+  return Object.freeze({ text: savedBundleSources.get(receipt)[role], filename: "ThreeCore-comparison-" + role + "-original.json",
+    mimeType: "application/json;charset=utf-8", containsOriginalEvidence: true, sourceTextPreserved: true,
+    authenticated: false, encrypted: false, automaticallyImported: false, authorizesExecution: false });
+}
+
+export function walletSavedBundleReviewText(value) {
+  if (!value) return "";
+  return ["まとめた資料の比較元: " + value.before.title + " / 比較先: " + value.after.title,
+    "両方の元記録の形式とチェックサムを確認しました。",
+    value.comparisonMatchesRecomputation ? "保存された比較結果は再計算と一致しています。元記録を取り出せます。" :
+      "保存された比較結果に不一致があるため、この資料から元記録を取り出す操作はできません。",
+    walletSavedComparisonText(value.comparison), walletSavedComparisonReviewText(value.comparisonReview),
+    "元記録を取り出しても、ウォレットへの接続・復元・取得開始は行いません。各形式の読込み欄で改めて確認してください。"].join("\n");
 }
