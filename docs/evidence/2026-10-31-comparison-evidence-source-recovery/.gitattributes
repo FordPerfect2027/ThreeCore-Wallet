@@ -1,0 +1,4 @@
+*.log -text whitespace=-trailing-space,-space-before-tab,cr-at-eol
+SHA256SUMS.txt text eol=lf
+# This evidence intentionally preserves the embedded source's exact whitespace.
+embedded-whitespace-before-recovered.json -text -whitespace

@@ -1,0 +1,67 @@
+{
+  "source": "48a804e",
+  "synthetic": true,
+  "captureEnvironment": "Shared screen recovery and standalone CLI under Node; native file selection/download callbacks tested separately",
+  "rows": [
+    {
+      "name": "matching",
+      "role": "before",
+      "exitCode": 0,
+      "embeddedBytesExactlyEqual": true,
+      "reloadable": true,
+      "errorCode": null,
+      "inputUnchanged": true,
+      "comparisonMatches": true
+    },
+    {
+      "name": "matching",
+      "role": "after",
+      "exitCode": 0,
+      "embeddedBytesExactlyEqual": true,
+      "reloadable": true,
+      "errorCode": null,
+      "inputUnchanged": true,
+      "comparisonMatches": true
+    },
+    {
+      "name": "altered-comparison",
+      "role": "before",
+      "exitCode": 2,
+      "embeddedBytesExactlyEqual": true,
+      "reloadable": true,
+      "errorCode": null,
+      "inputUnchanged": true,
+      "comparisonMatches": false
+    },
+    {
+      "name": "altered-comparison",
+      "role": "after",
+      "exitCode": 2,
+      "embeddedBytesExactlyEqual": true,
+      "reloadable": true,
+      "errorCode": null,
+      "inputUnchanged": true,
+      "comparisonMatches": false
+    },
+    {
+      "name": "embedded-whitespace",
+      "role": "before",
+      "exitCode": 0,
+      "embeddedBytesExactlyEqual": true,
+      "reloadable": true,
+      "errorCode": null,
+      "inputUnchanged": true,
+      "comparisonMatches": true
+    },
+    {
+      "name": "corrupt-unselected-original",
+      "role": "before",
+      "exitCode": 1,
+      "embeddedBytesExactlyEqual": false,
+      "reloadable": false,
+      "errorCode": "PERIOD_CHECKSUM",
+      "inputUnchanged": true,
+      "comparisonMatches": null
+    }
+  ]
+}
