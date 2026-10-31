@@ -1,0 +1,48 @@
+✔ structured checks retain exact observations and identify the canonical original source (331.0942ms)
+✔ empty structured selections retain source-wide contradictions and the exact query (489.5566ms)
+✔ structured note/address choices leave hashes and exact stored values intact (181.7929ms)
+✔ source, query and output options are captured before asynchronous digest work (146.8766ms)
+✔ cancelled or failed hashing does not return a viewing file (149.5694ms)
+✔ structured export rejects option/query getters without executing them (117.5351ms)
+✔ structured export observes acknowledgement, cancellation and delivery retry (767.251ms)
+✔ check export parses every option, captures normalized filters and rejects ambiguous flags (13.1779ms)
+✔ help needs no file and explains unfiltered summary and privacy scope (0.7889ms)
+✔ an exported check reference can be located again through the offline command (888.2984ms)
+✔ details format reproduces the browser file and retains strict source-wide continuity (995.501ms)
+✔ standalone command reproduces all matching browser CSV bytes without changing source (1535.4014ms)
+✔ JSON carries original digest and complete query/summary despite zero matching checks (535.006ms)
+✔ strict continuity cannot be concealed by token or search selection (786.5327ms)
+✔ note and address options reproduce browser export without claiming anonymization (991.238ms)
+✔ checksum tampering has no partial stdout (217.2491ms)
+✔ wrong file type, malformed UTF-8 and missing paths fail without disclosing paths (226.1009ms)
+✔ set panel mounts with accessible labels and no reads or wallet calls (179.0108ms)
+✔ loading retains explicit empty selection and native checkboxes (202.4364ms)
+✔ selection changes keep focused checkbox nodes and do not duplicate handlers (159.8885ms)
+✔ filtering never silently deselects hidden reports (190.2217ms)
+✔ clearing selection clears hidden choices too (152.3244ms)
+✔ archive filtering adds an archived report explicitly without restoring it (342.4134ms)
+✔ invalid filter input shows a useful message and preserves selected evidence (148.1938ms)
+✔ review and application are separate actions with three token cards (253.157ms)
+✔ editing the name invalidates a pending review (123.1752ms)
+✔ source change during review is shown and never overwrites old accepted evidence (326.2038ms)
+✔ source inspection keeps the frozen set and describes later metadata changes (239.7577ms)
+✔ new result clears export acknowledgement; selection editing does not replace that result (276.9565ms)
+✔ privacy controls apply to explanation files while JSON retains complete evidence (383.6475ms)
+✔ JSON import stages a review before display and never inserts history rows (207.8912ms)
+✔ tampered file keeps previous output visible and reports checksum failure (411.3539ms)
+✔ diagnostic filtering narrows visible checks without changing the result (747.7984ms)
+✔ diagnostic malformed query never reports zero unresolved checks (504.152ms)
+✔ all untrusted names are rendered as text nodes, including diagnostics (134.4354ms)
+✔ busy state disables edits and cancelling suppresses a late read (148.7457ms)
+✔ panel disposal removes listeners and closes only its own storage adapter (107.4561ms)
+✔ filtered checklist CSV preserves source summary on zero matches and respects export controls (716.9168ms)
+✔ visible check references can be searched and exported without changing source conclusions (170.8786ms)
+✔ check-detail JSON saves exact observations with the selected disclosure controls (163.7965ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9407.2823
