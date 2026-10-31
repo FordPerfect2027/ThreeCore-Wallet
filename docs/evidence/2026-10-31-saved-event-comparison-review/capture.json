@@ -1,0 +1,152 @@
+{
+  "source": "5ef9ea5",
+  "synthetic": true,
+  "providerReads": 0,
+  "storageWrites": 0,
+  "rows": [
+    {
+      "name": "agreeing-observations",
+      "exitCode": 0,
+      "matchesRecomputation": true,
+      "comparisonStatus": "saved-observations-match",
+      "sourceDigestMatches": true,
+      "sourceWarnings": {
+        "before": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        },
+        "after": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        }
+      },
+      "comparisonTextSha256": "3b0836659cb248916392ad87cbea98fe45440883be55949e94a0f52746310d90",
+      "cliReceiptMatchesSharedExactly": true,
+      "sourceAndComparisonUnchanged": true
+    },
+    {
+      "name": "faithful-differences",
+      "exitCode": 0,
+      "matchesRecomputation": true,
+      "comparisonStatus": "differences",
+      "sourceDigestMatches": true,
+      "sourceWarnings": {
+        "before": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        },
+        "after": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        }
+      },
+      "comparisonTextSha256": "eb30313175e1004dbac233fd2c87972baa513bcf70d7606a55860c38ac56a04b",
+      "cliReceiptMatchesSharedExactly": true,
+      "sourceAndComparisonUnchanged": true
+    },
+    {
+      "name": "no-common-coverage",
+      "exitCode": 0,
+      "matchesRecomputation": true,
+      "comparisonStatus": "no-common-coverage",
+      "sourceDigestMatches": true,
+      "sourceWarnings": {
+        "before": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        },
+        "after": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        }
+      },
+      "comparisonTextSha256": "303a572c68f9b3cb9d1aa41975a95cb32c4b3e7a4a4b0c21284d23e940f24ac0",
+      "cliReceiptMatchesSharedExactly": true,
+      "sourceAndComparisonUnchanged": true
+    },
+    {
+      "name": "altered-quantity",
+      "exitCode": 2,
+      "matchesRecomputation": false,
+      "comparisonStatus": "differences",
+      "sourceDigestMatches": true,
+      "sourceWarnings": {
+        "before": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        },
+        "after": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        }
+      },
+      "comparisonTextSha256": "4cd27fd5869d7661d1118edde9620e5830790ddab6d1d94218ca91bd313f35db",
+      "cliReceiptMatchesSharedExactly": true,
+      "sourceAndComparisonUnchanged": true
+    },
+    {
+      "name": "different-source-note",
+      "exitCode": 2,
+      "matchesRecomputation": false,
+      "comparisonStatus": "saved-observations-match",
+      "sourceDigestMatches": false,
+      "sourceWarnings": {
+        "before": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        },
+        "after": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        }
+      },
+      "comparisonTextSha256": "3b0836659cb248916392ad87cbea98fe45440883be55949e94a0f52746310d90",
+      "cliReceiptMatchesSharedExactly": true,
+      "sourceAndComparisonUnchanged": true
+    },
+    {
+      "name": "restricted-archived-source",
+      "exitCode": 0,
+      "matchesRecomputation": true,
+      "comparisonStatus": "differences",
+      "sourceDigestMatches": true,
+      "sourceWarnings": {
+        "before": {
+          "restricted": true,
+          "archivedReport": true,
+          "archivedSource": true,
+          "internallyConsistentHashes": true
+        },
+        "after": {
+          "restricted": false,
+          "archivedReport": false,
+          "archivedSource": false,
+          "internallyConsistentHashes": true
+        }
+      },
+      "comparisonTextSha256": "d2a90c023bcfe3d82ca92a946d9774275495ee7bf203feeeb021195bc8aedea0",
+      "cliReceiptMatchesSharedExactly": true,
+      "sourceAndComparisonUnchanged": true
+    }
+  ]
+}

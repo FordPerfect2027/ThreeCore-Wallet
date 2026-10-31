@@ -1,0 +1,47 @@
+{
+  "schema": "threecore.saved-event-comparison-review.v1",
+  "matchesRecomputation": true,
+  "sourcePayloadDigest": "5319018e1aeb7d95a81ff3c1888f2bb88aa732cdccd295ef712869052cde3979",
+  "sourceDigestMatches": true,
+  "comparisonTextSha256": "d2a90c023bcfe3d82ca92a946d9774275495ee7bf203feeeb021195bc8aedea0",
+  "query": {
+    "beforeId": "12345678-1234-4234-8234-000000000101",
+    "afterId": "12345678-1234-4234-8234-000000000102",
+    "agent": "DAT"
+  },
+  "differences": [],
+  "unexpectedFields": 0,
+  "comparisonStatus": "differences",
+  "comparedBlocks": "12",
+  "sources": {
+    "before": {
+      "restricted": true,
+      "archivedReport": true,
+      "archivedSource": true,
+      "internallyConsistentHashes": true
+    },
+    "after": {
+      "restricted": false,
+      "archivedReport": false,
+      "archivedSource": false,
+      "internallyConsistentHashes": true
+    }
+  },
+  "counts": {
+    "matching": 1,
+    "changed": 1,
+    "onlyBefore": 0,
+    "onlyAfter": 0
+  },
+  "sharedAnchorCount": 6,
+  "anchorDifferenceCount": 0,
+  "readOnly": true,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false,
+  "containsOriginalEvidence": false,
+  "authorizesExecution": false,
+  "sourceChecksumVerified": true
+}
