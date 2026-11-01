@@ -1,0 +1,50 @@
+{
+  "sourceRevision": "34d173112d7f45475c52fb64553cfa8b369699d2",
+  "beforeRevision": "b2270b25e32dfe1c6e13f0512df4ea30d961efb3",
+  "recordedAt": "2026-11-01T18:10:41.854Z",
+  "before": {
+    "reproductions": 4,
+    "failed": 4
+  },
+  "intermediate": {
+    "affectedNodePass": 624,
+    "browserFirstShardPass": 510,
+    "browserFirstShardCases": 511,
+    "browserOverallPassed": false,
+    "browserSecondShardExecuted": false
+  },
+  "final": {
+    "nodeHttpPass": 16451,
+    "nodeHttpFail": 0,
+    "browserPass": 1021,
+    "browserFail": 0,
+    "focusedBrowserPass": 13,
+    "focusedRunsOverlapFullSuites": true,
+    "freshTokenArtifactCompatibilityPass": 150
+  },
+  "tokenBuilds": {
+    "freshArtifactAndCacheDirectories": true,
+    "existingDependencyInstallationsReused": true,
+    "localEvmsOnly": true
+  },
+  "realPublicRpc": {
+    "chainId": 84532,
+    "blockNumber": "53169113",
+    "tokenCount": 3,
+    "existingAccountCount": 2,
+    "observations": 6,
+    "allRawBalancesZero": true,
+    "metamaskUsed": false
+  },
+  "realWalletUiAcceptanceComplete": false,
+  "emptyStoreRealAccountRecoveryComplete": false,
+  "realWalletVersionReturnComplete": false,
+  "independentReviewComplete": false,
+  "gitHubPublicationPerformed": false,
+  "realWalletSigningOrTransactionsPerformed": false,
+  "privateKeysRetrieved": false,
+  "progressPercentageCalculated": false,
+  "original4231ServerRestarted": false,
+  "originalTabsReloaded": false,
+  "scopeCorrection": "Three token cards do not require three distinct real accounts. Shared existing accounts are supported; permission and identity checks remain mandatory."
+}

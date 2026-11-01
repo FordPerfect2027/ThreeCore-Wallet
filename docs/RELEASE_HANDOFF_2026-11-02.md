@@ -11,9 +11,10 @@ which parts they did and did not examine.
 - Last observed public PR #4 head: `07041f00efdb503cb76a06fbe12e5531cb380930`.
   [Its existing CI run](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726)
   passed five jobs. The PR remains draft; this does not cover later local changes.
-- Current application source: `97dae0f43104ec80ae387e671a86389db9156aad`.
-- Current test/operator-guide changes: `c36ce33f16bfb42dc099324382281300ba9c9f30`.
-- Consolidated local evidence: `380c132bc3acedeba069ccf39726c1decf2200b8`.
+- Current application and test source: `34d173112d7f45475c52fb64553cfa8b369699d2`.
+  This corrects the shared-account policy in connection, settings and workspace
+  backup; it supersedes the application source at `97dae0f` and tests at `c36ce33`.
+- Previous consolidated local evidence: `380c132bc3acedeba069ccf39726c1decf2200b8`.
   The initial handoff was documented at `a39b0996ee2cf9fe03d57b87f37451980d2328e6`.
 - Evidence checkout policy and its regression test:
   `c53cb2628dc2b85e530d36b6f26248bf84acd013`. A real Windows checkout exposed
@@ -23,23 +24,26 @@ which parts they did and did not examine.
   The delivered package receipt identifies the exact final documentation commit.
 
 Read the [readiness gates](RELEASE_READINESS_2026-11-01.md) and
-[latest regression record](RELEASE_REGRESSION_2026-11-02.md) first. The latter
-links to the initial failures as well as the successful reruns. The current
-local results are 16,445 Node/HTTP cases, 1,019 synthetic browser cases and 150
-local token-artifact compatibility cases. Focused runs overlap those totals.
-The later Git portability change passed 63 focused cases, including two new
-round-trip cases. The full suites were not rerun for that metadata/test change.
-The token build checks reused existing compiled artifacts. The public token
-jobs' pinned source and fresh-build commands are in `.github/workflows/ci.yml`.
+[shared-account acceptance record](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md)
+first. The current source passed 16,451 Node/HTTP cases, 1,021 synthetic browser
+cases and 150 local token compatibility cases using newly compiled artifacts.
+Focused runs overlap those totals. Both Git portability round-trip tests are
+included in the full Node run. Each pinned token source was compiled in a new
+directory with no artifacts/cache; existing installed dependencies were reused.
+The [previous regression record](RELEASE_REGRESSION_2026-11-02.md) and current
+evidence preserve initial failures as well as successful reruns. The public
+token jobs' pinned source and fresh-build commands are in `.github/workflows/ci.yml`.
 
-The implementation delta from the public head to `380c132` is ten files,
-103 insertions and 26 deletions, excluding tests and documentation:
+The implementation delta from the public head to `34d1731` is sixteen files,
+120 insertions and 53 deletions, excluding tests, documentation and the
+evidence-checkout policy:
 
 | Change | Files | Important review question |
 | --- | --- | --- |
 | Compare a verified workspace backup with the current settings and full histories | `examples/workspace-panel.js`, `src/workspace-overview.js` | Can stale, cancelled or changed input produce a false match? Are retained additional observations represented accurately? |
 | Retain accepted transfer archives when the connection stops or its context changes | `src/transfer-archive-controller.js`, `examples/transfer-archive-panel.js`, `examples/transfer-panel.js`, `examples/wallet-demo.js` | Are pending operations/previews invalidated while accepted context-bound data stays exportable? Can a different account or chain contaminate the old archive? |
 | Recognize the saved-list backup and navigate to its reviewed restore control | `src/file-read-status.js`, `examples/file-read-panel.js`, `examples/transfer-vault-panel.js`, `scripts/inspect-wallet-saved-file.js` | Does the strict collection decoder run? Are counts references rather than invented independent observations? Does navigation avoid implicit import, storage write or provider calls? |
+| Permit existing accounts to serve multiple token cards | `src/wallet-setup.js`, `src/wallet-setup-file.js`, `src/workspace-format.js`, `src/workspace-file.js`, `src/workspace-overview.js`, `examples/wallet-demo.js`, `examples/wallet-setup-panel.js`, `examples/workspace-panel.js`, `examples/index.html` | Are token histories kept separate, wallet and card counts accurate, restore permission-free, and account/chain changes invalidating every card using the provider? New shared-address backups may be rejected by older readers: preserve the original pre-upgrade files |
 
 ## Review the capability boundaries
 
@@ -49,7 +53,7 @@ automatic network switching and autonomous spending are outside that scope.
 The supplied package does not establish browser-extension security or token
 contract safety. Test/provider fixtures are not evidence of real wallet access.
 
-Review these boundaries in the complete candidate, not only the ten-file delta:
+Review these boundaries in the complete candidate, not only the sixteen-file delta:
 
 | Boundary | Source starting points | Required finding/evidence |
 | --- | --- | --- |
@@ -122,8 +126,10 @@ These items remain open even if all automated checks pass:
    restore, reconnect explicitly, and exercise invalidation by switching between
    the two existing accounts. The earlier requirement for a third real account
    is superseded by the [shared-account matrix](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md).
-   Only two historical real identities and one current Mainnet permission have
-   been established; this is not a new successful testnet observation.
+   Public RPC reads now cover both recovered accounts and all three tokens at
+   Base Sepolia block 53,169,113 (six zero-balance observations). They did not
+   use MetaMask and do not complete this UI acceptance step. One current Mainnet
+   permission was previously observed; it is separate from testnet permission.
 2. Actual-account saved-collection recovery into an empty persistent store on the
    intended PC. The separate-database synthetic case passed; actual-file import
    into an existing list also passed. The new empty-store real-PC attempt reached

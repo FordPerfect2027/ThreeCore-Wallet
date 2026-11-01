@@ -1,0 +1,57 @@
+{
+  "walletRevision": "34d173112d7f45475c52fb64553cfa8b369699d2",
+  "recordedAt": "2026-11-01T18:00:37.659Z",
+  "receipts": [
+    {
+      "name": "DAT",
+      "revision": "e0215f1a32824c19bcc89da96841e758928f4f29",
+      "versions": {
+        "hardhat": "3.16.0",
+        "solc": "0.8.34",
+        "viem": "2.56.6"
+      },
+      "packageLockSha256": "29a17e64514fbe4b5452a5f3b3c0615e2b7f9fcbdaa1207790c958505b4101c2",
+      "artifactSha256": "39ef366816362da122df0e577a72434bbe5353a9576147dbd6415292016631ca",
+      "freshArtifactAndCacheDirectories": true,
+      "existingDependencyInstallationReused": true,
+      "compileExit": 0,
+      "compatibilityPassed": 50,
+      "compatibilityExit": 0,
+      "publicNetworkUsed": false
+    },
+    {
+      "name": "EMA-Draft",
+      "revision": "362db49dcc5d5db5560b71ed5acd19bba326575e",
+      "versions": {
+        "hardhat": "3.16.0",
+        "solc": "0.8.34",
+        "viem": "2.56.6"
+      },
+      "packageLockSha256": "a68d778d169a12e3f2269e94ee6ad96dae6ae92594549483782f960fd27e11ee",
+      "artifactSha256": "dcde8995b64bef2e5010c8cd2341e5c1765e24cd9558187e8f45aa9471f6657e",
+      "freshArtifactAndCacheDirectories": true,
+      "existingDependencyInstallationReused": true,
+      "compileExit": 0,
+      "compatibilityPassed": 50,
+      "compatibilityExit": 0,
+      "publicNetworkUsed": false
+    },
+    {
+      "name": "CAWELON-Draft",
+      "revision": "c62f63370f7bcbe559d07b4d757384cf5f43ff0f",
+      "versions": {
+        "hardhat": "3.16.0",
+        "solc": "0.8.34",
+        "viem": "2.56.6"
+      },
+      "packageLockSha256": "394b83cc49585a7350ddc1b709685b318f313cbe2c1812f8740f44d418713bea",
+      "artifactSha256": "349178d214a9735fe324c75bdf2e58c50b5fbda135f261d374cca4a879f9f261",
+      "freshArtifactAndCacheDirectories": true,
+      "existingDependencyInstallationReused": true,
+      "compileExit": 0,
+      "compatibilityPassed": 50,
+      "compatibilityExit": 0,
+      "publicNetworkUsed": false
+    }
+  ]
+}

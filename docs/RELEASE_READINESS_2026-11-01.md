@@ -15,12 +15,12 @@ swaps, bridges, or autonomous spending.
 
 | Gate | Completion evidence needed | Current assessment |
 | --- | --- | --- |
-| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | The latest inspected public PR head is `07041f00efdb503cb76a06fbe12e5531cb380930`; [run 41311235726](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726) completed all five jobs successfully. PR #4 remains open and draft. The [local continuation at `c36ce33`](RELEASE_REGRESSION_2026-11-02.md) passed 16,445 Node/HTTP and 1,019 browser cases; 150 local token-artifact compatibility cases also passed. No new remote CI result or publication applies to those local changes |
+| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | The latest inspected public PR head is `07041f00efdb503cb76a06fbe12e5531cb380930`; [run 41311235726](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726) completed all five jobs successfully. PR #4 remains open and draft. The [current local source at `34d1731`](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md) passed 16,451 Node/HTTP and 1,021 synthetic browser cases, plus 150 local compatibility cases against freshly compiled token artifacts. Existing dependency installations were reused. No new remote CI result or publication applies to those local changes |
 | Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | A fresh Windows checkout exposed 460 evidence mismatches caused by automatic line-ending conversion. The [correction at `c53cb26`](EVIDENCE_PORTABILITY_2026-11-02.md) preserves original evidence bytes; its fresh checkout verifies 248 manifests / 2,231 entries with zero mismatches, plus historical-record consistency. The final local package receipt separately covers the new evidence folder. New local evidence has no remote CI result; the successful public evidence job belongs to `07041f0` |
 | Real wallet acceptance | All three token cards with existing accounts (sharing allowed); permission UI, exact balances/block, save/reload/restore, explicit reconnect, and a switch between two existing accounts | Incomplete. The [revised acceptance matrix](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md) removes the unnecessary third-account prerequisite while retaining the permission, identity and recovery checks. Token count and distinct wallet count are reported separately; no new account is required |
-| File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | [Rehearsal recovery](OPERATOR_RECOVERY_2026-11-01.md) passed for six fictional records / three cases. [Real balance-history recovery](HISTORY_RECOVERY_2026-11-01.md) passed for one permitted EMA account with two observations. [Archive/vault recovery](VAULT_RECOVERY_2026-11-02.md) now includes retained archives after disconnect/protective stop, saved-list survival across reload, duplicate-free collection re-import, cancelled/reviewed bundle import and byte-identical exports. The final three-account candidate and empty-database collection restore remain pending |
+| File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | [Rehearsal recovery](OPERATOR_RECOVERY_2026-11-01.md) passed for six fictional records / three cases. [Real balance-history recovery](HISTORY_RECOVERY_2026-11-01.md) passed for one permitted EMA account with two observations. [Archive/vault recovery](VAULT_RECOVERY_2026-11-02.md) now includes retained archives after disconnect/protective stop, saved-list survival across reload, duplicate-free collection re-import, cancelled/reviewed bundle import and byte-identical exports. The final three-token candidate using existing accounts and empty-database collection restore remain pending |
 | Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present. A [bounded developer source review](OPERATOR_RECOVERY_2026-11-01.md#connection-guidance-and-bounded-source-review) traced connection/read dispatch, request filtering and stale-result protection. This does not replace review of the final candidate or independent review |
-| Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | The exported `97dae0f` package has 4,279 / 4,279 source files matching its commit and [ten successful fresh-directory HTTP/startup checks](RELEASE_REGRESSION_2026-11-02.md). Application source is unchanged in `c36ce33`; its changes are tests and the operator guide. The [operator procedure](SOURCE_CHECKPOINT_2026-11-01.md) is documented; real-wallet migration/return remains to be exercised |
+| Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | The prior exported `97dae0f` package had 4,279 / 4,279 source files matching its commit and [ten successful fresh-directory HTTP/startup checks](RELEASE_REGRESSION_2026-11-02.md). The current application source is `34d1731`; its final delivery receipt records the new export, empty-repository restoration, evidence verification and startup checks separately. The [operator procedure](SOURCE_CHECKPOINT_2026-11-01.md) is documented; real-wallet migration/return remains to be exercised |
 | Operational support | Supported browsers/networks, bounded RPC behavior, failure/retry instructions, backup procedure, and troubleshooting records for the candidate | The [Japanese operator guide](OPERATOR_ACCEPTANCE_JA.md) consolidates account identity, failed connection, preservation, backup and restore steps. Rehearsal file recovery and one real EMA account's settings/history recovery were exercised on the intended PC. The new plain-file comparison also reports exact content matches and retained extra history |
 | Independent review and release decision | Separate review of the final scope and findings, explicit release decision and a deployment plan | Not completed. A developer's self-check or source publication is not independent review or deployment |
 
@@ -104,6 +104,14 @@ features. Compiled-token jobs use local EVMs and do not send public transactions
     The [independent-review handoff](RELEASE_HANDOFF_2026-11-02.md) is prepared;
     preparation is not completion of an independent review.
 
+16. Corrected the actual repeated-account restrictions in Connect, permitted-account
+    input, setup export and workspace backup. Added one-account/three-token and
+    two-account scenarios, including shared-provider invalidation and reviewed
+    persistence. [Current evidence](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md)
+    records 16,451 full Node/HTTP passes, 1,021 full synthetic browser passes,
+    150 cases against fresh token builds, and six separately recorded real
+    public-RPC observations. No third real account is required for this scope.
+
 ## Current real-wallet observation
 
 Account 1's previously missing public address was obtained through the supported
@@ -133,6 +141,14 @@ and two historical identities do not by themselves complete the real-wallet
 checks. The later [shared-account correction](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md)
 permits those existing accounts and removes the missing third account as a
 prerequisite. Actual testnet observations are still recorded separately from Mainnet.
+
+The November 2 continuation also completed actual read-only Base Sepolia RPC
+queries for both recovered accounts and all three tokens at canonical block
+53,169,113: six zero-balance observations with contract code present. This did
+not use MetaMask or establish its testnet permission. Account-specific raw data
+remains private in Downloads; the packaged summary is redacted. The existing
+Wallet UI was readable, but further control failed before an action was
+confirmed. Its original tabs and server were preserved.
 
 ## Next work order
 

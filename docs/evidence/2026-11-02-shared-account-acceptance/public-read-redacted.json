@@ -1,0 +1,69 @@
+{
+  "recordedAt": "2026-11-01T17:54:51.248Z",
+  "sourceRevision": "34d173112d7f45475c52fb64553cfa8b369699d2",
+  "rpcUrl": "https://sepolia.base.org",
+  "readOnly": true,
+  "walletConnected": false,
+  "walletPermissionVerified": false,
+  "signingOrTransaction": false,
+  "rows": [
+    {
+      "agent": "DAT",
+      "label": "Account 1",
+      "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+      "codePresent": true,
+      "codeSha256": "5b16bf1ec1b41eeb317b17adcd45c5cc1cca4f8f8d5a82423345d82a13b804b1",
+      "balanceBaseUnits": "0"
+    },
+    {
+      "agent": "DAT",
+      "label": "Account 2",
+      "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+      "codePresent": true,
+      "codeSha256": "5b16bf1ec1b41eeb317b17adcd45c5cc1cca4f8f8d5a82423345d82a13b804b1",
+      "balanceBaseUnits": "0"
+    },
+    {
+      "agent": "EMA",
+      "label": "Account 1",
+      "tokenAddress": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+      "codePresent": true,
+      "codeSha256": "e37b6404d804c154e886b1fc78ea927b9d75bfefe8d50a2cb0b90df86847f080",
+      "balanceBaseUnits": "0"
+    },
+    {
+      "agent": "EMA",
+      "label": "Account 2",
+      "tokenAddress": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+      "codePresent": true,
+      "codeSha256": "e37b6404d804c154e886b1fc78ea927b9d75bfefe8d50a2cb0b90df86847f080",
+      "balanceBaseUnits": "0"
+    },
+    {
+      "agent": "CAWELON",
+      "label": "Account 1",
+      "tokenAddress": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+      "codePresent": true,
+      "codeSha256": "9ce17cc97d72b57e3cf6324f3e4a985e0d0030c689745b242678762dfb46d788",
+      "balanceBaseUnits": "0"
+    },
+    {
+      "agent": "CAWELON",
+      "label": "Account 2",
+      "tokenAddress": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+      "codePresent": true,
+      "codeSha256": "9ce17cc97d72b57e3cf6324f3e4a985e0d0030c689745b242678762dfb46d788",
+      "balanceBaseUnits": "0"
+    }
+  ],
+  "complete": true,
+  "chainId": 84532,
+  "blockNumber": "53169113",
+  "blockHash": "0xf42012b916a70061da9f46f2f984e5088e70ed5e2511d68737e9517c403ad166",
+  "canonicalHeaderRechecked": true,
+  "sourceRecordSha256": "a1f87d874b78072e8f72a2e520887ced764df7f50091dd4cd2c99d90379d430d",
+  "accountAddressesRedacted": true,
+  "rawRecordIncluded": false,
+  "sourceRecordLocation": "Private local Downloads; not included in this package",
+  "independentAccountSpecificVerificationPossibleFromThisSummary": false
+}

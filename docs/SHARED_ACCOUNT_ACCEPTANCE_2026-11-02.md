@@ -34,8 +34,28 @@ correction. The affected unit suites then passed 624 cases. The first complete
 browser attempt exposed the remaining connection-handler check: 510/511 cases
 passed in its first shard, which failed overall and did not run the second shard.
 After correcting that handler, all 13 focused acceptance cases passed, including
-the two new shared-provider lifecycles. Final full-suite results are recorded
-separately; focused passes do not imply that the complete suite has finished.
+the two new shared-provider lifecycles. The final source at
+`34d173112d7f45475c52fb64553cfa8b369699d2` then passed all 16,451 Node/HTTP
+cases and all 1,021 synthetic browser cases (511 + 510). Focused results overlap
+these totals; they are not additional unique cases.
+
+The same Wallet source passed 150 compatibility cases against freshly compiled
+DAT, EMA and CAWELON artifacts (50 each). Each pinned token source was exported
+into a new directory with no prior build artifacts or cache. Existing dependency
+installations were reused; this is a fresh compile, not a fresh dependency install.
+These checks use local EVMs and do not exercise the user's wallet or submit
+transactions on a public network.
+
+Separately, a read-only public Base Sepolia query at block 53,169,113 observed
+zero raw balance for each of the three configured tokens at each of the two
+recovered accounts: six observations. Contract code was present for all three
+tokens, reads used the canonical block hash, and the header was checked again.
+This does not verify MetaMask permission, account ownership, the token's safety,
+or the pending browser workflow. The account-specific raw record stays in
+Downloads. The evidence package contains only a redacted summary and its source
+digest, which is not a substitute for the raw record for independent checking.
+
+See the [logs, source scope and checksums](evidence/2026-11-02-shared-account-acceptance/README.md).
 
 Existing distinct-account V1 backups remain readable and retain their original
 bytes. A new V1 backup that uses shared addresses can be rejected by older
