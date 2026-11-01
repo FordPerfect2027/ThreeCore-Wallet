@@ -14,14 +14,21 @@ which parts they did and did not examine.
 - Current application source: `97dae0f43104ec80ae387e671a86389db9156aad`.
 - Current test/operator-guide changes: `c36ce33f16bfb42dc099324382281300ba9c9f30`.
 - Consolidated local evidence: `380c132bc3acedeba069ccf39726c1decf2200b8`.
-  This handoff is a documentation-only addition after that evidence checkpoint.
-  The delivered package receipt identifies the exact commit that includes it.
+  The initial handoff was documented at `a39b0996ee2cf9fe03d57b87f37451980d2328e6`.
+- Evidence checkout policy and its regression test:
+  `c53cb2628dc2b85e530d36b6f26248bf84acd013`. A real Windows checkout exposed
+  460 hash mismatches from LF-to-CRLF conversion. The narrow evidence-directory
+  policy fixes that without changing original artifacts or their hashes.
+  See the [portability record](EVIDENCE_PORTABILITY_2026-11-02.md).
+  The delivered package receipt identifies the exact final documentation commit.
 
 Read the [readiness gates](RELEASE_READINESS_2026-11-01.md) and
 [latest regression record](RELEASE_REGRESSION_2026-11-02.md) first. The latter
 links to the initial failures as well as the successful reruns. The current
 local results are 16,445 Node/HTTP cases, 1,019 synthetic browser cases and 150
 local token-artifact compatibility cases. Focused runs overlap those totals.
+The later Git portability change passed 63 focused cases, including two new
+round-trip cases. The full suites were not rerun for that metadata/test change.
 The token build checks reused existing compiled artifacts. The public token
 jobs' pinned source and fresh-build commands are in `.github/workflows/ci.yml`.
 
@@ -63,6 +70,13 @@ Review their assertions and coverage; green totals alone are insufficient.
 The delivery contains a source ZIP, a Git bundle and a receipt with hashes.
 The Git bundle preserves the exact candidate commit and its history without
 copying a developer's Git configuration, credentials or untracked local files.
+The source must have complete history before bundling. `git bundle verify`
+alone did not expose a missing parent in the initial shallow-source bundle;
+the delivery procedure therefore also restores the bundle into a new empty
+repository. The final receipt must confirm that actual offline restoration.
+The candidate includes `.gitattributes` so checksummed evidence retains its
+original bytes with both Windows CRLF conversion and unconverted checkouts.
+Do not normalize old evidence or regenerate its expected hashes to make it pass.
 Previously published historical verification records are part of the tracked
 repository; new private account backups and screenshots in Downloads are not
 added to this package.

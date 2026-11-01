@@ -1,0 +1,29 @@
+✔ Git checkout preserves original evidence bytes with core.autocrlf=false (3103.207ms)
+✖ Git checkout preserves original evidence bytes with core.autocrlf=true (2751.5167ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6134.3891
+
+✖ failing tests:
+
+test at test\evidence-git-roundtrip.test.js:13:3
+✖ Git checkout preserves original evidence bytes with core.autocrlf=true (2751.5167ms)
+  AssertionError [ERR_ASSERTION]: {"manifests":1,"matchedManifests":0,"failedManifests":0,"files":6,"mismatchedFiles":3,"unreadableFiles":0,"verifiedBytes":112,"admittedBytes":112}
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/evidence-git-roundtrip.test.js:57:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

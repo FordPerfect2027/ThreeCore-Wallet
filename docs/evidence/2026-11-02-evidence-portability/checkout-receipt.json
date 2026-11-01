@@ -1,0 +1,19 @@
+{
+  "sourceRevision": "c53cb2628dc2b85e530d36b6f26248bf84acd013",
+  "recordedAt": "2026-11-01T16:36:17.357Z",
+  "normalWindowsAutocrlf": "true",
+  "autocrlfOverridden": false,
+  "checkoutClean": true,
+  "evidenceSummary": {
+    "manifests": 248,
+    "matchedManifests": 248,
+    "failedManifests": 0,
+    "files": 2231,
+    "mismatchedFiles": 0,
+    "unreadableFiles": 0,
+    "verifiedBytes": 99579385,
+    "admittedBytes": 99579385
+  },
+  "historicalVerifierExit": 0,
+  "remoteWrite": false
+}
