@@ -1,0 +1,144 @@
+{
+  "recordedAt": "2026-11-01T21:19:46.215Z",
+  "tokens": [
+    {
+      "token": "DAT",
+      "baseCommit": "fb5a5f6940563b1efa5c5bb5006b270b086e303b",
+      "commit": "d5ff32f898b75482dd6d211eae0750ae9d0b6d22",
+      "status": "",
+      "files": [
+        "README.md",
+        "docs/CANONICAL_IDENTITY_2026-11-02.md",
+        "src/canonical-token-read.js",
+        "src/onchain-identity.js",
+        "scripts/verify-base-mainnet.js",
+        "test/onchain-identity.test.mjs",
+        "test/onchain-identity-cli.test.mjs"
+      ],
+      "tests": {
+        "readOnlyPassed": 159,
+        "failed": 0,
+        "identityUnitSubset": 42,
+        "cliHttpSubset": 3
+      },
+      "source": {
+        "src/canonical-token-read.js": {
+          "committedBytesSha256": "cd681b7821b9aef0f73e78095840b9ac6a022a9363bf4a94976999039b7d48eb",
+          "normalizedLfSha256": "cd681b7821b9aef0f73e78095840b9ac6a022a9363bf4a94976999039b7d48eb"
+        },
+        "src/onchain-identity.js": {
+          "committedBytesSha256": "eaa7a221f8549ddf70de719e86fdb43e167fba3c19b4c17443f94f6eba52086e",
+          "normalizedLfSha256": "b2330a5386319015486baa5b0c59db1e2aa4965fecdb79476fea785efced604b"
+        },
+        "scripts/verify-base-mainnet.js": {
+          "committedBytesSha256": "b3b33a4b0c6a0aa74f1ef2a42ce3f5f5bb983a2f320218b24ceb572eb2fab357",
+          "normalizedLfSha256": "8a8e03005e2f4b84f3ab472bed9b760fc6125d1f84a7966c444b05a218d1461a"
+        },
+        "test/onchain-identity.test.mjs": {
+          "committedBytesSha256": "2d5885605715705360cd083710277cd9e24e8ca31a07e8aeb4d49fb862440edc",
+          "normalizedLfSha256": "ac4f4bae2bd3d2999d98e62436dd753d190ba923b1ed873a304fea6d0efbae9f"
+        },
+        "test/onchain-identity-cli.test.mjs": {
+          "committedBytesSha256": "25dea2098bd41bffc629b252341659e115283ef0b4bdb128f6da3771063a95e2",
+          "normalizedLfSha256": "25dea2098bd41bffc629b252341659e115283ef0b4bdb128f6da3771063a95e2"
+        }
+      },
+      "contractDependencyAndDeploymentSourcesUnchanged": true
+    },
+    {
+      "token": "EMA",
+      "baseCommit": "69c89da9a0697a6d6f6f7a1fa82ab25354c7f7ab",
+      "commit": "ba4aa22d1b9f0eb4390a3dac25bf4b7105545e09",
+      "status": "",
+      "files": [
+        "README.md",
+        "docs/CANONICAL_IDENTITY_2026-11-02.md",
+        "src/canonical-token-read.js",
+        "src/onchain-identity.js",
+        "scripts/verify-base-mainnet.js",
+        "test/onchain-identity.test.mjs",
+        "test/onchain-identity-cli.test.mjs"
+      ],
+      "tests": {
+        "readOnlyPassed": 159,
+        "failed": 0,
+        "identityUnitSubset": 42,
+        "cliHttpSubset": 3
+      },
+      "source": {
+        "src/canonical-token-read.js": {
+          "committedBytesSha256": "cd681b7821b9aef0f73e78095840b9ac6a022a9363bf4a94976999039b7d48eb",
+          "normalizedLfSha256": "cd681b7821b9aef0f73e78095840b9ac6a022a9363bf4a94976999039b7d48eb"
+        },
+        "src/onchain-identity.js": {
+          "committedBytesSha256": "9bc2fabebe1ab7e8e15eab4cdf67611692a2d00095adcf2b117181bea48ad935",
+          "normalizedLfSha256": "e65384d6902e6af48701bc02147ef6037cf8d5c521c726d9331129352dee67cb"
+        },
+        "scripts/verify-base-mainnet.js": {
+          "committedBytesSha256": "b3b33a4b0c6a0aa74f1ef2a42ce3f5f5bb983a2f320218b24ceb572eb2fab357",
+          "normalizedLfSha256": "8a8e03005e2f4b84f3ab472bed9b760fc6125d1f84a7966c444b05a218d1461a"
+        },
+        "test/onchain-identity.test.mjs": {
+          "committedBytesSha256": "2d5885605715705360cd083710277cd9e24e8ca31a07e8aeb4d49fb862440edc",
+          "normalizedLfSha256": "ac4f4bae2bd3d2999d98e62436dd753d190ba923b1ed873a304fea6d0efbae9f"
+        },
+        "test/onchain-identity-cli.test.mjs": {
+          "committedBytesSha256": "25dea2098bd41bffc629b252341659e115283ef0b4bdb128f6da3771063a95e2",
+          "normalizedLfSha256": "25dea2098bd41bffc629b252341659e115283ef0b4bdb128f6da3771063a95e2"
+        }
+      },
+      "contractDependencyAndDeploymentSourcesUnchanged": true
+    },
+    {
+      "token": "CAWELON",
+      "baseCommit": "5fe773a62d1676b381a4a33156db0a3c033617f2",
+      "commit": "b3fc18ccaff040d4aff1f5567ceb049971836462",
+      "status": "",
+      "files": [
+        "README.md",
+        "docs/CANONICAL_IDENTITY_2026-11-02.md",
+        "src/canonical-token-read.js",
+        "src/onchain-identity.js",
+        "scripts/verify-base-mainnet.js",
+        "test/onchain-identity.test.mjs",
+        "test/onchain-identity-cli.test.mjs"
+      ],
+      "tests": {
+        "readOnlyPassed": 159,
+        "failed": 0,
+        "identityUnitSubset": 42,
+        "cliHttpSubset": 3
+      },
+      "source": {
+        "src/canonical-token-read.js": {
+          "committedBytesSha256": "cd681b7821b9aef0f73e78095840b9ac6a022a9363bf4a94976999039b7d48eb",
+          "normalizedLfSha256": "cd681b7821b9aef0f73e78095840b9ac6a022a9363bf4a94976999039b7d48eb"
+        },
+        "src/onchain-identity.js": {
+          "committedBytesSha256": "e9b878646a3e5679bcbbc9f89674eed8910587f84bd6cdc956bbeb83e32aaa8a",
+          "normalizedLfSha256": "8b2700e0d0d0376f5f9cfb79f1a0b0415a609ad109058174b5af38910694dbb6"
+        },
+        "scripts/verify-base-mainnet.js": {
+          "committedBytesSha256": "b3b33a4b0c6a0aa74f1ef2a42ce3f5f5bb983a2f320218b24ceb572eb2fab357",
+          "normalizedLfSha256": "8a8e03005e2f4b84f3ab472bed9b760fc6125d1f84a7966c444b05a218d1461a"
+        },
+        "test/onchain-identity.test.mjs": {
+          "committedBytesSha256": "2d5885605715705360cd083710277cd9e24e8ca31a07e8aeb4d49fb862440edc",
+          "normalizedLfSha256": "ac4f4bae2bd3d2999d98e62436dd753d190ba923b1ed873a304fea6d0efbae9f"
+        },
+        "test/onchain-identity-cli.test.mjs": {
+          "committedBytesSha256": "25dea2098bd41bffc629b252341659e115283ef0b4bdb128f6da3771063a95e2",
+          "normalizedLfSha256": "25dea2098bd41bffc629b252341659e115283ef0b4bdb128f6da3771063a95e2"
+        }
+      },
+      "contractDependencyAndDeploymentSourcesUnchanged": true
+    }
+  ],
+  "limits": [
+    "One provider; not independent consensus verification or a security audit.",
+    "No real-wallet permission or transaction exercised.",
+    "Test subsets overlap full read-only totals.",
+    "Full Solidity/Wallet regression results remain attached to previous named commits.",
+    "Live source LF hashes match the committed sources after newline normalization; tracked CRLF files retain their original convention."
+  ]
+}

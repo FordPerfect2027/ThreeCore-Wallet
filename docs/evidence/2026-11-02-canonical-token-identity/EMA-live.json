@@ -1,0 +1,17 @@
+{
+  "token": "EMA",
+  "startedAt": "2026-11-01T21:16:57.705Z",
+  "finishedAt": "2026-11-01T21:17:02.262Z",
+  "endpoint": "https://mainnet.base.org",
+  "baseCommit": "69c89da9a0697a6d6f6f7a1fa82ab25354c7f7ab",
+  "sourceSha256": {
+    "src/canonical-token-read.js": "cd681b7821b9aef0f73e78095840b9ac6a022a9363bf4a94976999039b7d48eb",
+    "src/onchain-identity.js": "e65384d6902e6af48701bc02147ef6037cf8d5c521c726d9331129352dee67cb",
+    "scripts/verify-base-mainnet.js": "8a8e03005e2f4b84f3ab472bed9b760fc6125d1f84a7966c444b05a218d1461a",
+    "test/onchain-identity.test.mjs": "ac4f4bae2bd3d2999d98e62436dd753d190ba923b1ed873a304fea6d0efbae9f",
+    "test/onchain-identity-cli.test.mjs": "25dea2098bd41bffc629b252341659e115283ef0b4bdb128f6da3771063a95e2"
+  },
+  "exitCode": 0,
+  "stdout": "{\n  \"network\": \"Base Mainnet\",\n  \"chainId\": 8453,\n  \"blockNumber\": \"53389236\",\n  \"blockHash\": \"0x3f2d71c8fa099cb337e1248aa065f5f2256500814719dbf9588e109e37971cf7\",\n  \"canonicalBlockRequired\": true,\n  \"canonicalBlockRechecked\": true,\n  \"chainRechecked\": true,\n  \"runtimeBytecodeKeccak256\": \"0x2e973da5cac7a7236f02f0f9765bfc055c0cfd3725a2ee21c402cf722319ef39\",\n  \"contractAddress\": \"0xBaE0933d509b83B7bbAb3AaB9feD413504382a76\",\n  \"tokenName\": \"EMA CORE\",\n  \"tokenSymbol\": \"EMA\",\n  \"decimals\": 18,\n  \"totalSupplyBaseUnits\": \"777000000000000000000000000\",\n  \"originalIssuanceTokenUnits\": \"777000000\",\n  \"estimatedBurnedBaseUnits\": \"0\",\n  \"deployedCodePresent\": true,\n  \"readOnly\": true,\n  \"contractDeployedByCheck\": false,\n  \"transactionSent\": false,\n  \"securityAudit\": false\n}\n",
+  "stderr": ""
+}

@@ -162,3 +162,14 @@ retest status. Separate verified defects, untested assumptions and unavailable
 environment steps. Do not sign or transact to obtain evidence for this scope.
 No release should be described as approved while these essential gates remain
 unproven. Do not turn test counts or time spent into a completion percentage.
+
+## Token canonical-read follow-up — November 2
+
+The [canonical token identity correction](CANONICAL_TOKEN_IDENTITY_2026-11-02.md)
+now pins all state reads by canonical block hash and rejects network/block
+changes. All three token read-only suites passed 159 cases, and three public
+Mainnet observations succeeded at block 53,389,236. CLI provider errors are
+redacted. Browser Wallet code, real-wallet acceptance and the remaining Zod
+finding are unchanged. The prepared token CI pins point to the new local
+commits. The 7f92929 delivery remains an earlier checkpoint and does not include
+this correction.

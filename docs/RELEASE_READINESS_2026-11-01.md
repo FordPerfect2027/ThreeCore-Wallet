@@ -203,3 +203,14 @@ independent review before a release decision. Record each material
 finding with its source revision, reproduction, fix and verification. Keep the
 current 4231 server and the user's open rehearsal data intact. New test servers
 must bind loopback on unused ports and be closed only by their own test process.
+
+## Token canonical-read follow-up — November 2
+
+The [canonical token identity correction](CANONICAL_TOKEN_IDENTITY_2026-11-02.md)
+now pins all state reads by canonical block hash and rejects network/block
+changes. All three token read-only suites passed 159 cases, and three public
+Mainnet observations succeeded at block 53,389,236. CLI provider errors are
+redacted. Browser Wallet code, real-wallet acceptance and the remaining Zod
+finding are unchanged. The prepared token CI pins point to the new local
+commits. The 7f92929 delivery remains an earlier checkpoint and does not include
+this correction.
