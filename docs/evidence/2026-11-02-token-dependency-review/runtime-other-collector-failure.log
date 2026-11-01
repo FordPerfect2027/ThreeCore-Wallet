@@ -1,0 +1,272 @@
+{"token":"CAWELON","stage":"installed","packages":19}
+{"token":"EMA","stage":"installed","packages":19}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /# tests 213\b/. Input:
+
+'✔ Approval event is indexed and bounded to a short read-only window (5.5523ms)\n' +
+  '✔ returns event history and pinned current allowance as DIFFERENT facts (10.202ms)\n' +
+  '✔ an explicit historical block pins the allowance, not latest (1.0146ms)\n' +
+  '✔ different public spender is explicit and never labelled Classic Router (4.0899ms)\n' +
+  '✔ deduplicates repeated RPC logs and sorts by transaction position (1.7935ms)\n' +
+  '✔ different values for one log ID cause a conflict (1.9415ms)\n' +
+  '✔ refuses incorrect chain before requesting an allowance or history (1.902ms)\n' +
+  '✔ refuses invalid owner and spender addresses without any network requests (1.8601ms)\n' +
+  '✔ rejects malformed block values, reversed ranges and too many blocks (4.4132ms)\n' +
+  '✔ requires public read client with contract read and log support (4.3807ms)\n' +
+  '✔ rejects unrelated, malformed or out-of-range Approval logs (2.9863ms)\n' +
+  '✔ rejects unbounded Approval event sets or malformed allowances (2.0548ms)\n' +
+  '✔ RPC errors propagate and never cause transactions or approvals (0.938ms)\n' +
+  '✔ inspect-wallet-readiness.js real CLI/viem HTTP preserves every canonical parameter (6600.2218ms)\n' +
+  '✔ inspect-wallet-readiness.js reorganization exits unsuccessfully without output (7989.0515ms)\n' +
+  '✔ inspect-wallet-readiness.js unsupported hash cannot retry weaker reads or leak provider details (9158.4381ms)\n' +
+  '✔ quote-dex.js real CLI/viem HTTP preserves every canonical parameter (7001.4175ms)\n' +
+  '✔ quote-dex.js reorganization exits unsuccessfully without output (6399.896ms)\n' +
+  '✔ quote-dex.js unsupported hash cannot retry weaker reads or leak provider details (6893.5539ms)\n' +
+  '✔ quote CLI bounds integer text before conversion or network access (6059.7867ms)\n' +
+  '✔ state reader rejects a write ABI function before eth_call (3.0474ms)\n' +
+  '✔ buy quote uses the registered volatile pool and one canonical state (243.9842ms)\n' +
+  '✔ sell quote switches exact base units and reserve direction (9.6999ms)\n' +
+  '✔ reverse token ordering is handled without assuming pool order (16.5984ms)\n' +
+  '✔ invalid directions and amounts fail before RPC (12.0708ms)\n' +
+  '✔ wrong network fails before pool lookup (0.6899ms)\n' +
+  '✔ missing or transaction-only clients fail (0.9431ms)\n' +
+  '✔ absent pool fails before quote (1.574ms)\n' +
+  '✔ unregistered pool and missing bytecode fail before pricing (5.7531ms)\n' +
+  '✔ wrong pair or stable flag: {"token0":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (5.6697ms)\n' +
+  '✔ wrong pair or stable flag: {"token1":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (8.5327ms)\n' +
+  '✔ wrong pair or stable flag: {"token0":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913","token1":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"} (6.8715ms)\n' +
+  '✔ wrong pair or stable flag: {"stable":true} (82.8257ms)\n' +
+  '✔ empty reserves and wrong decimals fail (17.0274ms)\n' +
+  '✔ zero or excessive output is rejected (27.763ms)\n' +
+  '✔ malformed ABI cannot produce a quote: getPool (2.4604ms)\n' +
+  '✔ malformed ABI cannot produce a quote: isPool (1.4371ms)\n' +
+  '✔ malformed ABI cannot produce a quote: token0 (4.5192ms)\n' +
+  '✔ malformed ABI cannot produce a quote: token1 (42.949ms)\n' +
+  '✔ malformed ABI cannot produce a quote: stable (16.3397ms)\n' +
+  '✔ malformed ABI cannot produce a quote: getReserves (4.9655ms)\n' +
+  '✔ malformed ABI cannot produce a quote: decimals (5.5824ms)\n' +
+  '✔ malformed ABI cannot produce a quote: getAmountOut (7.5741ms)\n' +
+  '✔ reorganized block cannot produce a successful quote (5.5388ms)\n' +
+  '✔ network switch cannot produce a successful quote (9.7614ms)\n' +
+  '✔ missing final header fails instead of returning output (21.8623ms)\n' +
+  '✔ failed hash selector never falls back: eth_getCode (1.7976ms)\n' +
+  '✔ failed hash selector never falls back: eth_call (0.6165ms)\n' +
+  '✔ Transfer: removed events fail the whole report (27.8915ms)\n' +
+  '✔ Transfer: pending or incomplete log identities fail closed (32.3132ms)\n' +
+  '✔ Transfer: rejects uint256 overflow in event amounts (0.9114ms)\n' +
+  '✔ Transfer: preserves zero and maximum uint256 event amounts exactly (3.1002ms)\n' +
+  '✔ Transfer: rejects oversized caller, tip and log heights (3.0927ms)\n' +
+  '✔ Transfer: accepts uint256 maximum height without rounding (1.0398ms)\n' +
+  '✔ Transfer: exact and differently cased duplicates are counted once (1.4148ms)\n' +
+  '✔ Transfer: duplicate identities cannot change block hash or transaction index (1.1495ms)\n' +
+  '✔ Transfer: different events at one height cannot claim different block hashes (0.9418ms)\n' +
+  '✔ Transfer: one block hash cannot claim two heights (1.7495ms)\n' +
+  '✔ Transfer: block-wide log and transaction positions cannot be reused (2.137ms)\n' +
+  '✔ Transfer: multiple logs in one transaction and multiple transactions remain valid (1.2018ms)\n' +
+  '✔ Transfer: each RPC response must match its requested direction (1.3745ms)\n' +
+  '✔ Approval: removed events fail the whole report (27.8005ms)\n' +
+  '✔ Approval: pending or incomplete log identities fail closed (25.8048ms)\n' +
+  '✔ Approval: rejects uint256 overflow in event amounts (0.386ms)\n' +
+  '✔ Approval: preserves zero and maximum uint256 event amounts exactly (0.9314ms)\n' +
+  '✔ Approval: rejects oversized caller, tip and log heights (0.7067ms)\n' +
+  '✔ Approval: accepts uint256 maximum height without rounding (0.3503ms)\n' +
+  '✔ Approval: exact and differently cased duplicates are counted once (0.4174ms)\n' +
+  '✔ Approval: duplicate identities cannot change block hash or transaction index (0.6374ms)\n' +
+  '✔ Approval: different events at one height cannot claim different block hashes (2.3601ms)\n' +
+  '✔ Approval: one block hash cannot claim two heights (0.4001ms)\n' +
+  '✔ Approval: block-wide log and transaction positions cannot be reused (0.7024ms)\n' +
+  '✔ Approval: multiple logs in one transaction and multiple transactions remain valid (0.5773ms)\n' +
+  '✔ Approval: rejects oversized sampled allowance (0.5015ms)\n' +
+  '✔ CLI preserves default, zero block and exact maximum uint256 inputs (8.7064ms)\n' +
+  '✔ invalid addresses and argument counts are rejected before parsing a range (1.6857ms)\n' +
+  '✔ decimal block input is bounded before BigInt conversion (1.3224ms)\n' +
+  '✔ known reversed or excessive ranges fail locally, including inclusive endpoints (0.5918ms)\n' +
+  '✔ RPC URLs accept HTTPS only and do not echo credentials on refusal (0.9135ms)\n' +
+  '✔ transfer CLI decodes a positive event through real viem HTTP, not a hard-coded empty result (9408.0199ms)\n' +
+  '✔ transfer CLI default window remains exactly 250 blocks and empty history is allowed (7186.4587ms)\n' +
+  '✔ transfer CLI rejects excessive ranges before any RPC (6545.9073ms)\n' +
+  '✔ transfer CLI rejects oversized block text before any RPC (5739.6619ms)\n' +
+  '✔ transfer CLI rejects invalid account and credential-bearing URL without network or echoed input (14347.4275ms)\n' +
+  '✔ transfer CLI fails on a changed canonical end block (6745.4474ms)\n' +
+  '✔ transfer CLI reports one failed provider request without retry or leaked details (6990.5683ms)\n' +
+  '✔ approval CLI decodes a positive event through real viem HTTP, not a hard-coded empty result (6946.9708ms)\n' +
+  '✔ approval CLI default window remains exactly 250 blocks and empty history is allowed (8325.0911ms)\n' +
+  '✔ approval CLI rejects excessive ranges before any RPC (7533.1213ms)\n' +
+  '✔ approval CLI rejects oversized block text before any RPC (3618.8883ms)\n' +
+  '✔ approval CLI rejects invalid account and credential-bearing URL without network or echoed input (6938.4617ms)\n' +
+  '✔ approval CLI fails on a changed canonical end block (3985.1708ms)\n' +
+  '✔ approval CLI reports one failed provider request without retry or leaked details (3686.7356ms)\n' +
+  '✔ Transfer snapshot: records the range-end hash and checks distinct event heights once (40.296ms)\n' +
+  '✔ Transfer snapshot: empty history still rechecks the sampled block (1.1014ms)\n' +
+  '✔ Transfer snapshot: empty history cannot hide an end-block replacement (2.6293ms)\n' +
+  '✔ Transfer snapshot: rejects a changed end block after successful log validation (19.3919ms)\n' +
+  '✔ Transfer snapshot: rejects a stale event even when removed is false (1.7066ms)\n' +
+  '✔ Transfer snapshot: events at the sampled end must match its captured hash (1.7855ms)\n' +
+  '✔ Transfer snapshot: invalid initial headers stop before querying logs or allowance (2.8287ms)\n' +
+  '✔ Transfer snapshot: unavailable initial, event or final blocks reject the report (2.2765ms)\n' +
+  '✔ Transfer snapshot: malformed event-block headers are rejected (20.5251ms)\n' +
+  '✔ Transfer snapshot: refuses a provider network change during reads (1.0395ms)\n' +
+  '✔ Transfer snapshot: captures header scalars rather than trusting a mutable object (0.7414ms)\n' +
+  '✔ Transfer snapshot: explicit historical end is checked rather than latest (0.9985ms)\n' +
+  '✔ Transfer snapshot: header errors propagate without retry or fallback (1.7058ms)\n' +
+  '✔ Transfer snapshot: a client without header support is rejected before RPC (0.7583ms)\n' +
+  '✔ Approval snapshot: records the range-end hash and checks distinct event heights once (2.5297ms)\n' +
+  '✔ Approval snapshot: empty history still rechecks the sampled block (0.5614ms)\n' +
+  '✔ Approval snapshot: empty history cannot hide an end-block replacement (1.0957ms)\n' +
+  '✔ Approval snapshot: rejects a changed end block after successful log validation (0.7554ms)\n' +
+  '✔ Approval snapshot: rejects a stale event even when removed is false (1.1087ms)\n' +
+  '✔ Approval snapshot: events at the sampled end must match its captured hash (0.6867ms)\n' +
+  '✔ Approval snapshot: invalid initial headers stop before querying logs or allowance (1.1417ms)\n' +
+  '✔ Approval snapshot: unavailable initial, event or final blocks reject the report (28.6429ms)\n' +
+  '✔ Approval snapshot: malformed event-block headers are rejected (0.4923ms)\n' +
+  '✔ Approval snapshot: refuses a provider network change during reads (18.446ms)\n' +
+  '✔ Approval snapshot: captures header scalars rather than trusting a mutable object (0.6205ms)\n' +
+  '✔ Approval snapshot: explicit historical end is checked rather than latest (0.8021ms)\n' +
+  '✔ Approval snapshot: header errors propagate without retry or fallback (0.4262ms)\n' +
+  '✔ Approval snapshot: a client without header support is rejected before RPC (0.3185ms)\n' +
+  '✔ Approval snapshot: unsupported hash selectors never fall back to number or latest (0.8248ms)\n' +
+  '✔ real viem HTTP transport preserves canonical block parameters and emits the observation (6542.6836ms)\n' +
+  '✔ unsupported hash parameter fails once without printing RPC credentials or response details (6533.0558ms)\n' +
+  '✔ reorganized final block cannot produce a successful CLI report (6685.3337ms)\n' +
+  '✔ published token specifi'... 6282 more characters
+
+    at check (file:///C:/Users/aseet/AppData/Local/Temp/threecore-runtime-three-token-check-20261102.mjs:35:9)
+    at async Promise.allSettled (index 0)
+    at async file:///C:/Users/aseet/AppData/Local/Temp/threecore-runtime-three-token-check-20261102.mjs:40:15 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '✔ Approval event is indexed and bounded to a short read-only window (5.5523ms)\n' +
+    '✔ returns event history and pinned current allowance as DIFFERENT facts (10.202ms)\n' +
+    '✔ an explicit historical block pins the allowance, not latest (1.0146ms)\n' +
+    '✔ different public spender is explicit and never labelled Classic Router (4.0899ms)\n' +
+    '✔ deduplicates repeated RPC logs and sorts by transaction position (1.7935ms)\n' +
+    '✔ different values for one log ID cause a conflict (1.9415ms)\n' +
+    '✔ refuses incorrect chain before requesting an allowance or history (1.902ms)\n' +
+    '✔ refuses invalid owner and spender addresses without any network requests (1.8601ms)\n' +
+    '✔ rejects malformed block values, reversed ranges and too many blocks (4.4132ms)\n' +
+    '✔ requires public read client with contract read and log support (4.3807ms)\n' +
+    '✔ rejects unrelated, malformed or out-of-range Approval logs (2.9863ms)\n' +
+    '✔ rejects unbounded Approval event sets or malformed allowances (2.0548ms)\n' +
+    '✔ RPC errors propagate and never cause transactions or approvals (0.938ms)\n' +
+    '✔ inspect-wallet-readiness.js real CLI/viem HTTP preserves every canonical parameter (6600.2218ms)\n' +
+    '✔ inspect-wallet-readiness.js reorganization exits unsuccessfully without output (7989.0515ms)\n' +
+    '✔ inspect-wallet-readiness.js unsupported hash cannot retry weaker reads or leak provider details (9158.4381ms)\n' +
+    '✔ quote-dex.js real CLI/viem HTTP preserves every canonical parameter (7001.4175ms)\n' +
+    '✔ quote-dex.js reorganization exits unsuccessfully without output (6399.896ms)\n' +
+    '✔ quote-dex.js unsupported hash cannot retry weaker reads or leak provider details (6893.5539ms)\n' +
+    '✔ quote CLI bounds integer text before conversion or network access (6059.7867ms)\n' +
+    '✔ state reader rejects a write ABI function before eth_call (3.0474ms)\n' +
+    '✔ buy quote uses the registered volatile pool and one canonical state (243.9842ms)\n' +
+    '✔ sell quote switches exact base units and reserve direction (9.6999ms)\n' +
+    '✔ reverse token ordering is handled without assuming pool order (16.5984ms)\n' +
+    '✔ invalid directions and amounts fail before RPC (12.0708ms)\n' +
+    '✔ wrong network fails before pool lookup (0.6899ms)\n' +
+    '✔ missing or transaction-only clients fail (0.9431ms)\n' +
+    '✔ absent pool fails before quote (1.574ms)\n' +
+    '✔ unregistered pool and missing bytecode fail before pricing (5.7531ms)\n' +
+    '✔ wrong pair or stable flag: {"token0":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (5.6697ms)\n' +
+    '✔ wrong pair or stable flag: {"token1":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (8.5327ms)\n' +
+    '✔ wrong pair or stable flag: {"token0":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913","token1":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"} (6.8715ms)\n' +
+    '✔ wrong pair or stable flag: {"stable":true} (82.8257ms)\n' +
+    '✔ empty reserves and wrong decimals fail (17.0274ms)\n' +
+    '✔ zero or excessive output is rejected (27.763ms)\n' +
+    '✔ malformed ABI cannot produce a quote: getPool (2.4604ms)\n' +
+    '✔ malformed ABI cannot produce a quote: isPool (1.4371ms)\n' +
+    '✔ malformed ABI cannot produce a quote: token0 (4.5192ms)\n' +
+    '✔ malformed ABI cannot produce a quote: token1 (42.949ms)\n' +
+    '✔ malformed ABI cannot produce a quote: stable (16.3397ms)\n' +
+    '✔ malformed ABI cannot produce a quote: getReserves (4.9655ms)\n' +
+    '✔ malformed ABI cannot produce a quote: decimals (5.5824ms)\n' +
+    '✔ malformed ABI cannot produce a quote: getAmountOut (7.5741ms)\n' +
+    '✔ reorganized block cannot produce a successful quote (5.5388ms)\n' +
+    '✔ network switch cannot produce a successful quote (9.7614ms)\n' +
+    '✔ missing final header fails instead of returning output (21.8623ms)\n' +
+    '✔ failed hash selector never falls back: eth_getCode (1.7976ms)\n' +
+    '✔ failed hash selector never falls back: eth_call (0.6165ms)\n' +
+    '✔ Transfer: removed events fail the whole report (27.8915ms)\n' +
+    '✔ Transfer: pending or incomplete log identities fail closed (32.3132ms)\n' +
+    '✔ Transfer: rejects uint256 overflow in event amounts (0.9114ms)\n' +
+    '✔ Transfer: preserves zero and maximum uint256 event amounts exactly (3.1002ms)\n' +
+    '✔ Transfer: rejects oversized caller, tip and log heights (3.0927ms)\n' +
+    '✔ Transfer: accepts uint256 maximum height without rounding (1.0398ms)\n' +
+    '✔ Transfer: exact and differently cased duplicates are counted once (1.4148ms)\n' +
+    '✔ Transfer: duplicate identities cannot change block hash or transaction index (1.1495ms)\n' +
+    '✔ Transfer: different events at one height cannot claim different block hashes (0.9418ms)\n' +
+    '✔ Transfer: one block hash cannot claim two heights (1.7495ms)\n' +
+    '✔ Transfer: block-wide log and transaction positions cannot be reused (2.137ms)\n' +
+    '✔ Transfer: multiple logs in one transaction and multiple transactions remain valid (1.2018ms)\n' +
+    '✔ Transfer: each RPC response must match its requested direction (1.3745ms)\n' +
+    '✔ Approval: removed events fail the whole report (27.8005ms)\n' +
+    '✔ Approval: pending or incomplete log identities fail closed (25.8048ms)\n' +
+    '✔ Approval: rejects uint256 overflow in event amounts (0.386ms)\n' +
+    '✔ Approval: preserves zero and maximum uint256 event amounts exactly (0.9314ms)\n' +
+    '✔ Approval: rejects oversized caller, tip and log heights (0.7067ms)\n' +
+    '✔ Approval: accepts uint256 maximum height without rounding (0.3503ms)\n' +
+    '✔ Approval: exact and differently cased duplicates are counted once (0.4174ms)\n' +
+    '✔ Approval: duplicate identities cannot change block hash or transaction index (0.6374ms)\n' +
+    '✔ Approval: different events at one height cannot claim different block hashes (2.3601ms)\n' +
+    '✔ Approval: one block hash cannot claim two heights (0.4001ms)\n' +
+    '✔ Approval: block-wide log and transaction positions cannot be reused (0.7024ms)\n' +
+    '✔ Approval: multiple logs in one transaction and multiple transactions remain valid (0.5773ms)\n' +
+    '✔ Approval: rejects oversized sampled allowance (0.5015ms)\n' +
+    '✔ CLI preserves default, zero block and exact maximum uint256 inputs (8.7064ms)\n' +
+    '✔ invalid addresses and argument counts are rejected before parsing a range (1.6857ms)\n' +
+    '✔ decimal block input is bounded before BigInt conversion (1.3224ms)\n' +
+    '✔ known reversed or excessive ranges fail locally, including inclusive endpoints (0.5918ms)\n' +
+    '✔ RPC URLs accept HTTPS only and do not echo credentials on refusal (0.9135ms)\n' +
+    '✔ transfer CLI decodes a positive event through real viem HTTP, not a hard-coded empty result (9408.0199ms)\n' +
+    '✔ transfer CLI default window remains exactly 250 blocks and empty history is allowed (7186.4587ms)\n' +
+    '✔ transfer CLI rejects excessive ranges before any RPC (6545.9073ms)\n' +
+    '✔ transfer CLI rejects oversized block text before any RPC (5739.6619ms)\n' +
+    '✔ transfer CLI rejects invalid account and credential-bearing URL without network or echoed input (14347.4275ms)\n' +
+    '✔ transfer CLI fails on a changed canonical end block (6745.4474ms)\n' +
+    '✔ transfer CLI reports one failed provider request without retry or leaked details (6990.5683ms)\n' +
+    '✔ approval CLI decodes a positive event through real viem HTTP, not a hard-coded empty result (6946.9708ms)\n' +
+    '✔ approval CLI default window remains exactly 250 blocks and empty history is allowed (8325.0911ms)\n' +
+    '✔ approval CLI rejects excessive ranges before any RPC (7533.1213ms)\n' +
+    '✔ approval CLI rejects oversized block text before any RPC (3618.8883ms)\n' +
+    '✔ approval CLI rejects invalid account and credential-bearing URL without network or echoed input (6938.4617ms)\n' +
+    '✔ approval CLI fails on a changed canonical end block (3985.1708ms)\n' +
+    '✔ approval CLI reports one failed provider request without retry or leaked details (3686.7356ms)\n' +
+    '✔ Transfer snapshot: records the range-end hash and checks distinct event heights once (40.296ms)\n' +
+    '✔ Transfer snapshot: empty history still rechecks the sampled block (1.1014ms)\n' +
+    '✔ Transfer snapshot: empty history cannot hide an end-block replacement (2.6293ms)\n' +
+    '✔ Transfer snapshot: rejects a changed end block after successful log validation (19.3919ms)\n' +
+    '✔ Transfer snapshot: rejects a stale event even when removed is false (1.7066ms)\n' +
+    '✔ Transfer snapshot: events at the sampled end must match its captured hash (1.7855ms)\n' +
+    '✔ Transfer snapshot: invalid initial headers stop before querying logs or allowance (2.8287ms)\n' +
+    '✔ Transfer snapshot: unavailable initial, event or final blocks reject the report (2.2765ms)\n' +
+    '✔ Transfer snapshot: malformed event-block headers are rejected (20.5251ms)\n' +
+    '✔ Transfer snapshot: refuses a provider network change during reads (1.0395ms)\n' +
+    '✔ Transfer snapshot: captures header scalars rather than trusting a mutable object (0.7414ms)\n' +
+    '✔ Transfer snapshot: explicit historical end is checked rather than latest (0.9985ms)\n' +
+    '✔ Transfer snapshot: header errors propagate without retry or fallback (1.7058ms)\n' +
+    '✔ Transfer snapshot: a client without header support is rejected before RPC (0.7583ms)\n' +
+    '✔ Approval snapshot: records the range-end hash and checks distinct event heights once (2.5297ms)\n' +
+    '✔ Approval snapshot: empty history still rechecks the sampled block (0.5614ms)\n' +
+    '✔ Approval snapshot: empty history cannot hide an end-block replacement (1.0957ms)\n' +
+    '✔ Approval snapshot: rejects a changed end block after successful log validation (0.7554ms)\n' +
+    '✔ Approval snapshot: rejects a stale event even when removed is false (1.1087ms)\n' +
+    '✔ Approval snapshot: events at the sampled end must match its captured hash (0.6867ms)\n' +
+    '✔ Approval snapshot: invalid initial headers stop before querying logs or allowance (1.1417ms)\n' +
+    '✔ Approval snapshot: unavailable initial, event or final blocks reject the report (28.6429ms)\n' +
+    '✔ Approval snapshot: malformed event-block headers are rejected (0.4923ms)\n' +
+    '✔ Approval snapshot: refuses a provider network change during reads (18.446ms)\n' +
+    '✔ Approval snapshot: captures header scalars rather than trusting a mutable object (0.6205ms)\n' +
+    '✔ Approval snapshot: explicit historical end is checked rather than latest (0.8021ms)\n' +
+    '✔ Approval snapshot: header errors propagate without retry or fallback (0.4262ms)\n' +
+    '✔ Approval snapshot: a client without header support is rejected before RPC (0.3185ms)\n' +
+    '✔ Approval snapshot: unsupported hash selectors never fall back to number or latest (0.8248ms)\n' +
+    '✔ real viem HTTP transport preserves canonical block parameters and emits the observation (6542.6836ms)\n' +
+    '✔ unsupported hash parameter fails once without printing RPC credentials or response details (6533.0558ms)\n' +
+    '✔ reorganized final block cannot produce a successful CLI report (6685.3337ms)\n' +
+    '✔ published token specifi'... 6282 more characters,
+  expected: /# tests 213\b/,
+  operator: 'match',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

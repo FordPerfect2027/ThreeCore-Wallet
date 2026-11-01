@@ -46,8 +46,8 @@ Subsequent [token dependency review and repair](TOKEN_DEPENDENCY_REVIEW_2026-11-
 patched two development dependencies and verified all three tokens again against
 the fixed Wallet source. Six audit package entries remain from one Zod root
 advisory and require compatible remediation/exposure review. This unresolved
-finding must accompany the candidate; it is not cleared by the narrower clean
-production-only audit. The prepared new CI pins are local only and require the
+finding must accompany the candidate; it is not cleared by the earlier clean
+production-only audit, which predates the runtime dependency reclassification. The prepared new CI pins are local only and require the
 documented token-before-Wallet publication order. The `7d58d08` delivery includes the dependency and canonical-read corrections.
 Subsequent history CLI changes are tracked separately below.
 
@@ -232,3 +232,13 @@ invalid input before RPC and redacts provider error details. Each token passes
 213 read-only cases; 19 history CLI/input cases are included. Before/after
 evidence reproduces unnecessary requests in the original commands. This does
 not close the remaining real-wallet, independent review or Zod gates.
+
+## Read-only runtime installation follow-up
+
+The [runtime installation correction](READ_ONLY_RUNTIME_2026-11-02.md) fixes a
+reproduced missing-viem startup failure after production-only installation.
+Each token passed the existing 213 read-only cases in its own fresh 19-package
+installation with development and optional dependencies omitted. Package versions,
+contracts and readers are unchanged. Full development Zod remediation, real-wallet
+UI acceptance and independent review remain open. The 7d58d08 combined delivery
+predates this follow-up; new CI jobs are prepared locally without a remote result.

@@ -188,3 +188,13 @@ token pins, 213 passing read-only cases per token, positive-event command
 transport checks and before/after proof. Input errors cause no RPC, provider
 details are redacted and automatic retries are disabled. Earlier test totals
 overlap. The 7d58d08 combined delivery predates this follow-up.
+
+## Read-only runtime installation follow-up
+
+The [runtime installation correction](READ_ONLY_RUNTIME_2026-11-02.md) fixes a
+reproduced missing-viem startup failure after production-only installation.
+Each token passed the existing 213 read-only cases in its own fresh 19-package
+installation with development and optional dependencies omitted. Package versions,
+contracts and readers are unchanged. Full development Zod remediation, real-wallet
+UI acceptance and independent review remain open. The 7d58d08 combined delivery
+predates this follow-up; new CI jobs are prepared locally without a remote result.

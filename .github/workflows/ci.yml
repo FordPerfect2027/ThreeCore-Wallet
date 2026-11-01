@@ -59,11 +59,11 @@ jobs:
       matrix:
         include:
           - repository: DAT
-            ref: 45f0aa3f897538f1dfccfe3299dcec793156bd8e
+            ref: 6c455914df26d52de75bd2c6d3ae0aefb1215d29
           - repository: EMA-Draft
-            ref: a292d6b81d1f1e754fcdb1d76af2e61e182375f6
+            ref: c027e68cd1974dc31f2619d04b4fb9059843424f
           - repository: CAWELON-Draft
-            ref: 1eee51c89ea9d6507b68ee017781125b321b7f2b
+            ref: b77a6b31af135c0461dd66d95bc837c8e7d9e88f
     steps:
       - uses: actions/checkout@v4
         with:

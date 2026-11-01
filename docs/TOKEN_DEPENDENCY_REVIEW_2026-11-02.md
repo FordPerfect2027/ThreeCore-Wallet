@@ -52,7 +52,9 @@ showed latest Hardhat 3.21.2 still depending on `zod: ^3.23.8`.
 No forced major-version override, toolchain downgrade or automatic audit fix
 was applied. Compatible remediation and source-level exposure review remain
 open; do not describe the development-dependency audit as clean. An additional
-production-only audit reports zero known findings. That narrower result does
+production-only audit reports zero known findings for the earlier classification.
+That result predates the [runtime installation correction](READ_ONLY_RUNTIME_2026-11-02.md);
+it is not an audit of the revised graph. That narrower historical result does
 not clear the development finding, certify contract safety, or replace an
 independent review.
 

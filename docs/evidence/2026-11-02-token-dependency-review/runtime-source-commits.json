@@ -1,0 +1,65 @@
+[
+  {
+    "token": "DAT",
+    "baseCommit": "45f0aa3f897538f1dfccfe3299dcec793156bd8e",
+    "commit": "6c455914df26d52de75bd2c6d3ae0aefb1215d29",
+    "changedFiles": [
+      ".github/workflows/ci.yml",
+      "README.md",
+      "docs/READ_ONLY_RUNTIME_2026-11-02.md",
+      "package-lock.json",
+      "package.json"
+    ],
+    "sourceSha256": {
+      ".github/workflows/ci.yml": "befc517bd49aa5d5a5c0a3dfe3bd037d095c60de0aa865de303df66306939e42",
+      "README.md": "1ef141f305214e81711df24cc9d48531b488b032268fe5c1c961455bb460f775",
+      "docs/READ_ONLY_RUNTIME_2026-11-02.md": "6838425155336e7bc076afee6147489804172ba23e260402738f0a45d7b833da",
+      "package-lock.json": "344fe0b079ba0468afbce767e037c887b5d26b58bd70837ffb021f627b653578",
+      "package.json": "a7a60e976b940271dcfd81cf28e2d4ee6a7b4b61cde32cfa1d23711c3d87d2c9"
+    },
+    "readOnlyPassed": 213,
+    "readOnlyFailed": 0
+  },
+  {
+    "token": "EMA",
+    "baseCommit": "a292d6b81d1f1e754fcdb1d76af2e61e182375f6",
+    "commit": "c027e68cd1974dc31f2619d04b4fb9059843424f",
+    "changedFiles": [
+      ".github/workflows/ci.yml",
+      "README.md",
+      "docs/READ_ONLY_RUNTIME_2026-11-02.md",
+      "package-lock.json",
+      "package.json"
+    ],
+    "sourceSha256": {
+      ".github/workflows/ci.yml": "1bbe1df0cc1cb6e146998f41ed8452c189bed78042edeb6ca08bba9997dd0270",
+      "README.md": "9de3718a8b13ef327a02112b7978085fa3548cef06780bb56601f3063d7cfdb6",
+      "docs/READ_ONLY_RUNTIME_2026-11-02.md": "6838425155336e7bc076afee6147489804172ba23e260402738f0a45d7b833da",
+      "package-lock.json": "36af1a11e4f940c4fb4655c8302d16adeb154421478cb0218fb89da4392887f7",
+      "package.json": "3870debe6f0d2eb0233477e6d27732db8f313ebdb4532afb878c1a31385ef175"
+    },
+    "readOnlyPassed": 213,
+    "readOnlyFailed": 0
+  },
+  {
+    "token": "CAWELON",
+    "baseCommit": "1eee51c89ea9d6507b68ee017781125b321b7f2b",
+    "commit": "b77a6b31af135c0461dd66d95bc837c8e7d9e88f",
+    "changedFiles": [
+      ".github/workflows/ci.yml",
+      "README.md",
+      "docs/READ_ONLY_RUNTIME_2026-11-02.md",
+      "package-lock.json",
+      "package.json"
+    ],
+    "sourceSha256": {
+      ".github/workflows/ci.yml": "1bbe1df0cc1cb6e146998f41ed8452c189bed78042edeb6ca08bba9997dd0270",
+      "README.md": "4adf72ab474e057bfaee521b784554a140e7ac6bb43cc3d2e70cbce6e975160b",
+      "docs/READ_ONLY_RUNTIME_2026-11-02.md": "6838425155336e7bc076afee6147489804172ba23e260402738f0a45d7b833da",
+      "package-lock.json": "e7e4e814cab7a8fe1c619f58714aa8c58df4e7cf6969ad66e90309089b0520ea",
+      "package.json": "e55b2f727bd9393b92373a440e31ce7e6628fb23dbfe85e5d4270d323497c0f0"
+    },
+    "readOnlyPassed": 213,
+    "readOnlyFailed": 0
+  }
+]
