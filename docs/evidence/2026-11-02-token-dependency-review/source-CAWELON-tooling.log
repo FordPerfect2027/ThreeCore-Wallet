@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: contract source checker accepts every actual UTF-8 LF contract
+ok 1 - contract source checker accepts every actual UTF-8 LF contract
+  ---
+  duration_ms: 2.3095
+  type: 'test'
+  ...
+# Subtest: actual source bytes survive Git checkouts with both autocrlf settings
+ok 2 - actual source bytes survive Git checkouts with both autocrlf settings
+  ---
+  duration_ms: 2499.2656
+  type: 'test'
+  ...
+# Subtest: the CLI rejects CRLF before compilation without rewriting the source
+ok 3 - the CLI rejects CRLF before compilation without rewriting the source
+  ---
+  duration_ms: 226.5068
+  type: 'test'
+  ...
+# Subtest: source checker refuses missing sources, BOM, lone CR and invalid UTF-8
+ok 4 - source checker refuses missing sources, BOM, lone CR and invalid UTF-8
+  ---
+  duration_ms: 11.9917
+  type: 'test'
+  ...
+# Subtest: actual runner includes TypeScript specs and excludes operational/support files
+ok 5 - actual runner includes TypeScript specs and excludes operational/support files
+  ---
+  duration_ms: 702.293
+  type: 'test'
+  ...
+# Subtest: actual runner propagates a failing Hardhat result
+ok 6 - actual runner propagates a failing Hardhat result
+  ---
+  duration_ms: 560.8607
+  type: 'test'
+  ...
+# Subtest: actual runner rejects an empty TypeScript suite before starting Hardhat
+ok 7 - actual runner rejects an empty TypeScript suite before starting Hardhat
+  ---
+  duration_ms: 361.9781
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3018.4731

@@ -1,5 +1,8 @@
 # DAT historical verifier correction — November 2, 2026
 
+Subsequent [source portability work](SOURCE_PORTABILITY_2026-11-02.md) closes
+the ordinary-build newline mismatch described at this earlier checkpoint.
+
 The former negative simulations treated any exception as an expected rejection.
 A real command with a fictional loopback provider printed PASS even when both
 probes received transport/rate-limit errors. The corrected command fails that

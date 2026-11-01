@@ -1,0 +1,77 @@
+TAP version 13
+# Subtest: EMACore: event history against the local EVM
+    # Subtest: reads actual mint, transfer, self-transfer and burn logs with mined identities
+    ok 1 - reads actual mint, transfer, self-transfer and burn logs with mined identities
+      ---
+      duration_ms: 68.8556
+      type: 'test'
+      ...
+    # Subtest: keeps Approval event amounts distinct from allowance consumed by transferFrom
+    ok 2 - keeps Approval event amounts distinct from allowance consumed by transferFrom
+      ---
+      duration_ms: 49.7222
+      type: 'test'
+      ...
+    # Subtest: preserves maximum approval and a later zero-amount revocation exactly
+    ok 3 - preserves maximum approval and a later zero-amount revocation exactly
+      ---
+      duration_ms: 49.1158
+      type: 'test'
+      ...
+    # Subtest: keeps the sampled allowance when the local chain advances during history reads
+    ok 4 - keeps the sampled allowance when the local chain advances during history reads
+      ---
+      duration_ms: 20.4585
+      type: 'test'
+      ...
+    # Subtest: Transfer: refuses removed flags injected into otherwise real local logs
+    ok 5 - Transfer: refuses removed flags injected into otherwise real local logs
+      ---
+      duration_ms: 23.3568
+      type: 'test'
+      ...
+    # Subtest: Transfer: refuses a conflicting duplicate of an actual local event
+    ok 6 - Transfer: refuses a conflicting duplicate of an actual local event
+      ---
+      duration_ms: 26.6
+      type: 'test'
+      ...
+    # Subtest: Transfer: rejects a local chain replacement and succeeds on a fresh snapshot
+    ok 7 - Transfer: rejects a local chain replacement and succeeds on a fresh snapshot
+      ---
+      duration_ms: 36.0883
+      type: 'test'
+      ...
+    # Subtest: Approval: refuses removed flags injected into otherwise real local logs
+    ok 8 - Approval: refuses removed flags injected into otherwise real local logs
+      ---
+      duration_ms: 27.0947
+      type: 'test'
+      ...
+    # Subtest: Approval: refuses a conflicting duplicate of an actual local event
+    ok 9 - Approval: refuses a conflicting duplicate of an actual local event
+      ---
+      duration_ms: 41.2042
+      type: 'test'
+      ...
+    # Subtest: Approval: rejects a local chain replacement and succeeds on a fresh snapshot
+    ok 10 - Approval: rejects a local chain replacement and succeeds on a fresh snapshot
+      ---
+      duration_ms: 31.8369
+      type: 'test'
+      ...
+    1..10
+ok 1 - EMACore: event history against the local EVM
+  ---
+  duration_ms: 379.9055
+  type: 'suite'
+  ...
+1..1
+# tests 10
+# suites 1
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4379.5788

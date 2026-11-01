@@ -1,0 +1,94 @@
+{
+  "recordedAt": "2026-11-01T23:46:56.440Z",
+  "node": "v24.19.0",
+  "tokens": [
+    {
+      "token": "DAT",
+      "parent": "ebaa8d923a5b88ab61e7c1626aca372c841f569a",
+      "commit": "502944c94ffed408356b487abc9a710807697ee2",
+      "sourceSha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6",
+      "sourceOnlyCrLfChanged": true,
+      "tooling": 7,
+      "contractTests": 37,
+      "localHistoryTests": 10,
+      "walletCompatibilityTests": 50,
+      "readOnlyRegression": {
+        "tests": 251,
+        "scope": "Complete npm run check after final script wiring"
+      },
+      "sourceHashes": {
+        ".gitattributes": "040370e6606c6059eeb3f3b28033df844f50c43788d035910a6049a035dba29c",
+        "README.md": "c2816a5b02f7d27ef67203efb7a45050e8a5f0f3a8b0934468b765532193e2fe",
+        "package.json": "fcb77167dccdf147738f662666f1982acfc84291c18304367d5bccb980cabdad",
+        "contracts/DATCore.sol": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6",
+        "docs/SOURCE_PORTABILITY_2026-11-02.md": "77a75585ac356c724a2a803481fd2aebe1c323099df6247f053b888a686a592a",
+        "scripts/check-contract-source.js": "58a75b9f7f743f9d556f6196469b940dbd5a638a4d7a3eebaed41b7837c029f3",
+        "scripts/test-contracts.js": "457ac897664b733e2b2373e132ac98742345ca6df643c8a02f7ad156f7aeb95c",
+        "integration/source-portability.test.mjs": "919b7c4b7408c9488a514c6fb36d5c12aac223f0f5d3b94ceeaa0a95c669e7d3",
+        "integration/test-routing.test.mjs": "cf316f22806d64352d4735597ca1f0db676be6dbecc89d736eb00639178e099b",
+        "BASE_SEPOLIA_VALIDATION.md": "bd8027dc38c0d731a0d64cd93c789e0d4e52d8ade1d71fa26095b272007b3847",
+        "docs/SEPOLIA_VERIFIER_2026-11-02.md": "c3f58087d98e486d06c0a9ccf3fae5baaf65c8221c2716258a80623e933ddf75",
+        "deployments/reference/README.md": "746e724748fdec3c2c63332858fa4c48526464e0694b6825e75e1577494eac9f"
+      }
+    },
+    {
+      "token": "EMA",
+      "parent": "b4f765338f77332eb11a0f0de5130cf5646a012e",
+      "commit": "9cad39a196e8afc37abb5b99c260e00327c55d1c",
+      "sourceSha256": "8234f4b8a94d9a2d25cde34bc2900ae080223e698633420cad7ad533390d7444",
+      "sourceOnlyCrLfChanged": true,
+      "tooling": 7,
+      "contractTests": 39,
+      "localHistoryTests": 10,
+      "walletCompatibilityTests": 50,
+      "readOnlyRegression": {
+        "tests": 227,
+        "scope": "Previous complete run; read-only implementation unchanged; not rerun for metadata-only contract normalization"
+      },
+      "sourceHashes": {
+        ".gitattributes": "5b1231f981a4517f207e9b00b2833505c0a5a7884755571d3584d1d8345cf690",
+        "README.md": "ff4ab46292b41f38a80ccdc4867d36eb5a2ac10304d2889059dfe9bb61bbb42b",
+        "package.json": "5ed1e97486ad842e4afb5d45806915712dc0a8f056bca3e02316ed933a8ecd6d",
+        "contracts/EMACore.sol": "8234f4b8a94d9a2d25cde34bc2900ae080223e698633420cad7ad533390d7444",
+        "docs/SOURCE_PORTABILITY_2026-11-02.md": "a5859ace9781c28a41da691c47bb63122f9724716126659abe629063bae88b6c",
+        "scripts/check-contract-source.js": "58a75b9f7f743f9d556f6196469b940dbd5a638a4d7a3eebaed41b7837c029f3",
+        "scripts/test-contracts.js": "457ac897664b733e2b2373e132ac98742345ca6df643c8a02f7ad156f7aeb95c",
+        "integration/source-portability.test.mjs": "919b7c4b7408c9488a514c6fb36d5c12aac223f0f5d3b94ceeaa0a95c669e7d3",
+        "integration/test-routing.test.mjs": "cf316f22806d64352d4735597ca1f0db676be6dbecc89d736eb00639178e099b"
+      }
+    },
+    {
+      "token": "CAWELON",
+      "parent": "f4ba321f7fe7f2eed548fa9545198b0eb0116370",
+      "commit": "e3a5fbb966008319b7b7204ddbfb705a3e9ab12c",
+      "sourceSha256": "51adf4a8edecc3d9e0fb79d359d57129085487661171c9174d77ad5c3497a2b5",
+      "sourceOnlyCrLfChanged": true,
+      "tooling": 7,
+      "contractTests": 39,
+      "localHistoryTests": 10,
+      "walletCompatibilityTests": 50,
+      "readOnlyRegression": {
+        "tests": 227,
+        "scope": "Previous complete run; read-only implementation unchanged; not rerun for metadata-only contract normalization"
+      },
+      "sourceHashes": {
+        ".gitattributes": "5b1231f981a4517f207e9b00b2833505c0a5a7884755571d3584d1d8345cf690",
+        "README.md": "cdc190476dbcadf0a6d3bcbf123f368354020721b1c5260c7015c4673a37eba4",
+        "package.json": "e7e29a42b716d58b8acc746e1bb350663a95600ae58521069a43c2a05bd85a9a",
+        "contracts/CAWELONCore.sol": "51adf4a8edecc3d9e0fb79d359d57129085487661171c9174d77ad5c3497a2b5",
+        "docs/SOURCE_PORTABILITY_2026-11-02.md": "5b06047ab5af3db60aad8edc4c0280606e3423842ce5b36acc6df38df5d73b2e",
+        "scripts/check-contract-source.js": "58a75b9f7f743f9d556f6196469b940dbd5a638a4d7a3eebaed41b7837c029f3",
+        "scripts/test-contracts.js": "457ac897664b733e2b2373e132ac98742345ca6df643c8a02f7ad156f7aeb95c",
+        "integration/source-portability.test.mjs": "919b7c4b7408c9488a514c6fb36d5c12aac223f0f5d3b94ceeaa0a95c669e7d3",
+        "integration/test-routing.test.mjs": "cf316f22806d64352d4735597ca1f0db676be6dbecc89d736eb00639178e099b"
+      }
+    }
+  ],
+  "scope": "LF-only Solidity normalization, local source guard and test routing; no dependency/compiler or deployment-record changes. Synthetic local EVM fixture accounts only; no real user-wallet actions or public-chain transaction.",
+  "limitations": [
+    "Both Git checkout modes were exercised on Windows, not separate operating systems.",
+    "ABI and executable bytecode are unchanged; metadata, source and full artifact hashes change.",
+    "The DAT historical reference itself is unchanged and matches the new ordinary build.",
+    "No remote CI, independent review or release approval is claimed."
+  ]
+}

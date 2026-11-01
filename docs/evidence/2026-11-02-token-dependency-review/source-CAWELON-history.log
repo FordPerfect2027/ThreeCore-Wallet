@@ -1,0 +1,77 @@
+TAP version 13
+# Subtest: CAWELONCore: event history against the local EVM
+    # Subtest: reads actual mint, transfer, self-transfer and burn logs with mined identities
+    ok 1 - reads actual mint, transfer, self-transfer and burn logs with mined identities
+      ---
+      duration_ms: 82.1355
+      type: 'test'
+      ...
+    # Subtest: keeps Approval event amounts distinct from allowance consumed by transferFrom
+    ok 2 - keeps Approval event amounts distinct from allowance consumed by transferFrom
+      ---
+      duration_ms: 39.5892
+      type: 'test'
+      ...
+    # Subtest: preserves maximum approval and a later zero-amount revocation exactly
+    ok 3 - preserves maximum approval and a later zero-amount revocation exactly
+      ---
+      duration_ms: 71.7507
+      type: 'test'
+      ...
+    # Subtest: keeps the sampled allowance when the local chain advances during history reads
+    ok 4 - keeps the sampled allowance when the local chain advances during history reads
+      ---
+      duration_ms: 32.0197
+      type: 'test'
+      ...
+    # Subtest: Transfer: refuses removed flags injected into otherwise real local logs
+    ok 5 - Transfer: refuses removed flags injected into otherwise real local logs
+      ---
+      duration_ms: 34.419
+      type: 'test'
+      ...
+    # Subtest: Transfer: refuses a conflicting duplicate of an actual local event
+    ok 6 - Transfer: refuses a conflicting duplicate of an actual local event
+      ---
+      duration_ms: 32.8062
+      type: 'test'
+      ...
+    # Subtest: Transfer: rejects a local chain replacement and succeeds on a fresh snapshot
+    ok 7 - Transfer: rejects a local chain replacement and succeeds on a fresh snapshot
+      ---
+      duration_ms: 52.5058
+      type: 'test'
+      ...
+    # Subtest: Approval: refuses removed flags injected into otherwise real local logs
+    ok 8 - Approval: refuses removed flags injected into otherwise real local logs
+      ---
+      duration_ms: 36.2828
+      type: 'test'
+      ...
+    # Subtest: Approval: refuses a conflicting duplicate of an actual local event
+    ok 9 - Approval: refuses a conflicting duplicate of an actual local event
+      ---
+      duration_ms: 49.4212
+      type: 'test'
+      ...
+    # Subtest: Approval: rejects a local chain replacement and succeeds on a fresh snapshot
+    ok 10 - Approval: rejects a local chain replacement and succeeds on a fresh snapshot
+      ---
+      duration_ms: 28.6272
+      type: 'test'
+      ...
+    1..10
+ok 1 - CAWELONCore: event history against the local EVM
+  ---
+  duration_ms: 482.9413
+  type: 'suite'
+  ...
+1..1
+# tests 10
+# suites 1
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4876.9456

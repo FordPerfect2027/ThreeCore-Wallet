@@ -1,0 +1,420 @@
+diff --git a/.gitattributes b/.gitattributes
+index 447f875..51067d4 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -1,2 +1,5 @@
+ # Keep the recorded reference artifact byte-identical on Windows and Unix.
+ /deployments/reference/*.json -text
++
++# Solidity metadata hashes source bytes; use LF on every platform.
++/contracts/** text eol=lf
+diff --git a/BASE_SEPOLIA_VALIDATION.md b/BASE_SEPOLIA_VALIDATION.md
+index 2f9dd66..1dc4e3c 100644
+--- a/BASE_SEPOLIA_VALIDATION.md
++++ b/BASE_SEPOLIA_VALIDATION.md
+@@ -5,10 +5,12 @@ exception as a successful rejection, including RPC failures. This was reproduced
+ with fictional HTTP fixtures and fixed. It does not establish what occurred in
+ the original September probes; an old rerun's PASS alone is insufficient evidence.
+ The updated verifier checks the recorded historical checkpoint and exact ABI
+-revert reasons. The current local build differs from the recorded artifact hashes
+-and is refused if selected. A separate LF-only reproduction now matches both
++revert reasons. The earlier CRLF local build differed from the recorded artifact
++hashes and was refused. A separate LF-only reproduction matches both
+ recorded hashes and passed public revalidation at block 46,922,886. It is included
+-as the verifier's reference. See [the correction and output changes](docs/SEPOLIA_VERIFIER_2026-11-02.md).
++as the verifier's reference. The subsequent source LF policy makes the ordinary
++build match too. See [the correction and output changes](docs/SEPOLIA_VERIFIER_2026-11-02.md)
++and [source portability](docs/SOURCE_PORTABILITY_2026-11-02.md).
+ 
+ This packet records the DATCORE public testnet deployment and gives an
+ independent reviewer enough information to reproduce the read-only checks
+diff --git a/README.md b/README.md
+index 86d80e3..4467456 100644
+--- a/README.md
++++ b/README.md
+@@ -409,8 +409,9 @@ BASE_SEPOLIA_RPC_URL=https://sepolia.base.org npm run verify:base-sepolia
+ ```
+ 
+ The command no longer recompiles implicitly. It uses the included, reproduced
+-historical reference artifact. The current CRLF developer build differs from that
+-record and is refused if selected with `--artifact`. The reproduced reference
++historical reference artifact. A differing developer build is refused if selected
++with `--artifact`. The subsequent source LF policy also makes the ordinary DAT
++build reproduce that reference. The reproduced reference
+ matches the unchanged recorded hashes and passed a public historical recheck.
+ [The November 2 verifier correction](docs/SEPOLIA_VERIFIER_2026-11-02.md) explains
+ the false-PASS fix, exact rejection evidence, checkpoint output and the source
+@@ -629,3 +630,5 @@ The [history CLI correction](docs/HISTORY_CLI_2026-11-02.md) rejects invalid add
+ The [runtime installation correction](docs/READ_ONLY_RUNTIME_2026-11-02.md) makes viem an explicit runtime dependency. A fresh installation with development and optional dependencies omitted passes all 213 read-only cases for this token. This smaller profile does not include contract compilation tools; the full development Zod finding remains open.
+ 
+ The five operational read-only commands now keep their 12-second request deadline through response-body consumption. See [the correction and reproducible checks](docs/RPC_BODY_DEADLINE_2026-11-02.md).
++
++[Contract source portability](docs/SOURCE_PORTABILITY_2026-11-02.md): compilation requires UTF-8/LF source bytes so platform line-ending conversion cannot silently change the candidate artifact.
+diff --git a/contracts/DATCore.sol b/contracts/DATCore.sol
+index b7d0c13..f9c2a38 100644
+--- a/contracts/DATCore.sol
++++ b/contracts/DATCore.sol
+@@ -1,29 +1,29 @@
+-// SPDX-License-Identifier: MIT
+-pragma solidity ^0.8.24;
+-
+-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+-import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+-import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+-
+-/// @title DATCORE
+-/// @notice Fixed-supply DAT token. There is no administrator mint function,
+-///         transfer tax, external-token dependency, blacklist, pause, or upgrade hook.
+-/// @dev A buyback executor can acquire DAT, hold it, and call burn() to reduce
+-///      totalSupply. No account can burn tokens belonging to another account
+-///      unless the holder has explicitly granted an ERC-20 allowance.
+-contract DATCore is ERC20, ERC20Burnable, ERC20Permit {
+-    error DATCoreZeroAddress();
+-
+-    uint256 public constant INITIAL_SUPPLY_UNITS = 1_000_000_000;
+-    uint256 public constant INITIAL_SUPPLY = INITIAL_SUPPLY_UNITS * 10 ** 18;
+-
+-    /// @param initialHolder Address receiving the complete initial supply.
+-    constructor(address initialHolder)
+-        ERC20("DATCORE", "DAT")
+-        ERC20Permit("DATCORE")
+-    {
+-        if (initialHolder == address(0)) revert DATCoreZeroAddress();
+-        _mint(initialHolder, INITIAL_SUPPLY);
+-    }
+-}
+-
++// SPDX-License-Identifier: MIT
++pragma solidity ^0.8.24;
++
++import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
++import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
++import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
++
++/// @title DATCORE
++/// @notice Fixed-supply DAT token. There is no administrator mint function,
++///         transfer tax, external-token dependency, blacklist, pause, or upgrade hook.
++/// @dev A buyback executor can acquire DAT, hold it, and call burn() to reduce
++///      totalSupply. No account can burn tokens belonging to another account
++///      unless the holder has explicitly granted an ERC-20 allowance.
++contract DATCore is ERC20, ERC20Burnable, ERC20Permit {
++    error DATCoreZeroAddress();
++
++    uint256 public constant INITIAL_SUPPLY_UNITS = 1_000_000_000;
++    uint256 public constant INITIAL_SUPPLY = INITIAL_SUPPLY_UNITS * 10 ** 18;
++
++    /// @param initialHolder Address receiving the complete initial supply.
++    constructor(address initialHolder)
++        ERC20("DATCORE", "DAT")
++        ERC20Permit("DATCORE")
++    {
++        if (initialHolder == address(0)) revert DATCoreZeroAddress();
++        _mint(initialHolder, INITIAL_SUPPLY);
++    }
++}
++
+diff --git a/deployments/reference/README.md b/deployments/reference/README.md
+index 2624ed9..74cb42e 100644
+--- a/deployments/reference/README.md
++++ b/deployments/reference/README.md
+@@ -24,6 +24,7 @@ the read-only check independent of a fresh contract compilation and does not
+ turn it into a security audit or proof of current balances.
+ 
+ [The verifier correction and public recheck](../../docs/SEPOLIA_VERIFIER_2026-11-02.md)
+-describe the evidence and remaining build-newline portability work. The combined
++describe the evidence. The later [source portability correction](../../docs/SOURCE_PORTABILITY_2026-11-02.md)
++also reproduces this reference through the ordinary build. The combined
+ Wallet evidence collection retains the exact compiler-input hash, reconstruction
+ method, diagnostics, failed baseline, passing regressions and public RPC receipt.
+diff --git a/docs/SEPOLIA_VERIFIER_2026-11-02.md b/docs/SEPOLIA_VERIFIER_2026-11-02.md
+index 91355e4..82c8564 100644
+--- a/docs/SEPOLIA_VERIFIER_2026-11-02.md
++++ b/docs/SEPOLIA_VERIFIER_2026-11-02.md
+@@ -1,5 +1,10 @@
+ # Recorded Sepolia checkpoint verification — November 2, 2026
+ 
++Subsequent [source portability work](SOURCE_PORTABILITY_2026-11-02.md) fixes the
++ordinary developer build's newline mismatch described below. This page retains
++the sequence and evidence of the verifier correction; it is not a claim that
++the later normalized source still builds the earlier CRLF metadata.
++
+ The old verifier counted every exception from each negative simulation as a
+ successful rejection. A loopback fixture reproduced a real command printing
+ `PASS` with both negative-path booleans true while the provider returned only
+@@ -37,7 +42,7 @@ verification, not independent consensus, a security audit or mainnet approval.
+ 
+ ## Matching artifacts and changed command behavior
+ 
+-The installed current DAT build does **not** match the creation and normalized
++At this correction's start, the installed DAT build did **not** match the creation and normalized
+ runtime hashes in `deployments/base-sepolia.json`. If that developer artifact is
+ selected explicitly, the verifier reports `ARTIFACT_RECORD_MISMATCH` before
+ contacting a provider. The expected hashes are
+@@ -85,9 +90,9 @@ not full, source verification. That source-text difference is not silently treat
+ as an exact source match. The compiler input, record hashes and public RPC result
+ provide separate evidence for this reproduction.
+ 
+-The ordinary developer build still uses CRLF source bytes in this checkout and
+-therefore produces different metadata hashes. Fixing source newline portability
+-across the token builds remains separate work; the pinned reference avoids replacing
++At this verifier checkpoint, the ordinary developer build used CRLF source bytes
++and produced different metadata hashes. The subsequent source portability change
++fixes that separately; the pinned reference avoids replacing
+ the historical verification target with that newer output. This result does not
+ complete real-wallet acceptance, independent review or a mainnet release decision.
+ 
+diff --git a/docs/SOURCE_PORTABILITY_2026-11-02.md b/docs/SOURCE_PORTABILITY_2026-11-02.md
+new file mode 100644
+index 0000000..cc6a542
+--- /dev/null
++++ b/docs/SOURCE_PORTABILITY_2026-11-02.md
+@@ -0,0 +1,44 @@
++# Deterministic contract source bytes — November 2, 2026
++
++Solidity metadata contains source hashes. Changing CRLF to LF can therefore
++change the bytecode metadata even when contract logic stays identical. DAT's
++historical verifier exposed this difference against its recorded deployment.
++
++The contracts directory now has a narrow Git LF checkout policy. This change
++normalizes the existing DATCore.sol line endings only; it changes no Solidity
++statement, compiler setting, dependency, deployment record or expected hash.
++It does change the generated bytecode metadata and artifact fingerprint. Rebuild
++and review the new artifact rather than labelling it byte-identical to the old one.
++
++The compile command first checks that all Solidity sources use UTF-8 without
++BOM and contain no CR. It fails before starting Hardhat if they do not, leaving
++the source untouched. The check uses local files only. The source regression
++creates isolated Git repositories and checks actual source bytes after checkout
++with both autocrlf settings, and verifies CRLF/BOM/invalid-UTF-8 rejection.
++
++Run npm run test:source followed by npm run compile. The ordinary npm run check
++also includes the source regression. Existing clones with converted files must
++save the contracts using LF before building; no automatic source rewrite occurs
++during compilation. Source hashes and fresh-build comparisons are recorded in
++the Wallet evidence collection. No live deployment is updated by this change.
++
++## Test routing correction
++
++The legacy Hardhat command recursively discovered every JavaScript/TypeScript
++file under test, including the CLI-only preload in test/support. A complete DAT
++attempt produced 288 passing cases and one failure because that preload correctly
++refused to run without its test-owned loopback configuration. It also repeated
++the 251 read-only cases already assigned to test:read-only.
++
++The test command now enumerates all top-level TypeScript specs for Hardhat;
++operational *.test.mjs cases remain in test:read-only, and both groups remain in
++npm run check. Support files are loaded only by their owning fixtures. The runner
++passes through Hardhat arguments and failure status, rejects an empty suite, and
++checks source encoding before Hardhat can implicitly compile. Routing regression
++tests exercise the real runner with a fixture child command. No test assertion
++was removed or relaxed. New nested TypeScript suites would need an explicit
++runner policy update rather than silently entering this top-level suite.
++
++The read-only command explicitly uses one test file at a time, matching the
++previous complete passing runs and avoiding test-process startup contention.
++The request deadlines, assertion coverage and child watchdogs are unchanged.
+diff --git a/integration/source-portability.test.mjs b/integration/source-portability.test.mjs
+new file mode 100644
+index 0000000..01d6156
+--- /dev/null
++++ b/integration/source-portability.test.mjs
+@@ -0,0 +1,69 @@
++import test from "node:test";
++import assert from "node:assert/strict";
++import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, lstatSync } from "node:fs";
++import { dirname, basename, join, resolve } from "node:path";
++import { fileURLToPath } from "node:url";
++import { tmpdir } from "node:os";
++import { execFileSync, spawnSync } from "node:child_process";
++import { checkContractSources } from "../scripts/check-contract-source.js";
++
++const root = fileURLToPath(new URL("..", import.meta.url));
++const sourcePaths = checkContractSources(root);
++const parent = resolve(tmpdir());
++function fixture(t) {
++  const path = mkdtempSync(join(parent, "threecore-source-portability-"));
++  t.after(() => {
++    assert.equal(dirname(resolve(path)), parent);
++    assert(basename(path).startsWith("threecore-source-portability-"));
++    assert(!lstatSync(path).isSymbolicLink());
++    rmSync(path, { recursive: true, force: true });
++  });
++  return path;
++}
++function cleanEnv() {
++  return Object.fromEntries(Object.entries(process.env).filter(([key]) => /^(path|systemroot|windir|temp|tmp|comspec|pathext)$/i.test(key)));
++}
++
++test("contract source checker accepts every actual UTF-8 LF contract", () => {
++  assert(sourcePaths.length > 0);
++  for (const path of sourcePaths) assert(!readFileSync(join(root, path)).includes(13));
++});
++
++test("actual source bytes survive Git checkouts with both autocrlf settings", t => {
++  const temporary = fixture(t), source = join(temporary, "source repository");
++  mkdirSync(source); writeFileSync(join(source, ".gitattributes"), readFileSync(join(root, ".gitattributes")));
++  for (const path of sourcePaths) { mkdirSync(dirname(join(source, path)), { recursive: true }); writeFileSync(join(source, path), readFileSync(join(root, path))); }
++  const env = { ...cleanEnv(), GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: join(temporary, "empty-gitconfig"), GIT_TERMINAL_PROMPT: "0" };
++  writeFileSync(env.GIT_CONFIG_GLOBAL, "");
++  const git = (cwd, ...args) => execFileSync("git", ["-c", "core.hooksPath=" + join(temporary, "no-hooks"), "-c", "core.autocrlf=false", ...args], { cwd, env, windowsHide: true, timeout: 15000, stdio: ["ignore", "pipe", "pipe"] });
++  git(source, "init", "--quiet"); git(source, "add", ".");
++  git(source, "-c", "user.name=Source portability test", "-c", "user.email=fixture@example.invalid", "-c", "commit.gpgsign=false", "commit", "--quiet", "-m", "Fixture source");
++  for (const setting of ["true", "false"]) {
++    const target = join(temporary, "checkout " + setting);
++    git(temporary, "clone", "--quiet", "--no-hardlinks", "--no-checkout", source, target);
++    git(target, "-c", "core.autocrlf=" + setting, "checkout", "HEAD", "--", ".");
++    assert.deepEqual(checkContractSources(target), sourcePaths);
++    for (const path of sourcePaths) assert.deepEqual(readFileSync(join(target, path)), readFileSync(join(root, path)), setting + ": " + path);
++  }
++});
++
++test("the CLI rejects CRLF before compilation without rewriting the source", t => {
++  const temporary = fixture(t);
++  mkdirSync(join(temporary, "scripts")); mkdirSync(join(temporary, "contracts"));
++  writeFileSync(join(temporary, "package.json"), '{"type":"module"}');
++  writeFileSync(join(temporary, "scripts/check-contract-source.js"), readFileSync(join(root, "scripts/check-contract-source.js")));
++  const bytes = Buffer.from(readFileSync(join(root, sourcePaths[0]), "utf8").replaceAll("\n", "\r\n"));
++  const path = join(temporary, "contracts/Converted.sol"); writeFileSync(path, bytes);
++  const result = spawnSync(process.execPath, [join(temporary, "scripts/check-contract-source.js")], { cwd: temporary, env: cleanEnv(), encoding: "utf8", timeout: 15000, windowsHide: true });
++  assert.equal(result.status, 1); assert.equal(result.stdout, ""); assert.match(result.stderr, /UTF-8 without BOM and LF/);
++  assert.deepEqual(readFileSync(path), bytes);
++});
++
++test("source checker refuses missing sources, BOM, lone CR and invalid UTF-8", t => {
++  const temporary = fixture(t); mkdirSync(join(temporary, "contracts"));
++  assert.throws(() => checkContractSources(temporary));
++  const path = join(temporary, "contracts/Invalid.sol");
++  for (const bytes of [Buffer.from([239,187,191,10]), Buffer.from("pragma solidity ^0.8.24;\r"), Buffer.from([0xff,0xfe,10])]) {
++    writeFileSync(path, bytes); assert.throws(() => checkContractSources(temporary));
++  }
++});
+diff --git a/integration/test-routing.test.mjs b/integration/test-routing.test.mjs
+new file mode 100644
+index 0000000..4fa5704
+--- /dev/null
++++ b/integration/test-routing.test.mjs
+@@ -0,0 +1,28 @@
++import test from "node:test";
++import assert from "node:assert/strict";
++import {readFileSync,writeFileSync,mkdirSync,mkdtempSync,rmSync,lstatSync} from "node:fs";
++import {resolve,dirname,basename,join} from "node:path";
++import {tmpdir} from "node:os";
++import {spawnSync} from "node:child_process";
++import {fileURLToPath} from "node:url";
++
++const root=fileURLToPath(new URL("..",import.meta.url)),parent=resolve(tmpdir());
++function fixture(t,exit=0,empty=false){
++ const path=mkdtempSync(join(parent,"threecore-test-routing-"));
++ t.after(()=>{assert.equal(dirname(resolve(path)),parent);assert(basename(path).startsWith("threecore-test-routing-"));assert(!lstatSync(path).isSymbolicLink());rmSync(path,{recursive:true,force:true});});
++ for(const dir of ["scripts","contracts","test/support","node_modules/hardhat/dist/src"])mkdirSync(join(path,dir),{recursive:true});
++ for(const file of ["scripts/test-contracts.js","scripts/check-contract-source.js"])writeFileSync(join(path,file),readFileSync(join(root,file)));
++ writeFileSync(join(path,"package.json"),'{"type":"module"}');writeFileSync(join(path,"node_modules/hardhat/package.json"),'{"type":"module"}');
++ writeFileSync(join(path,"contracts/Fixture.sol"),"pragma solidity ^0.8.24;\ncontract Fixture {}\n");
++ const files=["test/operational.test.mjs","test/support/preload.mjs","test/support/helper.ts","test/types.d.ts"];
++ if(!empty)files.push("test/Beta.ts","test/Alpha.ts");
++ for(const file of files)writeFileSync(join(path,file),'throw Error("The routing fixture must not execute test files");\n');
++ writeFileSync(join(path,"node_modules/hardhat/dist/src/cli.js"),'console.log(JSON.stringify(process.argv.slice(2)));process.exit('+exit+');\n');
++ return path;
++}
++function run(path){return spawnSync(process.execPath,[join(path,"scripts/test-contracts.js"),"--no-compile"],{cwd:path,env:Object.fromEntries(Object.entries(process.env).filter(([key])=>/^(path|systemroot|windir|temp|tmp|comspec|pathext)$/i.test(key))),encoding:"utf8",timeout:15000,windowsHide:true});}
++test("actual runner includes TypeScript specs and excludes operational/support files",t=>{
++ const result=run(fixture(t));assert.equal(result.status,0,result.stderr);assert.deepEqual(JSON.parse(result.stdout),["test","nodejs","test/Alpha.ts","test/Beta.ts","--no-compile"]);
++});
++test("actual runner propagates a failing Hardhat result",t=>{const result=run(fixture(t,7));assert.equal(result.status,7);});
++test("actual runner rejects an empty TypeScript suite before starting Hardhat",t=>{const result=run(fixture(t,0,true));assert.equal(result.status,1);assert.equal(result.stdout,"");assert.match(result.stderr,/Contract test runner failed/);});
+diff --git a/package.json b/package.json
+index afb7252..0389220 100644
+--- a/package.json
++++ b/package.json
+@@ -9,17 +9,18 @@
+     "node": ">=22"
+   },
+   "scripts": {
+-    "compile": "hardhat compile",
+-    "test": "hardhat test nodejs",
++    "compile": "node scripts/check-contract-source.js && hardhat compile",
++    "test": "node scripts/test-contracts.js",
+     "typecheck": "tsc --noEmit",
+-    "check": "npm run compile && npm run test && npm run typecheck && npm run test:read-only && npm run test:history",
++    "check": "npm run test:source && npm run compile && npm run test && npm run typecheck && npm run test:read-only && npm run test:history",
++    "test:source": "node --test integration/source-portability.test.mjs integration/test-routing.test.mjs",
+     "test:history": "node --test integration/history-compatibility.test.mjs",
+     "cmc:market-context": "node scripts/cmc-market-context.ts",
+     "deploy:base-sepolia": "hardhat run scripts/deploy-base-sepolia.ts --network baseSepolia",
+     "verify:base-sepolia": "node scripts/verify-base-sepolia.js",
+     "test:identity": "node --test test/onchain-identity.test.mjs",
+     "verify:base-mainnet": "node scripts/verify-base-mainnet.js",
+-    "test:read-only": "node --test test/*.test.mjs",
++    "test:read-only": "node --test --test-concurrency=1 test/*.test.mjs",
+     "inspect:transfers": "node scripts/inspect-transfers.js",
+     "inspect:wallet": "node scripts/inspect-wallet-readiness.js",
+     "inspect:approvals": "node scripts/inspect-approvals.js",
+diff --git a/scripts/check-contract-source.js b/scripts/check-contract-source.js
+new file mode 100644
+index 0000000..6f30e25
+--- /dev/null
++++ b/scripts/check-contract-source.js
+@@ -0,0 +1,35 @@
++import { readFileSync, readdirSync } from "node:fs";
++import { resolve, relative } from "node:path";
++import { fileURLToPath } from "node:url";
++
++// Solidity metadata includes source hashes. Reject edited/converted bytes rather
++// than silently repairing them while compiling a deployment candidate.
++export function checkContractSources(root) {
++  const files = [];
++  function walk(directory) {
++    for (const entry of readdirSync(directory, { withFileTypes: true })) {
++      const path = resolve(directory, entry.name);
++      if (entry.isSymbolicLink()) throw Error("CONTRACT_SOURCE_SYMLINK");
++      if (entry.isDirectory()) walk(path);
++      else if (entry.isFile() && entry.name.endsWith(".sol")) files.push(path);
++    }
++  }
++  walk(resolve(root, "contracts"));
++  if (!files.length) throw Error("NO_CONTRACT_SOURCE");
++  for (const path of files) {
++    const bytes = readFileSync(path);
++    if (bytes.includes(13) || bytes.subarray(0, 3).equals(Buffer.from([239, 187, 191]))) throw Error("CONTRACT_SOURCE_REQUIRES_UTF8_LF");
++    new TextDecoder("utf-8", { fatal: true }).decode(bytes);
++  }
++  return files.sort().map(path => relative(root, path).replaceAll("\\", "/"));
++}
++
++if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
++  try {
++    const files = checkContractSources(fileURLToPath(new URL("..", import.meta.url)));
++    process.stdout.write(JSON.stringify({ sourceEncoding: "UTF-8 without BOM", lineEndings: "LF", files }) + "\n");
++  } catch {
++    process.stderr.write("Contract source check failed: use UTF-8 without BOM and LF line endings for every Solidity source.\n");
++    process.exitCode = 1;
++  }
++}
+diff --git a/scripts/test-contracts.js b/scripts/test-contracts.js
+new file mode 100644
+index 0000000..caf3331
+--- /dev/null
++++ b/scripts/test-contracts.js
+@@ -0,0 +1,22 @@
++import { readdirSync } from "node:fs";
++import { fileURLToPath } from "node:url";
++import { spawnSync } from "node:child_process";
++import { checkContractSources } from "./check-contract-source.js";
++
++const root = fileURLToPath(new URL("..", import.meta.url));
++try {
++  checkContractSources(root);
++  // Operational *.test.mjs files run in test:read-only. Their support preloads
++  // require a fixture environment and must never be discovered as test entries.
++  const files = readdirSync(new URL("../test/", import.meta.url), { withFileTypes: true })
++    .filter(entry => entry.isFile() && /\.(?:ts|mts|cts)$/.test(entry.name) && !/\.d\.(?:ts|mts|cts)$/.test(entry.name))
++    .map(entry => "test/" + entry.name).sort();
++  if (!files.length) throw Error("NO_HARDHAT_TESTS");
++  const cli = fileURLToPath(new URL("../node_modules/hardhat/dist/src/cli.js", import.meta.url));
++  const result = spawnSync(process.execPath, [cli, "test", "nodejs", ...files, ...process.argv.slice(2)], { cwd: root, stdio: "inherit", windowsHide: true });
++  if (result.error) throw result.error;
++  process.exitCode = result.status ?? 1;
++} catch {
++  process.stderr.write("Contract test runner failed: check source encoding, TypeScript test files and installed Hardhat.\n");
++  process.exitCode = 1;
++}

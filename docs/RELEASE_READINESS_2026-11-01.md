@@ -1,11 +1,17 @@
 # ThreeCore release preparation — November 1, 2026
 
+The latest [source portability and test-routing correction](SOURCE_PORTABILITY_2026-11-02.md)
+fixes ordinary token builds and an accidental support-preload test failure. All
+three builds, source/routing checks and local EVM/Wallet compatibility checks
+pass; DAT also passes the complete revised standard check command. The earlier
+source-newline mismatch is closed. Real-wallet and independent-review gates remain.
+
 The latest [historical Sepolia verifier correction](SEPOLIA_VERIFIER_2026-11-02.md)
 prevents RPC errors from becoming false PASS results. DAT passes 251 local
 read-only cases and a public historical checkpoint recheck with a reproduced,
 recorded-hash-matching reference. The final default path also passes its 24
-dedicated cases. Ordinary source newline portability and real-wallet acceptance
-remain separate work; this does not establish a release percentage.
+dedicated cases. The later source correction above closes newline portability;
+real-wallet acceptance remains open. This does not establish a release percentage.
 
 The next development target is a release candidate for the **read-only ThreeCore
 Wallet and offline operation rehearsal**, with DAT, EMA and CAWELON checked

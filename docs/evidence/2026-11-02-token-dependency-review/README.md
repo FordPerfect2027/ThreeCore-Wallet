@@ -20,3 +20,5 @@ The subsequent [runtime installation evidence](RUNTIME.md) fixes missing runtime
 [The response-body deadline correction](BODY_DEADLINE.md) records a stalled-body reproduction and the five-command fix across all three token repositories.
 
 [The historical Sepolia verifier correction](SEPOLIA_VERIFIER.md) records the false-PASS fix, LF reference reproduction and actual public checkpoint revalidation.
+
+[Source portability and test routing](SOURCE_PORTABILITY.md) makes the three normal builds reproducible and corrects accidental execution of a CLI preload as a test.
