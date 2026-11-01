@@ -1,5 +1,12 @@
 # ThreeCore release preparation — November 1, 2026
 
+The latest [historical Sepolia verifier correction](SEPOLIA_VERIFIER_2026-11-02.md)
+prevents RPC errors from becoming false PASS results. DAT passes 251 local
+read-only cases and a public historical checkpoint recheck with a reproduced,
+recorded-hash-matching reference. The final default path also passes its 24
+dedicated cases. Ordinary source newline portability and real-wallet acceptance
+remain separate work; this does not establish a release percentage.
+
 The next development target is a release candidate for the **read-only ThreeCore
 Wallet and offline operation rehearsal**, with DAT, EMA and CAWELON checked
 separately. The user's planning target is 90% or higher. The earlier 60% artwork

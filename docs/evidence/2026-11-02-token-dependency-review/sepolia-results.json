@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-11-01T23:31:26.733Z",
+  "node": "v24.19.0",
+  "parent": "355fb9322bbfeafc8e008bf7f7aa1db057099750",
+  "commit": "ebaa8d923a5b88ab61e7c1626aca372c841f569a",
+  "sourceHashes": {
+    ".gitattributes": "7cfaa87fda86deee172f1b0459ea760bbc9163efd300674ea51dc813d758db5f",
+    "BASE_SEPOLIA_VALIDATION.md": "c00c0203487a33495a0d98b17c4d9b41b4bd9c168434178133511317bc4f0892",
+    "README.md": "02f147147a74c6f548dcd01b25ca7f2275c4c59d89b8cda203635b6c3a2243d8",
+    "deployments/reference/DATCore-base-sepolia.json": "516e7046d4222b953d56828d96a2b9917ac670c8515cefad9837e98efbc7ca67",
+    "deployments/reference/README.md": "28dbe5d0067bea3431f86f4f4605dcbd8a788d54608b4fbafdc5a839ff806846",
+    "docs/RPC_BODY_DEADLINE_2026-11-02.md": "83503aa01985710efce27789b89df58bd0f01169fe5007098c3d37597437519c",
+    "docs/SEPOLIA_VERIFIER_2026-11-02.md": "15ea2f066cae892a6b016ef7513dcfce4f1956ca01f53f4edcf38b40497c1e30",
+    "package.json": "e807790f7447eb62c3e8c311597059cacb110a6e38f1d1c2fe59f84963889f36",
+    "scripts/verify-base-sepolia.js": "ecc204f468bd79e8d415f48ad655ceb88fef5b3b0827f6ce82b96b27a857163c",
+    "src/sepolia-deployment-verifier.js": "1e0ec2d20b3b259671068f6e2717a24e80d99c47a9341f88b0f579ac9a80bba7",
+    "test/sepolia-verifier-cli.test.mjs": "aad6ced1a960e8c3c4aab4f3a2964d074810beebd059b5fc5c435f5c2b9bfbf2",
+    "test/sepolia-verifier.test.mjs": "0d9c628e82d5266afd5f49cced66fab9c4d12d09a93f88b4d181d6eb77b2ae87",
+    "test/support/sepolia-cli-fixture.mjs": "6eef6bd448714cf7031bcd9d581c26f999eb91057d167f8b4506dd023c5b0efc",
+    "test/support/sepolia-fixture.mjs": "cf6ab944a263aff1d88e66655fd7a4b9374fe9679edfee3f437dabfa33f277ea"
+  },
+  "artifactSha256": "516e7046d4222b953d56828d96a2b9917ac670c8515cefad9837e98efbc7ca67",
+  "fullReadOnly": {
+    "tests": 251,
+    "pass": 251,
+    "fail": 0
+  },
+  "finalDefaultReferenceRegression": {
+    "tests": 24,
+    "pass": 24,
+    "fail": 0
+  },
+  "unchangedFiles": [
+    "contracts/DATCore.sol",
+    "package-lock.json",
+    "deployments/base-sepolia.json",
+    "scripts/deploy-base-sepolia.ts"
+  ],
+  "otherTokensUnchanged": {
+    "EMA": "b4f765338f77332eb11a0f0de5130cf5646a012e",
+    "CAWELON": "f4ba321f7fe7f2eed548fa9545198b0eb0116370"
+  },
+  "scope": "DAT recorded Sepolia verifier only; existing dependencies; no real-wallet UI, transaction submission, signature creation, security audit, remote CI or publication",
+  "limitations": [
+    "Full 251-entry run predates the final default artifact path; 24 dedicated tests passed after that path change.",
+    "The before/after receipt captures an intermediate CLI/fixture hash before explicit artifact and default-reference refinements. The final source hashes are recorded here.",
+    "Ordinary CRLF developer artifact remains different; the included LF reference reproduces recorded hashes.",
+    "Public observation is checkpoint 46922886, not current balances."
+  ]
+}

@@ -1,0 +1,1 @@
+{"before":{"code":0,"result":"PASS","negativePaths":{"replayedPermitRejected":true,"zeroAddressTransferRejected":true}},"after":{"code":1,"stdout":"","stderr":"Read-only Sepolia verification failed: NEGATIVE_PROBE_RPC_ERROR\n"}}

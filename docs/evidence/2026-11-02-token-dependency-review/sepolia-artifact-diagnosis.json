@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-11-01T23:15:50.670Z",
+  "solc": "0.8.34+commit.80d5c536.Emscripten.clang",
+  "buildInfoSha256": "4dc06a6d5f26343113528dd373381931471629dae63247e0f49adb0a8cc6a370",
+  "recordedContractSourceSha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6",
+  "workingSourceSha256": "acd3142d0d17d91898842a247409db2dc273d40fe78263ff91ae3bc14e381c95",
+  "lfSourceSha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6",
+  "recordedCreationHash": "0x360eb0d90955f2a5d059d400229520cbc24a72c8d461fd8725b12309b99b3294",
+  "recordedNormalizedRuntimeHash": "0x6567224d1e46c8e80d345970cf59ed9dcd8949ff00cb873884e9a0decf377e64",
+  "currentCreationHash": "0x6f4bce5de4a21848c8be7d44af923f549e268bffd070c927726bfd3f658c5125",
+  "currentNormalizedRuntimeHash": "0x621dc4065fb9e1d344f150ecf5023b5a0b834a5e9118238a9c534ca80875d9f8",
+  "lfOnlyCreationHash": "0x360eb0d90955f2a5d059d400229520cbc24a72c8d461fd8725b12309b99b3294",
+  "lfOnlyNormalizedRuntimeHash": "0x6567224d1e46c8e80d345970cf59ed9dcd8949ff00cb873884e9a0decf377e64",
+  "preflight": "ARTIFACT_RECORD_MISMATCH",
+  "networkRequests": 0,
+  "scope": "One isolated solc standard-JSON compilation changing only project source CRLF to LF; existing outputs and source files unchanged; no wallet or RPC",
+  "lfOnlyMatchesRecord": true
+}

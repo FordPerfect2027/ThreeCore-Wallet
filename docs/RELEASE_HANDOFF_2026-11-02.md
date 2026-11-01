@@ -1,5 +1,12 @@
 # ThreeCore candidate review handoff — November 2, 2026
 
+The latest [historical Sepolia verifier correction](SEPOLIA_VERIFIER_2026-11-02.md)
+prevents RPC errors from becoming false PASS results. DAT passes 251 local
+read-only cases and a public historical checkpoint recheck with a reproduced,
+recorded-hash-matching reference. The final default path also passes its 24
+dedicated cases. Ordinary source newline portability and real-wallet acceptance
+remain separate work; this does not establish a release percentage.
+
 This is a prepared review package, not a completed independent review, an
 approved release, or a measured completion percentage. No reviewer has been
 contacted by this workflow. Publication remains deferred at the operator's

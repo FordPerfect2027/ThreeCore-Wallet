@@ -1,0 +1,64 @@
+{
+  "recordedAt": "2026-11-01T23:15:46.101Z",
+  "url": "https://base-sepolia.blockscout.com/api/v2/smart-contracts/0x2474A062Ec669C1912Ed41Bc491E8a97db4743D4",
+  "bytes": 228579,
+  "keys": [
+    "constructor_args",
+    "is_partially_verified",
+    "is_changed_bytecode",
+    "abi",
+    "conflicting_implementations",
+    "certified",
+    "additional_sources",
+    "is_verified_via_sourcify",
+    "can_be_visualized_via_sol2uml",
+    "evm_version",
+    "language",
+    "is_verified_via_eth_bytecode_db",
+    "is_fully_verified",
+    "license_type",
+    "is_blueprint",
+    "name",
+    "creation_bytecode",
+    "external_libraries",
+    "proxy_type",
+    "implementations",
+    "verified_at",
+    "is_verified_via_verifier_alliance",
+    "compiler_version",
+    "decoded_constructor_args",
+    "sourcify_repo_url",
+    "optimization_runs",
+    "compiler_settings",
+    "is_verified",
+    "verified_twin_address_hash",
+    "optimization_enabled",
+    "deployed_bytecode",
+    "source_code",
+    "creation_status",
+    "file_path"
+  ],
+  "compiler_version": "v0.8.34+commit.80d5c536",
+  "optimization_enabled": false,
+  "evm_version": "default",
+  "file_path": "DATCore.sol",
+  "verified_at": "2026-09-17T03:00:26.598608Z",
+  "additional_source_count": 21,
+  "compiler_settings": {
+    "libraries": {},
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    }
+  }
+}

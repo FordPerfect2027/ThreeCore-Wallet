@@ -1,0 +1,13 @@
+{
+  "sourceResponseSha256": "ea48bc3baf3393977e312436566f5e1e6b8ce87fe8d9557ac3f2c62ff0ab7002",
+  "sourceTextSha256": "57911df67f44e87d36e67177387d544c4486cf144209b113fe87a2002be0cf46",
+  "recordedSourceSha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6",
+  "sourceTextExactMatch": false,
+  "isPartiallyVerified": true,
+  "isFullyVerified": false,
+  "deployedCodeKeccak256": "0xdd8d491f8526e23a5951c5cbc627d07b31fa57f2433375d2453bad22423981f5",
+  "recordedDeployedCodeKeccak256": "0xdd8d491f8526e23a5951c5cbc627d07b31fa57f2433375d2453bad22423981f5",
+  "deployedCodeMatchesRecord": true,
+  "creationInputMatchesArtifactAndConstructor": true,
+  "scope": "Dated public explorer observation, not an independent source audit; full response retained locally, source text differs"
+}

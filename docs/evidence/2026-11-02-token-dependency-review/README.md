@@ -18,3 +18,5 @@ The subsequent [runtime installation evidence](RUNTIME.md) fixes missing runtime
 [The bounded Zod compatibility probe](ZOD_COMPATIBILITY.md) records an observed break in the unchanged Hardhat helper under Zod 4.6.6; no major-version override was adopted.
 
 [The response-body deadline correction](BODY_DEADLINE.md) records a stalled-body reproduction and the five-command fix across all three token repositories.
+
+[The historical Sepolia verifier correction](SEPOLIA_VERIFIER.md) records the false-PASS fix, LF reference reproduction and actual public checkpoint revalidation.

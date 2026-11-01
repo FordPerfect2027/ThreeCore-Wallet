@@ -1,0 +1,136 @@
+TAP version 13
+# Subtest: Sepolia CLI does not turn negative-probe transport errors into PASS
+ok 1 - Sepolia CLI does not turn negative-probe transport errors into PASS
+  ---
+  duration_ms: 4136.1119
+  type: 'test'
+  ...
+# Subtest: Sepolia CLI emits the exact checkpoint through real viem HTTP
+ok 2 - Sepolia CLI emits the exact checkpoint through real viem HTTP
+  ---
+  duration_ms: 4003.4465
+  type: 'test'
+  ...
+# Subtest: Sepolia CLI redacts endpoint and provider details on early RPC failure
+ok 3 - Sepolia CLI redacts endpoint and provider details on early RPC failure
+  ---
+  duration_ms: 3689.0723
+  type: 'test'
+  ...
+# Subtest: recorded checkpoint binds state reads and negative simulations to one canonical hash
+ok 4 - recorded checkpoint binds state reads and negative simulations to one canonical hash
+  ---
+  duration_ms: 66.9054
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses rpc-error-negative
+ok 5 - Sepolia record refuses rpc-error-negative
+  ---
+  duration_ms: 14.1594
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses permit-rpc-error
+ok 6 - Sepolia record refuses permit-rpc-error
+  ---
+  duration_ms: 10.6525
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses transfer-rpc-error
+ok 7 - Sepolia record refuses transfer-rpc-error
+  ---
+  duration_ms: 13.0619
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses empty-revert
+ok 8 - Sepolia record refuses empty-revert
+  ---
+  duration_ms: 13.8778
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses wrong-revert
+ok 9 - Sepolia record refuses wrong-revert
+  ---
+  duration_ms: 24.7515
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses trailing-revert
+ok 10 - Sepolia record refuses trailing-revert
+  ---
+  duration_ms: 10.0596
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses negative-success
+ok 11 - Sepolia record refuses negative-success
+  ---
+  duration_ms: 10.1553
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses expired-permit
+ok 12 - Sepolia record refuses expired-permit
+  ---
+  duration_ms: 7.2176
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses wrong-permit-target
+ok 13 - Sepolia record refuses wrong-permit-target
+  ---
+  duration_ms: 8.6822
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses wrong-receipt-hash
+ok 14 - Sepolia record refuses wrong-receipt-hash
+  ---
+  duration_ms: 2.1248
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses wrong-receipt-block
+ok 15 - Sepolia record refuses wrong-receipt-block
+  ---
+  duration_ms: 1.702
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses reorg
+ok 16 - Sepolia record refuses reorg
+  ---
+  duration_ms: 11.5989
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses chain-change
+ok 17 - Sepolia record refuses chain-change
+  ---
+  duration_ms: 12.1879
+  type: 'test'
+  ...
+# Subtest: Sepolia record refuses wrong-state
+ok 18 - Sepolia record refuses wrong-state
+  ---
+  duration_ms: 7.4085
+  type: 'test'
+  ...
+# Subtest: unsupported canonical state has no latest or number fallback
+ok 19 - unsupported canonical state has no latest or number fallback
+  ---
+  duration_ms: 1.673
+  type: 'test'
+  ...
+# Subtest: different compiled bytecode fails before network rather than changing recorded hashes
+ok 20 - different compiled bytecode fails before network rather than changing recorded hashes
+  ---
+  duration_ms: 1.2309
+  type: 'test'
+  ...
+# Subtest: malformed record and invalid immutable ranges fail before network
+ok 21 - malformed record and invalid immutable ranges fail before network
+  ---
+  duration_ms: 4.616
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15648.045

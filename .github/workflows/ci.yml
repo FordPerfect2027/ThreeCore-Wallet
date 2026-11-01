@@ -59,7 +59,7 @@ jobs:
       matrix:
         include:
           - repository: DAT
-            ref: 355fb9322bbfeafc8e008bf7f7aa1db057099750
+            ref: ebaa8d923a5b88ab61e7c1626aca372c841f569a
           - repository: EMA-Draft
             ref: b4f765338f77332eb11a0f0de5130cf5646a012e
           - repository: CAWELON-Draft
