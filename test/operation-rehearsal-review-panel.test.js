@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { webcrypto, createHash } from "node:crypto";
 import { newReportFixtures } from "./helpers/rehearsal-report-fixtures.js";
 import { Element } from "./helpers/panel-dom.js";
+import { until } from "./helpers/workspace-fixtures.js";
 import { mountRehearsalReviewPanel } from "../examples/operation-rehearsal-review-panel.js";
 import { reportRehearsalOverview } from "../src/operation-rehearsal-overview.js";
 import { REHEARSAL_WORKSPACE_SCHEMA } from "../src/operation-rehearsal-workspace.js";
@@ -22,7 +23,10 @@ function setup(subtle={digest:async(_algorithm,bytes)=>Uint8Array.from(createHas
   const file=(value,extras={})=>{const bytes=new TextEncoder().encode(value);field("file").files=[{name:"report.json",size:bytes.byteLength,arrayBuffer:async()=>bytes.buffer,...extras}];field("file").dispatchEvent(new Event("change"));};
   return {field,panel,downloads,change,paste,file};
 }
-async function finished(f) {for(let i=0;i<100&&f.field("status").getAttribute("aria-busy")==="true";i++)await tick();assert.equal(f.field("status").getAttribute("aria-busy"),"false");}
+async function finished(f) {
+  await until(() => f.field("status").getAttribute("aria-busy") !== "true");
+  assert.equal(f.field("status").getAttribute("aria-busy"),"false");
+}
 test("file review keeps exact UTF-8 text digest and exports the same receipt as the core",async()=>{
   const f=setup();f.file(text);await finished(f);assert.match(f.field("status").textContent,/再計算と一致/);
   assert.match(f.field("source").textContent,/report.json/);assert.match(f.field("digest").textContent,new RegExp(hash));

@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { Element } from "./helpers/panel-dom.js";
+import { until } from "./helpers/workspace-fixtures.js";
 import { mountOperationRehearsal } from "../examples/operation-rehearsal-page.js";
 import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
 import { REHEARSAL_WORKSPACE_SCHEMA, encodeRehearsalWorkspace } from "../src/operation-rehearsal-workspace.js";
@@ -44,7 +45,7 @@ async function setup(button) {
   }
   if(button==="report-review-save") {
     change("report-review-text",encodeRehearsalOverview(workspace(source)));field("report-review-paste").click();
-    for(let i=0;i<100 && field("report-review-status").getAttribute("aria-busy")==="true";i++)await new Promise(resolve=>setImmediate(resolve));
+    await until(() => field("report-review-status").getAttribute("aria-busy") !== "true");
   }
   assert.equal(field(button).disabled,false,button+" is ready");
   const snapshot=()=>{const previous=delivery;delivery=()=>undefined;try{field("session-save").click();return downloads.at(-1).text;}finally{delivery=previous;}};

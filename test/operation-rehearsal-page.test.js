@@ -6,6 +6,7 @@ import { encodeRehearsalWorkspace, decodeRehearsalWorkspace, REHEARSAL_WORKSPACE
   REHEARSAL_WORKSPACE_LIMIT } from "../src/operation-rehearsal-workspace.js";
 import { encodeRehearsal, decodeRehearsal, evaluateRehearsal, REHEARSAL_LIMIT } from "../src/operation-rehearsal.js";
 import { Element } from "./helpers/panel-dom.js";
+import { until } from "./helpers/workspace-fixtures.js";
 import { encodeRehearsalComparison } from "../src/operation-rehearsal-comparison.js";
 import { encodeRehearsalOverview } from "../src/operation-rehearsal-overview.js";
 import { encodeRehearsalScenario } from "../src/operation-rehearsal-scenario.js";
@@ -131,7 +132,7 @@ test("read-only saved-report review preserves workspace, undo and pending restor
   const before=savedWorkspace(f);const report=encodeRehearsalOverview(before);
   pasteWorkspace(f,workspaceText([rehearsalExampleV2("EMA")],"EMA"));
   f.change("report-review-text",report);f.field("report-review-paste").click();
-  for(let i=0;i<100&&f.field("report-review-status").getAttribute("aria-busy")==="true";i++)await new Promise(resolve=>setTimeout(resolve,1));
+  await until(() => f.field("report-review-status").getAttribute("aria-busy") !== "true");
   assert.equal(f.field("report-review-save").disabled,false);assert.equal(f.field("undo").disabled,false);
   assert.equal(f.field("workspace-apply").disabled,false);assert.deepEqual(savedWorkspace(f),before);
   f.field("workspace-cancel").click();f.field("undo").click();assert.equal(f.field("rows").children.length,2);
