@@ -1,0 +1,147 @@
+{
+  "recordedAt": "2026-11-01T21:29:52.121Z",
+  "tokens": [
+    {
+      "token": "DAT",
+      "baseCommit": "d5ff32f898b75482dd6d211eae0750ae9d0b6d22",
+      "commit": "62dee6aba8a092e179643e0e4b19d53473cd6e67",
+      "status": "",
+      "files": [
+        "README.md",
+        "docs/CANONICAL_STATE_READS_2026-11-02.md",
+        "src/canonical-state-read.js",
+        "src/wallet-readiness.js",
+        "src/dex-quote.js",
+        "scripts/inspect-wallet-readiness.js",
+        "scripts/quote-dex.js",
+        "test/wallet-readiness.test.mjs",
+        "test/dex-quote.test.mjs",
+        "test/canonical-state-cli.test.mjs",
+        "test/support/state-rpc.mjs",
+        "test/support/local-rpc-preload.mjs"
+      ],
+      "tests": {
+        "fullReadOnlyPassed": 194,
+        "failed": 0,
+        "focusedStateSubset": 69,
+        "cliHttpSubset": 7
+      },
+      "live": [
+        {
+          "kind": "readiness",
+          "startedAt": "2026-11-01T21:27:18.274Z",
+          "finishedAt": "2026-11-01T21:27:24.441Z",
+          "blockNumber": "53389548",
+          "blockHash": "0xc40b3e92705fd58e9154afc437b30d020f9235e329540f1146a1a57d42d6ac1f",
+          "redactedReceipt": "DAT-state-readiness-redacted.json"
+        },
+        {
+          "kind": "quote",
+          "startedAt": "2026-11-01T21:27:24.685Z",
+          "finishedAt": "2026-11-01T21:27:30.793Z",
+          "blockNumber": "53389551",
+          "blockHash": "0x2d633eb619c0f0c2892d3493e0d55c1247a20b6e6d962a66a88ebc1f671153a5",
+          "rawPublicReport": "DAT-state-quote.json"
+        }
+      ],
+      "contractDependencyAndDeploymentSourcesUnchanged": true
+    },
+    {
+      "token": "EMA",
+      "baseCommit": "ba4aa22d1b9f0eb4390a3dac25bf4b7105545e09",
+      "commit": "05d86c6a29f93057fc09778f47f15fe4fd94b4cf",
+      "status": "",
+      "files": [
+        "README.md",
+        "docs/CANONICAL_STATE_READS_2026-11-02.md",
+        "src/canonical-state-read.js",
+        "src/wallet-readiness.js",
+        "src/dex-quote.js",
+        "scripts/inspect-wallet-readiness.js",
+        "scripts/quote-dex.js",
+        "test/wallet-readiness.test.mjs",
+        "test/dex-quote.test.mjs",
+        "test/canonical-state-cli.test.mjs",
+        "test/support/state-rpc.mjs",
+        "test/support/local-rpc-preload.mjs"
+      ],
+      "tests": {
+        "fullReadOnlyPassed": 194,
+        "failed": 0,
+        "focusedStateSubset": 69,
+        "cliHttpSubset": 7
+      },
+      "live": [
+        {
+          "kind": "readiness",
+          "startedAt": "2026-11-01T21:27:31.045Z",
+          "finishedAt": "2026-11-01T21:27:35.729Z",
+          "blockNumber": "53389553",
+          "blockHash": "0xddafb73cd637b0ab2cd5d0f87b5b18f44c68d821330842944fc015b454330cdc",
+          "redactedReceipt": "EMA-state-readiness-redacted.json"
+        },
+        {
+          "kind": "quote",
+          "startedAt": "2026-11-01T21:27:35.875Z",
+          "finishedAt": "2026-11-01T21:27:40.477Z",
+          "blockNumber": "53389555",
+          "blockHash": "0x3818c60819218f00fbd873eb6733c78470dd37a1a61b90330131d2c149fd136e",
+          "rawPublicReport": "EMA-state-quote.json"
+        }
+      ],
+      "contractDependencyAndDeploymentSourcesUnchanged": true
+    },
+    {
+      "token": "CAWELON",
+      "baseCommit": "b3fc18ccaff040d4aff1f5567ceb049971836462",
+      "commit": "74c2c0fe001193915d45d9a4734bfa6714598717",
+      "status": "",
+      "files": [
+        "README.md",
+        "docs/CANONICAL_STATE_READS_2026-11-02.md",
+        "src/canonical-state-read.js",
+        "src/wallet-readiness.js",
+        "src/dex-quote.js",
+        "scripts/inspect-wallet-readiness.js",
+        "scripts/quote-dex.js",
+        "test/wallet-readiness.test.mjs",
+        "test/dex-quote.test.mjs",
+        "test/canonical-state-cli.test.mjs",
+        "test/support/state-rpc.mjs",
+        "test/support/local-rpc-preload.mjs"
+      ],
+      "tests": {
+        "fullReadOnlyPassed": 194,
+        "failed": 0,
+        "focusedStateSubset": 69,
+        "cliHttpSubset": 7
+      },
+      "live": [
+        {
+          "kind": "readiness",
+          "startedAt": "2026-11-01T21:27:40.597Z",
+          "finishedAt": "2026-11-01T21:27:44.263Z",
+          "blockNumber": "53389557",
+          "blockHash": "0xe64a78f646da8d712d937a79482fdb1c5163b14c5dc7b6a3949d5ae680d1ab2e",
+          "redactedReceipt": "CAWELON-state-readiness-redacted.json"
+        },
+        {
+          "kind": "quote",
+          "startedAt": "2026-11-01T21:27:44.362Z",
+          "finishedAt": "2026-11-01T21:27:48.034Z",
+          "blockNumber": "53389559",
+          "blockHash": "0x986088c60ed1887bfdd5397e3eda2832be3084d39995aa74ac09f60fdf0d0cea",
+          "rawPublicReport": "CAWELON-state-quote.json"
+        }
+      ],
+      "contractDependencyAndDeploymentSourcesUnchanged": true
+    }
+  ],
+  "limits": [
+    "Readiness account/balance details are retained privately; public receipts omit them.",
+    "Public pool quotes are observations, not executable prices or orders.",
+    "One provider; no independent consensus/finality verification.",
+    "No real MetaMask permission, signing or transaction exercised.",
+    "194 supersedes and overlaps the earlier 159; do not add these totals."
+  ]
+}

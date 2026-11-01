@@ -173,3 +173,10 @@ redacted. Browser Wallet code, real-wallet acceptance and the remaining Zod
 finding are unchanged. The prepared token CI pins point to the new local
 commits. The 7f92929 delivery remains an earlier checkpoint and does not include
 this correction.
+
+The subsequent [balance and reference-quote correction](CANONICAL_TOKEN_IDENTITY_2026-11-02.md#follow-up-balances-and-reference-quotes)
+now extends canonical hash reads to those two standalone commands. Each token
+passes 194 full read-only cases, superseding the earlier overlapping 159-case
+run. Six new public-RPC observations succeeded; existing-account details are
+retained privately. Real-wallet UI acceptance and independent review remain
+separate.

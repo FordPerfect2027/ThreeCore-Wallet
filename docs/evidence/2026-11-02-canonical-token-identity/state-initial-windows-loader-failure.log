@@ -1,0 +1,315 @@
+✖ inspect-wallet-readiness.js real CLI/viem HTTP preserves every canonical parameter (325.0077ms)
+✖ inspect-wallet-readiness.js reorganization exits unsuccessfully without output (167.394ms)
+✖ inspect-wallet-readiness.js unsupported hash cannot retry weaker reads or leak provider details (149.2399ms)
+✖ quote-dex.js real CLI/viem HTTP preserves every canonical parameter (176.1363ms)
+✖ quote-dex.js reorganization exits unsuccessfully without output (163.6605ms)
+✖ quote-dex.js unsupported hash cannot retry weaker reads or leak provider details (164.511ms)
+✖ quote CLI bounds integer text before conversion or network access (186.9322ms)
+✔ state reader rejects a write ABI function before eth_call (3.2174ms)
+✔ buy quote uses the registered volatile pool and one canonical state (47.3477ms)
+✔ sell quote switches exact base units and reserve direction (9.7531ms)
+✔ reverse token ordering is handled without assuming pool order (11.1207ms)
+✔ invalid directions and amounts fail before RPC (3.0251ms)
+✔ wrong network fails before pool lookup (0.8415ms)
+✔ missing or transaction-only clients fail (0.9303ms)
+✔ absent pool fails before quote (1.476ms)
+✔ unregistered pool and missing bytecode fail before pricing (3.2528ms)
+✔ wrong pair or stable flag: {"token0":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (12.2329ms)
+✔ wrong pair or stable flag: {"token1":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (6.0163ms)
+✔ wrong pair or stable flag: {"token0":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913","token1":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"} (9.7061ms)
+✔ wrong pair or stable flag: {"stable":true} (5.6118ms)
+✔ empty reserves and wrong decimals fail (15.4435ms)
+✔ zero or excessive output is rejected (25.4966ms)
+✔ malformed ABI cannot produce a quote: getPool (1.9922ms)
+✔ malformed ABI cannot produce a quote: isPool (1.4113ms)
+✔ malformed ABI cannot produce a quote: token0 (16.2424ms)
+✔ malformed ABI cannot produce a quote: token1 (11.7965ms)
+✔ malformed ABI cannot produce a quote: stable (6.7917ms)
+✔ malformed ABI cannot produce a quote: getReserves (4.2831ms)
+✔ malformed ABI cannot produce a quote: decimals (5.8786ms)
+✔ malformed ABI cannot produce a quote: getAmountOut (7.7893ms)
+✔ reorganized block cannot produce a successful quote (5.1732ms)
+✔ network switch cannot produce a successful quote (6.434ms)
+✔ missing final header fails instead of returning output (7.5656ms)
+✔ failed hash selector never falls back: eth_getCode (1.8838ms)
+✔ failed hash selector never falls back: eth_call (0.6127ms)
+✔ readiness reports exact public balances and existing allowance at one canonical hash (30.2303ms)
+✔ zero gas, balance and allowance remain separate facts (4.3016ms)
+✔ maximum uint256 balances and existing allowance remain exact (3.0335ms)
+✔ invalid or zero public addresses fail before RPC (2.1629ms)
+✔ mixed case public address normalizes before reads (18.5705ms)
+✔ missing and transaction-only clients fail (0.7903ms)
+✔ wrong chain fails before contract reads (0.7043ms)
+✔ invalid sampled block: null (0.7471ms)
+✔ invalid sampled block: {} (0.7067ms)
+✔ invalid sampled block: {"number":"0x-1","hash":"0xabababababababababababababababababababababababababababababababab"} (0.6964ms)
+✔ invalid sampled block: {"number":"123","hash":"0xabababababababababababababababababababababababababababababababab"} (0.4785ms)
+✔ invalid sampled block: {"number":"0x11111111111111111111111111111111111111111111111111111111111111111","hash":"0xabababababababababababababababababababababababababababababababab"} (0.3901ms)
+✔ invalid sampled block: {"number":"0x4d2","hash":null} (0.3212ms)
+✔ missing code aborts before balance reads: 0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5 (0.9605ms)
+✔ missing code aborts before balance reads: 0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43 (0.6573ms)
+✔ invalid bytecode: null (0.6456ms)
+✔ invalid bytecode: 0x1 (0.5328ms)
+✔ invalid bytecode: hello (0.5329ms)
+✔ invalid bytecode: 0xXX (1.4032ms)
+✔ invalid bytecode: 123 (0.6482ms)
+✔ oversized code is rejected before ABI decoding (0.9754ms)
+✔ invalid native balance quantity: null (2.6375ms)
+✔ invalid native balance quantity: 2 (2.4709ms)
+✔ invalid native balance quantity: -1 (16.49ms)
+✔ invalid native balance quantity: 0x00 (4.3905ms)
+✔ invalid native balance quantity: 0x-1 (3.5752ms)
+✔ invalid native balance quantity: 0x11111111111111111111111111111111111111111111111111111111111111111 (1.5297ms)
+✔ malformed and oversized ABI response: balanceOf (11.3349ms)
+✔ malformed and oversized ABI response: allowance (9.2099ms)
+✔ reorganized block cannot produce a readiness report (1.759ms)
+✔ network switch cannot produce a readiness report (1.6805ms)
+✔ failed state read never falls back or dispatches a transaction: eth_getCode (4.7444ms)
+✔ failed state read never falls back or dispatches a transaction: eth_getBalance (1.3974ms)
+✔ failed state read never falls back or dispatches a transaction: eth_call (1.0732ms)
+ℹ tests 69
+ℹ suites 0
+ℹ pass 62
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3095.3222
+
+✖ failing tests:
+
+test at test\canonical-state-cli.test.mjs:37:3
+✖ inspect-wallet-readiness.js real CLI/viem HTTP preserves every canonical parameter (325.0077ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/esm/load:193
+      throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+            ^
+  
+  Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+      at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)
+      at defaultLoadSync (node:internal/modules/esm/load:146:3)
+      at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+      at #loadSync (node:internal/modules/esm/loader:834:53)
+      at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+      at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+      at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+      at afterResolve (node:internal/modules/esm/loader:607:52)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+      at node:internal/modules/esm/loader:632:32 {
+    code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+  }
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/canonical-state-cli.test.mjs:38:56)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\canonical-state-cli.test.mjs:42:3
+✖ inspect-wallet-readiness.js reorganization exits unsuccessfully without output (167.394ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /BLOCK_CHANGED\n$/. Input:
+  
+  'node:internal/modules/esm/load:193\r\n' +
+    '    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);\r\n' +
+    '          ^\r\n' +
+    '\r\n' +
+    "Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'\r\n" +
+    '    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)\r\n' +
+    '    at defaultLoadSync (node:internal/modules/esm/load:146:3)\r\n' +
+    '    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)\r\n' +
+    '    at #loadSync (node:internal/modules/esm/loader:834:53)\r\n' +
+    '    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)\r\n' +
+    '    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)\r\n' +
+    '    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)\r\n' +
+    '    at afterResolve (node:internal/modules/esm/loader:607:52)\r\n' +
+    '    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)\r\n' +
+    '    at node:internal/modules/esm/loader:632:32 {\r\n' +
+    "  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.19.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/canonical-state-cli.test.mjs:43:117)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/esm/load:193\r\n    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);\r\n          ^\r\n\r\nError [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'\r\n    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)\r\n    at defaultLoadSync (node:internal/modules/esm/load:146:3)\r\n    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)\r\n    at #loadSync (node:internal/modules/esm/loader:834:53)\r\n    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)\r\n    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)\r\n    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)\r\n    at afterResolve (node:internal/modules/esm/loader:607:52)\r\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)\r\n    at node:internal/modules/esm/loader:632:32 {\r\n  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'\r\n}\r\n\r\nNode.js v24.19.0\r\n",
+    expected: /BLOCK_CHANGED\n$/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\canonical-state-cli.test.mjs:45:3
+✖ inspect-wallet-readiness.js unsupported hash cannot retry weaker reads or leak provider details (149.2399ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /RPC_ERROR\n$/. Input:
+  
+  'node:internal/modules/esm/load:193\r\n' +
+    '    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);\r\n' +
+    '          ^\r\n' +
+    '\r\n' +
+    "Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'\r\n" +
+    '    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)\r\n' +
+    '    at defaultLoadSync (node:internal/modules/esm/load:146:3)\r\n' +
+    '    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)\r\n' +
+    '    at #loadSync (node:internal/modules/esm/loader:834:53)\r\n' +
+    '    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)\r\n' +
+    '    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)\r\n' +
+    '    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)\r\n' +
+    '    at afterResolve (node:internal/modules/esm/loader:607:52)\r\n' +
+    '    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)\r\n' +
+    '    at node:internal/modules/esm/loader:632:32 {\r\n' +
+    "  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.19.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/canonical-state-cli.test.mjs:46:123)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/esm/load:193\r\n    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);\r\n          ^\r\n\r\nError [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'\r\n    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)\r\n    at defaultLoadSync (node:internal/modules/esm/load:146:3)\r\n    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)\r\n    at #loadSync (node:internal/modules/esm/loader:834:53)\r\n    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)\r\n    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)\r\n    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)\r\n    at afterResolve (node:internal/modules/esm/loader:607:52)\r\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)\r\n    at node:internal/modules/esm/loader:632:32 {\r\n  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'\r\n}\r\n\r\nNode.js v24.19.0\r\n",
+    expected: /RPC_ERROR\n$/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\canonical-state-cli.test.mjs:37:3
+✖ quote-dex.js real CLI/viem HTTP preserves every canonical parameter (176.1363ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/esm/load:193
+      throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+            ^
+  
+  Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+      at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)
+      at defaultLoadSync (node:internal/modules/esm/load:146:3)
+      at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)
+      at #loadSync (node:internal/modules/esm/loader:834:53)
+      at ModuleLoader.load (node:internal/modules/esm/loader:783:26)
+      at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)
+      at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)
+      at afterResolve (node:internal/modules/esm/loader:607:52)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)
+      at node:internal/modules/esm/loader:632:32 {
+    code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+  }
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/canonical-state-cli.test.mjs:38:56)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\canonical-state-cli.test.mjs:42:3
+✖ quote-dex.js reorganization exits unsuccessfully without output (163.6605ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /BLOCK_CHANGED\n$/. Input:
+  
+  'node:internal/modules/esm/load:193\r\n' +
+    '    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);\r\n' +
+    '          ^\r\n' +
+    '\r\n' +
+    "Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'\r\n" +
+    '    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)\r\n' +
+    '    at defaultLoadSync (node:internal/modules/esm/load:146:3)\r\n' +
+    '    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)\r\n' +
+    '    at #loadSync (node:internal/modules/esm/loader:834:53)\r\n' +
+    '    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)\r\n' +
+    '    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)\r\n' +
+    '    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)\r\n' +
+    '    at afterResolve (node:internal/modules/esm/loader:607:52)\r\n' +
+    '    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)\r\n' +
+    '    at node:internal/modules/esm/loader:632:32 {\r\n' +
+    "  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.19.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/canonical-state-cli.test.mjs:43:117)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/esm/load:193\r\n    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);\r\n          ^\r\n\r\nError [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'\r\n    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)\r\n    at defaultLoadSync (node:internal/modules/esm/load:146:3)\r\n    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)\r\n    at #loadSync (node:internal/modules/esm/loader:834:53)\r\n    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)\r\n    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)\r\n    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)\r\n    at afterResolve (node:internal/modules/esm/loader:607:52)\r\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)\r\n    at node:internal/modules/esm/loader:632:32 {\r\n  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'\r\n}\r\n\r\nNode.js v24.19.0\r\n",
+    expected: /BLOCK_CHANGED\n$/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\canonical-state-cli.test.mjs:45:3
+✖ quote-dex.js unsupported hash cannot retry weaker reads or leak provider details (164.511ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /RPC_ERROR\n$/. Input:
+  
+  'node:internal/modules/esm/load:193\r\n' +
+    '    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);\r\n' +
+    '          ^\r\n' +
+    '\r\n' +
+    "Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'\r\n" +
+    '    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)\r\n' +
+    '    at defaultLoadSync (node:internal/modules/esm/load:146:3)\r\n' +
+    '    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)\r\n' +
+    '    at #loadSync (node:internal/modules/esm/loader:834:53)\r\n' +
+    '    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)\r\n' +
+    '    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)\r\n' +
+    '    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)\r\n' +
+    '    at afterResolve (node:internal/modules/esm/loader:607:52)\r\n' +
+    '    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)\r\n' +
+    '    at node:internal/modules/esm/loader:632:32 {\r\n' +
+    "  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'\r\n" +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.19.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/canonical-state-cli.test.mjs:46:123)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/esm/load:193\r\n    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);\r\n          ^\r\n\r\nError [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'\r\n    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:193:11)\r\n    at defaultLoadSync (node:internal/modules/esm/load:146:3)\r\n    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:802:12)\r\n    at #loadSync (node:internal/modules/esm/loader:834:53)\r\n    at ModuleLoader.load (node:internal/modules/esm/loader:783:26)\r\n    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:494:31)\r\n    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:560:36)\r\n    at afterResolve (node:internal/modules/esm/loader:607:52)\r\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:613:12)\r\n    at node:internal/modules/esm/loader:632:32 {\r\n  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'\r\n}\r\n\r\nNode.js v24.19.0\r\n",
+    expected: /RPC_ERROR\n$/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\canonical-state-cli.test.mjs:51:1
+✖ quote CLI bounds integer text before conversion or network access (186.9322ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/canonical-state-cli.test.mjs:52:70)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

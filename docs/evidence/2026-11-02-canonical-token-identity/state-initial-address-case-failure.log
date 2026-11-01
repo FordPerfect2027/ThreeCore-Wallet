@@ -1,0 +1,124 @@
+✖ buy quote uses the registered volatile pool and one canonical state (94.7401ms)
+✔ sell quote switches exact base units and reserve direction (42.8095ms)
+✔ reverse token ordering is handled without assuming pool order (8.5998ms)
+✔ invalid directions and amounts fail before RPC (46.0091ms)
+✔ wrong network fails before pool lookup (0.6652ms)
+✔ missing or transaction-only clients fail (0.8598ms)
+✔ absent pool fails before quote (1.756ms)
+✔ unregistered pool and missing bytecode fail before pricing (3.5476ms)
+✔ wrong pair or stable flag: {"token0":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (6.4712ms)
+✔ wrong pair or stable flag: {"token1":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (199.5973ms)
+✔ wrong pair or stable flag: {"token0":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913","token1":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"} (5.2976ms)
+✔ wrong pair or stable flag: {"stable":true} (6.1127ms)
+✔ empty reserves and wrong decimals fail (76.6263ms)
+✔ zero or excessive output is rejected (15.2427ms)
+✔ malformed ABI cannot produce a quote: getPool (1.6915ms)
+✔ malformed ABI cannot produce a quote: isPool (2.5384ms)
+✔ malformed ABI cannot produce a quote: token0 (4.2309ms)
+✔ malformed ABI cannot produce a quote: token1 (11.6018ms)
+✔ malformed ABI cannot produce a quote: stable (6.7448ms)
+✔ malformed ABI cannot produce a quote: getReserves (4.6949ms)
+✔ malformed ABI cannot produce a quote: decimals (32.0385ms)
+✔ malformed ABI cannot produce a quote: getAmountOut (5.0064ms)
+✔ reorganized block cannot produce a successful quote (4.5211ms)
+✔ network switch cannot produce a successful quote (11.9932ms)
+✔ missing final header fails instead of returning output (38.5093ms)
+✔ failed hash selector never falls back: eth_getCode (1.5291ms)
+✔ failed hash selector never falls back: eth_call (0.4883ms)
+✖ readiness reports exact public balances and existing allowance at one canonical hash (30.8279ms)
+✔ zero gas, balance and allowance remain separate facts (4.677ms)
+✔ maximum uint256 balances and existing allowance remain exact (37.2629ms)
+✔ invalid or zero public addresses fail before RPC (2.0436ms)
+✔ mixed case public address normalizes before reads (3.9094ms)
+✔ missing and transaction-only clients fail (0.8454ms)
+✔ wrong chain fails before contract reads (1.1414ms)
+✔ invalid sampled block: null (0.7648ms)
+✔ invalid sampled block: {} (0.5778ms)
+✔ invalid sampled block: {"number":"0x-1","hash":"0xabababababababababababababababababababababababababababababababab"} (0.7262ms)
+✔ invalid sampled block: {"number":"123","hash":"0xabababababababababababababababababababababababababababababababab"} (0.6958ms)
+✔ invalid sampled block: {"number":"0x11111111111111111111111111111111111111111111111111111111111111111","hash":"0xabababababababababababababababababababababababababababababababab"} (0.5622ms)
+✔ invalid sampled block: {"number":"0x4d2","hash":null} (0.4469ms)
+✔ missing code aborts before balance reads: 0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5 (0.9477ms)
+✔ missing code aborts before balance reads: 0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43 (0.6075ms)
+✔ invalid bytecode: null (0.678ms)
+✔ invalid bytecode: 0x1 (0.557ms)
+✔ invalid bytecode: hello (0.4929ms)
+✔ invalid bytecode: 0xXX (0.4773ms)
+✔ invalid bytecode: 123 (1.1087ms)
+✔ oversized code is rejected before ABI decoding (0.8972ms)
+✔ invalid native balance quantity: null (38.7365ms)
+✔ invalid native balance quantity: 2 (23.0443ms)
+✔ invalid native balance quantity: -1 (1.5834ms)
+✔ invalid native balance quantity: 0x00 (1.4881ms)
+✔ invalid native balance quantity: 0x-1 (31.5994ms)
+✔ invalid native balance quantity: 0x11111111111111111111111111111111111111111111111111111111111111111 (1.7535ms)
+✔ malformed and oversized ABI response: balanceOf (6.8136ms)
+✔ malformed and oversized ABI response: allowance (5.6802ms)
+✔ reorganized block cannot produce a readiness report (1.5486ms)
+✔ network switch cannot produce a readiness report (1.6268ms)
+✔ failed state read never falls back or dispatches a transaction: eth_getCode (0.9768ms)
+✔ failed state read never falls back or dispatches a transaction: eth_getBalance (1.2525ms)
+✔ failed state read never falls back or dispatches a transaction: eth_call (0.9747ms)
+ℹ tests 61
+ℹ suites 0
+ℹ pass 59
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2357.8148
+
+✖ failing tests:
+
+test at test\dex-quote.test.mjs:8:1
+✖ buy quote uses the registered volatile pool and one canonical state (94.7401ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      '0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5',
+  +   '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+  -   '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+      false
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/dex-quote.test.mjs:17:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5', '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', false ],
+    expected: [ '0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5', '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913', false ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-readiness.test.mjs:8:1
+✖ readiness reports exact public balances and existing allowance at one canonical hash (30.8279ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      [
+        'balanceOf',
+        '0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5',
+        [
+  ...
+          '0x1111111111111111111111111111111111111111',
+  +       '0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43'
+  -       '0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43'
+        ]
+      ]
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/wallet-readiness.test.mjs:21:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'balanceOf', '0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5', [Array] ], [ 'allowance', '0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5', [Array] ] ],
+    expected: [ [ 'balanceOf', '0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5', [Array] ], [ 'allowance', '0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5', [Array] ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

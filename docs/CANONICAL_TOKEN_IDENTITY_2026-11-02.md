@@ -38,3 +38,21 @@ The offline package at 7f92929 predates this correction and is retained as an
 earlier checkpoint. A later combined delivery must include these new commits.
 
 Protocol reference: https://eips.ethereum.org/EIPS/eip-1898
+
+## Follow-up: balances and reference quotes
+
+The same block-number limitation was also corrected in the standalone public
+wallet-readiness and pool-reference-quote commands. All state reads now use
+one EIP-1898 canonical hash, with final header and chain rechecks. CLI errors
+omit provider details, and quote integer input is bounded before conversion.
+
+- DAT: `62dee6aba8a092e179643e0e4b19d53473cd6e67`
+- EMA: `05d86c6a29f93057fc09778f47f15fe4fd94b4cf`
+- CAWELON: `74c2c0fe001193915d45d9a4734bfa6714598717`
+
+Each full read-only suite now passes 194 cases (including, not adding to, the
+earlier 159); 69 focused state cases are a subset. Six live public-RPC commands
+also succeeded. [Detailed evidence and initial failures](evidence/2026-11-02-canonical-token-identity/STATE_READS.md)
+separate public quote outputs from redacted public-account readiness receipts.
+No real wallet permission, transaction or trade was exercised. The Wallet app
+source is unchanged. The prepared CI pins now select these newer token commits.
