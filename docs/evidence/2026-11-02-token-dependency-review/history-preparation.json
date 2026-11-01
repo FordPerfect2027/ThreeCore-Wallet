@@ -1,0 +1,32 @@
+{
+  "recordedAt": "2026-11-01T20:51:21.554Z",
+  "tokens": [
+    {
+      "token": "DAT",
+      "revision": "fb5a5f6940563b1efa5c5bb5006b270b086e303b",
+      "repository": "https://github.com/FordPerfect2027/DAT.git",
+      "shallowBefore": true,
+      "shallowAfter": false,
+      "headAndWorkingFilesUnchanged": true,
+      "remoteReadOnly": true
+    },
+    {
+      "token": "EMA",
+      "revision": "69c89da9a0697a6d6f6f7a1fa82ab25354c7f7ab",
+      "repository": "https://github.com/FordPerfect2027/EMA-Draft.git",
+      "shallowBefore": true,
+      "shallowAfter": false,
+      "headAndWorkingFilesUnchanged": true,
+      "remoteReadOnly": true
+    },
+    {
+      "token": "CAWELON",
+      "revision": "5fe773a62d1676b381a4a33156db0a3c033617f2",
+      "repository": "https://github.com/FordPerfect2027/CAWELON-Draft.git",
+      "shallowBefore": true,
+      "shallowAfter": false,
+      "headAndWorkingFilesUnchanged": true,
+      "remoteReadOnly": true
+    }
+  ]
+}

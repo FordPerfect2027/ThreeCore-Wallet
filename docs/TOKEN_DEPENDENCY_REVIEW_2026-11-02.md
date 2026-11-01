@@ -68,6 +68,30 @@ nor independent review. [The scope and source hashes are recorded here](evidence
 
 ## Combined publication order
 
+Before preparing the combined delivery, all three token repositories were found
+to have shallow local history. Read-only fetches completed their history without
+changing the pinned commits or working files. Each new Git bundle was then
+restored into its own empty repository without remote access; the full-history
+integrity check and clean working-tree check passed.
+
+The initial DAT source ZIP differed from its commit in two Markdown files.
+Inspection confirmed automatic LF-to-CRLF conversion only. The source export
+now uses `git -c core.autocrlf=false archive` to preserve committed bytes, while
+the independent bundle checkouts retain the normal Windows `core.autocrlf=true`
+setting. The initial failed ZIP and diagnosis are preserved; expected source
+hashes were not changed. Corrected exports match all 67 DAT files, 60 EMA files
+and 60 CAWELON files. Lockfiles match the previously verified builds, and the
+included compiled artifacts match the prior successful compatibility receipts.
+
+The local token review kit is `ThreeCore-token-offline-review-20261102-v2` in
+Downloads. Its complete 28-entry manifest passes. It contains source ZIPs,
+offline-restorable Git bundles, compiled artifacts, dependency notes and
+receipts. npm dependencies are not vendored: this demonstrates offline source
+restoration, not a network-free rebuild. No additional contract test run, new
+remote CI result, independent review or resolution of the remaining Zod advisory
+is claimed. [The token package receipt](evidence/2026-11-02-token-dependency-review/token-package-receipt.json)
+records exact pins and artifact hashes.
+
 Everything remains local at the operator's request. The Wallet CI matrix has
 been prepared with the three repair commits above. **Before publishing that
 Wallet change, publish the corresponding token commits to their intended

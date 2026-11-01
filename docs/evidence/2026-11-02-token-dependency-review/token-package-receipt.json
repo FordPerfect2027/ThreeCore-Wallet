@@ -1,0 +1,183 @@
+{
+  "recordedAt": "2026-11-01T20:54:01.646Z",
+  "walletApplicationRevision": "34d173112d7f45475c52fb64553cfa8b369699d2",
+  "walletEvidenceRevision": "903ee5a583d627c939de4c9699c382e74e3cd935",
+  "tokens": [
+    {
+      "token": "DAT",
+      "revision": "fb5a5f6940563b1efa5c5bb5006b270b086e303b",
+      "sourceSummary": {
+        "files": 67,
+        "matched": 67,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 364368
+      },
+      "sourceArchiveAutocrlf": false,
+      "checkoutAutocrlf": "true",
+      "bundleRestoredOfflineIntoEmptyRepository": true,
+      "restoredHistoryComplete": true,
+      "gitFsckPassed": true,
+      "restoredWorkingTreeClean": true,
+      "compilerAndRuntimeArtifactsRebuilt": false,
+      "artifactMatchesPreviouslyVerifiedBuild": true,
+      "artifactSha256": "5b0f20452adbd1e6645cd050f4e2c6ce674fd1e8bd3e204b0dfd1d839739fda0",
+      "dependencyLockMatchesVerifiedBuild": true,
+      "npmDependenciesVendored": false,
+      "offlineBuildClaimed": false,
+      "remoteWritePerformed": false,
+      "realWalletUsed": false,
+      "artifacts": [
+        {
+          "file": "DAT-review.bundle",
+          "bytes": 128268,
+          "sha256": "096304615fce6cab41ec9b7345481316a5ab40c05ca49a673e7d6ffb73f047b6"
+        },
+        {
+          "file": "DAT-source.zip",
+          "bytes": 135197,
+          "sha256": "58c932844f7c52a9ed4222d6c6544bf441651e04b5e8b980f33df32c6d87f3a7"
+        },
+        {
+          "file": "DATCore.json",
+          "bytes": 49487,
+          "sha256": "5b0f20452adbd1e6645cd050f4e2c6ce674fd1e8bd3e204b0dfd1d839739fda0"
+        },
+        {
+          "file": "DEPENDENCY_SECURITY_2026-11-02.md",
+          "bytes": 1611,
+          "sha256": "9e21b715e0bdfb4d2fd0c1663a9345afb6d206423a6a07664ae13b9a7240e8c2"
+        },
+        {
+          "file": "bundle-verification.txt",
+          "bytes": 157,
+          "sha256": "6fc5a961ca10ffcd7eb634dbdc2a05cc88cd8c90dec582ee76d7ce02c272b130"
+        },
+        {
+          "file": "source-verification.json",
+          "bytes": 13197,
+          "sha256": "8da5b31f08e57d52fa81d8764f293e90e68344ef46f7acb44d10553ffe8845dd"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "revision": "69c89da9a0697a6d6f6f7a1fa82ab25354c7f7ab",
+      "sourceSummary": {
+        "files": 60,
+        "matched": 60,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 379238
+      },
+      "sourceArchiveAutocrlf": false,
+      "checkoutAutocrlf": "true",
+      "bundleRestoredOfflineIntoEmptyRepository": true,
+      "restoredHistoryComplete": true,
+      "gitFsckPassed": true,
+      "restoredWorkingTreeClean": true,
+      "compilerAndRuntimeArtifactsRebuilt": false,
+      "artifactMatchesPreviouslyVerifiedBuild": true,
+      "artifactSha256": "72d5e0e09d8640717f803a06cc02d82b0ed7fcee8b29c115f28e74744008a2a4",
+      "dependencyLockMatchesVerifiedBuild": true,
+      "npmDependenciesVendored": false,
+      "offlineBuildClaimed": false,
+      "remoteWritePerformed": false,
+      "realWalletUsed": false,
+      "artifacts": [
+        {
+          "file": "DEPENDENCY_SECURITY_2026-11-02.md",
+          "bytes": 1611,
+          "sha256": "8438e46c79a47a5e575eab361a94c8866ee7ab4ce99b5b939b06432f06b7c65e"
+        },
+        {
+          "file": "EMA-review.bundle",
+          "bytes": 172011,
+          "sha256": "4b351173ae6c66d41910b18b6a2b1f84c5d4542ba7c945786b668e42acea3f09"
+        },
+        {
+          "file": "EMA-source.zip",
+          "bytes": 178732,
+          "sha256": "6e78a9ff7ca484a4d813b106f439b249e68774c7c332098cffa507aff857ba96"
+        },
+        {
+          "file": "EMACore.json",
+          "bytes": 49487,
+          "sha256": "72d5e0e09d8640717f803a06cc02d82b0ed7fcee8b29c115f28e74744008a2a4"
+        },
+        {
+          "file": "bundle-verification.txt",
+          "bytes": 157,
+          "sha256": "20bf3cb2d1faa418e9a71bb0e2d56f6369c8b1132d59880cdb3b0b8516ea5cdd"
+        },
+        {
+          "file": "source-verification.json",
+          "bytes": 11908,
+          "sha256": "1627d6e68656207f48db3b16b429460709ca90c34adc13912cd06bfd39224615"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "revision": "5fe773a62d1676b381a4a33156db0a3c033617f2",
+      "sourceSummary": {
+        "files": 60,
+        "matched": 60,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 397207
+      },
+      "sourceArchiveAutocrlf": false,
+      "checkoutAutocrlf": "true",
+      "bundleRestoredOfflineIntoEmptyRepository": true,
+      "restoredHistoryComplete": true,
+      "gitFsckPassed": true,
+      "restoredWorkingTreeClean": true,
+      "compilerAndRuntimeArtifactsRebuilt": false,
+      "artifactMatchesPreviouslyVerifiedBuild": true,
+      "artifactSha256": "2cbc9945138e5639b23eb7187881a7aaf74514e4680916f6655768c8b972ce94",
+      "dependencyLockMatchesVerifiedBuild": true,
+      "npmDependenciesVendored": false,
+      "offlineBuildClaimed": false,
+      "remoteWritePerformed": false,
+      "realWalletUsed": false,
+      "artifacts": [
+        {
+          "file": "CAWELON-review.bundle",
+          "bytes": 190111,
+          "sha256": "3b8c1a37baae4659f0af8b7a817160525b23e6fdc75043d95bb37f4b2007e1c3"
+        },
+        {
+          "file": "CAWELON-source.zip",
+          "bytes": 196194,
+          "sha256": "81b3c24ce641f13859950c19d700e3d20d69c507e92d25fad3e699f8799bb409"
+        },
+        {
+          "file": "CAWELONCore.json",
+          "bytes": 49533,
+          "sha256": "2cbc9945138e5639b23eb7187881a7aaf74514e4680916f6655768c8b972ce94"
+        },
+        {
+          "file": "DEPENDENCY_SECURITY_2026-11-02.md",
+          "bytes": 1611,
+          "sha256": "8438e46c79a47a5e575eab361a94c8866ee7ab4ce99b5b939b06432f06b7c65e"
+        },
+        {
+          "file": "bundle-verification.txt",
+          "bytes": 157,
+          "sha256": "afc6d0cd39746907767afccbe9801690390131f70f2ec33c27b96b8fa3756924"
+        },
+        {
+          "file": "source-verification.json",
+          "bytes": 11906,
+          "sha256": "7606cca5cef6677ac1f26cb00cdd9ad4685826fbf84a5438b90730138f4ec597"
+        }
+      ]
+    }
+  ],
+  "remainingRootAdvisory": "GHSA-mrhx-c7xc-m3w5",
+  "independentReviewComplete": false
+}
