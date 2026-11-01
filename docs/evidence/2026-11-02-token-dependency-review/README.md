@@ -16,3 +16,5 @@ The registry audit is a dated advisory lookup, not an independent security revie
 The subsequent [runtime installation evidence](RUNTIME.md) fixes missing runtime dependencies and verifies an independently installed minimal read-only profile for all three tokens.
 
 [The bounded Zod compatibility probe](ZOD_COMPATIBILITY.md) records an observed break in the unchanged Hardhat helper under Zod 4.6.6; no major-version override was adopted.
+
+[The response-body deadline correction](BODY_DEADLINE.md) records a stalled-body reproduction and the five-command fix across all three token repositories.

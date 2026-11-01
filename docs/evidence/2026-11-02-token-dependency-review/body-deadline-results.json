@@ -1,0 +1,155 @@
+{
+  "recordedAt": "2026-11-01T22:52:28.148Z",
+  "node": "v24.19.0",
+  "scope": "Five operational read-only mainnet CLIs; native HTTP body deadline and size handling",
+  "tokens": [
+    {
+      "token": "DAT",
+      "parent": "6c455914df26d52de75bd2c6d3ae0aefb1215d29",
+      "commit": "355fb9322bbfeafc8e008bf7f7aa1db057099750",
+      "sourceHashes": {
+        "README.md": "3a82ac44f2fc4363bd705e51ba56f965dbb6a6768e0ff2ec7a4daa0daaff9549",
+        "docs/RPC_BODY_DEADLINE_2026-11-02.md": "b8d801e392fac8fe49de1d51ad0e697f46cb20cab83ce25df9823121289a5b46",
+        "src/read-only-http.js": "132809b0d1c8bec89f7ad967ec38b5dab464a50117b9dc6930a62524555a5b6d",
+        "test/read-only-http.test.mjs": "85cbb5d85fa1c9089bd4be957fa2bff6bde1be63c27b1cfcd515690ac662b74d",
+        "test/read-only-http-cli.test.mjs": "17020a86bd7dcbdf2b068588b496dcc3766dd5dc41563a15bef8e11fe8a8dbe6",
+        "scripts/verify-base-mainnet.js": "9a3a2b5078b36615b17ad108a504cbca702d5b0105cad1a11eec0e10d6d492da",
+        "scripts/inspect-wallet-readiness.js": "61c80cd27109d9b6bb2d6219d420e44b19aa5562b6a65563022beb14ed52dc81",
+        "scripts/quote-dex.js": "3c4ddb06ede1d3d2636dd5bb72b0072782b8272ae689a5218c413af008af4dd8",
+        "scripts/inspect-transfers.js": "cc4d34ea56d5a92695a06b431b923aa18d8d617517d318ab0395b8476a0e459e",
+        "scripts/inspect-approvals.js": "1f013637b506f01bad82879400f2e4da58d535c7ee3ff11ca193f3f689f9280c"
+      },
+      "dependencies": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\node_modules",
+      "initial": {
+        "tests": 227,
+        "pass": 226,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "serial": {
+        "tests": 227,
+        "pass": 227,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "bodyObservedToExitMs": [
+        11766,
+        11850,
+        11643,
+        11747,
+        11783
+      ],
+      "unchangedLockSha256": "344fe0b079ba0468afbce767e037c887b5d26b58bd70837ffb021f627b653578"
+    },
+    {
+      "token": "EMA",
+      "parent": "c027e68cd1974dc31f2619d04b4fb9059843424f",
+      "commit": "b4f765338f77332eb11a0f0de5130cf5646a012e",
+      "sourceHashes": {
+        "README.md": "5f6ed0cbb6b4b242d1d441a2826330a0d0d60f57fe5153663e60892482c6d6ab",
+        "docs/RPC_BODY_DEADLINE_2026-11-02.md": "b8d801e392fac8fe49de1d51ad0e697f46cb20cab83ce25df9823121289a5b46",
+        "src/read-only-http.js": "132809b0d1c8bec89f7ad967ec38b5dab464a50117b9dc6930a62524555a5b6d",
+        "test/read-only-http.test.mjs": "85cbb5d85fa1c9089bd4be957fa2bff6bde1be63c27b1cfcd515690ac662b74d",
+        "test/read-only-http-cli.test.mjs": "17020a86bd7dcbdf2b068588b496dcc3766dd5dc41563a15bef8e11fe8a8dbe6",
+        "scripts/verify-base-mainnet.js": "9a3a2b5078b36615b17ad108a504cbca702d5b0105cad1a11eec0e10d6d492da",
+        "scripts/inspect-wallet-readiness.js": "61c80cd27109d9b6bb2d6219d420e44b19aa5562b6a65563022beb14ed52dc81",
+        "scripts/quote-dex.js": "3c4ddb06ede1d3d2636dd5bb72b0072782b8272ae689a5218c413af008af4dd8",
+        "scripts/inspect-transfers.js": "cc4d34ea56d5a92695a06b431b923aa18d8d617517d318ab0395b8476a0e459e",
+        "scripts/inspect-approvals.js": "1f013637b506f01bad82879400f2e4da58d535c7ee3ff11ca193f3f689f9280c"
+      },
+      "dependencies": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\node_modules",
+      "initial": {
+        "tests": 227,
+        "pass": 223,
+        "fail": 4,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "serial": {
+        "tests": 227,
+        "pass": 227,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "bodyObservedToExitMs": [
+        11778,
+        11897,
+        11803,
+        11926,
+        11707
+      ],
+      "unchangedLockSha256": "36af1a11e4f940c4fb4655c8302d16adeb154421478cb0218fb89da4392887f7"
+    },
+    {
+      "token": "CAWELON",
+      "parent": "b77a6b31af135c0461dd66d95bc837c8e7d9e88f",
+      "commit": "f4ba321f7fe7f2eed548fa9545198b0eb0116370",
+      "sourceHashes": {
+        "README.md": "b9b99886b35cbb335077ac32b2422ec89c9897c7fa159dc9ac070da16552fcde",
+        "docs/RPC_BODY_DEADLINE_2026-11-02.md": "b8d801e392fac8fe49de1d51ad0e697f46cb20cab83ce25df9823121289a5b46",
+        "src/read-only-http.js": "132809b0d1c8bec89f7ad967ec38b5dab464a50117b9dc6930a62524555a5b6d",
+        "test/read-only-http.test.mjs": "85cbb5d85fa1c9089bd4be957fa2bff6bde1be63c27b1cfcd515690ac662b74d",
+        "test/read-only-http-cli.test.mjs": "17020a86bd7dcbdf2b068588b496dcc3766dd5dc41563a15bef8e11fe8a8dbe6",
+        "scripts/verify-base-mainnet.js": "9a3a2b5078b36615b17ad108a504cbca702d5b0105cad1a11eec0e10d6d492da",
+        "scripts/inspect-wallet-readiness.js": "61c80cd27109d9b6bb2d6219d420e44b19aa5562b6a65563022beb14ed52dc81",
+        "scripts/quote-dex.js": "3c4ddb06ede1d3d2636dd5bb72b0072782b8272ae689a5218c413af008af4dd8",
+        "scripts/inspect-transfers.js": "cc4d34ea56d5a92695a06b431b923aa18d8d617517d318ab0395b8476a0e459e",
+        "scripts/inspect-approvals.js": "1f013637b506f01bad82879400f2e4da58d535c7ee3ff11ca193f3f689f9280c"
+      },
+      "dependencies": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\node_modules",
+      "initial": {
+        "tests": 227,
+        "pass": 223,
+        "fail": 4,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "serial": {
+        "tests": 227,
+        "pass": 227,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "bodyObservedToExitMs": [
+        11611,
+        11579,
+        11625,
+        11525,
+        11735
+      ],
+      "unchangedLockSha256": "e7e4e814cab7a8fe1c619f58714aa8c58df4e7cf6969ad66e90309089b0520ea"
+    }
+  ],
+  "baseline": {
+    "testSha256": "17020a86bd7dcbdf2b068588b496dcc3766dd5dc41563a15bef8e11fe8a8dbe6",
+    "sourceCommit": "6c455914df26d52de75bd2c6d3ae0aefb1215d29",
+    "dependencyReuse": "Existing DAT node_modules through a junction; not a fresh install",
+    "baselineRoot": "C:\\Users\\aseet\\AppData\\Local\\Temp\\ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446"
+  },
+  "baselineResult": {
+    "tests": 6,
+    "pass": 0,
+    "fail": 6,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "bodyDeadlineMs": 12000,
+  "responseBytes": 10485760,
+  "publicRpc": false,
+  "realWallet": false,
+  "transactions": false,
+  "contractRebuild": false,
+  "remotePublication": false,
+  "independentReview": false,
+  "dependencyVersionsChanged": false,
+  "originalServerRestarted": false,
+  "installedViemSources": {
+    "utils/rpc/http.js": "4e931522a6a82fe8c3b4a1d426ac7fc942a2c865243c53cf312560cd5c3604d8",
+    "utils/promise/withTimeout.js": "7bbeee270e6e0adcf5392978f96c7cd10f37cc7d93a80f4b4db89466b5a2af55",
+    "clients/transports/http.js": "3392a74cbcf73cfaae4f5f9f99f6e63870e580f7dfb41e2bb31e74cfa834aa4a"
+  }
+}

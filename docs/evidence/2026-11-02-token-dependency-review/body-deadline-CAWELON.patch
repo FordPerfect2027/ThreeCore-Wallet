@@ -1,0 +1,457 @@
+diff --git a/README.md b/README.md
+index a7bb860..45d7cf9 100644
+--- a/README.md
++++ b/README.md
+@@ -544,3 +544,5 @@ The [history CLI correction](docs/HISTORY_CLI_2026-11-02.md) rejects invalid add
+ ## Read-only runtime installation (November 2, 2026)
+ 
+ The [runtime installation correction](docs/READ_ONLY_RUNTIME_2026-11-02.md) makes viem an explicit runtime dependency. A fresh installation with development and optional dependencies omitted passes all 213 read-only cases for this token. This smaller profile does not include contract compilation tools; the full development Zod finding remains open.
++
++The five operational read-only commands now keep their 12-second request deadline through response-body consumption. See [the correction and reproducible checks](docs/RPC_BODY_DEADLINE_2026-11-02.md).
+diff --git a/docs/RPC_BODY_DEADLINE_2026-11-02.md b/docs/RPC_BODY_DEADLINE_2026-11-02.md
+new file mode 100644
+index 0000000..b0cf0ce
+--- /dev/null
++++ b/docs/RPC_BODY_DEADLINE_2026-11-02.md
+@@ -0,0 +1,67 @@
++# Read-only response-body deadline — November 2, 2026
++
++The five operational read-only commands set a 12-second HTTP timeout, but the
++installed viem 2.56.6 timeout stopped after response headers arrived. A small,
++unfinished JSON response could therefore keep a command waiting past that limit.
++This is separate from viem's existing 10 MiB response-size limit.
++
++The shared `src/read-only-http.js` transport now keeps a per-request deadline
++through body consumption. It cancels the native fetch on expiry and preserves
++caller cancellation. A caller-provided signal cannot disable the deadline.
++The response is buffered up to the same 10 MiB cap before normal JSON-RPC
++decoding. Declared and streamed oversize responses are cancelled before parsing.
++Normal status codes, JSON-RPC errors and split UTF-8 content are preserved.
++There is no automatic retry, weaker block fallback or additional RPC method.
++
++The affected commands are `verify-base-mainnet.js`,
++`inspect-wallet-readiness.js`, `quote-dex.js`, `inspect-transfers.js` and
++`inspect-approvals.js`. Twelve seconds is the limit for each network request,
++not a promise that a multi-request command or process startup finishes in that
++time. Solidity, deployment code, dependency versions and lockfiles are unchanged.
++The older deployment-artifact verifier `verify-base-sepolia.js` is outside this
++five-command correction; its existing transport is unchanged.
++
++## Reproduce
++
++```text
++node --test --test-reporter=tap --test-concurrency=2 test/*.test.mjs
++```
++
++The new command tests run real child processes and viem HTTP requests against
++test-owned loopback servers. They leave tiny response bodies unfinished, wait
++for the actual 12-second limit, and require unsuccessful exit with no report,
++no retry and no provider text in diagnostics. Startup time is measured separately
++from response-body waiting. The eight transport cases cover body cancellation,
++fresh deadlines, caller signals, UTF-8, response limits and HTTP RPC errors.
++The five command cases plus their parent group and eight transport cases produce
++14 TAP entries; the parent group is not another feature or command.
++
++A DAT source export from `6c455914df26d52de75bd2c6d3ae0aefb1215d29` failed all
++five corrected command checks and needed the test-owned 15-second body watchdog.
++The unchanged old dependencies were reused through a junction. The corrected
++DAT transport passed those checks, with process exit about 11.6–11.8 seconds
++after the server began its body (the request deadline starts slightly earlier).
++Both before/after outputs are retained in the combined Wallet evidence record.
++
++An initial harness used a 17-second process-wide watchdog. Starting five children
++concurrently could consume that budget before the request deadline, so that
++initial run cannot establish a response-body regression. Its failure log is
++retained. The corrected harness starts its 15-second body watchdog only when
++the server receives the request and separately bounds process startup.
++
++This verification does not connect to a real wallet or a public RPC, sign, send
++transactions, build contracts, resolve the open Zod advisory, or certify a release.
++
++## Full local regression
++
++All 227 TAP entries passed on Node 24.19.0 using the existing dependency
++installation. The three repositories were checked sequentially, with one test
++file active per repository. The 213 existing entries overlap earlier checkpoints;
++the 14 new entries include one parent grouping. Contract/build and browser suites
++were not rerun because their sources and dependencies did not change.
++
++The first simultaneous full runs reported watchdog failures (DAT 1, EMA 4,
++CAWELON 4). The same source passed the complete sequential reruns. These were
++existing child-process startup deadlines under combined load, including an input
++refusal that makes no RPC request. Assertions and those old watchdogs were not
++relaxed. Both initial and final logs remain in the combined evidence collection.
+diff --git a/scripts/inspect-approvals.js b/scripts/inspect-approvals.js
+index 3df3084..b60a38f 100644
+--- a/scripts/inspect-approvals.js
++++ b/scripts/inspect-approvals.js
+@@ -9,7 +9,8 @@
+  * The query returns public event history + allowance as of one block.
+  * It cannot approve token spending, trade or change a wallet.
+  */
+-import { createPublicClient, http } from "viem";
++import { createPublicClient } from "viem";
++import { createReadOnlyHttp } from "../src/read-only-http.js";
+ import { base } from "viem/chains";
+ import { ApprovalHistoryError, APPROVAL_LIMITS, inspectApprovalHistory } from "../src/approval-history.js";
+ import { HistoryCliInputError, parseHistoryCli, historyRpcUrl } from "../src/history-cli-input.js";
+@@ -19,7 +20,7 @@ try {
+   const rpcUrl = historyRpcUrl(process.env.THREECORE_READONLY_LOG_RPC ?? "https://base-rpc.publicnode.com");
+   const client = createPublicClient({
+     chain: base,
+-    transport: http(rpcUrl, { timeout: 12000, retryCount: 0 }),
++    transport: createReadOnlyHttp(rpcUrl),
+   });
+   const end = to ?? await client.getBlockNumber({ cacheTime: 0 });
+   const start = from ?? (end >= 249n ? end - 249n : 0n);
+diff --git a/scripts/inspect-transfers.js b/scripts/inspect-transfers.js
+index 60f826a..0a96434 100644
+--- a/scripts/inspect-transfers.js
++++ b/scripts/inspect-transfers.js
+@@ -9,7 +9,8 @@
+  * a full transaction history or balance, and it never executes a trade.
+  */
+ import { base } from "viem/chains";
+-import { createPublicClient, http } from "viem";
++import { createPublicClient } from "viem";
++import { createReadOnlyHttp } from "../src/read-only-http.js";
+ import { TransferHistoryError, TRANSFER_HISTORY_LIMITS, inspectAccountTransfers } from "../src/transfer-history.js";
+ import { HistoryCliInputError, parseHistoryCli, historyRpcUrl } from "../src/history-cli-input.js";
+ 
+@@ -18,7 +19,7 @@ try {
+   const rpcUrl = historyRpcUrl(process.env.THREECORE_READONLY_LOG_RPC ?? "https://base-rpc.publicnode.com");
+   const client = createPublicClient({
+     chain: base,
+-    transport: http(rpcUrl, { timeout: 12000, retryCount: 0 }),
++    transport: createReadOnlyHttp(rpcUrl),
+   });
+   const end = to ?? await client.getBlockNumber({ cacheTime: 0 });
+   const start = from ?? (end >= 249n ? end - 249n : 0n);
+diff --git a/scripts/inspect-wallet-readiness.js b/scripts/inspect-wallet-readiness.js
+index f7a2fbd..7b4db04 100644
+--- a/scripts/inspect-wallet-readiness.js
++++ b/scripts/inspect-wallet-readiness.js
+@@ -7,7 +7,8 @@
+  * This command does not connect to a browser wallet, grant an allowance,
+  * sign a message, send tokens, trade on a DEX or verify dApp safety.
+  */
+-import { createPublicClient, http } from "viem";
++import { createPublicClient } from "viem";
++import { createReadOnlyHttp } from "../src/read-only-http.js";
+ import { base } from "viem/chains";
+ import { WalletReadinessError, inspectWalletReadiness } from "../src/wallet-readiness.js";
+ 
+@@ -25,9 +26,7 @@ if (!/^0x[0-9a-fA-F]{40}$/.test(publicWalletAddress)) {
+ try {
+   const client = createPublicClient({
+     chain: base,
+-    transport: http("https://mainnet.base.org", {
+-      timeout: 12000, retryCount: 0,
+-    }),
++    transport: createReadOnlyHttp("https://mainnet.base.org"),
+   });
+   const report = await inspectWalletReadiness(client, publicWalletAddress);
+   process.stdout.write(JSON.stringify(report, null, 2) + "\n");
+diff --git a/scripts/quote-dex.js b/scripts/quote-dex.js
+index f83c72c..13494e2 100644
+--- a/scripts/quote-dex.js
++++ b/scripts/quote-dex.js
+@@ -8,7 +8,8 @@
+  * Exact raw input base units must be supplied. The quote will change as
+  * liquidity, trading fees and routes change. THIS IS NOT A TRADE OR ORDER.
+  */
+-import { createPublicClient, http } from "viem";
++import { createPublicClient } from "viem";
++import { createReadOnlyHttp } from "../src/read-only-http.js";
+ import { base } from "viem/chains";
+ import { DEPLOYED_TOKEN } from "../src/onchain-identity.js";
+ import { DexQuoteError, quoteClassicDex } from "../src/dex-quote.js";
+@@ -32,7 +33,7 @@ try {
+   }
+   const client = createPublicClient({
+     chain: base,
+-    transport: http(rpcUrl, { retryCount: 0, timeout: 12000 }),
++    transport: createReadOnlyHttp(rpcUrl),
+   });
+   const result = await quoteClassicDex(client, {
+     direction, amountInBaseUnits: BigInt(input),
+diff --git a/scripts/verify-base-mainnet.js b/scripts/verify-base-mainnet.js
+index ad20ec0..8f092ee 100644
+--- a/scripts/verify-base-mainnet.js
++++ b/scripts/verify-base-mainnet.js
+@@ -3,7 +3,8 @@
+  * Read-only deployed token identity verification. No wallet connection,
+  * signing credentials, approvals, or transaction submission.
+  */
+-import { createPublicClient, http } from "viem";
++import { createPublicClient } from "viem";
++import { createReadOnlyHttp } from "../src/read-only-http.js";
+ import { base } from "viem/chains";
+ import { DEPLOYED_TOKEN, TokenIdentityError, verifyDeployedToken } from "../src/onchain-identity.js";
+ 
+@@ -11,7 +12,7 @@ const rpcUrl = process.env.BASE_MAINNET_READ_RPC_URL || "https://mainnet.base.or
+ try {
+   const publicClient = createPublicClient({
+     chain: base,
+-    transport: http(rpcUrl, { retryCount: 0, timeout: 12000 }),
++    transport: createReadOnlyHttp(rpcUrl),
+   });
+   const report = await verifyDeployedToken(publicClient);
+   process.stdout.write(JSON.stringify(report, null, 2) + "\n");
+diff --git a/src/read-only-http.js b/src/read-only-http.js
+new file mode 100644
+index 0000000..e1ff18a
+--- /dev/null
++++ b/src/read-only-http.js
+@@ -0,0 +1,62 @@
++import { http } from "viem";
++
++export const READ_HTTP_LIMITS = Object.freeze({ timeoutMs: 12000, responseBytes: 10 * 1024 * 1024 });
++
++/** Keep viem's request deadline active until the entire bounded body arrives.
++ * Its native fetch deadline otherwise ends when response headers arrive.
++ * This transport does not grant wallet permission or add any RPC methods.
++ */
++export function createReadOnlyHttp(url, {
++  timeoutMs = READ_HTTP_LIMITS.timeoutMs,
++  responseBytes = READ_HTTP_LIMITS.responseBytes,
++} = {}) {
++  for (const [value, maximum] of [[timeoutMs, READ_HTTP_LIMITS.timeoutMs], [responseBytes, READ_HTTP_LIMITS.responseBytes]]) {
++    if (!Number.isSafeInteger(value) || value < 1 || value > maximum) throw Error("INVALID_READ_HTTP_LIMIT");
++  }
++  return http(url, {
++    timeout: timeoutMs, retryCount: 0, maxResponseBodySize: responseBytes,
++    async fetchFn(input, init) {
++      const controller = new AbortController();
++      const cancel = () => controller.abort();
++      if (init.signal?.aborted) cancel();
++      else init.signal?.addEventListener("abort", cancel, { once: true });
++      // Keep our deadline even when viem forwards a caller-supplied signal.
++      const timer = setTimeout(cancel, timeoutMs);
++      try {
++        const response = await fetch(input, { ...init, signal: controller.signal });
++        return await consumeBoundedResponse(response, responseBytes);
++      } finally {
++        clearTimeout(timer);
++        init.signal?.removeEventListener("abort", cancel);
++      }
++    },
++  });
++}
++
++async function consumeBoundedResponse(response, responseBytes) {
++  if (!response.body) return response;
++  const reader = response.body.getReader();
++  const chunks = [];
++  let size = 0, complete = false;
++  try {
++    if (Number(response.headers.get("content-length")) > responseBytes) throw Error("RPC_RESPONSE_LIMIT");
++    while (true) {
++      const { done, value } = await reader.read();
++      if (done) { complete = true; break; }
++      size += value.byteLength;
++      if (size > responseBytes) throw Error("RPC_RESPONSE_LIMIT");
++      chunks.push(value);
++    }
++    const bytes = new Uint8Array(size);
++    let offset = 0;
++    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
++    return new Response(bytes, {
++      status: response.status, statusText: response.statusText, headers: response.headers,
++    });
++  } finally {
++    if (!complete) {
++      try { await reader.cancel(); } catch { /* Preserve the original read failure. */ }
++    }
++    reader.releaseLock();
++  }
++}
+diff --git a/test/read-only-http-cli.test.mjs b/test/read-only-http-cli.test.mjs
+new file mode 100644
+index 0000000..6d651c9
+--- /dev/null
++++ b/test/read-only-http-cli.test.mjs
+@@ -0,0 +1,65 @@
++import test from "node:test";
++import assert from "node:assert/strict";
++import { createServer } from "node:http";
++import { execFile } from "node:child_process";
++import { fileURLToPath } from "node:url";
++
++const ACCOUNT = "0x" + "11".repeat(20);
++const commands = [
++  ["verify-base-mainnet.js", [], "https://mainnet.base.org/"],
++  ["inspect-wallet-readiness.js", [ACCOUNT], "https://mainnet.base.org/"],
++  ["quote-dex.js", ["buy", "1000000"], "https://mainnet.base.org/"],
++  ["inspect-transfers.js", [ACCOUNT], "https://base-rpc.publicnode.com/"],
++  ["inspect-approvals.js", [ACCOUNT], "https://base-rpc.publicnode.com/"],
++];
++
++// Exercise the actual CLI's normal 12-second limit, not an accelerated mock timer.
++// Only the endpoint is redirected, using the existing child-process-only preload.
++test("read-only CLI response-body deadlines", { concurrency: 5 }, async t => {
++  await Promise.all(commands.map(([script, args, endpoint]) => t.test(script, async subtest => {
++    const calls = [];
++    let headersSent = false;
++    let child, bodyWatchdog, bodyStarted;
++    const server = createServer(async (request, response) => {
++      let body = "";
++      for await (const chunk of request) body += chunk;
++      const query = JSON.parse(body);
++      calls.push(query.method);
++      response.writeHead(200, { "content-type": "application/json" });
++      response.write(JSON.stringify({ jsonrpc: "2.0", id: query.id, result: "test-only-secret" }).slice(0, -2));
++      headersSent = true; // Deliberately leave this tiny body unfinished.
++      if (bodyStarted === undefined) {
++        bodyStarted = performance.now();
++        bodyWatchdog = setTimeout(() => child.kill(), 15000);
++      }
++    });
++    try {
++      await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
++      const env = {
++        PATH: process.env.PATH, SYSTEMROOT: process.env.SYSTEMROOT,
++        THREECORE_TEST_TRANSPORT: "http://127.0.0.1:" + server.address().port + "/",
++        THREECORE_TEST_EXPECTED_ENDPOINT: endpoint,
++      };
++      const result = await new Promise(resolve => { child = execFile(process.execPath, [
++        "--import", new URL("./support/local-rpc-preload.mjs", import.meta.url).href,
++        fileURLToPath(new URL("../scripts/" + script, import.meta.url)), ...args,
++      ], { env, windowsHide: true, timeout: 45000, maxBuffer: 32768 }, (error, stdout, stderr) => {
++        resolve({ code: error?.code ?? 0, killed: Boolean(error?.killed), stdout, stderr });
++      }); });
++      const bodyElapsedMs = performance.now() - bodyStarted;
++      subtest.diagnostic("Response body observed to process exit: " + Math.round(bodyElapsedMs) + " ms");
++      assert(headersSent, "The response must reach the body-reading stage");
++      assert.equal(result.killed, false, "CLI stalled after response headers and required external termination");
++      assert.equal(result.code, 1, result.stderr);
++      assert.equal(result.stdout, "");
++      assert.match(result.stderr, /RPC_ERROR\n$/);
++      assert(!result.stderr.includes("test-only-secret"), "Provider body leaked into diagnostic");
++      assert.equal(calls.length, 1, "Timeout caused a retry or subsequent RPC");
++      assert(bodyElapsedMs < 15000, "CLI did not settle before the body watchdog");
++    } finally {
++      clearTimeout(bodyWatchdog);
++      server.closeAllConnections();
++      await new Promise(resolve => server.close(resolve));
++    }
++  })));
++});
+diff --git a/test/read-only-http.test.mjs b/test/read-only-http.test.mjs
+new file mode 100644
+index 0000000..e5d7ae9
+--- /dev/null
++++ b/test/read-only-http.test.mjs
+@@ -0,0 +1,112 @@
++import test from "node:test";
++import assert from "node:assert/strict";
++import { createServer } from "node:http";
++import { createPublicClient } from "viem";
++import { createReadOnlyHttp, READ_HTTP_LIMITS } from "../src/read-only-http.js";
++
++async function withServer(handler, run) {
++  let calls = 0;
++  const server = createServer(async (request, response) => {
++    let body = "";
++    for await (const chunk of request) body += chunk;
++    handler(JSON.parse(body), response, ++calls);
++  });
++  try {
++    await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
++    await run("http://127.0.0.1:" + server.address().port, () => calls);
++  } finally {
++    server.closeAllConnections();
++    await new Promise(resolve => server.close(resolve));
++  }
++}
++const request = client => client.request({ method: "eth_chainId" });
++const client = (url, options) => createPublicClient({ transport: createReadOnlyHttp(url, options) });
++
++test("body deadline aborts an unfinished stream without retries", async () => {
++  let closed;
++  const connectionClosed = new Promise(resolve => { closed = resolve; });
++  await withServer((query, response) => {
++    response.on("close", closed);
++    response.writeHead(200, { "content-type": "application/json" });
++    response.write('{"jsonrpc":"2.0","id":' + query.id + ',"result":"');
++  }, async (url, calls) => {
++    await assert.rejects(request(client(url, { timeoutMs: 300 })));
++    await Promise.race([connectionClosed, new Promise((_, reject) => {
++      const timer = setTimeout(() => reject(Error("Response connection was not cancelled")), 2000);
++      timer.unref();
++    })]);
++    assert.equal(calls(), 1);
++  });
++});
++
++test("each request receives a fresh deadline and preserves split UTF-8 JSON", async () => {
++  await withServer((query, response) => {
++    response.writeHead(200, { "content-type": "application/json" });
++    const bytes = Buffer.from(JSON.stringify({ jsonrpc: "2.0", id: query.id, result: "応答" }));
++    const split = bytes.indexOf(Buffer.from("応")) + 1;
++    response.write(bytes.subarray(0, split));
++    const timer = setTimeout(() => response.end(bytes.subarray(split)), 600);
++    response.on("close", () => clearTimeout(timer));
++  }, async (url, calls) => {
++    const rpc = client(url, { timeoutMs: 1000 });
++    assert.equal(await request(rpc), "応答");
++    assert.equal(await request(rpc), "応答");
++    assert.equal(calls(), 2);
++  });
++});
++
++test("an unexpired caller signal cannot disable the body deadline", async () => {
++  await withServer((_, response) => {
++    response.writeHead(200, { "content-type": "application/json" });
++    response.write('{"result":"');
++  }, async (url, calls) => {
++    const caller = new AbortController();
++    await assert.rejects(client(url, { timeoutMs: 300 }).request({ method: "eth_chainId" }, { signal: caller.signal }));
++    assert.equal(caller.signal.aborted, false, "Transport must not abort the caller's controller");
++    assert.equal(calls(), 1);
++  });
++});
++
++test("caller cancellation during a body read remains effective", async () => {
++  const caller = new AbortController();
++  await withServer((_, response) => {
++    response.writeHead(200, { "content-type": "application/json" });
++    response.write('{"result":"');
++    const timer = setTimeout(() => caller.abort(), 100);
++    response.on("close", () => clearTimeout(timer));
++  }, async (url, calls) => {
++    await assert.rejects(client(url).request({ method: "eth_chainId" }, { signal: caller.signal }));
++    assert.equal(caller.signal.aborted, true);
++    assert.equal(calls(), 1);
++  });
++});
++
++for (const declared of [true, false]) {
++  test("oversized " + (declared ? "declared" : "chunked") + " body is refused without retries", async () => {
++    await withServer((_, response) => {
++      response.writeHead(200, { "content-type": "application/json", ...(declared ? { "content-length": "1000" } : {}) });
++      response.write("x".repeat(declared ? 1 : 129));
++    }, async (url, calls) => {
++      await assert.rejects(request(client(url, { timeoutMs: 1000, responseBytes: 128 })), /RPC_RESPONSE_LIMIT/);
++      assert.equal(calls(), 1);
++    });
++  });
++}
++
++test("complete HTTP JSON-RPC errors retain their error code", async () => {
++  await withServer((query, response) => {
++    response.writeHead(429, { "content-type": "application/json" });
++    response.end(JSON.stringify({ jsonrpc: "2.0", id: query.id, error: { code: -32005, message: "Fixture limit" } }));
++  }, async (url, calls) => {
++    await assert.rejects(request(client(url)), error => error.code === -32005);
++    assert.equal(calls(), 1);
++  });
++});
++
++test("transport limits cannot be disabled or raised beyond the supported caps", () => {
++  assert.equal(READ_HTTP_LIMITS.timeoutMs, 12000);
++  assert.equal(READ_HTTP_LIMITS.responseBytes, 10485760);
++  for (const options of [{ timeoutMs: 0 }, { timeoutMs: 12001 }, { timeoutMs: NaN }, { responseBytes: false }, { responseBytes: Infinity }, { responseBytes: 10485761 }]) {
++    assert.throws(() => createReadOnlyHttp("http://127.0.0.1", options), /INVALID_READ_HTTP_LIMIT/);
++  }
++});

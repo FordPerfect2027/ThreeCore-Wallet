@@ -32,6 +32,12 @@ process and unsaved Wallet/rehearsal data. Already passing full suites should
 not be repeated without a relevant code change, new failure or unresolved
 concern. Keep GitHub publication deferred for one combined update.
 
+The later [RPC response-body deadline correction](RPC_BODY_DEADLINE_2026-11-02.md)
+fixes five operational read-only commands in each token. All three complete
+227-entry read-only suites pass in sequential local runs; initial failed runs
+are retained. This source change is newer than the verified delivery below.
+It does not complete real-wallet or independent-review gates.
+
 The latest [verified combined delivery](DISTRIBUTION_CHECKPOINT_2026-11-02.md)
 is `d9044422820973e53fa41e0c55908f6e34217d7f`: 4433 Wallet source files,
 253 evidence manifests / 2348 entries, ten isolated startup checks,

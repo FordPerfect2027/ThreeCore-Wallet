@@ -1,0 +1,12 @@
+import { createServer } from 'node:http';
+import { spawn } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
+const root='C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102';
+const start=Date.now();const note=(event,data)=>console.log(JSON.stringify({ms:Date.now()-start,event,data}));
+const server=createServer(async(req,res)=>{let b='';for await(const c of req)b+=c;note('request',JSON.parse(b).method);res.on('close',()=>note('response-close'));res.writeHead(200,{'content-type':'application/json'});res.write('{"jsonrpc":"2.0","id":0,"result":"');});
+server.on('connection',s=>{note('connection');s.on('close',()=>note('socket-close'));});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const child=spawn(process.execPath,['--import',pathToFileURL(root+'/test/support/local-rpc-preload.mjs').href,root+'/scripts/verify-base-mainnet.js'],{windowsHide:true,env:{PATH:process.env.PATH,SYSTEMROOT:process.env.SYSTEMROOT,THREECORE_TEST_TRANSPORT:'http://127.0.0.1:'+server.address().port+'/'},stdio:['ignore','pipe','pipe']});
+child.stdout.on('data',d=>note('stdout',d.toString()));child.stderr.on('data',d=>note('stderr',d.toString()));
+const timer=setTimeout(()=>{note('watchdog');child.kill();},26000);
+await new Promise(r=>child.on('close',(code,signal)=>{note('exit',{code,signal});r();}));clearTimeout(timer);server.closeAllConnections();await new Promise(r=>server.close(r));

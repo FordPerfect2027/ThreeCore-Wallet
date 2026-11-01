@@ -1,0 +1,8 @@
+{"ms":2828,"event":"connection"}
+{"ms":2844,"event":"request","data":"eth_chainId"}
+{"ms":14780,"event":"socket-close"}
+{"ms":14780,"event":"response-close"}
+{"ms":14783,"event":"stderr","data":"Read-only DAT verification failed: RPC_ERROR\n"}
+{"ms":14789,"event":"connection"}
+{"ms":14791,"event":"socket-close"}
+{"ms":14830,"event":"exit","data":{"code":1,"signal":null}}

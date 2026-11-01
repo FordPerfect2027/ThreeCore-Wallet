@@ -204,3 +204,11 @@ The [Zod compatibility probe](ZOD_COMPATIBILITY_2026-11-02.md) now provides a co
 ## Current combined distribution
 
 The [d904442 distribution checkpoint](DISTRIBUTION_CHECKPOINT_2026-11-02.md) now includes the history CLI and runtime-installation corrections. Its full-history bundles, source archives, evidence and isolated startup checks passed. All three token restores receive fresh minimal dependencies from an existing npm cache and pass 30 CLI/input cases each. Earlier full-regression totals are not reruns, and real-wallet acceptance, compatible Zod remediation and independent review remain open.
+
+## Later RPC body-deadline correction
+
+[The fixed token sources and reproduction](RPC_BODY_DEADLINE_2026-11-02.md)
+record the five-command timeout correction, complete sequential regressions,
+initial failures, and exact patches relative to the prior distribution. The
+verified d904442 ZIP predates this change. The prepared CI pins are local only;
+real-wallet and independent-review acceptance remain open.

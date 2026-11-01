@@ -1,0 +1,187 @@
+TAP version 13
+# Subtest: read-only CLI response-body deadlines
+    # Subtest: verify-base-mainnet.js
+    not ok 1 - verify-base-mainnet.js
+      ---
+      duration_ms: 17146.7527
+      type: 'test'
+      location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:46:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 0)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Subtest: inspect-wallet-readiness.js
+    not ok 2 - inspect-wallet-readiness.js
+      ---
+      duration_ms: 17126.8266
+      type: 'test'
+      location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:46:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 1)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Subtest: quote-dex.js
+    not ok 3 - quote-dex.js
+      ---
+      duration_ms: 17155.4857
+      type: 'test'
+      location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:46:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 2)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Subtest: inspect-transfers.js
+    not ok 4 - inspect-transfers.js
+      ---
+      duration_ms: 17213.8713
+      type: 'test'
+      location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:46:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 3)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Subtest: inspect-approvals.js
+    not ok 5 - inspect-approvals.js
+      ---
+      duration_ms: 17236.6933
+      type: 'test'
+      location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:46:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 4)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    1..5
+not ok 1 - read-only CLI response-body deadlines
+  ---
+  duration_ms: 17298.4589
+  type: 'test'
+  location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\test\\read-only-http-cli.test.mjs:18:1'
+  failureType: 'subtestsFailed'
+  error: '5 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: body deadline aborts an unfinished stream without retries
+ok 2 - body deadline aborts an unfinished stream without retries
+  ---
+  duration_ms: 616.3597
+  type: 'test'
+  ...
+# Subtest: each request receives a fresh deadline and preserves split UTF-8 JSON
+ok 3 - each request receives a fresh deadline and preserves split UTF-8 JSON
+  ---
+  duration_ms: 588.2721
+  type: 'test'
+  ...
+# Subtest: oversized declared body is refused without retries
+ok 4 - oversized declared body is refused without retries
+  ---
+  duration_ms: 161.4813
+  type: 'test'
+  ...
+# Subtest: oversized chunked body is refused without retries
+ok 5 - oversized chunked body is refused without retries
+  ---
+  duration_ms: 52.3006
+  type: 'test'
+  ...
+# Subtest: complete HTTP JSON-RPC errors retain their error code
+ok 6 - complete HTTP JSON-RPC errors retain their error code
+  ---
+  duration_ms: 36.0641
+  type: 'test'
+  ...
+# Subtest: transport limits cannot be disabled or raised beyond the supported caps
+ok 7 - transport limits cannot be disabled or raised beyond the supported caps
+  ---
+  duration_ms: 1.6537
+  type: 'test'
+  ...
+1..7
+# tests 12
+# suites 0
+# pass 6
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 17679.798
