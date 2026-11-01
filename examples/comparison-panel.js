@@ -31,6 +31,10 @@ export function mountComparisonPanel({ document, parent, download = offerWalletD
   const file = document.createElement("input"); file.type = "file"; file.accept = ".json,application/json"; file.className = "comparison-file"; fileLabel.append(file);
   const stop = document.createElement("button"); stop.type = "button"; stop.className = "comparison-file-stop secondary"; stop.textContent = "ファイル読み込みを中止";
   const save = document.createElement("button"); save.type = "button"; save.className = "comparison-save secondary"; save.textContent = "比較結果と前後の残高記録を保存";
+  const sourceSide = document.createElement("select"); sourceSide.className = "comparison-source-side"; sourceSide.setAttribute("aria-label", "比較資料から取り出す元の記録");
+  for (const [value, text] of [["earlier", "比較元の記録"], ["later", "比較先の記録"]]) { const option = document.createElement("option"); option.value = value; option.textContent = text; sourceSide.append(option); } sourceSide.value = "earlier";
+  const saveSource = document.createElement("button"); saveSource.type = "button"; saveSource.className = "comparison-source-save secondary"; saveSource.textContent = "選んだ元記録だけを保存";
+  const useSource = document.createElement("button"); useSource.type = "button"; useSource.className = "comparison-source-use secondary"; useSource.textContent = "選んだ元記録を比較元欄へ準備";
   const reviewLabel = document.createElement("label"); reviewLabel.textContent = "保存した比較資料を再確認（JSON・128 KiBまで）";
   const reviewFile = document.createElement("input"); reviewFile.type = "file"; reviewFile.accept = ".json,application/json"; reviewFile.className = "comparison-review-file"; reviewLabel.append(reviewFile);
   const compare = document.createElement("button");
@@ -50,7 +54,7 @@ export function mountComparisonPanel({ document, parent, download = offerWalletD
   const notice = document.createElement("p");
   notice.className = "notice";
   notice.textContent = "比較はPC内だけで行います。増減は送金履歴や利益を意味しません。比較資料の保存には前後の公開アドレスと残高も含みます。元ファイルの書式や出所を証明する資料ではありません。";
-  section.append(heading, fileLabel, stop, label, compare, clear, status, details, save, reviewLabel, notice);
+  section.append(heading, fileLabel, stop, label, compare, clear, status, details, save, sourceSide, saveSource, useSource, reviewLabel, notice);
   parent.append(section);
   let target = null;
   let disposed = false;
@@ -59,7 +63,7 @@ export function mountComparisonPanel({ document, parent, download = offerWalletD
   let completed = null;
   const owns = id => !disposed && id === generation;
   function retireRead() { const previous = reading; reading = null; previous?.abort(); }
-  function controls() { compare.disabled = !target || Boolean(reading); file.disabled = reviewFile.disabled = Boolean(reading); stop.disabled = !reading; save.disabled = !completed || Boolean(reading); section.setAttribute("aria-busy", String(Boolean(reading))); }
+  function controls() { compare.disabled = !target || Boolean(reading); file.disabled = reviewFile.disabled = Boolean(reading); stop.disabled = !reading; save.disabled = sourceSide.disabled = saveSource.disabled = useSource.disabled = !completed || Boolean(reading); section.setAttribute("aria-busy", String(Boolean(reading))); }
 
   function reset(message = "比較する結果を先に表示してください。") {
     completed = null;
@@ -130,13 +134,29 @@ export function mountComparisonPanel({ document, parent, download = offerWalletD
       if (kind !== "synchronous" || result === false) throw Error(); status.textContent = "比較資料の保存を開始しました。ダウンロード先をご確認ください。";
     } catch { if (owns(id) && completed === pair) status.textContent = "比較資料を保存できませんでした。比較結果は保持しています。"; }
   }
+  function selectedSource() {
+    if (disposed || reading || !completed || !["earlier", "later"].includes(sourceSide.value)) return null;
+    if (completed.inputText !== undefined && baseline.value !== completed.inputText) { reset("比較元が変わりました。元記録を取り出す前に再度比較してください。"); return null; }
+    return { pair: completed, side: sourceSide.value, snapshot: completed[sourceSide.value], id: generation };
+  }
+  function exportSource() {
+    const selected = selectedSource(); if (!selected) return;
+    try { const prepared = { text: encodePortfolioReport(selected.snapshot), filename: `ThreeCore-${selected.snapshot.agent}-comparison-${selected.side}-${selected.snapshot.blockNumber}.json`, mimeType: "application/json;charset=utf-8" };
+      const receipt = download({ document, prepared }), kind = observeCallbackResult(receipt);
+      if (!owns(selected.id) || completed !== selected.pair || sourceSide.value !== selected.side) return;
+      if (kind !== "synchronous" || receipt === false) throw Error();
+      status.textContent = "選んだ過去の元記録1件の保存を開始しました。公開アドレスと残高を含みます。現在の残高確認ではありません。";
+    } catch { if (owns(selected.id) && completed === selected.pair) status.textContent = "元記録を保存できませんでした。比較資料は保持しています。"; }
+  }
+  function reuseSource() { const selected = selectedSource(); if (selected) api.stageBaseline(selected.snapshot); }
+  saveSource.addEventListener("click", exportSource); useSource.addEventListener("click", reuseSource);
   reviewFile.addEventListener("change", loadFile); save.addEventListener("click", saveComparison);
   file.addEventListener("change", loadFile); stop.addEventListener("click", stopFile);
   baseline.addEventListener("input", changed);
   compare.addEventListener("click", run);
   clear.addEventListener("click", clearInput);
   reset();
-  return Object.freeze({
+  const api = Object.freeze({
     stageBaseline(snapshot) {
       if (disposed) return false;
       const id = ++generation; retireRead(); reset();
@@ -184,9 +204,11 @@ export function mountComparisonPanel({ document, parent, download = offerWalletD
       baseline.removeEventListener("input", changed);
       file.removeEventListener("change", loadFile); stop.removeEventListener("click", stopFile);
       reviewFile.removeEventListener("change", loadFile); save.removeEventListener("click", saveComparison);
+      saveSource.removeEventListener("click", exportSource); useSource.removeEventListener("click", reuseSource);
       compare.removeEventListener("click", run);
       clear.removeEventListener("click", clearInput);
       section.remove();
     },
   });
+  return api;
 }

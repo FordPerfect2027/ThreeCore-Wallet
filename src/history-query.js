@@ -3,6 +3,7 @@ import { createPortfolioHistory } from "./portfolio-history.js";
 import { normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
 import { exportTextBytes } from "./export-payload.js";
 import { parseSecurityJson } from "./security-json.js";
+import { validatePortfolioSnapshot } from "./portfolio-report.js";
 
 export const HISTORY_QUERY_FILE_LIMIT = 65536;
 export function encodeHistoryQueryFile(input) {
@@ -120,6 +121,28 @@ export function prepareHistoryPrune(text, input) {
   return Object.freeze({ query: q, previousCount: result.totalCount, removedCount: result.matchCount,
     remainingCount: result.totalCount - result.matchCount, removedIndices: Object.freeze([...selected]),
     text: remaining.exportText(), historicalObservation: true, canAuthorizeConnection: false, canAuthorizeTransaction: false });
+}
+
+/** Find the newest strictly earlier saved point in the exact target identity. */
+export function findPreviousPortfolioObservation(text, input) {
+  const target = validatePortfolioSnapshot(input), result = queryPortfolioHistory(text, { account: target.account, chainId: target.chainId, siteOrigin: target.siteOrigin, order: "newest" });
+  return result.rows.find(({ snapshot }) => snapshot.agent === target.agent && BigInt(snapshot.blockNumber) < BigInt(target.blockNumber)) ?? null;
+}
+
+/** Retain the newest N matched saved points per complete identity, preserving all unmatched rows. */
+export function prepareHistoryRetention(text, input, keepCount) {
+  if (!Number.isSafeInteger(keepCount) || keepCount < 1 || keepCount > 64) fail();
+  const result = queryPortfolioHistory(text, input), groups = new Map(), removed = new Set();
+  for (const row of result.rows) { const s = row.snapshot, key = JSON.stringify([s.agent, s.account, s.chainId, s.siteOrigin]); if (!groups.has(key)) groups.set(key, []); groups.get(key).push(row); }
+  for (const rows of groups.values()) {
+    rows.sort((a, b) => BigInt(a.snapshot.blockNumber) > BigInt(b.snapshot.blockNumber) ? -1 : BigInt(a.snapshot.blockNumber) < BigInt(b.snapshot.blockNumber) ? 1 : a.index - b.index);
+    for (const row of rows.slice(keepCount)) removed.add(row.index);
+  }
+  if (!removed.size) fail();
+  const source = createPortfolioHistory(); source.importText(text); const retained = createPortfolioHistory();
+  retained.merge(source.state().snapshots.filter((_, index) => !removed.has(index)));
+  return Object.freeze({ query: result.query, keepCount, previousCount: result.totalCount, removedCount: removed.size, remainingCount: result.totalCount - removed.size,
+    removedIndices: Object.freeze([...removed]), text: retained.exportText(), historicalObservation: true, canAuthorizeConnection: false, canAuthorizeTransaction: false });
 }
 
 /** Complete balance rows for matched observations; no valuation, rounding or inferred zeroes. */

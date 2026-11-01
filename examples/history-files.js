@@ -4,7 +4,7 @@ import { createHistoryFileReader } from "../src/history-file-reader.js";
 import { prepareHistoryDownload, createHistoryBackupTracker, preparePortfolioReportsHistory, prepareHistoryArchives, HISTORY_REPORT_FILE_LIMIT, HISTORY_REPORT_BATCH_LIMIT, HISTORY_ARCHIVE_FILE_LIMIT, HISTORY_ARCHIVE_BATCH_LIMIT } from "../src/history-file.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 import { validatePortfolioSnapshot } from "../src/portfolio-report.js";
-import { exportFilteredHistory, queryPortfolioHistory, prepareHistoryPrune, portfolioHistoryCSV, encodeHistoryQueryFile, decodeHistoryQueryFile, HISTORY_QUERY_FILE_LIMIT } from "../src/history-query.js";
+import { exportFilteredHistory, queryPortfolioHistory, prepareHistoryPrune, prepareHistoryRetention, portfolioHistoryCSV, encodeHistoryQueryFile, decodeHistoryQueryFile, HISTORY_QUERY_FILE_LIMIT } from "../src/history-query.js";
 import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
 
 /** Browser file actions are explicit and scoped to one agent card. */
@@ -342,35 +342,45 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   }); saveBalances.disabled = true;
   const pruneDetails = node("pre", "history-prune-details"); pruneDetails.setAttribute("tabindex", "-1");
   const pruneConfirm = node("input", "history-prune-confirm"); pruneConfirm.type = "checkbox";
+  const keepCount = node("input", "history-retain-count"); keepCount.type = "text"; keepCount.inputMode = "numeric"; keepCount.maxLength = 2; keepCount.value = "1";
   function invalidatePrune() { pruneProposal = null; pruneDetails.textContent = ""; pruneConfirm.checked = false; pruneApply.disabled = true; }
-  const prunePreview = button("history-prune-preview", "表示した記録の削除予定を確認", id => {
+  function reviewPrune(id, mode) {
     invalidatePrune(); reader.reset(); const selected = view;
     if (typeof onPrune !== "function" || !selected || !matches(selected, id) || JSON.stringify(selected.criteria) !== JSON.stringify(query())) throw Error("Search required");
-    const prepared = prepareHistoryPrune(selected.archive, selected.criteria);
+    const keepText = keepCount.value;
+    if (mode === "retention" && !/^[1-9][0-9]?$/.test(keepText)) throw Error("Invalid retention count");
+    const prepared = mode === "retention" ? prepareHistoryRetention(selected.archive, selected.criteria, Number(keepText)) : prepareHistoryPrune(selected.archive, selected.criteria);
     if (!matches(selected, id)) throw Error("History changed");
-    pruneProposal = { ...selected, prepared };
-    pruneDetails.textContent = `削除予定${prepared.removedCount}件 / 残す記録${prepared.remainingCount}件。まだ変更していません。\n` +
-      queryPortfolioHistory(selected.archive, selected.criteria).rows.map(({ snapshot, index }) => `元の位置${index}: ${snapshot.account} / chain ${snapshot.chainId} / ${snapshot.siteOrigin} / block ${snapshot.blockNumber}`).join("\n") +
+    pruneProposal = { ...selected, prepared, mode, keepText };
+    const removed = new Set(prepared.removedIndices);
+    pruneDetails.textContent = (mode === "retention" ? `表示した記録内で、同じエージェント・アカウント・チェーン・サイトごとに新しい${keepText}件を残します。\n` : "") + `削除予定${prepared.removedCount}件 / 残す記録${prepared.remainingCount}件。まだ変更していません。\n` +
+      queryPortfolioHistory(selected.archive, selected.criteria).rows.filter(row => removed.has(row.index)).map(({ snapshot, index }) => `元の位置${index}: ${snapshot.account} / chain ${snapshot.chainId} / ${snapshot.siteOrigin} / block ${snapshot.blockNumber}`).join("\n") +
       "\n必要な履歴は先にファイルへ保存してください。適用後は直前の履歴を復元できます。ページを閉じると復元用データも消えます。";
     status.textContent = "削除予定を表示しました。内容を確認し、確認欄を選んでから適用してください。";
     if (current(id)) { try { pruneDetails.focus?.(); } catch {} }
-  });
+  }
+  const prunePreview = button("history-prune-preview", "表示した記録の削除予定を確認", id => reviewPrune(id, "matches"));
+  const retainPreview = button("history-retain-preview", "対象ごとに新しい記録を残す整理案を確認", id => reviewPrune(id, "retention"));
   const pruneApply = button("history-prune-apply", "確認した記録だけ削除", id => {
     const proposal = pruneProposal;
     if (!pruneConfirm.checked || !proposal || !matches(proposal, id) || JSON.stringify(proposal.criteria) !== JSON.stringify(query())) { invalidatePrune(); throw Error("New review required"); }
-    const prepared = prepareHistoryPrune(proposal.archive, proposal.criteria);
+    if (proposal.mode === "retention" && proposal.keepText !== keepCount.value) { invalidatePrune(); throw Error("Retention count changed"); }
+    const prepared = proposal.mode === "retention" ? prepareHistoryRetention(proposal.archive, proposal.criteria, Number(proposal.keepText)) : prepareHistoryPrune(proposal.archive, proposal.criteria);
     if (prepared.text !== proposal.prepared.text || !matches(proposal, id) || proposal !== pruneProposal) { invalidatePrune(); throw Error("Stale deletion"); }
     invalidatePrune();
     try {
-      const receipt = onPrune(Object.freeze({ archive: proposal.archive, revision: proposal.revision, criteria: Object.freeze({ ...proposal.criteria }), text: prepared.text })), kind = observeCallbackResult(receipt);
+      const receipt = onPrune(Object.freeze({ archive: proposal.archive, revision: proposal.revision, criteria: Object.freeze({ ...proposal.criteria }), text: prepared.text, mode: proposal.mode, keepCount: prepared.keepCount ?? null })), kind = observeCallbackResult(receipt);
       if (!current(id)) return;
       if (kind !== "synchronous" || receipt !== true) throw Error("Unconfirmed deletion");
     } catch { if (current(id)) status.textContent = "削除結果を確認できませんでした。現在の履歴と復元欄を確認してください。"; return; }
     invalidateView(); status.textContent = prepared.removedCount + "件の削除を確認しました。直前の履歴は復元欄で確認できます。";
   }); pruneApply.disabled = true;
   listen(pruneConfirm, "change", () => { pruneApply.disabled = !pruneConfirm.checked || !pruneProposal; });
+  listen(keepCount, "input", invalidatePrune);
   const pruneSection = node("section", "history-prune"); pruneSection.hidden = typeof onPrune !== "function";
-  pruneSection.append(node("p", "notice", "容量整理: 条件で絞った一部の記録だけを削除します。全件の消去は上の専用確認欄で行ってください。"), prunePreview, pruneDetails,
+  pruneSection.append(node("p", "notice", "容量整理: 条件で絞った一部の記録だけを削除します。全件の消去は上の専用確認欄で行ってください。"), prunePreview,
+    labelled("対象ごとに残す新しい保存記録の数（1〜64件）", keepCount), retainPreview,
+    node("p", "notice", "整理案は表示した記録だけが対象です。条件に合わない記録は残します。「新しい」は保存記録のブロック番号順で、現在の残高を保証しません。"), pruneDetails,
     labelled("表示した記録をこの履歴から削除することを確認", pruneConfirm), pruneApply);
   const resetFilters = button("history-filter-reset", "絞り込み条件を消去", () => {
     for (const input of [account, chain, minimum, maximum, tokenAddress, origin]) input.value = "";
