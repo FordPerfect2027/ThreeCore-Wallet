@@ -180,3 +180,11 @@ passes 194 full read-only cases, superseding the earlier overlapping 159-case
 run. Six new public-RPC observations succeeded; existing-account details are
 retained privately. Real-wallet UI acceptance and independent review remain
 separate.
+
+## History command follow-up
+
+The [latest history CLI correction](HISTORY_CLI_2026-11-02.md) records the new
+token pins, 213 passing read-only cases per token, positive-event command
+transport checks and before/after proof. Input errors cause no RPC, provider
+details are redacted and automatic retries are disabled. Earlier test totals
+overlap. The 7d58d08 combined delivery predates this follow-up.

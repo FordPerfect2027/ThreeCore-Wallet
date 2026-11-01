@@ -32,12 +32,15 @@ process and unsaved Wallet/rehearsal data. Already passing full suites should
 not be repeated without a relevant code change, new failure or unresolved
 concern. Keep GitHub publication deferred for one combined update.
 
-The local release package at `59b63ca5fede34594ebed2749bed895724f09112`
-has now been exported and restored from its Git bundle into an empty repository:
-4,331 source files matched; all 250 evidence manifests / 2,255 entries matched;
-ten isolated startup checks passed. Its temporary server was closed. The outer
-ZIP was extracted again and its nine checksummed inner artifacts matched. This
-validates the local delivery, not the outstanding real-wallet acceptance.
+The latest verified combined delivery before the history CLI follow-up is
+`7d58d086c55e63e606a17454ff4faf925c4a42ee`: 4,390 Wallet source files,
+253 evidence manifests / 2,308 entries, ten isolated startup checks, and an
+outer-ZIP extraction with all 41 manifest entries matching. All three token
+bundles restored into empty Windows directories with spaces in their paths;
+each passed 11 CLI cases using the existing dependency installation. This is
+source restoration, not a fully offline build. It does not complete real-wallet
+acceptance. The [subsequent history CLI correction](HISTORY_CLI_2026-11-02.md)
+has separate fixed sources and regression evidence and awaits combined packaging.
 
 Subsequent [token dependency review and repair](TOKEN_DEPENDENCY_REVIEW_2026-11-02.md)
 patched two development dependencies and verified all three tokens again against
@@ -45,8 +48,8 @@ the fixed Wallet source. Six audit package entries remain from one Zod root
 advisory and require compatible remediation/exposure review. This unresolved
 finding must accompany the candidate; it is not cleared by the narrower clean
 production-only audit. The prepared new CI pins are local only and require the
-documented token-before-Wallet publication order. The delivered `59b63ca` ZIP
-predates this follow-up; a new package will be assembled with the combined work.
+documented token-before-Wallet publication order. The `7d58d08` delivery includes the dependency and canonical-read corrections.
+Subsequent history CLI changes are tracked separately below.
 
 ## Acceptance gates and current evidence
 
@@ -221,3 +224,11 @@ passes 194 full read-only cases, superseding the earlier overlapping 159-case
 run. Six new public-RPC observations succeeded; existing-account details are
 retained privately. Real-wallet UI acceptance and independent review remain
 separate.
+
+## History CLI follow-up — November 2
+
+The [history command correction](HISTORY_CLI_2026-11-02.md) now blocks known
+invalid input before RPC and redacts provider error details. Each token passes
+213 read-only cases; 19 history CLI/input cases are included. Before/after
+evidence reproduces unnecessary requests in the original commands. This does
+not close the remaining real-wallet, independent review or Zod gates.
