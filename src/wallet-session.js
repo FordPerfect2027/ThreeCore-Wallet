@@ -1,3 +1,4 @@
+import { observeCallbackResult } from "./security-callback.js";
 import { observeWalletProvider } from "./provider-events.js";
 import { walletRpcSupervisor, RpcSupervisorError } from "./rpc-supervisor.js";
 import { guardRpcRequest, guardRpcResponse, RpcSecurityError } from "./security-rpc.js";
@@ -616,4 +617,74 @@ function decodeUint256Word(value) {
     reject("INVALID_RPC_RESULT", "Expected one complete ABI-encoded uint256 word");
   }
   return BigInt(value);
+}
+
+const permittedAccountFail = code => { throw Object.assign(new Error(code), { code }); };
+
+/** Explicitly inspect existing site permission. Never request permission or connect. */
+export function startPermittedAccountRead({ provider, siteOrigin, isCurrent,
+  supervisor = walletRpcSupervisor, timeoutMs = 10_000 }) {
+  let cancelled = false, observer = null;
+  const pending = new Set();
+  function cancel() {
+    cancelled = true;
+    for (const operation of pending) operation.cancel();
+    observer?.dispose();
+  }
+  function check() {
+    if (cancelled) permittedAccountFail('SESSION_CHANGED');
+    let result;
+    try { result = isCurrent(); } catch { permittedAccountFail('ACCESS_LOCKED'); }
+    if (observeCallbackResult(result) !== 'synchronous' || result !== true || cancelled) permittedAccountFail('ACCESS_LOCKED');
+  }
+  // Defer dispatch until the owner has received its cancellation handle.
+  const promise = Promise.resolve().then(async () => {
+    try {
+      validateSiteOrigin(siteOrigin);
+      check();
+      let request;
+      try { request = provider?.request; } catch { permittedAccountFail('NO_PROVIDER'); }
+      check();
+      if (typeof request !== 'function') permittedAccountFail('NO_PROVIDER');
+      observer = observeWalletProvider(provider,
+        { accountsChanged: cancel, chainChanged: cancel, disconnect: cancel },
+        () => !cancelled);
+      check();
+      async function read(method) {
+        check();
+        const args = guardRpcRequest({ method });
+        const operation = supervisor.start({ provider, timeoutMs, invoke() {
+          check();
+          return request.call(provider, { method: args.method });
+        } });
+        pending.add(operation);
+        if (cancelled) operation.cancel();
+        try {
+          const value = await operation.promise;
+          check();
+          const captured = guardRpcResponse(method, value);
+          check();
+          return captured;
+        } finally { pending.delete(operation); }
+      }
+      const chainId = normalizeChainId(await read('eth_chainId'));
+      if (![8453, 84532].includes(chainId)) permittedAccountFail('UNSUPPORTED_CHAIN');
+      const accounts = await read('eth_accounts');
+      if (!Array.isArray(accounts) || !accounts.length) permittedAccountFail('NO_ACCOUNTS');
+      const addresses = accounts.map(normalizeAddress);
+      const finalChain = normalizeChainId(await read('eth_chainId'));
+      const finalAccounts = await read('eth_accounts');
+      if (!Array.isArray(finalAccounts) || finalAccounts.length !== addresses.length ||
+          finalAccounts.some((account, i) => normalizeAddress(account) !== addresses[i]) ||
+          finalChain !== chainId) permittedAccountFail('SESSION_CHANGED');
+      observer.dispose();
+      observer = null;
+      check();
+      return Object.freeze({ account: addresses[0], chainId, permittedAccountCount: addresses.length });
+    } finally {
+      observer?.dispose();
+      observer = null;
+    }
+  });
+  return Object.freeze({ promise, cancel });
 }

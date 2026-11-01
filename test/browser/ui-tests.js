@@ -114,6 +114,45 @@ function fixture(override = () => undefined, { legacy = true, announced = false,
 const tests = [];
 function test(name, run, group = "general") { tests.push({ name, run, group }); }
 
+test("permitted-account: preview and reviewed input precede explicit connection", async use => {
+  const f = use(); f.input('.account', '');
+  assert(f.calls.length === 0, 'Mount or field edits must not inspect permission');
+  f.field('.account-probe-read').click();
+  await waitFor(() => !f.field('.account-probe-apply').disabled);
+  assert(f.field('.account').value === '', 'Preview changed the configured account');
+  assert(f.field('.read').disabled, 'Preview connected the wallet');
+  f.field('.account-probe-apply').click();
+  await waitFor(() => f.field('.account').value === A);
+  assert(f.calls.every(c => ['eth_chainId','eth_accounts'].includes(c.method)), 'Unexpected permission or financial request');
+  assert(f.field('.read').disabled, 'Applying an address connected the wallet');
+  await f.connect();
+  assert(f.calls.filter(c => c.method === 'eth_requestAccounts').length === 1, 'Only explicit Connect requests permission');
+});
+
+test("permitted-account: global stop clears a preview without losing configured inputs", async use => {
+  const f = use();
+  f.field('.account-probe-read').click();
+  await waitFor(() => !f.field('.account-probe-apply').disabled);
+  document.querySelector('.security-stop').click();
+  assert(f.field('.account-probe-details').textContent === '', 'Stop retained account preview');
+  assert(f.field('.account-probe-read').disabled && f.field('.account-probe-apply').disabled, 'Stop left account actions enabled');
+  assert(f.field('.account').value === A && f.field('.token').value === TOKEN, 'Stop erased configured inputs');
+  const before = f.calls.length;
+  document.querySelector('.security-resume').click();
+  assert(f.calls.length === before, 'Resume automatically inspected a wallet');
+});
+
+test("permitted-account: reviewed address cannot duplicate another agent", async use => {
+  const f = use(); f.input('.account', '');
+  const other = document.querySelector('[data-agent="EMA"] .account'); other.value = A;
+  f.field('.account-probe-read').click();
+  await waitFor(() => !f.field('.account-probe-apply').disabled);
+  f.field('.account-probe-apply').click();
+  await waitFor(() => f.field('.account-probe-status').textContent.includes('別のカード'));
+  assert(f.field('.account').value === '', 'Duplicate account was applied');
+  assert(f.field('.read').disabled, 'Duplicate check connected the wallet');
+});
+
 test("wallet-navigation: task links focus existing sections without wallet requests", async use => {
   const f=use(),nav=document.querySelector(".wallet-navigation");assert(nav?.getAttribute("aria-label")==="ウォレットの各機能","Named task navigation");
   const links=[...nav.querySelectorAll("a")],ids=links.map(link=>link.getAttribute("href").slice(1));assert(links.length===13&&new Set(ids).size===13,"Distinct navigation destinations");

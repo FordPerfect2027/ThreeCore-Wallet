@@ -67,6 +67,11 @@ features. Compiled-token jobs use local EVMs and do not send public transactions
    permission, without changing the identity checks. The existing controller
    and connection-boundary suites passed 66 cases. Consolidated the operator
    steps and recorded the bounded read-only source review.
+10. Added an explicit, read-only preview of already permitted wallet addresses,
+    with revalidation before input and a separate Connect action. This removed
+    the need for the operator to copy the selected address during resumption.
+    [Account reconnection evidence](ACCOUNT_RECONNECTION_2026-11-01.md) records
+    116 focused passes, 1,004 synthetic UI passes and the intended-PC observation.
 
 ## Current real-wallet observation
 
@@ -86,15 +91,22 @@ be inferred from its display name or substituted with the historical address.
 The extension-control attempt again stopped because the UI tool could not
 establish its current URL. No new on-chain read is claimed. The earlier Account 2
 records remain historical records, separate from the requested Account 1 check.
-This observation does not close the real-wallet acceptance gate.
+That earlier blocker was subsequently resolved through the supported application
+UI: a new permitted-account preview obtained the currently exposed address
+without changing extension permissions. EMA reconnected, the canonical metadata
+and balance read completed, and actual settings-file/checkpoint preservation,
+page reload, reviewed restore, Stop/Resume and explicit reconnect were observed.
+See the [resumption record](ACCOUNT_RECONNECTION_2026-11-01.md). The full address
+and balance are retained locally. This one Base Mainnet account does not close
+the three-distinct-account public-testnet acceptance gate.
 
 ## Next work order
 
 Evidence CI, the fresh-directory source/startup check and the intended-PC
-rehearsal file cycle have passed. Obtain the selected Account 1 public address
-and restore an operable wallet UI connection, then run the account-specific
-acceptance and real-wallet recovery path. Complete the other prepared-account
-checks and independent review before a release decision. Record each material
+rehearsal file cycle have passed. Account 1 resumption and the named EMA reading
+have now been observed on the intended PC. Continue the distinct-account
+public-testnet acceptance and full history-recovery path, then complete
+independent review before a release decision. Record each material
 finding with its source revision, reproduction, fix and verification. Keep the
 current 4231 server and the user's open rehearsal data intact. New test servers
 must bind loopback on unused ports and be closed only by their own test process.

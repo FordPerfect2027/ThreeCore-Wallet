@@ -1,3 +1,4 @@
+import { startPermittedAccountRead } from "../src/wallet-session.js";
 import { setupFromFields, encodeWalletSetup, inspectWalletFields,
   createWalletSetupReview, describeWalletSetupReview, WALLET_SETUP_LIMIT } from "../src/wallet-setup.js";
 import { prepareWalletSetupFile, createWalletSetupFileReader } from "../src/wallet-setup-file.js";
@@ -244,4 +245,125 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
       section.remove();
     },
   });
+}
+
+const ACCOUNT_MESSAGES = Object.freeze({
+  __proto__: null,
+  NO_PROVIDER: '接続するWalletを選んでください。',
+  NO_ACCOUNTS: 'このサイトで許可済みのアカウントはありません。Wallet側の接続許可を確認してください。',
+  UNSUPPORTED_CHAIN: 'Walletのネットワークは対応範囲外です。Base MainnetまたはBase Sepoliaを選んでください。',
+  WRONG_CHAIN: 'Walletとこのカードのネットワークが違います。チェーン欄を確認して、もう一度読み取ってください。',
+  DUPLICATE_ACCOUNT: '別のカードに同じ公開アドレスが設定されています。このカードには反映していません。',
+  READ_TIMEOUT: 'Walletからの応答待ちを終了しました。接続状態を確認して再度読み取ってください。',
+  RPC_CAPACITY: 'Walletに未完了の要求が残っています。完了後に読み直してください。',
+  ACCESS_LOCKED: '読み取りを停止しました。接続保護とカードの状態を確認してください。',
+  SESSION_CHANGED: '読み取り中に対象が変わりました。内容を確認して読み直してください。',
+});
+
+export function mountPermittedAccountPanel({ document, parent, siteOrigin,
+  readContext, canRead, applyAccount, supervisor }) {
+  const section = document.createElement('section');
+  section.className = 'account-probe-panel';
+  section.setAttribute('aria-label', '許可済みアカウントの確認');
+  function node(tag, name, text) {
+    const element = document.createElement(tag);
+    element.className = 'account-probe-' + name;
+    if (text) element.textContent = text;
+    section.append(element);
+    return element;
+  }
+  node('p', 'help', 'このサイトで許可済みの公開アドレスをWalletから読み取れます。表示と確認だけでは接続しません。');
+  const read = node('button', 'read', 'Walletの許可済みアドレスを確認');
+  const details = node('pre', 'details');
+  const apply = node('button', 'apply', '確認した公開アドレスを入力');
+  const cancel = node('button', 'cancel', 'アドレス確認を取り消す');
+  for (const button of [read, apply, cancel]) button.type = 'button';
+  const status = node('p', 'status', '未確認です。アカウント名はWallet側で確認してください。');
+  status.setAttribute('role', 'status');
+  parent.append(section);
+  let generation = 0, disposed = false, busy = false, preview = null, operation = null;
+  const contextKeys = ['provider', 'account', 'chainId'];
+  const same = (a, b) => !!a && !!b && contextKeys.every(key => a[key] === b[key]);
+  function allowed() { try { const result = canRead(); return observeCallbackResult(result) === "synchronous" && result === true; } catch { return false; } }
+  function refresh() {
+    if (disposed) return;
+    const access = allowed();
+    read.disabled = busy || !access;
+    apply.disabled = busy || !access || !preview || preview.result.chainId !== preview.context.chainId;
+    cancel.disabled = !busy && !preview;
+  }
+  function invalidate(message = '確認内容を取り消しました。カードの設定は変更していません。') {
+    generation++;
+    const previous = operation;
+    operation = null;
+    preview = null;
+    busy = false;
+    details.textContent = '';
+    previous?.cancel();
+    if (!disposed) { status.textContent = message; refresh(); }
+  }
+  function current(id, context) {
+    if (disposed || id !== generation || !allowed()) return false;
+    const matches = same(context, readContext());
+    return matches && !disposed && id === generation;
+  }
+  async function run(confirm) {
+    if (disposed || busy || !allowed()) return;
+    const reviewed = confirm ? preview : null;
+    if (confirm && !reviewed) return;
+    const id = ++generation;
+    let context;
+    try { context = { ...readContext() }; } catch { status.textContent = ACCOUNT_MESSAGES.NO_PROVIDER; return; }
+    if (confirm && !same(context, reviewed.context)) { invalidate(ACCOUNT_MESSAGES.SESSION_CHANGED); return; }
+    preview = null;
+    busy = true;
+    details.textContent = '';
+    status.textContent = confirm ? '反映前に、許可済みの対象をもう一度確認しています。' : '許可済みの公開アドレスを読み取っています。';
+    refresh();
+    try {
+      operation = startPermittedAccountRead({ provider: context.provider, siteOrigin, supervisor,
+        isCurrent: () => current(id, context) });
+      const result = await operation.promise;
+      if (!current(id, context)) throw Object.assign(new Error("SESSION_CHANGED"), { code: "SESSION_CHANGED" });
+      if (confirm) {
+        if (result.account !== reviewed.result.account || result.chainId !== reviewed.result.chainId)
+          throw Object.assign(new Error('SESSION_CHANGED'), { code: 'SESSION_CHANGED' });
+        if (result.chainId !== context.chainId) throw Object.assign(new Error('WRONG_CHAIN'), { code: 'WRONG_CHAIN' });
+        const checkCurrent = () => { if (!current(id, context)) throw Object.assign(new Error('SESSION_CHANGED'), { code: 'SESSION_CHANGED' }); };
+        applyAccount(result, checkCurrent);
+        if (!disposed && id === generation) status.textContent = '公開アドレスを入力しました。内容を確認して「接続」へ進めます。履歴は変更していません。';
+      } else {
+        preview = { context, result };
+        details.textContent = '取得時点でWalletが最初に返した公開アドレス\n' + result.account +
+          '\nネットワーク: ' + (result.chainId === 8453 ? 'Base Mainnet' : 'Base Sepolia') +
+          '\n許可済みアドレス数: ' + result.permittedAccountCount;
+        status.textContent = result.chainId === context.chainId
+          ? '公開アドレスを確認してください。入力欄と接続状態はまだ変更していません。'
+          : ACCOUNT_MESSAGES.WRONG_CHAIN;
+      }
+    } catch (error) {
+      if (!disposed && id === generation) {
+        preview = null;
+        details.textContent = '';
+        status.textContent = ACCOUNT_MESSAGES[readOwnErrorCode(error)] ?? '許可済みアドレスを確認できませんでした。Walletの接続状態を確認してください。';
+      }
+    } finally {
+      if (!disposed && id === generation) { busy = false; operation = null; refresh(); }
+    }
+  }
+  const readAction = () => { void run(false); };
+  const applyAction = () => { void run(true); };
+  const cancelAction = () => invalidate();
+  read.addEventListener('click', readAction);
+  apply.addEventListener('click', applyAction);
+  cancel.addEventListener('click', cancelAction);
+  refresh();
+  return Object.freeze({ element: section, refresh, invalidate, dispose() {
+    disposed = true;
+    invalidate();
+    read.removeEventListener('click', readAction);
+    apply.removeEventListener('click', applyAction);
+    cancel.removeEventListener('click', cancelAction);
+    section.remove();
+  } });
 }

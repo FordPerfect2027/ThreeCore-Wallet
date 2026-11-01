@@ -22,7 +22,7 @@ import { createWalletCardController } from "../src/wallet-card-controller.js";
 import { createWalletProviderRegistry } from "../src/provider-registry.js";
 import { AGENT_IDS, normalizeAddress } from "../src/wallet-session.js";
 import { mountPortfolioPanel } from "./portfolio-panel.js";
-import { mountWalletSetupPanel } from "./wallet-setup-panel.js";
+import { mountWalletSetupPanel, mountPermittedAccountPanel } from "./wallet-setup-panel.js";
 import { mountWorkspacePanel } from "./workspace-panel.js";
 import { captureWorkspaceDraft } from "../src/workspace-format.js";
 import { mountCheckpointPanel } from "./checkpoint-panel.js";
@@ -56,6 +56,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
   const allowancePanels = [];
   const transferPanels = [];
+  const accountPanels = [];
   let transferVaultPanel;
   let reconciliationPanel;
   let periodPanel;
@@ -69,10 +70,15 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       if (workspacePanel) steps.push({ name: "backup", run: () => workspacePanel.protect() });
       if (periodPanel) steps.push({ name: "period", run: () => periodPanel.invalidate() });
       for (const [card, controller] of controllers) steps.push({ name: card.dataset.agent,
-        run: () => controller.disconnect("保護のため接続を停止しました。再開後に接続し直してください。") });
+        run: () => {
+          let cleared = true;
+          try { accountPanels[cards.indexOf(card)]?.invalidate(); } catch { cleared = false; }
+          return controller.disconnect("保護のため接続を停止しました。再開後に接続し直してください。") && cleared;
+        } });
       return runProtectionBatch(steps).completed;
     },
     onChange(state) {
+      for (const panel of accountPanels) panel.refresh();
       for (const card of cards) {
         const current = controllers.get(card)?.state;
         if (current) render(card, current);
@@ -194,10 +200,13 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     let identityPanel;
     let allowancePanel;
     let transferPanel;
+    let accountPanel;
     let wasConnected = false;
     const controller = createWalletCardController({ agent, siteOrigin, createSession, rpcSupervisor,
       isAccessAllowed: securityPanel.check, onChange: state => {
       render(card, state);
+      if (state.phase !== "disconnected") accountPanel?.invalidate();
+      else accountPanel?.refresh();
       if (wasConnected && !state.connection?.connected) periodPanel?.invalidate();
       if (wasConnected && !state.connection?.connected) panel?.invalidate();
       if (wasConnected && !state.connection?.connected) identityPanel?.invalidate();
@@ -259,7 +268,30 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         () => { identityPanel.invalidate(); allowancePanel.invalidate(); transferPanel.invalidate(); });
     }
     const value = selector => card.querySelector(selector).value.trim();
+    const selectedProvider = () => value(".provider") === "legacy" ? getLegacyProvider() : registry.getProvider(value(".provider"));
+    accountPanel = mountPermittedAccountPanel({ document, parent: card, siteOrigin, supervisor: rpcSupervisor,
+      canRead: () => securityPanel.check() && controller.state.phase === "disconnected",
+      readContext: () => ({ provider: selectedProvider(), account: value(".account"), chainId: Number(value(".chain")) }),
+      applyAccount: (result, checkCurrent) => {
+        checkCurrent();
+        for (const other of cards.filter(item => item !== card)) {
+          if (other.querySelector(".account").value.trim().toLowerCase() === result.account)
+            throw Object.assign(new Error("DUPLICATE_ACCOUNT"), { code: "DUPLICATE_ACCOUNT" });
+        }
+        for (const target of [panel, identityPanel, allowancePanel, transferPanel]) { target.invalidate(); checkCurrent(); }
+        setupPanel?.invalidate(); checkCurrent();
+        workspacePanel?.invalidate(); checkCurrent();
+        checkpointPanel?.invalidateDraft(); checkCurrent();
+        card.querySelector(".account").value = result.account;
+      },
+    });
+    accountPanels.push(accountPanel);
+    card.querySelector(".account").parentElement.after(accountPanel.element);
+    cleanup.push(() => accountPanel.dispose());
+    for (const selector of [".account", ".chain", ".provider"])
+      listen(card.querySelector(selector), selector === ".account" ? "input" : "change", () => accountPanel.invalidate());
     listen(card.querySelector(".connect"), "click", () => {
+      accountPanel.invalidate();
       try {
         const choice = value(".provider");
         const provider = choice === "legacy" ? getLegacyProvider() : registry.getProvider(choice);
