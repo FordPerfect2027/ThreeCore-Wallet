@@ -1,0 +1,54 @@
+{
+  "walletSource": "59b63ca5fede34594ebed2749bed895724f09112",
+  "walletApplicationSource": "34d173112d7f45475c52fb64553cfa8b369699d2",
+  "recordedAt": "2026-11-01T18:28:41.538Z",
+  "receipts": [
+    {
+      "name": "DAT",
+      "packageLockSha256": "c145b49c1bb3bc14d1390f5f4b2b30477e21c580afe4b44565d4869983829d99",
+      "previousArtifactSha256": "39ef366816362da122df0e577a72434bbe5353a9576147dbd6415292016631ca",
+      "artifactSha256": "5b0f20452adbd1e6645cd050f4e2c6ce674fd1e8bd3e204b0dfd1d839739fda0",
+      "artifactIdenticalToBeforeDependencyUpdate": false,
+      "changedArtifactFields": [
+        "buildInfoId"
+      ],
+      "creationBytecodeIdentical": true,
+      "runtimeBytecodeIdentical": true,
+      "abiIdentical": true,
+      "walletCompatibilityPassed": 50,
+      "exitCode": 0
+    },
+    {
+      "name": "EMA",
+      "packageLockSha256": "20099480af181bb48a964b3ccf1d2f3e3091f272bbe30e982608cf94087a11a5",
+      "previousArtifactSha256": "dcde8995b64bef2e5010c8cd2341e5c1765e24cd9558187e8f45aa9471f6657e",
+      "artifactSha256": "72d5e0e09d8640717f803a06cc02d82b0ed7fcee8b29c115f28e74744008a2a4",
+      "artifactIdenticalToBeforeDependencyUpdate": false,
+      "changedArtifactFields": [
+        "buildInfoId"
+      ],
+      "creationBytecodeIdentical": true,
+      "runtimeBytecodeIdentical": true,
+      "abiIdentical": true,
+      "walletCompatibilityPassed": 50,
+      "exitCode": 0
+    },
+    {
+      "name": "CAWELON",
+      "packageLockSha256": "94b0e4f2666593a27fd8a3ba51a2ac707b5d6750b91f903ee26930a8e8536409",
+      "previousArtifactSha256": "349178d214a9735fe324c75bdf2e58c50b5fbda135f261d374cca4a879f9f261",
+      "artifactSha256": "2cbc9945138e5639b23eb7187881a7aaf74514e4680916f6655768c8b972ce94",
+      "artifactIdenticalToBeforeDependencyUpdate": false,
+      "changedArtifactFields": [
+        "buildInfoId"
+      ],
+      "creationBytecodeIdentical": true,
+      "runtimeBytecodeIdentical": true,
+      "abiIdentical": true,
+      "walletCompatibilityPassed": 50,
+      "exitCode": 0
+    }
+  ],
+  "localEvmsOnly": true,
+  "publicTransactions": false
+}

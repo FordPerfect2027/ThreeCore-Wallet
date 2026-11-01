@@ -11,6 +11,43 @@ themselves. An unresolved essential gate cannot be offset by many small fixes.
 This page does not extend the product to signing, transfers, approvals, custody,
 swaps, bridges, or autonomous spending.
 
+## Operator deadline and work order — updated November 2
+
+The operator set the target deadline to **November 2, 2026, 12:00 JST**
+(`2026-11-02T03:00:00Z`), correcting the earlier conversational reference to
+November 3. The target remains 90% preparation; neither the deadline nor elapsed
+time establishes a completion percentage or a release approval.
+
+Do not wait for three newly created or funded accounts. Complete implementation,
+saved-data compatibility/recovery preparation, candidate review and distribution
+work first. Use the existing accounts for the final real-wallet sequence; an
+optional three-distinct-account exercise can be left until that stage. Reading
+balances and logs does not require funding the observed addresses. A later
+transaction exercise would be separate scope and is not authorized here.
+
+The operator will use this PC for browsing during development. Continue file-
+based work without switching, reloading or closing their browsing tabs. Batch
+remaining real UI acceptance separately. Preserve the original port 4231
+process and unsaved Wallet/rehearsal data. Already passing full suites should
+not be repeated without a relevant code change, new failure or unresolved
+concern. Keep GitHub publication deferred for one combined update.
+
+The local release package at `59b63ca5fede34594ebed2749bed895724f09112`
+has now been exported and restored from its Git bundle into an empty repository:
+4,331 source files matched; all 250 evidence manifests / 2,255 entries matched;
+ten isolated startup checks passed. Its temporary server was closed. The outer
+ZIP was extracted again and its nine checksummed inner artifacts matched. This
+validates the local delivery, not the outstanding real-wallet acceptance.
+
+Subsequent [token dependency review and repair](TOKEN_DEPENDENCY_REVIEW_2026-11-02.md)
+patched two development dependencies and verified all three tokens again against
+the fixed Wallet source. Six audit package entries remain from one Zod root
+advisory and require compatible remediation/exposure review. This unresolved
+finding must accompany the candidate; it is not cleared by the narrower clean
+production-only audit. The prepared new CI pins are local only and require the
+documented token-before-Wallet publication order. The delivered `59b63ca` ZIP
+predates this follow-up; a new package will be assembled with the combined work.
+
 ## Acceptance gates and current evidence
 
 | Gate | Completion evidence needed | Current assessment |

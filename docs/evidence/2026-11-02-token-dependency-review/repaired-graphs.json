@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-11-01T18:25:43.842Z",
+  "sameDependencyGraph": true,
+  "graph": [
+    {
+      "name": "DAT",
+      "graphSha256": "ecc8d37b1cc30d75d993b9afac538647b27442116840f4db950250d56e8b5e43"
+    },
+    {
+      "name": "EMA",
+      "graphSha256": "ecc8d37b1cc30d75d993b9afac538647b27442116840f4db950250d56e8b5e43"
+    },
+    {
+      "name": "CAWELON",
+      "graphSha256": "ecc8d37b1cc30d75d993b9afac538647b27442116840f4db950250d56e8b5e43"
+    }
+  ],
+  "cleanDependencyInstallation": "DAT: npm ci --ignore-scripts --no-audit --no-fund; exit 0; 109 packages",
+  "sharedWithOtherTwo": true,
+  "originalPinnedDirectoriesUnmodified": true
+}

@@ -64,6 +64,28 @@ return to an older version. Do not change a source backup merely to satisfy an
 older reader. The live original tab still runs its already loaded code until a
 separate page is opened; it is not reloaded to deploy this correction.
 
+## Saved-file version return preparation
+
+After packaging the candidate, fourteen actual previously downloaded files
+were checked with both the prior `b2270b2` source and candidate `59b63ca` source:
+nine checksummed workspace backups, two settings files and three saved-list
+collections. Both versions decoded identical records. The candidate's exports
+were then read by the prior version with identical decoded content and stable
+canonical re-encoding. Original source bytes were checked again and retained
+unchanged in a private local return kit. No source backup was overwritten.
+
+The new, unapplied shared-account settings candidate was checked separately:
+the current reader accepts it and the older reader rejects it with
+`SETUP_DUPLICATE`, as expected. Return to the prior version must use the
+pre-upgrade settings, preserving both the old and new files. These checks cover
+the data-format round trip; they do not complete browser-storage migration,
+real-wallet permission/reconnection, or the intended-PC UI return sequence.
+
+The private kit is in Downloads as `ThreeCore-private-return-kit-20261102`.
+Its `verification.json` records the two full source revisions and every source
+and export digest; `SHA256SUMS.txt` covers the 28 copied/exported files and the
+verification receipt. Raw account records are kept out of the public-ready repo.
+
 ## Required observations on the intended PC
 
 | Scenario | Existing identity needed | Evidence to retain |

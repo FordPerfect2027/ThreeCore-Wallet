@@ -34,6 +34,13 @@ The [previous regression record](RELEASE_REGRESSION_2026-11-02.md) and current
 evidence preserve initial failures as well as successful reruns. The public
 token jobs' pinned source and fresh-build commands are in `.github/workflows/ci.yml`.
 
+The later [token dependency correction](TOKEN_DEPENDENCY_REVIEW_2026-11-02.md)
+also passes the token projects' full checks and 150 Wallet compatibility cases.
+Its new pins are still local: publish and verify the token commits before the
+prepared Wallet workflow change. One Zod root advisory remains open across six
+development-dependency audit entries. This is part of the outstanding review;
+neither a clean production-only audit nor unchanged bytecode resolves it.
+
 The implementation delta from the public head to `34d1731` is sixteen files,
 120 insertions and 53 deletions, excluding tests, documentation and the
 evidence-checkout policy:
@@ -136,7 +143,11 @@ These items remain open even if all automated checks pass:
    the passive navigation guide, then native browser control stopped because it
    could not establish the active URL. No actual restore is claimed from it.
 3. Candidate migration/return with the intended real wallet, preserving the
-   previous working version and its files.
+   previous working version and its files. The offline data-format preparation
+   now passes for fourteen actual downloaded originals across `b2270b2` and
+   `59b63ca`, including reading candidate exports in the prior version. A private
+   return kit preserves originals. This does not substitute for UI/storage and
+   wallet reconnection acceptance; see the shared-account record.
 4. Independent findings and remediation review, followed by an explicit release
    decision and deployment plan. The present developer review is not independent.
 

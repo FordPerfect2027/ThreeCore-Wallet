@@ -1,0 +1,483 @@
+
+> @0628dao/emacore@0.1.0 check
+> npm run compile && npm run test && npm run typecheck && npm run test:read-only && npm run test:history
+
+
+> @0628dao/emacore@0.1.0 compile
+> hardhat compile
+
+
+Compiled 1 Solidity file with solc 0.8.34 (evm target: osaka)
+
+> @0628dao/emacore@0.1.0 test
+> hardhat test nodejs
+
+No contracts to compile
+
+Running node:test tests
+
+
+  ✔ Approval event is indexed and bounded to a short read-only window
+
+  ✔ returns event history and pinned current allowance as DIFFERENT facts
+
+  ✔ an explicit historical block pins the allowance, not latest
+
+  ✔ different public spender is explicit and never labelled Classic Router
+
+  ✔ deduplicates repeated RPC logs and sorts by transaction position
+
+  ✔ different values for one log ID cause a conflict
+
+  ✔ refuses incorrect chain before requesting an allowance or history
+
+  ✔ refuses invalid owner and spender addresses without any network requests
+
+  ✔ rejects malformed block values, reversed ranges and too many blocks
+
+  ✔ requires public read client with contract read and log support
+
+  ✔ rejects unrelated, malformed or out-of-range Approval logs
+
+  ✔ rejects unbounded Approval event sets or malformed allowances
+
+  ✔ RPC errors propagate and never cause transactions or approvals
+
+  ✔ manifest pins published Aerodrome Classic Factory and Base native USDC
+
+  ✔ buy: uses registered volatile TOKEN/USDC pool and onchain fee-aware output
+
+  ✔ sell: accepts raw token input and correctly switches reserve direction
+
+  ✔ contract token0/token1 ordering is handled without assuming a fixed order
+
+  ✔ all RPC reads use one snapshot block and only read-only publicClient methods
+
+  ✔ invalid directions and inputs are rejected without touching RPC
+
+  ✔ wrong Base network blocks all pool and quote RPC calls
+
+  ✔ missing read-only public client is rejected without network calls
+
+  ✔ absent or malformed PoolFactory result rejects without downstream operations
+
+  ✔ unregistered pool and missing bytecode fail before quote
+
+  ✔ pool token pair and stable-flag mismatches are refused
+
+  ✔ invalid reserve structure, zero reserves and decimals are refused
+
+  ✔ zero output, excessive output or invalid uint256 output is not a valid quote
+
+  ✔ RPC read errors propagate without an approval or trading retry
+
+  ✔ rejects a quote if the public RPC switches chains during the sampled reads
+
+  ✔ rechecks that RPC is still on Base before returning a read-only quote
+
+  EMACore
+    ✔ uses EMA CORE as the token name
+    ✔ uses EMA as the token symbol
+    ✔ uses 18 decimals
+    ✔ publishes the fixed supply unit constant
+    ✔ publishes the fixed base-unit supply constant
+    ✔ mints the complete supply exactly once
+    ✔ assigns the complete supply to the initial holder
+    ✔ rejects the zero address as initial holder
+    ✔ transfers EMA between holders
+    ✔ rejects transfers greater than the holder balance
+    ✔ mints to a separate initial holder, not the transaction sender
+    ✔ rejects a burn exceeding the spender allowance
+    ✔ rejects a permit signed for another contract
+    ✔ records ERC-20 allowances
+    ✔ supports allowance-based transfers
+    ✔ lets a holder burn its own EMA
+    ✔ allows burnFrom only through an explicit allowance
+    ✔ blocks burnFrom without an allowance
+    ✔ blocks transfers to the zero address
+    ✔ supports EIP-2612 nonce tracking
+    ✔ executes a signed EIP-2612 permit and rejects its replay
+    ✔ rejects an expired EIP-2612 permit
+    ✔ publishes the expected EIP-712 domain
+    ✔ does not expose administrator mint, pause, or upgrade functions
+    ✔ does not expose an owner or administrator getter
+
+
+  ✔ Transfer: removed events fail the whole report
+
+  ✔ Transfer: pending or incomplete log identities fail closed
+
+  ✔ Transfer: rejects uint256 overflow in event amounts
+
+  ✔ Transfer: preserves zero and maximum uint256 event amounts exactly
+
+  ✔ Transfer: rejects oversized caller, tip and log heights
+
+  ✔ Transfer: accepts uint256 maximum height without rounding
+
+  ✔ Transfer: exact and differently cased duplicates are counted once
+
+  ✔ Transfer: duplicate identities cannot change block hash or transaction index
+
+  ✔ Transfer: different events at one height cannot claim different block hashes
+
+  ✔ Transfer: one block hash cannot claim two heights
+
+  ✔ Transfer: block-wide log and transaction positions cannot be reused
+
+  ✔ Transfer: multiple logs in one transaction and multiple transactions remain valid
+
+  ✔ Transfer: each RPC response must match its requested direction
+
+  ✔ Approval: removed events fail the whole report
+
+  ✔ Approval: pending or incomplete log identities fail closed
+
+  ✔ Approval: rejects uint256 overflow in event amounts
+
+  ✔ Approval: preserves zero and maximum uint256 event amounts exactly
+
+  ✔ Approval: rejects oversized caller, tip and log heights
+
+  ✔ Approval: accepts uint256 maximum height without rounding
+
+  ✔ Approval: exact and differently cased duplicates are counted once
+
+  ✔ Approval: duplicate identities cannot change block hash or transaction index
+
+  ✔ Approval: different events at one height cannot claim different block hashes
+
+  ✔ Approval: one block hash cannot claim two heights
+
+  ✔ Approval: block-wide log and transaction positions cannot be reused
+
+  ✔ Approval: multiple logs in one transaction and multiple transactions remain valid
+
+  ✔ Approval: rejects oversized sampled allowance
+
+  ✔ Transfer snapshot: records the range-end hash and checks distinct event heights once
+
+  ✔ Transfer snapshot: empty history still rechecks the sampled block
+
+  ✔ Transfer snapshot: empty history cannot hide an end-block replacement
+
+  ✔ Transfer snapshot: rejects a changed end block after successful log validation
+
+  ✔ Transfer snapshot: rejects a stale event even when removed is false
+
+  ✔ Transfer snapshot: events at the sampled end must match its captured hash
+
+  ✔ Transfer snapshot: invalid initial headers stop before querying logs or allowance
+
+  ✔ Transfer snapshot: unavailable initial, event or final blocks reject the report
+
+  ✔ Transfer snapshot: malformed event-block headers are rejected
+
+  ✔ Transfer snapshot: refuses a provider network change during reads
+
+  ✔ Transfer snapshot: captures header scalars rather than trusting a mutable object
+
+  ✔ Transfer snapshot: explicit historical end is checked rather than latest
+
+  ✔ Transfer snapshot: header errors propagate without retry or fallback
+
+  ✔ Transfer snapshot: a client without header support is rejected before RPC
+
+  ✔ Approval snapshot: records the range-end hash and checks distinct event heights once
+
+  ✔ Approval snapshot: empty history still rechecks the sampled block
+
+  ✔ Approval snapshot: empty history cannot hide an end-block replacement
+
+  ✔ Approval snapshot: rejects a changed end block after successful log validation
+
+  ✔ Approval snapshot: rejects a stale event even when removed is false
+
+  ✔ Approval snapshot: events at the sampled end must match its captured hash
+
+  ✔ Approval snapshot: invalid initial headers stop before querying logs or allowance
+
+  ✔ Approval snapshot: unavailable initial, event or final blocks reject the report
+
+  ✔ Approval snapshot: malformed event-block headers are rejected
+
+  ✔ Approval snapshot: refuses a provider network change during reads
+
+  ✔ Approval snapshot: captures header scalars rather than trusting a mutable object
+
+  ✔ Approval snapshot: explicit historical end is checked rather than latest
+
+  ✔ Approval snapshot: header errors propagate without retry or fallback
+
+  ✔ Approval snapshot: a client without header support is rejected before RPC
+
+  ✔ Approval snapshot: unsupported hash selectors never fall back to number or latest
+
+  ✔ deployed token specification is immutable and contains a complete address
+
+  ✔ verifies token identity against read-only RPC calls pinned to one block
+
+  ✔ wrong chain is rejected before examining bytecode or balances
+
+  ✔ missing contract bytecode never passes the identity check
+
+  ✔ rejects unexpected token name or symbol without reporting success
+
+  ✔ rejects a decimals mismatch and supply above original issuance
+
+  ✔ allows valid future burn reductions and records the change
+
+  ✔ invalid block number or supply values are rejected
+
+  ✔ unknown RPC failure is propagated and no transaction method is called
+
+  ✔ does not accept a transaction-only or missing RPC client
+
+  EMACore permit authorization boundaries
+    ✔ rejects wrong chain without changing state or consuming the valid permit (109ms)
+    ✔ rejects wrong contract without changing state or consuming the valid permit
+    ✔ rejects wrong domain name without changing state or consuming the valid permit
+    ✔ rejects wrong version without changing state or consuming the valid permit
+    ✔ rejects wrong nonce without changing state or consuming the valid permit
+    ✔ rejects wrong signer without changing state or consuming the valid permit
+    ✔ rejects changed owner without changing state or consuming the valid permit
+    ✔ rejects changed spender without changing state or consuming the valid permit (106ms)
+    ✔ rejects changed value without changing state or consuming the valid permit
+    ✔ rejects changed deadline without changing state or consuming the valid permit
+
+
+  ✔ Transfer history uses a standard indexed ERC-20 event, not a transaction method
+
+  ✔ returns a frozen, deduplicated, block-pinned ThreeCore activity report
+
+  ✔ explicit historical toBlock is honored and never exceeds the observed chain tip
+
+  ✔ wrong chain refuses event scanning without calls to getLogs
+
+  ✔ invalid account address fails before any network access
+
+  ✔ invalid public clients and malformed block values are rejected
+
+  ✔ rejects future, reversed and excessively long ranges before fetching logs
+
+  ✔ rejects logs outside requested block range and logs from another contract
+
+  ✔ rejects unrelated and malformed decoded Transfer logs
+
+  ✔ refuses conflicting logs for the same transaction hash and log index
+
+  ✔ refuses excessive or malformed RPC log sets rather than truncating silently
+
+  ✔ RPC errors propagate without retrying or sending transactions
+
+  EMACore balance and allowance invariants
+    ✔ preserves total supply and account balances across delegated transfers
+    ✔ rejects an unapproved transferFrom without changing balances
+    ✔ does not allow delegated spending beyond remaining allowance
+    ✔ reduces supply exactly by cumulative burns without changing other balances
+
+
+  ✔ checks a ThreeCore token and the actual Classic Router, never another spender
+
+  ✔ reports pinned gas, token balance, and existing classic-router allowance
+
+  ✔ zero gas, zero balance and no Classic Router allowance are accurately distinguished
+
+  ✔ invalid and zero wallet addresses fail before any external requests
+
+  ✔ a transaction-only or missing RPC client cannot pass validation
+
+  ✔ wrong chain aborts before reading code, gas, token or allowances
+
+  ✔ negative or wrong-type block numbers are rejected without contract calls
+
+  ✔ missing token or Router bytecode aborts before reading balances
+
+  ✔ malformed deployed code is rejected instead of treated as verified
+
+  ✔ negative or non-bigint native gas values fail closed
+
+  ✔ malformed ERC-20 balance or allowance fails closed
+
+  ✔ RPC exceptions propagate without retrying a write transaction
+
+  ✔ every read is pinned to exactly the same observed block
+
+  ✔ case-insensitive wallet address normalizes account before RPC reads
+
+  ✔ uint256 overflow is rejected for block, gas, token and allowance
+
+  ✔ maximum uint256 existing approval remains exact and is reported as exposure
+
+  ✔ rejects wallet report if public RPC switches chains during sampled reads
+
+  ✔ rechecks RPC chain ID before returning wallet readiness report
+
+
+  163 passing (7239ms)
+
+
+
+> @0628dao/emacore@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @0628dao/emacore@0.1.0 test:read-only
+> node --test test/*.test.mjs
+
+✔ Approval event is indexed and bounded to a short read-only window (33.5561ms)
+✔ returns event history and pinned current allowance as DIFFERENT facts (13.856ms)
+✔ an explicit historical block pins the allowance, not latest (1.1424ms)
+✔ different public spender is explicit and never labelled Classic Router (0.881ms)
+✔ deduplicates repeated RPC logs and sorts by transaction position (1.5574ms)
+✔ different values for one log ID cause a conflict (2.5181ms)
+✔ refuses incorrect chain before requesting an allowance or history (25.3624ms)
+✔ refuses invalid owner and spender addresses without any network requests (17.3415ms)
+✔ rejects malformed block values, reversed ranges and too many blocks (4.7135ms)
+✔ requires public read client with contract read and log support (73.5788ms)
+✔ rejects unrelated, malformed or out-of-range Approval logs (17.1207ms)
+✔ rejects unbounded Approval event sets or malformed allowances (1.2784ms)
+✔ RPC errors propagate and never cause transactions or approvals (0.7779ms)
+✔ manifest pins published Aerodrome Classic Factory and Base native USDC (5.8788ms)
+✔ buy: uses registered volatile TOKEN/USDC pool and onchain fee-aware output (4.7321ms)
+✔ sell: accepts raw token input and correctly switches reserve direction (1.2069ms)
+✔ contract token0/token1 ordering is handled without assuming a fixed order (1.0345ms)
+✔ all RPC reads use one snapshot block and only read-only publicClient methods (1.5158ms)
+✔ invalid directions and inputs are rejected without touching RPC (3.2447ms)
+✔ wrong Base network blocks all pool and quote RPC calls (0.605ms)
+✔ missing read-only public client is rejected without network calls (4.6605ms)
+✔ absent or malformed PoolFactory result rejects without downstream operations (8.7283ms)
+✔ unregistered pool and missing bytecode fail before quote (1.1803ms)
+✔ pool token pair and stable-flag mismatches are refused (1.6272ms)
+✔ invalid reserve structure, zero reserves and decimals are refused (5.4725ms)
+✔ zero output, excessive output or invalid uint256 output is not a valid quote (1.3763ms)
+✔ RPC read errors propagate without an approval or trading retry (0.8321ms)
+✔ rejects a quote if the public RPC switches chains during the sampled reads (8.3688ms)
+✔ rechecks that RPC is still on Base before returning a read-only quote (2.4431ms)
+✔ Transfer: removed events fail the whole report (7.427ms)
+✔ Transfer: pending or incomplete log identities fail closed (18.4172ms)
+✔ Transfer: rejects uint256 overflow in event amounts (0.7363ms)
+✔ Transfer: preserves zero and maximum uint256 event amounts exactly (2.1762ms)
+✔ Transfer: rejects oversized caller, tip and log heights (2.9756ms)
+✔ Transfer: accepts uint256 maximum height without rounding (0.8868ms)
+✔ Transfer: exact and differently cased duplicates are counted once (1.3564ms)
+✔ Transfer: duplicate identities cannot change block hash or transaction index (3.4331ms)
+✔ Transfer: different events at one height cannot claim different block hashes (0.7233ms)
+✔ Transfer: one block hash cannot claim two heights (0.8099ms)
+✔ Transfer: block-wide log and transaction positions cannot be reused (1.1758ms)
+✔ Transfer: multiple logs in one transaction and multiple transactions remain valid (1.0207ms)
+✔ Transfer: each RPC response must match its requested direction (0.9195ms)
+✔ Approval: removed events fail the whole report (2.337ms)
+✔ Approval: pending or incomplete log identities fail closed (2.9736ms)
+✔ Approval: rejects uint256 overflow in event amounts (0.3716ms)
+✔ Approval: preserves zero and maximum uint256 event amounts exactly (1.1653ms)
+✔ Approval: rejects oversized caller, tip and log heights (0.7345ms)
+✔ Approval: accepts uint256 maximum height without rounding (0.3674ms)
+✔ Approval: exact and differently cased duplicates are counted once (0.4887ms)
+✔ Approval: duplicate identities cannot change block hash or transaction index (0.7447ms)
+✔ Approval: different events at one height cannot claim different block hashes (0.3972ms)
+✔ Approval: one block hash cannot claim two heights (1.0619ms)
+✔ Approval: block-wide log and transaction positions cannot be reused (0.8245ms)
+✔ Approval: multiple logs in one transaction and multiple transactions remain valid (0.605ms)
+✔ Approval: rejects oversized sampled allowance (0.4785ms)
+✔ Transfer snapshot: records the range-end hash and checks distinct event heights once (10.5438ms)
+✔ Transfer snapshot: empty history still rechecks the sampled block (1.1782ms)
+✔ Transfer snapshot: empty history cannot hide an end-block replacement (34.1733ms)
+✔ Transfer snapshot: rejects a changed end block after successful log validation (12.7227ms)
+✔ Transfer snapshot: rejects a stale event even when removed is false (2.3729ms)
+✔ Transfer snapshot: events at the sampled end must match its captured hash (2.4107ms)
+✔ Transfer snapshot: invalid initial headers stop before querying logs or allowance (2.8929ms)
+✔ Transfer snapshot: unavailable initial, event or final blocks reject the report (2.0188ms)
+✔ Transfer snapshot: malformed event-block headers are rejected (1.4518ms)
+✔ Transfer snapshot: refuses a provider network change during reads (1.5465ms)
+✔ Transfer snapshot: captures header scalars rather than trusting a mutable object (1.1626ms)
+✔ Transfer snapshot: explicit historical end is checked rather than latest (1.4801ms)
+✔ Transfer snapshot: header errors propagate without retry or fallback (1.6012ms)
+✔ Transfer snapshot: a client without header support is rejected before RPC (0.8116ms)
+✔ Approval snapshot: records the range-end hash and checks distinct event heights once (24.2727ms)
+✔ Approval snapshot: empty history still rechecks the sampled block (0.5919ms)
+✔ Approval snapshot: empty history cannot hide an end-block replacement (0.7928ms)
+✔ Approval snapshot: rejects a changed end block after successful log validation (0.6848ms)
+✔ Approval snapshot: rejects a stale event even when removed is false (43.1447ms)
+✔ Approval snapshot: events at the sampled end must match its captured hash (0.6745ms)
+✔ Approval snapshot: invalid initial headers stop before querying logs or allowance (1.0962ms)
+✔ Approval snapshot: unavailable initial, event or final blocks reject the report (14.6512ms)
+✔ Approval snapshot: malformed event-block headers are rejected (0.5192ms)
+✔ Approval snapshot: refuses a provider network change during reads (0.4941ms)
+✔ Approval snapshot: captures header scalars rather than trusting a mutable object (0.3798ms)
+✔ Approval snapshot: explicit historical end is checked rather than latest (0.3792ms)
+✔ Approval snapshot: header errors propagate without retry or fallback (0.3795ms)
+✔ Approval snapshot: a client without header support is rejected before RPC (0.3086ms)
+✔ Approval snapshot: unsupported hash selectors never fall back to number or latest (19.3175ms)
+✔ deployed token specification is immutable and contains a complete address (19.0398ms)
+✔ verifies token identity against read-only RPC calls pinned to one block (3.9477ms)
+✔ wrong chain is rejected before examining bytecode or balances (1.8327ms)
+✔ missing contract bytecode never passes the identity check (1.5284ms)
+✔ rejects unexpected token name or symbol without reporting success (1.1198ms)
+✔ rejects a decimals mismatch and supply above original issuance (1.0573ms)
+✔ allows valid future burn reductions and records the change (0.7855ms)
+✔ invalid block number or supply values are rejected (1.0182ms)
+✔ unknown RPC failure is propagated and no transaction method is called (1.152ms)
+✔ does not accept a transaction-only or missing RPC client (0.9169ms)
+✔ Transfer history uses a standard indexed ERC-20 event, not a transaction method (2.7576ms)
+✔ returns a frozen, deduplicated, block-pinned ThreeCore activity report (6.2181ms)
+✔ explicit historical toBlock is honored and never exceeds the observed chain tip (0.7005ms)
+✔ wrong chain refuses event scanning without calls to getLogs (1.5189ms)
+✔ invalid account address fails before any network access (1.0495ms)
+✔ invalid public clients and malformed block values are rejected (0.9401ms)
+✔ rejects future, reversed and excessively long ranges before fetching logs (1.4674ms)
+✔ rejects logs outside requested block range and logs from another contract (3.3841ms)
+✔ rejects unrelated and malformed decoded Transfer logs (4.7609ms)
+✔ refuses conflicting logs for the same transaction hash and log index (0.9423ms)
+✔ refuses excessive or malformed RPC log sets rather than truncating silently (0.8592ms)
+✔ RPC errors propagate without retrying or sending transactions (0.6742ms)
+✔ checks a ThreeCore token and the actual Classic Router, never another spender (3.7427ms)
+✔ reports pinned gas, token balance, and existing classic-router allowance (5.1321ms)
+✔ zero gas, zero balance and no Classic Router allowance are accurately distinguished (0.932ms)
+✔ invalid and zero wallet addresses fail before any external requests (2.7768ms)
+✔ a transaction-only or missing RPC client cannot pass validation (1.5392ms)
+✔ wrong chain aborts before reading code, gas, token or allowances (1.1693ms)
+✔ negative or wrong-type block numbers are rejected without contract calls (2.0316ms)
+✔ missing token or Router bytecode aborts before reading balances (1.3549ms)
+✔ malformed deployed code is rejected instead of treated as verified (2.6599ms)
+✔ negative or non-bigint native gas values fail closed (1.4229ms)
+✔ malformed ERC-20 balance or allowance fails closed (2.3053ms)
+✔ RPC exceptions propagate without retrying a write transaction (1.3249ms)
+✔ every read is pinned to exactly the same observed block (0.9603ms)
+✔ case-insensitive wallet address normalizes account before RPC reads (1.0222ms)
+✔ uint256 overflow is rejected for block, gas, token and allowance (1.7918ms)
+✔ maximum uint256 existing approval remains exact and is reported as exposure (0.6981ms)
+✔ rejects wallet report if public RPC switches chains during sampled reads (6.3223ms)
+✔ rechecks RPC chain ID before returning wallet readiness report (0.502ms)
+ℹ tests 124
+ℹ suites 0
+ℹ pass 124
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7895.4458
+
+> @0628dao/emacore@0.1.0 test:history
+> node --test integration/history-compatibility.test.mjs
+
+▶ EMACore: event history against the local EVM
+  ✔ reads actual mint, transfer, self-transfer and burn logs with mined identities (98.7323ms)
+  ✔ keeps Approval event amounts distinct from allowance consumed by transferFrom (46.9442ms)
+  ✔ preserves maximum approval and a later zero-amount revocation exactly (96.5188ms)
+  ✔ keeps the sampled allowance when the local chain advances during history reads (27.584ms)
+  ✔ Transfer: refuses removed flags injected into otherwise real local logs (43.5032ms)
+  ✔ Transfer: refuses a conflicting duplicate of an actual local event (78.4195ms)
+  ✔ Transfer: rejects a local chain replacement and succeeds on a fresh snapshot (54.8959ms)
+  ✔ Approval: refuses removed flags injected into otherwise real local logs (48.9633ms)
+  ✔ Approval: refuses a conflicting duplicate of an actual local event (43.046ms)
+  ✔ Approval: rejects a local chain replacement and succeeds on a fresh snapshot (52.4811ms)
+✔ EMACore: event history against the local EVM (599.1582ms)
+ℹ tests 10
+ℹ suites 1
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6608.4394
