@@ -1,0 +1,30 @@
+{
+  "schema": "threecore.operator-recovery-observations.v1",
+  "date": "2026-11-01",
+  "timezone": "Asia/Tokyo",
+  "browser": "Microsoft Edge",
+  "origin": "http://127.0.0.1:4231",
+  "provenance": "Transcribed from the assistant-observed browser UI and actions. This is not an automated replay or a saved screenshot.",
+  "checkoutBase": "d9f0eb05ac3c4694b1240811d88747416099befa",
+  "workingChanges": "Japanese connection failure messages and operator documentation were uncommitted. The existing local server was not restarted. This is not a frozen release-candidate deployment.",
+  "simulationOnly": true,
+  "realWalletAcceptance": false,
+  "originalTabPreserved": true,
+  "observations": [
+    "The original rehearsal tab contained six fictional records and three comparison cases.",
+    "The combined save control produced an actual downloaded JSON. The tool download-event waiter timed out, but the new nonempty file was found and verified; the save was not clicked again blindly.",
+    "A separate empty rehearsal tab showed no records or comparison cases before import.",
+    "The ordinary file chooser accepted the original downloaded JSON. The preview showed zero to three ledgers and zero to three comparison cases, without applying changes.",
+    "Cancelling that preview left the new tab empty and the apply control disabled.",
+    "The same file was selected again. The preview was checked and the explicit combined-restore control was pressed.",
+    "After restore, the UI reported six confirmed records and three comparison cases, matching the imported file. DAT had three records, EMA two and CAWELON one.",
+    "A second combined export was saved. Its bytes were compared with the original download and matched exactly."
+  ],
+  "notEstablished": [
+    "Real wallet permission or Account 1 identity",
+    "New on-chain balances or transfers",
+    "Actual browser reload of restored data",
+    "Closure of the verification tab",
+    "Independent security review"
+  ]
+}

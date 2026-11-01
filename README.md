@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+日本語の操作手順: [接続するアカウントの確認、保存と別タブでの復旧](docs/OPERATOR_ACCEPTANCE_JA.md)。
+
 **November 1, 2026 release preparation:** [Acceptance gates and remaining work](docs/RELEASE_READINESS_2026-11-01.md). The public CI timing failure was reproduced and fixed; all four original jobs passed. A new [source checkpoint verifier](docs/SOURCE_CHECKPOINT_2026-11-01.md) checks an extracted package against an exact Git commit, with a verified 4,227-file export and separate-directory startup check.
 
 **November 1, 2026 development update:** [English overview, direct evidence links and reproduction instructions](docs/DEVELOPMENT_UPDATE_2026-11-01_EN.md). The recorded continuation reached 600 completed work items; the fixed implementation passed 16,391 wallet regression tests and 1,001 native browser cases. This development checkpoint includes source and evidence; it does not deploy a service or certify mainnet readiness.

@@ -15,13 +15,13 @@ swaps, bridges, or autonomous spending.
 
 | Gate | Completion evidence needed | Current assessment |
 | --- | --- | --- |
-| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | Commit `f81c600918360daee77c1736915ac8878f02cb65` passed [run 41305306004](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41305306004): 15,962 unit tests, 431 HTTP tests, 1,001 synthetic browser cases on each of three consecutive runs; all three compiled-token jobs and the new evidence job passed |
+| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | Commit `f81c600918360daee77c1736915ac8878f02cb65` passed [run 41305306004](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41305306004): 15,962 unit tests, 431 HTTP tests, 1,001 synthetic browser cases on each of three consecutive runs; all three compiled-token jobs and the new evidence job passed. The navigation follow-up `d9f0eb05ac3c4694b1240811d88747416099befa` also passed [all five jobs](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41306291181). Check the PR for the operator-guidance follow-up's own CI result |
 | Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | Local audit at `f81c600`: 242 manifests / 2,183 entries matched. The separate evidence CI gate passed on the same revision, checking the development manifests and the October 28 historical evidence on a fresh checkout |
 | Real wallet acceptance | Three prepared distinct accounts in the intended wallet/browser; permission UI, exact balances/block, save/reload/restore, explicit reconnect and invalidation observed | Incomplete. The [existing acceptance criteria](LOCAL_TESTNET_ACCEPTANCE_2026-10-25.md) remain applicable. One Account 2 historical scan is not three distinct real-account acceptance |
-| File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | Local and synthetic regression evidence exists; repeat the complete real-wallet recovery using the release candidate |
-| Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present; the release review must cover the final candidate and any material remaining findings |
+| File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | [Microsoft Edge rehearsal recovery](OPERATOR_RECOVERY_2026-11-01.md) passed save, file selection, preview cancellation, confirmed restore and re-export: six fictional records / three cases; both 17,387-byte exports match exactly. Real-wallet recovery using the final candidate remains pending |
+| Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present. A [bounded developer source review](OPERATOR_RECOVERY_2026-11-01.md#connection-guidance-and-bounded-source-review) traced connection/read dispatch, request filtering and stale-result protection. This does not replace review of the final candidate or independent review |
 | Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | [Source package verification](SOURCE_CHECKPOINT_2026-11-01.md): 4,227 / 4,227 files match the selected commit and seven fresh-directory startup/boundary checks pass. The operator procedure is documented; real-wallet migration/return remains to be exercised |
-| Operational support | Supported browsers/networks, bounded RPC behavior, failure/retry instructions, backup procedure, and troubleshooting records for the candidate | Documentation exists across features; consolidate and exercise the operator path before closure |
+| Operational support | Supported browsers/networks, bounded RPC behavior, failure/retry instructions, backup procedure, and troubleshooting records for the candidate | The [Japanese operator guide](OPERATOR_ACCEPTANCE_JA.md) now consolidates account identity, failed connection, preservation, backup and restore steps. Its rehearsal file path was exercised on the intended PC; the real-wallet path remains unverified |
 | Independent review and release decision | Separate review of the final scope and findings, explicit release decision and a deployment plan | Not completed. A developer's self-check or source publication is not independent review or deployment |
 
 The 431 CI HTTP cases exclude the separate local-navigation-help file included
@@ -58,6 +58,15 @@ features. Compiled-token jobs use local EVMs and do not send public transactions
    remained unchanged in their original tabs. The user's pre-existing six
    fictional records and three cases were preserved without a reload. The
    existing demo-route and local-navigation suites passed all eight cases.
+8. Exercised the complete rehearsal file cycle in Microsoft Edge, including
+   cancelling an import preview before applying a second reviewed import.
+   [Saved evidence](OPERATOR_RECOVERY_2026-11-01.md) includes both downloaded
+   JSON files, their matching hashes, a structural inspection and explicit
+   limits of the observed UI evidence.
+9. Added Japanese messages for wrong account, wrong chain and absent account
+   permission, without changing the identity checks. The existing controller
+   and connection-boundary suites passed 66 cases. Consolidated the operator
+   steps and recorded the bounded read-only source review.
 
 ## Current real-wallet observation
 
@@ -67,15 +76,25 @@ card was configured with the previously authorized Account 2 public address
 The page displayed a wallet-permission wait and a MetaMask window appeared.
 The UI tool then could not establish the extension window's current URL and
 stopped computer control. No successful reconnection, new balance, or permission
-approval is claimed from that attempt. This observation does not close the real
-wallet acceptance gate. Development and offline verification can continue while
-the wallet screen is clarified.
+approval is claimed from that attempt.
+
+The operator subsequently reported that **Account 1** had been connected and
+selected it as the current target. The application still showed a protective
+stop, while its card retained the earlier Account 2 expected address. Account 1's
+public address has not yet been independently observed or supplied; it must not
+be inferred from its display name or substituted with the historical address.
+The extension-control attempt again stopped because the UI tool could not
+establish its current URL. No new on-chain read is claimed. The earlier Account 2
+records remain historical records, separate from the requested Account 1 check.
+This observation does not close the real-wallet acceptance gate.
 
 ## Next work order
 
-Evidence CI and the fresh-directory source/startup check have passed. Resolve
-the real-wallet screen and run the account-specific acceptance and recovery path; then review
-the final supported controls and operational limits. Record each material
+Evidence CI, the fresh-directory source/startup check and the intended-PC
+rehearsal file cycle have passed. Obtain the selected Account 1 public address
+and restore an operable wallet UI connection, then run the account-specific
+acceptance and real-wallet recovery path. Complete the other prepared-account
+checks and independent review before a release decision. Record each material
 finding with its source revision, reproduction, fix and verification. Keep the
 current 4231 server and the user's open rehearsal data intact. New test servers
 must bind loopback on unused ports and be closed only by their own test process.
