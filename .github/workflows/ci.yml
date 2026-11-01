@@ -7,6 +7,30 @@ on:
 permissions:
   contents: read
 jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify every tracked development evidence manifest
+        run: node scripts/verify-evidence-collection.js . > evidence-verification.json
+      - name: Verify the published historical read-only checkpoint
+        run: node docs/evidence/2026-10-28-readonly-verification/verify-evidence.mjs > historical-verification.json
+      - name: Keep the verification results with this workflow run
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-verification-${{ github.sha }}
+          path: |
+            evidence-verification.json
+            historical-verification.json
+          if-no-files-found: error
+          retention-days: 30
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
