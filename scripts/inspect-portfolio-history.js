@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { createPortfolioHistory, HISTORY_TEXT_LIMIT, HISTORY_LIMIT } from "../src/portfolio-history.js";
-import { queryPortfolioHistory, exportFilteredHistory, validateHistoryQuery, portfolioHistoryCSV } from "../src/history-query.js";
+import { queryPortfolioHistory, exportFilteredHistory, validateHistoryQuery, portfolioHistoryCSV, decodeHistoryQueryFile, HISTORY_QUERY_FILE_LIMIT } from "../src/history-query.js";
 import { encodePortfolioReport } from "../src/portfolio-report.js";
 import { encodePortfolioComparisonReport } from "../src/portfolio-comparison.js";
 import { describePortfolioHistory } from "../src/portfolio-history-summary.js";
@@ -11,6 +11,7 @@ import { describePortfolioHistory } from "../src/portfolio-history-summary.js";
 const USAGE = "Usage: node scripts/inspect-portfolio-history.js query|subset|csv history.json [filters]\n" +
   "  Filters: --account ADDRESS --chain ID --origin ORIGIN --min-block DECIMAL --max-block DECIMAL\n" +
   "           --order oldest|newest --token CONTRACT --token-state any|known|unknown|not-observed\n" +
+  "  Or use --query-file conditions.json alone to replay a saved query with query/subset/csv. No filter overrides.\n" +
   "  subset requires at least one filter and exports whole matching observations, including other holdings.\n" +
   "  csv emits a scope row and all native/token balances of matched observations; decimal text has a leading apostrophe.\n" +
   "  Missing-code balances stay blank, not zero. CSV is not a restorable archive.\n" +
@@ -29,10 +30,11 @@ export function parsePortfolioHistoryArgs(args) {
   if (!Array.isArray(args) || args.length < 2 || args.length % 2 !== 0 || args.some(value => typeof value !== "string" || value.includes("\0"))) fail();
   const [mode, path] = args;
   if (!["query", "subset", "csv", "record", "compare", "timeline"].includes(mode) || !path || path.startsWith("-") || !/\.json$/i.test(path)) fail();
-  const query = {}, positions = {}, seen = new Set();
+  const query = {}, positions = {}, seen = new Set(); let queryFile = null;
   for (let i = 2; i < args.length; i += 2) {
     const key = args[i], value = args[i + 1]; if (seen.has(key) || value === "") fail(); seen.add(key);
     if (["query", "subset", "csv"].includes(mode)) {
+      if (key === "--query-file") { if (value.startsWith("-") || !/\.json$/i.test(value)) fail(); queryFile = value; continue; }
       if (!Object.hasOwn(filters, key)) fail();
       if (key === "--chain" && !/^[1-9][0-9]{0,15}$/.test(value)) fail();
       query[filters[key]] = key === "--chain" ? Number(value) : value;
@@ -41,7 +43,16 @@ export function parsePortfolioHistoryArgs(args) {
     else fail();
   }
   if ((mode === "subset" && !seen.size) || (mode === "record" && seen.size !== 1) || (mode === "compare" && seen.size !== 2)) fail();
-  return Object.freeze({ mode, path, query: ["query", "subset", "csv"].includes(mode) ? validateHistoryQuery(query) : null, positions: Object.freeze(positions) });
+  if (queryFile !== null && seen.size !== 1) fail();
+  return Object.freeze({ mode, path, query: ["query", "subset", "csv"].includes(mode) && !queryFile ? validateHistoryQuery(query) : null, queryFile, positions: Object.freeze(positions) });
+}
+
+export async function resolvePortfolioHistoryQuery(request) {
+  if (!request.queryFile) return request.query;
+  const bytes = await readBoundedLocalBytes(request.queryFile, HISTORY_QUERY_FILE_LIMIT, {
+    fail, sizeCode: "PORTFOLIO_HISTORY_QUERY_SIZE", changedCode: "PORTFOLIO_HISTORY_QUERY_CHANGED", limitCode: "PORTFOLIO_HISTORY_QUERY_LIMIT",
+  });
+  return decodeHistoryQueryFile(new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes));
 }
 
 export async function inspectPortfolioHistoryPath(request) {
@@ -49,10 +60,11 @@ export async function inspectPortfolioHistoryPath(request) {
     fail, sizeCode: "PORTFOLIO_HISTORY_SIZE", changedCode: "PORTFOLIO_HISTORY_CHANGED", limitCode: "PORTFOLIO_HISTORY_LIMIT",
   });
   const text = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
-  if (request.mode === "query") return JSON.stringify(queryPortfolioHistory(text, request.query), null, 2) + "\n";
-  if (request.mode === "csv") return portfolioHistoryCSV(text, request.query).text;
+  const query = await resolvePortfolioHistoryQuery(request);
+  if (request.mode === "query") return JSON.stringify(queryPortfolioHistory(text, query), null, 2) + "\n";
+  if (request.mode === "csv") return portfolioHistoryCSV(text, query).text;
   if (request.mode === "subset") {
-    const result = exportFilteredHistory(text, request.query); if (!result.exportedCount) fail("PORTFOLIO_HISTORY_EMPTY_SELECTION"); return result.text;
+    const result = exportFilteredHistory(text, query); if (!result.exportedCount) fail("PORTFOLIO_HISTORY_EMPTY_SELECTION"); return result.text;
   }
   if (request.mode === "timeline") return describePortfolioHistory(text) + "\n";
   const history = createPortfolioHistory(); history.importText(text); const state = history.state();
