@@ -1,0 +1,65 @@
+{
+  "totalCount": 3,
+  "matchCount": 2,
+  "query": {
+    "account": "",
+    "chainId": "",
+    "minimumBlock": null,
+    "maximumBlock": "20",
+    "order": "newest",
+    "tokenAddress": "",
+    "tokenStatus": "any",
+    "siteOrigin": ""
+  },
+  "rows": [
+    {
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "20",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      },
+      "index": 2
+    },
+    {
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "10",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      },
+      "index": 1
+    }
+  ],
+  "historicalObservation": true,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false
+}
