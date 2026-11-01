@@ -1,0 +1,62 @@
+{
+  "recordedAt": "2026-11-01T18:33:17.777Z",
+  "walletSourceRevision": "eb08524482a74b1ba88bd5d0ee9528e133d6973a",
+  "tokenSourceRevision": "fb5a5f6940563b1efa5c5bb5006b270b086e303b",
+  "walletPackageDeclaresRuntimeDependencies": false,
+  "directRuntimeReferences": [],
+  "developerToolSourceFilesReviewed": [
+    {
+      "file": "node_modules/@nomicfoundation/hardhat-zod-utils/src/rpc/validate-params.ts",
+      "sha256": "e035727f94b600a8cfa65b551ec7e79b60ac5ae22ebb23479f0b4875251dddf9"
+    },
+    {
+      "file": "node_modules/@nomicfoundation/hardhat-zod-utils/src/rpc/types/access-list.ts",
+      "sha256": "3b4204c78519a537049968b94bc403bb306006e5fe2df31aedc87993858a174f"
+    },
+    {
+      "file": "node_modules/hardhat/src/internal/builtin-plugins/network-manager/type-validation.ts",
+      "sha256": "5e37c56cfa53f664b5341fd439eff887f2b9e17972def9b74583776d4e503050"
+    }
+  ],
+  "localHttpOrigin": "http://127.0.0.1:50739",
+  "httpChecks": [
+    {
+      "path": "/",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "path": "/node_modules/zod/index.js",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/node_modules/hardhat/package.json",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/package.json",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/integration/token-compatibility.test.mjs",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/test/browser/",
+      "status": 404,
+      "passed": true
+    }
+  ],
+  "ownTemporaryServerClosed": true,
+  "original4231ServerTouched": false,
+  "userBrowserTouched": false,
+  "realWalletUsed": false,
+  "publicRpcUsed": false,
+  "advisoryStillOpen": true,
+  "independentReview": false,
+  "scopeConclusion": "No reference to the four toolchain libraries was found in the Wallet examples/src JavaScript files; ordinary server routes deny toolchain and integration-test paths. Zod remains used by Hardhat config/RPC schemas. This bounded review does not prove absence of all reachable developer-tool paths and does not remediate the advisory."
+}

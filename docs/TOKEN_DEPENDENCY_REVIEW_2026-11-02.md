@@ -56,6 +56,16 @@ production-only audit reports zero known findings. That narrower result does
 not clear the development finding, certify contract safety, or replace an
 independent review.
 
+A bounded source/exposure check at Wallet `eb08524` found no references to these
+toolchain libraries in the Wallet's `examples/` or `src/` JavaScript files, and
+the Wallet package declares no runtime dependencies. A separate temporary
+ordinary-mode HTTP server served the Wallet while refusing package, toolchain,
+integration and browser-test routes in six checked cases. It was then closed;
+the original server and user browser were untouched. Hardhat's Zod configuration
+and RPC schemas do use arrays and validation parsing, so the advisory remains
+open in the development tools. This check is neither a full reachability proof
+nor independent review. [The scope and source hashes are recorded here](evidence/2026-11-02-token-dependency-review/exposure-review.json).
+
 ## Combined publication order
 
 Everything remains local at the operator's request. The Wallet CI matrix has
