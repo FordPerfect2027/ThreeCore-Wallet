@@ -1,0 +1,64 @@
+{
+  "sourceRevision": "0405370b38c43e599dda0b475c88e1ec1850034a",
+  "methods": [
+    {
+      "name": "vault-browser.js",
+      "originalMethodSha256": "0ff0f01ca56628cac336d4da0caf967ca71bd434485482a60541cd31cc12cd1a",
+      "publishedMethodSha256": "0ff0f01ca56628cac336d4da0caf967ca71bd434485482a60541cd31cc12cd1a",
+      "transform": "Only absolute filesystem locations replaced with documented placeholders; method is an evidence snapshot, not a turnkey CLI."
+    },
+    {
+      "name": "workspace-browser.js",
+      "originalMethodSha256": "547d26959bce406a2b03e8c4c523f3afa3a9d0140be51175b5c724b80dde7824",
+      "publishedMethodSha256": "547d26959bce406a2b03e8c4c523f3afa3a9d0140be51175b5c724b80dde7824",
+      "transform": "Only absolute filesystem locations replaced with documented placeholders; method is an evidence snapshot, not a turnkey CLI."
+    },
+    {
+      "name": "native-download-browser.js",
+      "originalMethodSha256": "2412d9ae6e788ed49aa64fdc5c2ca54ec225174d117ed9028cb49949c0df5597",
+      "publishedMethodSha256": "2412d9ae6e788ed49aa64fdc5c2ca54ec225174d117ed9028cb49949c0df5597",
+      "transform": "Only absolute filesystem locations replaced with documented placeholders; method is an evidence snapshot, not a turnkey CLI."
+    },
+    {
+      "name": "vault-runner.mjs",
+      "originalMethodSha256": "00f37061dfe6bf421849ee8c893004e6c182fe088f12e2b69b751a52f2a8bd23",
+      "publishedMethodSha256": "68816e1bddf029fc9541f36b0394688bcb1d83b1f94002172913d450fccbd4d2",
+      "transform": "Only absolute filesystem locations replaced with documented placeholders; method is an evidence snapshot, not a turnkey CLI."
+    },
+    {
+      "name": "workspace-runner.mjs",
+      "originalMethodSha256": "9dcf44c661f3112243fefb564688516fc1476eea0185f775ad11d2d44b03f323",
+      "publishedMethodSha256": "32787fdc270b346c7f779da786cffded0f74479ddff44b25dedc47edf6aaf339",
+      "transform": "Only absolute filesystem locations replaced with documented placeholders; method is an evidence snapshot, not a turnkey CLI."
+    },
+    {
+      "name": "native-download-runner.mjs",
+      "originalMethodSha256": "ad868d847bbdc10a102800775d92b89786880ef29b34e5b00826507bcb3083e7",
+      "publishedMethodSha256": "cbceaf300d95c4b887c767363d564ff857ad9a31e8dbd1b8e45cdedbc0a105f1",
+      "transform": "Only absolute filesystem locations replaced with documented placeholders; method is an evidence snapshot, not a turnkey CLI."
+    }
+  ],
+  "failures": [
+    {
+      "attempt": "initial",
+      "firstPhasePassed": 8,
+      "secondPhaseFailed": 8,
+      "messages": [
+        "FAIL — actual workspace phase 2: Restore must be reviewed"
+      ],
+      "privateHtmlSha256": "6ffc8c93aa135043b550e19ccb5509799e36645cd303d502ad88bdaed7dd8f9b",
+      "privateReceiptSha256": "47c153a0b4ec4aaf9551be281d1135e2d025608a7ca95808a4d0281d23f2d2ed"
+    },
+    {
+      "attempt": "-v2",
+      "firstPhasePassed": 8,
+      "secondPhaseFailed": 8,
+      "messages": [
+        "FAIL — actual workspace phase 2: Restore must be reviewed"
+      ],
+      "privateHtmlSha256": "0c29de9d41c435b606e576b9c171930e2dce2cde789840ed09d4b8c1048964da",
+      "privateReceiptSha256": "dda2e48d5210f0a5c3ce51727155e4b00da58464cc765a236f5e0fbce85c4f67"
+    }
+  ],
+  "diagnosis": "The test called history-export while checking preview state. Wallet deliberately invalidates workspace review on card clicks (examples/wallet-demo.js). The final method uses passive DOM reads while a review is pending, then exports full histories only after applying. No application code or protection changed."
+}

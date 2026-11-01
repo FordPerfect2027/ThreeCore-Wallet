@@ -1,0 +1,264 @@
+{
+  "recordedAt": "2026-11-01T20:45:34.644Z",
+  "sourceRevision": "0405370b38c43e599dda0b475c88e1ec1850034a",
+  "originalFiles": [
+    {
+      "name": "ThreeCore-workspace-backup.json",
+      "sha256": "5a0908039849dcf2dcb586c256f884d5e03591cded0d251e3e9f0cb0132ff4e8",
+      "bytes": 4479,
+      "entries": 3
+    },
+    {
+      "name": "ThreeCore-workspace-backup (1).json",
+      "sha256": "edad9370bbfa6c5a88267c570593c8775755db26dc5e9fa841d4a0c0722abfdc",
+      "bytes": 6417,
+      "entries": 3
+    },
+    {
+      "name": "ThreeCore-workspace-backup (2).json",
+      "sha256": "d85775ad665a2c77455cb9947f8a578b703d2a2586aa5e5f86b906a5597a98aa",
+      "bytes": 7814,
+      "entries": 3
+    },
+    {
+      "name": "ThreeCore-workspace-backup (3).json",
+      "sha256": "66dc187cae5c468a74aeb10c05e966d5600db3a862c29c28b77590d93378f48d",
+      "bytes": 10745,
+      "entries": 3
+    },
+    {
+      "name": "ThreeCore-workspace-backup (4).json",
+      "sha256": "74d9535ef483e26ee33ca90869698378cc5621041cef0f991d5dc37e197c08d7",
+      "bytes": 12280,
+      "entries": 3
+    },
+    {
+      "name": "ThreeCore-workspace-backup (5).json",
+      "sha256": "11f414cc8c45cd92f2a912e4f17e0a5f318284d02cf10b5ad90523eec8fa708c",
+      "bytes": 13703,
+      "entries": 3
+    },
+    {
+      "name": "ThreeCore-workspace-backup (6).json",
+      "sha256": "7deaf5d238d38958adda8eae983faa4e78a37660facc400407b900afdd9b056c",
+      "bytes": 2244,
+      "entries": 3
+    },
+    {
+      "name": "ThreeCore-workspace-backup (7).json",
+      "sha256": "05d41df7273089570db7a5bf5411cb1d2ab8771c6e9f0ff932a8cfcbc98f67ae",
+      "bytes": 3212,
+      "entries": 3
+    },
+    {
+      "name": "ThreeCore-workspace-backup (8).json",
+      "sha256": "05d41df7273089570db7a5bf5411cb1d2ab8771c6e9f0ff932a8cfcbc98f67ae",
+      "bytes": 3212,
+      "entries": 3
+    }
+  ],
+  "distinctFileContents": 8,
+  "phases": [
+    {
+      "phase": 1,
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "unexpectedErrors": 0,
+      "fault": null,
+      "observations": [
+        {
+          "phase": 1,
+          "sourceSha256": "5a0908039849dcf2dcb586c256f884d5e03591cded0d251e3e9f0cb0132ff4e8",
+          "configuredCards": 3,
+          "historyReports": 3,
+          "previewAndCancelPreservedInitialPage": true,
+          "fullRestoredContentsMatch": true,
+          "nativeCheckpointSaved": true,
+          "walletRequests": 0
+        },
+        {
+          "phase": 1,
+          "sourceSha256": "edad9370bbfa6c5a88267c570593c8775755db26dc5e9fa841d4a0c0722abfdc",
+          "configuredCards": 1,
+          "historyReports": 4,
+          "previewAndCancelPreservedInitialPage": true,
+          "fullRestoredContentsMatch": true,
+          "nativeCheckpointSaved": true,
+          "walletRequests": 0
+        },
+        {
+          "phase": 1,
+          "sourceSha256": "d85775ad665a2c77455cb9947f8a578b703d2a2586aa5e5f86b906a5597a98aa",
+          "configuredCards": 1,
+          "historyReports": 5,
+          "previewAndCancelPreservedInitialPage": true,
+          "fullRestoredContentsMatch": true,
+          "nativeCheckpointSaved": true,
+          "walletRequests": 0
+        },
+        {
+          "phase": 1,
+          "sourceSha256": "66dc187cae5c468a74aeb10c05e966d5600db3a862c29c28b77590d93378f48d",
+          "configuredCards": 2,
+          "historyReports": 8,
+          "previewAndCancelPreservedInitialPage": true,
+          "fullRestoredContentsMatch": true,
+          "nativeCheckpointSaved": true,
+          "walletRequests": 0
+        },
+        {
+          "phase": 1,
+          "sourceSha256": "74d9535ef483e26ee33ca90869698378cc5621041cef0f991d5dc37e197c08d7",
+          "configuredCards": 2,
+          "historyReports": 9,
+          "previewAndCancelPreservedInitialPage": true,
+          "fullRestoredContentsMatch": true,
+          "nativeCheckpointSaved": true,
+          "walletRequests": 0
+        },
+        {
+          "phase": 1,
+          "sourceSha256": "11f414cc8c45cd92f2a912e4f17e0a5f318284d02cf10b5ad90523eec8fa708c",
+          "configuredCards": 2,
+          "historyReports": 10,
+          "previewAndCancelPreservedInitialPage": true,
+          "fullRestoredContentsMatch": true,
+          "nativeCheckpointSaved": true,
+          "walletRequests": 0
+        },
+        {
+          "phase": 1,
+          "sourceSha256": "7deaf5d238d38958adda8eae983faa4e78a37660facc400407b900afdd9b056c",
+          "configuredCards": 1,
+          "historyReports": 1,
+          "previewAndCancelPreservedInitialPage": true,
+          "fullRestoredContentsMatch": true,
+          "nativeCheckpointSaved": true,
+          "walletRequests": 0
+        },
+        {
+          "phase": 1,
+          "sourceSha256": "05d41df7273089570db7a5bf5411cb1d2ab8771c6e9f0ff932a8cfcbc98f67ae",
+          "configuredCards": 1,
+          "historyReports": 2,
+          "previewAndCancelPreservedInitialPage": true,
+          "fullRestoredContentsMatch": true,
+          "nativeCheckpointSaved": true,
+          "walletRequests": 0
+        }
+      ],
+      "unexpected": [],
+      "fileInputMode": "Native File/FileReader through input.files; OS file chooser not exercised",
+      "actualDownloadedFileBytes": true,
+      "nativeIndexedDb": true,
+      "providerFixturesPresentButNeverCalled": true,
+      "userWalletUsed": false,
+      "originalUserProfileUsed": false
+    },
+    {
+      "phase": 2,
+      "total": 8,
+      "passed": 8,
+      "failed": 0,
+      "unexpectedErrors": 0,
+      "fault": null,
+      "observations": [
+        {
+          "phase": 2,
+          "sourceSha256": "5a0908039849dcf2dcb586c256f884d5e03591cded0d251e3e9f0cb0132ff4e8",
+          "fullContentsMatchAfterBrowserRestart": true,
+          "explicitRestoreRequired": true,
+          "fileComparisonReportsExactMatch": true,
+          "walletRequests": 0,
+          "connectionPermissionsRestored": false
+        },
+        {
+          "phase": 2,
+          "sourceSha256": "edad9370bbfa6c5a88267c570593c8775755db26dc5e9fa841d4a0c0722abfdc",
+          "fullContentsMatchAfterBrowserRestart": true,
+          "explicitRestoreRequired": true,
+          "fileComparisonReportsExactMatch": true,
+          "walletRequests": 0,
+          "connectionPermissionsRestored": false
+        },
+        {
+          "phase": 2,
+          "sourceSha256": "d85775ad665a2c77455cb9947f8a578b703d2a2586aa5e5f86b906a5597a98aa",
+          "fullContentsMatchAfterBrowserRestart": true,
+          "explicitRestoreRequired": true,
+          "fileComparisonReportsExactMatch": true,
+          "walletRequests": 0,
+          "connectionPermissionsRestored": false
+        },
+        {
+          "phase": 2,
+          "sourceSha256": "66dc187cae5c468a74aeb10c05e966d5600db3a862c29c28b77590d93378f48d",
+          "fullContentsMatchAfterBrowserRestart": true,
+          "explicitRestoreRequired": true,
+          "fileComparisonReportsExactMatch": true,
+          "walletRequests": 0,
+          "connectionPermissionsRestored": false
+        },
+        {
+          "phase": 2,
+          "sourceSha256": "74d9535ef483e26ee33ca90869698378cc5621041cef0f991d5dc37e197c08d7",
+          "fullContentsMatchAfterBrowserRestart": true,
+          "explicitRestoreRequired": true,
+          "fileComparisonReportsExactMatch": true,
+          "walletRequests": 0,
+          "connectionPermissionsRestored": false
+        },
+        {
+          "phase": 2,
+          "sourceSha256": "11f414cc8c45cd92f2a912e4f17e0a5f318284d02cf10b5ad90523eec8fa708c",
+          "fullContentsMatchAfterBrowserRestart": true,
+          "explicitRestoreRequired": true,
+          "fileComparisonReportsExactMatch": true,
+          "walletRequests": 0,
+          "connectionPermissionsRestored": false
+        },
+        {
+          "phase": 2,
+          "sourceSha256": "7deaf5d238d38958adda8eae983faa4e78a37660facc400407b900afdd9b056c",
+          "fullContentsMatchAfterBrowserRestart": true,
+          "explicitRestoreRequired": true,
+          "fileComparisonReportsExactMatch": true,
+          "walletRequests": 0,
+          "connectionPermissionsRestored": false
+        },
+        {
+          "phase": 2,
+          "sourceSha256": "05d41df7273089570db7a5bf5411cb1d2ab8771c6e9f0ff932a8cfcbc98f67ae",
+          "fullContentsMatchAfterBrowserRestart": true,
+          "explicitRestoreRequired": true,
+          "fileComparisonReportsExactMatch": true,
+          "walletRequests": 0,
+          "connectionPermissionsRestored": false
+        }
+      ],
+      "unexpected": [],
+      "fileInputMode": "Native File/FileReader through input.files; OS file chooser not exercised",
+      "actualDownloadedFileBytes": true,
+      "nativeIndexedDb": true,
+      "providerFixturesPresentButNeverCalled": true,
+      "userWalletUsed": false,
+      "originalUserProfileUsed": false
+    }
+  ],
+  "allPassed": true,
+  "independentBrowserProcesses": 2,
+  "processIds": [
+    23736,
+    20884
+  ],
+  "usedSameOwnedProfileAcrossPhases": true,
+  "temporaryProfileRemoved": true,
+  "ownServerClosed": true,
+  "originalUserBrowserTouched": false,
+  "original4231ServerTouched": false,
+  "realWalletUsed": false,
+  "osFilePickerExercised": false,
+  "sourceFilesUnmodified": true,
+  "privateOriginalReceiptSha256": "607c144613a81d75df466679823af8a8d2d236659383861af5e86a96670abe4e"
+}

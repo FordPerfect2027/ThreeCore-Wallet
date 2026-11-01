@@ -1,0 +1,112 @@
+{
+  "recordedAt": "2026-11-01T20:36:31.033Z",
+  "sourceRevision": "0405370b38c43e599dda0b475c88e1ec1850034a",
+  "originalFiles": [
+    {
+      "name": "ThreeCore-transfer-vault-collection.json",
+      "sha256": "626fd24315560846a1550622803cd932c992552526d087768cf2fd59c3dfe5de",
+      "bytes": 16124,
+      "entries": 1
+    },
+    {
+      "name": "ThreeCore-transfer-vault-collection (1).json",
+      "sha256": "07b861f7f35cb119d2680b68c5f384610a73628e89a1c3cd8fd7ca040b966296",
+      "bytes": 2356,
+      "entries": 1
+    },
+    {
+      "name": "ThreeCore-transfer-vault-collection (2).json",
+      "sha256": "07b861f7f35cb119d2680b68c5f384610a73628e89a1c3cd8fd7ca040b966296",
+      "bytes": 2356,
+      "entries": 1
+    }
+  ],
+  "distinctFileContents": 2,
+  "phases": [
+    {
+      "phase": 1,
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "unexpectedErrors": 0,
+      "fault": null,
+      "observations": [
+        {
+          "sourceSha256": "626fd24315560846a1550622803cd932c992552526d087768cf2fd59c3dfe5de",
+          "phase": 1,
+          "entries": 1,
+          "revision": 1,
+          "previewDidNotWrite": true,
+          "cancelKeptEmpty": true,
+          "reviewedImportExact": true,
+          "noImplicitCardRestore": true
+        },
+        {
+          "sourceSha256": "07b861f7f35cb119d2680b68c5f384610a73628e89a1c3cd8fd7ca040b966296",
+          "phase": 1,
+          "entries": 1,
+          "revision": 1,
+          "previewDidNotWrite": true,
+          "cancelKeptEmpty": true,
+          "reviewedImportExact": true,
+          "noImplicitCardRestore": true
+        }
+      ],
+      "unexpected": [],
+      "fileInputMode": "Native File/FileReader through input.files; OS file chooser not exercised",
+      "actualDownloadedFileBytes": true,
+      "nativeIndexedDb": true,
+      "userWalletUsed": false,
+      "originalUserProfileUsed": false
+    },
+    {
+      "phase": 2,
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "unexpectedErrors": 0,
+      "fault": null,
+      "observations": [
+        {
+          "sourceSha256": "626fd24315560846a1550622803cd932c992552526d087768cf2fd59c3dfe5de",
+          "phase": 2,
+          "entries": 1,
+          "persistedRevision": 1,
+          "exactAfterProcessRestart": true,
+          "reexportSha256": "626fd24315560846a1550622803cd932c992552526d087768cf2fd59c3dfe5de",
+          "reexportBytesIdentical": true,
+          "reimportDidNotMultiply": true,
+          "noImplicitCardRestore": true
+        },
+        {
+          "sourceSha256": "07b861f7f35cb119d2680b68c5f384610a73628e89a1c3cd8fd7ca040b966296",
+          "phase": 2,
+          "entries": 1,
+          "persistedRevision": 1,
+          "exactAfterProcessRestart": true,
+          "reexportSha256": "07b861f7f35cb119d2680b68c5f384610a73628e89a1c3cd8fd7ca040b966296",
+          "reexportBytesIdentical": true,
+          "reimportDidNotMultiply": true,
+          "noImplicitCardRestore": true
+        }
+      ],
+      "unexpected": [],
+      "fileInputMode": "Native File/FileReader through input.files; OS file chooser not exercised",
+      "actualDownloadedFileBytes": true,
+      "nativeIndexedDb": true,
+      "userWalletUsed": false,
+      "originalUserProfileUsed": false
+    }
+  ],
+  "allPassed": true,
+  "independentBrowserProcesses": 2,
+  "usedSameOwnedProfileAcrossPhases": true,
+  "temporaryProfileRemoved": true,
+  "ownServerClosed": true,
+  "originalUserBrowserTouched": false,
+  "original4231ServerTouched": false,
+  "realWalletUsed": false,
+  "osFilePickerExercised": false,
+  "sourceFilesUnmodified": true,
+  "privateOriginalReceiptSha256": "fc2a5a4e3b2a3e8ebf99246ee771d026306aa4a9722a3cb4e49ddeedc6f6e42f"
+}

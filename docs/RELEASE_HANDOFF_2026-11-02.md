@@ -137,17 +137,22 @@ These items remain open even if all automated checks pass:
    Base Sepolia block 53,169,113 (six zero-balance observations). They did not
    use MetaMask and do not complete this UI acceptance step. One current Mainnet
    permission was previously observed; it is separate from testnet permission.
-2. Actual-account saved-collection recovery into an empty persistent store on the
-   intended PC. The separate-database synthetic case passed; actual-file import
-   into an existing list also passed. The new empty-store real-PC attempt reached
-   the passive navigation guide, then native browser control stopped because it
-   could not establish the active URL. No actual restore is claimed from it.
+2. The original-profile OS file-selection workflow remains separate from the
+   completed [isolated actual-file recovery](ACTUAL_FILE_RECOVERY_2026-11-02.md).
+   On the intended PC, two distinct actual downloaded collection contents now
+   restore into empty native IndexedDB stores and survive a browser-process
+   restart. Eight distinct workspace backups also restore exact full contents
+   through the complete Wallet and its saved checkpoints. A normal browser
+   download of the restored ten-observation workspace is byte-identical to its
+   input. Those runs use new extension-free profiles and File/FileReader input;
+   they do not establish real-wallet permission or exercise the OS chooser.
 3. Candidate migration/return with the intended real wallet, preserving the
    previous working version and its files. The offline data-format preparation
    now passes for fourteen actual downloaded originals across `b2270b2` and
    `59b63ca`, including reading candidate exports in the prior version. A private
-   return kit preserves originals. This does not substitute for UI/storage and
-   wallet reconnection acceptance; see the shared-account record.
+   return kit preserves originals. Isolated native-storage and full-screen
+   recovery are now checked separately as above; intended real-wallet version
+   return and reconnection remain open. See the shared-account record.
 4. Independent findings and remediation review, followed by an explicit release
    decision and deployment plan. The present developer review is not independent.
 
