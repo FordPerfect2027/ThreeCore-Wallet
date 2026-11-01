@@ -62,10 +62,22 @@ for (const format of cases) {
 
   test("file format: caller deadline passed through " + format.name, async () => {
     const input = stalledFile({ stream: false });
-    const pending = format.read(input.file, { timeoutMs: 5 });
-    await assert.rejects(pending, { code: format.readCode });
-    assert.equal(walletFileReadService.state().retained, 1);
-    input.settle(); await tick();
+    const before = walletFileReadService.state();
+    assert.equal(before.active, 0);
+    try {
+      const pending = format.read(input.file, { timeoutMs: 5 });
+      await assert.rejects(pending, { code: format.readCode });
+      const expired = walletFileReadService.state();
+      assert.equal(expired.timedOut, before.timedOut + 1);
+      assert.equal(expired.waiting, 0);
+      // The deadline may expire before the worker starts on a busy machine.
+      // Only a read that actually started must retain its unsettled reservation.
+      assert(input.calls.read === 0 || input.calls.read === 1);
+      assert.equal(expired.retained, input.calls.read);
+      assert.equal(expired.reservedBytes, input.calls.read * input.file.size);
+    } finally {
+      input.settle(); await tick();
+    }
     assert.equal(walletFileReadService.state().active, 0);
   });
 

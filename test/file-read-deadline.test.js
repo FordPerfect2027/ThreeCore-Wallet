@@ -119,6 +119,9 @@ test("file deadline: slow metadata cannot reset the deadline", async t => {
   Object.defineProperty(input.file, "size", { get() { clock.set(100); return 2; } });
   await assert.rejects(service.readText(input.file, { timeoutMs: 100 }), code("FILE_TIMEOUT"));
   assert.equal(input.calls(), 0);
+  assert.equal(service.state().timedOut, 1);
+  assert.equal(service.state().retained, 0);
+  assert.equal(service.state().reservedBytes, 0);
   assert.equal(service.state().active, 0);
 });
 
@@ -140,6 +143,9 @@ test("file deadline: native fallback remains counted after timer expiry", async 
   const pending = outcome(service.readText(input.file, { timeoutMs: 10 }));
   await tick(); clock.set(10); clock.fire();
   assert.deepEqual(await pending, { code: "FILE_TIMEOUT" });
+  assert.equal(input.calls.read, 1);
+  assert.equal(service.state().timedOut, 1);
+  assert.equal(service.state().waiting, 0);
   assert.equal(service.state().reservedBytes, 2);
   assert.equal(service.state().retained, 1);
   input.gate.resolve(bytes("ok").buffer); await tick();
