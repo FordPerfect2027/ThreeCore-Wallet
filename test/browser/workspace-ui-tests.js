@@ -531,6 +531,9 @@ export function registerWorkspaceUITests(test) {
       q("preview").click();
       apply();
       assert(current().every(row => JSON.parse(row.history).reports.length === 1), "all histories retained");
+      q("compare").click();
+      assert(q("comparison-detail").textContent.includes("全3カードの設定・トークン一覧・保存履歴が一致"), "complete saved contents match");
+      assert(q("apply").disabled, "comparison does not authorize another restore");
     });
   });
 
@@ -542,7 +545,21 @@ export function registerWorkspaceUITests(test) {
       choose(new File([JSON.stringify(changed)], "backup.json"));
       await waitFor(() => q("status").textContent.includes("破損確認が一致しません"));
       assert(q("apply").disabled, "no apply after corrupt file");
+      assert(q("compare").disabled, "corrupt file cannot receive a comparison verdict");
       assert(current()[0].account === ACCOUNTS[0], "current data untouched");
+    });
+  });
+
+  test("workspace: loaded file comparison distinguishes a merge with additional existing records", async () => {
+    await isolated(async ({ choose, current }) => {
+      const saved = await prepareWorkspaceFile(workspaceFromDraft(draft("20")));
+      choose(new File([saved.text], "backup.json"));
+      await waitFor(() => !q("file").disabled);
+      q("preview").click(); apply(); q("compare").click();
+      assert(current().every(row => JSON.parse(row.history).reports.length === 2), "merge preserves originals");
+      assert(q("comparison-detail").textContent.includes("ファイル 1件 / 画面 2件"), "extra history is not an exact match");
+      q("cancel").click();
+      assert(q("comparison-detail").textContent === "" && q("compare").disabled, "cancel retires verdict");
     });
   });
 

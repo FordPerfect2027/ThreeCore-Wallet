@@ -1,6 +1,33 @@
-import { captureWorkspaceDraft, workspaceHistory, freezeWorkspace, workspaceFail } from "./workspace-format.js";
+import { captureWorkspaceDraft, workspaceHistory, freezeWorkspace, workspaceFail, validateWorkspace, workspaceFromDraft } from "./workspace-format.js";
 import { normalizeAddress } from "./wallet-session.js";
 import { describeWorkspaceChanges } from "./workspace-review.js";
+
+/** Compare the complete supported contents, not just counts or a merge result. */
+export function compareWorkspaceContents(saved, draft) {
+  const source = validateWorkspace(saved), current = workspaceFromDraft(draft);
+  const cards = source.entries.map((before, index) => {
+    const after = current.entries[index];
+    const configurationMatches = ["account", "chainId", "tokenAddress"].every(key => before[key] === after[key]) &&
+      JSON.stringify(before.tokens) === JSON.stringify(after.tokens);
+    return { agent: before.agent, configurationMatches,
+      historyMatches: JSON.stringify(before.history) === JSON.stringify(after.history),
+      savedObservations: before.history.reports.length, currentObservations: after.history.reports.length };
+  });
+  return freezeWorkspace({ sameContents: cards.every(card => card.configurationMatches && card.historyMatches), cards,
+    currentBalanceVerified: false, connectionVerified: false, authorizesRestoration: false });
+}
+
+export function describeWorkspaceComparison(saved, draft) {
+  const result = compareWorkspaceContents(saved, draft);
+  const lines = ["保存ファイルと現在の内容の照合", result.sameContents
+    ? "全3カードの設定・トークン一覧・保存履歴が一致しました。"
+    : "一致していない項目があります。復元対象と保存したファイルを確認してください。"];
+  for (const card of result.cards) lines.push(card.agent + ": 設定 " + (card.configurationMatches ? "一致" : "不一致") +
+    " / 履歴 " + (card.historyMatches ? "一致" : "不一致") + "（ファイル " + card.savedObservations + "件 / 画面 " + card.currentObservations + "件）");
+  lines.push("選んだ一括バックアップに含まれる内容だけの比較です。送受信履歴・期間レポートなど別保存の資料は含みません。",
+    "設定・履歴の変更や接続・残高照会は行っていません。現在の残高やファイルの作成者を証明しません。");
+  return lines.join("\n");
+}
 
 /** Exact display only. Does not infer decimals, prices, value or profit. */
 export function formatWorkspaceUnits(raw, decimals = 18) {

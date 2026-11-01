@@ -2,7 +2,7 @@ import { mountSecureBackupPanel } from "./secure-backup-panel.js";
 import { createWorkspaceController } from "../src/workspace-controller.js";
 import { workspaceFromDraft, workspaceDraftKey, decodeWorkspace, WORKSPACE_TEXT_LIMIT } from "../src/workspace-format.js";
 import { prepareWorkspaceFile, createWorkspaceFileReader, createWorkspaceBackupTracker } from "../src/workspace-file.js";
-import { describeWorkspaceOverview, describeWorkspacePreview, describeWorkspaceUndo } from "../src/workspace-overview.js";
+import { describeWorkspaceOverview, describeWorkspacePreview, describeWorkspaceUndo, describeWorkspaceComparison } from "../src/workspace-overview.js";
 import { offerHistoryDownload } from "./history-files.js";
 import { observeCallbackResult } from "../src/security-callback.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
@@ -151,6 +151,8 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   const overview = node("pre", "overview");
   const detail = node("pre", "detail");
   const undoDetail = node("pre", "undo-detail");
+  const comparisonDetail = node("pre", "comparison-detail");
+  comparisonDetail.setAttribute("role", "status");
   const json = node("textarea", "json");
   json.rows = 4;
   json.maxLength = WORKSPACE_TEXT_LIMIT;
@@ -187,6 +189,16 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     status.textContent = "保存状況のダウンロードを開始しました。PCで保存完了を確認してください。";
   });
   const save = button("save", "3ウォレットの平文バックアップを保存", saveFile);
+  const compare = button("compare", "選んだファイルと現在の内容を照合", () => {
+    comparisonDetail.textContent = "";
+    const id = saveGeneration, selected = reader.state();
+    if (reading || saving || selected.phase !== "ready" || json.value !== selected.result.text) return;
+    const draft = readCurrentDraft();
+    if (!current(id)) return;
+    const text = describeWorkspaceComparison(selected.result.workspace, draft);
+    if (!current(id) || reader.state() !== selected || json.value !== selected.result.text) return;
+    comparisonDetail.textContent = text;
+  });
   const previewButton = button("preview", "一括復元の変更内容を確認", () => {
     if (!stagedReady()) return;
     clearReview();
@@ -198,6 +210,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   const apply = button("apply", "確認した内容を一括復元", () => {
     if (!stagedReady()) return;
     if (!preview || !confirmed.item.checked || (preview.removed && !removal.item.checked)) return;
+    comparisonDetail.textContent = "";
     const candidate = preview;
     preview = null;
     confirmed.item.checked = removal.item.checked = false;
@@ -231,6 +244,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   });
   const undoApply = button("undo-apply", "確認した操作前の状態へ戻す", () => {
     if (!undoReview || !undoConfirmed.item.checked) return;
+    comparisonDetail.textContent = "";
     const id = undoReview.id;
     undoReview = null;
     undoConfirmed.item.checked = false;
@@ -249,6 +263,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   });
   const reader = createWorkspaceFileReader({ readBytes, subtle, onChange(state) {
     if (disposed) return;
+    comparisonDetail.textContent = "";
     const id = saveGeneration;
     reading = state.phase === "reading";
     if (reading) {
@@ -272,6 +287,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     preview = undoReview = null;
     confirmed.item.checked = removal.item.checked = undoConfirmed.item.checked = false;
     detail.textContent = undoDetail.textContent = "";
+    comparisonDetail.textContent = "";
     controls();
   }
   function updateBackup() {
@@ -292,6 +308,8 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     const state = controller.state();
     if (!current(id)) return;
     const busy = reading || saving;
+    const selected = reader.state();
+    compare.disabled = busy || selected.phase !== "ready" || json.value !== selected.result.text;
     section.setAttribute("aria-busy", String(busy));
     file.disabled = save.disabled = busy;
     previewButton.disabled = busy || state.recoveryRequired;
@@ -372,6 +390,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   const secureHost = node("div", "secure-host");
   section.append(heading, note, inspect, saveSummary, overview, save, backupStatus, secureHost,
     label("保存した一括バックアップを選択", file), label("読み込み用JSON（ファイル選択で入力されます）", json),
+    compare, comparisonDetail,
     settings.label, histories.label, replace.label, previewButton, detail,
     confirmed.label, removal.label, apply, cancel, undoPreview, undoDetail,
     undoConfirmed.label, undoApply, saveRecovery, status);
