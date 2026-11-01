@@ -48,11 +48,8 @@ export function validateWalletSetup(value) {
   try {
     value = fields(value, ["schema", "entries"]);
     if (value.schema !== WALLET_SETUP_SCHEMA) fail("SETUP_SCHEMA");
-    const seen = new Set();
     const entries = rows(value.entries).map(row => {
       const account = address(row.account);
-      if (account && seen.has(account)) fail("SETUP_DUPLICATE");
-      if (account) seen.add(account);
       return Object.freeze({ agent: row.agent, account, chainId: row.chainId });
     });
     return Object.freeze({ schema: WALLET_SETUP_SCHEMA, entries: Object.freeze(entries) });
@@ -104,11 +101,11 @@ export function inspectWalletFields(value) {
     catch { return { ...row, account: null, status: "invalid" }; }
   });
   const entries = normalized.map(row => Object.freeze({ ...row,
-    status: row.account && normalized.filter(other => other.account === row.account).length > 1
-      ? "duplicate" : row.status,
+    sharedAccount: Boolean(row.account && normalized.filter(other => other.account === row.account).length > 1),
   }));
   const configured = entries.filter(row => row.status === "configured").length;
   return Object.freeze({ entries: Object.freeze(entries), configured,
+    distinctAccounts: new Set(entries.filter(row => row.account).map(row => row.account)).size,
     readyForManualConnection: configured === 3, ownershipVerified: false });
 }
 

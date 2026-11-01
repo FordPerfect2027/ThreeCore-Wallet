@@ -142,15 +142,15 @@ test("permitted-account: global stop clears a preview without losing configured 
   assert(f.calls.length === before, 'Resume automatically inspected a wallet');
 });
 
-test("permitted-account: reviewed address cannot duplicate another agent", async use => {
+test("permitted-account: reviewed address can share another card's account without connecting", async use => {
   const f = use(); f.input('.account', '');
   const other = document.querySelector('[data-agent="EMA"] .account'); other.value = A;
   f.field('.account-probe-read').click();
   await waitFor(() => !f.field('.account-probe-apply').disabled);
   f.field('.account-probe-apply').click();
-  await waitFor(() => f.field('.account-probe-status').textContent.includes('別のカード'));
-  assert(f.field('.account').value === '', 'Duplicate account was applied');
-  assert(f.field('.read').disabled, 'Duplicate check connected the wallet');
+  await waitFor(() => f.field('.account').value === A);
+  assert(other.value === A, 'Other card was changed');
+  assert(f.field('.read').disabled, 'Shared address input connected the wallet');
 });
 
 test("wallet-navigation: task links focus existing sections without wallet requests", async use => {
@@ -324,7 +324,7 @@ test("Wallet情報をHTMLとして実行せず、選択変更で切断する", a
   assert(f.output().includes("未接続") && f.field(".read").disabled, "Provider change retained session");
 });
 
-test("他エージェントの重複アドレスは接続要求の前に拒否する", async use => {
+test("別カードも同じ口座へ明示的に接続でき、元の接続を維持する", async use => {
   const f = use();
   await f.connect();
   const ema = document.querySelector('[data-agent="EMA"]');
@@ -332,8 +332,10 @@ test("他エージェントの重複アドレスは接続要求の前に拒否�
   ema.querySelector(".chain").value = "8453";
   const count = f.calls.length;
   ema.querySelector(".connect").click();
-  assert(ema.querySelector("output").textContent.includes("同一"), "Duplicate agent account accepted");
-  assert(f.calls.length === count && f.output().includes("接続済み"), "Another card's session was changed");
+  await waitFor(() => !ema.querySelector(".read").disabled);
+  assert(f.calls.length > count && f.output().includes("接続済み"), "Explicit connection did not preserve the first card");
+  ema.querySelector(".disconnect").click();
+  assert(ema.querySelector(".read").disabled && !f.field(".read").disabled, "One card's disconnect affected the other");
 });
 
 for (const code of [4100, 4900, 4901]) {

@@ -1,5 +1,13 @@
 # Local testnet acceptance work — 2026-10-25
 
+> November 2 scope correction: the three-distinct-real-account prerequisite in
+> this historical plan is superseded by
+> [the shared-account acceptance matrix](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md).
+> DAT, EMA and CAWELON may use the same existing account. Real wallet permission,
+> per-token/chain isolation, restore and account-change checks remain required;
+> creating a third account is not a prerequisite. The original results below
+> describe the distinct-provider test fixture, not a product usage restriction.
+
 Developed from `bf409924d5d65bcd2283159581b6ddc98be4084d` in an isolated PC checkout.
 Nothing from this iteration has been pushed to GitHub. The source checkout and
 its unmodified baseline remain available, with a separate pre-change Git bundle.

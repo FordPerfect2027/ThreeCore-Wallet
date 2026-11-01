@@ -276,10 +276,6 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       readContext: () => ({ provider: selectedProvider(), account: value(".account"), chainId: Number(value(".chain")) }),
       applyAccount: (result, checkCurrent) => {
         checkCurrent();
-        for (const other of cards.filter(item => item !== card)) {
-          if (other.querySelector(".account").value.trim().toLowerCase() === result.account)
-            throw Object.assign(new Error("DUPLICATE_ACCOUNT"), { code: "DUPLICATE_ACCOUNT" });
-        }
         for (const target of [panel, identityPanel, allowancePanel, transferPanel]) { target.invalidate(); checkCurrent(); }
         setupPanel?.invalidate(); checkCurrent();
         workspacePanel?.invalidate(); checkCurrent();
@@ -299,10 +295,6 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         const provider = choice === "legacy" ? getLegacyProvider() : registry.getProvider(choice);
         if (!provider) throw Error("接続するWalletを選択してください。");
         const account = normalizeAddress(value(".account"));
-        for (const other of cards.filter(item => item !== card)) {
-          const address = other.querySelector(".account").value.trim();
-          if (address && normalizeAddress(address) === account) throw Error("別のエージェントと同一のWalletアドレスです。");
-        }
         controller.connect({ provider, account, chainId: Number(value(".chain")) });
       } catch (error) { controller.disconnect(error.message); }
     });

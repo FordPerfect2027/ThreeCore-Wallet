@@ -16,7 +16,7 @@ test('plain historical records remain structure-only through comparisons, bundle
 test('workspace checksum and saved observation conflicts remain authoritative',async()=>{
  const raw=JSON.parse(fixtures[0].text);raw.digest='0'.repeat(64);await assert.rejects(inspectWalletSavedText(JSON.stringify(raw)),{code:'WORKSPACE_CHECKSUM'});
  const history=JSON.parse(fixtures[2].text);const altered=structuredClone(history.reports[0]);altered.snapshot.nativeBalanceBaseUnits='99';history.reports.push(altered);await assert.rejects(inspectWalletSavedText(JSON.stringify(history)),{code:'OBSERVATION_CONFLICT'});
- const setup=JSON.parse(fixtures[3].text);setup.entries[1].account=setup.entries[0].account;await assert.rejects(inspectWalletSavedText(JSON.stringify(setup)),{code:'SETUP_DUPLICATE'});
+ const setup=JSON.parse(fixtures[3].text);setup.entries[1].agent=setup.entries[0].agent;await assert.rejects(inspectWalletSavedText(JSON.stringify(setup)),{code:'SETUP_AGENT'});
 });
 test('empty workspace histories have zero observations while absent observations in settings stay null',async()=>{
  const workspace=bundle({populated:false,accounts:false}),result=await inspectWalletSavedText((await prepareWorkspaceFile(workspace)).text);assert.equal(result.scope.portfolioObservationReferences,0);assert.equal(result.scope.configuredAccountReferences,0);assert.equal(result.scope.configurationReferences,3);const setup=await inspectWalletSavedText(fixtures[3].text);assert.equal(setup.scope.portfolioObservationReferences,null);

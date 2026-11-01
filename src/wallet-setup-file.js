@@ -7,7 +7,7 @@ export const WALLET_SETUP_FILE_LIMIT = WALLET_SETUP_LIMIT * 4;
 const fail = code => { throw new WalletSetupError(code); };
 const FILE_ERRORS = new Set(["SETUP_FILENAME", "SETUP_SIZE", "SETUP_ENCODING", "SETUP_FILE",
   "SETUP_JSON", "SETUP_SCHEMA", "SETUP_SHAPE", "SETUP_ROWS", "SETUP_AGENT", "SETUP_ADDRESS",
-  "SETUP_CHAIN", "SETUP_DUPLICATE"]);
+  "SETUP_CHAIN"]);
 
 export function prepareWalletSetupFile(plan) {
   const text = encodeWalletSetup(plan);

@@ -26,13 +26,13 @@ export function checked(node, value = true) {
   node.checked = value;
   node.dispatchEvent(new Event('change', { bubbles: true }));
 }
-export function makeAcceptanceFixture(name) {
+export function makeAcceptanceFixture(name, { sharedProvider = false, accounts = ACCOUNTS } = {}) {
   assert(new RegExp('^' + DB_PREFIX + '[a-f0-9-]{36}$').test(name), 'Use an isolated test database');
   const eventTarget = new EventTarget();
   const supervisor = createRpcSupervisor();
   const storage = createCheckpointStorage({ indexedDB, name });
   const calls = [], pending = [];
-  const conditions = AGENTS.map(() => ({ chain: '0x14a34', delay: false, reject: false }));
+  const conditions = AGENTS.map((_, index) => ({ account: accounts[index], chain: '0x14a34', delay: false, reject: false }));
   const providers = AGENTS.map((agent, index) => {
     const listeners = new Map();
     return {
@@ -42,25 +42,29 @@ export function makeAcceptanceFixture(name) {
       async request(request) {
         calls.push({ agent, method: request.method });
         switch (request.method) {
-          case 'eth_requestAccounts': case 'eth_accounts': return [ACCOUNTS[index]];
+          case 'eth_requestAccounts': case 'eth_accounts': return [conditions[index].account];
           case 'eth_chainId': return conditions[index].chain;
           case 'eth_getBlockByNumber':
             if (conditions[index].delay) await new Promise((resolve, reject) => pending.push({ index, resolve, reject }));
             if (conditions[index].reject) throw Object.assign(Error('Synthetic network unavailable'), { code: -32000 });
             return { number: '0x2a', hash: HASH };
-          case 'eth_getCode': return request.params[0].toLowerCase() === TOKENS[index] ? '0x6000' : '0x';
+          case 'eth_getCode': return (sharedProvider ? TOKENS : [TOKENS[index]]).includes(request.params[0].toLowerCase()) ? '0x6000' : '0x';
           case 'eth_getBalance': return '0x' + (BigInt(index + 1) * 10n ** 18n).toString(16);
-          case 'eth_call':
-            assert(request.params[0].to.toLowerCase() === TOKENS[index], 'Read crossed token boundary');
+          case 'eth_call': {
+            const tokenIndex = sharedProvider ? TOKENS.indexOf(request.params[0].to.toLowerCase()) : index;
+            assert(tokenIndex >= 0 && request.params[0].to.toLowerCase() === TOKENS[tokenIndex], 'Read crossed token boundary');
             assert(/^0x70a08231[0-9a-f]{64}$/.test(request.params[0].data), 'Only balanceOf is supported here');
-            return '0x' + (BigInt(index + 100) * 10n ** 18n).toString(16).padStart(64, '0');
+            assert(request.params[0].data.slice(-40) === conditions[index].account.slice(2), 'Read crossed account boundary');
+            return '0x' + (BigInt(tokenIndex + 100) * 10n ** 18n).toString(16).padStart(64, '0');
+          }
           default: throw Error('Forbidden test provider method: ' + request.method);
         }
       },
     };
   });
+  if (sharedProvider) providers.fill(providers[0]);
   function announce() {
-    providers.forEach((provider, index) => eventTarget.dispatchEvent(new CustomEvent('eip6963:announceProvider', {
+    (sharedProvider ? providers.slice(0, 1) : providers).forEach((provider, index) => eventTarget.dispatchEvent(new CustomEvent('eip6963:announceProvider', {
       detail: { provider, info: { uuid: UUIDS[index], name: 'Test ' + AGENTS[index], rdns: 'test.threecore' } },
     })));
   }
@@ -74,8 +78,8 @@ export function makeAcceptanceFixture(name) {
   const card = (index, selector) => q('[data-agent="' + AGENTS[index] + '"] ' + selector);
   function configure() {
     AGENTS.forEach((agent, index) => {
-      input(card(index, '.provider'), UUIDS[index], 'change');
-      input(card(index, '.account'), ACCOUNTS[index]);
+      input(card(index, '.provider'), UUIDS[sharedProvider ? 0 : index], 'change');
+      input(card(index, '.account'), accounts[index]);
       input(card(index, '.chain'), '84532', 'change');
       input(card(index, '.token'), TOKENS[index]);
       input(card(index, '.portfolio-tokens'), TOKENS[index]);
@@ -125,7 +129,7 @@ export function makeAcceptanceFixture(name) {
       return true;
     })) job.resolve();
   }
-  return { q, card, calls, providers, conditions, configure, connect, observe, save,
+  return { q, card, calls, providers, conditions, accounts, configure, connect, observe, save,
     checkpoint, stageSaved, applySaved, release,
     dispose() {
       app.dispose(); storage.close(); supervisor.dispose();

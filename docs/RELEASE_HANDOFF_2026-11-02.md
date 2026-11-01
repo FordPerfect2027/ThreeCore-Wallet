@@ -117,10 +117,13 @@ database to manufacture an empty recovery target.
 
 These items remain open even if all automated checks pass:
 
-1. Three distinct real accounts on Base Sepolia: confirm the intended allocation,
+1. The three token cards on Base Sepolia using existing accounts (sharing allowed): confirm the allocation,
    observe the wallet permission UI, record exact balances/block, save/reopen/
-   restore, reconnect explicitly, and exercise invalidation. Only two historical
-   real identities and one current Mainnet permission have been established.
+   restore, reconnect explicitly, and exercise invalidation by switching between
+   the two existing accounts. The earlier requirement for a third real account
+   is superseded by the [shared-account matrix](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md).
+   Only two historical real identities and one current Mainnet permission have
+   been established; this is not a new successful testnet observation.
 2. Actual-account saved-collection recovery into an empty persistent store on the
    intended PC. The separate-database synthetic case passed; actual-file import
    into an existing list also passed. The new empty-store real-PC attempt reached

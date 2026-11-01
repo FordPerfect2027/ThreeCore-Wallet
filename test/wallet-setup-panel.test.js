@@ -127,14 +127,16 @@ test("cancel keeps card values and draft JSON", () => {
   assert.equal(f.find("apply").disabled, true);
 });
 
-test("duplicate file plan explains the issue and keeps existing settings", () => {
+test("shared-account file plan keeps current settings until reviewed and confirmed", () => {
   const f = fixture();
   f.set(raw([A, B, C]));
   f.input(JSON.stringify(setup([A, A, C])));
   f.click("preview");
-  assert.match(f.find("status").textContent, /同じ公開アドレス/);
   assert.equal(f.applied.length, 0);
   assert.deepEqual(f.fields().map(row => row.account), [A, B, C]);
+  f.confirm(); f.click("apply");
+  assert.equal(f.applied.length, 1);
+  assert.deepEqual(f.fields().map(row => row.account), [A, A, C]);
 });
 
 test("export reflects current cards, not unreviewed imported JSON", () => {
@@ -160,11 +162,11 @@ test("download saves current settings without applying a pending file", () => {
 
 test("invalid current settings cannot be exported or downloaded", () => {
   const f = fixture();
-  f.set(raw([A, A, C]));
+  f.set(raw(["bad", A, C]));
   f.click("save");
   f.click("export");
   assert.equal(f.downloads.length, 0);
-  assert.match(f.find("status").textContent, /同じ公開アドレス/);
+  assert.match(f.find("status").textContent, /アドレス/);
 });
 
 test("file selection loads only a draft until preview and confirmation", async () => {

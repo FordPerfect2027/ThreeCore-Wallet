@@ -110,8 +110,10 @@ test("workspace overview distinguishes invalid duplicate and missing assignments
   assert.deepEqual(summary.cards.map(card => card.accountStatus), ["invalid", "missing", "configured"]);
   current[0].account = current[2].account;
   summary = summarizeWorkspace(current);
-  assert.deepEqual(summary.cards.map(card => card.accountStatus), ["duplicate", "missing", "duplicate"]);
-  assert.equal(summary.configured, 0);
+  assert.deepEqual(summary.cards.map(card => card.accountStatus), ["configured", "missing", "configured"]);
+  assert.deepEqual(summary.cards.map(card => card.sharedAccount), [true, false, true]);
+  assert.equal(summary.configured, 2);
+  assert.equal(summary.distinctAccounts, 1);
 });
 
 test("workspace overview marks historical accounts that differ from the current assignment", () => {

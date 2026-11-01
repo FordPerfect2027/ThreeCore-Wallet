@@ -7,7 +7,6 @@ import { observeCallbackResult } from "../src/security-callback.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 
 const MESSAGES = Object.freeze({
-  SETUP_DUPLICATE: "同じ公開アドレスが複数のカードにあります。別々のアドレスを設定してください。",
   SETUP_ADDRESS: "公開アドレスの形式を確認してください。未設定なら空欄にできます。",
   SETUP_CHAIN: "Base SepoliaまたはBase Mainnetを指定してください。",
   SETUP_STALE: "プレビュー後に画面の設定が変わりました。もう一度確認してください。",
@@ -181,9 +180,10 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
     try {
       const result = inspectWalletFields(readCurrentFields());
       if (!current(id)) return false;
-      const labels = { missing: "未設定", invalid: "公開アドレスの形式が不正", duplicate: "他のカードと同じアドレス", configured: "設定済み・接続未確認" };
-      readiness.textContent = "別アドレスの設定: " + result.configured + " / 3\n" +
-        result.entries.map(row => row.agent + ": " + labels[row.status] + " / " +
+      const labels = { missing: "未設定", invalid: "公開アドレスの形式が不正", configured: "設定済み・接続未確認" };
+      readiness.textContent = "カードの設定: " + result.configured + " / 3\n異なる公開アドレス: " + result.distinctAccounts +
+        "（同じ口座を複数カードで使えます）\n" +
+        result.entries.map(row => row.agent + ": " + labels[row.status] + (row.sharedAccount ? "・他のカードと口座を共用" : "") + " / " +
           (row.chainId === 84532 ? "Base Sepolia" : "Base Mainnet")).join("\n");
       return true;
     } catch {
@@ -253,7 +253,6 @@ const ACCOUNT_MESSAGES = Object.freeze({
   NO_ACCOUNTS: 'このサイトで許可済みのアカウントはありません。Wallet側の接続許可を確認してください。',
   UNSUPPORTED_CHAIN: 'Walletのネットワークは対応範囲外です。Base MainnetまたはBase Sepoliaを選んでください。',
   WRONG_CHAIN: 'Walletとこのカードのネットワークが違います。チェーン欄を確認して、もう一度読み取ってください。',
-  DUPLICATE_ACCOUNT: '別のカードに同じ公開アドレスが設定されています。このカードには反映していません。',
   READ_TIMEOUT: 'Walletからの応答待ちを終了しました。接続状態を確認して再度読み取ってください。',
   RPC_CAPACITY: 'Walletに未完了の要求が残っています。完了後に読み直してください。',
   ACCESS_LOCKED: '読み取りを停止しました。接続保護とカードの状態を確認してください。',

@@ -8,7 +8,6 @@ import { observeCallbackResult } from "../src/security-callback.js";
 import { readOwnErrorCode } from "../src/provider-error.js";
 
 const ERRORS = Object.freeze({
-  WORKSPACE_DUPLICATE: "複数のカードに同じ公開アドレスがあります。別々のアドレスを設定してください。",
   WORKSPACE_ADDRESS: "公開アドレスまたはトークンの契約アドレスの形式を確認してください。",
   WORKSPACE_TOKENS: "トークン一覧は重複なしの32件以内にしてください。",
   WORKSPACE_AGENT: "DAT・EMA・CAWELONと履歴の組み合わせを確認してください。",

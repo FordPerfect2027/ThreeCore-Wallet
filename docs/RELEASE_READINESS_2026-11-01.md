@@ -17,7 +17,7 @@ swaps, bridges, or autonomous spending.
 | --- | --- | --- |
 | Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | The latest inspected public PR head is `07041f00efdb503cb76a06fbe12e5531cb380930`; [run 41311235726](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726) completed all five jobs successfully. PR #4 remains open and draft. The [local continuation at `c36ce33`](RELEASE_REGRESSION_2026-11-02.md) passed 16,445 Node/HTTP and 1,019 browser cases; 150 local token-artifact compatibility cases also passed. No new remote CI result or publication applies to those local changes |
 | Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | A fresh Windows checkout exposed 460 evidence mismatches caused by automatic line-ending conversion. The [correction at `c53cb26`](EVIDENCE_PORTABILITY_2026-11-02.md) preserves original evidence bytes; its fresh checkout verifies 248 manifests / 2,231 entries with zero mismatches, plus historical-record consistency. The final local package receipt separately covers the new evidence folder. New local evidence has no remote CI result; the successful public evidence job belongs to `07041f0` |
-| Real wallet acceptance | Three prepared distinct accounts in the intended wallet/browser; permission UI, exact balances/block, save/reload/restore, explicit reconnect and invalidation observed | Incomplete. The [existing acceptance criteria](LOCAL_TESTNET_ACCEPTANCE_2026-10-25.md) remain applicable. One Account 2 historical scan is not three distinct real-account acceptance |
+| Real wallet acceptance | All three token cards with existing accounts (sharing allowed); permission UI, exact balances/block, save/reload/restore, explicit reconnect, and a switch between two existing accounts | Incomplete. The [revised acceptance matrix](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md) removes the unnecessary third-account prerequisite while retaining the permission, identity and recovery checks. Token count and distinct wallet count are reported separately; no new account is required |
 | File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | [Rehearsal recovery](OPERATOR_RECOVERY_2026-11-01.md) passed for six fictional records / three cases. [Real balance-history recovery](HISTORY_RECOVERY_2026-11-01.md) passed for one permitted EMA account with two observations. [Archive/vault recovery](VAULT_RECOVERY_2026-11-02.md) now includes retained archives after disconnect/protective stop, saved-list survival across reload, duplicate-free collection re-import, cancelled/reviewed bundle import and byte-identical exports. The final three-account candidate and empty-database collection restore remain pending |
 | Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present. A [bounded developer source review](OPERATOR_RECOVERY_2026-11-01.md#connection-guidance-and-bounded-source-review) traced connection/read dispatch, request filtering and stale-result protection. This does not replace review of the final candidate or independent review |
 | Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | The exported `97dae0f` package has 4,279 / 4,279 source files matching its commit and [ten successful fresh-directory HTTP/startup checks](RELEASE_REGRESSION_2026-11-02.md). Application source is unchanged in `c36ce33`; its changes are tests and the operator guide. The [operator procedure](SOURCE_CHECKPOINT_2026-11-01.md) is documented; real-wallet migration/return remains to be exercised |
@@ -129,7 +129,10 @@ No third real account was found in those saved files. The initial backup and
 checkpoint collection contain synthetic repeated-digit identities, not a third
 real wallet. [The operator handoff now starts with saved configuration recovery](OPERATOR_ACCEPTANCE_JA.md#接続するアカウントをそろえる),
 followed by the existing permission preview. This one current Mainnet permission
-and two historical identities do not close the three-account Base Sepolia gate.
+and two historical identities do not by themselves complete the real-wallet
+checks. The later [shared-account correction](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md)
+permits those existing accounts and removes the missing third account as a
+prerequisite. Actual testnet observations are still recorded separately from Mainnet.
 
 ## Next work order
 
@@ -139,7 +142,7 @@ and a two-observation EMA balance-history round trip have now been observed on
 the intended PC. Collect subsequent development and verification locally before
 any combined GitHub publication. One-account saved-collection persistence and
 re-import are also observed; empty-database recovery remains a separate check.
-Continue the distinct-account public-testnet acceptance, then complete
+Continue the existing-account public-testnet acceptance matrix, then complete
 independent review before a release decision. Record each material
 finding with its source revision, reproduction, fix and verification. Keep the
 current 4231 server and the user's open rehearsal data intact. New test servers

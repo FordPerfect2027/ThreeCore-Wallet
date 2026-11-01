@@ -189,14 +189,14 @@ export function registerWalletSetupUITests(test) {
     assert(f.calls.length === 0, "provider selection is not a connection");
   });
 
-  test("setup: duplicate accounts are diagnosed on both cards", make => {
+  test("setup: shared accounts are described on both cards and can be exported", make => {
     make();
     input(field("EMA", ".account"), A);
-    assert(q("readiness").textContent.includes("DAT: 他のカードと同じアドレス"), "DAT conflict");
-    assert(q("readiness").textContent.includes("EMA: 他のカードと同じアドレス"), "EMA conflict");
+    assert(q("readiness").textContent.includes("DAT: 設定済み・接続未確認・他のカードと口座を共用"), "DAT sharing");
+    assert(q("readiness").textContent.includes("EMA: 設定済み・接続未確認・他のカードと口座を共用"), "EMA sharing");
     q("export").click();
-    assert(q("status").textContent.includes("同じ公開アドレス"), "export rejected");
-    assert(q("json").value === "", "invalid setup not exported");
+    const exported = JSON.parse(q("json").value);
+    assert(exported.entries[0].account === A && exported.entries[1].account === A, "Shared setup exported");
   });
 
   test("setup: importing valid settings can repair duplicates", make => {

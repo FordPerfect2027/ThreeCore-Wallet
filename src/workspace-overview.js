@@ -112,7 +112,8 @@ export function summarizeWorkspace(draft) {
     return {
       agent: row.agent,
       account: identity.account,
-      accountStatus: duplicated ? "duplicate" : identity.status,
+      accountStatus: identity.status,
+      sharedAccount: Boolean(duplicated),
       chainId: row.chainId,
       tokens: tokenStatus(row.tokens),
       singleToken: accountStatus(row.tokenAddress),
@@ -127,6 +128,7 @@ export function summarizeWorkspace(draft) {
     schema: "threecore-workspace-overview-v1",
     cards,
     configured: cards.filter(card => card.accountStatus === "configured").length,
+    distinctAccounts: new Set(cards.filter(card => card.account).map(card => card.account)).size,
     totalObservations: cards.reduce((sum, card) => sum + card.historyCount, 0),
     unknownBalances: cards.reduce((sum, card) => sum + card.groups.reduce((subtotal, group) => subtotal + group.unknownTokens, 0), 0),
     historicalObservation: true,
@@ -138,11 +140,12 @@ export function summarizeWorkspace(draft) {
 
 export function describeWorkspaceOverview(draft) {
   const summary = summarizeWorkspace(draft);
-  const labels = { configured: "設定済み・接続未確認", missing: "未設定", invalid: "形式を確認してください", duplicate: "他のカードと重複" };
-  const lines = ["3ウォレットの保存状況", "別アドレスの設定: " + summary.configured + " / 3",
+  const labels = { configured: "設定済み・接続未確認", missing: "未設定", invalid: "形式を確認してください" };
+  const lines = ["3ウォレットの保存状況", "カードの設定: " + summary.configured + " / 3",
+    "異なる公開アドレス: " + summary.distinctAccounts + "（同じ口座を複数カードで使えます）",
     "保存履歴: 合計 " + summary.totalObservations + "件", ""];
   for (const card of summary.cards) {
-    lines.push(card.agent + " — " + labels[card.accountStatus],
+    lines.push(card.agent + " — " + labels[card.accountStatus] + (card.sharedAccount ? "・他のカードと口座を共用" : ""),
       "公開アドレス: " + (card.account ?? "未設定または入力不正"),
       "設定ネットワーク: " + card.chainId,
       "トークン一覧: " + card.tokens.count + "件（重複 " + card.tokens.duplicate + " / 不正 " + card.tokens.invalid + "）",
