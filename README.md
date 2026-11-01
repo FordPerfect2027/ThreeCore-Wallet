@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**November 1, 2026 release preparation:** [Acceptance gates and remaining work](docs/RELEASE_READINESS_2026-11-01.md). The public CI timing failure was reproduced and fixed; all four original jobs passed. A new [source checkpoint verifier](docs/SOURCE_CHECKPOINT_2026-11-01.md) checks an extracted package against an exact Git commit, with a verified 4,227-file export and separate-directory startup check.
+
 **November 1, 2026 development update:** [English overview, direct evidence links and reproduction instructions](docs/DEVELOPMENT_UPDATE_2026-11-01_EN.md). The recorded continuation reached 600 completed work items; the fixed implementation passed 16,391 wallet regression tests and 1,001 native browser cases. This development checkpoint includes source and evidence; it does not deploy a service or certify mainnet readiness.
 
 **November 1, 2026 continuation checkpoint — 600 of 600 completed items:** [Completion audit](docs/CONTINUATION_600_COMPLETION_2026-11-01.md) verifies the [full evidence ledger](docs/DEVELOPMENT_CONTINUATION_600_2026-10-29.md), all numbered ranges and committed artifacts. Fixed source 3fd2836 passed 16391 full-wallet tests and 1001 native browser cases. Existing port 4231 remains running. Local development only; this is not a mainnet-readiness percentage.

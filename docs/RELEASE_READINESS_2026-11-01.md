@@ -20,7 +20,7 @@ swaps, bridges, or autonomous spending.
 | Real wallet acceptance | Three prepared distinct accounts in the intended wallet/browser; permission UI, exact balances/block, save/reload/restore, explicit reconnect and invalidation observed | Incomplete. The [existing acceptance criteria](LOCAL_TESTNET_ACCEPTANCE_2026-10-25.md) remain applicable. One Account 2 historical scan is not three distinct real-account acceptance |
 | File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | Local and synthetic regression evidence exists; repeat the complete real-wallet recovery using the release candidate |
 | Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present; the release review must cover the final candidate and any material remaining findings |
-| Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | In progress. Preserve the running 4231 process and rehearsal state during preparation |
+| Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | [Source package verification](SOURCE_CHECKPOINT_2026-11-01.md): 4,227 / 4,227 files match the selected commit and seven fresh-directory startup/boundary checks pass. The operator procedure is documented; real-wallet migration/return remains to be exercised |
 | Operational support | Supported browsers/networks, bounded RPC behavior, failure/retry instructions, backup procedure, and troubleshooting records for the candidate | Documentation exists across features; consolidate and exercise the operator path before closure |
 | Independent review and release decision | Separate review of the final scope and findings, explicit release decision and a deployment plan | Not completed. A developer's self-check or source publication is not independent review or deployment |
 
@@ -43,6 +43,10 @@ features. Compiled-token jobs use local EVMs and do not send public transactions
 5. Re-established access to the existing rehearsal tab and opened the wallet
    through its same-origin link in a separate tab. The rehearsal still showed
    six fictional records and three comparison cases; it was not reloaded.
+6. Added a read-only source-package verifier and tested missing/changed/extra
+   files, fixed revision selection, size limits and directory redirection.
+   Verified a Git-exported package in a new directory and started its own
+   loopback server without changing the existing 4231 process.
 
 ## Current real-wallet observation
 
