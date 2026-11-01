@@ -15,8 +15,8 @@ swaps, bridges, or autonomous spending.
 
 | Gate | Completion evidence needed | Current assessment |
 | --- | --- | --- |
-| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | Commit `45632e904ca664327ed9f43f8eb49b6f92bb28b6` passed [run 41302931268](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41302931268): 15,954 unit tests, 431 HTTP tests, 1,001 synthetic browser cases on each of three consecutive runs; all three compiled-token jobs passed |
-| Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | Local audit: 241 manifests / 2,179 entries matched. A separate CI gate now checks the development manifests and the October 28 historical evidence on a fresh checkout |
+| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | Commit `f81c600918360daee77c1736915ac8878f02cb65` passed [run 41305306004](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41305306004): 15,962 unit tests, 431 HTTP tests, 1,001 synthetic browser cases on each of three consecutive runs; all three compiled-token jobs and the new evidence job passed |
+| Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | Local audit at `f81c600`: 242 manifests / 2,183 entries matched. The separate evidence CI gate passed on the same revision, checking the development manifests and the October 28 historical evidence on a fresh checkout |
 | Real wallet acceptance | Three prepared distinct accounts in the intended wallet/browser; permission UI, exact balances/block, save/reload/restore, explicit reconnect and invalidation observed | Incomplete. The [existing acceptance criteria](LOCAL_TESTNET_ACCEPTANCE_2026-10-25.md) remain applicable. One Account 2 historical scan is not three distinct real-account acceptance |
 | File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | Local and synthetic regression evidence exists; repeat the complete real-wallet recovery using the release candidate |
 | Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present; the release review must cover the final candidate and any material remaining findings |
@@ -47,6 +47,17 @@ features. Compiled-token jobs use local EVMs and do not send public transactions
    files, fixed revision selection, size limits and directory redirection.
    Verified a Git-exported package in a new directory and started its own
    loopback server without changing the existing 4231 process.
+7. Changed the links between Wallet and operation rehearsal to open a separate
+   tab, with visible wording that tells the operator what will happen. Previously
+   they navigated the current tab, whose `pagehide` handler disposes in-memory
+   state; going back cannot be relied upon to recover it. The existing tab now
+   stays open. This does not add automatic storage or protect a tab that the
+   operator closes or reloads; the page explains when to save files.
+   In Microsoft Edge, ordinary clicks opened distinct tabs in both directions;
+   the Wallet report-name draft and the rehearsal's two fictional records
+   remained unchanged in their original tabs. The user's pre-existing six
+   fictional records and three cases were preserved without a reload. The
+   existing demo-route and local-navigation suites passed all eight cases.
 
 ## Current real-wallet observation
 
@@ -62,8 +73,8 @@ the wallet screen is clarified.
 
 ## Next work order
 
-Complete evidence CI and a fresh-directory distribution/recovery check; resolve
-the real-wallet screen and run the account-specific acceptance path; then review
+Evidence CI and the fresh-directory source/startup check have passed. Resolve
+the real-wallet screen and run the account-specific acceptance and recovery path; then review
 the final supported controls and operational limits. Record each material
 finding with its source revision, reproduction, fix and verification. Keep the
 current 4231 server and the user's open rehearsal data intact. New test servers
