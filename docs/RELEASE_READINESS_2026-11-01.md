@@ -15,12 +15,12 @@ swaps, bridges, or autonomous spending.
 
 | Gate | Completion evidence needed | Current assessment |
 | --- | --- | --- |
-| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | The latest inspected public PR head is `07041f00efdb503cb76a06fbe12e5531cb380930`; [run 41311235726](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726) completed all five jobs successfully. PR #4 remains open and draft. Subsequent history/retention/collection-guide changes are local only, with separately recorded local checks and no new remote CI result |
-| Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | Local audit at `f81c600`: 242 manifests / 2,183 entries matched. The separate evidence CI gate passed on the same revision, checking the development manifests and the October 28 historical evidence on a fresh checkout |
+| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | The latest inspected public PR head is `07041f00efdb503cb76a06fbe12e5531cb380930`; [run 41311235726](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726) completed all five jobs successfully. PR #4 remains open and draft. The [local continuation at `c36ce33`](RELEASE_REGRESSION_2026-11-02.md) passed 16,445 Node/HTTP and 1,019 browser cases; 150 local token-artifact compatibility cases also passed. No new remote CI result or publication applies to those local changes |
+| Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | The local collection including the November 2 regression evidence verifies 248 manifests / 2,231 file entries with no mismatches or unreadable files. The earlier exported `97dae0f` package verified 247 manifests / 2,213 entries. New local evidence has not received a remote CI result; the successful public evidence job belongs to `07041f0` |
 | Real wallet acceptance | Three prepared distinct accounts in the intended wallet/browser; permission UI, exact balances/block, save/reload/restore, explicit reconnect and invalidation observed | Incomplete. The [existing acceptance criteria](LOCAL_TESTNET_ACCEPTANCE_2026-10-25.md) remain applicable. One Account 2 historical scan is not three distinct real-account acceptance |
 | File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | [Rehearsal recovery](OPERATOR_RECOVERY_2026-11-01.md) passed for six fictional records / three cases. [Real balance-history recovery](HISTORY_RECOVERY_2026-11-01.md) passed for one permitted EMA account with two observations. [Archive/vault recovery](VAULT_RECOVERY_2026-11-02.md) now includes retained archives after disconnect/protective stop, saved-list survival across reload, duplicate-free collection re-import, cancelled/reviewed bundle import and byte-identical exports. The final three-account candidate and empty-database collection restore remain pending |
 | Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present. A [bounded developer source review](OPERATOR_RECOVERY_2026-11-01.md#connection-guidance-and-bounded-source-review) traced connection/read dispatch, request filtering and stale-result protection. This does not replace review of the final candidate or independent review |
-| Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | [Source package verification](SOURCE_CHECKPOINT_2026-11-01.md): 4,227 / 4,227 files match the selected commit and seven fresh-directory startup/boundary checks pass. The operator procedure is documented; real-wallet migration/return remains to be exercised |
+| Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | The exported `97dae0f` package has 4,279 / 4,279 source files matching its commit and [ten successful fresh-directory HTTP/startup checks](RELEASE_REGRESSION_2026-11-02.md). Application source is unchanged in `c36ce33`; its changes are tests and the operator guide. The [operator procedure](SOURCE_CHECKPOINT_2026-11-01.md) is documented; real-wallet migration/return remains to be exercised |
 | Operational support | Supported browsers/networks, bounded RPC behavior, failure/retry instructions, backup procedure, and troubleshooting records for the candidate | The [Japanese operator guide](OPERATOR_ACCEPTANCE_JA.md) consolidates account identity, failed connection, preservation, backup and restore steps. Rehearsal file recovery and one real EMA account's settings/history recovery were exercised on the intended PC. The new plain-file comparison also reports exact content matches and retained extra history |
 | Independent review and release decision | Separate review of the final scope and findings, explicit release decision and a deployment plan | Not completed. A developer's self-check or source publication is not independent review or deployment |
 
@@ -90,33 +90,34 @@ features. Compiled-token jobs use local EVMs and do not send public transactions
     and added the correct restore destination. [Recovery and guide evidence](VAULT_RECOVERY_2026-11-02.md)
     includes the precise limits of the real-PC exercise and the separate
     synthetic tests. No new history query or GitHub publication was performed.
+14. Completed the full local regression for the subsequent collection-guide
+    changes, corrected a deadline test's assumption about worker start, and
+    verified whole-list restore into an isolated empty native browser database.
+    [The regression record](RELEASE_REGRESSION_2026-11-02.md) preserves initial
+    failures, the passing reruns and limits. Recovered the two known public
+    accounts from verified backups before asking the operator to re-enter them;
+    the third real account remains unidentified.
 
 ## Current real-wallet observation
 
-On November 1, Microsoft Edge recognized MetaMask in the application. The EMA
-card was configured with the previously authorized Account 2 public address
-`0xcfae42798e867968c60fedf38d7ee401120072c8` on Base Mainnet and Connect was pressed.
-The page displayed a wallet-permission wait and a MetaMask window appeared.
-The UI tool then could not establish the extension window's current URL and
-stopped computer control. No successful reconnection, new balance, or permission
-approval is claimed from that attempt.
+Account 1's previously missing public address was obtained through the supported
+permitted-account preview. EMA reconnection, canonical metadata/balance reads,
+settings/checkpoint preservation, reload, reviewed restore and Stop/Resume were
+subsequently observed on November 1; see the [resumption record](ACCOUNT_RECONNECTION_2026-11-01.md).
 
-The operator subsequently reported that **Account 1** had been connected and
-selected it as the current target. The application still showed a protective
-stop, while its card retained the earlier Account 2 expected address. Account 1's
-public address has not yet been independently observed or supplied; it must not
-be inferred from its display name or substituted with the historical address.
-The extension-control attempt again stopped because the UI tool could not
-establish its current URL. No new on-chain read is claimed. The earlier Account 2
-records remain historical records, separate from the requested Account 1 check.
-That earlier blocker was subsequently resolved through the supported application
-UI: a new permitted-account preview obtained the currently exposed address
-without changing extension permissions. EMA reconnected, the canonical metadata
-and balance read completed, and actual settings-file/checkpoint preservation,
-page reload, reviewed restore, Stop/Resume and explicit reconnect were observed.
-See the [resumption record](ACCOUNT_RECONNECTION_2026-11-01.md). The full address
-and balance are retained locally. This one Base Mainnet account does not close
-the three-distinct-account public-testnet acceptance gate.
+On November 2, nine verified workspace backups identified the two known public
+accounts and their historical card assignments. The intended Edge Wallet tab
+again displayed Account 1, Base Mainnet and one already permitted address.
+No new wallet permission or balance read was performed. A later loss of browser
+debugger attachment prevented further UI/screenshot confirmation; the original
+tab and server were not reloaded or restarted. The public addresses and detailed
+observations remain in private local records.
+
+No third real account was found in those saved files. The initial backup and
+checkpoint collection contain synthetic repeated-digit identities, not a third
+real wallet. [The operator handoff now starts with saved configuration recovery](OPERATOR_ACCEPTANCE_JA.md#接続するアカウントをそろえる),
+followed by the existing permission preview. This one current Mainnet permission
+and two historical identities do not close the three-account Base Sepolia gate.
 
 ## Next work order
 

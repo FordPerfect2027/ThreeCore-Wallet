@@ -1,0 +1,12 @@
+{
+  "scenario": "Metadata consumes the caller deadline before arrayBuffer starts",
+  "synthetic": true,
+  "callerTimeoutMs": 5,
+  "metadataDelayMs": 20,
+  "reads": 0,
+  "timedOutDelta": 1,
+  "retained": 0,
+  "active": 0,
+  "oldUnconditionalRetainedAssertionWouldPass": false,
+  "newReservationInvariantPassed": true
+}

@@ -1,0 +1,60 @@
+{
+  "recordedAt": "2026-11-01T16:02:07.471Z",
+  "applicationRevision": "97dae0f43104ec80ae387e671a86389db9156aad",
+  "testRevision": "c36ce33f16bfb42dc099324382281300ba9c9f30",
+  "node": {
+    "tests": 16445,
+    "pass": 16445,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "initialNode": {
+    "tests": 16445,
+    "pass": 16444,
+    "fail": 1,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "focusedOverlap": {
+    "tests": 91,
+    "pass": 91,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "pass": 1019,
+    "shards": [
+      510,
+      509
+    ],
+    "synthetic": true,
+    "isolatedCleanupCompleted": true,
+    "firstAttempt": "shutdown deadline failure; cause not established"
+  },
+  "tokens": {
+    "DAT": {
+      "tests": 50,
+      "pass": 50,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "EMA-Draft": {
+      "tests": 50,
+      "pass": 50,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "CAWELON-Draft": {
+      "tests": 50,
+      "pass": 50,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    }
+  },
+  "githubPublished": false
+}

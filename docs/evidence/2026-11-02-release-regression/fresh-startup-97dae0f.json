@@ -1,0 +1,82 @@
+{
+  "sourceRevision": "97dae0f43104ec80ae387e671a86389db9156aad",
+  "recordedAt": "2026-11-01T15:28:43.709Z",
+  "check": "fresh-export-local-server-startup",
+  "loopbackOnly": true,
+  "externalRpcRequested": false,
+  "browserNavigationTested": false,
+  "browserWalletUsed": false,
+  "testPort": 65415,
+  "existing4231Restarted": false,
+  "ownServerClosed": true,
+  "allPassed": true,
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "071e0b7dbd4aab5a6a08469b53c5afcb5c0747d0cd95e961d3d790e1543d319f",
+      "passed": true
+    },
+    {
+      "path": "/rehearsal/",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "b688d8c281208ed2faf5f5272c03426b8b714c17113afb5c5db7cc112aad0bb6",
+      "passed": true
+    },
+    {
+      "path": "/examples/wallet-entry.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "691fc62f83fdd6acdc7957f2837d8228b6175459ed5aa108d6992c7c01414c76",
+      "passed": true
+    },
+    {
+      "path": "/src/wallet-session.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "836638bf80386977c739d7301a52030a3e9488cc3a59f7e20716c73602f3e3ca",
+      "passed": true
+    },
+    {
+      "path": "/src/file-read-status.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "46bb66b57b3198ef2976fc1dbbd3fcc955fdf3540e837401b3eedefa0c6c68ef",
+      "passed": true
+    },
+    {
+      "path": "/src/transfer-vault-collection.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "ffeae6a1191d73609ecbb356aa1f71b2cd665cf900d970095449f0668825009c",
+      "passed": true
+    },
+    {
+      "path": "/examples/transfer-vault-panel.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "fcbeb0f2ee0dd2f66c2d7f0d86727d8f2c45fe079441bf8295c778d79188b337",
+      "passed": true
+    },
+    {
+      "path": "/.env",
+      "foreignOrigin": false,
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/test/browser/",
+      "foreignOrigin": false,
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/",
+      "foreignOrigin": true,
+      "status": 403,
+      "passed": true
+    }
+  ]
+}
