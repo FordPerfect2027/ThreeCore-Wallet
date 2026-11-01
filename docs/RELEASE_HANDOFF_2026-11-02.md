@@ -200,3 +200,7 @@ UI acceptance and independent review remain open. The 7d58d08 combined delivery
 predates this follow-up; new CI jobs are prepared locally without a remote result.
 
 The [Zod compatibility probe](ZOD_COMPATIBILITY_2026-11-02.md) now provides a concrete reason not to force the patched major version into the existing toolchain: the unchanged configuration helper throws while formatting invalid input. All token working trees remain clean at the runtime-installation commits.
+
+## Current combined distribution
+
+The [d904442 distribution checkpoint](DISTRIBUTION_CHECKPOINT_2026-11-02.md) now includes the history CLI and runtime-installation corrections. Its full-history bundles, source archives, evidence and isolated startup checks passed. All three token restores receive fresh minimal dependencies from an existing npm cache and pass 30 CLI/input cases each. Earlier full-regression totals are not reruns, and real-wallet acceptance, compatible Zod remediation and independent review remain open.

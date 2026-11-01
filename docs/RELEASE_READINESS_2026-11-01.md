@@ -32,15 +32,16 @@ process and unsaved Wallet/rehearsal data. Already passing full suites should
 not be repeated without a relevant code change, new failure or unresolved
 concern. Keep GitHub publication deferred for one combined update.
 
-The latest verified combined delivery before the history CLI follow-up is
-`7d58d086c55e63e606a17454ff4faf925c4a42ee`: 4,390 Wallet source files,
-253 evidence manifests / 2,308 entries, ten isolated startup checks, and an
-outer-ZIP extraction with all 41 manifest entries matching. All three token
-bundles restored into empty Windows directories with spaces in their paths;
-each passed 11 CLI cases using the existing dependency installation. This is
-source restoration, not a fully offline build. It does not complete real-wallet
-acceptance. The [subsequent history CLI correction](HISTORY_CLI_2026-11-02.md)
-has separate fixed sources and regression evidence and awaits combined packaging.
+The latest [verified combined delivery](DISTRIBUTION_CHECKPOINT_2026-11-02.md)
+is `d9044422820973e53fa41e0c55908f6e34217d7f`: 4433 Wallet source files,
+253 evidence manifests / 2348 entries, ten isolated startup checks,
+and all 46 outer-archive entries matching after fresh extraction. All three
+token bundles restore into empty Windows directories with spaces in their paths.
+Each receives its own 19-package runtime from the existing npm cache and passes
+30 CLI/input cases; existing node_modules is not reused. Dependencies are not
+vendored, and these cases overlap the earlier 213-case suites. This delivery
+includes the history CLI and runtime-installation corrections, with the open
+Zod compatibility finding. It does not complete real-wallet acceptance.
 
 Subsequent [token dependency review and repair](TOKEN_DEPENDENCY_REVIEW_2026-11-02.md)
 patched two development dependencies and verified all three tokens again against

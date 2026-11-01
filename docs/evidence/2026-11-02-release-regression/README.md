@@ -58,3 +58,7 @@ independent review and a release decision remain outstanding. These counts are
 not development percentages or a claim of token safety.
 
 See [the detailed local record](../../RELEASE_REGRESSION_2026-11-02.md).
+
+## Later distribution checkpoint
+
+[The d904442 distribution record](DISTRIBUTION_D904442.md) verifies the combined Wallet/token source and fresh minimal-runtime restoration. Its narrower package checks do not replace or rerun the earlier full regressions above.
