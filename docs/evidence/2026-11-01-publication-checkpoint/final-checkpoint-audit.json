@@ -1,0 +1,1307 @@
+{
+  "head": "8f4f90221911654b3df3d1f7eb5d45e6da457da6",
+  "completedCount": 600,
+  "itemCoverageCount": 600,
+  "recordCount": 215,
+  "records": [
+    {
+      "start": 598,
+      "end": 600,
+      "title": "reuse comparison source observations, select the exact saved predecessor and confirm per-identity retention",
+      "document": "docs/FINAL_HISTORY_WORKFLOWS_2026-11-01.md"
+    },
+    {
+      "start": 597,
+      "end": 597,
+      "title": "replay saved history conditions offline across search, subset, CSV and cleanup preparation",
+      "document": "docs/HISTORY_QUERY_REPLAY_2026-11-01.md"
+    },
+    {
+      "start": 596,
+      "end": 596,
+      "title": "identify saved history queries in shared inspection without treating filters as wallet evidence",
+      "document": "docs/HISTORY_QUERY_INSPECTION_2026-11-01.md"
+    },
+    {
+      "start": 595,
+      "end": 595,
+      "title": "save and explicitly reuse bounded history search conditions without importing records",
+      "document": "docs/HISTORY_QUERY_FILES_2026-11-01.md"
+    },
+    {
+      "start": 594,
+      "end": 594,
+      "title": "export complete historical balance rows with exact integers and preserved query scope",
+      "document": "docs/HISTORY_BALANCE_CSV_2026-11-01.md"
+    },
+    {
+      "start": 593,
+      "end": 593,
+      "title": "prepare consolidated and scoped-cleanup history candidates offline without source writes",
+      "document": "docs/HISTORY_OFFLINE_PREPARATION_2026-11-01.md"
+    },
+    {
+      "start": 592,
+      "end": 592,
+      "title": "consolidate multiple bounded history archives into a reviewed import candidate",
+      "document": "docs/HISTORY_ARCHIVE_BATCHES_2026-11-01.md"
+    },
+    {
+      "start": 591,
+      "end": 591,
+      "title": "stage a selected historical observation as a validated balance-comparison baseline",
+      "document": "docs/HISTORY_COMPARISON_BASELINE_2026-11-01.md"
+    },
+    {
+      "start": 590,
+      "end": 590,
+      "title": "preview, confirm and recover removal of an exact filtered history subset",
+      "document": "docs/HISTORY_SCOPED_CLEANUP_2026-11-01.md"
+    },
+    {
+      "start": 589,
+      "end": 589,
+      "title": "filter by exact site origin and search the selected historical account/network/site identity",
+      "document": "docs/HISTORY_IDENTITY_FILTER_2026-11-01.md"
+    },
+    {
+      "start": 588,
+      "end": 588,
+      "title": "diagnose capacity and every conflicting observation before a blocked history merge",
+      "document": "docs/HISTORY_MERGE_ASSESSMENT_2026-11-01.md"
+    },
+    {
+      "start": 587,
+      "end": 587,
+      "title": "review exact token-list replacement impact and reject application after current-input changes",
+      "document": "docs/TOKEN_PLAN_REPLACEMENT_2026-11-01.md"
+    },
+    {
+      "start": 586,
+      "end": 586,
+      "title": "stage bounded portfolio report batches as explicit history candidates with duplicate and conflict checks",
+      "document": "docs/HISTORY_REPORT_BATCHES_2026-11-01.md"
+    },
+    {
+      "start": 585,
+      "end": 585,
+      "title": "reuse a historical contract list through an explicit configuration preview without restoring balances",
+      "document": "docs/HISTORY_TOKEN_REUSE_2026-11-01.md"
+    },
+    {
+      "start": 583,
+      "end": 584,
+      "title": "inspect complete historical record details and compare the preceding matching observation",
+      "document": "docs/HISTORY_RECORD_NAVIGATION_2026-11-01.md"
+    },
+    {
+      "start": 582,
+      "end": 582,
+      "title": "reproduce portfolio history queries, exports and comparisons without a browser connection",
+      "document": "docs/PORTFOLIO_HISTORY_OFFLINE_2026-11-01.md"
+    },
+    {
+      "start": 580,
+      "end": 581,
+      "title": "save independently reviewable historical pairs and filter exact token observation states",
+      "document": "docs/HISTORY_COMPARISON_TOKEN_SCOPE_2026-11-01.md"
+    },
+    {
+      "start": 578,
+      "end": 579,
+      "title": "select exact filtered history rows and save one past observation without changing the archive",
+      "document": "docs/HISTORY_RESULT_ACTIONS_2026-11-01.md"
+    },
+    {
+      "start": 577,
+      "end": 577,
+      "title": "save normalized portfolio comparison sources and independently recompute every saved result",
+      "document": "docs/PORTFOLIO_COMPARISON_REPORT_2026-11-01.md"
+    },
+    {
+      "start": 576,
+      "end": 576,
+      "title": "independently inspect token input configuration and compare its exact saved sources",
+      "document": "docs/TOKEN_PLAN_INSPECTION_2026-11-01.md"
+    },
+    {
+      "start": 575,
+      "end": 575,
+      "title": "load an exact saved balance observation as an explicit local comparison baseline",
+      "document": "docs/COMPARISON_BASELINE_FILE_2026-11-01.md"
+    },
+    {
+      "start": 573,
+      "end": 574,
+      "title": "save and reopen token input lists and individual portfolio observations through bounded file workflows",
+      "document": "docs/CARD_FILE_WORKFLOWS_2026-11-01.md"
+    },
+    {
+      "start": 572,
+      "end": 572,
+      "title": "show current source-group processing and comparison stages without changing verdicts",
+      "document": "docs/COMPARISON_PROGRESS_2026-11-01.md"
+    },
+    {
+      "start": 571,
+      "end": 571,
+      "title": "hand the initially selected comparison file directly to its independent verifier",
+      "document": "docs/COMPARISON_FILE_HANDOFF_2026-11-01.md"
+    },
+    {
+      "start": 570,
+      "end": 570,
+      "title": "contain file review tables and long paths in keyboard-accessible narrow panes",
+      "document": "docs/FILE_REVIEW_LAYOUT_2026-11-01.md"
+    },
+    {
+      "start": 569,
+      "end": 569,
+      "title": "reuse bounded parsed JSON sources and recent difference pages for repeated inspection",
+      "document": "docs/SAVED_JSON_DIFFERENCE_CACHE_2026-11-01.md"
+    },
+    {
+      "start": 568,
+      "end": 568,
+      "title": "inspect and export bounded JSON difference locations inside verified source comparisons",
+      "document": "docs/COMPARISON_SOURCE_DIFFERENCES_2026-11-01.md"
+    },
+    {
+      "start": 566,
+      "end": 567,
+      "title": "preserve wallet comparison sources and independently inspect both verified source groups",
+      "document": "docs/PORTABLE_BATCH_PAIRS_2026-11-01.md"
+    },
+    {
+      "start": 564,
+      "end": 565,
+      "title": "compare rehearsal batches and preserve independently verifiable evidence of both source groups",
+      "document": "docs/REHEARSAL_BATCH_COMPARISON_2026-11-01.md"
+    },
+    {
+      "start": 562,
+      "end": 563,
+      "title": "verify selected-scope reports and reuse their checked filters without importing old results",
+      "document": "docs/BATCH_SELECTION_REVIEW_2026-11-01.md"
+    },
+    {
+      "start": 560,
+      "end": 561,
+      "title": "preserve cancelled batch selections and export explicitly filtered result scope",
+      "document": "docs/BATCH_SELECTION_RESULTS_2026-11-01.md"
+    },
+    {
+      "start": 559,
+      "end": 559,
+      "title": "verify saved batch receipts against exact source bundles and fresh owned reviews",
+      "document": "docs/BATCH_EVIDENCE_RECEIPTS_2026-11-01.md"
+    },
+    {
+      "start": 557,
+      "end": 558,
+      "title": "download original sources and hand selected rehearsal bundles directly to verification",
+      "document": "docs/BATCH_SOURCE_ACTIONS_2026-11-01.md"
+    },
+    {
+      "start": 556,
+      "end": 556,
+      "title": "extract exact named originals from verified wallet and rehearsal batches",
+      "document": "docs/BATCH_EVIDENCE_EXTRACTION_2026-11-01.md"
+    },
+    {
+      "start": 555,
+      "end": 555,
+      "title": "hand the selected wallet batch bundle directly from its guide to full verification",
+      "document": "docs/BATCH_EVIDENCE_GUIDE_2026-11-01.md"
+    },
+    {
+      "start": 554,
+      "end": 554,
+      "title": "save and independently reopen complete wallet source-file batches",
+      "document": "docs/WALLET_BATCH_EVIDENCE_2026-11-01.md"
+    },
+    {
+      "start": 553,
+      "end": 553,
+      "title": "save and independently reopen complete rehearsal batch source evidence",
+      "document": "docs/REHEARSAL_BATCH_EVIDENCE_2026-11-01.md"
+    },
+    {
+      "start": 551,
+      "end": 552,
+      "title": "filter rehearsal results and preserve exact local file identities",
+      "document": "docs/REHEARSAL_FILTER_AND_EXACT_FILE_IDENTITY_2026-11-01.md"
+    },
+    {
+      "start": 550,
+      "end": 550,
+      "title": "filter saved-file result rows while retaining complete batch scope and exports",
+      "document": "docs/WALLET_BATCH_FILTER_2026-11-01.md"
+    },
+    {
+      "start": 549,
+      "end": 549,
+      "title": "verify saved bundle review receipts against owned source recomputation",
+      "document": "docs/WALLET_BUNDLE_RECEIPT_CHECK_2026-11-01.md"
+    },
+    {
+      "start": 548,
+      "end": 548,
+      "title": "reuse unchanged record searches and financial summaries without stale source results",
+      "document": "docs/REHEARSAL_RECORD_QUERY_REUSE_2026-11-01.md"
+    },
+    {
+      "start": 547,
+      "end": 547,
+      "title": "retry failed rehearsal reports without repeating successful recomputations",
+      "document": "docs/REHEARSAL_FAILED_FILE_RETRY_2026-11-01.md"
+    },
+    {
+      "start": 546,
+      "end": 546,
+      "title": "retry only failed selected-file reads while preserving prior results and exact lineage",
+      "document": "docs/WALLET_FAILED_FILE_RETRY_2026-11-01.md"
+    },
+    {
+      "start": 544,
+      "end": 545,
+      "title": "jump to matching pages and walk adjacent record details across pages",
+      "document": "docs/REHEARSAL_RECORD_NAVIGATION_2026-11-01.md"
+    },
+    {
+      "start": 542,
+      "end": 543,
+      "title": "preserve validated plain source pairs and save bundle review receipts separately",
+      "document": "docs/WALLET_SOURCE_BUNDLES_2026-11-01.md"
+    },
+    {
+      "start": 540,
+      "end": 541,
+      "title": "navigate all difference locations and filter paths with exact exported scope",
+      "document": "docs/WALLET_DIFFERENCE_PAGES_2026-11-01.md"
+    },
+    {
+      "start": 538,
+      "end": 539,
+      "title": "preserve completed report-file reviews and continue only pending sources",
+      "document": "docs/REHEARSAL_FILE_BATCH_2026-11-01.md"
+    },
+    {
+      "start": 537,
+      "end": 537,
+      "title": "verify saved difference conclusions against owned source recomputations",
+      "document": "docs/WALLET_DIFFERENCE_REVIEW_2026-11-01.md"
+    },
+    {
+      "start": 536,
+      "end": 536,
+      "title": "locate differing JSON fields without exposing source values",
+      "document": "docs/WALLET_SAVED_DIFFERENCES_2026-11-01.md"
+    },
+    {
+      "start": 535,
+      "end": 535,
+      "title": "navigate validated saved files to existing wallet sections without importing them",
+      "document": "docs/WALLET_SAVED_DESTINATION_2026-11-01.md"
+    },
+    {
+      "start": 534,
+      "end": 534,
+      "title": "compare exact selected source text while retaining separate original-checksum scope",
+      "document": "docs/WALLET_PLAIN_TEXT_COMPARISON_2026-11-01.md"
+    },
+    {
+      "start": 533,
+      "end": 533,
+      "title": "continue pending selected-file checks while retaining and linking the checked prefix",
+      "document": "docs/WALLET_FILE_CONTINUATION_2026-11-01.md"
+    },
+    {
+      "start": 532,
+      "end": 532,
+      "title": "inspect saved rehearsal sources with explicit simulation-only scope and recalculated practice counts",
+      "document": "docs/WALLET_REHEARSAL_GUIDES_2026-11-01.md"
+    },
+    {
+      "start": 530,
+      "end": 531,
+      "title": "inspect workspace backups and plain historical/configuration files with distinct checksum scope",
+      "document": "docs/WALLET_WORKSPACE_LEGACY_GUIDES_2026-11-01.md"
+    },
+    {
+      "start": 529,
+      "end": 529,
+      "title": "avoid duplicate source hashing while preserving original validation and byte-identical receipts",
+      "document": "docs/WALLET_BATCH_HASH_REUSE_2026-11-01.md"
+    },
+    {
+      "start": 526,
+      "end": 528,
+      "title": "inspect transfer-history, token/balance/allowance and reconciliation originals from the shared guide",
+      "document": "docs/WALLET_OBSERVATION_GUIDES_2026-11-01.md"
+    },
+    {
+      "start": 525,
+      "end": 525,
+      "title": "preserve completed checks across unreadable and stalled selected files",
+      "document": "docs/WALLET_FILE_BATCH_2026-11-01.md"
+    },
+    {
+      "start": 524,
+      "end": 524,
+      "title": "open and compare verified batch originals without repeated file selection",
+      "document": "docs/WALLET_BATCH_NAVIGATION_2026-11-01.md"
+    },
+    {
+      "start": 522,
+      "end": 523,
+      "title": "compare local original-file batches and verify saved CLI comparisons against both manifests",
+      "document": "docs/WALLET_LOCAL_BATCH_COMPARISON_2026-11-01.md"
+    },
+    {
+      "start": 520,
+      "end": 521,
+      "title": "compare two original-file batches and recompute saved batch comparison conclusions",
+      "document": "docs/WALLET_BATCH_COMPARISON_2026-11-01.md"
+    },
+    {
+      "start": 518,
+      "end": 519,
+      "title": "compare original wallet batches with prior checksum lists and export every row to CSV",
+      "document": "docs/WALLET_SAVED_BATCH_REFERENCE_2026-11-01.md"
+    },
+    {
+      "start": 517,
+      "end": 517,
+      "title": "inspect multiple original wallet saves through an explicit cancellable browser workflow",
+      "document": "docs/WALLET_SAVED_BROWSER_BATCH_2026-11-01.md"
+    },
+    {
+      "start": 516,
+      "end": 516,
+      "title": "inspect explicit batches of original wallet save files with external and internal checksum checks",
+      "document": "docs/WALLET_SAVED_BATCH_2026-11-01.md"
+    },
+    {
+      "start": 515,
+      "end": 515,
+      "title": "finish cancelled local portfolio waits independently of uncooperative readers",
+      "document": "docs/PORTFOLIO_LOCAL_INTERRUPTION_2026-11-01.md"
+    },
+    {
+      "start": 513,
+      "end": 514,
+      "title": "open exact batch sources for detailed review and preserve complete scope in CSV exports",
+      "document": "docs/BROWSER_BATCH_DETAIL_AND_CSV_2026-11-01.md"
+    },
+    {
+      "start": 512,
+      "end": 512,
+      "title": "compare an exact selected report batch with a previously saved checksum reference",
+      "document": "docs/BROWSER_BATCH_REFERENCE_2026-11-01.md"
+    },
+    {
+      "start": 511,
+      "end": 511,
+      "title": "review multiple saved reports in the browser with partial results and portable checksums",
+      "document": "docs/BROWSER_REPORT_BATCH_2026-11-01.md"
+    },
+    {
+      "start": 509,
+      "end": 510,
+      "title": "capture coordinated account plans and card period inputs before callbacks",
+      "document": "docs/COMPOSITE_READ_INPUTS_2026-11-01.md"
+    },
+    {
+      "start": 508,
+      "end": 508,
+      "title": "bind wallet observation cancellation to native state with protected cleanup",
+      "document": "docs/NATIVE_READ_CANCELLATION_2026-11-01.md"
+    },
+    {
+      "start": 507,
+      "end": 507,
+      "title": "batch-check explicit saved reports with bounded local reads and independent recomputation",
+      "document": "docs/REHEARSAL_BATCH_REPORT_REVIEW_2026-10-31.md"
+    },
+    {
+      "start": 506,
+      "end": 506,
+      "title": "reuse verified saved search criteria against current inputs without restoring old history",
+      "document": "docs/REHEARSAL_VERIFIED_QUERY_REUSE_2026-10-31.md"
+    },
+    {
+      "start": 504,
+      "end": 505,
+      "title": "summarize matched records per agent and extract source-backed replay prefixes",
+      "document": "docs/REHEARSAL_RECORD_SUMMARY_AND_PREFIX_2026-10-31.md"
+    },
+    {
+      "start": 501,
+      "end": 503,
+      "title": "recover explicit comparison sides, named cases and unchanged expectations",
+      "document": "docs/REHEARSAL_REVIEWED_REPORT_PARTS_2026-10-31.md"
+    },
+    {
+      "start": 499,
+      "end": 500,
+      "title": "extract selected reviewed inputs and compare them with the current workspace",
+      "document": "docs/REHEARSAL_REVIEWED_INPUT_ACTIONS_2026-10-31.md"
+    },
+    {
+      "start": 496,
+      "end": 498,
+      "title": "filter exact rejection reasons, export lifecycle CSVs and recover reviewed workspace inputs",
+      "document": "docs/REHEARSAL_REASONS_AND_INPUT_RECOVERY_2026-10-31.md"
+    },
+    {
+      "start": 493,
+      "end": 495,
+      "title": "navigate from overviews and independently review complete operation lifecycles",
+      "document": "docs/REHEARSAL_REFERENCE_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 489,
+      "end": 492,
+      "title": "compare saved originals, recheck comparisons and preserve recoverable source pairs",
+      "document": "docs/SAVED_ORIGINAL_COMPARISON_AND_RECOVERY_2026-10-31.md"
+    },
+    {
+      "start": 488,
+      "end": 488,
+      "title": "inspect saved originals and explain their opening destination",
+      "document": "docs/SAVED_FILE_INSPECTION_GUIDE_2026-10-31.md"
+    },
+    {
+      "start": 484,
+      "end": 487,
+      "title": "preserve annotated history subsets and review selective imports",
+      "document": "docs/HISTORY_SUBSETS_AND_SELECTIVE_IMPORT_2026-10-31.md"
+    },
+    {
+      "start": 483,
+      "end": 483,
+      "title": "recover original annotated report history from accepted sets",
+      "document": "docs/REPORT_SET_HISTORY_RECOVERY_2026-10-31.md"
+    },
+    {
+      "start": 482,
+      "end": 482,
+      "title": "recover a token library from original report-set entries",
+      "document": "docs/REPORT_SET_TOKEN_LIBRARY_2026-10-31.md"
+    },
+    {
+      "start": 481,
+      "end": 481,
+      "title": "explain period-library import differences before writing",
+      "document": "docs/PERIOD_LIBRARY_IMPORT_INSPECTION_2026-10-31.md"
+    },
+    {
+      "start": 480,
+      "end": 480,
+      "title": "extract original token entries with restrictions intact",
+      "document": "docs/ORIGINAL_PERIOD_ENTRY_EXTRACTION_2026-10-31.md"
+    },
+    {
+      "start": 479,
+      "end": 479,
+      "title": "verify saved history-coverage files against their original source",
+      "document": "docs/SAVED_HISTORY_COVERAGE_REVIEW_2026-10-31.md"
+    },
+    {
+      "start": 478,
+      "end": 478,
+      "title": "verify saved event-comparison files against the original source",
+      "document": "docs/SAVED_EVENT_COMPARISON_REVIEW_2026-10-31.md"
+    },
+    {
+      "start": 476,
+      "end": 477,
+      "title": "find reports by history block and preserve catalog export scope",
+      "document": "docs/REPORT_BLOCK_AND_CSV_SCOPE_2026-10-31.md"
+    },
+    {
+      "start": 475,
+      "end": 475,
+      "title": "hand off unread period proposals directly for review",
+      "document": "docs/DIRECT_PERIOD_PROPOSAL_HANDOFF_2026-10-31.md"
+    },
+    {
+      "start": 474,
+      "end": 474,
+      "title": "prepare unread recheck drafts from selected saved discrepancies",
+      "document": "docs/DISCREPANCY_RECHECK_DRAFTS_2026-10-31.md"
+    },
+    {
+      "start": 473,
+      "end": 473,
+      "title": "compare saved events only within mutually recorded ranges",
+      "document": "docs/SAVED_EVENT_COMPARISON_2026-10-31.md"
+    },
+    {
+      "start": 472,
+      "end": 472,
+      "title": "recover either verified original from portable comparison evidence",
+      "document": "docs/COMPARISON_EVIDENCE_SOURCE_RECOVERY_2026-10-31.md"
+    },
+    {
+      "start": 471,
+      "end": 471,
+      "title": "save and independently verify portable paired-source comparison evidence",
+      "document": "docs/PORTABLE_COMPARISON_EVIDENCE_2026-10-31.md"
+    },
+    {
+      "start": 470,
+      "end": 470,
+      "title": "explain saved report-workflow file destinations",
+      "document": "docs/WALLET_SAVED_FILE_GUIDANCE_2026-10-31.md"
+    },
+    {
+      "start": 469,
+      "end": 469,
+      "title": "export saved history coverage with original-record references",
+      "document": "docs/HISTORY_COVERAGE_EXPORT_2026-10-31.md"
+    },
+    {
+      "start": 468,
+      "end": 468,
+      "title": "verify saved replacement comparisons against both originals",
+      "document": "docs/REPORT_SET_COMPARISON_REVIEW_2026-10-31.md"
+    },
+    {
+      "start": 467,
+      "end": 467,
+      "title": "compare replacement report sets before applying them",
+      "document": "docs/REPORT_SET_REPLACEMENT_COMPARISON_2026-10-31.md"
+    },
+    {
+      "start": 466,
+      "end": 466,
+      "title": "reuse immutable derived report analysis",
+      "document": "docs/IMMUTABLE_REPORT_ANALYSIS_2026-10-31.md"
+    },
+    {
+      "start": 465,
+      "end": 465,
+      "title": "save missing-history scopes as unread period drafts",
+      "document": "docs/MISSING_HISTORY_DRAFT_2026-10-31.md"
+    },
+    {
+      "start": 464,
+      "end": 464,
+      "title": "offline missing-history proposal reproduction",
+      "document": "docs/MISSING_HISTORY_QUEUE_CLI_2026-10-31.md"
+    },
+    {
+      "start": 463,
+      "end": 463,
+      "title": "preview ten missing-history windows at a time",
+      "document": "docs/MISSING_HISTORY_QUEUE_2026-10-31.md"
+    },
+    {
+      "start": 462,
+      "end": 462,
+      "title": "distinguish saved query coverage from planned ranges",
+      "document": "docs/REPORT_HISTORY_COVERAGE_2026-10-31.md"
+    },
+    {
+      "start": 461,
+      "end": 461,
+      "title": "extract reloadable original period reports from a set",
+      "document": "docs/REPORT_SET_SOURCE_EXPORT_2026-10-31.md"
+    },
+    {
+      "start": 460,
+      "end": 460,
+      "title": "on-screen check-detail comparison and saved results",
+      "document": "docs/REPORT_CHECK_SCREEN_REVIEW_2026-10-31.md"
+    },
+    {
+      "start": 459,
+      "end": 459,
+      "title": "independent recomputation of saved report-check details",
+      "document": "docs/REPORT_CHECK_RECOMPUTATION_2026-10-31.md"
+    },
+    {
+      "start": 458,
+      "end": 458,
+      "title": "source-linked structured report-check details",
+      "document": "docs/REPORT_CHECK_DETAILS_2026-10-31.md"
+    },
+    {
+      "start": 457,
+      "end": 457,
+      "title": "locating report checks by exported references and stored observations",
+      "document": "docs/REPORT_REFERENCE_SEARCH_2026-10-31.md"
+    },
+    {
+      "start": 456,
+      "end": 456,
+      "title": "offline reproduction of filtered report checklists",
+      "document": "docs/REPORT_CHECKLIST_EXPORT_CLI_2026-10-31.md"
+    },
+    {
+      "start": 455,
+      "end": 455,
+      "title": "faster repeated review of immutable historical evidence",
+      "document": "docs/IMMUTABLE_HISTORY_VALIDATION_2026-10-31.md"
+    },
+    {
+      "start": 453,
+      "end": 454,
+      "title": "exported report checklists and repeated validation",
+      "document": "docs/REPORT_CHECKLISTS_AND_VALIDATION_2026-10-31.md"
+    },
+    {
+      "start": 452,
+      "end": 452,
+      "title": "Offline reproduction of filtered historical-event exports",
+      "document": "docs/HISTORICAL_EVENT_EXPORT_CLI_2026-10-31.md"
+    },
+    {
+      "start": 450,
+      "end": 451,
+      "title": "Complete filtered event CSVs in reconciliation and period reports",
+      "document": "docs/FILTERED_EVENT_EXPORTS_2026-10-31.md"
+    },
+    {
+      "start": 449,
+      "end": 449,
+      "title": "Interruptible read-only diagnostic commands",
+      "document": "docs/PUBLIC_DIAGNOSTIC_INTERRUPT_2026-10-31.md"
+    },
+    {
+      "start": 445,
+      "end": 448,
+      "title": "Caller cancellation for bounded public diagnostics",
+      "document": "docs/PUBLIC_DIAGNOSTIC_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 438,
+      "end": 444,
+      "title": "Stable reader state and historical query inputs",
+      "document": "docs/READER_STATE_CAPTURE_2026-10-31.md"
+    },
+    {
+      "start": 436,
+      "end": 437,
+      "title": "Readable discrepancy previews and keyboard destinations",
+      "document": "docs/REHEARSAL_READABILITY_NAVIGATION_2026-10-31.md"
+    },
+    {
+      "start": 435,
+      "end": 435,
+      "title": "Complete filtered discrepancy exports",
+      "document": "docs/REHEARSAL_COMPLETE_DIFFERENCE_QUERY_2026-10-31.md"
+    },
+    {
+      "start": 433,
+      "end": 434,
+      "title": "Bounded discrepancy filtering in the review screen and offline query tool",
+      "document": "docs/REHEARSAL_DIFFERENCE_QUERY_2026-10-31.md"
+    },
+    {
+      "start": 432,
+      "end": 432,
+      "title": "save complete selected discrepancy values",
+      "document": "docs/REHEARSAL_COMPLETE_DIFFERENCE_VALUES_2026-10-31.md"
+    },
+    {
+      "start": 429,
+      "end": 431,
+      "title": "inspect saved and recalculated difference values",
+      "document": "docs/REHEARSAL_DIFFERENCE_VALUES_2026-10-31.md"
+    },
+    {
+      "start": 426,
+      "end": 428,
+      "title": "wallet input cancellation and native picker continuity",
+      "document": "docs/WALLET_INPUT_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 421,
+      "end": 425,
+      "title": "preserve newer work during panel file cancellation",
+      "document": "docs/REHEARSAL_PANEL_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 419,
+      "end": 420,
+      "title": "complete CSV exports and versioned recorded-context searches",
+      "document": "docs/REHEARSAL_RECORD_CONTEXT_2026-10-31.md"
+    },
+    {
+      "start": 417,
+      "end": 418,
+      "title": "accessible restore outcomes and preservation of newer recovery work",
+      "document": "docs/REHEARSAL_RESTORE_CONTINUITY_2026-10-31.md"
+    },
+    {
+      "start": 415,
+      "end": 416,
+      "title": "direct record detail navigation and retained-result focus",
+      "document": "docs/REHEARSAL_RECORD_NAVIGATION_2026-10-31.md"
+    },
+    {
+      "start": 414,
+      "end": 414,
+      "title": "bounded verification of all tracked evidence collections",
+      "document": "docs/EVIDENCE_COLLECTION_VERIFICATION_2026-10-31.md"
+    },
+    {
+      "start": 411,
+      "end": 413,
+      "title": "portable read-only evidence-manifest verification",
+      "document": "docs/EVIDENCE_MANIFEST_VERIFICATION_2026-10-31.md"
+    },
+    {
+      "start": 408,
+      "end": 410,
+      "title": "complete review-difference inspection in the browser and offline",
+      "document": "docs/REHEARSAL_REVIEW_DIFFERENCE_PAGES_2026-10-31.md"
+    },
+    {
+      "start": 402,
+      "end": 407,
+      "title": "portable review evidence, independent verification and evidence recovery",
+      "document": "docs/REHEARSAL_REVIEW_EVIDENCE_2026-10-31.md"
+    },
+    {
+      "start": 401,
+      "end": 401,
+      "title": "keyboard-accessible wallet task navigation",
+      "document": "docs/WALLET_TASK_NAVIGATION_2026-10-31.md"
+    },
+    {
+      "start": 397,
+      "end": 400,
+      "title": "offline difference inspection, checksum files and retained rehearsal history",
+      "document": "docs/REHEARSAL_OFFLINE_GUIDANCE_2026-10-31.md"
+    },
+    {
+      "start": 392,
+      "end": 396,
+      "title": "complete difference browsing and exact review evidence",
+      "document": "docs/REHEARSAL_REVIEW_CHECKPOINT_2026-10-31.md"
+    },
+    {
+      "start": 386,
+      "end": 391,
+      "title": "guided record entry and comparison-case management",
+      "document": "docs/REHEARSAL_ENTRY_AND_CASES_2026-10-31.md"
+    },
+    {
+      "start": 383,
+      "end": 385,
+      "title": "field-specific rehearsal correction guidance",
+      "document": "docs/REHEARSAL_FIELD_FEEDBACK_2026-10-31.md"
+    },
+    {
+      "start": 377,
+      "end": 382,
+      "title": "rehearsal continuity, record navigation and file guidance",
+      "document": "docs/REHEARSAL_SOURCE_BOUNDARIES_2026-10-31.md"
+    },
+    {
+      "start": 376,
+      "end": 376,
+      "title": "saved-format destination guidance",
+      "document": "docs/REHEARSAL_FILE_TARGET_2026-10-31.md"
+    },
+    {
+      "start": 375,
+      "end": 375,
+      "title": "rehearsal picker-dismissal guidance",
+      "document": "docs/REHEARSAL_PICKER_NOTICE_2026-10-31.md"
+    },
+    {
+      "start": 372,
+      "end": 374,
+      "title": "provider observer boundaries",
+      "document": "docs/PROVIDER_OBSERVER_BOUNDARIES_2026-10-31.md"
+    },
+    {
+      "start": 369,
+      "end": 371,
+      "title": "captured HTTP packets and bounded intrinsic byte accounting",
+      "document": "docs/STATE_RPC_BYTES_2026-10-31.md"
+    },
+    {
+      "start": 365,
+      "end": 368,
+      "title": "cleanup and observer failure containment",
+      "document": "docs/CLEANUP_OBSERVERS_2026-10-31.md"
+    },
+    {
+      "start": 361,
+      "end": 364,
+      "title": "bounded and stable offline file inspection",
+      "document": "docs/LOCAL_FILE_INSPECTION_2026-10-31.md"
+    },
+    {
+      "start": 359,
+      "end": 360,
+      "title": "current file-read ownership during cancellation and option capture",
+      "document": "docs/FILE_READ_SCOPE_2026-10-31.md"
+    },
+    {
+      "start": 355,
+      "end": 358,
+      "title": "single filename observations and retired rehearsal selections",
+      "document": "docs/FILE_NAME_CAPTURE_2026-10-31.md"
+    },
+    {
+      "start": 353,
+      "end": 354,
+      "title": "terminal protection fault escalation and current protection display",
+      "document": "docs/PROTECTION_FAULT_ESCALATION_2026-10-31.md"
+    },
+    {
+      "start": 351,
+      "end": 352,
+      "title": "crypto status and encrypted-library handoff ownership",
+      "document": "docs/SECURE_PANEL_STATE_2026-10-31.md"
+    },
+    {
+      "start": 336,
+      "end": 350,
+      "title": "current operation ownership across wallet and protection panels",
+      "document": "docs/PANEL_STATE_CONTINUITY_2026-10-31.md"
+    },
+    {
+      "start": 335,
+      "end": 335,
+      "title": "Windows native browser validation",
+      "document": "docs/WINDOWS_BROWSER_VALIDATION_2026-10-31.md"
+    },
+    {
+      "start": 330,
+      "end": 334,
+      "title": "history file handoffs and backup state",
+      "document": "docs/HISTORY_FILES_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 326,
+      "end": 329,
+      "title": "history recovery panel lifecycle",
+      "document": "docs/HISTORY_RECOVERY_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 323,
+      "end": 325,
+      "title": "history review source and download lifecycle",
+      "document": "docs/HISTORY_REVIEW_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 319,
+      "end": 322,
+      "title": "vault export and panel lifecycle",
+      "document": "docs/TRANSFER_VAULT_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 317,
+      "end": 318,
+      "title": "cooperative archive selection cancellation",
+      "document": "docs/TRANSFER_SELECTION_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 315,
+      "end": 316,
+      "title": "transfer archive panel lifecycle",
+      "document": "docs/TRANSFER_ARCHIVE_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 311,
+      "end": 314,
+      "title": "transfer panel lifecycle",
+      "document": "docs/TRANSFER_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 309,
+      "end": 310,
+      "title": "export policy capture",
+      "document": "docs/EXPORT_POLICY_CAPTURE_2026-10-31.md"
+    },
+    {
+      "start": 307,
+      "end": 308,
+      "title": "diagnostic message lookup",
+      "document": "docs/DIAGNOSTIC_MESSAGE_LOOKUP_2026-10-31.md"
+    },
+    {
+      "start": 301,
+      "end": 306,
+      "title": "identity and allowance panel lifecycle",
+      "document": "docs/IDENTITY_ALLOWANCE_PANELS_2026-10-31.md"
+    },
+    {
+      "start": 299,
+      "end": 300,
+      "title": "wallet setup panel lifecycle",
+      "document": "docs/WALLET_SETUP_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 295,
+      "end": 298,
+      "title": "local history panel lifecycle",
+      "document": "docs/LOCAL_HISTORY_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 291,
+      "end": 294,
+      "title": "checkpoint data capture",
+      "document": "docs/CHECKPOINT_CAPTURE_2026-10-31.md"
+    },
+    {
+      "start": 289,
+      "end": 290,
+      "title": "workspace export lifecycle",
+      "document": "docs/WORKSPACE_EXPORT_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 286,
+      "end": 288,
+      "title": "allowance bundle lifecycle",
+      "document": "docs/ALLOWANCE_BUNDLE_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 283,
+      "end": 285,
+      "title": "checkpoint lifecycle",
+      "document": "docs/CHECKPOINT_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 281,
+      "end": 282,
+      "title": "checkpoint hash cancellation",
+      "document": "docs/CHECKPOINT_HASH_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 280,
+      "end": 280,
+      "title": "rehearsal hash cancellation",
+      "document": "docs/REHEARSAL_HASH_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 277,
+      "end": 279,
+      "title": "export checksum cancellation",
+      "document": "docs/EXPORT_CHECKSUM_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 275,
+      "end": 276,
+      "title": "identity and allowance file cancellation",
+      "document": "docs/IDENTITY_ALLOWANCE_FILE_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 269,
+      "end": 274,
+      "title": "bounded checksum cancellation",
+      "document": "docs/CHECKSUM_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 263,
+      "end": 268,
+      "title": "public checksum boundaries",
+      "document": "docs/PUBLIC_CHECKSUM_BOUNDARY_2026-10-31.md"
+    },
+    {
+      "start": 261,
+      "end": 262,
+      "title": "library-file cancellation",
+      "document": "docs/LIBRARY_FILE_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 258,
+      "end": 260,
+      "title": "history-file cancellation",
+      "document": "docs/HISTORY_FILE_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 255,
+      "end": 257,
+      "title": "portfolio refresh lifecycle",
+      "document": "docs/PORTFOLIO_CONTROLLER_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 252,
+      "end": 254,
+      "title": "portfolio capture",
+      "document": "docs/PORTFOLIO_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 248,
+      "end": 251,
+      "title": "reconciliation lifecycle",
+      "document": "docs/RECONCILIATION_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 244,
+      "end": 247,
+      "title": "three-token vault lifecycle",
+      "document": "docs/TRANSFER_VAULT_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 241,
+      "end": 243,
+      "title": "archive lifecycle",
+      "document": "docs/TRANSFER_ARCHIVE_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 239,
+      "end": 240,
+      "title": "read-response and diagnostic capture",
+      "document": "docs/READ_BOUNDARY_COMPLETION_2026-10-30.md"
+    },
+    {
+      "start": 235,
+      "end": 238,
+      "title": "period-read checkpoint and handoff lifecycle",
+      "document": "docs/PERIOD_READ_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 232,
+      "end": 234,
+      "title": "period-report review and history handoff",
+      "document": "docs/PERIOD_REPORT_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 229,
+      "end": 231,
+      "title": "report-set selection and import lifecycle",
+      "document": "docs/REPORT_SET_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 226,
+      "end": 228,
+      "title": "report-history review and commit lifecycle",
+      "document": "docs/REPORT_HISTORY_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 223,
+      "end": 225,
+      "title": "report records and presentation settings",
+      "document": "docs/REPORT_RECORD_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 220,
+      "end": 222,
+      "title": "period-library review and storage lifecycle",
+      "document": "docs/PERIOD_LIBRARY_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 217,
+      "end": 219,
+      "title": "transfer lifecycle and reviewed files",
+      "document": "docs/TRANSFER_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 214,
+      "end": 216,
+      "title": "read observers and option ownership",
+      "document": "docs/READ_OBSERVER_OPTIONS_2026-10-30.md"
+    },
+    {
+      "start": 211,
+      "end": 213,
+      "title": "allowance lifecycle and review ownership",
+      "document": "docs/ALLOWANCE_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 208,
+      "end": 210,
+      "title": "identity controller lifecycle and captured UI inputs",
+      "document": "docs/IDENTITY_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 1,
+      "end": 20,
+      "title": "saved-report verification",
+      "document": "docs/OPERATION_REPORT_REVIEW_2026-10-29.md"
+    },
+    {
+      "start": 21,
+      "end": 40,
+      "title": "named comparison collections",
+      "document": "docs/OPERATION_SCENARIO_SET_2026-10-29.md"
+    },
+    {
+      "start": 41,
+      "end": 60,
+      "title": "expected-outcome checks",
+      "document": "docs/OPERATION_EXPECTED_OUTCOMES_2026-10-30.md"
+    },
+    {
+      "start": 61,
+      "end": 80,
+      "title": "record navigation",
+      "document": "docs/OPERATION_RECORD_NAVIGATION_2026-10-30.md"
+    },
+    {
+      "start": 81,
+      "end": 100,
+      "title": "combined recovery",
+      "document": "docs/OPERATION_COMBINED_RECOVERY_2026-10-30.md"
+    },
+    {
+      "start": 101,
+      "end": 110,
+      "title": "saved expectation/search report review",
+      "document": "docs/OPERATION_EXTENDED_REPORT_REVIEW_2026-10-30.md"
+    },
+    {
+      "start": 111,
+      "end": 120,
+      "title": "capacity and selected expectation export",
+      "document": "docs/OPERATION_CAPACITY_2026-10-30.md"
+    },
+    {
+      "start": 121,
+      "end": 130,
+      "title": "RPC diagnostic bounds and cancellation",
+      "document": "docs/RPC_DIAGNOSTIC_HARDENING_2026-10-30.md"
+    },
+    {
+      "start": 131,
+      "end": 138,
+      "title": "shared public diagnostics",
+      "document": "docs/PUBLIC_DIAGNOSTIC_READS_2026-10-30.md"
+    },
+    {
+      "start": 139,
+      "end": 147,
+      "title": "liquidity input validation and diagnostic CLI behavior",
+      "document": "docs/LIQUIDITY_INPUT_VALIDATION_2026-10-30.md"
+    },
+    {
+      "start": 148,
+      "end": 153,
+      "title": "state-read header cancellation",
+      "document": "docs/STATE_FETCH_CANCELLATION_2026-10-30.md"
+    },
+    {
+      "start": 154,
+      "end": 161,
+      "title": "canonical public observations",
+      "document": "docs/PUBLIC_CANONICAL_READS_2026-10-30.md"
+    },
+    {
+      "start": 162,
+      "end": 163,
+      "title": "liquidity data capture",
+      "document": "docs/LIQUIDITY_DATA_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 164,
+      "end": 166,
+      "title": "local navigation help",
+      "document": "docs/LOCAL_NAVIGATION_HELP_2026-10-30.md"
+    },
+    {
+      "start": 167,
+      "end": 169,
+      "title": "rehearsal download delivery",
+      "document": "docs/REHEARSAL_DOWNLOAD_DELIVERY_2026-10-30.md"
+    },
+    {
+      "start": 170,
+      "end": 174,
+      "title": "download lifecycle and full wallet validation",
+      "document": "docs/REHEARSAL_DOWNLOAD_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 175,
+      "end": 178,
+      "title": "bounded rehearsal file reading",
+      "document": "docs/REHEARSAL_FILE_READING_2026-10-30.md"
+    },
+    {
+      "start": 179,
+      "end": 182,
+      "title": "recovery observer isolation",
+      "document": "docs/REHEARSAL_SESSION_OBSERVERS_2026-10-30.md"
+    },
+    {
+      "start": 183,
+      "end": 184,
+      "title": "file-reading guidance and cancelled selection",
+      "document": "docs/REHEARSAL_FILE_GUIDANCE_2026-10-30.md"
+    },
+    {
+      "start": 185,
+      "end": 185,
+      "title": "consistent offline text decoding",
+      "document": "docs/REHEARSAL_CLI_ENCODING_2026-10-30.md"
+    },
+    {
+      "start": 186,
+      "end": 188,
+      "title": "visible save checkpoints and recovery lifecycle",
+      "document": "docs/REHEARSAL_SAVE_CHECKPOINT_2026-10-30.md"
+    },
+    {
+      "start": 189,
+      "end": 190,
+      "title": "stable configuration capture",
+      "document": "docs/CONFIGURATION_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 191,
+      "end": 192,
+      "title": "stable identity observations and catalog confirmation",
+      "document": "docs/IDENTITY_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 193,
+      "end": 194,
+      "title": "stable bounded transfer observations",
+      "document": "docs/TRANSFER_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 195,
+      "end": 195,
+      "title": "RPC array capture",
+      "document": "docs/RPC_ARRAY_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 196,
+      "end": 198,
+      "title": "history storage and query capture",
+      "document": "docs/TRANSFER_STORAGE_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 199,
+      "end": 200,
+      "title": "read-only allowance record capture",
+      "document": "docs/ALLOWANCE_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 201,
+      "end": 204,
+      "title": "period checkpoints, library, reports and reconciliation capture",
+      "document": "docs/PERIOD_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 205,
+      "end": 205,
+      "title": "period review lifecycle",
+      "document": "docs/PERIOD_REVIEW_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 206,
+      "end": 207,
+      "title": "observations across sequential reads",
+      "document": "docs/READ_OBSERVATION_CAPTURE_2026-10-30.md"
+    }
+  ],
+  "manifestCount": 239,
+  "evidenceEntries": 2174,
+  "verifiedEntries": 2174,
+  "verifiedBytes": 92724965,
+  "documentCount": 215,
+  "sourceCommitReferences": 246,
+  "referencedEvidenceCount": 412,
+  "workspaceClean": true,
+  "issues": []
+}
