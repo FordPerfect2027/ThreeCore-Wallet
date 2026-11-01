@@ -1,0 +1,81 @@
+{
+  "testedSource": "3fd2836",
+  "auditedRecordHead": "b0a1c2425bb282676470eadec25efffa6d846c68",
+  "requirements": [
+    {
+      "requirement": "Exactly 600 evidenced independent continuation items",
+      "result": "verified",
+      "evidence": "ledger-and-evidence-audit.json",
+      "count": 600,
+      "rangeRecords": 215
+    },
+    {
+      "requirement": "Every numbered item has a tracked document; ranges have no gaps or duplicates",
+      "result": "verified",
+      "evidence": "ledger-and-evidence-audit.json",
+      "issues": []
+    },
+    {
+      "requirement": "Recorded evidence matches committed SHA-256 manifests",
+      "result": "verified",
+      "evidence": "ledger-and-evidence-audit.json",
+      "manifests": 238,
+      "entries": 2171,
+      "bytes": 92678772
+    },
+    {
+      "requirement": "Referenced implementation commits and local artifacts resolve",
+      "result": "verified",
+      "evidence": "ledger-and-evidence-audit.json",
+      "commitReferences": 246,
+      "documents": 215
+    },
+    {
+      "requirement": "Full wallet regression suite completes successfully at fixed source",
+      "result": "verified",
+      "source": "3fd2836",
+      "tests": 16391,
+      "evidence": "../2026-11-01-final-history-workflows/full-wallet.log"
+    },
+    {
+      "requirement": "Full native browser suite completes successfully including cleanup",
+      "result": "verified",
+      "source": "3fd2836",
+      "cases": 1001,
+      "evidence": "../2026-11-01-final-history-workflows/full-browser.log",
+      "provider": "synthetic",
+      "externalRpc": false
+    },
+    {
+      "requirement": "Comparison source reuse, exact predecessor and reviewed retention preserve records and explicit confirmation",
+      "result": "verified",
+      "source": "3fd2836",
+      "evidence": "../2026-11-01-final-history-workflows/capture.json",
+      "selectedTests": 170
+    },
+    {
+      "requirement": "Existing port 4231 server is not restarted and serves the tested implementation",
+      "result": "verified",
+      "evidence": "existing-server-audit.json",
+      "pid": 2108,
+      "existingBrowserTabReloaded": false
+    },
+    {
+      "requirement": "Recorded validation source remains unchanged through completion",
+      "result": "verified",
+      "source": "3fd2836",
+      "codeDiffFromTestedSource": ""
+    },
+    {
+      "requirement": "Local-only scope: no signatures, transfers, approvals, secret retrieval, external RPC, publication or deployment",
+      "result": "verified-for-this-continuation",
+      "basis": "Execution consisted of local source edits, isolated synthetic tests, offline CLI captures, local commits and loopback-only health reads; no such action was invoked.",
+      "mainnetReadinessClaimed": false
+    },
+    {
+      "requirement": "Rest after the requested continuation target is complete",
+      "result": "ready-for-goal-completion-and-rest",
+      "furtherDevelopmentScheduled": false
+    }
+  ]
+}

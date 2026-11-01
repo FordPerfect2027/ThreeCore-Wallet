@@ -472,3 +472,7 @@ Persistent boundaries: local development and fictional/read-only operations; no 
 [Focused browser validation](BROWSER_FOCUSED_VALIDATION_2026-11-01.md) adds explicit module-scoped development checks at `a493ace`, with 137 harness tests, 99 native file-read cases and two native error controls. It adds zero items; completed count remains 532 / 600, and the last full browser checkpoint remains ef8f1a0 (947 cases).
 
 [History selection and regression maintenance](HISTORY_SELECTION_AND_REGRESSION_REPAIR_2026-11-01.md) fixes empty-selection deletion and recovery downloads at db873d3, with 54 affected checks and 144 focused native browser cases. It preserves the failed full-run log (16,331 pass / 2 stale fixture-route assertions) and adds zero completed items; count remains 589.
+
+## Completion audit
+
+[600-item completion audit](CONTINUATION_600_COMPLETION_2026-11-01.md) confirms all numbered ranges, linked documents, source commits and 2171 committed evidence entries. Fixed source 3fd2836 passed 16391 full-wallet tests and 1001 native browser cases. No additional item is counted for this audit. The requested local continuation target is complete; mainnet readiness is not inferred.
