@@ -77,6 +77,13 @@ features. Compiled-token jobs use local EVMs and do not send public transactions
     The [history-recovery record](HISTORY_RECOVERY_2026-11-01.md) documents two
     actual observations and the distinct synthetic automated tests. This
     continuation is being collected locally; it has not been pushed to GitHub.
+12. Fixed connection invalidation erasing explicitly accepted transfer archives.
+    Active operations and previews are still cancelled, while accepted records
+    remain available for offline JSON saving under their original context.
+    [Archive-retention evidence](TRANSFER_ARCHIVE_RETENTION_2026-11-01.md)
+    separates automated verification and an actual-file offline probe from the
+    post-fix intended-PC UI check, which remains unfinished. This is local work
+    awaiting the operator's requested combined publication.
 
 ## Current real-wallet observation
 

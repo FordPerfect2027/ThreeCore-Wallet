@@ -167,7 +167,8 @@ export function registerTransferUITests(test) {
 
   for (const agent of ["DAT", "EMA", "CAWELON"]) {
     for (const chainId of [8453, 84532]) {
-      test(`transfer: integrated ${agent} ${chainId} card reads registered token and clears on disconnect`, async () => {
+      for (const stopping of ["disconnect", "accountsChanged", "protect"]) {
+      test(`transfer: integrated ${agent} ${chainId} ${stopping} retains accepted archive and stops active reads`, async () => {
         const selected = context(agent, chainId);
         const f = providerFixture({ selected, siteOrigin: location.origin });
         const app = mountWalletDemo({ document, eventTarget: new EventTarget(), siteOrigin: location.origin,
@@ -191,14 +192,23 @@ export function registerTransferUITests(test) {
           assert(!q("output").textContent.includes("コードが見つかりません"));
           assert(f.calls.filter(call => call.method === "eth_getLogs").length === 2);
           q(".transfer-archive-add").click();
-          f.provider.account = OTHER;
-          f.provider.emit("accountsChanged", [OTHER]);
+          const accepted = q(".transfer-archive-overview").textContent;
+          if (stopping === "accountsChanged") {
+            f.provider.account = OTHER;
+            f.provider.emit("accountsChanged", [OTHER]);
+          } else if (stopping === "protect") document.querySelector(".security-stop").click();
+          else q(".disconnect").click();
           assert(q(".transfer-summary").textContent === "");
-          assert(q(".transfer-archive-overview").textContent === "");
+          assert(q(".transfer-archive-overview").textContent === accepted && accepted.includes("1記録"));
+          assert(!q(".transfer-archive-save").disabled);
+          assert(q(".transfer-archive-add").disabled);
+          assert(q(".read").disabled);
           assert(q(".transfer-save-json").disabled);
+          assert(f.calls.filter(call => call.method === "eth_getLogs").length === 2);
           assert(f.calls.every(call => !["eth_sendTransaction", "personal_sign", "wallet_switchEthereumChain"].includes(call.method)));
         } finally { app.dispose(); f.session.disconnect(); }
       });
+      }
     }
   }
 }

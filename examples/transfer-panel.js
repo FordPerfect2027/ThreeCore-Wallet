@@ -333,7 +333,7 @@ export function mountTransferPanel({ document, parent, getContext, read, onCance
       const id = advance();
       if (!current(id)) return;
       controller.invalidate();
-      if (current(id)) archivePanel.invalidate();
+      if (current(id)) archivePanel.suspend();
     },
     dispose() {
       if (disposed) return;

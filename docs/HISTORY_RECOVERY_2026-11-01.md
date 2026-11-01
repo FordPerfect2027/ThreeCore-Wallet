@@ -83,6 +83,11 @@ These private account files remain local and are not included in the evidence
 directory. This is distinct from the plain workspace comparison feature and
 does not cover all the other saved report collections.
 
+The disconnect-time loss described above is the observed behavior before the
+subsequent [archive-retention fix](TRANSFER_ARCHIVE_RETENTION_2026-11-01.md).
+That record distinguishes the local fix and tests from its outstanding
+intended-PC UI acceptance.
+
 ## Verification
 
 - The complete local wallet/HTTP regression run passed 16,425 tests, with no

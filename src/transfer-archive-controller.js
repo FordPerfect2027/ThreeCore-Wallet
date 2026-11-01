@@ -29,6 +29,14 @@ export function createTransferArchiveController({ getContext, onChange = () => {
     contextKey = null;
     publish({ phase: "empty", archive: null, preview: null, error: null });
   }
+  // Stop active work without discarding records the operator already accepted.
+  function suspend() {
+    if (disposed) return;
+    const id = interrupt();
+    if (!owns(id)) return;
+    contextKey = null;
+    publish({ phase: state.archive ? "ready" : "empty", preview: null, error: null });
+  }
   function interrupt() {
     const id = ++revision, previous = aborter;
     aborter = null;
@@ -40,8 +48,8 @@ export function createTransferArchiveController({ getContext, onChange = () => {
     const key = transferContextKey(getContext());
     if (!owns(id)) return null;
     if (contextKey !== null && contextKey !== key) {
-      if (!acceptChange) { invalidate(); return null; }
-      state = Object.freeze({ phase: "empty", archive: null, preview: null, error: null });
+      if (!acceptChange) { suspend(); return null; }
+      state = Object.freeze({ ...state, phase: state.archive ? "ready" : "empty", preview: null, error: null });
     }
     contextKey = key;
     return key;
@@ -49,7 +57,7 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   function current(id, key) {
     if (!owns(id)) return false;
     try { return context(id) === key && owns(id); }
-    catch { if (owns(id)) invalidate(); return false; }
+    catch { if (owns(id)) suspend(); return false; }
   }
   function fail(id, error) {
     if (!owns(id)) return false;
@@ -81,6 +89,7 @@ export function createTransferArchiveController({ getContext, onChange = () => {
     try {
       const key = context(id, true);
       if (!owns(id)) return false;
+      if (state.archive) assertContext(state.archive, key);
       const archive = removeTransferArchiveRecord(state.archive, index);
       if (!current(id, key)) return false;
       publish({ phase: archive ? "ready" : "empty", archive, preview: null, error: null });
@@ -91,11 +100,12 @@ export function createTransferArchiveController({ getContext, onChange = () => {
     if (disposed) return null;
     const id = revision;
     try {
-      context(id);
+      const key = context(id);
       if (!owns(id)) return null;
       if (!state.archive || !Number.isInteger(index) || index < 0 || index >= state.archive.records.length) {
         transferFail("TRANSFER_ARCHIVE_INDEX");
       }
+      assertContext(state.archive, key);
       return state.archive.records[index];
     } catch (error) { fail(id, error); return null; }
   }
@@ -140,21 +150,20 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   async function prepare() {
     if (disposed) return null;
     const id = interrupt();
-    let key, localAborter;
+    let localAborter;
     try {
-      key = context(id, true);
       if (!owns(id)) return null;
       const archive = state.archive;
       if (!archive) transferFail("TRANSFER_ARCHIVE_REQUIRED");
       publish({ phase: "preparing", preview: null, error: null });
-      if (!current(id, key)) return null;
+      if (!owns(id) || state.archive !== archive) return null;
       localAborter = new AbortController(); aborter = localAborter;
       const download = await prepareTransferArchive(archive, { subtle, signal: localAborter.signal });
-      if (!current(id, key)) return null;
+      if (!owns(id) || state.archive !== archive) return null;
       publish({ phase: "ready" });
-      return current(id, key) ? download : null;
+      return owns(id) && state.archive === archive ? download : null;
     } catch (error) {
-      if (owns(id) && (key === undefined || current(id, key))) fail(id, error);
+      if (owns(id)) fail(id, error);
       return null;
     }
     finally { if (localAborter && aborter === localAborter) aborter = null; }
@@ -162,8 +171,10 @@ export function createTransferArchiveController({ getContext, onChange = () => {
   function capture() {
     if (disposed || !state.archive) return null;
     const id = revision;
-    context(id);
-    return owns(id) ? state.archive : null;
+    const key = context(id);
+    if (!owns(id)) return null;
+    assertContext(state.archive, key);
+    return state.archive;
   }
   function reviewArchive(input) {
     if (disposed) return false;
@@ -192,5 +203,5 @@ export function createTransferArchiveController({ getContext, onChange = () => {
     observers.clear();
     state = Object.freeze({ phase: "disposed", archive: null, preview: null, error: null });
   }
-  return Object.freeze({ get state() { return state; }, add, remove, select, stage, apply, prepare, capture, reviewArchive, cancel, invalidate, dispose });
+  return Object.freeze({ get state() { return state; }, add, remove, select, stage, apply, prepare, capture, reviewArchive, cancel, suspend, invalidate, dispose });
 }

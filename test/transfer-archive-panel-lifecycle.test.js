@@ -17,7 +17,7 @@ function fixture(options={}) {
   const q=name=>parent.find('transfer-archive-'+name);return {parent,panel,q,downloads,run:name=>q(name).run()};
 }
 async function until(check){const limit=Date.now()+3000;while(!check()){assert.ok(Date.now()<limit);await tick();}}
-for(const ending of ['dispose','invalidate']) test(`archive source ${ending} prevents an old record being added`,()=>{
+for(const ending of ['dispose','invalidate','suspend']) test(`archive source ${ending} prevents an old record being added`,()=>{
   let f,armed=false,node,before;
   f=fixture({getSnapshot(){if(armed){armed=false;node=f.q('overview');f.panel[ending]();before=node.textContent;}return snapshot();}});
   try{armed=true;f.run('add');assert.equal(node.textContent,before);assert.equal(f.panel.getArchive(),null);}finally{f.panel.dispose();}
@@ -49,7 +49,7 @@ test('archive cancellation queued after preparation prevents delivery',async()=>
     await f.run('save');assert.equal(queued,true);assert.equal(f.downloads.length,0);
   }finally{f.panel.dispose();}
 });
-for(const ending of ['dispose','invalidate']) test(`archive download ${ending} cannot overwrite newer status`,async()=>{
+for(const ending of ['dispose','invalidate','suspend']) test(`archive download ${ending} cannot overwrite newer status`,async()=>{
   let f,node,before;
   f=fixture({download(){node=f.q('status');f.panel[ending]();before=node.textContent;throw Error('synthetic refusal');}});
   try{f.run('add');await f.run('save');assert.equal(node.textContent,before);}finally{f.panel.dispose();}
@@ -59,6 +59,16 @@ test('archive cancelled selection ignores a late display failure',async()=>{
   try{f.run('add');task=f.run('select');f.run('cancel');const before=f.q('status').textContent;
     hold.reject(Error('synthetic late display failure'));await task;assert.equal(f.q('status').textContent,before);
   }finally{hold.resolve();await task;f.panel.dispose();}
+});
+
+test('archive connection stop aborts pending selection without erasing accepted records',async()=>{
+  const hold=deferred();let signal;
+  const f=fixture({onSelect(record,options){signal=options.signal;return hold.promise;}});
+  try{f.run('add');const task=f.run('select');f.panel.suspend();
+    assert.equal(signal.aborted,true);assert.equal(f.panel.getArchive().records.length,1);
+    const before=f.q('status').textContent;hold.reject(Error('late stopped selection'));await task;
+    assert.equal(f.q('status').textContent,before);assert.equal(f.q('save').disabled,false);
+  }finally{hold.resolve();f.panel.dispose();}
 });
 test('archive ordinary add, select and download remain explicit',async()=>{
   let selected=0;const f=fixture({onSelect(){selected++;}});

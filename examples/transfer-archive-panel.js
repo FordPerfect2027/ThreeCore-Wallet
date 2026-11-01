@@ -39,7 +39,7 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
   }
   const host = element("details", "panel");
   host.append(element("summary", "title", "期間ごとの記録をまとめる（最大12件）"));
-  const help = element("p", "help", "記録を一時的にまとめ、問い合わせた期間と未確認の期間を整理します。画面を閉じる前にJSONを保存してください。既存の保存ファイルは変更しません。");
+  const help = element("p", "help", "追加した記録は接続を止めてもこの画面に残ります。別のアカウント・ネットワークの記録は混ぜられません。画面を閉じる・再読み込みする前にJSONを保存してください。既存の保存ファイルは変更しません。");
   const add = button("add", "今の履歴をまとめに追加");
   const save = button("save", "まとめたJSONを保存");
   const clear = button("clear", "この画面のまとめをクリア");
@@ -162,6 +162,7 @@ export function mountTransferArchivePanel({ document, parent, getContext, getSna
       return controller.reviewArchive(input);
     },
     invalidate() { if (!disposed) { const id = advance(); if (current(id)) controller.invalidate(); } },
+    suspend() { if (!disposed) { const id = advance(); if (current(id)) controller.suspend(); } },
     dispose() {
       if (disposed) return;
       disposed = true;

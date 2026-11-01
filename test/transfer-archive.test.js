@@ -222,12 +222,13 @@ test("transfer archive controller: newer addition invalidates a pending download
   assert.equal(f.controller.state.archive.records.length, 2);
 });
 
-test("transfer archive controller: context changed before invalid file completes recovers from loading", async () => {
+test("transfer archive controller: invalid file under a changed context preserves accepted records", async () => {
   const f = shelf();
   f.controller.add(window());
   f.select(context("EMA"));
   assert.equal(await f.controller.stage(fileFromText("bad")), false);
-  assert.equal(f.controller.state.phase, "empty");
+  assert.equal(f.controller.state.phase, "ready");
+  assert.equal(f.controller.state.archive.records[0].context.agent, "DAT");
   assert.equal(f.controller.state.error, "TRANSFER_FILE_JSON");
 });
 
