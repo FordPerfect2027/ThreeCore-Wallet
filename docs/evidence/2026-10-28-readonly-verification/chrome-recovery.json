@@ -1,0 +1,68 @@
+{
+  "schema": "threecore.browser-recovery.v1",
+  "verifiedAt": "2026-10-28T20:04:56.3966796+09:00",
+  "service": {
+    "revision": "b1cf96c4bb3905f9336d9ef93110ebc4db43ef61",
+    "codeModified": false
+  },
+  "diagnosis": "Local read-only app service was stopped while the existing Chrome page remained loaded. Restarting the matching service restored the same-page history reads.",
+  "chromeReadTests": [
+    {
+      "token": "DAT",
+      "file": "ThreeCore-DAT-8453-cfae4279-transfers-53063243-53065242.json",
+      "summary": "ThreeCore-DAT-8453-cfae4279-transfers-53063243-53065242.txt",
+      "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+      "chainId": 8453,
+      "range": {
+        "fromBlock": "53063243",
+        "toBlock": "53065242"
+      },
+      "eventCount": 0,
+      "readOnly": true,
+      "matchesPreviousBoundaryHashes": true,
+      "sha256": "DDC568853F945BDD36C220C9CC3C0B23D3BCC628B0C525FF7E6DEF6022C1FC47"
+    },
+    {
+      "token": "EMA",
+      "file": "ThreeCore-EMA-8453-cfae4279-transfers-53063243-53065242.json",
+      "summary": "ThreeCore-EMA-8453-cfae4279-transfers-53063243-53065242.txt",
+      "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+      "chainId": 8453,
+      "range": {
+        "fromBlock": "53063243",
+        "toBlock": "53065242"
+      },
+      "eventCount": 0,
+      "readOnly": true,
+      "matchesPreviousBoundaryHashes": true,
+      "sha256": "37E3D0F23CDF9D99C93E9ECDDC15CEA271A00D35A19033C37F859B09A7D16B4A"
+    },
+    {
+      "token": "CAWELON",
+      "file": "ThreeCore-CAWELON-8453-cfae4279-transfers-53063243-53065242.json",
+      "summary": "ThreeCore-CAWELON-8453-cfae4279-transfers-53063243-53065242.txt",
+      "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+      "chainId": 8453,
+      "range": {
+        "fromBlock": "53063243",
+        "toBlock": "53065242"
+      },
+      "eventCount": 0,
+      "readOnly": true,
+      "matchesPreviousBoundaryHashes": true,
+      "sha256": "18937BDD1969AAC1FEB9FFCB0ACF57C166BC26DB8B5C301A702EE191796D71F7"
+    }
+  ],
+  "fileReopen": {
+    "directFileUrlPolicyChanged": false,
+    "status": "verified_in_Chrome",
+    "token": "EMA",
+    "method": "Existing ThreeCore file chooser, validation preview, and apply-to-display"
+  },
+  "walletSettingsChanged": false,
+  "signingPerformed": false,
+  "transactionsSent": false,
+  "privateKeysRead": false,
+  "additionalVerifiedBlocks": 0,
+  "publicationNote": "Local process, port and filesystem details were omitted. This recovery observation predates the completed historical scan."
+}

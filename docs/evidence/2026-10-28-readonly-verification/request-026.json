@@ -1,0 +1,32 @@
+{
+  "url": "https://base.publicnode.com",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 26,
+    "method": "eth_getLogs",
+    "params": [
+      {
+        "address": [
+          "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+          "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+          "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895"
+        ],
+        "fromBlock": "0x31ab317",
+        "toBlock": "0x31b7666",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          null,
+          "0x000000000000000000000000cfae42798e867968c60fedf38d7ee401120072c8"
+        ]
+      }
+    ]
+  },
+  "requestedAtUtc": "2026-10-28T11:35:26.496Z",
+  "receivedAtUtc": "2026-10-28T11:35:29.748Z",
+  "httpStatus": 200,
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 26,
+    "result": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "url": "https://base.publicnode.com",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "eth_chainId",
+    "params": []
+  },
+  "requestedAtUtc": "2026-10-28T11:34:34.309Z",
+  "receivedAtUtc": "2026-10-28T11:34:34.507Z",
+  "httpStatus": 200,
+  "response": {
+    "jsonrpc": "2.0",
+    "result": "0x2105",
+    "id": 1
+  }
+}

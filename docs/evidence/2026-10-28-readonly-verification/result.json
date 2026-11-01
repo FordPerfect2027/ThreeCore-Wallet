@@ -1,0 +1,791 @@
+{
+  "schema": "threecore.receipt-overview.v1",
+  "startedAtUtc": "2026-10-28T11:34:34.302Z",
+  "completedAtUtc": "2026-10-28T11:36:36.126Z",
+  "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+  "chainId": 8453,
+  "readOnly": true,
+  "latestObservedBlock": 53198964,
+  "fixedEndBlock": 53198900,
+  "endBlockHash": "0x3d5cdcac059002ad76aa6253f90f49ac61432f6a387427df9c5987b4a05382b4",
+  "endBlockTimeUtc": "2026-10-28T11:32:27.000Z",
+  "tokens": [
+    {
+      "symbol": "DAT",
+      "address": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+      "creationBlock": 51281431,
+      "creationTx": "0x49cb417f0231eb149d60bcc471d0676a0643eb5cfc319741d8452c6e5d9cb589",
+      "coveredFromBlock": 51281431,
+      "coveredToBlock": 53198900,
+      "receiptCount": 0
+    },
+    {
+      "symbol": "EMA",
+      "address": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+      "creationBlock": 51542489,
+      "creationTx": "0x781f30ca91c974e60853d9dd1b8e71700bfd835eddffbd2b7222f0846f1208aa",
+      "coveredFromBlock": 51542489,
+      "coveredToBlock": 53198900,
+      "receiptCount": 0
+    },
+    {
+      "symbol": "CAWELON",
+      "address": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+      "creationBlock": 51542494,
+      "creationTx": "0x13ff6cae2e986d729aa76bf348f04186dff1bd80aae6fc8d684b0d559be8fd28",
+      "coveredFromBlock": 51542494,
+      "coveredToBlock": 53198900,
+      "receiptCount": 0
+    }
+  ],
+  "rpcEndpoint": "https://base.publicnode.com",
+  "explorer": [
+    {
+      "token": "DAT",
+      "pages": [
+        {
+          "url": "https://base.blockscout.com/api/v2/addresses/0xcfae42798e867968c60fedf38d7ee401120072c8/token-transfers?type=ERC-20&filter=to&token=0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+          "itemCount": 0,
+          "nextPageParams": null,
+          "receivedAtUtc": "2026-10-28T11:34:30.8485583Z"
+        }
+      ],
+      "items": [],
+      "paginationComplete": true
+    },
+    {
+      "token": "EMA",
+      "pages": [
+        {
+          "url": "https://base.blockscout.com/api/v2/addresses/0xcfae42798e867968c60fedf38d7ee401120072c8/token-transfers?type=ERC-20&filter=to&token=0xbae0933d509b83b7bbab3aab9fed413504382a76",
+          "itemCount": 0,
+          "nextPageParams": null,
+          "receivedAtUtc": "2026-10-28T11:34:31.8321582Z"
+        }
+      ],
+      "items": [],
+      "paginationComplete": true
+    },
+    {
+      "token": "CAWELON",
+      "pages": [
+        {
+          "url": "https://base.blockscout.com/api/v2/addresses/0xcfae42798e867968c60fedf38d7ee401120072c8/token-transfers?type=ERC-20&filter=to&token=0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+          "itemCount": 0,
+          "nextPageParams": null,
+          "receivedAtUtc": "2026-10-28T11:34:32.1205972Z"
+        }
+      ],
+      "items": [],
+      "paginationComplete": true
+    }
+  ],
+  "ranges": [
+    {
+      "fromBlock": 51281431,
+      "toBlock": 51331430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-010.json"
+    },
+    {
+      "fromBlock": 51331431,
+      "toBlock": 51381430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-011.json"
+    },
+    {
+      "fromBlock": 51381431,
+      "toBlock": 51431430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-012.json"
+    },
+    {
+      "fromBlock": 51431431,
+      "toBlock": 51481430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-013.json"
+    },
+    {
+      "fromBlock": 51481431,
+      "toBlock": 51531430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-014.json"
+    },
+    {
+      "fromBlock": 51531431,
+      "toBlock": 51581430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-015.json"
+    },
+    {
+      "fromBlock": 51581431,
+      "toBlock": 51631430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-016.json"
+    },
+    {
+      "fromBlock": 51631431,
+      "toBlock": 51681430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-017.json"
+    },
+    {
+      "fromBlock": 51681431,
+      "toBlock": 51731430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-018.json"
+    },
+    {
+      "fromBlock": 51731431,
+      "toBlock": 51781430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-019.json"
+    },
+    {
+      "fromBlock": 51781431,
+      "toBlock": 51831430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-020.json"
+    },
+    {
+      "fromBlock": 51831431,
+      "toBlock": 51881430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-021.json"
+    },
+    {
+      "fromBlock": 51881431,
+      "toBlock": 51931430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-022.json"
+    },
+    {
+      "fromBlock": 51931431,
+      "toBlock": 51981430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-023.json"
+    },
+    {
+      "fromBlock": 51981431,
+      "toBlock": 52031430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-024.json"
+    },
+    {
+      "fromBlock": 52031431,
+      "toBlock": 52081430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-025.json"
+    },
+    {
+      "fromBlock": 52081431,
+      "toBlock": 52131430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-026.json"
+    },
+    {
+      "fromBlock": 52131431,
+      "toBlock": 52181430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-027.json"
+    },
+    {
+      "fromBlock": 52181431,
+      "toBlock": 52231430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-028.json"
+    },
+    {
+      "fromBlock": 52231431,
+      "toBlock": 52281430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-029.json"
+    },
+    {
+      "fromBlock": 52281431,
+      "toBlock": 52331430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-030.json"
+    },
+    {
+      "fromBlock": 52331431,
+      "toBlock": 52381430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-031.json"
+    },
+    {
+      "fromBlock": 52381431,
+      "toBlock": 52431430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-032.json"
+    },
+    {
+      "fromBlock": 52431431,
+      "toBlock": 52481430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-033.json"
+    },
+    {
+      "fromBlock": 52481431,
+      "toBlock": 52531430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-034.json"
+    },
+    {
+      "fromBlock": 52531431,
+      "toBlock": 52581430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-035.json"
+    },
+    {
+      "fromBlock": 52581431,
+      "toBlock": 52631430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-036.json"
+    },
+    {
+      "fromBlock": 52631431,
+      "toBlock": 52681430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-037.json"
+    },
+    {
+      "fromBlock": 52681431,
+      "toBlock": 52731430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-038.json"
+    },
+    {
+      "fromBlock": 52731431,
+      "toBlock": 52781430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-039.json"
+    },
+    {
+      "fromBlock": 52781431,
+      "toBlock": 52831430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-040.json"
+    },
+    {
+      "fromBlock": 52831431,
+      "toBlock": 52881430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-041.json"
+    },
+    {
+      "fromBlock": 52881431,
+      "toBlock": 52931430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-042.json"
+    },
+    {
+      "fromBlock": 52931431,
+      "toBlock": 52981430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-043.json"
+    },
+    {
+      "fromBlock": 52981431,
+      "toBlock": 53031430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-044.json"
+    },
+    {
+      "fromBlock": 53031431,
+      "toBlock": 53081430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-045.json"
+    },
+    {
+      "fromBlock": 53081431,
+      "toBlock": 53131430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-046.json"
+    },
+    {
+      "fromBlock": 53131431,
+      "toBlock": 53181430,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-047.json"
+    },
+    {
+      "fromBlock": 53181431,
+      "toBlock": 53198900,
+      "eventCount": 0,
+      "complete": true,
+      "requestFile": "request-048.json"
+    }
+  ],
+  "receipts": [],
+  "positiveControls": [
+    {
+      "token": "DAT",
+      "creationBlock": 51281431,
+      "receiptHash": "0x49cb417f0231eb149d60bcc471d0676a0643eb5cfc319741d8452c6e5d9cb589",
+      "expectedLogs": 1,
+      "returnedLogs": 1,
+      "passed": true
+    },
+    {
+      "token": "EMA",
+      "creationBlock": 51542489,
+      "receiptHash": "0x781f30ca91c974e60853d9dd1b8e71700bfd835eddffbd2b7222f0846f1208aa",
+      "expectedLogs": 1,
+      "returnedLogs": 1,
+      "passed": true
+    },
+    {
+      "token": "CAWELON",
+      "creationBlock": 51542494,
+      "receiptHash": "0x13ff6cae2e986d729aa76bf348f04186dff1bd80aae6fc8d684b0d559be8fd28",
+      "expectedLogs": 1,
+      "returnedLogs": 1,
+      "passed": true
+    }
+  ],
+  "comparison": {
+    "rpcReceipts": 0,
+    "explorerReceiptsThroughEndBlock": 0,
+    "countsMatch": true
+  },
+  "balances": [
+    {
+      "token": "DAT",
+      "blockNumber": 53198900,
+      "valueBaseUnits": "0"
+    },
+    {
+      "token": "EMA",
+      "blockNumber": 53198900,
+      "valueBaseUnits": "0"
+    },
+    {
+      "token": "CAWELON",
+      "blockNumber": 53198900,
+      "valueBaseUnits": "0"
+    }
+  ],
+  "nativeBalanceWei": "0",
+  "outgoingTransactionCount": "0",
+  "rangeCoverageComplete": true,
+  "independentAbsoluteCompletenessProof": false,
+  "requests": [
+    {
+      "id": 1,
+      "file": "request-001.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_chainId",
+      "httpStatus": 200
+    },
+    {
+      "id": 2,
+      "file": "request-002.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getBlockByNumber",
+      "httpStatus": 200
+    },
+    {
+      "id": 3,
+      "file": "request-003.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getBlockByNumber",
+      "httpStatus": 200
+    },
+    {
+      "id": 4,
+      "file": "request-004.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getTransactionReceipt",
+      "httpStatus": 200
+    },
+    {
+      "id": 5,
+      "file": "request-005.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 6,
+      "file": "request-006.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getTransactionReceipt",
+      "httpStatus": 200
+    },
+    {
+      "id": 7,
+      "file": "request-007.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 8,
+      "file": "request-008.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getTransactionReceipt",
+      "httpStatus": 200
+    },
+    {
+      "id": 9,
+      "file": "request-009.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 10,
+      "file": "request-010.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 11,
+      "file": "request-011.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 12,
+      "file": "request-012.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 13,
+      "file": "request-013.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 14,
+      "file": "request-014.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 15,
+      "file": "request-015.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 16,
+      "file": "request-016.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 17,
+      "file": "request-017.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 18,
+      "file": "request-018.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 19,
+      "file": "request-019.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 20,
+      "file": "request-020.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 21,
+      "file": "request-021.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 22,
+      "file": "request-022.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 23,
+      "file": "request-023.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 24,
+      "file": "request-024.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 25,
+      "file": "request-025.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 26,
+      "file": "request-026.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 27,
+      "file": "request-027.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 28,
+      "file": "request-028.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 29,
+      "file": "request-029.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 30,
+      "file": "request-030.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 31,
+      "file": "request-031.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 32,
+      "file": "request-032.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 33,
+      "file": "request-033.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 34,
+      "file": "request-034.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 35,
+      "file": "request-035.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 36,
+      "file": "request-036.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 37,
+      "file": "request-037.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 38,
+      "file": "request-038.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 39,
+      "file": "request-039.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 40,
+      "file": "request-040.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 41,
+      "file": "request-041.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 42,
+      "file": "request-042.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 43,
+      "file": "request-043.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 44,
+      "file": "request-044.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 45,
+      "file": "request-045.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 46,
+      "file": "request-046.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 47,
+      "file": "request-047.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 48,
+      "file": "request-048.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getLogs",
+      "httpStatus": 200
+    },
+    {
+      "id": 49,
+      "file": "request-049.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_call",
+      "httpStatus": 200
+    },
+    {
+      "id": 50,
+      "file": "request-050.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_call",
+      "httpStatus": 200
+    },
+    {
+      "id": 51,
+      "file": "request-051.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_call",
+      "httpStatus": 200
+    },
+    {
+      "id": 52,
+      "file": "request-052.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getBalance",
+      "httpStatus": 200
+    },
+    {
+      "id": 53,
+      "file": "request-053.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getTransactionCount",
+      "httpStatus": 200
+    },
+    {
+      "id": 54,
+      "file": "request-054.json",
+      "url": "https://base.publicnode.com",
+      "method": "eth_getBlockByNumber",
+      "httpStatus": 200
+    }
+  ]
+}

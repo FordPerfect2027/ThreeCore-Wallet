@@ -1,0 +1,124 @@
+{
+  "schema": "threecore.receipt-overview.final-verification.v1",
+  "completedAtUtc": "2026-10-28T11:41:09.796Z",
+  "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+  "chainId": 8453,
+  "fixedHistoryEndBlock": 53198900,
+  "coverage": [
+    {
+      "token": "DAT",
+      "fromBlock": 51281431,
+      "toBlock": 53198900,
+      "receiptCount": 0
+    },
+    {
+      "token": "EMA",
+      "fromBlock": 51542489,
+      "toBlock": 53198900,
+      "receiptCount": 0
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": 51542494,
+      "toBlock": 53198900,
+      "receiptCount": 0
+    }
+  ],
+  "rpcWindows": 39,
+  "explorerAndRpcAgree": true,
+  "recipientFilterControls": [
+    {
+      "token": "DAT",
+      "creationBlock": 51281431,
+      "recipientTopic": "0x000000000000000000000000fbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "passed": true
+    },
+    {
+      "token": "EMA",
+      "creationBlock": 51542489,
+      "recipientTopic": "0x000000000000000000000000fbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "passed": true
+    },
+    {
+      "token": "CAWELON",
+      "creationBlock": 51542494,
+      "recipientTopic": "0x000000000000000000000000fbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "passed": true
+    }
+  ],
+  "chromeHistoryChecks": [
+    {
+      "token": "EMA",
+      "fromBlock": "51542489",
+      "toBlock": "51544488",
+      "checksumVerified": true,
+      "json": "ThreeCore-EMA-8453-cfae4279-transfers-51542489-51544488.json",
+      "summary": "ThreeCore-EMA-8453-cfae4279-transfers-51542489-51544488.txt"
+    },
+    {
+      "token": "EMA",
+      "fromBlock": "53196901",
+      "toBlock": "53198900",
+      "checksumVerified": true,
+      "json": "ThreeCore-EMA-8453-cfae4279-transfers-53196901-53198900.json",
+      "summary": "ThreeCore-EMA-8453-cfae4279-transfers-53196901-53198900.txt"
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": "51542494",
+      "toBlock": "51544493",
+      "checksumVerified": true,
+      "json": "ThreeCore-CAWELON-8453-cfae4279-transfers-51542494-51544493.json",
+      "summary": "ThreeCore-CAWELON-8453-cfae4279-transfers-51542494-51544493.txt"
+    },
+    {
+      "token": "CAWELON",
+      "fromBlock": "53196901",
+      "toBlock": "53198900",
+      "checksumVerified": true,
+      "json": "ThreeCore-CAWELON-8453-cfae4279-transfers-53196901-53198900.json",
+      "summary": "ThreeCore-CAWELON-8453-cfae4279-transfers-53196901-53198900.txt"
+    },
+    {
+      "token": "DAT",
+      "fromBlock": "51281431",
+      "toBlock": "51283430",
+      "checksumVerified": true,
+      "json": "ThreeCore-DAT-8453-cfae4279-transfers-51281431-51283430.json",
+      "summary": "ThreeCore-DAT-8453-cfae4279-transfers-51281431-51283430.txt"
+    },
+    {
+      "token": "DAT",
+      "fromBlock": "53196901",
+      "toBlock": "53198900",
+      "checksumVerified": true,
+      "json": "ThreeCore-DAT-8453-cfae4279-transfers-53196901-53198900.json",
+      "summary": "ThreeCore-DAT-8453-cfae4279-transfers-53196901-53198900.txt"
+    }
+  ],
+  "sameBlockBalanceChecks": [
+    {
+      "token": "DAT",
+      "blockNumber": "53198984",
+      "balanceBaseUnits": "0",
+      "matches": true
+    },
+    {
+      "token": "EMA",
+      "blockNumber": "53198984",
+      "balanceBaseUnits": "0",
+      "matches": true
+    },
+    {
+      "token": "CAWELON",
+      "blockNumber": "53198984",
+      "balanceBaseUnits": "0",
+      "matches": true
+    }
+  ],
+  "ethBalanceMatches": true,
+  "chromeHistorySavedRecords": 5,
+  "readOnly": true,
+  "remainingUncheckedWithinFixedHistoryScope": 0,
+  "tipAfterFixedEndBlockNotIncluded": true
+}

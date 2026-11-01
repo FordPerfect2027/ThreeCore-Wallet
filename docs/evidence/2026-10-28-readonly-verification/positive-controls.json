@@ -1,0 +1,26 @@
+[
+  {
+    "token": "DAT",
+    "creationBlock": 51281431,
+    "receiptHash": "0x49cb417f0231eb149d60bcc471d0676a0643eb5cfc319741d8452c6e5d9cb589",
+    "expectedLogs": 1,
+    "returnedLogs": 1,
+    "passed": true
+  },
+  {
+    "token": "EMA",
+    "creationBlock": 51542489,
+    "receiptHash": "0x781f30ca91c974e60853d9dd1b8e71700bfd835eddffbd2b7222f0846f1208aa",
+    "expectedLogs": 1,
+    "returnedLogs": 1,
+    "passed": true
+  },
+  {
+    "token": "CAWELON",
+    "creationBlock": 51542494,
+    "receiptHash": "0x13ff6cae2e986d729aa76bf348f04186dff1bd80aae6fc8d684b0d559be8fd28",
+    "expectedLogs": 1,
+    "returnedLogs": 1,
+    "passed": true
+  }
+]
