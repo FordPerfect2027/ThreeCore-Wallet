@@ -15,10 +15,10 @@ swaps, bridges, or autonomous spending.
 
 | Gate | Completion evidence needed | Current assessment |
 | --- | --- | --- |
-| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | Commit `f81c600918360daee77c1736915ac8878f02cb65` passed [run 41305306004](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41305306004): 15,962 unit tests, 431 HTTP tests, 1,001 synthetic browser cases on each of three consecutive runs; all three compiled-token jobs and the new evidence job passed. The navigation follow-up `d9f0eb05ac3c4694b1240811d88747416099befa` also passed [all five jobs](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41306291181). Check the PR for the operator-guidance follow-up's own CI result |
+| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | The latest inspected public PR head is `07041f00efdb503cb76a06fbe12e5531cb380930`; [run 41311235726](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726) completed all five jobs successfully. PR #4 remains open and draft. Subsequent history/retention/collection-guide changes are local only, with separately recorded local checks and no new remote CI result |
 | Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | Local audit at `f81c600`: 242 manifests / 2,183 entries matched. The separate evidence CI gate passed on the same revision, checking the development manifests and the October 28 historical evidence on a fresh checkout |
 | Real wallet acceptance | Three prepared distinct accounts in the intended wallet/browser; permission UI, exact balances/block, save/reload/restore, explicit reconnect and invalidation observed | Incomplete. The [existing acceptance criteria](LOCAL_TESTNET_ACCEPTANCE_2026-10-25.md) remain applicable. One Account 2 historical scan is not three distinct real-account acceptance |
-| File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | [Rehearsal recovery](OPERATOR_RECOVERY_2026-11-01.md) passed for six fictional records / three cases. [Real balance-history recovery](HISTORY_RECOVERY_2026-11-01.md) now passed for one permitted EMA account: two observations, actual file selection, cancelled preview, restore, byte-identical re-export, corrupt-file rejection and undo/reapply. The final three-account candidate and separately saved collections remain pending |
+| File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | [Rehearsal recovery](OPERATOR_RECOVERY_2026-11-01.md) passed for six fictional records / three cases. [Real balance-history recovery](HISTORY_RECOVERY_2026-11-01.md) passed for one permitted EMA account with two observations. [Archive/vault recovery](VAULT_RECOVERY_2026-11-02.md) now includes retained archives after disconnect/protective stop, saved-list survival across reload, duplicate-free collection re-import, cancelled/reviewed bundle import and byte-identical exports. The final three-account candidate and empty-database collection restore remain pending |
 | Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present. A [bounded developer source review](OPERATOR_RECOVERY_2026-11-01.md#connection-guidance-and-bounded-source-review) traced connection/read dispatch, request filtering and stale-result protection. This does not replace review of the final candidate or independent review |
 | Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | [Source package verification](SOURCE_CHECKPOINT_2026-11-01.md): 4,227 / 4,227 files match the selected commit and seven fresh-directory startup/boundary checks pass. The operator procedure is documented; real-wallet migration/return remains to be exercised |
 | Operational support | Supported browsers/networks, bounded RPC behavior, failure/retry instructions, backup procedure, and troubleshooting records for the candidate | The [Japanese operator guide](OPERATOR_ACCEPTANCE_JA.md) consolidates account identity, failed connection, preservation, backup and restore steps. Rehearsal file recovery and one real EMA account's settings/history recovery were exercised on the intended PC. The new plain-file comparison also reports exact content matches and retained extra history |
@@ -81,9 +81,15 @@ features. Compiled-token jobs use local EVMs and do not send public transactions
     Active operations and previews are still cancelled, while accepted records
     remain available for offline JSON saving under their original context.
     [Archive-retention evidence](TRANSFER_ARCHIVE_RETENTION_2026-11-01.md)
-    separates automated verification and an actual-file offline probe from the
-    post-fix intended-PC UI check, which remains unfinished. This is local work
-    awaiting the operator's requested combined publication.
+    separates the automated verification, offline probe and subsequent
+    intended-PC result. The latter now passed for one permitted EMA account.
+    This is local work awaiting the operator's requested combined publication.
+13. Exercised saved-list persistence, idempotent collection re-import, cancelled
+    and reviewed working-bundle import, and individual-card restore in Microsoft
+    Edge. Fixed the generic inspector rejecting the app's own whole-list backup
+    and added the correct restore destination. [Recovery and guide evidence](VAULT_RECOVERY_2026-11-02.md)
+    includes the precise limits of the real-PC exercise and the separate
+    synthetic tests. No new history query or GitHub publication was performed.
 
 ## Current real-wallet observation
 
@@ -118,8 +124,9 @@ Evidence CI, the fresh-directory source/startup check and the intended-PC
 rehearsal file cycle have passed on their named revisions. Account 1 resumption
 and a two-observation EMA balance-history round trip have now been observed on
 the intended PC. Collect subsequent development and verification locally before
-any combined GitHub publication. Continue the distinct-account public-testnet
-acceptance and recovery of separately saved collections, then complete
+any combined GitHub publication. One-account saved-collection persistence and
+re-import are also observed; empty-database recovery remains a separate check.
+Continue the distinct-account public-testnet acceptance, then complete
 independent review before a release decision. Record each material
 finding with its source revision, reproduction, fix and verification. Keep the
 current 4231 server and the user's open rehearsal data intact. New test servers

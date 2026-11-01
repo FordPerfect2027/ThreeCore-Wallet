@@ -1,0 +1,149 @@
+✔ collection export includes active and archived data with portable revision zero (212.6554ms)
+✔ collection checksum covers label, dates, archived state and observations (168.4783ms)
+✔ collection review is additive, idempotent and explicit about archived additions (35.2296ms)
+✔ collection identifier collisions reject differences without overwriting (11.0765ms)
+✔ collection identifier collisions reject differences without overwriting (8.6936ms)
+✔ collection identifier collisions reject differences without overwriting (29.7072ms)
+✔ collection identifier collisions reject differences without overwriting (12.8064ms)
+✔ collection capacity is checked for the combined destination (61.2817ms)
+✔ portable revision cannot be used to reset a destination update number (7.1145ms)
+✔ collection reader rejects nonzero portable revision and unsupported fields (23.1526ms)
+✔ collection file import validates byte size, UTF-8 and JSON before storage (17.9914ms)
+✔ empty collections do not produce a misleading backup download (0.8123ms)
+✔ collection restore requires opening storage, preview and a separate commit (45.5368ms)
+✔ collection restore does not replace the current working copy (38.6992ms)
+✔ collection restore refuses concurrent edits at the commit boundary (83.4568ms)
+✔ cancelled collection preview and late file decoding never mutate storage (8.7666ms)
+✔ collection save cancellation aborts before imported entries commit (35.6474ms)
+✔ exporting the collection rechecks storage rather than using a stale cached list (16.9042ms)
+✔ changing selection or refreshing invalidates an old collection preview (80.4031ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.wallet-saved-browser-batch.v3 (28.7671ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.wallet-saved-local-batch-comparison.v1 (16.5375ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.wallet-saved-local-batch-comparison-review.v1 (8.6721ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.wallet-saved-batch-comparison-review.v1 (9.3853ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.wallet-saved-batch-comparison.v1 (1.5205ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.wallet-saved-browser-batch.v1 (9.5051ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.wallet-saved-browser-batch.v2 (23.6987ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.wallet-saved-batch-inspection.v1 (1.2343ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.saved-file-comparison-review.v1 (30.8845ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.saved-file-comparison-bundle.v1 (12.6345ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.saved-file-comparison-bundle-review.v1 (2.3777ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.saved-file-comparison.v1 (1.4763ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.saved-file-inspection.v1 (1.3841ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.report-history-import-inspection.v1 (1.4806ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.report-history-file.v1 (1.1681ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.period-library-file.v1 (13.7656ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.period-library-import-inspection.v1 (1.753ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.saved-event-comparison-file.v1 (1.0563ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.saved-event-comparison-review.v1 (2.9219ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.period-file.v1 (4.5843ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.period-report-file.v1 (1.0807ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.report-set-file.v1 (1.7431ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.report-set-check-details.v1 (0.9354ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.report-set-comparison-file.v1 (1.2107ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.report-set-check-review.v1 (1.5023ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.report-set-comparison-review.v1 (10.8642ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.report-set-history-coverage.v1 (1.2211ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.report-set-history-coverage-review.v1 (0.9592ms)
+✔ declared wallet artifact gives a bounded destination hint: threecore.missing-history-queue.v1 (1.0003ms)
+✔ all existing supported artifacts still undergo their complete successful validation (960.7528ms)
+✔ real exported explanation files receive guidance instead of being treated as restorable sources (40.4735ms)
+✔ unknown, duplicate, unsafe or malformed declarations never receive a guessed route (37.4143ms)
+✔ destination hints cannot mask checksum corruption in the correct reader (194.1493ms)
+✔ saved observation guide validates and summarizes transfer.json (81.0109ms)
+✔ saved observation guide refuses checksum and shape substitution transfer.json (8.0972ms)
+✔ saved observation original comparison and bundle preserve exact bytes transfer.json (49.1122ms)
+✔ saved observation guide validates and summarizes archive.json (4.0238ms)
+✔ saved observation guide refuses checksum and shape substitution archive.json (4.0366ms)
+✔ saved observation original comparison and bundle preserve exact bytes archive.json (27.2892ms)
+✔ saved observation guide validates and summarizes vault.json (62.046ms)
+✔ saved observation guide refuses checksum and shape substitution vault.json (9.6878ms)
+✔ saved observation original comparison and bundle preserve exact bytes vault.json (162.2883ms)
+✔ saved observation guide validates and summarizes identity.json (50.7922ms)
+✔ saved observation guide refuses checksum and shape substitution identity.json (3.8537ms)
+✔ saved observation original comparison and bundle preserve exact bytes identity.json (10.2153ms)
+✔ saved observation guide validates and summarizes allowance-targets.json (2.8536ms)
+✔ saved observation guide refuses checksum and shape substitution allowance-targets.json (3.5217ms)
+✔ saved observation original comparison and bundle preserve exact bytes allowance-targets.json (127.5756ms)
+✔ saved observation guide validates and summarizes allowance-observation.json (5.6163ms)
+✔ saved observation guide refuses checksum and shape substitution allowance-observation.json (25.8762ms)
+✔ saved observation original comparison and bundle preserve exact bytes allowance-observation.json (207.7081ms)
+✔ saved observation guide validates and summarizes reconciliation.json (16.1053ms)
+✔ saved observation guide refuses checksum and shape substitution reconciliation.json (12.772ms)
+✔ saved observation original comparison and bundle preserve exact bytes reconciliation.json (210.5362ms)
+✔ new original scopes keep absent values null and CSV blank while exports retain observed counts (95.2686ms)
+✔ new inspection receipt is a declaration, not reusable original evidence (5.82ms)
+✔ archive text decoder is bounded and performs no file reads (89.7345ms)
+✔ changed historical values with unchanged counts remain content changes, not matching observations (16.1724ms)
+✔ an empty reconciliation source reports zero present references without inventing period progress (2.9604ms)
+✔ new guides cannot retain a result after cancellation while their checksum is waiting (68.8643ms)
+✔ actual selected observations open, compare and export through the shared file guide without exposing values (441.0535ms)
+✔ browser batch retains scope and guarded detail navigation for mixed observation originals (264.3229ms)
+✔ actual offline inspect and batch commands agree with the browser API and preserve every original byte (4188.3201ms)
+✖ collection guide verifies active and archived records without exporting private values or deduplicating references (85.3808ms)
+✖ collection and working-bundle restore routes are distinct (6.2008ms)
+✔ collection guide rejects altered metadata, nested observations, invalid shape and duplicate identities (51.9318ms)
+✔ collection comparisons detect metadata changes even when observation counts match (110.3399ms)
+✔ collection comparison bundle and batch CSV retain counts and verify the original bytes (90.0901ms)
+✔ collection verification cannot survive cancellation while checksum work is pending (7.6692ms)
+✔ generic local-file checker accepts a collection and leaves its source untouched (38.1306ms)
+ℹ tests 89
+ℹ suites 0
+ℹ pass 87
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7465.1218
+
+✖ failing tests:
+
+test at test\wallet-saved-vault-collection-guide.test.js:25:1
+✖ collection guide verifies active and archived records without exporting private values or deduplicating references (85.3808ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保管一覧の保存記録の参照: 2/. Input:
+  
+  '3トークンの履歴保管一覧バックアップ · 13681 bytes\n' +
+    '元記録の形式とチェックサムを確認しました。まだ読み込み先へ反映していません。\n' +
+    'PC内の保存一覧全体のバックアップです。「3トークンの履歴を保管・集計」→「PC内の保存一覧」→「保存一覧の保全JSONを開く」で元のJSONを選び、追加内容を確認してください。非表示保管も含みます。ここでは保存先への反映は行いません。この案内欄の上限16 MiBを超える場合は、上記の保全JSON欄（最大40 MiB）で直接選んでください。\n' +
+    '含まれるトークン: DAT、EMA、CAWELON\n' +
+    '履歴まとめの参照 6件\n' +
+    '取得区間の記録の参照 6件\n' +
+    '履歴イベントの参照 6件\n' +
+    '保管一覧の保存記録の参照 2件\n' +
+    'うち非表示保管の参照 1件\n' +
+    '同じ記録やイベントが複数の箇所に含まれる場合があるため、参照数は独立した検証回数や重複を除いた履歴件数ではありません。\n' +
+    'アドレス・残高・メモ本文はこの案内には表示しません。現在のチェーン、出所、完全性、安全性を証明する確認ではありません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-vault-collection-guide.test.js:44:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '3トークンの履歴保管一覧バックアップ · 13681 bytes\n元記録の形式とチェックサムを確認しました。まだ読み込み先へ反映していません。\nPC内の保存一覧全体のバックアップです。「3トークンの履歴を保管・集計」→「PC内の保存一覧」→「保存一覧の保全JSONを開く」で元のJSONを選び、追加内容を確認してください。非表示保管も含みます。ここでは保存先への反映は行いません。この案内欄の上限16 MiBを超える場合は、上記の保全JSON欄（最大40 MiB）で直接選んでください。\n含まれるトークン: DAT、EMA、CAWELON\n履歴まとめの参照 6件\n取得区間の記録の参照 6件\n履歴イベントの参照 6件\n保管一覧の保存記録の参照 2件\nうち非表示保管の参照 1件\n同じ記録やイベントが複数の箇所に含まれる場合があるため、参照数は独立した検証回数や重複を除いた履歴件数ではありません。\nアドレス・残高・メモ本文はこの案内には表示しません。現在のチェーン、出所、完全性、安全性を証明する確認ではありません。',
+    expected: /保管一覧の保存記録の参照: 2/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\wallet-saved-vault-collection-guide.test.js:52:1
+✖ collection and working-bundle restore routes are distinct (6.2008ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + null
+  - 'FILE_USE_TRANSFER_VAULT_COLLECTION'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-vault-collection-guide.test.js:56:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 'FILE_USE_TRANSFER_VAULT_COLLECTION',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

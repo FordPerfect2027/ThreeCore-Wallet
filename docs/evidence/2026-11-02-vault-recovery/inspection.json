@@ -1,0 +1,43 @@
+{
+  "schema": "threecore.saved-file-inspection.v2",
+  "sourceSchema": "threecore.transfer-vault-collection.v1",
+  "byteLength": 13677,
+  "title": "3トークンの履歴保管一覧バックアップ",
+  "target": "transfer-vault-collection",
+  "destinationMessage": "PC内の保存一覧全体のバックアップです。「3トークンの履歴を保管・集計」→「PC内の保存一覧」で、まず「PC内の保存一覧を開く・再読み込み」を押してください。次に「保存一覧の保全JSONを開く」で元のJSONを選び、追加内容を確認してください。非表示保管も含みます。ここでは保存先への反映は行いません。この案内欄の上限16 MiBを超える場合は、上記の保全JSON欄（最大40 MiB）で直接選んでください。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "9fa720d6291eb3aa646d60927ba830cb1e56a634d44fc0531eace3b9ce6bfe22",
+  "textDigest": "b58880f0479a2814d87e5315e49368f984276a7d8f83bffde02d2af52047a7f4",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT",
+      "EMA",
+      "CAWELON"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "archiveReferences": 6,
+    "transferRecordReferences": 6,
+    "eventReferences": 6,
+    "identityObservationReferences": null,
+    "allowanceTargetReferences": null,
+    "allowanceObservationReferences": null,
+    "vaultEntryReferences": 2,
+    "archivedVaultEntryReferences": 1
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

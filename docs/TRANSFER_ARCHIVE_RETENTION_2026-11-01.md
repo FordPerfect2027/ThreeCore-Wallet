@@ -80,3 +80,15 @@ verification tab, restore the saved archive, connect the previously permitted
 account if needed, stop the connection, and save/recompare the retained archive.
 Three distinct public-testnet account acceptance, independent review and a
 release decision remain separate, unfinished requirements.
+
+## Subsequent intended-PC result
+
+The following continuation recovered browser control and completed the
+specific Account 1 EMA stop/save check in Microsoft Edge using this local
+revision. Normal disconnect, protective stop and a blank input all preserved
+the accepted archive; actual saved files matched the original. The named
+saved-list record also survived a page reload, and reviewed bundle/card
+restoration preserved the bytes. See the [November 2 recovery record](VAULT_RECOVERY_2026-11-02.md)
+for scope, file hashes, the collection-guide defect found during that exercise,
+and remaining acceptance gates. The earlier failed UI attempt above remains
+part of the history; it is not being presented as a successful run.

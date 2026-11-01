@@ -4,7 +4,7 @@ import { pathToFileURL } from "node:url";
 import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { inspectWalletSavedText, walletSavedInspectionText, WALLET_SAVED_INSPECTION_LIMIT } from "../src/file-read-status.js";
 const USAGE = "Usage: node scripts/inspect-wallet-saved-file.js source.json [--json]\n" +
-  "Validates checksummed period/report originals, transfer snapshots/archives/vaults, identity/balance observations, allowance targets/observations and reconciliation sources.\n" +
+  "Validates checksummed period/report originals, transfer snapshots/archives/vaults/collections, identity/balance observations, allowance targets/observations and reconciliation sources.\n" +
   "Checksummed workspace backups are validated; plain portfolio reports/history, token input lists and public wallet setup receive separate structure-only validation.\n" +
   "Portable portfolio comparisons recompute saved arithmetic from both included observations; source authenticity remains unverified.\n" +
   "Saved history queries receive strict structure-only validation; filter addresses are not configured accounts or observed balances.\n" +

@@ -90,11 +90,13 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   cleanup.push(() => rpcStatusPanel.dispose());
   const storagePanel = mountStorageGuardPanel({ document, parent: securityHost, guard: storageGuard });
   cleanup.push(() => storagePanel.dispose());
-  const savedFileDestinations = Object.freeze(Object.fromEntries(Object.entries({ setup: "setup", workspace: "workspace",
+  const savedFileDestinations = Object.freeze({ ...Object.fromEntries(Object.entries({ setup: "setup", workspace: "workspace",
     "token-plan": "accounts", portfolio: "accounts", "portfolio-history": "accounts", "portfolio-comparison": "accounts", "history-query": "accounts",
     "transfer-vault": "history", period: "period", library: "period-library", report: "period-report",
     history: "report-history", set: "report-set", reconciliation: "reconciliation" })
-    .map(([target, key]) => [target, () => navigation.goTo(key)])));
+    .map(([target, key]) => [target, () => navigation.goTo(key)])),
+    "transfer-vault-collection": () => transferVaultPanel.showCollectionReader(),
+  });
   const fileReadPanel = mountFileReadPanel({ document, parent: securityHost, service: fileReadService, savedFileDestinations });
   cleanup.push(() => fileReadPanel.dispose());
   const exportPanel = mountExportGuardPanel({ document, parent: securityHost, guard: exportGuard });

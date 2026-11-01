@@ -1,0 +1,59 @@
+{
+  "baseRevision": "593916348fadc822de5d6811d694b1f3ce90a183",
+  "recordedAt": "2026-11-01T15:12:15.804Z",
+  "scope": "local modified files; no server restart",
+  "sources": [
+    {
+      "path": "src/file-read-status.js",
+      "bytes": 154213,
+      "sha256": "46bb66b57b3198ef2976fc1dbbd3fcc955fdf3540e837401b3eedefa0c6c68ef",
+      "httpStatus": 200,
+      "servedBytesMatch": true,
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "examples/file-read-panel.js",
+      "bytes": 145897,
+      "sha256": "47d458d04d844c007d954efb4a521206fe6da4ac003b0ded32a30e23641a5413",
+      "httpStatus": 200,
+      "servedBytesMatch": true,
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "examples/transfer-vault-panel.js",
+      "bytes": 21326,
+      "sha256": "fcbeb0f2ee0dd2f66c2d7f0d86727d8f2c45fe079441bf8295c778d79188b337",
+      "httpStatus": 200,
+      "servedBytesMatch": true,
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "examples/wallet-demo.js",
+      "bytes": 31802,
+      "sha256": "e016a04f0bef52d094961620ddadae026f2c003ee4888ecea00c8eb291c91948",
+      "httpStatus": 200,
+      "servedBytesMatch": true,
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "scripts/inspect-wallet-saved-file.js",
+      "bytes": 3458,
+      "sha256": "2b04b7515f4fef1f58aa16020ad8835c3169f925f768b6076934eb24b2830520"
+    },
+    {
+      "path": "test/wallet-saved-vault-collection-guide.test.js",
+      "bytes": 7824,
+      "sha256": "2a9a64a937542726e315397c9a2aac8b70f4412c3bfb7ecd50c64789175d1bbf"
+    },
+    {
+      "path": "test/wallet-saved-legacy-guide.test.js",
+      "bytes": 5874,
+      "sha256": "db44cfb492b0a22ef40837f1092242b70c9a0bc5acbc5648088c04f1fa994266"
+    },
+    {
+      "path": "test/browser/file-read-ui-tests.js",
+      "bytes": 235231,
+      "sha256": "8cd6216e317860ace820837046e7a5efccef417ad3291b24c15c0d6103c9fc18"
+    }
+  ]
+}

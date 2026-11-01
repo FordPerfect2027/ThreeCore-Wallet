@@ -282,6 +282,14 @@ export function mountTransferVaultPanel({ document, parent, readCards, stageArch
   listen(next, "click", () => { page++; renderActivity(); }, false);
   render(controller.state);
   return Object.freeze({ invalidateCards() { if (!disposed) { generation++; controller.invalidateCards(); } },
+    showCollectionReader() {
+      if (disposed || state.busy) return false;
+      saved.open = true;
+      const target = state.metadata ? collectionFile.element : refresh;
+      target.focus?.({ preventScroll: true });
+      (state.metadata ? collectionFile.label : refresh).scrollIntoView?.({ block: "center", behavior: "auto" });
+      return true;
+    },
     dispose() {
       if (disposed) return;
       disposed = true;

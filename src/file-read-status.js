@@ -184,6 +184,7 @@ const walletSavedTargets = Object.freeze({
   "threecore.transfer-file.v1": ["transfer", "FILE_USE_TRANSFER"],
   "threecore.transfer-archive-file.v1": ["transfer-archive", "FILE_USE_TRANSFER_ARCHIVE"],
   "threecore.transfer-vault-file.v1": ["transfer-vault", "FILE_USE_TRANSFER_VAULT"],
+  "threecore.transfer-vault-collection.v1": ["transfer-vault-collection", "FILE_USE_TRANSFER_VAULT_COLLECTION"],
   "threecore-token-observation-file-v1": ["identity", "FILE_USE_IDENTITY"],
   "threecore-allowance-file-v1": ["allowance", "FILE_USE_ALLOWANCE"],
   "threecore.reconciliation-file.v1": ["reconciliation", "FILE_USE_RECONCILIATION"],
@@ -264,6 +265,7 @@ const walletSavedMessages = Object.freeze({
   FILE_USE_TRANSFER: "受信・送信履歴の保存JSONです。該当トークンの履歴画面で、元のJSONを選んで確認してください。現在のチェーンへの再照会は行いません。",
   FILE_USE_TRANSFER_ARCHIVE: "複数区間の履歴をまとめたJSONです。履歴の保管画面で元のJSONを確認してください。取得済み区間の記録であり、全履歴を取得した証明ではありません。",
   FILE_USE_TRANSFER_VAULT: "3トークンの履歴をまとめた保管JSONです。履歴の保管画面で元のJSONを確認してください。保存先への反映は行っていません。",
+  FILE_USE_TRANSFER_VAULT_COLLECTION: "PC内の保存一覧全体のバックアップです。「3トークンの履歴を保管・集計」→「PC内の保存一覧」で、まず「PC内の保存一覧を開く・再読み込み」を押してください。次に「保存一覧の保全JSONを開く」で元のJSONを選び、追加内容を確認してください。非表示保管も含みます。ここでは保存先への反映は行いません。この案内欄の上限16 MiBを超える場合は、上記の保全JSON欄（最大40 MiB）で直接選んでください。",
   FILE_USE_IDENTITY: "トークンと残高の保存観測JSONです。該当トークンの確認画面で元のJSONを選んでください。現在の残高や契約の安全性を証明するものではありません。",
   FILE_USE_ALLOWANCE: "既存の利用許可を調べる対象一覧、または過去の観測JSONです。利用許可の確認画面で元のJSONを確認してください。許可を付与・変更する操作ではありません。",
   FILE_USE_RECONCILIATION: "残高と履歴を照合する保存JSONです。残高と履歴の照合画面で元のJSONを確認してください。ここでは照合の結論を再計算せず、保存内容の形式とチェックサムを確認します。",
@@ -327,15 +329,16 @@ const observationSavedTypes = Object.freeze({
   "threecore.transfer-file.v1": "1区間の受信・送信履歴",
   "threecore.transfer-archive-file.v1": "複数区間の受信・送信履歴",
   "threecore.transfer-vault-file.v1": "3トークンの履歴保管",
+  "threecore.transfer-vault-collection.v1": "3トークンの履歴保管一覧バックアップ",
   "threecore-token-observation-file-v1": "トークンと残高の保存観測",
   "threecore-allowance-file-v1": "利用許可の確認用保存資料",
   "threecore.reconciliation-file.v1": "残高と履歴の照合用保存資料",
 });
-export const WALLET_SAVED_OBSERVATION_SCOPE_FIELDS = Object.freeze(["archiveReferences", "transferRecordReferences", "eventReferences", "identityObservationReferences", "allowanceTargetReferences", "allowanceObservationReferences", "configurationReferences", "configuredAccountReferences", "configuredTokenReferences", "portfolioObservationReferences", "holdingReferences", "unknownHoldingReferences"]);
+export const WALLET_SAVED_OBSERVATION_SCOPE_FIELDS = Object.freeze(["archiveReferences", "transferRecordReferences", "eventReferences", "identityObservationReferences", "allowanceTargetReferences", "allowanceObservationReferences", "configurationReferences", "configuredAccountReferences", "configuredTokenReferences", "portfolioObservationReferences", "holdingReferences", "unknownHoldingReferences", "vaultEntryReferences", "archivedVaultEntryReferences"]);
 export const WALLET_SAVED_REHEARSAL_SCOPE_FIELDS = Object.freeze(["rehearsalLedgerReferences", "rehearsalRecordReferences", "rehearsalRejectedRecordReferences", "rehearsalScenarioReferences"]);
 const rehearsalScopeLabels = Object.freeze({ rehearsalLedgerReferences: "練習用の履歴の参照", rehearsalRecordReferences: "練習用の記録の参照", rehearsalRejectedRecordReferences: "入力された仮想条件に合わない記録の参照", rehearsalScenarioReferences: "仮想条件の比較ケース" });
 const rehearsalSavedTypes = Object.freeze({ "threecore.operation-rehearsal.v1": "運用リハーサルの旧形式の記録", "threecore.operation-rehearsal.v2": "運用リハーサルの記録", "threecore.operation-rehearsal-workspace.v1": "運用リハーサルの3トークン履歴", "threecore.operation-rehearsal-session.v1": "運用リハーサルの履歴と比較ケース", "threecore.operation-rehearsal-scenario-set.v1": "運用リハーサルの比較ケース集" });
-const observationScopeLabels = Object.freeze({ archiveReferences: "履歴まとめの参照", transferRecordReferences: "取得区間の記録の参照", eventReferences: "履歴イベントの参照", identityObservationReferences: "トークン・残高観測の参照", allowanceTargetReferences: "利用許可の確認対象の参照", allowanceObservationReferences: "利用許可の観測行の参照", configurationReferences: "ウォレット設定の行", configuredAccountReferences: "設定済み公開アドレスの参照", configuredTokenReferences: "設定済みトークン契約の参照", portfolioObservationReferences: "複数トークン残高記録の参照", holdingReferences: "トークン残高の行の参照", unknownHoldingReferences: "残高が不明な行の参照" });
+const observationScopeLabels = Object.freeze({ archiveReferences: "履歴まとめの参照", transferRecordReferences: "取得区間の記録の参照", eventReferences: "履歴イベントの参照", identityObservationReferences: "トークン・残高観測の参照", allowanceTargetReferences: "利用許可の確認対象の参照", allowanceObservationReferences: "利用許可の観測行の参照", configurationReferences: "ウォレット設定の行", configuredAccountReferences: "設定済み公開アドレスの参照", configuredTokenReferences: "設定済みトークン契約の参照", portfolioObservationReferences: "複数トークン残高記録の参照", holdingReferences: "トークン残高の行の参照", unknownHoldingReferences: "残高が不明な行の参照", vaultEntryReferences: "保管一覧の保存記録の参照", archivedVaultEntryReferences: "うち非表示保管の参照" });
 const legacySavedTypes = Object.freeze({ "threecore-portfolio-snapshot-v1": "過去の複数トークン残高記録", "threecore-portfolio-history-v1": "複数トークン残高の保存履歴", "threecore-wallet-setup-v1": "3ウォレットの公開設定", "threecore-token-plan-v1": "トークンの契約アドレス入力リスト", "threecore-portfolio-comparison-v1": "前後の残高記録と再計算できる比較結果", "threecore-history-query-v1": "保存履歴の検索条件（観測データを含まない設定）" });
 function savedPortfolioScope(observations, configuration) {
   const holdings = observations?.flatMap(row => row.holdings) ?? null;
@@ -380,11 +383,17 @@ async function inspectLegacySaved(text, schema, byteLength, options, checkpoint,
     validation: "validated-structure", checksumVerified: false, sourceDigest: null, textDigest, scope, originalEvidenceValidated: false, restorable: false, automaticallyImported: false, liveChainRechecked: false, authenticated: false, authorizesExecution: false });
 }
 async function inspectSavedObservation(text, schema, byteLength, options, checkpoint, knownTextDigest) {
-  let decoded, agents = [], archives = [], records = [], identities = null, targetCount = null, allowanceCount = null, portfolioScope;
+  let decoded, agents = [], archives = [], records = [], identities = null, targetCount = null, allowanceCount = null, portfolioScope, vaultScope;
   const target = walletSavedTargets[schema][0];
   if (target === "transfer") { decoded = await (await import("./transfer-file.js")).decodeTransferFile(text, options); records = [decoded.snapshot]; agents = [decoded.snapshot.context.agent]; }
   else if (target === "transfer-archive") { decoded = await (await import("./transfer-archive-file.js")).decodeTransferArchiveFile(text, options); archives = [decoded.archive]; }
   else if (target === "transfer-vault") { decoded = await (await import("./transfer-vault-file.js")).decodeVaultFile(text, options); archives = decoded.bundle.slots.map(row => row.archive).filter(Boolean); }
+  else if (target === "transfer-vault-collection") {
+    decoded = await (await import("./transfer-vault-collection.js")).decodeVaultCollection(text, options);
+    const entries = decoded.document.entries;
+    archives = entries.flatMap(entry => entry.bundle.slots.map(row => row.archive).filter(Boolean));
+    vaultScope = { vaultEntryReferences: entries.length, archivedVaultEntryReferences: entries.filter(entry => entry.archived).length };
+  }
   else if (target === "identity") { decoded = await (await import("./token-identity-report.js")).decodeTokenIdentityFile(new TextEncoder().encode(text), options); agents = [decoded.observation.agent]; identities = [decoded.observation]; }
   else if (target === "allowance") {
     decoded = await (await import("./allowance-file.js")).decodeAllowanceFile(new TextEncoder().encode(text), options);
@@ -404,14 +413,14 @@ async function inspectSavedObservation(text, schema, byteLength, options, checkp
   }
   checkpoint();
   if (archives.length) { records = archives.flatMap(row => row.records); agents.push(...records.map(row => row.context.agent)); }
-  const hasTransfers = ["transfer", "transfer-archive", "transfer-vault", "reconciliation"].includes(target);
+  const hasTransfers = ["transfer", "transfer-archive", "transfer-vault", "transfer-vault-collection", "reconciliation"].includes(target);
   const scope = Object.freeze({ reportCount: null, archivedReports: null, entryReferences: null, draftReferences: null,
     archivedEntryReferences: null, restrictedEntryReferences: null, incompleteDraftReferences: null, emptyDraftReferences: null,
     agents: Object.freeze(["DAT", "EMA", "CAWELON"].filter(agent => agents.includes(agent))), annotationValuesIncluded: false,
     repeatedReferencesMayExist: archives.length > 0 || target === "reconciliation",
     archiveReferences: hasTransfers && target !== "transfer" ? archives.length : null,
     transferRecordReferences: hasTransfers ? records.length : null, eventReferences: hasTransfers ? records.reduce((count, row) => count + row.events.length, 0) : null,
-    identityObservationReferences: identities?.length ?? null, allowanceTargetReferences: targetCount, allowanceObservationReferences: allowanceCount, ...portfolioScope });
+    identityObservationReferences: identities?.length ?? null, allowanceTargetReferences: targetCount, allowanceObservationReferences: allowanceCount, ...portfolioScope, ...vaultScope });
   const textDigest = knownTextDigest ?? await sha256Hex(new TextEncoder().encode(text), options.subtle ?? globalThis.crypto?.subtle, options); checkpoint();
   return captureSavedInspection({ schema: "threecore.saved-file-inspection.v2", sourceSchema: schema, byteLength,
     title: observationSavedTypes[schema], target, destinationMessage: walletSavedMessages[walletSavedTargets[schema][1]],

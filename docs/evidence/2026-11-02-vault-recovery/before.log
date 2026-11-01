@@ -1,0 +1,10 @@
+FILE_INSPECTION_UNSUPPORTED
+Usage: node scripts/inspect-wallet-saved-file.js source.json [--json]
+Validates checksummed period/report originals, transfer snapshots/archives/vaults, identity/balance observations, allowance targets/observations and reconciliation sources.
+Checksummed workspace backups are validated; plain portfolio reports/history, token input lists and public wallet setup receive separate structure-only validation.
+Portable portfolio comparisons recompute saved arithmetic from both included observations; source authenticity remains unverified.
+Saved history queries receive strict structure-only validation; filter addresses are not configured accounts or observed balances.
+Rehearsal ledgers, workspaces, sessions and scenario sets receive structure-only validation and recalculated practice-record counts; they are not on-chain evidence.
+Known auxiliary files receive declared-format guidance only; their contents and conclusions are not verified.
+Output contains guidance and counts, not original addresses, balances or note values. It is not a restorable backup.
+No network, import or source writes. Exit 0: checksummed original; 2: structure-only validation or auxiliary declaration; 1: invalid/unsupported input.

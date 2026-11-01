@@ -67,6 +67,22 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('saved collection guide: native inspection opens the collection reader without importing or requesting a wallet',async use=>{
+    const f=use(),{prepareVaultCollection}=await import('/src/transfer-vault-collection.js'),{emptyVaultDocument,mutateVaultDocument}=await import('/src/transfer-vault-model.js'),{saveOperation}=await import('/test/helpers/vault-fixtures.js');
+    const text=(await prepareVaultCollection(mutateVaultDocument(emptyVaultDocument(),0,saveOperation()))).text,q=name=>document.querySelector('.saved-file-guide-'+name),v=name=>document.querySelector('.transfer-vault-'+name),files=new DataTransfer();
+    const before={overview:v('overview').textContent,metadata:v('metadata').textContent,review:v('collection-review').textContent};
+    files.items.add(new File([text],'renamed-backup.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));
+    const started=performance.now();while(q('destination').disabled){assert(performance.now()-started<10000,'collection inspection did not finish');await tick();}
+    assert(q('output').textContent.includes('保存一覧の保全JSONを開く')&&q('output').textContent.includes('保管一覧の保存記録の参照 1件'),'collection guidance missing');
+    q('destination').click();assert(v('saved').open&&document.activeElement===v('refresh'),'unopened list must focus its explicit read button');
+    assert(v('collection-file').files.length===0&&v('collection-apply').disabled&&v('overview').textContent===before.overview&&v('metadata').textContent===before.metadata&&v('collection-review').textContent===before.review&&f.calls.length===0,'navigation changed wallet or storage state');
+    assert(q('destination-status').textContent.includes('元のJSONはまだ読み込んでいません'),'navigation receipt missing');
+    v('refresh').click();const loaded=performance.now();while(v('collection-file').disabled){assert(performance.now()-loaded<10000,'local list did not open');await tick();}
+    const loadedMetadata=v('metadata').textContent;q('destination').click();assert(document.activeElement===v('collection-file')&&v('collection-file').files.length===0&&v('collection-apply').disabled&&f.calls.length===0,'loaded list must focus file input without choosing or applying');
+    const invalid=JSON.parse(text);invalid.document.entries[0].label='Changed without checksum';const bad=new DataTransfer();bad.items.add(new File([JSON.stringify(invalid)],'bad.json'));q('file').files=bad.files;q('file').dispatchEvent(new Event('change'));
+    const second=performance.now();while(q('file').disabled){assert(performance.now()-second<10000);await tick();}
+    assert(q('destination').disabled&&v('collection-apply').disabled&&v('metadata').textContent===loadedMetadata&&f.calls.length===0,'invalid collection retained an action or changed storage');
+  });
   test('comparison sources: a native reopened pair exports its exact selected observation and stages reuse explicitly',async()=>{
     const {mountComparisonPanel}=await import('/examples/comparison-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),{encodePortfolioReport}=await import('/src/portfolio-report.js'),{encodePortfolioComparisonReport}=await import('/src/portfolio-comparison.js'),host=document.createElement('div');document.body.append(host);const earlier=snapshot(0,'10'),later=snapshot(0,'20'),saved=[],panel=mountComparisonPanel({document,parent:host,download:({prepared})=>saved.push(prepared)}),q=name=>host.querySelector('.comparison-'+name);
     try{panel.setTarget(later);const files=new DataTransfer();files.items.add(new File([encodePortfolioComparisonReport(earlier,later)],'pair.json'));q('review-file').files=files.files;q('review-file').dispatchEvent(new Event('change'));const started=performance.now();while(q('review-file').disabled){assert(performance.now()-started<10000);await tick();}for(const side of['earlier','later']){q('source-side').value=side;q('source-save').click();assert(saved.at(-1).text===encodePortfolioReport(side==='earlier'?earlier:later));}q('source-side').value='earlier';q('source-use').click();assert(q('baseline').value===encodePortfolioReport(earlier)&&q('details').textContent===''&&document.activeElement===q('baseline'));q('run').click();assert(!q('save').disabled);}
