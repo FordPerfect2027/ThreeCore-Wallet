@@ -1,0 +1,87 @@
+{
+  "recordedAt": "2026-11-01T22:12:47.854Z",
+  "node": "v24.19.0",
+  "npm": "11.17.0",
+  "baseline": {
+    "label": "baseline",
+    "zodVersion": "3.25.76",
+    "helperVersion": "3.0.6",
+    "helperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48",
+    "helperZodPeerRequirement": "^3.23.8",
+    "package": {
+      "version": "3.25.76",
+      "resolved": "https://registry.npmjs.org/zod/-/zod-3.25.76.tgz",
+      "integrity": "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==",
+      "license": "MIT",
+      "funding": {
+        "url": "https://github.com/sponsors/colinhacks"
+      }
+    },
+    "results": [
+      {
+        "name": "valid-config",
+        "status": "returned",
+        "errors": []
+      },
+      {
+        "name": "invalid-config",
+        "status": "returned",
+        "errors": [
+          {
+            "path": [
+              "name"
+            ],
+            "message": "Expected string, received number"
+          }
+        ]
+      },
+      {
+        "name": "record-config",
+        "status": "returned",
+        "errors": []
+      }
+    ]
+  },
+  "candidate": {
+    "label": "candidate",
+    "zodVersion": "4.6.6",
+    "helperVersion": "3.0.6",
+    "helperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48",
+    "helperZodPeerRequirement": "^3.23.8",
+    "package": {
+      "version": "4.6.6",
+      "resolved": "https://registry.npmjs.org/zod/-/zod-4.6.6.tgz",
+      "integrity": "sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==",
+      "license": "MIT",
+      "funding": {
+        "url": "https://github.com/sponsors/colinhacks"
+      }
+    },
+    "results": [
+      {
+        "name": "valid-config",
+        "status": "returned",
+        "errors": []
+      },
+      {
+        "name": "invalid-config",
+        "status": "threw",
+        "errorName": "TypeError",
+        "message": "Cannot read properties of undefined (reading 'map')"
+      },
+      {
+        "name": "record-config",
+        "status": "returned",
+        "errors": []
+      }
+    ]
+  },
+  "majorOverrideCompatibleInThisProbe": false,
+  "sourceRepositoriesChanged": false,
+  "originalNodeModulesChanged": false,
+  "fullHardhatBuildRun": false,
+  "userConfigurationOrSecretsLoaded": false,
+  "publicRpc": false,
+  "realWallet": false,
+  "method": "Byte-identical installed Hardhat Zod helper tested against separate npm installations of Zod 3.25.76 and 4.6.6 using three bounded fictional configuration values. Only the helper imports Zod; the complete Hardhat project is not imported."
+}

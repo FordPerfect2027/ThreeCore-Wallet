@@ -1,0 +1,1 @@
+{"results":[{"name":"valid-config","status":"returned","errors":[]},{"name":"invalid-config","status":"returned","errors":[{"path":["name"],"message":"Expected string, received number"}]},{"name":"record-config","status":"returned","errors":[]}]}

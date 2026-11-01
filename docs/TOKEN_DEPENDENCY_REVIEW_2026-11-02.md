@@ -107,3 +107,7 @@ current collection of changes is ready. Avoid repeatedly rebuilding the whole
 Wallet package for each documentation update.
 
 See [the audit JSON, logs and receipts](evidence/2026-11-02-token-dependency-review/README.md).
+
+## Major-version compatibility check
+
+A [bounded Zod 4.6.6 compatibility probe](ZOD_COMPATIBILITY_2026-11-02.md) reproduced a TypeError in the unchanged Hardhat helper when formatting an ordinary invalid configuration. The Zod 3 baseline returns the expected structured error. No override was adopted; compatible upstream remediation and full regression remain open.

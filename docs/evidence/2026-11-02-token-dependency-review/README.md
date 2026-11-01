@@ -14,3 +14,5 @@ See [the review](../../TOKEN_DEPENDENCY_REVIEW_2026-11-02.md) for scope, source 
 The registry audit is a dated advisory lookup, not an independent security review. Logs and audit bytes are preserved. The original 4231 server and user browser were not operated.
 
 The subsequent [runtime installation evidence](RUNTIME.md) fixes missing runtime dependencies and verifies an independently installed minimal read-only profile for all three tokens.
+
+[The bounded Zod compatibility probe](ZOD_COMPATIBILITY.md) records an observed break in the unchanged Hardhat helper under Zod 4.6.6; no major-version override was adopted.
