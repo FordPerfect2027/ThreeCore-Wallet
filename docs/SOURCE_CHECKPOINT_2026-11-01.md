@@ -72,3 +72,34 @@ types, oversized files and junction redirection. See the
 
 The archive is a development checkpoint. A public service deployment and
 mainnet release still require the [remaining release gates](RELEASE_READINESS_2026-11-01.md).
+
+## November 2 candidate prepared for actual migration
+
+The later Wallet-only archive `ThreeCore-candidate-f52109a-20261102.zip` pins
+`f52109a3a5d25665667b19b811584e33da035d15`. The existing checker compared its
+fresh Downloads extraction with that exact Git commit before execution:
+4,658 matched files / 126,215,683 inspected bytes, no missing, mismatched,
+unreadable or unexpected files. The ZIP is 29,172,809 bytes, SHA-256
+`db16c2523aa7477cf0279b58def2a5010fb579a007b2df255e9fc7db524894a0`.
+
+The exported ordinary server started with `THREECORE_DEMO_PORT=4232`, PID
+28252. Its Wallet page, rehearsal page, setup panel, security-RPC module and
+card controller matched the extracted files exactly with no-store/frame-denial
+headers. Private-file and browser-test routes returned 404; a foreign-origin
+request returned 403. The eight checks establish startup and these routes,
+not a complete new regression. No UI-test mode or new dependency installation
+was used.
+
+The exported modules also read three actual saved files offline: Mainnet backup
+`(12)`, Sepolia backup `(14)` and the fictional operation workspace. Both Wallet
+files have three cards / one saved observation per card and verified internal
+checksums. The rehearsal contains 3/2/1 fictional records. The original input
+bytes remained unchanged. Offline read-back does not establish UI restoration.
+
+The [preparation receipt](evidence/2026-11-02-release-regression/candidate-f52109a-migration-preparation.json)
+retains these results. Detailed source comparison, launch/startup receipts and
+the Japanese `-手順.txt` are saved beside the ZIP in Downloads. The existing
+4231 process remains PID 2108 with its October 30 start time, and its working
+tabs are retained. The candidate's Edge tab currently shows opening instructions;
+actual restore, permitted-account connection and version return remain pending.
+No claim of completed migration or 90% readiness follows from this preparation.

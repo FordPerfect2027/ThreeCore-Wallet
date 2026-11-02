@@ -1,0 +1,246 @@
+{
+  "schema": "threecore.candidate-migration-preparation.v1",
+  "recordedAt": "2026-11-02T07:56:53.140Z",
+  "sourceRevision": "f52109a3a5d25665667b19b811584e33da035d15",
+  "applicationRevision": "7c12a280649ee56d52165d9412db3af4c5bd4770",
+  "archive": {
+    "filename": "ThreeCore-candidate-f52109a-20261102.zip",
+    "bytes": 29172809,
+    "sha256": "db16c2523aa7477cf0279b58def2a5010fb579a007b2df255e9fc7db524894a0"
+  },
+  "sourceComparison": {
+    "allMatched": true,
+    "summary": {
+      "files": 4658,
+      "matched": 4658,
+      "mismatched": 0,
+      "unreadable": 0,
+      "unexpected": 0,
+      "inspectedBytes": 126215683
+    },
+    "originalReceipt": {
+      "filename": "ThreeCore-candidate-f52109a-20261102-source-receipt.json",
+      "bytes": 1030336,
+      "sha256": "8b453ac5b30da356a0731dba76afcf3ac7301b24370f7256cfe2a2d4010304fd"
+    }
+  },
+  "startup": {
+    "schema": "threecore.candidate-startup.v1",
+    "recordedAt": "2026-11-02T07:47:28.555Z",
+    "sourceRevision": "f52109a3a5d25665667b19b811584e33da035d15",
+    "origin": "http://127.0.0.1:4232",
+    "ordinaryMode": true,
+    "checks": [
+      {
+        "route": "/",
+        "status": 200,
+        "exactSourceBytes": true,
+        "sha256": "4a763e42abd894831290ee2cacfcf757be989f84aca71fca4762672bdf97f408",
+        "noStore": true,
+        "frameDenied": true
+      },
+      {
+        "route": "/rehearsal/",
+        "status": 200,
+        "exactSourceBytes": true,
+        "sha256": "b688d8c281208ed2faf5f5272c03426b8b714c17113afb5c5db7cc112aad0bb6",
+        "noStore": true,
+        "frameDenied": true
+      },
+      {
+        "route": "/examples/wallet-setup-panel.js",
+        "status": 200,
+        "exactSourceBytes": true,
+        "sha256": "43d7a010ebbe9f33861948456dbe4b4cc232828a065c38ec22e04fb9e747841a",
+        "noStore": true,
+        "frameDenied": true
+      },
+      {
+        "route": "/src/security-rpc.js",
+        "status": 200,
+        "exactSourceBytes": true,
+        "sha256": "06d262fe66b2a14e2de2f70be52b931bc7b0ae1f46ecd045059702628acb3f4a",
+        "noStore": true,
+        "frameDenied": true
+      },
+      {
+        "route": "/src/wallet-card-controller.js",
+        "status": 200,
+        "exactSourceBytes": true,
+        "sha256": "daa178eed55884f7d69431bb1963f3333be78235a1b7f4b9dcc329b5dad6bfdc",
+        "noStore": true,
+        "frameDenied": true
+      },
+      {
+        "route": "/.env",
+        "status": 404
+      },
+      {
+        "route": "/test/browser/",
+        "status": 404
+      },
+      {
+        "route": "/",
+        "foreignOriginRejected": true,
+        "status": 403
+      }
+    ],
+    "liveWalletConnected": false
+  },
+  "filePreflight": {
+    "schema": "threecore.candidate-file-preflight.v1",
+    "recordedAt": "2026-11-02T07:51:41.866Z",
+    "sourceRevision": "f52109a3a5d25665667b19b811584e33da035d15",
+    "source": "Freshly extracted candidate modules",
+    "reports": [
+      {
+        "filename": "ThreeCore-workspace-backup (12).json",
+        "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989",
+        "report": {
+          "schema": "threecore-backup-check-v1",
+          "byteLength": 4410,
+          "checksumVerified": true,
+          "digest": "10db29fa2df3d1a154c5e68980a0d3823246ed2acf225324d6b2ba583d3319a0",
+          "configuredCards": 3,
+          "totalObservations": 3,
+          "cards": [
+            {
+              "agent": "DAT",
+              "chainId": 8453,
+              "accountConfigured": true,
+              "configuredTokens": 1,
+              "observations": 1,
+              "remainingCapacity": 63,
+              "observationGroups": 1,
+              "historicalRecordsOutsideConfiguration": 0,
+              "unknownTokenBalances": 0
+            },
+            {
+              "agent": "EMA",
+              "chainId": 8453,
+              "accountConfigured": true,
+              "configuredTokens": 1,
+              "observations": 1,
+              "remainingCapacity": 63,
+              "observationGroups": 1,
+              "historicalRecordsOutsideConfiguration": 0,
+              "unknownTokenBalances": 0
+            },
+            {
+              "agent": "CAWELON",
+              "chainId": 8453,
+              "accountConfigured": true,
+              "configuredTokens": 1,
+              "observations": 1,
+              "remainingCapacity": 63,
+              "observationGroups": 1,
+              "historicalRecordsOutsideConfiguration": 0,
+              "unknownTokenBalances": 0
+            }
+          ],
+          "restored": false,
+          "currentBalanceVerified": false,
+          "ownershipVerified": false,
+          "independentSecurityAudit": false
+        }
+      },
+      {
+        "filename": "ThreeCore-workspace-backup (14).json",
+        "sha256": "97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4",
+        "report": {
+          "schema": "threecore-backup-check-v1",
+          "byteLength": 4371,
+          "checksumVerified": true,
+          "digest": "131e4d464e4aca3c0f06193b6aa99e020544d5291939f42097032cb9748e6b9a",
+          "configuredCards": 3,
+          "totalObservations": 3,
+          "cards": [
+            {
+              "agent": "DAT",
+              "chainId": 84532,
+              "accountConfigured": true,
+              "configuredTokens": 1,
+              "observations": 1,
+              "remainingCapacity": 63,
+              "observationGroups": 1,
+              "historicalRecordsOutsideConfiguration": 0,
+              "unknownTokenBalances": 0
+            },
+            {
+              "agent": "EMA",
+              "chainId": 84532,
+              "accountConfigured": true,
+              "configuredTokens": 1,
+              "observations": 1,
+              "remainingCapacity": 63,
+              "observationGroups": 1,
+              "historicalRecordsOutsideConfiguration": 0,
+              "unknownTokenBalances": 0
+            },
+            {
+              "agent": "CAWELON",
+              "chainId": 84532,
+              "accountConfigured": true,
+              "configuredTokens": 1,
+              "observations": 1,
+              "remainingCapacity": 63,
+              "observationGroups": 1,
+              "historicalRecordsOutsideConfiguration": 0,
+              "unknownTokenBalances": 0
+            }
+          ],
+          "restored": false,
+          "currentBalanceVerified": false,
+          "ownershipVerified": false,
+          "independentSecurityAudit": false
+        }
+      },
+      {
+        "filename": "ThreeCore-operation-workspace.json",
+        "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302",
+        "simulationOnly": true,
+        "recordCounts": [
+          3,
+          2,
+          1
+        ]
+      }
+    ],
+    "filesModified": 0,
+    "networkRequests": 0,
+    "walletRequests": 0,
+    "browserRestoreCompleted": false
+  },
+  "processes": {
+    "candidate": {
+      "pid": 28252,
+      "port": 4232,
+      "startedAt": "2026-11-02T16:46:47.9358315+09:00"
+    },
+    "original": {
+      "pid": 2108,
+      "port": 4231,
+      "startedAt": "2026-10-30T00:41:41.9142716+09:00"
+    },
+    "bothObservedRunning": true
+  },
+  "browser": {
+    "tabId": "148649836",
+    "origin": "http://127.0.0.1:4232",
+    "observedState": "Opening instructions / Cross-origin request refused (403)",
+    "userDirectAddressEntryRequested": true,
+    "filesImported": false,
+    "liveWalletConnected": false,
+    "migrationAndReturnCompleted": false
+  },
+  "limitations": [
+    "A fresh ordinary-mode server started from a byte-verified fixed source, but the browser acceptance has not started.",
+    "Offline decoding of actual backups does not substitute for real browser restore or MetaMask reconnection.",
+    "The original server and all original saved files remain intact; no switch to the candidate or rollback has been claimed.",
+    "No full test suite was repeated. No independent review or release approval is established."
+  ],
+  "transactionsSigned": 0,
+  "transactionsSubmitted": 0,
+  "secretKeysRead": false,
+  "githubModified": false
+}

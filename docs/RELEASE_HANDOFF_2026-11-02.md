@@ -130,6 +130,25 @@ replace those originals when a reviewer needs to recheck an actual observation.
 
 ## Packages and reproduction
 
+The newly prepared **Wallet source candidate** is
+`ThreeCore-candidate-f52109a-20261102.zip`, source
+`f52109a3a5d25665667b19b811584e33da035d15`, 29,172,809 bytes, SHA-256
+`db16c2523aa7477cf0279b58def2a5010fb579a007b2df255e9fc7db524894a0`.
+All 4,658 exported files / 126,215,683 bytes matched the fixed Git source.
+It starts in ordinary mode on the separate loopback port 4232. Eight startup
+checks passed, and its own readers accepted the actual Mainnet, Sepolia and
+fictional rehearsal backups without modifying them. It includes the latest
+Wallet guidance and Sepolia receipt. This source archive is separate from the
+older combined Wallet/token review package below.
+
+The [migration preparation receipt](evidence/2026-11-02-release-regression/candidate-f52109a-migration-preparation.json)
+records the exact scope. The new browser tab is still at its opening-instructions
+page: actual restore, MetaMask reconnect and return have not occurred. Both the
+original PID 2108 / port 4231 and candidate PID 28252 / port 4232 were observed
+running. Native Windows browser control again stopped because it could not
+establish the current URL. The requested direct address-bar entry remains the
+next operator step; no browser protection was changed.
+
 The full distribution in Downloads is
 `ThreeCore-review-23d0a35-20261102.zip`:
 50,030,551 bytes, SHA-256
@@ -196,7 +215,7 @@ Do not clear the user's database or reload their working tab to create a test.
 | Open item | Evidence needed to close it | Current limit |
 | --- | --- | --- |
 | Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet and Account 2/Sepolia sessions now passed. The operator changed context after the prior session stopped; live switch-event invalidation remains unobserved |
-| Complete candidate migration and return | Start the fixed candidate separately, restore actual saved files, reconnect and return to the preserved working version with records intact | Export/startup and offline format/native-storage checks passed; real-wallet migration/return is open |
+| Complete candidate migration and return | Start the fixed candidate separately, restore actual saved files, reconnect and return to the preserved working version with records intact | Fresh source `f52109a` is running separately on port 4232, with exact source/startup/actual-file preflight checks passed. Its browser tab awaits direct entry; real restore/reconnect/return remain open |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
 | Development dependency finding | Compatible remediation with applicable regression, or an explicit qualified release risk decision | One Zod root advisory remains; the forced patched major breaks an unchanged helper |
 | Independent review and release | Review the exact final scope, resolve findings, approve the deployment plan and release explicitly | No independent reviewer has completed or approved this candidate |
