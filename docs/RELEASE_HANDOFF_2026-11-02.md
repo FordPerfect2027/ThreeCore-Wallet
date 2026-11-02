@@ -35,6 +35,14 @@ audit. The earlier shared-directory installation error was repaired and final
 checks rerun. These supplements are outside the sealed Wallet ZIP and do not
 close live-wallet or independent-review gates.
 
+The [later pure-decoder comparison](HELPER_DECODER_COMPATIBILITY_2026-11-03.md)
+adds 68 input fixtures in each actual token installation. Acceptance, decoded
+values and error paths match upstream helper 3.0.8; three standard message
+differences are recorded. The [fresh-tab recovery](LIVE_RECOVERY_2026-11-03.md)
+also restored and re-exported the actual nine records byte-for-byte at port
+4233. That origin still required Wallet permission; no new live-switch pass
+is inferred from file restoration.
+
 The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
 The original permitted origin was recovered through the rehearsal page, three
@@ -72,7 +80,8 @@ a separate clean installation. Each token's full standard-check components and
 50 Wallet compatibility cases passed. All three ABI and complete creation/runtime
 bytecodes match their parents. The prepared local workflow uses the new token
 pins; the public PR and its earlier CI results remain unchanged. This does not
-resolve the separate Zod advisory or close actual-wallet/independent-review gates.
+itself resolve the separate Zod advisory; the applied repair above is later.
+Neither toolchain result closes actual-wallet/independent-review gates.
 
 The [latest network-label clarification](LIVE_ACCEPTANCE_2026-11-02.md#requested-network-and-observed-network-distinguished)
 at `8fa0ed2` displays the card's requested network alongside the network returned
