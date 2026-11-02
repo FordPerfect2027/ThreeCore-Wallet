@@ -220,3 +220,42 @@ started candidate server. Native Windows picker traversal, complete candidate
 migration/return, dependency disposition and independent review remain open.
 No transaction was signed/submitted, no secret key was read and no release
 percentage was calculated.
+
+## Fixed-candidate restore on port 4232 — connection pending
+
+The operator subsequently opened the separately started candidate on port 4232
+in the former Wallet tab. Its empty three-card state was observed before any
+import. The agent selected the actual `ThreeCore-workspace-backup (14).json`
+through the supported browser chooser, accepted the internal checksum, and
+inspected the restore preview: each card changed from zero to one history
+record, with no existing record removed. Explicit confirmation restored all
+three settings, token lists and histories, leaving every card disconnected.
+
+The in-page comparison reported a complete match with the selected file.
+The actual re-export, `ThreeCore-workspace-backup (15).json`, is byte-identical
+to `(14)`: 4,371 bytes, SHA-256
+`97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4`.
+Its saved observations still identify their original port 4231 and blocks.
+Restoring them into port 4232 does not relabel them as new candidate reads.
+
+The new origin's ordinary permitted-account probe returned no permitted
+account. One normal Connect request was started. The application's wait
+expired while the MetaMask confirmation remained unresolved; no second
+permission request was issued. The operator was asked to connect Account 2
+to this specific origin on Base Sepolia. That response remains pending.
+The inactivity protection subsequently stopped connections, while all three
+restored histories remained at one record. Reconnection and return to the
+original server have not been completed.
+
+The ordinary rehearsal link did not produce a visible new tab. Direct navigation
+of the unused error tab to the rehearsal route remained refused. That duplicate
+error tab was closed; the restored Wallet tab remains available. The original
+4231 server and candidate 4232 server were observed running with their recorded
+start times. Original backups were retained. The previous in-memory Wallet page
+is not claimed to survive the operator's navigation into the candidate.
+
+The [restore-progress receipt](evidence/2026-11-02-release-regression/live-candidate-restore-progress.json)
+pins candidate `f52109a`, identifies the preserved private evidence and records
+the incomplete connection/return steps. This is actual new-candidate restoration
+evidence, not completion of the entire migration gate. No application code,
+remote repository or permission boundary was changed for this sequence.
