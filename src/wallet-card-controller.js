@@ -160,8 +160,8 @@ export function createWalletCardController({
         release();
         const messages = {
           __proto__: null,
-          WRONG_ACCOUNT: "Walletで選ばれたアカウントが、このカードの公開アドレスと一致しません。Wallet側で確認対象のアカウントを選び直し、再接続してください。",
-          WRONG_CHAIN: "Walletのネットワークが、このカードのチェーンと一致しません。Wallet側で確認対象のネットワークを選び直し、再接続してください。",
+          WRONG_ACCOUNT: "Walletがこのサイトに許可したアカウントが、このカードの公開アドレスと一致しません。Walletの接続サイトの設定で確認対象の口座を選び直し、再接続してください。",
+          WRONG_CHAIN: "Walletのこのサイト向けネットワークが、このカードのチェーンと一致しません。Walletの接続サイトの設定で確認対象のネットワークを選び直し、再接続してください。",
           NO_ACCOUNTS: "Walletから接続を許可したアカウントを確認できませんでした。Wallet側の接続許可を確認して、再接続してください。",
           CONNECT_TIMEOUT: "Walletからの応答がないため接続を終了しました。再接続してください。",
           PERMISSION_TIMEOUT: "接続許可の待機を終了しました。Walletの許可画面を確認し、完了後に再接続してください。",

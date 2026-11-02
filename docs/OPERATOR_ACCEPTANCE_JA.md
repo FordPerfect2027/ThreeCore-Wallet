@@ -53,6 +53,34 @@ MetaMaskなどでアカウントを切り替えると、他のカードの接続
 あります。各カードの状態を確認し、過去の記録は保持したまま対象ごとに明示的に
 接続し直してください。署名・送金・トークン承認取引は、この手順にはありません。
 
+### MetaMaskで切り替えたのにThreeCoreへ反映されない場合
+
+MetaMaskは接続サイトごとにネットワークを管理します。資産一覧で表示する
+ネットワークや口座を変更しても、このサイトに許可された接続先まで変わったとは
+限りません。ThreeCoreが読み取った公開アドレスとネットワークを基準に確認します。
+
+1. ThreeCore Walletを開いている同じブラウザー・プロファイルでMetaMaskを開きます。
+2. 右上の接続サイトのアイコンから、対象がこのThreeCoreのURLであることを確認します。
+   今のローカル画面では `http://127.0.0.1:4231` です。他のサイトの設定は変更しません。
+3. 接続サイトの現在のネットワークを押し、今回の対象を選びます。
+   Base SepoliaのチェーンIDは `84532`、Base Mainnetは `8453` です。
+4. 口座も違う場合は、そのサイトの「権限を管理」または「Permissions」で
+   接続する既存口座を確認対象に変更します。新しい口座を作る必要はありません。
+5. ThreeCoreでカードのチェーンを今回の対象にそろえ、
+   「Walletの許可済みアドレスを確認」を押します。目的の公開アドレスとネットワークが
+   表示された後に入力へ反映し、各カードで明示的に接続します。
+
+ネットワーク一覧にBase Sepoliaがない場合は、「テストネットワークを表示」を確認し、
+未登録なら公式設定で追加します。RPCは `https://sepolia.base.org`、通貨記号は `ETH`、
+エクスプローラーは `https://sepolia.basescan.org` です。
+接続の変更と読み取り確認に、署名・送金・秘密鍵の入力は不要です。
+表示やメニュー名はMetaMaskの版によって異なります。
+
+参照: [MetaMaskのサイト別ネットワーク切替](https://support.metamask.io/configure/networks/how-to-change-networks)、
+[サイト別の接続許可](https://support.metamask.io/more-web3/dapps/manage-dapp-permissions/)、
+[テストネット表示](https://support.metamask.io/configure/networks/how-to-view-testnets-in-metamask)、
+[Base公式設定](https://docs.base.org/get-started/connect-to-base)。
+
 休憩前に「このブラウザーに控えを保存」で、対象が分かる名前の控えを残すと、
 再読み込み後は「保存済みの控え一覧を読み込む」から選び直せます。
 「選んだ控えの内容を確認」→「確認した控えを一括復元の入力欄へ」から、

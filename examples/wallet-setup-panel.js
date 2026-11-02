@@ -251,8 +251,8 @@ const ACCOUNT_MESSAGES = Object.freeze({
   __proto__: null,
   NO_PROVIDER: '接続するWalletを選んでください。',
   NO_ACCOUNTS: 'このサイトで許可済みのアカウントはありません。Wallet側の接続許可を確認してください。',
-  UNSUPPORTED_CHAIN: 'Walletのネットワークは対応範囲外です。Base MainnetまたはBase Sepoliaを選んでください。',
-  WRONG_CHAIN: 'Walletとこのカードのネットワークが違います。チェーン欄を確認して、もう一度読み取ってください。',
+  UNSUPPORTED_CHAIN: 'Walletのこのサイト向けネットワークは対応範囲外です。接続サイトの設定でBase MainnetまたはBase Sepoliaを選んでください。',
+  WRONG_CHAIN: 'Walletのこのサイト向けネットワークと、このカードのチェーンが違います。確認したいネットワークに両方をそろえて、もう一度読み取ってください。',
   READ_TIMEOUT: 'Walletからの応答待ちを終了しました。接続状態を確認して再度読み取ってください。',
   RPC_CAPACITY: 'Walletに未完了の要求が残っています。完了後に読み直してください。',
   ACCESS_LOCKED: '読み取りを停止しました。接続保護とカードの状態を確認してください。',
@@ -272,6 +272,7 @@ export function mountPermittedAccountPanel({ document, parent, siteOrigin,
     return element;
   }
   node('p', 'help', 'このサイトで許可済みの公開アドレスをWalletから読み取れます。表示と確認だけでは接続しません。');
+  node('p', 'site-help', 'MetaMaskでは、接続サイトのアイコンから、このサイト向けのネットワークと口座の許可を確認してください。資産一覧の表示を切り替えても、このサイトの接続先は変わらない場合があります。');
   const read = node('button', 'read', 'Walletの許可済みアドレスを確認');
   const details = node('pre', 'details');
   const apply = node('button', 'apply', '確認した公開アドレスを入力');
