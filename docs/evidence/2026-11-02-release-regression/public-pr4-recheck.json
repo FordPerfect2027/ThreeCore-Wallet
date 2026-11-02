@@ -1,0 +1,948 @@
+[
+  {
+    "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls/4",
+    "status": 200,
+    "observedAt": "2026-11-02T02:13:40.211Z",
+    "data": {
+      "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls/4",
+      "id": 5105936442,
+      "node_id": "PR_kwDOVSZ_mc8AAAABMFZoOg",
+      "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/pull/4",
+      "diff_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/pull/4.diff",
+      "patch_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/pull/4.patch",
+      "issue_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues/4",
+      "commits_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls/4/commits",
+      "review_comments_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls/4/comments",
+      "review_comment_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls/comments{/number}",
+      "comments_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues/4/comments",
+      "statuses_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/statuses/07041f00efdb503cb76a06fbe12e5531cb380930",
+      "number": 4,
+      "state": "open",
+      "locked": false,
+      "title": "Publish wallet development checkpoint and release verification",
+      "user": {
+        "login": "FordPerfect2027",
+        "id": 320293329,
+        "node_id": "U_kgDOExdJ0Q",
+        "avatar_url": "https://avatars.githubusercontent.com/u/320293329?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/FordPerfect2027",
+        "html_url": "https://github.com/FordPerfect2027",
+        "followers_url": "https://api.github.com/users/FordPerfect2027/followers",
+        "following_url": "https://api.github.com/users/FordPerfect2027/following{/other_user}",
+        "gists_url": "https://api.github.com/users/FordPerfect2027/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/FordPerfect2027/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/FordPerfect2027/subscriptions",
+        "organizations_url": "https://api.github.com/users/FordPerfect2027/orgs",
+        "repos_url": "https://api.github.com/users/FordPerfect2027/repos",
+        "events_url": "https://api.github.com/users/FordPerfect2027/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/FordPerfect2027/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "body": "This publishes the ThreeCore read-only wallet and offline rehearsal development checkpoint. Resuming a previously permitted wallet no longer requires copying its public address into the form: a new explicit preview reads existing site permission, rechecks the same address and network before applying it, and leaves Connect as a separate action. The existing identity checks, protection stops and idle policy remain in force. Wallet/rehearsal links also open a separate tab to preserve the original page's unsaved work.\n\nRelease verification includes the bounded source-package verifier, evidence-integrity CI, reviewed restoration/cancellation and stale-result fixes, plus Japanese operator instructions. Report-review tests wait for asynchronous digest completion; the delayed-digest control fails before the fix and passes after it.\n\nValidation:\n- [Latest CI at 07041f0](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726): all five jobs passed; 15,978 regression tests, 431 HTTP tests and three consecutive runs of 1,004 synthetic browser UI tests passed.\n- [Account reconnection report](https://github.com/FordPerfect2027/ThreeCore-Wallet/blob/07041f00efdb503cb76a06fbe12e5531cb380930/docs/ACCOUNT_RECONNECTION_2026-11-01.md): 116 focused cases and 1,004 synthetic browser UI cases passed locally. Coverage includes cancelled/delayed RPC, account/network changes, stopped access, reviewed input, duplicate-card rejection and explicit connection.\n- On the intended PC, existing MetaMask permission exposed the operator-selected account; the EMA card connected and read registered contract metadata/balance. Actual files and a named checkpoint were saved. After page reload, reviewed restore, Stop/Resume and explicit reconnect succeeded. Live account details and screenshots remain local; the public test logs contain synthetic data.\n- [Actual rehearsal recovery](https://github.com/FordPerfect2027/ThreeCore-Wallet/blob/b6989aa66dd6ae48b38ad963704deafb776987bd/docs/OPERATOR_RECOVERY_2026-11-01.md) preserved six fictional records and three cases across save, ordinary file selection, cancellation, confirmed restore and re-export. Both 17,387-byte exports match exactly and are published with checksums.\n- [Japanese operator guide](https://github.com/FordPerfect2027/ThreeCore-Wallet/blob/07041f00efdb503cb76a06fbe12e5531cb380930/docs/OPERATOR_ACCEPTANCE_JA.md) covers permitted-address preview, named resume checkpoints, preservation, backups, restoration and connection failures.\n- [Source-package checkpoint](https://github.com/FordPerfect2027/ThreeCore-Wallet/blob/f81c600918360daee77c1736915ac8878f02cb65/docs/SOURCE_CHECKPOINT_2026-11-01.md): 4,227 exported files matched the named earlier commit df9690f7d1b2c1d3a66e104e506a6ac8c732d86f; seven isolated startup checks and eight verifier regressions passed. This is an earlier package, not a package of the latest revision.\n- [Earlier 600-item checkpoint](https://github.com/FordPerfect2027/ThreeCore-Wallet/blob/f81c600918360daee77c1736915ac8878f02cb65/docs/CONTINUATION_600_COMPLETION_2026-11-01.md) retains its own evidence. [Current release gates](https://github.com/FordPerfect2027/ThreeCore-Wallet/blob/07041f00efdb503cb76a06fbe12e5531cb380930/docs/RELEASE_READINESS_2026-11-01.md) distinguish completed checks from the remaining public-testnet multi-account acceptance, full history recovery, independent review and release decision.\n\nThis remains a development draft. A single live Base Mainnet account is not three distinct public-testnet accounts. Address preview neither grants additional permission nor establishes ownership, and restoring settings does not restore a connection. Source publication and test counts do not establish a mainnet-readiness percentage. Signing, transfers, approval transactions and private-key retrieval remain outside scope.",
+      "labels": [],
+      "milestone": null,
+      "active_lock_reason": null,
+      "created_at": "2026-11-01T09:02:40Z",
+      "updated_at": "2026-11-01T13:34:17Z",
+      "closed_at": null,
+      "merged_at": null,
+      "merge_commit_sha": "eced782818eb9350080e1f2ec6d56f7b4b8c80c1",
+      "assignee": null,
+      "assignees": [],
+      "requested_reviewers": [],
+      "requested_teams": [],
+      "head": {
+        "label": "FordPerfect2027:codex/operation-rehearsal-20261029",
+        "ref": "codex/operation-rehearsal-20261029",
+        "repo": {
+          "id": 1428586393,
+          "node_id": "R_kgDOVSZ_mQ",
+          "name": "ThreeCore-Wallet",
+          "full_name": "FordPerfect2027/ThreeCore-Wallet",
+          "owner": {
+            "login": "FordPerfect2027",
+            "id": 320293329,
+            "node_id": "U_kgDOExdJ0Q",
+            "avatar_url": "https://avatars.githubusercontent.com/u/320293329?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/FordPerfect2027",
+            "html_url": "https://github.com/FordPerfect2027",
+            "followers_url": "https://api.github.com/users/FordPerfect2027/followers",
+            "following_url": "https://api.github.com/users/FordPerfect2027/following{/other_user}",
+            "gists_url": "https://api.github.com/users/FordPerfect2027/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/FordPerfect2027/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/FordPerfect2027/subscriptions",
+            "organizations_url": "https://api.github.com/users/FordPerfect2027/orgs",
+            "repos_url": "https://api.github.com/users/FordPerfect2027/repos",
+            "events_url": "https://api.github.com/users/FordPerfect2027/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/FordPerfect2027/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "private": false,
+          "fork": false,
+          "archived": false,
+          "disabled": false,
+          "description": "ThreeCore wallet adapter and integration development.",
+          "homepage": null,
+          "language": "JavaScript",
+          "visibility": "public",
+          "is_template": false,
+          "topics": [],
+          "forks_count": 0,
+          "forks": 0,
+          "stargazers_count": 0,
+          "watchers_count": 0,
+          "watchers": 0,
+          "open_issues_count": 1,
+          "open_issues": 1,
+          "size": 18469,
+          "default_branch": "main",
+          "has_issues": true,
+          "has_projects": true,
+          "has_wiki": true,
+          "has_pages": false,
+          "has_downloads": false,
+          "has_discussions": false,
+          "has_pull_requests": true,
+          "pushed_at": "2026-11-01T13:26:03Z",
+          "created_at": "2026-10-21T15:38:21Z",
+          "updated_at": "2026-10-28T12:59:38Z",
+          "allow_forking": true,
+          "web_commit_signoff_required": false,
+          "pull_request_creation_policy": "all",
+          "license": null,
+          "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet",
+          "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet",
+          "archive_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/{archive_format}{/ref}",
+          "assignees_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/assignees{/user}",
+          "blobs_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/blobs{/sha}",
+          "branches_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/branches{/branch}",
+          "collaborators_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/collaborators{/collaborator}",
+          "comments_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/comments{/number}",
+          "commits_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/commits{/sha}",
+          "compare_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/compare/{base}...{head}",
+          "contents_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/contents/{+path}",
+          "contributors_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/contributors",
+          "deployments_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/deployments",
+          "downloads_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/downloads",
+          "events_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/events",
+          "forks_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/forks",
+          "git_commits_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/commits{/sha}",
+          "git_refs_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/refs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/tags{/sha}",
+          "git_url": "git://github.com/FordPerfect2027/ThreeCore-Wallet.git",
+          "issue_comment_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues/comments{/number}",
+          "issue_events_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues/events{/number}",
+          "issues_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues{/number}",
+          "keys_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/keys{/key_id}",
+          "labels_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/labels{/name}",
+          "languages_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/languages",
+          "merges_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/merges",
+          "milestones_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/notifications{?since,all,participating}",
+          "pulls_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls{/number}",
+          "releases_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/releases{/id}",
+          "ssh_url": "git@github.com:FordPerfect2027/ThreeCore-Wallet.git",
+          "stargazers_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/stargazers",
+          "statuses_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/statuses/{sha}",
+          "subscribers_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/subscribers",
+          "subscription_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/subscription",
+          "tags_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/tags",
+          "teams_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/teams",
+          "trees_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/trees{/sha}",
+          "clone_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet.git",
+          "mirror_url": null,
+          "hooks_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/hooks",
+          "svn_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet"
+        },
+        "sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+        "user": {
+          "login": "FordPerfect2027",
+          "id": 320293329,
+          "node_id": "U_kgDOExdJ0Q",
+          "avatar_url": "https://avatars.githubusercontent.com/u/320293329?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/FordPerfect2027",
+          "html_url": "https://github.com/FordPerfect2027",
+          "followers_url": "https://api.github.com/users/FordPerfect2027/followers",
+          "following_url": "https://api.github.com/users/FordPerfect2027/following{/other_user}",
+          "gists_url": "https://api.github.com/users/FordPerfect2027/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/FordPerfect2027/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/FordPerfect2027/subscriptions",
+          "organizations_url": "https://api.github.com/users/FordPerfect2027/orgs",
+          "repos_url": "https://api.github.com/users/FordPerfect2027/repos",
+          "events_url": "https://api.github.com/users/FordPerfect2027/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/FordPerfect2027/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        }
+      },
+      "base": {
+        "label": "FordPerfect2027:main",
+        "ref": "main",
+        "repo": {
+          "id": 1428586393,
+          "node_id": "R_kgDOVSZ_mQ",
+          "name": "ThreeCore-Wallet",
+          "full_name": "FordPerfect2027/ThreeCore-Wallet",
+          "owner": {
+            "login": "FordPerfect2027",
+            "id": 320293329,
+            "node_id": "U_kgDOExdJ0Q",
+            "avatar_url": "https://avatars.githubusercontent.com/u/320293329?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/FordPerfect2027",
+            "html_url": "https://github.com/FordPerfect2027",
+            "followers_url": "https://api.github.com/users/FordPerfect2027/followers",
+            "following_url": "https://api.github.com/users/FordPerfect2027/following{/other_user}",
+            "gists_url": "https://api.github.com/users/FordPerfect2027/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/FordPerfect2027/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/FordPerfect2027/subscriptions",
+            "organizations_url": "https://api.github.com/users/FordPerfect2027/orgs",
+            "repos_url": "https://api.github.com/users/FordPerfect2027/repos",
+            "events_url": "https://api.github.com/users/FordPerfect2027/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/FordPerfect2027/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "private": false,
+          "fork": false,
+          "archived": false,
+          "disabled": false,
+          "description": "ThreeCore wallet adapter and integration development.",
+          "homepage": null,
+          "language": "JavaScript",
+          "visibility": "public",
+          "is_template": false,
+          "topics": [],
+          "forks_count": 0,
+          "forks": 0,
+          "stargazers_count": 0,
+          "watchers_count": 0,
+          "watchers": 0,
+          "open_issues_count": 1,
+          "open_issues": 1,
+          "size": 18469,
+          "default_branch": "main",
+          "has_issues": true,
+          "has_projects": true,
+          "has_wiki": true,
+          "has_pages": false,
+          "has_downloads": false,
+          "has_discussions": false,
+          "has_pull_requests": true,
+          "pushed_at": "2026-11-01T13:26:03Z",
+          "created_at": "2026-10-21T15:38:21Z",
+          "updated_at": "2026-10-28T12:59:38Z",
+          "allow_forking": true,
+          "web_commit_signoff_required": false,
+          "pull_request_creation_policy": "all",
+          "license": null,
+          "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet",
+          "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet",
+          "archive_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/{archive_format}{/ref}",
+          "assignees_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/assignees{/user}",
+          "blobs_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/blobs{/sha}",
+          "branches_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/branches{/branch}",
+          "collaborators_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/collaborators{/collaborator}",
+          "comments_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/comments{/number}",
+          "commits_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/commits{/sha}",
+          "compare_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/compare/{base}...{head}",
+          "contents_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/contents/{+path}",
+          "contributors_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/contributors",
+          "deployments_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/deployments",
+          "downloads_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/downloads",
+          "events_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/events",
+          "forks_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/forks",
+          "git_commits_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/commits{/sha}",
+          "git_refs_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/refs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/tags{/sha}",
+          "git_url": "git://github.com/FordPerfect2027/ThreeCore-Wallet.git",
+          "issue_comment_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues/comments{/number}",
+          "issue_events_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues/events{/number}",
+          "issues_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues{/number}",
+          "keys_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/keys{/key_id}",
+          "labels_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/labels{/name}",
+          "languages_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/languages",
+          "merges_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/merges",
+          "milestones_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/notifications{?since,all,participating}",
+          "pulls_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls{/number}",
+          "releases_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/releases{/id}",
+          "ssh_url": "git@github.com:FordPerfect2027/ThreeCore-Wallet.git",
+          "stargazers_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/stargazers",
+          "statuses_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/statuses/{sha}",
+          "subscribers_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/subscribers",
+          "subscription_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/subscription",
+          "tags_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/tags",
+          "teams_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/teams",
+          "trees_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/git/trees{/sha}",
+          "clone_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet.git",
+          "mirror_url": null,
+          "hooks_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/hooks",
+          "svn_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet"
+        },
+        "sha": "7d1dc3323045375fdb794137b072c0a86d58ef57",
+        "user": {
+          "login": "FordPerfect2027",
+          "id": 320293329,
+          "node_id": "U_kgDOExdJ0Q",
+          "avatar_url": "https://avatars.githubusercontent.com/u/320293329?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/FordPerfect2027",
+          "html_url": "https://github.com/FordPerfect2027",
+          "followers_url": "https://api.github.com/users/FordPerfect2027/followers",
+          "following_url": "https://api.github.com/users/FordPerfect2027/following{/other_user}",
+          "gists_url": "https://api.github.com/users/FordPerfect2027/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/FordPerfect2027/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/FordPerfect2027/subscriptions",
+          "organizations_url": "https://api.github.com/users/FordPerfect2027/orgs",
+          "repos_url": "https://api.github.com/users/FordPerfect2027/repos",
+          "events_url": "https://api.github.com/users/FordPerfect2027/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/FordPerfect2027/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        }
+      },
+      "_links": {
+        "comments": {
+          "href": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues/4/comments"
+        },
+        "commits": {
+          "href": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls/4/commits"
+        },
+        "statuses": {
+          "href": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/statuses/07041f00efdb503cb76a06fbe12e5531cb380930"
+        },
+        "html": {
+          "href": "https://github.com/FordPerfect2027/ThreeCore-Wallet/pull/4"
+        },
+        "issue": {
+          "href": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/issues/4"
+        },
+        "review_comments": {
+          "href": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls/4/comments"
+        },
+        "review_comment": {
+          "href": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls/comments{/number}"
+        },
+        "self": {
+          "href": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/pulls/4"
+        }
+      },
+      "author_association": "OWNER",
+      "auto_merge": null,
+      "draft": true,
+      "merged": false,
+      "mergeable": true,
+      "rebaseable": false,
+      "mergeable_state": "clean",
+      "merged_by": null,
+      "comments": 0,
+      "review_comments": 0,
+      "maintainer_can_modify": false,
+      "commits": 514,
+      "additions": 1321130,
+      "deletions": 4087,
+      "changed_files": 3481
+    }
+  },
+  {
+    "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/jobs?per_page=100",
+    "status": 200,
+    "observedAt": "2026-11-02T02:13:41.050Z",
+    "data": {
+      "total_count": 5,
+      "jobs": [
+        {
+          "id": 124861881848,
+          "run_id": 41311235726,
+          "workflow_name": "Read-only wallet regression tests",
+          "head_branch": "codex/operation-rehearsal-20261029",
+          "run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVSZ_mc8AAAAdElkd-A",
+          "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+          "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/jobs/124861881848",
+          "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861881848",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-11-01T13:26:08Z",
+          "started_at": "2026-11-01T13:26:10Z",
+          "completed_at": "2026-11-01T13:30:17Z",
+          "name": "test",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-01T13:26:11Z",
+              "completed_at": "2026-11-01T13:26:12Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-01T13:26:12Z",
+              "completed_at": "2026-11-01T13:26:14Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-01T13:26:14Z",
+              "completed_at": "2026-11-01T13:26:14Z"
+            },
+            {
+              "name": "Offline mock and read-only regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-01T13:26:14Z",
+              "completed_at": "2026-11-01T13:27:36Z"
+            },
+            {
+              "name": "Demo HTTP routes and test fixture isolation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-01T13:27:36Z",
+              "completed_at": "2026-11-01T13:27:40Z"
+            },
+            {
+              "name": "Browser harness rejects uncaught exceptions and unhandled rejections",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-01T13:27:40Z",
+              "completed_at": "2026-11-01T13:27:51Z"
+            },
+            {
+              "name": "Three consecutive synthetic Wallet UI runs in fresh Chrome profiles",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-01T13:27:51Z",
+              "completed_at": "2026-11-01T13:30:14Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-01T13:30:14Z",
+              "completed_at": "2026-11-01T13:30:14Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-01T13:30:14Z",
+              "completed_at": "2026-11-01T13:30:14Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-01T13:30:14Z",
+              "completed_at": "2026-11-01T13:30:14Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/check-runs/124861881848",
+          "labels": [
+            "ubuntu-latest"
+          ],
+          "runner_id": 1000000176,
+          "runner_name": "GitHub Actions 1000000176",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        },
+        {
+          "id": 124861882009,
+          "run_id": 41311235726,
+          "workflow_name": "Read-only wallet regression tests",
+          "head_branch": "codex/operation-rehearsal-20261029",
+          "run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVSZ_mc8AAAAdElkemQ",
+          "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+          "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/jobs/124861882009",
+          "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861882009",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-11-01T13:26:08Z",
+          "started_at": "2026-11-01T13:26:11Z",
+          "completed_at": "2026-11-01T13:26:35Z",
+          "name": "token-integration (EMA-Draft, 362db49dcc5d5db5560b71ed5acd19bba326575e)",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-01T13:26:11Z",
+              "completed_at": "2026-11-01T13:26:13Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-01T13:26:13Z",
+              "completed_at": "2026-11-01T13:26:15Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-01T13:26:15Z",
+              "completed_at": "2026-11-01T13:26:16Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-01T13:26:16Z",
+              "completed_at": "2026-11-01T13:26:17Z"
+            },
+            {
+              "name": "Install pinned token dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-01T13:26:17Z",
+              "completed_at": "2026-11-01T13:26:22Z"
+            },
+            {
+              "name": "Compile the actual token contract",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-01T13:26:22Z",
+              "completed_at": "2026-11-01T13:26:25Z"
+            },
+            {
+              "name": "Validate actual token history and malformed log rejection",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-01T13:26:25Z",
+              "completed_at": "2026-11-01T13:26:27Z"
+            },
+            {
+              "name": "Wallet against local EVM on both supported chain IDs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-01T13:26:27Z",
+              "completed_at": "2026-11-01T13:26:32Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-01T13:26:32Z",
+              "completed_at": "2026-11-01T13:26:33Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-01T13:26:33Z",
+              "completed_at": "2026-11-01T13:26:33Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-01T13:26:33Z",
+              "completed_at": "2026-11-01T13:26:33Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-01T13:26:33Z",
+              "completed_at": "2026-11-01T13:26:33Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/check-runs/124861882009",
+          "labels": [
+            "ubuntu-latest"
+          ],
+          "runner_id": 1000000177,
+          "runner_name": "GitHub Actions 1000000177",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        },
+        {
+          "id": 124861882013,
+          "run_id": 41311235726,
+          "workflow_name": "Read-only wallet regression tests",
+          "head_branch": "codex/operation-rehearsal-20261029",
+          "run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVSZ_mc8AAAAdElkenQ",
+          "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+          "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/jobs/124861882013",
+          "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861882013",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-11-01T13:26:08Z",
+          "started_at": "2026-11-01T13:26:10Z",
+          "completed_at": "2026-11-01T13:26:38Z",
+          "name": "token-integration (DAT, e0215f1a32824c19bcc89da96841e758928f4f29)",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-01T13:26:11Z",
+              "completed_at": "2026-11-01T13:26:12Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-01T13:26:12Z",
+              "completed_at": "2026-11-01T13:26:14Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-01T13:26:14Z",
+              "completed_at": "2026-11-01T13:26:15Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-01T13:26:15Z",
+              "completed_at": "2026-11-01T13:26:17Z"
+            },
+            {
+              "name": "Install pinned token dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-01T13:26:17Z",
+              "completed_at": "2026-11-01T13:26:24Z"
+            },
+            {
+              "name": "Compile the actual token contract",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-01T13:26:24Z",
+              "completed_at": "2026-11-01T13:26:27Z"
+            },
+            {
+              "name": "Validate actual token history and malformed log rejection",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-01T13:26:27Z",
+              "completed_at": "2026-11-01T13:26:30Z"
+            },
+            {
+              "name": "Wallet against local EVM on both supported chain IDs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-01T13:26:30Z",
+              "completed_at": "2026-11-01T13:26:36Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-01T13:26:36Z",
+              "completed_at": "2026-11-01T13:26:36Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-01T13:26:36Z",
+              "completed_at": "2026-11-01T13:26:36Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-01T13:26:36Z",
+              "completed_at": "2026-11-01T13:26:37Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-01T13:26:37Z",
+              "completed_at": "2026-11-01T13:26:37Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/check-runs/124861882013",
+          "labels": [
+            "ubuntu-latest"
+          ],
+          "runner_id": 1000000174,
+          "runner_name": "GitHub Actions 1000000174",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        },
+        {
+          "id": 124861882041,
+          "run_id": 41311235726,
+          "workflow_name": "Read-only wallet regression tests",
+          "head_branch": "codex/operation-rehearsal-20261029",
+          "run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVSZ_mc8AAAAdElkeuQ",
+          "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+          "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/jobs/124861882041",
+          "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861882041",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-11-01T13:26:08Z",
+          "started_at": "2026-11-01T13:26:10Z",
+          "completed_at": "2026-11-01T13:26:22Z",
+          "name": "evidence",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-01T13:26:11Z",
+              "completed_at": "2026-11-01T13:26:12Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-01T13:26:12Z",
+              "completed_at": "2026-11-01T13:26:15Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-01T13:26:15Z",
+              "completed_at": "2026-11-01T13:26:15Z"
+            },
+            {
+              "name": "Verify every tracked development evidence manifest",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-01T13:26:15Z",
+              "completed_at": "2026-11-01T13:26:17Z"
+            },
+            {
+              "name": "Verify the published historical read-only checkpoint",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-01T13:26:17Z",
+              "completed_at": "2026-11-01T13:26:17Z"
+            },
+            {
+              "name": "Keep the verification results with this workflow run",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-01T13:26:17Z",
+              "completed_at": "2026-11-01T13:26:19Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-01T13:26:19Z",
+              "completed_at": "2026-11-01T13:26:19Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-01T13:26:19Z",
+              "completed_at": "2026-11-01T13:26:19Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-01T13:26:19Z",
+              "completed_at": "2026-11-01T13:26:19Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/check-runs/124861882041",
+          "labels": [
+            "ubuntu-latest"
+          ],
+          "runner_id": 1000000175,
+          "runner_name": "GitHub Actions 1000000175",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        },
+        {
+          "id": 124861882045,
+          "run_id": 41311235726,
+          "workflow_name": "Read-only wallet regression tests",
+          "head_branch": "codex/operation-rehearsal-20261029",
+          "run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOVSZ_mc8AAAAdElkevQ",
+          "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+          "url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/actions/jobs/124861882045",
+          "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861882045",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-11-01T13:26:08Z",
+          "started_at": "2026-11-01T13:26:11Z",
+          "completed_at": "2026-11-01T13:26:35Z",
+          "name": "token-integration (CAWELON-Draft, c62f63370f7bcbe559d07b4d757384cf5f43ff0f)",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-01T13:26:12Z",
+              "completed_at": "2026-11-01T13:26:12Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-01T13:26:12Z",
+              "completed_at": "2026-11-01T13:26:14Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-01T13:26:14Z",
+              "completed_at": "2026-11-01T13:26:15Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-01T13:26:15Z",
+              "completed_at": "2026-11-01T13:26:17Z"
+            },
+            {
+              "name": "Install pinned token dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-01T13:26:17Z",
+              "completed_at": "2026-11-01T13:26:22Z"
+            },
+            {
+              "name": "Compile the actual token contract",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-01T13:26:22Z",
+              "completed_at": "2026-11-01T13:26:25Z"
+            },
+            {
+              "name": "Validate actual token history and malformed log rejection",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-01T13:26:25Z",
+              "completed_at": "2026-11-01T13:26:27Z"
+            },
+            {
+              "name": "Wallet against local EVM on both supported chain IDs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-01T13:26:27Z",
+              "completed_at": "2026-11-01T13:26:32Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-01T13:26:32Z",
+              "completed_at": "2026-11-01T13:26:32Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-01T13:26:32Z",
+              "completed_at": "2026-11-01T13:26:32Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-01T13:26:32Z",
+              "completed_at": "2026-11-01T13:26:33Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-01T13:26:33Z",
+              "completed_at": "2026-11-01T13:26:33Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/FordPerfect2027/ThreeCore-Wallet/check-runs/124861882045",
+          "labels": [
+            "ubuntu-latest"
+          ],
+          "runner_id": 1000000178,
+          "runner_name": "GitHub Actions 1000000178",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        }
+      ]
+    }
+  }
+]

@@ -1,5 +1,11 @@
 # ThreeCore release preparation — November 1, 2026
 
+The [current review handoff](RELEASE_HANDOFF_2026-11-02.md) now consolidates the
+implementation, regression, token and distribution pins. Its November 2 public
+GET recheck confirms PR #4 remains open/draft at `07041f0`, with the same five
+successful jobs. The bounded review covers all 17 changed implementation files
+against that public head; it does not replace independent review or rerun tests.
+
 The [11:04 JST live-context follow-up](LIVE_ACCEPTANCE_2026-11-02.md#existing-account-context-rejection--11041106-jst-follow-up)
 now verifies wrong-network and wrong-account rejection against the actual
 MetaMask permission, explicit return/reconnection, and a byte-identical workspace
