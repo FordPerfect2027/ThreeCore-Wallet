@@ -40,8 +40,9 @@ The later copy-only change at `7c12a28` explains MetaMask's site-specific accoun
 permissions and network selection, separately from its asset display. Existing
 permitted-account, card-controller and connection-boundary suites passed all
 82 cases. RPC dispatch, permission requests and identity checks did not change.
-The original live tab was not reloaded, so this result does not establish live
-rendering of the new guidance or successful Sepolia acceptance. See the
+The later actual Edge session displayed the new guidance and completed Account
+2 / Base Sepolia reads, file restore and reconnection at source `8e5079d`.
+See the [successful Sepolia follow-up](LIVE_ACCEPTANCE_2026-11-02.md#account-2--base-sepolia-successful-follow-up), the earlier
 [site-context follow-up](LIVE_ACCEPTANCE_2026-11-02.md#metamask-site-context-and-guidance--afternoon-follow-up)
 and [Japanese operator steps](OPERATOR_ACCEPTANCE_JA.md#metamaskで切り替えたのにthreecoreへ反映されない場合).
 
@@ -102,6 +103,12 @@ and browser UI suites. Review assertions and scope, not just passing totals.
   one existing MetaMask account, saved-file restore, explicit reconnect, pending
   read Stop and byte-identical histories. The later real-provider checks reject
   wrong card account/network settings; they do not switch MetaMask itself.
+- [Actual Sepolia acceptance](LIVE_ACCEPTANCE_2026-11-02.md#account-2--base-sepolia-successful-follow-up): all three cards on
+  existing Account 2, three identity files, one saved portfolio observation per
+  card, actual chooser import and restoration after a DAT token-list edit,
+  Stop/resume and explicit three-card reconnect. The two 4,371-byte exports
+  match exactly; the four prior Mainnet backups remain unchanged. This is one
+  account and a same-tab restore, not live switch-event or server-migration proof.
 - [Actual-file recovery](ACTUAL_FILE_RECOVERY_2026-11-02.md): distinct saved
   collections and complete workspaces restored in isolated native storage,
   including browser restart and a byte-identical download.
@@ -188,8 +195,7 @@ Do not clear the user's database or reload their working tab to create a test.
 
 | Open item | Evidence needed to close it | Current limit |
 | --- | --- | --- |
-| Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Card-setting mismatch checks passed; actual MetaMask switches remain unperformed |
-| Sepolia Wallet acceptance | Three token cards with existing accounts, exact saved observations, restore and explicit reconnect through the real Wallet | Public RPC reads of two existing accounts are recorded, but do not establish MetaMask testnet permission |
+| Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet and Account 2/Sepolia sessions now passed. The operator changed context after the prior session stopped; live switch-event invalidation remains unobserved |
 | Complete candidate migration and return | Start the fixed candidate separately, restore actual saved files, reconnect and return to the preserved working version with records intact | Export/startup and offline format/native-storage checks passed; real-wallet migration/return is open |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
 | Development dependency finding | Compatible remediation with applicable regression, or an explicit qualified release risk decision | One Zod root advisory remains; the forced patched major breaks an unchanged helper |

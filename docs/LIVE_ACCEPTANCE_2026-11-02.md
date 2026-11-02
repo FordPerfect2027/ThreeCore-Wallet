@@ -1,5 +1,11 @@
 # Intended-PC acceptance progress — November 2, 2026
 
+Latest: the [Account 2 / Base Sepolia follow-up](#account-2--base-sepolia-successful-follow-up)
+below completes three-card reads, actual file selection, same-tab restoration
+and explicit reconnection. The earlier Mainnet observations are retained below
+as their own checkpoint. Live account/chain-change invalidation and full
+candidate-server migration remain separate, uncompleted checks.
+
 After the operator selected the existing Microsoft Edge rehearsal tab, its
 control connection responded. The existing MetaMask permission exposed one
 account on Base Mainnet. Three token cards were explicitly connected to that
@@ -148,3 +154,69 @@ MetaMask connection, rather than requesting the same switch repeatedly.
 
 Official references: [per-site network selection](https://support.metamask.io/configure/networks/how-to-change-networks)
 and [dapp permissions](https://support.metamask.io/more-web3/dapps/manage-dapp-permissions/).
+
+## Account 2 / Base Sepolia successful follow-up
+
+After the operator supplied a photo of the working Wallet and MetaMask, the
+existing Edge Wallet tab became controllable with the requested context. Its
+ordinary permitted-account button returned Account 2 on Base Sepolia, chain
+84532, with two permitted addresses. All three cards were explicitly connected
+to the displayed Account 2 address. This is one observed account serving three
+token cards, not three independent wallets.
+
+The tab now displayed the site-specific guidance added at `7c12a28`, with empty
+histories. The agent did not reload it. The prior in-memory Mainnet histories
+are not claimed to have survived the operator intervention; all four previously
+saved 4,410-byte Mainnet backups were checked and retained their original
+`17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989`
+SHA-256. The original port 4231 process remained PID 2108, started October 30
+at 00:41:41 JST.
+
+| Token | Identity-read block | Saved portfolio block | Token balance, smallest units |
+| --- | --- | --- | --- |
+| DAT | 53,413,786 | 53,414,276 | 0 |
+| EMA | 53,413,786 | 53,414,584 | 0 |
+| CAWELON | 53,413,972 | 53,414,584 | 0 |
+
+All three identity panels reported agreement with the registered information:
+contract code present, names/symbols/decimals matched, and supply/balance checks
+within bounds. Separate identity JSON files were actually downloaded. Each
+portfolio observation was added once to its card's saved history. Identity and
+portfolio blocks differ; they are not a common current balance checkpoint.
+
+The actual combined backup was `ThreeCore-workspace-backup (13).json`, 4,371
+bytes. Its internal checksum was accepted by both the UI and the offline
+decoder. After saving, the DAT token input list was deliberately cleared for a
+bounded restoration exercise; histories were left intact. The documented
+browser file chooser selected that real file. The restore preview showed one
+DAT token being re-added, no removed history, and one duplicate history record
+per card. Applying it disconnected the changed DAT card while the unchanged
+EMA/CAWELON cards retained their connections. The UI then reported all three
+settings, token lists and full histories matching the selected file.
+
+The ordinary Stop control disconnected all cards. Resume did not automatically
+connect them. All three were explicitly reconnected to Account 2 / Base Sepolia.
+The resulting `ThreeCore-workspace-backup (14).json` was byte-identical:
+
+`97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4`
+
+The browser's download listener timed out for the first identity export, but
+the actual file was already present in Downloads; that download was not
+repeated. Other exports were likewise checked on disk. No failure was counted
+as a pass without the saved bytes.
+
+The [redacted receipt](evidence/2026-11-02-release-regression/live-sepolia-acceptance-summary.json)
+and [recording/checking method](evidence/2026-11-02-release-regression/live-sepolia-record-method.mjs)
+pin source `8e5079d` and application `7c12a28`. Thirteen original evidence files
+are retained in `Downloads/ThreeCore-private-sepolia-acceptance-20261102-HATjJE`,
+with checksums and a summary. No product code changed and no full regression
+was rerun for this live acceptance.
+
+This closes the scoped Sepolia read/save/restore/reconnect exercise. It does
+not establish live `accountsChanged` / `chainChanged` invalidation: the earlier
+Mainnet session had been stopped before the operator changed context. Restore
+was into the same tab after a token-list edit, not an empty tab or a newly
+started candidate server. Native Windows picker traversal, complete candidate
+migration/return, dependency disposition and independent review remain open.
+No transaction was signed/submitted, no secret key was read and no release
+percentage was calculated.

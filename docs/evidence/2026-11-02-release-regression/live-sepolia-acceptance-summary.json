@@ -1,0 +1,207 @@
+{
+  "schema": "threecore.live-sepolia-acceptance.v1",
+  "recordedAt": "2026-11-02T07:38:55.723Z",
+  "sourceRevision": "8e5079df4b3fa5aed51cc7054aeb82a92f46c901",
+  "applicationRevision": "7c12a280649ee56d52165d9412db3af4c5bd4770",
+  "browser": "Microsoft Edge, existing profile with MetaMask",
+  "origin": "http://127.0.0.1:4231",
+  "network": "Base Sepolia",
+  "chainId": 84532,
+  "tokenCards": 3,
+  "distinctObservedAccounts": 1,
+  "accountLabel": "Account 2",
+  "accountValuesRedacted": true,
+  "observations": [
+    {
+      "agent": "DAT",
+      "identityBlock": "53413786",
+      "identityBlockHash": "0x0e89143fba75999fae9065719e03f8be65b4e59bc02c8b5d949a3d81ae43deb2",
+      "portfolioBlock": "53414276",
+      "portfolioBlockHash": "0x3d4a3a9bc538c4b94781049e8b8be70e11bf79bb0bcabb20d40f930ccc88ceae",
+      "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+      "balanceBaseUnits": "0",
+      "nativeBalanceBaseUnits": "0",
+      "metadata": {
+        "name": "DATCORE",
+        "symbol": "DAT",
+        "decimals": 18,
+        "totalSupply": "999999998000000000000000000"
+      },
+      "identityFileSha256": "55932a09f935d666a9629a71254497fcb822f0b67029b3691d65fae02fd0a190",
+      "checksumVerified": true
+    },
+    {
+      "agent": "EMA",
+      "identityBlock": "53413786",
+      "identityBlockHash": "0x0e89143fba75999fae9065719e03f8be65b4e59bc02c8b5d949a3d81ae43deb2",
+      "portfolioBlock": "53414584",
+      "portfolioBlockHash": "0x8f436e4b70f0b710dcabc4d9542efed2dcb84e7ad5ac7204d40a6de5ba4cdc33",
+      "tokenAddress": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+      "balanceBaseUnits": "0",
+      "nativeBalanceBaseUnits": "0",
+      "metadata": {
+        "name": "EMA CORE",
+        "symbol": "EMA",
+        "decimals": 18,
+        "totalSupply": "777000000000000000000000000"
+      },
+      "identityFileSha256": "faa969ac284175cab821a301915362d0ec1da2023f27783995aa73dc132cc00a",
+      "checksumVerified": true
+    },
+    {
+      "agent": "CAWELON",
+      "identityBlock": "53413972",
+      "identityBlockHash": "0x4ea9aa120f3ac33c6ae74c9f4a6635354616383921a96b8d1dbca803a9be5ec6",
+      "portfolioBlock": "53414584",
+      "portfolioBlockHash": "0x8f436e4b70f0b710dcabc4d9542efed2dcb84e7ad5ac7204d40a6de5ba4cdc33",
+      "tokenAddress": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+      "balanceBaseUnits": "0",
+      "nativeBalanceBaseUnits": "0",
+      "metadata": {
+        "name": "CAWELON CORE",
+        "symbol": "CAWELON",
+        "decimals": 18,
+        "totalSupply": "420000000000000000000000000000000"
+      },
+      "identityFileSha256": "65c57ed9a1cfff1720957a3e99d5046eb3581485f5dce7cec1a327200aa5d4e4",
+      "checksumVerified": true
+    }
+  ],
+  "stepsObserved": {
+    "permittedAccountAndNetworkReadFromActualWallet": true,
+    "permittedAccountCount": 2,
+    "allThreeCardsExplicitlyConnected": true,
+    "allThreeIdentityReadsSaved": true,
+    "portfolioHistoryCounts": [
+      1,
+      1,
+      1
+    ],
+    "downloadedFilesDecodedAndChecksummed": true,
+    "liveSiteSpecificGuidanceVisible": true,
+    "originalTabReloadedByAgent": false,
+    "datTokenListClearedAfterBackupForRestoreExercise": true,
+    "supportedBrowserFileChooserUsed": true,
+    "restorePreviewInspected": true,
+    "existingHistoryRecordsRemoved": 0,
+    "changedDatCardDisconnectedByRestore": true,
+    "unchangedCardsRetainedConnection": true,
+    "allThreeSettingsTokensHistoriesMatchedInUi": true,
+    "stopAndResumeDidNotAutoConnect": true,
+    "allThreeCardsExplicitlyReconnected": true,
+    "reexportByteIdentical": true
+  },
+  "integrity": {
+    "workspaceBytes": 4371,
+    "workspaceSha256": "97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4",
+    "workspaceInternalChecksum": "131e4d464e4aca3c0f06193b6aa99e020544d5291939f42097032cb9748e6b9a",
+    "previousMainnetBackupsPreserved": [
+      {
+        "suffix": "9",
+        "bytes": 4410,
+        "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989"
+      },
+      {
+        "suffix": "10",
+        "bytes": 4410,
+        "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989"
+      },
+      {
+        "suffix": "11",
+        "bytes": 4410,
+        "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989"
+      },
+      {
+        "suffix": "12",
+        "bytes": 4410,
+        "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989"
+      }
+    ],
+    "privateEvidence": [
+      {
+        "filename": "ThreeCore-workspace-backup (13).json",
+        "bytes": 4371,
+        "sha256": "97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4"
+      },
+      {
+        "filename": "ThreeCore-workspace-backup (14).json",
+        "bytes": 4371,
+        "sha256": "97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4"
+      },
+      {
+        "filename": "ThreeCore-DAT-identity-53413786.json",
+        "bytes": 919,
+        "sha256": "55932a09f935d666a9629a71254497fcb822f0b67029b3691d65fae02fd0a190"
+      },
+      {
+        "filename": "ThreeCore-EMA-identity-53413786.json",
+        "bytes": 920,
+        "sha256": "faa969ac284175cab821a301915362d0ec1da2023f27783995aa73dc132cc00a"
+      },
+      {
+        "filename": "ThreeCore-CAWELON-identity-53413972.json",
+        "bytes": 938,
+        "sha256": "65c57ed9a1cfff1720957a3e99d5046eb3581485f5dce7cec1a327200aa5d4e4"
+      },
+      {
+        "filename": "identity-overview.txt",
+        "bytes": 934,
+        "sha256": "c5cb42527839ac25340193174c662b3a9cb10cdc65f54e6bf61963ad102facec"
+      },
+      {
+        "filename": "identity-overview.png",
+        "bytes": 33454,
+        "sha256": "1f09379ff614a22325bfc4909840980f43c9c825f0cfa170114b4986854509fa"
+      },
+      {
+        "filename": "restore-preview.txt",
+        "bytes": 6795,
+        "sha256": "932a5f9be7d2f7cba1797f6bde56804ea3089b1519e342a4df2bcf0090331646"
+      },
+      {
+        "filename": "restored-state.json",
+        "bytes": 1049,
+        "sha256": "62743f6a8d431f3aa455e7fdad7a6f26476d4870d97b87fdaf9da264a3a10a27"
+      },
+      {
+        "filename": "restore-comparison.txt",
+        "bytes": 7288,
+        "sha256": "f13c8fd0de64b6be0dd95c105a018299de005ac6371427410208c8a8833a5b6d"
+      },
+      {
+        "filename": "resume-does-not-autoconnect.json",
+        "bytes": 323,
+        "sha256": "0d61398ac4bf962e34fe456d14843467705f3a15a4d0c346316d6b4e02a4ccbf"
+      },
+      {
+        "filename": "reconnected-state.json",
+        "bytes": 786,
+        "sha256": "91b46093cd82f54cb15ce41c235d05ceecd91d400c374bce1690a63631c84383"
+      },
+      {
+        "filename": "restored-overview.png",
+        "bytes": 32189,
+        "sha256": "27dc06773c458c0e186481e5288a529d39a122f98a90b1f44332aa7cb5d4987e"
+      }
+    ]
+  },
+  "originalServer": {
+    "pid": 2108,
+    "observedStartLocal": "2026-10-30T00:41:41+09:00",
+    "restarted": false
+  },
+  "limitations": [
+    "One existing account serves all three token cards; this is not three independently controlled accounts.",
+    "This successful Sepolia session follows an earlier stopped Mainnet session. A live accountsChanged/chainChanged invalidation sequence was not observed.",
+    "The existing tab returned with empty histories and updated client text after the operator intervention. Its prior in-memory histories were not claimed to survive; the saved Mainnet backups were verified unchanged.",
+    "Restore was into the same live tab after clearing the DAT token list, retaining its histories. It was not an empty-tab or full-candidate server migration.",
+    "File selection used the documented browser chooser API, not traversal of the native Windows picker.",
+    "Identity and portfolio blocks differ. These are recorded observations, not a common current balance checkpoint, security audit, or ownership certificate.",
+    "Raw account evidence remains in the private local folder. Redacted summaries do not replace the original files.",
+    "No new full regression or release-percentage calculation was performed."
+  ],
+  "transactionsSigned": 0,
+  "transactionsSubmitted": 0,
+  "secretKeysRead": false,
+  "githubModified": false
+}
