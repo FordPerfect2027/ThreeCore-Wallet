@@ -1,5 +1,13 @@
 # ThreeCore release preparation — November 1, 2026
 
+The latest application change is `96b5945`: the [RPC history-range correction](RPC_RANGE_BOUNDARY_2026-11-02.md)
+enforces the inclusive 2,000-block limit at the low-level dispatch and HTTP relay,
+with three reproduced failures becoming passes and 585 related cases passing.
+The original running server/tabs were preserved. The verified distribution below
+predates this change; collect it in the next combined delivery. The previous full
+Wallet/browser results still apply to their named earlier source, not a fresh
+complete run of this revision.
+
 The current [verified distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md) is
 16a0d33, with the later token fixes: 4523 Wallet source files, 253 manifests /
 2434 entries, fresh minimal runtimes and a successful restored DAT historical

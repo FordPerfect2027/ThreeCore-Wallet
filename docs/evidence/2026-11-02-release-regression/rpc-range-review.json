@@ -1,0 +1,56 @@
+{
+  "schema": "threecore-rpc-range-review-v1",
+  "observedAt": "2026-11-02T00:17:57.784Z",
+  "base": "c2159aa432119e35d1c35b1d69cb702eddcce5c1",
+  "revision": "96b59459a0f593246c60f0bed4b52052211a464a",
+  "issue": "The low-level read guard and fixed Base relay accepted log spans beyond the inclusive 2000-block session/UI bound.",
+  "scope": [
+    "Direct dispatch guard",
+    "Base state provider before HTTP",
+    "Actual isolated loopback HTTP relay before its stub upstream"
+  ],
+  "regression": {
+    "failingBefore": 3,
+    "passingAfter": 3,
+    "focusedExistingAndNewCases": 585,
+    "fullWalletSuiteRerun": false,
+    "realBrowserWalletTest": false
+  },
+  "boundaries": {
+    "inclusiveBlocks": 2000,
+    "firstRefusedSpan": 2001,
+    "highPrecisionUint256Coverage": true,
+    "publicRpcRequests": 0,
+    "walletRequests": 0,
+    "serverPort": "ephemeral loopback",
+    "existing4231ProcessModified": false
+  },
+  "source": [
+    {
+      "path": "src/security-rpc.js",
+      "sha256": "06d262fe66b2a14e2de2f70be52b931bc7b0ae1f46ecd045059702628acb3f4a"
+    },
+    {
+      "path": "src/transfer-codec.js",
+      "sha256": "2a971ddbb7c7bdd3b4e108a880adbe852e7a20aa81d8fd8d2f40cb434b9a5802"
+    },
+    {
+      "path": "test/security-rpc.test.js",
+      "sha256": "e203d61fed5bc7f3846a66ad808bccfbe6c6e3b73c5872ed97cf8e8267108a47"
+    },
+    {
+      "path": "test/base-state-provider.test.js",
+      "sha256": "afb926935ad0c940b1758ea5e336df9a01e362d39fbaac6450a369f8fde33223"
+    },
+    {
+      "path": "integration/base-state-rpc-server.test.mjs",
+      "sha256": "54ad7b9885cabe5c2480ba4a9aed025f6cc89cf492297616841f864472f2f771"
+    }
+  ],
+  "sourcePatchSha256": "2f9ee6e5047932bb7d1baf492e3c2dd78ea258fb9372c17076cf791579f5df49",
+  "retainedLimitations": [
+    "Original live tabs and the existing 4231 process were not upgraded/reloaded.",
+    "Previously delivered 16a0d33 ZIP predates this correction.",
+    "This developer review is not independent review or a mainnet readiness percentage."
+  ]
+}
