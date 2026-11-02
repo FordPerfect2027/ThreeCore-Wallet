@@ -6,6 +6,7 @@ export const SECURITY_JOURNAL_EVENTS = Object.freeze([
   "ready", "manual", "idle", "hidden", "page-exit", "clock", "timer", "disposed",
   "resumed", "idle-policy", "hidden-policy", "broadcast-stop", "peer-stop",
   "channel-error", "page-freeze", "page-restored",
+  "wallet-account", "wallet-network", "wallet-unavailable",
 ]);
 export const SECURITY_JOURNAL_TEXT = Object.freeze({
   ready: "保護機能を開始しました",
@@ -24,6 +25,9 @@ export const SECURITY_JOURNAL_TEXT = Object.freeze({
   "channel-error": "停止通知の通信を確認できず保護停止しました",
   "page-freeze": "ページの一時停止により保護停止しました",
   "page-restored": "保存されたページの再表示により保護停止しました",
+  "wallet-account": "Walletの口座情報が変わったか確認できなくなったため、カードの接続を停止しました",
+  "wallet-network": "Walletのネットワークが変わったか確認できなくなったため、カードの接続を停止しました",
+  "wallet-unavailable": "Walletとの接続を確認できなくなったため、カードの接続を停止しました",
 });
 const intervals = [60_000, 300_000, 900_000];
 const fail = () => { throw new TypeError("Invalid protection journal data"); };
@@ -134,7 +138,7 @@ export function exportSecurityJournal(value) {
   const snapshot = validateSecurityJournal(value);
   return JSON.stringify({
     schema: "threecore.local-protection-journal",
-    version: 1,
+    version: 2,
     scope: "This page session only. Not a security audit or wallet permission revocation record.",
     containsWalletAddresses: false,
     containsBalances: false,

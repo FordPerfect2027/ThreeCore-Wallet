@@ -70,6 +70,12 @@ export function registerAcceptanceUITests(test) {
       assert(f.card(1, '.read').disabled && f.card(2, '.read').disabled, 'Other cards reconnected implicitly');
       f.conditions[0].chain = '0x2105'; f.providers[0].emit('chainChanged', '0x2105');
       assert(f.card(0, '.read').disabled, 'Network change left second account connected');
+      document.querySelector('.security-stop').click();
+      document.querySelector('.security-journal-prepare').click();
+      const diagnostic = JSON.parse(document.querySelector('.security-journal-output').value);
+      assert(diagnostic.counts['wallet-account'] === 3, 'Each connected card must record its account invalidation once');
+      assert(diagnostic.counts['wallet-network'] === 1, 'Only the reconnected card must record network invalidation');
+      assert(diagnostic.counts.manual === 1, 'Later protection must remain a separate reason');
       AGENTS.forEach((_, index) => assert(f.card(index, '.history-list').children.length === 1, 'Saved history lost'));
     }, { sharedProvider: true, accounts: [ACCOUNTS[0], ACCOUNTS[0], ACCOUNTS[0]] });
   });

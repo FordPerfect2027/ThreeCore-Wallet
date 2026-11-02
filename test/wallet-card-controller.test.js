@@ -15,7 +15,7 @@ function deferred() {
   const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
   return { promise, resolve, reject };
 }
-function fixture(override = () => undefined) {
+function fixture(override = () => undefined, onConnectionInvalidated) {
   const calls = [], views = [], listeners = new Map();
   const provider = {
     on(name, fn) {
@@ -42,9 +42,66 @@ function fixture(override = () => undefined) {
   };
   const controller = createWalletCardController({
     agent: "DAT", siteOrigin: "http://localhost:4173", onChange: state => views.push(state),
+    onConnectionInvalidated,
   });
   return { controller, provider, calls, views, listeners,
     connect: () => controller.connect({ provider, account: A, chainId: 8453 }) };
+}
+
+for (const [event, value, reason] of [
+  ["accountsChanged", [B], "wallet-account"],
+  ["accountsChanged", [], "wallet-account"],
+  ["chainChanged", "0x14a34", "wallet-network"],
+  ["chainChanged", "invalid", "wallet-network"],
+  ["disconnect", { message: "PRIVATE-PAYLOAD" }, "wallet-unavailable"],
+]) {
+  test("connection diagnostic follows invalidation and contains only its fixed reason: " + event + "/" + String(value), async () => {
+    const notices = [];
+    const f = fixture(undefined, (...args) => {
+      assert.equal(f.controller.state.phase, "disconnected");
+      assert.equal(f.controller.state.connection, null);
+      notices.push(args);
+    });
+    await f.connect();
+    const callbacks = [...f.listeners.get(event)];
+    f.provider.emit(event, value);
+    callbacks.forEach(callback => callback(value)); // A queued old event is inert.
+    f.controller.disconnect();
+    assert.deepEqual(notices, [[reason]]);
+    assert.equal(await f.controller.readBalances(), false);
+    f.controller.dispose();
+  });
+}
+
+test("unchanged provider events and explicit disconnect do not become wallet-change evidence", async () => {
+  const notices = [], f = fixture(undefined, reason => notices.push(reason));
+  await f.connect();
+  f.provider.emit("accountsChanged", [A]);
+  f.provider.emit("chainChanged", "0x2105");
+  assert.equal(f.controller.state.phase, "connected");
+  f.controller.disconnect();
+  assert.deepEqual(notices, []);
+  f.controller.dispose();
+});
+
+for (const asynchronous of [false, true]) {
+  test("a failing diagnostic cannot reconnect or interrupt connection cleanup: async=" + asynchronous, async () => {
+    let restart;
+    const f = fixture(undefined, () => {
+      restart = f.connect();
+      if (asynchronous) return Promise.reject(Error("PRIVATE-DIAGNOSTIC"));
+      throw Error("PRIVATE-DIAGNOSTIC");
+    });
+    await f.connect();
+    const before = f.calls.length;
+    f.provider.emit("accountsChanged", [B]);
+    assert.equal(await restart, false);
+    assert.equal(f.calls.length, before);
+    assert.equal(f.controller.state.phase, "disconnected");
+    assert.equal([...f.listeners.values()].every(set => set.size === 0), true);
+    assert.equal(f.controller.state.error.includes("PRIVATE"), false);
+    f.controller.dispose();
+  });
 }
 
 test("repeated pending Connect actions share a single permission request", async () => {

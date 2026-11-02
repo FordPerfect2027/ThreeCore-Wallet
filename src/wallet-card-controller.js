@@ -22,6 +22,7 @@ import { readErrorCode, readErrorMessage } from "./provider-error.js";
  */
 export function createWalletCardController({
   agent, siteOrigin, rpcSupervisor, onChange = () => {}, isAccessAllowed = () => true,
+  onConnectionInvalidated = () => {},
   createSession = (options) => new ThreeCoreWalletSession(options),
 }) {
   let wallet = null;
@@ -97,19 +98,24 @@ export function createWalletCardController({
     return completed;
   }
   function watch(provider, session, account, chainId) {
-    const invalidate = () => {
-      if (wallet === session) disconnect("接続先が変わりました。内容を確認して再接続してください。");
+    const invalidate = kind => {
+      if (wallet !== session || disposed) return;
+      disconnect("接続先が変わりました。内容を確認して再接続してください。");
+      // Record only a fixed reason, after access is closed. An observer must
+      // never prevent invalidation, restart a connection or receive payloads.
+      if (!disposed) cleanup(() => onConnectionInvalidated(kind));
     };
     const events = {
       accountsChanged(accounts) {
         try {
-          if (!Array.isArray(accounts) || !accounts.length || normalizeAddress(accounts[0]) !== account) invalidate();
-        } catch { invalidate(); }
+          if (!Array.isArray(accounts) || !accounts.length || normalizeAddress(accounts[0]) !== account) invalidate("wallet-account");
+        } catch { invalidate("wallet-account"); }
       },
       chainChanged(chain) {
-        try { if (normalizeChainId(chain) !== chainId) invalidate(); } catch { invalidate(); }
+        try { if (normalizeChainId(chain) !== chainId) invalidate("wallet-network"); } catch { invalidate("wallet-network"); }
       },
-      disconnect: invalidate,
+      // Also covers the event-rate guard, not only a provider disconnect event.
+      disconnect: () => invalidate("wallet-unavailable"),
     };
     const observer = observeWalletProvider(provider, events, () => wallet === session && !disposed);
     if (wallet === session && !disposed) unwatch = observer.dispose;

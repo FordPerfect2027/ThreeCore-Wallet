@@ -166,7 +166,7 @@ for (const limit of [0, 65, 1.5, "8", NaN]) {
 test("export includes explicit scope and no external identity", () => {
   const result = JSON.parse(exportSecurityJournal(sample().state()));
   assert.equal(result.schema, "threecore.local-protection-journal");
-  assert.equal(result.version, 1);
+  assert.equal(result.version, 2);
   assert.equal(result.containsPrivateKeys, false);
   assert.equal(result.containsWalletAddresses, false);
   assert.equal(result.containsBalances, false);

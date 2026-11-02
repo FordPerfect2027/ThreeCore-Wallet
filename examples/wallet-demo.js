@@ -206,6 +206,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     let accountPanel;
     let wasConnected = false;
     const controller = createWalletCardController({ agent, siteOrigin, createSession, rpcSupervisor,
+      onConnectionInvalidated: securityPanel.recordConnectionStop,
       isAccessAllowed: securityPanel.check, onChange: state => {
       render(card, state);
       if (state.phase !== "disconnected") accountPanel?.invalidate();

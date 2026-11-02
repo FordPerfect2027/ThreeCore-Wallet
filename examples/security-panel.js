@@ -188,6 +188,12 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
     check: lock.check,
     state: lock.state,
     lock: protectAgain,
+    recordConnectionStop(kind) {
+      if (disposed || !["wallet-account", "wallet-network", "wallet-unavailable"].includes(kind)) return false;
+      const recorded = journal.record(kind);
+      journalPanel.render();
+      return recorded;
+    },
     dispose() {
       if (disposed) return;
       disposed = true;
