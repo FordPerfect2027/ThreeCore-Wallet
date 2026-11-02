@@ -92,3 +92,19 @@ jobs:
       - name: Wallet against local EVM on both supported chain IDs
         working-directory: token
         run: node --test ../wallet/integration/token-compatibility.test.mjs
+      - name: Reproduce recorded deployed source and initial issuance offline
+        if: matrix.repository == 'DAT'
+        working-directory: wallet
+        run: |
+          node docs/evidence/2026-11-02-token-dependency-review/reconstruct-runtime-source.mjs ../token > source-reconstruction.json
+          node docs/evidence/2026-11-02-token-dependency-review/verify-recorded-mainnet-deployments.mjs ../token > mainnet-deployment-verification.json
+      - name: Keep the source and deployment comparison results
+        if: ${{ always() && matrix.repository == 'DAT' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployed-source-verification-${{ github.sha }}
+          path: |
+            wallet/source-reconstruction.json
+            wallet/mainnet-deployment-verification.json
+          if-no-files-found: error
+          retention-days: 30

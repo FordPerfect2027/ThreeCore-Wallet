@@ -1,0 +1,26 @@
+{
+  "compiler": "0.8.34+commit.80d5c536.Emscripten.clang",
+  "rows": [
+    {
+      "token": "DAT",
+      "transaction": "0x49cb417f0231eb149d60bcc471d0676a0643eb5cfc319741d8452c6e5d9cb589",
+      "fullCreationBytecodeMatches": false,
+      "creationExecutableMatches": true,
+      "metadataMatches": false
+    },
+    {
+      "token": "EMA",
+      "transaction": "0x781f30ca91c974e60853d9dd1b8e71700bfd835eddffbd2b7222f0846f1208aa",
+      "fullCreationBytecodeMatches": true,
+      "creationExecutableMatches": true,
+      "metadataMatches": true
+    },
+    {
+      "token": "CAWELON",
+      "transaction": "0x13ff6cae2e986d729aa76bf348f04186dff1bd80aae6fc8d684b0d559be8fd28",
+      "fullCreationBytecodeMatches": true,
+      "creationExecutableMatches": true,
+      "metadataMatches": true
+    }
+  ]
+}

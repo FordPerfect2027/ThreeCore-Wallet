@@ -1,0 +1,216 @@
+{
+  "startedAt": "2026-11-02T01:17:29.698Z",
+  "compiler": "0.8.34+commit.80d5c536.Emscripten.clang",
+  "publicRecordSha256": "1f3e83e29b997ac1ca67fb34fb3137b63b7d450085ff4270aba880beacfa454d",
+  "scope": "bounded source-path-only reconstruction using saved compiler inputs; no dependency, Solidity text or optimizer changes",
+  "rows": [
+    {
+      "token": "DAT",
+      "variant": "hardhat-saved-paths",
+      "compilerInputFile": "DAT-hardhat-saved-paths-input.json",
+      "compilerInputSha256": "4c017f1606057b734cecd650c37d238a8a581c1d9efa79858af528be918de163",
+      "savedBuildInputSha256": "e467fe0462222b9cc1ec5baa3fbe2299e9756913f6689fdf392e9dbc6126f4ad",
+      "metadataSha256": "86c3d753a6b2359fa68a558f572474d3e5db6618db37a2713ba15ceaf047cced",
+      "compiledMetadataTrailer": "0xa26469706673582212200d3c1d1c498a6c72d7d478e77ac66804514e2398a1fd52a04a3589d200b7c2b664736f6c63430008220033",
+      "comparisons": [
+        {
+          "chainId": 8453,
+          "contract": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        },
+        {
+          "chainId": 84532,
+          "contract": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+          "metadataMatches": true,
+          "immutableNormalizedFullRuntimeMatches": true
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "variant": "unversioned-import-paths",
+      "compilerInputFile": "DAT-unversioned-import-paths-input.json",
+      "compilerInputSha256": "ea952e5371f849969cdf3c2ba6ea4e27af08d3241cc103ff2a8753f06b978b33",
+      "savedBuildInputSha256": "e467fe0462222b9cc1ec5baa3fbe2299e9756913f6689fdf392e9dbc6126f4ad",
+      "metadataSha256": "1191c8a9fd6a9c317013d6878e0639826b3449bd2cda486a15bce14a4d6cfaf7",
+      "compiledMetadataTrailer": "0xa2646970667358221220eb0ea817f0f28f08f0d1b1da0970da853d04506242faf16c627332551b24545d64736f6c63430008220033",
+      "comparisons": [
+        {
+          "chainId": 8453,
+          "contract": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        },
+        {
+          "chainId": 84532,
+          "contract": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        }
+      ]
+    },
+    {
+      "token": "DAT",
+      "variant": "root-contract-path",
+      "compilerInputFile": "DAT-root-contract-path-input.json",
+      "compilerInputSha256": "07828341b79b59fb4034dd5a22757965d50c62ff45e47fbcbc470a17f4192edc",
+      "savedBuildInputSha256": "e467fe0462222b9cc1ec5baa3fbe2299e9756913f6689fdf392e9dbc6126f4ad",
+      "metadataSha256": "0589a9090fbac3dcc794845e91b095c46d801ba3ccfcbc548c6e03e4ab9d938d",
+      "compiledMetadataTrailer": "0xa2646970667358221220d11770f56716735af21ab80ace9102bc60b6b4a6b723713808ce197e622e570464736f6c63430008220033",
+      "comparisons": [
+        {
+          "chainId": 8453,
+          "contract": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        },
+        {
+          "chainId": 84532,
+          "contract": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "variant": "hardhat-saved-paths",
+      "compilerInputFile": "EMA-hardhat-saved-paths-input.json",
+      "compilerInputSha256": "670e4320b3336a9220d81d6382e1a026e65afcc02f4723fd59d6fc607f1cf7d1",
+      "savedBuildInputSha256": "7a469de80bafad5596b23546f2b1685f2ca7f256773869bd7fa03b6520000a2d",
+      "metadataSha256": "9105a34ec6b32d0b98127aabf7d8153239140b54a003f2bb7207c858e97d50ff",
+      "compiledMetadataTrailer": "0xa2646970667358221220cbcb02b20b9df6ebf6dc73b393ba218ea66f7ed44f0a7fa71126f8ef4fb4ca3364736f6c63430008220033",
+      "comparisons": [
+        {
+          "chainId": 8453,
+          "contract": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        },
+        {
+          "chainId": 84532,
+          "contract": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "variant": "unversioned-import-paths",
+      "compilerInputFile": "EMA-unversioned-import-paths-input.json",
+      "compilerInputSha256": "e3e6e70dfa467886c728e71062f169fc481fc8e74131a55e02bb11d8973ec69b",
+      "savedBuildInputSha256": "7a469de80bafad5596b23546f2b1685f2ca7f256773869bd7fa03b6520000a2d",
+      "metadataSha256": "027f896fb205e1b74e7a5e71649cbf4d7cf455b7e5eef5d5f8af89aac07c1a73",
+      "compiledMetadataTrailer": "0xa2646970667358221220a6a20f89a26503ac04ed8aef8f17ca7d869911b33d1f66c0cae756f7287550fc64736f6c63430008220033",
+      "comparisons": [
+        {
+          "chainId": 8453,
+          "contract": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+          "metadataMatches": true,
+          "immutableNormalizedFullRuntimeMatches": true
+        },
+        {
+          "chainId": 84532,
+          "contract": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+          "metadataMatches": true,
+          "immutableNormalizedFullRuntimeMatches": true
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "variant": "root-contract-path",
+      "compilerInputFile": "EMA-root-contract-path-input.json",
+      "compilerInputSha256": "d1248c85a5e9b4b37d9c4f267359228e01f65a9253ee057ff1653c2fd90b905b",
+      "savedBuildInputSha256": "7a469de80bafad5596b23546f2b1685f2ca7f256773869bd7fa03b6520000a2d",
+      "metadataSha256": "23b4d3e0be5fffdcaee0ba72266c9d60e678b41a5df369153fb3471665c59ef7",
+      "compiledMetadataTrailer": "0xa2646970667358221220044cdf5749754db4e505e451a4af3156d235d6e79af0076d57bbeee1fd0d262b64736f6c63430008220033",
+      "comparisons": [
+        {
+          "chainId": 8453,
+          "contract": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        },
+        {
+          "chainId": 84532,
+          "contract": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "variant": "hardhat-saved-paths",
+      "compilerInputFile": "CAWELON-hardhat-saved-paths-input.json",
+      "compilerInputSha256": "12050628d25ad0f0f2727642d1066e2b77cc85b50c52d3ff051be3d94acbf7d9",
+      "savedBuildInputSha256": "a5fa656f4e32ba1a3d83e8458a39cd07049de84f726a3c0b6bd950723e6ee50c",
+      "metadataSha256": "60233e7e47dc2444b078a8aab658547fd6111ee61a1bc1d1fbd7c53e9180777b",
+      "compiledMetadataTrailer": "0xa2646970667358221220df4fb62bae637bfcb44696e2ffdf47559c0f496c37060dbc71c9682424125cd364736f6c63430008220033",
+      "comparisons": [
+        {
+          "chainId": 8453,
+          "contract": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        },
+        {
+          "chainId": 84532,
+          "contract": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "variant": "unversioned-import-paths",
+      "compilerInputFile": "CAWELON-unversioned-import-paths-input.json",
+      "compilerInputSha256": "7c55f5d634150f2d4bdc477ad96451c19498f150f37c6f18dc43ab2ca0c8a44b",
+      "savedBuildInputSha256": "a5fa656f4e32ba1a3d83e8458a39cd07049de84f726a3c0b6bd950723e6ee50c",
+      "metadataSha256": "1c47109ff0c6eac9c71cc19589d221581175af4bb28217e66db98bc31cf1253b",
+      "compiledMetadataTrailer": "0xa264697066735822122019c93726f8ffa5943ea8517ea2f8fbd3681fa400ad3d4ed469614fc7d0f0fbd464736f6c63430008220033",
+      "comparisons": [
+        {
+          "chainId": 8453,
+          "contract": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+          "metadataMatches": true,
+          "immutableNormalizedFullRuntimeMatches": true
+        },
+        {
+          "chainId": 84532,
+          "contract": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+          "metadataMatches": true,
+          "immutableNormalizedFullRuntimeMatches": true
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "variant": "root-contract-path",
+      "compilerInputFile": "CAWELON-root-contract-path-input.json",
+      "compilerInputSha256": "9bc3ea2412cccb160d3a17803e6110d5928d4e834f936c0355730c1f5b9939e1",
+      "savedBuildInputSha256": "a5fa656f4e32ba1a3d83e8458a39cd07049de84f726a3c0b6bd950723e6ee50c",
+      "metadataSha256": "51285dfc10983811d80b9c8d5adfc666c170582c1869a33aa60b50a436a433c2",
+      "compiledMetadataTrailer": "0xa26469706673582212201fa6baaeed5f1529a0540b91987b4ceb1c66cfddd29909ae1969c8a8c5d03b2164736f6c63430008220033",
+      "comparisons": [
+        {
+          "chainId": 8453,
+          "contract": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        },
+        {
+          "chainId": 84532,
+          "contract": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+          "metadataMatches": false,
+          "immutableNormalizedFullRuntimeMatches": false
+        }
+      ]
+    }
+  ],
+  "finishedAt": "2026-11-02T01:17:43.124Z"
+}

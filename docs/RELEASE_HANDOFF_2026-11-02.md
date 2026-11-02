@@ -1,5 +1,11 @@
 # ThreeCore candidate review handoff — November 2, 2026
 
+Newer than the 23d0a35 archive: [deployment source reconstruction](DEPLOYMENT_SOURCE_RECONSTRUCTION_2026-11-02.md)
+reproduces five complete runtimes with unchanged Solidity and path-only compiler
+input changes. Mainnet creation and initial issuance were separately checked for
+all three tokens; EMA/CAWELON creation code matches completely. DAT Mainnet
+metadata and the previously listed real-wallet/review gates remain open.
+
 Latest source/test checkpoint: `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd`;
 application source: `96b59459a0f593246c60f0bed4b52052211a464a`.
 [Full local regression](NATIVE_CRYPTO_TEST_WAIT_2026-11-02.md) passed 16,454

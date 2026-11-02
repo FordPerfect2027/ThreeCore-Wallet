@@ -1,0 +1,29 @@
+{
+  "schema": "threecore-runtime-source-reconstruction-inputs.v1",
+  "compilerVersion": "0.8.34+commit.80d5c536.Emscripten.clang",
+  "soljsonSha256": "4d847e9615868981cd44a5d7b1896779e6dda323b88e9c693099e0aa8320f70d",
+  "publicRecordSha256": "1f3e83e29b997ac1ca67fb34fb3137b63b7d450085ff4270aba880beacfa454d",
+  "inputs": [
+    {
+      "token": "DAT",
+      "sourceRevision": "502944c94ffed408356b487abc9a710807697ee2",
+      "file": "source-reconstruction-DAT-input.json",
+      "sha256": "4c017f1606057b734cecd650c37d238a8a581c1d9efa79858af528be918de163",
+      "projectSourceSha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6"
+    },
+    {
+      "token": "EMA",
+      "sourceRevision": "9cad39a196e8afc37abb5b99c260e00327c55d1c",
+      "file": "source-reconstruction-EMA-input.json",
+      "sha256": "670e4320b3336a9220d81d6382e1a026e65afcc02f4723fd59d6fc607f1cf7d1",
+      "projectSourceSha256": "8234f4b8a94d9a2d25cde34bc2900ae080223e698633420cad7ad533390d7444"
+    },
+    {
+      "token": "CAWELON",
+      "sourceRevision": "e3a5fbb966008319b7b7204ddbfb705a3e9ab12c",
+      "file": "source-reconstruction-CAWELON-input.json",
+      "sha256": "12050628d25ad0f0f2727642d1066e2b77cc85b50c52d3ff051be3d94acbf7d9",
+      "projectSourceSha256": "51adf4a8edecc3d9e0fb79d359d57129085487661171c9174d77ad5c3497a2b5"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "variant": "unversioned-import-paths-project-crlf",
+    "sourceSha256": "acd3142d0d17d91898842a247409db2dc273d40fe78263ff91ae3bc14e381c95",
+    "compiledMetadataTrailer": "0xa264697066735822122098f35ce91ad0be935f1af9d5e31bd293035c90d985ad2049132a28dcdaeade6f64736f6c63430008220033",
+    "comparisons": [
+      {
+        "chainId": 8453,
+        "metadataMatches": false
+      },
+      {
+        "chainId": 84532,
+        "metadataMatches": false
+      }
+    ]
+  },
+  {
+    "variant": "root-contract-path-project-crlf",
+    "sourceSha256": "acd3142d0d17d91898842a247409db2dc273d40fe78263ff91ae3bc14e381c95",
+    "compiledMetadataTrailer": "0xa2646970667358221220b39f5a8a8abc85e539a51e16089f3d36c6df83aca2fbfa151d061936e8092d0464736f6c63430008220033",
+    "comparisons": [
+      {
+        "chainId": 8453,
+        "metadataMatches": false
+      },
+      {
+        "chainId": 84532,
+        "metadataMatches": false
+      }
+    ]
+  }
+]
