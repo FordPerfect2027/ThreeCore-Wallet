@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {createRequire} from 'node:module';
 import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {readDatMainnetSourceInput} from './dat-mainnet-source-input.mjs';
 if(process.argv.length!==3)throw Error('Usage: node reconstruct-runtime-source.mjs <token-checkout-with-solc-and-viem>');
 const dir=dirname(fileURLToPath(import.meta.url));
 const require=createRequire(join(resolve(process.argv[2]),'package.json'));
@@ -36,7 +37,7 @@ function compile(input,token){
  input.settings.outputSelection={'*':{'':['ast'],'*':['metadata','evm.deployedBytecode.object','evm.deployedBytecode.immutableReferences']}};
  const result=JSON.parse(solc.compile(JSON.stringify(input)));
  assert.deepEqual((result.errors||[]).filter(e=>e.severity==='error'),[]);
- const target=Object.keys(input.sources).find(p=>p.endsWith('/'+token+'Core.sol'));assert(target);
+ const target=Object.keys(input.sources).find(p=>p===token+'Core.sol'||p.endsWith('/'+token+'Core.sol'));assert(target);
  const contract=result.contracts[target][token+'Core'];assert(contract);
  const eip=Object.keys(result.sources).find(p=>p.endsWith('/utils/cryptography/EIP712.sol'));assert(eip);
  const bindings=new Map(),pending=[result.sources[eip].ast];
@@ -61,12 +62,15 @@ function expectedRuntime(compiled,token,chainId,contract){
  assert.deepEqual([...used].sort(),Object.keys(values).sort());ranges.sort((a,b)=>a.start-b.start);for(let i=1;i<ranges.length;i++)assert(ranges[i-1].start+32<=ranges[i].start);
  return {expected,ranges};
 }
-const rows=[];let commentControl=false;
+const rows=[];let commentControl=false,datProvenance=null;
 for(const entry of manifest.inputs){
  const bytes=read(entry.file);assert.equal(sha(bytes),entry.sha256);
  const input=JSON.parse(bytes),source=Object.keys(input.sources).find(p=>p==='project/contracts/'+entry.token+'Core.sol');assert(source);
  assert.equal(sha(input.sources[source].content),entry.projectSourceSha256);
  const candidate=transformed(input),baselineBuild=compile(input,entry.token),candidateBuild=compile(candidate,entry.token);
+ const recovered=entry.token==='DAT'?readDatMainnetSourceInput(read,input,solc.version()):null;
+ const recoveredBuild=recovered?compile(recovered.input,entry.token):null;
+ if(recovered){assert.deepEqual(JSON.parse(recoveredBuild.metadata),recovered.metadata);datProvenance=recovered.provenance;}
  for(const observation of observed.observations){
   assert([8453,84532].includes(observation.chainId));const row=observation.rows.find(r=>r.token===entry.token);assert(row);
   const chainCode=row.publicRuntimeBytecode.toLowerCase();assert.equal(keccak256(chainCode),row.onchainRuntimeKeccak256);
@@ -77,13 +81,17 @@ for(const entry of manifest.inputs){
   const matchBaseline=baseline.expected===chainCode,matchCandidate=restored.expected===chainCode;
   assert.equal(matchBaseline,entry.token==='DAT'&&observation.chainId===84532);
   assert.equal(matchCandidate,entry.token!=='DAT');
-  const chosen=matchCandidate?restored:baseline;
-  if(matchBaseline||matchCandidate){for(const offset of [0,chosen.ranges[0].start,(chainCode.length-2)/2-12]){
+  const exactRecovered=recoveredBuild?expectedRuntime(recoveredBuild,entry.token,observation.chainId,row.contract):null;
+  const recoveredMatches=exactRecovered?.expected===chainCode;
+  assert.equal(recoveredMatches,entry.token==='DAT'&&observation.chainId===8453);
+  const chosen=recoveredMatches?exactRecovered:matchCandidate?restored:baseline;
+  if(matchBaseline||matchCandidate||recoveredMatches){for(const offset of [0,chosen.ranges[0].start,(chainCode.length-2)/2-12]){
    const p=2+offset*2,mutated=chainCode.slice(0,p)+(parseInt(chainCode.slice(p,p+2),16)^1).toString(16).padStart(2,'0')+chainCode.slice(p+2);assert.notEqual(chosen.expected,mutated);
   }}
   rows.push({token:entry.token,chainId:observation.chainId,blockNumber:observation.blockNumber,blockHash:observation.blockHash,contract:row.contract,
-   unchangedInputFullMatch:matchBaseline,unversionedPathFullMatch:matchCandidate,completeRuntimeMatch:matchBaseline||matchCandidate,
-   expectedImmutablesIncluded:true,metadataIncluded:true,sourceContentsUnchanged:true});
+   unchangedInputFullMatch:matchBaseline,unversionedPathFullMatch:matchCandidate,recoveredPublishedInputFullMatch:recoveredMatches,completeRuntimeMatch:matchBaseline||matchCandidate||recoveredMatches,
+   expectedImmutablesIncluded:true,metadataIncluded:true,sourceContentsUnchanged:!recoveredMatches,
+   sourceAdjustment:recoveredMatches?'published root path and removal of one final LF, authenticated against retrieved source':'paths only or original input'});
  }
  if(entry.token==='EMA'){
   const changed=structuredClone(candidate);changed.sources['contracts/EMACore.sol'].content+='\n// Reconstruction negative control.\n';
@@ -92,7 +100,7 @@ for(const entry of manifest.inputs){
   assert.equal(split(original).executable,split(mutated).executable);assert.notEqual(original,mutated);assert.notEqual(split(original).metadata,split(mutated).metadata);commentControl=true;
  }
 }
-assert.equal(rows.length,6);assert.equal(rows.filter(r=>r.completeRuntimeMatch).length,5);assert(commentControl);
-console.log(JSON.stringify({offline:true,compiler:solc.version(),rows,completeRuntimeMatches:5,remainingMetadataMismatches:['DAT / Base Mainnet'],
+assert.equal(rows.length,6);assert.equal(rows.filter(r=>r.completeRuntimeMatch).length,6);assert(commentControl);
+console.log(JSON.stringify({offline:true,compiler:solc.version(),rows,completeRuntimeMatches:6,remainingMetadataMismatches:[],datMainnetSourceProvenance:datProvenance,
  controls:{changedExecutableRejected:true,changedImmutableRejected:true,changedMetadataRejected:true,sourceCommentOnlyChangeRejected:commentControl},
  currentChainReverified:false,initialHolderOrStorageVerified:false,independentAudit:false},null,2));

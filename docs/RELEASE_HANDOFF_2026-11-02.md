@@ -85,10 +85,10 @@ and browser UI suites. Review assertions and scope, not just passing totals.
   collections and complete workspaces restored in isolated native storage,
   including browser restart and a byte-identical download.
 - [Source reconstruction](DEPLOYMENT_SOURCE_RECONSTRUCTION_2026-11-02.md): all
-  six executable/immutable comparisons match; five complete runtime byte
-  comparisons match after path-only reconstruction. Mainnet initial creation/
+  six complete runtime byte comparisons now match, including recovered DAT
+  Mainnet source and its final-newline difference. Mainnet initial creation/
   issuance was checked for three tokens; EMA and CAWELON also have exact Sepolia
-  creation/issuance replays. DAT Mainnet compiler metadata remains unresolved.
+  creation/issuance replays. All three complete Mainnet creation inputs match.
 - [Reproducible distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md): the fixed
   full Wallet/token package and its fresh checkout, startup and ZIP receipts.
 - [Development dependency review](ZOD_EXPOSURE_2026-11-02.md): the remaining
@@ -162,7 +162,6 @@ Do not clear the user's database or reload their working tab to create a test.
 | Sepolia Wallet acceptance | Three token cards with existing accounts, exact saved observations, restore and explicit reconnect through the real Wallet | Public RPC reads of two existing accounts are recorded, but do not establish MetaMask testnet permission |
 | Complete candidate migration and return | Start the fixed candidate separately, restore actual saved files, reconnect and return to the preserved working version with records intact | Export/startup and offline format/native-storage checks passed; real-wallet migration/return is open |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
-| DAT Mainnet metadata | Recover and independently compare the original compiler input/metadata against the recorded on-chain bytes | Executable, immutables and initial mint match; full source reconstruction is incomplete |
 | Development dependency finding | Compatible remediation with applicable regression, or an explicit qualified release risk decision | One Zod root advisory remains; the forced patched major breaks an unchanged helper |
 | Independent review and release | Review the exact final scope, resolve findings, approve the deployment plan and release explicitly | No independent reviewer has completed or approved this candidate |
 
@@ -170,6 +169,12 @@ The original server was not restarted; its old imported server modules are not
 a demonstration of the complete candidate. Current native browser automation
 cannot establish Edge's URL reliably for extension control. Preserve that
 limitation instead of bypassing browser protections.
+
+The DAT Mainnet metadata comparison was closed by the later Sourcify-input
+recovery and local compilation against the separately recorded RPC bytes.
+This closes that developer verification item, not the independent-review gate.
+The fixed distributions above predate this follow-up; their source pins and
+earlier results remain unchanged.
 
 For every finding, record the exact commit, affected path, trigger, expected and
 observed behavior, evidence, impact, proposed fix and retest status. Do not count

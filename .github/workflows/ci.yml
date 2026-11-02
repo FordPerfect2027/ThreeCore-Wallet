@@ -97,6 +97,7 @@ jobs:
         working-directory: wallet
         run: |
           node docs/evidence/2026-11-02-token-dependency-review/reconstruct-runtime-source.mjs ../token > source-reconstruction.json
+          node docs/evidence/2026-11-02-token-dependency-review/verify-dat-mainnet-source-controls.mjs > dat-mainnet-source-controls.json
           node docs/evidence/2026-11-02-token-dependency-review/verify-recorded-mainnet-deployments.mjs ../token > mainnet-deployment-verification.json
           node docs/evidence/2026-11-02-token-dependency-review/verify-recorded-sepolia-deployments.mjs ../token > sepolia-deployment-verification.json
       - name: Keep the source and deployment comparison results
@@ -106,6 +107,7 @@ jobs:
           name: deployed-source-verification-${{ github.sha }}
           path: |
             wallet/source-reconstruction.json
+            wallet/dat-mainnet-source-controls.json
             wallet/mainnet-deployment-verification.json
             wallet/sepolia-deployment-verification.json
           if-no-files-found: error

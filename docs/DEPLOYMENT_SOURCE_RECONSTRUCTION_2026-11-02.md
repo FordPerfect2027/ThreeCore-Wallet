@@ -1,13 +1,13 @@
 # Deployment source reconstruction — November 2, 2026
 
-The recorded runtime bytes can now be reproduced completely for **five of six
+The recorded runtime bytes can now be reproduced completely for **all six
 registered deployments**, including compiler metadata and the expected EIP712
 immutable values. This is an offline compiler reproduction of the earlier
 canonical-block observations, not a new runtime read or independent audit.
 
 | Token | Base Mainnet | Base Sepolia |
 | --- | --- | --- |
-| DAT | Executable and immutable values match; metadata remains different | Complete runtime matches the saved Hardhat input |
+| DAT | Complete runtime matches recovered published compiler input | Complete runtime matches the saved Hardhat input |
 | EMA | Complete runtime matches reconstructed source paths | Complete runtime matches reconstructed source paths |
 | CAWELON | Complete runtime matches reconstructed source paths | Complete runtime matches reconstructed source paths |
 
@@ -30,12 +30,52 @@ or zeroing observed immutable values. Changing an executable, immutable or
 metadata byte fails comparison. A separate compile with only a source comment
 added preserves the executable but changes metadata and fails full comparison.
 
-DAT Mainnet remains unresolved. The bounded root-filename and project-CRLF
-diagnostics did not explain its metadata. The original five-mismatch result
+The earlier bounded DAT root-filename and project-CRLF diagnostics did not
+explain its metadata; the later recovery below closes that comparison. The original five-mismatch result
 remains valid for the unchanged ordinary Hardhat build; it is not overwritten.
 An attempt to retrieve the six on-chain IPFS metadata references received HTTP
 429 for every response. No metadata content was obtained or authenticated, and
 no alternate gateway or repeated request was used to evade that limit.
+
+## DAT Mainnet source recovered at 11:32 JST
+
+A separate read-only lookup using the documented
+[Sourcify contract API](https://docs.sourcify.dev/blog/apiv2-lookup-endpoints/)
+retrieved the published compiler input for
+[`8453 / 0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5`](https://sourcify.dev/server/v2/contract/8453/0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5?fields=all).
+The HTTP 200 response contains 614,446 bytes, SHA-256
+`4f20e25432a7c2e648940b03c1cb065f97f840f3851f2b7f251cb0e7ac6fd9e1`.
+No source was uploaded and no verification job was submitted.
+
+The 21 OpenZeppelin source files are byte-identical to the saved dependency
+input after mapping their paths. The root is `DATCore.sol` rather than
+`project/contracts/DATCore.sol`, and the local root file has **one additional
+final LF byte**: 1,272 versus 1,271 bytes. No other Solidity content difference
+was found. Compiler 0.8.34 and disabled optimizer / 200 runs match the published
+input. The source repositories remain unchanged.
+
+The local checker verifies those constraints, recompiles the recovered input
+with the pinned compiler, derives the seven EIP712 immutable slots itself, and
+compares the entire runtime against the independently saved Base RPC observation
+at block 53,394,765. Runtime bytes and compiler metadata match completely.
+The entire creation bytecode also matches the separately recorded creation
+transaction at block 51,281,431. This does not rely on Sourcify's `exact_match`
+label, its supplied immutable values or its supplied runtime as the comparison
+target. Compiled metadata is additionally compared with the retrieved metadata.
+
+The updated offline run therefore reports **6/6 complete runtime matches and
+3/3 complete Mainnet creation matches**. Nine source-provenance controls reject
+altered identity, compiler, source bytes, filename, optimizer or response digest.
+The eight semantic controls recompute the changed response digest before testing.
+Removing the service's match labels does not make the source checker fail.
+Creation replay also rejects a modified metadata byte for each token, in addition
+to the existing transaction and initial-mint controls. Previous 5/6 and 2/3
+results are retained as earlier evidence, not silently overwritten.
+
+- [Retrieved response](evidence/2026-11-02-token-dependency-review/dat-mainnet-sourcify-response.json) and [retrieval receipt](evidence/2026-11-02-token-dependency-review/dat-mainnet-sourcify-receipt.json)
+- [Complete runtime result](evidence/2026-11-02-token-dependency-review/source-reconstruction-complete-results.json)
+- [Complete Mainnet creation replay](evidence/2026-11-02-token-dependency-review/mainnet-deployment-complete-replay.json)
+- [Source-input controls](evidence/2026-11-02-token-dependency-review/dat-mainnet-source-controls.json)
 
 ## Mainnet creation and initial issuance
 
@@ -45,7 +85,7 @@ second header/chain check. No wallet or account credentials were used.
 
 | Token | Creation block | Initial minted amount, smallest units | Complete creation bytecode |
 | --- | ---: | ---: | --- |
-| DAT | 51,281,431 | 1000000000000000000000000000 | Executable matches; metadata remains different |
+| DAT | 51,281,431 | 1000000000000000000000000000 | Exact match after published-input recovery |
 | EMA | 51,542,489 | 777000000000000000000000000 | Exact match |
 | CAWELON | 51,542,494 | 420000000000000000000000000000000 | Exact match |
 
@@ -106,14 +146,16 @@ From the Wallet checkout, with the pinned DAT development dependencies installed
 
 ```powershell
 node docs/evidence/2026-11-02-token-dependency-review/reconstruct-runtime-source.mjs ../token-dependency-repair-DAT-20261102
+node docs/evidence/2026-11-02-token-dependency-review/verify-dat-mainnet-source-controls.mjs
 node docs/evidence/2026-11-02-token-dependency-review/verify-recorded-mainnet-deployments.mjs ../token-dependency-repair-DAT-20261102
 node docs/evidence/2026-11-02-token-dependency-review/verify-recorded-sepolia-deployments.mjs ../token-dependency-repair-DAT-20261102
 ```
 
-The first command requires the recorded solc binary hash and reproduces five
-complete runtimes. The second checks three initial mints and reproduces two
-complete creation inputs. The minimal 19-package read-only profile does not
-include solc and cannot compile these inputs. The third command replays the 96
+The runtime command requires the recorded solc binary hash and reproduces six
+complete runtimes. The source-control command needs only Node.js. The Mainnet
+command checks three initial mints and reproduces three complete creation inputs.
+The minimal 19-package read-only profile does not
+include solc and cannot compile these inputs. The Sepolia command replays the 96
 recorded Sepolia requests and verifies both creation inputs and initial mints.
 No dependency or Solidity change
 was made to the token repositories, and the development Zod advisory remains
@@ -121,9 +163,10 @@ open. The checks depend on the saved provider observations and local compiler;
 they do not authenticate the provider, establish an independent audit or close
 the remaining real-wallet and release gates.
 
-The local CI configuration now runs all three commands once in the DAT matrix job
+The local CI configuration now runs these four commands once in the DAT matrix job
 after installing the pinned development dependencies, and retains their JSON
-results as workflow artifacts. All three commands passed locally. This workflow
+results as workflow artifacts. The updated runtime/Mainnet/source-control commands
+passed locally; the unchanged Sepolia command retains its earlier passing run. This workflow
 change has not been published or run on GitHub; the previously documented
 token-before-Wallet publication order still applies.
 
@@ -139,6 +182,10 @@ the required recorded inputs, observations, three offline commands and a minimal
 compiler dependency lock. It is **358,656 bytes**, SHA-256
 `867bef2f9a75fc3807c19c48f786d780403b4acc59ccd79e43249cb8330d7161`.
 Its source checkpoint is `9838e5ba1b097fa998cb95d36f8d7fec4834143d`.
+This fixed kit predates the DAT Mainnet recovery above and retains its earlier
+5/6 runtime and 2/3 Mainnet creation results. The `9c8c81b` incremental review
+supplement also predates that recovery. Use the newer checkout evidence and
+checker files to reproduce the complete DAT comparison.
 
 A separate newly installed 21-package compiler environment, using neither the
 previous node_modules nor previous npm cache, passed all three included checks.

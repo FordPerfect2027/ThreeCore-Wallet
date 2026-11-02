@@ -1,9 +1,10 @@
 # Deployed runtime and current builds — November 2, 2026
 
 Follow-up: [source-path reconstruction](DEPLOYMENT_SOURCE_RECONSTRUCTION_2026-11-02.md)
-now reproduces complete runtime bytes for five of six deployments. The path-only
-reconstruction explains EMA/CAWELON metadata on both networks; DAT Mainnet remains
-different. The ordinary-build comparison below remains unchanged evidence.
+now reproduces complete runtime bytes for all six deployments. Path-only
+reconstruction explains EMA/CAWELON metadata on both networks; recovered DAT
+Mainnet source identifies the root path and one final LF difference. The
+ordinary-build comparison below remains unchanged evidence.
 
 Read-only observations at **09:21 JST** compared the current DAT, EMA and
 CAWELON build artifacts with the six registered ERC-20 deployments. All six

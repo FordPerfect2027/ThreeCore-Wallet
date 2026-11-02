@@ -13,10 +13,11 @@ export. It changes card configuration, not MetaMask's selected account/network;
 the actual switching, Sepolia and full migration gates remain open.
 
 The latest [source reconstruction](DEPLOYMENT_SOURCE_RECONSTRUCTION_2026-11-02.md)
-reproduces complete runtime bytes for five of six deployments after changing
-only compiler source paths. It also verifies the recorded Mainnet creation and
-initial mint for all three tokens, with exact creation-code matches for EMA and
-CAWELON. DAT Mainnet metadata remains unresolved. These additions are newer than
+reproduces complete runtime bytes for all six deployments. EMA/CAWELON required
+source-path reconstruction; DAT Mainnet additionally required removal of the
+one final LF absent from its recovered published source. Local compilation
+matches the separately saved RPC runtime and all three complete Mainnet creation
+inputs. This closes the DAT metadata comparison. These additions are newer than
 the 23d0a35 archive and do not close independent review or real-wallet switching.
 The separate Sepolia follow-up also locates and validates EMA/CAWELON creation
 and initial issuance, including complete creation-code matches and offline replay.
@@ -34,7 +35,8 @@ The earlier unchanged-input [deployed-runtime comparison](DEPLOYED_RUNTIME_COMPA
 covers all six registered ERC-20 deployments. Executable bytes and expected
 constructor immutables match the current builds; complete runtime bytes match
 only DAT on Sepolia because five metadata IPFS digests differ. The later path-only
-reconstruction above explains four of those differences. A portable
+reconstruction above explains four of those differences, and recovered DAT source
+explains the fifth. A portable
 offline checker reproduces the distinction. This is developer evidence and
 does not close independent review or real-wallet acceptance.
 

@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {createRequire} from 'node:module';
 import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {readDatMainnetSourceInput} from './dat-mainnet-source-input.mjs';
 if(process.argv.length!==3)throw Error('Usage: node verify-recorded-mainnet-deployments.mjs <token-checkout-with-solc-and-viem>');
 const dir=dirname(fileURLToPath(import.meta.url)),read=name=>readFileSync(join(dir,name));
 const require=createRequire(join(resolve(process.argv[2]),'package.json'));
@@ -43,7 +44,7 @@ function verify(item,fixture,compiled){
  assert.match(log.data,/^0x[a-f0-9]{64}$/i);assert.equal(BigInt(log.data).toString(),item.supply);
  const creation=tx.input.slice(0,-64).toLowerCase();
  assert.equal(split(creation).executable,split(compiled).executable);
- const full=creation===compiled;assert.equal(full,item.token!=='DAT');
+ const full=creation===compiled;assert.equal(full,true);
  return {token:item.token,contract:item.contract,transaction:item.transaction,blockNumber:quantity(tx.blockNumber).toString(),blockHash:hash(tx.blockHash),
   initialHolder:holder,initialSupply:item.supply,initialMintMatches:true,constructorArgumentMatches:true,addressDerivationMatches:true,canonicalRecordedHeadersMatch:true,
   fullCreationBytecodeMatches:full,creationExecutableMatches:true,metadataMatches:split(creation).metadata===split(compiled).metadata};
@@ -54,11 +55,12 @@ assert.equal(quantity(consume('eth_chainId',[])),8453n);
 const rows=[],controlKinds=new Set();
 for(const token of ['DAT','EMA','CAWELON']){
  const item={token,...expected[token]},entry=inputs.inputs.find(x=>x.token===token);assert(entry);
- const bytes=read(entry.file);assert.equal(sha(bytes),entry.sha256);const input=JSON.parse(bytes);
- input.sources=Object.fromEntries(Object.entries(input.sources).map(([path,value])=>[path.replace('npm/@openzeppelin/contracts@5.6.1/','@openzeppelin/contracts/').replace(/^project\//,''),value]));
- delete input.settings.remappings;input.settings.outputSelection={'*':{'*':['evm.bytecode.object']}};
+ const bytes=read(entry.file);assert.equal(sha(bytes),entry.sha256);let input=JSON.parse(bytes);
+ if(token==='DAT')input=readDatMainnetSourceInput(read,input,solc.version()).input;
+ else{input.sources=Object.fromEntries(Object.entries(input.sources).map(([path,value])=>[path.replace('npm/@openzeppelin/contracts@5.6.1/','@openzeppelin/contracts/').replace(/^project\//,''),value]));delete input.settings.remappings;}
+ input.settings.outputSelection={'*':{'*':['evm.bytecode.object']}};
  const built=JSON.parse(solc.compile(JSON.stringify(input)));assert.deepEqual((built.errors||[]).filter(e=>e.severity==='error'),[]);
- const compiled='0x'+built.contracts['contracts/'+token+'Core.sol'][token+'Core'].evm.bytecode.object;
+ const compiled='0x'+built.contracts[(token==='DAT'?'':'contracts/')+token+'Core.sol'][token+'Core'].evm.bytecode.object;
  const tx=consume('eth_getTransactionByHash',[item.transaction]),r=consume('eth_getTransactionReceipt',[item.transaction]);
  const before=consume('eth_getBlockByNumber',[tx.blockNumber,false]),after=consume('eth_getBlockByNumber',[tx.blockNumber,false]);
  const fixture={tx,receipt:r,before,after};rows.push(verify(item,fixture,compiled));
@@ -73,10 +75,11 @@ for(const token of ['DAT','EMA','CAWELON']){
   changedCanonicalHeader:f=>{f.after.hash='0x'+'11'.repeat(32);},
   wrongTransactionPosition:f=>{f.before.transactions[Number(quantity(f.tx.transactionIndex))]='0x'+'11'.repeat(32);},
   wrongChain:f=>{f.tx.chainId='0x14a34';},
-  wrongCreationOpcode:f=>{f.tx.input='0xff'+f.tx.input.slice(4);}
+  wrongCreationOpcode:f=>{f.tx.input='0xff'+f.tx.input.slice(4);},
+  wrongCreationMetadata:f=>{const p=f.tx.input.length-64-20;f.tx.input=f.tx.input.slice(0,p)+(parseInt(f.tx.input.slice(p,p+2),16)^1).toString(16).padStart(2,'0')+f.tx.input.slice(p+2);}
  };
  for(const[kind,mutate]of Object.entries(mutations)){const changed=structuredClone(fixture);mutate(changed);assert.throws(()=>verify(item,changed,compiled),undefined,kind);controlKinds.add(kind);}
 }
 assert.equal(quantity(consume('eth_chainId',[])),8453n);assert.equal(cursor,raw.length);
-console.log(JSON.stringify({offline:true,rows,initialMintAndConstructorChecksPassed:3,completeCreationBytecodeMatches:2,
- remainingMetadataMismatches:['DAT / Base Mainnet'],negativeControlKinds:[...controlKinds],currentChainReverified:false,currentHolderBalanceVerified:false,independentAudit:false},null,2));
+console.log(JSON.stringify({offline:true,rows,initialMintAndConstructorChecksPassed:3,completeCreationBytecodeMatches:3,
+ remainingMetadataMismatches:[],negativeControlKinds:[...controlKinds],currentChainReverified:false,currentHolderBalanceVerified:false,independentAudit:false},null,2));
