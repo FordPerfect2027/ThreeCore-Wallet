@@ -131,3 +131,27 @@ token-before-Wallet publication order still applies.
 are in the existing checksummed evidence collection. The 23d0a35 distribution
 predates this addition; retain it as its own checkpoint and include the addition
 in the next combined delivery.
+
+## Standalone additional verification kit
+
+`ThreeCore-source-verification-9838e5b-20261102-final.zip` in Downloads contains
+the required recorded inputs, observations, three offline commands and a minimal
+compiler dependency lock. It is **358,656 bytes**, SHA-256
+`867bef2f9a75fc3807c19c48f786d780403b4acc59ccd79e43249cb8330d7161`.
+Its source checkpoint is `9838e5ba1b097fa998cb95d36f8d7fec4834143d`.
+
+A separate newly installed 21-package compiler environment, using neither the
+previous node_modules nor previous npm cache, passed all three included checks.
+That profile pins solc/viem and the applicable temporary-file/redirect overrides;
+it does not install Hardhat or Zod. Its dated npm audit reports zero known
+findings, which does not clear the affected full development toolchain or
+constitute an independent audit. Dependencies are not vendored and initial
+installation requires npm access. The packaged checks themselves are offline.
+
+The ZIP was extracted to another new folder and all 48 manifest entries matched.
+The final packaging pass adjusts only standalone documentation links; verified
+code and data remain byte-identical to the fresh-runtime validation. This is an
+addition to the existing Wallet distribution, not a replacement or release
+approval. [Receipt](evidence/2026-11-02-token-dependency-review/source-kit-receipt.json)
+and [compiler profile/replays](evidence/2026-11-02-token-dependency-review/source-kit-replays.json)
+are retained with the methods and package manifest.
