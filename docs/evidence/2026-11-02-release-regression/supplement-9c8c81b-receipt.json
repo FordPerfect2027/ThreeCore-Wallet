@@ -1,0 +1,62 @@
+{
+  "schema": "threecore.review-supplement.v1",
+  "recordedAt": "2026-11-02T02:26:18.769Z",
+  "baseRevision": "23d0a35b129c32be581bf1a3ffad57e228b9b65c",
+  "targetRevision": "9c8c81bfd2cdefa8f9419815b5de79f490e02fc0",
+  "applicationRevision": "96b59459a0f593246c60f0bed4b52052211a464a",
+  "regressionRevision": "e5841f0d1b412b516b3e3eb4a81d75eabaf81edd",
+  "requiresBaseBundle": true,
+  "baseBundle": {
+    "file": "ThreeCore-Wallet-review.bundle",
+    "bytes": 20459159,
+    "sha256": "82ccc56f7aaa27f7c5b8dc592ba9990ff645d2db9de0d5efec57ace0ca329044"
+  },
+  "deltaBundle": {
+    "file": "ThreeCore-Wallet-23d0a35-to-9c8c81b.bundle",
+    "bytes": 313232,
+    "sha256": "8ac7d0def24ecfe86e748eea13b549fc6918774b89c83a1ef177e2210ce3756c"
+  },
+  "absentBaseRejected": true,
+  "baseThenDeltaRestorePassed": true,
+  "completeHistoryMatches": true,
+  "historyCommits": 602,
+  "restoredWorkingTreeClean": true,
+  "autocrlf": true,
+  "remoteConfigured": false,
+  "changedFileCount": 65,
+  "unchangedRuntimeAndTestPaths": [
+    "src",
+    "examples",
+    "scripts",
+    "test",
+    "integration",
+    "package.json",
+    "package-lock.json"
+  ],
+  "evidenceSummary": {
+    "manifests": 253,
+    "matchedManifests": 253,
+    "failedManifests": 0,
+    "files": 2539,
+    "mismatchedFiles": 0,
+    "unreadableFiles": 0,
+    "verifiedBytes": 113945024,
+    "admittedBytes": 113945024
+  },
+  "historicalVerification": {
+    "verified": true,
+    "files": 149,
+    "rpcRanges": 39,
+    "chromeBatchReads": 30,
+    "chromeBatchFiles": 60,
+    "chromeCrossChecks": 6,
+    "incomingEvents": 0
+  },
+  "fullRegressionRerun": false,
+  "readOnlyRpcUsed": false,
+  "realWalletUsed": false,
+  "originalServerRestarted": false,
+  "githubChanged": false,
+  "independentReviewCompleted": false,
+  "releaseReadinessPercentageCalculated": false
+}

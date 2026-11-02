@@ -1,6 +1,6 @@
 # Combined distribution checkpoint — November 2, 2026
 
-The latest local archive includes the RPC history-range correction, complete
+The full local archive includes the RPC history-range correction, complete
 regression after the native-crypto test-wait fix, six deployed-runtime comparisons,
 and the intended-PC Mainnet restore/reconnect/stop acceptance record.
 
@@ -57,3 +57,44 @@ not release approval or a calculated 90% completion score. The earlier 16a0d33
 and d904442 distributions remain unchanged.
 
 [Receipts and methods](evidence/2026-11-02-release-regression/DISTRIBUTION_23D0A35.md)
+
+## Incremental evidence and review supplement
+
+`ThreeCore-review-supplement-9c8c81b-20261102.zip` in Downloads adds the later
+source-reconstruction, actual-context and review records to the fixed full
+distribution. It requires the original `ThreeCore-Wallet-review.bundle`; it is
+not a standalone Wallet distribution.
+
+- Supplement target: `9c8c81bfd2cdefa8f9419815b5de79f490e02fc0`
+- ZIP: 468,608 bytes
+- SHA-256: `df51633722500251b51cf8dde996e38fde284567d0363a8174ac913c13bb42de`
+- Incremental bundle: 313,232 bytes, 65 changed documentation/evidence/CI files
+- Application and regression inputs: unchanged from the full distribution
+
+A fresh Windows checkout first rejected the incremental bundle because its base
+history was absent. After fetching the full bundle and then the increment, the
+exact target, all 602 history commits and a clean working tree were confirmed.
+No remote was configured. With `core.autocrlf=true`, all 253 evidence manifests /
+2,539 entries matched. The historical-record checker also passed its 149 files.
+These are checks of saved evidence, not new chain observations or additional
+Wallet regression cases.
+
+Fresh ZIP extraction matched all nine outer manifest entries with no extra
+files. The initial sealing attempt detected ordinary Markdown newline changes
+from the Windows checkout and stopped before creating a ZIP. The loose handoff
+copy was then checked with newline normalization and omitted: its relative
+links should be followed inside the fully restored repository. Evidence bytes
+were never normalized. The Japanese README contains the base-then-increment
+restore steps and the exact expected revision.
+
+The supplement does not close the remaining release gates in the
+[current review handoff](RELEASE_HANDOFF_2026-11-02.md). The source-replay kit is
+still available separately; it is not required to apply this bundle increment.
+The original 4231 process was observed unchanged at the end of this work.
+
+- [Restore receipt](evidence/2026-11-02-release-regression/supplement-9c8c81b-receipt.json)
+- [ZIP receipt](evidence/2026-11-02-release-regression/supplement-9c8c81b-zip-receipt.json)
+- [Included file manifest](evidence/2026-11-02-release-regression/supplement-9c8c81b-file-manifest.txt)
+- [Japanese restore instructions](evidence/2026-11-02-release-regression/supplement-9c8c81b-README.txt)
+- [Creation method](evidence/2026-11-02-release-regression/supplement-9c8c81b-build-method.mjs)
+- [Sealing method](evidence/2026-11-02-release-regression/supplement-9c8c81b-seal-method.mjs)
