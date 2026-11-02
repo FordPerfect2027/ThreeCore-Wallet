@@ -1,0 +1,211 @@
+{
+  "schema": "threecore.public-checkpoint-backup-compatibility.v1",
+  "recordedAt": "2026-11-02T18:18:36.742Z",
+  "oldPublicPrHead": "07041f00efdb503cb76a06fbe12e5531cb380930",
+  "currentSource": "bf690f38b070362aab1369fbf22c8e68b1a6567f",
+  "sourceSummary": {
+    "files": 4249,
+    "matched": 4249,
+    "mismatched": 0,
+    "unreadable": 0,
+    "unexpected": 0,
+    "inspectedBytes": 105110167
+  },
+  "sourceArchive": {
+    "bytes": 24634635,
+    "sha256": "4baaa1b1112f79abef74d58ef5e7786ab6851e48889991351586e3d82b198870"
+  },
+  "observations": [
+    {
+      "input": "mainnet-three-records",
+      "bytes": 4410,
+      "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989",
+      "oldExitCode": 1,
+      "oldResult": null,
+      "oldFailure": "Workspace backup check failed: WORKSPACE_DUPLICATE. Check the filename, format, and original backup.",
+      "currentExitCode": 0,
+      "currentResult": {
+        "schema": "threecore-backup-check-v1",
+        "byteLength": 4410,
+        "checksumVerified": true,
+        "digest": "10db29fa2df3d1a154c5e68980a0d3823246ed2acf225324d6b2ba583d3319a0",
+        "configuredCards": 3,
+        "totalObservations": 3,
+        "cards": [
+          {
+            "agent": "DAT",
+            "chainId": 8453,
+            "accountConfigured": true,
+            "configuredTokens": 1,
+            "observations": 1,
+            "remainingCapacity": 63,
+            "observationGroups": 1,
+            "historicalRecordsOutsideConfiguration": 0,
+            "unknownTokenBalances": 0
+          },
+          {
+            "agent": "EMA",
+            "chainId": 8453,
+            "accountConfigured": true,
+            "configuredTokens": 1,
+            "observations": 1,
+            "remainingCapacity": 63,
+            "observationGroups": 1,
+            "historicalRecordsOutsideConfiguration": 0,
+            "unknownTokenBalances": 0
+          },
+          {
+            "agent": "CAWELON",
+            "chainId": 8453,
+            "accountConfigured": true,
+            "configuredTokens": 1,
+            "observations": 1,
+            "remainingCapacity": 63,
+            "observationGroups": 1,
+            "historicalRecordsOutsideConfiguration": 0,
+            "unknownTokenBalances": 0
+          }
+        ],
+        "restored": false,
+        "currentBalanceVerified": false,
+        "ownershipVerified": false,
+        "independentSecurityAudit": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "input": "sepolia-three-records",
+      "bytes": 4371,
+      "sha256": "97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4",
+      "oldExitCode": 1,
+      "oldResult": null,
+      "oldFailure": "Workspace backup check failed: WORKSPACE_DUPLICATE. Check the filename, format, and original backup.",
+      "currentExitCode": 0,
+      "currentResult": {
+        "schema": "threecore-backup-check-v1",
+        "byteLength": 4371,
+        "checksumVerified": true,
+        "digest": "131e4d464e4aca3c0f06193b6aa99e020544d5291939f42097032cb9748e6b9a",
+        "configuredCards": 3,
+        "totalObservations": 3,
+        "cards": [
+          {
+            "agent": "DAT",
+            "chainId": 84532,
+            "accountConfigured": true,
+            "configuredTokens": 1,
+            "observations": 1,
+            "remainingCapacity": 63,
+            "observationGroups": 1,
+            "historicalRecordsOutsideConfiguration": 0,
+            "unknownTokenBalances": 0
+          },
+          {
+            "agent": "EMA",
+            "chainId": 84532,
+            "accountConfigured": true,
+            "configuredTokens": 1,
+            "observations": 1,
+            "remainingCapacity": 63,
+            "observationGroups": 1,
+            "historicalRecordsOutsideConfiguration": 0,
+            "unknownTokenBalances": 0
+          },
+          {
+            "agent": "CAWELON",
+            "chainId": 84532,
+            "accountConfigured": true,
+            "configuredTokens": 1,
+            "observations": 1,
+            "remainingCapacity": 63,
+            "observationGroups": 1,
+            "historicalRecordsOutsideConfiguration": 0,
+            "unknownTokenBalances": 0
+          }
+        ],
+        "restored": false,
+        "currentBalanceVerified": false,
+        "ownershipVerified": false,
+        "independentSecurityAudit": false
+      },
+      "inputUnchanged": true
+    },
+    {
+      "input": "latest-nine-records",
+      "bytes": 10103,
+      "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc",
+      "oldExitCode": 1,
+      "oldResult": null,
+      "oldFailure": "Workspace backup check failed: WORKSPACE_DUPLICATE. Check the filename, format, and original backup.",
+      "currentExitCode": 0,
+      "currentResult": {
+        "schema": "threecore-backup-check-v1",
+        "byteLength": 10103,
+        "checksumVerified": true,
+        "digest": "e2134d6f55364ce1cdcf5487513983b6bd8be7b858f7ff03fcc0027acc9da37d",
+        "configuredCards": 3,
+        "totalObservations": 9,
+        "cards": [
+          {
+            "agent": "DAT",
+            "chainId": 84532,
+            "accountConfigured": true,
+            "configuredTokens": 1,
+            "observations": 3,
+            "remainingCapacity": 61,
+            "observationGroups": 3,
+            "historicalRecordsOutsideConfiguration": 2,
+            "unknownTokenBalances": 0
+          },
+          {
+            "agent": "EMA",
+            "chainId": 84532,
+            "accountConfigured": true,
+            "configuredTokens": 1,
+            "observations": 3,
+            "remainingCapacity": 61,
+            "observationGroups": 3,
+            "historicalRecordsOutsideConfiguration": 2,
+            "unknownTokenBalances": 0
+          },
+          {
+            "agent": "CAWELON",
+            "chainId": 84532,
+            "accountConfigured": true,
+            "configuredTokens": 1,
+            "observations": 3,
+            "remainingCapacity": 61,
+            "observationGroups": 3,
+            "historicalRecordsOutsideConfiguration": 2,
+            "unknownTokenBalances": 0
+          }
+        ],
+        "restored": false,
+        "currentBalanceVerified": false,
+        "ownershipVerified": false,
+        "independentSecurityAudit": false
+      },
+      "inputUnchanged": true
+    }
+  ],
+  "startup": [
+    {
+      "path": "/",
+      "status": 200,
+      "sourceBytesMatch": true
+    },
+    {
+      "path": "/rehearsal/",
+      "status": 200,
+      "sourceBytesMatch": true
+    }
+  ],
+  "ownServerClosed": true,
+  "existingServersRestarted": false,
+  "publicReleaseExists": false,
+  "publicReleaseStatusBasis": "Previously recorded November 2 Releases response; not re-fetched by this check",
+  "isPublicReleaseRollback": false,
+  "browserRestorePerformed": false,
+  "walletOrRpcUsed": false,
+  "githubWrites": false
+}

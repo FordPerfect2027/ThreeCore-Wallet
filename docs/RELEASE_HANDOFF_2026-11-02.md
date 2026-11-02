@@ -19,6 +19,12 @@ The nine-record actual backup round trip retains its separate
 [earlier live record](REVIEW_CONTINUATION_2026-11-03.md).
 Older ZIPs remain fixed historical evidence. No GitHub publication occurred.
 
+The later [old-source compatibility and history recovery check](LEGACY_HISTORY_RECOVERY_2026-11-03.md)
+found that public checkpoint `07041f0` rejects current shared-account backups.
+A separate history-view copy preserves all nine observations and is accepted by
+both decoders; restoring the original configuration reproduces the original
+bytes exactly. This is offline file recovery, not a completed browser rollback.
+
 The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
 The original permitted origin was recovered through the rehearsal page, three
@@ -282,7 +288,7 @@ Do not clear the user's database or reload their working tab to create a test.
 | Open item | Evidence needed to close it | Current limit |
 | --- | --- | --- |
 | Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet, Account 1/Sepolia and Account 2/Sepolia sessions passed. The recovered Account 1 page retained nine records. The operator changed context after the prior session stopped; live switch-event invalidation remains unobserved |
-| Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files; a distinct older immutable public release was not exercised |
+| Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files. Offline follow-up found public checkpoint `07041f0` rejects shared-account backups; a nine-record history-only recovery copy is verified, but browser rollback to a public release is not |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
 | Development dependency finding | Compatible remediation with applicable regression, or an explicit qualified release risk decision | One Zod root advisory remains; the forced patched major breaks an unchanged helper |
 | Independent review and release | Review the exact final scope, resolve findings, approve the deployment plan and release explicitly | No independent reviewer has completed or approved this candidate |

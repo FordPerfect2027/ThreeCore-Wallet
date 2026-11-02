@@ -10,6 +10,10 @@ after extraction, with a successful alteration-detection control.
 Nine actual observations survived the earlier candidate restore/export byte-for-byte.
 These results close the later-source full-regression coverage gap; actual wallet
 switch invalidation, dependency disposition and independent review remain open.
+The later [legacy compatibility check](LEGACY_HISTORY_RECOVERY_2026-11-03.md)
+found the old public checkpoint rejects shared-account files. A separate
+history-view copy retains all nine records and passes both decoders; this does
+not establish full browser rollback or change the sealed package.
 
 The [navigation recovery follow-up](NAVIGATION_RECOVERY_2026-11-03.md) at `f6f378c`
 closes the detached-tab interruption: supported same-origin links reopened the

@@ -1,0 +1,43 @@
+{
+  "recordedAt": "2026-11-02T18:22:06.813Z",
+  "initialMethodErrors": [
+    "Generated method had a literal newline inside a quoted string; corrected before execution.",
+    "Startup comparison first used examples/rehearsal/index.html; corrected to the old revision actual examples/operation-rehearsal.html."
+  ],
+  "initialFailuresAreNotProductFailures": true,
+  "sourceExportReusedAfterSuccessfulVerification": true,
+  "oldSourceModified": false,
+  "finalCompatibilityMethodExitCode": 0,
+  "finalRecoveryMethodExitCode": 0,
+  "browserControl": {
+    "reason": "Edge extension update requested; existing debugger detached and fresh rehearsal binding timed out. Native app inventory also timed out.",
+    "connectionRestored": false,
+    "serverHttpChecks": [
+      {
+        "port": 4231,
+        "status": 200,
+        "bytes": 9804,
+        "walletHtml": true
+      },
+      {
+        "port": 4232,
+        "status": 200,
+        "bytes": 9804,
+        "walletHtml": true
+      },
+      {
+        "port": 4233,
+        "status": 200,
+        "bytes": 9804,
+        "walletHtml": true
+      }
+    ],
+    "existingProcessesPreserved": [
+      2108,
+      28252,
+      19964
+    ],
+    "walletSwitchTestNotCounted": true
+  },
+  "liveBackupsCopiedToPublicEvidence": false
+}
