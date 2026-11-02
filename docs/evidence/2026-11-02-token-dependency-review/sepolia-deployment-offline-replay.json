@@ -1,0 +1,42 @@
+{
+  "offline": true,
+  "recordedRequestsReplayed": 96,
+  "creationAndInitialMintMatches": 2,
+  "rows": [
+    {
+      "token": "EMA",
+      "contract": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+      "transaction": "0x15f2353c67409fce705522945bcd0d2496e182d72cea6f8dd93b1bd5326d9f20",
+      "blockNumber": "47046084",
+      "blockHash": "0x10b77bbe155f82595465e4d52aafd1bba85a2a86d563557205823560d07177a9",
+      "deployer": "0xfbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "initialHolder": "0xfbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "initialSupply": "777000000000000000000000000",
+      "codeAbsentAtPrecedingBlock": true,
+      "codeMatchesSavedRuntime": true,
+      "directCreateAddressMatches": true,
+      "fullCreationBytecodeMatches": true,
+      "initialMintMatches": true,
+      "canonicalHeaderRechecked": true
+    },
+    {
+      "token": "CAWELON",
+      "contract": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+      "transaction": "0x4731e7ead96c674706cb6acae4de3e5574e4528a73f602bdc37b9142315d5aea",
+      "blockNumber": "47045524",
+      "blockHash": "0xf56244671a714d84a22763938db135502dfa8d06c76ca8e7ee6581025e95a5ef",
+      "deployer": "0xfbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "initialHolder": "0xfbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "initialSupply": "420000000000000000000000000000000",
+      "codeAbsentAtPrecedingBlock": true,
+      "codeMatchesSavedRuntime": true,
+      "directCreateAddressMatches": true,
+      "fullCreationBytecodeMatches": true,
+      "initialMintMatches": true,
+      "canonicalHeaderRechecked": true
+    }
+  ],
+  "currentChainReverified": false,
+  "currentHolderBalanceVerified": false,
+  "independentAudit": false
+}

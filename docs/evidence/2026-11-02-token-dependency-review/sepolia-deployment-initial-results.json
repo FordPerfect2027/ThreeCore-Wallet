@@ -1,0 +1,17 @@
+{
+  "startedAt": "2026-11-02T01:38:04.661Z",
+  "chainId": 84532,
+  "endpoint": "https://sepolia.base.org",
+  "rows": [],
+  "readOnly": true,
+  "signatureCreated": false,
+  "transactionSent": false,
+  "searchAssumption": "Locate a code-absent/code-present boundary, then require a matching direct CREATE transaction and successful mint receipt at that exact block.",
+  "error": {
+    "name": "RpcRequestError",
+    "message": "RPC Request failed."
+  },
+  "finishedAt": "2026-11-02T01:38:05.570Z",
+  "requests": 2,
+  "rawSha256": "2fb2d61b7fd7b825b6a5de8e9e2483fd3c1826636d38da06b98da293cf10a2ba"
+}

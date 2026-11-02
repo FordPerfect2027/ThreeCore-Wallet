@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile} from 'node:fs/promises';
+const root='C:/Users/aseet/AppData/Local/Temp/';
+let script=await readFile(root+'threecore-sepolia-deployment-locate-20261102.mjs','utf8');
+const diagnostic=JSON.parse(await readFile('C:/Users/aseet/Downloads/ThreeCore-sepolia-deployment-check-20261102/genesis-diagnostic.json','utf8'));
+assert.equal(diagnostic.response.error.code,4444);assert.equal(diagnostic.response.error.message,'pruned history unavailable: requested 0, earliest available 46500000');
+script=script.replace("const output='C:/Users/aseet/Downloads/ThreeCore-sepolia-deployment-check-20261102';","const output='C:/Users/aseet/Downloads/ThreeCore-sepolia-deployment-check-20261102-v2';\nconst lowerBound=46500000n;");
+script=script.replace("const result=await client.request({method,params});raw.push({method,params,result});return result;", "const entry={method,params};raw.push(entry);try{entry.result=await client.request({method,params});return entry.result;}catch(error){entry.error={name:error.name,message:error.shortMessage||error.message,details:error.details,code:error.code};throw error;}");
+script=script.replace("rows:[],readOnly:true", "rows:[],lowerBoundBlock:lowerBound.toString(),readOnly:true");
+script=script.replace('await codeAt(0n)','await codeAt(lowerBound)').replace('let lo=0n,hi=high','let lo=lowerBound,hi=high');
+await writeFile(root+'threecore-sepolia-deployment-locate-v2-20261102.mjs',script,{flag:'wx'});

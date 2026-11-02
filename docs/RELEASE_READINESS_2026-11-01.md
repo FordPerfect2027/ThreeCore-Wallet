@@ -6,6 +6,8 @@ only compiler source paths. It also verifies the recorded Mainnet creation and
 initial mint for all three tokens, with exact creation-code matches for EMA and
 CAWELON. DAT Mainnet metadata remains unresolved. These additions are newer than
 the 23d0a35 archive and do not close independent review or real-wallet switching.
+The separate Sepolia follow-up also locates and validates EMA/CAWELON creation
+and initial issuance, including complete creation-code matches and offline replay.
 
 The latest [intended-PC acceptance](LIVE_ACCEPTANCE_2026-11-02.md) connected all
 three token cards to one existing MetaMask account on Base Mainnet, saved their

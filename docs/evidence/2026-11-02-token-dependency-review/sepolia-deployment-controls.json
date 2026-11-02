@@ -1,0 +1,43 @@
+{
+  "source": "C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/docs/evidence/2026-11-02-token-dependency-review",
+  "ownedTarget": "C:/Users/aseet/AppData/Local/Temp/threecore sepolia replay cb121207-23db-4c95-a5ff-8aad14be54a4",
+  "offline": true,
+  "networkRequests": 0,
+  "rows": [
+    {
+      "case": "baseline",
+      "exitCode": 0,
+      "signal": null,
+      "rawDigestUpdated": true,
+      "expectedResultObserved": true
+    },
+    {
+      "case": "wrongMint",
+      "exitCode": 1,
+      "signal": null,
+      "rawDigestUpdated": true,
+      "expectedResultObserved": true
+    },
+    {
+      "case": "wrongCreation",
+      "exitCode": 1,
+      "signal": null,
+      "rawDigestUpdated": true,
+      "expectedResultObserved": true
+    },
+    {
+      "case": "falseAbsentCode",
+      "exitCode": 1,
+      "signal": null,
+      "rawDigestUpdated": true,
+      "expectedResultObserved": true
+    },
+    {
+      "case": "changedCanonicalHeader",
+      "exitCode": 1,
+      "signal": null,
+      "rawDigestUpdated": true,
+      "expectedResultObserved": true
+    }
+  ]
+}

@@ -62,7 +62,43 @@ recorded responses. Modified sender, constructor argument, receipt status,
 created address, removed log, mint supply/recipient, canonical header,
 transaction position, chain and creation opcode are rejected. It does not
 contact a provider or create any new transaction. EMA/CAWELON Sepolia creation
-transactions and initial allocations were not examined in this sequence.
+transactions and initial allocations were examined in the separate follow-up
+below.
+
+## Sepolia creation follow-up
+
+The initial search stopped because the provider reports block history before
+46,500,000 as pruned. Its two successful responses and the failed-attempt method
+are retained, together with a separate diagnostic response reporting the
+available lower bound. The initial collector's `requests: 2` counts completed
+responses; it attempted three requests. The diagnostic was one additional call.
+
+A bounded follow-up starting at the provider's stated lower bound completed
+**96 read-only requests**. Code was absent at that bound and present at the
+captured head. The search found an absent/present boundary for each contract,
+then required an actual direct creation transaction and a successful matching
+receipt at that exact block. It did not infer a deployment merely from finding
+code. The previous block was also read as empty; code at every non-empty search
+point matched the earlier saved runtime. Observation and creation headers and
+chain ID were rechecked.
+
+| Token | Creation block | Creation transaction | Result |
+| --- | ---: | --- | --- |
+| EMA | 47,046,084 | `0x15f2353c67409fce705522945bcd0d2496e182d72cea6f8dd93b1bd5326d9f20` | Complete creation code and initial mint match |
+| CAWELON | 47,045,524 | `0x4731e7ead96c674706cb6acae4de3e5574e4528a73f602bdc37b9142315d5aea` | Complete creation code and initial mint match |
+
+Both observed Sepolia initial holders are
+`0xfbe494b465efe6d0daff80dc715302d0fa0ac5d9`, with the respective EMA/CAWELON
+issuance amounts shown in the Mainnet table. The constructor argument and mint
+event agree, and the sender/nonce derive the registered created address. This
+does not establish current balances or ownership of that address.
+
+The offline checker consumes the exact recorded method/parameter sequence,
+recompiles creation bytecode and repeats the boundary/receipt checks without a
+public RPC transport. Separate process controls modify mint amount, creation
+opcode, an absent-code response and the repeated canonical header. The raw-file
+digest is updated in each modified copy, so rejection cannot rely solely on
+that digest. The untouched copy passes and all four changed copies fail.
 
 ## Reproduce the saved checks
 
@@ -71,20 +107,23 @@ From the Wallet checkout, with the pinned DAT development dependencies installed
 ```powershell
 node docs/evidence/2026-11-02-token-dependency-review/reconstruct-runtime-source.mjs ../token-dependency-repair-DAT-20261102
 node docs/evidence/2026-11-02-token-dependency-review/verify-recorded-mainnet-deployments.mjs ../token-dependency-repair-DAT-20261102
+node docs/evidence/2026-11-02-token-dependency-review/verify-recorded-sepolia-deployments.mjs ../token-dependency-repair-DAT-20261102
 ```
 
 The first command requires the recorded solc binary hash and reproduces five
 complete runtimes. The second checks three initial mints and reproduces two
 complete creation inputs. The minimal 19-package read-only profile does not
-include solc and cannot compile these inputs. No dependency or Solidity change
+include solc and cannot compile these inputs. The third command replays the 96
+recorded Sepolia requests and verifies both creation inputs and initial mints.
+No dependency or Solidity change
 was made to the token repositories, and the development Zod advisory remains
 open. The checks depend on the saved provider observations and local compiler;
 they do not authenticate the provider, establish an independent audit or close
 the remaining real-wallet and release gates.
 
-The local CI configuration now runs both commands once in the DAT matrix job
-after installing the pinned development dependencies, and retains both JSON
-results as workflow artifacts. Both commands passed locally. This workflow
+The local CI configuration now runs all three commands once in the DAT matrix job
+after installing the pinned development dependencies, and retains their JSON
+results as workflow artifacts. All three commands passed locally. This workflow
 change has not been published or run on GitHub; the previously documented
 token-before-Wallet publication order still applies.
 

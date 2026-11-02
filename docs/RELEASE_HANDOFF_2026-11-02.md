@@ -5,6 +5,8 @@ reproduces five complete runtimes with unchanged Solidity and path-only compiler
 input changes. Mainnet creation and initial issuance were separately checked for
 all three tokens; EMA/CAWELON creation code matches completely. DAT Mainnet
 metadata and the previously listed real-wallet/review gates remain open.
+EMA/CAWELON Sepolia creation and initial issuance now have a separate saved
+96-request observation, complete creation-code matches and an offline replay.
 
 Latest source/test checkpoint: `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd`;
 application source: `96b59459a0f593246c60f0bed4b52052211a464a`.
