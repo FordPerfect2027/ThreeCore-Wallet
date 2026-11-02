@@ -272,6 +272,7 @@ export function mountPermittedAccountPanel({ document, parent, siteOrigin,
     return element;
   }
   node('p', 'help', 'このサイトで許可済みの公開アドレスをWalletから読み取れます。表示と確認だけでは接続しません。');
+  node('p', 'site-origin', 'この画面の接続先: ' + siteOrigin);
   node('p', 'site-help', 'MetaMaskでは、接続サイトのアイコンから、このサイト向けのネットワークと口座の許可を確認してください。資産一覧の表示を切り替えても、このサイトの接続先は変わらない場合があります。');
   const read = node('button', 'read', 'Walletの許可済みアドレスを確認');
   const details = node('pre', 'details');
