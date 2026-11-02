@@ -9,7 +9,17 @@ DAT, EMA and CAWELON checked separately. Signing, transactions, token approvals,
 custody, swaps, bridges and autonomous spending are outside this candidate.
 A 90% planning target is not an achieved release gate or a measured score.
 
-The current standalone review package is `ThreeCore-review-bf690f3-20261103-r1.zip`.
+The current standalone review package is
+[`ThreeCore-review-128ee11-20261103.zip`](CONSOLIDATED_REVIEW_2026-11-03.md).
+It contains the applied private helper repair in all three token sources and
+the later 68-case decoder comparison and nine-record recovery evidence.
+All four complete Git histories, 5,022 Wallet source files, 285 token source
+files and 264 manifests / 2,903 evidence entries matched. The outer ZIP was
+freshly extracted and all 29 listed files matched; an alteration control failed
+as expected. Wallet implementation/test files are unchanged from the complete
+regression below. No new full regression or live event pass is claimed.
+
+The earlier standalone package is `ThreeCore-review-bf690f3-20261103-r1.zip`.
 It includes the diagnostics, navigation recovery, evidence-checker repair and
 all three token compatibility guards. All 42 outer files, 4,783 Wallet source
 files and 258 evidence manifests / 2,676 entries matched. The clean restored
