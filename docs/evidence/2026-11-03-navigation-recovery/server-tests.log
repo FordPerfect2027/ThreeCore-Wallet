@@ -1,0 +1,382 @@
+TAP version 13
+# Subtest: RPC relay targets only official Base and preserves the canonical hash selector
+ok 1 - RPC relay targets only official Base and preserves the canonical hash selector
+  ---
+  duration_ms: 326.3437
+  type: 'test'
+  ...
+# Subtest: origin, permission/write methods, destination injection and malformed input cannot reach upstream
+ok 2 - origin, permission/write methods, destination injection and malformed input cannot reach upstream
+  ---
+  duration_ms: 158.6896
+  type: 'test'
+  ...
+# Subtest: the HTTP relay enforces the history span even when the browser guard is bypassed
+ok 3 - the HTTP relay enforces the history span even when the browser guard is bypassed
+  ---
+  duration_ms: 30.2325
+  type: 'test'
+  ...
+# Subtest: remote failures and mismatched response IDs never become a successful result
+ok 4 - remote failures and mismatched response IDs never become a successful result
+  ---
+  duration_ms: 30.6707
+  type: 'test'
+  ...
+# Subtest: full wallet + HTTP state path succeeds although the wallet rejects all state calls
+ok 5 - full wallet + HTTP state path succeeds although the wallet rejects all state calls
+  ---
+  duration_ms: 99.219
+  type: 'test'
+  ...
+# Subtest: relay caps concurrent upstream work and releases capacity after completion
+ok 6 - relay caps concurrent upstream work and releases capacity after completion
+  ---
+  duration_ms: 106.9333
+  type: 'test'
+  ...
+# Subtest: closing the client aborts outstanding upstream work
+ok 7 - closing the client aborts outstanding upstream work
+  ---
+  duration_ms: 33.5038
+  type: 'test'
+  ...
+# Subtest: closing clients cancels stalled upstream bodies and releases all twelve relay slots
+ok 8 - closing clients cancels stalled upstream bodies and releases all twelve relay slots
+  ---
+  duration_ms: 188.89
+  type: 'test'
+  ...
+# Subtest: client closure frees all slots while initial fetch ignores abort, and late replies are discarded
+ok 9 - client closure frees all slots while initial fetch ignores abort, and late replies are discarded
+  ---
+  duration_ms: 299.1207
+  type: 'test'
+  ...
+# Subtest: relay refuses a redirected upstream success and retains generic local error text
+ok 10 - relay refuses a redirected upstream success and retains generic local error text
+  ---
+  duration_ms: 42.0027
+  type: 'test'
+  ...
+# Subtest: demo serves production modules and gates browser fixtures (uiTest=false)
+ok 11 - demo serves production modules and gates browser fixtures (uiTest=false)
+  ---
+  duration_ms: 726.2945
+  type: 'test'
+  ...
+# Subtest: demo serves production modules and gates browser fixtures (uiTest=true)
+ok 12 - demo serves production modules and gates browser fixtures (uiTest=true)
+  ---
+  duration_ms: 711.1361
+  type: 'test'
+  ...
+# Subtest: refused rehearsal navigation stays 403 and offers one fixed same-origin link
+ok 13 - refused rehearsal navigation stays 403 and offers one fixed same-origin link
+  ---
+  duration_ms: 143.2091
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /
+ok 14 - explicit same-origin navigation loads only the fixed screen after a refusal: /
+  ---
+  duration_ms: 114.15
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+ok 15 - explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+  ---
+  duration_ms: 44.1787
+  type: 'test'
+  ...
+# Subtest: wallet entry guide uses only the local listening port and fixed root route
+ok 16 - wallet entry guide uses only the local listening port and fixed root route
+  ---
+  duration_ms: 27.2429
+  type: 'test'
+  ...
+# Subtest: RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+ok 17 - RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+  ---
+  duration_ms: 30.1304
+  type: 'test'
+  ...
+# Subtest: invalid Host remains a plain rejection and is never echoed in a recovery URL
+ok 18 - invalid Host remains a plain rejection and is never echoed in a recovery URL
+  ---
+  duration_ms: 10.5601
+  type: 'test'
+  ...
+# Subtest: ordinary direct navigation still serves the actual rehearsal page
+ok 19 - ordinary direct navigation still serves the actual rehearsal page
+  ---
+  duration_ms: 24.8164
+  type: 'test'
+  ...
+# Subtest: guide helper refuses invalid local ports and unrelated verdicts
+ok 20 - guide helper refuses invalid local ports and unrelated verdicts
+  ---
+  duration_ms: 2.2575
+  type: 'test'
+  ...
+# Subtest: rehearsal is reachable from the wallet and explicitly disconnects network access
+ok 21 - rehearsal is reachable from the wallet and explicitly disconnects network access
+  ---
+  duration_ms: 216.0116
+  type: 'test'
+  ...
+# Subtest: all module imports resolve from the explicit allowlist with safe content types
+ok 22 - all module imports resolve from the explicit allowlist with safe content types
+  ---
+  duration_ms: 465.2666
+  type: 'test'
+  ...
+# Subtest: rehearsal exposes no files outside allowlist or writable endpoint
+ok 23 - rehearsal exposes no files outside allowlist or writable endpoint
+  ---
+  duration_ms: 96.7219
+  type: 'test'
+  ...
+# Subtest: security headers cover successful files, missing paths and denied requests: false
+ok 24 - security headers cover successful files, missing paths and denied requests: false
+  ---
+  duration_ms: 113.4313
+  type: 'test'
+  ...
+# Subtest: security headers cover successful files, missing paths and denied requests: true
+ok 25 - security headers cover successful files, missing paths and denied requests: true
+  ---
+  duration_ms: 23.7378
+  type: 'test'
+  ...
+# Subtest: canonical loopback authority and exact same-origin reads remain available
+ok 26 - canonical loopback authority and exact same-origin reads remain available
+  ---
+  duration_ms: 18.8476
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: attacker.invalid
+ok 27 - Host validation rejects DNS rebinding authority: attacker.invalid
+  ---
+  duration_ms: 7.6184
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 127.0.0.1.attacker.invalid
+ok 28 - Host validation rejects DNS rebinding authority: 127.0.0.1.attacker.invalid
+  ---
+  duration_ms: 11.345
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: localhost.attacker.invalid
+ok 29 - Host validation rejects DNS rebinding authority: localhost.attacker.invalid
+  ---
+  duration_ms: 8.2695
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 0.0.0.0
+ok 30 - Host validation rejects DNS rebinding authority: 0.0.0.0
+  ---
+  duration_ms: 8.5363
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 127.1
+ok 31 - Host validation rejects DNS rebinding authority: 127.1
+  ---
+  duration_ms: 7.6985
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 2130706433
+ok 32 - Host validation rejects DNS rebinding authority: 2130706433
+  ---
+  duration_ms: 7.0984
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: [::ffff:127.0.0.1]
+ok 33 - Host validation rejects DNS rebinding authority: [::ffff:127.0.0.1]
+  ---
+  duration_ms: 9.9372
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 127.0.0.1:1
+ok 34 - Host validation rejects DNS rebinding authority: 127.0.0.1:1
+  ---
+  duration_ms: 20.2186
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: localhost.
+ok 35 - Host validation rejects DNS rebinding authority: localhost.
+  ---
+  duration_ms: 11.5563
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: user@127.0.0.1
+ok 36 - Host validation rejects DNS rebinding authority: user@127.0.0.1
+  ---
+  duration_ms: 5.7601
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: null
+ok 37 - foreign Origin is refused even with a valid Host: null
+  ---
+  duration_ms: 7.6139
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: https://attacker.invalid
+ok 38 - foreign Origin is refused even with a valid Host: https://attacker.invalid
+  ---
+  duration_ms: 7.5868
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: http://localhost:1
+ok 39 - foreign Origin is refused even with a valid Host: http://localhost:1
+  ---
+  duration_ms: 7.4991
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: file://
+ok 40 - foreign Origin is refused even with a valid Host: file://
+  ---
+  duration_ms: 7.0119
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: chrome-extension://fake
+ok 41 - foreign Origin is refused even with a valid Host: chrome-extension://fake
+  ---
+  duration_ms: 7.4674
+  type: 'test'
+  ...
+# Subtest: Fetch Metadata refuses non-origin browser request: cross-site
+ok 42 - Fetch Metadata refuses non-origin browser request: cross-site
+  ---
+  duration_ms: 8.2152
+  type: 'test'
+  ...
+# Subtest: Fetch Metadata refuses non-origin browser request: same-site
+ok 43 - Fetch Metadata refuses non-origin browser request: same-site
+  ---
+  duration_ms: 8.7864
+  type: 'test'
+  ...
+# Subtest: Fetch Metadata refuses non-origin browser request: bogus
+ok 44 - Fetch Metadata refuses non-origin browser request: bogus
+  ---
+  duration_ms: 6.4049
+  type: 'test'
+  ...
+# Subtest: local wallet cannot be embedded as iframe
+ok 45 - local wallet cannot be embedded as iframe
+  ---
+  duration_ms: 9.9385
+  type: 'test'
+  ...
+# Subtest: local wallet cannot be embedded as frame
+ok 46 - local wallet cannot be embedded as frame
+  ---
+  duration_ms: 10.9327
+  type: 'test'
+  ...
+# Subtest: local wallet cannot be embedded as object
+ok 47 - local wallet cannot be embedded as object
+  ---
+  duration_ms: 9.5204
+  type: 'test'
+  ...
+# Subtest: local wallet cannot be embedded as embed
+ok 48 - local wallet cannot be embedded as embed
+  ---
+  duration_ms: 7.9467
+  type: 'test'
+  ...
+# Subtest: Origin comparison includes the port and host spelling
+ok 49 - Origin comparison includes the port and host spelling
+  ---
+  duration_ms: 11.3283
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: http://attacker.invalid/
+ok 50 - ambiguous HTTP target is refused without crashing server: http://attacker.invalid/
+  ---
+  duration_ms: 10.7383
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: //attacker.invalid/
+ok 51 - ambiguous HTTP target is refused without crashing server: //attacker.invalid/
+  ---
+  duration_ms: 12.5996
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: /%
+ok 52 - ambiguous HTTP target is refused without crashing server: /%
+  ---
+  duration_ms: 11.4719
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: /%zz
+ok 53 - ambiguous HTTP target is refused without crashing server: /%zz
+  ---
+  duration_ms: 11.2942
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: /\#fragment
+ok 54 - ambiguous HTTP target is refused without crashing server: /\#fragment
+  ---
+  duration_ms: 13.459
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: /\\attacker.invalid/
+ok 55 - ambiguous HTTP target is refused without crashing server: /\\attacker.invalid/
+  ---
+  duration_ms: 11.4289
+  type: 'test'
+  ...
+# Subtest: request target length is bounded independently of body or query content
+ok 56 - request target length is bounded independently of body or query content
+  ---
+  duration_ms: 19.2876
+  type: 'test'
+  ...
+# Subtest: forwarded headers cannot override the local Host requirement
+ok 57 - forwarded headers cannot override the local Host requirement
+  ---
+  duration_ms: 10.3297
+  type: 'test'
+  ...
+# Subtest: server rejects write methods and never provides an upload endpoint
+ok 58 - server rejects write methods and never provides an upload endpoint
+  ---
+  duration_ms: 100.5732
+  type: 'test'
+  ...
+# Subtest: source allowlist excludes private files, policies and backup artifacts
+ok 59 - source allowlist excludes private files, policies and backup artifacts
+  ---
+  duration_ms: 72.2251
+  type: 'test'
+  ...
+# Subtest: all new production security modules are explicitly available
+ok 60 - all new production security modules are explicitly available
+  ---
+  duration_ms: 73.7847
+  type: 'test'
+  ...
+# Subtest: CSP excludes executable inline code, eval, external connections and embedding
+ok 61 - CSP excludes executable inline code, eval, external connections and embedding
+  ---
+  duration_ms: 5.0673
+  type: 'test'
+  ...
+# Subtest: inspection is read-only and returns no reflected private request text
+ok 62 - inspection is read-only and returns no reflected private request text
+  ---
+  duration_ms: 0.8839
+  type: 'test'
+  ...
+1..62
+# tests 62
+# suites 0
+# pass 62
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3066.9994

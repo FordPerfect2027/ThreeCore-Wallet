@@ -1,0 +1,32 @@
+# ThreeCore working agreement
+
+The user requested this operating method on November 3, 2026 (Japan time).
+
+- Continue the authorized task through execution, verification, problem detection,
+  cause analysis, correction, another execution and another verification.
+  Ordinary errors, lost browser connections and failed tests are evidence for the
+  next step, not by themselves reasons to return the task to the user.
+- Try supported recovery paths and continue independent useful work. Do not
+  repeatedly retry an unchanged failed action or manufacture test counts.
+- Ask the user only for genuinely missing decisions or actions that require
+  them, such as personal authentication or significant irreversible actions.
+  Do all authorized preparation first and explain the concrete dependency.
+- Respect tool-enforced safety stops. Do not bypass access restrictions or
+  weaken protections to get a passing result. Follow an explicit instruction
+  to stop the turn when a tool requires it.
+- Verify actual results and save evidence. Keep synthetic tests, user reports,
+  observed live wallet behavior and planning percentages distinct. Do not claim
+  90% or a release gate solely from elapsed time or the number of passing tests.
+- No user-wallet signing, sending, token approvals, swaps, private-key or seed
+  access. Normal authorized connection and read-only work may proceed.
+- Keep GitHub writes deferred for the requested consolidated publication.
+- Preserve loaded user pages and their unsaved data. Use an existing same-origin
+  in-app link to open a fresh Wallet tab when an old automation tab is detached;
+  do not reload a working page to repair the automation connection.
+- Preserve the original 4231 and fixed-candidate 4232 server processes. Run new
+  server-code checks separately. Verify downloads on disk, not only from the UI.
+- Keep handoff marks current for unfinished agent-created pages; they last only
+  for the current turn. Save file backups as well, since tab access can be lost.
+- Do not spawn sub-agents unless the user explicitly authorizes delegation.
+
+Current review status starts at `docs/RELEASE_HANDOFF_2026-11-02.md`.

@@ -2,6 +2,13 @@
 
 ## Local development follow-up — November 3
 
+The [navigation recovery follow-up](NAVIGATION_RECOVERY_2026-11-03.md) at `f6f378c`
+closes the detached-tab interruption: supported same-origin links reopened the
+Wallet without another manual address-bar entry. Three real Account 1 / Sepolia
+reads completed at block 53,572,089; a verified nine-record backup preserves the
+six prior Account 2 observations. The 62 server/security cases passed. This is
+post-switch recovery evidence; live event invalidation remains unverified.
+
 The [connection-stop diagnostic change](CONNECTION_STOP_DIAGNOSTICS_2026-11-03.md)
 at `856f670` preserves account/network/provider stop reasons after later idle
 stops, without storing wallet payloads. Its 453 targeted Node checks and the

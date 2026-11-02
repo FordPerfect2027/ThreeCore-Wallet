@@ -9,10 +9,14 @@ DAT, EMA and CAWELON checked separately. Signing, transactions, token approvals,
 custody, swaps, bridges and autonomous spending are outside this candidate.
 A 90% planning target is not an achieved release gate or a measured score.
 
-The latest local implementation is the [connection-stop diagnostic improvement](CONNECTION_STOP_DIAGNOSTICS_2026-11-03.md)
-at `856f670`, with 453 targeted Node cases and 1,024 synthetic browser cases
-passing. Live switching remains unverified after the controlled tab lost its
-operation connection. The unchanged [fixed-package full regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md)
+The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
+at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
+The original permitted origin was recovered through the rehearsal page, three
+Account 1 / Sepolia reads completed at block 53,572,089, and a nine-record backup
+was verified. The prior [connection-stop diagnostic improvement](CONNECTION_STOP_DIAGNOSTICS_2026-11-03.md)
+at `856f670` passed 453 targeted Node cases and 1,024 synthetic browser cases.
+Live switch-event invalidation remains separately unverified.
+The unchanged [fixed-package full regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md)
 at `2126019` predates this implementation; that package and the public CI do not
 include the diagnostic change.
 
@@ -21,7 +25,7 @@ include the diagnostic change.
 | Item | Fixed revision | What it establishes |
 | --- | --- | --- |
 | Earlier bounded code-review checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
-| Latest Wallet implementation | `856f670e2e813a828214dc8cffa47ba53e8222f7` | Bounded, payload-free wallet invalidation reasons retained in the existing protection journal; 453 targeted Node and 1,024 browser cases passed |
+| Latest Wallet implementation | `f6f378cc9b44f33fc7e147f4626e23573de06a6c` | Explicit same-origin entry-guide link; 62 server/security cases and actual Edge recovery passed; controller diagnostics remain at `856f670` |
 | Latest complete Wallet regression | `212601977bc6dad8da298f11ebb9e7a421052571` | Restored standalone package: 16,454 Node/HTTP and 1,021 synthetic browser passes on unchanged source |
 | DAT | `47d8aa9db72e54e49fc9521f9b4022c416a7c6d1` | Local empty-data toolchain correction; contract bytes unchanged |
 | EMA | `5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac` | Local empty-data toolchain correction; contract bytes unchanged |
