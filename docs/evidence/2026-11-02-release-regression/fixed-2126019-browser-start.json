@@ -1,0 +1,7 @@
+{
+  "mode": "Isolated headless Chrome, synthetic provider, no real wallet or external RPC",
+  "startedAt": "2026-11-02T13:32:12.0970274+00:00",
+  "rerunCount": 1,
+  "command": "node scripts/test-browser-ui.js",
+  "sourceRevision": "212601977bc6dad8da298f11ebb9e7a421052571"
+}

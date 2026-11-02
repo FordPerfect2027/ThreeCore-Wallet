@@ -1,5 +1,33 @@
 # ThreeCore release preparation — November 1, 2026
 
+## Current fixed-candidate assessment — November 2, 22:36 JST
+
+The [standalone review package](DISTRIBUTION_CHECKPOINT_2026-11-02.md) pins Wallet
+source `212601977bc6dad8da298f11ebb9e7a421052571` and application `8fa0ed2`.
+Its restored, clean checkout now passed the [complete local regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md):
+16,454 Node/HTTP cases and 1,021 synthetic browser cases, with no failed, cancelled
+or skipped cases. This supersedes the previous full-regression coverage gap
+for the later copy/layout changes. It does not change product scope or prove 90%.
+
+| Release condition | Current evidence and remaining requirement |
+| --- | --- |
+| Fixed source and regression | The exact packaged Wallet source passed complete local checks. New token toolchain pins retain their separately recorded successful suites. Public PR #4's five passing jobs still apply to its older `07041f0` head; current remote CI remains pending publication. |
+| Evidence and reproducibility | The fixed package restored four complete Git histories and exact source exports; 254 manifests / 2,630 entries matched at packaging. New regression logs and their hashes are saved separately without replacing the source ZIP. |
+| Real wallet acceptance | Account 1/Mainnet and Account 2/Sepolia reads, six-record migration/return and explicit reconnect passed. The latest reported network switch still yielded Sepolia in the controlled tab; live account/chain switching remains unverified. |
+| File recovery | Actual Wallet and rehearsal file restoration and byte-identical round trips passed. Traversal of the original profile's Windows picker remains unverified; browser filechooser evidence is separate. |
+| Read-only/input protection | Existing dispatch/input/cancellation safeguards passed the fixed-source regression. The separate development Zod advisory and independent assessment remain open. |
+| Distribution and rollback | The unchanged fixed-source review package starts from a fresh folder. Actual candidate migration/return passed, but not rollback to an older immutable public release. The public Releases endpoint returned no releases at this check. |
+| Operational support | The operator guide, source pins, source-reconstruction evidence, backup procedures and review package are available. Actual extension-control limitations are recorded. |
+| Independent review and release decision | No independent review or release approval has been completed. These cannot be replaced by more self-tests. |
+
+The 90% planning target remains active. Essential unresolved conditions are not
+offset by test counts, repeated runs or elapsed time. Preserve the existing
+4231/4232 servers and unsaved user tabs. Collect work locally for the requested
+combined publication; no new user-wallet signature, transaction or key access
+is authorized. The records below retain their original historical scopes.
+
+## Earlier development record
+
 The [current review handoff](RELEASE_HANDOFF_2026-11-02.md) now consolidates the
 implementation, regression, token and distribution pins. Its November 2 public
 GET recheck confirms PR #4 remains open/draft at `07041f0`, with the same five
@@ -154,7 +182,7 @@ production-only audit, which predates the runtime dependency reclassification. T
 documented token-before-Wallet publication order. The `7d58d08` delivery includes the dependency and canonical-read corrections.
 Subsequent history CLI changes are tracked separately below.
 
-## Acceptance gates and current evidence
+## Earlier acceptance-gate assessment
 
 | Gate | Completion evidence needed | Current assessment |
 | --- | --- | --- |
@@ -255,7 +283,7 @@ features. Compiled-token jobs use local EVMs and do not send public transactions
     150 cases against fresh token builds, and six separately recorded real
     public-RPC observations. No third real account is required for this scope.
 
-## Current real-wallet observation
+## Earlier real-wallet observations
 
 Account 1's previously missing public address was obtained through the supported
 permitted-account preview. EMA reconnection, canonical metadata/balance reads,
@@ -293,7 +321,7 @@ remains private in Downloads; the packaged summary is redacted. The existing
 Wallet UI was readable, but further control failed before an action was
 confirmed. Its original tabs and server were preserved.
 
-## Next work order
+## Earlier work order
 
 Evidence CI, the fresh-directory source/startup check and the intended-PC
 rehearsal file cycle have passed on their named revisions. Account 1 resumption

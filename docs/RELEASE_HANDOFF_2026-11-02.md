@@ -9,13 +9,18 @@ DAT, EMA and CAWELON checked separately. Signing, transactions, token approvals,
 custody, swaps, bridges and autonomous spending are outside this candidate.
 A 90% planning target is not an achieved release gate or a measured score.
 
+The [fixed-package full regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md) now
+covers the latest application at source `2126019`, including the network-label
+and layout changes. The source ZIP remains unchanged. Its new local results are
+separate from the earlier public CI and do not close the remaining release gates.
+
 ## Exact source map
 
 | Item | Fixed revision | What it establishes |
 | --- | --- | --- |
-| Inspected local evidence checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
+| Earlier bounded code-review checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
 | Latest Wallet implementation | `8fa0ed2739482b8df415e46c6c45491955d4bfc4` | Distinct requested/observed network labels, exact site-origin display and earlier address wrapping; the last RPC behavior change remains the inclusive range correction at `96b5945` |
-| Latest complete Wallet regression | `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd` | 16,454 Node/HTTP and 1,021 synthetic browser passes; later test-only drain-wait fix included |
+| Latest complete Wallet regression | `212601977bc6dad8da298f11ebb9e7a421052571` | Restored standalone package: 16,454 Node/HTTP and 1,021 synthetic browser passes on unchanged source |
 | DAT | `47d8aa9db72e54e49fc9521f9b4022c416a7c6d1` | Local empty-data toolchain correction; contract bytes unchanged |
 | EMA | `5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac` | Local empty-data toolchain correction; contract bytes unchanged |
 | CAWELON | `4af9e1db98cac546e498b6f34531ba890cc2e3c0` | Local empty-data toolchain correction; contract bytes unchanged |
@@ -59,8 +64,9 @@ with `scrollWidth === clientWidth`. The existing tab was preserved and separate
 empty validation tabs were closed. Its actual permission read still reported
 Base Mainnet and one permitted account; this does not close the requested
 Sepolia or account-switch gate. See the [layout receipt](evidence/2026-11-02-release-regression/account-probe-layout-summary.json).
-The full regression predates this CSS-only change; the new evidence is the actual
-rendered layout check, not another full regression run.
+At that point the full regression predated this CSS-only change; that original
+record is an actual layout check. The later full regression at `2126019` now
+includes this source without replacing the earlier layout receipt.
 
 The later copy-only change at `7c12a28` explains MetaMask's site-specific account
 permissions and network selection, separately from its asset display. Existing
@@ -118,9 +124,10 @@ and browser UI suites. Review assertions and scope, not just passing totals.
 
 ## Evidence already available
 
-- [Complete regression](NATIVE_CRYPTO_TEST_WAIT_2026-11-02.md): 16,454 Node/HTTP
-  and 1,021 synthetic browser passes. The initial one-test failure and test-only
-  wait correction are retained. These are not new reruns for this handoff.
+- [Latest complete regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md): 16,454 Node/HTTP
+  and 1,021 synthetic browser passes from the clean restored `2126019` package.
+  The [earlier native-crypto test correction](NATIVE_CRYPTO_TEST_WAIT_2026-11-02.md)
+  and its original failure remain separately recorded.
 - [Token source and test routing](SOURCE_PORTABILITY_2026-11-02.md): all three
   current builds, source/routing and local history/Wallet compatibility checks
   passed. DAT also passed its full standard check. Earlier read-only totals

@@ -1,0 +1,9 @@
+{
+  "node": "v24.19.0",
+  "startedAt": "2026-11-02T13:21:44.1022564+00:00",
+  "command": "node --test --test-reporter=tap --test-timeout=60000 --test-concurrency=2 test/*.test.js integration/*-server.test.mjs integration/local-navigation-help.test.mjs",
+  "realWallet": false,
+  "restoredCheckout": "C:\\Users\\aseet\\AppData\\Local\\Temp\\threecore review dcee74dd-1b85-49e8-b5ad-e0a958064208\\wallet checkout",
+  "sourceRevision": "212601977bc6dad8da298f11ebb9e7a421052571",
+  "githubWrites": false
+}

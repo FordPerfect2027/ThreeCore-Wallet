@@ -9,7 +9,7 @@ The original packages remain unchanged.
 
 - Wallet source/evidence: `212601977bc6dad8da298f11ebb9e7a421052571`
 - Wallet implementation: `8fa0ed2739482b8df415e46c6c45491955d4bfc4`
-- Last complete Wallet regression: `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd`
+- Complete Wallet regression after restoration: `212601977bc6dad8da298f11ebb9e7a421052571`
 - ZIP: 51,127,612 bytes
 - SHA-256: `a938e26ed7c572962c32decf0cc452654caeed58f5514be9ae41418c9ad605ea`
 
@@ -44,6 +44,12 @@ approval or a calculated completion percentage.
 - [ZIP verification](evidence/2026-11-02-release-regression/distribution-2126019-zip-receipt.json)
 - [Included file manifest](evidence/2026-11-02-release-regression/distribution-2126019-file-manifest.txt)
 - [Japanese entry instructions](evidence/2026-11-02-release-regression/distribution-2126019-README.txt)
+
+The subsequent [full fixed-source regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md)
+passed 16,454 Node/HTTP and 1,021 synthetic browser cases from the clean restored
+checkout. This was a separate later run, not part of the packaging checks above.
+The ZIP hash remains unchanged; the later report is saved alongside its results
+and in the development evidence. The open release gates remain open.
 
 ## Earlier combined package: 23d0a35
 
