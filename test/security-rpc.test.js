@@ -103,6 +103,20 @@ test("both supported Transfer directions remain account and token bound", () => 
   assert.deepEqual(guardRpcRequest(outgoing, context), outgoing);
 });
 
+test("the dispatch boundary enforces the inclusive 2000-block limit without losing uint256 precision", () => {
+  const maximum = (1n << 256n) - 1n;
+  for (const [start, end] of [[0n, 0n], [0n, 1999n], [maximum - 1999n, maximum]]) {
+    const request = logs();
+    Object.assign(request.params[0], { fromBlock: "0x" + start.toString(16), toBlock: "0x" + end.toString(16) });
+    assert.deepEqual(guardRpcRequest(request, context), request);
+  }
+  for (const [start, end] of [[0n, 2000n], [maximum - 2000n, maximum], [0n, maximum]]) {
+    const request = logs();
+    Object.assign(request.params[0], { fromBlock: "0x" + start.toString(16), toBlock: "0x" + end.toString(16) });
+    assert.throws(() => guardRpcRequest(request, context), code("RPC_LOG_FILTER"));
+  }
+});
+
 for (const alter of [
   args => { args.params[0].address = A; },
   args => { args.params[0].topics[0] = HASH; },

@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import { createDemoServer } from "../examples/dev-server.js";
 import { createBaseStateProvider } from "../src/base-state-provider.js";
 import { ThreeCoreWalletSession } from "../src/wallet-session.js";
+import { catalogToken } from "../src/token-catalog.js";
+import { TRANSFER_TOPIC } from "../src/transfer-codec.js";
 const A = "0x1111111111111111111111111111111111111111";
 const HASH = "0x" + "ab".repeat(32);
 const rpc = { method: "eth_getBalance", params: [A, { blockHash: HASH, requireCanonical: true }] };
@@ -41,6 +43,29 @@ test("origin, permission/write methods, destination injection and malformed inpu
     assert.equal((await post(base, '{"agent":"DAT","agent":"EMA"}')).status, 400);
     assert.equal((await post(base, "x".repeat(8193))).status, 413);
     assert.equal(calls, 0);
+  });
+});
+
+test("the HTTP relay enforces the history span even when the browser guard is bypassed", async () => {
+  const calls = [];
+  await withServer(async (_url, options) => {
+    calls.push(JSON.parse(options.body));
+    return Response.json({ jsonrpc: "2.0", id: 1, result: [] });
+  }, async base => {
+    const query = { method: "eth_getLogs", params: [{ address: catalogToken({ agent: "DAT", chainId: 8453 }).address,
+      fromBlock: "0x0", toBlock: "0x7d0", topics: [TRANSFER_TOPIC, null, "0x" + A.slice(2).padStart(64, "0")] }] };
+    for (const end of ["0x7d0", "0x" + "f".repeat(64)]) {
+      query.params[0].toBlock = end;
+      const rejected = await post(base, envelope(query));
+      assert.equal(rejected.status, 400);
+      assert.deepEqual(await rejected.json(), { error: "STATE_RPC_REQUEST" });
+    }
+    assert.equal(calls.length, 0);
+    query.params[0].toBlock = "0x7cf";
+    const accepted = await post(base, envelope(query));
+    assert.equal(accepted.status, 200);
+    assert.deepEqual(await accepted.json(), { result: [] });
+    assert.deepEqual(calls, [{ jsonrpc: "2.0", id: 1, ...query }]);
   });
 });
 

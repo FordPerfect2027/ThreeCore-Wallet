@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createBaseStateProvider } from "../src/base-state-provider.js";
+import { catalogToken } from "../src/token-catalog.js";
+import { TRANSFER_TOPIC } from "../src/transfer-codec.js";
 import { readStateRpcJson, STATE_RPC_RESPONSE_LIMIT, STATE_RPC_TIMEOUT_MS } from "../src/state-rpc-http.js";
 const A = "0x1111111111111111111111111111111111111111";
 const HASH = "0x" + "ab".repeat(32);
@@ -28,6 +30,18 @@ test("wrong account and unpinned selectors are refused before HTTP", async () =>
   await assert.rejects(p.request({ ...request, params: [A, "0x1"] }));
   await assert.rejects(p.request({ ...request, params: [A, { blockHash: HASH, requireCanonical: false }] }));
   assert.equal(calls, 0);
+});
+
+test("direct state-provider log requests cannot exceed 2000 blocks before HTTP", async () => {
+  const calls = [];
+  const p = provider(async (_url, options) => { calls.push(JSON.parse(options.body).request); return Response.json({ result: [] }); });
+  const query = { method: "eth_getLogs", params: [{ address: catalogToken({ agent: "DAT", chainId: 8453 }).address,
+    fromBlock: "0x0", toBlock: "0x7d0", topics: [TRANSFER_TOPIC, null, "0x" + A.slice(2).padStart(64, "0")] }] };
+  await assert.rejects(p.request(query), { code: "RPC_LOG_FILTER" });
+  assert.equal(calls.length, 0);
+  query.params[0].toBlock = "0x7cf";
+  assert.deepEqual(await p.request(query), []);
+  assert.deepEqual(calls, [query]);
 });
 test("transport errors are bounded local text, not provider instructions", async () => {
   for (const response of [new Response("secret instruction", { status: 502 }), Response.json({ result: "0x1", extra: "secret" }),

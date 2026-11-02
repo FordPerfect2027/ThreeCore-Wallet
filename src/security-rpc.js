@@ -1,5 +1,6 @@
 /** A second, explicit capability boundary before any provider request. */
 import { captureDataArray } from "./security-data.js";
+import { MAX_TRANSFER_BLOCKS } from "./transfer-codec.js";
 export class RpcSecurityError extends Error {
   constructor(code) {
     super(code);
@@ -77,7 +78,8 @@ export function guardRpcRequest(input, { account, tokenAddress, allowPermission 
     if (params.length !== 1 || !address(account) || !address(tokenAddress)) fail("RPC_REQUEST_SHAPE");
     const query = object(params[0], ["address", "fromBlock", "toBlock", "topics"]);
     if (query.address !== tokenAddress || !quantity(query.fromBlock) || !quantity(query.toBlock) ||
-        BigInt(query.fromBlock) > BigInt(query.toBlock)) fail("RPC_LOG_FILTER");
+        BigInt(query.fromBlock) > BigInt(query.toBlock) ||
+        BigInt(query.toBlock) - BigInt(query.fromBlock) + 1n > BigInt(MAX_TRANSFER_BLOCKS)) fail("RPC_LOG_FILTER");
     const topics = array(query.topics, 3);
     const owner = "0x" + account.slice(2).toLowerCase().padStart(64, "0");
     const incoming = topics.length === 3 && topics[1] === null && topics[2] === owner;
