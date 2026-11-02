@@ -68,6 +68,36 @@ test('one total admission budget is shared by all manifests', () => fixture(asyn
   assert.equal(result.summary.matchedManifests, 1); assert.equal(result.summary.admittedBytes, 4);
   assert.equal(result.manifests[1].result.files[0].code, 'TOTAL_SIZE_LIMIT'); assert.equal(result.allMatched, false);
 }));
+
+test('growing evidence history supports 257 through 512 manifests, but rejects 513', { timeout: 60000 }, () => fixture(async ({ repo, git }) => {
+  async function addRange(start, end) {
+    for (let i = start; i < end; i++) {
+      const dir = join(repo, 'docs', 'extra-' + String(i).padStart(3, '0'));
+      await mkdir(dir); await writeFile(join(dir, 'evidence.log'), 'x');
+      await writeFile(join(dir, 'SHA256SUMS.txt'), hash('x') + '  evidence.log\n');
+    }
+    git('add', 'docs');
+  }
+  await addRange(0, 255);
+  const grown = await verifyEvidenceCollection(repo);
+  assert.equal(grown.summary.manifests, 257); assert.equal(grown.allMatched, true);
+  const limited = await verifyEvidenceCollection(repo, { maxTotalBytes: 8 });
+  assert.equal(limited.summary.admittedBytes, 8); assert.equal(limited.allMatched, false);
+  assert.equal(limited.summary.matchedManifests, 2);
+  assert.equal(limited.manifests[2].result.files[0].code, 'TOTAL_SIZE_LIMIT');
+
+  const changed = join(repo, 'docs/extra-000/evidence.log');
+  await writeFile(changed, 'y');
+  const corrupt = await verifyEvidenceCollection(repo);
+  assert.equal(corrupt.allMatched, false); assert.equal(corrupt.summary.mismatchedFiles, 1);
+  await writeFile(changed, 'x');
+
+  await addRange(255, 510);
+  const boundary = await verifyEvidenceCollection(repo);
+  assert.equal(boundary.summary.manifests, 512); assert.equal(boundary.allMatched, true);
+  await addRange(510, 511);
+  await assert.rejects(verifyEvidenceCollection(repo), { code: 'EVIDENCE_COLLECTION_LIMIT' });
+}));
 test('a nested path never silently expands to the whole repository', () => fixture(async ({ repo }) => {
   await assert.rejects(verifyEvidenceCollection(join(repo, 'docs')), { code: 'EVIDENCE_REPOSITORY_ROOT_REQUIRED' });
 }));

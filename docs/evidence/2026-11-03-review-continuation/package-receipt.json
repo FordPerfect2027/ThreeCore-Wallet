@@ -1,0 +1,145 @@
+{
+  "schema": "threecore.combined-review-package.v4",
+  "recordedAt": "2026-11-02T17:12:36.531Z",
+  "node": "v24.19.0",
+  "sourceRevision": "9374845d440910f7ecb27c73d35fe2cfda37f934",
+  "walletImplementation": "f6f378cc9b44f33fc7e147f4626e23573de06a6c",
+  "latestCompleteWalletRegression": "212601977bc6dad8da298f11ebb9e7a421052571",
+  "laterTargetedChecks": {
+    "diagnosticNode": 453,
+    "syntheticBrowser": 1024,
+    "navigationServer": 62
+  },
+  "diagnosticsImplementation": "856f670e2e813a828214dc8cffa47ba53e8222f7",
+  "fullWalletRegressionRerunDuringPackaging": false,
+  "publicPrHead": "07041f00efdb503cb76a06fbe12e5531cb380930",
+  "walletSourceSummary": {
+    "files": 4758,
+    "matched": 4758,
+    "mismatched": 0,
+    "unreadable": 0,
+    "unexpected": 0,
+    "inspectedBytes": 130475086
+  },
+  "evidenceSummary": {
+    "manifests": 256,
+    "matchedManifests": 256,
+    "failedManifests": 0,
+    "files": 2655,
+    "mismatchedFiles": 0,
+    "unreadableFiles": 0,
+    "verifiedBytes": 118841822,
+    "admittedBytes": 118841822
+  },
+  "startupChecks": 11,
+  "ownServerClosed": true,
+  "original4231Restarted": false,
+  "candidate4232Restarted": false,
+  "realWalletUsed": false,
+  "sourceHistoryComplete": true,
+  "restoredCheckoutsHaveNoRemotes": true,
+  "tokenSources": [
+    {
+      "token": "DAT",
+      "revision": "47d8aa9db72e54e49fc9521f9b4022c416a7c6d1",
+      "sourceSummary": {
+        "files": 99,
+        "matched": 99,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 520224
+      },
+      "completeHistoryVerified": true,
+      "restoredWorkingTreeClean": true,
+      "windowsCheckoutAutocrlf": true,
+      "sourceSha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6",
+      "artifactSha256": "ee5993ac0526aff0f9d75e1de75e0a544acdcd1bd384b94c692aa72f25d78722",
+      "artifactCopiedFromVerifiedBuild": true,
+      "artifactRebuiltDuringPackaging": false,
+      "dependenciesInstalledDuringPackaging": false,
+      "testsRerunDuringPackaging": false,
+      "priorTests": {
+        "sourceAndRouting": 7,
+        "toolchain": 2,
+        "contracts": 37,
+        "readOnly": 251,
+        "localHistory": 10,
+        "walletCompatibility": 50
+      },
+      "priorTestsEvidence": "wallet/source.zip: docs/evidence/2026-11-02-toolchain-empty-data/",
+      "contractBytecodesUnchangedByToolchainRepair": true
+    },
+    {
+      "token": "EMA",
+      "revision": "5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac",
+      "sourceSummary": {
+        "files": 84,
+        "matched": 84,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 449473
+      },
+      "completeHistoryVerified": true,
+      "restoredWorkingTreeClean": true,
+      "windowsCheckoutAutocrlf": true,
+      "sourceSha256": "8234f4b8a94d9a2d25cde34bc2900ae080223e698633420cad7ad533390d7444",
+      "artifactSha256": "564834dcc3d3b978838c91acfe006c9579d7f105d10b1bc298120fc610784389",
+      "artifactCopiedFromVerifiedBuild": true,
+      "artifactRebuiltDuringPackaging": false,
+      "dependenciesInstalledDuringPackaging": false,
+      "testsRerunDuringPackaging": false,
+      "priorTests": {
+        "sourceAndRouting": 7,
+        "toolchain": 2,
+        "contracts": 39,
+        "readOnly": 227,
+        "localHistory": 10,
+        "walletCompatibility": 50
+      },
+      "priorTestsEvidence": "wallet/source.zip: docs/evidence/2026-11-02-toolchain-empty-data/",
+      "contractBytecodesUnchangedByToolchainRepair": true
+    },
+    {
+      "token": "CAWELON",
+      "revision": "4af9e1db98cac546e498b6f34531ba890cc2e3c0",
+      "sourceSummary": {
+        "files": 84,
+        "matched": 84,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 467456
+      },
+      "completeHistoryVerified": true,
+      "restoredWorkingTreeClean": true,
+      "windowsCheckoutAutocrlf": true,
+      "sourceSha256": "51adf4a8edecc3d9e0fb79d359d57129085487661171c9174d77ad5c3497a2b5",
+      "artifactSha256": "282a9f2bab274a3eb3345e23451b1626e25c954c12174a3cd8127c476476f967",
+      "artifactCopiedFromVerifiedBuild": true,
+      "artifactRebuiltDuringPackaging": false,
+      "dependenciesInstalledDuringPackaging": false,
+      "testsRerunDuringPackaging": false,
+      "priorTests": {
+        "sourceAndRouting": 7,
+        "toolchain": 2,
+        "contracts": 39,
+        "readOnly": 227,
+        "localHistory": 10,
+        "walletCompatibility": 50
+      },
+      "priorTestsEvidence": "wallet/source.zip: docs/evidence/2026-11-02-toolchain-empty-data/",
+      "contractBytecodesUnchangedByToolchainRepair": true
+    }
+  ],
+  "remaining": [
+    "Live account/chain-switch invalidation",
+    "Native Windows picker traversal",
+    "Older immutable public-release rollback if required",
+    "Zod GHSA-mrhx-c7xc-m3w5",
+    "Independent review and explicit release decision"
+  ],
+  "githubWrites": false,
+  "percentageCalculated": false
+}

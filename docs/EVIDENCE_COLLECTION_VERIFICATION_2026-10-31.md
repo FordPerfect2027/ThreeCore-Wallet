@@ -2,7 +2,7 @@
 
 Continuation item 414. Source revision `1acf7f2`.
 
-A new read-only command discovers the repository's tracked SHA256SUMS.txt files and verifies them as one bounded collection. It requires the actual repository root, ignores untracked checksum lists and rejects outside-repository paths, duplicate resolved manifest aliases and unsafe tracked names. No fetch, stage, commit or other repository mutation is performed by the checker. Git inspection has bounded output and time limits; at most 256 manifests are accepted.
+A new read-only command discovers the repository's tracked SHA256SUMS.txt files and verifies them as one bounded collection. It requires the actual repository root, ignores untracked checksum lists and rejects outside-repository paths, duplicate resolved manifest aliases and unsafe tracked names. No fetch, stage, commit or other repository mutation is performed by the checker. Git inspection has bounded output and time limits; at most 512 manifests are accepted (increased from 256 on November 3 as the tracked collection grew). The shared 512 MiB artifact-admission budget, per-file limits and path checks are unchanged.
 
 All manifests share a 512 MiB artifact-admission budget rather than receiving independent unlimited allowances. The single-manifest result now includes `admittedBytes` so collection accounting also covers a file whose read fails after admission. Callers may lower the total budget. Files that cannot be read, missing lists and malformed manifests remain explicit failures while other evidence is checked. A changed HEAD or tracked-manifest listing invalidates the collection result.
 

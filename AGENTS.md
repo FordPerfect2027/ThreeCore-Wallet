@@ -27,6 +27,9 @@ The user requested this operating method on November 3, 2026 (Japan time).
   server-code checks separately. Verify downloads on disk, not only from the UI.
 - Keep handoff marks current for unfinished agent-created pages; they last only
   for the current turn. Save file backups as well, since tab access can be lost.
+- Handle browser event-wait promise rejection immediately, including filechooser
+  and download waits, so a timeout cannot reset the control session. A download
+  timeout is not proof of a missing file: check actual saved bytes before retrying.
 - Do not spawn sub-agents unless the user explicitly authorizes delegation.
 
 Current review status starts at `docs/RELEASE_HANDOFF_2026-11-02.md`.

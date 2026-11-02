@@ -1,6 +1,15 @@
 # Combined distribution checkpoint — November 2, 2026
 
-## Current combined review package: 2126019
+## Current combined review package: 9374845
+
+The November 3 standalone package `ThreeCore-review-9374845-20261103.zip`
+includes the later connection-stop diagnostics, navigation recovery and their
+verification records. It restores without an earlier package. See the
+[current package and candidate round-trip record](REVIEW_CONTINUATION_2026-11-03.md)
+for its exact source pins, ZIP checksum and fresh extraction results.
+The packages below remain unchanged historical checkpoints.
+
+## Earlier combined review package: 2126019
 
 `ThreeCore-review-2126019-20261102.zip` in Downloads replaces the earlier combined
 review package as the entry point. It is standalone and includes complete source

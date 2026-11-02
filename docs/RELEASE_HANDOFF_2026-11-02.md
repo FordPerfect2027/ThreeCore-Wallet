@@ -9,6 +9,17 @@ DAT, EMA and CAWELON checked separately. Signing, transactions, token approvals,
 custody, swaps, bridges and autonomous spending are outside this candidate.
 A 90% planning target is not an achieved release gate or a measured score.
 
+The current standalone review package is `ThreeCore-review-9374845-20261103.zip`.
+It includes the latest implementation and restores complete Wallet/token source
+without an earlier package. All 31 outer files, 4,758 Wallet source files and
+256 evidence manifests matched. Actual candidate restoration also preserved
+the nine-record backup byte-for-byte. See the
+[November 3 package and round-trip record](REVIEW_CONTINUATION_2026-11-03.md).
+The older ZIPs mentioned below remain fixed historical evidence.
+The subsequent evidence-checker capacity repair accepts 512 manifests under the
+unchanged shared byte budget. All 56 scoped tests and the actual 257-manifest /
+2,668-entry collection passed; this tooling follow-up is outside the sealed ZIP.
+
 The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
 The original permitted origin was recovered through the rehearsal page, three
@@ -18,7 +29,8 @@ at `856f670` passed 453 targeted Node cases and 1,024 synthetic browser cases.
 Live switch-event invalidation remains separately unverified.
 The unchanged [fixed-package full regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md)
 at `2126019` predates this implementation; that package and the public CI do not
-include the diagnostic change.
+include the diagnostic change. The newer `9374845` review package does include
+both changes; it does not represent a new full regression or public CI run.
 
 ## Exact source map
 
@@ -270,7 +282,7 @@ Do not clear the user's database or reload their working tab to create a test.
 
 | Open item | Evidence needed to close it | Current limit |
 | --- | --- | --- |
-| Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet and Account 2/Sepolia sessions now passed. The operator changed context after the prior session stopped; live switch-event invalidation remains unobserved |
+| Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet, Account 1/Sepolia and Account 2/Sepolia sessions passed. The recovered Account 1 page retained nine records. The operator changed context after the prior session stopped; live switch-event invalidation remains unobserved |
 | Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files; a distinct older immutable public release was not exercised |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
 | Development dependency finding | Compatible remediation with applicable regression, or an explicit qualified release risk decision | One Zod root advisory remains; the forced patched major breaks an unchanged helper |

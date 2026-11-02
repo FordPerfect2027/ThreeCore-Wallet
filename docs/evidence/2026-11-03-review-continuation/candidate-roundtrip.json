@@ -1,0 +1,38 @@
+{
+  "schema": "threecore.candidate-roundtrip.v1",
+  "recordedAt": "2026-11-02T17:18:58.381Z",
+  "sourceRevision": "9374845d440910f7ecb27c73d35fe2cfda37f934",
+  "implementation": "f6f378cc9b44f33fc7e147f4626e23573de06a6c",
+  "browser": "Microsoft Edge",
+  "origin": "http://127.0.0.1:4233",
+  "tab": "148649886",
+  "recoveredWithoutUserInput": true,
+  "previousTabDetached": true,
+  "oldTabReloaded": false,
+  "loadedBackup": "ThreeCore-workspace-backup (19).json",
+  "savedBackup": "ThreeCore-workspace-backup (20).json",
+  "bytes": 10103,
+  "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc",
+  "byteIdenticalRoundtrip": true,
+  "historiesPerCard": [
+    3,
+    3,
+    3
+  ],
+  "retainedHistoricalRecordsOutsideCurrentConfigurationPerCard": [
+    2,
+    2,
+    2
+  ],
+  "automaticWalletConnection": false,
+  "realWalletOperations": false,
+  "newBlockchainReads": false,
+  "liveAccountSwitchObserved": false,
+  "manualStopThenResumeObserved": true,
+  "historyRetainedAfterResume": true,
+  "downloadWaitTimedOut": true,
+  "downloadVerifiedOnDisk": true,
+  "initialOfflineCommandFailure": "Missing --file argument; corrected invocation succeeded. Source file was valid and unchanged.",
+  "nativePickerTraversed": false,
+  "screenshotSha256": "b28134ef2cfeba22a339c2426de3d81b832ac38e650929d25898f6afa8d6b389"
+}

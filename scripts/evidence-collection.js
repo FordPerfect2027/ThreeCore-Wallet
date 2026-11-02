@@ -3,6 +3,9 @@ import { realpath, lstat } from 'node:fs/promises';
 import { resolve, relative, isAbsolute, sep } from 'node:path';
 import { parseEvidenceManifest, verifyEvidenceManifest, EvidenceManifestError, EVIDENCE_INSPECTION_LIMITS } from './evidence-manifest.js';
 const fail = code => { throw new EvidenceManifestError(code); };
+// Accommodate the growing local review history while retaining a finite list.
+// The 512 MiB shared admission budget and bounded Git output remain unchanged.
+const MAX_COLLECTION_MANIFESTS = 512;
 const git = (root, args) => {
   const result = spawnSync('git', ['-c', 'core.fsmonitor=false', ...args], {
     cwd: root, encoding: 'utf8', windowsHide: true, timeout: 10000, maxBuffer: 512 * 1024,
@@ -13,7 +16,7 @@ const git = (root, args) => {
 function namesFromIndex(text) {
   const names = text.split('\0').filter(Boolean).filter(name => /(^|\/)SHA256SUMS\.txt$/.test(name));
   if (!names.length) fail('NO_TRACKED_EVIDENCE_MANIFESTS');
-  if (names.length > 256) fail('EVIDENCE_COLLECTION_LIMIT');
+  if (names.length > MAX_COLLECTION_MANIFESTS) fail('EVIDENCE_COLLECTION_LIMIT');
   let parsed;
   try { parsed = parseEvidenceManifest(names.map(name => '0'.repeat(64) + '  ' + name).join('\n')); }
   catch { fail('UNSAFE_TRACKED_MANIFEST_PATH'); }
