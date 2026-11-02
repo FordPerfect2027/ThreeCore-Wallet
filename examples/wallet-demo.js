@@ -191,6 +191,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       '<label>接続するWallet<select class="provider"></select></label>' +
       '<label>このエージェントのWallet公開アドレス<input class="account" placeholder="0x..." autocomplete="off" spellcheck="false"></label>' +
       '<label>チェーン<select class="chain"><option value="84532">Base Sepolia / testnet</option><option value="8453">Base Mainnet / read only</option></select></label>' +
+      '<p class="notice">このカードで確認したいネットワークを選びます。この選択だけではMetaMask側の接続先は変わりません。</p>' +
       '<label>トークンの契約アドレス（任意）<input class="token" placeholder="0x..." autocomplete="off" spellcheck="false"></label>' +
       '<label>承認先の契約アドレス（任意）<input class="spender" placeholder="0x..." autocomplete="off" spellcheck="false"></label>' +
       '<button class="connect">接続</button><button class="read secondary">残高を参照</button>' +

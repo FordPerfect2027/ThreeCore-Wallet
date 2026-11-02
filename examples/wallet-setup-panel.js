@@ -336,7 +336,8 @@ export function mountPermittedAccountPanel({ document, parent, siteOrigin,
       } else {
         preview = { context, result };
         details.textContent = '取得時点でWalletが最初に返した公開アドレス\n' + result.account +
-          '\nネットワーク: ' + (result.chainId === 8453 ? 'Base Mainnet' : 'Base Sepolia') +
+          '\nWalletがこのサイトへ返したネットワーク: ' + (result.chainId === 8453 ? 'Base Mainnet' : 'Base Sepolia') +
+          '\nこのカードで確認するネットワーク: ' + (context.chainId === 8453 ? 'Base Mainnet' : context.chainId === 84532 ? 'Base Sepolia' : '未選択・対応範囲外') +
           '\n許可済みアドレス数: ' + result.permittedAccountCount;
         status.textContent = result.chainId === context.chainId
           ? '公開アドレスを確認してください。入力欄と接続状態はまだ変更していません。'
