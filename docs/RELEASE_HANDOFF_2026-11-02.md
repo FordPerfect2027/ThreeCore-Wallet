@@ -180,7 +180,19 @@ preserved development server with current client files, not a separately pinned
 older public release. Actual account/chain-switch invalidation remains open.
 No browser protection was changed.
 
-The full distribution in Downloads is
+The latest standalone combined review package in Downloads is
+`ThreeCore-review-2126019-20261102.zip`, 51,127,612 bytes, SHA-256
+`a938e26ed7c572962c32decf0cc452654caeed58f5514be9ae41418c9ad605ea`.
+It contains Wallet source `212601977bc6dad8da298f11ebb9e7a421052571` and the
+three corrected token revisions in the source map above. Complete history and
+source archives for all four repositories were restored into new directories.
+The package's `START_HERE.txt` and `package-receipt.json` are the entry points;
+`node verify-package.mjs` checks all 31 files after extraction. See the
+[current distribution record](DISTRIBUTION_CHECKPOINT_2026-11-02.md#current-combined-review-package-2126019).
+It needs no earlier ZIP or supplement. Packaging did not rerun full regression
+or close any real-wallet, dependency-security or independent-review gate.
+
+The earlier full distribution in Downloads is
 `ThreeCore-review-23d0a35-20261102.zip`:
 50,030,551 bytes, SHA-256
 `31a88b5c015fd4adb71100d8b66fb8fd06b4eae5ad14defd868e76ce9d80aadc`.

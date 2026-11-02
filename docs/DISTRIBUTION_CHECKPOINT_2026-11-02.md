@@ -1,5 +1,52 @@
 # Combined distribution checkpoint — November 2, 2026
 
+## Current combined review package: 2126019
+
+`ThreeCore-review-2126019-20261102.zip` in Downloads replaces the earlier combined
+review package as the entry point. It is standalone and includes complete source
+archives and Git history for the Wallet and all three corrected token candidates.
+The original packages remain unchanged.
+
+- Wallet source/evidence: `212601977bc6dad8da298f11ebb9e7a421052571`
+- Wallet implementation: `8fa0ed2739482b8df415e46c6c45491955d4bfc4`
+- Last complete Wallet regression: `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd`
+- ZIP: 51,127,612 bytes
+- SHA-256: `a938e26ed7c572962c32decf0cc452654caeed58f5514be9ae41418c9ad605ea`
+
+| Token | Included revision |
+| --- | --- |
+| DAT | `47d8aa9db72e54e49fc9521f9b4022c416a7c6d1` |
+| EMA | `5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac` |
+| CAWELON | `4af9e1db98cac546e498b6f34531ba890cc2e3c0` |
+
+Each full bundle was verified in an empty Git repository, then restored with
+`core.autocrlf=true`, without a remote. The exact commits, complete history and
+clean checkouts were confirmed. Source ZIPs matched all 4,727 Wallet files,
+99 DAT files, 84 EMA files and 84 CAWELON files. The restored Wallet verified
+254 evidence manifests / 2,630 entries and the historical checkpoint checker.
+An isolated ephemeral server passed 11 source-byte, route and security-header
+checks and was closed. Original servers on 4231 and 4232 were not restarted.
+
+The final outer ZIP was extracted into another new directory: all 31 manifest
+entries matched, with no extra files. A deliberately altered README was rejected;
+restoring its exact bytes made verification pass again. Run the included
+`node verify-package.mjs` to check the extracted package.
+
+Packaging did not reinstall dependencies, rebuild contracts or repeat full
+regression. The [previous toolchain validation](TOOLCHAIN_EMPTY_DATA_2026-11-02.md)
+and its original logs remain the test evidence. Included token artifacts match
+those verified builds exactly. No new public RPC or real-wallet operation occurred.
+The Zod finding, live switch-event acceptance, native picker traversal, independent
+review and release decision remain open. This is a review package, not release
+approval or a calculated completion percentage.
+
+- [Package receipt](evidence/2026-11-02-release-regression/distribution-2126019-package-receipt.json)
+- [ZIP verification](evidence/2026-11-02-release-regression/distribution-2126019-zip-receipt.json)
+- [Included file manifest](evidence/2026-11-02-release-regression/distribution-2126019-file-manifest.txt)
+- [Japanese entry instructions](evidence/2026-11-02-release-regression/distribution-2126019-README.txt)
+
+## Earlier combined package: 23d0a35
+
 The full local archive includes the RPC history-range correction, complete
 regression after the native-crypto test-wait fix, six deployed-runtime comparisons,
 and the intended-PC Mainnet restore/reconnect/stop acceptance record.
