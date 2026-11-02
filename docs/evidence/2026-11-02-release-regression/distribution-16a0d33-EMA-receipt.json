@@ -1,0 +1,110 @@
+{
+  "token": "EMA",
+  "revision": "9cad39a196e8afc37abb5b99c260e00327c55d1c",
+  "sourceSummary": {
+    "files": 82,
+    "matched": 82,
+    "mismatched": 0,
+    "unreadable": 0,
+    "unexpected": 0,
+    "inspectedBytes": 447425
+  },
+  "restoredSourceSha256": "8234f4b8a94d9a2d25cde34bc2900ae080223e698633420cad7ad533390d7444",
+  "completeHistoryVerified": true,
+  "restoredWorkingTreeClean": true,
+  "windowsCheckoutAutocrlf": true,
+  "restoredCliCasesPassed": 45,
+  "restoredCliCasesFailed": 0,
+  "installedRuntimePackages": [
+    {
+      "name": "node_modules/@adraffy/ens-normalize",
+      "version": "1.11.1"
+    },
+    {
+      "name": "node_modules/@openzeppelin/contracts",
+      "version": "5.6.1"
+    },
+    {
+      "name": "node_modules/abitype",
+      "version": "1.2.3"
+    },
+    {
+      "name": "node_modules/eventemitter3",
+      "version": "5.0.1"
+    },
+    {
+      "name": "node_modules/isows",
+      "version": "1.0.7"
+    },
+    {
+      "name": "node_modules/ox",
+      "version": "0.14.44"
+    },
+    {
+      "name": "node_modules/ox/node_modules/@noble/ciphers",
+      "version": "1.3.0"
+    },
+    {
+      "name": "node_modules/ox/node_modules/@noble/curves",
+      "version": "1.9.1"
+    },
+    {
+      "name": "node_modules/ox/node_modules/@noble/hashes",
+      "version": "1.8.0"
+    },
+    {
+      "name": "node_modules/ox/node_modules/@scure/base",
+      "version": "1.2.6"
+    },
+    {
+      "name": "node_modules/ox/node_modules/@scure/bip32",
+      "version": "1.7.0"
+    },
+    {
+      "name": "node_modules/ox/node_modules/@scure/bip39",
+      "version": "1.6.0"
+    },
+    {
+      "name": "node_modules/viem",
+      "version": "2.56.6"
+    },
+    {
+      "name": "node_modules/viem/node_modules/@noble/curves",
+      "version": "1.9.1"
+    },
+    {
+      "name": "node_modules/viem/node_modules/@noble/hashes",
+      "version": "1.8.0"
+    },
+    {
+      "name": "node_modules/viem/node_modules/@scure/base",
+      "version": "1.2.6"
+    },
+    {
+      "name": "node_modules/viem/node_modules/@scure/bip32",
+      "version": "1.7.0"
+    },
+    {
+      "name": "node_modules/viem/node_modules/@scure/bip39",
+      "version": "1.6.0"
+    },
+    {
+      "name": "node_modules/ws",
+      "version": "8.21.0"
+    }
+  ],
+  "existingNodeModulesReused": false,
+  "freshRuntimeInstall": true,
+  "npmOfflineMode": true,
+  "preexistingNpmPackageCacheUsed": true,
+  "npmDependenciesVendored": false,
+  "networkFreeBuildClaimed": false,
+  "artifactSourceRevision": "9cad39a196e8afc37abb5b99c260e00327c55d1c",
+  "artifactSha256": "ddddfa632efc130d64ce46b4e388ba6dc8024c96ea986a1c46443bfba0b227a5",
+  "artifactMatchesRecordedSourceBuild": true,
+  "artifactCopiedFromEarlierBuildThisTurn": true,
+  "artifactRebuiltDuringPackaging": false,
+  "metadataChangedFromPreviousDistribution": true,
+  "publicHistoricalCheckPassed": null,
+  "realWalletUsed": false
+}

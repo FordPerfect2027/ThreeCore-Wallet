@@ -1,5 +1,12 @@
 # ThreeCore release preparation — November 1, 2026
 
+The current [verified distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md) is
+16a0d33, with the later token fixes: 4523 Wallet source files, 253 manifests /
+2434 entries, fresh minimal runtimes and a successful restored DAT historical
+read. The earlier d904442 distribution discussed below is retained as history.
+The [bounded Zod exposure review](ZOD_EXPOSURE_2026-11-02.md) identifies the
+development surface without closing the advisory or independent-review gate.
+
 The latest [source portability and test-routing correction](SOURCE_PORTABILITY_2026-11-02.md)
 fixes ordinary token builds and an accidental support-preload test failure. All
 three builds, source/routing checks and local EVM/Wallet compatibility checks
@@ -51,8 +58,8 @@ fixes five operational read-only commands in each token. All three complete
 are retained. This source change is newer than the verified delivery below.
 It does not complete real-wallet or independent-review gates.
 
-The latest [verified combined delivery](DISTRIBUTION_CHECKPOINT_2026-11-02.md)
-is `d9044422820973e53fa41e0c55908f6e34217d7f`: 4433 Wallet source files,
+The earlier [verified combined delivery](evidence/2026-11-02-release-regression/DISTRIBUTION_D904442.md)
+was `d9044422820973e53fa41e0c55908f6e34217d7f`: 4433 Wallet source files,
 253 evidence manifests / 2348 entries, ten isolated startup checks,
 and all 46 outer-archive entries matching after fresh extraction. All three
 token bundles restore into empty Windows directories with spaces in their paths.

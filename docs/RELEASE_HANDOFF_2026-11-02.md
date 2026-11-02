@@ -1,5 +1,12 @@
 # ThreeCore candidate review handoff — November 2, 2026
 
+The current [verified distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md) is
+16a0d33, with the later token fixes: 4523 Wallet source files, 253 manifests /
+2434 entries, fresh minimal runtimes and a successful restored DAT historical
+read. The earlier d904442 distribution discussed below is retained as history.
+The [bounded Zod exposure review](ZOD_EXPOSURE_2026-11-02.md) identifies the
+development surface without closing the advisory or independent-review gate.
+
 The latest [source portability and test-routing correction](SOURCE_PORTABILITY_2026-11-02.md)
 fixes ordinary token builds and an accidental support-preload test failure. All
 three builds, source/routing checks and local EVM/Wallet compatibility checks
@@ -212,11 +219,11 @@ contracts and readers are unchanged. Full development Zod remediation, real-wall
 UI acceptance and independent review remain open. The 7d58d08 combined delivery
 predates this follow-up; new CI jobs are prepared locally without a remote result.
 
-The [Zod compatibility probe](ZOD_COMPATIBILITY_2026-11-02.md) now provides a concrete reason not to force the patched major version into the existing toolchain: the unchanged configuration helper throws while formatting invalid input. All token working trees remain clean at the runtime-installation commits.
+The [Zod compatibility probe](ZOD_COMPATIBILITY_2026-11-02.md) provides a concrete reason not to force the patched major version into the existing toolchain: the unchanged configuration helper throws while formatting invalid input. At that checkpoint the token working trees were clean at the runtime-installation commits; later token revisions are recorded above.
 
 ## Current combined distribution
 
-The [d904442 distribution checkpoint](DISTRIBUTION_CHECKPOINT_2026-11-02.md) now includes the history CLI and runtime-installation corrections. Its full-history bundles, source archives, evidence and isolated startup checks passed. All three token restores receive fresh minimal dependencies from an existing npm cache and pass 30 CLI/input cases each. Earlier full-regression totals are not reruns, and real-wallet acceptance, compatible Zod remediation and independent review remain open.
+The earlier [d904442 distribution checkpoint](evidence/2026-11-02-release-regression/DISTRIBUTION_D904442.md) included the history CLI and runtime-installation corrections. Its full-history bundles, source archives, evidence and isolated startup checks passed. All three token restores received fresh minimal dependencies from an existing npm cache and passed 30 CLI/input cases each. The current 16a0d33 distribution above supersedes it. Earlier full-regression totals are not reruns, and real-wallet acceptance, compatible Zod remediation and independent review remain open.
 
 ## Later RPC body-deadline correction
 

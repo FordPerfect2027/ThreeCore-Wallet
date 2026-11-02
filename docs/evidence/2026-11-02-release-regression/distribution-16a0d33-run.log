@@ -1,0 +1,9 @@
+{"stage":"wallet-source-restored","files":4523}
+{"stage":"wallet-restoration-passed","files":4523,"evidence":2434,"startup":10}
+{"stage":"minimal-runtime-installed","token":"EMA","packages":19}
+{"stage":"minimal-runtime-installed","token":"DAT","packages":19}
+{"stage":"token-restoration-passed","token":"EMA","tests":45,"publicHistoricalCheckPassed":null}
+{"stage":"token-restoration-passed","token":"DAT","tests":51,"publicHistoricalCheckPassed":true}
+{"stage":"minimal-runtime-installed","token":"CAWELON","packages":19}
+{"stage":"token-restoration-passed","token":"CAWELON","tests":45,"publicHistoricalCheckPassed":null}
+{"stage":"package-complete","folder":"C:/Users/aseet/Downloads/ThreeCore-review-16a0d33-20261102","revision":"16a0d33b6af6c735c5d690e63a8b629bbabf867c","manifestEntries":51,"tokens":[{"token":"DAT","tests":51},{"token":"EMA","tests":45},{"token":"CAWELON","tests":45}]}

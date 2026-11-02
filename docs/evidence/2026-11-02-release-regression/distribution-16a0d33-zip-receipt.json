@@ -1,0 +1,44 @@
+{
+  "recordedAt": "2026-11-02T00:00:30.128Z",
+  "sourceRevision": "16a0d33b6af6c735c5d690e63a8b629bbabf867c",
+  "zip": "C:/Users/aseet/Downloads/ThreeCore-review-16a0d33-20261102.zip",
+  "bytes": 47868853,
+  "sha256": "79e5329634c0634e7528a27272a202d553c7101467a146eb82b82e85ee08ed17",
+  "before": {
+    "entries": 56,
+    "allMatched": true,
+    "rootManifestSha256": "676ed632ca7c9560c5364ae906dfde169e0ba7d25ebb0bfba9c26dac98e5c3a1",
+    "totalBytes": 50796599
+  },
+  "after": {
+    "entries": 56,
+    "allMatched": true,
+    "rootManifestSha256": "676ed632ca7c9560c5364ae906dfde169e0ba7d25ebb0bfba9c26dac98e5c3a1",
+    "totalBytes": 50796599
+  },
+  "outerArchiveExtracted": true,
+  "restoredTokenCases": [
+    {
+      "token": "DAT",
+      "passed": 51
+    },
+    {
+      "token": "EMA",
+      "passed": 45
+    },
+    {
+      "token": "CAWELON",
+      "passed": 45
+    }
+  ],
+  "restoredNodeModulesReused": false,
+  "preexistingNpmCacheUsed": true,
+  "npmDependenciesVendored": false,
+  "completeOfflineBuildClaimed": false,
+  "publicHistoricalReadPerformed": true,
+  "signatureCreated": false,
+  "transactionSubmitted": false,
+  "original4231Restarted": false,
+  "realWalletAcceptanceComplete": false,
+  "independentReviewComplete": false
+}

@@ -62,3 +62,5 @@ See [the detailed local record](../../RELEASE_REGRESSION_2026-11-02.md).
 ## Later distribution checkpoint
 
 [The d904442 distribution record](DISTRIBUTION_D904442.md) verifies the combined Wallet/token source and fresh minimal-runtime restoration. Its narrower package checks do not replace or rerun the earlier full regressions above.
+
+[The 16a0d33 distribution checkpoint](DISTRIBUTION_16A0D33.md) includes the later deadline/verifier/source fixes, independently restored minimal runtimes and a bounded Zod exposure supplement. Earlier results retain their own source scopes.
