@@ -1,0 +1,20 @@
+{
+  "offline": true,
+  "untouchedInputAccepted": true,
+  "rejectedControls": [
+    "wrongChain",
+    "wrongContract",
+    "wrongDeployment",
+    "wrongCompiler",
+    "changedDependency",
+    "changedFinalNewline",
+    "renamedRoot",
+    "changedOptimizer",
+    "unchangedDigestForModifiedResponse"
+  ],
+  "mutatedSemanticControlsUseUpdatedDigest": true,
+  "serviceMatchClaimNotRequired": true,
+  "sourceOrDependencyExecuted": false,
+  "walletUsed": false,
+  "rpcUsed": false
+}

@@ -1,0 +1,57 @@
+
+> @0628dao/datcore@0.1.0 test
+> node scripts/test-contracts.js
+
+No contracts to compile
+
+Running node:test tests
+
+  DATCore
+    ✔ uses DATCORE as the token name (132ms)
+    ✔ uses DAT as the token symbol
+    ✔ uses 18 decimals
+    ✔ publishes the fixed supply unit constant
+    ✔ publishes the fixed base-unit supply constant
+    ✔ mints the complete supply exactly once
+    ✔ assigns the complete supply to the initial holder
+    ✔ rejects the zero address as initial holder
+    ✔ transfers DAT between holders
+    ✔ records ERC-20 allowances
+    ✔ supports allowance-based transfers
+    ✔ lets a holder burn its own DAT
+    ✔ allows burnFrom only through an explicit allowance
+    ✔ blocks burnFrom without an allowance
+    ✔ blocks transfers to the zero address
+    ✔ supports EIP-2612 nonce tracking
+    ✔ executes a signed EIP-2612 permit and rejects its replay (77ms)
+    ✔ rejects an expired EIP-2612 permit
+    ✔ publishes the expected EIP-712 domain
+    ✔ does not expose administrator mint, pause, or upgrade functions
+    ✔ does not expose an owner or administrator getter
+
+  DATCore permit authorization boundaries
+    ✔ rejects wrong chain without changing state or consuming the valid permit (79ms)
+    ✔ rejects wrong contract without changing state or consuming the valid permit
+    ✔ rejects wrong domain name without changing state or consuming the valid permit
+    ✔ rejects wrong version without changing state or consuming the valid permit
+    ✔ rejects wrong nonce without changing state or consuming the valid permit
+    ✔ rejects wrong signer without changing state or consuming the valid permit
+    ✔ rejects changed owner without changing state or consuming the valid permit
+    ✔ rejects changed spender without changing state or consuming the valid permit
+    ✔ rejects changed value without changing state or consuming the valid permit
+    ✔ rejects changed deadline without changing state or consuming the valid permit
+
+  DATCore balance and allowance invariants
+    ✔ preserves total supply and account balances across delegated transfers
+    ✔ rejects an unapproved transferFrom without changing balances
+    ✔ does not allow delegated spending beyond remaining allowance
+    ✔ reduces supply exactly by cumulative burns without changing other balances
+
+  CMC market context
+    ✔ normalizes a CoinMarketCap quote response for agent consumption
+    ✔ rejects API errors instead of returning incomplete context
+
+
+  37 passing (11131ms)
+
+

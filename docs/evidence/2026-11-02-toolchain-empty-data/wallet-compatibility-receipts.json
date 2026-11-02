@@ -1,0 +1,29 @@
+[
+  {
+    "token": "DAT",
+    "command": "node --test <wallet>/integration/token-compatibility.test.mjs",
+    "walletSource": "ed32d7cd2593f8fc73b5a46ac27b6b1b2454d6c2",
+    "startedAt": "2026-11-02T12:19:55.7897739Z",
+    "finishedAt": "2026-11-02T12:20:10.9322474Z",
+    "exitCode": 0,
+    "log": "dat-wallet-compatibility.log"
+  },
+  {
+    "token": "EMA",
+    "command": "node --test <wallet>/integration/token-compatibility.test.mjs",
+    "walletSource": "ed32d7cd2593f8fc73b5a46ac27b6b1b2454d6c2",
+    "startedAt": "2026-11-02T12:20:11.1175216Z",
+    "finishedAt": "2026-11-02T12:20:38.3993243Z",
+    "exitCode": 0,
+    "log": "ema-wallet-compatibility.log"
+  },
+  {
+    "token": "CAWELON",
+    "command": "node --test <wallet>/integration/token-compatibility.test.mjs",
+    "walletSource": "ed32d7cd2593f8fc73b5a46ac27b6b1b2454d6c2",
+    "startedAt": "2026-11-02T12:20:38.4460496Z",
+    "finishedAt": "2026-11-02T12:20:53.0596518Z",
+    "exitCode": 0,
+    "log": "cawelon-wallet-compatibility.log"
+  }
+]

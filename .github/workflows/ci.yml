@@ -59,11 +59,11 @@ jobs:
       matrix:
         include:
           - repository: DAT
-            ref: 502944c94ffed408356b487abc9a710807697ee2
+            ref: 47d8aa9db72e54e49fc9521f9b4022c416a7c6d1
           - repository: EMA-Draft
-            ref: 9cad39a196e8afc37abb5b99c260e00327c55d1c
+            ref: 5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac
           - repository: CAWELON-Draft
-            ref: e3a5fbb966008319b7b7204ddbfb705a3e9ab12c
+            ref: 4af9e1db98cac546e498b6f34531ba890cc2e3c0
     steps:
       - uses: actions/checkout@v4
         with:
@@ -83,9 +83,9 @@ jobs:
       - name: Install pinned token dependencies
         working-directory: token
         run: npm ci
-      - name: Check source portability and compile the actual token contract
+      - name: Check source portability, empty-data decoding and compile the actual token contract
         working-directory: token
-        run: npm run test:source && npm run compile
+        run: npm run test:source && npm run test:toolchain && npm run compile
       - name: Validate actual token history and malformed log rejection
         working-directory: token
         run: npm run test:read-only && npm run test:history

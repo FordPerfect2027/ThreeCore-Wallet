@@ -1,0 +1,30 @@
+[
+  {
+    "script": "reconstruct-runtime-source",
+    "startedAt": "2026-11-02T12:30:00.7550959Z",
+    "finishedAt": "2026-11-02T12:30:37.1399609Z",
+    "exitCode": 0,
+    "log": "reconstruct-runtime-source.json"
+  },
+  {
+    "script": "verify-dat-mainnet-source-controls",
+    "startedAt": "2026-11-02T12:30:37.2924465Z",
+    "finishedAt": "2026-11-02T12:30:37.8355278Z",
+    "exitCode": 0,
+    "log": "verify-dat-mainnet-source-controls.json"
+  },
+  {
+    "script": "verify-recorded-mainnet-deployments",
+    "startedAt": "2026-11-02T12:30:37.8437370Z",
+    "finishedAt": "2026-11-02T12:30:45.6909245Z",
+    "exitCode": 0,
+    "log": "verify-recorded-mainnet-deployments.json"
+  },
+  {
+    "script": "verify-recorded-sepolia-deployments",
+    "startedAt": "2026-11-02T12:30:45.7040768Z",
+    "finishedAt": "2026-11-02T12:30:51.9833151Z",
+    "exitCode": 0,
+    "log": "verify-recorded-sepolia-deployments.json"
+  }
+]

@@ -16,9 +16,9 @@ A 90% planning target is not an achieved release gate or a measured score.
 | Inspected local evidence checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
 | Latest Wallet implementation | `8fa0ed2739482b8df415e46c6c45491955d4bfc4` | Distinct requested/observed network labels, exact site-origin display and earlier address wrapping; the last RPC behavior change remains the inclusive range correction at `96b5945` |
 | Latest complete Wallet regression | `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd` | 16,454 Node/HTTP and 1,021 synthetic browser passes; later test-only drain-wait fix included |
-| DAT | `502944c94ffed408356b487abc9a710807697ee2` | Current checked local token source |
-| EMA | `9cad39a196e8afc37abb5b99c260e00327c55d1c` | Current checked local token source |
-| CAWELON | `e3a5fbb966008319b7b7204ddbfb705a3e9ab12c` | Current checked local token source |
+| DAT | `47d8aa9db72e54e49fc9521f9b4022c416a7c6d1` | Local empty-data toolchain correction; contract bytes unchanged |
+| EMA | `5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac` | Local empty-data toolchain correction; contract bytes unchanged |
+| CAWELON | `4af9e1db98cac546e498b6f34531ba890cc2e3c0` | Local empty-data toolchain correction; contract bytes unchanged |
 | Public PR #4 head | `07041f00efdb503cb76a06fbe12e5531cb380930` | Earlier public source only |
 
 All three token working trees were clean when this source map was checked.
@@ -26,6 +26,16 @@ The [saved checkpoint receipt](evidence/2026-11-02-release-regression/candidate-
 records 17 changed implementation files at `5297728` and their content digests.
 It predates the later CSS and site-specific guidance changes listed here.
 New documentation commits do not alter the implementation/regression pins above.
+
+The [later toolchain repair](TOOLCHAIN_EMPTY_DATA_2026-11-02.md) replaces the token
+pins from the source-portability checkpoint. The prior decoder converted empty
+RPC data into a zero byte. The first upgrade failed because the lock retained an
+old helper; the corrected lock and final decoder regression passed, including
+a separate clean installation. Each token's full standard-check components and
+50 Wallet compatibility cases passed. All three ABI and complete creation/runtime
+bytecodes match their parents. The prepared local workflow uses the new token
+pins; the public PR and its earlier CI results remain unchanged. This does not
+resolve the separate Zod advisory or close actual-wallet/independent-review gates.
 
 The [latest network-label clarification](LIVE_ACCEPTANCE_2026-11-02.md#requested-network-and-observed-network-distinguished)
 at `8fa0ed2` displays the card's requested network alongside the network returned

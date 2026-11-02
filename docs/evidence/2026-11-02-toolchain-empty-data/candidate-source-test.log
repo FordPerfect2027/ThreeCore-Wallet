@@ -1,0 +1,19 @@
+
+> @0628dao/datcore@0.1.0 test:source
+> node --test integration/source-portability.test.mjs integration/test-routing.test.mjs
+
+✔ contract source checker accepts every actual UTF-8 LF contract (4.0191ms)
+✔ actual source bytes survive Git checkouts with both autocrlf settings (4596.4712ms)
+✔ the CLI rejects CRLF before compilation without rewriting the source (311.2611ms)
+✔ source checker refuses missing sources, BOM, lone CR and invalid UTF-8 (12.706ms)
+✔ actual runner includes TypeScript specs and excludes operational/support files (1531.9957ms)
+✔ actual runner propagates a failing Hardhat result (969.3212ms)
+✔ actual runner rejects an empty TypeScript suite before starting Hardhat (451.2077ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5505.8467

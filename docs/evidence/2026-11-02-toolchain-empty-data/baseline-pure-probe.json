@@ -1,0 +1,59 @@
+{
+  "node": "v24.19.0",
+  "versions": {
+    "hardhat": "3.16.0",
+    "@nomicfoundation/hardhat-utils": "4.1.9",
+    "@nomicfoundation/hardhat-zod-utils": "3.0.6",
+    "zod": "3.25.76"
+  },
+  "samples": [
+    {
+      "input": "0x",
+      "directBytes": [
+        0
+      ],
+      "rpcBytes": [
+        0
+      ],
+      "roundTrip": "0x00"
+    },
+    {
+      "input": "0x00",
+      "directBytes": [
+        0
+      ],
+      "rpcBytes": [
+        0
+      ],
+      "roundTrip": "0x00"
+    },
+    {
+      "input": "0x0100",
+      "directBytes": [
+        1,
+        0
+      ],
+      "rpcBytes": [
+        1,
+        0
+      ],
+      "roundTrip": "0x0100"
+    }
+  ],
+  "malformed": [
+    {
+      "input": "0x0",
+      "accepted": false
+    },
+    {
+      "input": "0xgg",
+      "accepted": false
+    },
+    {
+      "input": "00",
+      "accepted": false
+    }
+  ],
+  "emptyDataPreserved": false,
+  "scope": "Pure dependency conversion only; no configuration, wallet, EVM or RPC."
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "token": "DAT",
+    "command": "npm run test:toolchain",
+    "finishedAt": "2026-11-02T12:24:51.5813287Z",
+    "exitCode": 0,
+    "log": "dat-toolchain-final.log"
+  },
+  {
+    "token": "EMA",
+    "command": "npm run test:toolchain",
+    "finishedAt": "2026-11-02T12:24:53.7626413Z",
+    "exitCode": 0,
+    "log": "ema-toolchain-final.log"
+  },
+  {
+    "token": "CAWELON",
+    "command": "npm run test:toolchain",
+    "finishedAt": "2026-11-02T12:24:55.7548744Z",
+    "exitCode": 0,
+    "log": "cawelon-toolchain-final.log"
+  }
+]

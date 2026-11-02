@@ -1,0 +1,62 @@
+{
+  "schema": "threecore.toolchain-artifact-comparison.v1",
+  "tokens": [
+    {
+      "token": "DAT",
+      "parent": "502944c94ffed408356b487abc9a710807697ee2",
+      "artifact": "artifacts/contracts/DATCore.sol/DATCore.json",
+      "changedFields": [
+        "buildInfoId"
+      ],
+      "abiEqual": true,
+      "creationBytecodeEqual": true,
+      "runtimeBytecodeEqual": true,
+      "contractSourceEqual": true,
+      "runtimeDependenciesEqual": true,
+      "compilerVersion": "0.8.34",
+      "sourceSha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6",
+      "beforeArtifactSha256": "bd996621a5f7d3bea50a1792d07f8007888c650d5656311d7af71b11aa976f29",
+      "afterArtifactSha256": "ee5993ac0526aff0f9d75e1de75e0a544acdcd1bd384b94c692aa72f25d78722",
+      "beforeBuildInfoId": "solc-0_8_34-0edd0025779e2bd543ff8cc1598003ac4506ebd4",
+      "afterBuildInfoId": "solc-0_8_34-1104dafd83aa4343edc146edaa7fb09df1406485"
+    },
+    {
+      "token": "EMA",
+      "parent": "9cad39a196e8afc37abb5b99c260e00327c55d1c",
+      "artifact": "artifacts/contracts/EMACore.sol/EMACore.json",
+      "changedFields": [
+        "buildInfoId"
+      ],
+      "abiEqual": true,
+      "creationBytecodeEqual": true,
+      "runtimeBytecodeEqual": true,
+      "contractSourceEqual": true,
+      "runtimeDependenciesEqual": true,
+      "compilerVersion": "0.8.34",
+      "sourceSha256": "8234f4b8a94d9a2d25cde34bc2900ae080223e698633420cad7ad533390d7444",
+      "beforeArtifactSha256": "ddddfa632efc130d64ce46b4e388ba6dc8024c96ea986a1c46443bfba0b227a5",
+      "afterArtifactSha256": "564834dcc3d3b978838c91acfe006c9579d7f105d10b1bc298120fc610784389",
+      "beforeBuildInfoId": "solc-0_8_34-5bcd8d72c0e5263c95fd582acd6077be01b8e783",
+      "afterBuildInfoId": "solc-0_8_34-a98389c8ecf996dfebc205f5e51af3409725e5f9"
+    },
+    {
+      "token": "CAWELON",
+      "parent": "e3a5fbb966008319b7b7204ddbfb705a3e9ab12c",
+      "artifact": "artifacts/contracts/CAWELONCore.sol/CAWELONCore.json",
+      "changedFields": [
+        "buildInfoId"
+      ],
+      "abiEqual": true,
+      "creationBytecodeEqual": true,
+      "runtimeBytecodeEqual": true,
+      "contractSourceEqual": true,
+      "runtimeDependenciesEqual": true,
+      "compilerVersion": "0.8.34",
+      "sourceSha256": "51adf4a8edecc3d9e0fb79d359d57129085487661171c9174d77ad5c3497a2b5",
+      "beforeArtifactSha256": "022ecc2221c5b92b99846bb42d19e0dd48413dbbaa1a1aa0c298390d57af3d0d",
+      "afterArtifactSha256": "282a9f2bab274a3eb3345e23451b1626e25c954c12174a3cd8127c476476f967",
+      "beforeBuildInfoId": "solc-0_8_34-9cc04e183fcff0096d3ebf06c0f31919f0a7cd3d",
+      "afterBuildInfoId": "solc-0_8_34-0f2dba9a1ae3c85bf3cca6d547536438c5a26c1a"
+    }
+  ]
+}
