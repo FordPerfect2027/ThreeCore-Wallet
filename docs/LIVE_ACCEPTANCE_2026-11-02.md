@@ -335,7 +335,7 @@ explicitly disconnected before probing. MetaMask still returned Account 2,
 Base Sepolia and two permitted addresses for this tab. All histories remained
 at two records per card. The extra diagnostic read was not added to history.
 
-The exact site origin changed in MetaMask is being clarified. This is not
+At that point, the exact site origin changed in MetaMask was being clarified. This is not
 evidence that live chain-change invalidation passed, nor sufficient evidence of
 a handler defect: the tab's actual provider continued reporting Sepolia.
 The [context follow-up receipt](evidence/2026-11-02-release-regression/live-network-switch-context-followup.json)
@@ -348,3 +348,34 @@ Edge tab displayed the correct `http://127.0.0.1:4231` on all three cards, with
 display-only test tab was closed. The existing permitted-account and setup-panel
 suites passed 58 cases. RPC behavior, permissions and the fixed `f52109a` source
 archive were unchanged. That archive predates this one-line display addition.
+
+## Requested network and observed network distinguished
+
+The operator subsequently confirmed port 4231 and reported a Base Mainnet
+display. Once browser interaction resumed, a fresh permission read in the
+working tab still returned Account 2 / Base Sepolia. A separate empty Wallet
+tab opened from the rehearsal's ordinary link returned the same result. The
+discrepancy therefore remained after creating a fresh page; a completed live
+network switch has not been established. No original working tab was reloaded.
+
+At `8fa0ed2`, the permitted-account result now separately labels the network
+returned by the Wallet and the network requested by the card. The card's
+selector also explains that changing it does not change MetaMask's connection.
+RPC dispatch and permission behavior are unchanged.
+
+Actual Edge checks deliberately set only the empty DAT card to Mainnet while
+MetaMask returned Sepolia. Both names were visible and applying the account
+remained disabled. Restoring that card to Sepolia produced matching names and
+enabled the existing apply action; no account was applied or connected in this
+diagnostic tab. The details fit a 261px width without horizontal overflow.
+Original DAT, EMA and CAWELON histories each retained two records. Both server
+processes retained their recorded start times. The existing permitted-account
+and card-controller suites passed all 69 cases; no new tests or full regression
+run were added for this display change.
+
+The [receipt](evidence/2026-11-02-release-regression/network-selection-distinction-summary.json)
+records four private screenshots/state files by hash. The fixed `f52109a`
+archive remains unchanged and predates this change. Live switch-event
+invalidation, native Windows picker traversal, dependency disposition and
+independent review remain open. No signature, transaction, key access or
+GitHub write occurred, and no release percentage was calculated.

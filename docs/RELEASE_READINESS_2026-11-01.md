@@ -56,8 +56,14 @@ explains the fifth. A portable
 offline checker reproduces the distinction. This is developer evidence and
 does not close independent review or real-wallet acceptance.
 
-The latest application change is the copy-only site-specific MetaMask guidance
-at `7c12a28`. Its existing permitted-account, card-controller and
+The latest application change at `8fa0ed2` distinguishes the card's requested
+network from the network returned by MetaMask. Actual Edge checks cover matching
+and mismatching displays; 69 existing cases passed. The observed provider still
+returned Sepolia, so the live-switch gate remains open. See the
+[follow-up record](LIVE_ACCEPTANCE_2026-11-02.md#requested-network-and-observed-network-distinguished).
+
+The earlier copy-only site-specific MetaMask guidance
+at `7c12a28` had its existing permitted-account, card-controller and
 connection-boundary suites passed 82 cases. It changes no RPC or permission
 behavior; live rendering and successful Sepolia reads were subsequently observed
 in the actual Edge session, separately from those tests. The earlier CSS-only permitted-address wrapping fix is

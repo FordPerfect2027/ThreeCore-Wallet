@@ -1,0 +1,90 @@
+{
+  "schema": "threecore.network-selection-distinction.v1",
+  "recordedAt": "2026-11-02T11:47:11.289Z",
+  "implementationSource": "8fa0ed2739482b8df415e46c6c45491955d4bfc4",
+  "browser": "Microsoft Edge with MetaMask",
+  "siteOrigin": "http://127.0.0.1:4231",
+  "accountValuesRedacted": true,
+  "operatorReported": {
+    "site": "127.0.0.1:4231",
+    "networkDisplay": "Base Mainnet"
+  },
+  "observedProvider": {
+    "accountLabel": "Account 2",
+    "chainId": 84532,
+    "permittedAccountCount": 2,
+    "freshEmptyTabAlsoReturned84532": true
+  },
+  "uiChange": {
+    "actualNetworkAndRequestedNetworkShownSeparately": true,
+    "selectionHelpExplainsNoWalletNetworkChange": true,
+    "rpcAndPermissionsChanged": false
+  },
+  "mismatch": {
+    "requestedChainId": 8453,
+    "observedChainId": 84532,
+    "applyEnabled": false
+  },
+  "match": {
+    "requestedChainId": 84532,
+    "observedChainId": 84532,
+    "applyEnabled": true,
+    "detailClientWidth": 261,
+    "detailScrollWidth": 261
+  },
+  "preservation": {
+    "originalWalletReloaded": false,
+    "originalHistoryCounts": [
+      2,
+      2,
+      2
+    ],
+    "diagnosticTabHistoryCounts": [
+      0,
+      0,
+      0
+    ],
+    "originalServerPid": 2108,
+    "candidateServerPid": 28252,
+    "serverStartTimesUnchanged": true,
+    "fixedCandidateArchiveModified": false
+  },
+  "tests": {
+    "command": "node --test test/permitted-account.test.js test/wallet-card-controller.test.js",
+    "passed": 69,
+    "failed": 0,
+    "newTestsAdded": 0,
+    "fullRegressionRerun": false
+  },
+  "scope": {
+    "liveChainChangedInvalidationProven": false,
+    "metaMaskNetworkChangedByAgent": false,
+    "signatures": 0,
+    "transactions": 0,
+    "secretKeysRead": false,
+    "githubModified": false
+  },
+  "conclusion": "Fresh permission reads still returned Sepolia. The UI now distinguishes the card's requested network from the provider's observed network; this does not establish a completed live network switch.",
+  "privateEvidence": [
+    {
+      "filename": "network-distinction-match.json",
+      "bytes": 1203,
+      "sha256": "deb979a962be9ea10b38d4d48e8f961bce5b520ab7f6dbeb97e359d322e00acd"
+    },
+    {
+      "filename": "network-distinction-match.png",
+      "bytes": 40282,
+      "sha256": "9134828fa23e0633db7e671f3eaa640c42c8ea1f5a9867913ec792ddbe3e4365"
+    },
+    {
+      "filename": "network-distinction-mismatch.json",
+      "bytes": 1224,
+      "sha256": "417251dde71fe05c5f3e0153b3ae3d12b0fe21b38dbc9654ab2b20e3f89aeffe"
+    },
+    {
+      "filename": "network-distinction-mismatch.png",
+      "bytes": 36868,
+      "sha256": "9ce7da3224a10fcb51df69aeeb1499b4bf11fa4c518bb175865a29fdbe8471b0"
+    }
+  ]
+}
