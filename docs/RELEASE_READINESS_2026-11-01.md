@@ -1,5 +1,12 @@
 # ThreeCore release preparation — November 1, 2026
 
+A new [deployed-runtime comparison](DEPLOYED_RUNTIME_COMPARISON_2026-11-02.md)
+covers all six registered ERC-20 deployments. Executable bytes and expected
+constructor immutables match the current builds; complete runtime bytes match
+only DAT on Sepolia because five metadata IPFS digests differ. A portable
+offline checker reproduces the distinction. This is developer evidence and
+does not close independent review or real-wallet acceptance.
+
 The latest application change is `96b5945`: the [RPC history-range correction](RPC_RANGE_BOUNDARY_2026-11-02.md)
 enforces the inclusive 2,000-block limit at the low-level dispatch and HTTP relay,
 with three reproduced failures becoming passes and 585 related cases passing.
