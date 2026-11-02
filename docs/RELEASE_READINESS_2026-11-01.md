@@ -1,5 +1,14 @@
 # ThreeCore release preparation — November 1, 2026
 
+The latest [intended-PC acceptance](LIVE_ACCEPTANCE_2026-11-02.md) connected all
+three token cards to one existing MetaMask account on Base Mainnet, saved their
+observations, restored them into a separate empty tab, explicitly reconnected,
+and preserved byte-identical histories after stopping a pending read. Account
+and chain switching, Sepolia and complete candidate migration remain open.
+The [latest full local regression](NATIVE_CRYPTO_TEST_WAIT_2026-11-02.md), at
+`e5841f0`, passed 16,454 Node/HTTP and 1,021 synthetic browser cases. The initial
+full-run failure and the test-only wait correction are retained.
+
 A new [deployed-runtime comparison](DEPLOYED_RUNTIME_COMPARISON_2026-11-02.md)
 covers all six registered ERC-20 deployments. Executable bytes and expected
 constructor immutables match the current builds; complete runtime bytes match
@@ -11,9 +20,8 @@ The latest application change is `96b5945`: the [RPC history-range correction](R
 enforces the inclusive 2,000-block limit at the low-level dispatch and HTTP relay,
 with three reproduced failures becoming passes and 585 related cases passing.
 The original running server/tabs were preserved. The verified distribution below
-predates this change; collect it in the next combined delivery. The previous full
-Wallet/browser results still apply to their named earlier source, not a fresh
-complete run of this revision.
+predates this change; collect it in the next combined delivery. The new full
+Wallet/browser results at `e5841f0` include this application change.
 
 The current [verified distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md) is
 16a0d33, with the later token fixes: 4523 Wallet source files, 253 manifests /
@@ -99,7 +107,7 @@ Subsequent history CLI changes are tracked separately below.
 | --- | --- | --- |
 | Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | The latest inspected public PR head is `07041f00efdb503cb76a06fbe12e5531cb380930`; [run 41311235726](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726) completed all five jobs successfully. PR #4 remains open and draft. The [current local source at `34d1731`](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md) passed 16,451 Node/HTTP and 1,021 synthetic browser cases, plus 150 local compatibility cases against freshly compiled token artifacts. Existing dependency installations were reused. No new remote CI result or publication applies to those local changes |
 | Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | A fresh Windows checkout exposed 460 evidence mismatches caused by automatic line-ending conversion. The [correction at `c53cb26`](EVIDENCE_PORTABILITY_2026-11-02.md) preserves original evidence bytes; its fresh checkout verifies 248 manifests / 2,231 entries with zero mismatches, plus historical-record consistency. The final local package receipt separately covers the new evidence folder. New local evidence has no remote CI result; the successful public evidence job belongs to `07041f0` |
-| Real wallet acceptance | All three token cards with existing accounts (sharing allowed); permission UI, exact balances/block, save/reload/restore, explicit reconnect, and a switch between two existing accounts | Incomplete. The [revised acceptance matrix](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md) removes the unnecessary third-account prerequisite while retaining the permission, identity and recovery checks. Token count and distinct wallet count are reported separately; no new account is required |
+| Real wallet acceptance | All three token cards with existing accounts (sharing allowed); permission UI, exact balances/block, save/reload/restore, explicit reconnect, and a switch between two existing accounts | Partially completed: [intended-PC Mainnet sequence](LIVE_ACCEPTANCE_2026-11-02.md) passed three-card reads, actual file restore, explicit reconnect and stop/history retention with one existing account. No new account is required. Two-account switch, chain switch, Sepolia and full candidate-server migration remain unverified |
 | File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | [Rehearsal recovery](OPERATOR_RECOVERY_2026-11-01.md) passed for six fictional records / three cases. [Real balance-history recovery](HISTORY_RECOVERY_2026-11-01.md) passed for one permitted EMA account with two observations. [Archive/vault recovery](VAULT_RECOVERY_2026-11-02.md) now includes retained archives after disconnect/protective stop, saved-list survival across reload, duplicate-free collection re-import, cancelled/reviewed bundle import and byte-identical exports. [Isolated actual-file checks](ACTUAL_FILE_RECOVERY_2026-11-02.md) now cover two distinct collection files in empty native stores, eight distinct full workspaces across browser restarts, and an actual byte-identical browser download. Original-profile OS selection and the live three-token candidate using existing accounts remain separate |
 | Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present. A [bounded developer source review](OPERATOR_RECOVERY_2026-11-01.md#connection-guidance-and-bounded-source-review) traced connection/read dispatch, request filtering and stale-result protection. This does not replace review of the final candidate or independent review |
 | Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | The prior exported `97dae0f` package had 4,279 / 4,279 source files matching its commit and [ten successful fresh-directory HTTP/startup checks](RELEASE_REGRESSION_2026-11-02.md). The current application source is `34d1731`; its final delivery receipt records the new export, empty-repository restoration, evidence verification and startup checks separately. The [operator procedure](SOURCE_CHECKPOINT_2026-11-01.md) is documented; real-wallet migration/return remains to be exercised |

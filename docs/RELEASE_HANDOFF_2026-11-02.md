@@ -1,5 +1,15 @@
 # ThreeCore candidate review handoff — November 2, 2026
 
+Latest source/test checkpoint: `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd`;
+application source: `96b59459a0f593246c60f0bed4b52052211a464a`.
+[Full local regression](NATIVE_CRYPTO_TEST_WAIT_2026-11-02.md) passed 16,454
+Node/HTTP and 1,021 synthetic browser cases after a test-only drain-wait fix.
+[Live Mainnet acceptance progress](LIVE_ACCEPTANCE_2026-11-02.md) now covers
+three cards sharing an existing MetaMask account, saved-file restore, explicit
+reconnect and stop/history preservation. The earlier checkpoints below are
+retained history; account/chain switching, Sepolia, candidate migration and
+independent review remain open.
+
 The current [verified distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md) is
 16a0d33, with the later token fixes: 4523 Wallet source files, 253 manifests /
 2434 entries, fresh minimal runtimes and a successful restored DAT historical

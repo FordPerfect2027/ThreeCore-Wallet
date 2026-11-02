@@ -1,0 +1,20 @@
+✔ cancel encryption during native digest never returns a file (63.8145ms)
+✔ cancel encryption during native importKey never returns a file (12.8911ms)
+✔ cancel encryption during native deriveKey never returns a file (1042.0071ms)
+✔ cancel encryption during native encrypt never returns a file (803.3129ms)
+✔ cancel restoration during native importKey never returns plaintext (611.7528ms)
+✔ cancel restoration during native deriveKey never returns plaintext (695.1458ms)
+✔ cancel restoration during native decrypt never returns plaintext (546.1682ms)
+✔ cancel restoration during native digest never returns plaintext (578.6624ms)
+✔ native key derivation timeout prevents later encryption stage (619.2487ms)
+✔ successful native roundtrip retains exact DAT EMA CAWELON workspace (1188.3699ms)
+✔ real authenticated plaintext expires before controller handoff (638.9607ms)
+✔ wrong passphrase exposes only authentication failure through hardened runner (710.6685ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8311.4332

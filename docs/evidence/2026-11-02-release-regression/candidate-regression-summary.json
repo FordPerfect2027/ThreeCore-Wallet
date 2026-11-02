@@ -1,0 +1,17 @@
+{
+  "revision": "e5841f0d1b412b516b3e3eb4a81d75eabaf81edd",
+  "applicationRevision": "96b59459a0f593246c60f0bed4b52052211a464a",
+  "fullNodePassed": 16454,
+  "fullSyntheticBrowserPassed": 1021,
+  "initialFullRun": {
+    "revision": "3961b5151bec3cadca44bf732628c2c6addabeac",
+    "passed": 16453,
+    "failed": 1,
+    "reason": "Two-second busy-poll helper expired while native PBKDF2 drained after cancellation."
+  },
+  "unchangedIsolatedRunPassed": 12,
+  "eventDrivenWaitFocusedPassed": 12,
+  "productCryptoOrDeadlineRelaxed": false,
+  "changes": "Test-only drain wait subscribes to runner idle notification; finite 60-second test timeout remains.",
+  "fullSuitesRepeatedBecause": "New full-run failure and subsequent test-wait correction; no unchanged token suite was rerun."
+}

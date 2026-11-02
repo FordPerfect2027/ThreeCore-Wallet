@@ -1,5 +1,12 @@
 # Shared accounts and the real-wallet acceptance matrix
 
+Update: the [intended-PC Mainnet sequence](LIVE_ACCEPTANCE_2026-11-02.md) now
+exercises three cards sharing one actual MetaMask account, all three identity
+reads, full workspace save/restore, explicit reconnect and pending-read Stop
+with preserved histories. It does not cover a two-account or chain switch,
+Sepolia, or full candidate-server migration. The synthetic results below remain
+separate evidence.
+
 The supported product has three **token cards**, not a requirement for three
 different wallet accounts. The operator confirmed that no new account should
 be required merely to use DAT, EMA and CAWELON. Existing accounts may be shared.

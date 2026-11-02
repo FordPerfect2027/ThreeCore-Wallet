@@ -1,0 +1,190 @@
+{
+  "schema": "threecore.live-acceptance-progress.v1",
+  "recordedAt": "2026-11-02T01:02:35.112Z",
+  "sourceRevision": "e5841f0d1b412b516b3e3eb4a81d75eabaf81edd",
+  "applicationRevision": "96b59459a0f593246c60f0bed4b52052211a464a",
+  "browser": "Microsoft Edge, existing user profile with MetaMask",
+  "origin": "http://127.0.0.1:4231",
+  "network": "Base Mainnet",
+  "chainId": 8453,
+  "distinctPermittedAccounts": 1,
+  "tokenCards": 3,
+  "accountValuesRedacted": true,
+  "observations": [
+    {
+      "agent": "DAT",
+      "blockNumber": "53395642",
+      "blockHash": "0x185896c12793dc8377e01e3a3f02b239040123637ec03ddb6f36b2f0d23f5d7f",
+      "tokenAddress": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+      "balanceBaseUnits": "0",
+      "metadata": {
+        "name": "DATCORE",
+        "symbol": "DAT",
+        "decimals": 18,
+        "totalSupply": "1000000000000000000000000000"
+      },
+      "sourceFileSha256": "d4e81bd785ab4ccaaea09e3efe5506be1ea328d186291c6d4d623039b5020c04",
+      "checksumVerified": true
+    },
+    {
+      "agent": "EMA",
+      "blockNumber": "53395722",
+      "blockHash": "0xdd69655d1e9a218f5b97c59e16fdadb984808a7db820ff39fedebd7cd32a3f7b",
+      "tokenAddress": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+      "balanceBaseUnits": "0",
+      "metadata": {
+        "name": "EMA CORE",
+        "symbol": "EMA",
+        "decimals": 18,
+        "totalSupply": "777000000000000000000000000"
+      },
+      "sourceFileSha256": "8903850273457111b0ba93e3072693bde7127a58fce043593bf2044a29fb3a7d",
+      "checksumVerified": true
+    },
+    {
+      "agent": "CAWELON",
+      "blockNumber": "53395750",
+      "blockHash": "0x10dc0e56a7d4d36a0ea0e5fd0bd1d1c866012c70ace61c8c88eb5d95c5c9a202",
+      "tokenAddress": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+      "balanceBaseUnits": "0",
+      "metadata": {
+        "name": "CAWELON CORE",
+        "symbol": "CAWELON",
+        "decimals": 18,
+        "totalSupply": "420000000000000000000000000000000"
+      },
+      "sourceFileSha256": "1a856aca76c62b1cd529151abeca4668424409c445bb998d5420953a16146911",
+      "checksumVerified": true
+    }
+  ],
+  "stepsObserved": {
+    "existingRehearsalTabReclaimed": true,
+    "fictionalWorkspaceFileChooserRead": true,
+    "fictionalRecords": [
+      3,
+      2,
+      1
+    ],
+    "fictionalReexportByteIdentical": true,
+    "actualMetaMaskExistingPermissionRead": true,
+    "threeCardsExplicitlyConnected": true,
+    "threeIdentityReadsSaved": true,
+    "realPortfolioHistoryRecords": [
+      1,
+      1,
+      1
+    ],
+    "emptyDestinationTab": true,
+    "workspaceFileChooserRead": true,
+    "checksumAccepted": true,
+    "changesPreviewedBeforeRestore": true,
+    "existingRecordsRemoved": 0,
+    "restoredCardsInitiallyDisconnected": true,
+    "settingsTokensAndFullHistoriesMatchInUi": true,
+    "reexportByteIdentical": true,
+    "allThreeCardsExplicitlyReconnected": true,
+    "datReadObservedPendingBeforeStop": true,
+    "manualStopDisconnectedAllCards": true,
+    "liveResultStayedUnconfirmedAfterStop": true,
+    "acceptedHistoryPreservedByByteIdenticalBackup": true,
+    "resumeControlDidNotAutomaticallyReconnect": true
+  },
+  "integrity": {
+    "workspaceBytes": 4410,
+    "workspaceSha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989",
+    "workspaceInternalChecksum": "10db29fa2df3d1a154c5e68980a0d3823246ed2acf225324d6b2ba583d3319a0",
+    "rehearsalBytes": 4771,
+    "rehearsalSha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302",
+    "privateEvidence": [
+      {
+        "filename": "ThreeCore-operation-workspace.json",
+        "bytes": 4771,
+        "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+      },
+      {
+        "filename": "ThreeCore-operation-workspace (21).json",
+        "bytes": 4771,
+        "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+      },
+      {
+        "filename": "ThreeCore-workspace-comparison (1).json",
+        "bytes": 16598,
+        "sha256": "b2a6dbbc0da63d09b5ac0ee01d911e355e6ee567524b853eb59e36bc6f930bba"
+      },
+      {
+        "filename": "ThreeCore-workspace-backup (9).json",
+        "bytes": 4410,
+        "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989"
+      },
+      {
+        "filename": "ThreeCore-workspace-backup (10).json",
+        "bytes": 4410,
+        "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989"
+      },
+      {
+        "filename": "ThreeCore-workspace-backup (11).json",
+        "bytes": 4410,
+        "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989"
+      },
+      {
+        "filename": "ThreeCore-workspace-overview.txt",
+        "bytes": 2246,
+        "sha256": "cacc04ce1d9be2f7c34a885297e343dade66e37e06f8bc59af66cc3f93ef7f0a"
+      },
+      {
+        "filename": "ThreeCore-rehearsal-restored-20261102.jpg",
+        "bytes": 46881,
+        "sha256": "1f4c23abdfc9c87e0bda9d557b56238603fa5509342ccc66aa7c1e68bafcf3af"
+      },
+      {
+        "filename": "ThreeCore-mainnet-three-cards-20261102.jpg",
+        "bytes": 57254,
+        "sha256": "8a3bc3b1c5bdc3920c5470342f3d20ae9f600c457abd56088addbf674940537b"
+      },
+      {
+        "filename": "ThreeCore-three-cards-restored-match-20261102.jpg",
+        "bytes": 62371,
+        "sha256": "158a5b24f6347d342a025f76be620cf22e8b927def8cd052a183c95085374326"
+      },
+      {
+        "filename": "ThreeCore-mainnet-stop-status-20261102.json",
+        "bytes": 2181,
+        "sha256": "7e66d048d67a18285a62ce2ff5af2b03d38ea33090f74b69e6944d9f0da7b8b8"
+      },
+      {
+        "filename": "ThreeCore-DAT-identity-53395642.json",
+        "bytes": 934,
+        "sha256": "d4e81bd785ab4ccaaea09e3efe5506be1ea328d186291c6d4d623039b5020c04"
+      },
+      {
+        "filename": "ThreeCore-EMA-identity-53395722.json",
+        "bytes": 934,
+        "sha256": "8903850273457111b0ba93e3072693bde7127a58fce043593bf2044a29fb3a7d"
+      },
+      {
+        "filename": "ThreeCore-CAWELON-identity-53395750.json",
+        "bytes": 952,
+        "sha256": "1a856aca76c62b1cd529151abeca4668424409c445bb998d5420953a16146911"
+      }
+    ]
+  },
+  "originalServer": {
+    "pid": 2108,
+    "observedStartLocal": "2026-10-30T00:41:41+09:00",
+    "restarted": false,
+    "sourceScope": "Fresh client tabs loaded current on-disk assets; original server process and its already-imported modules were preserved. This is not a full fresh-candidate server deployment."
+  },
+  "limitations": [
+    "This live sequence used Mainnet, not Sepolia.",
+    "No actual two-account switch or chain switch was performed.",
+    "File chooser was driven through the documented browser filechooser API; native OS picker traversal was not exercised.",
+    "No prior-version browser migration/return or independent review was completed.",
+    "UI observations are developer evidence, not authentication of the files or token safety.",
+    "Raw actual-account evidence remains in a private local folder; the redacted summary cannot replace it for independent rechecking."
+  ],
+  "transactionsSigned": 0,
+  "transactionsSubmitted": 0,
+  "secretKeysRead": false,
+  "githubModified": false,
+  "readinessPercentageCalculated": false
+}
