@@ -110,3 +110,41 @@ Native Edge inspection subsequently stopped because the automation tool could
 not establish the browser's current URL. No native browser input followed.
 The actual MetaMask account/chain switch, Sepolia acceptance and full candidate
 migration remain open; the new evidence does not complete those separate steps.
+
+## MetaMask site context and guidance — afternoon follow-up
+
+The operator reported selecting Account 2 and Base Sepolia, and subsequently
+changing the connection settings for `127.0.0.1`. The retained Edge Wallet tab's
+ordinary permitted-account control was read again after each report. Both reads
+still returned the prior Account 1 public address, Base Mainnet and one permitted
+account. No address was applied, no card connected and no new balance was read.
+These observations do not establish a completed account or network switch.
+
+MetaMask's official documentation distinguishes the asset display from each
+connected site's network and permitted accounts. This explains a possible
+source of confusion; it does not establish why this particular tab continued
+returning the old context. The browser/profile and actual site settings still
+need to be confirmed. A planned fresh-tab recheck did not complete. Native Edge
+inspection again stopped because the tool could not establish the current URL;
+no native browser input followed. The original tab and server were preserved.
+
+At `7c12a280649ee56d52165d9412db3af4c5bd4770`, the account preview helper text,
+account/network mismatch messages and Japanese operator guide were updated to
+direct the operator to the connected site's settings. No RPC dispatch,
+permission handling or identity guard changed. The existing command
+`node --test test/permitted-account.test.js test/wallet-card-controller.test.js test/connection-boundaries.test.js`
+passed **82 tests, zero failures**, as recorded in the development session and
+commit message. These are automated local cases, not 82 real-wallet exercises.
+The preserved live tab was not reloaded to display the new source, and the
+complete regression was not repeated for this copy-only change.
+
+The first follow-up's visible result and screenshot remain private under
+`Downloads/ThreeCore-private-site-context-20261102-0P9ZM8`. They were saved before
+the operator's subsequent site-settings report and must not be presented as a
+screenshot taken after that later change. The later read was observed in the
+live tool output. Sepolia, actual account/chain switching and candidate migration
+remain open. The next clarification is which browser/profile holds the changed
+MetaMask connection, rather than requesting the same switch repeatedly.
+
+Official references: [per-site network selection](https://support.metamask.io/configure/networks/how-to-change-networks)
+and [dapp permissions](https://support.metamask.io/more-web3/dapps/manage-dapp-permissions/).

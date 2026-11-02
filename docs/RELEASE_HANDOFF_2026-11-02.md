@@ -14,7 +14,7 @@ A 90% planning target is not an achieved release gate or a measured score.
 | Item | Fixed revision | What it establishes |
 | --- | --- | --- |
 | Inspected local evidence checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
-| Latest Wallet implementation | `307ed11a13706c71954dfa6b6f12d7710b05bae9` | Permitted-address detail wrapping; the last behavioral change remains the inclusive range correction at `96b5945` |
+| Latest Wallet implementation | `7c12a280649ee56d52165d9412db3af4c5bd4770` | Site-specific MetaMask guidance and earlier address wrapping; the last RPC behavior change remains the inclusive range correction at `96b5945` |
 | Latest complete Wallet regression | `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd` | 16,454 Node/HTTP and 1,021 synthetic browser passes; later test-only drain-wait fix included |
 | DAT | `502944c94ffed408356b487abc9a710807697ee2` | Current checked local token source |
 | EMA | `9cad39a196e8afc37abb5b99c260e00327c55d1c` | Current checked local token source |
@@ -22,8 +22,9 @@ A 90% planning target is not an achieved release gate or a measured score.
 | Public PR #4 head | `07041f00efdb503cb76a06fbe12e5531cb380930` | Earlier public source only |
 
 All three token working trees were clean when this source map was checked.
-The [saved current-state receipt](evidence/2026-11-02-release-regression/candidate-review-scope.json)
-records the 17 changed implementation files and their content digests.
+The [saved checkpoint receipt](evidence/2026-11-02-release-regression/candidate-review-scope.json)
+records 17 changed implementation files at `5297728` and their content digests.
+It predates the later CSS and site-specific guidance changes listed here.
 New documentation commits do not alter the implementation/regression pins above.
 
 The later CSS-only change prevents permitted-account details overflowing narrow
@@ -34,6 +35,15 @@ Base Mainnet and one permitted account; this does not close the requested
 Sepolia or account-switch gate. See the [layout receipt](evidence/2026-11-02-release-regression/account-probe-layout-summary.json).
 The full regression predates this CSS-only change; the new evidence is the actual
 rendered layout check, not another full regression run.
+
+The later copy-only change at `7c12a28` explains MetaMask's site-specific account
+permissions and network selection, separately from its asset display. Existing
+permitted-account, card-controller and connection-boundary suites passed all
+82 cases. RPC dispatch, permission requests and identity checks did not change.
+The original live tab was not reloaded, so this result does not establish live
+rendering of the new guidance or successful Sepolia acceptance. See the
+[site-context follow-up](LIVE_ACCEPTANCE_2026-11-02.md#metamask-site-context-and-guidance--afternoon-follow-up)
+and [Japanese operator steps](OPERATOR_ACCEPTANCE_JA.md#metamaskで切り替えたのにthreecoreへ反映されない場合).
 
 The [public PR](https://github.com/FordPerfect2027/ThreeCore-Wallet/pull/4) was
 rechecked through unauthenticated GitHub GET requests on November 2. It is open
@@ -49,6 +59,8 @@ Publication remains deferred for the operator's combined update.
 Relative to the public head, the inspected local checkpoint changes **17 files,
 123 added and 54 deleted lines** in src, examples and scripts. CI, tests,
 documentation and the evidence newline policy are additional, separate changes.
+Those fixed-checkpoint counts exclude the later changes at `307ed11` and
+`7c12a28`; inspect those two commits as well when reviewing the latest candidate.
 
 | Change | Source starting points | Review question |
 | --- | --- | --- |
