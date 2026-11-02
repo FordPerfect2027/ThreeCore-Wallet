@@ -1,5 +1,11 @@
 # ThreeCore release preparation — November 1, 2026
 
+The [11:04 JST live-context follow-up](LIVE_ACCEPTANCE_2026-11-02.md#existing-account-context-rejection--11041106-jst-follow-up)
+now verifies wrong-network and wrong-account rejection against the actual
+MetaMask permission, explicit return/reconnection, and a byte-identical workspace
+export. It changes card configuration, not MetaMask's selected account/network;
+the actual switching, Sepolia and full migration gates remain open.
+
 The latest [source reconstruction](DEPLOYMENT_SOURCE_RECONSTRUCTION_2026-11-02.md)
 reproduces complete runtime bytes for five of six deployments after changing
 only compiler source paths. It also verifies the recorded Mainnet creation and
@@ -18,10 +24,11 @@ The [latest full local regression](NATIVE_CRYPTO_TEST_WAIT_2026-11-02.md), at
 `e5841f0`, passed 16,454 Node/HTTP and 1,021 synthetic browser cases. The initial
 full-run failure and the test-only wait correction are retained.
 
-A new [deployed-runtime comparison](DEPLOYED_RUNTIME_COMPARISON_2026-11-02.md)
+The earlier unchanged-input [deployed-runtime comparison](DEPLOYED_RUNTIME_COMPARISON_2026-11-02.md)
 covers all six registered ERC-20 deployments. Executable bytes and expected
 constructor immutables match the current builds; complete runtime bytes match
-only DAT on Sepolia because five metadata IPFS digests differ. A portable
+only DAT on Sepolia because five metadata IPFS digests differ. The later path-only
+reconstruction above explains four of those differences. A portable
 offline checker reproduces the distinction. This is developer evidence and
 does not close independent review or real-wallet acceptance.
 

@@ -1,0 +1,88 @@
+{
+  "schema": "threecore.live-context-acceptance.v1",
+  "recordedAt": "2026-11-02T02:09:43.460Z",
+  "sourceRevision": "2e470d9386a3a5e7ef216e27928ee2f41c582dc1",
+  "applicationRevision": "96b59459a0f593246c60f0bed4b52052211a464a",
+  "origin": "http://127.0.0.1:4231",
+  "browser": "Microsoft Edge with existing MetaMask permission",
+  "subject": "DAT card configuration changes against the existing Mainnet Account 1 permission",
+  "accountValuesRedacted": true,
+  "observations": {
+    "changingCardNetworkDisconnects": true,
+    "wrongNetworkRejected": true,
+    "wrongNetworkBalanceButtonDisabled": true,
+    "originalMainnetReconnectPassed": true,
+    "changingCardAccountDisconnects": true,
+    "wrongAccountRejected": true,
+    "wrongAccountBalanceButtonDisabled": true,
+    "threeCardsExplicitlyReconnectedAfterRestore": true,
+    "savedHistoriesPerCard": [
+      1,
+      1,
+      1
+    ],
+    "afterExportByteIdentical": true,
+    "ordinaryStopUsedAfterChecks": true
+  },
+  "wrongNetworkObservedAt": "2026-11-02T02:04:45.137Z",
+  "wrongAccountObservedAt": "2026-11-02T02:05:14.435Z",
+  "workspace": {
+    "bytes": 4410,
+    "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989",
+    "internalChecksumVerified": true
+  },
+  "download": {
+    "listenerTimedOut": true,
+    "timeoutMilliseconds": 15000,
+    "actualFileFoundAndVerified": true,
+    "retries": 0
+  },
+  "evidence": [
+    {
+      "file": "after-context-roundtrip.json",
+      "bytes": 4410,
+      "sha256": "17d16f8c10f571ba04b23be790640cab36ccbae5feeddca44e6a4433328ac989"
+    },
+    {
+      "file": "visible-steps.json",
+      "bytes": 8797,
+      "sha256": "c6f89aa7bfa418fd0349e57b87ba67a84187315d13ad1b1a5cb5938b6f0f9669"
+    },
+    {
+      "file": "wrong-network.png",
+      "bytes": 63714,
+      "sha256": "b47f251cda0b13704ead21a646aa29fb308d605a96aed42f8167a31c29ca97f4"
+    },
+    {
+      "file": "wrong-account.png",
+      "bytes": 64481,
+      "sha256": "0fa8f655773d369215aab95deeb19b402188d5931bcef8acda6e5f94a3150d22"
+    },
+    {
+      "file": "restored-connection.png",
+      "bytes": 34111,
+      "sha256": "06f0bc5e6f1cce41f732c5b19b06f7a32bd987d251095c3a7ba5722d85225f8d"
+    },
+    {
+      "file": "finished.png",
+      "bytes": 55074,
+      "sha256": "e46c477f25d05a7d39e03def1cce1b1387d810b5ec6d28c41b3b5b53b632e9d7"
+    }
+  ],
+  "scope": {
+    "actualWalletNetworkSwitched": false,
+    "actualWalletAccountSwitched": false,
+    "sepoliaWalletAcceptanceCompleted": false,
+    "newBalanceReadPerformed": false,
+    "fullCandidateServerMigrationCompleted": false,
+    "nativeFilePickerUsed": false,
+    "independentAudit": false,
+    "signedOrSubmittedTransactions": 0,
+    "secretKeysRead": false,
+    "original4231ServerRestarted": false,
+    "originalServerPid": 2108,
+    "browserExtensionUiEnded": "Native browser automation could not establish the current URL; no native input was sent.",
+    "sourceScope": "Existing client assets; original running server modules preserved.",
+    "provenance": "Developer-observed UI steps with retained local screenshots and real files; this script checks recorded data and does not authenticate observations."
+  }
+}

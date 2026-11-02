@@ -1,5 +1,9 @@
 # ThreeCore candidate review handoff — November 2, 2026
 
+The [11:04 JST live-context follow-up](LIVE_ACCEPTANCE_2026-11-02.md#existing-account-context-rejection--11041106-jst-follow-up)
+adds actual MetaMask mismatch rejection, explicit reconnection and byte-identical
+workspace preservation. Actual wallet account/network switching remains open.
+
 Newer than the 23d0a35 archive: [deployment source reconstruction](DEPLOYMENT_SOURCE_RECONSTRUCTION_2026-11-02.md)
 reproduces five complete runtimes with unchanged Solidity and path-only compiler
 input changes. Mainnet creation and initial issuance were separately checked for

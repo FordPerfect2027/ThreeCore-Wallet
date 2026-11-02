@@ -71,3 +71,42 @@ independent review. Native Windows picker traversal was not exercised: the real
 files were selected through the browser's supported file-chooser API. These
 results advance the file/reconnection checks without closing all release gates
 or establishing a completion percentage.
+
+## Existing-account context rejection — 11:04–11:06 JST follow-up
+
+The existing restored Wallet tab responded through its retained browser
+connection. Reclaiming the rehearsal tab still timed out; that tab was not
+reloaded. The Wallet retained one saved portfolio observation per token.
+
+With the actual MetaMask Account 1 permission still on Base Mainnet, the DAT
+card was explicitly reconnected and then changed to Base Sepolia in the card's
+own configuration. The card immediately disconnected. A new Connect attempt
+reported a network mismatch and left the balance-read button disabled. Returning
+the card to Mainnet and explicitly connecting succeeded.
+
+Next, the DAT card was set to the other previously saved public account while
+MetaMask's selected account remained unchanged. This disconnected the card;
+Connect then reported an account mismatch and left the balance-read button
+disabled. Restoring the original account and explicitly reconnecting all three
+cards succeeded. These are real-provider **mismatch rejection** checks, not an
+actual MetaMask account or network switch.
+
+The subsequent actual workspace download is byte-identical to the earlier
+4,410-byte backup, with the same SHA-256 above. It preserves all three settings,
+token lists and full histories. The browser download listener timed out after
+15 seconds, but the file was already present in Downloads and was verified
+directly; the download action was not repeated. The ordinary Stop control was
+then used on the tested tab, without broadcasting to other tabs.
+
+[The redacted follow-up receipt](evidence/2026-11-02-release-regression/live-context-acceptance-summary.json)
+and recording method retain the exact source checkpoint, observed steps and
+private evidence digests. Actual files, screenshots and visible-state records
+are in `Downloads/ThreeCore-private-context-acceptance-20261102-Fg9Opw`.
+The source checkpoint was `2e470d9`; application source remained `96b5945`.
+No product code changed, new balance was read or full regression rerun in this
+sequence. The original 4231 process remained PID 2108 with its original start.
+
+Native Edge inspection subsequently stopped because the automation tool could
+not establish the browser's current URL. No native browser input followed.
+The actual MetaMask account/chain switch, Sepolia acceptance and full candidate
+migration remain open; the new evidence does not complete those separate steps.
