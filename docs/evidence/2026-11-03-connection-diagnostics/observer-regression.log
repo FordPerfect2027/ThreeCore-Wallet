@@ -1,0 +1,1486 @@
+TAP version 13
+# Subtest: file cleanup consumes rejected asynchronous adapter results: native
+ok 1 - file cleanup consumes rejected asynchronous adapter results: native
+  ---
+  duration_ms: 24.371
+  type: 'test'
+  ...
+# Subtest: file cleanup consumes rejected asynchronous adapter results: malformed
+ok 2 - file cleanup consumes rejected asynchronous adapter results: malformed
+  ---
+  duration_ms: 2.9712
+  type: 'test'
+  ...
+# Subtest: secure expiry consumes malformed asynchronous notification and remains expired
+ok 3 - secure expiry consumes malformed asynchronous notification and remains expired
+  ---
+  duration_ms: 3.6052
+  type: 'test'
+  ...
+# Subtest: read-scope eligibility rejection is consumed without invoking a wallet method
+ok 4 - read-scope eligibility rejection is consumed without invoking a wallet method
+  ---
+  duration_ms: 28.2108
+  type: 'test'
+  ...
+# Subtest: read completion observer failure cannot escape or replace the method result
+ok 5 - read completion observer failure cannot escape or replace the method result
+  ---
+  duration_ms: 3.3846
+  type: 'test'
+  ...
+# Subtest: wallet card view notification failure is consumed after disconnect
+ok 6 - wallet card view notification failure is consumed after disconnect
+  ---
+  duration_ms: 3.5343
+  type: 'test'
+  ...
+# Subtest: wallet card asynchronous access result cannot create a wallet session
+ok 7 - wallet card asynchronous access result cannot create a wallet session
+  ---
+  duration_ms: 2.429
+  type: 'test'
+  ...
+# Subtest: discarded HTTP headers consume malformed body-cancellation failures
+ok 8 - discarded HTTP headers consume malformed body-cancellation failures
+  ---
+  duration_ms: 3.5284
+  type: 'test'
+  ...
+# Subtest: pre-aborted body reads consume cancellation failures without reading
+ok 9 - pre-aborted body reads consume cancellation failures without reading
+  ---
+  duration_ms: 4.5029
+  type: 'test'
+  ...
+# Subtest: oversized declared responses consume body-cancellation failures before opening a reader
+ok 10 - oversized declared responses consume body-cancellation failures before opening a reader
+  ---
+  duration_ms: 4.5945
+  type: 'test'
+  ...
+# Subtest: HTTP reader cancel failure cannot escape a rejected response
+ok 11 - HTTP reader cancel failure cannot escape a rejected response
+  ---
+  duration_ms: 2.4637
+  type: 'test'
+  ...
+# Subtest: HTTP reader releaseLock failure cannot escape a rejected response
+ok 12 - HTTP reader releaseLock failure cannot escape a rejected response
+  ---
+  duration_ms: 1.3822
+  type: 'test'
+  ...
+# Subtest: public RPC response cleanup cannot escape its transport error
+ok 13 - public RPC response cleanup cannot escape its transport error
+  ---
+  duration_ms: 16.9886
+  type: 'test'
+  ...
+# Subtest: rpc: a later observer never receives the pre-cancellation snapshot
+ok 14 - rpc: a later observer never receives the pre-cancellation snapshot
+  ---
+  duration_ms: 89.1665
+  type: 'test'
+  ...
+# Subtest: rpc: a late observer stop refreshes an earlier display
+ok 15 - rpc: a late observer stop refreshes an earlier display
+  ---
+  duration_ms: 10.3599
+  type: 'test'
+  ...
+# Subtest: rpc: removing a later listener from a stop callback prevents delivery
+ok 16 - rpc: removing a later listener from a stop callback prevents delivery
+  ---
+  duration_ms: 2.7902
+  type: 'test'
+  ...
+# Subtest: rpc: disposal inside a notification stops remaining observers
+ok 17 - rpc: disposal inside a notification stops remaining observers
+  ---
+  duration_ms: 2.4126
+  type: 'test'
+  ...
+# Subtest: rpc: a rejecting stop observer cannot hide the stopped state
+ok 18 - rpc: a rejecting stop observer cannot hide the stopped state
+  ---
+  duration_ms: 3.6544
+  type: 'test'
+  ...
+# Subtest: storage: a later observer never receives the pre-cancellation snapshot
+ok 19 - storage: a later observer never receives the pre-cancellation snapshot
+  ---
+  duration_ms: 4.0758
+  type: 'test'
+  ...
+# Subtest: storage: a late observer stop refreshes an earlier display
+ok 20 - storage: a late observer stop refreshes an earlier display
+  ---
+  duration_ms: 1.7802
+  type: 'test'
+  ...
+# Subtest: storage: removing a later listener from a stop callback prevents delivery
+ok 21 - storage: removing a later listener from a stop callback prevents delivery
+  ---
+  duration_ms: 1.6989
+  type: 'test'
+  ...
+# Subtest: storage: disposal inside a notification stops remaining observers
+ok 22 - storage: disposal inside a notification stops remaining observers
+  ---
+  duration_ms: 1.6009
+  type: 'test'
+  ...
+# Subtest: storage: a rejecting stop observer cannot hide the stopped state
+ok 23 - storage: a rejecting stop observer cannot hide the stopped state
+  ---
+  duration_ms: 2.0872
+  type: 'test'
+  ...
+# Subtest: crypto: a later observer never receives the pre-cancellation snapshot
+ok 24 - crypto: a later observer never receives the pre-cancellation snapshot
+  ---
+  duration_ms: 5.3982
+  type: 'test'
+  ...
+# Subtest: crypto: a late observer stop refreshes an earlier display
+ok 25 - crypto: a late observer stop refreshes an earlier display
+  ---
+  duration_ms: 1.6841
+  type: 'test'
+  ...
+# Subtest: crypto: removing a later listener from a stop callback prevents delivery
+ok 26 - crypto: removing a later listener from a stop callback prevents delivery
+  ---
+  duration_ms: 36.0427
+  type: 'test'
+  ...
+# Subtest: crypto: disposal inside a notification stops remaining observers
+ok 27 - crypto: disposal inside a notification stops remaining observers
+  ---
+  duration_ms: 9.2122
+  type: 'test'
+  ...
+# Subtest: crypto: a rejecting stop observer cannot hide the stopped state
+ok 28 - crypto: a rejecting stop observer cannot hide the stopped state
+  ---
+  duration_ms: 1.8397
+  type: 'test'
+  ...
+# Subtest: file: a later observer never receives the pre-cancellation snapshot
+ok 29 - file: a later observer never receives the pre-cancellation snapshot
+  ---
+  duration_ms: 5.157
+  type: 'test'
+  ...
+# Subtest: file: a late observer stop refreshes an earlier display
+ok 30 - file: a late observer stop refreshes an earlier display
+  ---
+  duration_ms: 3.2411
+  type: 'test'
+  ...
+# Subtest: file: removing a later listener from a stop callback prevents delivery
+ok 31 - file: removing a later listener from a stop callback prevents delivery
+  ---
+  duration_ms: 2.2023
+  type: 'test'
+  ...
+# Subtest: file: disposal inside a notification stops remaining observers
+ok 32 - file: disposal inside a notification stops remaining observers
+  ---
+  duration_ms: 2.2948
+  type: 'test'
+  ...
+# Subtest: file: a rejecting stop observer cannot hide the stopped state
+ok 33 - file: a rejecting stop observer cannot hide the stopped state
+  ---
+  duration_ms: 6.953
+  type: 'test'
+  ...
+# Subtest: export: a later observer never receives the pre-cancellation snapshot
+ok 34 - export: a later observer never receives the pre-cancellation snapshot
+  ---
+  duration_ms: 6.5536
+  type: 'test'
+  ...
+# Subtest: export: a late observer stop refreshes an earlier display
+ok 35 - export: a late observer stop refreshes an earlier display
+  ---
+  duration_ms: 3.5255
+  type: 'test'
+  ...
+# Subtest: export: removing a later listener from a stop callback prevents delivery
+ok 36 - export: removing a later listener from a stop callback prevents delivery
+  ---
+  duration_ms: 23.664
+  type: 'test'
+  ...
+# Subtest: export: disposal inside a notification stops remaining observers
+ok 37 - export: disposal inside a notification stops remaining observers
+  ---
+  duration_ms: 2.692
+  type: 'test'
+  ...
+# Subtest: export: a rejecting stop observer cannot hide the stopped state
+ok 38 - export: a rejecting stop observer cannot hide the stopped state
+  ---
+  duration_ms: 5.7106
+  type: 'test'
+  ...
+# Subtest: file: a stop notification cannot launch a new read outside the cancellation batch
+ok 39 - file: a stop notification cannot launch a new read outside the cancellation batch
+  ---
+  duration_ms: 2.5336
+  type: 'test'
+  ...
+# Subtest: file: a new explicit read is available after cancellation returns
+ok 40 - file: a new explicit read is available after cancellation returns
+  ---
+  duration_ms: 23.737
+  type: 'test'
+  ...
+# Subtest: file: repeated cancel from the stop notification is idempotent
+ok 41 - file: repeated cancel from the stop notification is idempotent
+  ---
+  duration_ms: 3.303
+  type: 'test'
+  ...
+# Subtest: storage: repeated stop notifications do not starve the event loop
+ok 42 - storage: repeated stop notifications do not starve the event loop
+  ---
+  duration_ms: 903.2362
+  type: 'test'
+  ...
+# Subtest: async listener registration fails closed: accountsChanged / resolve
+ok 43 - async listener registration fails closed: accountsChanged / resolve
+  ---
+  duration_ms: 11.9057
+  type: 'test'
+  ...
+# Subtest: async listener registration fails closed: accountsChanged / reject
+ok 44 - async listener registration fails closed: accountsChanged / reject
+  ---
+  duration_ms: 1.0129
+  type: 'test'
+  ...
+# Subtest: async listener registration fails closed: accountsChanged / never
+ok 45 - async listener registration fails closed: accountsChanged / never
+  ---
+  duration_ms: 1.0895
+  type: 'test'
+  ...
+# Subtest: async listener registration fails closed: chainChanged / resolve
+ok 46 - async listener registration fails closed: chainChanged / resolve
+  ---
+  duration_ms: 4.1038
+  type: 'test'
+  ...
+# Subtest: async listener registration fails closed: chainChanged / reject
+ok 47 - async listener registration fails closed: chainChanged / reject
+  ---
+  duration_ms: 3.0713
+  type: 'test'
+  ...
+# Subtest: async listener registration fails closed: chainChanged / never
+ok 48 - async listener registration fails closed: chainChanged / never
+  ---
+  duration_ms: 0.8652
+  type: 'test'
+  ...
+# Subtest: async listener registration fails closed: disconnect / resolve
+ok 49 - async listener registration fails closed: disconnect / resolve
+  ---
+  duration_ms: 1.037
+  type: 'test'
+  ...
+# Subtest: async listener registration fails closed: disconnect / reject
+ok 50 - async listener registration fails closed: disconnect / reject
+  ---
+  duration_ms: 0.67
+  type: 'test'
+  ...
+# Subtest: async listener registration fails closed: disconnect / never
+ok 51 - async listener registration fails closed: disconnect / never
+  ---
+  duration_ms: 0.7132
+  type: 'test'
+  ...
+# Subtest: then getter for asynchronous registration is captured once
+ok 52 - then getter for asynchronous registration is captured once
+  ---
+  duration_ms: 1.6146
+  type: 'test'
+  ...
+# Subtest: throwing then accessor cannot leave a partially registered observer active
+ok 53 - throwing then accessor cannot leave a partially registered observer active
+  ---
+  duration_ms: 1.0562
+  type: 'test'
+  ...
+# Subtest: a hostile thenable resolving twice is consumed without installing later listeners
+ok 54 - a hostile thenable resolving twice is consumed without installing later listeners
+  ---
+  duration_ms: 0.993
+  type: 'test'
+  ...
+# Subtest: throwing thenable function is consumed rather than becoming an unhandled rejection
+ok 55 - throwing thenable function is consumed rather than becoming an unhandled rejection
+  ---
+  duration_ms: 0.8699
+  type: 'test'
+  ...
+# Subtest: an EventEmitter-style provider return is not inspected for then
+ok 56 - an EventEmitter-style provider return is not inspected for then
+  ---
+  duration_ms: 0.4658
+  type: 'test'
+  ...
+# Subtest: asynchronous removal cannot reopen local callbacks: resolve
+ok 57 - asynchronous removal cannot reopen local callbacks: resolve
+  ---
+  duration_ms: 0.9088
+  type: 'test'
+  ...
+# Subtest: asynchronous removal cannot reopen local callbacks: reject
+ok 58 - asynchronous removal cannot reopen local callbacks: reject
+  ---
+  duration_ms: 0.7488
+  type: 'test'
+  ...
+# Subtest: asynchronous removal cannot reopen local callbacks: throw-then
+ok 59 - asynchronous removal cannot reopen local callbacks: throw-then
+  ---
+  duration_ms: 0.5273
+  type: 'test'
+  ...
+# Subtest: asynchronous removal cannot reopen local callbacks: never
+ok 60 - asynchronous removal cannot reopen local callbacks: never
+  ---
+  duration_ms: 0.6204
+  type: 'test'
+  ...
+# Subtest: async cleanup failures do not skip other listeners after partial installation
+ok 61 - async cleanup failures do not skip other listeners after partial installation
+  ---
+  duration_ms: 2.0229
+  type: 'test'
+  ...
+# Subtest: late asynchronous registration completion cannot restore disposed listeners
+ok 62 - late asynchronous registration completion cannot restore disposed listeners
+  ---
+  duration_ms: 1.4139
+  type: 'test'
+  ...
+# Subtest: event ingress has fixed bounded defaults and immutable snapshots
+ok 63 - event ingress has fixed bounded defaults and immutable snapshots
+  ---
+  duration_ms: 9.0663
+  type: 'test'
+  ...
+# Subtest: invalid event count limit refused: 0
+ok 64 - invalid event count limit refused: 0
+  ---
+  duration_ms: 1.3829
+  type: 'test'
+  ...
+# Subtest: invalid event count limit refused: -1
+ok 65 - invalid event count limit refused: -1
+  ---
+  duration_ms: 0.3934
+  type: 'test'
+  ...
+# Subtest: invalid event count limit refused: 257
+ok 66 - invalid event count limit refused: 257
+  ---
+  duration_ms: 0.382
+  type: 'test'
+  ...
+# Subtest: invalid event count limit refused: 1.5
+ok 67 - invalid event count limit refused: 1.5
+  ---
+  duration_ms: 3.3829
+  type: 'test'
+  ...
+# Subtest: invalid event count limit refused: 256
+ok 68 - invalid event count limit refused: 256
+  ---
+  duration_ms: 5.5086
+  type: 'test'
+  ...
+# Subtest: invalid event count limit refused: null
+ok 69 - invalid event count limit refused: null
+  ---
+  duration_ms: 0.4867
+  type: 'test'
+  ...
+# Subtest: invalid event count limit refused: Infinity
+ok 70 - invalid event count limit refused: Infinity
+  ---
+  duration_ms: 0.411
+  type: 'test'
+  ...
+# Subtest: invalid event count limit refused: NaN
+ok 71 - invalid event count limit refused: NaN
+  ---
+  duration_ms: 0.4885
+  type: 'test'
+  ...
+# Subtest: invalid event budget window refused: 0
+ok 72 - invalid event budget window refused: 0
+  ---
+  duration_ms: 0.9302
+  type: 'test'
+  ...
+# Subtest: invalid event budget window refused: -1
+ok 73 - invalid event budget window refused: -1
+  ---
+  duration_ms: 0.387
+  type: 'test'
+  ...
+# Subtest: invalid event budget window refused: 999
+ok 74 - invalid event budget window refused: 999
+  ---
+  duration_ms: 0.4454
+  type: 'test'
+  ...
+# Subtest: invalid event budget window refused: 60001
+ok 75 - invalid event budget window refused: 60001
+  ---
+  duration_ms: 0.2849
+  type: 'test'
+  ...
+# Subtest: invalid event budget window refused: 1000.5
+ok 76 - invalid event budget window refused: 1000.5
+  ---
+  duration_ms: 0.2519
+  type: 'test'
+  ...
+# Subtest: invalid event budget window refused: 1000
+ok 77 - invalid event budget window refused: 1000
+  ---
+  duration_ms: 0.2387
+  type: 'test'
+  ...
+# Subtest: invalid event budget window refused: null
+ok 78 - invalid event budget window refused: null
+  ---
+  duration_ms: 0.3287
+  type: 'test'
+  ...
+# Subtest: invalid event budget window refused: Infinity
+ok 79 - invalid event budget window refused: Infinity
+  ---
+  duration_ms: 0.2539
+  type: 'test'
+  ...
+# Subtest: invalid event budget window refused: NaN
+ok 80 - invalid event budget window refused: NaN
+  ---
+  duration_ms: 0.2238
+  type: 'test'
+  ...
+# Subtest: exactly 256 event inspections are permitted in one window
+ok 81 - exactly 256 event inspections are permitted in one window
+  ---
+  duration_ms: 1.2594
+  type: 'test'
+  ...
+# Subtest: blocked event gate never resets automatically
+ok 82 - blocked event gate never resets automatically
+  ---
+  duration_ms: 0.6947
+  type: 'test'
+  ...
+# Subtest: healthy window renews at its exact boundary
+ok 83 - healthy window renews at its exact boundary
+  ---
+  duration_ms: 0.4384
+  type: 'test'
+  ...
+# Subtest: one millisecond before renewal cannot reset an exhausted budget
+ok 84 - one millisecond before renewal cannot reset an exhausted budget
+  ---
+  duration_ms: 0.3589
+  type: 'test'
+  ...
+# Subtest: constant monotonic time is valid but remains within the same budget
+ok 85 - constant monotonic time is valid but remains within the same budget
+  ---
+  duration_ms: 0.3779
+  type: 'test'
+  ...
+# Subtest: rollback within the current window fails closed
+ok 86 - rollback within the current window fails closed
+  ---
+  duration_ms: 0.8484
+  type: 'test'
+  ...
+# Subtest: rollback after renewing a window is still detected
+ok 87 - rollback after renewing a window is still detected
+  ---
+  duration_ms: 0.7114
+  type: 'test'
+  ...
+# Subtest: non-finite or non-numeric event time closes inspection: NaN
+ok 88 - non-finite or non-numeric event time closes inspection: NaN
+  ---
+  duration_ms: 0.4851
+  type: 'test'
+  ...
+# Subtest: non-finite or non-numeric event time closes inspection: Infinity
+ok 89 - non-finite or non-numeric event time closes inspection: Infinity
+  ---
+  duration_ms: 0.4341
+  type: 'test'
+  ...
+# Subtest: non-finite or non-numeric event time closes inspection: -Infinity
+ok 90 - non-finite or non-numeric event time closes inspection: -Infinity
+  ---
+  duration_ms: 0.5216
+  type: 'test'
+  ...
+# Subtest: non-finite or non-numeric event time closes inspection: -1
+ok 91 - non-finite or non-numeric event time closes inspection: -1
+  ---
+  duration_ms: 0.208
+  type: 'test'
+  ...
+# Subtest: non-finite or non-numeric event time closes inspection: 1000
+ok 92 - non-finite or non-numeric event time closes inspection: 1000
+  ---
+  duration_ms: 0.217
+  type: 'test'
+  ...
+# Subtest: non-finite or non-numeric event time closes inspection: null
+ok 93 - non-finite or non-numeric event time closes inspection: null
+  ---
+  duration_ms: 0.6386
+  type: 'test'
+  ...
+# Subtest: non-finite or non-numeric event time closes inspection: undefined
+ok 94 - non-finite or non-numeric event time closes inspection: undefined
+  ---
+  duration_ms: 0.2526
+  type: 'test'
+  ...
+# Subtest: clock exception is contained without exposing detail
+ok 95 - clock exception is contained without exposing detail
+  ---
+  duration_ms: 0.4834
+  type: 'test'
+  ...
+# Subtest: blocked gate does not continue calling an untrusted clock
+ok 96 - blocked gate does not continue calling an untrusted clock
+  ---
+  duration_ms: 0.5094
+  type: 'test'
+  ...
+# Subtest: detached gate snapshots retain earlier values
+ok 97 - detached gate snapshots retain earlier values
+  ---
+  duration_ms: 0.3742
+  type: 'test'
+  ...
+# Subtest: observer bounds a storm before reading rejected account descriptors
+ok 98 - observer bounds a storm before reading rejected account descriptors
+  ---
+  duration_ms: 2.4747
+  type: 'test'
+  ...
+# Subtest: event storm disconnect is delivered once even when extension retains callbacks
+ok 99 - event storm disconnect is delivered once even when extension retains callbacks
+  ---
+  duration_ms: 1.4339
+  type: 'test'
+  ...
+# Subtest: different event names share the same observer ingress budget
+ok 100 - different event names share the same observer ingress budget
+  ---
+  duration_ms: 0.7801
+  type: 'test'
+  ...
+# Subtest: healthy lower-frequency provider notifications do not trigger a stop
+ok 101 - healthy lower-frequency provider notifications do not trigger a stop
+  ---
+  duration_ms: 0.8656
+  type: 'test'
+  ...
+# Subtest: observer clock failure closes listeners before calling disconnect handler
+ok 102 - observer clock failure closes listeners before calling disconnect handler
+  ---
+  duration_ms: 0.6837
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on wrong-account without implicit reconnection
+ok 103 - DAT fails closed on wrong-account without implicit reconnection
+  ---
+  duration_ms: 45.6223
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on empty-accounts without implicit reconnection
+ok 104 - DAT fails closed on empty-accounts without implicit reconnection
+  ---
+  duration_ms: 35.833
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on wrong-chain without implicit reconnection
+ok 105 - DAT fails closed on wrong-chain without implicit reconnection
+  ---
+  duration_ms: 2.88
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on invalid-chain without implicit reconnection
+ok 106 - DAT fails closed on invalid-chain without implicit reconnection
+  ---
+  duration_ms: 2.6798
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on disconnect without implicit reconnection
+ok 107 - DAT fails closed on disconnect without implicit reconnection
+  ---
+  duration_ms: 2.743
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on account-accessor without implicit reconnection
+ok 108 - DAT fails closed on account-accessor without implicit reconnection
+  ---
+  duration_ms: 2.3739
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on extra-account-field without implicit reconnection
+ok 109 - DAT fails closed on extra-account-field without implicit reconnection
+  ---
+  duration_ms: 2.0184
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on too-many-accounts without implicit reconnection
+ok 110 - DAT fails closed on too-many-accounts without implicit reconnection
+  ---
+  duration_ms: 1.8918
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on wrong-account without implicit reconnection
+ok 111 - EMA fails closed on wrong-account without implicit reconnection
+  ---
+  duration_ms: 2.1979
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on empty-accounts without implicit reconnection
+ok 112 - EMA fails closed on empty-accounts without implicit reconnection
+  ---
+  duration_ms: 2.2837
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on wrong-chain without implicit reconnection
+ok 113 - EMA fails closed on wrong-chain without implicit reconnection
+  ---
+  duration_ms: 2.4046
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on invalid-chain without implicit reconnection
+ok 114 - EMA fails closed on invalid-chain without implicit reconnection
+  ---
+  duration_ms: 1.7751
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on disconnect without implicit reconnection
+ok 115 - EMA fails closed on disconnect without implicit reconnection
+  ---
+  duration_ms: 1.4529
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on account-accessor without implicit reconnection
+ok 116 - EMA fails closed on account-accessor without implicit reconnection
+  ---
+  duration_ms: 0.91
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on extra-account-field without implicit reconnection
+ok 117 - EMA fails closed on extra-account-field without implicit reconnection
+  ---
+  duration_ms: 12.3468
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on too-many-accounts without implicit reconnection
+ok 118 - EMA fails closed on too-many-accounts without implicit reconnection
+  ---
+  duration_ms: 1.0452
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on wrong-account without implicit reconnection
+ok 119 - CAWELON fails closed on wrong-account without implicit reconnection
+  ---
+  duration_ms: 1.3677
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on empty-accounts without implicit reconnection
+ok 120 - CAWELON fails closed on empty-accounts without implicit reconnection
+  ---
+  duration_ms: 2.638
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on wrong-chain without implicit reconnection
+ok 121 - CAWELON fails closed on wrong-chain without implicit reconnection
+  ---
+  duration_ms: 2.0246
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on invalid-chain without implicit reconnection
+ok 122 - CAWELON fails closed on invalid-chain without implicit reconnection
+  ---
+  duration_ms: 0.9798
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on disconnect without implicit reconnection
+ok 123 - CAWELON fails closed on disconnect without implicit reconnection
+  ---
+  duration_ms: 1.1558
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on account-accessor without implicit reconnection
+ok 124 - CAWELON fails closed on account-accessor without implicit reconnection
+  ---
+  duration_ms: 1.0501
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on extra-account-field without implicit reconnection
+ok 125 - CAWELON fails closed on extra-account-field without implicit reconnection
+  ---
+  duration_ms: 0.9701
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on too-many-accounts without implicit reconnection
+ok 126 - CAWELON fails closed on too-many-accounts without implicit reconnection
+  ---
+  duration_ms: 0.9494
+  type: 'test'
+  ...
+# Subtest: malformed account event during a provider wait rejects late balance
+ok 127 - malformed account event during a provider wait rejects late balance
+  ---
+  duration_ms: 6.6126
+  type: 'test'
+  ...
+# Subtest: registration function replaced during first subscription is not executed
+ok 128 - registration function replaced during first subscription is not executed
+  ---
+  duration_ms: 3.0428
+  type: 'test'
+  ...
+# Subtest: removal method replaced after connection cannot prevent captured cleanup
+ok 129 - removal method replaced after connection cannot prevent captured cleanup
+  ---
+  duration_ms: 1.7522
+  type: 'test'
+  ...
+# Subtest: all listener removals are attempted even if one removal throws
+ok 130 - all listener removals are attempted even if one removal throws
+  ---
+  duration_ms: 5.6825
+  type: 'test'
+  ...
+# Subtest: failed session registration after installing accountsChanged leaves no active listener
+ok 131 - failed session registration after installing accountsChanged leaves no active listener
+  ---
+  duration_ms: 3.4649
+  type: 'test'
+  ...
+# Subtest: failed session registration after installing chainChanged leaves no active listener
+ok 132 - failed session registration after installing chainChanged leaves no active listener
+  ---
+  duration_ms: 1.0674
+  type: 'test'
+  ...
+# Subtest: failed session registration after installing disconnect leaves no active listener
+ok 133 - failed session registration after installing disconnect leaves no active listener
+  ---
+  duration_ms: 0.7187
+  type: 'test'
+  ...
+# Subtest: synchronous disconnect event emitted from on() cannot continue connecting
+ok 134 - synchronous disconnect event emitted from on() cannot continue connecting
+  ---
+  duration_ms: 1.5157
+  type: 'test'
+  ...
+# Subtest: same-account notifications preserve access without causing reads
+ok 135 - same-account notifications preserve access without causing reads
+  ---
+  duration_ms: 1.6631
+  type: 'test'
+  ...
+# Subtest: retained old callbacks cannot invalidate a replacement session
+ok 136 - retained old callbacks cannot invalidate a replacement session
+  ---
+  duration_ms: 39.7734
+  type: 'test'
+  ...
+# Subtest: controller and session observers both reject accessor-based account impersonation
+ok 137 - controller and session observers both reject accessor-based account impersonation
+  ---
+  duration_ms: 7.2903
+  type: 'test'
+  ...
+# Subtest: controller registration errors are fixed text rather than extension instructions
+ok 138 - controller registration errors are fixed text rather than extension instructions
+  ---
+  duration_ms: 3.8697
+  type: 'test'
+  ...
+# Subtest: a generation change inside account descriptor traps cannot revive an older session
+ok 139 - a generation change inside account descriptor traps cannot revive an older session
+  ---
+  duration_ms: 4.5533
+  type: 'test'
+  ...
+# Subtest: account snapshots copy, normalize and freeze only bounded address strings
+ok 140 - account snapshots copy, normalize and freeze only bounded address strings
+  ---
+  duration_ms: 9.2662
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: null
+ok 141 - invalid event account payload is refused: null
+  ---
+  duration_ms: 0.528
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: [object Object]
+ok 142 - invalid event account payload is refused: [object Object]
+  ---
+  duration_ms: 0.5744
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: account
+ok 143 - invalid event account payload is refused: account
+  ---
+  duration_ms: 0.346
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: true
+ok 144 - invalid event account payload is refused: true
+  ---
+  duration_ms: 0.6671
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: 1
+ok 145 - invalid event account payload is refused: 1
+  ---
+  duration_ms: 0.689
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: bad
+ok 146 - invalid event account payload is refused: bad
+  ---
+  duration_ms: 0.4735
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: 0xabababababababababababababababababababab,5
+ok 147 - invalid event account payload is refused: 0xabababababababababababababababababababab,5
+  ---
+  duration_ms: 0.5023
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: 0xabababababababababababababababababababab,
+ok 148 - invalid event account payload is refused: 0xabababababababababababababababababababab,
+  ---
+  duration_ms: 0.8684
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: 0x1
+ok 149 - invalid event account payload is refused: 0x1
+  ---
+  duration_ms: 13.8021
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: 0x000000000000000000000000000000000000000000
+ok 150 - invalid event account payload is refused: 0x000000000000000000000000000000000000000000
+  ---
+  duration_ms: 0.8803
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused:   0xabababababababababababababababababababab
+ok 151 - invalid event account payload is refused:   0xabababababababababababababababababababab
+  ---
+  duration_ms: 0.6054
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: 0xabababababababababababababababababababab\\n
+ok 152 - invalid event account payload is refused: 0xabababababababababababababababababababab\\n
+  ---
+  duration_ms: 0.3857
+  type: 'test'
+  ...
+# Subtest: invalid event account payload is refused: 
+ok 153 - invalid event account payload is refused: 
+  ---
+  duration_ms: 0.309
+  type: 'test'
+  ...
+# Subtest: event account count boundary accepts 128 and rejects 129
+ok 154 - event account count boundary accepts 128 and rejects 129
+  ---
+  duration_ms: 1.0672
+  type: 'test'
+  ...
+# Subtest: event account getters do not run even when they would return the right address
+ok 155 - event account getters do not run even when they would return the right address
+  ---
+  duration_ms: 0.9111
+  type: 'test'
+  ...
+# Subtest: event account metadata, symbols and extra index names are rejected
+ok 156 - event account metadata, symbols and extra index names are rejected
+  ---
+  duration_ms: 0.4213
+  type: 'test'
+  ...
+# Subtest: inherited account slots cannot substitute for own data
+ok 157 - inherited account slots cannot substitute for own data
+  ---
+  duration_ms: 0.3334
+  type: 'test'
+  ...
+# Subtest: throwing event proxies are contained
+ok 158 - throwing event proxies are contained
+  ---
+  duration_ms: 0.5601
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: null
+ok 159 - invalid event chain is refused: null
+  ---
+  duration_ms: 2.4968
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: undefined
+ok 160 - invalid event chain is refused: undefined
+  ---
+  duration_ms: 0.3589
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: 8453
+ok 161 - invalid event chain is refused: 8453
+  ---
+  duration_ms: 0.2548
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: true
+ok 162 - invalid event chain is refused: true
+  ---
+  duration_ms: 0.2051
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: [object Object]
+ok 163 - invalid event chain is refused: [object Object]
+  ---
+  duration_ms: 0.1678
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: 8453
+ok 164 - invalid event chain is refused: 8453
+  ---
+  duration_ms: 0.2538
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: 0x
+ok 165 - invalid event chain is refused: 0x
+  ---
+  duration_ms: 0.2964
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: 0xzz
+ok 166 - invalid event chain is refused: 0xzz
+  ---
+  duration_ms: 0.1708
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: 0x-1
+ok 167 - invalid event chain is refused: 0x-1
+  ---
+  duration_ms: 0.1668
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: 0x20000000000000
+ok 168 - invalid event chain is refused: 0x20000000000000
+  ---
+  duration_ms: 0.3337
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: 0x0000000000000001
+ok 169 - invalid event chain is refused: 0x0000000000000001
+  ---
+  duration_ms: 0.2238
+  type: 'test'
+  ...
+# Subtest: invalid event chain is refused: 0x2105\\n
+ok 170 - invalid event chain is refused: 0x2105\\n
+  ---
+  duration_ms: 0.1799
+  type: 'test'
+  ...
+# Subtest: chain snapshots are canonical, bounded and do not coerce objects
+ok 171 - chain snapshots are canonical, bounded and do not coerce objects
+  ---
+  duration_ms: 0.7099
+  type: 'test'
+  ...
+# Subtest: registration captures one on and one removal function
+ok 172 - registration captures one on and one removal function
+  ---
+  duration_ms: 3.5664
+  type: 'test'
+  ...
+# Subtest: disconnect details are never inspected or forwarded
+ok 173 - disconnect details are never inspected or forwarded
+  ---
+  duration_ms: 3.4121
+  type: 'test'
+  ...
+# Subtest: malformed account and chain events become null observations for fail-closed owners
+ok 174 - malformed account and chain events become null observations for fail-closed owners
+  ---
+  duration_ms: 18.477
+  type: 'test'
+  ...
+# Subtest: disposed callbacks retained by an extension stay inert
+ok 175 - disposed callbacks retained by an extension stay inert
+  ---
+  duration_ms: 1.3961
+  type: 'test'
+  ...
+# Subtest: generation invalidation during payload snapshot suppresses delivery
+ok 176 - generation invalidation during payload snapshot suppresses delivery
+  ---
+  duration_ms: 2.3512
+  type: 'test'
+  ...
+# Subtest: partially installed listener cleaned after registration throws: accountsChanged
+ok 177 - partially installed listener cleaned after registration throws: accountsChanged
+  ---
+  duration_ms: 2.0782
+  type: 'test'
+  ...
+# Subtest: partially installed listener cleaned after registration throws: chainChanged
+ok 178 - partially installed listener cleaned after registration throws: chainChanged
+  ---
+  duration_ms: 0.3854
+  type: 'test'
+  ...
+# Subtest: partially installed listener cleaned after registration throws: disconnect
+ok 179 - partially installed listener cleaned after registration throws: disconnect
+  ---
+  duration_ms: 0.3192
+  type: 'test'
+  ...
+# Subtest: reentrant invalidation during registration stops the remaining registrations
+ok 180 - reentrant invalidation during registration stops the remaining registrations
+  ---
+  duration_ms: 0.7955
+  type: 'test'
+  ...
+# Subtest: throwing cleanup cannot skip removal attempts for the other event names
+ok 181 - throwing cleanup cannot skip removal attempts for the other event names
+  ---
+  duration_ms: 0.702
+  type: 'test'
+  ...
+# Subtest: eventless adapters retain bounded polling compatibility
+ok 182 - eventless adapters retain bounded polling compatibility
+  ---
+  duration_ms: 0.4299
+  type: 'test'
+  ...
+# Subtest: providers without a working removal function cannot reanimate disposed callbacks
+ok 183 - providers without a working removal function cannot reanimate disposed callbacks
+  ---
+  duration_ms: 0.3822
+  type: 'test'
+  ...
+# Subtest: inaccessible provider event service fails before subscription: on
+ok 184 - inaccessible provider event service fails before subscription: on
+  ---
+  duration_ms: 0.5365
+  type: 'test'
+  ...
+# Subtest: closed or throwing owner guards prevent any subscription
+ok 185 - closed or throwing owner guards prevent any subscription
+  ---
+  duration_ms: 0.9735
+  type: 'test'
+  ...
+# Subtest: owner guard is checked before reading an event payload
+ok 186 - owner guard is checked before reading an event payload
+  ---
+  duration_ms: 0.5023
+  type: 'test'
+  ...
+# Subtest: malformed asynchronous registration result is consumed after listeners close
+ok 187 - malformed asynchronous registration result is consumed after listeners close
+  ---
+  duration_ms: 16.448
+  type: 'test'
+  ...
+# Subtest: malformed asynchronous removal result is consumed after listeners close
+ok 188 - malformed asynchronous removal result is consumed after listeners close
+  ---
+  duration_ms: 14.7664
+  type: 'test'
+  ...
+# Subtest: asynchronous owner guard cannot register listeners: native
+ok 189 - asynchronous owner guard cannot register listeners: native
+  ---
+  duration_ms: 5.2817
+  type: 'test'
+  ...
+# Subtest: asynchronous owner guard blocks event delivery: native
+ok 190 - asynchronous owner guard blocks event delivery: native
+  ---
+  duration_ms: 2.3057
+  type: 'test'
+  ...
+# Subtest: asynchronous owner guard cannot register listeners: malformed
+ok 191 - asynchronous owner guard cannot register listeners: malformed
+  ---
+  duration_ms: 15.561
+  type: 'test'
+  ...
+# Subtest: asynchronous owner guard blocks event delivery: malformed
+ok 192 - asynchronous owner guard blocks event delivery: malformed
+  ---
+  duration_ms: 4.8476
+  type: 'test'
+  ...
+# Subtest: guard that disposes its observer cannot authorize payload inspection
+ok 193 - guard that disposes its observer cannot authorize payload inspection
+  ---
+  duration_ms: 7.8997
+  type: 'test'
+  ...
+# Subtest: then accessor that closes observer cannot authorize payload inspection
+ok 194 - then accessor that closes observer cannot authorize payload inspection
+  ---
+  duration_ms: 0.9014
+  type: 'test'
+  ...
+# Subtest: provider identity returned from listener methods is never inspected as a promise
+ok 195 - provider identity returned from listener methods is never inspected as a promise
+  ---
+  duration_ms: 5.1482
+  type: 'test'
+  ...
+# Subtest: asynchronous event clock closes gate without leaking rejection: native
+ok 196 - asynchronous event clock closes gate without leaking rejection: native
+  ---
+  duration_ms: 15.749
+  type: 'test'
+  ...
+# Subtest: asynchronous event clock closes gate without leaking rejection: malformed
+ok 197 - asynchronous event clock closes gate without leaking rejection: malformed
+  ---
+  duration_ms: 1.9895
+  type: 'test'
+  ...
+# Subtest: reentrant event clock closes both nested and outer ingress permanently
+ok 198 - reentrant event clock closes both nested and outer ingress permanently
+  ---
+  duration_ms: 0.8993
+  type: 'test'
+  ...
+# Subtest: clock-result inspection cannot reopen a gate stopped during reentry
+ok 199 - clock-result inspection cannot reopen a gate stopped during reentry
+  ---
+  duration_ms: 0.4776
+  type: 'test'
+  ...
+# Subtest: ordinary event clock still renews the bounded window
+ok 200 - ordinary event clock still renews the bounded window
+  ---
+  duration_ms: 0.3674
+  type: 'test'
+  ...
+# Subtest: read observer identity-progress contains a rejecting asynchronous then method
+ok 201 - read observer identity-progress contains a rejecting asynchronous then method
+  ---
+  duration_ms: 564.3862
+  type: 'test'
+  ...
+# Subtest: read observer transfer-progress contains a rejecting asynchronous then method
+ok 202 - read observer transfer-progress contains a rejecting asynchronous then method
+  ---
+  duration_ms: 392.1159
+  type: 'test'
+  ...
+# Subtest: read observer allowance-progress contains a rejecting asynchronous then method
+ok 203 - read observer allowance-progress contains a rejecting asynchronous then method
+  ---
+  duration_ms: 462.6912
+  type: 'test'
+  ...
+# Subtest: read observer period-progress contains a rejecting asynchronous then method
+ok 204 - read observer period-progress contains a rejecting asynchronous then method
+  ---
+  duration_ms: 432.1671
+  type: 'test'
+  ...
+# Subtest: read observer period-checkpoint contains a rejecting asynchronous then method
+ok 205 - read observer period-checkpoint contains a rejecting asynchronous then method
+  ---
+  duration_ms: 463.2829
+  type: 'test'
+  ...
+# Subtest: callback result: primitive undefined remains synchronous without coercion
+ok 206 - callback result: primitive undefined remains synchronous without coercion
+  ---
+  duration_ms: 11.5123
+  type: 'test'
+  ...
+# Subtest: callback result: primitive null remains synchronous without coercion
+ok 207 - callback result: primitive null remains synchronous without coercion
+  ---
+  duration_ms: 0.4078
+  type: 'test'
+  ...
+# Subtest: callback result: primitive false remains synchronous without coercion
+ok 208 - callback result: primitive false remains synchronous without coercion
+  ---
+  duration_ms: 0.3964
+  type: 'test'
+  ...
+# Subtest: callback result: primitive true remains synchronous without coercion
+ok 209 - callback result: primitive true remains synchronous without coercion
+  ---
+  duration_ms: 0.4416
+  type: 'test'
+  ...
+# Subtest: callback result: primitive 0 remains synchronous without coercion
+ok 210 - callback result: primitive 0 remains synchronous without coercion
+  ---
+  duration_ms: 0.4627
+  type: 'test'
+  ...
+# Subtest: callback result: primitive 1 remains synchronous without coercion
+ok 211 - callback result: primitive 1 remains synchronous without coercion
+  ---
+  duration_ms: 0.4041
+  type: 'test'
+  ...
+# Subtest: callback result: primitive -1 remains synchronous without coercion
+ok 212 - callback result: primitive -1 remains synchronous without coercion
+  ---
+  duration_ms: 0.4938
+  type: 'test'
+  ...
+# Subtest: callback result: primitive 1 remains synchronous without coercion
+ok 213 - callback result: primitive 1 remains synchronous without coercion
+  ---
+  duration_ms: 0.4198
+  type: 'test'
+  ...
+# Subtest: callback result: primitive Symbol(synthetic) remains synchronous without coercion
+ok 214 - callback result: primitive Symbol(synthetic) remains synchronous without coercion
+  ---
+  duration_ms: 0.859
+  type: 'test'
+  ...
+# Subtest: callback result: primitive 1 remains synchronous without coercion
+ok 215 - callback result: primitive 1 remains synchronous without coercion
+  ---
+  duration_ms: 1.0606
+  type: 'test'
+  ...
+# Subtest: callback result: getter is captured once and method receives original receiver
+ok 216 - callback result: getter is captured once and method receives original receiver
+  ---
+  duration_ms: 3.8094
+  type: 'test'
+  ...
+# Subtest: callback result: throwing getter is unreadable and never exposes its error
+ok 217 - callback result: throwing getter is unreadable and never exposes its error
+  ---
+  duration_ms: 0.5501
+  type: 'test'
+  ...
+# Subtest: callback result: nonfunction then property does not coerce or execute
+ok 218 - callback result: nonfunction then property does not coerce or execute
+  ---
+  duration_ms: 0.335
+  type: 'test'
+  ...
+# Subtest: callback result: once-only settlement reject
+ok 219 - callback result: once-only settlement reject
+  ---
+  duration_ms: 0.702
+  type: 'test'
+  ...
+# Subtest: callback result: once-only settlement throw
+ok 220 - callback result: once-only settlement throw
+  ---
+  duration_ms: 0.4199
+  type: 'test'
+  ...
+# Subtest: callback result: once-only settlement resolve-twice
+ok 221 - callback result: once-only settlement resolve-twice
+  ---
+  duration_ms: 0.4355
+  type: 'test'
+  ...
+# Subtest: callback result: once-only settlement resolve-reject
+ok 222 - callback result: once-only settlement resolve-reject
+  ---
+  duration_ms: 0.2957
+  type: 'test'
+  ...
+# Subtest: callback result: once-only settlement nested-promise
+ok 223 - callback result: once-only settlement nested-promise
+  ---
+  duration_ms: 0.3585
+  type: 'test'
+  ...
+# Subtest: callback cleanup: thrown action and rejected action remain best effort
+ok 224 - callback cleanup: thrown action and rejected action remain best effort
+  ---
+  duration_ms: 0.7047
+  type: 'test'
+  ...
+# Subtest: timer handle: synchronous native identity retained number
+ok 225 - timer handle: synchronous native identity retained number
+  ---
+  duration_ms: 0.4175
+  type: 'test'
+  ...
+# Subtest: timer handle: synchronous native identity retained number
+ok 226 - timer handle: synchronous native identity retained number
+  ---
+  duration_ms: 0.1768
+  type: 'test'
+  ...
+# Subtest: timer handle: synchronous native identity retained object
+ok 227 - timer handle: synchronous native identity retained object
+  ---
+  duration_ms: 0.2071
+  type: 'test'
+  ...
+# Subtest: timer handle: synchronous native identity retained function
+ok 228 - timer handle: synchronous native identity retained function
+  ---
+  duration_ms: 0.281
+  type: 'test'
+  ...
+# Subtest: timer handle: missing registration undefined
+ok 229 - timer handle: missing registration undefined
+  ---
+  duration_ms: 0.3321
+  type: 'test'
+  ...
+# Subtest: timer handle: missing registration null
+ok 230 - timer handle: missing registration null
+  ---
+  duration_ms: 0.1992
+  type: 'test'
+  ...
+# Subtest: timer handle: missing registration false
+ok 231 - timer handle: missing registration false
+  ---
+  duration_ms: 0.2072
+  type: 'test'
+  ...
+# Subtest: timer handle: opaque broken handle is released once with the same identity
+ok 232 - timer handle: opaque broken handle is released once with the same identity
+  ---
+  duration_ms: 0.5325
+  type: 'test'
+  ...
+# Subtest: timer handle: late native zero is released even though it is falsy
+ok 233 - timer handle: late native zero is released even though it is falsy
+  ---
+  duration_ms: 0.5628
+  type: 'test'
+  ...
+# Subtest: timer handle: delayed cleanup failure does not leak a rejection
+ok 234 - timer handle: delayed cleanup failure does not leak a rejection
+  ---
+  duration_ms: 0.6135
+  type: 'test'
+  ...
+# Subtest: clock adapter: non-number response is never a current timestamp string
+ok 235 - clock adapter: non-number response is never a current timestamp string
+  ---
+  duration_ms: 0.8401
+  type: 'test'
+  ...
+# Subtest: clock adapter: non-number response is never a current timestamp object
+ok 236 - clock adapter: non-number response is never a current timestamp object
+  ---
+  duration_ms: 0.4179
+  type: 'test'
+  ...
+# Subtest: clock adapter: non-number response is never a current timestamp object
+ok 237 - clock adapter: non-number response is never a current timestamp object
+  ---
+  duration_ms: 0.7605
+  type: 'test'
+  ...
+# Subtest: clock adapter: non-number response is never a current timestamp boolean
+ok 238 - clock adapter: non-number response is never a current timestamp boolean
+  ---
+  duration_ms: 0.2487
+  type: 'test'
+  ...
+# Subtest: clock adapter: numeric policy remains with the consumer
+ok 239 - clock adapter: numeric policy remains with the consumer
+  ---
+  duration_ms: 0.6143
+  type: 'test'
+  ...
+# Subtest: export callback: asynchronous getter is read exactly once
+ok 240 - export callback: asynchronous getter is read exactly once
+  ---
+  duration_ms: 2.542
+  type: 'test'
+  ...
+# Subtest: tab callback: subscribe cannot change its then method during validation
+ok 241 - tab callback: subscribe cannot change its then method during validation
+  ---
+  duration_ms: 3.8489
+  type: 'test'
+  ...
+# Subtest: tab callback: post cannot change its then method during validation
+ok 242 - tab callback: post cannot change its then method during validation
+  ---
+  duration_ms: 3.1463
+  type: 'test'
+  ...
+# Subtest: tab callback: stop cannot change its then method during validation
+ok 243 - tab callback: stop cannot change its then method during validation
+  ---
+  duration_ms: 0.6098
+  type: 'test'
+  ...
+# Subtest: callback rejection: native asynchronous then-method is contained
+ok 244 - callback rejection: native asynchronous then-method is contained
+  ---
+  duration_ms: 443.346
+  type: 'test'
+  ...
+# Subtest: callback rejection: native asynchronous on-resolved is contained
+ok 245 - callback rejection: native asynchronous on-resolved is contained
+  ---
+  duration_ms: 300.0896
+  type: 'test'
+  ...
+# Subtest: callback rejection: native asynchronous cleanup is contained
+ok 246 - callback rejection: native asynchronous cleanup is contained
+  ---
+  duration_ms: 313.6592
+  type: 'test'
+  ...
+1..246
+# tests 246
+# suites 0
+# pass 246
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5105.8164

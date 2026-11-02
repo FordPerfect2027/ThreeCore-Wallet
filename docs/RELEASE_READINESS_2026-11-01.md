@@ -1,5 +1,15 @@
 # ThreeCore release preparation — November 1, 2026
 
+## Local development follow-up — November 3
+
+The [connection-stop diagnostic change](CONNECTION_STOP_DIAGNOSTICS_2026-11-03.md)
+at `856f670` preserves account/network/provider stop reasons after later idle
+stops, without storing wallet payloads. Its 453 targeted Node checks and the
+complete 1,024-case synthetic browser suite passed. It is newer than the fixed
+review package below. The operator reported switching to Account 1, but the
+browser operation connection failed before the post-switch read; live acceptance
+remains unverified. This adds useful diagnostics, not a 90% completion claim.
+
 ## Current fixed-candidate assessment — November 2, 22:36 JST
 
 The [standalone review package](DISTRIBUTION_CHECKPOINT_2026-11-02.md) pins Wallet

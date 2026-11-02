@@ -9,17 +9,19 @@ DAT, EMA and CAWELON checked separately. Signing, transactions, token approvals,
 custody, swaps, bridges and autonomous spending are outside this candidate.
 A 90% planning target is not an achieved release gate or a measured score.
 
-The [fixed-package full regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md) now
-covers the latest application at source `2126019`, including the network-label
-and layout changes. The source ZIP remains unchanged. Its new local results are
-separate from the earlier public CI and do not close the remaining release gates.
+The latest local implementation is the [connection-stop diagnostic improvement](CONNECTION_STOP_DIAGNOSTICS_2026-11-03.md)
+at `856f670`, with 453 targeted Node cases and 1,024 synthetic browser cases
+passing. Live switching remains unverified after the controlled tab lost its
+operation connection. The unchanged [fixed-package full regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md)
+at `2126019` predates this implementation; that package and the public CI do not
+include the diagnostic change.
 
 ## Exact source map
 
 | Item | Fixed revision | What it establishes |
 | --- | --- | --- |
 | Earlier bounded code-review checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
-| Latest Wallet implementation | `8fa0ed2739482b8df415e46c6c45491955d4bfc4` | Distinct requested/observed network labels, exact site-origin display and earlier address wrapping; the last RPC behavior change remains the inclusive range correction at `96b5945` |
+| Latest Wallet implementation | `856f670e2e813a828214dc8cffa47ba53e8222f7` | Bounded, payload-free wallet invalidation reasons retained in the existing protection journal; 453 targeted Node and 1,024 browser cases passed |
 | Latest complete Wallet regression | `212601977bc6dad8da298f11ebb9e7a421052571` | Restored standalone package: 16,454 Node/HTTP and 1,021 synthetic browser passes on unchanged source |
 | DAT | `47d8aa9db72e54e49fc9521f9b4022c416a7c6d1` | Local empty-data toolchain correction; contract bytes unchanged |
 | EMA | `5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac` | Local empty-data toolchain correction; contract bytes unchanged |

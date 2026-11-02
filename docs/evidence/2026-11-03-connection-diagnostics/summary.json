@@ -1,0 +1,105 @@
+{
+  "recordedAt": "2026-11-02T15:39:07.055Z",
+  "sourceCommit": "856f670e2e813a828214dc8cffa47ba53e8222f7",
+  "parentCommit": "aa76dc3f075a88a52ec31798aab753ce93024f59",
+  "scope": "Fixed, payload-free connection invalidation reasons retained in the existing page-local protection journal. No new wallet methods or automatic reconnect.",
+  "files": [
+    {
+      "path": "examples/security-panel.js",
+      "bytes": 9934,
+      "sha256": "9a698836966243f7f102f9277b6f4f7919c4da7da41fca03c93510158aab5e60"
+    },
+    {
+      "path": "examples/wallet-demo.js",
+      "bytes": 31478,
+      "sha256": "b96618f5b2ff2a8851060a605cc225688c56d07c93f1da55fa48a779a6b83153"
+    },
+    {
+      "path": "src/security-journal.js",
+      "bytes": 7529,
+      "sha256": "df55f2fa45907d7b8360babb8044f17bb148e7d30cbf960a346112cbc59c3458"
+    },
+    {
+      "path": "src/wallet-card-controller.js",
+      "bytes": 18351,
+      "sha256": "05e72c9e7b4d5b6e7d52bdb606cec0bf56ce0e6d64ec3cafc7384086d1d960fa"
+    },
+    {
+      "path": "test/browser/acceptance-ui-tests.js",
+      "bytes": 10117,
+      "sha256": "01c2182974656ed19b346ec4130d6db1ed083e947c59bfe63ff162fc1f79feeb"
+    },
+    {
+      "path": "test/browser/security-ui-tests.js",
+      "bytes": 14770,
+      "sha256": "2dde669727add767c694d01062d5d870e7c8e38e102a393e31710b028f98b08b"
+    },
+    {
+      "path": "test/security-journal-panel.test.js",
+      "bytes": 6581,
+      "sha256": "4c41e61119538b209e23817cdaf390ad7fc5089a68465e1f5bc0b4cfbf98431f"
+    },
+    {
+      "path": "test/security-journal.test.js",
+      "bytes": 10007,
+      "sha256": "df510711ff3f4b5ff5aa10da4fe6a03324c9ccf85a1b663f9adb71a034d25856"
+    },
+    {
+      "path": "test/wallet-card-controller.test.js",
+      "bytes": 26453,
+      "sha256": "41c8134b048c7ba0af69d4ef48037eb45ead3d7b9dd6138c90157a6a6bdd9422"
+    }
+  ],
+  "checks": [
+    {
+      "log": "node-targeted.log",
+      "passed": 207,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    {
+      "log": "observer-regression.log",
+      "passed": 246,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    {
+      "log": "browser.log",
+      "passed": 1024,
+      "failed": 0,
+      "syntheticProvider": true,
+      "externalRpc": false,
+      "shards": [
+        512,
+        512
+      ],
+      "modulePreflight": 261
+    }
+  ],
+  "totalChecks": 1477,
+  "actualWallet": {
+    "before": "Three connected cards: Account 2 / Base Sepolia, with six saved history records.",
+    "later": "Idle protection observed before the operator replied that Account 1 was selected.",
+    "afterUserReply": "AX observation timed out; same-tab rebind reported Debugger unattached; bounded DOM read also timed out. No post-switch account response or live event pass observed.",
+    "oldTabsReloaded": false
+  },
+  "preservedServers": [
+    {
+      "port": 4231,
+      "pid": 2108,
+      "start": "2026-10-30T00:41:41+09:00"
+    },
+    {
+      "port": 4232,
+      "pid": 28252,
+      "start": "2026-11-02T16:46:47+09:00"
+    }
+  ],
+  "githubWrites": 0,
+  "realWalletSignatures": 0,
+  "realWalletTransfers": 0,
+  "privateKeysAccessed": false,
+  "planningTarget90Verified": false
+}
