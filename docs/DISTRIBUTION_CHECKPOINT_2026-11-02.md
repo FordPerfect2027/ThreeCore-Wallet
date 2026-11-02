@@ -1,11 +1,21 @@
 # Combined distribution checkpoint — November 2, 2026
 
-## Current combined review package: 9374845
+## Current combined review package: bf690f3
+
+The November 3 standalone package `ThreeCore-review-bf690f3-20261103-r1.zip`
+includes all current source/test pins and complete regression from a clean
+restored checkout: 16,470 Node/HTTP and 1,024 synthetic browser cases passed.
+All 42 outer files matched after fresh extraction. See the
+[current fixed-source package record](FIXED_CANDIDATE_REGRESSION_2026-11-03.md)
+for exact revisions, 52,755,739-byte ZIP checksum, raw logs and remaining gates.
+The older packages below remain unchanged historical evidence.
+
+## Earlier combined review package: 9374845
 
 The November 3 standalone package `ThreeCore-review-9374845-20261103.zip`
 includes the later connection-stop diagnostics, navigation recovery and their
 verification records. It restores without an earlier package. See the
-[current package and candidate round-trip record](REVIEW_CONTINUATION_2026-11-03.md)
+[dated package and candidate round-trip record](REVIEW_CONTINUATION_2026-11-03.md)
 for its exact source pins, ZIP checksum and fresh extraction results.
 The packages below remain unchanged historical checkpoints.
 

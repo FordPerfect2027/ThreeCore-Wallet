@@ -1,0 +1,30 @@
+ThreeCore review handoff / 2026-11-03
+
+This package pins Wallet bf690f38b070362aab1369fbf22c8e68b1a6567f, DAT ada78f5ecbd8654860d818b774ef31beb6f0b871,
+EMA c4765efe92857e7060c0efaa44b271c67d8d68c3 and CAWELON a94d61be77c0c14109910879cdd6a7f377176101.
+Restore each history.bundle in a new empty directory; do not alter ports 4231/4232 or existing pages.
+
+REVIEW_SCOPE.json maps the six Wallet implementation/tooling files changed since the previous complete regression.
+The token follow-up changes only pure-validation tests. Contract sources, dependencies and artifacts are unchanged.
+The workflow adds navigation-help coverage and pins those token test revisions. GitHub publication is deferred.
+The source archive's docs/RELEASE_HANDOFF_2026-11-02.md links the scope-specific test records and open findings.
+
+Outstanding evidence to review:
+1. Observe an actual account switch while the three MetaMask sessions are connected; retain wallet-account stop reasons,
+   reject obsolete reads, preserve all nine historical observations, and reconnect explicitly to the new permitted account.
+2. Observe an actual site-network switch with the same preservation and explicit-reconnect requirements.
+   A change after inactivity protection already stopped the session is not a live-invalidation pass.
+3. Resolve or obtain a qualified disposition of Zod GHSA-mrhx-c7xc-m3w5. The current Hardhat helper still requires Zod 3;
+   forcing Zod 4 breaks invalid-configuration reporting. A clean minimal runtime is not a clean full-development audit.
+4. Check native Windows file selection/cancellation if required for the supported operator path. Browser-filechooser
+   restoration and byte-identical downloaded files have separate existing evidence.
+5. Finalize any required previous-public-release rollback and the intended deployment/operation plan.
+6. Record independent reviewer findings and an explicit release decision. Developer tests and this checklist do not supply them.
+
+For each finding retain the exact commit and file, trigger, expected/observed behavior, evidence, impact, repair and retest.
+No user-wallet signatures, transfers, token approvals or private-key/seed access are authorized by this package.
+No automatic publication, deployment, external messaging or reviewer approval is implied.
+
+日本語補足：この資料は第三者の点検に渡せる固定版です。独立した点検や公開承認が完了した資料ではありません。
+実際の口座・接続先の変更、依存ライブラリ問題の判断、公開時の運用確認を残件として明記しています。
+署名・送金・秘密鍵は不要です。以前の作業画面を閉じたり、既存サーバーを上書きしたりしないでください。

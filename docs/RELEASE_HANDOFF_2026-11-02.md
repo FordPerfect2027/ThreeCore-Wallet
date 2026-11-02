@@ -9,21 +9,15 @@ DAT, EMA and CAWELON checked separately. Signing, transactions, token approvals,
 custody, swaps, bridges and autonomous spending are outside this candidate.
 A 90% planning target is not an achieved release gate or a measured score.
 
-The current standalone review package is `ThreeCore-review-9374845-20261103.zip`.
-It includes the latest implementation and restores complete Wallet/token source
-without an earlier package. All 31 outer files, 4,758 Wallet source files and
-256 evidence manifests matched. Actual candidate restoration also preserved
-the nine-record backup byte-for-byte. See the
-[November 3 package and round-trip record](REVIEW_CONTINUATION_2026-11-03.md).
-The older ZIPs mentioned below remain fixed historical evidence.
-The subsequent evidence-checker capacity repair accepts 512 manifests under the
-unchanged shared byte budget. All 56 scoped tests and the actual 257-manifest /
-2,668-entry collection passed; this tooling follow-up is outside the sealed ZIP.
-The later [toolchain upgrade guards](TOOLCHAIN_COMPATIBILITY_GUARDS_2026-11-03.md)
-add structured invalid-input regression to each token (four cases each), with
-unchanged dependencies and contract artifacts. The prepared local CI now names
-the navigation-help test explicitly; its exact HTTP command passed 440 cases.
-These test/workflow changes are also newer than the sealed review ZIP.
+The current standalone review package is `ThreeCore-review-bf690f3-20261103-r1.zip`.
+It includes the diagnostics, navigation recovery, evidence-checker repair and
+all three token compatibility guards. All 42 outer files, 4,783 Wallet source
+files and 258 evidence manifests / 2,676 entries matched. The clean restored
+Wallet passed **16,470 Node/HTTP and 1,024 synthetic browser cases**. See the
+[fixed-source regression and package record](FIXED_CANDIDATE_REGRESSION_2026-11-03.md).
+The nine-record actual backup round trip retains its separate
+[earlier live record](REVIEW_CONTINUATION_2026-11-03.md).
+Older ZIPs remain fixed historical evidence. No GitHub publication occurred.
 
 The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
@@ -32,10 +26,9 @@ Account 1 / Sepolia reads completed at block 53,572,089, and a nine-record backu
 was verified. The prior [connection-stop diagnostic improvement](CONNECTION_STOP_DIAGNOSTICS_2026-11-03.md)
 at `856f670` passed 453 targeted Node cases and 1,024 synthetic browser cases.
 Live switch-event invalidation remains separately unverified.
-The unchanged [fixed-package full regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md)
-at `2126019` predates this implementation; that package and the public CI do not
-include the diagnostic change. The newer `9374845` review package does include
-both changes; it does not represent a new full regression or public CI run.
+The [latest full fixed-source regression](FIXED_CANDIDATE_REGRESSION_2026-11-03.md)
+at `bf690f3` includes both changes and the later checker/test fixes. Public CI
+still applies only to its older published head; local results are not remote CI.
 
 ## Exact source map
 
@@ -43,7 +36,7 @@ both changes; it does not represent a new full regression or public CI run.
 | --- | --- | --- |
 | Earlier bounded code-review checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
 | Latest Wallet implementation | `f6f378cc9b44f33fc7e147f4626e23573de06a6c` | Explicit same-origin entry-guide link; 62 server/security cases and actual Edge recovery passed; controller diagnostics remain at `856f670` |
-| Latest complete Wallet regression | `212601977bc6dad8da298f11ebb9e7a421052571` | Restored standalone package: 16,454 Node/HTTP and 1,021 synthetic browser passes on unchanged source |
+| Latest complete Wallet regression | `bf690f38b070362aab1369fbf22c8e68b1a6567f` | Restored standalone package: 16,470 Node/HTTP and 1,024 synthetic browser passes on unchanged source |
 | DAT | `ada78f5ecbd8654860d818b774ef31beb6f0b871` | Earlier empty-data fix plus structured-validation regression; contract bytes unchanged |
 | EMA | `c4765efe92857e7060c0efaa44b271c67d8d68c3` | Earlier empty-data fix plus structured-validation regression; contract bytes unchanged |
 | CAWELON | `a94d61be77c0c14109910879cdd6a7f377176101` | Earlier empty-data fix plus structured-validation regression; contract bytes unchanged |
@@ -147,8 +140,8 @@ and browser UI suites. Review assertions and scope, not just passing totals.
 
 ## Evidence already available
 
-- [Latest complete regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md): 16,454 Node/HTTP
-  and 1,021 synthetic browser passes from the clean restored `2126019` package.
+- [Latest complete regression](FIXED_CANDIDATE_REGRESSION_2026-11-03.md): 16,470 Node/HTTP
+  and 1,024 synthetic browser passes from the clean restored `bf690f3` package.
   The [earlier native-crypto test correction](NATIVE_CRYPTO_TEST_WAIT_2026-11-02.md)
   and its original failure remain separately recorded.
 - [Token source and test routing](SOURCE_PORTABILITY_2026-11-02.md): all three
@@ -186,15 +179,15 @@ replace those originals when a reviewer needs to recheck an actual observation.
 
 ## Packages and reproduction
 
-The newly prepared **Wallet source candidate** is
+The earlier **Wallet source candidate** is
 `ThreeCore-candidate-f52109a-20261102.zip`, source
 `f52109a3a5d25665667b19b811584e33da035d15`, 29,172,809 bytes, SHA-256
 `db16c2523aa7477cf0279b58def2a5010fb579a007b2df255e9fc7db524894a0`.
 All 4,658 exported files / 126,215,683 bytes matched the fixed Git source.
 It starts in ordinary mode on the separate loopback port 4232. Eight startup
 checks passed, and its own readers accepted the actual Mainnet, Sepolia and
-fictional rehearsal backups without modifying them. It includes the latest
-Wallet guidance and Sepolia receipt. This source archive is separate from the
+fictional rehearsal backups without modifying them. It includes the guidance
+and Sepolia receipt available at that fixed revision. This source archive is separate from the
 older combined Wallet/token review package below.
 
 The [migration preparation receipt](evidence/2026-11-02-release-regression/candidate-f52109a-migration-preparation.json)
@@ -210,15 +203,16 @@ preserved development server with current client files, not a separately pinned
 older public release. Actual account/chain-switch invalidation remains open.
 No browser protection was changed.
 
-The latest standalone combined review package in Downloads is
+The earlier standalone combined review package in Downloads is
 `ThreeCore-review-2126019-20261102.zip`, 51,127,612 bytes, SHA-256
 `a938e26ed7c572962c32decf0cc452654caeed58f5514be9ae41418c9ad605ea`.
 It contains Wallet source `212601977bc6dad8da298f11ebb9e7a421052571` and the
-three corrected token revisions in the source map above. Complete history and
+three earlier token revisions recorded in its dated distribution receipt.
+Complete history and
 source archives for all four repositories were restored into new directories.
 The package's `START_HERE.txt` and `package-receipt.json` are the entry points;
 `node verify-package.mjs` checks all 31 files after extraction. See the
-[current distribution record](DISTRIBUTION_CHECKPOINT_2026-11-02.md#current-combined-review-package-2126019).
+[historical distribution record](DISTRIBUTION_CHECKPOINT_2026-11-02.md#earlier-combined-review-package-2126019).
 It needs no earlier ZIP or supplement. Packaging did not rerun full regression
 or close any real-wallet, dependency-security or independent-review gate.
 

@@ -2,15 +2,14 @@
 
 ## Local development follow-up — November 3
 
-The [current standalone review package and candidate round trip](REVIEW_CONTINUATION_2026-11-03.md)
-pins `9374845` and includes the navigation recovery and connection diagnostics.
-Nine actual observations survived candidate restore/export byte-for-byte.
-The later evidence-checker growth repair passed 56 scoped cases and all 257
-then-tracked manifests / 2,668 entries. The subsequent
-[toolchain compatibility guards and CI coverage correction](TOOLCHAIN_COMPATIBILITY_GUARDS_2026-11-03.md)
-passed four pure validation cases per token and the complete revised 440-case
-HTTP command. Neither follow-up closes the remaining real-wallet or independent
-review gates, and the Zod advisory remains unresolved.
+The [latest fixed-source package and complete regression](FIXED_CANDIDATE_REGRESSION_2026-11-03.md)
+pin `bf690f3`, including navigation recovery, connection diagnostics, evidence
+capacity repair and current token test pins. The clean restored source passed
+16,470 Node/HTTP and 1,024 synthetic browser cases. All 42 package files matched
+after extraction, with a successful alteration-detection control.
+Nine actual observations survived the earlier candidate restore/export byte-for-byte.
+These results close the later-source full-regression coverage gap; actual wallet
+switch invalidation, dependency disposition and independent review remain open.
 
 The [navigation recovery follow-up](NAVIGATION_RECOVERY_2026-11-03.md) at `f6f378c`
 closes the detached-tab interruption: supported same-origin links reopened the

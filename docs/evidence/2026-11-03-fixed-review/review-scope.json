@@ -1,0 +1,75 @@
+{
+  "schema": "threecore.review-delta-map.v1",
+  "recordedAt": "2026-11-02T17:56:07.177Z",
+  "base": "212601977bc6dad8da298f11ebb9e7a421052571",
+  "head": "bf690f38b070362aab1369fbf22c8e68b1a6567f",
+  "files": [
+    {
+      "path": "examples/local-navigation-help.js",
+      "added": 7,
+      "deleted": 3,
+      "sha256": "c26072d0d97e185944e457d667e67ec27afc05164457ea89c5dec2ae1d141d5c"
+    },
+    {
+      "path": "examples/security-panel.js",
+      "added": 6,
+      "deleted": 0,
+      "sha256": "9a698836966243f7f102f9277b6f4f7919c4da7da41fca03c93510158aab5e60"
+    },
+    {
+      "path": "examples/wallet-demo.js",
+      "added": 1,
+      "deleted": 0,
+      "sha256": "b96618f5b2ff2a8851060a605cc225688c56d07c93f1da55fa48a779a6b83153"
+    },
+    {
+      "path": "scripts/evidence-collection.js",
+      "added": 4,
+      "deleted": 1,
+      "sha256": "153f7d99aa55c5f3d2bf59d74adc47e1edfec2e5c1c212c478d98b386f7bfe45"
+    },
+    {
+      "path": "src/security-journal.js",
+      "added": 5,
+      "deleted": 1,
+      "sha256": "df55f2fa45907d7b8360babb8044f17bb148e7d30cbf960a346112cbc59c3458"
+    },
+    {
+      "path": "src/wallet-card-controller.js",
+      "added": 12,
+      "deleted": 6,
+      "sha256": "05e72c9e7b4d5b6e7d52bdb606cec0bf56ce0e6d64ec3cafc7384086d1d960fa"
+    }
+  ],
+  "reviewKind": "Developer inspection of the six changed implementation/tooling files and their relevant surrounding code; not independent review.",
+  "observations": [
+    {
+      "area": "Navigation guide",
+      "files": [
+        "examples/local-navigation-help.js"
+      ],
+      "finding": "Only fixed root/rehearsal routes and validated local port enter HTML; original guard is unchanged; no script, redirect, RPC or wallet operation."
+    },
+    {
+      "area": "Connection diagnostics",
+      "files": [
+        "src/wallet-card-controller.js",
+        "src/security-journal.js",
+        "examples/security-panel.js",
+        "examples/wallet-demo.js"
+      ],
+      "finding": "Connection state closes before the fixed reason callback; callback runs behind the existing reentrancy boundary; stale callbacks are inert. Journal stays bounded at 64 reason-only entries and export version is 2."
+    },
+    {
+      "area": "Evidence collection",
+      "files": [
+        "scripts/evidence-collection.js"
+      ],
+      "finding": "Manifest ceiling is 512. Shared artifact bytes, per-file admission, path checks, Git output limit and Git timeout are unchanged."
+    }
+  ],
+  "independentlyReviewed": false,
+  "liveSwitchGateClosed": false,
+  "dependencyFindingClosed": false,
+  "releaseApproved": false
+}
