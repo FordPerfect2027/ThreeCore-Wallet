@@ -323,3 +323,28 @@ Actual connected-wallet switch-event invalidation, native OS picker traversal,
 dependency disposition and independent review remain separate. No product code
 changed, full regression rerun, signature, transaction, key access or GitHub
 write was performed in this sequence. No release percentage was calculated.
+
+## Network-switch target follow-up
+
+After restoring the six-record backup again, all three cards were explicitly
+connected to Account 2 / Base Sepolia at port 4231. The operator reported changing
+the site's network to Base. However, all three cards still displayed chain 84532,
+and an ordinary DAT portfolio read completed on Sepolia at block 53,469,807.
+The permitted-account control is disabled while connected, so DAT alone was
+explicitly disconnected before probing. MetaMask still returned Account 2,
+Base Sepolia and two permitted addresses for this tab. All histories remained
+at two records per card. The extra diagnostic read was not added to history.
+
+The exact site origin changed in MetaMask is being clarified. This is not
+evidence that live chain-change invalidation passed, nor sufficient evidence of
+a handler defect: the tab's actual provider continued reporting Sepolia.
+The [context follow-up receipt](evidence/2026-11-02-release-regression/live-network-switch-context-followup.json)
+preserves the observations and hashes of eight private artifacts.
+
+To make the target easier to compare with MetaMask, `dfc0746` adds the exact
+site origin as plain text beside each permitted-account panel. A separate empty
+Edge tab displayed the correct `http://127.0.0.1:4231` on all three cards, with
+261px client and scroll widths. The working Wallet tab was not reloaded; the
+display-only test tab was closed. The existing permitted-account and setup-panel
+suites passed 58 cases. RPC behavior, permissions and the fixed `f52109a` source
+archive were unchanged. That archive predates this one-line display addition.

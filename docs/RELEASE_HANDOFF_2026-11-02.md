@@ -14,7 +14,7 @@ A 90% planning target is not an achieved release gate or a measured score.
 | Item | Fixed revision | What it establishes |
 | --- | --- | --- |
 | Inspected local evidence checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
-| Latest Wallet implementation | `7c12a280649ee56d52165d9412db3af4c5bd4770` | Site-specific MetaMask guidance and earlier address wrapping; the last RPC behavior change remains the inclusive range correction at `96b5945` |
+| Latest Wallet implementation | `dfc0746390f46eef8d544915135f5aa008a016bd` | Exact site-origin display beside the MetaMask guidance and earlier address wrapping; the last RPC behavior change remains the inclusive range correction at `96b5945` |
 | Latest complete Wallet regression | `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd` | 16,454 Node/HTTP and 1,021 synthetic browser passes; later test-only drain-wait fix included |
 | DAT | `502944c94ffed408356b487abc9a710807697ee2` | Current checked local token source |
 | EMA | `9cad39a196e8afc37abb5b99c260e00327c55d1c` | Current checked local token source |
@@ -26,6 +26,14 @@ The [saved checkpoint receipt](evidence/2026-11-02-release-regression/candidate-
 records 17 changed implementation files at `5297728` and their content digests.
 It predates the later CSS and site-specific guidance changes listed here.
 New documentation commits do not alter the implementation/regression pins above.
+
+The latest one-line origin display at `dfc0746` was observed in a separate empty
+Edge tab for all three cards; 58 existing account/setup-panel cases passed.
+The fixed `f52109a` candidate archive and completed migration exercise predate
+this display addition. The [network-switch target follow-up](LIVE_ACCEPTANCE_2026-11-02.md#network-switch-target-follow-up)
+records that MetaMask still returned Sepolia for port 4231 after the operator
+reported switching to Base. The exact changed site is being clarified; no live
+switch-event pass or handler defect is inferred from that mismatch.
 
 The later CSS-only change prevents permitted-account details overflowing narrow
 cards. Actual Edge display confirmed the full address within a 296px element,
@@ -60,8 +68,8 @@ Publication remains deferred for the operator's combined update.
 Relative to the public head, the inspected local checkpoint changes **17 files,
 123 added and 54 deleted lines** in src, examples and scripts. CI, tests,
 documentation and the evidence newline policy are additional, separate changes.
-Those fixed-checkpoint counts exclude the later changes at `307ed11` and
-`7c12a28`; inspect those two commits as well when reviewing the latest candidate.
+Those fixed-checkpoint counts exclude the later changes at `307ed11`,
+`7c12a28` and `dfc0746`; inspect those commits as well when reviewing the latest candidate.
 
 | Change | Source starting points | Review question |
 | --- | --- | --- |
