@@ -110,7 +110,16 @@ Its source pin is `23d0a35b129c32be581bf1a3ffad57e228b9b65c`.
 It includes the implementation/regression above, but predates the additional
 source-reconstruction and live-context receipts.
 
-The additional standalone compiler/replay kit is
+The current standalone compiler/replay kit is
+`ThreeCore-source-verification-complete-f7aaec1-20261102.zip`:
+445,316 bytes, SHA-256
+`7c77c4abd74f8067940057c48c2175de07f9560c4bf310afabf57e11a48f0b3b`.
+It pins `f7aaec1e7179324bb9dcb7d8efb17b6414b5dcf9` and includes the complete
+DAT Mainnet source recovery. Its four relocated offline checks passed and all
+30 package manifest entries matched after fresh extraction. The previously
+verified compiler installation was reused; dependency versions were unchanged.
+
+The earlier additional standalone compiler/replay kit is
 `ThreeCore-source-verification-9838e5b-20261102-final.zip`:
 358,656 bytes, SHA-256
 `867bef2f9a75fc3807c19c48f786d780403b4acc59ccd79e43249cb8330d7161`.
@@ -173,8 +182,9 @@ limitation instead of bypassing browser protections.
 The DAT Mainnet metadata comparison was closed by the later Sourcify-input
 recovery and local compilation against the separately recorded RPC bytes.
 This closes that developer verification item, not the independent-review gate.
-The fixed distributions above predate this follow-up; their source pins and
-earlier results remain unchanged.
+The full Wallet distribution and the older 9838e5b kit predate this follow-up;
+their source pins and earlier results remain unchanged. The f7aaec1 source kit
+includes the complete comparison.
 
 For every finding, record the exact commit, affected path, trigger, expected and
 observed behavior, evidence, impact, proposed fix and retest status. Do not count

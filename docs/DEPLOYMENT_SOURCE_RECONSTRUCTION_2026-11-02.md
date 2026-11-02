@@ -175,7 +175,33 @@ are in the existing checksummed evidence collection. The 23d0a35 distribution
 predates this addition; retain it as its own checkpoint and include the addition
 in the next combined delivery.
 
-## Standalone additional verification kit
+## Complete standalone verification kit
+
+`ThreeCore-source-verification-complete-f7aaec1-20261102.zip` in Downloads is the
+current standalone kit, pinned to `f7aaec1e7179324bb9dcb7d8efb17b6414b5dcf9`.
+It includes the recovered DAT input, the four offline commands, required source
+and RPC records, compiler dependency lock, source licenses and Japanese README.
+It is **445,316 bytes**, SHA-256
+`7c77c4abd74f8067940057c48c2175de07f9560c4bf310afabf57e11a48f0b3b`.
+
+All four commands passed from the newly assembled folder: six complete runtimes,
+three complete Mainnet creations, two Sepolia creations/initial mints and nine
+source-input rejection controls. This pass reused the earlier verified compiler
+installation with an identical lock and checked compiler version/binary digest;
+it was not another fresh dependency installation. The resulting JSON values
+match the recorded repository results. All 30 outer manifest entries matched
+after fresh ZIP extraction, and local report links were checked.
+
+The kit's dependency installation requires npm; replay itself is offline.
+It does not need the full Wallet package and is not a runnable Wallet release.
+It does not close the remaining real-wallet, development dependency or
+independent-review gates.
+[Receipt](evidence/2026-11-02-token-dependency-review/complete-source-kit-receipt.json),
+[file manifest](evidence/2026-11-02-token-dependency-review/complete-source-kit-manifest.txt)
+and [Japanese instructions](evidence/2026-11-02-token-dependency-review/complete-source-kit-README.txt)
+are retained with the creation method.
+
+## Earlier standalone verification kit
 
 `ThreeCore-source-verification-9838e5b-20261102-final.zip` in Downloads contains
 the required recorded inputs, observations, three offline commands and a minimal

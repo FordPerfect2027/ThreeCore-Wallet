@@ -1,0 +1,43 @@
+{
+  "schema": "threecore.complete-source-verification-kit.v1",
+  "sourceRevision": "f7aaec1e7179324bb9dcb7d8efb17b6414b5dcf9",
+  "recordedAt": "2026-11-02T02:44:32.286Z",
+  "completeRuntimeMatches": 6,
+  "completeMainnetCreationMatches": 3,
+  "sepoliaCreationAndInitialMintMatches": 2,
+  "sourceControlsRejected": 9,
+  "remainingMetadataMismatches": [],
+  "results": [
+    {
+      "name": "runtime",
+      "passed": true
+    },
+    {
+      "name": "source-controls",
+      "passed": true
+    },
+    {
+      "name": "mainnet",
+      "passed": true
+    },
+    {
+      "name": "sepolia",
+      "passed": true
+    }
+  ],
+  "compilerInstallationReused": true,
+  "compilerLockUnchanged": true,
+  "newDependencyInstallation": false,
+  "dependenciesVendored": false,
+  "compilerCheckedByVersionAndDigest": true,
+  "publicChainRequestsDuringPackaging": 0,
+  "walletUsed": false,
+  "original4231Restarted": false,
+  "independentAudit": false,
+  "percentageCalculated": false,
+  "zip": "ThreeCore-source-verification-complete-f7aaec1-20261102.zip",
+  "bytes": 445316,
+  "sha256": "7c77c4abd74f8067940057c48c2175de07f9560c4bf310afabf57e11a48f0b3b",
+  "manifestEntries": 30,
+  "freshExtractionAllMatched": true
+}
