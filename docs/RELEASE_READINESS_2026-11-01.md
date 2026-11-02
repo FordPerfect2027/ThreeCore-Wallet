@@ -2,6 +2,16 @@
 
 ## Local development follow-up — November 3
 
+The [current standalone review package and candidate round trip](REVIEW_CONTINUATION_2026-11-03.md)
+pins `9374845` and includes the navigation recovery and connection diagnostics.
+Nine actual observations survived candidate restore/export byte-for-byte.
+The later evidence-checker growth repair passed 56 scoped cases and all 257
+then-tracked manifests / 2,668 entries. The subsequent
+[toolchain compatibility guards and CI coverage correction](TOOLCHAIN_COMPATIBILITY_GUARDS_2026-11-03.md)
+passed four pure validation cases per token and the complete revised 440-case
+HTTP command. Neither follow-up closes the remaining real-wallet or independent
+review gates, and the Zod advisory remains unresolved.
+
 The [navigation recovery follow-up](NAVIGATION_RECOVERY_2026-11-03.md) at `f6f378c`
 closes the detached-tab interruption: supported same-origin links reopened the
 Wallet without another manual address-bar entry. Three real Account 1 / Sepolia
@@ -17,7 +27,7 @@ review package below. The operator reported switching to Account 1, but the
 browser operation connection failed before the post-switch read; live acceptance
 remains unverified. This adds useful diagnostics, not a 90% completion claim.
 
-## Current fixed-candidate assessment — November 2, 22:36 JST
+## Earlier fixed-candidate assessment — November 2, 22:36 JST
 
 The [standalone review package](DISTRIBUTION_CHECKPOINT_2026-11-02.md) pins Wallet
 source `212601977bc6dad8da298f11ebb9e7a421052571` and application `8fa0ed2`.

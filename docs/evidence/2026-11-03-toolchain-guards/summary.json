@@ -1,0 +1,62 @@
+{
+  "schema": "threecore.toolchain-compatibility-guards.v1",
+  "recordedAt": "2026-11-02T17:39:31.515Z",
+  "walletBaseRevision": "dc49cfb6588e8f7a6cc12f7b2c63d65fbcecc99e",
+  "tokenSources": [
+    {
+      "token": "DAT",
+      "revision": "ada78f5ecbd8654860d818b774ef31beb6f0b871",
+      "parent": "47d8aa9db72e54e49fc9521f9b4022c416a7c6d1",
+      "changedFiles": [
+        "integration/toolchain-data.test.mjs"
+      ],
+      "testsPassed": 4,
+      "addedCases": 2,
+      "testSourceSha256": "1cbb6c1009e46276bbf11767505b1f6f004a31554262b845e277aed426665594",
+      "artifactSha256": "ee5993ac0526aff0f9d75e1de75e0a544acdcd1bd384b94c692aa72f25d78722",
+      "artifactUnchanged": true,
+      "dependencyLockUnchanged": true,
+      "workingTreeClean": true
+    },
+    {
+      "token": "EMA",
+      "revision": "c4765efe92857e7060c0efaa44b271c67d8d68c3",
+      "parent": "5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac",
+      "changedFiles": [
+        "integration/toolchain-data.test.mjs"
+      ],
+      "testsPassed": 4,
+      "addedCases": 2,
+      "testSourceSha256": "1cbb6c1009e46276bbf11767505b1f6f004a31554262b845e277aed426665594",
+      "artifactSha256": "564834dcc3d3b978838c91acfe006c9579d7f105d10b1bc298120fc610784389",
+      "artifactUnchanged": true,
+      "dependencyLockUnchanged": true,
+      "workingTreeClean": true
+    },
+    {
+      "token": "CAWELON",
+      "revision": "a94d61be77c0c14109910879cdd6a7f377176101",
+      "parent": "4af9e1db98cac546e498b6f34531ba890cc2e3c0",
+      "changedFiles": [
+        "integration/toolchain-data.test.mjs"
+      ],
+      "testsPassed": 4,
+      "addedCases": 2,
+      "testSourceSha256": "1cbb6c1009e46276bbf11767505b1f6f004a31554262b845e277aed426665594",
+      "artifactSha256": "282a9f2bab274a3eb3345e23451b1626e25c954c12174a3cd8127c476476f967",
+      "artifactUnchanged": true,
+      "dependencyLockUnchanged": true,
+      "workingTreeClean": true
+    }
+  ],
+  "httpCases": 440,
+  "workflowNewlyIncludes": "integration/local-navigation-help.test.mjs",
+  "workflowSha256": "3af7a8835acce444765a2e5cee4bc3e113ecf65ab29784fb90fe242d74528504",
+  "dependencyInstallations": false,
+  "contractsRebuilt": false,
+  "fullTokenSuitesRerun": false,
+  "liveWalletSwitchObserved": false,
+  "advisoryClosed": false,
+  "githubWrites": false,
+  "remoteCiRun": false
+}

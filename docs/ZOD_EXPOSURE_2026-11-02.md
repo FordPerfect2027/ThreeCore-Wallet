@@ -1,5 +1,18 @@
 # Bounded development dependency exposure review — November 2, 2026
 
+## Current toolchain follow-up — November 3
+
+The corrected token candidates now use Hardhat 3.21.2, its Zod helper 3.0.8 and
+Zod 3.25.76. The earlier installed-version paragraph below is historical.
+A fresh official registry lookup still reports Hardhat 3.21.2 / helper 3.0.8
+requiring Zod `^3.23.8`, while latest Zod is 4.6.7. The helper's loaded bytes still
+match the earlier incompatible-major probe. The
+[new compatibility guards](TOOLCHAIN_COMPATIBILITY_GUARDS_2026-11-03.md) retain
+structured invalid-input handling as an upgrade requirement in all three token
+projects. They do not remediate or waive the advisory.
+
+## Original bounded observations
+
 The [official advisory](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5) still
 identifies Zod versions before 4.6.6 as affected by excessive resource use while
 collecting validation failures. This dated source check is not an independent

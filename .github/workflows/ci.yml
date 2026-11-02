@@ -41,8 +41,8 @@ jobs:
           node-version: 22
       - name: Offline mock and read-only regression tests
         run: node --test --test-timeout=60000 --test-concurrency=2 test/*.test.js
-      - name: Demo HTTP routes and test fixture isolation
-        run: node --test --test-concurrency=2 integration/*server.test.mjs
+      - name: Demo HTTP routes, refusal recovery and test fixture isolation
+        run: node --test --test-concurrency=2 integration/*server.test.mjs integration/local-navigation-help.test.mjs
       - name: Browser harness rejects uncaught exceptions and unhandled rejections
         run: node scripts/test-browser-ui.js --verify-error-detection
       - name: Three consecutive synthetic Wallet UI runs in fresh Chrome profiles
@@ -59,11 +59,11 @@ jobs:
       matrix:
         include:
           - repository: DAT
-            ref: 47d8aa9db72e54e49fc9521f9b4022c416a7c6d1
+            ref: ada78f5ecbd8654860d818b774ef31beb6f0b871
           - repository: EMA-Draft
-            ref: 5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac
+            ref: c4765efe92857e7060c0efaa44b271c67d8d68c3
           - repository: CAWELON-Draft
-            ref: 4af9e1db98cac546e498b6f34531ba890cc2e3c0
+            ref: a94d61be77c0c14109910879cdd6a7f377176101
     steps:
       - uses: actions/checkout@v4
         with:
@@ -83,7 +83,7 @@ jobs:
       - name: Install pinned token dependencies
         working-directory: token
         run: npm ci
-      - name: Check source portability, empty-data decoding and compile the actual token contract
+      - name: Check source portability, toolchain compatibility and compile the actual token contract
         working-directory: token
         run: npm run test:source && npm run test:toolchain && npm run compile
       - name: Validate actual token history and malformed log rejection

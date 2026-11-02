@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-11-02T17:36:50.505Z",
+  "currentHelperVersion": "3.0.8",
+  "currentHelperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48",
+  "fixturesMatchCurrentHelperBytes": true,
+  "rows": [
+    {
+      "version": "3.25.76",
+      "validCaseAccepted": true,
+      "invalidCaseReturnsStructuredPath": true,
+      "thrown": null,
+      "packageLockSha256": "14c15661de5ca76a986f18b9f5a12c92ac0655351dc88b10af377e4c995a335c"
+    },
+    {
+      "version": "4.6.6",
+      "validCaseAccepted": true,
+      "invalidCaseReturnsStructuredPath": false,
+      "thrown": "TypeError",
+      "packageLockSha256": "f7a26d57b88f16855c3d65fa691bf4a07e2b747d619106fd6417eafb4fddc50f"
+    }
+  ],
+  "currentNewRegressionDetectsForcedMajorIncompatibility": true,
+  "dependencyInstalls": false,
+  "projectConfigurationLoaded": false,
+  "keystoreLoaded": false,
+  "walletUsed": false,
+  "advisoryClosed": false
+}

@@ -19,6 +19,11 @@ The older ZIPs mentioned below remain fixed historical evidence.
 The subsequent evidence-checker capacity repair accepts 512 manifests under the
 unchanged shared byte budget. All 56 scoped tests and the actual 257-manifest /
 2,668-entry collection passed; this tooling follow-up is outside the sealed ZIP.
+The later [toolchain upgrade guards](TOOLCHAIN_COMPATIBILITY_GUARDS_2026-11-03.md)
+add structured invalid-input regression to each token (four cases each), with
+unchanged dependencies and contract artifacts. The prepared local CI now names
+the navigation-help test explicitly; its exact HTTP command passed 440 cases.
+These test/workflow changes are also newer than the sealed review ZIP.
 
 The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
@@ -39,9 +44,9 @@ both changes; it does not represent a new full regression or public CI run.
 | Earlier bounded code-review checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
 | Latest Wallet implementation | `f6f378cc9b44f33fc7e147f4626e23573de06a6c` | Explicit same-origin entry-guide link; 62 server/security cases and actual Edge recovery passed; controller diagnostics remain at `856f670` |
 | Latest complete Wallet regression | `212601977bc6dad8da298f11ebb9e7a421052571` | Restored standalone package: 16,454 Node/HTTP and 1,021 synthetic browser passes on unchanged source |
-| DAT | `47d8aa9db72e54e49fc9521f9b4022c416a7c6d1` | Local empty-data toolchain correction; contract bytes unchanged |
-| EMA | `5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac` | Local empty-data toolchain correction; contract bytes unchanged |
-| CAWELON | `4af9e1db98cac546e498b6f34531ba890cc2e3c0` | Local empty-data toolchain correction; contract bytes unchanged |
+| DAT | `ada78f5ecbd8654860d818b774ef31beb6f0b871` | Earlier empty-data fix plus structured-validation regression; contract bytes unchanged |
+| EMA | `c4765efe92857e7060c0efaa44b271c67d8d68c3` | Earlier empty-data fix plus structured-validation regression; contract bytes unchanged |
+| CAWELON | `a94d61be77c0c14109910879cdd6a7f377176101` | Earlier empty-data fix plus structured-validation regression; contract bytes unchanged |
 | Public PR #4 head | `07041f00efdb503cb76a06fbe12e5531cb380930` | Earlier public source only |
 
 All three token working trees were clean when this source map was checked.
