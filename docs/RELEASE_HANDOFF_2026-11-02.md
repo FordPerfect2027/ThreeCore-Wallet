@@ -14,7 +14,7 @@ A 90% planning target is not an achieved release gate or a measured score.
 | Item | Fixed revision | What it establishes |
 | --- | --- | --- |
 | Inspected local evidence checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
-| Latest Wallet implementation | `96b59459a0f593246c60f0bed4b52052211a464a` | Inclusive 2,000-block RPC range correction and earlier application changes |
+| Latest Wallet implementation | `307ed11a13706c71954dfa6b6f12d7710b05bae9` | Permitted-address detail wrapping; the last behavioral change remains the inclusive range correction at `96b5945` |
 | Latest complete Wallet regression | `e5841f0d1b412b516b3e3eb4a81d75eabaf81edd` | 16,454 Node/HTTP and 1,021 synthetic browser passes; later test-only drain-wait fix included |
 | DAT | `502944c94ffed408356b487abc9a710807697ee2` | Current checked local token source |
 | EMA | `9cad39a196e8afc37abb5b99c260e00327c55d1c` | Current checked local token source |
@@ -25,6 +25,15 @@ All three token working trees were clean when this source map was checked.
 The [saved current-state receipt](evidence/2026-11-02-release-regression/candidate-review-scope.json)
 records the 17 changed implementation files and their content digests.
 New documentation commits do not alter the implementation/regression pins above.
+
+The later CSS-only change prevents permitted-account details overflowing narrow
+cards. Actual Edge display confirmed the full address within a 296px element,
+with `scrollWidth === clientWidth`. The existing tab was preserved and separate
+empty validation tabs were closed. Its actual permission read still reported
+Base Mainnet and one permitted account; this does not close the requested
+Sepolia or account-switch gate. See the [layout receipt](evidence/2026-11-02-release-regression/account-probe-layout-summary.json).
+The full regression predates this CSS-only change; the new evidence is the actual
+rendered layout check, not another full regression run.
 
 The [public PR](https://github.com/FordPerfect2027/ThreeCore-Wallet/pull/4) was
 rechecked through unauthenticated GitHub GET requests on November 2. It is open

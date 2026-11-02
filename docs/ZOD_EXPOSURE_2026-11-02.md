@@ -35,3 +35,35 @@ regression, or an explicit qualified release risk decision. Do not represent the
 minimal runtime's absence of Zod as a clean audit of the development toolchain.
 [Exact versions, source hashes, bounded observations and metadata receipts](evidence/2026-11-02-release-regression/DISTRIBUTION_16A0D33.md)
 are included with the latest review archive.
+
+## Size-bound and compatibility-export follow-up
+
+The [upstream fix](https://github.com/colinhacks/zod/commit/a0ebf970f2d752e5f58527cd2942ff48be4f46bd)
+adds early size checks to v4 arrays, maps and sets with configured upper bounds.
+It does not add a universal limit to an unconstrained array. This matters when
+considering a migration for the unbounded helper schemas above.
+
+A bounded offline probe reused the two earlier isolated installations and
+compared Zod 3.25.76, the ordinary 4.6.6 export, and `zod/v3` from 4.6.6. It used
+2, 3 and 64 fictional numeric elements against a string schema, with and without
+`.max(2)`, and counted element visits as well as returned issues.
+
+| Import | 64 invalid elements with `.max(2)` | Without a maximum |
+| --- | --- | --- |
+| Zod 3.25.76 | 64 visits, 65 issues | 64 visits, 64 issues |
+| Zod 4.6.6 ordinary export | 0 visits, 1 size issue | 64 visits, 64 issues |
+| Zod 4.6.6 `zod/v3` compatibility export | 64 visits, 65 issues | 64 visits, 64 issues |
+
+Valid input at the limit was accepted in all three cases. The compatibility
+export therefore cannot be treated as applying the v4 early-size fix while
+retaining the old helper API. A migration also needs explicit limits before
+processing untrusted collections; merely changing the package version or the
+error-property alias does not establish that protection. This is a conclusion
+about these measured paths, not a complete Hardhat vulnerability assessment.
+
+No package, project configuration, account or keystore was changed or loaded.
+The largest input contained 64 elements; no exhaustion or network attack was
+attempted. The advisory remains open. [Results](evidence/2026-11-02-token-dependency-review/zod-size-gate-probe.json)
+and [the exact probe](evidence/2026-11-02-token-dependency-review/zod-size-gate-probe-method.mjs)
+retain package-lock and loaded-entry digests. These later records postdate the
+fixed review archives above.
