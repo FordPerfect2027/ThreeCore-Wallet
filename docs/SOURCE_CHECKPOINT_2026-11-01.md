@@ -100,6 +100,13 @@ The [preparation receipt](evidence/2026-11-02-release-regression/candidate-f5210
 retains these results. Detailed source comparison, launch/startup receipts and
 the Japanese `-手順.txt` are saved beside the ZIP in Downloads. The existing
 4231 process remains PID 2108 with its October 30 start time, and its working
-tabs are retained. The candidate's Edge tab currently shows opening instructions;
-actual restore, permitted-account connection and version return remain pending.
-No claim of completed migration or 90% readiness follows from this preparation.
+tabs are retained. Opening, permission and return were pending at preparation.
+The later [actual migration and return](LIVE_ACCEPTANCE_2026-11-02.md#fixed-candidate-migration-and-return-completed)
+completed three new candidate Wallet reads, retained all six observations,
+explicitly reconnected at the original origin, and produced byte-identical
+7,237-byte candidate/return Wallet exports. Rehearsal restoration also passed
+for six fictional records and three cases, with byte-identical 17,387-byte
+original/candidate/return session files. The original server was not restarted.
+This return used its current client files, not a separately pinned older public
+release. The preparation alone did not establish these later UI results, and
+neither sequence establishes 90% readiness or independent release approval.

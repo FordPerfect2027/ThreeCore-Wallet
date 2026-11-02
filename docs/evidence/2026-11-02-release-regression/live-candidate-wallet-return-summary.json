@@ -1,0 +1,187 @@
+{
+  "schema": "threecore.live-candidate-wallet-return.v1",
+  "recordedAt": "2026-11-02T10:21:14.942Z",
+  "candidateSource": "f52109a3a5d25665667b19b811584e33da035d15",
+  "applicationSource": "7c12a280649ee56d52165d9412db3af4c5bd4770",
+  "recordingSource": "3687bc035847f2c81b31aa9ebca62e6330de43ae",
+  "browser": "Microsoft Edge with MetaMask",
+  "chainId": 84532,
+  "accountLabel": "Account 2",
+  "distinctObservedAccounts": 1,
+  "accountValuesRedacted": true,
+  "candidateOrigin": "http://127.0.0.1:4232",
+  "returnOrigin": "http://127.0.0.1:4231",
+  "observations": [
+    {
+      "agent": "DAT",
+      "blockNumber": "53463168",
+      "blockHash": "0xd105046941a06d5a7cfb55d65dc3f678b78b8d457e9fd0ee52117358a1b92b75",
+      "siteOrigin": "http://127.0.0.1:4232",
+      "hasCode": true,
+      "tokenBalanceBaseUnits": "0",
+      "nativeBalanceBaseUnits": "0"
+    },
+    {
+      "agent": "EMA",
+      "blockNumber": "53463168",
+      "blockHash": "0xd105046941a06d5a7cfb55d65dc3f678b78b8d457e9fd0ee52117358a1b92b75",
+      "siteOrigin": "http://127.0.0.1:4232",
+      "hasCode": true,
+      "tokenBalanceBaseUnits": "0",
+      "nativeBalanceBaseUnits": "0"
+    },
+    {
+      "agent": "CAWELON",
+      "blockNumber": "53463168",
+      "blockHash": "0xd105046941a06d5a7cfb55d65dc3f678b78b8d457e9fd0ee52117358a1b92b75",
+      "siteOrigin": "http://127.0.0.1:4232",
+      "hasCode": true,
+      "tokenBalanceBaseUnits": "0",
+      "nativeBalanceBaseUnits": "0"
+    }
+  ],
+  "stepsObserved": {
+    "operatorApprovedCandidateConnection": true,
+    "candidatePermittedAccountCount": 1,
+    "threeCandidateCardsExplicitlyConnected": true,
+    "threeCandidateReadsCompleted": true,
+    "originalThreeRecordsRetained": true,
+    "threeNewRecordsAdded": true,
+    "candidateExportActuallySaved": true,
+    "allCandidateConnectionsStoppedBeforeReturn": true,
+    "browserBackReturnedToOriginalOrigin": true,
+    "returnInitialHistories": [
+      0,
+      0,
+      0
+    ],
+    "realFileChooserUsedOnReturn": true,
+    "returnPreviewConfirmed": true,
+    "removedExistingRecords": 0,
+    "returnedHistories": [
+      2,
+      2,
+      2
+    ],
+    "returnedSettingsTokensAndHistoriesMatch": true,
+    "returnExportActuallySaved": true,
+    "returnExportByteIdentical": true,
+    "returnPermittedAccountCount": 2,
+    "allThreeCardsExplicitlyReconnectedOnReturn": true
+  },
+  "integrity": {
+    "originalBackupSha256": "97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4",
+    "candidateBackupFilename": "ThreeCore-workspace-backup (16).json",
+    "returnBackupFilename": "ThreeCore-workspace-backup (17).json",
+    "backupBytes": 7237,
+    "backupSha256": "4fabece09fba893fc7339bb976eee752845db8bfa05a6e0411b747f32afc0fdb",
+    "internalChecksumVerified": true,
+    "internalChecksum": "00e70b8acbfe9ac177c2b05a3a6c80683abae3be6e69bfaedb362b0478a55981",
+    "privateEvidence": [
+      {
+        "filename": "candidate-permitted-account.txt",
+        "bytes": 792,
+        "sha256": "a7fd0d9befb57a9a8e17638841e39e351e444a20d20c52c45136536e075aa50d"
+      },
+      {
+        "filename": "candidate-connected.json",
+        "bytes": 267,
+        "sha256": "83f78a0eecd9a1692325e2811b3b8e85f4e70902927fe71008145b8153c5af3c"
+      },
+      {
+        "filename": "candidate-new-read-status.json",
+        "bytes": 621,
+        "sha256": "49a9ef31420e7c38d3389dc390df6890ac595478183852fbf658a08706b707b6"
+      },
+      {
+        "filename": "candidate-new-observations.json",
+        "bytes": 1230,
+        "sha256": "1b098140725fafdce4900af155d8c209d01ddb32ce04646247ce81cdd3ce2e51"
+      },
+      {
+        "filename": "candidate-final-overview.txt",
+        "bytes": 7516,
+        "sha256": "6dd5c438fa6f3a05266083925440418cc6030467fb12dd49cabd4841778d2015"
+      },
+      {
+        "filename": "candidate-final-overview.png",
+        "bytes": 36384,
+        "sha256": "c4174c51633d22d3e7d06fb41eabbe159e16d14b908ba829eefe9db9d5d9b525"
+      },
+      {
+        "filename": "ThreeCore-workspace-backup (16).json",
+        "bytes": 7237,
+        "sha256": "4fabece09fba893fc7339bb976eee752845db8bfa05a6e0411b747f32afc0fdb"
+      },
+      {
+        "filename": "return-initial-state.json",
+        "bytes": 452,
+        "sha256": "bb966ab3385c940c8fb4cf3efd82b2274e735cbe64da677338322fe9a5a53d73"
+      },
+      {
+        "filename": "return-restore-preview.txt",
+        "bytes": 8149,
+        "sha256": "bfc15dfedaaa4123f7340aa9bd983e332fa5497b90e06f08bec1fec80b1bf1aa"
+      },
+      {
+        "filename": "return-restore-comparison.txt",
+        "bytes": 8096,
+        "sha256": "2d9a03bc8800920ccfdff001f0b54adf774c913c97ef45469ae9249d165b47bd"
+      },
+      {
+        "filename": "return-permitted-account.txt",
+        "bytes": 792,
+        "sha256": "aa4cab262d47a8fdc34cce22d231082ea586ba1686e54be491a1005ecffecb68"
+      },
+      {
+        "filename": "return-connected.json",
+        "bytes": 733,
+        "sha256": "787d173d98e7cfbea7abee600468fdbc5a3c77a60ee883339418f6cc5ff6c123"
+      },
+      {
+        "filename": "return-final-overview.txt",
+        "bytes": 7516,
+        "sha256": "6dd5c438fa6f3a05266083925440418cc6030467fb12dd49cabd4841778d2015"
+      },
+      {
+        "filename": "return-final-overview.png",
+        "bytes": 36134,
+        "sha256": "73f8b8253ee48bfc9ab3880422fee54b0fa8c5604bb5e9cf49fd9b2c6a61a402"
+      },
+      {
+        "filename": "ThreeCore-workspace-backup (17).json",
+        "bytes": 7237,
+        "sha256": "4fabece09fba893fc7339bb976eee752845db8bfa05a6e0411b747f32afc0fdb"
+      }
+    ]
+  },
+  "scope": {
+    "walletMigrationAndReturnCompleted": true,
+    "rehearsalUiMigrationCompleted": false,
+    "olderImmutableReleaseRollbackProven": false,
+    "originalServer": {
+      "pid": 2108,
+      "startedLocal": "2026-10-30T00:41:41+09:00",
+      "restarted": false
+    },
+    "candidateServer": {
+      "pid": 28252,
+      "startedLocal": "2026-11-02T16:46:47+09:00",
+      "port": 4232,
+      "retainedForRemainingVerification": true
+    }
+  },
+  "limitations": [
+    "This is the Wallet data migration, live read and return sequence, not the separate rehearsal UI migration.",
+    "Return used the preserved running development server, which serves current client files. This is not rollback to a separately pinned older public release.",
+    "Browser navigation started with an empty original-origin page; records were explicitly restored from verified files, not claimed to survive in memory.",
+    "One existing account serves all three cards. Actual account/chain-change invalidation while connected remains untested.",
+    "The real file chooser API was used; native Windows picker traversal was not exercised.",
+    "The recorded reads do not establish token security, ownership, independent review or a release percentage.",
+    "No complete regression was rerun for these observed UI actions."
+  ],
+  "transactionsSigned": 0,
+  "transactionsSubmitted": 0,
+  "secretKeysRead": false,
+  "githubModified": false
+}

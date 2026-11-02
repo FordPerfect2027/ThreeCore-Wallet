@@ -1,0 +1,159 @@
+{
+  "schema": "threecore.live-candidate-rehearsal-return.v1",
+  "recordedAt": "2026-11-02T10:32:05.414Z",
+  "candidateSource": "f52109a3a5d25665667b19b811584e33da035d15",
+  "recordingSource": "3687bc035847f2c81b31aa9ebca62e6330de43ae",
+  "browser": "Microsoft Edge",
+  "simulationOnly": true,
+  "candidateOrigin": "http://127.0.0.1:4232",
+  "returnOrigin": "http://127.0.0.1:4231",
+  "workspace": [
+    {
+      "agent": "DAT",
+      "records": 3
+    },
+    {
+      "agent": "EMA",
+      "records": 2
+    },
+    {
+      "agent": "CAWELON",
+      "records": 1
+    }
+  ],
+  "cases": [
+    {
+      "id": "dat-limit-50",
+      "agent": "DAT"
+    },
+    {
+      "id": "dat-quota-5",
+      "agent": "DAT"
+    },
+    {
+      "id": "ema-opening-1001",
+      "agent": "EMA"
+    }
+  ],
+  "observedUi": {
+    "candidateOpenedThroughOrdinaryWalletLink": true,
+    "candidateInitiallyEmpty": true,
+    "candidateWorkspacePreviewAndRestoreConfirmed": true,
+    "candidateSessionPreviewAndRestoreConfirmed": true,
+    "returnOpenedAsSeparateEmptyTab": true,
+    "existingUserRehearsalTabsNotReloadedOrOverwritten": true,
+    "candidateExportSelectedThroughRealBrowserFileChooserOnReturn": true,
+    "returnPreviewAndRestoreConfirmed": true,
+    "restoredRecords": [
+      3,
+      2,
+      1
+    ],
+    "restoredCases": 3,
+    "actualCandidateAndReturnDownloadsFoundOnDisk": true
+  },
+  "integrity": {
+    "workspaceBytes": 4771,
+    "workspaceSha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302",
+    "candidateWorkspaceByteIdentical": true,
+    "sessionBytes": 17387,
+    "sessionSha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c",
+    "originalCandidateAndReturnSessionBytesIdentical": true,
+    "offlineSessionDecoderAndRecalculationPassed": true,
+    "privateEvidence": [
+      {
+        "filename": "ThreeCore-operation-workspace.json",
+        "bytes": 4771,
+        "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+      },
+      {
+        "filename": "ThreeCore-operation-workspace (22).json",
+        "bytes": 4771,
+        "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+      },
+      {
+        "filename": "ThreeCore-rehearsal-session (14).json",
+        "bytes": 17387,
+        "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c"
+      },
+      {
+        "filename": "ThreeCore-rehearsal-session (15).json",
+        "bytes": 17387,
+        "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c"
+      },
+      {
+        "filename": "ThreeCore-rehearsal-session (16).json",
+        "bytes": 17387,
+        "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c"
+      },
+      {
+        "filename": "rehearsal-candidate-preview.txt",
+        "bytes": 2922,
+        "sha256": "03f80ff381776a34d8d5d52c26d4793fa77ac68fc61d20bedb1743c7294563d5"
+      },
+      {
+        "filename": "rehearsal-candidate-restored.txt",
+        "bytes": 2544,
+        "sha256": "e7f787a2d02a3dd3c84b679f141dcfd08544414782f9d0c9f878eada3d599855"
+      },
+      {
+        "filename": "rehearsal-candidate-session-preview.txt",
+        "bytes": 2327,
+        "sha256": "6e9f56e4542ab49c4ef76dd306b315b5d4b884572693eeead5533be54d2a6938"
+      },
+      {
+        "filename": "rehearsal-candidate-session-restored.txt",
+        "bytes": 1233,
+        "sha256": "3a64dd2092f47392f25d1fef623e189296bb73dbe2983bdf07e0e32cbed53d1e"
+      },
+      {
+        "filename": "rehearsal-candidate-session.png",
+        "bytes": 31204,
+        "sha256": "cc291c221cd5eeb6ccce5d5c779fe0ab41d436018806edec381247d877542376"
+      },
+      {
+        "filename": "rehearsal-return-empty.txt",
+        "bytes": 914,
+        "sha256": "bbaa5298a8abb8a9a5e2182fc9e218711438932540ef530f953ebdf03a84ad5c"
+      },
+      {
+        "filename": "rehearsal-return-preview.txt",
+        "bytes": 2196,
+        "sha256": "02702007d191236cdd774c71ed672c0bc36df3653eb961f0bb567957e69e5f89"
+      },
+      {
+        "filename": "rehearsal-return-restored.txt",
+        "bytes": 1233,
+        "sha256": "03e72d17838ed6ff2e1c8cff08c231d6d622e3b3003a840275c3b334e0e0a42e"
+      },
+      {
+        "filename": "rehearsal-return-table.txt",
+        "bytes": 192,
+        "sha256": "562c4deae99e25447818b28ed080eef343f5398c9dd28fa9e3d19e6b9b128197"
+      },
+      {
+        "filename": "rehearsal-return-session.png",
+        "bytes": 34299,
+        "sha256": "eef64e66066f377ee3319df006c25e8a1aee4f6a648e4454fe43c024590db1cb"
+      }
+    ]
+  },
+  "scope": {
+    "rehearsalMigrationAndReturnCompleted": true,
+    "olderImmutableReleaseRollbackProven": false,
+    "originalServerPid": 2108,
+    "originalServerRestarted": false,
+    "candidateServerPid": 28252
+  },
+  "limitations": [
+    "These are six fictional simulation records and three comparison cases, not live assets or transactions.",
+    "Return used the preserved development server with current client files, not a pinned older public release.",
+    "UI observations were made through actual page controls; this script checks their saved file bytes, not the UI itself.",
+    "The supported browser file chooser was used; native Windows picker traversal was not exercised.",
+    "This does not establish live wallet switch-event invalidation, independent review, or a release percentage."
+  ],
+  "transactionsSigned": 0,
+  "transactionsSubmitted": 0,
+  "secretKeysRead": false,
+  "githubModified": false
+}

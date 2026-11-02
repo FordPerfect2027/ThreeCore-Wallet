@@ -223,6 +223,9 @@ percentage was calculated.
 
 ## Fixed-candidate restore on port 4232 — connection pending
 
+Historical intermediate state; the completed follow-up below supersedes its
+pending connection and return status. The original receipt is retained.
+
 The operator subsequently opened the separately started candidate on port 4232
 in the former Wallet tab. Its empty three-card state was observed before any
 import. The agent selected the actual `ThreeCore-workspace-backup (14).json`
@@ -259,3 +262,64 @@ pins candidate `f52109a`, identifies the preserved private evidence and records
 the incomplete connection/return steps. This is actual new-candidate restoration
 evidence, not completion of the entire migration gate. No application code,
 remote repository or permission boundary was changed for this sequence.
+
+## Fixed-candidate migration and return completed
+
+After the operator approved Account 2 for the candidate origin, the ordinary
+permitted-account probe returned that account on Base Sepolia (84532), with
+one permitted address. Each of DAT, EMA and CAWELON was explicitly connected.
+All three new portfolio reads completed at block **53,463,168**, block hash
+`0xd105046941a06d5a7cfb55d65dc3f678b78b8d457e9fd0ee52117358a1b92b75`.
+Contract code was present and the recorded token/native balances were zero.
+These are new port 4232 observations; the earlier port 4231 observations retain
+their original origins and blocks. Adding each result once produced two records
+per card, six overall, with no original observation changed.
+
+The actual candidate download, `ThreeCore-workspace-backup (16).json`, is
+7,237 bytes. Connections were stopped before navigating back to port 4231.
+That page was empty; data was explicitly restored through the real browser file
+chooser, checked preview and confirmation, not claimed to survive in memory.
+The in-page comparison matched settings, token lists and complete histories.
+`ThreeCore-workspace-backup (17).json` is byte-identical to `(16)`, SHA-256:
+
+`4fabece09fba893fc7339bb976eee752845db8bfa05a6e0411b747f32afc0fdb`
+
+The original origin's permitted-account probe returned Account 2 / Sepolia and
+two permitted addresses. All three cards explicitly reconnected. The
+[Wallet return receipt](evidence/2026-11-02-release-regression/live-candidate-wallet-return-summary.json)
+records the observed sequence and hashes of fifteen preserved private artifacts.
+
+The ordinary rehearsal link subsequently opened a fresh candidate rehearsal tab
+when activated with Enter. The earlier direct-navigation refusal was not bypassed
+and no origin guard changed. The real `ThreeCore-operation-workspace.json` was
+previewed and restored: DAT 3, EMA 2, CAWELON 1 fictional records. Its actual
+candidate re-export `(22)` is byte-identical, 4,771 bytes, SHA-256:
+
+`b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302`
+
+The existing combined `ThreeCore-rehearsal-session (14).json` then added its
+three saved comparison cases through preview and confirmation. Candidate export
+`(15)` was imported into a separate empty rehearsal tab at the original origin,
+again using the real file chooser and explicit confirmation. No old user
+rehearsal tab was reloaded or overwritten. The original, candidate and returned
+`(16)` session files are all byte-identical: **17,387 bytes**, SHA-256:
+
+`22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c`
+
+Both live displays recalculated the same fictional totals: DAT 28 SIM profit
+and 2.8 SIM reserved, EMA -42 SIM, CAWELON -1 SIM with one open position.
+The saved session also passed the existing decoder/recalculation. The
+[rehearsal return receipt](evidence/2026-11-02-release-regression/live-candidate-rehearsal-return-summary.json)
+and [saved-file checking method](evidence/2026-11-02-release-regression/live-candidate-rehearsal-record-method.mjs)
+identify fifteen private artifacts. The checker validates actual downloaded
+bytes; UI evidence comes from the observed page actions and saved screenshots.
+
+These steps close migration to the separately started fixed candidate `f52109a`
+and return to the preserved running development server for both Wallet and
+rehearsal. Original PID 2108 retained its October 30 start time; candidate PID
+28252 retained its November 2 start time. The return server serves current client
+files, so this is not rollback to a separately pinned older public release.
+Actual connected-wallet switch-event invalidation, native OS picker traversal,
+dependency disposition and independent review remain separate. No product code
+changed, full regression rerun, signature, transaction, key access or GitHub
+write was performed in this sequence. No release percentage was calculated.

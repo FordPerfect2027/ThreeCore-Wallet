@@ -142,15 +142,17 @@ Wallet guidance and Sepolia receipt. This source archive is separate from the
 older combined Wallet/token review package below.
 
 The [migration preparation receipt](evidence/2026-11-02-release-regression/candidate-f52109a-migration-preparation.json)
-records the preparation scope. The later [actual candidate restore](LIVE_ACCEPTANCE_2026-11-02.md#fixed-candidate-restore-on-port-4232--connection-pending)
-now restores all three cards into an empty candidate page and produces a
-byte-identical export. MetaMask permission, new live reads and return remain
-pending. Both the
-original PID 2108 / port 4231 and candidate PID 28252 / port 4232 were observed
-running. Native Windows browser control again stopped because it could not
-establish the current URL. Direct address-bar entry was the required
-operator step at that stage; the current request is the new origin's MetaMask
-connection confirmation. No browser protection was changed.
+records the preparation scope. The later [completed migration and return](LIVE_ACCEPTANCE_2026-11-02.md#fixed-candidate-migration-and-return-completed)
+now covers actual MetaMask permission, three new Sepolia reads, six retained
+Wallet records, explicit reconnection at the original origin, and byte-identical
+7,237-byte candidate/return exports. The rehearsal also restored six fictional
+records and three cases into the candidate and a new original-origin tab;
+all three 17,387-byte session files match exactly. Both original PID 2108 /
+port 4231 and candidate PID 28252 / port 4232 retained their recorded start times.
+This closes the scoped candidate migration/return exercise. Return used the
+preserved development server with current client files, not a separately pinned
+older public release. Actual account/chain-switch invalidation remains open.
+No browser protection was changed.
 
 The full distribution in Downloads is
 `ThreeCore-review-23d0a35-20261102.zip`:
@@ -218,7 +220,7 @@ Do not clear the user's database or reload their working tab to create a test.
 | Open item | Evidence needed to close it | Current limit |
 | --- | --- | --- |
 | Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet and Account 2/Sepolia sessions now passed. The operator changed context after the prior session stopped; live switch-event invalidation remains unobserved |
-| Complete candidate migration and return | Start the fixed candidate separately, restore actual saved files, reconnect and return to the preserved working version with records intact | Fresh source `f52109a` is running separately on port 4232. Actual empty-page restore and byte-identical export passed. The new origin has no observed Wallet permission yet; live reconnect/reads and return remain open |
+| Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files; a distinct older immutable public release was not exercised |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
 | Development dependency finding | Compatible remediation with applicable regression, or an explicit qualified release risk decision | One Zod root advisory remains; the forced patched major breaks an unchanged helper |
 | Independent review and release | Review the exact final scope, resolve findings, approve the deployment plan and release explicitly | No independent reviewer has completed or approved this candidate |
