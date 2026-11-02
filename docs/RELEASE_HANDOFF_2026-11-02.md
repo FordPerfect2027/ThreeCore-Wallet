@@ -10,9 +10,10 @@ reconnect and stop/history preservation. The earlier checkpoints below are
 retained history; account/chain switching, Sepolia, candidate migration and
 independent review remain open.
 
-The current [verified distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md) is
-16a0d33, with the later token fixes: 4523 Wallet source files, 253 manifests /
-2434 entries, fresh minimal runtimes and a successful restored DAT historical
+The latest [verified distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md) is
+23d0a35: 4,577 source files, 253 manifests / 2,483 evidence entries, 12 isolated
+startup/HTTP checks and a six-deployment offline replay from a fresh minimal
+runtime. The previous 16a0d33 package retained a successful DAT historical
 read. The earlier d904442 distribution discussed below is retained as history.
 The [bounded Zod exposure review](ZOD_EXPOSURE_2026-11-02.md) identifies the
 development surface without closing the advisory or independent-review gate.
