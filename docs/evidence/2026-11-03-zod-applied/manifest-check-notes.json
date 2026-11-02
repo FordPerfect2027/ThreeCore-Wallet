@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-11-02T19:28:12.280Z",
+  "firstAttempt": "Importing the evidence checker inside the generic Node REPL returned FILE_READ_FAILED for every entry; this was not a content-digest mismatch.",
+  "authoritativeMethod": "Run the existing checker as a standalone Node CLI, the normal supported path.",
+  "candidateCli": {
+    "exit": 0,
+    "files": 111,
+    "matched": 111,
+    "unreadable": 0
+  },
+  "appliedCliBeforeTheseTwoReceipts": {
+    "exit": 0,
+    "files": 76,
+    "matched": 76,
+    "unreadable": 0
+  },
+  "freshZipCli": {
+    "exit": 0,
+    "files": 6,
+    "matched": 6,
+    "unreadable": 0
+  },
+  "checkerCodeChanged": false
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "token": "DAT",
+    "isSymlink": false,
+    "realPath": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-toolchain-empty-data-DAT-20261102\\node_modules"
+  },
+  {
+    "token": "EMA",
+    "isSymlink": false,
+    "realPath": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-toolchain-empty-data-EMA-20261102\\node_modules"
+  },
+  {
+    "token": "CAWELON",
+    "isSymlink": false,
+    "realPath": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-toolchain-empty-data-CAWELON-20261102\\node_modules"
+  }
+]

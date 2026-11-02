@@ -1,0 +1,173 @@
+{
+  "recordedAt": "2026-11-02T18:26:51.873Z",
+  "helperVersion": "3.0.8",
+  "originalHelperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48",
+  "experimentalHelperSha256": "e14bdcd61fcb023a720e57dbbd2dd2f78e2c26c49cd1cb51a4be6ca18b71be9b",
+  "patch": "result.error.errors -> result.error.issues (isolated helper only)",
+  "cases": [
+    {
+      "profile": "baseline",
+      "version": "3.25.76",
+      "issuesAliasPatched": false,
+      "name": "nested invalid config retains structured path",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "baseline",
+      "version": "3.25.76",
+      "issuesAliasPatched": false,
+      "name": "Hardhat single-argument record accepts headers",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "baseline",
+      "version": "3.25.76",
+      "issuesAliasPatched": false,
+      "name": "Hardhat single-argument record rejects wrong value",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "baseline",
+      "version": "3.25.76",
+      "issuesAliasPatched": false,
+      "name": "resolved configuration variable accepts functions without invoking",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "baseline",
+      "version": "3.25.76",
+      "issuesAliasPatched": false,
+      "name": "resolved configuration variable reports invalid function",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "baseline",
+      "version": "3.25.76",
+      "issuesAliasPatched": false,
+      "name": "incompatible field retains deliberate diagnostic",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "baseline",
+      "version": "3.25.76",
+      "issuesAliasPatched": false,
+      "name": "ordinary configuration variable accepts fictional reference",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "baseline",
+      "version": "3.25.76",
+      "issuesAliasPatched": false,
+      "name": "conditional union retains nested error path",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "baseline",
+      "version": "3.25.76",
+      "issuesAliasPatched": false,
+      "name": "sensitive URL rejects invalid fictional value",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "candidate",
+      "version": "4.6.6",
+      "issuesAliasPatched": true,
+      "name": "nested invalid config retains structured path",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "candidate",
+      "version": "4.6.6",
+      "issuesAliasPatched": true,
+      "name": "Hardhat single-argument record accepts headers",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "candidate",
+      "version": "4.6.6",
+      "issuesAliasPatched": true,
+      "name": "Hardhat single-argument record rejects wrong value",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "candidate",
+      "version": "4.6.6",
+      "issuesAliasPatched": true,
+      "name": "resolved configuration variable accepts functions without invoking",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "candidate",
+      "version": "4.6.6",
+      "issuesAliasPatched": true,
+      "name": "resolved configuration variable reports invalid function",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "candidate",
+      "version": "4.6.6",
+      "issuesAliasPatched": true,
+      "name": "incompatible field retains deliberate diagnostic",
+      "pass": false,
+      "failureType": "AssertionError"
+    },
+    {
+      "profile": "candidate",
+      "version": "4.6.6",
+      "issuesAliasPatched": true,
+      "name": "ordinary configuration variable accepts fictional reference",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "candidate",
+      "version": "4.6.6",
+      "issuesAliasPatched": true,
+      "name": "conditional union retains nested error path",
+      "pass": true,
+      "failureType": null
+    },
+    {
+      "profile": "candidate",
+      "version": "4.6.6",
+      "issuesAliasPatched": true,
+      "name": "sensitive URL rejects invalid fictional value",
+      "pass": true,
+      "failureType": null
+    }
+  ],
+  "counts": [
+    {
+      "profile": "baseline",
+      "passed": 9,
+      "failed": 0
+    },
+    {
+      "profile": "candidate",
+      "passed": 8,
+      "failed": 1
+    }
+  ],
+  "installedProjectHelperUnchanged": true,
+  "projectDependenciesChanged": false,
+  "newDependencyInstall": false,
+  "configurationOrKeystoreLoaded": false,
+  "fictionalFunctionsInvoked": 0,
+  "walletOrNetworkUsed": false,
+  "remediationAccepted": false,
+  "advisoryClosed": false
+}

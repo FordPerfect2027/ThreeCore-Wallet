@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: toolchain preserves empty RPC data separately from a zero byte
+ok 1 - toolchain preserves empty RPC data separately from a zero byte
+  ---
+  duration_ms: 11.2925
+  type: 'test'
+  ...
+# Subtest: toolchain rejects malformed RPC data without repairing it into bytes
+ok 2 - toolchain rejects malformed RPC data without repairing it into bytes
+  ---
+  duration_ms: 1.2203
+  type: 'test'
+  ...
+# Subtest: toolchain accepts a valid fictional configuration without loading Hardhat settings
+ok 3 - toolchain accepts a valid fictional configuration without loading Hardhat settings
+  ---
+  duration_ms: 22.819
+  type: 'test'
+  ...
+# Subtest: toolchain reports a nested invalid field as a structured error rather than throwing
+ok 4 - toolchain reports a nested invalid field as a structured error rather than throwing
+  ---
+  duration_ms: 6.3882
+  type: 'test'
+  ...
+# Subtest: migrated helper keeps ordinary path segments and represents symbol labels explicitly
+ok 5 - migrated helper keeps ordinary path segments and represents symbol labels explicitly
+  ---
+  duration_ms: 19.4905
+  type: 'test'
+  ...
+# Subtest: migrated conditional union retains strict-object failure
+ok 6 - migrated conditional union retains strict-object failure
+  ---
+  duration_ms: 21.6092
+  type: 'test'
+  ...
+# Subtest: migrated union accepts members and rejects nonmembers
+ok 7 - migrated union accepts members and rejects nonmembers
+  ---
+  duration_ms: 3.1573
+  type: 'test'
+  ...
+# Subtest: oversized bounded array fails before element validation
+ok 8 - oversized bounded array fails before element validation
+  ---
+  duration_ms: 8.1255
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2886.0267

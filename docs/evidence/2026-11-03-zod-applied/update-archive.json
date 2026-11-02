@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-11-02T19:28:12.277Z",
+  "file": "C:/Users/aseet/Downloads/ThreeCore-zod4-update-20261103.zip",
+  "bytes": 63565,
+  "sha256": "806e41a29d0e9679ccad08c290c537af824e9fa9fdefdf99647eaf1f829985e1",
+  "freshExtractionVerification": {
+    "allMatched": true,
+    "summary": {
+      "files": 6,
+      "matched": 6,
+      "mismatched": 0,
+      "unreadable": 0,
+      "verifiedBytes": 98561,
+      "admittedBytes": 98561
+    }
+  },
+  "containsFinalAppliedPatches": true
+}

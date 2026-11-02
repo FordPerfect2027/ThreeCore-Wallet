@@ -1,0 +1,24 @@
+{
+  "applyPlan": [
+    {
+      "token": "DAT",
+      "target": "C:/Users/aseet/AppData/Local/Temp/threecore-zod4-review-application-20261103/DAT",
+      "sourceCommit": "ada78f5ecbd8654860d818b774ef31beb6f0b871",
+      "originalConfigSha256": "8ac5d06bdd3a188e51d792ea7d9ff48d55798bccb3aaebffe7ab3c24e750b887"
+    },
+    {
+      "token": "EMA",
+      "target": "C:/Users/aseet/AppData/Local/Temp/threecore-zod4-review-application-20261103/EMA",
+      "sourceCommit": "c4765efe92857e7060c0efaa44b271c67d8d68c3",
+      "originalConfigSha256": "bf01e68894a88091a9fd09617d2d5034d443ff74a4fcd4d32ce97054ff16e38b"
+    },
+    {
+      "token": "CAWELON",
+      "target": "C:/Users/aseet/AppData/Local/Temp/threecore-zod4-review-application-20261103/CAWELON",
+      "sourceCommit": "a94d61be77c0c14109910879cdd6a7f377176101",
+      "originalConfigSha256": "bf01e68894a88091a9fd09617d2d5034d443ff74a4fcd4d32ce97054ff16e38b"
+    }
+  ],
+  "originalRepositoriesChanged": false,
+  "profile": "CI true and task-owned appdata; compile/type/schema only; no network provider created"
+}

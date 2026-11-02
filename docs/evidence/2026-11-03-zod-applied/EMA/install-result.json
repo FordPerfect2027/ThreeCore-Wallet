@@ -1,0 +1,11 @@
+{
+  "steps": [
+    {
+      "name": "install",
+      "startedAt": "2026-11-02T19:12:11.481Z",
+      "endedAt": "2026-11-02T19:12:26.246Z",
+      "code": 4294963248,
+      "signal": null
+    }
+  ]
+}

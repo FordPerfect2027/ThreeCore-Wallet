@@ -1,0 +1,22 @@
+src/index.ts(41,29): error TS2339: Property 'safeParse' does not exist on type 'SomeType'.
+src/index.ts(103,22): error TS2345: Argument of type '$ZodIssue' is not assignable to parameter of type 'string | { [x: string]: unknown; readonly keys: string[]; readonly input?: Record<string, unknown> | undefined; readonly code: "unrecognized_keys"; readonly message?: string | undefined; readonly path?: PropertyKey[] | undefined; readonly inst?: $ZodType<...> | ... 1 more ... | undefined; readonly continue?: boolean...'.
+  Type '$ZodIssueUnrecognizedKeys' is not assignable to type 'string | { [x: string]: unknown; readonly keys: string[]; readonly input?: Record<string, unknown> | undefined; readonly code: "unrecognized_keys"; readonly message?: string | undefined; readonly path?: PropertyKey[] | undefined; readonly inst?: $ZodType<...> | ... 1 more ... | undefined; readonly continue?: boolean...'.
+    Type '$ZodIssueUnrecognizedKeys' is not assignable to type '{ [x: string]: unknown; readonly keys: string[]; readonly input?: Record<string, unknown> | undefined; readonly code: "unrecognized_keys"; readonly message?: string | undefined; readonly path?: PropertyKey[] | undefined; readonly inst?: $ZodType<...> | ... 1 more ... | undefined; readonly continue?: boolean | undefi...'.
+      Index signature for type 'string' is missing in type '$ZodIssueUnrecognizedKeys'.
+src/index.ts(214,5): error TS2322: Type '{ path: PropertyKey[]; message: string; }[]' is not assignable to type 'HardhatUserConfigValidationError[]'.
+  Type '{ path: PropertyKey[]; message: string; }' is not assignable to type 'HardhatUserConfigValidationError'.
+    Types of property 'path' are incompatible.
+      Type 'PropertyKey[]' is not assignable to type '(string | number)[]'.
+        Type 'PropertyKey' is not assignable to type 'string | number'.
+          Type 'symbol' is not assignable to type 'string | number'.
+src/rpc/types/address.ts(14,17): error TS2591: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/rpc/types/address.ts(14,42): error TS18046: 'data' is of type 'unknown'.
+src/rpc/types/data.ts(12,6): error TS2591: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/rpc/types/hash.ts(14,17): error TS2591: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/rpc/types/hash.ts(14,42): error TS18046: 'data' is of type 'unknown'.
+src/rpc/types/hash.ts(21,27): error TS2591: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/rpc/types/rpc-parity.ts(10,33): error TS2591: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/rpc/types/rpc-parity.ts(13,17): error TS2591: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+src/rpc/types/rpc-parity.ts(13,42): error TS18046: 'data' is of type 'unknown'.
+src/rpc/types/rpc-parity.ts(20,27): error TS2591: Cannot find name 'Buffer'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+../node_modules/@nomicfoundation/hardhat-utils/dist/src/error.d.ts(71,91): error TS2503: Cannot find namespace 'NodeJS'.

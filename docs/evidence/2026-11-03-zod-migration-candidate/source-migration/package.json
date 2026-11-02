@@ -1,0 +1,49 @@
+{
+  "name": "@nomicfoundation/hardhat-zod-utils",
+  "version": "3.0.8-threecore-zod4.1",
+  "description": "Experimental ThreeCore migration of Hardhat Zod utilities to Zod 4; not an upstream release",
+  "homepage": "https://github.com/NomicFoundation/hardhat/tree/main/packages/hardhat-zod-utils",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NomicFoundation/hardhat",
+    "directory": "packages/hardhat-zod-utils"
+  },
+  "author": "Nomic Foundation",
+  "license": "MIT",
+  "type": "module",
+  "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": "./dist/src/index.js",
+    "./rpc": "./dist/src/rpc/index.js",
+    "./package.json": "./package.json"
+  },
+  "keywords": [
+    "ethereum",
+    "smart-contracts",
+    "hardhat"
+  ],
+  "files": [
+    "src/",
+    "dist/src/",
+    "LICENSE",
+    "README.md",
+    "THREECORE-MIGRATION.md",
+    "tsconfig.json"
+  ],
+  "devDependencies": {
+    "@types/node": "22.8.5",
+    "typescript": "6.0.3",
+    "zod": "4.6.6"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-errors": "^3.0.13",
+    "@nomicfoundation/hardhat-utils": "^5.0.0"
+  },
+  "peerDependencies": {
+    "zod": "4.6.6"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "private": true
+}

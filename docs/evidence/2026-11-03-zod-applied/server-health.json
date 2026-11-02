@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-11-02T19:25:36.215Z",
+  "results": [
+    {
+      "port": 4231,
+      "status": 200,
+      "walletTitle": true,
+      "sha256": "4a763e42abd894831290ee2cacfcf757be989f84aca71fca4762672bdf97f408"
+    },
+    {
+      "port": 4232,
+      "status": 200,
+      "walletTitle": true,
+      "sha256": "4a763e42abd894831290ee2cacfcf757be989f84aca71fca4762672bdf97f408"
+    },
+    {
+      "port": 4233,
+      "status": 200,
+      "walletTitle": true,
+      "sha256": "4a763e42abd894831290ee2cacfcf757be989f84aca71fca4762672bdf97f408"
+    }
+  ]
+}

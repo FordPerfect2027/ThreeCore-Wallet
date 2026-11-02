@@ -31,5 +31,10 @@ The user requested this operating method on November 3, 2026 (Japan time).
   and download waits, so a timeout cannot reset the control session. A download
   timeout is not proof of a missing file: check actual saved bytes before retrying.
 - Do not spawn sub-agents unless the user explicitly authorizes delegation.
+- Before reinstalling dependencies, inspect each `node_modules` path with lstat
+  and realpath. Earlier token checkouts shared DAT's directory through junctions.
+  Do not run npm ci against shared targets concurrently. Prepare independent
+  directories first, verify any junction target before unlinking only the link,
+  and check the installed dependency graph after installation.
 
 Current review status starts at `docs/RELEASE_HANDOFF_2026-11-02.md`.

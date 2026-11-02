@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-11-02T18:55:51.681Z",
+  "changes": [
+    {
+      "path": "node_modules/@nomicfoundation/hardhat-zod-utils",
+      "before": {
+        "version": "3.0.8",
+        "integrity": "sha512-BMg06ZY7HxfOW1FoUKlSs1QmYmqxPHRsihxl3DeRSiFO0UUDVPrVoVhlWRKUB99LGSVLDF+97wGfIlI49tKTYg=="
+      },
+      "after": {
+        "version": "3.0.8-threecore-zod4.1",
+        "integrity": "sha512-IAOiXFGMOLqMkkNYeAo23o6U3zXM62IOre7IV2zd6TLIrLF7MemG2+Gm3D6hlG69TUuPzgBp4iuI+6HTKels0w=="
+      }
+    },
+    {
+      "path": "node_modules/zod",
+      "before": {
+        "version": "3.25.76",
+        "integrity": "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="
+      },
+      "after": {
+        "version": "4.6.6",
+        "integrity": "sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA=="
+      }
+    }
+  ]
+}

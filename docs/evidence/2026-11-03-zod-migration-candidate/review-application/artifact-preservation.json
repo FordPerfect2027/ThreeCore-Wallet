@@ -1,0 +1,29 @@
+[
+  {
+    "token": "DAT",
+    "abiEqual": true,
+    "creationBytecodeEqual": true,
+    "runtimeBytecodeEqual": true,
+    "configMatchesOriginal": true,
+    "originalGitClean": true,
+    "originalHelperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48"
+  },
+  {
+    "token": "EMA",
+    "abiEqual": true,
+    "creationBytecodeEqual": true,
+    "runtimeBytecodeEqual": true,
+    "configMatchesOriginal": true,
+    "originalGitClean": true,
+    "originalHelperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48"
+  },
+  {
+    "token": "CAWELON",
+    "abiEqual": true,
+    "creationBytecodeEqual": true,
+    "runtimeBytecodeEqual": true,
+    "configMatchesOriginal": true,
+    "originalGitClean": true,
+    "originalHelperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48"
+  }
+]

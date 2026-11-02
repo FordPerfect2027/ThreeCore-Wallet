@@ -1,0 +1,30 @@
+{
+  "recordedAt": "2026-11-02T18:39:51.470Z",
+  "configuration": "minimal isolated compile fixture, no original config or plugins",
+  "artifacts": [
+    {
+      "token": "DAT",
+      "abiEqual": true,
+      "creationBytecodeEqual": true,
+      "runtimeBytecodeEqual": true,
+      "creationSha256": "020b75b4c2d6eb1a0c5ed4fff5ca20e6d951b427d1e007e5495c79a900f2a47e",
+      "runtimeSha256": "ef220d542d00ffc51e662dc60b1387d95f17afbe7d1f8a917444398a2008b1ba"
+    },
+    {
+      "token": "EMA",
+      "abiEqual": true,
+      "creationBytecodeEqual": true,
+      "runtimeBytecodeEqual": true,
+      "creationSha256": "682f3f86499820ba17e35112ac9e92f9f4712177bcf685a41230d2c6253b7ed1",
+      "runtimeSha256": "bd159fe5dc1c45a8e94494b52e5b26d20028c13a54fd39ce31a3b4c3592ee8a1"
+    },
+    {
+      "token": "CAWELON",
+      "abiEqual": true,
+      "creationBytecodeEqual": true,
+      "runtimeBytecodeEqual": true,
+      "creationSha256": "7062666990f900e167dd1ac72a8279b58dd911e3e91ed3832cf17af172db959a",
+      "runtimeSha256": "0f5370d0d395d44281c8c9f6db808ef755d4887d0d206bffe2a01af5ea697f40"
+    }
+  ]
+}

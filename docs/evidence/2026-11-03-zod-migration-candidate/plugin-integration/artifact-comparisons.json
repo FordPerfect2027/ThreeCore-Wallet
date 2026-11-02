@@ -1,0 +1,20 @@
+[
+  {
+    "token": "DAT",
+    "abiEqual": true,
+    "creationBytecodeEqual": true,
+    "runtimeBytecodeEqual": true
+  },
+  {
+    "token": "EMA",
+    "abiEqual": true,
+    "creationBytecodeEqual": true,
+    "runtimeBytecodeEqual": true
+  },
+  {
+    "token": "CAWELON",
+    "abiEqual": true,
+    "creationBytecodeEqual": true,
+    "runtimeBytecodeEqual": true
+  }
+]

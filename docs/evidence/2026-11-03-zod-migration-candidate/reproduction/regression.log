@@ -1,0 +1,16 @@
+✔ migrated helper keeps ordinary path segments and represents symbol labels explicitly (11.1652ms)
+✔ migrated conditional union retains strict-object failure (17.4004ms)
+✔ migrated union accepts members and rejects nonmembers (11.0764ms)
+✔ oversized bounded array fails before element validation (4.4935ms)
+✔ toolchain preserves empty RPC data separately from a zero byte (8.0252ms)
+✔ toolchain rejects malformed RPC data without repairing it into bytes (1.1622ms)
+✔ toolchain accepts a valid fictional configuration without loading Hardhat settings (14.6031ms)
+✔ toolchain reports a nested invalid field as a structured error rather than throwing (4.3637ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2052.0588

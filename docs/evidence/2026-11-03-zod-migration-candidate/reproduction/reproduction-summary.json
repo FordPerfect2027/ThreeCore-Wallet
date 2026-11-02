@@ -1,0 +1,41 @@
+{
+  "recordedAt": "2026-11-02T18:51:54.918Z",
+  "artifactComparisons": [
+    {
+      "token": "DAT",
+      "abiEqual": true,
+      "creationBytecodeEqual": true,
+      "runtimeBytecodeEqual": true
+    },
+    {
+      "token": "EMA",
+      "abiEqual": true,
+      "creationBytecodeEqual": true,
+      "runtimeBytecodeEqual": true
+    },
+    {
+      "token": "CAWELON",
+      "abiEqual": true,
+      "creationBytecodeEqual": true,
+      "runtimeBytecodeEqual": true
+    }
+  ],
+  "resolutions": [
+    {
+      "path": "node_modules/@nomicfoundation/hardhat-zod-utils",
+      "version": "3.0.8-threecore-zod4.1",
+      "integrity": "sha512-IAOiXFGMOLqMkkNYeAo23o6U3zXM62IOre7IV2zd6TLIrLF7MemG2+Gm3D6hlG69TUuPzgBp4iuI+6HTKels0w=="
+    },
+    {
+      "path": "node_modules/zod",
+      "version": "4.6.6",
+      "integrity": "sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA=="
+    }
+  ],
+  "tarballSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+  "installedHelperSha256": "79e75336c8277f1d8d0a48b007e569f1a313c516260b7067c80db3c2a76bb52f",
+  "regressionEvidence": "regression.log; eight tests passed; prior command exit not retained by observer",
+  "typeAndProbeEvidence": "verification-result.json",
+  "sourcePatchedAfterInstall": false,
+  "adoptedInOriginalProjects": false
+}

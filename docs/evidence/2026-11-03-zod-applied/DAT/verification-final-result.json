@@ -1,0 +1,37 @@
+{
+  "steps": [
+    {
+      "name": "schema-final",
+      "startedAt": "2026-11-02T19:21:13.206Z",
+      "endedAt": "2026-11-02T19:21:16.873Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "name": "compile-final",
+      "startedAt": "2026-11-02T19:21:16.900Z",
+      "endedAt": "2026-11-02T19:21:32.378Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "name": "types-final",
+      "startedAt": "2026-11-02T19:21:32.380Z",
+      "endedAt": "2026-11-02T19:21:54.375Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "name": "audit-final",
+      "startedAt": "2026-11-02T19:21:54.381Z",
+      "endedAt": "2026-11-02T19:21:57.643Z",
+      "code": 0,
+      "signal": null
+    }
+  ],
+  "CI": true,
+  "keystoreLookupDisabled": true,
+  "signatures": false,
+  "transactions": false,
+  "originalConfigUsed": true
+}

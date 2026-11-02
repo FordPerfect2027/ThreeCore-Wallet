@@ -1,0 +1,771 @@
+{
+  "version": "0.1.0",
+  "name": "@0628dao/datcore",
+  "dependencies": {
+    "@nomicfoundation/hardhat-keystore": {
+      "version": "3.1.2",
+      "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-keystore/-/hardhat-keystore-3.1.2.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@noble/ciphers": {
+          "version": "2.4.0",
+          "resolved": "https://registry.npmjs.org/@noble/ciphers/-/ciphers-2.4.0.tgz",
+          "overridden": false
+        },
+        "@noble/hashes": {
+          "version": "2.4.0",
+          "resolved": "https://registry.npmjs.org/@noble/hashes/-/hashes-2.4.0.tgz",
+          "overridden": false
+        },
+        "@nomicfoundation/hardhat-errors": {
+          "version": "3.1.4",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-errors/-/hardhat-errors-3.1.4.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@nomicfoundation/hardhat-utils": {
+              "version": "5.1.1"
+            }
+          }
+        },
+        "@nomicfoundation/hardhat-utils": {
+          "version": "5.1.1",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-5.1.1.tgz",
+          "overridden": true,
+          "dependencies": {
+            "@streamparser/json-node": {
+              "version": "0.0.26",
+              "resolved": "https://registry.npmjs.org/@streamparser/json-node/-/json-node-0.0.26.tgz",
+              "overridden": false,
+              "dependencies": {
+                "@streamparser/json": {
+                  "version": "0.0.26",
+                  "resolved": "https://registry.npmjs.org/@streamparser/json/-/json-0.0.26.tgz",
+                  "overridden": false
+                }
+              }
+            },
+            "env-paths": {
+              "version": "4.0.0",
+              "resolved": "https://registry.npmjs.org/env-paths/-/env-paths-4.0.0.tgz",
+              "overridden": false,
+              "dependencies": {
+                "is-safe-filename": {
+                  "version": "0.1.1",
+                  "resolved": "https://registry.npmjs.org/is-safe-filename/-/is-safe-filename-0.1.1.tgz",
+                  "overridden": false
+                }
+              }
+            },
+            "ethereum-cryptography": {
+              "version": "3.2.0"
+            },
+            "fast-equals": {
+              "version": "6.0.3",
+              "resolved": "https://registry.npmjs.org/fast-equals/-/fast-equals-6.0.3.tgz",
+              "overridden": false
+            },
+            "json-stream-stringify": {
+              "version": "3.1.7",
+              "resolved": "https://registry.npmjs.org/json-stream-stringify/-/json-stream-stringify-3.1.7.tgz",
+              "overridden": false
+            },
+            "micro-eth-signer": {
+              "version": "0.19.0"
+            },
+            "rfdc": {
+              "version": "1.4.1",
+              "resolved": "https://registry.npmjs.org/rfdc/-/rfdc-1.4.1.tgz",
+              "overridden": false
+            },
+            "undici": {
+              "version": "7.30.1",
+              "resolved": "https://registry.npmjs.org/undici/-/undici-7.30.1.tgz",
+              "overridden": true
+            }
+          }
+        },
+        "@nomicfoundation/hardhat-zod-utils": {
+          "version": "3.0.8-threecore-zod4.1"
+        },
+        "hardhat": {
+          "version": "3.21.2"
+        },
+        "zod": {
+          "version": "4.6.6"
+        }
+      }
+    },
+    "@nomicfoundation/hardhat-node-test-runner": {
+      "version": "3.1.2",
+      "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-runner/-/hardhat-node-test-runner-3.1.2.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@nomicfoundation/hardhat-errors": {
+          "version": "3.1.4"
+        },
+        "@nomicfoundation/hardhat-node-test-reporter": {
+          "version": "3.1.1",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-reporter/-/hardhat-node-test-reporter-3.1.1.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@actions/core": {
+              "version": "3.0.1",
+              "resolved": "https://registry.npmjs.org/@actions/core/-/core-3.0.1.tgz",
+              "overridden": false,
+              "dependencies": {
+                "@actions/exec": {
+                  "version": "3.0.0",
+                  "resolved": "https://registry.npmjs.org/@actions/exec/-/exec-3.0.0.tgz",
+                  "overridden": false,
+                  "dependencies": {
+                    "@actions/io": {
+                      "version": "3.0.2",
+                      "resolved": "https://registry.npmjs.org/@actions/io/-/io-3.0.2.tgz",
+                      "overridden": false
+                    }
+                  }
+                },
+                "@actions/http-client": {
+                  "version": "4.0.1",
+                  "resolved": "https://registry.npmjs.org/@actions/http-client/-/http-client-4.0.1.tgz",
+                  "overridden": false,
+                  "dependencies": {
+                    "tunnel": {
+                      "version": "0.0.6",
+                      "resolved": "https://registry.npmjs.org/tunnel/-/tunnel-0.0.6.tgz",
+                      "overridden": false
+                    },
+                    "undici": {
+                      "version": "6.29.1",
+                      "resolved": "https://registry.npmjs.org/undici/-/undici-6.29.1.tgz",
+                      "overridden": true
+                    }
+                  }
+                }
+              }
+            },
+            "jest-diff": {
+              "version": "30.5.1",
+              "resolved": "https://registry.npmjs.org/jest-diff/-/jest-diff-30.5.1.tgz",
+              "overridden": false,
+              "dependencies": {
+                "@jest/diff-sequences": {
+                  "version": "30.5.0",
+                  "resolved": "https://registry.npmjs.org/@jest/diff-sequences/-/diff-sequences-30.5.0.tgz",
+                  "overridden": false
+                },
+                "@jest/get-type": {
+                  "version": "30.5.0",
+                  "resolved": "https://registry.npmjs.org/@jest/get-type/-/get-type-30.5.0.tgz",
+                  "overridden": false
+                },
+                "chalk": {
+                  "version": "4.1.2",
+                  "resolved": "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz",
+                  "overridden": false,
+                  "dependencies": {
+                    "ansi-styles": {
+                      "version": "4.3.0",
+                      "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz",
+                      "overridden": false,
+                      "dependencies": {
+                        "color-convert": {
+                          "version": "2.0.1",
+                          "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz",
+                          "overridden": false,
+                          "dependencies": {
+                            "color-name": {
+                              "version": "1.1.4",
+                              "resolved": "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz",
+                              "overridden": false
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "supports-color": {
+                      "version": "7.2.0",
+                      "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz",
+                      "overridden": false,
+                      "dependencies": {
+                        "has-flag": {
+                          "version": "4.0.0",
+                          "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz",
+                          "overridden": false
+                        }
+                      }
+                    }
+                  }
+                },
+                "pretty-format": {
+                  "version": "30.5.1",
+                  "resolved": "https://registry.npmjs.org/pretty-format/-/pretty-format-30.5.1.tgz",
+                  "overridden": false,
+                  "dependencies": {
+                    "@jest/react-is-18": {
+                      "version": "18.3.1",
+                      "resolved": "https://registry.npmjs.org/react-is/-/react-is-18.3.1.tgz",
+                      "overridden": false
+                    },
+                    "@jest/react-is-19": {
+                      "version": "19.3.0",
+                      "resolved": "https://registry.npmjs.org/react-is/-/react-is-19.3.0.tgz",
+                      "overridden": false
+                    },
+                    "@jest/schemas": {
+                      "version": "30.5.0",
+                      "resolved": "https://registry.npmjs.org/@jest/schemas/-/schemas-30.5.0.tgz",
+                      "overridden": false,
+                      "dependencies": {
+                        "@sinclair/typebox": {
+                          "version": "0.34.52",
+                          "resolved": "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.34.52.tgz",
+                          "overridden": false
+                        }
+                      }
+                    },
+                    "ansi-styles": {
+                      "version": "5.2.0",
+                      "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-5.2.0.tgz",
+                      "overridden": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "@nomicfoundation/hardhat-utils": {
+          "version": "5.1.1"
+        },
+        "@nomicfoundation/hardhat-zod-utils": {
+          "version": "3.0.8-threecore-zod4.1"
+        },
+        "hardhat": {
+          "version": "3.21.2"
+        },
+        "zod": {
+          "version": "4.6.6"
+        }
+      }
+    },
+    "@nomicfoundation/hardhat-viem": {
+      "version": "3.1.0",
+      "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-viem/-/hardhat-viem-3.1.0.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@nomicfoundation/hardhat-errors": {
+          "version": "3.1.4"
+        },
+        "@nomicfoundation/hardhat-utils": {
+          "version": "5.1.1"
+        },
+        "hardhat": {
+          "version": "3.21.2"
+        },
+        "viem": {
+          "version": "2.56.6"
+        }
+      }
+    },
+    "@nomicfoundation/hardhat-zod-utils": {
+      "version": "3.0.8-threecore-zod4.1",
+      "resolved": "file:C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-toolchain-empty-data-DAT-20261102\\vendor\\helper.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@nomicfoundation/hardhat-errors": {
+          "version": "3.1.4"
+        },
+        "@nomicfoundation/hardhat-utils": {
+          "version": "5.1.1"
+        },
+        "zod": {
+          "version": "4.6.6"
+        }
+      }
+    },
+    "@openzeppelin/contracts": {
+      "version": "5.6.1",
+      "resolved": "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-5.6.1.tgz",
+      "overridden": false
+    },
+    "@types/node": {
+      "version": "22.8.5",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-22.8.5.tgz",
+      "overridden": false,
+      "dependencies": {
+        "undici-types": {
+          "version": "6.19.8",
+          "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-6.19.8.tgz",
+          "overridden": false
+        }
+      }
+    },
+    "hardhat": {
+      "version": "3.21.2",
+      "resolved": "https://registry.npmjs.org/hardhat/-/hardhat-3.21.2.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@nomicfoundation/edr": {
+          "version": "0.25.0",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/edr/-/edr-0.25.0.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@nomicfoundation/edr-darwin-arm64": {},
+            "@nomicfoundation/edr-darwin-x64": {},
+            "@nomicfoundation/edr-linux-arm64-gnu": {},
+            "@nomicfoundation/edr-linux-arm64-musl": {},
+            "@nomicfoundation/edr-linux-x64-gnu": {},
+            "@nomicfoundation/edr-linux-x64-musl": {},
+            "@nomicfoundation/edr-win32-x64-msvc": {
+              "version": "0.25.0",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/edr-win32-x64-msvc/-/edr-win32-x64-msvc-0.25.0.tgz",
+              "overridden": false
+            }
+          }
+        },
+        "@nomicfoundation/hardhat-errors": {
+          "version": "3.1.4"
+        },
+        "@nomicfoundation/hardhat-utils": {
+          "version": "5.1.1"
+        },
+        "@nomicfoundation/hardhat-vendored": {
+          "version": "3.0.4",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-vendored/-/hardhat-vendored-3.0.4.tgz",
+          "overridden": false
+        },
+        "@nomicfoundation/hardhat-zod-utils": {
+          "version": "3.0.8-threecore-zod4.1"
+        },
+        "@nomicfoundation/solidity-analyzer": {
+          "version": "0.1.2",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/solidity-analyzer/-/solidity-analyzer-0.1.2.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@nomicfoundation/solidity-analyzer-darwin-arm64": {
+              "version": "0.1.2",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/solidity-analyzer-darwin-arm64/-/solidity-analyzer-darwin-arm64-0.1.2.tgz",
+              "overridden": false
+            },
+            "@nomicfoundation/solidity-analyzer-darwin-x64": {
+              "version": "0.1.2",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/solidity-analyzer-darwin-x64/-/solidity-analyzer-darwin-x64-0.1.2.tgz",
+              "overridden": false
+            },
+            "@nomicfoundation/solidity-analyzer-linux-arm64-gnu": {
+              "version": "0.1.2",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/solidity-analyzer-linux-arm64-gnu/-/solidity-analyzer-linux-arm64-gnu-0.1.2.tgz",
+              "overridden": false
+            },
+            "@nomicfoundation/solidity-analyzer-linux-arm64-musl": {
+              "version": "0.1.2",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/solidity-analyzer-linux-arm64-musl/-/solidity-analyzer-linux-arm64-musl-0.1.2.tgz",
+              "overridden": false
+            },
+            "@nomicfoundation/solidity-analyzer-linux-x64-gnu": {
+              "version": "0.1.2",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/solidity-analyzer-linux-x64-gnu/-/solidity-analyzer-linux-x64-gnu-0.1.2.tgz",
+              "overridden": false
+            },
+            "@nomicfoundation/solidity-analyzer-linux-x64-musl": {
+              "version": "0.1.2",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/solidity-analyzer-linux-x64-musl/-/solidity-analyzer-linux-x64-musl-0.1.2.tgz",
+              "overridden": false
+            },
+            "@nomicfoundation/solidity-analyzer-win32-x64-msvc": {
+              "version": "0.1.2",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/solidity-analyzer-win32-x64-msvc/-/solidity-analyzer-win32-x64-msvc-0.1.2.tgz",
+              "overridden": false
+            }
+          }
+        },
+        "@sentry/core": {
+          "version": "9.47.1",
+          "resolved": "https://registry.npmjs.org/@sentry/core/-/core-9.47.1.tgz",
+          "overridden": false
+        },
+        "adm-zip": {
+          "version": "0.6.1",
+          "resolved": "https://registry.npmjs.org/adm-zip/-/adm-zip-0.6.1.tgz",
+          "overridden": false
+        },
+        "chokidar": {
+          "version": "5.0.0",
+          "resolved": "https://registry.npmjs.org/chokidar/-/chokidar-5.0.0.tgz",
+          "overridden": false,
+          "dependencies": {
+            "readdirp": {
+              "version": "5.1.1",
+              "resolved": "https://registry.npmjs.org/readdirp/-/readdirp-5.1.1.tgz",
+              "overridden": false
+            }
+          }
+        },
+        "enquirer": {
+          "version": "2.4.1",
+          "resolved": "https://registry.npmjs.org/enquirer/-/enquirer-2.4.1.tgz",
+          "overridden": false,
+          "dependencies": {
+            "ansi-colors": {
+              "version": "4.1.3",
+              "resolved": "https://registry.npmjs.org/ansi-colors/-/ansi-colors-4.1.3.tgz",
+              "overridden": false
+            },
+            "strip-ansi": {
+              "version": "6.0.1",
+              "resolved": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz",
+              "overridden": false,
+              "dependencies": {
+                "ansi-regex": {
+                  "version": "5.0.1",
+                  "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz",
+                  "overridden": false
+                }
+              }
+            }
+          }
+        },
+        "ethereum-cryptography": {
+          "version": "3.2.0",
+          "resolved": "https://registry.npmjs.org/ethereum-cryptography/-/ethereum-cryptography-3.2.0.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@noble/ciphers": {
+              "version": "1.3.0",
+              "resolved": "https://registry.npmjs.org/@noble/ciphers/-/ciphers-1.3.0.tgz",
+              "overridden": false
+            },
+            "@noble/curves": {
+              "version": "1.9.0",
+              "resolved": "https://registry.npmjs.org/@noble/curves/-/curves-1.9.0.tgz",
+              "overridden": false,
+              "dependencies": {
+                "@noble/hashes": {
+                  "version": "1.8.0",
+                  "resolved": "https://registry.npmjs.org/@noble/hashes/-/hashes-1.8.0.tgz",
+                  "overridden": false
+                }
+              }
+            },
+            "@noble/hashes": {
+              "version": "1.8.0",
+              "resolved": "https://registry.npmjs.org/@noble/hashes/-/hashes-1.8.0.tgz",
+              "overridden": false
+            },
+            "@scure/bip32": {
+              "version": "1.7.0"
+            },
+            "@scure/bip39": {
+              "version": "1.6.0"
+            }
+          }
+        },
+        "micro-eth-signer": {
+          "version": "0.19.0",
+          "resolved": "https://registry.npmjs.org/micro-eth-signer/-/micro-eth-signer-0.19.0.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@noble/ciphers": {
+              "version": "2.2.0",
+              "resolved": "https://registry.npmjs.org/@noble/ciphers/-/ciphers-2.2.0.tgz",
+              "overridden": false
+            },
+            "@noble/curves": {
+              "version": "2.2.0",
+              "resolved": "https://registry.npmjs.org/@noble/curves/-/curves-2.2.0.tgz",
+              "overridden": false,
+              "dependencies": {
+                "@noble/hashes": {
+                  "version": "2.2.0"
+                }
+              }
+            },
+            "@noble/hashes": {
+              "version": "2.2.0",
+              "resolved": "https://registry.npmjs.org/@noble/hashes/-/hashes-2.2.0.tgz",
+              "overridden": false
+            },
+            "micro-packed": {
+              "version": "0.9.0",
+              "resolved": "https://registry.npmjs.org/micro-packed/-/micro-packed-0.9.0.tgz",
+              "overridden": false,
+              "dependencies": {
+                "@scure/base": {
+                  "version": "2.2.0",
+                  "resolved": "https://registry.npmjs.org/@scure/base/-/base-2.2.0.tgz",
+                  "overridden": false
+                }
+              }
+            }
+          }
+        },
+        "p-map": {
+          "version": "7.0.8",
+          "resolved": "https://registry.npmjs.org/p-map/-/p-map-7.0.8.tgz",
+          "overridden": false
+        },
+        "resolve.exports": {
+          "version": "2.0.3",
+          "resolved": "https://registry.npmjs.org/resolve.exports/-/resolve.exports-2.0.3.tgz",
+          "overridden": false
+        },
+        "semver": {
+          "version": "7.8.5",
+          "resolved": "https://registry.npmjs.org/semver/-/semver-7.8.5.tgz",
+          "overridden": false
+        },
+        "tsx": {
+          "version": "4.23.13",
+          "resolved": "https://registry.npmjs.org/tsx/-/tsx-4.23.13.tgz",
+          "overridden": false,
+          "dependencies": {
+            "esbuild": {
+              "version": "0.28.2",
+              "resolved": "https://registry.npmjs.org/esbuild/-/esbuild-0.28.2.tgz",
+              "overridden": false,
+              "dependencies": {
+                "@esbuild/aix-ppc64": {},
+                "@esbuild/android-arm": {},
+                "@esbuild/android-arm64": {},
+                "@esbuild/android-x64": {},
+                "@esbuild/darwin-arm64": {},
+                "@esbuild/darwin-x64": {},
+                "@esbuild/freebsd-arm64": {},
+                "@esbuild/freebsd-x64": {},
+                "@esbuild/linux-arm": {},
+                "@esbuild/linux-arm64": {},
+                "@esbuild/linux-ia32": {},
+                "@esbuild/linux-loong64": {},
+                "@esbuild/linux-mips64el": {},
+                "@esbuild/linux-ppc64": {},
+                "@esbuild/linux-riscv64": {},
+                "@esbuild/linux-s390x": {},
+                "@esbuild/linux-x64": {},
+                "@esbuild/netbsd-arm64": {},
+                "@esbuild/netbsd-x64": {},
+                "@esbuild/openbsd-arm64": {},
+                "@esbuild/openbsd-x64": {},
+                "@esbuild/openharmony-arm64": {},
+                "@esbuild/sunos-x64": {},
+                "@esbuild/win32-arm64": {},
+                "@esbuild/win32-ia32": {},
+                "@esbuild/win32-x64": {
+                  "version": "0.28.2",
+                  "resolved": "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.28.2.tgz",
+                  "overridden": false
+                }
+              }
+            },
+            "fsevents": {}
+          }
+        },
+        "ws": {
+          "version": "8.21.3",
+          "resolved": "https://registry.npmjs.org/ws/-/ws-8.21.3.tgz",
+          "overridden": false,
+          "dependencies": {
+            "bufferutil": {},
+            "utf-8-validate": {}
+          }
+        },
+        "zod": {
+          "version": "4.6.6"
+        }
+      }
+    },
+    "solc": {
+      "version": "0.8.34",
+      "resolved": "https://registry.npmjs.org/solc/-/solc-0.8.34.tgz",
+      "overridden": false,
+      "dependencies": {
+        "command-exists": {
+          "version": "1.2.9",
+          "resolved": "https://registry.npmjs.org/command-exists/-/command-exists-1.2.9.tgz",
+          "overridden": false
+        },
+        "commander": {
+          "version": "8.3.0",
+          "resolved": "https://registry.npmjs.org/commander/-/commander-8.3.0.tgz",
+          "overridden": false
+        },
+        "follow-redirects": {
+          "version": "1.16.2",
+          "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.2.tgz",
+          "overridden": true
+        },
+        "js-sha3": {
+          "version": "0.8.0",
+          "resolved": "https://registry.npmjs.org/js-sha3/-/js-sha3-0.8.0.tgz",
+          "overridden": false
+        },
+        "memorystream": {
+          "version": "0.3.1",
+          "resolved": "https://registry.npmjs.org/memorystream/-/memorystream-0.3.1.tgz",
+          "overridden": false
+        },
+        "semver": {
+          "version": "5.7.2",
+          "resolved": "https://registry.npmjs.org/semver/-/semver-5.7.2.tgz",
+          "overridden": false
+        },
+        "tmp": {
+          "version": "0.2.7",
+          "resolved": "https://registry.npmjs.org/tmp/-/tmp-0.2.7.tgz",
+          "overridden": true
+        }
+      }
+    },
+    "typescript": {
+      "version": "6.0.3",
+      "resolved": "https://registry.npmjs.org/typescript/-/typescript-6.0.3.tgz",
+      "overridden": false
+    },
+    "viem": {
+      "version": "2.56.6",
+      "resolved": "https://registry.npmjs.org/viem/-/viem-2.56.6.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@noble/curves": {
+          "version": "1.9.1",
+          "resolved": "https://registry.npmjs.org/@noble/curves/-/curves-1.9.1.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@noble/hashes": {
+              "version": "1.8.0"
+            }
+          }
+        },
+        "@noble/hashes": {
+          "version": "1.8.0",
+          "resolved": "https://registry.npmjs.org/@noble/hashes/-/hashes-1.8.0.tgz",
+          "overridden": false
+        },
+        "@scure/bip32": {
+          "version": "1.7.0",
+          "resolved": "https://registry.npmjs.org/@scure/bip32/-/bip32-1.7.0.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@noble/curves": {
+              "version": "1.9.0"
+            },
+            "@noble/hashes": {
+              "version": "1.8.0",
+              "resolved": "https://registry.npmjs.org/@noble/hashes/-/hashes-1.8.0.tgz",
+              "overridden": false
+            },
+            "@scure/base": {
+              "version": "1.2.6",
+              "resolved": "https://registry.npmjs.org/@scure/base/-/base-1.2.6.tgz",
+              "overridden": false
+            }
+          }
+        },
+        "@scure/bip39": {
+          "version": "1.6.0",
+          "resolved": "https://registry.npmjs.org/@scure/bip39/-/bip39-1.6.0.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@noble/hashes": {
+              "version": "1.8.0",
+              "resolved": "https://registry.npmjs.org/@noble/hashes/-/hashes-1.8.0.tgz",
+              "overridden": false
+            },
+            "@scure/base": {
+              "version": "1.2.6"
+            }
+          }
+        },
+        "abitype": {
+          "version": "1.2.3",
+          "resolved": "https://registry.npmjs.org/abitype/-/abitype-1.2.3.tgz",
+          "overridden": false,
+          "dependencies": {
+            "typescript": {
+              "version": "6.0.3"
+            },
+            "zod": {
+              "version": "4.6.6"
+            }
+          }
+        },
+        "isows": {
+          "version": "1.0.7",
+          "resolved": "https://registry.npmjs.org/isows/-/isows-1.0.7.tgz",
+          "overridden": false,
+          "dependencies": {
+            "ws": {
+              "version": "8.21.0"
+            }
+          }
+        },
+        "ox": {
+          "version": "0.14.44",
+          "resolved": "https://registry.npmjs.org/ox/-/ox-0.14.44.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@adraffy/ens-normalize": {
+              "version": "1.11.1",
+              "resolved": "https://registry.npmjs.org/@adraffy/ens-normalize/-/ens-normalize-1.11.1.tgz",
+              "overridden": false
+            },
+            "@noble/ciphers": {
+              "version": "1.3.0",
+              "resolved": "https://registry.npmjs.org/@noble/ciphers/-/ciphers-1.3.0.tgz",
+              "overridden": false
+            },
+            "@noble/curves": {
+              "version": "1.9.1",
+              "resolved": "https://registry.npmjs.org/@noble/curves/-/curves-1.9.1.tgz",
+              "overridden": false,
+              "dependencies": {
+                "@noble/hashes": {
+                  "version": "1.8.0"
+                }
+              }
+            },
+            "@noble/hashes": {
+              "version": "1.8.0",
+              "resolved": "https://registry.npmjs.org/@noble/hashes/-/hashes-1.8.0.tgz",
+              "overridden": false
+            },
+            "@scure/bip32": {
+              "version": "1.7.0"
+            },
+            "@scure/bip39": {
+              "version": "1.6.0"
+            },
+            "abitype": {
+              "version": "1.2.3"
+            },
+            "eventemitter3": {
+              "version": "5.0.1",
+              "resolved": "https://registry.npmjs.org/eventemitter3/-/eventemitter3-5.0.1.tgz",
+              "overridden": false
+            },
+            "typescript": {
+              "version": "6.0.3"
+            }
+          }
+        },
+        "typescript": {
+          "version": "6.0.3"
+        },
+        "ws": {
+          "version": "8.21.0",
+          "resolved": "https://registry.npmjs.org/ws/-/ws-8.21.0.tgz",
+          "overridden": false,
+          "dependencies": {
+            "bufferutil": {},
+            "utf-8-validate": {}
+          }
+        }
+      }
+    },
+    "zod": {
+      "version": "4.6.6",
+      "resolved": "https://registry.npmjs.org/zod/-/zod-4.6.6.tgz",
+      "overridden": true
+    }
+  }
+}

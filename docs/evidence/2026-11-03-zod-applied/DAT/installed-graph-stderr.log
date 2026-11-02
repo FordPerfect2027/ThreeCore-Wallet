@@ -1,0 +1,13 @@
+npm error code ELSPROBLEMS
+npm error missing: @nomicfoundation/hardhat-keystore@3.1.2, required by @0628dao/datcore@0.1.0
+npm error missing: @nomicfoundation/hardhat-node-test-runner@3.1.2, required by @0628dao/datcore@0.1.0
+npm error missing: @nomicfoundation/hardhat-viem@3.1.0, required by @0628dao/datcore@0.1.0
+npm error missing: @nomicfoundation/hardhat-zod-utils@file:./vendor/helper.tgz, required by @0628dao/datcore@0.1.0
+npm error missing: @openzeppelin/contracts@5.6.1, required by @0628dao/datcore@0.1.0
+npm error missing: @types/node@22.8.5, required by @0628dao/datcore@0.1.0
+npm error missing: hardhat@3.21.2, required by @0628dao/datcore@0.1.0
+npm error missing: solc@0.8.34, required by @0628dao/datcore@0.1.0
+npm error missing: typescript@6.0.3, required by @0628dao/datcore@0.1.0
+npm error missing: viem@2.56.6, required by @0628dao/datcore@0.1.0
+npm error missing: zod@4.6.6, required by @0628dao/datcore@0.1.0
+npm error A complete log of this run can be found in: C:\Users\aseet\npm-cache\_logs\2026-11-02T19_16_54_033Z-debug-0.log

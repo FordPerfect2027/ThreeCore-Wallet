@@ -25,6 +25,16 @@ A separate history-view copy preserves all nine observations and is accepted by
 both decoders; restoring the original configuration reproduces the original
 bytes exactly. This is offline file recovery, not a completed browser rollback.
 
+A later [private Zod 4 repair candidate](ZOD_MIGRATION_CANDIDATE_2026-11-03.md)
+now passes clean installation, actual configuration validation, all three token
+builds/type checks and artifact comparisons, plus DAT's 251 read-only cases.
+The repair is now [committed and installed in all three local token projects](ZOD_APPLIED_2026-11-03.md).
+Each applied environment passes the targeted regression, forced compilation,
+type check and dependency-graph check, with zero findings in its dated full
+audit. The earlier shared-directory installation error was repaired and final
+checks rerun. These supplements are outside the sealed Wallet ZIP and do not
+close live-wallet or independent-review gates.
+
 The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
 The original permitted origin was recovered through the rehearsal page, three
@@ -43,9 +53,9 @@ still applies only to its older published head; local results are not remote CI.
 | Earlier bounded code-review checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
 | Latest Wallet implementation | `f6f378cc9b44f33fc7e147f4626e23573de06a6c` | Explicit same-origin entry-guide link; 62 server/security cases and actual Edge recovery passed; controller diagnostics remain at `856f670` |
 | Latest complete Wallet regression | `bf690f38b070362aab1369fbf22c8e68b1a6567f` | Restored standalone package: 16,470 Node/HTTP and 1,024 synthetic browser passes on unchanged source |
-| DAT | `ada78f5ecbd8654860d818b774ef31beb6f0b871` | Earlier empty-data fix plus structured-validation regression; contract bytes unchanged |
-| EMA | `c4765efe92857e7060c0efaa44b271c67d8d68c3` | Earlier empty-data fix plus structured-validation regression; contract bytes unchanged |
-| CAWELON | `a94d61be77c0c14109910879cdd6a7f377176101` | Earlier empty-data fix plus structured-validation regression; contract bytes unchanged |
+| DAT | `dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1` | Earlier empty-data fix plus applied private Zod 4 helper repair; contract bytes unchanged |
+| EMA | `cae4130e8e01fd325fdcb6a589a46338be08b27e` | Earlier empty-data fix plus applied private Zod 4 helper repair; contract bytes unchanged |
+| CAWELON | `9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d` | Earlier empty-data fix plus applied private Zod 4 helper repair; contract bytes unchanged |
 | Public PR #4 head | `07041f00efdb503cb76a06fbe12e5531cb380930` | Earlier public source only |
 
 All three token working trees were clean when this source map was checked.
@@ -177,6 +187,10 @@ and browser UI suites. Review assertions and scope, not just passing totals.
 - [Development dependency review](ZOD_EXPOSURE_2026-11-02.md): the remaining
   Zod finding and bounded exposure analysis. The incompatible forced-major
   upgrade is documented in [the compatibility record](ZOD_COMPATIBILITY_2026-11-02.md).
+  The later [compatible private candidate](ZOD_MIGRATION_CANDIDATE_2026-11-03.md)
+  includes the helper source repair, clean installation, full-plugin checks
+  and three token patches. The [applied follow-up](ZOD_APPLIED_2026-11-03.md)
+  records final verification and the local commits in the source map above.
 
 Checksums establish byte consistency, not provenance, current chain state,
 token safety or independent approval. Private account backups and screenshots
@@ -290,7 +304,7 @@ Do not clear the user's database or reload their working tab to create a test.
 | Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet, Account 1/Sepolia and Account 2/Sepolia sessions passed. The recovered Account 1 page retained nine records. The operator changed context after the prior session stopped; live switch-event invalidation remains unobserved |
 | Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files. Offline follow-up found public checkpoint `07041f0` rejects shared-account backups; a nine-record history-only recovery copy is verified, but browser rollback to a public release is not |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
-| Development dependency finding | Compatible remediation with applicable regression, or an explicit qualified release risk decision | One Zod root advisory remains; the forced patched major breaks an unchanged helper |
+| Development dependency release review | Independently review the applied private helper fork and approve its maintenance/release scope | The affected Zod version is replaced in all three local installations; final builds/types, dependency graphs, exact bytecode comparisons and dated full audits pass. Transaction-executing suites were not rerun; independent review and release approval remain open |
 | Independent review and release | Review the exact final scope, resolve findings, approve the deployment plan and release explicitly | No independent reviewer has completed or approved this candidate |
 
 The original server was not restarted; its old imported server modules are not

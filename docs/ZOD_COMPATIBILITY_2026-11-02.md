@@ -1,5 +1,12 @@
 # Zod major-version compatibility probe — November 2, 2026
 
+Follow-up: a [private source migration candidate](ZOD_MIGRATION_CANDIDATE_2026-11-03.md)
+now passes the tested ThreeCore configuration, build and read-only workflows.
+It repairs the helper rather than forcing Zod 4 onto unchanged helper code.
+The original failure below remains valid for the unchanged helper. The subsequent
+[local application record](ZOD_APPLIED_2026-11-03.md) covers the repaired source,
+all three updated installations and their final checks.
+
 The outstanding [Zod advisory](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5)
 lists 4.6.6 as fixed. The installed Hardhat configuration helper
 @nomicfoundation/hardhat-zod-utils 3.0.6 declares a Zod ^3.23.8 peer and uses

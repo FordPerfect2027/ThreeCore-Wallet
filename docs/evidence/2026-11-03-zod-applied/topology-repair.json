@@ -1,0 +1,8 @@
+{
+  "recordedAt": "2026-11-02T19:18:03.222Z",
+  "removedLink": "C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-toolchain-empty-data-CAWELON-20261102/node_modules",
+  "verifiedTarget": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-toolchain-empty-data-DAT-20261102\\node_modules",
+  "operation": "unlink junction only, then create independent empty directory",
+  "targetDirectoryDeleted": false,
+  "subsequentPlan": "independent clean installations for DAT and CAWELON; EMA installation already independent"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "token": "DAT",
+    "sourceCommit": "ada78f5ecbd8654860d818b774ef31beb6f0b871",
+    "patchSha256": "78bf02ce486de4a9538608b592e2ba9cecdf91314fa2ab320128d2711d1159ec",
+    "checkExit": 0,
+    "bytes": 28493,
+    "baseline": "canonical Git blob, original JSON line endings retained"
+  },
+  {
+    "token": "EMA",
+    "sourceCommit": "c4765efe92857e7060c0efaa44b271c67d8d68c3",
+    "patchSha256": "04569a34a13dbec23192b5c47ba22090f28ad57ba0e9a4c971c9eebaca9f08bf",
+    "checkExit": 0,
+    "bytes": 28233,
+    "baseline": "canonical Git blob, original JSON line endings retained"
+  },
+  {
+    "token": "CAWELON",
+    "sourceCommit": "a94d61be77c0c14109910879cdd6a7f377176101",
+    "patchSha256": "ee8764fffe31da3e2932f786ac2d3f3710490ba96b2381b70e8c23a1913aacb4",
+    "checkExit": 0,
+    "bytes": 28233,
+    "baseline": "canonical Git blob, original JSON line endings retained"
+  }
+]

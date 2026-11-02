@@ -1,0 +1,187 @@
+{
+  "sourceCommit": "c4765efe92857e7060c0efaa44b271c67d8d68c3",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "bb202605edaca16cd398b32cf137f61813008bc91b06b929135f58308d6571e5"
+    },
+    {
+      "path": "contracts/EMACore.sol",
+      "sha256": "8234f4b8a94d9a2d25cde34bc2900ae080223e698633420cad7ad533390d7444"
+    },
+    {
+      "path": "integration/history-compatibility.test.mjs",
+      "sha256": "e072518bac60e195adfa53bbfee28a4cc050dac00d5b1b7dca2c5e46b4e08cfd"
+    },
+    {
+      "path": "integration/source-portability.test.mjs",
+      "sha256": "13340e16736bdea857d8d8dea8b26128dd9ec189f809d4b2b04da2261bfe1db4"
+    },
+    {
+      "path": "integration/test-routing.test.mjs",
+      "sha256": "bc46c04ac8d0d0f52cbf27fbb03916b3afdbc5f86e0d44360686434a368c8cdf"
+    },
+    {
+      "path": "integration/toolchain-data.test.mjs",
+      "sha256": "1cbb6c1009e46276bbf11767505b1f6f004a31554262b845e277aed426665594"
+    },
+    {
+      "path": "package.json",
+      "sha256": "26b2b5e6f2c2934ec92852e190714d864dcf3379f15493ce5352c2e2fb3ded5b"
+    },
+    {
+      "path": "scripts/check-contract-source.js",
+      "sha256": "9972e004e8b98195f2052cfcb3669334e855153fa52dd063af50e8e2c1389caa"
+    },
+    {
+      "path": "scripts/deploy-base-sepolia.ts",
+      "sha256": "5820b3118588b6139781bcddad442cb757e58d65701524acb759a095e4b71316"
+    },
+    {
+      "path": "scripts/inspect-approvals.js",
+      "sha256": "1f013637b506f01bad82879400f2e4da58d535c7ee3ff11ca193f3f689f9280c"
+    },
+    {
+      "path": "scripts/inspect-transfers.js",
+      "sha256": "cc4d34ea56d5a92695a06b431b923aa18d8d617517d318ab0395b8476a0e459e"
+    },
+    {
+      "path": "scripts/inspect-wallet-readiness.js",
+      "sha256": "61c80cd27109d9b6bb2d6219d420e44b19aa5562b6a65563022beb14ed52dc81"
+    },
+    {
+      "path": "scripts/quote-dex.js",
+      "sha256": "3c4ddb06ede1d3d2636dd5bb72b0072782b8272ae689a5218c413af008af4dd8"
+    },
+    {
+      "path": "scripts/test-contracts.js",
+      "sha256": "7213961c10d4d47cb7198e99b1acdda1f0e738101f2c7aba68e3bf7ff0361bd9"
+    },
+    {
+      "path": "scripts/verify-base-mainnet.js",
+      "sha256": "9a3a2b5078b36615b17ad108a504cbca702d5b0105cad1a11eec0e10d6d492da"
+    },
+    {
+      "path": "src/approval-history.js",
+      "sha256": "d33ab2c8c45f241e7c2d265ba45f4f9d7f4f61d59b62900275a78e2d923cb079"
+    },
+    {
+      "path": "src/canonical-state-read.js",
+      "sha256": "ab7d9fb7d2f4aa7570195897fe6a93849c7f8f379ee114a02172160b932e4fe2"
+    },
+    {
+      "path": "src/canonical-token-read.js",
+      "sha256": "ddaf8c3c06866be7f3402c53f65fb019e6ea2a25e22375cdcf9ab122831c1c3c"
+    },
+    {
+      "path": "src/dex-quote.js",
+      "sha256": "3df944fe80188d85878438f1b9fcc0e870760b779be874b36c48bab37afff116"
+    },
+    {
+      "path": "src/history-cli-input.js",
+      "sha256": "87bbd36e21dcd514eb3d63bda8f4983a7195679d557ee9043789b3042a78b5be"
+    },
+    {
+      "path": "src/history-log.js",
+      "sha256": "c31b830c7916cb27fd962145458a9e3c11b65b85413fa0f831b28ef6976f9114"
+    },
+    {
+      "path": "src/history-snapshot.js",
+      "sha256": "ab0723244ae954fc0dab222d73cfc7361f0eebc5f7087a651285f2d4c211a767"
+    },
+    {
+      "path": "src/onchain-identity.js",
+      "sha256": "9bc2fabebe1ab7e8e15eab4cdf67611692a2d00095adcf2b117181bea48ad935"
+    },
+    {
+      "path": "src/read-only-http.js",
+      "sha256": "830dcda2c124a22a3cb3969f3e97bcab33b5b689aa96b82dd6231f87900f920f"
+    },
+    {
+      "path": "src/transfer-history.js",
+      "sha256": "e2349cd4309908eaa7cbd6ea16ce20da0b48abe8f9e0284ec750836f9f6548c5"
+    },
+    {
+      "path": "src/wallet-readiness.js",
+      "sha256": "8fd73a9885ab722982261bf1b5f9d8a2ecd47172f214258f183a0d0a8a30dcbf"
+    },
+    {
+      "path": "test/EMACore.ts",
+      "sha256": "69e8e728a92914f5c49971cc30b48414245d971e37ebcc36388da5437cda2f2a"
+    },
+    {
+      "path": "test/PermitBoundaries.ts",
+      "sha256": "a7b8aa42ca6e298a40ebffc3f28434cbcc5f8c93af788c32fbf14710b3058c23"
+    },
+    {
+      "path": "test/TransferInvariants.ts",
+      "sha256": "27138c0b50d85d9e1ab0ebf7ce5898d084fec52aaabc321bedf38fedaf807da1"
+    },
+    {
+      "path": "test/approval-history.test.mjs",
+      "sha256": "54c811e8d014bd472a32075d3b870eeb0b455a0d290eb522d6ffe0beef58513a"
+    },
+    {
+      "path": "test/canonical-state-cli.test.mjs",
+      "sha256": "ecac8ba5626ada46bdc248b620808cded51c50be4defd27c8a073089826b5d4a"
+    },
+    {
+      "path": "test/dex-quote.test.mjs",
+      "sha256": "409df3241fd300b3f05e0af732848c488552aacb21db9927bc0c597d72569f6f"
+    },
+    {
+      "path": "test/history-boundaries.test.mjs",
+      "sha256": "d03a9719de6b91cbce7c0a7e12c4e5fb2e0cb7b2113091524fc76ec59a8f090d"
+    },
+    {
+      "path": "test/history-cli.test.mjs",
+      "sha256": "e1b598390dbe8908aa9d11f7b4cd95cca8c5e175aafbfbc1424c6567fe468fd1"
+    },
+    {
+      "path": "test/history-snapshot.test.mjs",
+      "sha256": "87548994a56fe10ccdb816e57b8444fd54136e9d98f2005c3b4d147b0a824025"
+    },
+    {
+      "path": "test/onchain-identity-cli.test.mjs",
+      "sha256": "a17c072ce9f6f756a12b268309a828c5a23fc2d2102a267eec8c92447ed3727f"
+    },
+    {
+      "path": "test/onchain-identity.test.mjs",
+      "sha256": "2d5885605715705360cd083710277cd9e24e8ca31a07e8aeb4d49fb862440edc"
+    },
+    {
+      "path": "test/read-only-http-cli.test.mjs",
+      "sha256": "a325f5735458bce1682ac37105ae9a252c8ec177f00e500b885b1ba7ca6d1d11"
+    },
+    {
+      "path": "test/read-only-http.test.mjs",
+      "sha256": "5106eeec08467317d06b47c5ac10d7be79030c9f80426e7627ca13f0de8dd665"
+    },
+    {
+      "path": "test/support/local-rpc-preload.mjs",
+      "sha256": "1f87feef0c73c3287d1b12b30ac99a4e8d13de3a25d82718cc0f70562187fab5"
+    },
+    {
+      "path": "test/support/state-rpc.mjs",
+      "sha256": "f0d728b6ffa11331c1cfbc25f9e3ef4c05d208318952a79ada2a4e4e8969b3ba"
+    },
+    {
+      "path": "test/transfer-history.test.mjs",
+      "sha256": "cb23c663978deaec399a1756ad113821298327646a538251881d85810519e2a0"
+    },
+    {
+      "path": "test/wallet-readiness.test.mjs",
+      "sha256": "184bbcd33acbd7f97ed2d7f7245a9c833ebef1a6d3a6f4f77e23629a3e90ac69"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "8136d310e7e5a17ab6af8527adc77105fc6e8bfab5b1b807050225ae67ce783d"
+    }
+  ],
+  "dependenciesMatchOriginalDat": {
+    "dependencies": true,
+    "devDependencies": true,
+    "overrides": true
+  },
+  "usingParentCandidateNodeModules": true
+}

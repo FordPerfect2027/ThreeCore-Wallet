@@ -1,0 +1,43 @@
+{
+  "recordedAt": "2026-11-02T19:16:07.894Z",
+  "sourceBasePins": [
+    {
+      "token": "DAT",
+      "commit": "ada78f5ecbd8654860d818b774ef31beb6f0b871"
+    },
+    {
+      "token": "EMA",
+      "commit": "c4765efe92857e7060c0efaa44b271c67d8d68c3"
+    },
+    {
+      "token": "CAWELON",
+      "commit": "a94d61be77c0c14109910879cdd6a7f377176101"
+    }
+  ],
+  "sourceChanges": [
+    "package.json",
+    "package-lock.json",
+    "integration/zod-migration.test.mjs",
+    "vendor/helper.tgz",
+    "vendor/LICENSE-hardhat-zod-utils",
+    "vendor/helper-migration.patch",
+    "vendor/README.md"
+  ],
+  "transactionSuitesNotRun": true,
+  "publicWrites": false,
+  "originalServerProcessesPreserved": true,
+  "serverProbe": {
+    "4231": 200,
+    "4232": 200,
+    "4233": 200
+  },
+  "windowsInstallFailure": {
+    "token": "EMA",
+    "firstAttempt": "EPERM rmdir node_modules/@jest/react-is-19",
+    "action": "Retain failing output, recheck once after the concurrent DAT installation completed; no elevation, permissions edit or forced process termination.",
+    "confirmedCause": "Earlier TOOLCHAIN_EMPTY_DATA report states that all three token sources shared one dependency directory. Parallel npm ci and the EMA retry therefore touched the same installation. A later graph check found DAT empty; CAWELON still had a junction to DAT. EMA had become independent.",
+    "repair": "Removed only the explicitly verified CAWELON junction, created a separate directory, and rebuild independent installations. No recursive delete, elevation, ACL change or process termination used."
+  },
+  "datFirstVerificationSuperseded": true,
+  "datFirstVerificationReason": "Its successful tests occurred before the shared-directory interference was detected; a new final verification is required after independent installation."
+}

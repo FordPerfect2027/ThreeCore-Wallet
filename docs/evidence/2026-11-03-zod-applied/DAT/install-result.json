@@ -1,0 +1,13 @@
+{
+  "steps": [
+    {
+      "name": "install",
+      "startedAt": "2026-11-02T19:12:11.481Z",
+      "endedAt": "2026-11-02T19:13:56.561Z",
+      "code": 0,
+      "signal": null
+    }
+  ],
+  "scriptsDisabled": true,
+  "sourcePatchedAfterInstall": false
+}
