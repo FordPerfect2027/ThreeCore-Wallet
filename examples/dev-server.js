@@ -11,6 +11,7 @@ const publicPaths = [
   ["/budget/", { file: resolve(here, "operation-budget.html"), mime: "text/html; charset=utf-8" }],
   ["/budget/evidence/", { file: resolve(here, "operation-budget-evidence.html"), mime: "text/html; charset=utf-8" }],
   ["/src/operation-budget-evidence.js", { file: resolve(here, "../src/operation-budget-evidence.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/public-token-batch-model.js", { file: resolve(here, "../src/public-token-batch-model.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/operation-budget-evidence-page.js", { file: resolve(here, "operation-budget-evidence-page.js"), mime: "text/javascript; charset=utf-8" }],
   ["/budget/shared/", { file: resolve(here, "shared-operation-budget.html"), mime: "text/html; charset=utf-8" }],
   ["/src/shared-operation-budget.js", { file: resolve(here, "../src/shared-operation-budget.js"), mime: "text/javascript; charset=utf-8" }],

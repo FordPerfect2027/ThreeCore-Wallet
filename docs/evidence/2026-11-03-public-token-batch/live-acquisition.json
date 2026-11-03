@@ -1,0 +1,227 @@
+{
+  "started": "2026-11-03T09:12:14.622Z",
+  "finished": "2026-11-03T09:12:19.686Z",
+  "success": true,
+  "endpoint": "https://sepolia.base.org",
+  "chainId": 84532,
+  "blockNumber": "53876331",
+  "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+  "canonicalBlockRechecked": true,
+  "requests": [
+    {
+      "method": "eth_chainId",
+      "blockSelector": null,
+      "httpStatus": 200,
+      "responseHeadersMs": 464
+    },
+    {
+      "method": "eth_blockNumber",
+      "blockSelector": null,
+      "httpStatus": 200,
+      "responseHeadersMs": 201
+    },
+    {
+      "method": "eth_getBlockByNumber",
+      "blockSelector": "0x336166b",
+      "httpStatus": 200,
+      "responseHeadersMs": 208
+    },
+    {
+      "method": "eth_getBalance",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 195
+    },
+    {
+      "method": "eth_getCode",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 219
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 209
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 197
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 186
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 202
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 218
+    },
+    {
+      "method": "eth_getCode",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 211
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 192
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 201
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 202
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 208
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 199
+    },
+    {
+      "method": "eth_getCode",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 227
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 207
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 233
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 206
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 201
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 192
+    },
+    {
+      "method": "eth_getBlockByNumber",
+      "blockSelector": "0x336166b",
+      "httpStatus": 200,
+      "responseHeadersMs": 207
+    }
+  ],
+  "requestCount": 23,
+  "walletConnected": false,
+  "tokenIdentityMatches": [
+    {
+      "agent": "DAT",
+      "matched": true
+    },
+    {
+      "agent": "EMA",
+      "matched": true
+    },
+    {
+      "agent": "CAWELON",
+      "matched": true
+    }
+  ],
+  "bytes": 1678,
+  "sha256": "7d026b28e4016b956e22fc60b1b1f3f07d33210fbe4291e85ad57731a26dfca8",
+  "newPrivateFileName": "ThreeCore-public-batch-53876331.json",
+  "sourcePublicAccountReadFromExistingSavedFile": true
+}

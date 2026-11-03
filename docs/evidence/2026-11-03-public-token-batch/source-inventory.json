@@ -1,0 +1,77 @@
+[
+  {
+    "file": "src/public-base-rpc.js",
+    "bytes": 9174,
+    "sha256": "7989823e1555c4d915dce8a5d945dab97f1a9ae5c695c713f5c7e9da85469f37"
+  },
+  {
+    "file": "src/public-token-batch-model.js",
+    "bytes": 6128,
+    "sha256": "d541764a30a9d7e0558b8f93aace97e822dca535f1a31c02b237ad6fe1c0288b"
+  },
+  {
+    "file": "src/public-token-batch-reader.js",
+    "bytes": 3971,
+    "sha256": "5605b0cb2617219526c93ec480521befbf2aa7f0c7df629adc19c8a4c4366205"
+  },
+  {
+    "file": "scripts/public-token-batch.js",
+    "bytes": 3480,
+    "sha256": "cb1ab26b773a8bcce8eeaf1a4ea47810027057344159faeda63115a02b43ac27"
+  },
+  {
+    "file": "src/operation-budget-evidence.js",
+    "bytes": 5800,
+    "sha256": "2d755670e1f1b0833614dfb122fc157ab52416e0e95a16c8744260a19802d3a5"
+  },
+  {
+    "file": "examples/operation-budget-evidence-page.js",
+    "bytes": 6872,
+    "sha256": "b87e21fddcd3ca1ee5ee1289ba8041ecff184db9a589ed870b23990a1e67fbdd"
+  },
+  {
+    "file": "examples/operation-budget-evidence.html",
+    "bytes": 3651,
+    "sha256": "fe1c6b2cc6b8fbeb9d3357047f71fcc107558d5f7996a03443f46f6d2f04dd05"
+  },
+  {
+    "file": "examples/dev-server.js",
+    "bytes": 34786,
+    "sha256": "851485c62afe668c22896ec0acfd254f68ffbe16566486ff0fbe0685a7853a3a"
+  },
+  {
+    "file": "package.json",
+    "bytes": 4589,
+    "sha256": "66059346357de6d120b77b67fbab8ba6e037eff270a8b8e4b4c081b23f398fa9"
+  },
+  {
+    "file": "test/public-base-rpc.test.js",
+    "bytes": 5944,
+    "sha256": "a007d26929063d2142b49a0029c977b3a0869322fdf94d2bcfae83c998395fb2"
+  },
+  {
+    "file": "test/public-token-batch.test.js",
+    "bytes": 8071,
+    "sha256": "d668a61f3b52465624d103efb5e368737d27e3efc9f65ba99620a5e33f2bd139"
+  },
+  {
+    "file": "test/public-token-batch-cli.test.js",
+    "bytes": 2752,
+    "sha256": "650a4bad86a0264ca7a20489c07c9d6266005542c515beed2726378bc92c8c21"
+  },
+  {
+    "file": "test/public-batch-budget-evidence.test.js",
+    "bytes": 3007,
+    "sha256": "e5cc1fcf7f8a99a6f4d7636074b169b4ae7eeb3c086aabd49941e318d15039a9"
+  },
+  {
+    "file": "test/operation-budget-evidence-page.test.js",
+    "bytes": 6843,
+    "sha256": "00487689d8d4af6bc145a30092452fbd2da5d95c4885c67ff5e5c525d5cec86c"
+  },
+  {
+    "file": "test/helpers/public-batch-fixture.js",
+    "bytes": 825,
+    "sha256": "97d7619bacdde6ff4c9b1597e041d174e92b044ebd8ea6089bdf0deccddf616c"
+  }
+]

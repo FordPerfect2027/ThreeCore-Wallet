@@ -22,7 +22,7 @@ function cancel(body) {
 }
 
 // This diagnostic reader accepts only the selectors used by the existing
-// balance/allowance and Classic-pool inspections. No wallet transport is used.
+// balance/metadata/allowance and Classic-pool inspections. No wallet transport is used.
 function allowedCall(call) {
   if (!call || Object.getPrototypeOf(call) !== Object.prototype ||
       Object.keys(call).length !== 2 || !Object.hasOwn(call, "to") ||
@@ -31,6 +31,7 @@ function allowedCall(call) {
   const selector = call.data.slice(0, 10).toLowerCase();
   const data = call.data.slice(10);
   if (["0x0dfe1681", "0xd21220a7", "0x0902f1ac"].includes(selector)) return data.length === 0;
+  if (["0x06fdde03", "0x95d89b41", "0x313ce567", "0x18160ddd"].includes(selector)) return data.length === 0;
   if (selector === "0x70a08231") return data.length === 64 && ADDRESS_WORD.test(data);
   if (selector === "0xdd62ed3e") return data.length === 128 &&
     ADDRESS_WORD.test(data.slice(0, 64)) && ADDRESS_WORD.test(data.slice(64));
@@ -39,7 +40,7 @@ function allowedCall(call) {
     /^0{63}[01]$/.test(data.slice(128));
 }
 function validateRequest(method, params) {
-  if (!["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber", "eth_getCode", "eth_call"].includes(method))
+  if (!["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber", "eth_getCode", "eth_getBalance", "eth_call"].includes(method))
     fail("METHOD_BLOCKED", "Only supported diagnostic read methods are permitted");
   try { params = captureDataArray(params, 2); }
   catch { fail("INVALID_PARAMS", "Invalid diagnostic read parameters"); }
@@ -60,7 +61,7 @@ function validateRequest(method, params) {
         throw Error();
     } else if (!QUANTITY.test(selector)) throw Error();
     if (method === "eth_call") call = { ...captureDataRecord(call, ["to", "data"]) };
-    if (params.length !== 2 || (method === "eth_getCode" ?
+    if (params.length !== 2 || (["eth_getCode", "eth_getBalance"].includes(method) ?
       typeof call !== "string" || !ADDRESS.test(call) : !allowedCall(call))) throw Error();
   } catch { fail("INVALID_PARAMS", "Diagnostic state reads require a supported input and explicit block selector"); }
   return [call, selector];
@@ -136,7 +137,7 @@ export function createPublicBaseRpcReader(input = {}) {
           return Object.freeze({ number: "0x" + BigInt(header.number).toString(16), hash: header.hash.toLowerCase() });
         }
         if (typeof json.result !== "string") fail("INVALID_RPC_RESPONSE", "Expected a diagnostic string result");
-        if ((method === "eth_chainId" || method === "eth_blockNumber") && !QUANTITY.test(json.result))
+        if (["eth_chainId", "eth_blockNumber", "eth_getBalance"].includes(method) && !QUANTITY.test(json.result))
           fail("INVALID_RPC_RESPONSE", "Expected a canonical hexadecimal EVM quantity");
         if (method === "eth_getCode" && (json.result.length > RPC_SECURITY_LIMITS.contractCodeCharacters ||
             !/^0x(?:[0-9a-fA-F]{2})*$/.test(json.result)))

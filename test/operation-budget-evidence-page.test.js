@@ -6,6 +6,8 @@ import { prepareTokenIdentityFile } from "../src/token-identity-report.js";
 import { operationBudgetExample, encodeOperationBudget } from "../src/operation-budget.js";
 import { BUDGET_EVIDENCE_SCHEMA, inspectBudgetEvidence, encodeBudgetEvidence, decodeBudgetEvidence } from "../src/operation-budget-evidence.js";
 import { mountBudgetEvidencePage } from "../examples/operation-budget-evidence-page.js";
+import { publicBatchFixture } from "./helpers/public-batch-fixture.js";
+import { preparePublicTokenBatchFile } from "../src/public-token-batch-model.js";
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 async function until(condition){const end=Date.now()+2000;while(!condition()){if(Date.now()>end)throw Error("WAIT_TIMEOUT");await new Promise(resolve=>setTimeout(resolve,1));}}
 async function fixture(){const b=structuredClone(operationBudgetExample());b.fees.operatorFeeBudgetWei="0";
@@ -55,4 +57,10 @@ test("excess file count, duplicate budget files and malformed bytes are rejected
 test("reentrant export does not report a saved revoked result",async()=>{
  const f=setup({download(request,get){get("cancel").click();}});f.choose([encodeBudgetEvidence(await fixture())]);await until(()=>!f.get("check").disabled);f.get("check").click();await until(()=>!f.get("save").disabled);
  f.get("save").click();assert.equal(f.get("save-status").textContent,"");assert.equal(f.get("result").hidden,true);f.panel.dispose();
+});
+test("public RPC batch is labelled separately from a connected-wallet observation",async()=>{
+ const f=setup(),data=await fixture(),publicFile=await preparePublicTokenBatchFile(publicBatchFixture());
+ f.choose([data.budgetFile,publicFile.text]);await until(()=>!f.get("check").disabled);f.get("check").click();await until(()=>!f.get("save").disabled);
+ assert.match(f.get("outcome").textContent,/整合しています/);assert.match(f.get("rows").children[0].children[0].textContent,/公開RPC/);
+ f.get("save").click();assert.equal(decodeBudgetEvidence(f.downloads[0].text).observationFiles[0],publicFile.text);f.panel.dispose();
 });

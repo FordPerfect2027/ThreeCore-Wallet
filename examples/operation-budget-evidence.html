@@ -9,6 +9,7 @@
 <p class="notice">保存された過去の記録の照合です。現在の残高、記録の発行者、記録内容が実際のチェーンと一致することは確認しません。Walletへの接続・署名・送金は行いません。</p></header>
 <section aria-labelledby="evidence-source-title"><h2 id="evidence-source-title">1. 元になるファイルを選ぶ</h2>
 <p>予算入力1個と、対応する各トークンの「コントラクト情報・残高」保存ファイル1〜3個をまとめて選択してください。保存済みの照合ファイル1個を読み戻すこともできます。</p>
+<p>公開RPCで3トークンを同じブロックから取得した一括ファイルも使えます。一括ファイルでは予算の対象トークンを照合します。公開RPCによる記録は、Wallet接続による記録と区別して表示します。</p>
 <p class="small">通常のWalletバックアップや送受信履歴ではなく、各トークンのコントラクト情報・残高確認から保存したJSONを使います。元のファイルは書き換えません。</p>
 <label class="file-label">予算と残高の保存ファイル<input id="evidence-file" type="file" accept=".json,application/json" multiple></label>
 <p id="evidence-status" role="status" aria-live="polite">ファイルを選んでください。</p>

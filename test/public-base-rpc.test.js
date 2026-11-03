@@ -52,6 +52,19 @@ test("only established read selectors are accepted with canonical ABI arguments"
   assert.ok(calls.every(c => c.params[1] === "0x0"));
 });
 
+test("public batch additions permit only explicit native-balance and argument-free metadata reads", async () => {
+  const calls=[];const read=createPublicBaseRpcReader({rpcUrl,fetchImpl:async(url,options)=>{const q=JSON.parse(options.body);calls.push(q);
+    return Response.json({jsonrpc:"2.0",id:q.id,result:q.method==="eth_getBalance"?"0x0":"0x"});}});
+  assert.equal(await read("eth_getBalance",[address,"0x1"]),"0x0");
+  for(const data of ["0x06fdde03","0x95d89b41","0x313ce567","0x18160ddd"])
+    await read("eth_call",[{to:address,data},{blockHash:"0x"+"ab".repeat(32),requireCanonical:true}]);
+  const count=calls.length;
+  for(const params of [[address,"latest"],["bad","0x1"],[address,"0x01"],[address,"0x1","extra"]])
+    await assert.rejects(read("eth_getBalance",params),rejects("INVALID_PARAMS"));
+  await assert.rejects(read("eth_call",[{to:address,data:"0x313ce56700"},"0x1"]),rejects("INVALID_PARAMS"));
+  assert.equal(calls.length,count);
+});
+
 test("canonical hash selectors require complete own data and cannot execute accessors", async () => {
   let calls = 0, getterCalls = 0;
   const read = createPublicBaseRpcReader({ rpcUrl, fetchImpl: async (_url, options) => {

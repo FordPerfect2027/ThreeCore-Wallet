@@ -4,6 +4,7 @@ import { OperationBudgetError, OPERATION_BUDGET_SCHEMA, OPERATION_BUDGET_LIMIT, 
 import { SHARED_BUDGET_SCHEMA, SHARED_BUDGET_LIMIT, decodeSharedOperationBudget, evaluateSharedOperationBudget } from "./shared-operation-budget.js";
 import { decodeTokenIdentityFile, IDENTITY_FILE_LIMIT } from "./token-identity-report.js";
 import { assessTokenObservation } from "./token-identity-model.js";
+import { PUBLIC_TOKEN_BATCH_FILE_SCHEMA, decodePublicTokenBatchFile, publicBatchObservations } from "./public-token-batch-model.js";
 
 export const BUDGET_EVIDENCE_SCHEMA = "threecore.operation-budget-evidence.v1";
 export const BUDGET_EVIDENCE_LIMIT = 196608;
@@ -44,8 +45,15 @@ export async function inspectBudgetEvidence(input, { subtle = globalThis.crypto?
   } else fail("INVALID_BUDGET_SCHEMA");
   const observations = [], sourceHashes = [];
   for (const text of data.observationFiles) {
-    const decoded = await decodeTokenIdentityFile(bytes(text), options);
-    observations.push(decoded.observation);
+    let sourceSchema;
+    try { sourceSchema = parseSecurityJson(text)?.schema; } catch { fail("INVALID_JSON"); }
+    if (sourceSchema === PUBLIC_TOKEN_BATCH_FILE_SCHEMA) {
+      const decoded = await decodePublicTokenBatchFile(text, options);
+      observations.push(...publicBatchObservations(decoded.batch).filter(o => budgets.some(b => b.agent === o.agent)));
+    } else {
+      const decoded = await decodeTokenIdentityFile(bytes(text), options);
+      observations.push(decoded.observation);
+    }
     sourceHashes.push(await sha256Hex(bytes(text), subtle, { signal, timeoutMs }));
   }
   if (new Set(observations.map(o => o.agent)).size !== observations.length) fail("DUPLICATE_SOURCE_AGENT");
@@ -58,7 +66,8 @@ export async function inspectBudgetEvidence(input, { subtle = globalThis.crypto?
     const observation = observations.find(o => o.agent === budget.agent), reasons = [];
     if (!observation) reasons.push("SOURCE_MISSING");
     else {
-      if (assessTokenObservation(observation).status !== "matched") reasons.push("TOKEN_IDENTITY_UNCONFIRMED");
+      if (observation.source === "public-rpc" ? !observation.identityMatches : assessTokenObservation(observation).status !== "matched")
+        reasons.push("TOKEN_IDENTITY_UNCONFIRMED");
       if (observation.chainId !== budget.chainId) reasons.push("BUDGET_NETWORK_MISMATCH");
       if (observation.metadata?.decimals !== budget.token.decimals) reasons.push("BUDGET_DECIMALS_MISMATCH");
       if (observation.balanceBaseUnits !== budget.token.balanceUnits) reasons.push("BUDGET_TOKEN_BALANCE_MISMATCH");

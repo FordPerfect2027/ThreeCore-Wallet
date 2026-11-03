@@ -3,6 +3,7 @@ import { createFileReadScope } from "../src/security-file.js";
 import { OPERATION_BUDGET_SCHEMA } from "../src/operation-budget.js";
 import { SHARED_BUDGET_SCHEMA, SHARED_BUDGET_LIMIT } from "../src/shared-operation-budget.js";
 import { IDENTITY_FILE_SCHEMA } from "../src/token-identity-report.js";
+import { PUBLIC_TOKEN_BATCH_FILE_SCHEMA } from "../src/public-token-batch-model.js";
 import { BUDGET_EVIDENCE_SCHEMA, BUDGET_EVIDENCE_LIMIT, inspectBudgetEvidence, encodeBudgetEvidence, decodeBudgetEvidence } from "../src/operation-budget-evidence.js";
 import { offerWalletDownload } from "./export-download.js";
 import { requireSyncExport } from "../src/export-policy.js";
@@ -28,14 +29,14 @@ export function mountBudgetEvidencePage(document, { download=offerWalletDownload
         for(const file of files){
           if(!current(own))return;const text=await reader.readText(file,{maxBytes:SHARED_BUDGET_LIMIT});if(!current(own))return;
           const raw=parseSecurityJson(text);
-          if(raw?.schema===IDENTITY_FILE_SCHEMA)observationFiles.push(text);
+          if([IDENTITY_FILE_SCHEMA,PUBLIC_TOKEN_BATCH_FILE_SCHEMA].includes(raw?.schema))observationFiles.push(text);
           else if([OPERATION_BUDGET_SCHEMA,SHARED_BUDGET_SCHEMA].includes(raw?.schema)&&budgetFile===null)budgetFile=text;
           else throw Error("FORMAT");
         }
         data=decodeBudgetEvidence(encodeBudgetEvidence({schema:BUDGET_EVIDENCE_SCHEMA,budgetFile,observationFiles}));
       }
       if(!current(own))return;pending=data;get("check").disabled=false;
-      get("status").textContent="予算1個と残高記録"+data.observationFiles.length+"個を読み込みました。照合すると内容とチェックサムを確認します。";
+      get("status").textContent="予算1個と残高ファイル"+data.observationFiles.length+"個を読み込みました。照合すると内容とチェックサムを確認します。";
     }catch{if(current(own))get("status").textContent="読み込めませんでした。予算1個と残高記録1〜3個、または保存した照合ファイル1個を選んでください。";}
   });
   listen("check","click",async()=>{
@@ -49,7 +50,7 @@ export function mountBudgetEvidencePage(document, { download=offerWalletDownload
       get("reasons").textContent=r.groupReasons.map(code=>REASONS[code]).join(" ");
       get("rows").replaceChildren(...r.comparisons.map(item=>{
         const row=document.createElement("tr"),o=item.observation;
-        const values=[item.agent,o?.account??"記録なし",o?(o.chainId===8453?"Base Mainnet":"Base Sepolia")+" / "+o.blockNumber+" / "+o.blockHash:"記録なし",
+        const values=[item.agent+(o?.source==="public-rpc"?"（公開RPC）":""),o?.account??"記録なし",o?(o.chainId===8453?"Base Mainnet":"Base Sepolia")+" / "+o.blockNumber+" / "+o.blockHash:"記録なし",
           item.consistent?"残高・トークン情報が一致":item.reasons.map(code=>REASONS[code]).join(" / ")];
         for(const value of values){const cell=document.createElement("td");cell.textContent=value;row.append(cell);}return row;
       }));
