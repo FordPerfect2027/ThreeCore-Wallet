@@ -11,6 +11,15 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [manual proposal authoring screen](MANUAL_PROPOSAL_DRAFT_2026-11-03.md)
+now creates proposal/condition review files directly from verified saved budget
+evidence. Related checks pass 37/37. Actual browser files reproduce pass,
+over-limit and insufficient-budget results; reimport/recheck preserves all source
+texts and expiry. This completes manual authoring and the existing review handoff,
+not AI generation or execution authority. Next: bind existing allowance records
+to proposals/quotes, then fee/execution preflight. Prioritize reuse of completed
+readers and review models instead of repeating live wallet connection exercises.
+
 The [USDC acquisition screen](USDC_READ_UI_2026-11-03.md) completes ordinary
 browser read/cancel/save and budget handoff. All 55 related checks passed,
 including 10 new feature checks. Actual public results match the earlier command

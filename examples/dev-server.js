@@ -11,6 +11,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/proposals/new/", { file: resolve(here, "operation-proposal-draft.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/operation-proposal-draft-page.js", { file: resolve(here, "operation-proposal-draft-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["operation-proposal-draft", "proposal-review-messages"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/usdc/read/", { file: resolve(here, "public-usdc.html"), mime: "text/html; charset=utf-8" }],
   ["/examples/public-usdc-page.js", { file: resolve(here, "public-usdc-page.js"), mime: "text/javascript; charset=utf-8" }],
   ...["public-usdc-request", "public-usdc-client"].map(name =>

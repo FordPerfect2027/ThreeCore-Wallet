@@ -1,0 +1,42 @@
+<!doctype html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>提案と使用条件を作成 — ThreeCore</title><link rel="stylesheet" href="/examples/operation-rehearsal.css">
+</head><body><main><header>
+<a href="/budget/evidence/" target="_blank" rel="noopener">予算と残高の照合ファイルを作る</a>
+<p class="eyebrow">DAT · EMA · CAWELON</p><h1>提案と使用条件を作成</h1>
+<p>保存した予算から口座・ネットワーク・使用額を引き継ぎ、対象サービスと比較上限・期限を入力します。</p>
+<p class="notice">手動で作る検討用の提案です。AI生成、Wallet接続、署名、送金は行いません。ここで入力する条件は、Walletの権限や取引の承認にはなりません。</p>
+</header>
+<section aria-labelledby="draft-source-title"><h2 id="draft-source-title">1. 元になる予算と残高</h2>
+<label>予算と残高の照合ファイル<input id="draft-file" type="file" accept=".json,application/json"></label>
+<label>対象トークン<select id="draft-agent"><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label>
+<p id="draft-source-status" role="status" aria-live="polite"></p>
+<div id="draft-source-preview" hidden><p id="draft-context"></p><div class="table-wrap"><table><caption>原本から引き継ぐ内容</caption><tbody>
+<tr><th scope="row">公開口座</th><td id="draft-account" class="restore-source"></td></tr><tr><th scope="row">使用資産の契約</th><td id="draft-token" class="restore-source"></td></tr><tr><th scope="row">残高のブロック</th><td id="draft-block" class="restore-source"></td></tr>
+<tr><th scope="row">使用する元本</th><td id="draft-spend"></td></tr><tr><th scope="row">費用以外に使うETH</th><td id="draft-native"></td></tr><tr><th scope="row">費用の予算</th><td id="draft-fee"></td></tr></tbody></table></div></div>
+<p class="small">使用額を変える場合は、予算入力から作り直してください。原本の残高が足りない場合も作成できますが、照合結果には不足が残ります。</p></section>
+<section aria-labelledby="draft-content-title"><h2 id="draft-content-title">2. 提案の説明と対象</h2>
+<label>提案名（半角英数字・ハイフン・下線）<input id="draft-id" maxlength="64" autocomplete="off"></label>
+<label>作成者の表示名<input id="draft-label" maxlength="80" value="手入力" autocomplete="off"></label>
+<label>この提案の説明<textarea id="draft-rationale" maxlength="2000" rows="3"></textarea></label>
+<label>対象サービスのURL（https:// から、パスなし）<input id="draft-origin" maxlength="256" autocomplete="off" spellcheck="false" placeholder="https://…"></label>
+<label>対象の契約アドレス<input id="draft-contract" maxlength="42" autocomplete="off" spellcheck="false" placeholder="0x…"></label>
+<button id="draft-aerodrome" type="button" disabled>BaseのAerodromeを入力</button>
+<p class="small">このURLと契約の組1件を比較対象にします。サービスへの接続や、その安全性の認定は行いません。</p></section>
+<section aria-labelledby="draft-limits-title"><h2 id="draft-limits-title">3. 比較する使用条件</h2>
+<button id="draft-fill" type="button" disabled>予算の額を比較上限に転記</button>
+<div class="fields"><label>元本の使用上限（上に表示した資産）<input id="draft-max-spend" inputmode="decimal" maxlength="100"></label>
+<label>費用以外に使うETHの上限<input id="draft-max-native" inputmode="decimal" maxlength="100"></label>
+<label>費用全体の上限（ETH）<input id="draft-max-fee" inputmode="decimal" maxlength="100"></label>
+<label>作成してからの有効時間（分・最大1440）<input id="draft-minutes" inputmode="numeric" maxlength="4" value="60"></label></div>
+<p class="small">金額を確認してから作成してください。未確認の費用は0とは扱いません。上限への転記後も、予算の不足や未確認の判定は変わりません。</p>
+<button id="draft-generate" type="button" disabled>この入力で提案を作成・照合</button> <button id="draft-cancel" type="button">確認結果を取り消す</button>
+<p id="draft-status" role="status" aria-live="polite"></p></section>
+<section id="draft-result" aria-labelledby="draft-result-title" hidden><h2 id="draft-result-title">4. 作成した提案</h2>
+<p id="draft-outcome" class="notice"></p><p id="draft-summary" class="restore-source"></p><p id="draft-time"></p><ul id="draft-reasons"></ul>
+<p>提案・比較条件・元の予算と公開残高・照合時刻を、1ファイルに保存します。後で読み戻しても期限は延長されません。</p>
+<button id="draft-save" type="button" disabled>提案・条件・原本をまとめて保存</button><p id="draft-save-status" role="status" aria-live="polite"></p>
+<p>保存後は<a href="/proposals/" target="_blank" rel="noopener">提案と使用条件の照合</a>で再確認できます。価格も比べる場合は<a href="/quotes/" target="_blank" rel="noopener">見積もりの取得</a>、続いて<a href="/proposals/quote/" target="_blank" rel="noopener">提案と見積もりの照合</a>へ進んでください。対応する同じブロック・使用額の資料が必要です。</p>
+<p class="small">この結果は、現在の残高、権限の設定者、実行済みかどうかを証明しません。取引実行の機能は含みません。</p></section>
+</main><script type="module" src="/examples/operation-proposal-draft-page.js"></script></body></html>

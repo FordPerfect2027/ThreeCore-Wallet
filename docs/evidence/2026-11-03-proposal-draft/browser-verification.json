@@ -1,0 +1,44 @@
+{
+  "checkedAt": "2026-11-03T12:10:53.715Z",
+  "records": [
+    {
+      "download": "ThreeCore-manual-proposal-review.json",
+      "file": "browser-pass.json",
+      "bytes": 4059,
+      "sha256": "964bcd41fdcbf623381807730844b1dd250ade0ccd7b70b76e9456c9e5acc22e",
+      "checksSatisfied": true,
+      "reasons": []
+    },
+    {
+      "download": "ThreeCore-manual-proposal-review (1).json",
+      "file": "browser-limit.json",
+      "bytes": 4091,
+      "sha256": "54fd7b2f614089e69b58363b76efef46ea5ad7bbc84a78f39798196c7437b150",
+      "checksSatisfied": false,
+      "reasons": [
+        "TOKEN_SPEND_LIMIT"
+      ]
+    },
+    {
+      "download": "ThreeCore-manual-proposal-review (2).json",
+      "file": "browser-live-insufficient.json",
+      "bytes": 4134,
+      "sha256": "b05b367e0bb7a878b54ff176c10d02549e3bb557a58ba215f43c228f8ac0a558",
+      "checksSatisfied": false,
+      "reasons": [
+        "BUDGET_CONSTRAINTS_UNSATISFIED"
+      ]
+    },
+    {
+      "download": "ThreeCore-proposal-review (3).json",
+      "file": "browser-recheck.json",
+      "bytes": 4059,
+      "sha256": "6481dcc835fe0572a86d917fc7f3b4e796f3ca577a333a3d63a148247179c817",
+      "checksSatisfied": true,
+      "reasons": []
+    }
+  ],
+  "savedSourceTextPreserved": true,
+  "recheckDidNotExtendExpiry": true,
+  "noTransactions": true
+}
