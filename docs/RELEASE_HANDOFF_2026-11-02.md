@@ -11,6 +11,15 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [proposal comparison foundation](OPERATION_PROPOSAL_REVIEW_2026-11-03.md)
+now binds imported proposals to exact budget evidence, account/network/token,
+dApp origin and contract, amount limits and time windows. It includes an offline
+command, a local screen and source-preserving saved-result verification.
+All 25 feature and 207 related tests passed; actual browser downloads reproduced
+success, expiry and over-limit results using explicitly synthetic data.
+This follow-up is not in the sealed `cd7f7ed` ZIP. Actual product AI generation,
+live dApp quotes and isolated execution integration are the next missing work.
+
 The [integrated public-reading and budget delivery](INTEGRATED_PUBLIC_BUDGET_DELIVERY_2026-11-03.md)
 now pins `cd7f7ed`, passes 16,585 Node/HTTP and 1,026 synthetic browser cases,
 and restores all four source projects from one ZIP. Fresh ordinary startup and

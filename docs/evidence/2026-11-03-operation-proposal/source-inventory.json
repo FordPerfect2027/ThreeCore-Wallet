@@ -1,0 +1,75 @@
+{
+  "baseCommit": "7272e81",
+  "sources": [
+    {
+      "path": "src/operation-proposal.js",
+      "bytes": 9924,
+      "sha256": "3e065d3dcef322d435129750d9552130b45c3de88ee35ea6df72996571aa12e1"
+    },
+    {
+      "path": "src/operation-proposal-file.js",
+      "bytes": 3897,
+      "sha256": "a419a80bc0d4f0100b86775999ad33380974dd988b44dd7eeac75df6d25cf529"
+    },
+    {
+      "path": "scripts/check-operation-proposal.js",
+      "bytes": 3151,
+      "sha256": "efa9d29f5ce7c8cc52aa3bee76c998f76656f1c34c095300c639ba50670572e3"
+    },
+    {
+      "path": "examples/operation-proposal-page.js",
+      "bytes": 8839,
+      "sha256": "3489622df7bc917c4999a8709f652b550cd3275f94ee3381e1a794d26cea53f6"
+    },
+    {
+      "path": "examples/operation-proposal.html",
+      "bytes": 3495,
+      "sha256": "0ea07fa7eff79bb248d4ddd1d423267fd05867d667db690e2e8121be54e7bf3c"
+    },
+    {
+      "path": "examples/dev-server.js",
+      "bytes": 35972,
+      "sha256": "e3a868b8bed3f10a2b9befe7e4d35f033bf81aa10d90b0bc8afbb8e0c8efefee"
+    },
+    {
+      "path": "examples/operation-budget-evidence.html",
+      "bytes": 3862,
+      "sha256": "a31e0fad3607762726f77f2bab1de49a8659e552346ab39607d1f6a60a4ee9d2"
+    },
+    {
+      "path": "package.json",
+      "bytes": 4655,
+      "sha256": "13530e691892277a137ca45c86c4744ad6c21d12a1141f17a167cb7e297435cd"
+    },
+    {
+      "path": "test/operation-proposal.test.js",
+      "bytes": 10166,
+      "sha256": "004937692c48821d3903f5cf618572f004eacd6feb6a3916115dc0c7764921b5"
+    },
+    {
+      "path": "test/operation-proposal-cli.test.js",
+      "bytes": 4492,
+      "sha256": "a747ca0228b3181540c1ca0269618f9dc56c34b893755af22c6da0f493ae8131"
+    },
+    {
+      "path": "test/operation-proposal-file.test.js",
+      "bytes": 2527,
+      "sha256": "36b8dcbb1c7f993b2081b768b5068a3f7777f62fce46282172660fedb2131eab"
+    },
+    {
+      "path": "test/operation-proposal-page.test.js",
+      "bytes": 7466,
+      "sha256": "0134d6beddc1c66078185de88510f81421ca57be5649f8e2217fa59ee70ca849"
+    },
+    {
+      "path": "test/helpers/proposal-fixtures.js",
+      "bytes": 2751,
+      "sha256": "eb77f8787be4382bddd8d6c5a7479b8ad644603a2fac3a202a63601f4c436e50"
+    },
+    {
+      "path": "integration/operation-proposal-server.test.mjs",
+      "bytes": 2021,
+      "sha256": "89d41660ff3330799a74c5aba6a7089bcdd5172f193c1f772a5da769ec0bf506"
+    }
+  ]
+}

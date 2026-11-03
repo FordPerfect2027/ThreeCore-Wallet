@@ -1,0 +1,20 @@
+{
+  "schema": "threecore.proposal-review-policy.v1",
+  "reviewOnly": true,
+  "agent": "DAT",
+  "chainId": 84532,
+  "account": "0x1111111111111111111111111111111111111111",
+  "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+  "allowedDapps": [
+    {
+      "origin": "https://example.invalid",
+      "contract": "0x5555555555555555555555555555555555555555"
+    }
+  ],
+  "maxTokenSpendUnits": "1",
+  "maxNativeValueWei": "0",
+  "maxTotalFeeWei": "1000000000000000",
+  "validFromSeconds": 1793702379,
+  "expiresAtSeconds": 1793706039,
+  "maxProposalLifetimeSeconds": 3600
+}

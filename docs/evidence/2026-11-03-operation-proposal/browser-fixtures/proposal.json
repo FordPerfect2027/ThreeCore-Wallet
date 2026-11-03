@@ -1,0 +1,23 @@
+{
+  "schema": "threecore.operation-proposal.v1",
+  "reviewOnly": true,
+  "proposalId": "synthetic-plan-1",
+  "source": {
+    "kind": "ai",
+    "label": "Synthetic fixture, no model call"
+  },
+  "agent": "DAT",
+  "chainId": 84532,
+  "account": "0x1111111111111111111111111111111111111111",
+  "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+  "dapp": {
+    "origin": "https://example.invalid",
+    "contract": "0x5555555555555555555555555555555555555555"
+  },
+  "spendUnits": "50000000000000000000",
+  "nativeValueWei": "0",
+  "createdAtSeconds": 1793702409,
+  "expiresAtSeconds": 1793704239,
+  "budgetEvidenceSha256": "8826aa9759756c83b79c1d85dfba874e708dc843468cc8ff2d9b8652acb2240e",
+  "rationale": "Fictional allocation plan for testing source and policy comparison."
+}

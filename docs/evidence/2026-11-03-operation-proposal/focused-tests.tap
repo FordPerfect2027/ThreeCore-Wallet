@@ -1,0 +1,20 @@
+✔ CLI reports acceptable comparisons, mismatches and invalid input separately without modifying original files (120.1254ms)
+✔ CLI bounds bytes, rejects invalid UTF-8 and validates argument shape before opening files (53.3427ms)
+✔ all three agents bind original evidence and budget without granting authority to an AI label (77.3433ms)
+✔ an exact source-file hash prevents substituting or reformatting the linked budget evidence (23.248ms)
+✔ policy context and exact origin/contract pair must match, independently of reassuring rationale (36.4806ms)
+✔ policy and proposal time windows use exclusive expiry and bounded lifetimes (30.6738ms)
+✔ spend, native value and known fee limits are exact uint256 comparisons (33.7322ms)
+✔ a proposal and policy agreeing with each other cannot replace the evidence account or token (11.6793ms)
+✔ unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked (7.1376ms)
+✔ shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal (17.7769ms)
+✔ strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts (6.6196ms)
+✔ async checks retain captured proposal/policy and reject cancelled or malformed nested evidence (7.8358ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 749.7349

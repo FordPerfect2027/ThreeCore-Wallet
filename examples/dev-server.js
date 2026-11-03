@@ -9,6 +9,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/proposals/", { file: resolve(here, "operation-proposal.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/operation-proposal-page.js", { file: resolve(here, "operation-proposal-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["operation-proposal", "operation-proposal-file"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/tokens/read/", { file: resolve(here, "public-token-batch.html"), mime: "text/html; charset=utf-8" }],
   ["/examples/public-token-batch-page.js", { file: resolve(here, "public-token-batch-page.js"), mime: "text/javascript; charset=utf-8" }],
   ...["public-token-batch-request", "public-token-batch-client"].map(name =>

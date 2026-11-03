@@ -21,6 +21,7 @@
     "budget:check": "node scripts/check-operation-budget.js",
     "budget:shared": "node scripts/check-shared-operation-budget.js",
     "budget:evidence": "node scripts/check-operation-budget-evidence.js",
+    "proposal:check": "node scripts/check-operation-proposal.js",
     "tokens:read": "node scripts/public-token-batch.js",
     "rehearsal:compare": "node scripts/compare-rehearsal-workspaces.js",
     "demo": "node examples/dev-server.js",
