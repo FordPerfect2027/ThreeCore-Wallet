@@ -1,0 +1,160 @@
+{
+  "recordedAt": "2026-11-03T01:54:02.693Z",
+  "origin": "http://127.0.0.1:4233",
+  "walletSource": "6858cc73a8cb23281d1323b56e2ffe90dda8e012",
+  "walletImplementation": "f6f378cc9b44f33fc7e147f4626e23573de06a6c",
+  "userReportedPermission": "Account 1 connected",
+  "observedPermission": {
+    "allowedAddressCount": 1,
+    "accountMatchesExistingAccount1": true,
+    "chainId": 8453
+  },
+  "observedConnections": [
+    "DAT",
+    "EMA",
+    "CAWELON"
+  ],
+  "backup": {
+    "bytes": 10100,
+    "sha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0",
+    "historyRecords": 9,
+    "historyPerCard": 3,
+    "historyIdenticalToOriginal": true,
+    "historySha256": "a450048a9e25861d62561a0db5efa553f664b3efaf15c96f4eb9cb1fe45a3107",
+    "requestedCardChainIds": [
+      8453,
+      8453,
+      8453
+    ],
+    "historicalRecordChainIds": [
+      84532
+    ]
+  },
+  "userReportedChange": "4233 site network changed from Base to Base Sepolia, account unchanged",
+  "observedAfterReportedChange": {
+    "recordedAt": "2026-11-03T01:48:25.851Z",
+    "connectedCards": 3,
+    "renderedChainIds": [
+      8453,
+      8453,
+      8453
+    ],
+    "protectionLogContainsStartOnly": true,
+    "DATReadCompleted": true,
+    "renderedBlock": "53440599"
+  },
+  "interpretation": "The requested new chain was not observed. This is not a live chainChanged acceptance pass and does not establish an event-handler defect.",
+  "toolBoundary": "Native Windows UI inspection could not determine the browser URL; Computer Use explicitly stopped the prior turn. The user was asked to select the actual 4233 Wallet tab, without redoing connection approval.",
+  "nativeWindowTitleObserved": "Extensions and 13 other pages - Personal - Microsoft Edge",
+  "afterActualSwitchHistoryVerified": false,
+  "localEvidenceHashes": [
+    {
+      "name": "active-network-check-pending.json",
+      "bytes": 1173,
+      "sha256": "53db34a0eedb726d3d57fb1c46af51111752819c84ad91e4f01ace0e5d9cdbe3"
+    },
+    {
+      "name": "after-idle-stop.json",
+      "bytes": 10100,
+      "sha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0"
+    },
+    {
+      "name": "after-network-switch.json",
+      "bytes": 826,
+      "sha256": "f4e0ce22565895cff9901c68afedfce98a8b8e8aa2cec288d1efe3c6db29caf1"
+    },
+    {
+      "name": "after-visibility-stop-and-resume.json",
+      "bytes": 10100,
+      "sha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0"
+    },
+    {
+      "name": "before-switch.json",
+      "bytes": 10100,
+      "sha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0"
+    },
+    {
+      "name": "connected-before.jpg",
+      "bytes": 28990,
+      "sha256": "0e10996cb0cacab02c43f7a00235efd23d0953e41d39d2e92f0de31e3c9aff70"
+    },
+    {
+      "name": "connected-before.txt",
+      "bytes": 3627,
+      "sha256": "1614d1233a70717ba1dfdd4341c03eeac5c8907deef4f1f9b0e327e14c70c384"
+    },
+    {
+      "name": "connection-observation.json",
+      "bytes": 826,
+      "sha256": "86325bafdb68878dac74a7794be54b1d500d76769b771e29befa50e87bfaffb5"
+    },
+    {
+      "name": "current-site-probe-after-resume.txt",
+      "bytes": 1515,
+      "sha256": "15f22a8b6bc88a23cdd88f0f497a23a913e5edf590183ee8e4f0d50d0d4ba391"
+    },
+    {
+      "name": "protection-after-native-stop.txt",
+      "bytes": 356,
+      "sha256": "0066947f483a4f634c30937a5d0fa8c050367bc8caa861eab5b3066b3f90b997"
+    },
+    {
+      "name": "protection-before.txt",
+      "bytes": 301,
+      "sha256": "984ccf72855f98149c25502fde376f7774e0d0963e16b6446d16279204564e39"
+    },
+    {
+      "name": "protection-stop-observed.jpg",
+      "bytes": 36045,
+      "sha256": "f334b0e3139d369247925df1af8a6425e32d768c66a1f0cf46cdedd633c61df3"
+    },
+    {
+      "name": "read-after-reported-network-switch.txt",
+      "bytes": 1270,
+      "sha256": "43b4bd4877dbe593671b6b982ef811d2a1142f0228973fb41f0a400f1a764afc"
+    },
+    {
+      "name": "reconnected-before-active-network-check.jpg",
+      "bytes": 28998,
+      "sha256": "ea86d547a8c6fc349f0586c33d7927cac3332c7a903508fb67211c938f7a1b5b"
+    },
+    {
+      "name": "reconnected-before-active-network-check.json",
+      "bytes": 498,
+      "sha256": "64a125c5dadb71872444e74273dc1af78c10cac7b526e01813149e36c0d78510"
+    }
+  ],
+  "externalWalletTransactions": false,
+  "signatures": false,
+  "privateKeysAccessed": false,
+  "githubWrites": false,
+  "independentlyReviewed": false,
+  "percentageCalculated": false,
+  "updatedAt": "2026-11-03T02:06:38.373Z",
+  "protectionFollowup": {
+    "pageHiddenStopObserved": true,
+    "explicitResume": true,
+    "permittedAccountStillMatchesAccount1": true,
+    "permittedChainIdAfterResume": 8453,
+    "allThreeExplicitlyReconnectedAt": "2026-11-03T01:58:07.356Z",
+    "afterResumeExportSha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0",
+    "afterResumeExportByteIdenticalToBefore": true,
+    "idleStopObservedAt": "2026-11-03T02:04:05.267Z",
+    "idleMinutes": 5,
+    "stopOnPageHidden": true,
+    "allThreeStopped": true,
+    "afterIdleExportSavedAt": "2026-11-03T11:05:18+09:00",
+    "afterIdleExportBytes": 10100,
+    "afterIdleExportSha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0",
+    "afterIdleExportByteIdenticalToBefore": true,
+    "historyRecords": 9,
+    "historyIdenticalToOriginal": true,
+    "internalChecksumsValidatedByCLI": true,
+    "interpretation": "Observed visibility and inactivity stops only; these are not chainChanged evidence."
+  },
+  "pendingAction": "Select the current Base network through MetaMask site icon for origin 4233, then Base Sepolia while retaining Account 1. The active-network follow-up has not been observed.",
+  "officialGuidance": [
+    "https://support.metamask.io/configure/networks/how-to-change-networks",
+    "https://support.metamask.io/more-web3/dapps/manage-dapp-permissions/"
+  ]
+}

@@ -53,6 +53,18 @@ also restored and re-exported the actual nine records byte-for-byte at port
 4233. That origin still required Wallet permission; no new live-switch pass
 is inferred from file restoration.
 
+The [later Account 1 follow-up](LIVE_RECOVERY_2026-11-03.md#later-account-1-permission-and-connection-confirmed)
+now confirms permission and three explicit Mainnet connections at 4233, with
+all nine original histories retained in a validated export. After a reported
+site-network change, the controlled page still returned/rendered Mainnet and
+completed a native-balance read. The requested Sepolia change was not observed;
+live switch-event acceptance remains open. Subsequent page-hidden and inactivity
+protection stops retained all nine histories in byte-identical, validated exports.
+The current operator dependency is selecting the site's active network through
+MetaMask's site icon and current Base display, not repeating Account 1 permission
+or editing only the list of networks the site is permitted to use. The exact
+4233 target and distinction are recorded in the updated operator guide.
+
 The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
 The original permitted origin was recovered through the rehearsal page, three
@@ -320,7 +332,7 @@ Do not clear the user's database or reload their working tab to create a test.
 
 | Open item | Evidence needed to close it | Current limit |
 | --- | --- | --- |
-| Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet, Account 1/Sepolia and Account 2/Sepolia sessions passed. The recovered Account 1 page retained nine records. The operator changed context after the prior session stopped; live switch-event invalidation remains unobserved |
+| Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet, Account 1/Sepolia and Account 2/Sepolia sessions passed. The later 4233 Account 1/Mainnet session connected all three cards with nine original histories. After a reported change, that page still rendered/read Mainnet. Page-hidden/inactivity stops and unchanged nine-record exports were observed separately; the requested new chain and live switch-event invalidation remain unobserved |
 | Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files. Offline follow-up found public checkpoint `07041f0` rejects shared-account backups; a nine-record history-only recovery copy is verified, but browser rollback to a public release is not |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
 | Development dependency release review | Independently review the applied private helper fork and approve its maintenance/release scope | The affected Zod version is replaced in all three local installations; final builds/types, dependency graphs, exact bytecode comparisons and dated full audits pass. Transaction-executing suites were not rerun; independent review and release approval remain open |
