@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile,readdir} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+const here=new URL('./',import.meta.url),sha=b=>createHash('sha256').update(b).digest('hex');
+const json=async name=>JSON.parse(await readFile(new URL(name,here),'utf8'));
+const node=await readFile(new URL('full-wallet-tests.tap',here),'utf8');
+assert.match(node,/# tests 16730\r?\n/);assert.match(node,/# pass 16730\r?\n/);
+for(const count of ['fail','cancelled','skipped'])assert.match(node,new RegExp('# '+count+' 0\\r?\\n'));
+assert.match(node,/# duration_ms [\d.]+\s*$/);
+const browser=await json('browser-result.json'),build=await json('package-build.json'),restored=await json('restoration-result.json'),startup=await json('startup-result.json'),evidence=await json('restored-evidence-verification.json'),files=await json('actual-file-restoration.json');
+assert.equal(browser.completed,1026);assert.equal(browser.status,'passed');assert.deepEqual(browser.failures,[]);
+assert.equal(build.verification.allMatched,true);assert.equal(restored.observations.length,4);
+assert(restored.observations.every(o=>o.clean&&o.noRemotes&&o.objectIntegrityVerified));
+assert.equal(startup.allServedBytesMatch,true);assert.equal(evidence.allMatched,true);assert.equal(files.byteIdentical,true);assert.equal(files.feeRecord.byteIdentical,true);
+await writeFile(new URL('summary.json',here),JSON.stringify({walletRevision:'288efc36baf017221ec17e21fd9bcd939cbed4cf',nodePassed:16730,browserPassed:1026,package:build.verification,restoredSources:restored.observations,startupAssetCount:startup.assetCount,evidence:evidence.summary,actualSavedFilesIdentical:true,wholeProjectComplete:false,userWalletTransactions:false},null,2)+'\n');
+const lines=[];for(const name of(await readdir(here)).filter(n=>n!=='SHA256SUMS.txt').sort())lines.push(sha(await readFile(new URL(name,here)))+'  '+name);
+await writeFile(new URL('SHA256SUMS.txt',here),lines.join('\n')+'\n');console.log(JSON.stringify({evidenceFiles:lines.length,nodePassed:16730,browserPassed:1026}));

@@ -1,0 +1,8 @@
+{
+  "firstNavigationWaitTimedOut": true,
+  "existingTabRecoveredViaDocumentedApi": true,
+  "testPageReloaded": false,
+  "firstShardCompleted": true,
+  "firstShardFailedAssertions": 0,
+  "scope": "The control wait timed out while the existing page was running; no test timeout or retry is claimed."
+}

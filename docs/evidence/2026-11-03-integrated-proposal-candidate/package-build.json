@@ -1,0 +1,55 @@
+{
+  "destination": "C:/Users/aseet/Downloads/ThreeCore-complete-288efc3-20261103-r1",
+  "sources": [
+    {
+      "name": "Wallet",
+      "base": "b7df758492f759066492152d7de433d220d7c3b7",
+      "revision": "288efc36baf017221ec17e21fd9bcd939cbed4cf",
+      "tree": "461f9e82e7f4f9d3f911eab174498a32b38983a5",
+      "baseBundle": "wallet/history.bundle",
+      "updateBundle": "wallet.bundle",
+      "bytes": 4587343,
+      "sha256": "af7b87ad1375c10fcfd385714bf7662da15e7129c915c0140918359f76228575",
+      "baseBundleSha256": "56d68bcbbc67821f838c472a4038ff017932e9dbe29a01a08efcb6908d049f20"
+    },
+    {
+      "name": "DAT",
+      "base": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+      "revision": "c50aae41b9c7aa496833e6260cc3314dc3c3fbfb",
+      "tree": "ffccb83b2b397f2a42d7fa19fd93de86817c4747",
+      "baseBundle": "tokens/DAT/history.bundle",
+      "updateBundle": "dat.bundle",
+      "bytes": 4157,
+      "sha256": "34b8c82f205921bdee2e7699a5bdfbf90781a0dfd1893aaca357116a767b6beb",
+      "baseBundleSha256": "140df5ea679b1934842364d05b2aa7f6df452909702c6ffed814e8ece1fec14c"
+    },
+    {
+      "name": "EMA",
+      "base": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+      "revision": "a37c60574e279980b5ce90775842d27b9c4ce5eb",
+      "tree": "555c7b4e2f14497d4e695d22e1a4a159d48418d9",
+      "baseBundle": "tokens/EMA/history.bundle",
+      "updateBundle": "ema.bundle",
+      "bytes": 4145,
+      "sha256": "27e5e3937835f56751a6abaca6e274fdaebdd1e0ce25ea1b830cf77cc8876aa1",
+      "baseBundleSha256": "a9416e7e95756cde9d19c9c065cd78626c5f98303fcf2ea96ed0720edc89091a"
+    },
+    {
+      "name": "CAWELON",
+      "base": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+      "revision": "0f5dfa00a6e1738df3706e12e59b48459ff875a0",
+      "tree": "cfd1c568071fe3908977af620ee9b5ef1a19b2c1",
+      "baseBundle": "tokens/CAWELON/history.bundle",
+      "updateBundle": "cawelon.bundle",
+      "bytes": 4153,
+      "sha256": "13070507f690c171a4aa970e86a4f37dfe56c6250c57823033c38f7c04b55848",
+      "baseBundleSha256": "fbd3fb5f659b0dc03f32eaa377d200a2ca3500beb0f55366c831c25ca2c891f1"
+    }
+  ],
+  "verification": {
+    "entries": 50,
+    "totalBytes": 65673797,
+    "allMatched": true,
+    "manifestSha256": "176d359d28ce44c18b2ad989ef63f4e2c339b297f3c827804cbaf0420482ec89"
+  }
+}

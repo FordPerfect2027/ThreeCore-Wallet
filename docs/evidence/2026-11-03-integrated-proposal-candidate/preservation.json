@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-11-03T13:47:50.565Z",
+  "priorZip": {
+    "path": "C:/Users/aseet/Downloads/ThreeCore-complete-cd7f7ed-20261103-r1.zip",
+    "bytes": 55939946,
+    "sha256": "b1dd360de61bd7f036ae8a4fa4d6083ae644f38aae304db53dab362db35a8e21",
+    "unchanged": true
+  },
+  "servers": [
+    {
+      "port": 4231,
+      "status": 200
+    },
+    {
+      "port": 4232,
+      "status": 200
+    },
+    {
+      "port": 4233,
+      "status": 200
+    }
+  ],
+  "originalServersRestarted": false,
+  "userTabsReloaded": false
+}

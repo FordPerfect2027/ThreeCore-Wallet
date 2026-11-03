@@ -1,0 +1,9 @@
+{
+  "destination": "C:/Users/aseet/Downloads/ThreeCore-complete-288efc3-20261103",
+  "status": "failed-before-zip",
+  "error": "MANIFEST_FORMAT",
+  "cause": "The existing package verifier intentionally accepts an ASCII manifest path grammar; the newly added Japanese guide filename did not match it.",
+  "correction": "Keep the guide contents in Japanese and use README_JA.txt; rebuild into a new r1 directory without changing the verifier.",
+  "productSourceChanged": false,
+  "failureReclassifiedAsPass": false
+}

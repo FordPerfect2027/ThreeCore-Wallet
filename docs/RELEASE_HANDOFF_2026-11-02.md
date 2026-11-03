@@ -11,6 +11,16 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [new integrated proposal delivery](INTEGRATED_PROPOSAL_DELIVERY_2026-11-03.md)
+pins `288efc3` and includes proposals, quotes, allowance checks, simulation inputs
+and fee acquisition/review. Its new full Node/HTTP run passed 16,730 cases; the
+two CUA browser shards passed all 1,026 cases. A fresh ZIP extraction restored
+all four repositories. All 267 served assets and 292 evidence manifests matched.
+Actual browser restoration preserved nine Wallet histories and the complete fee
+record byte-for-byte. The ZIP is in Downloads as
+`ThreeCore-complete-288efc3-20261103-r1.zip`. This closes the pending integrated
+delivery step for this source; the broader goal remains active and incomplete.
+
 The [public proposal fee path](PUBLIC_PROPOSAL_FEES_2026-11-03.md) now connects
 fixed-call simulation and canonical Base fee-oracle reads to the fee screen,
 bounded local HTTP, source-preserving download and offline replay. All 55 related
