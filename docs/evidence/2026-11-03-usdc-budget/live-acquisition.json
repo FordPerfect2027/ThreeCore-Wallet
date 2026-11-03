@@ -1,0 +1,139 @@
+{
+  "started": "2026-11-03T11:42:40.724Z",
+  "finished": "2026-11-03T11:42:42.985Z",
+  "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+  "blockNumber": "53457078",
+  "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+  "requests": [
+    {
+      "method": "eth_chainId",
+      "params": [],
+      "status": 200,
+      "headersMs": 421
+    },
+    {
+      "method": "eth_getBlockByNumber",
+      "params": [
+        "0x32fb0b6",
+        false
+      ],
+      "status": 200,
+      "headersMs": 191
+    },
+    {
+      "method": "eth_getCode",
+      "params": [
+        "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        {
+          "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+          "requireCanonical": true
+        }
+      ],
+      "status": 200,
+      "headersMs": 169
+    },
+    {
+      "method": "eth_getBalance",
+      "params": [
+        "0xcfae42798e867968c60fedf38d7ee401120072c8",
+        {
+          "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+          "requireCanonical": true
+        }
+      ],
+      "status": 200,
+      "headersMs": 178
+    },
+    {
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+          "data": "0x06fdde03"
+        },
+        {
+          "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+          "requireCanonical": true
+        }
+      ],
+      "status": 200,
+      "headersMs": 176
+    },
+    {
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+          "data": "0x95d89b41"
+        },
+        {
+          "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+          "requireCanonical": true
+        }
+      ],
+      "status": 200,
+      "headersMs": 170
+    },
+    {
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+          "data": "0x313ce567"
+        },
+        {
+          "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+          "requireCanonical": true
+        }
+      ],
+      "status": 200,
+      "headersMs": 176
+    },
+    {
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+          "data": "0x18160ddd"
+        },
+        {
+          "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+          "requireCanonical": true
+        }
+      ],
+      "status": 200,
+      "headersMs": 185
+    },
+    {
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+          "data": "0x70a08231000000000000000000000000cfae42798e867968c60fedf38d7ee401120072c8"
+        },
+        {
+          "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+          "requireCanonical": true
+        }
+      ],
+      "status": 200,
+      "headersMs": 179
+    },
+    {
+      "method": "eth_getBlockByNumber",
+      "params": [
+        "0x32fb0b6",
+        false
+      ],
+      "status": 200,
+      "headersMs": 192
+    },
+    {
+      "method": "eth_chainId",
+      "params": [],
+      "status": 200,
+      "headersMs": 161
+    }
+  ],
+  "walletConnected": false
+}

@@ -1,0 +1,114 @@
+{
+  "schema": "threecore.operation-budget-evidence-result.v1",
+  "input": {
+    "schema": "threecore.operation-budget-evidence.v1",
+    "budgetFile": "{\n  \"schema\": \"threecore.usdc-operation-budget.v1\",\n  \"simulationOnly\": true,\n  \"agent\": \"EMA\",\n  \"chainId\": 8453,\n  \"token\": {\n    \"decimals\": 6,\n    \"balanceUnits\": \"0\",\n    \"reservedUnits\": \"1000000\",\n    \"reserveFloorUnits\": \"1000000\",\n    \"spendUnits\": \"1000000\"\n  },\n  \"native\": {\n    \"balanceWei\": \"700000000000000\",\n    \"reservedWei\": \"1000000000000000\",\n    \"reserveFloorWei\": \"2000000000000000\",\n    \"valueWei\": \"0\"\n  },\n  \"fees\": {\n    \"gasLimit\": \"200000\",\n    \"maxFeePerGasWei\": \"100000000\",\n    \"l1FeeBudgetWei\": \"10000000000000\",\n    \"operatorFeeBudgetWei\": \"0\",\n    \"bufferWei\": \"10000000000000\"\n  }\n}\n",
+    "observationFiles": [
+      "{\n  \"schema\": \"threecore.public-usdc-file.v1\",\n  \"observation\": {\n    \"schema\": \"threecore.public-usdc-observation.v1\",\n    \"chainId\": 8453,\n    \"rpcUrl\": \"https://mainnet.base.org\",\n    \"account\": \"0xcfae42798e867968c60fedf38d7ee401120072c8\",\n    \"tokenAddress\": \"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913\",\n    \"blockNumber\": \"53457078\",\n    \"blockHash\": \"0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a\",\n    \"blockTimestampSeconds\": 1793703503,\n    \"observedAtSeconds\": 1793706162,\n    \"metadata\": {\n      \"name\": \"USD Coin\",\n      \"symbol\": \"USDC\",\n      \"decimals\": 6,\n      \"totalSupply\": \"4286770006941469\"\n    },\n    \"balanceBaseUnits\": \"0\",\n    \"nativeBalanceBaseUnits\": \"700000000000000\",\n    \"hasCode\": true,\n    \"canonicalBlockRechecked\": true,\n    \"readOnly\": true,\n    \"walletConnected\": false\n  },\n  \"digest\": \"da4c0d43472ce3fd1defe9504bb7b48e21f4e2710b0723fe8399b2b0e8b99f6f\"\n}\n"
+    ]
+  },
+  "budgetResult": {
+    "schema": "threecore.operation-budget-result.v1",
+    "input": {
+      "schema": "threecore.usdc-operation-budget.v1",
+      "simulationOnly": true,
+      "agent": "EMA",
+      "chainId": 8453,
+      "token": {
+        "decimals": 6,
+        "balanceUnits": "0",
+        "reservedUnits": "1000000",
+        "reserveFloorUnits": "1000000",
+        "spendUnits": "1000000"
+      },
+      "native": {
+        "balanceWei": "700000000000000",
+        "reservedWei": "1000000000000000",
+        "reserveFloorWei": "2000000000000000",
+        "valueWei": "0"
+      },
+      "fees": {
+        "gasLimit": "200000",
+        "maxFeePerGasWei": "100000000",
+        "l1FeeBudgetWei": "10000000000000",
+        "operatorFeeBudgetWei": "0",
+        "bufferWei": "10000000000000"
+      }
+    },
+    "simulationOnly": true,
+    "sourceVerified": false,
+    "authorizesExecution": false,
+    "onchainFeeCap": false,
+    "constraintsSatisfied": false,
+    "reasons": [
+      "TOKEN_BUDGET_SHORTFALL",
+      "NATIVE_BUDGET_SHORTFALL"
+    ],
+    "token": {
+      "required": "3000000",
+      "shortfall": "3000000",
+      "surplus": "0"
+    },
+    "executionBudgetWei": "20000000000000",
+    "knownFeeBudgetWei": "40000000000000",
+    "unknownComponents": [],
+    "plannedFeeBudgetWei": "40000000000000",
+    "plannedNativeCostWei": "40000000000000",
+    "native": {
+      "required": "3040000000000000",
+      "shortfall": "2340000000000000",
+      "surplus": "0"
+    },
+    "knownNativeMinimum": {
+      "required": "3040000000000000",
+      "shortfall": "2340000000000000",
+      "surplus": "0"
+    }
+  },
+  "sourceHashes": [
+    "b785beda4c7ef4ab1adcf2577769c5eee31310dad666739f4ec252bb5be8dcda"
+  ],
+  "budgetHash": "1e2f197108f4a8439c98a995bacff0ca2f0a92d1a7d1fc58ffedd30c4c1ec552",
+  "comparisons": [
+    {
+      "agent": "EMA",
+      "consistent": true,
+      "reasons": [],
+      "observation": {
+        "schema": "threecore.public-usdc-observation.v1",
+        "chainId": 8453,
+        "rpcUrl": "https://mainnet.base.org",
+        "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+        "tokenAddress": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+        "blockNumber": "53457078",
+        "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+        "blockTimestampSeconds": 1793703503,
+        "observedAtSeconds": 1793706162,
+        "metadata": {
+          "name": "USD Coin",
+          "symbol": "USDC",
+          "decimals": 6,
+          "totalSupply": "4286770006941469"
+        },
+        "balanceBaseUnits": "0",
+        "nativeBalanceBaseUnits": "700000000000000",
+        "hasCode": true,
+        "canonicalBlockRechecked": true,
+        "readOnly": true,
+        "walletConnected": false,
+        "source": "public-rpc",
+        "agent": "EMA",
+        "spendingAsset": "USDC",
+        "identityMatches": true,
+        "securityAudit": false
+      }
+    }
+  ],
+  "groupReasons": [],
+  "consistent": true,
+  "checksumsVerified": true,
+  "historicalOnly": true,
+  "authenticated": false,
+  "currentBalanceVerified": false,
+  "authorizesExecution": false
+}

@@ -24,6 +24,7 @@
     "proposal:check": "node scripts/check-operation-proposal.js",
     "dapp:quote": "node scripts/aerodrome-quote.js",
     "tokens:read": "node scripts/public-token-batch.js",
+    "usdc:read": "node scripts/public-usdc.js",
     "rehearsal:compare": "node scripts/compare-rehearsal-workspaces.js",
     "demo": "node examples/dev-server.js",
     "test:demo-server": "node --test integration/demo-server.test.mjs",

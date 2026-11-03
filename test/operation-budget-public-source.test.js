@@ -6,6 +6,8 @@ import { preparePublicTokenBatchFile } from "../src/public-token-batch-model.js"
 import { mountOperationBudgetPage } from "../examples/operation-budget-page.js";
 import { decodeOperationBudget } from "../src/operation-budget.js";
 import { BUDGET_EVIDENCE_SCHEMA, inspectBudgetEvidence } from "../src/operation-budget-evidence.js";
+import { preparePublicUsdcFile } from "../src/public-usdc-model.js";
+import { usdcFixture } from "./helpers/usdc-fixture.js";
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 async function until(check){const end=Date.now()+2000;while(!check()){if(Date.now()>end)throw Error("TIMEOUT");await new Promise(resolve=>setTimeout(resolve,1));}}
 function setup(options={}){
@@ -53,4 +55,19 @@ for(const action of ["cancel","edit","pagehide","dispose","regular-import"])test
 test("a context change without an input event still cannot apply a preview for the previous token",async()=>{
   const f=setup();f.choose((await preparePublicTokenBatchFile(publicBatchFixture())).text);await until(()=>!f.get("source-apply").disabled);
   f.get("agent").value="EMA";f.get("source-apply").click();assert.equal(f.get("source-apply").disabled,true);assert.equal(f.get("token-balance").value,"1000");assert.equal(f.get("source-preview").hidden,true);f.page.dispose();
+});
+
+test("USDC preview applies only balance and precision, preserves spending and remains evidence-linked",async()=>{
+  const f=setup();f.get("chain").value="8453";f.get("asset").value="usdc";
+  const originalSpend=f.get("token-spend").value,source=(await preparePublicUsdcFile(usdcFixture())).text;
+  f.choose(source);await until(()=>!f.get("source-apply").disabled);
+  assert.equal(f.get("token-balance").value,"1000");f.get("source-apply").click();
+  assert.equal(f.get("token-balance").value,"10");assert.equal(f.get("decimals").value,"6");
+  assert.equal(f.get("token-spend").value,originalSpend);assert.match(f.get("source-status").textContent,/USDC/);
+  f.get("calculate").click();f.get("save").click();
+  const checked=await inspectBudgetEvidence({schema:BUDGET_EVIDENCE_SCHEMA,budgetFile:f.downloads[0].text,observationFiles:[source]});
+  assert.equal(checked.consistent,true);assert.equal(checked.budgetResult.constraintsSatisfied,false);
+  f.choose(source);await until(()=>!f.get("source-apply").disabled);
+  f.get("asset").value="project";f.get("source-apply").click();assert.equal(f.get("source-preview").hidden,true);
+  f.page.dispose();
 });

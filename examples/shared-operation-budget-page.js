@@ -1,4 +1,4 @@
-import { decodeOperationBudget, OPERATION_BUDGET_LIMIT } from "../src/operation-budget.js";
+import { decodeOperationBudget, operationBudgetAssetSymbol, OPERATION_BUDGET_LIMIT } from "../src/operation-budget.js";
 import { SHARED_BUDGET_SCHEMA, SHARED_BUDGET_LIMIT, decodeSharedOperationBudget,
   encodeSharedOperationBudget, evaluateSharedOperationBudget } from "../src/shared-operation-budget.js";
 import { formatRehearsalUnits } from "../src/operation-rehearsal.js";
@@ -7,10 +7,10 @@ import { requireSyncExport } from "../src/export-policy.js";
 import { offerWalletDownload } from "./export-download.js";
 
 const REASONS = { ZERO_TOKEN_SPEND: "使う元本が0のトークンがあります。", TOKEN_BUDGET_SHORTFALL: "元本が不足するトークンがあります。",
-  FEE_COMPONENT_UNKNOWN: "不明な費用があり、ETHの総必要額は未確定です。", SHARED_ETH_SHORTFALL: "共通のETH残高では、分かっている必要額にも足りません。" };
+  FEE_COMPONENT_UNKNOWN: "不明な費用があり、ETHの総必要額は未確定です。", SHARED_ETH_SHORTFALL: "共通のETH残高では、分かっている必要額にも足りません。", SHARED_USDC_SHORTFALL: "共通のUSDC残高では、運用案全体の必要額に足りません。" };
 const ERRORS = { DUPLICATE_AGENT: "同じトークンが重複しています。異なるトークンの入力を選んでください。",
   SHARED_NETWORK_MISMATCH: "ネットワークが異なります。同じネットワークの入力を選んでください。",
-  SHARED_BALANCE_MISMATCH: "ETH残高・別用途の確保額・予備資金が一致しません。同じ口座・同じ時点の仮定にそろえてください。" };
+  SHARED_BALANCE_MISMATCH: "ETH残高・別用途の確保額・予備資金が一致しません。同じ口座・同じ時点の仮定にそろえてください。", SHARED_USDC_BALANCE_MISMATCH: "USDC残高・別用途の確保額・予備資金が一致しません。同じ口座の仮定にそろえてください。" };
 
 export function mountSharedBudgetPage(document, { download = offerWalletDownload } = {}) {
   const get = name => document.getElementById("shared-" + name), reader = createFileReadScope(), remove = [];
@@ -53,8 +53,8 @@ export function mountSharedBudgetPage(document, { download = offerWalletDownload
       if (disposed || own !== revision) return;
       const r = evaluateSharedOperationBudget(input), first = r.input.budgets[0];
       table("preview-rows", r.results.map(row => [row.input.agent,
-        formatRehearsalUnits(row.input.token.spendUnits, row.input.token.decimals) + " " + row.input.agent,
-        formatRehearsalUnits(row.token.shortfall, row.input.token.decimals) + " " + row.input.agent,
+        formatRehearsalUnits(row.input.token.spendUnits, row.input.token.decimals) + " " + operationBudgetAssetSymbol(row.input),
+        formatRehearsalUnits(row.token.shortfall, row.input.token.decimals) + " " + operationBudgetAssetSymbol(row.input),
         eth(row.input.native.valueWei), eth(row.plannedFeeBudgetWei), row.constraintsSatisfied ? "仮定上は足りる" : "不足または未確認"]));
       get("context").textContent = (first.chainId === 8453 ? "Base Mainnet" : "Base Sepolia") + " · " + r.results.length + "トークン";
       get("reserves").textContent = "共通の仮定：ETH残高 " + eth(first.native.balanceWei) + " ／ 別用途 " + eth(first.native.reservedWei) + " ／ 予備資金 " + eth(first.native.reserveFloorWei);
@@ -76,9 +76,10 @@ export function mountSharedBudgetPage(document, { download = offerWalletDownload
       table("rows", [["全トークンの費用とETH使用額", eth(r.plannedNativeCostWei)],
         ["ETH必要額（別用途・予備資金を含む）", eth(r.native?.required ?? null)],
         ["ETH不足額", eth(r.native?.shortfall ?? null)], ["ETH余裕額", eth(r.native?.surplus ?? null)],
-        ["分かっている必要額の下限", eth(r.knownNativeMinimum.required)]], true);
+        ["分かっている必要額の下限", eth(r.knownNativeMinimum.required)],
+        ...(r.sharedUsdc ? [["共通USDCの必要額", formatRehearsalUnits(r.sharedUsdc.required,6)+" USDC"], ["共通USDCの不足額", formatRehearsalUnits(r.sharedUsdc.shortfall,6)+" USDC"]] : [])], true);
       get("outcome").textContent = r.constraintsSatisfied ? "入力した共通の仮定では、まとめて使う予算が足ります。" :
-        r.individuallySatisfied ? "単独では足りても、まとめると共通のETH残高が不足します。" : "まとめて使う予算に、不足または未確認の項目があります。";
+        r.individuallySatisfied ? (r.sharedUsdc?.shortfall !== undefined && r.sharedUsdc.shortfall !== "0" ? "単独では足りても、まとめると共通のUSDC残高が不足します。" : "単独では足りても、まとめると共通のETH残高が不足します。") : "まとめて使う予算に、不足または未確認の項目があります。";
       get("reasons").textContent = r.reasons.map(code => REASONS[code]).join(" ");
       if (disposed || own !== revision || get("assume").checked !== true) return;
       calculated = text; get("result").hidden = false; get("save").disabled = false;

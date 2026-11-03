@@ -10,7 +10,7 @@
 <body><main>
   <header>
     <a href="/rehearsal/" target="_blank" rel="noopener">運用リハーサルを別タブで開く</a>
-    <p><a href="/budget/shared/" target="_blank" rel="noopener">同じ口座のETH予算をまとめて確認する</a></p>
+    <p><a href="/budget/shared/" target="_blank" rel="noopener">同じ口座のETH・USDC予算をまとめて確認する</a></p>
     <p><a href="/budget/evidence/" target="_blank" rel="noopener">予算と保存済み残高を照合する</a></p>
     <p class="eyebrow">DAT · EMA · CAWELON</p><h1>元本とガス代の予算確認</h1>
     <p>トークンで使う元本と、ETHで払う費用を分けて試算します。別の用途に確保した額と、残しておく予備資金も差し引きます。</p>
@@ -22,6 +22,7 @@
     <h2 id="budget-token-title">1. トークンの元本</h2>
     <div class="fields">
       <label>対象トークン<select id="budget-agent"><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label>
+      <label>今回使用する資産<select id="budget-asset"><option value="project">対象トークンそのもの</option><option value="usdc">USDC（Base Mainnet・小数6桁）</option></select></label>
       <label>想定ネットワーク<select id="budget-chain"><option value="84532">Base Sepolia</option><option value="8453">Base Mainnet</option></select></label>
       <label>トークンの小数桁数<input id="budget-decimals" inputmode="numeric" maxlength="2" value="18"></label>
       <label>トークン残高（仮定）<input id="budget-token-balance" inputmode="decimal" maxlength="100"></label>
@@ -32,7 +33,7 @@
   </section>
   <section aria-labelledby="budget-source-title">
     <h2 id="budget-source-title">保存した公開残高を転記する（任意）</h2>
-    <p>上で対象トークンとネットワークを選び、<a href="/tokens/read/" target="_blank" rel="noopener">3トークンの公開残高確認</a>から保存したJSONを選んでください。口座とブロックを確認してから、残高と小数桁数だけを転記します。</p>
+    <p>上で対象トークン・使用する資産・ネットワークを選び、<a href="/tokens/read/" target="_blank" rel="noopener">3トークンの公開残高確認</a>、またはUSDCの読み取りから保存したJSONを選んでください。口座とブロックを確認してから、残高と小数桁数だけを転記します。USDC予算ではBase Mainnet・小数6桁を指定してください。</p>
     <label class="file-label">公開残高の一括ファイル<input id="budget-source-file" type="file" accept=".json,application/json"></label>
     <p id="budget-source-status" role="status" aria-live="polite"></p>
     <div id="budget-source-preview" hidden><div class="table-wrap"><table><caption>転記する公開残高</caption><tbody id="budget-source-rows"></tbody></table></div></div>

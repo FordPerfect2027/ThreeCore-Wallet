@@ -1,0 +1,802 @@
+TAP version 13
+# Subtest: ordinary quote page/module graph and fixed Base reader work; upstream implementation is not public
+ok 1 - ordinary quote page/module graph and fixed Base reader work; upstream implementation is not public
+  ---
+  duration_ms: 778.1203
+  type: 'test'
+  ...
+# Subtest: foreign origin, extra fields, injected methods, invalid numbers, oversized and invalid UTF-8 bodies cannot reach upstream
+ok 2 - foreign origin, extra fields, injected methods, invalid numbers, oversized and invalid UTF-8 bodies cannot reach upstream
+  ---
+  duration_ms: 192.4868
+  type: 'test'
+  ...
+# Subtest: upstream errors are generic and partial quotes never leak
+ok 3 - upstream errors are generic and partial quotes never leak
+  ---
+  duration_ms: 20.6084
+  type: 'test'
+  ...
+# Subtest: two simultaneous jobs are allowed; disconnect cancels upstream and releases capacity
+ok 4 - two simultaneous jobs are allowed; disconnect cancels upstream and releases capacity
+  ---
+  duration_ms: 86.3002
+  type: 'test'
+  ...
+# Subtest: quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+ok 5 - quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+  ---
+  duration_ms: 737.1552
+  type: 'test'
+  ...
+# Subtest: CLI read preserves explicit agent, input, direction, slippage and optional height
+ok 6 - CLI read preserves explicit agent, input, direction, slippage and optional height
+  ---
+  duration_ms: 17.637
+  type: 'test'
+  ...
+# Subtest: CLI saved quote validates files read-only and does not report tampered source contents
+ok 7 - CLI saved quote validates files read-only and does not report tampered source contents
+  ---
+  duration_ms: 98.5667
+  type: 'test'
+  ...
+# Subtest: quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+ok 8 - quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+  ---
+  duration_ms: 8.9742
+  type: 'test'
+  ...
+# Subtest: quote files revalidate arithmetic and checksum rather than trusting saved output
+ok 9 - quote files revalidate arithmetic and checksum rather than trusting saved output
+  ---
+  duration_ms: 30.9364
+  type: 'test'
+  ...
+# Subtest: proposal, exact input amount, router, original budget block and current limits bind the quote
+ok 10 - proposal, exact input amount, router, original budget block and current limits bind the quote
+  ---
+  duration_ms: 151.0453
+  type: 'test'
+  ...
+# Subtest: comparison limits must be explicit and valid; cancellation interrupts archived source validation
+ok 11 - comparison limits must be explicit and valid; cancellation interrupts archived source validation
+  ---
+  duration_ms: 8.862
+  type: 'test'
+  ...
+# Subtest: UI decimal input is exact, buyer unit changes, and saved file reproduces validated amounts
+ok 12 - UI decimal input is exact, buyer unit changes, and saved file reproduces validated amounts
+  ---
+  duration_ms: 74.1182
+  type: 'test'
+  ...
+# Subtest: invalid, overprecise, exponential, zero and oversized values never dispatch
+ok 13 - invalid, overprecise, exponential, zero and oversized values never dispatch
+  ---
+  duration_ms: 10.4525
+  type: 'test'
+  ...
+# Subtest: cancel cancels outstanding requests and discards their eventual result
+ok 14 - cancel cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 3.3126
+  type: 'test'
+  ...
+# Subtest: input cancels outstanding requests and discards their eventual result
+ok 15 - input cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 4.8749
+  type: 'test'
+  ...
+# Subtest: pagehide cancels outstanding requests and discards their eventual result
+ok 16 - pagehide cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 4.1215
+  type: 'test'
+  ...
+# Subtest: dispose cancels outstanding requests and discards their eventual result
+ok 17 - dispose cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 27.2838
+  type: 'test'
+  ...
+# Subtest: changed source context, RPC failure and arithmetic mismatch never expose a usable result
+ok 18 - changed source context, RPC failure and arithmetic mismatch never expose a usable result
+  ---
+  duration_ms: 42.4728
+  type: 'test'
+  ...
+# Subtest: failed download preserves output while reentrant cancellation never reports success
+ok 19 - failed download preserves output while reentrant cancellation never reports success
+  ---
+  duration_ms: 10.7352
+  type: 'test'
+  ...
+# Subtest: CLI preserves its source and separates sufficient, unknown/short and invalid input
+ok 20 - CLI preserves its source and separates sufficient, unknown/short and invalid input
+  ---
+  duration_ms: 58.7361
+  type: 'test'
+  ...
+# Subtest: CLI rejects malformed bytes and file limits without exposing file contents
+ok 21 - CLI rejects malformed bytes and file limits without exposing file contents
+  ---
+  duration_ms: 18.0433
+  type: 'test'
+  ...
+# Subtest: offline proof inspection keeps original bytes, reports discrepancies and rejects malformed input
+ok 22 - offline proof inspection keeps original bytes, reports discrepancies and rejects malformed input
+  ---
+  duration_ms: 120.0215
+  type: 'test'
+  ...
+# Subtest: selected original files are reviewed before hashing and preserve exact bytes through saved evidence
+ok 23 - selected original files are reviewed before hashing and preserve exact bytes through saved evidence
+  ---
+  duration_ms: 101.1945
+  type: 'test'
+  ...
+# Subtest: checksum failure clears old results and mismatched balances remain a visible non-pass
+ok 24 - checksum failure clears old results and mismatched balances remain a visible non-pass
+  ---
+  duration_ms: 23.5678
+  type: 'test'
+  ...
+# Subtest: cancel revokes pending checksum work and discards late completion
+ok 25 - cancel revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 21.5622
+  type: 'test'
+  ...
+# Subtest: new-file revokes pending checksum work and discards late completion
+ok 26 - new-file revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 14.9725
+  type: 'test'
+  ...
+# Subtest: pagehide revokes pending checksum work and discards late completion
+ok 27 - pagehide revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 16.2902
+  type: 'test'
+  ...
+# Subtest: dispose revokes pending checksum work and discards late completion
+ok 28 - dispose revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 38.0879
+  type: 'test'
+  ...
+# Subtest: cancelled file read cannot later offer its old review
+ok 29 - cancelled file read cannot later offer its old review
+  ---
+  duration_ms: 10.1238
+  type: 'test'
+  ...
+# Subtest: excess file count, duplicate budget files and malformed bytes are rejected
+ok 30 - excess file count, duplicate budget files and malformed bytes are rejected
+  ---
+  duration_ms: 6.2491
+  type: 'test'
+  ...
+# Subtest: reentrant export does not report a saved revoked result
+ok 31 - reentrant export does not report a saved revoked result
+  ---
+  duration_ms: 5.0425
+  type: 'test'
+  ...
+# Subtest: public RPC batch is labelled separately from a connected-wallet observation
+ok 32 - public RPC batch is labelled separately from a connected-wallet observation
+  ---
+  duration_ms: 19.6378
+  type: 'test'
+  ...
+# Subtest: matching historical records bind original bytes and amounts without claiming current or authenticated balances
+ok 33 - matching historical records bind original bytes and amounts without claiming current or authenticated balances
+  ---
+  duration_ms: 70.2361
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_ACCOUNT_MISMATCH context differences
+ok 34 - shared records reject SOURCE_ACCOUNT_MISMATCH context differences
+  ---
+  duration_ms: 16.4584
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_BLOCK_MISMATCH context differences
+ok 35 - shared records reject SOURCE_BLOCK_MISMATCH context differences
+  ---
+  duration_ms: 13.6208
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_BLOCK_MISMATCH context differences
+ok 36 - shared records reject SOURCE_BLOCK_MISMATCH context differences
+  ---
+  duration_ms: 14.7668
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_ETH_MISMATCH context differences
+ok 37 - shared records reject SOURCE_ETH_MISMATCH context differences
+  ---
+  duration_ms: 11.8477
+  type: 'test'
+  ...
+# Subtest: individual budget balance, decimals and network discrepancies are kept distinct
+ok 38 - individual budget balance, decimals and network discrepancies are kept distinct
+  ---
+  duration_ms: 24.4153
+  type: 'test'
+  ...
+# Subtest: sources from different supported networks cannot form a shared-account observation
+ok 39 - sources from different supported networks cannot form a shared-account observation
+  ---
+  duration_ms: 19.1344
+  type: 'test'
+  ...
+# Subtest: matching zero balance and insufficient budget are different conclusions
+ok 40 - matching zero balance and insufficient budget are different conclusions
+  ---
+  duration_ms: 7.0612
+  type: 'test'
+  ...
+# Subtest: missing, extra and duplicate token sources do not produce an accepted shared proof
+ok 41 - missing, extra and duplicate token sources do not produce an accepted shared proof
+  ---
+  duration_ms: 14.2906
+  type: 'test'
+  ...
+# Subtest: missing code or mismatched token metadata cannot be treated as a verified budget balance
+ok 42 - missing code or mismatched token metadata cannot be treated as a verified budget balance
+  ---
+  duration_ms: 25.5097
+  type: 'test'
+  ...
+# Subtest: changed source bytes fail checksum while rechecksummed statements remain unauthenticated
+ok 43 - changed source bytes fail checksum while rechecksummed statements remain unauthenticated
+  ---
+  duration_ms: 10.2421
+  type: 'test'
+  ...
+# Subtest: bounded strict data capture prevents getters and protects asynchronous input comparison
+ok 44 - bounded strict data capture prevents getters and protects asynchronous input comparison
+  ---
+  duration_ms: 15.0853
+  type: 'test'
+  ...
+# Subtest: aborted hashing cannot finish a source-linked result
+ok 45 - aborted hashing cannot finish a source-linked result
+  ---
+  duration_ms: 10.2262
+  type: 'test'
+  ...
+# Subtest: page distinguishes an unknown fee from an explicitly entered zero and invalidates old results
+ok 46 - page distinguishes an unknown fee from an explicitly entered zero and invalidates old results
+  ---
+  duration_ms: 21.6713
+  type: 'test'
+  ...
+# Subtest: page rejects excess precision and blank required fields without retaining an old pass
+ok 47 - page rejects excess precision and blank required fields without retaining an old pass
+  ---
+  duration_ms: 5.5505
+  type: 'test'
+  ...
+# Subtest: saved inputs round-trip and unnoticed programmatic edits cannot export stale results
+ok 48 - saved inputs round-trip and unnoticed programmatic edits cannot export stale results
+  ---
+  duration_ms: 6.6242
+  type: 'test'
+  ...
+# Subtest: file preview preserves current input until explicit restore and then recalculates
+ok 49 - file preview preserves current input until explicit restore and then recalculates
+  ---
+  duration_ms: 28.4987
+  type: 'test'
+  ...
+# Subtest: edit prevents late file completion replacing the current review
+ok 50 - edit prevents late file completion replacing the current review
+  ---
+  duration_ms: 6.1851
+  type: 'test'
+  ...
+# Subtest: cancel prevents late file completion replacing the current review
+ok 51 - cancel prevents late file completion replacing the current review
+  ---
+  duration_ms: 5.8979
+  type: 'test'
+  ...
+# Subtest: pagehide prevents late file completion replacing the current review
+ok 52 - pagehide prevents late file completion replacing the current review
+  ---
+  duration_ms: 4.0818
+  type: 'test'
+  ...
+# Subtest: dispose prevents late file completion replacing the current review
+ok 53 - dispose prevents late file completion replacing the current review
+  ---
+  duration_ms: 14.0819
+  type: 'test'
+  ...
+# Subtest: new-file prevents late file completion replacing the current review
+ok 54 - new-file prevents late file completion replacing the current review
+  ---
+  duration_ms: 6.7763
+  type: 'test'
+  ...
+# Subtest: invalid or overflowing imported data does not replace an existing calculation
+ok 55 - invalid or overflowing imported data does not replace an existing calculation
+  ---
+  duration_ms: 5.8472
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download cannot falsely report a saved current input
+ok 56 - failed or reentrant download cannot falsely report a saved current input
+  ---
+  duration_ms: 5.7688
+  type: 'test'
+  ...
+# Subtest: DAT source preview changes nothing until apply; only exact balances/decimals change
+ok 57 - DAT source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 70.5977
+  type: 'test'
+  ...
+# Subtest: EMA source preview changes nothing until apply; only exact balances/decimals change
+ok 58 - EMA source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 16.7878
+  type: 'test'
+  ...
+# Subtest: CAWELON source preview changes nothing until apply; only exact balances/decimals change
+ok 59 - CAWELON source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 16.0774
+  type: 'test'
+  ...
+# Subtest: wrong network, missing contract, mismatched token metadata, corrupt checksum and excessive size cannot replace input
+ok 60 - wrong network, missing contract, mismatched token metadata, corrupt checksum and excessive size cannot replace input
+  ---
+  duration_ms: 70.026
+  type: 'test'
+  ...
+# Subtest: cancel aborts source hashing and rejects its late result
+ok 61 - cancel aborts source hashing and rejects its late result
+  ---
+  duration_ms: 17.0189
+  type: 'test'
+  ...
+# Subtest: edit aborts source hashing and rejects its late result
+ok 62 - edit aborts source hashing and rejects its late result
+  ---
+  duration_ms: 9.1427
+  type: 'test'
+  ...
+# Subtest: pagehide aborts source hashing and rejects its late result
+ok 63 - pagehide aborts source hashing and rejects its late result
+  ---
+  duration_ms: 9.4386
+  type: 'test'
+  ...
+# Subtest: dispose aborts source hashing and rejects its late result
+ok 64 - dispose aborts source hashing and rejects its late result
+  ---
+  duration_ms: 26.9957
+  type: 'test'
+  ...
+# Subtest: regular-import aborts source hashing and rejects its late result
+ok 65 - regular-import aborts source hashing and rejects its late result
+  ---
+  duration_ms: 16.937
+  type: 'test'
+  ...
+# Subtest: a context change without an input event still cannot apply a preview for the previous token
+ok 66 - a context change without an input event still cannot apply a preview for the previous token
+  ---
+  duration_ms: 8.2128
+  type: 'test'
+  ...
+# Subtest: token capital and ETH fees remain separate, with existing reservations preserved
+ok 67 - token capital and ETH fees remain separate, with existing reservations preserved
+  ---
+  duration_ms: 6.9386
+  type: 'test'
+  ...
+# Subtest: abundant tokens never pay for missing ETH, and abundant ETH never pays for missing tokens
+ok 68 - abundant tokens never pay for missing ETH, and abundant ETH never pays for missing tokens
+  ---
+  duration_ms: 1.3198
+  type: 'test'
+  ...
+# Subtest: exactly sufficient budgets pass, a one-wei or one-token-unit shortage fails
+ok 69 - exactly sufficient budgets pass, a one-wei or one-token-unit shortage fails
+  ---
+  duration_ms: 1.2493
+  type: 'test'
+  ...
+# Subtest: unknown fee components keep total and affordability unknown rather than filling zero
+ok 70 - unknown fee components keep total and affordability unknown rather than filling zero
+  ---
+  duration_ms: 0.9081
+  type: 'test'
+  ...
+# Subtest: explicit extra fee, native value and buffer all consume ETH only
+ok 71 - explicit extra fee, native value and buffer all consume ETH only
+  ---
+  duration_ms: 1.0402
+  type: 'test'
+  ...
+# Subtest: existing reservations and floors cannot be double-counted as spendable balance
+ok 72 - existing reservations and floors cannot be double-counted as spendable balance
+  ---
+  duration_ms: 0.8218
+  type: 'test'
+  ...
+# Subtest: large exact integers never go through floating point
+ok 73 - large exact integers never go through floating point
+  ---
+  duration_ms: 0.6703
+  type: 'test'
+  ...
+# Subtest: all three agents and supported chains keep their own identity in a stable round trip
+ok 74 - all three agents and supported chains keep their own identity in a stable round trip
+  ---
+  duration_ms: 29.8944
+  type: 'test'
+  ...
+# Subtest: zero token spend is not an accepted operation budget
+ok 75 - zero token spend is not an accepted operation budget
+  ---
+  duration_ms: 0.7061
+  type: 'test'
+  ...
+# Subtest: rejects uint256 multiplication and addition overflow
+ok 76 - rejects uint256 multiplication and addition overflow
+  ---
+  duration_ms: 5.3862
+  type: 'test'
+  ...
+# Subtest: rejects ambiguous amounts, absent fields and inappropriate contexts
+ok 77 - rejects ambiguous amounts, absent fields and inappropriate contexts
+  ---
+  duration_ms: 5.7852
+  type: 'test'
+  ...
+# Subtest: input accessors are not invoked and later mutations cannot change a captured result
+ok 78 - input accessors are not invoked and later mutations cannot change a captured result
+  ---
+  duration_ms: 1.0214
+  type: 'test'
+  ...
+# Subtest: JSON rejects duplicate keys, BOM, extra data and oversized documents
+ok 79 - JSON rejects duplicate keys, BOM, extra data and oversized documents
+  ---
+  duration_ms: 9.0127
+  type: 'test'
+  ...
+# Subtest: CLI reports acceptable comparisons, mismatches and invalid input separately without modifying original files
+ok 80 - CLI reports acceptable comparisons, mismatches and invalid input separately without modifying original files
+  ---
+  duration_ms: 212.4375
+  type: 'test'
+  ...
+# Subtest: CLI bounds bytes, rejects invalid UTF-8 and validates argument shape before opening files
+ok 81 - CLI bounds bytes, rejects invalid UTF-8 and validates argument shape before opening files
+  ---
+  duration_ms: 56.1998
+  type: 'test'
+  ...
+# Subtest: CLI saved review replays its original time and rejects a modified verdict without modifying the archive
+ok 82 - CLI saved review replays its original time and rejects a modified verdict without modifying the archive
+  ---
+  duration_ms: 137.0705
+  type: 'test'
+  ...
+# Subtest: saved proposal review retains original text and recomputes historical success and failure
+ok 83 - saved proposal review retains original text and recomputes historical success and failure
+  ---
+  duration_ms: 112.2779
+  type: 'test'
+  ...
+# Subtest: saved verdict, reasons, time and permissions cannot substitute for recomputation
+ok 84 - saved verdict, reasons, time and permissions cannot substitute for recomputation
+  ---
+  duration_ms: 34.9381
+  type: 'test'
+  ...
+# Subtest: page previews text without executing it, then saves and reloads exact sources with current-time recheck
+ok 85 - page previews text without executing it, then saves and reloads exact sources with current-time recheck
+  ---
+  duration_ms: 131.7926
+  type: 'test'
+  ...
+# Subtest: historical pass is not retained as a current pass after expiry
+ok 86 - historical pass is not retained as a current pass after expiry
+  ---
+  duration_ms: 35.0876
+  type: 'test'
+  ...
+# Subtest: cancel discards stale comparison and aborts work
+ok 87 - cancel discards stale comparison and aborts work
+  ---
+  duration_ms: 10.5916
+  type: 'test'
+  ...
+# Subtest: new-file discards stale comparison and aborts work
+ok 88 - new-file discards stale comparison and aborts work
+  ---
+  duration_ms: 10.0522
+  type: 'test'
+  ...
+# Subtest: pagehide discards stale comparison and aborts work
+ok 89 - pagehide discards stale comparison and aborts work
+  ---
+  duration_ms: 8.799
+  type: 'test'
+  ...
+# Subtest: dispose discards stale comparison and aborts work
+ok 90 - dispose discards stale comparison and aborts work
+  ---
+  duration_ms: 11.6525
+  type: 'test'
+  ...
+# Subtest: wrong file count, duplicate types, changed evidence and changed saved verdict never retain old result
+ok 91 - wrong file count, duplicate types, changed evidence and changed saved verdict never retain old result
+  ---
+  duration_ms: 44.9326
+  type: 'test'
+  ...
+# Subtest: cancelled reads and saved-record verification cannot repopulate the page
+ok 92 - cancelled reads and saved-record verification cannot repopulate the page
+  ---
+  duration_ms: 14.3843
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download does not lose result or report revoked export success
+ok 93 - failed or reentrant download does not lose result or report revoked export success
+  ---
+  duration_ms: 59.386
+  type: 'test'
+  ...
+# Subtest: all three agents bind original evidence and budget without granting authority to an AI label
+ok 94 - all three agents bind original evidence and budget without granting authority to an AI label
+  ---
+  duration_ms: 62.2821
+  type: 'test'
+  ...
+# Subtest: an exact source-file hash prevents substituting or reformatting the linked budget evidence
+ok 95 - an exact source-file hash prevents substituting or reformatting the linked budget evidence
+  ---
+  duration_ms: 12.7985
+  type: 'test'
+  ...
+# Subtest: policy context and exact origin/contract pair must match, independently of reassuring rationale
+ok 96 - policy context and exact origin/contract pair must match, independently of reassuring rationale
+  ---
+  duration_ms: 34.2476
+  type: 'test'
+  ...
+# Subtest: policy and proposal time windows use exclusive expiry and bounded lifetimes
+ok 97 - policy and proposal time windows use exclusive expiry and bounded lifetimes
+  ---
+  duration_ms: 25.0157
+  type: 'test'
+  ...
+# Subtest: spend, native value and known fee limits are exact uint256 comparisons
+ok 98 - spend, native value and known fee limits are exact uint256 comparisons
+  ---
+  duration_ms: 26.6117
+  type: 'test'
+  ...
+# Subtest: a proposal and policy agreeing with each other cannot replace the evidence account or token
+ok 99 - a proposal and policy agreeing with each other cannot replace the evidence account or token
+  ---
+  duration_ms: 9.8803
+  type: 'test'
+  ...
+# Subtest: unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+ok 100 - unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+  ---
+  duration_ms: 6.516
+  type: 'test'
+  ...
+# Subtest: shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+ok 101 - shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+  ---
+  duration_ms: 52.7671
+  type: 'test'
+  ...
+# Subtest: strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+ok 102 - strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+  ---
+  duration_ms: 34.4514
+  type: 'test'
+  ...
+# Subtest: async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+ok 103 - async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+  ---
+  duration_ms: 19.7604
+  type: 'test'
+  ...
+# Subtest: one public batch supplies all three same-block sources while retaining its different provenance
+ok 104 - one public batch supplies all three same-block sources while retaining its different provenance
+  ---
+  duration_ms: 68.3097
+  type: 'test'
+  ...
+# Subtest: one- or two-token budgets select their referenced members from the full original batch
+ok 105 - one- or two-token budgets select their referenced members from the full original batch
+  ---
+  duration_ms: 22.3906
+  type: 'test'
+  ...
+# Subtest: unknown token identity, changed original bytes, and duplicate public batches cannot pass
+ok 106 - unknown token identity, changed original bytes, and duplicate public batches cannot pass
+  ---
+  duration_ms: 60.7647
+  type: 'test'
+  ...
+# Subtest: USDC and ETH use one account, canonical block and fixed contract; explicit height has no latest fallback
+ok 107 - USDC and ETH use one account, canonical block and fixed contract; explicit height has no latest fallback
+  ---
+  duration_ms: 147.2511
+  type: 'test'
+  ...
+# Subtest: network, metadata, missing code, malformed balance and reorganization fail closed
+ok 108 - network, metadata, missing code, malformed balance and reorganization fail closed
+  ---
+  duration_ms: 48.9185
+  type: 'test'
+  ...
+# Subtest: invalid inputs and pre-abort never dispatch; stalled fetch and body can be stopped
+ok 109 - invalid inputs and pre-abort never dispatch; stalled fetch and body can be stopped
+  ---
+  duration_ms: 218.6878
+  type: 'test'
+  ...
+# Subtest: offline checker binds source hashes, detects cumulative insufficiency and preserves source files
+ok 110 - offline checker binds source hashes, detects cumulative insufficiency and preserves source files
+  ---
+  duration_ms: 66.9456
+  type: 'test'
+  ...
+# Subtest: three separate files require explicit shared-account assumption and reveal aggregate shortfall
+ok 111 - three separate files require explicit shared-account assumption and reveal aggregate shortfall
+  ---
+  duration_ms: 37.5647
+  type: 'test'
+  ...
+# Subtest: saved shared inputs require renewed assumption and reproduce exact inputs
+ok 112 - saved shared inputs require renewed assumption and reproduce exact inputs
+  ---
+  duration_ms: 17.3254
+  type: 'test'
+  ...
+# Subtest: unknown fees remain unknown; changing selection clears the old result and assumption
+ok 113 - unknown fees remain unknown; changing selection clears the old result and assumption
+  ---
+  duration_ms: 12.8043
+  type: 'test'
+  ...
+# Subtest: mixed, duplicated, inconsistent and oversized sets cannot be applied
+ok 114 - mixed, duplicated, inconsistent and oversized sets cannot be applied
+  ---
+  duration_ms: 15.8405
+  type: 'test'
+  ...
+# Subtest: cancel cancels unfinished imports without applying late content
+ok 115 - cancel cancels unfinished imports without applying late content
+  ---
+  duration_ms: 4.8972
+  type: 'test'
+  ...
+# Subtest: new-file cancels unfinished imports without applying late content
+ok 116 - new-file cancels unfinished imports without applying late content
+  ---
+  duration_ms: 7.8932
+  type: 'test'
+  ...
+# Subtest: pagehide cancels unfinished imports without applying late content
+ok 117 - pagehide cancels unfinished imports without applying late content
+  ---
+  duration_ms: 2.3146
+  type: 'test'
+  ...
+# Subtest: dispose cancels unfinished imports without applying late content
+ok 118 - dispose cancels unfinished imports without applying late content
+  ---
+  duration_ms: 2.1027
+  type: 'test'
+  ...
+# Subtest: failed or reentrant export never falsely reports a completed save
+ok 119 - failed or reentrant export never falsely reports a completed save
+  ---
+  duration_ms: 12.8094
+  type: 'test'
+  ...
+# Subtest: three individually sufficient plans cannot each reuse the same ETH balance
+ok 120 - three individually sufficient plans cannot each reuse the same ETH balance
+  ---
+  duration_ms: 11.12
+  type: 'test'
+  ...
+# Subtest: shared reserves are counted once and each operation's native value and fees are counted
+ok 121 - shared reserves are counted once and each operation's native value and fees are counted
+  ---
+  duration_ms: 4.7642
+  type: 'test'
+  ...
+# Subtest: tokens retain separate balances, decimals and shortfalls
+ok 122 - tokens retain separate balances, decimals and shortfalls
+  ---
+  duration_ms: 2.003
+  type: 'test'
+  ...
+# Subtest: one unknown component makes the whole shared requirement unknown while preserving known insufficiency
+ok 123 - one unknown component makes the whole shared requirement unknown while preserving known insufficiency
+  ---
+  duration_ms: 2.02
+  type: 'test'
+  ...
+# Subtest: mixed networks, duplicate tokens and inconsistent shared account assumptions are rejected
+ok 124 - mixed networks, duplicate tokens and inconsistent shared account assumptions are rejected
+  ---
+  duration_ms: 5.8463
+  type: 'test'
+  ...
+# Subtest: combined totals reject uint256 overflow even when each separate operation fits
+ok 125 - combined totals reject uint256 overflow even when each separate operation fits
+  ---
+  duration_ms: 1.7617
+  type: 'test'
+  ...
+# Subtest: two plans are supported, one or four plans and sparse arrays are not
+ok 126 - two plans are supported, one or four plans and sparse arrays are not
+  ---
+  duration_ms: 6.3722
+  type: 'test'
+  ...
+# Subtest: captures immutable data without invoking accessors, and round trips only inputs
+ok 127 - captures immutable data without invoking accessors, and round trips only inputs
+  ---
+  duration_ms: 12.4491
+  type: 'test'
+  ...
+# Subtest: USDC budgets have a separate schema, fixed network and precision; legacy budgets keep their currency
+ok 128 - USDC budgets have a separate schema, fixed network and precision; legacy budgets keep their currency
+  ---
+  duration_ms: 7.8677
+  type: 'test'
+  ...
+# Subtest: separate agents cannot each spend the same USDC; shared reserves are counted once
+ok 129 - separate agents cannot each spend the same USDC; shared reserves are counted once
+  ---
+  duration_ms: 5.5707
+  type: 'test'
+  ...
+# Subtest: USDC source is checksum-bound and rejects bridged token, wrong decimals, supply overflow and tampering
+ok 130 - USDC source is checksum-bound and rejects bridged token, wrong decimals, supply overflow and tampering
+  ---
+  duration_ms: 24.9536
+  type: 'test'
+  ...
+# Subtest: one USDC source expands only to matching budgets and retains aggregate insufficiency
+ok 131 - one USDC source expands only to matching budgets and retains aggregate insufficiency
+  ---
+  duration_ms: 25.8912
+  type: 'test'
+  ...
+# Subtest: USDC-funded buy quote binds proposal, original source account/block, price, limits and budget
+ok 132 - USDC-funded buy quote binds proposal, original source account/block, price, limits and budget
+  ---
+  duration_ms: 35.3959
+  type: 'test'
+  ...
+1..132
+# tests 132
+# suites 0
+# pass 132
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8046.8138

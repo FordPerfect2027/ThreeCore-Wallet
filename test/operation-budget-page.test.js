@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { Element } from "./helpers/panel-dom.js";
 import { mountOperationBudgetPage } from "../examples/operation-budget-page.js";
 import { operationBudgetExample, encodeOperationBudget, decodeOperationBudget } from "../src/operation-budget.js";
+import { usdcBudget } from "./helpers/usdc-fixture.js";
 const tick = () => new Promise(resolve => setImmediate(resolve));
 function setup(options = {}) {
   const elements = new Map(), downloads = [], view = new EventTarget();
@@ -52,7 +53,7 @@ test("file preview preserves current input until explicit restore and then recal
   data.agent = "EMA"; data.fees.operatorFeeBudgetWei = "0";
   f.choose(encodeOperationBudget(data)); await tick();
   assert.equal(f.get("agent").value, "DAT"); assert.equal(f.get("apply").disabled, false);
-  assert.equal(f.get("preview-rows").children.length, 16);
+  assert.equal(f.get("preview-rows").children.length, 17);
   f.get("apply").click(); assert.equal(f.get("agent").value, "EMA");
   assert.match(f.get("outcome").textContent, /予算が足ります/); assert.equal(f.get("apply").disabled, true);
   f.get("save").click(); assert.equal(f.downloads[0].text, encodeOperationBudget(data));
@@ -90,4 +91,15 @@ test("failed or reentrant download cannot falsely report a saved current input",
   const reentrant = setup({ download(request, get) { get("native-balance").value = "0"; get("native-balance").dispatchEvent(new Event("input")); } });
   reentrant.calculate(); reentrant.get("save").click(); assert.equal(reentrant.get("save-status").textContent, "");
   assert.equal(reentrant.get("save").disabled, true); reentrant.panel.dispose();
+});
+
+test("USDC restoration preserves its asset and six-decimal amounts through calculation and download", async () => {
+  const f = setup(), data = usdcBudget("EMA"); f.choose(encodeOperationBudget(data)); await tick();
+  assert.equal(f.get("asset").value, "project");
+  f.get("apply").click(); assert.equal(f.get("asset").value, "usdc");
+  assert.equal(f.get("decimals").value, "6"); assert.equal(f.get("chain").value, "8453");
+  assert.match(f.get("rows").children[0].children[1].textContent, /3 USDC/);
+  f.get("save").click(); assert.deepEqual(decodeOperationBudget(f.downloads[0].text), data);
+  f.edit("decimals", "18"); f.calculate(); assert.equal(f.get("save").disabled, true);
+  f.panel.dispose();
 });

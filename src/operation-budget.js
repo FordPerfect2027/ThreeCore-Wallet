@@ -2,6 +2,8 @@ import { captureDataRecord } from "./security-data.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
 
 export const OPERATION_BUDGET_SCHEMA = "threecore.operation-budget.v1";
+// A distinct schema keeps historical DAT/EMA/CAWELON budgets from changing currency.
+export const USDC_OPERATION_BUDGET_SCHEMA = "threecore.usdc-operation-budget.v1";
 export const OPERATION_BUDGET_LIMIT = 16384;
 const MAX = (1n << 256n) - 1n;
 const TOKEN_FIELDS = ["decimals", "balanceUnits", "reservedUnits", "reserveFloorUnits", "spendUnits"];
@@ -26,18 +28,24 @@ function checked(value) {
 }
 export function validateOperationBudget(input) {
   const data = record(input, ["schema", "simulationOnly", "agent", "chainId", "token", "native", "fees"]);
-  if (data.schema !== OPERATION_BUDGET_SCHEMA || data.simulationOnly !== true) fail("SIMULATION_REQUIRED");
+  if (![OPERATION_BUDGET_SCHEMA, USDC_OPERATION_BUDGET_SCHEMA].includes(data.schema) || data.simulationOnly !== true) fail("SIMULATION_REQUIRED");
   if (!["DAT", "EMA", "CAWELON"].includes(data.agent) || ![8453, 84532].includes(data.chainId)) fail("INVALID_CONTEXT");
   const token = record(data.token, TOKEN_FIELDS), native = record(data.native, NATIVE_FIELDS), fees = record(data.fees, FEE_FIELDS);
   if (!Number.isInteger(token.decimals) || token.decimals < 0 || token.decimals > 18) fail("INVALID_DECIMALS");
+  if (data.schema === USDC_OPERATION_BUDGET_SCHEMA && (data.chainId !== 8453 || token.decimals !== 6)) fail("USDC_BUDGET_CONTEXT");
   const capturedToken = Object.freeze({ decimals: token.decimals,
     ...Object.fromEntries(TOKEN_FIELDS.slice(1).map(key => [key, amount(token[key])])) });
   const capturedNative = Object.freeze(Object.fromEntries(NATIVE_FIELDS.map(key => [key, amount(native[key])])));
   const capturedFees = Object.freeze(Object.fromEntries(FEE_FIELDS.map(key => [key,
     ["l1FeeBudgetWei", "operatorFeeBudgetWei"].includes(key) && fees[key] === null ? null : amount(fees[key])])));
   if (capturedFees.gasLimit === "0" || capturedFees.maxFeePerGasWei === "0") fail("ZERO_EXECUTION_BUDGET");
-  return Object.freeze({ schema: OPERATION_BUDGET_SCHEMA, simulationOnly: true,
+  return Object.freeze({ schema: data.schema, simulationOnly: true,
     agent: data.agent, chainId: data.chainId, token: capturedToken, native: capturedNative, fees: capturedFees });
+}
+
+export function operationBudgetAssetSymbol(input) {
+  const data = validateOperationBudget(input);
+  return data.schema === USDC_OPERATION_BUDGET_SCHEMA ? "USDC" : data.agent;
 }
 
 function balanceCheck(balance, reserved, floor, spend) {

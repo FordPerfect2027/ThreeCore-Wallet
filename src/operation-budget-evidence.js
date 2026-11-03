@@ -1,6 +1,7 @@
 import { captureDataRecord, captureDataArray, sha256Hex } from "./security-data.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
-import { OperationBudgetError, OPERATION_BUDGET_SCHEMA, OPERATION_BUDGET_LIMIT, decodeOperationBudget, evaluateOperationBudget } from "./operation-budget.js";
+import { OperationBudgetError, OPERATION_BUDGET_SCHEMA, USDC_OPERATION_BUDGET_SCHEMA, OPERATION_BUDGET_LIMIT, decodeOperationBudget, evaluateOperationBudget } from "./operation-budget.js";
+import { PUBLIC_USDC_FILE_SCHEMA, decodePublicUsdcFile, publicUsdcBudgetObservation } from "./public-usdc-model.js";
 import { SHARED_BUDGET_SCHEMA, SHARED_BUDGET_LIMIT, decodeSharedOperationBudget, evaluateSharedOperationBudget } from "./shared-operation-budget.js";
 import { decodeTokenIdentityFile, IDENTITY_FILE_LIMIT } from "./token-identity-report.js";
 import { assessTokenObservation } from "./token-identity-model.js";
@@ -37,7 +38,7 @@ export async function inspectBudgetEvidence(input, { subtle = globalThis.crypto?
   let raw;
   try { raw = parseSecurityJson(data.budgetFile); } catch { fail("INVALID_JSON"); }
   let budgetResult, budgets;
-  if (raw?.schema === OPERATION_BUDGET_SCHEMA) {
+  if ([OPERATION_BUDGET_SCHEMA, USDC_OPERATION_BUDGET_SCHEMA].includes(raw?.schema)) {
     bounded(data.budgetFile, OPERATION_BUDGET_LIMIT);
     budgetResult = evaluateOperationBudget(decodeOperationBudget(data.budgetFile)); budgets = [budgetResult.input];
   } else if (raw?.schema === SHARED_BUDGET_SCHEMA) {
@@ -47,9 +48,14 @@ export async function inspectBudgetEvidence(input, { subtle = globalThis.crypto?
   for (const text of data.observationFiles) {
     let sourceSchema;
     try { sourceSchema = parseSecurityJson(text)?.schema; } catch { fail("INVALID_JSON"); }
-    if (sourceSchema === PUBLIC_TOKEN_BATCH_FILE_SCHEMA) {
+    if (sourceSchema === PUBLIC_USDC_FILE_SCHEMA) {
+      const { observation } = await decodePublicUsdcFile(text, options);
+      const targets = budgets.filter(b => b.schema === USDC_OPERATION_BUDGET_SCHEMA);
+      if (!targets.length) fail("USDC_SOURCE_WITHOUT_BUDGET");
+      observations.push(...targets.map(b => publicUsdcBudgetObservation(observation, b.agent)));
+    } else if (sourceSchema === PUBLIC_TOKEN_BATCH_FILE_SCHEMA) {
       const decoded = await decodePublicTokenBatchFile(text, options);
-      observations.push(...publicBatchObservations(decoded.batch).filter(o => budgets.some(b => b.agent === o.agent)));
+      observations.push(...publicBatchObservations(decoded.batch).filter(o => budgets.some(b => b.agent === o.agent && b.schema !== USDC_OPERATION_BUDGET_SCHEMA)));
     } else {
       const decoded = await decodeTokenIdentityFile(bytes(text), options);
       observations.push(decoded.observation);
@@ -66,6 +72,7 @@ export async function inspectBudgetEvidence(input, { subtle = globalThis.crypto?
     const observation = observations.find(o => o.agent === budget.agent), reasons = [];
     if (!observation) reasons.push("SOURCE_MISSING");
     else {
+      if ((budget.schema === USDC_OPERATION_BUDGET_SCHEMA) !== (observation.spendingAsset === "USDC")) reasons.push("BUDGET_ASSET_MISMATCH");
       if (observation.source === "public-rpc" ? !observation.identityMatches : assessTokenObservation(observation).status !== "matched")
         reasons.push("TOKEN_IDENTITY_UNCONFIRMED");
       if (observation.chainId !== budget.chainId) reasons.push("BUDGET_NETWORK_MISMATCH");

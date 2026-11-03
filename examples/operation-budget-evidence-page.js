@@ -1,6 +1,7 @@
 import { parseSecurityJson } from "../src/security-json.js";
 import { createFileReadScope } from "../src/security-file.js";
-import { OPERATION_BUDGET_SCHEMA } from "../src/operation-budget.js";
+import { OPERATION_BUDGET_SCHEMA, USDC_OPERATION_BUDGET_SCHEMA } from "../src/operation-budget.js";
+import { PUBLIC_USDC_FILE_SCHEMA } from "../src/public-usdc-model.js";
 import { SHARED_BUDGET_SCHEMA, SHARED_BUDGET_LIMIT } from "../src/shared-operation-budget.js";
 import { IDENTITY_FILE_SCHEMA } from "../src/token-identity-report.js";
 import { PUBLIC_TOKEN_BATCH_FILE_SCHEMA } from "../src/public-token-batch-model.js";
@@ -10,7 +11,7 @@ import { requireSyncExport } from "../src/export-policy.js";
 const REASONS = { SOURCE_SET_MISMATCH:"予算と参照記録のトークンの組み合わせが異なります。", SOURCE_ACCOUNT_MISMATCH:"参照記録の口座が異なります。",
   SOURCE_NETWORK_MISMATCH:"参照記録のネットワークが異なります。", SOURCE_BLOCK_MISMATCH:"参照記録のブロック番号またはハッシュが異なります。", SOURCE_ETH_MISMATCH:"参照記録のETH残高が異なります。",
   SOURCE_MISSING:"対応する記録なし", TOKEN_IDENTITY_UNCONFIRMED:"トークン情報に不一致・未確認あり", BUDGET_NETWORK_MISMATCH:"予算のネットワークが異なる",
-  BUDGET_DECIMALS_MISMATCH:"小数桁数が異なる", BUDGET_TOKEN_BALANCE_MISMATCH:"トークン残高が異なる", BUDGET_ETH_BALANCE_MISMATCH:"ETH残高が異なる" };
+  BUDGET_DECIMALS_MISMATCH:"小数桁数が異なる", BUDGET_TOKEN_BALANCE_MISMATCH:"トークン残高が異なる", BUDGET_ETH_BALANCE_MISMATCH:"ETH残高が異なる", BUDGET_ASSET_MISMATCH:"使用する資産が異なる" };
 export function mountBudgetEvidencePage(document, { download=offerWalletDownload, inspect=inspectBudgetEvidence }={}) {
   const get=name=>document.getElementById("evidence-"+name), reader=createFileReadScope(), removers=[];
   let revision=0, disposed=false, pending=null, calculated=null, controller=null;
@@ -29,8 +30,8 @@ export function mountBudgetEvidencePage(document, { download=offerWalletDownload
         for(const file of files){
           if(!current(own))return;const text=await reader.readText(file,{maxBytes:SHARED_BUDGET_LIMIT});if(!current(own))return;
           const raw=parseSecurityJson(text);
-          if([IDENTITY_FILE_SCHEMA,PUBLIC_TOKEN_BATCH_FILE_SCHEMA].includes(raw?.schema))observationFiles.push(text);
-          else if([OPERATION_BUDGET_SCHEMA,SHARED_BUDGET_SCHEMA].includes(raw?.schema)&&budgetFile===null)budgetFile=text;
+          if([IDENTITY_FILE_SCHEMA,PUBLIC_TOKEN_BATCH_FILE_SCHEMA,PUBLIC_USDC_FILE_SCHEMA].includes(raw?.schema))observationFiles.push(text);
+          else if([OPERATION_BUDGET_SCHEMA,USDC_OPERATION_BUDGET_SCHEMA,SHARED_BUDGET_SCHEMA].includes(raw?.schema)&&budgetFile===null)budgetFile=text;
           else throw Error("FORMAT");
         }
         data=decodeBudgetEvidence(encodeBudgetEvidence({schema:BUDGET_EVIDENCE_SCHEMA,budgetFile,observationFiles}));
@@ -50,7 +51,7 @@ export function mountBudgetEvidencePage(document, { download=offerWalletDownload
       get("reasons").textContent=r.groupReasons.map(code=>REASONS[code]).join(" ");
       get("rows").replaceChildren(...r.comparisons.map(item=>{
         const row=document.createElement("tr"),o=item.observation;
-        const values=[item.agent+(o?.source==="public-rpc"?"（公開RPC）":""),o?.account??"記録なし",o?(o.chainId===8453?"Base Mainnet":"Base Sepolia")+" / "+o.blockNumber+" / "+o.blockHash:"記録なし",
+        const values=[item.agent+(o?.spendingAsset==="USDC"?" / 支出USDC":"")+(o?.source==="public-rpc"?"（公開RPC）":""),o?.account??"記録なし",o?(o.chainId===8453?"Base Mainnet":"Base Sepolia")+" / "+o.blockNumber+" / "+o.blockHash:"記録なし",
           item.consistent?"残高・トークン情報が一致":item.reasons.map(code=>REASONS[code]).join(" / ")];
         for(const value of values){const cell=document.createElement("td");cell.textContent=value;row.append(cell);}return row;
       }));

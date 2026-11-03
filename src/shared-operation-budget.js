@@ -1,6 +1,6 @@
 import { captureDataRecord, captureDataArray } from "./security-data.js";
 import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
-import { OperationBudgetError, validateOperationBudget, evaluateOperationBudget } from "./operation-budget.js";
+import { OperationBudgetError, USDC_OPERATION_BUDGET_SCHEMA, validateOperationBudget, evaluateOperationBudget } from "./operation-budget.js";
 
 export const SHARED_BUDGET_SCHEMA = "threecore.shared-operation-budget.v1";
 export const SHARED_BUDGET_LIMIT = 49152;
@@ -22,6 +22,9 @@ export function validateSharedOperationBudget(input) {
   if (budgets.some(b => b.chainId !== first.chainId)) fail("SHARED_NETWORK_MISMATCH");
   for (const key of ["balanceWei", "reservedWei", "reserveFloorWei"])
     if (budgets.some(b => b.native[key] !== first.native[key])) fail("SHARED_BALANCE_MISMATCH");
+  const usdc = budgets.filter(b => b.schema === USDC_OPERATION_BUDGET_SCHEMA);
+  if (usdc.length > 1) for (const key of ["balanceUnits", "reservedUnits", "reserveFloorUnits"])
+    if (usdc.some(b => b.token[key] !== usdc[0].token[key])) fail("SHARED_USDC_BALANCE_MISMATCH");
   return Object.freeze({ schema: SHARED_BUDGET_SCHEMA, simulationOnly: true, sameAccount: true,
     budgets: Object.freeze(budgets) });
 }
@@ -41,13 +44,25 @@ export function evaluateSharedOperationBudget(input) {
   if (results.some(r => r.token.shortfall !== "0")) reasons.push("TOKEN_BUDGET_SHORTFALL");
   if (unknown.length) reasons.push("FEE_COMPONENT_UNKNOWN");
   if (minimum.shortfall !== "0") reasons.push("SHARED_ETH_SHORTFALL");
+  const usdc = data.budgets.filter(b => b.schema === USDC_OPERATION_BUDGET_SCHEMA);
+  let sharedUsdc = null;
+  if (usdc.length) {
+    const balance = BigInt(usdc[0].token.balanceUnits);
+    const spend = checked(usdc.reduce((sum, b) => sum + BigInt(b.token.spendUnits), 0n));
+    // Shared reserves are counted once, as with shared ETH. Each plan's spending is counted.
+    const required = checked(BigInt(usdc[0].token.reservedUnits) + BigInt(usdc[0].token.reserveFloorUnits) + spend);
+    sharedUsdc = Object.freeze({ asset: "USDC", decimals: 6, spendUnits: String(spend), required: String(required),
+      shortfall: String(required > balance ? required - balance : 0n), surplus: String(balance > required ? balance - required : 0n) });
+    if (sharedUsdc.shortfall !== "0") reasons.push("SHARED_USDC_SHORTFALL");
+  }
   return Object.freeze({ schema: "threecore.shared-operation-budget-result.v1", input: data,
     simulationOnly: true, sourceVerified: false, authorizesExecution: false, onchainFeeCap: false,
     constraintsSatisfied: reasons.length === 0, reasons: Object.freeze(reasons),
     individuallySatisfied: results.every(r => r.constraintsSatisfied), results: Object.freeze(results),
     knownFeeBudgetWei: String(sum("knownFeeBudgetWei")), knownNativeCostWei: String(knownNativeCostWei),
     plannedNativeCostWei: unknown.length ? null : String(knownNativeCostWei),
-    native: unknown.length ? null : minimum, knownNativeMinimum: minimum, unknownComponents: Object.freeze(unknown) });
+    native: unknown.length ? null : minimum, knownNativeMinimum: minimum, unknownComponents: Object.freeze(unknown),
+    ...(sharedUsdc ? { sharedUsdc } : {}) });
 }
 
 export function encodeSharedOperationBudget(input) {

@@ -4,6 +4,7 @@ import { Element } from "./helpers/panel-dom.js";
 import { operationBudgetExample, encodeOperationBudget } from "../src/operation-budget.js";
 import { SHARED_BUDGET_SCHEMA, encodeSharedOperationBudget, decodeSharedOperationBudget } from "../src/shared-operation-budget.js";
 import { mountSharedBudgetPage } from "../examples/shared-operation-budget-page.js";
+import { usdcBudget } from "./helpers/usdc-fixture.js";
 const tick = () => new Promise(resolve => setImmediate(resolve));
 const plans = () => ["DAT", "EMA", "CAWELON"].map(agent => {
   const b = structuredClone(operationBudgetExample()); b.agent = agent; b.fees.operatorFeeBudgetWei = "0";
@@ -89,4 +90,18 @@ test("failed or reentrant export never falsely reports a completed save", async 
   const reentrant = setup({ download(request, get) { get("cancel").click(); } });
   reentrant.choose([bundle(plans())]); await tick(); reentrant.assume(true); reentrant.get("apply").click(); reentrant.get("save").click();
   assert.equal(reentrant.get("save-status").textContent, ""); assert.equal(reentrant.get("save").disabled, true); reentrant.panel.dispose();
+});
+
+test("USDC plans show combined shortfall despite individually sufficient budgets and survive export", async () => {
+  const f = setup(), data = [usdcBudget("DAT"), usdcBudget("EMA")];
+  for (const b of data) b.token.spendUnits = "5000000";
+  f.choose(data.map(encodeOperationBudget)); await tick();
+  assert.equal(f.get("preview-rows").children[0].children[1].textContent, "5 USDC");
+  f.assume(true); f.get("apply").click();
+  assert.match(f.get("outcome").textContent, /共通のUSDC残高が不足/);
+  assert.equal(f.get("rows").children.at(-1).children[1].textContent, "2 USDC");
+  f.get("save").click(); assert.deepEqual(decodeSharedOperationBudget(f.downloads[0].text).budgets, data);
+  data[1].token.balanceUnits = "9000000"; f.choose(data.map(encodeOperationBudget)); await tick();
+  assert.match(f.get("status").textContent, /USDC残高.*一致しません/); assert.equal(f.get("apply").disabled, true);
+  f.panel.dispose();
 });

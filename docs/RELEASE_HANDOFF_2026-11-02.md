@@ -11,13 +11,24 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [USDC budget integration](USDC_BUDGET_2026-11-03.md) now supports
+individual and shared spending, canonical public USDC/ETH observations,
+source-preview transfer, evidence comparison and USDC-funded buy proposals.
+Four actual browser downloads/reexports matched their prepared inputs exactly.
+Public Account 2 held 0 USDC and 0.0007 ETH at the recorded block; the example
+budget correctly failed while its source comparison passed. Final focused
+checks passed 43/43 and HTTP checks 7/7. The user explicitly deferred AI
+connection and requested completing short, near-finished features first.
+Next: public USDC acquisition screen, then the existing-file workflow.
+See the updated whole-project scope for the order and the provisional 65% view.
+
 The [public quote acquisition screen](AERODROME_QUOTE_UI_2026-11-03.md) now
 provides `/quotes/` through a bounded same-origin endpoint, exact decimal input,
 cancel-on-change and quote-file download. All 56 related checks passed.
 Normal-browser DAT sell, EMA buy and CAWELON buy at block 53,457,078 are recorded
 separately from synthetic UI tests. Next independent work is USDC spending
-budgets, gas/allowance binding and isolated execution; the AI credential choice
-is still pending and should not be requested again.
+budgets, gas/allowance binding and isolated execution. The user has since
+deferred AI connection; do not repeat the credential question.
 
 The [proposal/quote screen and archive](PROPOSAL_QUOTE_UI_2026-11-03.md)
 adds offline `/proposals/quote/`, exact source/limit preservation, recorded-time
@@ -34,8 +45,9 @@ current proposal conditions and the original budget block. Live reads saved
 eight valid observations plus two expected zero-output rejections. Final
 feature/proposal tests passed 38/38; the overlapping public-reader regression
 passed 167/167. USDC spending budgets and isolated execution remain
-unfinished. Product AI authentication is awaiting the already-sent user choice;
-independent non-AI development can continue without another credential question.
+unfinished at that checkpoint. USDC budgets are completed above. Product AI
+authentication is deferred at the user's request; independent non-AI development
+continues without another credential question.
 
 The [proposal comparison foundation](OPERATION_PROPOSAL_REVIEW_2026-11-03.md)
 now binds imported proposals to exact budget evidence, account/network/token,
