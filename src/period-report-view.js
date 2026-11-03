@@ -1,3 +1,5 @@
+import { walletSavedFileTargetMessage } from "./file-read-status.js";
+import { readOwnErrorCode } from "./provider-error.js";
 import { formatReconciliationAmount } from "./reconciliation-engine.js";
 
 export const REPORT_STATUS_TEXT = Object.freeze({
@@ -33,6 +35,7 @@ const ERRORS = Object.freeze({
   PERIOD_REPORT_BUSY: "処理中です。完了を待つか中止してください。",
   PERIOD_REPORT_NOT_LOADED: "先にPC内の保存一覧を読み込んでください。",
   PERIOD_REPORT_EMPTY: "少なくとも1つの控えを選択してください。",
+  PERIOD_REPORT_ENTRY_MISSING: "この報告には選んだトークンの元の控えがありません。",
   PERIOD_REPORT_SOURCE_MISSING: "選んだ控えが見つかりません。一覧を再読み込みしてください。",
   PERIOD_REPORT_SOURCE_CHANGED: "確認中に選んだ控えが変更されました。一覧を再読み込みし、もう一度確認してください。",
   PERIOD_REPORT_AGENT: "トークンと控えの組み合わせが一致しません。",
@@ -59,21 +62,21 @@ const ERRORS = Object.freeze({
 });
 
 export function reportErrorCode(error) {
-  const value = error?.code;
+  const value = readOwnErrorCode(error);
   return typeof value === "string" && /^(PERIOD|CHECKPOINT|IDENTITY|TRANSFER|RECONCILIATION)_[A-Z_]+$/.test(value)
     ? value : "PERIOD_REPORT_FAILED";
 }
 
 export function reportErrorText(code) {
-  return Object.hasOwn(ERRORS, code) ? ERRORS[code] : "処理を完了できませんでした。元の記録は変更されていません。";
+  return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code] : walletSavedFileTargetMessage(code) ?? "処理を完了できませんでした。元の記録は変更されていません。";
 }
 
 export function reportStatusText(status) {
-  return Object.hasOwn(REPORT_STATUS_TEXT, status) ? REPORT_STATUS_TEXT[status] : "未確認";
+  return typeof status === "string" && Object.hasOwn(REPORT_STATUS_TEXT, status) ? REPORT_STATUS_TEXT[status] : "未確認";
 }
 
 export function reportIssueText(code) {
-  return Object.hasOwn(REPORT_ISSUE_TEXT, code) ? REPORT_ISSUE_TEXT[code] : "記録の追加確認が必要です。";
+  return typeof code === "string" && Object.hasOwn(REPORT_ISSUE_TEXT, code) ? REPORT_ISSUE_TEXT[code] : "記録の追加確認が必要です。";
 }
 
 export function reportAmount(value, decimals = 18) {

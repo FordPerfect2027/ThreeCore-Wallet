@@ -1,0 +1,58 @@
+{
+  "recordedAt": "2026-11-03T10:24:12.151Z",
+  "origin": "http://127.0.0.1:4247",
+  "walletRevision": "cd7f7edf49bafd1e529cfd23f8bc7d3c5fae782b",
+  "walletHistories": 9,
+  "rehearsalRecords": 6,
+  "rehearsalCases": 3,
+  "files": [
+    {
+      "kind": "Wallet",
+      "original": "ThreeCore-workspace-backup (39).json",
+      "saved": "ThreeCore-workspace-backup (40).json",
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "exactMatch": true
+    },
+    {
+      "kind": "Rehearsal",
+      "original": "ThreeCore-rehearsal-session (19).json",
+      "saved": "ThreeCore-rehearsal-session (20).json",
+      "bytes": 17387,
+      "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c",
+      "exactMatch": true
+    },
+    {
+      "kind": "Shared budget with public source",
+      "original": "ThreeCore-budget-evidence (5).json",
+      "saved": "ThreeCore-budget-evidence (6).json",
+      "bytes": 4453,
+      "sha256": "813dafd7780d83f92518a183b333a0125a41cb853677b9b6fa6ad9e5e97a95f0",
+      "exactMatch": true,
+      "sourceConsistent": true,
+      "budgetConstraintsSatisfied": false
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "ThreeCore-integrated-wallet-restored-20261103.jpg",
+      "bytes": 68876,
+      "sha256": "ad9e31ad8f846f9ba371fa101e3b6e15fb14f37faf9e626397b1654a62e7e0bc"
+    },
+    {
+      "name": "ThreeCore-integrated-rehearsal-restored-20261103.jpg",
+      "bytes": 75662,
+      "sha256": "a6fd8c888b462c7572a954642a6ae20f94e55a3a366fc946ef688b5e5be1429d"
+    },
+    {
+      "name": "ThreeCore-integrated-budget-restored-20261103.jpg",
+      "bytes": 69236,
+      "sha256": "425c78c09aa9e64ac9313fd3e06ba9dd75323d8bcfac5d9d734bd52c2c241e85"
+    },
+    {
+      "name": "ThreeCore-integrated-browser-summary-20261103.jpg",
+      "bytes": 117791,
+      "sha256": "838672d21e7085d5ce615a67b8b29dd40e3444befe943447fc53bae7770e20b4"
+    }
+  ]
+}

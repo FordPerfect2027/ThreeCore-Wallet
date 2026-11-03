@@ -1,3 +1,4 @@
+import { matchingPeriodReportEvents } from "./period-report-query.js";
 import { analyzePeriodReport } from "./period-report-engine.js";
 import { validatePeriodReportInput } from "./period-report-model.js";
 import { reportStatusText, reportIssueText, reportSlotText, REPORT_LIMITATION } from "./period-report-view.js";
@@ -66,4 +67,22 @@ ${cards}
 ${conflicts ? '<section><h2>ブロックハッシュ不一致</h2><table><thead><tr><th>Chain</th><th>Block</th><th>各記録</th></tr></thead><tbody>' + conflicts + '</tbody></table></section>' : ''}
 <footer><small>Read-only historical evidence. No wallet connection, transfer, current-chain verification or independent security audit. No combined token valuation.</small></footer>
 </main></body></html>\n`, "html", "text/html");
+}
+
+/** Exact integer event rows, across all matching pages; source totals stay unfiltered. */
+export function periodReportEventsCSV(input, queryInput) {
+  const found = matchingPeriodReportEvents(input, queryInput), { query, report, slot } = found;
+  const columns = ["query_agent", "query_direction", "query_search", "total_events", "matched_events",
+    "report_status", "source_status", "source_id", "source_label", "chain_id", "account", "token_address",
+    "block", "block_hash", "transaction_hash", "transaction_index", "log_index", "direction", "from", "to",
+    "amount_base_units", "delta_base_units", "cumulative_delta_base_units", "implied_balance_base_units",
+    "historical_only", "live_chain_rechecked", "independently_verified"];
+  const rows = found.rows.map(row => [query.agent, query.direction, query.search, found.total, found.matched,
+    report.status, slot.status, slot.entryId, slot.label, slot.plan?.context.chainId, slot.plan?.context.account,
+    slot.arithmetic.tokenAddress, row.blockNumber, row.blockHash, row.transactionHash, row.transactionIndex, row.logIndex,
+    row.direction, row.from, row.to, row.amountBaseUnits, row.deltaBaseUnits, row.cumulativeBaseUnits, row.impliedBalanceBaseUnits,
+    true, false, false]);
+  const text = "\ufeff" + [columns, ...rows].map(csvLine).join("\r\n") + "\r\n";
+  return Object.freeze({ ...file(text, "csv", "text/csv"), filename: "ThreeCore-period-report-events.csv",
+    query, total: found.total, matched: found.matched, scope: "all-matches", restorable: false, totalsAreUnfiltered: true });
 }

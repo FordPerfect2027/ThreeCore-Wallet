@@ -79,7 +79,8 @@ for (const [field, value] of [
   test("incompatible backup header fails: " + field + "/" + value, async () => {
     const envelope = JSON.parse((await preparePeriodLibraryFile(library())).text);
     envelope[field] = value;
-    await assert.rejects(decodePeriodLibraryFile(JSON.stringify(envelope)), code("PERIOD_LIBRARY_FILE_SCHEMA"));
+    await assert.rejects(decodePeriodLibraryFile(JSON.stringify(envelope)),
+      code(field === "schema" ? "PERIOD_FILE_USE_PERIOD" : "PERIOD_LIBRARY_FILE_SCHEMA"));
   });
 }
 

@@ -1,0 +1,47 @@
+✔ demo serves production modules and gates browser fixtures (uiTest=false) (854.2401ms)
+✔ demo serves production modules and gates browser fixtures (uiTest=true) (892.5863ms)
+✔ screen reads explicitly, displays precise USDC, saves exact source and reopens before current recheck (383.4645ms)
+✔ insufficient and expired observations are displayed and saved honestly; invalid input cannot replace them (224.9782ms)
+✔ cancel, replacement, condition edits, leaving, disposal and file-read cancellation discard late work (157.8401ms)
+✔ failed/wrong-context reads, download errors and reentrant cancellation preserve consistent controls (66.9982ms)
+✔ DAT sell and all three USDC buy proposals retain exact amount, original source, expiry and replay (571.4965ms)
+✔ amount insufficiency, unknown code, wrong context, reorg, stale/future times and differing balance cannot pass (328.6087ms)
+✔ saved result, observation hash and recorded time cannot be silently changed (207.3605ms)
+✔ reader fixes RPC, contracts and canonical hash for every state read and rechecks chain/header (193.7952ms)
+✔ reader rejects changed blocks/chains, malformed amounts and unrequested target without latest fallback (47.8171ms)
+✔ reader/client cancellation and deadlines release stalled requests; client binds each request field (182.1172ms)
+✔ recorded results remain distinct from current expiry and reexport preserves the complete original (797.8395ms)
+✔ two-file import accepts either order, shows unknown totals and rejects duplicates or malformed files (583.8248ms)
+✔ cancel, edit, replacement, navigation and disposal suppress delayed results (898.6856ms)
+✔ invalid age, failed comparison and failed download cannot advertise an unsaved or stale success (319.5163ms)
+✔ fee review retains source caps for three buys, selling and shared-agent budgets (1766.5474ms)
+✔ each component cap is enforced with exact integers, including the total policy ceiling (577.2708ms)
+✔ unknown L1/operator fees stay unknown; zero is distinct and partial totals cannot pass (268.9694ms)
+✔ source hash, canonical block and observation time cannot be replaced or extended (703.8309ms)
+✔ malformed, accessor, oversized, aborted and forged saved fee results are rejected (491.0991ms)
+✔ offline command distinguishes complete, blocked, historical and invalid evidence (302.8924ms)
+✔ saved quote comparison preserves exact originals and selected limits, replaying success and expiry (148.8449ms)
+✔ changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed (69.5843ms)
+✔ page previews units, compares, saves exact inputs and limits, then reopens without assuming current success (184.5017ms)
+✔ recorded success is re-evaluated as stale at current time; stricter slippage invalidates the visible result (51.0384ms)
+✔ cancel aborts and discards a delayed comparison (27.9011ms)
+✔ new-file aborts and discards a delayed comparison (46.1251ms)
+✔ limit-change aborts and discards a delayed comparison (27.7209ms)
+✔ pagehide aborts and discards a delayed comparison (51.9352ms)
+✔ dispose aborts and discards a delayed comparison (46.2052ms)
+✔ invalid or duplicate files and forged saved verdict clear old results; cancelled file reads cannot restore them (47.8818ms)
+✔ blank, out-of-range, exponent and overprecise conditions never produce a saved result (18.2917ms)
+✔ failed or reentrant download keeps state consistent (49.8357ms)
+✔ simulation call fixes source recipient, route, minimum, expiry and budget caps for sell and three USDC buys (520.3865ms)
+✔ expired/failing preconditions cannot produce call data; reading saved success does not extend its window (214.3475ms)
+✔ shared source selects the intended agent fee budget and missing agent leaves an explicitly blocked plan (183.9537ms)
+✔ saved plan rejects recipient, amounts, calldata, source, fee limits and expiry tampering (346.6106ms)
+✔ offline command prepares, verifies, rejects malformed inputs and distinguishes blocked plan from errors (234.1644ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9824.2692

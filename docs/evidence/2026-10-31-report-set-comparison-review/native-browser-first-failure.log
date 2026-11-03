@@ -1,0 +1,12 @@
+Browser completion summary: {"suite-status":"failed","tests-count":"878","tests-passed":"877","tests-failed":"1","unexpected-errors":"0","error-kinds":"","injected-fault":""}
+FAIL — portfolio duplicate click during loading starts only one balance read: UI did not reach the expected state
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-result.js:48
+  if (failed !== 0 || passed !== total) throw Error("Browser test cases failed");
+                                              ^
+
+Error: Browser test cases failed
+    at checkBrowserResult (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/browser-result.js:48:47)
+    at checkResult (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:74:16)
+    at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:97:18
+
+Node.js v24.19.0

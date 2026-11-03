@@ -1,0 +1,47 @@
+{
+  "localSyntheticMeasurement": true,
+  "rows": [
+    {
+      "name": "period-draft",
+      "beforeMedianMs": 1.2579649999999902,
+      "afterMedianMs": 0.001290000000000191,
+      "ratio": 975.1666666665147,
+      "resultUnchanged": true
+    },
+    {
+      "name": "period-report",
+      "beforeMedianMs": 4.44686999999999,
+      "afterMedianMs": 0.0008899999999925967,
+      "ratio": 4996.483146108967,
+      "resultUnchanged": true
+    },
+    {
+      "name": "report-history",
+      "beforeMedianMs": 76.5644666666667,
+      "afterMedianMs": 0.0033000000000053356,
+      "ratio": 23201.353535316033,
+      "resultUnchanged": true
+    },
+    {
+      "name": "report-set",
+      "beforeMedianMs": 67.7461,
+      "afterMedianMs": 0.0031333333333426103,
+      "ratio": 21621.095744616836,
+      "resultUnchanged": true
+    },
+    {
+      "name": "filtered-diagnostics",
+      "beforeMedianMs": 1085.8002999999999,
+      "afterMedianMs": 314.38390000000004,
+      "ratio": 3.453740156541094,
+      "resultUnchanged": true
+    },
+    {
+      "name": "filtered-checklist-csv",
+      "beforeMedianMs": 2225.2445000000007,
+      "afterMedianMs": 427.7258999999999,
+      "ratio": 5.202501181247152,
+      "resultUnchanged": true
+    }
+  ]
+}

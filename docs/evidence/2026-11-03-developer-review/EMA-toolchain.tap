@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: HTTP configuration validates record values and unresolved variable references
+ok 1 - HTTP configuration validates record values and unresolved variable references
+  ---
+  duration_ms: 323.9503
+  type: 'test'
+  ...
+# Subtest: simulated network configuration retains tuple and cross-field validation
+ok 2 - simulated network configuration retains tuple and cross-field validation
+  ---
+  duration_ms: 133.8233
+  type: 'test'
+  ...
+# Subtest: chain descriptors keep strict activation objects and chronological validation
+ok 3 - chain descriptors keep strict activation objects and chronological validation
+  ---
+  duration_ms: 19.3763
+  type: 'test'
+  ...
+# Subtest: compiler variants retain nested error paths through conditional unions
+ok 4 - compiler variants retain nested error paths through conditional unions
+  ---
+  duration_ms: 123.8086
+  type: 'test'
+  ...
+# Subtest: incompatible compiler fields preserve the actionable custom message
+ok 5 - incompatible compiler fields preserve the actionable custom message
+  ---
+  duration_ms: 31.1966
+  type: 'test'
+  ...
+# Subtest: source-path variants reject wrong types and empty lists without throwing
+ok 6 - source-path variants reject wrong types and empty lists without throwing
+  ---
+  duration_ms: 4.1008
+  type: 'test'
+  ...
+# Subtest: toolchain preserves empty RPC data separately from a zero byte
+ok 7 - toolchain preserves empty RPC data separately from a zero byte
+  ---
+  duration_ms: 11.0275
+  type: 'test'
+  ...
+# Subtest: toolchain rejects malformed RPC data without repairing it into bytes
+ok 8 - toolchain rejects malformed RPC data without repairing it into bytes
+  ---
+  duration_ms: 1.2919
+  type: 'test'
+  ...
+# Subtest: toolchain accepts a valid fictional configuration without loading Hardhat settings
+ok 9 - toolchain accepts a valid fictional configuration without loading Hardhat settings
+  ---
+  duration_ms: 14.6765
+  type: 'test'
+  ...
+# Subtest: toolchain reports a nested invalid field as a structured error rather than throwing
+ok 10 - toolchain reports a nested invalid field as a structured error rather than throwing
+  ---
+  duration_ms: 5.8332
+  type: 'test'
+  ...
+# Subtest: migrated helper keeps ordinary path segments and represents symbol labels explicitly
+ok 11 - migrated helper keeps ordinary path segments and represents symbol labels explicitly
+  ---
+  duration_ms: 47.6854
+  type: 'test'
+  ...
+# Subtest: migrated conditional union retains strict-object failure
+ok 12 - migrated conditional union retains strict-object failure
+  ---
+  duration_ms: 8.9632
+  type: 'test'
+  ...
+# Subtest: migrated union accepts members and rejects nonmembers
+ok 13 - migrated union accepts members and rejects nonmembers
+  ---
+  duration_ms: 63.1855
+  type: 'test'
+  ...
+# Subtest: oversized bounded array fails before element validation
+ok 14 - oversized bounded array fails before element validation
+  ---
+  duration_ms: 9.3471
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4040.7539

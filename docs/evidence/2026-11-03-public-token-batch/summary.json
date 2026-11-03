@@ -1,0 +1,55 @@
+{
+  "recordedAt": "2026-11-03T09:20:24.398Z",
+  "baseCommit": "42ec555",
+  "scope": "One-account, three-token public RPC read at one canonical block and saved-budget reconciliation",
+  "verification": {
+    "tests": 1058,
+    "passed": 1058,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "log": "focused-tests.tap",
+    "fullWalletRegressionRerun": false
+  },
+  "liveReads": [
+    {
+      "chainId": 84532,
+      "blockNumber": "53876331",
+      "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+      "requests": 23,
+      "tokenIdentitiesMatched": 3,
+      "fileSha256": "7d026b28e4016b956e22fc60b1b1f3f07d33210fbe4291e85ad57731a26dfca8"
+    },
+    {
+      "chainId": 8453,
+      "blockNumber": "53454110",
+      "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+      "requests": 23,
+      "tokenIdentitiesMatched": 3,
+      "fileSha256": "4a4596c54c600dad8201e894839d11be4d3f30a18310f510e79bc8f16c5ea470"
+    }
+  ],
+  "browser": {
+    "type": "Codex in-app browser",
+    "origin": "http://127.0.0.1:4244",
+    "publicRpcSourceLabelVerified": true,
+    "threeTokenConsistency": true,
+    "budgetConstraintsSatisfied": false,
+    "roundtripBytes": 4453,
+    "roundtripSha256": "813dafd7780d83f92518a183b333a0125a41cb853677b9b6fa6ad9e5e97a95f0",
+    "saveRestoreReexportByteIdentical": true,
+    "offlineAgreement": true,
+    "screenshot": {
+      "name": "ThreeCore-public-batch-match-20261103.jpg",
+      "bytes": 69236,
+      "sha256": "425c78c09aa9e64ac9313fd3e06ba9dd75323d8bcfac5d9d734bd52c2c241e85"
+    }
+  },
+  "walletRequests": 0,
+  "transactions": 0,
+  "privateKeyAccess": false,
+  "githubWrites": 0,
+  "oldServersAndFilesNotModified": true,
+  "privateEvidenceInDownloads": true,
+  "overall90PercentEstablished": false
+}

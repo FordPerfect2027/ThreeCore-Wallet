@@ -84,7 +84,8 @@ for (const [name, mutate] of [
 ]) {
   test("file rejects " + name, async () => {
     const value = JSON.parse((await preparePeriodReportFile(reportInput())).text); mutate(value);
-    await assert.rejects(decodePeriodReportFile(JSON.stringify(value)), code("PERIOD_REPORT_FILE_SCHEMA"));
+    await assert.rejects(decodePeriodReportFile(JSON.stringify(value)),
+      code(name === "wrong schema" ? "PERIOD_FILE_USE_LIBRARY" : "PERIOD_REPORT_FILE_SCHEMA"));
   });
 }
 

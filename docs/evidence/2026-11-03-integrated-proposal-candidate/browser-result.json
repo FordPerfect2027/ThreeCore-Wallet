@@ -1,0 +1,43 @@
+{
+  "recordedAt": "2026-11-03T13:58:46.611Z",
+  "walletRevision": "288efc3",
+  "status": "passed",
+  "completed": 1026,
+  "failures": [],
+  "summary": {
+    "total": 1026,
+    "passed": 1026,
+    "failed": 0,
+    "unexpectedErrors": 0,
+    "fault": null
+  },
+  "environment": "Codex in-app browser through CUA; separate new loopback origins per shard; synthetic providers only",
+  "shards": [
+    {
+      "total": 513,
+      "passed": 513,
+      "failed": 0,
+      "unexpectedErrors": 0,
+      "fault": null,
+      "index": 0,
+      "registered": 1026,
+      "digest": "ad851629bdfb7c961b2a2635d65ba71a7984ea0816ec1dfece42edda14c9a007",
+      "url": "http://127.0.0.1:4257/test/browser/?shard-count=2&shard-index=0",
+      "htmlSha256": "b50678862e09829acc291d0712b080af49ed62ab8fbcbc7d278cb61f82cf305a"
+    },
+    {
+      "total": 513,
+      "passed": 513,
+      "failed": 0,
+      "unexpectedErrors": 0,
+      "fault": null,
+      "index": 1,
+      "registered": 1026,
+      "digest": "ad851629bdfb7c961b2a2635d65ba71a7984ea0816ec1dfece42edda14c9a007",
+      "url": "http://127.0.0.1:4258/test/browser/?shard-count=2&shard-index=1",
+      "htmlSha256": "6533f33fac1d9250fa73c71528e545a54ef631c880f4ec4610135dbeee31c37a"
+    }
+  ],
+  "realWalletUsed": false,
+  "publicRpcUsed": false
+}

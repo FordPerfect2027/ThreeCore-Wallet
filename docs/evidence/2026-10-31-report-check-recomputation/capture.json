@@ -1,0 +1,95 @@
+{
+  "source": "8c3052c",
+  "synthetic": true,
+  "rows": [
+    {
+      "name": "conflicts",
+      "args": [
+        "balance-source.json",
+        "conflicts-details.json",
+        "--json"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "matches": true,
+      "sourceDigestMatches": true,
+      "total": 9,
+      "matched": 6,
+      "differences": [],
+      "sourceUnchanged": true,
+      "detailsUnchanged": true
+    },
+    {
+      "name": "full",
+      "args": [
+        "balance-source.json",
+        "full-details.json",
+        "--json"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "matches": true,
+      "sourceDigestMatches": true,
+      "total": 9,
+      "matched": 9,
+      "differences": [],
+      "sourceUnchanged": true,
+      "detailsUnchanged": true
+    },
+    {
+      "name": "empty",
+      "args": [
+        "demo-source.json",
+        "empty-details.json",
+        "--json"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "matches": true,
+      "sourceDigestMatches": true,
+      "total": 15,
+      "matched": 0,
+      "differences": [],
+      "sourceUnchanged": true,
+      "detailsUnchanged": true
+    },
+    {
+      "name": "changed-observation",
+      "args": [
+        "balance-source.json",
+        "changed-details.json",
+        "--json"
+      ],
+      "exitCode": 2,
+      "stderr": "",
+      "matches": false,
+      "sourceDigestMatches": true,
+      "total": 9,
+      "matched": 9,
+      "differences": [
+        "items"
+      ],
+      "sourceUnchanged": true,
+      "detailsUnchanged": true
+    },
+    {
+      "name": "wrong-original",
+      "args": [
+        "other-source.json",
+        "conflicts-details.json",
+        "--json"
+      ],
+      "exitCode": 2,
+      "stderr": "",
+      "matches": false,
+      "sourceDigestMatches": false,
+      "total": 9,
+      "matched": 6,
+      "differences": [
+        "sourcePayloadDigest"
+      ],
+      "sourceUnchanged": true,
+      "detailsUnchanged": true
+    }
+  ]
+}

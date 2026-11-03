@@ -1,0 +1,80 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v2",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": true,
+  "phase": "cancelled",
+  "complete": false,
+  "allRecomputationsMatch": false,
+  "summary": {
+    "selected": 3,
+    "reviewed": 1,
+    "pending": 2,
+    "matching": 1,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 37844,
+    "checksumsCompared": 1,
+    "checksumsMatching": 1,
+    "checksumMismatches": 0
+  },
+  "files": [
+    {
+      "name": "01-saved-report.json",
+      "byteLength": 8218,
+      "status": "matched",
+      "sha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2",
+      "inputSchema": "threecore.operation-rehearsal-overview.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null,
+      "expectedSha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2",
+      "checksumMatches": true
+    },
+    {
+      "name": "02-saved-report.json",
+      "byteLength": 9274,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null,
+      "expectedSha256": "e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22",
+      "checksumMatches": null
+    },
+    {
+      "name": "03-saved-report.json",
+      "byteLength": 20352,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null,
+      "expectedSha256": "245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193",
+      "checksumMatches": null
+    }
+  ],
+  "referenceProvided": true,
+  "reference": {
+    "text": "245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193  03-saved-report.json\ne6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22  02-saved-report.json\n2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2  01-saved-report.json\n",
+    "sha256": "b571f555607c198fe5589014d7e8dafa06f17c38499d897f2d7a52d0760b1bdb",
+    "entries": [
+      {
+        "name": "01-saved-report.json",
+        "expectedSha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2"
+      },
+      {
+        "name": "02-saved-report.json",
+        "expectedSha256": "e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22"
+      },
+      {
+        "name": "03-saved-report.json",
+        "expectedSha256": "245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193"
+      }
+    ]
+  },
+  "allExternalChecksumsMatch": false
+}

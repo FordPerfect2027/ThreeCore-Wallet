@@ -1,0 +1,90 @@
+{
+  "recordedAt": "2026-11-03T04:46:30.557Z",
+  "node": "v24.19.0",
+  "isolatedSimulatedChain": true,
+  "realWalletUsed": false,
+  "realAssetsMoved": false,
+  "userKeysRead": false,
+  "publicChainWrites": false,
+  "dependenciesInstalled": false,
+  "compilationRerun": false,
+  "results": [
+    {
+      "name": "guard-control",
+      "startedAt": "2026-11-03T04:46:06.740Z",
+      "endedAt": "2026-11-03T04:46:07.125Z",
+      "code": 0,
+      "signal": null,
+      "networkAttempted": true,
+      "logSha256": "4057714227229552784bf086f7dda744af08c620db7e78d8fd73980c66da7329"
+    },
+    {
+      "name": "DAT-configuration",
+      "startedAt": "2026-11-03T04:46:08.228Z",
+      "endedAt": "2026-11-03T04:46:10.813Z",
+      "code": 0,
+      "signal": null,
+      "networkAttempted": false,
+      "logSha256": "0e4a9153ae342d2eecc873e22742fb43766ab1c707f96166f609f03c1fa9653f"
+    },
+    {
+      "name": "EMA-configuration",
+      "startedAt": "2026-11-03T04:46:08.240Z",
+      "endedAt": "2026-11-03T04:46:11.012Z",
+      "code": 0,
+      "signal": null,
+      "networkAttempted": false,
+      "logSha256": "0e4a9153ae342d2eecc873e22742fb43766ab1c707f96166f609f03c1fa9653f"
+    },
+    {
+      "name": "CAWELON-configuration",
+      "startedAt": "2026-11-03T04:46:08.248Z",
+      "endedAt": "2026-11-03T04:46:11.028Z",
+      "code": 0,
+      "signal": null,
+      "networkAttempted": false,
+      "logSha256": "0e4a9153ae342d2eecc873e22742fb43766ab1c707f96166f609f03c1fa9653f"
+    },
+    {
+      "name": "DAT-contracts",
+      "startedAt": "2026-11-03T04:46:10.814Z",
+      "endedAt": "2026-11-03T04:46:29.905Z",
+      "code": 0,
+      "signal": null,
+      "networkAttempted": true,
+      "logSha256": "f8035fbefa27f23d6574d19cbbea68d5e42098ddc2c3a0c69855d6c1340050cc"
+    },
+    {
+      "name": "EMA-contracts",
+      "startedAt": "2026-11-03T04:46:11.013Z",
+      "endedAt": "2026-11-03T04:46:30.482Z",
+      "code": 0,
+      "signal": null,
+      "networkAttempted": true,
+      "logSha256": "2c7d882d935980ec2f8c934fb14250784e5052409a09e33be14f45dbda6339ec"
+    },
+    {
+      "name": "CAWELON-contracts",
+      "startedAt": "2026-11-03T04:46:11.029Z",
+      "endedAt": "2026-11-03T04:46:30.556Z",
+      "code": 0,
+      "signal": null,
+      "networkAttempted": true,
+      "logSha256": "96008acf2eab15fa8b4ca1daf5596f8059e044b00df3bccc6e3a673a70fecb83"
+    }
+  ],
+  "outcomes": [
+    {
+      "status": "rejected",
+      "reason": "AssertionError [ERR_ASSERTION]: Unexpected external network attempt\n\ntrue !== false\n"
+    },
+    {
+      "status": "rejected",
+      "reason": "AssertionError [ERR_ASSERTION]: Unexpected external network attempt\n\ntrue !== false\n"
+    },
+    {
+      "status": "rejected",
+      "reason": "AssertionError [ERR_ASSERTION]: Unexpected external network attempt\n\ntrue !== false\n"
+    }
+  ]
+}

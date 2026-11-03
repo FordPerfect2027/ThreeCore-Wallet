@@ -1,0 +1,42 @@
+✔ offline differences CLI distinguishes equal JSON values, changed values and invalid sources without writes (1693.6083ms)
+✔ explicit field inspection re-reads both captured files and exports only after acknowledgement (64.0612ms)
+✔ a changed source on re-read cannot replace the previously selected comparison (8.3226ms)
+✔ pending inspection cannot publish after stop (1.2152ms)
+✔ pending inspection cannot publish after pair (1.2441ms)
+✔ pending inspection cannot publish after dispose (1.6768ms)
+✔ the parent saved-file guide wires the exact pair and clears differences on replacement (75.5245ms)
+✔ all supported plain source families distinguish formatting from JSON-value changes (168.5939ms)
+✖ same-count settings changes expose only field locations and exact source bindings (37.5839ms)
+✔ rehearsal event differences count all changed positions but list at most 40 (47.9155ms)
+✔ sources must validate independently, use the same format and fit the bounded comparison (48.0243ms)
+✔ cancellation and a stalled hash deadline return without publishing a result (34.9144ms)
+✔ difference helper escapes pointers, preserves type changes and bounds input before traversal (4.061ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2231.8933
+
+✖ failing tests:
+
+test at test\wallet-saved-differences.test.js:19:1
+✖ same-count settings changes expose only field locations and exact source bindings (37.5839ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'declared-only'
+  - 'unverified'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-differences.test.js:24:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'declared-only',
+    expected: 'unverified',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

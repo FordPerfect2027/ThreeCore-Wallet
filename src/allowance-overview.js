@@ -1,16 +1,14 @@
 import { allowanceObject, allowanceFail } from "./allowance-targets.js";
 import { validateAllowanceObservation, summarizeAllowances } from "./allowance-observation.js";
+import { captureDataArray } from "./security-data.js";
 
 const agents = ["DAT", "EMA", "CAWELON"];
 export function allowanceOverview(input) {
-  if (!Array.isArray(input) || input.length !== 3 || Reflect.ownKeys(input).length !== 4) allowanceFail("ALLOWANCE_OVERVIEW");
+  try { input = captureDataArray(input, 3, 3); }
+  catch { allowanceFail("ALLOWANCE_OVERVIEW"); }
   const seen = new Set();
-  for (let index = 0; index < input.length; index++) {
-    const descriptor = Object.getOwnPropertyDescriptor(input, String(index));
-    if (!descriptor || !("value" in descriptor)) allowanceFail("ALLOWANCE_OVERVIEW");
-  }
   const cards = input.map(value => {
-    allowanceObject(value, ["agent", "observation", "provenance"]);
+    value = allowanceObject(value, ["agent", "observation", "provenance"]);
     if (!agents.includes(value.agent) || seen.has(value.agent) ||
         ![null, "read", "imported"].includes(value.provenance)) allowanceFail("ALLOWANCE_OVERVIEW");
     seen.add(value.agent);

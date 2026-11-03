@@ -1,0 +1,31 @@
+✔ offline bounded read rejects a changed mtimeMs after reading (8.0463ms)
+✔ offline bounded read rejects a changed ctimeMs after reading (1.3271ms)
+✔ offline bounded read rejects a changed ino after reading (1.1341ms)
+✔ offline bounded read rejects a changed dev after reading (1.0707ms)
+✔ offline bounded read rejects a changed size after reading (1.4897ms)
+✔ offline bounded read rejects invalid limit before opening: Infinity (1.3489ms)
+✔ offline bounded read rejects invalid limit before opening: NaN (0.9982ms)
+✔ offline bounded read rejects invalid limit before opening: 0 (2.2488ms)
+✔ offline bounded read rejects invalid limit before opening: -1 (0.9661ms)
+✔ offline bounded read rejects invalid limit before opening: 1.5 (1.1233ms)
+✔ offline bounded read rejects invalid limit before opening: 10 (0.8103ms)
+✔ offline bounded read rejects invalid limit before opening: 100663297 (0.7261ms)
+✔ stable offline file retains exact text and closes its handle (0.9537ms)
+✔ offline growth is rejected before returning a truncated success (0.9873ms)
+✔ offline read failure still closes its handle (0.9418ms)
+✔ identity: changed file is rejected before interpreting its contents (2.0577ms)
+✔ allowance: changed file is rejected before interpreting its contents (2.2596ms)
+✔ transfer: changed file is rejected before interpreting its contents (1.3249ms)
+✔ transfer archive: changed file is rejected before interpreting its contents (1.0059ms)
+✔ rehearsal input: changed file is rejected before interpreting its contents (1.4546ms)
+✔ rehearsal workspace: changed file is rejected before interpreting its contents (0.9592ms)
+✔ rehearsal text: changed file is rejected before interpreting its contents (1.0702ms)
+✔ native file changed between reads is rejected without modifying it again (65.6498ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 573.9683

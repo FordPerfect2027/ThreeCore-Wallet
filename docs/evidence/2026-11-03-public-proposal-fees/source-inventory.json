@@ -1,0 +1,85 @@
+{
+  "baseCommit": "98fbd1d",
+  "sources": [
+    {
+      "path": "src/base-fee-reader.js",
+      "bytes": 7615,
+      "sha256": "b0f1eca227502087b1858e774f25130336a5ee907c42d628cac2a575fb8c669e"
+    },
+    {
+      "path": "src/proposal-fee-reader.js",
+      "bytes": 5314,
+      "sha256": "bd27b1cfc18d0ec4c136a53fa2fc86c02792954e2dfdbfa0aeae8f2852b45979"
+    },
+    {
+      "path": "src/proposal-fee-client.js",
+      "bytes": 1687,
+      "sha256": "ec736aeaa5bd8287dfaa4f6816252afbda1c610167274b06ac3f57fc871ae461"
+    },
+    {
+      "path": "src/proposal-fee-request.js",
+      "bytes": 350,
+      "sha256": "952ac7b0bc0fe6b6931e6dc30c565301ad22e780970a47ccbe117fbdc2c48cc5"
+    },
+    {
+      "path": "src/state-rpc-http.js",
+      "bytes": 4424,
+      "sha256": "524deb6c74d2bf03ff3e67e37686f543fa61344c0c22f8edff853bf944c15768"
+    },
+    {
+      "path": "examples/proposal-fee-http.js",
+      "bytes": 2067,
+      "sha256": "3c9f908ffd1c6c8ba3c6775aef3bec53a00c52c323db834f0806f11249d0b981"
+    },
+    {
+      "path": "examples/proposal-fee-page.js",
+      "bytes": 11194,
+      "sha256": "e2e9a2a38a2747d60bdbdcccb9cdea63fec82eb10dec40c906ee71236d987dc3"
+    },
+    {
+      "path": "examples/proposal-fee.html",
+      "bytes": 2754,
+      "sha256": "1868727a2ff5ff6a13087fec055a285ea0eeb1d9d57ffc1c1b6c7b23d5efde30"
+    },
+    {
+      "path": "examples/dev-server.js",
+      "bytes": 39841,
+      "sha256": "e311812538c5115046ca73b8c6a54ec67674205bff96295aee89f7faccbf2474"
+    },
+    {
+      "path": "scripts/read-proposal-fees.js",
+      "bytes": 2274,
+      "sha256": "a7ab3090d2b356855aae0da282c8fabed0125dbc31b8c621489700054d64bea9"
+    },
+    {
+      "path": "test/helpers/proposal-fee-rpc-fixture.js",
+      "bytes": 2142,
+      "sha256": "bf6c9a3a30f150caf5d7d28045d7f0d6c1a13476b335423462e005153378ea52"
+    },
+    {
+      "path": "test/proposal-fee-reader.test.js",
+      "bytes": 7426,
+      "sha256": "fe886c613cafb6ec96d910cc042adac92083b47320dc9a77bd6598960e6ba1dd"
+    },
+    {
+      "path": "test/proposal-fee-transport.test.js",
+      "bytes": 7172,
+      "sha256": "e746f8f18f909ddf6c66a1209588051a2c1ad7b7f0237f062a8469fe46db59ee"
+    },
+    {
+      "path": "test/proposal-fee-page.test.js",
+      "bytes": 8890,
+      "sha256": "599e908d1baccf3a70845c3da3ee69962b443ef4844938fc3cb7e2057cab5b75"
+    },
+    {
+      "path": "test/proposal-fee-cli.test.js",
+      "bytes": 2936,
+      "sha256": "ec3da1c399f0bb785304901713b72d1a63c0557d3d92cfd2e74369d8f74349d1"
+    },
+    {
+      "path": "test/state-rpc-http.test.js",
+      "bytes": 5875,
+      "sha256": "39ddb262809f8cca92def379ecd62c7b5c7e14ac6f1dd96d51acaf7e48634386"
+    }
+  ]
+}

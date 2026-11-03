@@ -1,0 +1,983 @@
+✖ transfer: digest accessor failure is sanitized (16.8761ms)
+✖ transfer: capture each digest method once and retain its receiver (22.7769ms)
+✖ transfer: reject a fake digest length (1.6989ms)
+✔ transfer: reject array-like digest results (1.2657ms)
+✖ archive: digest accessor failure is sanitized (2.3288ms)
+✖ archive: capture each digest method once and retain its receiver (9.4919ms)
+✖ archive: reject a fake digest length (2.386ms)
+✔ archive: reject array-like digest results (0.772ms)
+✖ vault: digest accessor failure is sanitized (4.9563ms)
+✖ vault: capture each digest method once and retain its receiver (21.0191ms)
+✖ vault: reject a fake digest length (4.0043ms)
+✔ vault: reject array-like digest results (3.0901ms)
+✖ vault collection: digest accessor failure is sanitized (8.1384ms)
+✖ vault collection: capture each digest method once and retain its receiver (11.1002ms)
+✖ vault collection: reject a fake digest length (7.496ms)
+✔ vault collection: reject array-like digest results (3.051ms)
+✖ period: digest accessor failure is sanitized (16.1279ms)
+✖ period: capture each digest method once and retain its receiver (13.2812ms)
+✖ period: reject a fake digest length (6.7841ms)
+✔ period: reject array-like digest results (10.2731ms)
+✖ library: digest accessor failure is sanitized (1.1586ms)
+✖ library: capture each digest method once and retain its receiver (4.6692ms)
+✖ library: reject a fake digest length (1.2083ms)
+✔ library: reject array-like digest results (0.4202ms)
+✖ report: digest accessor failure is sanitized (57.6542ms)
+✖ report: capture each digest method once and retain its receiver (77.0671ms)
+✖ report: reject a fake digest length (74.142ms)
+✔ report: reject array-like digest results (69.7837ms)
+✖ history: digest accessor failure is sanitized (1.1519ms)
+✖ history: capture each digest method once and retain its receiver (5.1067ms)
+✖ history: reject a fake digest length (0.9066ms)
+✔ history: reject array-like digest results (0.3736ms)
+✖ report set: digest accessor failure is sanitized (405.1239ms)
+✖ report set: capture each digest method once and retain its receiver (504.2511ms)
+✖ report set: reject a fake digest length (382.4313ms)
+✔ report set: reject array-like digest results (387.1946ms)
+✖ reconciliation: digest accessor failure is sanitized (3.4316ms)
+✖ reconciliation: capture each digest method once and retain its receiver (6.4591ms)
+✖ reconciliation: reject a fake digest length (1.3967ms)
+✔ reconciliation: reject array-like digest results (1.005ms)
+✖ workspace: digest accessor failure is sanitized (14.6677ms)
+✖ workspace: capture each digest method once and retain its receiver (11.2158ms)
+✔ workspace: reject a fake digest length (7.4081ms)
+✖ workspace: reject array-like digest results (5.3186ms)
+✖ checkpoints: digest accessor failure is sanitized (1.4995ms)
+✖ checkpoints: capture each digest method once and retain its receiver (7.4912ms)
+✔ checkpoints: reject a fake digest length (0.8565ms)
+✖ checkpoints: reject array-like digest results (0.5189ms)
+✖ allowance: digest accessor failure is sanitized (3.0131ms)
+✖ allowance: capture each digest method once and retain its receiver (6.7446ms)
+✖ allowance: reject a fake digest length (1.1697ms)
+✔ allowance: reject array-like digest results (0.8498ms)
+✖ allowance bundle: digest accessor failure is sanitized (3.1853ms)
+✖ allowance bundle: capture each digest method once and retain its receiver (18.6533ms)
+✖ allowance bundle: reject a fake digest length (3.8299ms)
+✔ allowance bundle: reject array-like digest results (1.7251ms)
+✖ identity: digest accessor failure is sanitized (1.093ms)
+✖ identity: capture each digest method once and retain its receiver (5.7988ms)
+✖ identity: reject a fake digest length (0.9493ms)
+✔ identity: reject array-like digest results (0.878ms)
+✖ rehearsal review: digest accessor failure is sanitized (35.3572ms)
+✖ rehearsal review: capture each digest method once and retain its receiver (29.2047ms)
+✔ rehearsal review: reject a fake digest length (10.7329ms)
+✖ rehearsal review: reject array-like digest results (11.3671ms)
+ℹ tests 64
+ℹ suites 0
+ℹ pass 16
+ℹ fail 48
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2795.5127
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ transfer: digest accessor failure is sanitized (16.8761ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at checksum (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-file.js:11:32)
+        at encodeTransferFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-file.js:27:24)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:36:27
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.start (node:internal/test_runner/test:1242:17)
+        at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ transfer: capture each digest method once and retain its receiver (22.7769ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ transfer: reject a fake digest length (1.6989ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ archive: digest accessor failure is sanitized (2.3288ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at digestArchive (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-archive-file.js:11:32)
+        at prepareTransferArchive (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-archive-file.js:21:24)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:37:26
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ archive: capture each digest method once and retain its receiver (9.4919ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ archive: reject a fake digest length (2.386ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ vault: digest accessor failure is sanitized (4.9563ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at checksum (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-file.js:20:32)
+        at prepareVaultFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-file.js:33:24)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:38:24
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ vault: capture each digest method once and retain its receiver (21.0191ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ vault: reject a fake digest length (4.0043ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ vault collection: digest accessor failure is sanitized (8.1384ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at checksum (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-collection.js:19:32)
+        at prepareVaultCollection (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-collection.js:31:24)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:39:35
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ vault collection: capture each digest method once and retain its receiver (11.1002ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ vault collection: reject a fake digest length (7.496ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ period: digest accessor failure is sanitized (16.1279ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at checksum (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-file.js:17:32)
+        at preparePeriodFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-file.js:29:24)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:40:25
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ period: capture each digest method once and retain its receiver (13.2812ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ period: reject a fake digest length (6.7841ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ library: digest accessor failure is sanitized (1.1586ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at checksum (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-library-file.js:20:32)
+        at preparePeriodLibraryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-library-file.js:31:24)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:41:26
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ library: capture each digest method once and retain its receiver (4.6692ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ library: reject a fake digest length (1.2083ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ report: digest accessor failure is sanitized (57.6542ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at digest (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-file.js:17:32)
+        at preparePeriodReportFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-file.js:27:73)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:42:25
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ report: capture each digest method once and retain its receiver (77.0671ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ report: reject a fake digest length (74.142ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ history: digest accessor failure is sanitized (1.1519ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at digest (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-history-file.js:22:32)
+        at prepareReportHistoryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-history-file.js:31:50)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:43:26
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ history: capture each digest method once and retain its receiver (5.1067ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ history: reject a fake digest length (0.9066ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ report set: digest accessor failure is sanitized (405.1239ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at checksum (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-set-file.js:11:32)
+        at prepareReportSetFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-set-file.js:25:58)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:44:29
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ report set: capture each digest method once and retain its receiver (504.2511ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ report set: reject a fake digest length (382.4313ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ reconciliation: digest accessor failure is sanitized (3.4316ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at checksum (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/reconciliation-file.js:27:32)
+        at prepareReconciliationFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/reconciliation-file.js:39:24)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:45:33
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ reconciliation: capture each digest method once and retain its receiver (6.4591ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ reconciliation: reject a fake digest length (1.3967ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ workspace: digest accessor failure is sanitized (14.6677ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at digestText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/workspace-file.js:17:32)
+        at prepareWorkspaceFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/workspace-file.js:29:24)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:46:28
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ workspace: capture each digest method once and retain its receiver (11.2158ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:71:3
+✖ workspace: reject array-like digest results (5.3186ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:72:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ checkpoints: digest accessor failure is sanitized (1.4995ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at digest (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/checkpoint-transfer.js:16:32)
+        at prepareCheckpointCollection (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/checkpoint-transfer.js:33:26)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ checkpoints: capture each digest method once and retain its receiver (7.4912ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:71:3
+✖ checkpoints: reject array-like digest results (0.5189ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:72:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ allowance: digest accessor failure is sanitized (3.0131ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at digest (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-file.js:21:20)
+        at prepareAllowanceFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-file.js:32:26)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:48:28
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ allowance: capture each digest method once and retain its receiver (6.7446ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ allowance: reject a fake digest length (1.1697ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ allowance bundle: digest accessor failure is sanitized (3.1853ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at digest (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-file.js:21:20)
+        at prepareAllowanceFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-file.js:32:26)
+        at prepareAllowanceBundle (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-bundle.js:58:28)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:49:35
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ allowance bundle: capture each digest method once and retain its receiver (18.6533ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  8 !== 4
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 8,
+    expected: 4,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ allowance bundle: reject a fake digest length (3.8299ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ identity: digest accessor failure is sanitized (1.093ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at checksum (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-report.js:19:32)
+        at prepareTokenIdentityFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-report.js:43:24)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:50:27
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ identity: capture each digest method once and retain its receiver (5.7988ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:66:3
+✖ identity: reject a fake digest length (0.9493ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:69:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:54:3
+✖ rehearsal review: digest accessor failure is sanitized (35.3572ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: synthetic adapter detail
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic adapter detail
+        at get digest (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:55:43)
+        at reviewRehearsalReport (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-report-review.js:80:32)
+        at formats (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:51:35)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:57:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:59:3
+✖ rehearsal review: capture each digest method once and retain its receiver (29.2047ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:64:61)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-checksum-boundary-20261031\before-formats.test.js:71:3
+✖ rehearsal review: reject array-like digest results (11.3671ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-checksum-boundary-20261031/before-formats.test.js:72:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }

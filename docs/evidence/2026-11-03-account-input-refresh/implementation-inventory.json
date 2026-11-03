@@ -1,0 +1,25 @@
+{
+  "revision": "7bdb23d3398e1e92582a602bb22f06d364825412",
+  "files": [
+    {
+      "path": "examples/wallet-demo.js",
+      "bytes": 31731,
+      "sha256": "755ed36c24cc64c1e067690eaa26e95b07633b475ae734aac837e4ead7f8131a"
+    },
+    {
+      "path": "examples/wallet-setup-panel.js",
+      "bytes": 19727,
+      "sha256": "f678be440144a738b564dd6c0910cb2fc59fec6dc29eb7f6c070ba5503748c8b"
+    },
+    {
+      "path": "examples/workspace-panel.js",
+      "bytes": 22375,
+      "sha256": "103667d9d80e8c3dbd24f2df3c6f19b3388dafd1a8a47a3b419b0248e0afbde9"
+    },
+    {
+      "path": "test/browser/ui-tests.js",
+      "bytes": 77998,
+      "sha256": "92341cc46be511c8fce59bc49b1a55160e8dc0fa310946d3e4f7e02128121972"
+    }
+  ]
+}

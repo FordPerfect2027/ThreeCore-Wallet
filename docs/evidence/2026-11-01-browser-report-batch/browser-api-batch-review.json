@@ -1,0 +1,185 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": false,
+  "phase": "complete",
+  "complete": true,
+  "allRecomputationsMatch": false,
+  "summary": {
+    "selected": 17,
+    "reviewed": 17,
+    "pending": 0,
+    "matching": 13,
+    "differing": 2,
+    "unsupported": 1,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 1,
+    "totalBytes": 146153
+  },
+  "files": [
+    {
+      "name": "01-saved-report.json",
+      "byteLength": 8218,
+      "status": "matched",
+      "sha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2",
+      "inputSchema": "threecore.operation-rehearsal-overview.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "02-saved-report.json",
+      "byteLength": 9274,
+      "status": "matched",
+      "sha256": "e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "03-saved-report.json",
+      "byteLength": 20352,
+      "status": "matched",
+      "sha256": "245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193",
+      "inputSchema": "threecore.operation-rehearsal-comparison.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "04-saved-report.json",
+      "byteLength": 21301,
+      "status": "matched",
+      "sha256": "d0740ccd499741396cff4999da58d510be018f4e1e1023baf188de4fd422650a",
+      "inputSchema": "threecore.operation-rehearsal-check-report.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": {
+        "cases": 3,
+        "matched": 1,
+        "differing": 2
+      }
+    },
+    {
+      "name": "05-saved-report.json",
+      "byteLength": 20626,
+      "status": "matched",
+      "sha256": "23700e3d71c74a84296128e1de8a4a19a2d5bdb431950d144d623d97aa1c8e0c",
+      "inputSchema": "threecore.operation-rehearsal-check-report.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": {
+        "cases": 3,
+        "matched": 3,
+        "differing": 0
+      }
+    },
+    {
+      "name": "06-saved-report.json",
+      "byteLength": 5679,
+      "status": "matched",
+      "sha256": "bc98a415c6a2d4bae88e2ec1999daa3c8e2fe06deda5b638bbab592c49b4cabf",
+      "inputSchema": "threecore.operation-rehearsal-record-query.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "07-saved-report.json",
+      "byteLength": 6015,
+      "status": "matched",
+      "sha256": "ac8a3eb2fec1b300805b20033fa6feeac6ce9f116a65787146c15ae1cf2a6238",
+      "inputSchema": "threecore.operation-rehearsal-scenario-set-report.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "08-saved-report.json",
+      "byteLength": 7999,
+      "status": "matched",
+      "sha256": "e1186413cc8e4a98dedef3b8d7e8e3211e8bf312a8439071264baeaf6c354d98",
+      "inputSchema": "threecore.operation-rehearsal-record-query.v3",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "09-saved-report.json",
+      "byteLength": 10158,
+      "status": "matched",
+      "sha256": "7c8834bb1d7558dd9df325da7301d857ea6de4b0b619db381b419d3620b9fdce",
+      "inputSchema": "threecore.operation-rehearsal-reference.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "10-saved-report.json",
+      "byteLength": 6734,
+      "status": "matched",
+      "sha256": "8799445f6f5262b0c4fbd4ed0f86900807bbd53789782ca0ace348eb623487dd",
+      "inputSchema": "threecore.operation-rehearsal-record-summary.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "11-saved-report.json",
+      "byteLength": 6572,
+      "status": "matched",
+      "sha256": "e6aa03de378a50b300820d3a2c0dcc067a87e000a719afaf9016b4184e014408",
+      "inputSchema": "threecore.operation-rehearsal-record-prefix.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "12-saved-report.json",
+      "byteLength": 2124,
+      "status": "matched",
+      "sha256": "7452796c18ac599f63926032765beb3c4bd53ad1c7285cc85c522751d57a02ce",
+      "inputSchema": "threecore.operation-rehearsal-record-query.v3",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "13-context-query-generated.json",
+      "byteLength": 4193,
+      "status": "matched",
+      "sha256": "047d0f448e847dbb6d61b7ef3324b941e9c18f2c1d9c54bcf3d07b33580b86ef",
+      "inputSchema": "threecore.operation-rehearsal-record-query.v2",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "control-1-tampered.json",
+      "byteLength": 9264,
+      "status": "different",
+      "sha256": "ae6b64c4e29691613c44c9a7fe7c89c4e25ea12c65c938a9733d5b1d67c17d89",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 2,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "control-2-tampered.json",
+      "byteLength": 7614,
+      "status": "different",
+      "sha256": "a070e4b99570fe21f4c921d90885ca1533efee939afb031ac49f7de513857faa",
+      "inputSchema": "threecore.operation-rehearsal-record-query.v1",
+      "differenceCount": 2,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "control-unsupported.json",
+      "byteLength": 3,
+      "status": "unsupported",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "control-invalid.json",
+      "byteLength": 27,
+      "status": "invalid",
+      "sha256": "7f5e938c7a50754b9658520cacaa1c553a175c5ea8251d1cc60e8c776b78b6e0",
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    }
+  ]
+}

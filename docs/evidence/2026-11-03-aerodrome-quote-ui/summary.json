@@ -1,0 +1,61 @@
+{
+  "baseCommit": "852a519",
+  "sources": [
+    {
+      "path": "src/aerodrome-quote-request.js",
+      "sha256": "6079a851b411869d2ce94e01985dca19b7ba42562f6728adea001a397ef0f0ae"
+    },
+    {
+      "path": "src/aerodrome-quote-client.js",
+      "sha256": "ebd36f623ff0efe72672eb45df097dc6a99fcb086f1a127080626fffbe395c1f"
+    },
+    {
+      "path": "examples/aerodrome-quote-http.js",
+      "sha256": "7ff8274db8ff098e65ddf41aa09aaae03a6223a505faf6a63f3507214c642dd0"
+    },
+    {
+      "path": "examples/aerodrome-quote-page.js",
+      "sha256": "f1d8376caf77fbb2956cdf5d76c5b72df060941fbf2061030d0c73842db0d998"
+    },
+    {
+      "path": "examples/aerodrome-quote.html",
+      "sha256": "3020e7dc3908d737ec2c7a9f1b55b74e5226fe96f504da228ced4224c64baddc"
+    },
+    {
+      "path": "examples/dev-server.js",
+      "sha256": "c37c1cacf1a69a9bd8054853f3ffb22da21bb22b6cb046cca11f96d1871a1794"
+    },
+    {
+      "path": "examples/proposal-quote.html",
+      "sha256": "3f98fb2953d0c896b3385b359fc158d89d33beddd27d2069521d738d1cfa6928"
+    },
+    {
+      "path": "integration/aerodrome-quote-server.test.mjs",
+      "sha256": "d5e00573f6fe6fe96e14c26f8c0da8a11880d34818ab53f43b3180d81267a4c1"
+    },
+    {
+      "path": "integration/proposal-quote-server.test.mjs",
+      "sha256": "feadcd22c0ca34e79a4fb0cfc518a42a9d5d439f5d30992517cc4d171a4695ee"
+    },
+    {
+      "path": "test/aerodrome-quote-client.test.js",
+      "sha256": "4e36fb6d992ebb209a25beea91abb4d00b022f06990ee3fd8bd7f7640f9027db"
+    },
+    {
+      "path": "test/aerodrome-quote-page.test.js",
+      "sha256": "29f0328781e8a8f5cc767224d80ea4fe035ad9318952d2c507c9a892d8fa01a6"
+    }
+  ],
+  "relatedTestsPassed": 56,
+  "realBrowserQuotes": 3,
+  "canonicalBlock": "53457078",
+  "noWalletCalls": true,
+  "noTransactions": true,
+  "overallReadinessPercent": null,
+  "nextScope": [
+    "USDC spending budgets",
+    "gas and allowance linkage",
+    "isolated execution",
+    "AI connection pending user credential choice"
+  ]
+}

@@ -1,0 +1,183 @@
+✖ wallet embedded JSON pages cover every location once and retain exact source/bundle bindings (8.3302ms)
+✖ wallet filtered empty scope is distinct from equal JSON values and formatting-only byte differences (0.5137ms)
+✔ wallet unavailable pairs, invalid JSON, forged reviews and hostile query descriptors cannot yield pages (63.2532ms)
+✖ wallet offline page output matches the API, validates query syntax, and retains input bytes (478.727ms)
+✖ wallet UI pages and filters require explicit source selection and revoke pending or obsolete exports (8.7611ms)
+✖ wallet difference save throw cannot publish an unconfirmed or obsolete success (25.3944ms)
+✖ wallet difference save false cannot publish an unconfirmed or obsolete success (3.2785ms)
+✖ wallet difference save async cannot publish an unconfirmed or obsolete success (5.5987ms)
+✖ wallet difference save replace cannot publish an unconfirmed or obsolete success (2.6949ms)
+✔ rehearsal embedded JSON pages cover every location once and retain exact source/bundle bindings (9.754ms)
+✔ rehearsal filtered empty scope is distinct from equal JSON values and formatting-only byte differences (3.6469ms)
+✔ rehearsal unavailable pairs, invalid JSON, forged reviews and hostile query descriptors cannot yield pages (34.0961ms)
+✔ rehearsal offline page output matches the API, validates query syntax, and retains input bytes (2749.2155ms)
+✔ rehearsal UI pages and filters require explicit source selection and revoke pending or obsolete exports (9.0277ms)
+✔ rehearsal difference save throw cannot publish an unconfirmed or obsolete success (5.2653ms)
+✔ rehearsal difference save false cannot publish an unconfirmed or obsolete success (2.454ms)
+✔ rehearsal difference save async cannot publish an unconfirmed or obsolete success (2.6077ms)
+✔ rehearsal difference save replace cannot publish an unconfirmed or obsolete success (10.241ms)
+✔ wallet portable pair independently recomputes each source group and retains negative originals (203.3073ms)
+✔ wallet changed pair claims cannot expose owned original sources and do not echo unexpected fields (320.0471ms)
+✔ wallet pair processing shares cancellation and deadlines without overriding original checksum references (51.6195ms)
+✔ wallet offline portable pair review and exact-role extraction do not change files or return tampered sources (3078.975ms)
+✔ wallet verified pair viewer keeps both source roles separate and requires fresh consent after role changes (23.3104ms)
+✔ wallet integrated portable pair shows independent verified rows and revokes them for replaced or altered evidence (91.868ms)
+✔ rehearsal portable pair independently recomputes each source group and retains negative originals (28.0477ms)
+✔ rehearsal changed pair claims cannot expose owned original sources and do not echo unexpected fields (109.208ms)
+✔ rehearsal pair processing shares cancellation and deadlines without overriding original checksum references (35.5364ms)
+✔ rehearsal offline portable pair review and exact-role extraction do not change files or return tampered sources (2694.9106ms)
+✔ rehearsal verified pair viewer keeps both source roles separate and requires fresh consent after role changes (25.3935ms)
+✔ rehearsal integrated portable pair shows independent verified rows and revokes them for replaced or altered evidence (55.4409ms)
+✔ wallet portable evidence cancellation and source changes suppress late reads and stale download claims (54.1729ms)
+✔ portable comparison recomputes both exact source groups while retaining faithful negative outcomes (45.7089ms)
+✔ nested source claims, comparison changes and unexpected authority cannot pass a portable comparison review (136.5341ms)
+✔ portable comparison obeys shared deadlines, cancellation and no reference overrides (48.4002ms)
+✔ offline comparison command matches API results, rejects changed claims and leaves source bytes unchanged (1512.6842ms)
+✔ portable comparison UI requires original-source consent and keeps live comparison independent of opened evidence (96.398ms)
+✔ portable comparison read cancellation and source replacement suppress late results and stale exports (56.0591ms)
+✔ rehearsal comparisons distinguish exact bytes, selection differences and unchanged negative results (13.3132ms)
+✔ unchanged bytes cannot conceal a changed reference verdict or missing read/hash evidence (44.7927ms)
+✔ comparison CSV preserves exact per-file scope and neutralizes formula-like file names (5.4733ms)
+✔ comparison UI retains its baseline while current work is absent and exports all rows despite display filtering (11.8648ms)
+✔ integrated rehearsal batch comparison follows confirmed results and never replaces the active list (165.336ms)
+✔ all pages cover the full difference sequence once while the original bounded receipt stays unchanged (21.3184ms)
+✔ path filters keep global ordinals and distinguish an empty subset from globally equal inputs (21.9112ms)
+✔ page query bounds, owned-source requirements and descriptor capture reject forged or hostile input (12.0434ms)
+✔ JSON pages remain auxiliary and CSV retains empty scope, source bindings and spreadsheet-safe fields (12.9611ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 38
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7954.6702
+
+✖ failing tests:
+
+test at test\batch-comparison-differences.test.js:8:2
+✖ wallet embedded JSON pages cover every location once and retain exact source/bundle bindings (8.3302ms)
+  Error: FILE_BATCH_COMPARISON_DIFFERENCE
+      at savedInspectionFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/file-read-status.js:410:52)
+      at Object.queryWalletBatchComparisonDifferences [as query] (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/file-read-status.js:1480:92)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-comparison-differences.test.js:9:39
+      at Array.map (<anonymous>)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-comparison-differences.test.js:9:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    code: 'FILE_BATCH_COMPARISON_DIFFERENCE'
+  }
+
+test at test\batch-comparison-differences.test.js:11:2
+✖ wallet filtered empty scope is distinct from equal JSON values and formatting-only byte differences (0.5137ms)
+  Error: FILE_BATCH_COMPARISON_DIFFERENCE
+      at savedInspectionFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/file-read-status.js:410:52)
+      at Object.queryWalletBatchComparisonDifferences [as query] (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/file-read-status.js:1480:92)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-comparison-differences.test.js:12:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    code: 'FILE_BATCH_COMPARISON_DIFFERENCE'
+  }
+
+test at test\batch-comparison-differences.test.js:17:2
+✖ wallet offline page output matches the API, validates query syntax, and retains input bytes (478.727ms)
+  AssertionError [ERR_ASSERTION]: FILE_BATCH_COMPARISON_DIFFERENCE
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-comparison-differences.test.js:19:133)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\batch-comparison-differences.test.js:21:2
+✖ wallet UI pages and filters require explicit source selection and revoke pending or obsolete exports (8.7611ms)
+  TypeError: Cannot read properties of null (reading 'shownDifferences')
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-comparison-differences.test.js:23:178)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\batch-comparison-differences.test.js:25:56
+✖ wallet difference save throw cannot publish an unconfirmed or obsolete success (25.3944ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(!q('ack').checked)
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-comparison-differences.test.js:27:253)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\batch-comparison-differences.test.js:25:56
+✖ wallet difference save false cannot publish an unconfirmed or obsolete success (3.2785ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(!q('ack').checked)
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-comparison-differences.test.js:27:253)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\batch-comparison-differences.test.js:25:56
+✖ wallet difference save async cannot publish an unconfirmed or obsolete success (5.5987ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(!q('ack').checked)
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-comparison-differences.test.js:27:253)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\batch-comparison-differences.test.js:25:56
+✖ wallet difference save replace cannot publish an unconfirmed or obsolete success (2.6949ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(!q('ack').checked)
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-comparison-differences.test.js:27:253)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

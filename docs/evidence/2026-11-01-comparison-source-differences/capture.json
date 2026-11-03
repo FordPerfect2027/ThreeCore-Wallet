@@ -1,0 +1,68 @@
+{
+  "source": "0fb437b",
+  "captures": [
+    {
+      "kind": "wallet",
+      "allPages": [
+        {
+          "offset": 0,
+          "shown": 40
+        },
+        {
+          "offset": 40,
+          "shown": 40
+        },
+        {
+          "offset": 80,
+          "shown": 6
+        }
+      ],
+      "globalDifferences": 86,
+      "filteredShown": 5,
+      "emptyScope": {
+        "matched": 0,
+        "total": 86
+      },
+      "emptyStatus": "全体の相違86件／この条件に一致0件／表示0件。 この条件の0件は、元ファイル全体の一致を意味しません。 元資料の判定は上の一覧に残っています。",
+      "dirtySaveDisabled": true,
+      "exactUiApiCli": true,
+      "cliExit": 0,
+      "sourceStatus": "validated-structure",
+      "validatesOriginals": false
+    },
+    {
+      "kind": "rehearsal",
+      "allPages": [
+        {
+          "offset": 0,
+          "shown": 40
+        },
+        {
+          "offset": 40,
+          "shown": 40
+        },
+        {
+          "offset": 80,
+          "shown": 6
+        }
+      ],
+      "globalDifferences": 86,
+      "filteredShown": 5,
+      "emptyScope": {
+        "matched": 0,
+        "total": 86
+      },
+      "emptyStatus": "全体の相違86件／この条件に一致0件／表示0件。 この条件の0件は、元ファイル全体の一致を意味しません。 元資料の判定は上の一覧に残っています。",
+      "dirtySaveDisabled": true,
+      "exactUiApiCli": true,
+      "cliExit": 0,
+      "sourceStatus": "unsupported",
+      "validatesOriginals": false
+    }
+  ],
+  "synthetic": true,
+  "nativeBrowserCases": 123,
+  "fullBrowserRun": false,
+  "externalRpcCalls": 0,
+  "userTabConnectionVerified": false
+}

@@ -1,0 +1,217 @@
+✖ workspace export: cancel settles a stalled checksum wait (79.2977ms)
+✖ workspace export: stage settles a stalled checksum wait (55.7505ms)
+✖ workspace export: invalidate settles a stalled checksum wait (45.9121ms)
+✖ workspace export: dispose settles a stalled checksum wait (45.0408ms)
+✖ workspace inspect: error accessors are not evaluated (3.9629ms)
+✖ workspace save: error accessors are not evaluated (4.7921ms)
+✖ workspace inspect: diagnostic capture cannot revive a disposed panel (6.9372ms)
+✖ workspace save: diagnostic capture cannot revive a disposed panel (5.0103ms)
+✖ workspace diagnostic constructor uses the unknown-code message (4.9917ms)
+✖ workspace diagnostic toString uses the unknown-code message (4.3356ms)
+✖ workspace diagnostic __proto__ uses the unknown-code message (2.6189ms)
+✔ workspace old export completion cannot retire a newer export (33.6477ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 1
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 653.0205
+
+✖ failing tests:
+
+test at test\workspace-export-lifecycle.test.js:20:64
+✖ workspace export: cancel settles a stalled checksum wait (79.2977ms)
+  AssertionError [ERR_ASSERTION]: the retired export is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:27:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:20:64
+✖ workspace export: stage settles a stalled checksum wait (55.7505ms)
+  AssertionError [ERR_ASSERTION]: the retired export is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:27:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:20:64
+✖ workspace export: invalidate settles a stalled checksum wait (45.9121ms)
+  AssertionError [ERR_ASSERTION]: the retired export is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:27:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:20:64
+✖ workspace export: dispose settles a stalled checksum wait (45.0408ms)
+  AssertionError [ERR_ASSERTION]: the retired export is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:27:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:30:41
+✖ workspace inspect: error accessors are not evaluated (3.9629ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:34:46)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:30:41
+✖ workspace save: error accessors are not evaluated (4.7921ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:34:46)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:37:41
+✖ workspace inspect: diagnostic capture cannot revive a disposed panel (6.9372ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ダウンロードを開始できませんでした。操作前の控えと保存履歴は保持しています。もう一度保存を試してください。'
+  - '必要な履歴を追加してから一括バックアップを保存してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:45:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ダウンロードを開始できませんでした。操作前の控えと保存履歴は保持しています。もう一度保存を試してください。',
+    expected: '必要な履歴を追加してから一括バックアップを保存してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:37:41
+✖ workspace save: diagnostic capture cannot revive a disposed panel (5.0103ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ダウンロードを開始できませんでした。操作前の控えと保存履歴は保持しています。もう一度保存を試してください。'
+  - '必要な履歴を追加してから一括バックアップを保存してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:45:42)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ダウンロードを開始できませんでした。操作前の控えと保存履歴は保持しています。もう一度保存を試してください。',
+    expected: '必要な履歴を追加してから一括バックアップを保存してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:47:59
+✖ workspace diagnostic constructor uses the unknown-code message (4.9917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:49:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:47:59
+✖ workspace diagnostic toString uses the unknown-code message (4.3356ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:49:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\workspace-export-lifecycle.test.js:47:59
+✖ workspace diagnostic __proto__ uses the unknown-code message (2.6189ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'object' !== 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/workspace-export-lifecycle.test.js:49:49)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'object',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

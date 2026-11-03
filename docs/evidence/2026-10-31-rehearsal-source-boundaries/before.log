@@ -1,0 +1,556 @@
+✖ records: source capture cannot outlive dispose (27.1565ms)
+✖ records: source capture cannot outlive dispose even when capture throws (4.2257ms)
+✖ records: source capture cannot outlive clear (6.3564ms)
+✖ records: source capture cannot outlive clear even when capture throws (4.8582ms)
+✖ records: source capture cannot outlive replace (6.3322ms)
+✖ records: source capture cannot outlive replace even when capture throws (7.1212ms)
+✖ scenario: source capture cannot outlive dispose (6.8565ms)
+✖ scenario: source capture cannot outlive dispose even when capture throws (4.7777ms)
+✖ scenario: source capture cannot outlive clear (4.3794ms)
+✖ scenario: source capture cannot outlive clear even when capture throws (2.5092ms)
+✖ scenario: source capture cannot outlive replace (3.7239ms)
+✖ scenario: source capture cannot outlive replace even when capture throws (3.7885ms)
+✔ comparison refresh observer cannot overwrite dispose (10.2909ms)
+✔ comparison refresh observer cannot overwrite clear (3.7797ms)
+✔ comparison refresh observer cannot overwrite replace (7.9043ms)
+✖ comparison compare-start observer cannot overwrite dispose (5.6662ms)
+✖ comparison compare-start observer cannot overwrite clear (2.1951ms)
+✖ comparison compare-start observer cannot overwrite replace (10.6542ms)
+✖ comparison compare-result observer cannot overwrite dispose (6.8985ms)
+✖ comparison compare-result observer cannot overwrite clear (9.0842ms)
+✖ comparison compare-result observer cannot overwrite replace (8.3173ms)
+✖ comparison observers do not discard valid work or leak failures: throw (2.2595ms)
+✖ comparison observers do not discard valid work or leak failures: native (63.617ms)
+✔ comparison observers do not discard valid work or leak failures: malformed (10.503ms)
+✖ comparison disposal marks the panel closed before notifying its owner (37.0311ms)
+✔ invalid replacement still reports its own failure without erasing a healthy source (8.3421ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 5
+ℹ fail 21
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 633.0808
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ records: source capture cannot outlive dispose (27.1565ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","EMA:open-one",false,null,["EMA / 1番目 / open-one","EMA / 2番目 / settle-one"]],["record-browser-save","","",false,null,[]],["record-browser-rows","","",false,null,["",""]],["record-browser-detail","保存元 EMA の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内","",false,null,[]],["record-browser-event","","",false,null,["","","","","","","","","","",""]],["record-browser-balances","","",false,null,["","","","","",""]],["record-browser-related","","",false,null,[""]],["record-browser-related-status","同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","一致 2件 / 全 2件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。","",false,null,[]],["record-browser-scope","DAT: 未作成 / EMA: 2件 / CAWELON: 未作成","",false,null,[]]]'
+  - '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","DAT:open-one",true,null,[]],["record-browser-save","","",true,null,[]],["record-browser-rows","","",false,null,[]],["record-browser-detail","","",false,null,[]],["record-browser-event","","",false,null,[]],["record-browser-balances","","",false,null,[]],["record-browser-related","","",false,null,[]],["record-browser-related-status","","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","履歴を作成または復旧すると、ここから記録を探せます。","",false,null,[]],["record-browser-scope","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:89)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","EMA:open-one",false,null,["EMA / 1番目 / open-one","EMA / 2番目 / settle-one"]],["record-browser-save","","",false,null,[]],["record-browser-rows","","",false,null,["",""]],["record-browser-detail","保存元 EMA の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内","",false,null,[]],["record-browser-event","","",false,null,["","","","","","","","","","",""]],["record-browser-balances","","",false,null,["","","","","",""]],["record-browser-related","","",false,null,[""]],["record-browser-related-status","同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","一致 2件 / 全 2件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。","",false,null,[]],["record-browser-scope","DAT: 未作成 / EMA: 2件 / CAWELON: 未作成","",false,null,[]]]',
+    expected: '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","DAT:open-one",true,null,[]],["record-browser-save","","",true,null,[]],["record-browser-rows","","",false,null,[]],["record-browser-detail","","",false,null,[]],["record-browser-event","","",false,null,[]],["record-browser-balances","","",false,null,[]],["record-browser-related","","",false,null,[]],["record-browser-related-status","","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","履歴を作成または復旧すると、ここから記録を探せます。","",false,null,[]],["record-browser-scope","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ records: source capture cannot outlive dispose even when capture throws (4.2257ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "INVALID_WORKSPACE"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_WORKSPACE
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-workspace.js:9:30)
+        at validateRehearsalWorkspace (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-workspace.js:17:13)
+        at indexRehearsalRecords (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-records.js:16:59)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-records-panel.js:48:80)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:39
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ records: source capture cannot outlive clear (6.3564ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","EMA:open-one",false,null,["EMA / 1番目 / open-one","EMA / 2番目 / settle-one"]],["record-browser-save","","",false,null,[]],["record-browser-rows","","",false,null,["",""]],["record-browser-detail","保存元 EMA の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内","",false,null,[]],["record-browser-event","","",false,null,["","","","","","","","","","",""]],["record-browser-balances","","",false,null,["","","","","",""]],["record-browser-related","","",false,null,[""]],["record-browser-related-status","同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","一致 2件 / 全 2件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。","",false,null,[]],["record-browser-scope","DAT: 未作成 / EMA: 2件 / CAWELON: 未作成","",false,null,[]]]'
+  - '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","DAT:open-one",true,null,[]],["record-browser-save","","",true,null,[]],["record-browser-rows","","",false,null,[]],["record-browser-detail","","",false,null,[]],["record-browser-event","","",false,null,[]],["record-browser-balances","","",false,null,[]],["record-browser-related","","",false,null,[]],["record-browser-related-status","","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","履歴を作成または復旧すると、ここから記録を探せます。","",false,null,[]],["record-browser-scope","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:89)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","EMA:open-one",false,null,["EMA / 1番目 / open-one","EMA / 2番目 / settle-one"]],["record-browser-save","","",false,null,[]],["record-browser-rows","","",false,null,["",""]],["record-browser-detail","保存元 EMA の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内","",false,null,[]],["record-browser-event","","",false,null,["","","","","","","","","","",""]],["record-browser-balances","","",false,null,["","","","","",""]],["record-browser-related","","",false,null,[""]],["record-browser-related-status","同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","一致 2件 / 全 2件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。","",false,null,[]],["record-browser-scope","DAT: 未作成 / EMA: 2件 / CAWELON: 未作成","",false,null,[]]]',
+    expected: '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","DAT:open-one",true,null,[]],["record-browser-save","","",true,null,[]],["record-browser-rows","","",false,null,[]],["record-browser-detail","","",false,null,[]],["record-browser-event","","",false,null,[]],["record-browser-balances","","",false,null,[]],["record-browser-related","","",false,null,[]],["record-browser-related-status","","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","履歴を作成または復旧すると、ここから記録を探せます。","",false,null,[]],["record-browser-scope","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ records: source capture cannot outlive clear even when capture throws (4.8582ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "INVALID_WORKSPACE"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_WORKSPACE
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-workspace.js:9:30)
+        at validateRehearsalWorkspace (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-workspace.js:17:13)
+        at indexRehearsalRecords (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-records.js:16:59)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-records-panel.js:48:80)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:39
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ records: source capture cannot outlive replace (6.3322ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","EMA:open-one",false,null,["EMA / 1番目 / open-one","EMA / 2番目 / settle-one"]],["record-browser-save","","",false,null,[]],["record-browser-rows","","",false,null,["",""]],["record-browser-detail","保存元 EMA の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内","",false,null,[]],["record-browser-event","","",false,null,["","","","","","","","","","",""]],["record-browser-balances","","",false,null,["","","","","",""]],["record-browser-related","","",false,null,[""]],["record-browser-related-status","同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","一致 2件 / 全 2件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。","",false,null,[]],["record-browser-scope","DAT: 未作成 / EMA: 2件 / CAWELON: 未作成","",false,null,[]]]'
+  - '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","CAWELON:open-one",false,null,["CAWELON / 1番目 / open-one","CAWELON / 2番目 / settle-one"]],["record-browser-save","","",false,null,[]],["record-browser-rows","","",false,null,["",""]],["record-browser-detail","保存元 CAWELON の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内","",false,null,[]],["record-browser-event","","",false,null,["","","","","","","","","","",""]],["record-browser-balances","","",false,null,["","","","","",""]],["record-browser-related","","",false,null,[""]],["record-browser-related-status","同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","一致 2件 / 全 2件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。","",false,null,[]],["record-browser-scope","DAT: 未作成 / EMA: 未作成 / CAWELON: 2件","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:89)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","EMA:open-one",false,null,["EMA / 1番目 / open-one","EMA / 2番目 / settle-one"]],["record-browser-save","","",false,null,[]],["record-browser-rows","","",false,null,["",""]],["record-browser-detail","保存元 EMA の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内","",false,null,[]],["record-browser-event","","",false,null,["","","","","","","","","","",""]],["record-browser-balances","","",false,null,["","","","","",""]],["record-browser-related","","",false,null,[""]],["record-browser-related-status","同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","一致 2件 / 全 2件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。","",false,null,[]],["record-browser-scope","DAT: 未作成 / EMA: 2件 / CAWELON: 未作成","",false,null,[]]]',
+    expected: '[["record-browser-agent","","",false,null,[]],["record-browser-kind","","",false,null,[]],["record-browser-decision","","",false,null,[]],["record-browser-size","","",false,null,[]],["record-browser-search","","",false,null,[]],["record-browser-clear","","",false,null,[]],["record-browser-prev","","",true,null,[]],["record-browser-next","","",true,null,[]],["record-browser-select","","CAWELON:open-one",false,null,["CAWELON / 1番目 / open-one","CAWELON / 2番目 / settle-one"]],["record-browser-save","","",false,null,[]],["record-browser-rows","","",false,null,["",""]],["record-browser-detail","保存元 CAWELON の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内","",false,null,[]],["record-browser-event","","",false,null,["","","","","","","","","","",""]],["record-browser-balances","","",false,null,["","","","","",""]],["record-browser-related","","",false,null,[""]],["record-browser-related-status","同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。","",false,null,[]],["record-browser-export-status","","",false,null,[]],["record-browser-status","一致 2件 / 全 2件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。","",false,null,[]],["record-browser-scope","DAT: 未作成 / EMA: 未作成 / CAWELON: 2件","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ records: source capture cannot outlive replace even when capture throws (7.1212ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "INVALID_WORKSPACE"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_WORKSPACE
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-workspace.js:9:30)
+        at validateRehearsalWorkspace (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-workspace.js:17:13)
+        at indexRehearsalRecords (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-records.js:16:59)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-records-panel.js:48:80)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:39
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ scenario: source capture cannot outlive dispose (6.8565ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","EMA / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  - '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:89)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","EMA / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    expected: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ scenario: source capture cannot outlive dispose even when capture throws (4.7777ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "INVALID_STRUCTURE"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_STRUCTURE
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:27:30)
+        at record (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:56:60)
+        at validateRehearsal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:71:16)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:38:22)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:39
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ scenario: source capture cannot outlive clear (4.3794ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","EMA / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  - '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","先に例を表示するか、保存した履歴を復旧してください。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:89)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","EMA / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    expected: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","先に例を表示するか、保存した履歴を復旧してください。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ scenario: source capture cannot outlive clear even when capture throws (2.5092ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "INVALID_STRUCTURE"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_STRUCTURE
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:27:30)
+        at record (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:56:60)
+        at validateRehearsal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:71:16)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:38:22)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:39
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ scenario: source capture cannot outlive replace (3.7239ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","EMA / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  - '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:89)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","EMA / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    expected: '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:25:2
+✖ scenario: source capture cannot outlive replace even when capture throws (3.7885ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "INVALID_STRUCTURE"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_STRUCTURE
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:27:30)
+        at record (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:56:60)
+        at validateRehearsal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal.js:71:16)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:38:22)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:39
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:31:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:36:2
+✖ comparison compare-start observer cannot overwrite dispose (5.6662ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較条件を確認してください。金額は0以上・この資産の小数桁数まで、還元割合は0〜100%です。元の履歴は保持しています。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  - '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:45:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較条件を確認してください。金額は0以上・この資産の小数桁数まで、還元割合は0〜100%です。元の履歴は保持しています。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    expected: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:36:2
+✖ comparison compare-start observer cannot overwrite clear (2.1951ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較条件を確認してください。金額は0以上・この資産の小数桁数まで、還元割合は0〜100%です。元の履歴は保持しています。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  - '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","先に例を表示するか、保存した履歴を復旧してください。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:45:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較条件を確認してください。金額は0以上・この資産の小数桁数まで、還元割合は0〜100%です。元の履歴は保持しています。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    expected: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","先に例を表示するか、保存した履歴を復旧してください。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:36:2
+✖ comparison compare-start observer cannot overwrite replace (10.6542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",false,null,[]],["whatif-input-save","","",false,null,[]],["whatif-parameters","","",false,null,[""]],["whatif-metrics","","",false,null,["","","","","","","","",""]],["whatif-rows","","",false,null,["",""]],["whatif-summary","変更した条件 0項目 / 結果が変わる記録 0件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","表示 2件 / 全 2件。金額の増減は改善・悪化の判定ではありません。","",false,null,[]],["whatif-blockers","追加予約を止める理由 — 元の条件: 該当なし / 比較条件: 該当なし","",false,null,[]],["whatif-results","","",false,false,[]],["whatif-status","比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  - '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:45:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",false,null,[]],["whatif-input-save","","",false,null,[]],["whatif-parameters","","",false,null,[""]],["whatif-metrics","","",false,null,["","","","","","","","",""]],["whatif-rows","","",false,null,["",""]],["whatif-summary","変更した条件 0項目 / 結果が変わる記録 0件 / 新たな見送り 0件 / 見送りから条件内へ 0件。未決済 0 → 0件。","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","表示 2件 / 全 2件。金額の増減は改善・悪化の判定ではありません。","",false,null,[]],["whatif-blockers","追加予約を止める理由 — 元の条件: 該当なし / 比較条件: 該当なし","",false,null,[]],["whatif-results","","",false,false,[]],["whatif-status","比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    expected: '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:36:2
+✖ comparison compare-result observer cannot overwrite dispose (6.8985ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  - '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:45:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    expected: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:36:2
+✖ comparison compare-result observer cannot overwrite clear (9.0842ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  - '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","先に例を表示するか、保存した履歴を復旧してください。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:45:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    expected: '[["whatif-openingBalance","","",true,null,[]],["whatif-maxPerOperation","","",true,null,[]],["whatif-maxOutstanding","","",true,null,[]],["whatif-reserveFloor","","",true,null,[]],["whatif-lossLimit","","",true,null,[]],["whatif-buybackBps","","",true,null,[]],["whatif-paused","","",true,null,[]],["whatif-maxEntryFee","","",true,null,[]],["whatif-maxExitFee","","",true,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",true,null,[]],["whatif-compare","","",true,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","先に例を表示するか、保存した履歴を復旧してください。","",false,null,[]],["whatif-context","","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:36:2
+✖ comparison compare-result observer cannot overwrite replace (8.3173ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  - '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:45:35)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","比較が完了しました。これは全履歴を別条件で再計算した仮の結果です。元の履歴・取り消し履歴は変更していません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    expected: '[["whatif-openingBalance","","1000",false,null,[]],["whatif-maxPerOperation","","100",false,null,[]],["whatif-maxOutstanding","","200",false,null,[]],["whatif-reserveFloor","","200",false,null,[]],["whatif-lossLimit","","250",false,null,[]],["whatif-buybackBps","","10",false,null,[]],["whatif-paused","","",false,null,[]],["whatif-maxEntryFee","","3",false,null,[]],["whatif-maxExitFee","","5",false,null,[]],["whatif-filter","","",false,null,[]],["whatif-reset","","",false,null,[]],["whatif-compare","","",false,null,[]],["whatif-save","","",true,null,[]],["whatif-input-save","","",true,null,[]],["whatif-parameters","","",false,null,[]],["whatif-metrics","","",false,null,[]],["whatif-rows","","",false,null,[]],["whatif-summary","","",false,null,[]],["whatif-export-status","","",false,null,[]],["whatif-row-status","","",false,null,[]],["whatif-blockers","","",false,null,[]],["whatif-results","","",false,true,[]],["whatif-status","表示中の履歴の条件をコピーしました。別の条件を入力して比較できます。元の履歴は変更しません。","",false,null,[]],["whatif-context","CAWELON / 2件の同じ記録を順番どおりに再計算 / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444) / サイト https://training.example / 利用先契約 0x5555555555555555555555555555555555555555","",false,null,[]],["whatif-version","","",false,null,[]]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:53:3
+✖ comparison observers do not discard valid work or leak failures: throw (2.2595ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "private notification"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:55:24)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: private notification
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:50:22
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:54:81
+        at invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:34:5)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:39:5)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:55:49
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:55:24)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:53:3
+✖ comparison observers do not discard valid work or leak failures: native (63.617ms)
+  Error: private async notification
+      at then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:51:31)
+      at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:54:81
+      at invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:34:5)
+      at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:39:5)
+      at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:55:49
+      at getActual (node:assert:611:5)
+      at strict.doesNotThrow (node:assert:779:32)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:55:24)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-source-boundaries.test.mjs:59:1
+✖ comparison disposal marks the panel closed before notifying its owner (37.0311ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Maximum call stack size exceeded"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:62:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RangeError: Maximum call stack size exceeded
+        at Object.dispose (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:126:90)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:60:78
+        at invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:34:5)
+        at refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:39:5)
+        at Object.dispose (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:127:27)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:60:78
+        at invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:34:5)
+        at refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:39:5)
+        at Object.dispose (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-panel.js:127:27)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-source-boundaries.test.mjs:60:78,
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }

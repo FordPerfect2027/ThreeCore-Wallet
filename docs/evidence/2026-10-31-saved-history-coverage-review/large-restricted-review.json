@@ -1,0 +1,80 @@
+{
+  "schema": "threecore.report-set-history-coverage-review.v1",
+  "matchesRecomputation": true,
+  "sourcePayloadDigest": "f277a66037a86654e241733d14f6204b24575cb9041de4d9a350edda8929c33a",
+  "sourceDigestMatches": true,
+  "coverageTextSha256": "82b147c8f9abc09f9c2123cfc0525c3c4406db3235cfdaed03f26ba6e1247011",
+  "options": {
+    "shortAddresses": true
+  },
+  "differences": [],
+  "unexpectedFields": 0,
+  "summary": {
+    "reportCount": 1,
+    "allContinuous": false,
+    "issues": [
+      "SINGLE_REPORT",
+      "INCOMPLETE_EVIDENCE",
+      "REPORTS_NEED_REVIEW"
+    ],
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "missingAgents": [],
+  "groupCount": 3,
+  "groups": [
+    {
+      "id": "DAT-1",
+      "agent": "DAT",
+      "chainId": 84532,
+      "fromBlock": "1152921504606847007",
+      "toBlock": "1152921504606847018",
+      "plannedUniqueBlocks": "12",
+      "recordedUniqueBlocks": "12",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "0",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "12",
+      "savedQueryRecords": 3
+    },
+    {
+      "id": "EMA-1",
+      "agent": "EMA",
+      "chainId": 84532,
+      "fromBlock": "1152921504606847007",
+      "toBlock": "1152921504606847018",
+      "plannedUniqueBlocks": "12",
+      "recordedUniqueBlocks": "12",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "0",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "0",
+      "savedQueryRecords": 3
+    },
+    {
+      "id": "CAWELON-1",
+      "agent": "CAWELON",
+      "chainId": 84532,
+      "fromBlock": "1152921504606847007",
+      "toBlock": "1152921504606847018",
+      "plannedUniqueBlocks": "12",
+      "recordedUniqueBlocks": "12",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "0",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "0",
+      "savedQueryRecords": 3
+    }
+  ],
+  "blockCountsCombinedAcrossGroups": false,
+  "savedQueryPresenceOnly": true,
+  "completeHistory": false,
+  "readOnly": true,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false,
+  "containsOriginalEvidence": false,
+  "authorizesExecution": false,
+  "sourceChecksumVerified": true
+}

@@ -1,0 +1,6 @@
+{"agent":"DAT","direction":"buy","gasEstimate":"262298","gasUsed":"247779","negativeControls":4}
+{"agent":"DAT","direction":"sell","gasEstimate":"261231","gasUsed":"246772","negativeControls":4}
+{"agent":"EMA","direction":"buy","gasEstimate":"262298","gasUsed":"247779","negativeControls":4}
+{"agent":"EMA","direction":"sell","gasEstimate":"261231","gasUsed":"246772","negativeControls":4}
+{"agent":"CAWELON","direction":"buy","gasEstimate":"262298","gasUsed":"247779","negativeControls":4}
+{"agent":"CAWELON","direction":"sell","gasEstimate":"261231","gasUsed":"246772","negativeControls":4}

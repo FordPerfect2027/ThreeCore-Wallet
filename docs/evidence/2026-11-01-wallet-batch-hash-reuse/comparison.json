@@ -1,0 +1,20 @@
+{
+  "beforeSource": "e47bf5c",
+  "afterSource": "22435d1",
+  "fixtures": 14,
+  "validatedOriginalFixtures": 12,
+  "modes": [
+    "text",
+    "file"
+  ],
+  "byteIdenticalReceipts": 28,
+  "rawHashCallsBefore": 52,
+  "rawHashCallsAfter": 28,
+  "hashCallsRemoved": 24,
+  "bytesHashedBefore": 771308,
+  "bytesHashedAfter": 506716,
+  "bytesOfRepeatedHashWorkRemoved": 264592,
+  "wallClockSpeedupMeasured": false,
+  "originalInternalChecksumsStillVerified": true,
+  "externalRpcCalls": 0
+}

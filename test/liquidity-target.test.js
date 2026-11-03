@@ -4,6 +4,8 @@ import {
   assessLiquidityTargets, formatUsdcRaw,
   LiquidityTargetError, TARGET_USDC_PER_POOL, TARGET_USDC_RAW,
 } from "../src/liquidity-target.js";
+import { AERODROME_BASE } from "../src/aerodrome-readonly.js";
+import { BASE_NATIVE_USDC } from "../src/aerodrome-pools.js";
 
 const DAT = "0x1111111111111111111111111111111111111111";
 const EMA = "0x2222222222222222222222222222222222222222";
@@ -24,7 +26,12 @@ function snapshot(overrides = {}) {
     classicFactoryOnly: true,
     readOnly: true,
     transactionsExecuted: false,
+    walletConnected: false,
+    factoryAddress: AERODROME_BASE.poolFactory,
+    quoteTokenAddress: BASE_NATIVE_USDC,
     checkedBlockNumber: "52852584",
+    checkedBlockHash: "0x" + "ab".repeat(32),
+    canonicalBlockRechecked: true,
     pools: {
       DAT: { volatile: pool(DAT) },
       EMA: { volatile: pool(EMA) },
@@ -153,4 +160,141 @@ test("invalid reports do not generate a target progress claim", () => {
   assert.throws(() => assessLiquidityTargets(snapshot({
     DAT: { stable: pool(DAT) },
   })), fail("INVALID_REPORT"));
+});
+
+test("foreign factory, foreign quote token and missing provenance cannot produce USDC percentages", () => {
+  for (const changes of [
+    { factoryAddress: DAT }, { factoryAddress: undefined },
+    { quoteTokenAddress: EMA }, { quoteTokenAddress: undefined },
+    { walletConnected: true }, { walletConnected: undefined },
+    { classicFactoryOnly: 1 }, { classicFactoryOnly: "true" },
+  ]) assert.throws(() => assessLiquidityTargets({ ...snapshot(), ...changes }), fail("INVALID_REPORT"));
+  const upper = { ...snapshot(), factoryAddress: "0x" + AERODROME_BASE.poolFactory.slice(2).toUpperCase(),
+    quoteTokenAddress: "0x" + BASE_NATIVE_USDC.slice(2).toUpperCase() };
+  assert.equal(assessLiquidityTargets(upper).verifiedPools, 3);
+});
+
+test("block numbers must be canonical bounded decimal strings without coercion", () => {
+  let coerced = false;
+  for (const checkedBlockNumber of [12, 12n, "01", "-1", "1.5", "9".repeat(79),
+    (1n << 256n).toString(), { toString() { coerced = true; return "12"; } }])
+    assert.throws(() => assessLiquidityTargets({ ...snapshot(), checkedBlockNumber }), fail("INVALID_REPORT"));
+  assert.equal(coerced, false);
+  assert.equal(assessLiquidityTargets({ ...snapshot(), checkedBlockNumber: "0" }).observedBlockNumber, "0");
+});
+
+test("reserves and timestamps reject uint256 overflow and excessive text before conversion", () => {
+  for (const field of ["usdcReserveBaseUnits", "tokenReserveBaseUnits", "reserveTimestamp"]) {
+    for (const invalid of [(1n << 256n).toString(), "9".repeat(10000), null, undefined, 1]) {
+      const record = pool(DAT); record[field] = invalid;
+      assert.throws(() => assessLiquidityTargets(snapshot({ DAT: { volatile: record } })), fail("INVALID_RESERVE"));
+    }
+  }
+});
+
+test("three maximum reserves aggregate exactly even when their sum exceeds uint256", () => {
+  const max = (1n << 256n) - 1n;
+  const result = assessLiquidityTargets(snapshot(Object.fromEntries(
+    [["DAT", DAT], ["EMA", EMA], ["CAWELON", CAWELON]].map(([name, address]) =>
+      [name, { volatile: pool(address, max.toString(), max.toString()) }]))));
+  const total = max * 3n;
+  assert.equal(result.aggregateObservedUsdc, (total / 1000000n).toString() + "." +
+    (total % 1000000n).toString().padStart(6, "0"));
+  assert.equal(result.aggregateReserveGapUsdc, "0.000000");
+  assert.equal(result.verifiedPools, 3);
+  assert.throws(() => formatUsdcRaw(total + 1n), fail("INVALID_RESERVE"));
+  assert.throws(() => formatUsdcRaw("9".repeat(10000)), fail("INVALID_RESERVE"));
+});
+
+test("duplicate pool addresses cannot double-count observed liquidity", () => {
+  assert.throws(() => assessLiquidityTargets(snapshot({
+    EMA: { volatile: pool(DAT) },
+  })), fail("INVALID_REPORT"));
+  const hex = "0x" + "ab".repeat(20);
+  assert.throws(() => assessLiquidityTargets(snapshot({
+    DAT: { volatile: pool(hex) }, EMA: { volatile: pool("0x" + "AB".repeat(20)) },
+  })), fail("INVALID_REPORT"));
+});
+
+test("invalid or contradictory pool identity cannot be downgraded to an unknown successful entry", () => {
+  for (const changes of [
+    { poolAddress: "bad" }, { poolAddress: "0x" + "0".repeat(40) }, { poolAddress: null },
+    { contractCodePresent: "true" }, { contractCodePresent: false },
+  ]) assert.throws(() => assessLiquidityTargets(snapshot({
+    DAT: { volatile: { ...pool(DAT), ...changes } },
+  })), fail("INVALID_REPORT"));
+});
+
+test("a valid address without code remains unknown and never contributes a zero", () => {
+  const result = assessLiquidityTargets(snapshot({ DAT: { volatile: {
+    poolAddress: DAT, contractCodePresent: false, usdcReserveBaseUnits: null,
+    tokenReserveBaseUnits: null, reserveTimestamp: null,
+  } } }));
+  assert.equal(result.pools.DAT.status, "UNVERIFIED");
+  assert.equal(result.pools.DAT.observedUsdc, null);
+  assert.equal(result.aggregateObservedUsdc, null);
+  assert.equal(result.aggregateReserveGapUsdc, null);
+});
+
+test("liquidity progress retains its canonical source hash and refuses unanchored input", () => {
+  for (const changes of [{ checkedBlockHash: undefined }, { checkedBlockHash: "0x12" },
+    { canonicalBlockRechecked: false }, { canonicalBlockRechecked: undefined }])
+    assert.throws(() => assessLiquidityTargets({ ...snapshot(), ...changes }), fail("INVALID_REPORT"));
+  const result = assessLiquidityTargets({ ...snapshot(), checkedBlockHash: "0x" + "AB".repeat(32) });
+  assert.equal(result.observedBlockHash, "0x" + "ab".repeat(32));
+  assert.equal(result.canonicalBlockRechecked, true);
+});
+
+test("liquidity calculation rejects getters at every consumed object layer without invoking them", () => {
+  for (const target of ["root", "pools", "agent", "volatile", "amount", "hash"]) {
+    const input = snapshot(); let reads = 0;
+    const [object, field] = target === "root" ? [input, "chainId"] :
+      target === "pools" ? [input, "pools"] : target === "agent" ? [input.pools, "DAT"] :
+      target === "volatile" ? [input.pools.DAT, "volatile"] :
+      target === "hash" ? [input, "checkedBlockHash"] : [input.pools.DAT.volatile, "usdcReserveBaseUnits"];
+    Object.defineProperty(object, field, { get() { reads++; throw new Error("PRIVATE_GETTER"); } });
+    assert.throws(() => assessLiquidityTargets(input), error => {
+      assert.ok(fail("INVALID_REPORT")(error)); assert.doesNotMatch(error.message, /PRIVATE_GETTER/); return true;
+    });
+    assert.equal(reads, 0, target);
+  }
+});
+test("liquidity calculation ignores unused properties and stable-pool accessors", () => {
+  const input = snapshot(); let reads = 0;
+  Object.defineProperty(input, "unused", { get() { reads++; throw new Error("not part of observation"); } });
+  Object.defineProperty(input.pools.DAT, "stable", { get() { reads++; throw new Error("not a volatile target"); } });
+  assert.equal(assessLiquidityTargets(input).aggregateObservedUsdc, "300.000000");
+  assert.equal(reads, 0);
+});
+test("captured values cannot change between validation and result formatting through property reads", () => {
+  const raw = snapshot(); let propertyReads = 0;
+  const input = new Proxy(raw, { get() { propertyReads++; throw new Error("ordinary property access"); } });
+  const result = assessLiquidityTargets(input);
+  assert.equal(result.observedBlockNumber, "52852584");
+  assert.equal(result.aggregateObservedUsdc, "300.000000");
+  assert.equal(propertyReads, 0);
+});
+test("inherited fields and unusual object prototypes are not observations", () => {
+  const inherited = Object.create(snapshot());
+  assert.throws(() => assessLiquidityTargets(inherited), fail("INVALID_REPORT"));
+  for (const value of [[], new Date(), new Map(), Object.create({ chainId: 8453 })]) {
+    assert.throws(() => assessLiquidityTargets(value), fail("INVALID_REPORT"));
+  }
+  const input = snapshot(); input.pools.DAT.volatile = Object.create(pool(DAT));
+  assert.throws(() => assessLiquidityTargets(input), fail("INVALID_REPORT"));
+});
+test("null-prototype JSON-like records remain accepted and source records stay unchanged", () => {
+  function nullRecords(value) {
+    if (!value || typeof value !== "object") return value;
+    return Object.assign(Object.create(null), Object.fromEntries(Object.entries(value).map(([key, item]) => [key, nullRecords(item)])));
+  }
+  const input = nullRecords(snapshot()), before = JSON.stringify(input);
+  assert.equal(assessLiquidityTargets(input).verifiedPools, 3);
+  assert.equal(JSON.stringify(input), before);
+});
+test("throwing reflection traps become a bounded local error", () => {
+  const input = new Proxy(snapshot(), { getOwnPropertyDescriptor() { throw new Error("PRIVATE_REFLECTION"); } });
+  assert.throws(() => assessLiquidityTargets(input), error => {
+    assert.ok(fail("INVALID_REPORT")(error)); assert.doesNotMatch(error.message, /PRIVATE_REFLECTION/); return true;
+  });
 });

@@ -1,0 +1,33 @@
+TAP version 13
+# Subtest: Sepolia CLI does not turn negative-probe transport errors into PASS
+not ok 1 - Sepolia CLI does not turn negative-probe transport errors into PASS
+  ---
+  duration_ms: 6475.4946
+  type: 'test'
+  location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\test\\sepolia-verifier-cli.test.mjs:5:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Transport failures were counted as successful rejection probes
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/sepolia-verifier-cli.test.mjs:7:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8424.934

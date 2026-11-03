@@ -1,0 +1,38 @@
+{
+  "source": "03fbb57",
+  "synthetic": true,
+  "reads": [
+    0,
+    1,
+    2,
+    3,
+    1,
+    3
+  ],
+  "initialReads": 4,
+  "retryReads": 2,
+  "preservedUnchangedRows": [
+    0,
+    2
+  ],
+  "partialCompletedIndexes": [
+    1
+  ],
+  "partialRemainingIndexes": [
+    3
+  ],
+  "finalRetryCompletedIndexes": [
+    3
+  ],
+  "previousReceiptsUnchanged": true,
+  "exactLineageHashes": true,
+  "allFinalRecomputationsMatch": true,
+  "sourceVerified": false,
+  "nativeFocus": "file-read",
+  "nativeFocusedCases": 111,
+  "fullBrowserCoverage": false,
+  "lastFullBrowserSource": "a2eb7e5",
+  "lastFullBrowserCases": 950,
+  "userTabConnectionVerified": false,
+  "realProviderCalls": 0
+}

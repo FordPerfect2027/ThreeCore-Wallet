@@ -1,5 +1,12 @@
 import { SECURITY_HEADERS, inspectLocalRequest } from "./security-http.js";
+import { renderLocalNavigationHelp } from "./local-navigation-help.js";
 import { createBaseStateRpcHandler } from "./base-state-rpc.js";
+import { createPublicBatchHandler } from "./public-token-batch-http.js";
+import { createPublicUsdcHandler } from "./public-usdc-http.js";
+import { createProposalAllowanceHandler } from "./proposal-allowance-http.js";
+import { createProposalFeeHandler } from "./proposal-fee-http.js";
+import { readProposalStateReview } from "../src/proposal-state-reader.js";
+import { createAerodromeQuoteHandler } from "./aerodrome-quote-http.js";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -7,6 +14,63 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/proposals/state/", { file: resolve(here, "proposal-state.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/proposal-state-page.js", { file: resolve(here, "proposal-state-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["proposal-state-review", "proposal-state-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/proposals/fees/", { file: resolve(here, "proposal-fee.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/proposal-fee-page.js", { file: resolve(here, "proposal-fee-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["proposal-fee-review", "proposal-simulation-plan", "proposal-fee-request", "proposal-fee-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/proposals/allowance/", { file: resolve(here, "proposal-allowance.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/proposal-allowance-page.js", { file: resolve(here, "proposal-allowance-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["proposal-allowance", "proposal-allowance-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/proposals/new/", { file: resolve(here, "operation-proposal-draft.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/operation-proposal-draft-page.js", { file: resolve(here, "operation-proposal-draft-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["operation-proposal-draft", "proposal-review-messages"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/usdc/read/", { file: resolve(here, "public-usdc.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/public-usdc-page.js", { file: resolve(here, "public-usdc-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["public-usdc-request", "public-usdc-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/quotes/", { file: resolve(here, "aerodrome-quote.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/aerodrome-quote-page.js", { file: resolve(here, "aerodrome-quote-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["aerodrome-quote-request", "aerodrome-quote-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/proposals/quote/", { file: resolve(here, "proposal-quote.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/proposal-quote-page.js", { file: resolve(here, "proposal-quote-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["proposal-quote-file", "aerodrome-quote-model", "aerodrome-readonly", "aerodrome-pools", "public-base-rpc", "public-usdc-model"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/proposals/", { file: resolve(here, "operation-proposal.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/operation-proposal-page.js", { file: resolve(here, "operation-proposal-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["operation-proposal", "operation-proposal-file"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/tokens/read/", { file: resolve(here, "public-token-batch.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/public-token-batch-page.js", { file: resolve(here, "public-token-batch-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["public-token-batch-request", "public-token-batch-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/budget/", { file: resolve(here, "operation-budget.html"), mime: "text/html; charset=utf-8" }],
+  ["/budget/evidence/", { file: resolve(here, "operation-budget-evidence.html"), mime: "text/html; charset=utf-8" }],
+  ["/src/operation-budget-evidence.js", { file: resolve(here, "../src/operation-budget-evidence.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/public-token-batch-model.js", { file: resolve(here, "../src/public-token-batch-model.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-budget-evidence-page.js", { file: resolve(here, "operation-budget-evidence-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/budget/shared/", { file: resolve(here, "shared-operation-budget.html"), mime: "text/html; charset=utf-8" }],
+  ["/src/shared-operation-budget.js", { file: resolve(here, "../src/shared-operation-budget.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/shared-operation-budget-page.js", { file: resolve(here, "shared-operation-budget-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/operation-budget.js", { file: resolve(here, "../src/operation-budget.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-budget-page.js", { file: resolve(here, "operation-budget-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/rehearsal/", { file: resolve(here, "operation-rehearsal.html"), mime: "text/html; charset=utf-8" }],
+  ...["operation-rehearsal", "operation-rehearsal-examples", "operation-rehearsal-ledger", "operation-rehearsal-workspace", "operation-rehearsal-comparison", "operation-rehearsal-overview", "operation-rehearsal-scenario", "operation-rehearsal-report-review", "operation-rehearsal-scenario-set", "operation-rehearsal-check-suite", "operation-rehearsal-records", "operation-rehearsal-session"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
+  ["/examples/operation-rehearsal-page.js", { file: resolve(here, "operation-rehearsal-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-rehearsal-scenario-panel.js", { file: resolve(here, "operation-rehearsal-scenario-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-rehearsal-review-panel.js", { file: resolve(here, "operation-rehearsal-review-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-rehearsal-scenario-set-panel.js", { file: resolve(here, "operation-rehearsal-scenario-set-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-rehearsal-check-panel.js", { file: resolve(here, "operation-rehearsal-check-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-rehearsal-records-panel.js", { file: resolve(here, "operation-rehearsal-records-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-rehearsal-session-panel.js", { file: resolve(here, "operation-rehearsal-session-panel.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-rehearsal.css", { file: resolve(here, "operation-rehearsal.css"), mime: "text/css; charset=utf-8" }],
   ...["base-state-provider", "state-rpc-http", "security-json", "security-data"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/src/security-abort.js", { file: resolve(here, "../src/security-abort.js"), mime: "text/javascript; charset=utf-8" }],
@@ -123,8 +187,14 @@ const publicPaths = [
   ["/src/dapp-preflight.js", { file: resolve(here, "../src/dapp-preflight.js"), mime: "text/javascript; charset=utf-8" }],
 ];
 
-export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch } = {}) {
+export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch, publicBatchFetch = globalThis.fetch, quoteFetch = globalThis.fetch, usdcFetch = globalThis.fetch, allowanceFetch = globalThis.fetch, feeFetch = globalThis.fetch } = {}) {
+  const serveProposalFees = createProposalFeeHandler(feeFetch);
+  const serveProposalState = createProposalFeeHandler(feeFetch, readProposalStateReview);
+  const serveProposalAllowance = createProposalAllowanceHandler(allowanceFetch);
   const serveBaseStateRpc = createBaseStateRpcHandler(stateFetch);
+  const servePublicBatch = createPublicBatchHandler(publicBatchFetch);
+  const servePublicUsdc = createPublicUsdcHandler(usdcFetch);
+  const serveQuote = createAerodromeQuoteHandler(quoteFetch);
   const paths = new Map(publicPaths);
   if (uiTest) {
     for (const name of ['acceptance-fixture', 'acceptance-ui-tests', 'acceptance-demo']) {
@@ -155,6 +225,9 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
     paths.set("/test/browser/export-guard-demo.js", { file: resolve(here, "../test/browser/export-guard-demo.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/export-guard-ui-tests.js", { file: resolve(here, "../test/browser/export-guard-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/file-read-ui-tests.js", { file: resolve(here, "../test/browser/file-read-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    for (const name of ["saved-observation-fixtures", "identity-fixtures", "allowance-fixtures"]) {
+      paths.set("/test/helpers/" + name + ".js", { file: resolve(here, "../test/helpers/" + name + ".js"), mime: "text/javascript; charset=utf-8" });
+    }
     paths.set("/test/browser/rpc-supervisor-ui-tests.js", { file: resolve(here, "../test/browser/rpc-supervisor-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/tab-guard-ui-tests.js", { file: resolve(here, "../test/browser/tab-guard-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/security-demo/", { file: resolve(here, "../test/browser/security-demo.html"), mime: "text/html; charset=utf-8" });
@@ -227,11 +300,32 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
     for (const [name, value] of Object.entries(SECURITY_HEADERS)) response.setHeader(name, value);
     const verdict = inspectLocalRequest(request);
     if (verdict.status !== 200) {
-      response.writeHead(verdict.status, { "content-type": "text/plain; charset=utf-8" });
-      response.end(verdict.reason);
+      const help = renderLocalNavigationHelp(request, verdict);
+      response.writeHead(verdict.status, { "content-type": help ? "text/html; charset=utf-8" : "text/plain; charset=utf-8" });
+      response.end(help ?? verdict.reason);
       return;
     }
     const item = paths.get(verdict.pathname);
+    if (verdict.pathname === "/rpc/aerodrome-quote") {
+      await serveQuote(request, response);
+      return;
+    }
+    if (verdict.pathname === "/rpc/public-usdc") {
+      await servePublicUsdc(request, response); return;
+    }
+    if (verdict.pathname === "/rpc/proposal-fees") {
+      await serveProposalFees(request, response); return;
+    }
+    if (verdict.pathname === "/rpc/proposal-state") {
+      await serveProposalState(request, response); return;
+    }
+    if (verdict.pathname === "/rpc/proposal-allowance") {
+      await serveProposalAllowance(request, response); return;
+    }
+    if (verdict.pathname === "/rpc/public-token-batch") {
+      await servePublicBatch(request, response);
+      return;
+    }
     if (verdict.pathname === "/rpc/base-mainnet") {
       await serveBaseStateRpc(request, response);
       return;

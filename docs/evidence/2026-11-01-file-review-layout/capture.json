@@ -1,0 +1,21 @@
+{
+  "source": "42a0f7e",
+  "nativeBrowserCases": 126,
+  "selectedChecks": 49,
+  "testPaneWidth": 320,
+  "longFilenameCharacters": 105,
+  "tableMinimumRem": 48,
+  "testedBehaviors": [
+    "native pane scrollWidth <= clientWidth + 2",
+    "named regions receive DOM focus",
+    "each comparison table scrolls horizontally",
+    "long difference path remains within its output",
+    "checkbox stays narrower than 40px",
+    "invalid original classification preserved",
+    "live rehearsal page links the shared stylesheet"
+  ],
+  "synthetic": true,
+  "realOsPickerVerified": false,
+  "userTabConnectionVerified": false,
+  "fullBrowserRun": false
+}

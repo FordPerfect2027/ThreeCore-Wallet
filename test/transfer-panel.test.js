@@ -212,12 +212,19 @@ test("transfer panel: archive duplicate is explained and previous record preserv
   f.panel.dispose();
 });
 
-test("transfer panel: context invalidation clears archive as well as current observation", async () => {
+test("transfer panel: connection invalidation preserves accepted archive while clearing current observation", async () => {
   const f = fixture();
   await f.inspect();
   f.click("archive-add");
   f.panel.invalidate();
   assert.equal(f.q("summary").textContent, "");
+  assert.match(f.q("archive-overview").textContent, /1記録/);
+  assert.equal(f.q("archive-save").disabled, false);
+  assert.equal(f.q("archive-add").disabled, true);
+  f.click("archive-save");
+  await settle(() => f.downloads.length === 1);
+  assert.equal(f.reads.length, 1);
+  f.click("archive-clear");
   assert.equal(f.q("archive-overview").textContent, "");
   assert.equal(f.q("archive-save").disabled, true);
   f.panel.dispose();

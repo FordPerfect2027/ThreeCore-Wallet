@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readSecurityFileBytes } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { CHECKPOINT_SCHEMA, CHECKPOINT_TOTAL_BYTES, checkpointFail,
@@ -12,25 +13,21 @@ function canonical(entries) {
     entries: validateCheckpointDocument({ schema: CHECKPOINT_SCHEMA, revision: 0, entries }).entries });
 }
 
-async function digest(text, subtle = globalThis.crypto?.subtle) {
-  if (!subtle || typeof subtle.digest !== "function") checkpointFail("CHECKPOINT_CRYPTO");
-  try {
-    const bytes = new Uint8Array(await subtle.digest("SHA-256", new TextEncoder().encode(text)));
-    if (bytes.length !== 32) checkpointFail("CHECKPOINT_CRYPTO");
-    return [...bytes].map(value => value.toString(16).padStart(2, "0")).join("");
-  } catch { checkpointFail("CHECKPOINT_CRYPTO"); }
+async function digest(text, subtle, options) {
+  try { return await sha256Hex(new TextEncoder().encode(text), subtle, options); }
+  catch { checkpointFail("CHECKPOINT_CRYPTO"); }
 }
 
-async function verifyEntries(entries, subtle) {
+async function verifyEntries(entries, subtle, options) {
   // Do not release a partial import when a later entry is damaged.
-  for (const entry of entries) await decodeWorkspaceFile(new TextEncoder().encode(entry.fileText), { subtle });
+  for (const entry of entries) await decodeWorkspaceFile(new TextEncoder().encode(entry.fileText), { subtle, ...options });
 }
 
-export async function prepareCheckpointCollection(input, { subtle } = {}) {
+export async function prepareCheckpointCollection(input, { subtle, signal, timeoutMs } = {}) {
   const document = validateCheckpointDocument(input);
-  await verifyEntries(document.entries, subtle);
+  await verifyEntries(document.entries, subtle, { signal, timeoutMs });
   const payload = canonical(document.entries);
-  const checksum = await digest(payload, subtle);
+  const checksum = await digest(payload, subtle, { signal, timeoutMs });
   const text = JSON.stringify({ schema: CHECKPOINT_TRANSFER_SCHEMA, algorithm: "SHA-256",
     digest: checksum, entries: document.entries }, null, 2);
   const byteLength = new TextEncoder().encode(text).byteLength;
@@ -39,7 +36,7 @@ export async function prepareCheckpointCollection(input, { subtle } = {}) {
     mimeType: "application/json;charset=utf-8", digest: checksum });
 }
 
-export async function decodeCheckpointCollection(text, { subtle } = {}) {
+export async function decodeCheckpointCollection(text, { subtle, signal, timeoutMs } = {}) {
   if (typeof text !== "string" || !text.length || text.length > CHECKPOINT_TRANSFER_LIMIT ||
       new TextEncoder().encode(text).byteLength > CHECKPOINT_TRANSFER_LIMIT) checkpointFail("CHECKPOINT_TRANSFER_SIZE");
   let value;
@@ -50,13 +47,14 @@ export async function decodeCheckpointCollection(text, { subtle } = {}) {
       typeof value.digest !== "string" || !/^[0-9a-f]{64}$/.test(value.digest)) checkpointFail("CHECKPOINT_TRANSFER_SCHEMA");
   const validated = validateCheckpointDocument({ schema: CHECKPOINT_SCHEMA, revision: 0, entries: value.entries });
   if (checkpointMetadata(validated).totalBytes > CHECKPOINT_TOTAL_BYTES) checkpointFail("CHECKPOINT_CAPACITY");
-  if (await digest(canonical(validated.entries), subtle) !== value.digest) checkpointFail("CHECKPOINT_TRANSFER_CHECKSUM");
-  await verifyEntries(validated.entries, subtle);
+  if (await digest(canonical(validated.entries), subtle, { signal, timeoutMs }) !== value.digest) checkpointFail("CHECKPOINT_TRANSFER_CHECKSUM");
+  await verifyEntries(validated.entries, subtle, { signal, timeoutMs });
   return Object.freeze({ entries: validated.entries, checksumVerified: true, authenticated: false });
 }
 
 export function reviewCheckpointImport(current, incoming) {
   const before = validateCheckpointDocument(current);
+  incoming = validateCheckpointDocument({ schema: CHECKPOINT_SCHEMA, revision: 0, entries: incoming }).entries;
   const after = mutateCheckpoints(before, before.revision, { kind: "import", entries: incoming });
   const original = new Set(before.entries.map(entry => entry.id));
   const added = after.entries.filter(entry => !original.has(entry.id));

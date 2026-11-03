@@ -1,0 +1,13 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {allowanceFixture} from '../../../test/helpers/proposal-allowance-fixture.js';
+import {prepareProposalQuoteReview} from '../../../src/proposal-quote-file.js';
+import {prepareProposalAllowanceReview} from '../../../src/proposal-allowance.js';
+const here=new URL('./',import.meta.url);
+const nowSeconds=Math.floor(Date.now()/1000),synthetic=await allowanceFixture({buy:true,agent:'EMA',nowSeconds});
+await writeFile(new URL('synthetic-pass-input.json',here),(await prepareProposalAllowanceReview(synthetic.files,synthetic.options)).text,{flag:'wx'});
+await writeFile(new URL('synthetic-shortfall-input.json',here),(await prepareProposalAllowanceReview({...synthetic.files,observation:{...synthetic.observation,allowanceBaseUnits:'0'}},synthetic.options)).text,{flag:'wx'});
+const proposalReviewFile=await readFile(new URL('../2026-11-03-proposal-draft/browser-live-insufficient.json',here),'utf8');
+const quoteFile=await readFile(new URL('../2026-11-03-aerodrome-quote-ui/EMA-buy-browser-quote.json',here),'utf8');
+const live=await prepareProposalQuoteReview({proposalReviewFile,quoteFile},{nowSeconds,maxQuoteAgeSeconds:60,maxBlockAgeSeconds:60,maxOutputShortfallBps:200,maxSlippageBps:50});
+await writeFile(new URL('historical-account2-input.json',here),live.text,{flag:'wx'});
+console.log(JSON.stringify({syntheticEpoch:nowSeconds,syntheticPass:true,historicalQuoteReasons:live.result.reasons,account:live.result.proposalReview.proposal.account,block:live.result.quote.quote.blockNumber}));

@@ -1,9 +1,11 @@
+import { walletSavedFileTargetMessage } from "./file-read-status.js";
 import { describePeriodPlan } from "./period-plan.js";
 import { validatePeriodDraft, periodDraftProgress, periodDraftWorkspace } from "./period-draft.js";
 import { reconcileWorkspace } from "./reconciliation-engine.js";
 import { formatTokenUnits } from "./token-identity-codec.js";
 
 const messages = Object.freeze({
+  PERIOD_PROPOSAL_NOT_EMPTY: "新しい読み取り予定として渡せるのは、残高・履歴をまだ取得していない控えだけです。元の記録は保持しています。",
   PERIOD_BLOCK: "ブロック番号は0以上の整数を半角数字で入力してください。",
   PERIOD_ORDER: "終了ブロックは開始ブロックより大きくしてください。",
   PERIOD_WINDOW_SIZE: "1回の履歴取得は1～2,000ブロックにしてください。",
@@ -43,7 +45,7 @@ const messages = Object.freeze({
   TRANSFER_FUTURE_BLOCK: "終了ブロックが接続先の最新ブロックより先にあります。",
 });
 
-export function periodMessage(code) { return messages[code] ?? "入力または保存記録を確認できませんでした。元のデータは保持しています。"; }
+export function periodMessage(code) { return typeof code === "string" && Object.hasOwn(messages, code) ? messages[code] : walletSavedFileTargetMessage(code) ?? "入力または保存記録を確認できませんでした。元のデータは保持しています。"; }
 
 export function periodPlanText(input) {
   const plan = describePeriodPlan(input);

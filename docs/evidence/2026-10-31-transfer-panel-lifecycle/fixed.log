@@ -1,0 +1,47 @@
+✔ transfer onCancel consumes asynchronous observer failures (36.485ms)
+✔ transfer onStateChange consumes asynchronous observer failures (5.6331ms)
+✔ transfer cancellation survives a throwing notification (1.8974ms)
+✔ transfer window callback dispose cannot write late status (25.0569ms)
+✔ transfer window callback invalidate cannot write late status (18.5926ms)
+✔ transfer json false download receipt is refused (27.5445ms)
+✔ transfer json resolved download receipt is refused (7.7209ms)
+✔ transfer json rejected download receipt is refused (6.1672ms)
+✔ transfer csv false download receipt is refused (5.587ms)
+✔ transfer csv resolved download receipt is refused (4.5675ms)
+✔ transfer csv rejected download receipt is refused (5.1452ms)
+✔ transfer txt false download receipt is refused (5.1386ms)
+✔ transfer txt resolved download receipt is refused (8.8425ms)
+✔ transfer txt rejected download receipt is refused (5.5667ms)
+✔ transfer asynchronous receipt does not hold the handler open (40.1244ms)
+✔ transfer queued cancellation after preparation prevents delivery (15.7646ms)
+✔ transfer archive capture dispose cannot return stale evidence (5.5187ms)
+✔ transfer archive capture invalidate cannot return stale evidence (3.912ms)
+✔ transfer stage permission cannot open a disposed archive (0.8621ms)
+✔ transfer asynchronous stage permission failure is consumed (4.086ms)
+✔ transfer ordinary synchronous downloads preserve all three formats (9.8718ms)
+✔ transfer panel: accessible initial state has no reads and no enabled export (17.2424ms)
+✔ transfer panel: explicit range reaches reader and summary shows exact values (38.8874ms)
+✔ transfer panel: RPC failure is a status message, not zero events (7.2924ms)
+✔ transfer panel: window controls edit only the draft, never start another read (17.9515ms)
+✔ transfer panel: numeric and directional filters paginate without more RPC (17.6937ms)
+✔ transfer panel: search text is not interpreted as HTML (5.7993ms)
+✔ transfer panel: changing range cancels an outstanding read (9.4318ms)
+✔ transfer panel: valid JSON requires preview and explicit apply (33.2894ms)
+✔ transfer panel: cancel preview cannot change the displayed record (13.9533ms)
+✔ transfer panel: baseline comparison is separate from live result (17.6688ms)
+✔ transfer panel: explicit json download (28.2138ms)
+✔ transfer panel: explicit csv download (31.2249ms)
+✔ transfer panel: explicit txt download (15.0855ms)
+✔ transfer panel: download error is reported without corrupting observation (8.1411ms)
+✔ transfer panel: archive adds record only on explicit action and survives current-view clear (14.6461ms)
+✔ transfer panel: archive duplicate is explained and previous record preserved (11.8612ms)
+✔ transfer panel: context invalidation clears archive as well as current observation (4.2717ms)
+✔ transfer panel: no stale download after disposal (7.8104ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 754.6782

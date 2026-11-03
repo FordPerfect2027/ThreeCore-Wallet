@@ -1,4 +1,5 @@
 import { WORKSPACE_FILE_LIMIT } from "./workspace-file.js";
+import { captureDataRecord, captureOptionalDataFields } from "./security-data.js";
 
 export const CHECKPOINT_SCHEMA = "threecore-local-checkpoints-v1";
 export const CHECKPOINT_LIMIT = 5;
@@ -15,13 +16,8 @@ export class CheckpointError extends Error {
 export function checkpointFail(code) { throw new CheckpointError(code); }
 
 function fields(value, names) {
-  if (!value || typeof value !== "object" || Array.isArray(value) ||
-      ![Object.prototype, null].includes(Object.getPrototypeOf(value))) checkpointFail("CHECKPOINT_SHAPE");
-  const keys = Reflect.ownKeys(value);
-  if (keys.length !== names.length || keys.some(key => !names.includes(key))) checkpointFail("CHECKPOINT_SHAPE");
-  for (const key of keys) {
-    if (!("value" in Object.getOwnPropertyDescriptor(value, key))) checkpointFail("CHECKPOINT_SHAPE");
-  }
+  try { return captureDataRecord(value, names); }
+  catch { checkpointFail("CHECKPOINT_SHAPE"); }
 }
 
 export function checkpointLabel(value) {
@@ -57,20 +53,29 @@ function fileSize(text) {
 
 /** This layer validates storage shape; the controller verifies workspace checksums. */
 export function validateCheckpointDocument(input) {
-  fields(input, ["schema", "revision", "entries"]);
+  input = fields(input, ["schema", "revision", "entries"]);
   if (input.schema !== CHECKPOINT_SCHEMA || !Number.isSafeInteger(input.revision) || input.revision < 0) {
     checkpointFail("CHECKPOINT_SCHEMA");
   }
   const rows = input.entries;
-  if (!Array.isArray(rows) || rows.length > CHECKPOINT_LIMIT ||
-      Reflect.ownKeys(rows).length !== rows.length + 1) checkpointFail("CHECKPOINT_CAPACITY");
+  let array, length, keys;
+  try {
+    array = Array.isArray(rows);
+    if (array) {
+      length = Object.getOwnPropertyDescriptor(rows, "length")?.value;
+      keys = Reflect.ownKeys(rows);
+    }
+  } catch { checkpointFail("CHECKPOINT_SHAPE"); }
+  if (!array || !Number.isSafeInteger(length) || length < 0 || length > CHECKPOINT_LIMIT ||
+      keys.length !== length + 1) checkpointFail("CHECKPOINT_CAPACITY");
   const entries = [];
   let bytes = 0;
-  for (let index = 0; index < rows.length; index++) {
-    const descriptor = Object.getOwnPropertyDescriptor(rows, String(index));
-    if (!descriptor || !("value" in descriptor)) checkpointFail("CHECKPOINT_SHAPE");
-    const row = descriptor.value;
-    fields(row, SLOT_KEYS);
+  for (let index = 0; index < length; index++) {
+    let descriptor;
+    try { descriptor = Object.getOwnPropertyDescriptor(rows, String(index)); }
+    catch { checkpointFail("CHECKPOINT_SHAPE"); }
+    if (!descriptor || !Object.hasOwn(descriptor, "value")) checkpointFail("CHECKPOINT_SHAPE");
+    const row = fields(descriptor.value, SLOT_KEYS);
     const id = checkpointId(row.id);
     const label = checkpointLabel(row.label);
     const createdAt = checkpointTime(row.createdAt);
@@ -104,13 +109,19 @@ export function checkpointMetadata(input) {
 export function mutateCheckpoints(input, expectedRevision, operation) {
   const document = validateCheckpointDocument(input);
   if (!Number.isSafeInteger(expectedRevision) || expectedRevision !== document.revision) checkpointFail("CHECKPOINT_STALE");
-  if (!operation || typeof operation !== "object") checkpointFail("CHECKPOINT_OPERATION");
-  const kind = Object.getOwnPropertyDescriptor(operation, "kind");
-  if (!kind || !("value" in kind)) checkpointFail("CHECKPOINT_OPERATION");
+  let captured, keys;
+  try {
+    captured = captureOptionalDataFields(operation, ["kind", "entries", "id", "label", "time", "fileText", "confirmed"]);
+    keys = Reflect.ownKeys(operation);
+  } catch { checkpointFail("CHECKPOINT_OPERATION"); }
+  if (keys.length !== Object.keys(captured).length || keys.some(key => !Object.hasOwn(captured, key))) checkpointFail("CHECKPOINT_SHAPE");
+  operation = captured;
+  const kind = operation.kind;
+  if (typeof kind !== "string") checkpointFail("CHECKPOINT_OPERATION");
   let entries = [...document.entries];
   let changed = true;
-  if (kind.value === "import") {
-    fields(operation, ["kind", "entries"]);
+  if (kind === "import") {
+    operation = fields(operation, ["kind", "entries"]);
     const incoming = validateCheckpointDocument({ schema: CHECKPOINT_SCHEMA, revision: 0, entries: operation.entries });
     let added = 0;
     for (const row of incoming.entries) {
@@ -120,33 +131,33 @@ export function mutateCheckpoints(input, expectedRevision, operation) {
       } else { entries.push(row); added++; }
     }
     changed = added > 0;
-  } else if (kind.value === "save") {
-    fields(operation, ["kind", "id", "label", "time", "fileText"]);
+  } else if (kind === "save") {
+    operation = fields(operation, ["kind", "id", "label", "time", "fileText"]);
     if (entries.length >= CHECKPOINT_LIMIT) checkpointFail("CHECKPOINT_CAPACITY");
     const id = checkpointId(operation.id);
     if (entries.some(row => row.id === id)) checkpointFail("CHECKPOINT_DUPLICATE");
     entries.push({ id, label: checkpointLabel(operation.label), createdAt: checkpointTime(operation.time),
       updatedAt: operation.time, archived: false, fileText: operation.fileText });
   } else {
-    const keys = kind.value === "rename" ? ["kind", "id", "label", "time"] :
-      kind.value === "purge" ? ["kind", "id", "confirmed"] : ["kind", "id", "time"];
-    fields(operation, keys);
+    const keys = kind === "rename" ? ["kind", "id", "label", "time"] :
+      kind === "purge" ? ["kind", "id", "confirmed"] : ["kind", "id", "time"];
+    operation = fields(operation, keys);
     checkpointId(operation.id);
     const index = entries.findIndex(row => row.id === operation.id);
     if (index < 0) checkpointFail("CHECKPOINT_MISSING");
     const old = entries[index];
-    if (kind.value === "purge") {
+    if (kind === "purge") {
       if (operation.confirmed !== true || !old.archived) checkpointFail("CHECKPOINT_CONFIRMATION");
       entries.splice(index, 1);
     } else {
       const time = checkpointTime(operation.time);
       const updatedAt = time > old.updatedAt ? time : old.updatedAt;
-      if (kind.value === "rename") {
+      if (kind === "rename") {
         const label = checkpointLabel(operation.label);
         changed = old.label !== label;
         entries[index] = { ...old, label, updatedAt };
-      } else if (kind.value === "archive" || kind.value === "unarchive") {
-        const archived = kind.value === "archive";
+      } else if (kind === "archive" || kind === "unarchive") {
+        const archived = kind === "archive";
         changed = old.archived !== archived;
         entries[index] = { ...old, archived, updatedAt };
       } else checkpointFail("CHECKPOINT_OPERATION");

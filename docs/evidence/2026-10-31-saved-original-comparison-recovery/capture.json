@@ -1,0 +1,67 @@
+{
+  "source": "cbb04fa",
+  "synthetic": true,
+  "storageWrites": 0,
+  "providerCalls": 0,
+  "rows": [
+    {
+      "case": "identical",
+      "comparisonExit": 0,
+      "kind": "identical",
+      "sameOriginal": true,
+      "faithfulReview": true,
+      "originalPairValidated": true,
+      "sharedAndCliIdentical": true,
+      "sourceUnchanged": true
+    },
+    {
+      "case": "format-only",
+      "comparisonExit": 0,
+      "kind": "format-only",
+      "sameOriginal": true,
+      "faithfulReview": true,
+      "originalPairValidated": true,
+      "sharedAndCliIdentical": true,
+      "sourceUnchanged": true
+    },
+    {
+      "case": "changed-original",
+      "comparisonExit": 2,
+      "kind": "changed-original",
+      "sameOriginal": false,
+      "faithfulReview": true,
+      "originalPairValidated": true,
+      "sharedAndCliIdentical": true,
+      "sourceUnchanged": true
+    },
+    {
+      "case": "different-format",
+      "comparisonExit": 2,
+      "kind": "different-format",
+      "sameOriginal": null,
+      "faithfulReview": true,
+      "originalPairValidated": true,
+      "sharedAndCliIdentical": true,
+      "sourceUnchanged": true
+    },
+    {
+      "case": "unverified",
+      "comparisonExit": 2,
+      "kind": "unverified",
+      "sameOriginal": null,
+      "faithfulReview": true,
+      "originalPairValidated": false,
+      "sharedAndCliIdentical": true,
+      "sourceUnchanged": true
+    }
+  ],
+  "bundle": {
+    "faithful": true,
+    "changedOriginal": true,
+    "exactUTF8Extraction": true,
+    "restrictionsAndNotesPreserved": true,
+    "tamperedComparisonExtractionRefused": true,
+    "corruptOriginalRefused": true,
+    "inputsUnchanged": true
+  }
+}

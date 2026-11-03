@@ -1,0 +1,26 @@
+{
+  "schema": "threecore.wallet-batch-evidence-receipt-check.v1",
+  "matchesRecomputation": true,
+  "bundleTextDigest": "43304d896dd7e66cf27301fd8344e548ed9cdaea19c02a6793ba9f53e6c0c419",
+  "bundleTextBindingMatches": true,
+  "receiptTextDigest": "98a8d5435ba171899d5f9351c05e37bb64822f743028fc75dfa0a8622e41ab95",
+  "expectedEvidenceMatches": true,
+  "expectedSummary": {
+    "selected": 2,
+    "checked": 2,
+    "pending": 0,
+    "validatedOriginals": 1,
+    "declaredOnly": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "totalBytes": 5869
+  },
+  "differences": [],
+  "unexpectedFields": 0,
+  "readOnly": true,
+  "authenticated": false,
+  "authorizesExecution": false,
+  "automaticallyImported": false,
+  "containsOriginalEvidence": false,
+  "restorable": false
+}

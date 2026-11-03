@@ -1,0 +1,57 @@
+{
+  "schema": "threecore.report-set-comparison-evidence-review.v1",
+  "evidenceTextSha256": "0b895e84531e89e830a1173fb2f084d6be3556fae9bcdfa881d8d8f8952ab5eb",
+  "beforeChecksumVerified": true,
+  "afterChecksumVerified": true,
+  "comparisonReview": {
+    "schema": "threecore.report-set-comparison-review.v1",
+    "matchesRecomputation": false,
+    "beforePayloadDigest": "720a539642a98a8c5421e00636d2278a5488bb8d2e55bd36b6e6a7f27064c747",
+    "afterPayloadDigest": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e",
+    "beforeDigestMatches": true,
+    "afterDigestMatches": true,
+    "comparisonTextSha256": "7078e3597d687d0b710594703089f73a304893c4e71cccdef5e9a0366f0014de",
+    "differences": [
+      "comparison"
+    ],
+    "unexpectedFields": 0,
+    "counts": {
+      "added": 4,
+      "removed": 0,
+      "changed": 0,
+      "metadata-only": 1,
+      "unchanged": 2
+    },
+    "sameContents": false,
+    "beforeSummary": {
+      "allContinuous": true,
+      "issues": []
+    },
+    "afterSummary": {
+      "allContinuous": false,
+      "issues": [
+        "OVERLAPS",
+        "REPEATED_EVIDENCE",
+        "INCOMPLETE_EVIDENCE",
+        "HASH_CONFLICTS",
+        "REPORTS_NEED_REVIEW"
+      ]
+    },
+    "historicalOnly": true,
+    "readOnly": true,
+    "liveChainRechecked": false,
+    "authenticated": false,
+    "encrypted": false,
+    "restorable": false
+  },
+  "beforeReportCount": 3,
+  "afterReportCount": 7,
+  "readOnly": true,
+  "imported": false,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false,
+  "authorizesExecution": false
+}

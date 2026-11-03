@@ -1,0 +1,17 @@
+{
+  "source": "78fafd0",
+  "synthetic": true,
+  "providerCalls": 0,
+  "restoresOlderHistory": false,
+  "olderMatched": 1,
+  "currentMatched": 0,
+  "currentTotalRecords": 1,
+  "currentAgents": [
+    "EMA"
+  ],
+  "allFourCliOutputsMatch": true,
+  "currentJsonOutputsIndependentlyReviewed": true,
+  "bothOriginalsUnchanged": true,
+  "wrongChecksumExit": 2,
+  "wrongChecksumOutputBytes": 0
+}

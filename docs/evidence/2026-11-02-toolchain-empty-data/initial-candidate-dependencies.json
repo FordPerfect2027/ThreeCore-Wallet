@@ -1,0 +1,159 @@
+{
+  "version": "0.1.0",
+  "name": "@0628dao/datcore",
+  "dependencies": {
+    "@nomicfoundation/hardhat-keystore": {
+      "version": "3.1.2",
+      "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-keystore/-/hardhat-keystore-3.1.2.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@nomicfoundation/hardhat-errors": {
+          "version": "3.1.4",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-errors/-/hardhat-errors-3.1.4.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@nomicfoundation/hardhat-utils": {
+              "version": "5.1.1",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-5.1.1.tgz",
+              "overridden": true,
+              "dependencies": {
+                "undici": {
+                  "version": "7.30.1",
+                  "resolved": "https://registry.npmjs.org/undici/-/undici-7.30.1.tgz",
+                  "overridden": true
+                }
+              }
+            }
+          }
+        },
+        "@nomicfoundation/hardhat-utils": {
+          "version": "5.1.1",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-5.1.1.tgz",
+          "overridden": true,
+          "dependencies": {
+            "undici": {
+              "version": "7.30.1",
+              "resolved": "https://registry.npmjs.org/undici/-/undici-7.30.1.tgz",
+              "overridden": true
+            }
+          }
+        },
+        "@nomicfoundation/hardhat-zod-utils": {
+          "version": "3.0.6",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-zod-utils/-/hardhat-zod-utils-3.0.6.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@nomicfoundation/hardhat-utils": {
+              "version": "4.1.9",
+              "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-4.1.9.tgz",
+              "overridden": false,
+              "dependencies": {
+                "undici": {
+                  "version": "6.29.1",
+                  "resolved": "https://registry.npmjs.org/undici/-/undici-6.29.1.tgz",
+                  "overridden": true
+                }
+              }
+            }
+          }
+        },
+        "hardhat": {
+          "version": "3.21.2"
+        }
+      }
+    },
+    "@nomicfoundation/hardhat-node-test-runner": {
+      "version": "3.1.2",
+      "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-runner/-/hardhat-node-test-runner-3.1.2.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@nomicfoundation/hardhat-node-test-reporter": {
+          "version": "3.1.1",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-node-test-reporter/-/hardhat-node-test-reporter-3.1.1.tgz",
+          "overridden": false,
+          "dependencies": {
+            "@actions/core": {
+              "version": "3.0.1",
+              "resolved": "https://registry.npmjs.org/@actions/core/-/core-3.0.1.tgz",
+              "overridden": false,
+              "dependencies": {
+                "@actions/http-client": {
+                  "version": "4.0.1",
+                  "resolved": "https://registry.npmjs.org/@actions/http-client/-/http-client-4.0.1.tgz",
+                  "overridden": false,
+                  "dependencies": {
+                    "undici": {
+                      "version": "6.29.1"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "@nomicfoundation/hardhat-utils": {
+          "version": "5.1.1",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-5.1.1.tgz",
+          "overridden": true,
+          "dependencies": {
+            "undici": {
+              "version": "7.30.1",
+              "resolved": "https://registry.npmjs.org/undici/-/undici-7.30.1.tgz",
+              "overridden": true
+            }
+          }
+        },
+        "@nomicfoundation/hardhat-zod-utils": {
+          "version": "3.0.6"
+        },
+        "hardhat": {
+          "version": "3.21.2"
+        }
+      }
+    },
+    "@nomicfoundation/hardhat-viem": {
+      "version": "3.1.0",
+      "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-viem/-/hardhat-viem-3.1.0.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@nomicfoundation/hardhat-utils": {
+          "version": "5.1.1",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-5.1.1.tgz",
+          "overridden": true,
+          "dependencies": {
+            "undici": {
+              "version": "7.30.1",
+              "resolved": "https://registry.npmjs.org/undici/-/undici-7.30.1.tgz",
+              "overridden": true
+            }
+          }
+        },
+        "hardhat": {
+          "version": "3.21.2"
+        }
+      }
+    },
+    "hardhat": {
+      "version": "3.21.2",
+      "resolved": "https://registry.npmjs.org/hardhat/-/hardhat-3.21.2.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@nomicfoundation/hardhat-utils": {
+          "version": "5.1.1",
+          "resolved": "https://registry.npmjs.org/@nomicfoundation/hardhat-utils/-/hardhat-utils-5.1.1.tgz",
+          "overridden": true,
+          "dependencies": {
+            "undici": {
+              "version": "7.30.1",
+              "resolved": "https://registry.npmjs.org/undici/-/undici-7.30.1.tgz",
+              "overridden": true
+            }
+          }
+        },
+        "@nomicfoundation/hardhat-zod-utils": {
+          "version": "3.0.6"
+        }
+      }
+    }
+  }
+}

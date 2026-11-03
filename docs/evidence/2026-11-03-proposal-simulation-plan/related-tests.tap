@@ -1,0 +1,166 @@
+TAP version 13
+# Subtest: all three agents bind original evidence and budget without granting authority to an AI label
+ok 1 - all three agents bind original evidence and budget without granting authority to an AI label
+  ---
+  duration_ms: 87.5314
+  type: 'test'
+  ...
+# Subtest: an exact source-file hash prevents substituting or reformatting the linked budget evidence
+ok 2 - an exact source-file hash prevents substituting or reformatting the linked budget evidence
+  ---
+  duration_ms: 11.9478
+  type: 'test'
+  ...
+# Subtest: policy context and exact origin/contract pair must match, independently of reassuring rationale
+ok 3 - policy context and exact origin/contract pair must match, independently of reassuring rationale
+  ---
+  duration_ms: 55.5134
+  type: 'test'
+  ...
+# Subtest: policy and proposal time windows use exclusive expiry and bounded lifetimes
+ok 4 - policy and proposal time windows use exclusive expiry and bounded lifetimes
+  ---
+  duration_ms: 61.677
+  type: 'test'
+  ...
+# Subtest: spend, native value and known fee limits are exact uint256 comparisons
+ok 5 - spend, native value and known fee limits are exact uint256 comparisons
+  ---
+  duration_ms: 72.2256
+  type: 'test'
+  ...
+# Subtest: a proposal and policy agreeing with each other cannot replace the evidence account or token
+ok 6 - a proposal and policy agreeing with each other cannot replace the evidence account or token
+  ---
+  duration_ms: 26.657
+  type: 'test'
+  ...
+# Subtest: unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+ok 7 - unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+  ---
+  duration_ms: 16.963
+  type: 'test'
+  ...
+# Subtest: shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+ok 8 - shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+  ---
+  duration_ms: 69.1781
+  type: 'test'
+  ...
+# Subtest: strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+ok 9 - strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+  ---
+  duration_ms: 29.0189
+  type: 'test'
+  ...
+# Subtest: async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+ok 10 - async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+  ---
+  duration_ms: 49.5497
+  type: 'test'
+  ...
+# Subtest: screen reads explicitly, displays precise USDC, saves exact source and reopens before current recheck
+ok 11 - screen reads explicitly, displays precise USDC, saves exact source and reopens before current recheck
+  ---
+  duration_ms: 430.3297
+  type: 'test'
+  ...
+# Subtest: insufficient and expired observations are displayed and saved honestly; invalid input cannot replace them
+ok 12 - insufficient and expired observations are displayed and saved honestly; invalid input cannot replace them
+  ---
+  duration_ms: 114.9502
+  type: 'test'
+  ...
+# Subtest: cancel, replacement, condition edits, leaving, disposal and file-read cancellation discard late work
+ok 13 - cancel, replacement, condition edits, leaving, disposal and file-read cancellation discard late work
+  ---
+  duration_ms: 215.871
+  type: 'test'
+  ...
+# Subtest: failed/wrong-context reads, download errors and reentrant cancellation preserve consistent controls
+ok 14 - failed/wrong-context reads, download errors and reentrant cancellation preserve consistent controls
+  ---
+  duration_ms: 58.6876
+  type: 'test'
+  ...
+# Subtest: DAT sell and all three USDC buy proposals retain exact amount, original source, expiry and replay
+ok 15 - DAT sell and all three USDC buy proposals retain exact amount, original source, expiry and replay
+  ---
+  duration_ms: 506.2727
+  type: 'test'
+  ...
+# Subtest: amount insufficiency, unknown code, wrong context, reorg, stale/future times and differing balance cannot pass
+ok 16 - amount insufficiency, unknown code, wrong context, reorg, stale/future times and differing balance cannot pass
+  ---
+  duration_ms: 258.6221
+  type: 'test'
+  ...
+# Subtest: saved result, observation hash and recorded time cannot be silently changed
+ok 17 - saved result, observation hash and recorded time cannot be silently changed
+  ---
+  duration_ms: 149.5576
+  type: 'test'
+  ...
+# Subtest: reader fixes RPC, contracts and canonical hash for every state read and rechecks chain/header
+ok 18 - reader fixes RPC, contracts and canonical hash for every state read and rechecks chain/header
+  ---
+  duration_ms: 238.2116
+  type: 'test'
+  ...
+# Subtest: reader rejects changed blocks/chains, malformed amounts and unrequested target without latest fallback
+ok 19 - reader rejects changed blocks/chains, malformed amounts and unrequested target without latest fallback
+  ---
+  duration_ms: 69.6603
+  type: 'test'
+  ...
+# Subtest: reader/client cancellation and deadlines release stalled requests; client binds each request field
+ok 20 - reader/client cancellation and deadlines release stalled requests; client binds each request field
+  ---
+  duration_ms: 216.0467
+  type: 'test'
+  ...
+# Subtest: saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+ok 21 - saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+  ---
+  duration_ms: 133.2612
+  type: 'test'
+  ...
+# Subtest: changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+ok 22 - changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+  ---
+  duration_ms: 93.0059
+  type: 'test'
+  ...
+# Subtest: simulation call fixes source recipient, route, minimum, expiry and budget caps for sell and three USDC buys
+ok 23 - simulation call fixes source recipient, route, minimum, expiry and budget caps for sell and three USDC buys
+  ---
+  duration_ms: 549.4846
+  type: 'test'
+  ...
+# Subtest: expired/failing preconditions cannot produce call data; reading saved success does not extend its window
+ok 24 - expired/failing preconditions cannot produce call data; reading saved success does not extend its window
+  ---
+  duration_ms: 176.0056
+  type: 'test'
+  ...
+# Subtest: saved plan rejects recipient, amounts, calldata, source, fee limits and expiry tampering
+ok 25 - saved plan rejects recipient, amounts, calldata, source, fee limits and expiry tampering
+  ---
+  duration_ms: 329.1529
+  type: 'test'
+  ...
+# Subtest: offline command prepares, verifies, rejects malformed inputs and distinguishes blocked plan from errors
+ok 26 - offline command prepares, verifies, rejects malformed inputs and distinguishes blocked plan from errors
+  ---
+  duration_ms: 198.2158
+  type: 'test'
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 26
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3962.7824

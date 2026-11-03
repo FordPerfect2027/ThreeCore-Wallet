@@ -1,0 +1,3609 @@
+TAP version 13
+# Subtest: acceptance route /test/browser/acceptance-fixture.js is isolated: uiTest=false
+ok 1 - acceptance route /test/browser/acceptance-fixture.js is isolated: uiTest=false
+  ---
+  duration_ms: 140.8051
+  type: 'test'
+  ...
+# Subtest: acceptance route /test/browser/acceptance-fixture.js is isolated: uiTest=true
+ok 2 - acceptance route /test/browser/acceptance-fixture.js is isolated: uiTest=true
+  ---
+  duration_ms: 32.4835
+  type: 'test'
+  ...
+# Subtest: acceptance route /test/browser/acceptance-ui-tests.js is isolated: uiTest=false
+ok 3 - acceptance route /test/browser/acceptance-ui-tests.js is isolated: uiTest=false
+  ---
+  duration_ms: 12.7502
+  type: 'test'
+  ...
+# Subtest: acceptance route /test/browser/acceptance-ui-tests.js is isolated: uiTest=true
+ok 4 - acceptance route /test/browser/acceptance-ui-tests.js is isolated: uiTest=true
+  ---
+  duration_ms: 40.6712
+  type: 'test'
+  ...
+# Subtest: acceptance route /test/browser/acceptance-demo.js is isolated: uiTest=false
+ok 5 - acceptance route /test/browser/acceptance-demo.js is isolated: uiTest=false
+  ---
+  duration_ms: 26.4801
+  type: 'test'
+  ...
+# Subtest: acceptance route /test/browser/acceptance-demo.js is isolated: uiTest=true
+ok 6 - acceptance route /test/browser/acceptance-demo.js is isolated: uiTest=true
+  ---
+  duration_ms: 21.3611
+  type: 'test'
+  ...
+# Subtest: acceptance route /test/browser/acceptance-demo/ is isolated: uiTest=false
+ok 7 - acceptance route /test/browser/acceptance-demo/ is isolated: uiTest=false
+  ---
+  duration_ms: 9.7598
+  type: 'test'
+  ...
+# Subtest: acceptance route /test/browser/acceptance-demo/ is isolated: uiTest=true
+ok 8 - acceptance route /test/browser/acceptance-demo/ is isolated: uiTest=true
+  ---
+  duration_ms: 28.2113
+  type: 'test'
+  ...
+# Subtest: acceptance fixtures never use an extension or an external network
+ok 9 - acceptance fixtures never use an extension or an external network
+  ---
+  duration_ms: 58.0431
+  type: 'test'
+  ...
+# Subtest: acceptance demo refuses {"Origin":"https://outside.invalid"}
+ok 10 - acceptance demo refuses {"Origin":"https://outside.invalid"}
+  ---
+  duration_ms: 15.7278
+  type: 'test'
+  ...
+# Subtest: acceptance demo refuses {"Sec-Fetch-Dest":"iframe"}
+ok 11 - acceptance demo refuses {"Sec-Fetch-Dest":"iframe"}
+  ---
+  duration_ms: 9.0707
+  type: 'test'
+  ...
+# Subtest: access lifecycle runtime is served with all security headers: /src/wallet-read-scope.js
+ok 12 - access lifecycle runtime is served with all security headers: /src/wallet-read-scope.js
+  ---
+  duration_ms: 188.0252
+  type: 'test'
+  ...
+# Subtest: access lifecycle runtime is served with all security headers: /src/security-lock.js
+ok 13 - access lifecycle runtime is served with all security headers: /src/security-lock.js
+  ---
+  duration_ms: 17.8484
+  type: 'test'
+  ...
+# Subtest: access lifecycle runtime is served with all security headers: /examples/security-panel.js
+ok 14 - access lifecycle runtime is served with all security headers: /examples/security-panel.js
+  ---
+  duration_ms: 15.8602
+  type: 'test'
+  ...
+# Subtest: synthetic access workflow /test/browser/access-lifecycle-ui-tests.js only available with uiTest=false
+ok 15 - synthetic access workflow /test/browser/access-lifecycle-ui-tests.js only available with uiTest=false
+  ---
+  duration_ms: 13.6458
+  type: 'test'
+  ...
+# Subtest: synthetic access workflow /test/browser/access-lifecycle-ui-tests.js only available with uiTest=true
+ok 16 - synthetic access workflow /test/browser/access-lifecycle-ui-tests.js only available with uiTest=true
+  ---
+  duration_ms: 18.2953
+  type: 'test'
+  ...
+# Subtest: synthetic access workflow /test/browser/access-lifecycle-demo/ only available with uiTest=false
+ok 17 - synthetic access workflow /test/browser/access-lifecycle-demo/ only available with uiTest=false
+  ---
+  duration_ms: 11.5561
+  type: 'test'
+  ...
+# Subtest: synthetic access workflow /test/browser/access-lifecycle-demo/ only available with uiTest=true
+ok 18 - synthetic access workflow /test/browser/access-lifecycle-demo/ only available with uiTest=true
+  ---
+  duration_ms: 21.4526
+  type: 'test'
+  ...
+# Subtest: synthetic access workflow /test/browser/access-lifecycle-demo.js only available with uiTest=false
+ok 19 - synthetic access workflow /test/browser/access-lifecycle-demo.js only available with uiTest=false
+  ---
+  duration_ms: 18.5896
+  type: 'test'
+  ...
+# Subtest: synthetic access workflow /test/browser/access-lifecycle-demo.js only available with uiTest=true
+ok 20 - synthetic access workflow /test/browser/access-lifecycle-demo.js only available with uiTest=true
+  ---
+  duration_ms: 20.8086
+  type: 'test'
+  ...
+# Subtest: synthetic access workflow /test/browser/access-lifecycle-demo.css only available with uiTest=false
+ok 21 - synthetic access workflow /test/browser/access-lifecycle-demo.css only available with uiTest=false
+  ---
+  duration_ms: 16.9881
+  type: 'test'
+  ...
+# Subtest: synthetic access workflow /test/browser/access-lifecycle-demo.css only available with uiTest=true
+ok 22 - synthetic access workflow /test/browser/access-lifecycle-demo.css only available with uiTest=true
+  ---
+  duration_ms: 14.4012
+  type: 'test'
+  ...
+# Subtest: new read scope refuses foreign browser request {"Origin":"https://outside.invalid"}
+ok 23 - new read scope refuses foreign browser request {"Origin":"https://outside.invalid"}
+  ---
+  duration_ms: 12.6089
+  type: 'test'
+  ...
+# Subtest: new read scope refuses foreign browser request {"Origin":"null"}
+ok 24 - new read scope refuses foreign browser request {"Origin":"null"}
+  ---
+  duration_ms: 12.3
+  type: 'test'
+  ...
+# Subtest: new read scope refuses foreign browser request {"Host":"127.0.0.1.outside.invalid"}
+ok 25 - new read scope refuses foreign browser request {"Host":"127.0.0.1.outside.invalid"}
+  ---
+  duration_ms: 12.0511
+  type: 'test'
+  ...
+# Subtest: new read scope refuses foreign browser request {"Sec-Fetch-Site":"cross-site"}
+ok 26 - new read scope refuses foreign browser request {"Sec-Fetch-Site":"cross-site"}
+  ---
+  duration_ms: 10.579
+  type: 'test'
+  ...
+# Subtest: new read scope refuses foreign browser request {"Sec-Fetch-Dest":"iframe"}
+ok 27 - new read scope refuses foreign browser request {"Sec-Fetch-Dest":"iframe"}
+  ---
+  duration_ms: 23.6276
+  type: 'test'
+  ...
+# Subtest: read scope server does not accept filesystem mutation through POST
+ok 28 - read scope server does not accept filesystem mutation through POST
+  ---
+  duration_ms: 14.4011
+  type: 'test'
+  ...
+# Subtest: read scope server does not accept filesystem mutation through PUT
+ok 29 - read scope server does not accept filesystem mutation through PUT
+  ---
+  duration_ms: 22.609
+  type: 'test'
+  ...
+# Subtest: read scope server does not accept filesystem mutation through PATCH
+ok 30 - read scope server does not accept filesystem mutation through PATCH
+  ---
+  duration_ms: 9.6264
+  type: 'test'
+  ...
+# Subtest: read scope server does not accept filesystem mutation through DELETE
+ok 31 - read scope server does not accept filesystem mutation through DELETE
+  ---
+  duration_ms: 14.3335
+  type: 'test'
+  ...
+# Subtest: preview uses only synthetic sessions and declares the test-only boundary
+ok 32 - preview uses only synthetic sessions and declares the test-only boundary
+  ---
+  duration_ms: 23.3885
+  type: 'test'
+  ...
+# Subtest: allowance server: modules served without cache false
+ok 33 - allowance server: modules served without cache false
+  ---
+  duration_ms: 379.7377
+  type: 'test'
+  ...
+# Subtest: allowance server: synthetic routes gated by test mode false
+ok 34 - allowance server: synthetic routes gated by test mode false
+  ---
+  duration_ms: 60.638
+  type: 'test'
+  ...
+# Subtest: allowance server: local files and mutation methods unavailable false
+ok 35 - allowance server: local files and mutation methods unavailable false
+  ---
+  duration_ms: 115.2744
+  type: 'test'
+  ...
+# Subtest: allowance server: shared fictional observation fixtures require explicit UI-test mode false
+ok 36 - allowance server: shared fictional observation fixtures require explicit UI-test mode false
+  ---
+  duration_ms: 44.705
+  type: 'test'
+  ...
+# Subtest: allowance server: modules served without cache true
+ok 37 - allowance server: modules served without cache true
+  ---
+  duration_ms: 134.2765
+  type: 'test'
+  ...
+# Subtest: allowance server: synthetic routes gated by test mode true
+ok 38 - allowance server: synthetic routes gated by test mode true
+  ---
+  duration_ms: 89.4996
+  type: 'test'
+  ...
+# Subtest: allowance server: local files and mutation methods unavailable true
+ok 39 - allowance server: local files and mutation methods unavailable true
+  ---
+  duration_ms: 80.7264
+  type: 'test'
+  ...
+# Subtest: allowance server: shared fictional observation fixtures require explicit UI-test mode true
+ok 40 - allowance server: shared fictional observation fixtures require explicit UI-test mode true
+  ---
+  duration_ms: 15.6996
+  type: 'test'
+  ...
+# Subtest: allowance server: all browser imports resolve locally
+ok 41 - allowance server: all browser imports resolve locally
+  ---
+  duration_ms: 2526.8037
+  type: 'test'
+  ...
+# Subtest: allowance server: production page styles and module remain present
+ok 42 - allowance server: production page styles and module remain present
+  ---
+  duration_ms: 18.1957
+  type: 'test'
+  ...
+# Subtest: RPC relay targets only official Base and preserves the canonical hash selector
+ok 43 - RPC relay targets only official Base and preserves the canonical hash selector
+  ---
+  duration_ms: 179.8219
+  type: 'test'
+  ...
+# Subtest: origin, permission/write methods, destination injection and malformed input cannot reach upstream
+ok 44 - origin, permission/write methods, destination injection and malformed input cannot reach upstream
+  ---
+  duration_ms: 159.6384
+  type: 'test'
+  ...
+# Subtest: the HTTP relay enforces the history span even when the browser guard is bypassed
+ok 45 - the HTTP relay enforces the history span even when the browser guard is bypassed
+  ---
+  duration_ms: 27.966
+  type: 'test'
+  ...
+# Subtest: remote failures and mismatched response IDs never become a successful result
+ok 46 - remote failures and mismatched response IDs never become a successful result
+  ---
+  duration_ms: 30.3139
+  type: 'test'
+  ...
+# Subtest: full wallet + HTTP state path succeeds although the wallet rejects all state calls
+ok 47 - full wallet + HTTP state path succeeds although the wallet rejects all state calls
+  ---
+  duration_ms: 101.5677
+  type: 'test'
+  ...
+# Subtest: relay caps concurrent upstream work and releases capacity after completion
+ok 48 - relay caps concurrent upstream work and releases capacity after completion
+  ---
+  duration_ms: 131.5497
+  type: 'test'
+  ...
+# Subtest: closing the client aborts outstanding upstream work
+ok 49 - closing the client aborts outstanding upstream work
+  ---
+  duration_ms: 86.5174
+  type: 'test'
+  ...
+# Subtest: closing clients cancels stalled upstream bodies and releases all twelve relay slots
+ok 50 - closing clients cancels stalled upstream bodies and releases all twelve relay slots
+  ---
+  duration_ms: 262.2695
+  type: 'test'
+  ...
+# Subtest: client closure frees all slots while initial fetch ignores abort, and late replies are discarded
+ok 51 - client closure frees all slots while initial fetch ignores abort, and late replies are discarded
+  ---
+  duration_ms: 253.7408
+  type: 'test'
+  ...
+# Subtest: relay refuses a redirected upstream success and retains generic local error text
+ok 52 - relay refuses a redirected upstream success and retains generic local error text
+  ---
+  duration_ms: 19.3687
+  type: 'test'
+  ...
+# Subtest: checkpoint module routes and dependencies resolve: uiTest=false
+ok 53 - checkpoint module routes and dependencies resolve: uiTest=false
+  ---
+  duration_ms: 526.0764
+  type: 'test'
+  ...
+# Subtest: checkpoint fixtures and inspection tools are not exposed: uiTest=false
+ok 54 - checkpoint fixtures and inspection tools are not exposed: uiTest=false
+  ---
+  duration_ms: 79.6538
+  type: 'test'
+  ...
+# Subtest: checkpoint UI fixtures are available only behind --ui-test: false
+ok 55 - checkpoint UI fixtures are available only behind --ui-test: false
+  ---
+  duration_ms: 25.8298
+  type: 'test'
+  ...
+# Subtest: checkpoint module routes and dependencies resolve: uiTest=true
+ok 56 - checkpoint module routes and dependencies resolve: uiTest=true
+  ---
+  duration_ms: 379.9528
+  type: 'test'
+  ...
+# Subtest: checkpoint fixtures and inspection tools are not exposed: uiTest=true
+ok 57 - checkpoint fixtures and inspection tools are not exposed: uiTest=true
+  ---
+  duration_ms: 95.6324
+  type: 'test'
+  ...
+# Subtest: checkpoint UI fixtures are available only behind --ui-test: true
+ok 58 - checkpoint UI fixtures are available only behind --ui-test: true
+  ---
+  duration_ms: 34.9515
+  type: 'test'
+  ...
+# Subtest: demo serves production modules and gates browser fixtures (uiTest=false)
+ok 59 - demo serves production modules and gates browser fixtures (uiTest=false)
+  ---
+  duration_ms: 520.887
+  type: 'test'
+  ...
+# Subtest: demo serves production modules and gates browser fixtures (uiTest=true)
+ok 60 - demo serves production modules and gates browser fixtures (uiTest=true)
+  ---
+  duration_ms: 513.2281
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: false /src/encrypted-library-model.js
+ok 61 - library module is same-origin, uncached and protected: false /src/encrypted-library-model.js
+  ---
+  duration_ms: 92.0981
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: false /src/encrypted-library-storage.js
+ok 62 - library module is same-origin, uncached and protected: false /src/encrypted-library-storage.js
+  ---
+  duration_ms: 16.0682
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: false /src/encrypted-library-controller.js
+ok 63 - library module is same-origin, uncached and protected: false /src/encrypted-library-controller.js
+  ---
+  duration_ms: 9.1377
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: false /src/encrypted-library-archive.js
+ok 64 - library module is same-origin, uncached and protected: false /src/encrypted-library-archive.js
+  ---
+  duration_ms: 12.2734
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: false /examples/encrypted-library-panel.js
+ok 65 - library module is same-origin, uncached and protected: false /examples/encrypted-library-panel.js
+  ---
+  duration_ms: 11.0398
+  type: 'test'
+  ...
+# Subtest: no server route can read stored archives or accept credentials: false
+ok 66 - no server route can read stored archives or accept credentials: false
+  ---
+  duration_ms: 38.8542
+  type: 'test'
+  ...
+# Subtest: new assets refuse foreign origins and framing: false
+ok 67 - new assets refuse foreign origins and framing: false
+  ---
+  duration_ms: 24.09
+  type: 'test'
+  ...
+# Subtest: native library test page exists only in explicit UI test mode: false
+ok 68 - native library test page exists only in explicit UI test mode: false
+  ---
+  duration_ms: 7.0347
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: true /src/encrypted-library-model.js
+ok 69 - library module is same-origin, uncached and protected: true /src/encrypted-library-model.js
+  ---
+  duration_ms: 21.9123
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: true /src/encrypted-library-storage.js
+ok 70 - library module is same-origin, uncached and protected: true /src/encrypted-library-storage.js
+  ---
+  duration_ms: 29.0074
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: true /src/encrypted-library-controller.js
+ok 71 - library module is same-origin, uncached and protected: true /src/encrypted-library-controller.js
+  ---
+  duration_ms: 10.2821
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: true /src/encrypted-library-archive.js
+ok 72 - library module is same-origin, uncached and protected: true /src/encrypted-library-archive.js
+  ---
+  duration_ms: 10.8806
+  type: 'test'
+  ...
+# Subtest: library module is same-origin, uncached and protected: true /examples/encrypted-library-panel.js
+ok 73 - library module is same-origin, uncached and protected: true /examples/encrypted-library-panel.js
+  ---
+  duration_ms: 31.0665
+  type: 'test'
+  ...
+# Subtest: no server route can read stored archives or accept credentials: true
+ok 74 - no server route can read stored archives or accept credentials: true
+  ---
+  duration_ms: 34.1935
+  type: 'test'
+  ...
+# Subtest: new assets refuse foreign origins and framing: true
+ok 75 - new assets refuse foreign origins and framing: true
+  ---
+  duration_ms: 16.3996
+  type: 'test'
+  ...
+# Subtest: native library test page exists only in explicit UI test mode: true
+ok 76 - native library test page exists only in explicit UI test mode: true
+  ---
+  duration_ms: 12.4343
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//src/export-policy.js
+ok 77 - export HTTP: protected static module false//src/export-policy.js
+  ---
+  duration_ms: 104.3066
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//src/export-payload.js
+ok 78 - export HTTP: protected static module false//src/export-payload.js
+  ---
+  duration_ms: 14.0536
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//src/export-guard.js
+ok 79 - export HTTP: protected static module false//src/export-guard.js
+  ---
+  duration_ms: 11.0543
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//src/export-status.js
+ok 80 - export HTTP: protected static module false//src/export-status.js
+  ---
+  duration_ms: 9.5994
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//examples/export-resource.js
+ok 81 - export HTTP: protected static module false//examples/export-resource.js
+  ---
+  duration_ms: 14.2045
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//examples/export-download.js
+ok 82 - export HTTP: protected static module false//examples/export-download.js
+  ---
+  duration_ms: 11.3515
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//examples/export-guard-panel.js
+ok 83 - export HTTP: protected static module false//examples/export-guard-panel.js
+  ---
+  duration_ms: 22.4294
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//src/state-notifier.js
+ok 84 - export HTTP: protected static module false//src/state-notifier.js
+  ---
+  duration_ms: 14.2016
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//src/security-callback.js
+ok 85 - export HTTP: protected static module false//src/security-callback.js
+  ---
+  duration_ms: 13.2433
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module false//src/provider-error.js
+ok 86 - export HTTP: protected static module false//src/provider-error.js
+  ---
+  duration_ms: 14.628
+  type: 'test'
+  ...
+# Subtest: export HTTP: no download upload or status endpoint false
+ok 87 - export HTTP: no download upload or status endpoint false
+  ---
+  duration_ms: 63.8792
+  type: 'test'
+  ...
+# Subtest: export HTTP: foreign request context cannot load modules false
+ok 88 - export HTTP: foreign request context cannot load modules false
+  ---
+  duration_ms: 211.5836
+  type: 'test'
+  ...
+# Subtest: export HTTP: synthetic UI is available only in explicit test mode false
+ok 89 - export HTTP: synthetic UI is available only in explicit test mode false
+  ---
+  duration_ms: 19.0924
+  type: 'test'
+  ...
+# Subtest: export HTTP: normal app wires shared budget into protection stop false
+ok 90 - export HTTP: normal app wires shared budget into protection stop false
+  ---
+  duration_ms: 29.3314
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//src/export-policy.js
+ok 91 - export HTTP: protected static module true//src/export-policy.js
+  ---
+  duration_ms: 13.8547
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//src/export-payload.js
+ok 92 - export HTTP: protected static module true//src/export-payload.js
+  ---
+  duration_ms: 14.1524
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//src/export-guard.js
+ok 93 - export HTTP: protected static module true//src/export-guard.js
+  ---
+  duration_ms: 10.9148
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//src/export-status.js
+ok 94 - export HTTP: protected static module true//src/export-status.js
+  ---
+  duration_ms: 11.8274
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//examples/export-resource.js
+ok 95 - export HTTP: protected static module true//examples/export-resource.js
+  ---
+  duration_ms: 14.1319
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//examples/export-download.js
+ok 96 - export HTTP: protected static module true//examples/export-download.js
+  ---
+  duration_ms: 8.4421
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//examples/export-guard-panel.js
+ok 97 - export HTTP: protected static module true//examples/export-guard-panel.js
+  ---
+  duration_ms: 8.5452
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//src/state-notifier.js
+ok 98 - export HTTP: protected static module true//src/state-notifier.js
+  ---
+  duration_ms: 10.5986
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//src/security-callback.js
+ok 99 - export HTTP: protected static module true//src/security-callback.js
+  ---
+  duration_ms: 7.7078
+  type: 'test'
+  ...
+# Subtest: export HTTP: protected static module true//src/provider-error.js
+ok 100 - export HTTP: protected static module true//src/provider-error.js
+  ---
+  duration_ms: 9.7504
+  type: 'test'
+  ...
+# Subtest: export HTTP: no download upload or status endpoint true
+ok 101 - export HTTP: no download upload or status endpoint true
+  ---
+  duration_ms: 45.6805
+  type: 'test'
+  ...
+# Subtest: export HTTP: foreign request context cannot load modules true
+ok 102 - export HTTP: foreign request context cannot load modules true
+  ---
+  duration_ms: 145.5419
+  type: 'test'
+  ...
+# Subtest: export HTTP: synthetic UI is available only in explicit test mode true
+ok 103 - export HTTP: synthetic UI is available only in explicit test mode true
+  ---
+  duration_ms: 43.3882
+  type: 'test'
+  ...
+# Subtest: export HTTP: normal app wires shared budget into protection stop true
+ok 104 - export HTTP: normal app wires shared budget into protection stop true
+  ---
+  duration_ms: 19.3436
+  type: 'test'
+  ...
+# Subtest: export HTTP: twelve former URL allocation sites all resolve the same guard
+ok 105 - export HTTP: twelve former URL allocation sites all resolve the same guard
+  ---
+  duration_ms: 65.7136
+  type: 'test'
+  ...
+# Subtest: export HTTP: all new module imports resolve locally without new network privileges
+ok 106 - export HTTP: all new module imports resolve locally without new network privileges
+  ---
+  duration_ms: 72.8454
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/file-read-policy.js
+ok 107 - file boundary HTTP: guarded static module false//src/file-read-policy.js
+  ---
+  duration_ms: 152.8074
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/file-read-source.js
+ok 108 - file boundary HTTP: guarded static module false//src/file-read-source.js
+  ---
+  duration_ms: 15.9441
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/file-read-service.js
+ok 109 - file boundary HTTP: guarded static module false//src/file-read-service.js
+  ---
+  duration_ms: 11.0435
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/file-read-status.js
+ok 110 - file boundary HTTP: guarded static module false//src/file-read-status.js
+  ---
+  duration_ms: 17.2202
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/security-file.js
+ok 111 - file boundary HTTP: guarded static module false//src/security-file.js
+  ---
+  duration_ms: 16.3223
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//examples/file-read-panel.js
+ok 112 - file boundary HTTP: guarded static module false//examples/file-read-panel.js
+  ---
+  duration_ms: 15.339
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/state-notifier.js
+ok 113 - file boundary HTTP: guarded static module false//src/state-notifier.js
+  ---
+  duration_ms: 12.7401
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/security-callback.js
+ok 114 - file boundary HTTP: guarded static module false//src/security-callback.js
+  ---
+  duration_ms: 10.9183
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/security-abort.js
+ok 115 - file boundary HTTP: guarded static module false//src/security-abort.js
+  ---
+  duration_ms: 12.267
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/security-json.js
+ok 116 - file boundary HTTP: guarded static module false//src/security-json.js
+  ---
+  duration_ms: 14.1216
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/security-data.js
+ok 117 - file boundary HTTP: guarded static module false//src/security-data.js
+  ---
+  duration_ms: 15.7149
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//examples/export-download.js
+ok 118 - file boundary HTTP: guarded static module false//examples/export-download.js
+  ---
+  duration_ms: 16.861
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//examples/export-resource.js
+ok 119 - file boundary HTTP: guarded static module false//examples/export-resource.js
+  ---
+  duration_ms: 9.5249
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/export-guard.js
+ok 120 - file boundary HTTP: guarded static module false//src/export-guard.js
+  ---
+  duration_ms: 7.0954
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/export-payload.js
+ok 121 - file boundary HTTP: guarded static module false//src/export-payload.js
+  ---
+  duration_ms: 9.5256
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/export-policy.js
+ok 122 - file boundary HTTP: guarded static module false//src/export-policy.js
+  ---
+  duration_ms: 7.2726
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module false//src/provider-error.js
+ok 123 - file boundary HTTP: guarded static module false//src/provider-error.js
+  ---
+  duration_ms: 15.9235
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: no read, upload, filesystem or status endpoint false
+ok 124 - file boundary HTTP: no read, upload, filesystem or status endpoint false
+  ---
+  duration_ms: 65.6986
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: foreign fetch and frame contexts cannot load modules false
+ok 125 - file boundary HTTP: foreign fetch and frame contexts cannot load modules false
+  ---
+  duration_ms: 278.2205
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: synthetic harness requires explicit test mode false
+ok 126 - file boundary HTTP: synthetic harness requires explicit test mode false
+  ---
+  duration_ms: 15.9618
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: all new imports resolve within local allowlist false
+ok 127 - file boundary HTTP: all new imports resolve within local allowlist false
+  ---
+  duration_ms: 113.4143
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: main screen wires file cancellation into ordered protection false
+ok 128 - file boundary HTTP: main screen wires file cancellation into ordered protection false
+  ---
+  duration_ms: 19.7599
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/file-read-policy.js
+ok 129 - file boundary HTTP: guarded static module true//src/file-read-policy.js
+  ---
+  duration_ms: 8.1851
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/file-read-source.js
+ok 130 - file boundary HTTP: guarded static module true//src/file-read-source.js
+  ---
+  duration_ms: 8.9324
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/file-read-service.js
+ok 131 - file boundary HTTP: guarded static module true//src/file-read-service.js
+  ---
+  duration_ms: 13.8253
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/file-read-status.js
+ok 132 - file boundary HTTP: guarded static module true//src/file-read-status.js
+  ---
+  duration_ms: 33.1234
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/security-file.js
+ok 133 - file boundary HTTP: guarded static module true//src/security-file.js
+  ---
+  duration_ms: 8.7268
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//examples/file-read-panel.js
+ok 134 - file boundary HTTP: guarded static module true//examples/file-read-panel.js
+  ---
+  duration_ms: 10.3386
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/state-notifier.js
+ok 135 - file boundary HTTP: guarded static module true//src/state-notifier.js
+  ---
+  duration_ms: 10.694
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/security-callback.js
+ok 136 - file boundary HTTP: guarded static module true//src/security-callback.js
+  ---
+  duration_ms: 6.7129
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/security-abort.js
+ok 137 - file boundary HTTP: guarded static module true//src/security-abort.js
+  ---
+  duration_ms: 6.3228
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/security-json.js
+ok 138 - file boundary HTTP: guarded static module true//src/security-json.js
+  ---
+  duration_ms: 7.2277
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/security-data.js
+ok 139 - file boundary HTTP: guarded static module true//src/security-data.js
+  ---
+  duration_ms: 8.2104
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//examples/export-download.js
+ok 140 - file boundary HTTP: guarded static module true//examples/export-download.js
+  ---
+  duration_ms: 7.6968
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//examples/export-resource.js
+ok 141 - file boundary HTTP: guarded static module true//examples/export-resource.js
+  ---
+  duration_ms: 6.3931
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/export-guard.js
+ok 142 - file boundary HTTP: guarded static module true//src/export-guard.js
+  ---
+  duration_ms: 14.6114
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/export-payload.js
+ok 143 - file boundary HTTP: guarded static module true//src/export-payload.js
+  ---
+  duration_ms: 16.4135
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/export-policy.js
+ok 144 - file boundary HTTP: guarded static module true//src/export-policy.js
+  ---
+  duration_ms: 9.4514
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: guarded static module true//src/provider-error.js
+ok 145 - file boundary HTTP: guarded static module true//src/provider-error.js
+  ---
+  duration_ms: 7.9472
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: no read, upload, filesystem or status endpoint true
+ok 146 - file boundary HTTP: no read, upload, filesystem or status endpoint true
+  ---
+  duration_ms: 49.4497
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: foreign fetch and frame contexts cannot load modules true
+ok 147 - file boundary HTTP: foreign fetch and frame contexts cannot load modules true
+  ---
+  duration_ms: 285.3493
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: synthetic harness requires explicit test mode true
+ok 148 - file boundary HTTP: synthetic harness requires explicit test mode true
+  ---
+  duration_ms: 26.3611
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: all new imports resolve within local allowlist true
+ok 149 - file boundary HTTP: all new imports resolve within local allowlist true
+  ---
+  duration_ms: 113.9598
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: main screen wires file cancellation into ordered protection true
+ok 150 - file boundary HTTP: main screen wires file cancellation into ordered protection true
+  ---
+  duration_ms: 18.7295
+  type: 'test'
+  ...
+# Subtest: file boundary HTTP: every migrated entry module resolves guarded byte/text readers
+ok 151 - file boundary HTTP: every migrated entry module resolves guarded byte/text readers
+  ---
+  duration_ms: 66.118
+  type: 'test'
+  ...
+# Subtest: history files are served as scripts and fixtures remain gated: false
+ok 152 - history files are served as scripts and fixtures remain gated: false
+  ---
+  duration_ms: 521.7041
+  type: 'test'
+  ...
+# Subtest: history files are served as scripts and fixtures remain gated: true
+ok 153 - history files are served as scripts and fixtures remain gated: true
+  ---
+  duration_ms: 517.3686
+  type: 'test'
+  ...
+# Subtest: recovery modules are read-only routes, fixtures gated: false
+ok 154 - recovery modules are read-only routes, fixtures gated: false
+  ---
+  duration_ms: 435.5859
+  type: 'test'
+  ...
+# Subtest: recovery modules are read-only routes, fixtures gated: true
+ok 155 - recovery modules are read-only routes, fixtures gated: true
+  ---
+  duration_ms: 260.7703
+  type: 'test'
+  ...
+# Subtest: review routes are explicit and test UI is not public: false
+ok 156 - review routes are explicit and test UI is not public: false
+  ---
+  duration_ms: 325.8294
+  type: 'test'
+  ...
+# Subtest: review routes are explicit and test UI is not public: true
+ok 157 - review routes are explicit and test UI is not public: true
+  ---
+  duration_ms: 187.4732
+  type: 'test'
+  ...
+# Subtest: refused rehearsal navigation stays 403 and offers one fixed same-origin link
+ok 158 - refused rehearsal navigation stays 403 and offers one fixed same-origin link
+  ---
+  duration_ms: 175.4635
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /
+ok 159 - explicit same-origin navigation loads only the fixed screen after a refusal: /
+  ---
+  duration_ms: 54.8952
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+ok 160 - explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+  ---
+  duration_ms: 48.5873
+  type: 'test'
+  ...
+# Subtest: wallet entry guide uses only the local listening port and fixed root route
+ok 161 - wallet entry guide uses only the local listening port and fixed root route
+  ---
+  duration_ms: 59.9163
+  type: 'test'
+  ...
+# Subtest: RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+ok 162 - RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+  ---
+  duration_ms: 102.6086
+  type: 'test'
+  ...
+# Subtest: invalid Host remains a plain rejection and is never echoed in a recovery URL
+ok 163 - invalid Host remains a plain rejection and is never echoed in a recovery URL
+  ---
+  duration_ms: 16.4659
+  type: 'test'
+  ...
+# Subtest: ordinary direct navigation still serves the actual rehearsal page
+ok 164 - ordinary direct navigation still serves the actual rehearsal page
+  ---
+  duration_ms: 17.6331
+  type: 'test'
+  ...
+# Subtest: guide helper refuses invalid local ports and unrelated verdicts
+ok 165 - guide helper refuses invalid local ports and unrelated verdicts
+  ---
+  duration_ms: 0.8973
+  type: 'test'
+  ...
+# Subtest: observer runtime retains protected JavaScript response headers
+ok 166 - observer runtime retains protected JavaScript response headers
+  ---
+  duration_ms: 179.6978
+  type: 'test'
+  ...
+# Subtest: observer fixture is available only under ui-test=false
+ok 167 - observer fixture is available only under ui-test=false
+  ---
+  duration_ms: 14.2805
+  type: 'test'
+  ...
+# Subtest: observer fixture is available only under ui-test=true
+ok 168 - observer fixture is available only under ui-test=true
+  ---
+  duration_ms: 27.6275
+  type: 'test'
+  ...
+# Subtest: observer routes reject foreign context {"Origin":"https://foreign.invalid"}
+ok 169 - observer routes reject foreign context {"Origin":"https://foreign.invalid"}
+  ---
+  duration_ms: 27.2801
+  type: 'test'
+  ...
+# Subtest: observer routes reject foreign context {"Origin":"null"}
+ok 170 - observer routes reject foreign context {"Origin":"null"}
+  ---
+  duration_ms: 17.6254
+  type: 'test'
+  ...
+# Subtest: observer routes reject foreign context {"Host":"127.0.0.1.foreign.invalid"}
+ok 171 - observer routes reject foreign context {"Host":"127.0.0.1.foreign.invalid"}
+  ---
+  duration_ms: 33.1052
+  type: 'test'
+  ...
+# Subtest: observer routes reject foreign context {"Sec-Fetch-Site":"cross-site"}
+ok 172 - observer routes reject foreign context {"Sec-Fetch-Site":"cross-site"}
+  ---
+  duration_ms: 23.7693
+  type: 'test'
+  ...
+# Subtest: observer routes reject foreign context {"Sec-Fetch-Dest":"iframe"}
+ok 173 - observer routes reject foreign context {"Sec-Fetch-Dest":"iframe"}
+  ---
+  duration_ms: 21.4878
+  type: 'test'
+  ...
+# Subtest: observer additions expose no mutation endpoint: POST
+ok 174 - observer additions expose no mutation endpoint: POST
+  ---
+  duration_ms: 26.0971
+  type: 'test'
+  ...
+# Subtest: observer additions expose no mutation endpoint: PUT
+ok 175 - observer additions expose no mutation endpoint: PUT
+  ---
+  duration_ms: 21.1262
+  type: 'test'
+  ...
+# Subtest: observer additions expose no mutation endpoint: PATCH
+ok 176 - observer additions expose no mutation endpoint: PATCH
+  ---
+  duration_ms: 15.444
+  type: 'test'
+  ...
+# Subtest: observer additions expose no mutation endpoint: DELETE
+ok 177 - observer additions expose no mutation endpoint: DELETE
+  ---
+  duration_ms: 66.4458
+  type: 'test'
+  ...
+# Subtest: observer fixture and all five production services resolve locally
+ok 178 - observer fixture and all five production services resolve locally
+  ---
+  duration_ms: 168.2504
+  type: 'test'
+  ...
+# Subtest: observer additions do not expose test helpers or captured state: /test/observer-boundaries.test.js
+ok 179 - observer additions do not expose test helpers or captured state: /test/observer-boundaries.test.js
+  ---
+  duration_ms: 6.7743
+  type: 'test'
+  ...
+# Subtest: observer additions do not expose test helpers or captured state: /test/helpers/observer-fixtures.js
+ok 180 - observer additions do not expose test helpers or captured state: /test/helpers/observer-fixtures.js
+  ---
+  duration_ms: 9.3279
+  type: 'test'
+  ...
+# Subtest: observer additions do not expose test helpers or captured state: /test/observer-liveness.test.js
+ok 181 - observer additions do not expose test helpers or captured state: /test/observer-liveness.test.js
+  ---
+  duration_ms: 24.7517
+  type: 'test'
+  ...
+# Subtest: observer additions do not expose test helpers or captured state: /observer-state.json
+ok 182 - observer additions do not expose test helpers or captured state: /observer-state.json
+  ---
+  duration_ms: 19.7651
+  type: 'test'
+  ...
+# Subtest: budget page serves its complete local graph and denies network/write/file exposure
+not ok 183 - budget page serves its complete local graph and denies network/write/file exposure
+  ---
+  duration_ms: 224.8616
+  type: 'test'
+  location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\threecore-wallet-operation-rehearsal-20261029\\integration\\operation-budget-server.test.mjs:5:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /現在の残高・手数料は取得しません/. Input:
+    
+    '<!doctype html>\n' +
+      '<html lang="ja">\n' +
+      '<head>\n' +
+      '  <meta charset="utf-8">\n' +
+      '  <meta name="viewport" content="width=device-width,initial-scale=1">\n' +
+      `  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">\n` +
+      '  <title>元本とガス代の予算確認 — ThreeCore</title>\n' +
+      '  <link rel="stylesheet" href="/examples/operation-rehearsal.css">\n' +
+      '</head>\n' +
+      '<body><main>\n' +
+      '  <header>\n' +
+      '    <a href="/rehearsal/" target="_blank" rel="noopener">運用リハーサルを別タブで開く</a>\n' +
+      '    <p><a href="/budget/shared/" target="_blank" rel="noopener">同じ口座のETH予算をまとめて確認する</a></p>\n' +
+      '    <p><a href="/budget/evidence/" target="_blank" rel="noopener">予算と保存済み残高を照合する</a></p>\n' +
+      '    <p class="eyebrow">DAT · EMA · CAWELON</p><h1>元本とガス代の予算確認</h1>\n' +
+      '    <p>トークンで使う元本と、ETHで払う費用を分けて試算します。別の用途に確保した額と、残しておく予備資金も差し引きます。</p>\n' +
+      '    <p class="notice">入力した仮定で予算を確認します。保存した公開残高を転記することもできます。このページでは現在の残高・手数料を取得せず、Wallet接続・署名・送金も行いません。</p>\n' +
+      '    <p class="small">Baseでは実行ガス代のほかにL1データ費用などが必要です。追加費用が不明な場合は空欄にすると、総額を「未確定」と表示します。入力した費用予算は実際の請求上限ではありません。</p>\n' +
+      '    <button id="budget-example" type="button">仮の入力例を表示</button>\n' +
+      '  </header>\n' +
+      '  <section aria-labelledby="budget-token-title">\n' +
+      '    <h2 id="budget-token-title">1. トークンの元本</h2>\n' +
+      '    <div class="fields">\n' +
+      '      <label>対象トークン<select id="budget-agent"><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label>\n' +
+      '      <label>想定ネットワーク<select id="budget-chain"><option value="84532">Base Sepolia</option><option value="8453">Base Mainnet</option></select></label>\n' +
+      '      <label>トークンの小数桁数<input id="budget-decimals" inputmode="numeric" maxlength="2" value="18"></label>\n' +
+      '      <label>トークン残高（仮定）<input id="budget-token-balance" inputmode="decimal" maxlength="100"></label>\n' +
+      '      <label>別用途に確保したトークン<input id="budget-token-reserved" inputmode="decimal" maxlength="100"></label>\n' +
+      '      <label>残しておくトークン<input id="budget-token-floor" inputmode="decimal" maxlength="100"></label>\n' +
+      '      <label>今回使うトークン<input id="budget-token-spend" inputmode="decimal" maxlength="100"></label>\n' +
+      '    </div>\n' +
+      '  </section>\n' +
+      '  <section aria-labelledby="budget-source-title">\n' +
+      '    <h2 id="budget-source-title">保存した公開残高を転記する（任意）</h2>\n' +
+      '    <p>上で対象トークンとネットワークを選び、<a href="/tokens/read/" target="_blank" rel="noopener">3トークンの公開残高確認</a>から保存したJSONを選んでください。口座とブロックを確認してから、残高と小数桁数だけを転記します。</p>\n' +
+      '    <label class="file-label">公開残高の一括ファイル<input id="budget-source-file" type="file" accept=".json,application/json"></label>\n' +
+      '    <p id="budget-source-status" role="status" aria-live="polite"></p>\n' +
+      '    <div id="budget-source-preview" hidden><div class="table-wrap"><table><caption>転記する公開残高</caption><tbody id="budget-source-rows"></tbody></table></div></div>\n' +
+      '    <button id="budget-source-apply" type="button" disabled>確認した残高を転記する</button> <button id="budget-source-cancel" type="button">残高の確認を取り消す</button>\n' +
+      '    <p class="small">使用額・確保額・予備資金・費用は変更しません。過去の残高であり、現在の資産や取引実行を保証するものではありません。元の残高ファイルを保管し、予算の保存後に「予算と保存済み残高の照合」で一緒に確認してください。</p>\n' +
+      '  </section>\n' +
+      '  <section aria-labelledby="budget-native-title">\n' +
+      '    <h2 id="budget-native-title">2. ETHの残高と予備資金</h2>\n' +
+      '    <div class="fields">\n' +
+      '      <label>ETH残高（仮定）<input id="budget-native-balance" inputmode="decimal" maxlength="100"></label>\n' +
+      '      <label>別用途に確保したETH<input id="budget-native-reserved" inputmode="decimal" maxlength="100"></label>\n' +
+      '      <label>残しておくETH<input id="budget-native-floor" inputmode="decimal" maxlength="100"></label>\n' +
+      '      <label>費用以外に使うETH（仮定）<input id="budget-native-value" inputmode="decimal" maxlength="100"></label>\n' +
+      '    </div>\n' +
+      '  </section>\n' +
+      '  <section aria-labelledby="budget-fees-title">\n' +
+      '    <h2 id="budget-fees-title">3. 費用の予算</h2>\n' +
+      '    <div class="fields">\n' +
+      '      <label>想定ガス上限<input id="budget-gas" inputmode="numeric" maxlength="78"></label>\n' +
+      '      <label>1ガスあたりの上限（Gwei）<input id="budget-fee" inputmode="decimal" maxlength="100"></label>\n' +
+      '      <label>L1データ費用の予算（ETH・不明なら空欄）<input id="budget-l1" inputmode="decimal" maxlength="100"></label>\n' +
+      '      <label>運営者費用の予算（ETH・不明なら空欄）<input id="budget-operator" inputmode="decimal" maxlength="100"></label>\n' +
+      '      <label>追加の余裕分（ETH）<input id="budget-buffer" inputmode="decimal" maxlength="100"></label>\n' +
+      '    </div>\n' +
+      '    <p class="small">ガス上限×1ガスあたりの上限に、L1データ費用・運営者費用・余裕分を足します。0を入れると「費用なしという仮定」になります。金額が不明な項目は空欄にしてください。</p>\n' +
+      '    <button id="budget-calculate" type="button">この入力で予算を確認</button>\n' +
+      '    <p id="budget-status" role="status" aria-live="polite" tabindex="-1">入力後に予算を確認してください。</p>\n' +
+      '    <div id="budget-result" hidden>\n' +
+      '      <p id="budget-outcome" class="notice"></p>\n' +
+      '      <div class="table-wrap"><table><caption>通貨を分けた予算の内訳</caption><thead><tr><th>項目</th><th>入力から計算した額</th></tr></thead><tbody id="budget-rows"></tbody></table></div>\n' +
+      '      <p id="budget-reasons"></p>\n' +
+      '      <p class="small">入力額で足りる場合も、実際の残高・ガス使用量・費用・実行結果の確認にはなりません。取引を許可する結果ではありません。</p>\n' +
+      '    </div>\n' +
+      '    <button id="budget-save" type="button" disabled>確認した入力を保存</button><p id="budget-save-status" class="small" role="status" aria-live="polite"></p>\n' +
+      '  </section>\n' +
+      '  <section aria-labelledby="budget-restore-title">\n' +
+      '    <h2 id="budget-restore-title">保存した予算入力を再確認</h2>\n' +
+      '    <p>予算確認専用の入力ファイルを読み込み、内容を確認してから入力欄へ戻します。運用リハーサルの履歴・ケース集には含まれません。</p>\n' +
+      '    <label class="file-label">保存した予算入力<input id="budget-file" type="file" accept=".json,application/json"></label>\n' +
+      '    <p id="budget-import-status" role="status" aria-live="polite"></p>\n' +
+      '    <div id="budget-preview" hidden><div class="table-wrap"><table><caption>復元する予算入力</caption><thead><tr><th>項目</th><th>保存されている入力</th></tr></thead><tbody id="budget-preview-rows"></tbody></table></div></div>\n' +
+      '    <button id="budget-apply" type="button" disabled>この入力を復元して再計算</button>\n' +
+      '    <button id="budget-cancel" type="button">ファイル確認を取り消す</button>\n' +
+      '  </section>\n' +
+      '  <footer>このページは仮の予算確認専用です。取引の作成、価格取得、許可額の変更、署名、送信は行いません。</footer>\n' +
+      '</main><script type="module" src="/examples/operation-budget-page.js"></script></body></html>\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    <!doctype html>
+    <html lang="ja">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+      <title>元本とガス代の予算確認 — ThreeCore</title>
+      <link rel="stylesheet" href="/examples/operation-rehearsal.css">
+    </head>
+    <body><main>
+      <header>
+        <a href="/rehearsal/" target="_blank" rel="noopener">運用リハーサルを別タブで開く</a>
+        <p><a href="/budget/shared/" target="_blank" rel="noopener">同じ口座のETH予算をまとめて確認する</a></p>
+        <p><a href="/budget/evidence/" target="_blank" rel="noopener">予算と保存済み残高を照合する</a></p>
+        <p class="eyebrow">DAT · EMA · CAWELON</p><h1>元本とガス代の予算確認</h1>
+        <p>トークンで使う元本と、ETHで払う費用を分けて試算します。別の用途に確保した額と、残しておく予備資金も差し引きます。</p>
+        <p class="notice">入力した仮定で予算を確認します。保存した公開残高を転記することもできます。このページでは現在の残高・手数料を取得せず、Wallet接続・署名・送金も行いません。</p>
+        <p class="small">Baseでは実行ガス代のほかにL1データ費用などが必要です。追加費用が不明な場合は空欄にすると、総額を「未確定」と表示します。入力した費用予算は実際の請求上限ではありません。</p>
+        <button id="budget-example" type="button">仮の入力例を表示</button>
+      </header>
+      <section aria-labelledby="budget-token-title">
+        <h2 id="budget-token-title">1. トークンの元本</h2>
+        <div class="fields">
+          <label>対象トークン<select id="budget-agent"><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label>
+          <label>想定ネットワーク<select id="budget-chain"><option value="84532">Base Sepolia</option><option value="8453">Base Mainnet</option></select></label>
+          <label>トークンの小数桁数<input id="budget-decimals" inputmode="numeric" maxlength="2" value="18"></label>
+          <label>トークン残高（仮定）<input id="budget-token-balance" inputmode="decimal" maxlength="100"></label>
+          <label>別用途に確保したトークン<input id="budget-token-reserved" inputmode="decimal" maxlength="100"></label>
+          <label>残しておくトークン<input id="budget-token-floor" inputmode="decimal" maxlength="100"></label>
+          <label>今回使うトークン<input id="budget-token-spend" inputmode="decimal" maxlength="100"></label>
+        </div>
+      </section>
+      <section aria-labelledby="budget-source-title">
+        <h2 id="budget-source-title">保存した公開残高を転記する（任意）</h2>
+        <p>上で対象トークンとネットワークを選び、<a href="/tokens/read/" target="_blank" rel="noopener">3トークンの公開残高確認</a>から保存したJSONを選んでください。口座とブロックを確認してから、残高と小数桁数だけを転記します。</p>
+        <label class="file-label">公開残高の一括ファイル<input id="budget-source-file" type="file" accept=".json,application/json"></label>
+        <p id="budget-source-status" role="status" aria-live="polite"></p>
+        <div id="budget-source-preview" hidden><div class="table-wrap"><table><caption>転記する公開残高</caption><tbody id="budget-source-rows"></tbody></table></div></div>
+        <button id="budget-source-apply" type="button" disabled>確認した残高を転記する</button> <button id="budget-source-cancel" type="button">残高の確認を取り消す</button>
+        <p class="small">使用額・確保額・予備資金・費用は変更しません。過去の残高であり、現在の資産や取引実行を保証するものではありません。元の残高ファイルを保管し、予算の保存後に「予算と保存済み残高の照合」で一緒に確認してください。</p>
+      </section>
+      <section aria-labelledby="budget-native-title">
+        <h2 id="budget-native-title">2. ETHの残高と予備資金</h2>
+        <div class="fields">
+          <label>ETH残高（仮定）<input id="budget-native-balance" inputmode="decimal" maxlength="100"></label>
+          <label>別用途に確保したETH<input id="budget-native-reserved" inputmode="decimal" maxlength="100"></label>
+          <label>残しておくETH<input id="budget-native-floor" inputmode="decimal" maxlength="100"></label>
+          <label>費用以外に使うETH（仮定）<input id="budget-native-value" inputmode="decimal" maxlength="100"></label>
+        </div>
+      </section>
+      <section aria-labelledby="budget-fees-title">
+        <h2 id="budget-fees-title">3. 費用の予算</h2>
+        <div class="fields">
+          <label>想定ガス上限<input id="budget-gas" inputmode="numeric" maxlength="78"></label>
+          <label>1ガスあたりの上限（Gwei）<input id="budget-fee" inputmode="decimal" maxlength="100"></label>
+          <label>L1データ費用の予算（ETH・不明なら空欄）<input id="budget-l1" inputmode="decimal" maxlength="100"></label>
+          <label>運営者費用の予算（ETH・不明なら空欄）<input id="budget-operator" inputmode="decimal" maxlength="100"></label>
+          <label>追加の余裕分（ETH）<input id="budget-buffer" inputmode="decimal" maxlength="100"></label>
+        </div>
+        <p class="small">ガス上限×1ガスあたりの上限に、L1データ費用・運営者費用・余裕分を足します。0を入れると「費用なしという仮定」になります。金額が不明な項目は空欄にしてください。</p>
+        <button id="budget-calculate" type="button">この入力で予算を確認</button>
+        <p id="budget-status" role="status" aria-live="polite" tabindex="-1">入力後に予算を確認してください。</p>
+        <div id="budget-result" hidden>
+          <p id="budget-outcome" class="notice"></p>
+          <div class="table-wrap"><table><caption>通貨を分けた予算の内訳</caption><thead><tr><th>項目</th><th>入力から計算した額</th></tr></thead><tbody id="budget-rows"></tbody></table></div>
+          <p id="budget-reasons"></p>
+          <p class="small">入力額で足りる場合も、実際の残高・ガス使用量・費用・実行結果の確認にはなりません。取引を許可する結果ではありません。</p>
+        </div>
+        <button id="budget-save" type="button" disabled>確認した入力を保存</button><p id="budget-save-status" class="small" role="status" aria-live="polite"></p>
+      </section>
+      <section aria-labelledby="budget-restore-title">
+        <h2 id="budget-restore-title">保存した予算入力を再確認</h2>
+        <p>予算確認専用の入力ファイルを読み込み、内容を確認してから入力欄へ戻します。運用リハーサルの履歴・ケース集には含まれません。</p>
+        <label class="file-label">保存した予算入力<input id="budget-file" type="file" accept=".json,application/json"></label>
+        <p id="budget-import-status" role="status" aria-live="polite"></p>
+        <div id="budget-preview" hidden><div class="table-wrap"><table><caption>復元する予算入力</caption><thead><tr><th>項目</th><th>保存されている入力</th></tr></thead><tbody id="budget-preview-rows"></tbody></table></div></div>
+        <button id="budget-apply" type="button" disabled>この入力を復元して再計算</button>
+        <button id="budget-cancel" type="button">ファイル確認を取り消す</button>
+      </section>
+      <footer>このページは仮の予算確認専用です。取引の作成、価格取得、許可額の変更、署名、送信は行いません。</footer>
+    </main><script type="module" src="/examples/operation-budget-page.js"></script></body></html>
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/integration/operation-budget-server.test.mjs:13:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: rehearsal is reachable from the wallet and explicitly disconnects network access
+ok 184 - rehearsal is reachable from the wallet and explicitly disconnects network access
+  ---
+  duration_ms: 310.1285
+  type: 'test'
+  ...
+# Subtest: all module imports resolve from the explicit allowlist with safe content types
+ok 185 - all module imports resolve from the explicit allowlist with safe content types
+  ---
+  duration_ms: 1101.4869
+  type: 'test'
+  ...
+# Subtest: rehearsal exposes no files outside allowlist or writable endpoint
+ok 186 - rehearsal exposes no files outside allowlist or writable endpoint
+  ---
+  duration_ms: 131.598
+  type: 'test'
+  ...
+# Subtest: library modules have explicit MIME and no caching: false
+ok 187 - library modules have explicit MIME and no caching: false
+  ---
+  duration_ms: 503.461
+  type: 'test'
+  ...
+# Subtest: library synthetic preview is gated by explicit test mode: false
+ok 188 - library synthetic preview is gated by explicit test mode: false
+  ---
+  duration_ms: 90.4033
+  type: 'test'
+  ...
+# Subtest: library server cannot expose local backups or accept writes: false
+ok 189 - library server cannot expose local backups or accept writes: false
+  ---
+  duration_ms: 170.8898
+  type: 'test'
+  ...
+# Subtest: library modules have explicit MIME and no caching: true
+ok 190 - library modules have explicit MIME and no caching: true
+  ---
+  duration_ms: 121.4749
+  type: 'test'
+  ...
+# Subtest: library synthetic preview is gated by explicit test mode: true
+ok 191 - library synthetic preview is gated by explicit test mode: true
+  ---
+  duration_ms: 138.3436
+  type: 'test'
+  ...
+# Subtest: library server cannot expose local backups or accept writes: true
+ok 192 - library server cannot expose local backups or accept writes: true
+  ---
+  duration_ms: 187.5513
+  type: 'test'
+  ...
+# Subtest: library preview imports resolve entirely to explicit local routes
+ok 193 - library preview imports resolve entirely to explicit local routes
+  ---
+  duration_ms: 1186.0815
+  type: 'test'
+  ...
+# Subtest: library preview labels synthetic data and disallows outside connections
+ok 194 - library preview labels synthetic data and disallows outside connections
+  ---
+  duration_ms: 40.1568
+  type: 'test'
+  ...
+# Subtest: main demo and browser harness load library styling and registration
+ok 195 - main demo and browser harness load library styling and registration
+  ---
+  duration_ms: 58.6335
+  type: 'test'
+  ...
+# Subtest: report local modules have correct headers: false
+ok 196 - report local modules have correct headers: false
+  ---
+  duration_ms: 259.144
+  type: 'test'
+  ...
+# Subtest: report fixtures require explicit UI-test mode: false
+ok 197 - report fixtures require explicit UI-test mode: false
+  ---
+  duration_ms: 35.1662
+  type: 'test'
+  ...
+# Subtest: report server refuses writes and private file paths: false
+ok 198 - report server refuses writes and private file paths: false
+  ---
+  duration_ms: 116.764
+  type: 'test'
+  ...
+# Subtest: report local modules have correct headers: true
+ok 199 - report local modules have correct headers: true
+  ---
+  duration_ms: 157.2526
+  type: 'test'
+  ...
+# Subtest: report fixtures require explicit UI-test mode: true
+ok 200 - report fixtures require explicit UI-test mode: true
+  ---
+  duration_ms: 47.3602
+  type: 'test'
+  ...
+# Subtest: report server refuses writes and private file paths: true
+ok 201 - report server refuses writes and private file paths: true
+  ---
+  duration_ms: 119.6482
+  type: 'test'
+  ...
+# Subtest: report preview has a complete local import graph
+ok 202 - report preview has a complete local import graph
+  ---
+  duration_ms: 971.0707
+  type: 'test'
+  ...
+# Subtest: report preview clearly labels synthetic data and restricts connections
+ok 203 - report preview clearly labels synthetic data and restricts connections
+  ---
+  duration_ms: 15.6882
+  type: 'test'
+  ...
+# Subtest: report is integrated into main demo lifecycle and browser harness
+ok 204 - report is integrated into main demo lifecycle and browser harness
+  ---
+  duration_ms: 49.3537
+  type: 'test'
+  ...
+# Subtest: period modules are served with explicit safe MIME and no caching: false
+ok 205 - period modules are served with explicit safe MIME and no caching: false
+  ---
+  duration_ms: 236.1015
+  type: 'test'
+  ...
+# Subtest: period synthetic fixtures require explicit test mode: false
+ok 206 - period synthetic fixtures require explicit test mode: false
+  ---
+  duration_ms: 47.3027
+  type: 'test'
+  ...
+# Subtest: period server never serves downloaded data, scripts or repository metadata: false
+ok 207 - period server never serves downloaded data, scripts or repository metadata: false
+  ---
+  duration_ms: 140.2311
+  type: 'test'
+  ...
+# Subtest: period modules are served with explicit safe MIME and no caching: true
+ok 208 - period modules are served with explicit safe MIME and no caching: true
+  ---
+  duration_ms: 101.115
+  type: 'test'
+  ...
+# Subtest: period synthetic fixtures require explicit test mode: true
+ok 209 - period synthetic fixtures require explicit test mode: true
+  ---
+  duration_ms: 48.2138
+  type: 'test'
+  ...
+# Subtest: period server never serves downloaded data, scripts or repository metadata: true
+ok 210 - period server never serves downloaded data, scripts or repository metadata: true
+  ---
+  duration_ms: 108.0414
+  type: 'test'
+  ...
+# Subtest: period preview and browser suite import graph resolves without external packages
+ok 211 - period preview and browser suite import graph resolves without external packages
+  ---
+  duration_ms: 2797.0409
+  type: 'test'
+  ...
+# Subtest: period test preview has conspicuous synthetic labeling and disallows network connections
+ok 212 - period test preview has conspicuous synthetic labeling and disallows network connections
+  ---
+  duration_ms: 24.9102
+  type: 'test'
+  ...
+# Subtest: main wallet and browser harness include period stylesheet and module integration
+ok 213 - main wallet and browser harness include period stylesheet and module integration
+  ---
+  duration_ms: 53.0355
+  type: 'test'
+  ...
+# Subtest: page/module routes exist and same-origin batch reads return validated data without a generic RPC proxy
+ok 214 - page/module routes exist and same-origin batch reads return validated data without a generic RPC proxy
+  ---
+  duration_ms: 225.9371
+  type: 'test'
+  ...
+# Subtest: wrong origin, cross-site fetch, unknown fields, invalid amounts and oversized bodies cannot reach upstream
+ok 215 - wrong origin, cross-site fetch, unknown fields, invalid amounts and oversized bodies cannot reach upstream
+  ---
+  duration_ms: 122.0822
+  type: 'test'
+  ...
+# Subtest: upstream failure sends only a bounded generic error without partial results or upstream secrets
+ok 216 - upstream failure sends only a bounded generic error without partial results or upstream secrets
+  ---
+  duration_ms: 12.3549
+  type: 'test'
+  ...
+# Subtest: disconnect aborts ongoing upstream and releases batch capacity for the next request
+ok 217 - disconnect aborts ongoing upstream and releases batch capacity for the next request
+  ---
+  duration_ms: 38.968
+  type: 'test'
+  ...
+# Subtest: only three simultaneous batch jobs are admitted; cancelled requests release all slots
+ok 218 - only three simultaneous batch jobs are admitted; cancelled requests release all slots
+  ---
+  duration_ms: 59.4052
+  type: 'test'
+  ...
+# Subtest: missing POST origin, duplicate JSON keys and invalid UTF-8 fail before any upstream read
+ok 219 - missing POST origin, duplicate JSON keys and invalid UTF-8 fail before any upstream read
+  ---
+  duration_ms: 25.7841
+  type: 'test'
+  ...
+# Subtest: reconciliation server serves only explicitly allowed modules false
+ok 220 - reconciliation server serves only explicitly allowed modules false
+  ---
+  duration_ms: 263.6918
+  type: 'test'
+  ...
+# Subtest: reconciliation synthetic fixtures require test flag false
+ok 221 - reconciliation synthetic fixtures require test flag false
+  ---
+  duration_ms: 85.0251
+  type: 'test'
+  ...
+# Subtest: reconciliation server never exposes saved data or mutation endpoints false
+ok 222 - reconciliation server never exposes saved data or mutation endpoints false
+  ---
+  duration_ms: 146.0713
+  type: 'test'
+  ...
+# Subtest: reconciliation server serves only explicitly allowed modules true
+ok 223 - reconciliation server serves only explicitly allowed modules true
+  ---
+  duration_ms: 138.6803
+  type: 'test'
+  ...
+# Subtest: reconciliation synthetic fixtures require test flag true
+ok 224 - reconciliation synthetic fixtures require test flag true
+  ---
+  duration_ms: 65.071
+  type: 'test'
+  ...
+# Subtest: reconciliation server never exposes saved data or mutation endpoints true
+ok 225 - reconciliation server never exposes saved data or mutation endpoints true
+  ---
+  duration_ms: 114.698
+  type: 'test'
+  ...
+# Subtest: reconciliation import graph resolves locally, with no CDN dependency
+ok 226 - reconciliation import graph resolves locally, with no CDN dependency
+  ---
+  duration_ms: 2445.4314
+  type: 'test'
+  ...
+# Subtest: reconciliation preview is labeled synthetic and denies network requests
+ok 227 - reconciliation preview is labeled synthetic and denies network requests
+  ---
+  duration_ms: 30.5692
+  type: 'test'
+  ...
+# Subtest: history modules and CSS are available with safe content types: false
+ok 228 - history modules and CSS are available with safe content types: false
+  ---
+  duration_ms: 289.7471
+  type: 'test'
+  ...
+# Subtest: history synthetic fixtures require UI test mode: false
+ok 229 - history synthetic fixtures require UI test mode: false
+  ---
+  duration_ms: 54.5905
+  type: 'test'
+  ...
+# Subtest: history backups, repository metadata and executable scripts stay private: false
+ok 230 - history backups, repository metadata and executable scripts stay private: false
+  ---
+  duration_ms: 92.5315
+  type: 'test'
+  ...
+# Subtest: history modules and CSS are available with safe content types: true
+ok 231 - history modules and CSS are available with safe content types: true
+  ---
+  duration_ms: 98.6992
+  type: 'test'
+  ...
+# Subtest: history synthetic fixtures require UI test mode: true
+ok 232 - history synthetic fixtures require UI test mode: true
+  ---
+  duration_ms: 27.7017
+  type: 'test'
+  ...
+# Subtest: history backups, repository metadata and executable scripts stay private: true
+ok 233 - history backups, repository metadata and executable scripts stay private: true
+  ---
+  duration_ms: 137.6877
+  type: 'test'
+  ...
+# Subtest: history preview blocks external connections and declares synthetic balances
+ok 234 - history preview blocks external connections and declares synthetic balances
+  ---
+  duration_ms: 24.0382
+  type: 'test'
+  ...
+# Subtest: main wallet mounts and disposes history after the report panel
+ok 235 - main wallet mounts and disposes history after the report panel
+  ---
+  duration_ms: 17.1619
+  type: 'test'
+  ...
+# Subtest: report set: explicit module routes and stylesheet are available false
+ok 236 - report set: explicit module routes and stylesheet are available false
+  ---
+  duration_ms: 223.8879
+  type: 'test'
+  ...
+# Subtest: report set: synthetic fixtures are exposed only in UI-test mode false
+ok 237 - report set: synthetic fixtures are exposed only in UI-test mode false
+  ---
+  duration_ms: 52.089
+  type: 'test'
+  ...
+# Subtest: report set: private source, backups and mutation requests are unavailable false
+ok 238 - report set: private source, backups and mutation requests are unavailable false
+  ---
+  duration_ms: 133.1181
+  type: 'test'
+  ...
+# Subtest: report set: explicit module routes and stylesheet are available true
+ok 239 - report set: explicit module routes and stylesheet are available true
+  ---
+  duration_ms: 85.9007
+  type: 'test'
+  ...
+# Subtest: report set: synthetic fixtures are exposed only in UI-test mode true
+ok 240 - report set: synthetic fixtures are exposed only in UI-test mode true
+  ---
+  duration_ms: 59.4899
+  type: 'test'
+  ...
+# Subtest: report set: private source, backups and mutation requests are unavailable true
+ok 241 - report set: private source, backups and mutation requests are unavailable true
+  ---
+  duration_ms: 124.4957
+  type: 'test'
+  ...
+# Subtest: report set: main wallet mounts and disposes the panel with no synthetic imports
+ok 242 - report set: main wallet mounts and disposes the panel with no synthetic imports
+  ---
+  duration_ms: 34.9019
+  type: 'test'
+  ...
+# Subtest: report set: preview prevents network connections and uses a separate named database
+ok 243 - report set: preview prevents network connections and uses a separate named database
+  ---
+  duration_ms: 31.3486
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: false /src/rpc-capacity.js
+ok 244 - request supervisor asset is served with protections: false /src/rpc-capacity.js
+  ---
+  duration_ms: 105.8588
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: false /src/rpc-supervisor.js
+ok 245 - request supervisor asset is served with protections: false /src/rpc-supervisor.js
+  ---
+  duration_ms: 16.071
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: false /src/rpc-status.js
+ok 246 - request supervisor asset is served with protections: false /src/rpc-status.js
+  ---
+  duration_ms: 9.3842
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: false /src/provider-events.js
+ok 247 - request supervisor asset is served with protections: false /src/provider-events.js
+  ---
+  duration_ms: 11.1966
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: false /src/provider-event-gate.js
+ok 248 - request supervisor asset is served with protections: false /src/provider-event-gate.js
+  ---
+  duration_ms: 13.7349
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: false /examples/rpc-status-panel.js
+ok 249 - request supervisor asset is served with protections: false /examples/rpc-status-panel.js
+  ---
+  duration_ms: 15.8468
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: false /src/state-notifier.js
+ok 250 - request supervisor asset is served with protections: false /src/state-notifier.js
+  ---
+  duration_ms: 8.8994
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: false /src/security-callback.js
+ok 251 - request supervisor asset is served with protections: false /src/security-callback.js
+  ---
+  duration_ms: 8.6441
+  type: 'test'
+  ...
+# Subtest: supervisor assets are denied to foreign fetch contexts: false
+ok 252 - supervisor assets are denied to foreign fetch contexts: false
+  ---
+  duration_ms: 53.9325
+  type: 'test'
+  ...
+# Subtest: request supervision exposes no server-side request, reset or diagnostics API: false
+ok 253 - request supervision exposes no server-side request, reset or diagnostics API: false
+  ---
+  duration_ms: 38.0224
+  type: 'test'
+  ...
+# Subtest: synthetic response-protection tests require explicit test mode: false
+ok 254 - synthetic response-protection tests require explicit test mode: false
+  ---
+  duration_ms: 9.4366
+  type: 'test'
+  ...
+# Subtest: response-protection import graph resolves locally: false
+ok 255 - response-protection import graph resolves locally: false
+  ---
+  duration_ms: 35.0511
+  type: 'test'
+  ...
+# Subtest: normal demo mounts aggregate status and session supervises provider calls: false
+ok 256 - normal demo mounts aggregate status and session supervises provider calls: false
+  ---
+  duration_ms: 11.9164
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: true /src/rpc-capacity.js
+ok 257 - request supervisor asset is served with protections: true /src/rpc-capacity.js
+  ---
+  duration_ms: 21.7522
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: true /src/rpc-supervisor.js
+ok 258 - request supervisor asset is served with protections: true /src/rpc-supervisor.js
+  ---
+  duration_ms: 30.003
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: true /src/rpc-status.js
+ok 259 - request supervisor asset is served with protections: true /src/rpc-status.js
+  ---
+  duration_ms: 13.7988
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: true /src/provider-events.js
+ok 260 - request supervisor asset is served with protections: true /src/provider-events.js
+  ---
+  duration_ms: 15.1551
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: true /src/provider-event-gate.js
+ok 261 - request supervisor asset is served with protections: true /src/provider-event-gate.js
+  ---
+  duration_ms: 12.9461
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: true /examples/rpc-status-panel.js
+ok 262 - request supervisor asset is served with protections: true /examples/rpc-status-panel.js
+  ---
+  duration_ms: 16.4415
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: true /src/state-notifier.js
+ok 263 - request supervisor asset is served with protections: true /src/state-notifier.js
+  ---
+  duration_ms: 44.518
+  type: 'test'
+  ...
+# Subtest: request supervisor asset is served with protections: true /src/security-callback.js
+ok 264 - request supervisor asset is served with protections: true /src/security-callback.js
+  ---
+  duration_ms: 27.7571
+  type: 'test'
+  ...
+# Subtest: supervisor assets are denied to foreign fetch contexts: true
+ok 265 - supervisor assets are denied to foreign fetch contexts: true
+  ---
+  duration_ms: 129.4585
+  type: 'test'
+  ...
+# Subtest: request supervision exposes no server-side request, reset or diagnostics API: true
+ok 266 - request supervision exposes no server-side request, reset or diagnostics API: true
+  ---
+  duration_ms: 58.4135
+  type: 'test'
+  ...
+# Subtest: synthetic response-protection tests require explicit test mode: true
+ok 267 - synthetic response-protection tests require explicit test mode: true
+  ---
+  duration_ms: 31.0815
+  type: 'test'
+  ...
+# Subtest: response-protection import graph resolves locally: true
+ok 268 - response-protection import graph resolves locally: true
+  ---
+  duration_ms: 52.8581
+  type: 'test'
+  ...
+# Subtest: normal demo mounts aggregate status and session supervises provider calls: true
+ok 269 - normal demo mounts aggregate status and session supervises provider calls: true
+  ---
+  duration_ms: 26.5477
+  type: 'test'
+  ...
+# Subtest: ordinary entry point works with strict script CSP, mode=false
+ok 270 - ordinary entry point works with strict script CSP, mode=false
+  ---
+  duration_ms: 256.5443
+  type: 'test'
+  ...
+# Subtest: encrypted backup assets are explicit local uncached modules, mode=false
+ok 271 - encrypted backup assets are explicit local uncached modules, mode=false
+  ---
+  duration_ms: 57.6507
+  type: 'test'
+  ...
+# Subtest: encrypted backup data and key endpoints do not exist, mode=false
+ok 272 - encrypted backup data and key endpoints do not exist, mode=false
+  ---
+  duration_ms: 36.5489
+  type: 'test'
+  ...
+# Subtest: server cannot receive an encrypted backup upload, mode=false
+ok 273 - server cannot receive an encrypted backup upload, mode=false
+  ---
+  duration_ms: 24.0864
+  type: 'test'
+  ...
+# Subtest: foreign origin cannot obtain backup modules, mode=false
+ok 274 - foreign origin cannot obtain backup modules, mode=false
+  ---
+  duration_ms: 8.8806
+  type: 'test'
+  ...
+# Subtest: synthetic encrypted UI test route is opt-in, mode=false
+ok 275 - synthetic encrypted UI test route is opt-in, mode=false
+  ---
+  duration_ms: 12.138
+  type: 'test'
+  ...
+# Subtest: ordinary entry point works with strict script CSP, mode=true
+ok 276 - ordinary entry point works with strict script CSP, mode=true
+  ---
+  duration_ms: 17.0167
+  type: 'test'
+  ...
+# Subtest: encrypted backup assets are explicit local uncached modules, mode=true
+ok 277 - encrypted backup assets are explicit local uncached modules, mode=true
+  ---
+  duration_ms: 86.3871
+  type: 'test'
+  ...
+# Subtest: encrypted backup data and key endpoints do not exist, mode=true
+ok 278 - encrypted backup data and key endpoints do not exist, mode=true
+  ---
+  duration_ms: 49.312
+  type: 'test'
+  ...
+# Subtest: server cannot receive an encrypted backup upload, mode=true
+ok 279 - server cannot receive an encrypted backup upload, mode=true
+  ---
+  duration_ms: 22.0747
+  type: 'test'
+  ...
+# Subtest: foreign origin cannot obtain backup modules, mode=true
+ok 280 - foreign origin cannot obtain backup modules, mode=true
+  ---
+  duration_ms: 6.9847
+  type: 'test'
+  ...
+# Subtest: synthetic encrypted UI test route is opt-in, mode=true
+ok 281 - synthetic encrypted UI test route is opt-in, mode=true
+  ---
+  duration_ms: 22.3991
+  type: 'test'
+  ...
+# Subtest: lifecycle module is available under production CSP: /src/security-callback.js
+ok 282 - lifecycle module is available under production CSP: /src/security-callback.js
+  ---
+  duration_ms: 192.7203
+  type: 'test'
+  ...
+# Subtest: lifecycle module is available under production CSP: /src/security-abort.js
+ok 283 - lifecycle module is available under production CSP: /src/security-abort.js
+  ---
+  duration_ms: 17.5285
+  type: 'test'
+  ...
+# Subtest: lifecycle module is available under production CSP: /src/secure-deadline.js
+ok 284 - lifecycle module is available under production CSP: /src/secure-deadline.js
+  ---
+  duration_ms: 13.4305
+  type: 'test'
+  ...
+# Subtest: lifecycle module is available under production CSP: /src/secure-backup-status.js
+ok 285 - lifecycle module is available under production CSP: /src/secure-backup-status.js
+  ---
+  duration_ms: 9.8827
+  type: 'test'
+  ...
+# Subtest: lifecycle module is available under production CSP: /src/secure-backup-runner.js
+ok 286 - lifecycle module is available under production CSP: /src/secure-backup-runner.js
+  ---
+  duration_ms: 11.7032
+  type: 'test'
+  ...
+# Subtest: lifecycle module is available under production CSP: /src/secure-backup-controller.js
+ok 287 - lifecycle module is available under production CSP: /src/secure-backup-controller.js
+  ---
+  duration_ms: 22.9435
+  type: 'test'
+  ...
+# Subtest: lifecycle module is available under production CSP: /examples/secure-operation-panel.js
+ok 288 - lifecycle module is available under production CSP: /examples/secure-operation-panel.js
+  ---
+  duration_ms: 16.9114
+  type: 'test'
+  ...
+# Subtest: lifecycle module is available under production CSP: /examples/secure-backup-panel.js
+ok 289 - lifecycle module is available under production CSP: /examples/secure-backup-panel.js
+  ---
+  duration_ms: 15.764
+  type: 'test'
+  ...
+# Subtest: lifecycle module is available under production CSP: /examples/workspace-panel.js
+ok 290 - lifecycle module is available under production CSP: /examples/workspace-panel.js
+  ---
+  duration_ms: 18.7199
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/restore-confirmation-ui-tests.js test=false
+ok 291 - synthetic lifecycle fixture route /test/browser/restore-confirmation-ui-tests.js test=false
+  ---
+  duration_ms: 12.5165
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/restore-confirmation-ui-tests.js test=true
+ok 292 - synthetic lifecycle fixture route /test/browser/restore-confirmation-ui-tests.js test=true
+  ---
+  duration_ms: 16.1599
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/history-fixtures.js test=false
+ok 293 - synthetic lifecycle fixture route /test/helpers/history-fixtures.js test=false
+  ---
+  duration_ms: 18.5354
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/history-fixtures.js test=true
+ok 294 - synthetic lifecycle fixture route /test/helpers/history-fixtures.js test=true
+  ---
+  duration_ms: 31.0384
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/storage-receipt-ui-tests.js test=false
+ok 295 - synthetic lifecycle fixture route /test/browser/storage-receipt-ui-tests.js test=false
+  ---
+  duration_ms: 9.7248
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/storage-receipt-ui-tests.js test=true
+ok 296 - synthetic lifecycle fixture route /test/browser/storage-receipt-ui-tests.js test=true
+  ---
+  duration_ms: 10.2204
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/export-receipt-fixtures.js test=false
+ok 297 - synthetic lifecycle fixture route /test/helpers/export-receipt-fixtures.js test=false
+  ---
+  duration_ms: 7.4241
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/export-receipt-fixtures.js test=true
+ok 298 - synthetic lifecycle fixture route /test/helpers/export-receipt-fixtures.js test=true
+  ---
+  duration_ms: 15.7823
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/encrypted-library-fixtures.js test=false
+ok 299 - synthetic lifecycle fixture route /test/helpers/encrypted-library-fixtures.js test=false
+  ---
+  duration_ms: 9.6645
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/encrypted-library-fixtures.js test=true
+ok 300 - synthetic lifecycle fixture route /test/helpers/encrypted-library-fixtures.js test=true
+  ---
+  duration_ms: 9.024
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/checkpoint-fixtures.js test=false
+ok 301 - synthetic lifecycle fixture route /test/helpers/checkpoint-fixtures.js test=false
+  ---
+  duration_ms: 6.1812
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/checkpoint-fixtures.js test=true
+ok 302 - synthetic lifecycle fixture route /test/helpers/checkpoint-fixtures.js test=true
+  ---
+  duration_ms: 13.0131
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/workspace-fixtures.js test=false
+ok 303 - synthetic lifecycle fixture route /test/helpers/workspace-fixtures.js test=false
+  ---
+  duration_ms: 10.6402
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/workspace-fixtures.js test=true
+ok 304 - synthetic lifecycle fixture route /test/helpers/workspace-fixtures.js test=true
+  ---
+  duration_ms: 10.9537
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/adapter-boundary-ui-tests.js test=false
+ok 305 - synthetic lifecycle fixture route /test/browser/adapter-boundary-ui-tests.js test=false
+  ---
+  duration_ms: 14.4213
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/adapter-boundary-ui-tests.js test=true
+ok 306 - synthetic lifecycle fixture route /test/browser/adapter-boundary-ui-tests.js test=true
+  ---
+  duration_ms: 72.4294
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-fixture.js test=false
+ok 307 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-fixture.js test=false
+  ---
+  duration_ms: 10.1242
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-fixture.js test=true
+ok 308 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-fixture.js test=true
+  ---
+  duration_ms: 42.7745
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-ui-tests.js test=false
+ok 309 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-ui-tests.js test=false
+  ---
+  duration_ms: 39.863
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-ui-tests.js test=true
+ok 310 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-ui-tests.js test=true
+  ---
+  duration_ms: 14.9085
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/secure-lifecycle-time.js test=false
+ok 311 - synthetic lifecycle fixture route /test/helpers/secure-lifecycle-time.js test=false
+  ---
+  duration_ms: 14.9472
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/helpers/secure-lifecycle-time.js test=true
+ok 312 - synthetic lifecycle fixture route /test/helpers/secure-lifecycle-time.js test=true
+  ---
+  duration_ms: 16.257
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo/ test=false
+ok 313 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo/ test=false
+  ---
+  duration_ms: 11.7004
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo/ test=true
+ok 314 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo/ test=true
+  ---
+  duration_ms: 10.8282
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo.js test=false
+ok 315 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo.js test=false
+  ---
+  duration_ms: 11.7902
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo.js test=true
+ok 316 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo.js test=true
+  ---
+  duration_ms: 10.9136
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo.css test=false
+ok 317 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo.css test=false
+  ---
+  duration_ms: 7.2669
+  type: 'test'
+  ...
+# Subtest: synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo.css test=true
+ok 318 - synthetic lifecycle fixture route /test/browser/secure-lifecycle-demo.css test=true
+  ---
+  duration_ms: 14.6923
+  type: 'test'
+  ...
+# Subtest: new lifecycle routes reject foreign request context {"Origin":"https://foreign.invalid"}
+ok 319 - new lifecycle routes reject foreign request context {"Origin":"https://foreign.invalid"}
+  ---
+  duration_ms: 30.0675
+  type: 'test'
+  ...
+# Subtest: new lifecycle routes reject foreign request context {"Host":"127.0.0.1.attacker.invalid"}
+ok 320 - new lifecycle routes reject foreign request context {"Host":"127.0.0.1.attacker.invalid"}
+  ---
+  duration_ms: 33.4322
+  type: 'test'
+  ...
+# Subtest: new lifecycle routes reject foreign request context {"Sec-Fetch-Site":"cross-site"}
+ok 321 - new lifecycle routes reject foreign request context {"Sec-Fetch-Site":"cross-site"}
+  ---
+  duration_ms: 30.9391
+  type: 'test'
+  ...
+# Subtest: new lifecycle routes reject foreign request context {"Sec-Fetch-Dest":"iframe"}
+ok 322 - new lifecycle routes reject foreign request context {"Sec-Fetch-Dest":"iframe"}
+  ---
+  duration_ms: 25.8017
+  type: 'test'
+  ...
+# Subtest: new lifecycle routes reject foreign request context {"Origin":"null"}
+ok 323 - new lifecycle routes reject foreign request context {"Origin":"null"}
+  ---
+  duration_ms: 33.5128
+  type: 'test'
+  ...
+# Subtest: lifecycle routes accept no write method: /src/secure-deadline.js
+ok 324 - lifecycle routes accept no write method: /src/secure-deadline.js
+  ---
+  duration_ms: 16.4216
+  type: 'test'
+  ...
+# Subtest: lifecycle routes accept no write method: /examples/secure-operation-panel.js
+ok 325 - lifecycle routes accept no write method: /examples/secure-operation-panel.js
+  ---
+  duration_ms: 12.9075
+  type: 'test'
+  ...
+# Subtest: all transitive relative imports of the backup UI remain available
+ok 326 - all transitive relative imports of the backup UI remain available
+  ---
+  duration_ms: 191.7521
+  type: 'test'
+  ...
+# Subtest: lifecycle additions do not expose evidence or repository files
+ok 327 - lifecycle additions do not expose evidence or repository files
+  ---
+  duration_ms: 11.8072
+  type: 'test'
+  ...
+# Subtest: security headers cover successful files, missing paths and denied requests: false
+ok 328 - security headers cover successful files, missing paths and denied requests: false
+  ---
+  duration_ms: 143.3759
+  type: 'test'
+  ...
+# Subtest: security headers cover successful files, missing paths and denied requests: true
+ok 329 - security headers cover successful files, missing paths and denied requests: true
+  ---
+  duration_ms: 33.5354
+  type: 'test'
+  ...
+# Subtest: canonical loopback authority and exact same-origin reads remain available
+ok 330 - canonical loopback authority and exact same-origin reads remain available
+  ---
+  duration_ms: 36.294
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: attacker.invalid
+ok 331 - Host validation rejects DNS rebinding authority: attacker.invalid
+  ---
+  duration_ms: 7.1592
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 127.0.0.1.attacker.invalid
+ok 332 - Host validation rejects DNS rebinding authority: 127.0.0.1.attacker.invalid
+  ---
+  duration_ms: 13.3204
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: localhost.attacker.invalid
+ok 333 - Host validation rejects DNS rebinding authority: localhost.attacker.invalid
+  ---
+  duration_ms: 9.2435
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 0.0.0.0
+ok 334 - Host validation rejects DNS rebinding authority: 0.0.0.0
+  ---
+  duration_ms: 11.2091
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 127.1
+ok 335 - Host validation rejects DNS rebinding authority: 127.1
+  ---
+  duration_ms: 10.9061
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 2130706433
+ok 336 - Host validation rejects DNS rebinding authority: 2130706433
+  ---
+  duration_ms: 9.7135
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: [::ffff:127.0.0.1]
+ok 337 - Host validation rejects DNS rebinding authority: [::ffff:127.0.0.1]
+  ---
+  duration_ms: 9.4722
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: 127.0.0.1:1
+ok 338 - Host validation rejects DNS rebinding authority: 127.0.0.1:1
+  ---
+  duration_ms: 13.9765
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: localhost.
+ok 339 - Host validation rejects DNS rebinding authority: localhost.
+  ---
+  duration_ms: 9.0342
+  type: 'test'
+  ...
+# Subtest: Host validation rejects DNS rebinding authority: user@127.0.0.1
+ok 340 - Host validation rejects DNS rebinding authority: user@127.0.0.1
+  ---
+  duration_ms: 7.5887
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: null
+ok 341 - foreign Origin is refused even with a valid Host: null
+  ---
+  duration_ms: 11.0191
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: https://attacker.invalid
+ok 342 - foreign Origin is refused even with a valid Host: https://attacker.invalid
+  ---
+  duration_ms: 8.2728
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: http://localhost:1
+ok 343 - foreign Origin is refused even with a valid Host: http://localhost:1
+  ---
+  duration_ms: 8.3596
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: file://
+ok 344 - foreign Origin is refused even with a valid Host: file://
+  ---
+  duration_ms: 12.7444
+  type: 'test'
+  ...
+# Subtest: foreign Origin is refused even with a valid Host: chrome-extension://fake
+ok 345 - foreign Origin is refused even with a valid Host: chrome-extension://fake
+  ---
+  duration_ms: 9.4645
+  type: 'test'
+  ...
+# Subtest: Fetch Metadata refuses non-origin browser request: cross-site
+ok 346 - Fetch Metadata refuses non-origin browser request: cross-site
+  ---
+  duration_ms: 8.8233
+  type: 'test'
+  ...
+# Subtest: Fetch Metadata refuses non-origin browser request: same-site
+ok 347 - Fetch Metadata refuses non-origin browser request: same-site
+  ---
+  duration_ms: 6.7867
+  type: 'test'
+  ...
+# Subtest: Fetch Metadata refuses non-origin browser request: bogus
+ok 348 - Fetch Metadata refuses non-origin browser request: bogus
+  ---
+  duration_ms: 11.3399
+  type: 'test'
+  ...
+# Subtest: local wallet cannot be embedded as iframe
+ok 349 - local wallet cannot be embedded as iframe
+  ---
+  duration_ms: 16.7368
+  type: 'test'
+  ...
+# Subtest: local wallet cannot be embedded as frame
+ok 350 - local wallet cannot be embedded as frame
+  ---
+  duration_ms: 19.09
+  type: 'test'
+  ...
+# Subtest: local wallet cannot be embedded as object
+ok 351 - local wallet cannot be embedded as object
+  ---
+  duration_ms: 9.7077
+  type: 'test'
+  ...
+# Subtest: local wallet cannot be embedded as embed
+ok 352 - local wallet cannot be embedded as embed
+  ---
+  duration_ms: 9.3582
+  type: 'test'
+  ...
+# Subtest: Origin comparison includes the port and host spelling
+ok 353 - Origin comparison includes the port and host spelling
+  ---
+  duration_ms: 16.0164
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: http://attacker.invalid/
+ok 354 - ambiguous HTTP target is refused without crashing server: http://attacker.invalid/
+  ---
+  duration_ms: 10.2407
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: //attacker.invalid/
+ok 355 - ambiguous HTTP target is refused without crashing server: //attacker.invalid/
+  ---
+  duration_ms: 15.9584
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: /%
+ok 356 - ambiguous HTTP target is refused without crashing server: /%
+  ---
+  duration_ms: 7.9641
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: /%zz
+ok 357 - ambiguous HTTP target is refused without crashing server: /%zz
+  ---
+  duration_ms: 8.4006
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: /\#fragment
+ok 358 - ambiguous HTTP target is refused without crashing server: /\#fragment
+  ---
+  duration_ms: 7.8688
+  type: 'test'
+  ...
+# Subtest: ambiguous HTTP target is refused without crashing server: /\\attacker.invalid/
+ok 359 - ambiguous HTTP target is refused without crashing server: /\\attacker.invalid/
+  ---
+  duration_ms: 10.0265
+  type: 'test'
+  ...
+# Subtest: request target length is bounded independently of body or query content
+ok 360 - request target length is bounded independently of body or query content
+  ---
+  duration_ms: 9.5671
+  type: 'test'
+  ...
+# Subtest: forwarded headers cannot override the local Host requirement
+ok 361 - forwarded headers cannot override the local Host requirement
+  ---
+  duration_ms: 6.9527
+  type: 'test'
+  ...
+# Subtest: server rejects write methods and never provides an upload endpoint
+ok 362 - server rejects write methods and never provides an upload endpoint
+  ---
+  duration_ms: 20.9877
+  type: 'test'
+  ...
+# Subtest: source allowlist excludes private files, policies and backup artifacts
+ok 363 - source allowlist excludes private files, policies and backup artifacts
+  ---
+  duration_ms: 18.1382
+  type: 'test'
+  ...
+# Subtest: all new production security modules are explicitly available
+ok 364 - all new production security modules are explicitly available
+  ---
+  duration_ms: 26.6789
+  type: 'test'
+  ...
+# Subtest: CSP excludes executable inline code, eval, external connections and embedding
+ok 365 - CSP excludes executable inline code, eval, external connections and embedding
+  ---
+  duration_ms: 2.5277
+  type: 'test'
+  ...
+# Subtest: inspection is read-only and returns no reflected private request text
+ok 366 - inspection is read-only and returns no reflected private request text
+  ---
+  duration_ms: 0.6029
+  type: 'test'
+  ...
+# Subtest: storage guard runtime retains HTTP security headers: /src/storage-guard-policy.js
+ok 367 - storage guard runtime retains HTTP security headers: /src/storage-guard-policy.js
+  ---
+  duration_ms: 86.0718
+  type: 'test'
+  ...
+# Subtest: storage guard runtime retains HTTP security headers: /src/storage-guard.js
+ok 368 - storage guard runtime retains HTTP security headers: /src/storage-guard.js
+  ---
+  duration_ms: 15.7433
+  type: 'test'
+  ...
+# Subtest: storage guard runtime retains HTTP security headers: /src/storage-guard-status.js
+ok 369 - storage guard runtime retains HTTP security headers: /src/storage-guard-status.js
+  ---
+  duration_ms: 12.7249
+  type: 'test'
+  ...
+# Subtest: storage guard runtime retains HTTP security headers: /examples/storage-guard-panel.js
+ok 370 - storage guard runtime retains HTTP security headers: /examples/storage-guard-panel.js
+  ---
+  duration_ms: 13.8774
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-fixture.js only under ui-test=false
+ok 371 - storage guard fixture route /test/browser/storage-guard-fixture.js only under ui-test=false
+  ---
+  duration_ms: 17.2673
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-fixture.js only under ui-test=true
+ok 372 - storage guard fixture route /test/browser/storage-guard-fixture.js only under ui-test=true
+  ---
+  duration_ms: 16.2699
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-ui-tests.js only under ui-test=false
+ok 373 - storage guard fixture route /test/browser/storage-guard-ui-tests.js only under ui-test=false
+  ---
+  duration_ms: 9.5155
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-ui-tests.js only under ui-test=true
+ok 374 - storage guard fixture route /test/browser/storage-guard-ui-tests.js only under ui-test=true
+  ---
+  duration_ms: 13.4632
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-demo/ only under ui-test=false
+ok 375 - storage guard fixture route /test/browser/storage-guard-demo/ only under ui-test=false
+  ---
+  duration_ms: 14.0417
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-demo/ only under ui-test=true
+ok 376 - storage guard fixture route /test/browser/storage-guard-demo/ only under ui-test=true
+  ---
+  duration_ms: 11.9696
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-demo.js only under ui-test=false
+ok 377 - storage guard fixture route /test/browser/storage-guard-demo.js only under ui-test=false
+  ---
+  duration_ms: 7.0989
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-demo.js only under ui-test=true
+ok 378 - storage guard fixture route /test/browser/storage-guard-demo.js only under ui-test=true
+  ---
+  duration_ms: 13.4592
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-demo.css only under ui-test=false
+ok 379 - storage guard fixture route /test/browser/storage-guard-demo.css only under ui-test=false
+  ---
+  duration_ms: 6.1925
+  type: 'test'
+  ...
+# Subtest: storage guard fixture route /test/browser/storage-guard-demo.css only under ui-test=true
+ok 380 - storage guard fixture route /test/browser/storage-guard-demo.css only under ui-test=true
+  ---
+  duration_ms: 8.1126
+  type: 'test'
+  ...
+# Subtest: storage guard routes refuse foreign browser context {"Origin":"https://foreign.invalid"}
+ok 381 - storage guard routes refuse foreign browser context {"Origin":"https://foreign.invalid"}
+  ---
+  duration_ms: 22.6201
+  type: 'test'
+  ...
+# Subtest: storage guard routes refuse foreign browser context {"Origin":"null"}
+ok 382 - storage guard routes refuse foreign browser context {"Origin":"null"}
+  ---
+  duration_ms: 19.4712
+  type: 'test'
+  ...
+# Subtest: storage guard routes refuse foreign browser context {"Host":"127.0.0.1.foreign.invalid"}
+ok 383 - storage guard routes refuse foreign browser context {"Host":"127.0.0.1.foreign.invalid"}
+  ---
+  duration_ms: 17.4191
+  type: 'test'
+  ...
+# Subtest: storage guard routes refuse foreign browser context {"Sec-Fetch-Site":"cross-site"}
+ok 384 - storage guard routes refuse foreign browser context {"Sec-Fetch-Site":"cross-site"}
+  ---
+  duration_ms: 27.6975
+  type: 'test'
+  ...
+# Subtest: storage guard routes refuse foreign browser context {"Sec-Fetch-Dest":"iframe"}
+ok 385 - storage guard routes refuse foreign browser context {"Sec-Fetch-Dest":"iframe"}
+  ---
+  duration_ms: 19.4075
+  type: 'test'
+  ...
+# Subtest: storage guard adds no HTTP mutation endpoint: POST
+ok 386 - storage guard adds no HTTP mutation endpoint: POST
+  ---
+  duration_ms: 22.2221
+  type: 'test'
+  ...
+# Subtest: storage guard adds no HTTP mutation endpoint: PUT
+ok 387 - storage guard adds no HTTP mutation endpoint: PUT
+  ---
+  duration_ms: 22.6496
+  type: 'test'
+  ...
+# Subtest: storage guard adds no HTTP mutation endpoint: PATCH
+ok 388 - storage guard adds no HTTP mutation endpoint: PATCH
+  ---
+  duration_ms: 21.921
+  type: 'test'
+  ...
+# Subtest: storage guard adds no HTTP mutation endpoint: DELETE
+ok 389 - storage guard adds no HTTP mutation endpoint: DELETE
+  ---
+  duration_ms: 30.3022
+  type: 'test'
+  ...
+# Subtest: storage guard native browser fixture import graph is complete and same-origin
+ok 390 - storage guard native browser fixture import graph is complete and same-origin
+  ---
+  duration_ms: 236.8668
+  type: 'test'
+  ...
+# Subtest: storage preview controls and entry module are protected without inline executable code
+ok 391 - storage preview controls and entry module are protected without inline executable code
+  ---
+  duration_ms: 11.2665
+  type: 'test'
+  ...
+# Subtest: test fixture owns a fresh database and never enumerates existing saved information
+ok 392 - test fixture owns a fresh database and never enumerates existing saved information
+  ---
+  duration_ms: 13.7697
+  type: 'test'
+  ...
+# Subtest: storage security additions do not expose local data: /storage.json
+ok 393 - storage security additions do not expose local data: /storage.json
+  ---
+  duration_ms: 7.6427
+  type: 'test'
+  ...
+# Subtest: storage security additions do not expose local data: /storage-guard-state.json
+ok 394 - storage security additions do not expose local data: /storage-guard-state.json
+  ---
+  duration_ms: 8.7639
+  type: 'test'
+  ...
+# Subtest: storage security additions do not expose local data: /.git/config
+ok 395 - storage security additions do not expose local data: /.git/config
+  ---
+  duration_ms: 7.0086
+  type: 'test'
+  ...
+# Subtest: storage security additions do not expose local data: /src/../package.json
+ok 396 - storage security additions do not expose local data: /src/../package.json
+  ---
+  duration_ms: 7.4552
+  type: 'test'
+  ...
+# Subtest: storage security additions do not expose local data: /test/storage-deadline.test.js
+ok 397 - storage security additions do not expose local data: /test/storage-deadline.test.js
+  ---
+  duration_ms: 8.8254
+  type: 'test'
+  ...
+# Subtest: storage security additions do not expose local data: /test/helpers/storage-guard-fixtures.js
+ok 398 - storage security additions do not expose local data: /test/helpers/storage-guard-fixtures.js
+  ---
+  duration_ms: 13.2915
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: false /src/tab-guard-protocol.js
+ok 399 - tab guard asset keeps server protections: false /src/tab-guard-protocol.js
+  ---
+  duration_ms: 114.1635
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: false /src/tab-guard-controller.js
+ok 400 - tab guard asset keeps server protections: false /src/tab-guard-controller.js
+  ---
+  duration_ms: 14.0518
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: false /src/tab-guard-transport.js
+ok 401 - tab guard asset keeps server protections: false /src/tab-guard-transport.js
+  ---
+  duration_ms: 17.8287
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: false /src/protection-batch.js
+ok 402 - tab guard asset keeps server protections: false /src/protection-batch.js
+  ---
+  duration_ms: 14.6279
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: false /examples/tab-guard-panel.js
+ok 403 - tab guard asset keeps server protections: false /examples/tab-guard-panel.js
+  ---
+  duration_ms: 13.8936
+  type: 'test'
+  ...
+# Subtest: tab guard has no public send or resume endpoint: false
+ok 404 - tab guard has no public send or resume endpoint: false
+  ---
+  duration_ms: 53.2172
+  type: 'test'
+  ...
+# Subtest: tab guard modules reject foreign fetch contexts: false
+ok 405 - tab guard modules reject foreign fetch contexts: false
+  ---
+  duration_ms: 71.2415
+  type: 'test'
+  ...
+# Subtest: native tab guard test module is available only in explicit test mode: false
+ok 406 - native tab guard test module is available only in explicit test mode: false
+  ---
+  duration_ms: 11.676
+  type: 'test'
+  ...
+# Subtest: protection imports resolve without external services: false
+ok 407 - protection imports resolve without external services: false
+  ---
+  duration_ms: 42.6198
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: true /src/tab-guard-protocol.js
+ok 408 - tab guard asset keeps server protections: true /src/tab-guard-protocol.js
+  ---
+  duration_ms: 13.4411
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: true /src/tab-guard-controller.js
+ok 409 - tab guard asset keeps server protections: true /src/tab-guard-controller.js
+  ---
+  duration_ms: 12.181
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: true /src/tab-guard-transport.js
+ok 410 - tab guard asset keeps server protections: true /src/tab-guard-transport.js
+  ---
+  duration_ms: 7.5129
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: true /src/protection-batch.js
+ok 411 - tab guard asset keeps server protections: true /src/protection-batch.js
+  ---
+  duration_ms: 11.7249
+  type: 'test'
+  ...
+# Subtest: tab guard asset keeps server protections: true /examples/tab-guard-panel.js
+ok 412 - tab guard asset keeps server protections: true /examples/tab-guard-panel.js
+  ---
+  duration_ms: 11.1971
+  type: 'test'
+  ...
+# Subtest: tab guard has no public send or resume endpoint: true
+ok 413 - tab guard has no public send or resume endpoint: true
+  ---
+  duration_ms: 39.0052
+  type: 'test'
+  ...
+# Subtest: tab guard modules reject foreign fetch contexts: true
+ok 414 - tab guard modules reject foreign fetch contexts: true
+  ---
+  duration_ms: 34.4192
+  type: 'test'
+  ...
+# Subtest: native tab guard test module is available only in explicit test mode: true
+ok 415 - native tab guard test module is available only in explicit test mode: true
+  ---
+  duration_ms: 17.6891
+  type: 'test'
+  ...
+# Subtest: protection imports resolve without external services: true
+ok 416 - protection imports resolve without external services: true
+  ---
+  duration_ms: 38.4848
+  type: 'test'
+  ...
+# Subtest: normal demo imports the all-cleanups runner used by the stop handler
+ok 417 - normal demo imports the all-cleanups runner used by the stop handler
+  ---
+  duration_ms: 26.7284
+  type: 'test'
+  ...
+# Subtest: identity modules are available with correct media and no caching: false
+ok 418 - identity modules are available with correct media and no caching: false
+  ---
+  duration_ms: 267.3728
+  type: 'test'
+  ...
+# Subtest: identity synthetic routes require test mode: false
+ok 419 - identity synthetic routes require test mode: false
+  ---
+  duration_ms: 75.2965
+  type: 'test'
+  ...
+# Subtest: identity server does not expose local test inputs or CLI sources: false
+ok 420 - identity server does not expose local test inputs or CLI sources: false
+  ---
+  duration_ms: 113.2283
+  type: 'test'
+  ...
+# Subtest: identity server serves shared fictional observation fixtures only in explicit UI-test mode: false
+ok 421 - identity server serves shared fictional observation fixtures only in explicit UI-test mode: false
+  ---
+  duration_ms: 23.3546
+  type: 'test'
+  ...
+# Subtest: identity modules are available with correct media and no caching: true
+ok 422 - identity modules are available with correct media and no caching: true
+  ---
+  duration_ms: 95.7587
+  type: 'test'
+  ...
+# Subtest: identity synthetic routes require test mode: true
+ok 423 - identity synthetic routes require test mode: true
+  ---
+  duration_ms: 83.5913
+  type: 'test'
+  ...
+# Subtest: identity server does not expose local test inputs or CLI sources: true
+ok 424 - identity server does not expose local test inputs or CLI sources: true
+  ---
+  duration_ms: 158.2648
+  type: 'test'
+  ...
+# Subtest: identity server serves shared fictional observation fixtures only in explicit UI-test mode: true
+ok 425 - identity server serves shared fictional observation fixtures only in explicit UI-test mode: true
+  ---
+  duration_ms: 21.0582
+  type: 'test'
+  ...
+# Subtest: browser-facing identity modules have resolvable relative imports
+ok 426 - browser-facing identity modules have resolvable relative imports
+  ---
+  duration_ms: 666.1563
+  type: 'test'
+  ...
+# Subtest: transfer server: module routes are explicit and uncached false
+ok 427 - transfer server: module routes are explicit and uncached false
+  ---
+  duration_ms: 330.1253
+  type: 'test'
+  ...
+# Subtest: transfer server: synthetic fixtures are test-mode-only false
+ok 428 - transfer server: synthetic fixtures are test-mode-only false
+  ---
+  duration_ms: 56.7713
+  type: 'test'
+  ...
+# Subtest: transfer server: no local source directory or mutation API exposed false
+ok 429 - transfer server: no local source directory or mutation API exposed false
+  ---
+  duration_ms: 121.7385
+  type: 'test'
+  ...
+# Subtest: transfer server: module routes are explicit and uncached true
+ok 430 - transfer server: module routes are explicit and uncached true
+  ---
+  duration_ms: 181.8674
+  type: 'test'
+  ...
+# Subtest: transfer server: synthetic fixtures are test-mode-only true
+ok 431 - transfer server: synthetic fixtures are test-mode-only true
+  ---
+  duration_ms: 112.0255
+  type: 'test'
+  ...
+# Subtest: transfer server: no local source directory or mutation API exposed true
+ok 432 - transfer server: no local source directory or mutation API exposed true
+  ---
+  duration_ms: 222.7953
+  type: 'test'
+  ...
+# Subtest: transfer server: complete import graph resolves on localhost
+ok 433 - transfer server: complete import graph resolves on localhost
+  ---
+  duration_ms: 2510.2027
+  type: 'test'
+  ...
+# Subtest: transfer server: main demo includes real panel but no synthetic data script
+ok 434 - transfer server: main demo includes real panel but no synthetic data script
+  ---
+  duration_ms: 11.4265
+  type: 'test'
+  ...
+# Subtest: transfer server: fixture page prohibits external network connections
+ok 435 - transfer server: fixture page prohibits external network connections
+  ---
+  duration_ms: 19.8673
+  type: 'test'
+  ...
+# Subtest: vault server: explicit modules are uncached false
+ok 436 - vault server: explicit modules are uncached false
+  ---
+  duration_ms: 227.1222
+  type: 'test'
+  ...
+# Subtest: vault server: synthetic routes require test mode false
+ok 437 - vault server: synthetic routes require test mode false
+  ---
+  duration_ms: 67.389
+  type: 'test'
+  ...
+# Subtest: vault server: no saved records, file upload or database API is exposed false
+ok 438 - vault server: no saved records, file upload or database API is exposed false
+  ---
+  duration_ms: 97.6421
+  type: 'test'
+  ...
+# Subtest: vault server: explicit modules are uncached true
+ok 439 - vault server: explicit modules are uncached true
+  ---
+  duration_ms: 104.2581
+  type: 'test'
+  ...
+# Subtest: vault server: synthetic routes require test mode true
+ok 440 - vault server: synthetic routes require test mode true
+  ---
+  duration_ms: 40.7509
+  type: 'test'
+  ...
+# Subtest: vault server: no saved records, file upload or database API is exposed true
+ok 441 - vault server: no saved records, file upload or database API is exposed true
+  ---
+  duration_ms: 106.8321
+  type: 'test'
+  ...
+# Subtest: vault server: complete imports stay local and resolve
+ok 442 - vault server: complete imports stay local and resolve
+  ---
+  duration_ms: 2476.9273
+  type: 'test'
+  ...
+# Subtest: vault server: preview forbids network and uses a separate storage namespace
+ok 443 - vault server: preview forbids network and uses a separate storage namespace
+  ---
+  duration_ms: 19.7243
+  type: 'test'
+  ...
+# Subtest: workspace modules and transitive imports are available locally: uiTest=false
+ok 444 - workspace modules and transitive imports are available locally: uiTest=false
+  ---
+  duration_ms: 458.0382
+  type: 'test'
+  ...
+# Subtest: workspace backup and recovery data are not served or accepted as uploads: uiTest=false
+ok 445 - workspace backup and recovery data are not served or accepted as uploads: uiTest=false
+  ---
+  duration_ms: 157.5618
+  type: 'test'
+  ...
+# Subtest: workspace modules and transitive imports are available locally: uiTest=true
+ok 446 - workspace modules and transitive imports are available locally: uiTest=true
+  ---
+  duration_ms: 399.8792
+  type: 'test'
+  ...
+# Subtest: workspace backup and recovery data are not served or accepted as uploads: uiTest=true
+ok 447 - workspace backup and recovery data are not served or accepted as uploads: uiTest=true
+  ---
+  duration_ms: 108.5048
+  type: 'test'
+  ...
+# Subtest: CLI preserves its source and separates sufficient, unknown/short and invalid input
+ok 448 - CLI preserves its source and separates sufficient, unknown/short and invalid input
+  ---
+  duration_ms: 53.9546
+  type: 'test'
+  ...
+# Subtest: CLI rejects malformed bytes and file limits without exposing file contents
+ok 449 - CLI rejects malformed bytes and file limits without exposing file contents
+  ---
+  duration_ms: 19.9934
+  type: 'test'
+  ...
+# Subtest: offline proof inspection keeps original bytes, reports discrepancies and rejects malformed input
+ok 450 - offline proof inspection keeps original bytes, reports discrepancies and rejects malformed input
+  ---
+  duration_ms: 91.3793
+  type: 'test'
+  ...
+# Subtest: selected original files are reviewed before hashing and preserve exact bytes through saved evidence
+ok 451 - selected original files are reviewed before hashing and preserve exact bytes through saved evidence
+  ---
+  duration_ms: 117.2867
+  type: 'test'
+  ...
+# Subtest: checksum failure clears old results and mismatched balances remain a visible non-pass
+ok 452 - checksum failure clears old results and mismatched balances remain a visible non-pass
+  ---
+  duration_ms: 33.9821
+  type: 'test'
+  ...
+# Subtest: cancel revokes pending checksum work and discards late completion
+ok 453 - cancel revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 40.1094
+  type: 'test'
+  ...
+# Subtest: new-file revokes pending checksum work and discards late completion
+ok 454 - new-file revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 7.2187
+  type: 'test'
+  ...
+# Subtest: pagehide revokes pending checksum work and discards late completion
+ok 455 - pagehide revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 11.8205
+  type: 'test'
+  ...
+# Subtest: dispose revokes pending checksum work and discards late completion
+ok 456 - dispose revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 10.6825
+  type: 'test'
+  ...
+# Subtest: cancelled file read cannot later offer its old review
+ok 457 - cancelled file read cannot later offer its old review
+  ---
+  duration_ms: 7.2253
+  type: 'test'
+  ...
+# Subtest: excess file count, duplicate budget files and malformed bytes are rejected
+ok 458 - excess file count, duplicate budget files and malformed bytes are rejected
+  ---
+  duration_ms: 5.8485
+  type: 'test'
+  ...
+# Subtest: reentrant export does not report a saved revoked result
+ok 459 - reentrant export does not report a saved revoked result
+  ---
+  duration_ms: 37.068
+  type: 'test'
+  ...
+# Subtest: public RPC batch is labelled separately from a connected-wallet observation
+ok 460 - public RPC batch is labelled separately from a connected-wallet observation
+  ---
+  duration_ms: 14.8227
+  type: 'test'
+  ...
+# Subtest: matching historical records bind original bytes and amounts without claiming current or authenticated balances
+ok 461 - matching historical records bind original bytes and amounts without claiming current or authenticated balances
+  ---
+  duration_ms: 79.9202
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_ACCOUNT_MISMATCH context differences
+ok 462 - shared records reject SOURCE_ACCOUNT_MISMATCH context differences
+  ---
+  duration_ms: 24.0024
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_BLOCK_MISMATCH context differences
+ok 463 - shared records reject SOURCE_BLOCK_MISMATCH context differences
+  ---
+  duration_ms: 31.5674
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_BLOCK_MISMATCH context differences
+ok 464 - shared records reject SOURCE_BLOCK_MISMATCH context differences
+  ---
+  duration_ms: 27.1053
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_ETH_MISMATCH context differences
+ok 465 - shared records reject SOURCE_ETH_MISMATCH context differences
+  ---
+  duration_ms: 13.2605
+  type: 'test'
+  ...
+# Subtest: individual budget balance, decimals and network discrepancies are kept distinct
+ok 466 - individual budget balance, decimals and network discrepancies are kept distinct
+  ---
+  duration_ms: 25.3043
+  type: 'test'
+  ...
+# Subtest: sources from different supported networks cannot form a shared-account observation
+ok 467 - sources from different supported networks cannot form a shared-account observation
+  ---
+  duration_ms: 13.9474
+  type: 'test'
+  ...
+# Subtest: matching zero balance and insufficient budget are different conclusions
+ok 468 - matching zero balance and insufficient budget are different conclusions
+  ---
+  duration_ms: 5.726
+  type: 'test'
+  ...
+# Subtest: missing, extra and duplicate token sources do not produce an accepted shared proof
+ok 469 - missing, extra and duplicate token sources do not produce an accepted shared proof
+  ---
+  duration_ms: 18.6303
+  type: 'test'
+  ...
+# Subtest: missing code or mismatched token metadata cannot be treated as a verified budget balance
+ok 470 - missing code or mismatched token metadata cannot be treated as a verified budget balance
+  ---
+  duration_ms: 25.9735
+  type: 'test'
+  ...
+# Subtest: changed source bytes fail checksum while rechecksummed statements remain unauthenticated
+ok 471 - changed source bytes fail checksum while rechecksummed statements remain unauthenticated
+  ---
+  duration_ms: 17.5869
+  type: 'test'
+  ...
+# Subtest: bounded strict data capture prevents getters and protects asynchronous input comparison
+ok 472 - bounded strict data capture prevents getters and protects asynchronous input comparison
+  ---
+  duration_ms: 11.0688
+  type: 'test'
+  ...
+# Subtest: aborted hashing cannot finish a source-linked result
+ok 473 - aborted hashing cannot finish a source-linked result
+  ---
+  duration_ms: 5.1536
+  type: 'test'
+  ...
+# Subtest: page distinguishes an unknown fee from an explicitly entered zero and invalidates old results
+ok 474 - page distinguishes an unknown fee from an explicitly entered zero and invalidates old results
+  ---
+  duration_ms: 19.7087
+  type: 'test'
+  ...
+# Subtest: page rejects excess precision and blank required fields without retaining an old pass
+ok 475 - page rejects excess precision and blank required fields without retaining an old pass
+  ---
+  duration_ms: 4.6974
+  type: 'test'
+  ...
+# Subtest: saved inputs round-trip and unnoticed programmatic edits cannot export stale results
+ok 476 - saved inputs round-trip and unnoticed programmatic edits cannot export stale results
+  ---
+  duration_ms: 5.8234
+  type: 'test'
+  ...
+# Subtest: file preview preserves current input until explicit restore and then recalculates
+ok 477 - file preview preserves current input until explicit restore and then recalculates
+  ---
+  duration_ms: 29.8168
+  type: 'test'
+  ...
+# Subtest: edit prevents late file completion replacing the current review
+ok 478 - edit prevents late file completion replacing the current review
+  ---
+  duration_ms: 6.0181
+  type: 'test'
+  ...
+# Subtest: cancel prevents late file completion replacing the current review
+ok 479 - cancel prevents late file completion replacing the current review
+  ---
+  duration_ms: 3.1318
+  type: 'test'
+  ...
+# Subtest: pagehide prevents late file completion replacing the current review
+ok 480 - pagehide prevents late file completion replacing the current review
+  ---
+  duration_ms: 5.6529
+  type: 'test'
+  ...
+# Subtest: dispose prevents late file completion replacing the current review
+ok 481 - dispose prevents late file completion replacing the current review
+  ---
+  duration_ms: 4.1146
+  type: 'test'
+  ...
+# Subtest: new-file prevents late file completion replacing the current review
+ok 482 - new-file prevents late file completion replacing the current review
+  ---
+  duration_ms: 7.0802
+  type: 'test'
+  ...
+# Subtest: invalid or overflowing imported data does not replace an existing calculation
+ok 483 - invalid or overflowing imported data does not replace an existing calculation
+  ---
+  duration_ms: 7.3993
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download cannot falsely report a saved current input
+ok 484 - failed or reentrant download cannot falsely report a saved current input
+  ---
+  duration_ms: 3.5087
+  type: 'test'
+  ...
+# Subtest: DAT source preview changes nothing until apply; only exact balances/decimals change
+ok 485 - DAT source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 76.5203
+  type: 'test'
+  ...
+# Subtest: EMA source preview changes nothing until apply; only exact balances/decimals change
+ok 486 - EMA source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 15.5982
+  type: 'test'
+  ...
+# Subtest: CAWELON source preview changes nothing until apply; only exact balances/decimals change
+ok 487 - CAWELON source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 11.8508
+  type: 'test'
+  ...
+# Subtest: wrong network, missing contract, mismatched token metadata, corrupt checksum and excessive size cannot replace input
+ok 488 - wrong network, missing contract, mismatched token metadata, corrupt checksum and excessive size cannot replace input
+  ---
+  duration_ms: 23.8732
+  type: 'test'
+  ...
+# Subtest: cancel aborts source hashing and rejects its late result
+ok 489 - cancel aborts source hashing and rejects its late result
+  ---
+  duration_ms: 5.5806
+  type: 'test'
+  ...
+# Subtest: edit aborts source hashing and rejects its late result
+ok 490 - edit aborts source hashing and rejects its late result
+  ---
+  duration_ms: 7.7855
+  type: 'test'
+  ...
+# Subtest: pagehide aborts source hashing and rejects its late result
+ok 491 - pagehide aborts source hashing and rejects its late result
+  ---
+  duration_ms: 17.0145
+  type: 'test'
+  ...
+# Subtest: dispose aborts source hashing and rejects its late result
+ok 492 - dispose aborts source hashing and rejects its late result
+  ---
+  duration_ms: 3.894
+  type: 'test'
+  ...
+# Subtest: regular-import aborts source hashing and rejects its late result
+ok 493 - regular-import aborts source hashing and rejects its late result
+  ---
+  duration_ms: 15.3223
+  type: 'test'
+  ...
+# Subtest: a context change without an input event still cannot apply a preview for the previous token
+ok 494 - a context change without an input event still cannot apply a preview for the previous token
+  ---
+  duration_ms: 7.532
+  type: 'test'
+  ...
+# Subtest: token capital and ETH fees remain separate, with existing reservations preserved
+ok 495 - token capital and ETH fees remain separate, with existing reservations preserved
+  ---
+  duration_ms: 7.6278
+  type: 'test'
+  ...
+# Subtest: abundant tokens never pay for missing ETH, and abundant ETH never pays for missing tokens
+ok 496 - abundant tokens never pay for missing ETH, and abundant ETH never pays for missing tokens
+  ---
+  duration_ms: 1.1481
+  type: 'test'
+  ...
+# Subtest: exactly sufficient budgets pass, a one-wei or one-token-unit shortage fails
+ok 497 - exactly sufficient budgets pass, a one-wei or one-token-unit shortage fails
+  ---
+  duration_ms: 1.4297
+  type: 'test'
+  ...
+# Subtest: unknown fee components keep total and affordability unknown rather than filling zero
+ok 498 - unknown fee components keep total and affordability unknown rather than filling zero
+  ---
+  duration_ms: 0.9133
+  type: 'test'
+  ...
+# Subtest: explicit extra fee, native value and buffer all consume ETH only
+ok 499 - explicit extra fee, native value and buffer all consume ETH only
+  ---
+  duration_ms: 1.2633
+  type: 'test'
+  ...
+# Subtest: existing reservations and floors cannot be double-counted as spendable balance
+ok 500 - existing reservations and floors cannot be double-counted as spendable balance
+  ---
+  duration_ms: 2.3026
+  type: 'test'
+  ...
+# Subtest: large exact integers never go through floating point
+ok 501 - large exact integers never go through floating point
+  ---
+  duration_ms: 0.6752
+  type: 'test'
+  ...
+# Subtest: all three agents and supported chains keep their own identity in a stable round trip
+ok 502 - all three agents and supported chains keep their own identity in a stable round trip
+  ---
+  duration_ms: 9.2815
+  type: 'test'
+  ...
+# Subtest: zero token spend is not an accepted operation budget
+ok 503 - zero token spend is not an accepted operation budget
+  ---
+  duration_ms: 1.2826
+  type: 'test'
+  ...
+# Subtest: rejects uint256 multiplication and addition overflow
+ok 504 - rejects uint256 multiplication and addition overflow
+  ---
+  duration_ms: 3.8154
+  type: 'test'
+  ...
+# Subtest: rejects ambiguous amounts, absent fields and inappropriate contexts
+ok 505 - rejects ambiguous amounts, absent fields and inappropriate contexts
+  ---
+  duration_ms: 7.2228
+  type: 'test'
+  ...
+# Subtest: input accessors are not invoked and later mutations cannot change a captured result
+ok 506 - input accessors are not invoked and later mutations cannot change a captured result
+  ---
+  duration_ms: 1.6363
+  type: 'test'
+  ...
+# Subtest: JSON rejects duplicate keys, BOM, extra data and oversized documents
+ok 507 - JSON rejects duplicate keys, BOM, extra data and oversized documents
+  ---
+  duration_ms: 3.5472
+  type: 'test'
+  ...
+# Subtest: diagnostic endpoint validation cannot be replaced with an arbitrary URL
+ok 508 - diagnostic endpoint validation cannot be replaced with an arbitrary URL
+  ---
+  duration_ms: 4.9013
+  type: 'test'
+  ...
+# Subtest: write methods, approval selectors, extra transaction fields and latest tags fail before transport
+ok 509 - write methods, approval selectors, extra transaction fields and latest tags fail before transport
+  ---
+  duration_ms: 18.0565
+  type: 'test'
+  ...
+# Subtest: only established read selectors are accepted with canonical ABI arguments
+ok 510 - only established read selectors are accepted with canonical ABI arguments
+  ---
+  duration_ms: 93.8153
+  type: 'test'
+  ...
+# Subtest: public batch additions permit only explicit native-balance and argument-free metadata reads
+ok 511 - public batch additions permit only explicit native-balance and argument-free metadata reads
+  ---
+  duration_ms: 10.485
+  type: 'test'
+  ...
+# Subtest: canonical hash selectors require complete own data and cannot execute accessors
+ok 512 - canonical hash selectors require complete own data and cannot execute accessors
+  ---
+  duration_ms: 4.2077
+  type: 'test'
+  ...
+# Subtest: header reads reject latest, full transaction requests and a mismatched returned height
+ok 513 - header reads reject latest, full transaction requests and a mismatched returned height
+  ---
+  duration_ms: 3.2189
+  type: 'test'
+  ...
+# Subtest: one public batch supplies all three same-block sources while retaining its different provenance
+ok 514 - one public batch supplies all three same-block sources while retaining its different provenance
+  ---
+  duration_ms: 57.5548
+  type: 'test'
+  ...
+# Subtest: one- or two-token budgets select their referenced members from the full original batch
+ok 515 - one- or two-token budgets select their referenced members from the full original batch
+  ---
+  duration_ms: 37.258
+  type: 'test'
+  ...
+# Subtest: unknown token identity, changed original bytes, and duplicate public batches cannot pass
+ok 516 - unknown token identity, changed original bytes, and duplicate public batches cannot pass
+  ---
+  duration_ms: 24.1756
+  type: 'test'
+  ...
+# Subtest: public batch command validates before reading and never overwrites an existing file
+ok 517 - public batch command validates before reading and never overwrites an existing file
+  ---
+  duration_ms: 92.5088
+  type: 'test'
+  ...
+# Subtest: failed acquisition never emits a file or a fabricated partial observation
+ok 518 - failed acquisition never emits a file or a fabricated partial observation
+  ---
+  duration_ms: 3.4434
+  type: 'test'
+  ...
+# Subtest: client uses only the local batch endpoint and binds response to submitted account/network/height
+ok 519 - client uses only the local batch endpoint and binds response to submitted account/network/height
+  ---
+  duration_ms: 120.2856
+  type: 'test'
+  ...
+# Subtest: invalid or extra request fields and pre-aborted signals never start HTTP
+ok 520 - invalid or extra request fields and pre-aborted signals never start HTTP
+  ---
+  duration_ms: 2.5592
+  type: 'test'
+  ...
+# Subtest: unresponsive response headers are interrupted by cancel and deadline
+ok 521 - unresponsive response headers are interrupted by cancel and deadline
+  ---
+  duration_ms: 15.2593
+  type: 'test'
+  ...
+# Subtest: malformed, redirected and oversized replies never produce a batch
+ok 522 - malformed, redirected and oversized replies never produce a batch
+  ---
+  duration_ms: 7.2324
+  type: 'test'
+  ...
+# Subtest: no automatic reads; explicit read shows all tokens and one native balance, save is independently decodable
+ok 523 - no automatic reads; explicit read shows all tokens and one native balance, save is independently decodable
+  ---
+  duration_ms: 50.041
+  type: 'test'
+  ...
+# Subtest: cancel cancels and prevents late network result from displaying/saving
+ok 524 - cancel cancels and prevents late network result from displaying/saving
+  ---
+  duration_ms: 4.9299
+  type: 'test'
+  ...
+# Subtest: account cancels and prevents late network result from displaying/saving
+ok 525 - account cancels and prevents late network result from displaying/saving
+  ---
+  duration_ms: 2.4743
+  type: 'test'
+  ...
+# Subtest: chain cancels and prevents late network result from displaying/saving
+ok 526 - chain cancels and prevents late network result from displaying/saving
+  ---
+  duration_ms: 3.0662
+  type: 'test'
+  ...
+# Subtest: block cancels and prevents late network result from displaying/saving
+ok 527 - block cancels and prevents late network result from displaying/saving
+  ---
+  duration_ms: 2.4954
+  type: 'test'
+  ...
+# Subtest: pagehide cancels and prevents late network result from displaying/saving
+ok 528 - pagehide cancels and prevents late network result from displaying/saving
+  ---
+  duration_ms: 3.333
+  type: 'test'
+  ...
+# Subtest: dispose cancels and prevents late network result from displaying/saving
+ok 529 - dispose cancels and prevents late network result from displaying/saving
+  ---
+  duration_ms: 2.1582
+  type: 'test'
+  ...
+# Subtest: cancel during checksum generation discards late export even when implementation ignores abort
+ok 530 - cancel during checksum generation discards late export even when implementation ignores abort
+  ---
+  duration_ms: 7.3862
+  type: 'test'
+  ...
+# Subtest: invalid input never reads; retry after failure and response context mismatch remain explicit
+ok 531 - invalid input never reads; retry after failure and response context mismatch remain explicit
+  ---
+  duration_ms: 15.8149
+  type: 'test'
+  ...
+# Subtest: missing code and metadata mismatch are visible rather than claimed as verified zero
+ok 532 - missing code and metadata mismatch are visible rather than claimed as verified zero
+  ---
+  duration_ms: 9.5109
+  type: 'test'
+  ...
+# Subtest: failed download preserves completed result and reentrant input change prevents a stale save receipt
+ok 533 - failed download preserves completed result and reentrant input change prevents a stale save receipt
+  ---
+  duration_ms: 22.9337
+  type: 'test'
+  ...
+# Subtest: public batch pins all three tokens and native balance to one hash on 8453
+ok 534 - public batch pins all three tokens and native balance to one hash on 8453
+  ---
+  duration_ms: 166.2248
+  type: 'test'
+  ...
+# Subtest: public batch pins all three tokens and native balance to one hash on 84532
+ok 535 - public batch pins all three tokens and native balance to one hash on 84532
+  ---
+  duration_ms: 24.7316
+  type: 'test'
+  ...
+# Subtest: explicit historical height avoids latest and rechecks the exact same height
+ok 536 - explicit historical height avoids latest and rechecks the exact same height
+  ---
+  duration_ms: 25.0067
+  type: 'test'
+  ...
+# Subtest: chain mismatch, changed canonical block and rejected hash selectors yield no partial batch or fallback
+ok 537 - chain mismatch, changed canonical block and rejected hash selectors yield no partial batch or fallback
+  ---
+  duration_ms: 25.1454
+  type: 'test'
+  ...
+# Subtest: missing code preserves unknown token balance and skips metadata and balance calls for that token
+ok 538 - missing code preserves unknown token balance and skips metadata and balance calls for that token
+  ---
+  duration_ms: 17.4606
+  type: 'test'
+  ...
+# Subtest: malformed uint and metadata responses fail without manufacturing known balances
+ok 539 - malformed uint and metadata responses fail without manufacturing known balances
+  ---
+  duration_ms: 11.0282
+  type: 'test'
+  ...
+# Subtest: cancel and total deadline prevent late completion and further reads
+ok 540 - cancel and total deadline prevent late completion and further reads
+  ---
+  duration_ms: 136.7006
+  type: 'test'
+  ...
+# Subtest: invalid options, account, block and pre-aborted signals never contact the endpoint
+ok 541 - invalid options, account, block and pre-aborted signals never contact the endpoint
+  ---
+  duration_ms: 3.0896
+  type: 'test'
+  ...
+# Subtest: file binds canonical public batch without pretending a wallet connection; corruption fails
+ok 542 - file binds canonical public batch without pretending a wallet connection; corruption fails
+  ---
+  duration_ms: 45.6052
+  type: 'test'
+  ...
+# Subtest: offline checker binds source hashes, detects cumulative insufficiency and preserves source files
+ok 543 - offline checker binds source hashes, detects cumulative insufficiency and preserves source files
+  ---
+  duration_ms: 62.0203
+  type: 'test'
+  ...
+# Subtest: three separate files require explicit shared-account assumption and reveal aggregate shortfall
+ok 544 - three separate files require explicit shared-account assumption and reveal aggregate shortfall
+  ---
+  duration_ms: 29.185
+  type: 'test'
+  ...
+# Subtest: saved shared inputs require renewed assumption and reproduce exact inputs
+ok 545 - saved shared inputs require renewed assumption and reproduce exact inputs
+  ---
+  duration_ms: 12.1821
+  type: 'test'
+  ...
+# Subtest: unknown fees remain unknown; changing selection clears the old result and assumption
+ok 546 - unknown fees remain unknown; changing selection clears the old result and assumption
+  ---
+  duration_ms: 17.9945
+  type: 'test'
+  ...
+# Subtest: mixed, duplicated, inconsistent and oversized sets cannot be applied
+ok 547 - mixed, duplicated, inconsistent and oversized sets cannot be applied
+  ---
+  duration_ms: 12.9969
+  type: 'test'
+  ...
+# Subtest: cancel cancels unfinished imports without applying late content
+ok 548 - cancel cancels unfinished imports without applying late content
+  ---
+  duration_ms: 3.1722
+  type: 'test'
+  ...
+# Subtest: new-file cancels unfinished imports without applying late content
+ok 549 - new-file cancels unfinished imports without applying late content
+  ---
+  duration_ms: 3.4092
+  type: 'test'
+  ...
+# Subtest: pagehide cancels unfinished imports without applying late content
+ok 550 - pagehide cancels unfinished imports without applying late content
+  ---
+  duration_ms: 1.6913
+  type: 'test'
+  ...
+# Subtest: dispose cancels unfinished imports without applying late content
+ok 551 - dispose cancels unfinished imports without applying late content
+  ---
+  duration_ms: 1.8799
+  type: 'test'
+  ...
+# Subtest: failed or reentrant export never falsely reports a completed save
+ok 552 - failed or reentrant export never falsely reports a completed save
+  ---
+  duration_ms: 10.0651
+  type: 'test'
+  ...
+# Subtest: three individually sufficient plans cannot each reuse the same ETH balance
+ok 553 - three individually sufficient plans cannot each reuse the same ETH balance
+  ---
+  duration_ms: 9.2244
+  type: 'test'
+  ...
+# Subtest: shared reserves are counted once and each operation's native value and fees are counted
+ok 554 - shared reserves are counted once and each operation's native value and fees are counted
+  ---
+  duration_ms: 1.7318
+  type: 'test'
+  ...
+# Subtest: tokens retain separate balances, decimals and shortfalls
+ok 555 - tokens retain separate balances, decimals and shortfalls
+  ---
+  duration_ms: 2.2292
+  type: 'test'
+  ...
+# Subtest: one unknown component makes the whole shared requirement unknown while preserving known insufficiency
+ok 556 - one unknown component makes the whole shared requirement unknown while preserving known insufficiency
+  ---
+  duration_ms: 2.218
+  type: 'test'
+  ...
+# Subtest: mixed networks, duplicate tokens and inconsistent shared account assumptions are rejected
+ok 557 - mixed networks, duplicate tokens and inconsistent shared account assumptions are rejected
+  ---
+  duration_ms: 6.156
+  type: 'test'
+  ...
+# Subtest: combined totals reject uint256 overflow even when each separate operation fits
+ok 558 - combined totals reject uint256 overflow even when each separate operation fits
+  ---
+  duration_ms: 1.2743
+  type: 'test'
+  ...
+# Subtest: two plans are supported, one or four plans and sparse arrays are not
+ok 559 - two plans are supported, one or four plans and sparse arrays are not
+  ---
+  duration_ms: 4.9234
+  type: 'test'
+  ...
+# Subtest: captures immutable data without invoking accessors, and round trips only inputs
+ok 560 - captures immutable data without invoking accessors, and round trips only inputs
+  ---
+  duration_ms: 9.4075
+  type: 'test'
+  ...
+# Subtest: pre-aborted read cancels body without acquiring a reader
+ok 561 - pre-aborted read cancels body without acquiring a reader
+  ---
+  duration_ms: 3.8855
+  type: 'test'
+  ...
+# Subtest: abort rejects a pending read without awaiting an uncooperative cancellation
+ok 562 - abort rejects a pending read without awaiting an uncooperative cancellation
+  ---
+  duration_ms: 107.1888
+  type: 'test'
+  ...
+# Subtest: successful split UTF-8 read removes abort listener and releases stream lock
+ok 563 - successful split UTF-8 read removes abort listener and releases stream lock
+  ---
+  duration_ms: 8.8925
+  type: 'test'
+  ...
+# Subtest: declared oversize rejection is not delayed by body cancellation
+ok 564 - declared oversize rejection is not delayed by body cancellation
+  ---
+  duration_ms: 3.0682
+  type: 'test'
+  ...
+# Subtest: parsing failure also cleans up listener and lock
+ok 565 - parsing failure also cleans up listener and lock
+  ---
+  duration_ms: 5.1676
+  type: 'test'
+  ...
+# Subtest: header read rejects a pre-aborted signal without invoking fetch
+ok 566 - header read rejects a pre-aborted signal without invoking fetch
+  ---
+  duration_ms: 2.0271
+  type: 'test'
+  ...
+# Subtest: header read aborts promptly and cancels a late response without retaining the listener
+ok 567 - header read aborts promptly and cancels a late response without retaining the listener
+  ---
+  duration_ms: 4.8982
+  type: 'test'
+  ...
+# Subtest: late header rejection is consumed after the caller has aborted
+ok 568 - late header rejection is consumed after the caller has aborted
+  ---
+  duration_ms: 5.5391
+  type: 'test'
+  ...
+# Subtest: accepted headers remove their listener without cancelling the body
+ok 569 - accepted headers remove their listener without cancelling the body
+  ---
+  duration_ms: 3.4144
+  type: 'test'
+  ...
+# Subtest: redirected headers are cancelled even if the transport ignored redirect policy
+ok 570 - redirected headers are cancelled even if the transport ignored redirect policy
+  ---
+  duration_ms: 1.5934
+  type: 'test'
+  ...
+1..570
+# tests 570
+# suites 0
+# pass 569
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 34295.0107

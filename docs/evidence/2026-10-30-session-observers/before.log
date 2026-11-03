@@ -1,0 +1,213 @@
+✔ session observer throw cannot suppress restoration or healthy views (39.6407ms)
+✖ session observer reject cannot suppress restoration or healthy views (15.8871ms)
+✔ session observer then-getter cannot suppress restoration or healthy views (14.7582ms)
+✔ session observer then-reject cannot suppress restoration or healthy views (9.9001ms)
+✔ session observer async-then cannot suppress restoration or healthy views (10.9351ms)
+✖ cancel notification bounds a continually mutating observer (2.1661ms)
+✖ workspace notification bounds a continually mutating observer (0.6822ms)
+✖ cases notification bounds a continually mutating observer (0.5393ms)
+✖ commit notification bounds a continually mutating observer (3.4843ms)
+✖ removed observers are skipped during an in-flight notification (0.7953ms)
+✖ disposal inside a view preserves the commit receipt and stops remaining views (5.1522ms)
+✖ later view mutations cannot rewrite the result of a successful commit (8.7152ms)
+✖ new subscriptions do not fire eagerly and removed subscriptions release capacity (0.983ms)
+✔ duplicate subscriptions consume one slot and notify once (0.5368ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 5
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 346.0756
+
+✖ failing tests:
+
+test at test\operation-rehearsal-session-observers.test.js:16:3
+✖ session observer reject cannot suppress restoration or healthy views (15.8871ms)
+  Error: Synthetic view failure
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:20:55
+      at notify (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:35:63)
+      at Object.commit (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:53:97)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:26:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at test\operation-rehearsal-session-observers.test.js:34:3
+✖ cancel notification bounds a continually mutating observer (2.1661ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  11 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:42:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 11,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-observers.test.js:34:3
+✖ workspace notification bounds a continually mutating observer (0.6822ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  11 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:42:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 11,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-observers.test.js:34:3
+✖ cases notification bounds a continually mutating observer (0.5393ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  11 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:42:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 11,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-observers.test.js:34:3
+✖ commit notification bounds a continually mutating observer (3.4843ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  11 !== 2
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:42:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 11,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-observers.test.js:49:1
+✖ removed observers are skipped during an in-flight notification (0.7953ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:55:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-observers.test.js:59:1
+✖ disposal inside a view preserves the commit receipt and stops remaining views (5.1522ms)
+  Error [RehearsalError]: SESSION_DISPOSED
+      at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:9:25)
+      at active (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:32:59)
+      at snapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:40:23)
+      at Object.commit (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:53:113)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:64:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12) {
+    code: 'SESSION_DISPOSED'
+  }
+
+test at test\operation-rehearsal-session-observers.test.js:69:1
+✖ later view mutations cannot rewrite the result of a successful commit (8.7152ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      cases: {
+        cases: [],
+        schema: 'threecore.operation-rehearsal-scenario-set.v1',
+        simulationOnly: true
+  ...
+      workspace: {
+  +     activeAgent: 'CAWELON',
+  -     activeAgent: 'EMA',
+        ledgers: [
+          {
+            account: '0x2222222222222222222222222222222222222222',
+            agent: 'EMA',
+            asset: {
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:77:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.operation-rehearsal-session.v1', simulationOnly: true, workspace: { schema: 'threecore.operation-rehearsal-workspace.v1', simulationOnly: true, activeAgent: 'CAWELON', ledgers: [Array] }, cases: { schema: 'threecore.operation-rehearsal-scenario-set.v1', simulationOnly: true, cases: [] } },
+    expected: { schema: 'threecore.operation-rehearsal-session.v1', simulationOnly: true, workspace: { schema: 'threecore.operation-rehearsal-workspace.v1', simulationOnly: true, activeAgent: 'EMA', ledgers: [Array] }, cases: { schema: 'threecore.operation-rehearsal-scenario-set.v1', simulationOnly: true, cases: [] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-observers.test.js:84:1
+✖ new subscriptions do not fire eagerly and removed subscriptions release capacity (0.983ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-observers.test.js:89:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'SESSION_LISTENER_LIMIT' },
+    operator: 'throws',
+    diff: 'simple'
+  }

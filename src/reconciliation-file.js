@@ -1,4 +1,5 @@
-import { readFormatFileText } from "./security-file.js";
+import { sha256Hex } from "./security-data.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import {
   RECONCILIATION_LIMIT, validateReconciliationWorkspace, reconciliationFail, reconciliationShape,
@@ -23,20 +24,16 @@ function boundedText(text) {
   return text;
 }
 
-async function checksum(workspace, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") reconciliationFail("RECONCILIATION_CRYPTO");
+async function checksum(workspace, subtle, options) {
   const bytes = encoder.encode(JSON.stringify(workspace));
   if (bytes.byteLength > RECONCILIATION_LIMIT) reconciliationFail("RECONCILIATION_SIZE");
-  let buffer;
-  try { buffer = await subtle.digest("SHA-256", bytes); }
+  try { return await sha256Hex(bytes, subtle, options); }
   catch { reconciliationFail("RECONCILIATION_CRYPTO"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== 32) reconciliationFail("RECONCILIATION_CRYPTO");
-  return [...new Uint8Array(buffer)].map(value => value.toString(16).padStart(2, "0")).join("");
 }
 
-export async function prepareReconciliationFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareReconciliationFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const workspace = validateReconciliationWorkspace(input);
-  const digest = await checksum(workspace, subtle);
+  const digest = await checksum(workspace, subtle, { signal, timeoutMs });
   const text = boundedText(JSON.stringify({
     schema: RECONCILIATION_FILE_SCHEMA,
     algorithm: "SHA-256",
@@ -54,7 +51,7 @@ export async function prepareReconciliationFile(input, { subtle = globalThis.cry
   });
 }
 
-export async function decodeReconciliationFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeReconciliationFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   boundedText(text);
   let envelope;
   try { envelope = parseSecurityJson(text); }
@@ -65,16 +62,13 @@ export async function decodeReconciliationFile(text, { subtle = globalThis.crypt
     reconciliationFail("RECONCILIATION_FILE_SCHEMA");
   }
   const workspace = validateReconciliationWorkspace(envelope.workspace);
-  const digest = await checksum(workspace, subtle);
+  const digest = await checksum(workspace, subtle, { signal, timeoutMs });
   if (digest !== envelope.digest) reconciliationFail("RECONCILIATION_CHECKSUM");
   return Object.freeze({ workspace, digest, checksumVerified: true, authenticated: false });
 }
 
 export async function readReconciliationFile(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 180 ||
-      !/\.json$/i.test(file.name) || /[/\\\u0000-\u001f\u007f]/.test(file.name)) {
-    reconciliationFail("RECONCILIATION_FILENAME");
-  }
+  readFormatFileName(file, { maxLength: 180, fail: reconciliationFail, code: "RECONCILIATION_FILENAME" });
   const size = file.size;
   if (!Number.isSafeInteger(size) || size < 1 || size > RECONCILIATION_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") reconciliationFail("RECONCILIATION_FILE_SIZE");

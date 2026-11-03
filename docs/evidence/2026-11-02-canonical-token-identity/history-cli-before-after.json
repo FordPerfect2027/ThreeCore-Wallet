@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-11-01T21:48:00.966Z",
+  "token": "DAT",
+  "baselineCommit": "62dee6aba8a092e179643e0e4b19d53473cd6e67",
+  "baselineCliBytesUnchanged": true,
+  "sourceHashes": {
+    "scripts/inspect-transfers.js": "00a393a91d8ab0d8e3a928a5dac6f978e02f4be6d25b85403197fc9d1f4e49a7",
+    "scripts/inspect-approvals.js": "b58a69484f431de675462ffa42c4674e7d5e9747a7dc60563ab37e4327a7cd18"
+  },
+  "testFixtureFilesAdded": [
+    "test/history-cli.test.mjs",
+    "test/support/local-rpc-preload.mjs",
+    "src/history-cli-input.js"
+  ],
+  "helperNotImportedByBaselineCommands": true,
+  "expectedFailedCases": 2,
+  "observedRpcCallsPerInvalidRange": 3,
+  "expectedRpcCalls": 0,
+  "realNetworkUsed": false,
+  "transactionsPerformed": false,
+  "dependencyInstallationReused": true
+}

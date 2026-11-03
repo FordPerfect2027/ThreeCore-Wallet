@@ -1,4 +1,5 @@
 import { identityObject, identityFail } from "./token-identity-codec.js";
+import { captureDataArray } from "./security-data.js";
 import { validateTokenObservation, assessTokenObservation } from "./token-identity-model.js";
 
 const AGENTS = ["DAT", "EMA", "CAWELON"];
@@ -6,15 +7,12 @@ const PHASES = ["idle", "reading", "loading", "preparing", "ready", "error", "ca
 
 /** Aggregates verification status, never sums unrelated token amounts. */
 export function summarizeIdentityCards(input) {
-  if (!Array.isArray(input) || input.length !== 3 || Reflect.ownKeys(input).length !== 4) {
-    identityFail("IDENTITY_OVERVIEW_SHAPE");
-  }
+  let entries;
+  try { entries = captureDataArray(input, 3, 3); }
+  catch { identityFail("IDENTITY_OVERVIEW_SHAPE"); }
   const rows = [];
-  for (let index = 0; index < 3; index++) {
-    const descriptor = Object.getOwnPropertyDescriptor(input, String(index));
-    if (!descriptor || !("value" in descriptor)) identityFail("IDENTITY_OVERVIEW_SHAPE");
-    const row = descriptor.value;
-    identityObject(row, ["agent", "phase", "provenance", "observation"]);
+  for (const entry of entries) {
+    const row = identityObject(entry, ["agent", "phase", "provenance", "observation"]);
     if (!AGENTS.includes(row.agent) || !PHASES.includes(row.phase) ||
         ![null, "read", "imported"].includes(row.provenance)) identityFail("IDENTITY_OVERVIEW_SHAPE");
     if (row.observation === null && row.provenance !== null) identityFail("IDENTITY_OVERVIEW_SHAPE");

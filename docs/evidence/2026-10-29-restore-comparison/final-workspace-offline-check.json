@@ -1,0 +1,224 @@
+{
+  "schema": "threecore.offline-rehearsal-workspace-check.v1",
+  "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302",
+  "byteLength": 4771,
+  "expectedChecksumMatched": true,
+  "authenticated": false,
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "constraintsSatisfied": true,
+  "rejectedRecords": [],
+  "networkRequests": 0,
+  "walletRequests": 0,
+  "filesModified": 0,
+  "report": {
+    "simulationOnly": true,
+    "sourceVerified": false,
+    "authorizesExecution": false,
+    "activeAgent": "DAT",
+    "presentAgents": 3,
+    "constraintsSatisfied": true,
+    "rows": [
+      {
+        "agent": "DAT",
+        "present": true,
+        "recordCount": 3,
+        "report": {
+          "schema": "threecore.operation-rehearsal-report.v2",
+          "simulationOnly": true,
+          "sourceVerified": false,
+          "authorizesExecution": false,
+          "agent": "DAT",
+          "asset": {
+            "address": "0x4444444444444444444444444444444444444444",
+            "symbol": "SIM",
+            "decimals": 6
+          },
+          "rows": [
+            {
+              "id": "open-one",
+              "kind": "open",
+              "withinEnteredLimits": true,
+              "reasons": [],
+              "cash": "899000000",
+              "outstanding": "100000000",
+              "realizedPnl": "-1000000",
+              "pnlChange": "-1000000",
+              "reservedExitFees": "2000000",
+              "reservedAllocations": "0",
+              "availableCash": "897000000"
+            },
+            {
+              "id": "settle-one",
+              "kind": "settle",
+              "withinEnteredLimits": true,
+              "reasons": [],
+              "cash": "1028000000",
+              "outstanding": "0",
+              "realizedPnl": "28000000",
+              "pnlChange": "29000000",
+              "reservedExitFees": "0",
+              "reservedAllocations": "0",
+              "availableCash": "1028000000"
+            },
+            {
+              "id": "step-3",
+              "kind": "reserve",
+              "withinEnteredLimits": true,
+              "reasons": [],
+              "cash": "1028000000",
+              "outstanding": "0",
+              "realizedPnl": "28000000",
+              "pnlChange": "0",
+              "reservedExitFees": "0",
+              "reservedAllocations": "2800000",
+              "availableCash": "1025200000"
+            }
+          ],
+          "cash": "1028000000",
+          "outstanding": "0",
+          "realizedPnl": "28000000",
+          "deposits": "0",
+          "withdrawals": "0",
+          "fees": "2000000",
+          "openPositions": 0,
+          "proposedOwnTokenBuybackBudget": "0",
+          "reservedExitFees": "0",
+          "reservedAllocations": "2800000",
+          "availableCash": "1025200000",
+          "allocationShortfall": "0",
+          "positions": [],
+          "reservations": [
+            {
+              "reservationId": "dat-reserve",
+              "amount": "2800000"
+            }
+          ],
+          "allocationBlockers": [],
+          "accountingInvariant": true
+        }
+      },
+      {
+        "agent": "EMA",
+        "present": true,
+        "recordCount": 2,
+        "report": {
+          "schema": "threecore.operation-rehearsal-report.v2",
+          "simulationOnly": true,
+          "sourceVerified": false,
+          "authorizesExecution": false,
+          "agent": "EMA",
+          "asset": {
+            "address": "0x4444444444444444444444444444444444444444",
+            "symbol": "SIM",
+            "decimals": 6
+          },
+          "rows": [
+            {
+              "id": "open-one",
+              "kind": "open",
+              "withinEnteredLimits": true,
+              "reasons": [],
+              "cash": "899000000",
+              "outstanding": "100000000",
+              "realizedPnl": "-1000000",
+              "pnlChange": "-1000000",
+              "reservedExitFees": "2000000",
+              "reservedAllocations": "0",
+              "availableCash": "897000000"
+            },
+            {
+              "id": "settle-one",
+              "kind": "settle",
+              "withinEnteredLimits": true,
+              "reasons": [],
+              "cash": "958000000",
+              "outstanding": "0",
+              "realizedPnl": "-42000000",
+              "pnlChange": "-41000000",
+              "reservedExitFees": "0",
+              "reservedAllocations": "0",
+              "availableCash": "958000000"
+            }
+          ],
+          "cash": "958000000",
+          "outstanding": "0",
+          "realizedPnl": "-42000000",
+          "deposits": "0",
+          "withdrawals": "0",
+          "fees": "2000000",
+          "openPositions": 0,
+          "proposedOwnTokenBuybackBudget": "0",
+          "reservedExitFees": "0",
+          "reservedAllocations": "0",
+          "availableCash": "958000000",
+          "allocationShortfall": "0",
+          "positions": [],
+          "reservations": [],
+          "allocationBlockers": [
+            "NO_NET_PROFIT"
+          ],
+          "accountingInvariant": true
+        }
+      },
+      {
+        "agent": "CAWELON",
+        "present": true,
+        "recordCount": 1,
+        "report": {
+          "schema": "threecore.operation-rehearsal-report.v2",
+          "simulationOnly": true,
+          "sourceVerified": false,
+          "authorizesExecution": false,
+          "agent": "CAWELON",
+          "asset": {
+            "address": "0x4444444444444444444444444444444444444444",
+            "symbol": "SIM",
+            "decimals": 6
+          },
+          "rows": [
+            {
+              "id": "open-one",
+              "kind": "open",
+              "withinEnteredLimits": true,
+              "reasons": [],
+              "cash": "899000000",
+              "outstanding": "100000000",
+              "realizedPnl": "-1000000",
+              "pnlChange": "-1000000",
+              "reservedExitFees": "2000000",
+              "reservedAllocations": "0",
+              "availableCash": "897000000"
+            }
+          ],
+          "cash": "899000000",
+          "outstanding": "100000000",
+          "realizedPnl": "-1000000",
+          "deposits": "0",
+          "withdrawals": "0",
+          "fees": "1000000",
+          "openPositions": 1,
+          "proposedOwnTokenBuybackBudget": "0",
+          "reservedExitFees": "2000000",
+          "reservedAllocations": "0",
+          "availableCash": "897000000",
+          "allocationShortfall": "0",
+          "positions": [
+            {
+              "operationId": "one",
+              "principal": "100000000",
+              "exitFeeReserve": "2000000"
+            }
+          ],
+          "reservations": [],
+          "allocationBlockers": [
+            "UNSETTLED_POSITIONS",
+            "NO_NET_PROFIT"
+          ],
+          "accountingInvariant": true
+        }
+      }
+    ]
+  }
+}

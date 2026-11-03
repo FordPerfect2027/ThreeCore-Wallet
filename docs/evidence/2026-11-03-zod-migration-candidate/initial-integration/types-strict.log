@@ -1,0 +1,6 @@
+node_modules/@nomicfoundation/hardhat-zod-utils/dist/src/index.d.ts(1,15): error TS2724: '"zod"' has no exported member named 'ZodTypeDef'. Did you mean 'ZodType'?
+node_modules/@nomicfoundation/hardhat-zod-utils/dist/src/index.d.ts(27,99): error TS2694: Namespace '"C:/Users/aseet/AppData/Local/Temp/threecore-hardhat-zod4-migration-20261103/node_modules/zod/v4/classic/external"' has no exported member 'ZodEffects'.
+node_modules/@nomicfoundation/hardhat-zod-utils/dist/src/index.d.ts(60,152): error TS2694: Namespace '"C:/Users/aseet/AppData/Local/Temp/threecore-hardhat-zod4-migration-20261103/node_modules/zod/v4/classic/external"' has no exported member 'ZodEffects'.
+node_modules/@nomicfoundation/hardhat-zod-utils/dist/src/index.d.ts(95,51): error TS2707: Generic type 'ZodObject<Shape, Config>' requires between 0 and 2 type arguments.
+node_modules/@nomicfoundation/hardhat-zod-utils/dist/src/index.d.ts(114,59): error TS2707: Generic type 'ZodObject<Shape, Config>' requires between 0 and 2 type arguments.
+node_modules/@nomicfoundation/hardhat-zod-utils/dist/src/index.d.ts(156,193): error TS2344: Type 'Input' does not satisfy the constraint '$ZodTypeInternals<Output, Def>'.

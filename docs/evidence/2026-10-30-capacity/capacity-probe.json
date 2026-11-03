@@ -1,0 +1,98 @@
+[
+  {
+    "name": "600-record workspace roundtrip",
+    "ok": true,
+    "ms": 70.52289999999999,
+    "bytes": 138640,
+    "records": [
+      200,
+      200,
+      200
+    ]
+  },
+  {
+    "name": "600-record query review",
+    "ok": true,
+    "ms": 281.22220000000004,
+    "bytes": 1204296,
+    "matches": true
+  },
+  {
+    "name": "12 cases x 50 records: save/reload",
+    "ok": true,
+    "ms": 185.04259999999994,
+    "bytes": 312567
+  },
+  {
+    "name": "12 cases x 50 records: expected baseline",
+    "ok": true,
+    "ms": 471.1838,
+    "bytes": 494344
+  },
+  {
+    "name": "12 cases x 100 records: save/reload",
+    "ok": true,
+    "ms": 298.3511000000001,
+    "bytes": 603367
+  },
+  {
+    "name": "12 cases x 100 records: expected baseline",
+    "ok": true,
+    "ms": 733.5549999999998,
+    "bytes": 953144
+  },
+  {
+    "name": "12 cases x 140 records: save/reload",
+    "ok": true,
+    "ms": 371.9113000000002,
+    "bytes": 836967
+  },
+  {
+    "name": "12 cases x 140 records: expected baseline",
+    "ok": false,
+    "code": "FILE_TOO_LARGE",
+    "ms": 460.21630000000005
+  },
+  {
+    "name": "12 cases x 160 records: save/reload",
+    "ok": true,
+    "ms": 454.27919999999995,
+    "bytes": 953767
+  },
+  {
+    "name": "12 cases x 160 records: expected baseline",
+    "ok": false,
+    "code": "FILE_TOO_LARGE",
+    "ms": 454.73939999999993
+  },
+  {
+    "name": "12 cases x 180 records: save/reload",
+    "ok": false,
+    "code": "FILE_TOO_LARGE",
+    "ms": 247.02819999999974
+  },
+  {
+    "name": "12 cases x 180 records: expected baseline",
+    "ok": false,
+    "code": "FILE_TOO_LARGE",
+    "ms": 192.32130000000052
+  },
+  {
+    "name": "12 cases x 200 records: save/reload",
+    "ok": false,
+    "code": "FILE_TOO_LARGE",
+    "ms": 213.20740000000023
+  },
+  {
+    "name": "12 cases x 200 records: expected baseline",
+    "ok": false,
+    "code": "FILE_TOO_LARGE",
+    "ms": 248.71259999999984
+  },
+  {
+    "name": "combined 600 records and 12 cases x 100 records",
+    "ok": true,
+    "ms": 1262.9071000000004,
+    "bytes": 791696
+  }
+]

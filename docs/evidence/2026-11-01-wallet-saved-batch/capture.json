@@ -1,0 +1,89 @@
+{
+  "source": "2f87c4c",
+  "provenance": [
+    {
+      "name": "period-source.json",
+      "from": "docs/evidence/2026-10-31-saved-file-inspection-guide/period-source.json",
+      "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce"
+    },
+    {
+      "name": "library-source.json",
+      "from": "docs/evidence/2026-10-31-saved-file-inspection-guide/library-source.json",
+      "sha256": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4"
+    },
+    {
+      "name": "report-source.json",
+      "from": "docs/evidence/2026-10-31-saved-file-inspection-guide/report-source.json",
+      "sha256": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89"
+    },
+    {
+      "name": "history-source.json",
+      "from": "docs/evidence/2026-10-31-saved-file-inspection-guide/history-source.json",
+      "sha256": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f"
+    },
+    {
+      "name": "set-source.json",
+      "from": "docs/evidence/2026-10-31-saved-file-inspection-guide/set-source.json",
+      "sha256": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3"
+    },
+    {
+      "name": "corrupt-set-source.json",
+      "from": "docs/evidence/2026-10-31-saved-file-inspection-guide/corrupt-set-source.json",
+      "sha256": "b4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3"
+    },
+    {
+      "name": "auxiliary-declaration-source.json",
+      "from": "docs/evidence/2026-10-31-saved-file-inspection-guide/auxiliary-declaration-source.json",
+      "sha256": "e4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2"
+    }
+  ],
+  "captures": [
+    {
+      "manifest": "ORIGINALS.txt",
+      "format": "json",
+      "exit": 0,
+      "output": "originals-inspection.json"
+    },
+    {
+      "manifest": "ORIGINALS.txt",
+      "format": "csv",
+      "exit": 0,
+      "output": "originals-inspection.csv"
+    },
+    {
+      "manifest": "MIXED.txt",
+      "format": "json",
+      "exit": 2,
+      "output": "mixed-inspection.json"
+    },
+    {
+      "manifest": "MIXED.txt",
+      "format": "csv",
+      "exit": 2,
+      "output": "mixed-inspection.csv"
+    }
+  ],
+  "originals": {
+    "files": 5,
+    "validatedOriginals": 5,
+    "declaredOnly": 0,
+    "checksumMismatched": 0,
+    "unreadable": 0,
+    "admittedBytes": 105736,
+    "readBytes": 105736
+  },
+  "mixed": {
+    "files": 5,
+    "validatedOriginals": 1,
+    "declaredOnly": 1,
+    "checksumMismatched": 1,
+    "unreadable": 2,
+    "admittedBytes": 52807,
+    "readBytes": 52807
+  },
+  "originalsUnchanged": true,
+  "missingControlIntentionallyAbsent": "missing.json",
+  "liveChainRechecked": false,
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false
+}

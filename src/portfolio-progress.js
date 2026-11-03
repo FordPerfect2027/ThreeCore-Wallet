@@ -1,5 +1,6 @@
 import { normalizeAddress } from "./wallet-session.js";
 import { readErrorCode } from "./provider-error.js";
+import { captureDataRecord, captureDataArray } from "./security-data.js";
 
 const FAILURES = Object.freeze({
   INVALID_ADDRESS: "契約アドレスを0xで始まる42文字で入力してください。",
@@ -42,14 +43,7 @@ const KEYS = ["stage", "completedTokens", "totalTokens", "tokenIndex", "tokenAdd
 const STAGES = ["block", "native", "token-code", "token-balance", "canonical", "complete"];
 
 function data(input) {
-  if (!input || typeof input !== "object" || Array.isArray(input) ||
-      ![Object.prototype, null].includes(Object.getPrototypeOf(input))) fail();
-  const names = Reflect.ownKeys(input);
-  if (names.length !== KEYS.length || names.some(name => !KEYS.includes(name))) fail();
-  for (const name of names) {
-    const descriptor = Object.getOwnPropertyDescriptor(input, name);
-    if (!descriptor || !("value" in descriptor)) fail();
-  }
+  input = captureDataRecord(input, KEYS);
   if (!STAGES.includes(input.stage) || !Number.isInteger(input.totalTokens) ||
       input.totalTokens < 1 || input.totalTokens > 32 ||
       !Number.isInteger(input.completedTokens) || input.completedTokens < 0 ||
@@ -81,21 +75,19 @@ function label(event) {
 
 /** Progress is display-only; it cannot produce a portfolio or authorize an action. */
 export function createPortfolioProgressTracker(inputTokens) {
-  if (!Array.isArray(inputTokens) || inputTokens.length < 1 || inputTokens.length > 32) fail();
-  const tokens = [];
+  let tokens;
   try {
-    for (let index = 0; index < inputTokens.length; index++) {
-      const item = Object.getOwnPropertyDescriptor(inputTokens, String(index));
-      if (!item || !("value" in item)) fail();
-      tokens.push(normalizeAddress(item.value));
-    }
+    tokens = captureDataArray(inputTokens, 32, 1).map(normalizeAddress);
     if (new Set(tokens).size !== tokens.length) fail();
   } catch { fail(); }
   let previous = null;
+  let revision = 0;
   return Object.freeze({
     accept(input) {
+      const id = revision;
       let event;
       try { event = data(input); } catch { fail(); }
+      if (id !== revision) fail();
       if (event.totalTokens !== tokens.length ||
           (event.tokenIndex !== null && event.tokenAddress !== tokens[event.tokenIndex])) fail();
       let allowed = false;
@@ -109,6 +101,7 @@ export function createPortfolioProgressTracker(inputTokens) {
       } else if (previous.stage === "canonical") allowed = event.stage === "complete";
       if (!allowed) fail();
       previous = event;
+      revision++;
       return Object.freeze({ ...event, label: label(event) });
     },
   });

@@ -1,0 +1,12 @@
+{
+  "source": "ccbbbe3",
+  "synthetic": true,
+  "fullBrowserCases": 959,
+  "fullBrowserCoverage": true,
+  "nativeModulePreflight": 261,
+  "lastFullWalletSource": "d253e8d",
+  "lastFullWalletTests": 15720,
+  "userTabConnectionVerified": false,
+  "realProviderCalls": 0,
+  "measurementScope": "Node-only repeated identical query and summary calls on a prebuilt immutable 600-record index; excludes DOM, exports, network and index construction"
+}

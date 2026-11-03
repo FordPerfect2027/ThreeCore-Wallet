@@ -1,0 +1,40 @@
+{
+  "source": "db69d73",
+  "beforeSource": "666096f with regression controls; card source unchanged while agent fixes were present",
+  "beforeAgent": {
+    "tests": 26,
+    "pass": 0,
+    "fail": 26,
+    "skipped": 0,
+    "cancelled": 0,
+    "duration_ms": 661.6448
+  },
+  "beforeCard": {
+    "tests": 14,
+    "pass": 0,
+    "fail": 14,
+    "skipped": 0,
+    "cancelled": 0,
+    "duration_ms": 1719.6207
+  },
+  "focused": {
+    "tests": 359,
+    "pass": 359,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "duration_ms": 3194.2874
+  },
+  "full": {
+    "tests": 15581,
+    "pass": 15581,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "duration_ms": 401507.5283
+  },
+  "nativeCases": 926,
+  "realProviderCalls": 0,
+  "published": false,
+  "existingServerRestarted": false
+}

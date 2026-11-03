@@ -1,0 +1,1412 @@
+✖ allowance-file: validates one captured name before reading the payload (8.2214ms)
+✖ allowance-file: a changed name cannot erase an oversized first observation (10.6528ms)
+✖ allowance-file: metadata failure uses the public filename diagnostic (1.9391ms)
+✖ allowance-file: asynchronous filename failure is consumed without reading (141.2438ms)
+✔ allowance-file: native File name remains supported (31.8036ms)
+✔ allowance-file: invalid name objects are never string-coerced (0.5196ms)
+✖ allowance-bundle: validates one captured name before reading the payload (0.7848ms)
+✖ allowance-bundle: a changed name cannot erase an oversized first observation (0.6434ms)
+✖ allowance-bundle: metadata failure uses the public filename diagnostic (0.4403ms)
+✖ allowance-bundle: asynchronous filename failure is consumed without reading (8.1809ms)
+✔ allowance-bundle: native File name remains supported (3.0263ms)
+✔ allowance-bundle: invalid name objects are never string-coerced (0.3756ms)
+✖ token-identity-report: validates one captured name before reading the payload (0.744ms)
+✖ token-identity-report: a changed name cannot erase an oversized first observation (0.6854ms)
+✖ token-identity-report: metadata failure uses the public filename diagnostic (0.4326ms)
+✖ token-identity-report: asynchronous filename failure is consumed without reading (5.422ms)
+✔ token-identity-report: native File name remains supported (5.6611ms)
+✔ token-identity-report: invalid name objects are never string-coerced (0.4739ms)
+✖ period-file: validates one captured name before reading the payload (0.7851ms)
+✖ period-file: a changed name cannot erase an oversized first observation (1.0586ms)
+✖ period-file: metadata failure uses the public filename diagnostic (0.4505ms)
+✖ period-file: asynchronous filename failure is consumed without reading (6.0229ms)
+✔ period-file: native File name remains supported (3.2674ms)
+✔ period-file: invalid name objects are never string-coerced (0.3728ms)
+✖ period-library-file: validates one captured name before reading the payload (1.0415ms)
+✖ period-library-file: a changed name cannot erase an oversized first observation (1.0868ms)
+✖ period-library-file: metadata failure uses the public filename diagnostic (0.5702ms)
+✖ period-library-file: asynchronous filename failure is consumed without reading (6.3269ms)
+✔ period-library-file: native File name remains supported (3.6752ms)
+✔ period-library-file: invalid name objects are never string-coerced (0.3428ms)
+✖ period-report-file: validates one captured name before reading the payload (0.615ms)
+✖ period-report-file: a changed name cannot erase an oversized first observation (0.7141ms)
+✖ period-report-file: metadata failure uses the public filename diagnostic (0.3109ms)
+✖ period-report-file: asynchronous filename failure is consumed without reading (6.5272ms)
+✔ period-report-file: native File name remains supported (3.2339ms)
+✔ period-report-file: invalid name objects are never string-coerced (0.3925ms)
+✖ report-history-file: validates one captured name before reading the payload (0.8825ms)
+✖ report-history-file: a changed name cannot erase an oversized first observation (1.1068ms)
+✖ report-history-file: metadata failure uses the public filename diagnostic (0.5217ms)
+✖ report-history-file: asynchronous filename failure is consumed without reading (8.3986ms)
+✔ report-history-file: native File name remains supported (2.6786ms)
+✔ report-history-file: invalid name objects are never string-coerced (0.3492ms)
+✖ report-set-file: validates one captured name before reading the payload (0.5421ms)
+✖ report-set-file: a changed name cannot erase an oversized first observation (0.4117ms)
+✖ report-set-file: metadata failure uses the public filename diagnostic (0.2798ms)
+✖ report-set-file: asynchronous filename failure is consumed without reading (16.3899ms)
+✔ report-set-file: native File name remains supported (2.7469ms)
+✔ report-set-file: invalid name objects are never string-coerced (0.2428ms)
+✖ transfer-file: validates one captured name before reading the payload (0.8603ms)
+✖ transfer-file: a changed name cannot erase an oversized first observation (7.917ms)
+✖ transfer-file: metadata failure uses the public filename diagnostic (0.5732ms)
+✖ transfer-file: asynchronous filename failure is consumed without reading (8.5416ms)
+✔ transfer-file: native File name remains supported (8.209ms)
+✔ transfer-file: invalid name objects are never string-coerced (0.5164ms)
+✖ transfer-archive-file: validates one captured name before reading the payload (0.6609ms)
+✖ transfer-archive-file: a changed name cannot erase an oversized first observation (0.4963ms)
+✖ transfer-archive-file: metadata failure uses the public filename diagnostic (0.2921ms)
+✖ transfer-archive-file: asynchronous filename failure is consumed without reading (6.4427ms)
+✔ transfer-archive-file: native File name remains supported (2.8793ms)
+✔ transfer-archive-file: invalid name objects are never string-coerced (1.1687ms)
+✖ transfer-vault-file: validates one captured name before reading the payload (0.7762ms)
+✖ transfer-vault-file: a changed name cannot erase an oversized first observation (2.5389ms)
+✖ transfer-vault-file: metadata failure uses the public filename diagnostic (0.5056ms)
+✖ transfer-vault-file: asynchronous filename failure is consumed without reading (8.6336ms)
+✔ transfer-vault-file: native File name remains supported (5.9425ms)
+✔ transfer-vault-file: invalid name objects are never string-coerced (0.4541ms)
+✖ transfer-vault-collection: validates one captured name before reading the payload (0.6917ms)
+✖ transfer-vault-collection: a changed name cannot erase an oversized first observation (0.6631ms)
+✖ transfer-vault-collection: metadata failure uses the public filename diagnostic (0.5409ms)
+✖ transfer-vault-collection: asynchronous filename failure is consumed without reading (35.5799ms)
+✔ transfer-vault-collection: native File name remains supported (2.7173ms)
+✔ transfer-vault-collection: invalid name objects are never string-coerced (0.3481ms)
+✖ reconciliation-file: validates one captured name before reading the payload (0.7062ms)
+✖ reconciliation-file: a changed name cannot erase an oversized first observation (0.7412ms)
+✖ reconciliation-file: metadata failure uses the public filename diagnostic (0.5187ms)
+✖ reconciliation-file: asynchronous filename failure is consumed without reading (8.3865ms)
+✔ reconciliation-file: native File name remains supported (2.3691ms)
+✔ reconciliation-file: invalid name objects are never string-coerced (0.2962ms)
+ℹ tests 78
+ℹ suites 0
+ℹ pass 26
+ℹ fail 52
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 809.1894
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ allowance-file: validates one captured name before reading the payload (8.2214ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'ALLOWANCE_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readAllowanceFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-file.js:59:55)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.start (node:internal/test_runner/test:1242:17)
+        at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17),
+    expected: { code: 'ALLOWANCE_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ allowance-file: a changed name cannot erase an oversized first observation (10.6528ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'ALLOWANCE_FILE_READ'
+  -   code: 'ALLOWANCE_FILENAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: AllowanceError: ALLOWANCE_FILE_READ
+        at allowanceFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-targets.js:16:45)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readAllowanceFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-file.js:61:17)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'ALLOWANCE_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ allowance-file: metadata failure uses the public filename diagnostic (1.9391ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'ALLOWANCE_FILENAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readAllowanceFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-file.js:59:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'ALLOWANCE_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ allowance-file: asynchronous filename failure is consumed without reading (141.2438ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readAllowanceFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-file.js:59:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ allowance-bundle: validates one captured name before reading the payload (0.7848ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'ALLOWANCE_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readAllowanceBundle (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-bundle.js:98:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'ALLOWANCE_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ allowance-bundle: a changed name cannot erase an oversized first observation (0.6434ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'ALLOWANCE_FILE_READ'
+  -   code: 'ALLOWANCE_FILENAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: AllowanceError: ALLOWANCE_FILE_READ
+        at allowanceFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-targets.js:16:45)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readAllowanceBundle (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-bundle.js:100:17)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'ALLOWANCE_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ allowance-bundle: metadata failure uses the public filename diagnostic (0.4403ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'ALLOWANCE_FILENAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readAllowanceBundle (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-bundle.js:98:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'ALLOWANCE_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ allowance-bundle: asynchronous filename failure is consumed without reading (8.1809ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readAllowanceBundle (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-bundle.js:98:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ token-identity-report: validates one captured name before reading the payload (0.744ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'IDENTITY_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readTokenIdentityFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-report.js:83:55)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'IDENTITY_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ token-identity-report: a changed name cannot erase an oversized first observation (0.6854ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'IDENTITY_FILE_READ'
+  -   code: 'IDENTITY_FILENAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TokenIdentityError: IDENTITY_FILE_READ
+        at identityFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-codec.js:12:9)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readTokenIdentityFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-report.js:85:17)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'IDENTITY_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ token-identity-report: metadata failure uses the public filename diagnostic (0.4326ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'IDENTITY_FILENAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readTokenIdentityFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-report.js:83:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'IDENTITY_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ token-identity-report: asynchronous filename failure is consumed without reading (5.422ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readTokenIdentityFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-report.js:83:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ period-file: validates one captured name before reading the payload (0.7851ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readPeriodFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-file.js:49:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ period-file: a changed name cannot erase an oversized first observation (1.0586ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'PERIOD_FILE_READ'
+  -   code: 'PERIOD_FILENAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PeriodError: PERIOD_FILE_READ
+        at periodFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-plan.js:16:42)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readPeriodFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-file.js:54:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ period-file: metadata failure uses the public filename diagnostic (0.4505ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILENAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readPeriodFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-file.js:49:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ period-file: asynchronous filename failure is consumed without reading (6.0229ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readPeriodFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-file.js:49:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ period-library-file: validates one captured name before reading the payload (1.0415ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readPeriodLibraryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-library-file.js:49:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ period-library-file: a changed name cannot erase an oversized first observation (1.0868ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'PERIOD_FILE_READ'
+  -   code: 'PERIOD_FILENAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PeriodError: PERIOD_FILE_READ
+        at periodFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-plan.js:16:42)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readPeriodLibraryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-library-file.js:53:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ period-library-file: metadata failure uses the public filename diagnostic (0.5702ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILENAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readPeriodLibraryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-library-file.js:49:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ period-library-file: asynchronous filename failure is consumed without reading (6.3269ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readPeriodLibraryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-library-file.js:49:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ period-report-file: validates one captured name before reading the payload (0.615ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readPeriodReportFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-file.js:44:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ period-report-file: a changed name cannot erase an oversized first observation (0.7141ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'PERIOD_FILE_READ'
+  -   code: 'PERIOD_FILENAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PeriodError: PERIOD_FILE_READ
+        at periodFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-plan.js:16:42)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readPeriodReportFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-file.js:48:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ period-report-file: metadata failure uses the public filename diagnostic (0.3109ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILENAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readPeriodReportFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-file.js:44:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ period-report-file: asynchronous filename failure is consumed without reading (6.5272ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readPeriodReportFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-file.js:44:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ report-history-file: validates one captured name before reading the payload (0.8825ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readReportHistoryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-history-file.js:49:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ report-history-file: a changed name cannot erase an oversized first observation (1.1068ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'PERIOD_FILE_READ'
+  -   code: 'PERIOD_FILENAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PeriodError: PERIOD_FILE_READ
+        at periodFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-plan.js:16:42)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readReportHistoryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-history-file.js:53:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ report-history-file: metadata failure uses the public filename diagnostic (0.5217ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILENAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readReportHistoryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-history-file.js:49:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ report-history-file: asynchronous filename failure is consumed without reading (8.3986ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readReportHistoryFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-history-file.js:49:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ report-set-file: validates one captured name before reading the payload (0.5421ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readReportSetFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-set-file.js:43:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ report-set-file: a changed name cannot erase an oversized first observation (0.4117ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'PERIOD_FILE_READ'
+  -   code: 'PERIOD_FILENAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: PeriodError: PERIOD_FILE_READ
+        at periodFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-plan.js:16:42)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readReportSetFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-set-file.js:47:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ report-set-file: metadata failure uses the public filename diagnostic (0.2798ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'PERIOD_FILENAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readReportSetFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-set-file.js:43:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'PERIOD_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ report-set-file: asynchronous filename failure is consumed without reading (16.3899ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readReportSetFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-set-file.js:43:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ transfer-file: validates one captured name before reading the payload (0.8603ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'TRANSFER_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readTransferFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-file.js:50:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ transfer-file: a changed name cannot erase an oversized first observation (7.917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'TRANSFER_FILE_READ'
+  -   code: 'TRANSFER_FILE_NAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TransferError: TRANSFER_FILE_READ
+        at transferFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:22:9)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readTransferFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-file.js:54:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_NAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ transfer-file: metadata failure uses the public filename diagnostic (0.5732ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'TRANSFER_FILE_NAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readTransferFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-file.js:50:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_NAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ transfer-file: asynchronous filename failure is consumed without reading (8.5416ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readTransferFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-file.js:50:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ transfer-archive-file: validates one captured name before reading the payload (0.6609ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'TRANSFER_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readTransferArchive (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-archive-file.js:31:71)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ transfer-archive-file: a changed name cannot erase an oversized first observation (0.4963ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'TRANSFER_FILE_READ'
+  -   code: 'TRANSFER_FILE_NAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TransferError: TRANSFER_FILE_READ
+        at transferFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:22:9)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readTransferArchive (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-archive-file.js:33:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_NAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ transfer-archive-file: metadata failure uses the public filename diagnostic (0.2921ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'TRANSFER_FILE_NAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readTransferArchive (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-archive-file.js:31:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_NAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ transfer-archive-file: asynchronous filename failure is consumed without reading (6.4427ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readTransferArchive (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-archive-file.js:31:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ transfer-vault-file: validates one captured name before reading the payload (0.7762ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'TRANSFER_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readVaultFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-file.js:52:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ transfer-vault-file: a changed name cannot erase an oversized first observation (2.5389ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'TRANSFER_FILE_READ'
+  -   code: 'TRANSFER_FILE_NAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TransferError: TRANSFER_FILE_READ
+        at transferFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:22:9)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readVaultFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-file.js:56:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_NAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ transfer-vault-file: metadata failure uses the public filename diagnostic (0.5056ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'TRANSFER_FILE_NAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readVaultFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-file.js:52:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_NAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ transfer-vault-file: asynchronous filename failure is consumed without reading (8.6336ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readVaultFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-file.js:52:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ transfer-vault-collection: validates one captured name before reading the payload (0.6917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'TRANSFER_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readVaultCollection (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-collection.js:50:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ transfer-vault-collection: a changed name cannot erase an oversized first observation (0.6631ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'TRANSFER_FILE_READ'
+  -   code: 'TRANSFER_FILE_NAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TransferError: TRANSFER_FILE_READ
+        at transferFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-codec.js:22:9)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readVaultCollection (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-collection.js:52:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_NAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ transfer-vault-collection: metadata failure uses the public filename diagnostic (0.5409ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'TRANSFER_FILE_NAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readVaultCollection (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-collection.js:50:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'TRANSFER_FILE_NAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ transfer-vault-collection: asynchronous filename failure is consumed without reading (35.5799ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readVaultCollection (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-collection.js:50:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:22:2
+✖ reconciliation-file: validates one captured name before reading the payload (0.7062ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'RECONCILIATION_FILE_READ'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: second read
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:24:52)
+        at readReconciliationFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/reconciliation-file.js:71:54)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:25:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'RECONCILIATION_FILE_READ' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:27:2
+✖ reconciliation-file: a changed name cannot erase an oversized first observation (0.7412ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'RECONCILIATION_FILE_READ'
+  -   code: 'RECONCILIATION_FILENAME'
+    }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: ReconciliationError: RECONCILIATION_FILE_READ
+        at reconciliationFail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/reconciliation-model.js:20:9)
+        at readFormat (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-file.js:43:12)
+        at async readReconciliationFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/reconciliation-file.js:78:16)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:30:4)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'RECONCILIATION_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:32:2
+✖ reconciliation-file: metadata failure uses the public filename diagnostic (0.5187ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'RECONCILIATION_FILENAME'
+  - }
+  
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:4)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: private metadata details
+        at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:33:45)
+        at readReconciliationFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/reconciliation-file.js:71:28)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:34:25)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: { code: 'RECONCILIATION_FILENAME' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-format-name-next.test.mjs:36:2
+✖ reconciliation-file: asynchronous filename failure is consumed without reading (8.3865ms)
+  Error: async metadata
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:37:61)
+      at readReconciliationFile (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/reconciliation-file.js:71:28)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-format-name-next.test.mjs:38:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

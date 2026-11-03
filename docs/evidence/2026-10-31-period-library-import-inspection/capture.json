@@ -1,0 +1,83 @@
+{
+  "source": "a7e54ea",
+  "synthetic": true,
+  "providerReads": 0,
+  "storageWrites": 0,
+  "rows": [
+    {
+      "name": "mixed-metadata",
+      "exitCode": 2,
+      "compatible": false,
+      "additions": 1,
+      "identical": 1,
+      "conflicts": 1,
+      "capacityFits": true,
+      "controllerReviewAvailable": false,
+      "controllerError": "PERIOD_LIBRARY_IMPORT_CONFLICT",
+      "cliMatchesSharedExactly": true,
+      "controllerMatchesSharedExactly": true,
+      "bothInputsUnchanged": true,
+      "storageWrites": 0
+    },
+    {
+      "name": "removed-restriction",
+      "exitCode": 2,
+      "compatible": false,
+      "additions": 0,
+      "identical": 0,
+      "conflicts": 1,
+      "capacityFits": true,
+      "controllerReviewAvailable": false,
+      "controllerError": "PERIOD_LIBRARY_IMPORT_CONFLICT",
+      "cliMatchesSharedExactly": true,
+      "controllerMatchesSharedExactly": true,
+      "bothInputsUnchanged": true,
+      "storageWrites": 0
+    },
+    {
+      "name": "compatible-addition",
+      "exitCode": 0,
+      "compatible": true,
+      "additions": 1,
+      "identical": 0,
+      "conflicts": 0,
+      "capacityFits": true,
+      "controllerReviewAvailable": true,
+      "controllerError": null,
+      "cliMatchesSharedExactly": true,
+      "controllerMatchesSharedExactly": true,
+      "bothInputsUnchanged": true,
+      "storageWrites": 0
+    },
+    {
+      "name": "empty-retains-current",
+      "exitCode": 0,
+      "compatible": true,
+      "additions": 0,
+      "identical": 0,
+      "conflicts": 0,
+      "capacityFits": true,
+      "controllerReviewAvailable": true,
+      "controllerError": null,
+      "cliMatchesSharedExactly": true,
+      "controllerMatchesSharedExactly": true,
+      "bothInputsUnchanged": true,
+      "storageWrites": 0
+    },
+    {
+      "name": "capacity-exceeded",
+      "exitCode": 2,
+      "compatible": false,
+      "additions": 1,
+      "identical": 0,
+      "conflicts": 0,
+      "capacityFits": false,
+      "controllerReviewAvailable": false,
+      "controllerError": "PERIOD_LIBRARY_CAPACITY",
+      "cliMatchesSharedExactly": true,
+      "controllerMatchesSharedExactly": true,
+      "bothInputsUnchanged": true,
+      "storageWrites": 0
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-11-03T11:47:41.735Z",
+  "records": [
+    {
+      "download": "ThreeCore-budget-input (3).json",
+      "file": "browser-live-budget.json",
+      "bytes": 618,
+      "sha256": "1e2f197108f4a8439c98a995bacff0ca2f0a92d1a7d1fc58ffedd30c4c1ec552",
+      "byteIdenticalTo": "live-ema-usdc-budget.json"
+    },
+    {
+      "download": "ThreeCore-shared-budget-input (2).json",
+      "file": "browser-shared-budget.json",
+      "bytes": 2323,
+      "sha256": "803c18f91d3fd2e4225c6c4153802bab44ee5cf967847a5322de55dad59696b1",
+      "byteIdenticalTo": "synthetic-shared-usdc-budget.json"
+    },
+    {
+      "download": "ThreeCore-shared-budget-input (3).json",
+      "file": "browser-shared-reexport.json",
+      "bytes": 2323,
+      "sha256": "803c18f91d3fd2e4225c6c4153802bab44ee5cf967847a5322de55dad59696b1",
+      "byteIdenticalTo": "synthetic-shared-usdc-budget.json"
+    },
+    {
+      "download": "ThreeCore-budget-evidence (7).json",
+      "file": "browser-live-evidence.json",
+      "bytes": 1843,
+      "sha256": "812299e5f046c423bd6bf744dec875e2ecb6857eeab95573860712e24e58f292",
+      "byteIdenticalTo": "live-budget-evidence.json"
+    }
+  ],
+  "sharedShortfallUnits": "4000000",
+  "liveEvidenceConsistent": true,
+  "liveBudgetSatisfied": false
+}

@@ -1,0 +1,32 @@
+:root{color-scheme:dark;font-family:system-ui,"Noto Sans JP",sans-serif;background:#101725;color:#eaf0f7}
+*{box-sizing:border-box}body{margin:0}main{max-width:1260px;margin:auto;padding:32px 24px 48px}
+a{color:#89dfd0}h1{font-size:36px;margin:8px 0}h2{font-size:20px;margin-top:0}p{line-height:1.8}
+.eyebrow{letter-spacing:.16em;color:#9eafc4;font-size:12px}.notice{padding:16px 20px;background:#253346;border-left:4px solid #7ee0cb;border-radius:8px}
+section{background:#182333;border:1px solid #33435c;border-radius:14px;padding:24px;margin:20px 0}
+.toolbar,.actions{display:flex;gap:14px;flex-wrap:wrap;align-items:end}.toolbar label{min-width:170px}
+.layout{display:grid;grid-template-columns:minmax(300px,1fr) minmax(420px,1.4fr);gap:20px}.layout section{margin-top:0}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0 22px}
+label{display:flex;flex-direction:column;gap:7px;font-size:13px;color:#bdcde0}
+input,select,button,textarea{font:inherit;border-radius:7px;padding:11px 12px;border:1px solid #52647f}
+input,select,textarea{background:#0e1828;color:#eef5fc;min-width:0;width:100%}
+button{background:#164e4a;color:#e8fffa;cursor:pointer;font-weight:650}
+button:hover{background:#21625c}button:disabled{opacity:.45;cursor:default}.check{flex-direction:row;align-items:center;margin-bottom:24px}
+.check input{width:auto}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{padding:16px;background:#0e192a;border-radius:10px}
+.metric span{display:block;color:#9eb2cc;font-size:12px}.metric strong{display:block;font-size:24px;overflow-wrap:anywhere;margin-top:6px}
+#status{color:#a0efdc}#allocation-note{padding:12px;background:#243247;border-radius:8px}.small,footer{font-size:12px;color:#a8b9cd;overflow-wrap:anywhere}
+.table-wrap{overflow:auto;margin:20px 0}table{border-collapse:collapse;width:100%;font-size:12px}th,td{text-align:left;padding:10px;border-bottom:1px solid #34455e}
+caption{text-align:left;margin-bottom:12px;font-weight:bold}.blocked{color:#ffd08d}.passed{color:#a0efdc}td{overflow-wrap:anywhere}
+:focus-visible{outline:3px solid #ffd369;outline-offset:3px}.file-label{max-width:350px}footer{line-height:1.8;margin-top:24px}
+.restore-steps{padding-left:24px;line-height:1.9;color:#bdcde0}.restore-stage{padding:12px 16px;border-left:4px solid #7ee0cb;background:#253346;font-weight:700;border-radius:6px}
+.restore-stage[data-stage="review"]{border-color:#ffd369}.restore-stage[data-stage="error"]{border-color:#ffb5a5}.restore-source{overflow-wrap:anywhere;color:#a0efdc}
+details{margin-top:24px;border-top:1px solid #34455e;padding-top:16px}summary{cursor:pointer;font-weight:650}textarea{resize:vertical;font-family:monospace;white-space:pre-wrap;margin-bottom:12px}
+[hidden]{display:none!important}
+.scenario-panel{grid-column:1/-1}.scenario-panel table td{vertical-align:top}.scenario-records{min-width:640px}.scenario-records td:first-child{min-width:120px}.scenario-panel select{max-width:300px}#whatif-summary{padding:12px;background:#243247;border-radius:8px}
+.overview{margin-top:28px;border-top:1px solid #34455e;padding-top:10px}.overview-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}.overview-card{background:#0e192a;border:1px solid #34455e;border-radius:10px;padding:16px}.overview-card h3{margin:0;color:#a0efdc}.overview-card p{font-size:13px}.overview-card details{margin-top:12px;padding-top:12px}.overview table td{vertical-align:top}.overview table th:nth-child(-n+2){min-width:65px}
+@media(max-width:850px){.overview-cards{grid-template-columns:1fr}}
+.review-detail{padding:14px;border:1px solid #34455e;border-radius:8px}.review-detail td{vertical-align:top;min-width:110px;overflow-wrap:anywhere}.review-detail table{table-layout:fixed}.comparison-note{padding:12px;border-left:3px solid #ffd369;background:#253346}
+@media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:20px 14px}.fields{gap:12px}section{padding:18px}h1{font-size:30px}}
+
+input[aria-invalid="true"]{border:2px solid #ffb5a5;background:#30202b}
+
+.rehearsal-difference-detail{white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;max-height:28rem;overflow:auto;padding:14px;border:1px solid #52647f;border-radius:8px;background:#0e1828;line-height:1.6}

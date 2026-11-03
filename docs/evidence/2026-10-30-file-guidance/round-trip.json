@@ -1,0 +1,9 @@
+{
+  "source": "C:/Users/aseet/Downloads/ThreeCore-rehearsal-session (10).json",
+  "result": "C:/Users/aseet/Downloads/ThreeCore-rehearsal-session (11).json",
+  "sourceBytes": 17387,
+  "resultBytes": 17387,
+  "equal": true,
+  "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c",
+  "method": "Native file choice, deliberate invalid-UTF8 selection in six inputs, actual browser download"
+}

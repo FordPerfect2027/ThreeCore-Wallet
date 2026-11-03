@@ -1,0 +1,2 @@
+858c01fe0ac900fdd0fc6691356a5cad03622a783bb04ccb7e472206ae82c047  collection.json
+4cfc72c023c6919821d9a4327dcca6e7c1b5ecaecebe25319bef5454d8085f6d  targeted.log

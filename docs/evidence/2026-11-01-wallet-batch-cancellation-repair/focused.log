@@ -1,0 +1,20 @@
+✔ saved files batch releases a delayed decoder import on cancelled, retaining its checked prefix (604.4445ms)
+✔ saved files batch releases a delayed decoder import on timed-out, retaining its checked prefix (3483.7824ms)
+✔ saved texts batch releases a delayed decoder import on cancelled, retaining its checked prefix (482.5687ms)
+✔ saved texts batch releases a delayed decoder import on timed-out, retaining its checked prefix (3418.9555ms)
+✔ native cancellation survives reader shadowing of the owned signal: false (29.073ms)
+✔ native cancellation survives reader shadowing of the owned signal: true (3.2856ms)
+✔ native cancellation survives reader shadowing of the owned signal: throw (3.3494ms)
+✔ a true shadow does not fabricate a native abort or discard successfully read originals (88.7413ms)
+✔ cancellation retains the checked prefix even if the second source shadows the owned signal with a getter (9.7426ms)
+✔ overall deadline uses native state despite a false shadow, and late source rejection stays observed (42.7847ms)
+✔ artificial owned-signal events cannot consume later real cancellation (1.3322ms)
+✔ fake true abort state cannot hide a real source decoding failure or skip the following source (6.6691ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8215.5309

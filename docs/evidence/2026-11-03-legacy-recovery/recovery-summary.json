@@ -1,0 +1,54 @@
+{
+  "schema": "threecore.legacy-history-recovery.v1",
+  "recordedAt": "2026-11-02T18:20:37.562Z",
+  "oldRevision": "07041f00efdb503cb76a06fbe12e5531cb380930",
+  "newRevision": "bf690f38b070362aab1369fbf22c8e68b1a6567f",
+  "original": {
+    "bytes": 10103,
+    "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc",
+    "digest": "e2134d6f55364ce1cdcf5487513983b6bd8be7b858f7ff03fcc0027acc9da37d",
+    "oldRejection": "WORKSPACE_DUPLICATE"
+  },
+  "historyView": {
+    "bytes": 9983,
+    "sha256": "07039033ae5e30e5c3b7fdfccbf8c33afc6d291f2dceec93a64b757965104795",
+    "digest": "e60c6502d207d6002709ce8082a30b925ed1401df6a8451a7f5a534f43317150",
+    "configuredAccounts": 0,
+    "historyRecords": 9,
+    "oldDecoderAccepted": true,
+    "currentDecoderAccepted": true
+  },
+  "histories": [
+    {
+      "agent": "DAT",
+      "reports": 3,
+      "sha256": "0e70d412c8001ad113c402901fb1e7a65235b723cf564abb4812c0569bc1b3fc",
+      "unchanged": true
+    },
+    {
+      "agent": "EMA",
+      "reports": 3,
+      "sha256": "4f5438a89a3792ee6f7146dbf4bc11e2a34291f330c39c2cf8c3fc24daf5caa3",
+      "unchanged": true
+    },
+    {
+      "agent": "CAWELON",
+      "reports": 3,
+      "sha256": "c1e09ece2ea062ebc5a6709ae06e466bcf0224d41888728bf4db4c7e3e78d951",
+      "unchanged": true
+    }
+  ],
+  "onlyChangedFields": [
+    "entries[0].account",
+    "entries[1].account",
+    "entries[2].account"
+  ],
+  "envelopeChecksumRecomputed": true,
+  "restoringOriginalConfigurationReproducesOriginalBytes": true,
+  "tamperRejected": "WORKSPACE_CHECKSUM",
+  "originalInputUnchanged": true,
+  "filesOnly": true,
+  "browserRestorePerformed": false,
+  "realWalletOrRpcUsed": false,
+  "githubWrites": false
+}

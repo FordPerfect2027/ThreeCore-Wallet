@@ -1,0 +1,54 @@
+{
+  "head": "3fd2836d0ff93e3881518868799f781f13103323",
+  "base": "http://127.0.0.1:4231",
+  "server": {
+    "port": 4231,
+    "processId": 2108,
+    "startTimeUtc": "2026-10-29T15:41:41.9142716Z",
+    "preserved": true
+  },
+  "results": [
+    {
+      "path": "examples/history-files.js",
+      "status": 200,
+      "bytes": 35720,
+      "sha256": "0955d6d6f92fa847c4e12c3fab6a29b44215730a966aafc142cb08994c84048d",
+      "exactWorkingSource": true
+    },
+    {
+      "path": "examples/history-panel.js",
+      "status": 200,
+      "bytes": 23593,
+      "sha256": "6a185c57c612933d2c04eace568671fbc62f881a59dd173c26a6079421d8cf29",
+      "exactWorkingSource": true
+    },
+    {
+      "path": "examples/comparison-panel.js",
+      "status": 200,
+      "bytes": 15448,
+      "sha256": "164f74b240427408f9f67ca12b54a7f0b1b8f9a91080d07af907a9cd11c700e9",
+      "exactWorkingSource": true
+    },
+    {
+      "path": "examples/wallet-demo.js",
+      "status": 200,
+      "bytes": 29755,
+      "sha256": "cab692afe81f176a73de08618aa872cf3868d0e2bce5f490c3138ef987b46a70",
+      "exactWorkingSource": true
+    },
+    {
+      "path": "src/history-query.js",
+      "status": 200,
+      "bytes": 10802,
+      "sha256": "f1820bc799c8b7c8aaca41a3e2869bcc39b3ff50fbb658dad2f54b08f72ba7ad",
+      "exactWorkingSource": true
+    }
+  ],
+  "rehearsalPage": {
+    "status": 200,
+    "containsRehearsalHeading": true
+  },
+  "existingBrowserTabReloaded": false,
+  "externalRequests": 0,
+  "readOnlyHealthCheck": true
+}

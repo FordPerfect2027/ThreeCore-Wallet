@@ -1,0 +1,22 @@
+{
+  "source": "ce12d98",
+  "syntheticOnly": true,
+  "nativeBrowserCases": 865,
+  "navigationLinks": 18,
+  "destinations": [
+    "session-title",
+    "workspace-title",
+    "whatif-title",
+    "scenario-set-title",
+    "record-browser-title",
+    "ledger-title",
+    "check-suite-title",
+    "report-review-title",
+    "report-evidence-title",
+    "record-save-title"
+  ],
+  "layoutWidthPixels": 360,
+  "longValuesExact": true,
+  "sessionUnchanged": true,
+  "userBrowserConnectionRestored": false
+}

@@ -1,0 +1,35 @@
+✔ saved prefixes distinguish empty plans, partial history and complete record presence (85.3891ms)
+✔ adjacent completed reports count each block once with exact inclusive query boundaries (204.3429ms)
+✔ overlapping windows and identical saved reports never double count acquired ranges (437.2912ms)
+✔ large unplanned gaps remain exact without allocating a row per block (101.5181ms)
+✔ archived and restricted source records remain explicit review evidence (355.9378ms)
+✔ shared-chain hash disagreements remain visible despite full saved range coverage (242.0335ms)
+✔ separate chains and missing tokens never acquire coverage from another group (65.0944ms)
+✔ coverage is immutable, independent of selection order and does not alter evidence (124.1444ms)
+✔ coverage panel selects pending and recorded intervals and removes retained handlers (24.5193ms)
+✔ timeline has distinct chronological groups for all three tokens (234.2524ms)
+✔ timeline order is independent of the order in which checkboxes were selected (216.6954ms)
+✔ gap cell explains exact boundaries and adjacent report names (112.9946ms)
+✔ tiny intervals stay visible beside a gap larger than safe floating-point integers (103.4428ms)
+✔ overlap cell identifies every covering report without repeating an interval (105.4001ms)
+✔ same-evidence repetitions use review wording instead of duplicate value totals (293.8956ms)
+✔ a conflicting boundary is disclosed on both neighboring cells (98.0185ms)
+✔ shared chain hash disagreements are visible on each affected token group (242.1459ms)
+✔ missing agent has a named notice instead of an invented empty period (86.1026ms)
+✔ partial archived evidence is visibly marked and never receives recorded tone (161.9042ms)
+✔ restricted source record retains the reacquisition instruction (71.4224ms)
+✔ all cells have unique stable identifiers and immutable nested report references (279.1297ms)
+✔ timeline panel announces selected report details without modifying source input (80.187ms)
+✔ selection is exclusive within one token group and independent across groups (71.5428ms)
+✔ arrow keys and Home/End move focus without silently selecting a different interval (70.5814ms)
+✔ timeline renders hostile labels as plain text when a cell is selected (85.1171ms)
+✔ unmounting removes handlers from retained controls (72.7834ms)
+✔ all missing-token notices remain explicit in the visual panel (58.5719ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2978.9524

@@ -1,0 +1,1542 @@
+{
+  "schema": "threecore-portfolio-history-v1",
+  "historicalObservation": true,
+  "reports": [
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "1",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "2",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "3",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "4",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "5",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "6",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "7",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "8",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "9",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "10",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "11",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "12",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "13",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "14",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "15",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "16",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "17",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "18",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "19",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "20",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "21",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "22",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "23",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "24",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "25",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "26",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "27",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "28",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "29",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "30",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "31",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "32",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "33",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "34",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "35",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "36",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "37",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "38",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "39",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "40",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "41",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "42",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "43",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "44",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "45",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "46",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "47",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "48",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "49",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "50",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "51",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "52",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "53",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "54",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "55",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "56",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "57",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "58",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "59",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "60",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "61",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "62",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "63",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    },
+    {
+      "schema": "threecore-portfolio-snapshot-v1",
+      "historicalObservation": true,
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "64",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      }
+    }
+  ]
+}

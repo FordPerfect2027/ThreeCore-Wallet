@@ -1,0 +1,20 @@
+<!doctype html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>提案に必要な許可額を確認 — ThreeCore</title><link rel="stylesheet" href="/examples/operation-rehearsal.css">
+</head><body><main><header><a href="/proposals/quote/" target="_blank" rel="noopener">提案と見積もりの照合を別タブで開く</a>
+<p><a href="/proposals/fees/" target="_blank" rel="noopener">費用の保存記録を別タブで確認する</a></p>
+<h1>提案に必要な許可額を確認</h1><p>保存した提案・見積もりと同じブロックで、Aerodrome Classic Routerへの既存の許可額と残高を確認します。購入はUSDC、売却は対象トークンを読み取ります。</p>
+<p>公開情報の読み取り専用です。Wallet接続や取引の承認は行いません。結果は保存時点の照合で、現在の実行許可や費用見積もりではありません。</p></header>
+<section><h2>1. 資料を開く</h2><label>提案と見積もりの照合記録、または許可額の保存記録1個 <input id="allow-file" type="file" accept=".json,application/json"></label>
+<p id="allow-status" role="status">資料を選んでください。選択だけでは公開情報を取得しません。</p>
+<div id="allow-preview" hidden><p id="allow-context"></p><p id="allow-target"></p><p id="allow-block"></p><p id="allow-recorded"></p></div></section>
+<section><h2>2. 取得・照合</h2><label>許可額の取得から許容する時間（秒、1〜3600） <input id="allow-age" type="text" inputmode="numeric" value="60"></label>
+<p>見積もりの期限・比較条件は元の保存記録を維持します。古いブロックを読み直しても、見積もりの期限は延長されません。</p>
+<button id="allow-read" type="button" disabled>同じブロックの許可額を取得して照合</button>
+<button id="allow-check" type="button" disabled>保存された許可額を現在の時刻で再照合</button>
+<button id="allow-cancel" type="button">取り消す</button></section>
+<section id="allow-result" hidden><h2>3. 確認結果</h2><p id="allow-outcome"></p><p id="allow-amount"></p><p id="allow-balance"></p><p id="allow-time"></p><ul id="allow-reasons"></ul>
+<p>不足や期限超過がある結果も保存できます。許可額の変更は行いません。</p></section>
+<button id="allow-save" type="button" disabled>元の資料と結果を1ファイルに保存</button><p id="allow-save-status" role="status"></p>
+</main><script type="module" src="/examples/proposal-allowance-page.js"></script></body></html>

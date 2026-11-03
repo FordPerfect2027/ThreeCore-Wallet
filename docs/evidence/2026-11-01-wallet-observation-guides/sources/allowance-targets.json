@@ -1,0 +1,22 @@
+{
+  "schema": "threecore-allowance-file-v1",
+  "kind": "targets",
+  "algorithm": "SHA-256",
+  "digest": "bcc112585bf9c12d1fec035d3e9b37103d5156df69a118dc91d3dd7001028e8a",
+  "payload": {
+    "schema": "threecore-allowance-targets-v1",
+    "agent": "DAT",
+    "chainId": 8453,
+    "tokenAddress": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+    "targets": [
+      {
+        "address": "0x5555555555555555555555555555555555555555",
+        "label": "Exchange A"
+      },
+      {
+        "address": "0x6666666666666666666666666666666666666666",
+        "label": "Exchange B"
+      }
+    ]
+  }
+}

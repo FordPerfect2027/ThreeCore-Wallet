@@ -1,0 +1,68 @@
+{
+  "schema": "threecore.report-history-import-inspection.v1",
+  "beforeCount": 4,
+  "incomingCount": 2,
+  "additions": 1,
+  "duplicates": 1,
+  "conflicts": 0,
+  "metadataKept": 1,
+  "retainedIds": [
+    "12345678-1234-4234-8234-000000000102",
+    "12345678-1234-4234-8234-000000000103",
+    "12345678-1234-4234-8234-000000000104"
+  ],
+  "rows": [
+    {
+      "incomingId": "12345678-1234-4234-8234-000000000201",
+      "retainedId": "12345678-1234-4234-8234-000000000101",
+      "kind": "duplicate",
+      "changedMetadata": [
+        "id",
+        "note",
+        "archived"
+      ],
+      "changedReportFields": [],
+      "changedAgents": [],
+      "removedRestrictions": [],
+      "incomingArchived": true,
+      "retainedArchived": false,
+      "localMetadataKept": true
+    },
+    {
+      "incomingId": "12345678-1234-4234-8234-000000000109",
+      "retainedId": null,
+      "kind": "addition",
+      "changedMetadata": [],
+      "changedReportFields": [],
+      "changedAgents": [],
+      "removedRestrictions": [],
+      "incomingArchived": false,
+      "retainedArchived": null,
+      "localMetadataKept": false
+    }
+  ],
+  "revisionLimited": false,
+  "resultingRevision": 1,
+  "capacity": {
+    "entriesAfter": 5,
+    "maxEntries": 12,
+    "bytesAfter": 65326,
+    "maxBytes": 67108864,
+    "fits": true
+  },
+  "compatible": true,
+  "compatibleSkippingConflicts": true,
+  "addOnly": true,
+  "localEvidenceKept": true,
+  "historicalOnly": true,
+  "containsOriginalEvidence": false,
+  "restorable": false,
+  "automaticallyApplied": false,
+  "liveChainRechecked": false,
+  "authorizesExecution": false,
+  "beforeRevision": 0,
+  "beforeDigest": "ed8a1a40bc4332f39693907cbc3be3d9002d4d2416a61a40e78eafb7a4aad275",
+  "incomingDigest": "0a0ff5f39a718174adc226dafb6b9dc67507b5392a745f9332c7676e029e817b",
+  "sourcesCaptured": true,
+  "authenticated": false
+}

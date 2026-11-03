@@ -4,7 +4,9 @@ import { request } from "node:http";
 import { createDemoServer } from "../examples/dev-server.js";
 
 const assets = ["/src/file-read-policy.js", "/src/file-read-source.js", "/src/file-read-service.js",
-  "/src/file-read-status.js", "/src/security-file.js", "/examples/file-read-panel.js", "/src/state-notifier.js", "/src/security-callback.js", "/src/security-abort.js"];
+  "/src/file-read-status.js", "/src/security-file.js", "/examples/file-read-panel.js", "/src/state-notifier.js", "/src/security-callback.js", "/src/security-abort.js", "/src/security-json.js",
+  "/src/security-data.js", "/examples/export-download.js", "/examples/export-resource.js",
+  "/src/export-guard.js", "/src/export-payload.js", "/src/export-policy.js", "/src/provider-error.js"];
 const fixtures = ["/test/browser/file-read-ui-tests.js", "/test/browser/file-boundary-demo/",
   "/test/browser/file-boundary-demo.js"];
 

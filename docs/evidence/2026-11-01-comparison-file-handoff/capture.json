@@ -1,0 +1,35 @@
+{
+  "source": "026d7f9",
+  "captures": [
+    {
+      "kind": "wallet",
+      "originalPath": "docs/evidence/2026-11-01-portable-batch-pairs/wallet-pair.json",
+      "appendedSpaces": 0,
+      "handedFileBytes": 32787,
+      "handoffStatus": "同じファイルの再確認を終えました。二組の比較資料の欄で結果をご確認ください。履歴や設定の復元は行っていません。",
+      "verificationStatus": "照合結果の保存を開始しました。元資料の判定は変わりません。",
+      "extraPickerSelection": false,
+      "ordinaryBatchRows": 0,
+      "exactUiApi": true,
+      "negativeSourceResultsPreserved": true
+    },
+    {
+      "kind": "rehearsal",
+      "originalPath": "docs/evidence/2026-11-01-portable-batch-pairs/rehearsal-pair.json",
+      "appendedSpaces": 2097152,
+      "handedFileBytes": 2120448,
+      "handoffStatus": "二組の比較資料の再確認を終えました。比較資料の欄で結果をご確認ください。現在の履歴・一覧・比較元は変更していません。",
+      "verificationStatus": "保存内容と二組の再計算・比較が一致しました。 比較元2件／比較先2件／照合値の変化1件。 元資料自体に再計算の相違・形式・照合値の問題があります。照合結果の内訳をご確認ください。 現在の一覧・比較元・履歴は置き換えていません。 照合結果の保存を開始しました。",
+      "extraPickerSelection": false,
+      "ordinaryBatchRows": 0,
+      "exactUiApi": true,
+      "negativeSourceResultsPreserved": true
+    }
+  ],
+  "synthetic": true,
+  "nativeBrowserCases": 128,
+  "nativeFullRehearsalSessionUnchanged": true,
+  "realPickerVerified": false,
+  "userTabConnectionVerified": false,
+  "externalRpcCalls": 0
+}

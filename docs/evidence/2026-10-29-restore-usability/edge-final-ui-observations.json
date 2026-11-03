@@ -1,0 +1,177 @@
+[
+  {
+    "step": "final-source-1325e8a-fresh-load",
+    "at": "2026-10-29T12:01:12.559Z",
+    "state": {
+      "agent": "DAT",
+      "applyDisabled": true,
+      "comparison": "",
+      "metrics": "",
+      "overview": "DAT\t未作成\t—\t—\t—\nEMA\t未作成\t—\t—\t—\nCAWELON\t未作成\t—\t—\t—",
+      "pasteLength": 0,
+      "receipt": "",
+      "source": "",
+      "stage": "1 / 3 — 保存した記録を選ぶ",
+      "status": "保存した記録を選ぶと、復旧前に変更内容を確認できます。自動保存は行いません。",
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "final-source-original-preview",
+    "at": "2026-10-29T12:01:15.267Z",
+    "state": {
+      "agent": "DAT",
+      "applyDisabled": false,
+      "comparison": "DAT\t未作成\t3件\t復旧する\nEMA\t未作成\t2件\t復旧する\nCAWELON\t未作成\t1件\t復旧する",
+      "metrics": "",
+      "overview": "DAT\t未作成\t—\t—\t—\nEMA\t未作成\t—\t—\t—\nCAWELON\t未作成\t—\t—\t—",
+      "pasteLength": 0,
+      "receipt": "",
+      "source": "確認する記録: 貼り付けた一括記録",
+      "stage": "2 / 3 — 選択できています。次は復旧ボタンを押してください",
+      "status": "上の一覧は現在の履歴です。下の変更内容を確認し、「確認した3トークンの履歴を復旧」を押してください。必要なら現在の履歴を先に一括保存できます。",
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "final-source-six-records-restored",
+    "at": "2026-10-29T12:01:16.596Z",
+    "state": {
+      "agent": "DAT",
+      "applyDisabled": true,
+      "comparison": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "pasteLength": 0,
+      "receipt": "直前の復旧: 貼り付けた一括記録 — DAT: 3件 / EMA: 2件 / CAWELON: 1件。全記録を再計算しました。",
+      "source": "",
+      "stage": "3 / 3 — 復旧が完了しました",
+      "status": "上の一覧に復旧済みの履歴を表示しています。取り消し履歴は新しく開始します。必要な履歴は一括保存してください。",
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "keyboard-focus-after-confirmation",
+    "at": "2026-10-29T12:01:43.437Z",
+    "focusedElement": "workspace-stage"
+  },
+  {
+    "step": "malformed-json-rejected-with-six-records-preserved",
+    "at": "2026-10-29T12:01:44.791Z",
+    "state": {
+      "agent": "DAT",
+      "applyDisabled": true,
+      "comparison": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "pasteLength": 0,
+      "receipt": "直前の復旧: 貼り付けた一括記録 — DAT: 3件 / EMA: 2件 / CAWELON: 1件。全記録を再計算しました。",
+      "source": "",
+      "stage": "読み込めませんでした — 現在の履歴は変更していません",
+      "status": "JSONの内容を読み取れません。一括保存したファイルの全文を指定してください。 現在の履歴は保持しています。",
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "duplicate-agent-rejected-with-six-records-preserved",
+    "at": "2026-10-29T12:01:46.288Z",
+    "state": {
+      "agent": "DAT",
+      "applyDisabled": true,
+      "comparison": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "pasteLength": 0,
+      "receipt": "直前の復旧: 貼り付けた一括記録 — DAT: 3件 / EMA: 2件 / CAWELON: 1件。全記録を再計算しました。",
+      "source": "",
+      "stage": "読み込めませんでした — 現在の履歴は変更していません",
+      "status": "同じトークンの記録が重複しています。一括保存した元のファイルを選び直してください。 現在の履歴は保持しています。",
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "partial-preview-explains-removals-and-preserves-current-results",
+    "at": "2026-10-29T12:01:47.278Z",
+    "state": {
+      "agent": "DAT",
+      "applyDisabled": false,
+      "comparison": "DAT\t3件\t未作成\t履歴を消去する\nEMA\t2件\t2件\t置き換える\nCAWELON\t1件\t未作成\t履歴を消去する",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "pasteLength": 0,
+      "receipt": "直前の復旧: 貼り付けた一括記録 — DAT: 3件 / EMA: 2件 / CAWELON: 1件。全記録を再計算しました。",
+      "source": "確認する記録: 貼り付けた一括記録",
+      "stage": "2 / 3 — 選択できています。次は復旧ボタンを押してください",
+      "status": "上の一覧は現在の履歴です。下の変更内容を確認し、「確認した3トークンの履歴を復旧」を押してください。必要なら現在の履歴を先に一括保存できます。",
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "cancelled-partial-review-preserves-six-records",
+    "at": "2026-10-29T12:02:15.554Z",
+    "state": {
+      "agent": "DAT",
+      "applyDisabled": true,
+      "comparison": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "pasteLength": 0,
+      "receipt": "直前の復旧: 貼り付けた一括記録 — DAT: 3件 / EMA: 2件 / CAWELON: 1件。全記録を再計算しました。",
+      "source": "",
+      "stage": "1 / 3 — 保存した記録を選ぶ",
+      "status": "一括読込を取り消しました。現在の履歴は保持しています。",
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "switching-agent-revokes-reviewed-replacement",
+    "at": "2026-10-29T12:02:18.844Z",
+    "state": {
+      "agent": "EMA",
+      "applyDisabled": true,
+      "comparison": "",
+      "metrics": "手元資金\n958 SIM\n未決済元本\n0 SIM\n累計実現損益\n-42 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n0 SIM\n予約を除く手元資金\n958 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "pasteLength": 0,
+      "receipt": "直前の復旧: 貼り付けた一括記録 — DAT: 3件 / EMA: 2件 / CAWELON: 1件。全記録を再計算しました。",
+      "source": "",
+      "stage": "1 / 3 — 保存した記録を選ぶ",
+      "status": "入力・表示が変わりました。復旧する場合は保存した記録をもう一度選んでください。",
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "final-restored-six-records-ready-to-save",
+    "at": "2026-10-29T12:02:22.606Z",
+    "state": {
+      "agent": "DAT",
+      "applyDisabled": true,
+      "comparison": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "pasteLength": 0,
+      "receipt": "直前の復旧: 貼り付けた一括記録 — DAT: 3件 / EMA: 2件 / CAWELON: 1件。全記録を再計算しました。",
+      "source": "",
+      "stage": "3 / 3 — 復旧が完了しました",
+      "status": "上の一覧に復旧済みの履歴を表示しています。取り消し履歴は新しく開始します。必要な履歴は一括保存してください。",
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "download-requested-after-final-restore",
+    "at": "2026-10-29T12:02:29.002Z",
+    "state": {
+      "agent": "DAT",
+      "applyDisabled": true,
+      "comparison": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "pasteLength": 0,
+      "receipt": "直前の復旧: 貼り付けた一括記録 — DAT: 3件 / EMA: 2件 / CAWELON: 1件。全記録を再計算しました。",
+      "source": "",
+      "stage": "3 / 3 — 復旧が完了しました",
+      "status": "3トークン分の保存を開始しました。作成済みの確定した試算履歴だけが含まれます。",
+      "undoDisabled": true
+    }
+  }
+]

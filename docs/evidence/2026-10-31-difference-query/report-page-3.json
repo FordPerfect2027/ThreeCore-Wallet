@@ -1,0 +1,138 @@
+{
+  "schema": "threecore.operation-rehearsal-difference-query.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "target": "report",
+  "sourceSha256": "64c2b1dce79a1b52637c3b157b8cdda034b3081d6e93e9b2d31622c68ca09af8",
+  "summary": {
+    "matchesReceipt": null,
+    "matchesRecomputation": false,
+    "checksumMatches": null,
+    "reportOutcome": {
+      "kind": "record-query",
+      "query": {
+        "agent": "EMA",
+        "kind": "settle",
+        "decision": "all",
+        "search": ""
+      },
+      "totalRecords": 5,
+      "matchedRecords": 1
+    }
+  },
+  "query": {
+    "path": "extra0",
+    "kind": "unexpected"
+  },
+  "offset": 80,
+  "limit": 40,
+  "page": 3,
+  "totalPages": 3,
+  "totalDifferences": 103,
+  "matchedDifferences": 100,
+  "differences": [
+    {
+      "index": 80,
+      "path": "/extra080",
+      "kind": "unexpected"
+    },
+    {
+      "index": 81,
+      "path": "/extra081",
+      "kind": "unexpected"
+    },
+    {
+      "index": 82,
+      "path": "/extra082",
+      "kind": "unexpected"
+    },
+    {
+      "index": 83,
+      "path": "/extra083",
+      "kind": "unexpected"
+    },
+    {
+      "index": 84,
+      "path": "/extra084",
+      "kind": "unexpected"
+    },
+    {
+      "index": 85,
+      "path": "/extra085",
+      "kind": "unexpected"
+    },
+    {
+      "index": 86,
+      "path": "/extra086",
+      "kind": "unexpected"
+    },
+    {
+      "index": 87,
+      "path": "/extra087",
+      "kind": "unexpected"
+    },
+    {
+      "index": 88,
+      "path": "/extra088",
+      "kind": "unexpected"
+    },
+    {
+      "index": 89,
+      "path": "/extra089",
+      "kind": "unexpected"
+    },
+    {
+      "index": 90,
+      "path": "/extra090",
+      "kind": "unexpected"
+    },
+    {
+      "index": 91,
+      "path": "/extra091",
+      "kind": "unexpected"
+    },
+    {
+      "index": 92,
+      "path": "/extra092",
+      "kind": "unexpected"
+    },
+    {
+      "index": 93,
+      "path": "/extra093",
+      "kind": "unexpected"
+    },
+    {
+      "index": 94,
+      "path": "/extra094",
+      "kind": "unexpected"
+    },
+    {
+      "index": 95,
+      "path": "/extra095",
+      "kind": "unexpected"
+    },
+    {
+      "index": 96,
+      "path": "/extra096",
+      "kind": "unexpected"
+    },
+    {
+      "index": 97,
+      "path": "/extra097",
+      "kind": "unexpected"
+    },
+    {
+      "index": 98,
+      "path": "/extra098",
+      "kind": "unexpected"
+    },
+    {
+      "index": 99,
+      "path": "/extra099",
+      "kind": "unexpected"
+    }
+  ],
+  "hasPrevious": true,
+  "hasNext": false
+}

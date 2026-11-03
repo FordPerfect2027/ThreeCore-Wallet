@@ -1,0 +1,97 @@
+{
+  "source": "000950c",
+  "synthetic": true,
+  "captureEnvironment": "Node executing the shared timeline model; native UI verified separately",
+  "rows": [
+    {
+      "name": "partial",
+      "groups": [
+        {
+          "agent": "DAT",
+          "chainId": 84532,
+          "recordedUniqueBlocks": "0",
+          "pendingPlannedBlocks": "12",
+          "unplannedBlocks": "0",
+          "reviewRecordedBlocks": "0"
+        },
+        {
+          "agent": "EMA",
+          "chainId": 84532,
+          "recordedUniqueBlocks": "5",
+          "pendingPlannedBlocks": "7",
+          "unplannedBlocks": "0",
+          "reviewRecordedBlocks": "5"
+        },
+        {
+          "agent": "CAWELON",
+          "chainId": 84532,
+          "recordedUniqueBlocks": "12",
+          "pendingPlannedBlocks": "0",
+          "unplannedBlocks": "0",
+          "reviewRecordedBlocks": "0"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "name": "demo",
+      "groups": [
+        {
+          "agent": "DAT",
+          "chainId": 84532,
+          "recordedUniqueBlocks": "60",
+          "pendingPlannedBlocks": "0",
+          "unplannedBlocks": "0",
+          "reviewRecordedBlocks": "19"
+        },
+        {
+          "agent": "EMA",
+          "chainId": 84532,
+          "recordedUniqueBlocks": "60",
+          "pendingPlannedBlocks": "0",
+          "unplannedBlocks": "0",
+          "reviewRecordedBlocks": "19"
+        },
+        {
+          "agent": "CAWELON",
+          "chainId": 84532,
+          "recordedUniqueBlocks": "53",
+          "pendingPlannedBlocks": "7",
+          "unplannedBlocks": "0",
+          "reviewRecordedBlocks": "24"
+        }
+      ],
+      "sourceUnchanged": true
+    },
+    {
+      "name": "large-gap",
+      "groups": [
+        {
+          "agent": "DAT",
+          "chainId": 84532,
+          "recordedUniqueBlocks": "24",
+          "pendingPlannedBlocks": "0",
+          "unplannedBlocks": "9007199254740999",
+          "reviewRecordedBlocks": "0"
+        },
+        {
+          "agent": "EMA",
+          "chainId": 84532,
+          "recordedUniqueBlocks": "24",
+          "pendingPlannedBlocks": "0",
+          "unplannedBlocks": "9007199254740999",
+          "reviewRecordedBlocks": "0"
+        },
+        {
+          "agent": "CAWELON",
+          "chainId": 84532,
+          "recordedUniqueBlocks": "24",
+          "pendingPlannedBlocks": "0",
+          "unplannedBlocks": "9007199254740999",
+          "reviewRecordedBlocks": "0"
+        }
+      ],
+      "sourceUnchanged": true
+    }
+  ]
+}

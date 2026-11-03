@@ -1,4 +1,8 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
 import { AGENT_IDS, normalizeAddress, validateSiteOrigin } from "./wallet-session.js";
+import { captureDataArray, captureDataRecord, captureOptionalDataFields } from "./security-data.js";
+import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
 
 const MAX_UINT256 = (1n << 256n) - 1n;
 const HASH = /^0x[0-9a-fA-F]{64}$/;
@@ -17,7 +21,7 @@ function fail(code, message) {
 }
 
 function identity(session) {
-  const state = session?.state;
+  let state;try { state=captureWalletReadState(session); } catch { fail("INVALID_SESSION", "Expected own-data session state"); }
   if (!state || !AGENT_IDS.includes(state.agent) ||
       !Number.isSafeInteger(state.chainId) || state.chainId < 1 ||
       !Number.isSafeInteger(state.connectionEpoch) || state.connectionEpoch < 0 ||
@@ -52,6 +56,8 @@ function unchanged(session, initial) {
 }
 
 function blockHeader(value) {
+  try { value = captureDataRecord(value, ["number", "hash"]); }
+  catch { fail("INVALID_BLOCK", "Expected an own-data block number and hash"); }
   if (!value || typeof value.number !== "string" || !HEIGHT.test(value.number) ||
       typeof value.hash !== "string" || !HASH.test(value.hash)) {
     fail("INVALID_BLOCK", "Expected a mined block number and hash");
@@ -70,12 +76,8 @@ function units(value) {
 }
 
 function tokenList(tokens) {
-  if (!Array.isArray(tokens) || tokens.length === 0 || tokens.length > 32) {
-    fail("INVALID_TOKENS", "Choose between one and 32 token contracts");
-  }
-  for (let index = 0; index < tokens.length; index++) {
-    if (!Object.hasOwn(tokens, index)) fail("INVALID_TOKENS", "Sparse token plans are forbidden");
-  }
+  try { tokens = captureDataArray(tokens, 32, 1); }
+  catch { fail("INVALID_TOKENS", "Choose between one and 32 own-data token contracts"); }
   const seen = new Set();
   return Object.freeze(tokens.map(input => {
     const address = normalizeAddress(input);
@@ -86,17 +88,13 @@ function tokenList(tokens) {
 }
 
 function optionsFor(options) {
-  if (!options || typeof options !== "object" || Array.isArray(options)) {
-    fail("INVALID_OPTIONS", "Snapshot options must be an object");
-  }
+  try { options = captureOptionalDataFields(options, ["tokens", "timeoutMs", "signal", "onProgress"]); }
+  catch { fail("INVALID_OPTIONS", "Snapshot options must contain own data fields"); }
   const timeoutMs = options.timeoutMs ?? 30_000;
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120_000) {
     fail("INVALID_TIMEOUT", "Snapshot timeout must be 1..120000ms");
   }
   const signal = options.signal;
-  if (signal !== undefined && !(signal instanceof AbortSignal)) {
-    fail("INVALID_SIGNAL", "Expected an AbortSignal");
-  }
   const onProgress = options.onProgress;
   if (onProgress !== undefined && typeof onProgress !== "function") {
     fail("INVALID_PROGRESS_OBSERVER", "Expected a progress callback");
@@ -115,24 +113,21 @@ export async function readPortfolioSnapshot(session, options) {
   const { tokens, timeoutMs, signal, onProgress } = optionsFor(options);
   const initial = identity(session);
   let timer;
-  let abort;
+  let cancellation;
+  let rejectInterrupt;
+  let reason = "ABORTED";
   let stopped = false;
   const stop = (code, message) => {
+    if (stopped) return;
     stopped = true;
-    return new PortfolioSnapshotError(code, message);
+    reason = code;
+    rejectInterrupt(new PortfolioSnapshotError(code, message));
   };
   const guard = () => {
-    if (stopped || signal?.aborted) fail("ABORTED", "Snapshot was cancelled");
+    if (stopped || cancellation?.aborted()) fail(reason, "Snapshot read ended");
     unchanged(session, initial);
   };
-  if (signal?.aborted) fail("ABORTED", "Snapshot was cancelled");
-  const interruption = new Promise((resolve, reject) => {
-    timer = setTimeout(() => reject(stop("SNAPSHOT_TIMEOUT", "Snapshot deadline exceeded")), timeoutMs);
-    if (signal) {
-      abort = () => reject(stop("ABORTED", "Snapshot was cancelled"));
-      signal.addEventListener("abort", abort, { once: true });
-    }
-  });
+  const interruption = new Promise((resolve, reject) => { rejectInterrupt = reject; });
   const read = async operation => {
     guard();
     const value = await operation();
@@ -143,10 +138,7 @@ export async function readPortfolioSnapshot(session, options) {
     guard();
     if (onProgress) {
       const event = Object.freeze({ stage, completedTokens, totalTokens: tokens.length, tokenIndex, tokenAddress });
-      try {
-        // A failing or asynchronous display observer must not stall the read.
-        Promise.resolve(onProgress(event)).catch(() => {});
-      } catch { /* Display failures cannot alter portfolio contents. */ }
+      consumeCallback(() => onProgress(event));
     }
     guard(); // Observers may synchronously cancel or invalidate a session.
   };
@@ -159,7 +151,11 @@ export async function readPortfolioSnapshot(session, options) {
     for (const address of tokens) {
       const index = holdings.length;
       notify("token-code", index, index, address);
-      const code = await read(() => session.getContractCode(address, block.hash));
+      const rawCode = await read(() => session.getContractCode(address, block.hash));
+      let code;
+      try { code = captureDataRecord(rawCode, ["address", "deployed"]); }
+      catch { guard(); fail("INVALID_CODE_RESULT", "Expected own-data contract code fields"); }
+      guard();
       if (!code || code.address !== address || typeof code.deployed !== "boolean") {
         fail("INVALID_CODE_RESULT", "Contract code result does not match the requested address");
       }
@@ -193,11 +189,16 @@ export async function readPortfolioSnapshot(session, options) {
       securityAudit: false,
     });
   };
+  interruption.catch(() => {});
   try {
+    try { cancellation = subscribeReadAbort(signal, () => stop("ABORTED", "Snapshot was cancelled")); }
+    catch { fail("INVALID_SIGNAL", "Expected a native AbortSignal"); }
+    guard();
+    timer = setTimeout(() => stop("SNAPSHOT_TIMEOUT", "Snapshot deadline exceeded"), timeoutMs);
     return await Promise.race([collect(), interruption]);
   } finally {
     stopped = true;
     clearTimeout(timer);
-    if (abort) signal.removeEventListener("abort", abort);
+    cancellation?.dispose();
   }
 }

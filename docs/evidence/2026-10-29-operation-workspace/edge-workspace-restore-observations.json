@@ -1,0 +1,62 @@
+[
+  {
+    "step": "user-selected-file-preview-before-apply",
+    "at": "2026-10-29T11:45:56.993Z",
+    "browser": "Microsoft Edge",
+    "url": "http://127.0.0.1:4231/rehearsal/",
+    "dom": "Browser tab: 148649138, Title: \"運用リハーサル — ThreeCore Wallet\", URL: \"http://127.0.0.1:4231/rehearsal/\".\nThere has been no change in the accessibility tree.\nThe focused UI element is 0 AXWebArea 運用リハーサル — ThreeCore Wallet, URL: 127.0.0.1:4231/rehearsal/"
+  },
+  {
+    "step": "workspace-restored",
+    "at": "2026-10-29T11:46:01.502Z",
+    "dom": "Browser tab: 148649138, Title: \"運用リハーサル — ThreeCore Wallet\", URL: \"http://127.0.0.1:4231/rehearsal/\".\nThe following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.\nRemoved element IDs: 46-78, 86-87, 140\n+\t\t\t\t\t202 row\n+\t\t\t\t\t\t203 cell\n+\t\t\t\t\t\t\t204 text DAT\n+\t\t\t\t\t\t205 cell\n+\t\t\t\t\t\t\t206 text 3件\n+\t\t\t\t\t\t207 cell\n+\t\t\t\t\t\t\t208 text 28 SIM\n+\t\t\t\t\t\t209 cell\n+\t\t\t\t\t\t\t210 text 2.8 SIM\n+\t\t\t\t\t\t211 cell\n+\t\t\t\t\t\t\t212 text 0 SIM\n+\t\t\t\t\t213 row\n+\t\t\t\t\t\t214 cell\n+\t\t\t\t\t\t\t215 text EMA\n+\t\t\t\t\t\t216 cell\n+\t\t\t\t\t\t\t217 text 2件\n+\t\t\t\t\t\t218 cell\n+\t\t\t\t\t\t\t219 text -42 SIM\n+\t\t\t\t\t\t220 cell\n+\t\t\t\t\t\t\t221 text 0 SIM\n+\t\t\t\t\t\t222 cell\n+\t\t\t\t\t\t\t223 text 0 SIM\n+\t\t\t\t\t224 row\n+\t\t\t\t\t\t225 cell\n+\t\t\t\t\t\t\t226 text CAWELON\n+\t\t\t\t\t\t227 cell\n+\t\t\t\t\t\t\t228 text 1件\n+\t\t\t\t\t\t229 cell\n+\t\t\t\t\t\t\t230 text -1 SIM\n+\t\t\t\t\t\t231 cell\n+\t\t\t\t\t\t\t232 text 0 SIM\n+\t\t\t\t\t\t233 cell\n+\t\t\t\t\t\t\t234 text 0 SIM\n~\t\t\t80 button 3トークンの履歴を一括保存, ID: workspace-save\n~\t\t\t84 button (disabled) 確認した3トークンの履歴を復旧, ID: workspace-apply\n+\t\t\t235 text 一括復旧して全記録を再計算しました。取り消し履歴は新しく開始します。\n+\t\t\t236 text 試算が完了しました。元本・費用・損益の計算は整合しています。すべて入力に基づく仮の結果です。\n+\t\t\t237 container metrics\n+\t\t\t\t238 text 手元資金\n+\t\t\t\t239 text 1028 SIM\n+\t\t\t\t240 text 未決済元本\n+\t\t\t\t241 text 0 SIM\n+\t\t\t\t242 text 累計実現損益\n+\t\t\t\t243 text 28 SIM\n+\t\t\t\t244 text 費用合計\n+\t\t\t\t245 text 2 SIM\n+\t\t\t\t246 text 確保した決済費用\n+\t\t\t\t247 text 0 SIM\n+\t\t\t\t248 text 予約済みの還元額\n+\t\t\t\t249 text 2.8 SIM\n+\t\t\t\t250 text 予約を除く手元資金\n+\t\t\t\t251 text 1025.2 SIM\n+\t\t\t\t252 text 利益を超える予約額\n+\t\t\t\t253 text 0 SIM\n+\t\t\t254 text 追加で予約できる自トークン買戻し額: 0 SIM（実行されません）\n+\t\t\t255 text DAT / チェーン 84532 / 仮の口座 0x1111111111111111111111111111111111111111 / 入力された対象: https://training.example / 0x5555555555555555555555555555555555555555\n+\t\t\t\t256 container rows\n+\t\t\t\t\t257 row\n+\t\t\t\t\t\t258 cell\n+\t\t\t\t\t\t\t259 text 投入 / open-one\n+\t\t\t\t\t\t260 cell\n+\t\t\t\t\t\t\t261 text 仮の条件内\n+\t\t\t\t\t\t262 cell\n+\t\t\t\t\t\t\t263 text 899 SIM\n+\t\t\t\t\t\t264 cell\n+\t\t\t\t\t\t\t265 text 100 SIM\n+\t\t\t\t\t\t266 cell\n+\t\t\t\t\t\t\t267 text -1 SIM\n+\t\t\t\t\t\t268 cell\n+\t\t\t\t\t\t\t269 text 2 SIM\n+\t\t\t\t\t\t270 cell\n+\t\t\t\t\t\t\t271 text 0 SIM\n+\t\t\t\t\t272 row\n+\t\t\t\t\t\t273 cell\n+\t\t\t\t\t\t\t274 text 決済 / settle-one\n+\t\t\t\t\t\t275 cell\n+\t\t\t\t\t\t\t276 text 仮の条件内\n+\t\t\t\t\t\t277 cell\n+\t\t\t\t\t\t\t278 text 1028 SIM\n+\t\t\t\t\t\t279 cell\n+\t\t\t\t\t\t\t280 text 0 SIM\n+\t\t\t\t\t\t281 cell\n+\t\t\t\t\t\t\t282 text 28 SIM\n+\t\t\t\t\t\t283 cell\n+\t\t\t\t\t\t\t284 text 0 SIM\n+\t\t\t\t\t\t285 cell\n+\t\t\t\t\t\t\t286 text 0 SIM\n+\t\t\t\t\t287 row\n+\t\t\t\t\t\t288 cell\n+\t\t\t\t\t\t\t289 text 還元予約 / step-3\n+\t\t\t\t\t\t290 cell\n+\t\t\t\t\t\t\t291 text 仮の条件内\n+\t\t\t\t\t\t292 cell\n+\t\t\t\t\t\t\t293 text 1028 SIM\n+\t\t\t\t\t\t294 cell\n+\t\t\t\t\t\t\t295 text 0 SIM\n+\t\t\t\t\t\t296 cell\n+\t\t\t\t\t\t\t297 text 28 SIM\n+\t\t\t\t\t\t298 cell\n+\t\t\t\t\t\t\t299 text 0 SIM\n+\t\t\t\t\t\t300 cell\n+\t\t\t\t\t\t\t301 text 2.8 SIM\n+\t\t\t302 text 新形式 / 3件。未決済ID: なし。予約ID: dat-reserve=2.8 SIM。取り消せる追記: 0件。\n~\t\t\t186 button 追記前に確認, ID: append-preview\n~\t\t194 button この試算の入力記録を保存, ID: save\n~\t\t195 button 計算の流れをCSV保存, ID: csv-save\nThe focused UI element is 0 AXWebArea 運用リハーサル — ThreeCore Wallet, URL: 127.0.0.1:4231/rehearsal/"
+  },
+  {
+    "step": "restored-DAT",
+    "at": "2026-10-29T11:46:28.004Z",
+    "result": {
+      "agent": "DAT",
+      "ledger": "新形式 / 3件。未決済ID: なし。予約ID: dat-reserve=2.8 SIM。取り消せる追記: 0件。",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "restoreDisabled": true,
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "restored-EMA",
+    "at": "2026-10-29T11:46:28.696Z",
+    "result": {
+      "agent": "EMA",
+      "ledger": "新形式 / 2件。未決済ID: なし。予約ID: なし。取り消せる追記: 0件。",
+      "metrics": "手元資金\n958 SIM\n未決済元本\n0 SIM\n累計実現損益\n-42 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n0 SIM\n予約を除く手元資金\n958 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "restoreDisabled": true,
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "restored-CAWELON",
+    "at": "2026-10-29T11:46:29.409Z",
+    "result": {
+      "agent": "CAWELON",
+      "ledger": "新形式 / 1件。未決済ID: one。予約ID: なし。取り消せる追記: 0件。",
+      "metrics": "手元資金\n899 SIM\n未決済元本\n100 SIM\n累計実現損益\n-1 SIM\n費用合計\n1 SIM\n確保した決済費用\n2 SIM\n予約済みの還元額\n0 SIM\n予約を除く手元資金\n897 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "restoreDisabled": true,
+      "undoDisabled": true
+    }
+  },
+  {
+    "step": "returned-to-DAT",
+    "at": "2026-10-29T11:46:30.723Z",
+    "result": {
+      "agent": "DAT",
+      "ledger": "新形式 / 3件。未決済ID: なし。予約ID: dat-reserve=2.8 SIM。取り消せる追記: 0件。",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "restoreDisabled": true,
+      "undoDisabled": true
+    }
+  }
+]

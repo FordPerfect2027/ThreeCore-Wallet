@@ -1,0 +1,3 @@
+Browser module preflight passed: 261 local modules.
+Focused browser file-read completion received: 112 passing cases; isolated cleanup pending.
+112 focused browser UI tests passed (file-read) in 26036 ms; full browser coverage was not run.

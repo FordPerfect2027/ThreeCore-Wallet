@@ -1,5 +1,6 @@
 import { secureBackupRunner } from "../src/secure-backup-runner.js";
-import { describeSecureOperation, describeSecureOperationCounts } from "../src/secure-backup-status.js";
+import { describeSecureOperation, describeSecureOperationCounts, secureOperationStatus } from "../src/secure-backup-status.js";
+import { consumeCallback, observeCallbackResult } from "../src/security-callback.js";
 
 /** Text only, no file payloads, password fields, downloads or network capability. */
 export function mountSecureOperationPanel({ document, parent, runner = secureBackupRunner } = {}) {
@@ -19,21 +20,32 @@ export function mountSecureOperationPanel({ document, parent, runner = secureBac
   section.append(heading, status, counts, note);
   parent.append(section);
   let disposed = false;
+  let generation = 0, observing = true;
   let unsubscribe;
   function render(value) {
     if (disposed) return;
-    status.textContent = describeSecureOperation(value);
-    counts.textContent = describeSecureOperationCounts(value);
+    const id = ++generation;
+    const captured = secureOperationStatus(value);
+    if (disposed || id !== generation) return;
+    status.textContent = describeSecureOperation(captured);
+    counts.textContent = describeSecureOperationCounts(captured);
   }
   try {
-    render(runner.state());
-    unsubscribe = runner.subscribe(render);
-  } catch { render(null); }
+    const initial = runner.state();
+    const initialKind = observeCallbackResult(initial);
+    render(initialKind === "synchronous" ? initial : null);
+    const receipt = runner.subscribe(value => { if (observing) render(value); });
+    const kind = observeCallbackResult(receipt, late => { if (typeof late === "function") consumeCallback(late); });
+    if (kind !== "synchronous" || typeof receipt !== "function") { observing = false; render(null); }
+    else if (disposed) consumeCallback(receipt);
+    else unsubscribe = receipt;
+  } catch { observing = false; render(null); }
   return Object.freeze({
     dispose() {
       if (disposed) return;
       disposed = true;
-      try { unsubscribe?.(); } catch {}
+      observing = false; generation++;
+      consumeCallback(() => unsubscribe?.());
       section.remove();
     },
   });

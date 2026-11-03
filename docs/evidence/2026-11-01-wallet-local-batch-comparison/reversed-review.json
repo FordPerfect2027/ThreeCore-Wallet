@@ -1,0 +1,35 @@
+{
+  "schema": "threecore.wallet-saved-local-batch-comparison-review.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "containsOriginalEvidence": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "matchesRecomputation": false,
+  "beforeBindingMatches": false,
+  "afterBindingMatches": false,
+  "beforeManifestSha256": "fb084ae2f6188e2c4faca8dc0380b4b73de3756e43da3d1ea6b64698edb847c4",
+  "afterManifestSha256": "898cd9e6e8042f9d6822d40ca022778b243cb8d0c5824e31a4be8ea4da6c8373",
+  "comparisonTextDigest": "d7eda2fcdae8093c4e4aa3b31d70c38ee2f47fd8211b404806c28bdad28799ea",
+  "expectedComparisonDigest": "541dd1e6ab407e585fffbff0b44d2eafdb8f001fc1f857814f1bdb30b0738b94",
+  "allSelectedOriginalsIdentical": false,
+  "expectedSummary": {
+    "files": 8,
+    "bothSelected": 6,
+    "onlyBefore": 1,
+    "onlyAfter": 1,
+    "identical": 2,
+    "formatOnly": 1,
+    "changedOriginal": 1,
+    "differentFormat": 1,
+    "unverified": 1
+  },
+  "differences": [
+    "before",
+    "after",
+    "files"
+  ],
+  "unexpectedFields": 0
+}

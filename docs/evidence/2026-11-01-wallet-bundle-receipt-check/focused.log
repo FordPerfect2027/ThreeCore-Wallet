@@ -1,0 +1,18 @@
+✔ offline saved receipt checks reproduce API output and distinguish faithful failure from altered claims (3391.2031ms)
+✔ saved bundle receipt checking requires its own acknowledgement and saves mismatches with no source values (189.3555ms)
+✔ receipt stop clears pending work before late reading completes (45.6413ms)
+✔ receipt replace clears pending work before late reading completes (70.2008ms)
+✔ receipt dispose clears pending work before late reading completes (63.8396ms)
+✔ invalid replacement and a source change during export cannot retain or publish old success (86.444ms)
+✔ V1/V2 saved receipts reproduce every field, including faithful negative bundle conclusions (346.9494ms)
+✔ changed bundle binding, nested comparisons, scope and authority claims are rejected without exposing unknown content (53.6788ms)
+✔ uploaded review authority, duplicate keys, incompatible schemas, invalid options and oversized receipts are refused (13.1128ms)
+✔ cancelled or timed-out receipt hashing cannot publish an accepted result (44.5771ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4041.4089

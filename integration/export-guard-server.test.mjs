@@ -5,7 +5,7 @@ import { createDemoServer } from "../examples/dev-server.js";
 
 const assets = ["/src/export-policy.js", "/src/export-payload.js", "/src/export-guard.js",
   "/src/export-status.js", "/examples/export-resource.js", "/examples/export-download.js",
-  "/examples/export-guard-panel.js", "/src/state-notifier.js", "/src/security-callback.js"];
+  "/examples/export-guard-panel.js", "/src/state-notifier.js", "/src/security-callback.js", "/src/provider-error.js"];
 
 async function serving(uiTest, action) {
   const server = createDemoServer({ uiTest });
@@ -115,7 +115,7 @@ test("export HTTP: all new module imports resolve locally without new network pr
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      assert(visited.size <= assets.length);
+      assert(assets.includes(path), "Unexpected export dependency: " + path);
       const response = await get(path);
       assert.equal(response.status, 200, path);
       for (const match of response.body.matchAll(/from\s+["']([^"']+)["']/g)) {

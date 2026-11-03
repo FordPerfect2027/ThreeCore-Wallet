@@ -1,5 +1,20 @@
-import { createFileReadService } from "/src/file-read-service.js";
-import { mountFileReadPanel } from "/examples/file-read-panel.js";
+import { mountCheckpointPanel } from "/examples/checkpoint-panel.js";
+import { emptyCheckpointDocument } from "/src/checkpoint-model.js";
+import { mountOperationRehearsal } from "/examples/operation-rehearsal-page.js";
+import { captureRehearsalCheckSuite, encodeRehearsalCheckSuite } from "/src/operation-rehearsal-check-suite.js";
+import { REHEARSAL_SCENARIO_SET_SCHEMA } from "/src/operation-rehearsal-scenario-set.js";
+import { rehearsalExampleV2 } from "/src/operation-rehearsal-examples.js";
+import { encodeRehearsal } from "/src/operation-rehearsal.js";
+import { REHEARSAL_WORKSPACE_SCHEMA,encodeRehearsalWorkspace } from "/src/operation-rehearsal-workspace.js";
+import { encodeRehearsalComparison } from "/src/operation-rehearsal-comparison.js";
+import { encodeRehearsalScenario } from "/src/operation-rehearsal-scenario.js";
+import { encodeRehearsalScenarioSet,encodeRehearsalScenarioSetReport } from "/src/operation-rehearsal-scenario-set.js";
+import { encodeRehearsalCheckReport } from "/src/operation-rehearsal-check-suite.js";
+import { createFileReadService,walletFileReadService } from "/src/file-read-service.js";
+import { mountFileReadPanel, mountSavedFileInspectionPanel, mountSavedFileBatchPanel, mountSavedBatchComparisonPanel } from "/examples/file-read-panel.js";
+import { inspectWalletSavedFileBatch, inspectWalletSavedTextBatch, compareWalletSavedTextBatches, encodeWalletSavedBatchComparison } from "/src/file-read-status.js";
+import { prepareReportHistoryFile } from "/src/report-history-file.js";
+import { sampleHistory } from "/test/helpers/report-history-fixtures.js";
 import { createWalletSetupFileReader, prepareWalletSetupFile } from "/src/wallet-setup-file.js";
 import { WALLET_SETUP_SCHEMA, WalletSetupError } from "/src/wallet-setup.js";
 import { mountWalletSetupPanel } from "/examples/wallet-setup-panel.js";
@@ -9,6 +24,9 @@ import { workspaceFromDraft, WorkspaceError } from "/src/workspace-format.js";
 import { createPortfolioHistory } from "/src/portfolio-history.js";
 import { createHistoryFileReader } from "/src/history-file-reader.js";
 import { readSecurityFileBytes } from "/src/security-file.js";
+import { mountRehearsalBatchReviewPanel, mountRehearsalReviewPanel } from "/examples/operation-rehearsal-review-panel.js";
+import { savedObservationFixtures } from "/test/helpers/saved-observation-fixtures.js";
+import { savedWorkspaceGuideFixtures, savedRehearsalGuideFixtures, savedDifferencePageFixtures } from "/test/helpers/workspace-fixtures.js";
 
 const assert = (value, message = "File boundary UI assertion failed") => { if (!value) throw Error(message); };
 const bytes = text => new TextEncoder().encode(text);
@@ -49,6 +67,1170 @@ async function isolated(action, options = {}) {
 }
 
 export function registerFileReadUITests(test) {
+  test('saved collection guide: native inspection opens the collection reader without importing or requesting a wallet',async use=>{
+    const f=use(),{prepareVaultCollection}=await import('/src/transfer-vault-collection.js'),{emptyVaultDocument,mutateVaultDocument}=await import('/src/transfer-vault-model.js'),{saveOperation}=await import('/test/helpers/vault-fixtures.js');
+    const text=(await prepareVaultCollection(mutateVaultDocument(emptyVaultDocument(),0,saveOperation()))).text,q=name=>document.querySelector('.saved-file-guide-'+name),v=name=>document.querySelector('.transfer-vault-'+name),files=new DataTransfer();
+    const before={overview:v('overview').textContent,metadata:v('metadata').textContent,review:v('collection-review').textContent};
+    files.items.add(new File([text],'renamed-backup.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));
+    const started=performance.now();while(q('destination').disabled){assert(performance.now()-started<10000,'collection inspection did not finish');await tick();}
+    assert(q('output').textContent.includes('保存一覧の保全JSONを開く')&&q('output').textContent.includes('保管一覧の保存記録の参照 1件'),'collection guidance missing');
+    q('destination').click();assert(v('saved').open&&document.activeElement===v('refresh'),'unopened list must focus its explicit read button');
+    assert(v('collection-file').files.length===0&&v('collection-apply').disabled&&v('overview').textContent===before.overview&&v('metadata').textContent===before.metadata&&v('collection-review').textContent===before.review&&f.calls.length===0,'navigation changed wallet or storage state');
+    assert(q('destination-status').textContent.includes('元のJSONはまだ読み込んでいません'),'navigation receipt missing');
+    v('refresh').click();const loaded=performance.now();while(v('collection-file').disabled){assert(performance.now()-loaded<10000,'local list did not open');await tick();}
+    const loadedMetadata=v('metadata').textContent;q('destination').click();assert(document.activeElement===v('collection-file')&&v('collection-file').files.length===0&&v('collection-apply').disabled&&f.calls.length===0,'loaded list must focus file input without choosing or applying');
+    const invalid=JSON.parse(text);invalid.document.entries[0].label='Changed without checksum';const bad=new DataTransfer();bad.items.add(new File([JSON.stringify(invalid)],'bad.json'));q('file').files=bad.files;q('file').dispatchEvent(new Event('change'));
+    const second=performance.now();while(q('file').disabled){assert(performance.now()-second<10000);await tick();}
+    assert(q('destination').disabled&&v('collection-apply').disabled&&v('metadata').textContent===loadedMetadata&&f.calls.length===0,'invalid collection retained an action or changed storage');
+  });
+  test('comparison sources: a native reopened pair exports its exact selected observation and stages reuse explicitly',async()=>{
+    const {mountComparisonPanel}=await import('/examples/comparison-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),{encodePortfolioReport}=await import('/src/portfolio-report.js'),{encodePortfolioComparisonReport}=await import('/src/portfolio-comparison.js'),host=document.createElement('div');document.body.append(host);const earlier=snapshot(0,'10'),later=snapshot(0,'20'),saved=[],panel=mountComparisonPanel({document,parent:host,download:({prepared})=>saved.push(prepared)}),q=name=>host.querySelector('.comparison-'+name);
+    try{panel.setTarget(later);const files=new DataTransfer();files.items.add(new File([encodePortfolioComparisonReport(earlier,later)],'pair.json'));q('review-file').files=files.files;q('review-file').dispatchEvent(new Event('change'));const started=performance.now();while(q('review-file').disabled){assert(performance.now()-started<10000);await tick();}for(const side of['earlier','later']){q('source-side').value=side;q('source-save').click();assert(saved.at(-1).text===encodePortfolioReport(side==='earlier'?earlier:later));}q('source-side').value='earlier';q('source-use').click();assert(q('baseline').value===encodePortfolioReport(earlier)&&q('details').textContent===''&&document.activeElement===q('baseline'));q('run').click();assert(!q('save').disabled);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('previous saved baseline: native card chooses the newest earlier matching record without another balance read',async()=>{
+    const {mountPortfolioPanel}=await import('/examples/portfolio-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),{encodePortfolioReport}=await import('/src/portfolio-report.js'),card=document.createElement('div');card.dataset.agent='DAT';document.body.append(card);const earlier=snapshot(0,'20'),current=snapshot(0,'30'),history=createPortfolioHistory();history.merge([snapshot(0,'10'),earlier,snapshot(0,'40')]);let reads=0;const panel=mountPortfolioPanel({document,card,getContext:()=>({agent:'DAT',chainId:current.chainId}),read:async()=>{reads++;return current;}}),q=name=>card.querySelector('.'+name);
+    try{q('portfolio-tokens').value=current.holdings[0].address;q('portfolio-read').click();const started=performance.now();while(q('portfolio-read').disabled){assert(performance.now()-started<10000);await tick();}panel.replaceHistory(history.exportText());const original=panel.exportHistory();q('history-use-previous-baseline').click();assert(q('history-last').value==='1'&&q('comparison-baseline').value===encodePortfolioReport(earlier)&&q('comparison-save').disabled);q('comparison-run').click();assert(!q('comparison-save').disabled&&reads===1&&panel.exportHistory()===original);}
+    finally{panel.dispose();card.remove();}
+  });
+  test('history retention: native policy preview requires confirmation and exact undo remains available',async()=>{
+    const {mountHistoryPanel}=await import('/examples/history-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),host=document.createElement('div');document.body.append(host);const history=createPortfolioHistory();history.merge([snapshot(0,'30'),snapshot(0,'10'),snapshot(0,'20')]);const panel=mountHistoryPanel({document,parent:host,agent:'DAT',getSnapshot:()=>null,getReport:()=>''}),q=name=>host.querySelector('.history-'+name);
+    try{panel.replaceArchive(history.exportText());const original=panel.exportArchive();q('filter-run').click();q('retain-count').value='1';q('retain-preview').click();assert(panel.exportArchive()===original&&q('prune-apply').disabled);q('prune-confirm').click();q('prune-apply').click();const rows=JSON.parse(panel.exportArchive()).reports;assert(rows.length===1&&rows[0].snapshot.blockNumber==='30');q('recovery-preview').click();q('recovery-apply').click();assert(panel.exportArchive()===original);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('saved query guide: native classification navigates to cards without filling filters or requesting wallet access',async use=>{
+    const f=use(),{encodeHistoryQueryFile}=await import('/src/history-query.js'),text=encodeHistoryQueryFile({minimumBlock:'200'}),q=name=>document.querySelector('.saved-file-guide-'+name),files=new DataTransfer();files.items.add(new File([text],'renamed.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const started=performance.now();while(q('destination').disabled){assert(performance.now()-started<10000);await tick();}assert(q('output').textContent.includes('検索条件')&&q('output').textContent.includes('内部チェックサム'));q('destination').click();assert(document.activeElement===document.getElementById('grid'));assert(f.field('.history-query-json').value===''&&f.field('.history-filter-minimum').value===''&&f.calls.length===0);
+  });
+  test('saved history query: native file loads a draft and explicit use restores the search without importing records',async()=>{
+    const {mountHistoryPanel}=await import('/examples/history-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),{encodeHistoryQueryFile}=await import('/src/history-query.js'),host=document.createElement('div');document.body.append(host);const history=createPortfolioHistory();history.merge([snapshot(0,'10'),snapshot(0,'20')]);const encoded=encodeHistoryQueryFile({minimumBlock:'20'}),saved=[],panel=mountHistoryPanel({document,parent:host,agent:'DAT',getSnapshot:()=>null,getReport:()=>'',download:({prepared})=>saved.push(prepared)}),q=name=>host.querySelector('.history-'+name);
+    try{panel.replaceArchive(history.exportText());const original=panel.exportArchive(),files=new DataTransfer();files.items.add(new File([encoded],'query.json'));q('query-file').files=files.files;q('query-file').dispatchEvent(new Event('change'));const started=performance.now();while(q('query-file').disabled){assert(performance.now()-started<10000);await tick();}assert(q('filter-minimum').value===''&&q('query-json').value===encoded);q('query-use').click();assert(q('filter-actions').children.length===1&&document.activeElement===q('filter-results'));q('query-save').click();assert(saved[0].text===encoded&&panel.exportArchive()===original);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('historical balance CSV: native filtered export matches the full scoped rows and leaves the archive unchanged',async()=>{
+    const {mountHistoryPanel}=await import('/examples/history-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),{portfolioHistoryCSV}=await import('/src/history-query.js'),host=document.createElement('div');document.body.append(host);const history=createPortfolioHistory();history.merge([snapshot(0,'10'),snapshot(0,'20')]);const saved=[],panel=mountHistoryPanel({document,parent:host,agent:'DAT',getSnapshot:()=>null,getReport:()=>'',download:({prepared})=>saved.push(prepared)}),q=name=>host.querySelector('.history-'+name);
+    try{panel.replaceArchive(history.exportText());const original=panel.exportArchive(),backup=q('backup-state').textContent;q('filter-minimum').value='20';q('filter-run').click();q('file-save-balances').click();assert(saved.length===1&&saved[0].text===portfolioHistoryCSV(original,{minimumBlock:'20'}).text);assert(panel.exportArchive()===original&&q('backup-state').textContent===backup);q('filter-minimum').dispatchEvent(new Event('input'));assert(q('file-save-balances').disabled);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('archive consolidation: native multi-file selection deduplicates without importing until explicit apply',async()=>{
+    const {mountHistoryPanel}=await import('/examples/history-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),host=document.createElement('div');document.body.append(host);const first=createPortfolioHistory(),second=createPortfolioHistory();first.merge([snapshot(0,'10'),snapshot(0,'20')]);second.merge([snapshot(0,'20'),snapshot(0,'30')]);const panel=mountHistoryPanel({document,parent:host,agent:'DAT',getSnapshot:()=>null,getReport:()=>''}),q=name=>host.querySelector('.history-'+name);
+    try{const original=panel.exportArchive(),files=new DataTransfer();files.items.add(new File([first.exportText()],'one.json'));files.items.add(new File([second.exportText()],'two.json'));q('archive-files').files=files.files;q('archive-files').dispatchEvent(new Event('change'));const started=performance.now();while(q('archive-files').disabled){assert(performance.now()-started<10000);await tick();}assert(panel.exportArchive()===original&&q('file-status').textContent.includes('重複1件')&&q('apply').disabled);q('preview').click();q('apply').click();assert(JSON.parse(panel.exportArchive()).reports.length===3);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('history baseline handoff: native selection stages a comparison without replacing the displayed observation',async()=>{
+    const {mountPortfolioPanel}=await import('/examples/portfolio-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),{encodePortfolioReport}=await import('/src/portfolio-report.js'),card=document.createElement('div');card.dataset.agent='DAT';document.body.append(card);let reads=0;const current=snapshot(0,'30'),past=snapshot(0,'10'),history=createPortfolioHistory();history.merge([past]);const panel=mountPortfolioPanel({document,card,getContext:()=>({agent:'DAT',chainId:current.chainId}),read:async()=>{reads++;return current;}}),q=name=>card.querySelector('.'+name);
+    try{q('portfolio-tokens').value=current.holdings[0].address;q('portfolio-read').click();const started=performance.now();while(q('portfolio-read').disabled){assert(performance.now()-started<10000);await tick();}const visible=q('portfolio-details').textContent;panel.replaceHistory(history.exportText());const original=panel.exportHistory();q('history-use-baseline').click();assert(q('comparison-baseline').value===encodePortfolioReport(past)&&document.activeElement===q('comparison-baseline'));assert(q('comparison-save').disabled&&q('comparison-details').textContent==='');q('comparison-run').click();assert(!q('comparison-save').disabled&&reads===1&&q('portfolio-details').textContent===visible&&panel.exportHistory()===original);}
+    finally{panel.dispose();card.remove();}
+  });
+  test('scoped history cleanup: native filter, preview, confirmation and recovery preserve unrelated records',async()=>{
+    const {mountHistoryPanel}=await import('/examples/history-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),host=document.createElement('div');document.body.append(host);const history=createPortfolioHistory();history.merge([snapshot(0,'30'),snapshot(0,'10'),snapshot(0,'20')]);const saved=[],panel=mountHistoryPanel({document,parent:host,agent:'DAT',getSnapshot:()=>null,getReport:()=>'',download:({prepared})=>saved.push(prepared)}),q=name=>host.querySelector('.history-'+name);
+    try{panel.replaceArchive(history.exportText());const original=panel.exportArchive();q('filter-maximum').value='20';q('filter-order').value='newest';q('filter-run').click();q('prune-preview').click();assert(panel.exportArchive()===original&&q('prune-apply').disabled&&document.activeElement===q('prune-details'));q('prune-confirm').click();assert(!q('prune-apply').disabled);q('prune-apply').click();const remaining=JSON.parse(panel.exportArchive()).reports;assert(remaining.length===1&&remaining[0].snapshot.blockNumber==='30');q('recovery-save').click();assert(saved[0].text===original);q('recovery-preview').click();q('recovery-apply').click();assert(panel.exportArchive()===original);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('history removal selection: native empty selection preserves records and valid removal remains recoverable',async()=>{
+    const {mountHistoryPanel}=await import('/examples/history-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),host=document.createElement('div');document.body.append(host);const history=createPortfolioHistory();history.merge([snapshot(0,'10'),snapshot(0,'20')]);const panel=mountHistoryPanel({document,parent:host,agent:'DAT',getSnapshot:()=>null,getReport:()=>''}),q=name=>host.querySelector('.history-'+name);
+    try{panel.replaceArchive(history.exportText());const original=panel.exportArchive();q('last').value='not-an-option';assert(q('last').value==='');q('remove').click();assert(panel.exportArchive()===original&&q('recovery-preview').disabled);q('last').value='1';q('remove').click();assert(JSON.parse(panel.exportArchive()).reports.length===1);q('recovery-preview').click();q('recovery-apply').click();assert(panel.exportArchive()===original);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('history identity scope: native same-target search separates sites and focuses exact filtered results',async()=>{
+    const {mountHistoryPanel}=await import('/examples/history-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),host=document.createElement('div');document.body.append(host);const rows=[snapshot(0,'10',{siteOrigin:'https://one.example'}),snapshot(0,'10',{siteOrigin:'https://two.example'}),snapshot(0,'20',{siteOrigin:'https://one.example'})],history=createPortfolioHistory(),saved=[];history.merge(rows);const panel=mountHistoryPanel({document,parent:host,agent:'DAT',getSnapshot:()=>null,getReport:()=>'',download:({prepared})=>saved.push(prepared)}),q=name=>host.querySelector('.history-'+name);
+    try{panel.replaceArchive(history.exportText());const original=panel.exportArchive();assert(q('first').options[0].textContent.includes('https://one.example')&&q('first').options[1].textContent.includes('https://two.example'));q('last').value='0';q('last').dispatchEvent(new Event('change'));q('filter-identity').click();assert(document.activeElement===q('filter-results')&&q('filter-actions').children.length===2);assert(q('filter-origin').value==='https://one.example'&&q('filter-results').textContent.includes('2 / 3件'));q('file-save-subset').click();assert(JSON.parse(saved[0].text).reports.every(row=>row.snapshot.siteOrigin==='https://one.example'));assert(panel.exportArchive()===original);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('history blocked merge: native capacity/conflict diagnosis preserves records and permits only a corrected preview',async()=>{
+    const {mountHistoryPanel}=await import('/examples/history-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),host=document.createElement('div');document.body.append(host);const history=createPortfolioHistory(),incoming=createPortfolioHistory();history.merge(Array.from({length:64},(_,i)=>snapshot(0,String(i+1))));incoming.merge([snapshot(0,'65'),snapshot(0,'2',{nativeBalanceBaseUnits:'99'})]);const panel=mountHistoryPanel({document,parent:host,agent:'DAT',getSnapshot:()=>null,getReport:()=>''}),q=name=>host.querySelector('.history-'+name);
+    try{panel.replaceArchive(history.exportText());const original=panel.exportArchive(),source=incoming.exportText();q('json').value=source;q('json').dispatchEvent(new Event('input'));q('preview').click();assert(q('apply').disabled&&q('preview-details').textContent.includes('追加に不足する空き: 1件')&&q('preview-details').textContent.includes('矛盾1件'));q('apply').click();assert(panel.exportArchive()===original&&q('json').value===source);const corrected=createPortfolioHistory();corrected.add(snapshot(0,'1'));q('json').value=corrected.exportText();q('json').dispatchEvent(new Event('input'));q('preview').click();assert(!q('apply').disabled);q('apply').click();assert(panel.exportArchive()===original);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('token list replacement: native preview explains removals and refuses applying after a silent current-list change',async()=>{
+    const {mountTokenPlanPanel}=await import('/examples/token-plan-panel.js'),{createTokenPlan,encodeTokenPlan}=await import('/src/token-plan.js'),host=document.createElement('div');document.body.append(host);const identity={agent:'DAT',chainId:84532},[a,b,c]=['aa','bb','cc'].map(value=>'0x'+value.repeat(20)),applied=[];let lines=a+'\n'+b;const panel=mountTokenPlanPanel({document,parent:host,getContext:()=>identity,readLines:()=>lines,applyLines:value=>applied.push(value)}),q=name=>host.querySelector('.token-plan-'+name);
+    try{q('json').value=encodeTokenPlan(createTokenPlan(identity,b+'\n'+c));q('json').dispatchEvent(new Event('input'));q('preview').click();assert(q('details').textContent.includes('追加1件・削除1件・維持1件')&&q('details').textContent.includes('削除する契約:\n'+a));assert(applied.length===0);lines=c;q('apply').click();assert(applied.length===0&&q('apply').disabled);q('preview').click();assert(q('details').textContent.includes('追加1件・削除0件・維持1件'));q('apply').click();assert(applied.length===1&&applied[0]===b+'\n'+c);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('portfolio report batch: native multi-file candidate deduplicates and requires preview before history changes',async()=>{
+    const {mountPortfolioPanel}=await import('/examples/portfolio-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),{encodePortfolioReport}=await import('/src/portfolio-report.js'),{preparePortfolioReportsHistory}=await import('/src/history-file.js'),host=document.createElement('div');document.body.append(host);const texts=[encodePortfolioReport(snapshot(0,'10')),encodePortfolioReport(snapshot(0,'20'))],panel=mountPortfolioPanel({document,card:host,getContext:()=>({agent:'DAT',chainId:84532}),read:async()=>{throw Error('Unexpected wallet read');}}),q=name=>host.querySelector('.history-'+name),choose=values=>{const files=new DataTransfer();for(const [index,text]of values.entries())files.items.add(new File([text],'observation-'+index+'.json'));q('report-files').files=files.files;q('report-files').dispatchEvent(new Event('change'));},wait=async()=>{const end=Date.now()+10000;while(q('report-files').disabled&&Date.now()<end)await tick();assert(!q('report-files').disabled);};
+    try{const original=panel.exportHistory();choose([...texts,texts[0]]);await wait();assert(q('report-files').multiple&&q('json').value===preparePortfolioReportsHistory(texts,'DAT').text);assert(panel.exportHistory()===original&&q('apply').disabled&&q('file-status').textContent.includes('重複1件'));q('preview').click();q('apply').click();const saved=panel.exportHistory(),draft=q('json').value;assert(JSON.parse(saved).reports.length===2);choose([texts[0],'{']);await wait();assert(panel.exportHistory()===saved&&q('json').value===draft&&q('file-status').textContent.includes('まとめられません'));assert(q('report-files').value==='');}
+    finally{panel.dispose();host.remove();}
+  });
+  test('history token reuse: native handoff focuses a configuration-only draft and requires preview/apply',async()=>{
+    const {mountPortfolioPanel}=await import('/examples/portfolio-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),host=document.createElement('div');document.body.append(host);const row=snapshot(0,'10'),history=createPortfolioHistory();history.merge([row]);let reads=0;const panel=mountPortfolioPanel({document,card:host,getContext:()=>({agent:'DAT',chainId:84532}),read:async()=>{reads++;return snapshot(0,'30');}}),q=name=>host.querySelector('.'+name);
+    try{q('portfolio-tokens').value='0x'+'99'.repeat(20);q('portfolio-read').click();const end=Date.now()+10000;while(q('portfolio-read').disabled&&Date.now()<end)await tick();assert(!q('portfolio-read').disabled);panel.replaceHistory(history.exportText());const original=panel.exportHistory(),current=q('portfolio-details').textContent;q('history-reuse-tokens').click();const plan=JSON.parse(q('token-plan-json').value);assert(document.activeElement===q('token-plan-json'));assert(Object.keys(plan).join(',')==='schema,agent,chainId,tokens'&&plan.tokens[0]===row.holdings[0].address);assert(q('token-plan-apply').disabled&&q('portfolio-details').textContent===current&&q('portfolio-tokens').value==='0x'+'99'.repeat(20));q('token-plan-preview').click();q('token-plan-apply').click();assert(q('portfolio-tokens').value===row.holdings[0].address&&q('portfolio-details').textContent==='');assert(panel.exportHistory()===original&&reads===1);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('history record inspection: native detail focus and same-identity predecessor preserve the current observation',async()=>{
+    const {mountPortfolioPanel}=await import('/examples/portfolio-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),host=document.createElement('div');document.body.append(host);const rows=[snapshot(0,'30'),snapshot(0,'20',{siteOrigin:'https://another.example'}),snapshot(0,'10')],history=createPortfolioHistory(),downloads=[];history.merge(rows);let reads=0;const panel=mountPortfolioPanel({document,card:host,getContext:()=>({agent:'DAT',chainId:84532}),read:async()=>{reads++;return rows[0];},download:({prepared})=>downloads.push(prepared)}),q=name=>host.querySelector('.history-'+name),p=name=>host.querySelector('.portfolio-'+name);
+    try{p('read').click();const end=Date.now()+10000;while(p('read').disabled&&Date.now()<end)await tick();assert(!p('read').disabled);const current=p('details').textContent;panel.replaceHistory(history.exportText());const original=panel.exportHistory();q('last').value='1';q('last').dispatchEvent(new Event('change'));q('show-record').click();assert(document.activeElement===q('details')&&q('details').textContent.includes('https://another.example'));q('last').value='0';q('last').dispatchEvent(new Event('change'));q('compare-previous').click();assert(q('first').value==='2'&&q('details').textContent.includes('10 → 30'));q('save-comparison').click();const saved=JSON.parse(downloads.pop().text);assert(saved.earlier.blockNumber==='10'&&saved.later.blockNumber==='30');q('show-record').click();assert(q('save-comparison').disabled);assert(p('details').textContent===current&&panel.exportHistory()===original&&reads===1);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('history token scope and portable pair: native zero/unknown/unobserved filters and independently reopened comparison',async()=>{
+    const {mountPortfolioPanel}=await import('/examples/portfolio-panel.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),{encodePortfolioComparisonReport}=await import('/src/portfolio-comparison.js'),host=document.createElement('div');document.body.append(host);const address='0x'+'ab'.repeat(20),other='0x'+'cd'.repeat(20),rows=[snapshot(0,'10',{holdings:[{address,hasCode:true,balanceBaseUnits:'0',notice:null}]}),snapshot(0,'20',{holdings:[{address,hasCode:false,balanceBaseUnits:null,notice:'TOKEN_CODE_MISSING'}]}),snapshot(0,'30',{holdings:[{address:other,hasCode:true,balanceBaseUnits:'7',notice:null}]})],history=createPortfolioHistory(),downloads=[];history.merge(rows);let reads=0;const panel=mountPortfolioPanel({document,card:host,getContext:()=>({agent:'DAT',chainId:84532}),read:async()=>{reads++;return rows[0];},download:({prepared})=>downloads.push(prepared)}),q=name=>host.querySelector('.history-'+name),c=name=>host.querySelector('.comparison-'+name);
+    try{panel.replaceHistory(history.exportText());const original=panel.exportHistory();q('filter-token').value=address;q('filter-token').dispatchEvent(new Event('input'));for(const [state,index]of[['known','0'],['unknown','1'],['not-observed','2']]){q('filter-token-status').value=state;q('filter-token-status').dispatchEvent(new Event('change'));q('filter-run').click();assert(q('filter-actions').children.length===1);q('filter-actions').children[0].querySelector('.history-filter-select-after').click();assert(q('last').value===index);}q('first').value='0';q('first').dispatchEvent(new Event('change'));q('last').value='1';q('last').dispatchEvent(new Event('change'));q('compare').click();q('save-comparison').click();const saved=downloads.pop().text;assert(saved===encodePortfolioComparisonReport(rows[0],rows[1]));const files=new DataTransfer();files.items.add(new File([saved],'history-pair.json'));c('review-file').files=files.files;c('review-file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(c('review-file').disabled&&Date.now()<end)await tick();assert(!c('review-file').disabled&&c('status').textContent.includes('再計算が一致'));assert(c('details').textContent===q('details').textContent);q('last').value='2';q('last').dispatchEvent(new Event('change'));assert(q('save-comparison').disabled);assert(panel.exportHistory()===original&&reads===0);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('history search actions: native sorted selection and one-record export preserve the archive and current wallet state',async()=>{
+    const {mountPortfolioPanel}=await import('/examples/portfolio-panel.js'),{encodePortfolioReport}=await import('/src/portfolio-report.js'),{snapshot}=await import('/test/helpers/workspace-fixtures.js'),host=document.createElement('div');document.body.append(host);const rows=['30','10','20'].map(block=>snapshot(0,block,{nativeBalanceBaseUnits:block})),history=createPortfolioHistory(),downloads=[];history.merge(rows);let reads=0;const panel=mountPortfolioPanel({document,card:host,getContext:()=>({agent:'DAT',chainId:84532}),read:async()=>{reads++;return rows[0];},download:({prepared})=>downloads.push(prepared)}),q=name=>host.querySelector('.history-'+name);
+    try{panel.replaceHistory(history.exportText());const original=panel.exportHistory(),current=host.querySelector('.portfolio-details').textContent;q('filter-order').value='newest';q('filter-order').dispatchEvent(new Event('change'));q('filter-run').click();const found=q('filter-actions').children;assert(found.length===3);found[2].querySelector('.history-filter-select-before').click();assert(q('first').value==='1'&&document.activeElement===q('first'));found[0].querySelector('.history-filter-select-after').click();assert(q('last').value==='0'&&document.activeElement===q('last'));assert(q('details').textContent==='');q('compare').click();assert(q('details').textContent.includes('10 → 30')&&q('details').textContent.includes('wei）: +20'));q('save-record').click();assert(downloads.length===1&&downloads[0].text===encodePortfolioReport(rows[0]));assert(q('backup-state').textContent.includes('まだファイルとしてダウンロードしていません'));const old=found[2].querySelector('.history-filter-select-after');q('filter-minimum').value='31';q('filter-minimum').dispatchEvent(new Event('input'));q('filter-run').click();assert(q('filter-actions').children.length===0);old.click();assert(q('last').value==='0');assert(panel.exportHistory()===original&&host.querySelector('.portfolio-details').textContent===current&&reads===0);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('portable portfolio comparison: native save and independent review preserve the current observation and history',async()=>{
+    const {mountPortfolioPanel}=await import('/examples/portfolio-panel.js'),{encodePortfolioReport}=await import('/src/portfolio-report.js'),{encodePortfolioComparisonReport}=await import('/src/portfolio-comparison.js'),host=document.createElement('div');document.body.append(host);const before={agent:'DAT',account:'0x'+'11'.repeat(20),chainId:84532,siteOrigin:'http://localhost:4231',connectionEpoch:1,blockNumber:'42',blockHash:'0x'+'ab'.repeat(32),nativeBalanceBaseUnits:'12',holdings:[{address:'0x'+'22'.repeat(20),hasCode:false,balanceBaseUnits:null,notice:'TOKEN_CODE_MISSING'}],readOnly:true,securityAudit:false},after={...before,blockNumber:'43',blockHash:'0x'+'cd'.repeat(32),nativeBalanceBaseUnits:'16'},downloads=[];let reads=0;const panel=mountPortfolioPanel({document,card:host,getContext:()=>({agent:'DAT',chainId:84532}),read:async()=>{reads++;return after;},download:({prepared})=>downloads.push(prepared)}),q=name=>host.querySelector('.comparison-'+name),p=name=>host.querySelector('.portfolio-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());},choose=text=>{const files=new DataTransfer();files.items.add(new File([text],'comparison.json'));q('review-file').files=files.files;q('review-file').dispatchEvent(new Event('change'));};
+    try{p('read').click();await wait(()=>!p('download').disabled);const history=panel.exportHistory(),current=p('details').textContent;q('baseline').value=encodePortfolioReport(before);q('baseline').dispatchEvent(new Event('input'));q('run').click();q('save').click();const saved=downloads.pop().text;assert(saved===encodePortfolioComparisonReport(before,after));q('clear').click();choose(saved);await wait(()=>!q('review-file').disabled);assert(q('status').textContent.includes('再計算が一致')&&q('details').textContent.includes('wei）: +4'));assert(q('baseline').value===''&&p('details').textContent===current&&panel.exportHistory()===history&&reads===1);q('save').click();assert(downloads.pop().text===saved);const invalid=JSON.parse(saved);invalid.comparison.native.deltaBaseUnits='999';choose(JSON.stringify(invalid));await wait(()=>!q('review-file').disabled);assert(q('save').disabled&&q('details').textContent==='');assert(p('details').textContent===current&&panel.exportHistory()===history&&reads===1);}finally{panel.dispose();host.remove();}
+  });
+  test('card configuration and observation guide: native verification routes to cards without importing or connecting',async use=>{
+    const f=use(),{createTokenPlan,encodeTokenPlan}=await import('/src/token-plan.js'),plan=encodeTokenPlan(createTokenPlan({agent:'DAT',chainId:84532},'0x'+'11'.repeat(20))),fixtures=await savedWorkspaceGuideFixtures(),q=name=>document.querySelector('.saved-file-guide-'+name);
+    for(const text of [plan,fixtures.find(row=>row.target==='portfolio').text,fixtures.find(row=>row.target==='portfolio-history').text]){const files=new DataTransfer();files.items.add(new File([text],'renamed.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(q('destination').disabled&&Date.now()<end)await tick();assert(!q('destination').disabled);assert(q('output').textContent.includes('内部チェックサム'));q('destination').click();assert(document.activeElement===document.getElementById('grid'));assert(q('destination-status').textContent.includes('まだ読み込んでいません'));assert(f.field('.token-plan-json').value===''&&f.field('.portfolio-json').value===''&&f.calls.length===0);}
+  });
+  test('portfolio comparison baseline: native file selection preserves exact source and requires an explicit comparison',async()=>{
+    const {mountComparisonPanel}=await import('/examples/comparison-panel.js'),{encodePortfolioReport}=await import('/src/portfolio-report.js'),host=document.createElement('div');document.body.append(host);const before={agent:'DAT',account:'0x'+'11'.repeat(20),chainId:84532,siteOrigin:'http://localhost:4231',connectionEpoch:1,blockNumber:'42',blockHash:'0x'+'ab'.repeat(32),nativeBalanceBaseUnits:'12',holdings:[{address:'0x'+'22'.repeat(20),hasCode:true,balanceBaseUnits:'33',notice:null}],readOnly:true,securityAudit:false},text=encodePortfolioReport(before),after={...before,blockNumber:'43',blockHash:'0x'+'cd'.repeat(32),nativeBalanceBaseUnits:'16'},panel=mountComparisonPanel({document,parent:host}),q=name=>host.querySelector('.comparison-'+name);
+    try{panel.setTarget(after);const files=new DataTransfer();files.items.add(new File([text+'\n'],'baseline.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));assert(q('run').disabled);const end=Date.now()+10000;while(q('file').disabled&&Date.now()<end)await tick();assert(!q('file').disabled&&q('baseline').value===text+'\n'&&q('details').textContent==='');q('run').click();assert(q('details').textContent.includes('wei）: +4')&&q('details').textContent.includes('42 → 43'));assert(q('file').value==='');const previous=q('details').textContent;q('file').files=new DataTransfer().files;q('file').dispatchEvent(new Event('change'));assert(q('details').textContent===previous);panel.clearTarget();assert(q('run').disabled&&q('baseline').value==='');}finally{panel.dispose();host.remove();}
+  });
+  test('token input list files: native selection stages configuration, preview applies explicitly, saved JSON is exact',async()=>{
+    const {mountTokenPlanPanel}=await import('/examples/token-plan-panel.js'),{createTokenPlan,encodeTokenPlan}=await import('/src/token-plan.js'),host=document.createElement('div');document.body.append(host);const context={agent:'DAT',chainId:84532},address='0x'+'11'.repeat(20),text=encodeTokenPlan(createTokenPlan(context,address)),downloads=[],applied=[],panel=mountTokenPlanPanel({document,parent:host,getContext:()=>context,readLines:()=>address,applyLines:value=>applied.push(value),download:({prepared})=>downloads.push(prepared)}),q=name=>host.querySelector('.token-plan-'+name);
+    try{q('download').click();assert(downloads[0].text===text);const files=new DataTransfer();files.items.add(new File([text+'\n'],'tokens.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(q('file').disabled&&Date.now()<end)await tick();assert(!q('file').disabled&&q('json').value===text+'\n');assert(applied.length===0&&q('apply').disabled);q('preview').click();q('apply').click();assert(applied.length===1&&applied[0]===address);assert(q('apply').disabled&&q('file').value==='');}finally{panel.dispose();host.remove();}
+  });
+  test('portfolio record files: native selection preserves current observation and history until historical display is requested',async()=>{
+    const {mountPortfolioPanel}=await import('/examples/portfolio-panel.js'),{encodePortfolioReport}=await import('/src/portfolio-report.js'),host=document.createElement('div');document.body.append(host);const snapshot={agent:'DAT',account:'0x'+'11'.repeat(20),chainId:84532,siteOrigin:'http://localhost:4231',connectionEpoch:1,blockNumber:'42',blockHash:'0x'+'ab'.repeat(32),nativeBalanceBaseUnits:((1n<<256n)-1n).toString(),holdings:[{address:'0x'+'22'.repeat(20),hasCode:false,balanceBaseUnits:null,notice:'TOKEN_CODE_MISSING'}],readOnly:true,securityAudit:false},text=encodePortfolioReport(snapshot),downloads=[];let reads=0;const panel=mountPortfolioPanel({document,card:host,getContext:()=>({agent:'DAT',chainId:84532}),read:async()=>{reads++;return snapshot;},download:({prepared})=>downloads.push(prepared)}),q=name=>host.querySelector('.portfolio-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());};
+    try{q('read').click();await wait(()=>!q('download').disabled);const current=q('details').textContent,history=panel.exportHistory();q('download').click();assert(downloads[0].text===text);const files=new DataTransfer();files.items.add(new File([text],'snapshot.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));await wait(()=>!q('file').disabled);assert(q('json').value===text&&q('details').textContent===current&&panel.exportHistory()===history&&reads===1);q('import').click();assert(q('details').textContent.includes('過去の保存記録')&&q('details').textContent.includes('契約コードなし'));assert(q('details').textContent.includes(snapshot.nativeBalanceBaseUnits));assert(q('download').disabled&&panel.exportHistory()===history&&reads===1);}finally{panel.dispose();host.remove();}
+  });
+  for(const kind of ['wallet','rehearsal'])test(kind+' comparison progress: native status distinguishes groups and cancellation retains no obsolete result',async()=>{
+    const w=kind==='wallet',core=await import(w?'/src/file-read-status.js':'/src/operation-rehearsal-report-review.js'),ui=await import(w?'/examples/file-read-panel.js':'/examples/operation-rehearsal-review-panel.js'),inspect=core[w?'inspectWalletSavedTextBatch':'reviewRehearsalReportBatch'],prepare=core[w?'prepareWalletBatchComparisonEvidence':'prepareRehearsalBatchComparisonEvidence'],source=savedRehearsalGuideFixtures()[0].text,batch=await inspect([{name:'source.json',text:source},{name:'invalid.json',text:'{'}]),bundle=await prepare(batch,batch),host=document.createElement('div');document.body.append(host);
+    const panel=w?ui.mountSavedBatchComparisonPanel({document,parent:host,download:()=>{}}):ui.mountRehearsalBatchComparisonPanel(document,{parent:host,download:()=>{}}),e=name=>host.querySelector((w?'.wallet-comparison-evidence-':'.rehearsal-batch-comparison-evidence-')+name),status=e('status'),history=[];let cancel=false,stopped=false;
+    const observer=new MutationObserver(records=>{history.push(...records.flatMap(r=>[...r.removedNodes].map(n=>n.textContent)),status.textContent);if(cancel&&!stopped&&history.some(v=>v.startsWith('比較元:'))){stopped=true;e('stop').click();}});observer.observe(status,{childList:true});
+    try{assert(await panel.inspectEvidenceFile(new File([bundle.text],'pair.json')));await tick();assert(history.some(v=>v.includes('比較元: 2／2'))&&history.some(v=>v.includes('比較先: 2／2')));assert(status.getAttribute('role')==='status'&&status.getAttribute('aria-live')==='polite');assert(host.querySelector('.reviewed-batch-comparison-rows').rows.length===2);history.length=0;cancel=true;assert(!await panel.inspectEvidenceFile(new File([bundle.text],'pair.json')));await tick();assert(stopped&&status.textContent.includes('中止'));assert(!history.some(v=>v.startsWith('比較先:')));assert(host.querySelector('.reviewed-batch-comparison-rows').rows.length===0);
+    }finally{observer.disconnect();panel.dispose();host.remove();}
+  });
+  for(const kind of ['wallet','rehearsal'])test(kind+' comparison handoff: native initial file selection reaches the verifier and preserves active records',async()=>{
+    const wallet=kind==='wallet',core=await import(wallet?'/src/file-read-status.js':'/src/operation-rehearsal-report-review.js'),inspect=core[wallet?'inspectWalletSavedTextBatch':'reviewRehearsalReportBatch'],prepare=core[wallet?'prepareWalletBatchComparisonEvidence':'prepareRehearsalBatchComparisonEvidence'],source=savedRehearsalGuideFixtures()[0].text,left=await inspect([{name:'source.json',text:source},{name:'bad.json',text:'{'}]),right=await inspect([{name:'source.json',text:source+' '},{name:'bad.json',text:'{'}]),bundle=await prepare(left,right),host=wallet?document.createElement('div'):document.importNode(new DOMParser().parseFromString(await(await fetch('/rehearsal/')).text(),'text/html').querySelector('main'),true);document.body.append(host);const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[],panel=wallet?mountFileReadPanel({document,parent:host}):mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=name=>wallet?host.querySelector('.saved-file-guide-'+name):view.getElementById('report-review-'+name),e=name=>host.querySelector(wallet?'.wallet-comparison-evidence-'+name:'.rehearsal-batch-comparison-evidence-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());};let original;
+    try{if(!wallet){view.getElementById('example').click();view.getElementById('session-save').click();original=downloads.pop().text;}const files=new DataTransfer();files.items.add(new File([bundle.text+(wallet?'':' '.repeat(2097152))],'comparison.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const action=q(wallet?'batch-evidence':'comparison-evidence');await wait(()=>!action.disabled);action.click();await wait(()=>q('batch-evidence-status').textContent.includes('再確認を終えました'));assert(host.querySelector('.reviewed-batch-comparison-rows').rows.length===2);assert(e('file').files.length===0);assert(document.activeElement===e('status'));assert((wallet?host.querySelector('.saved-file-batch-rows'):view.getElementById('report-batch-rows')).rows.length===0);assert(e('status').textContent.includes('一致しました'));if(!wallet){view.getElementById('session-save').click();assert(downloads.pop().text===original);}assert(!action.disabled);
+    }finally{panel.dispose();host.remove();}
+  });
+  for(const kind of ['wallet','rehearsal'])test(kind+' file comparison: 320px panes contain long names, digests and JSON paths in focusable scroll regions',async()=>{
+    const wallet=kind==='wallet',core=await import(wallet?'/src/file-read-status.js':'/src/operation-rehearsal-report-review.js'),ui=await import(wallet?'/examples/file-read-panel.js':'/examples/operation-rehearsal-review-panel.js'),inspect=core[wallet?'inspectWalletSavedTextBatch':'reviewRehearsalReportBatch'],prepare=core[wallet?'prepareWalletBatchComparisonEvidence':'prepareRehearsalBatchComparisonEvidence'],name='x'.repeat(100)+'.json',key='nested-property-'.repeat(15),text=JSON.stringify({schema:'layout.fixture', [key]:1}),changed=JSON.stringify({schema:'layout.fixture',[key]:2}),before=await inspect([{name,text}]),after=await inspect([{name,text:changed}]),bundle=await prepare(before,after),host=document.createElement('div');host.style.cssText='width:320px;max-width:320px;box-sizing:border-box';document.body.append(host);
+    const panel=wallet?ui.mountSavedBatchComparisonPanel({document,parent:host,download:()=>{}}):ui.mountRehearsalBatchComparisonPanel(document,{parent:host,download:()=>{}}),q=name=>host.querySelector((wallet?'.saved-batch-comparison-':'.rehearsal-batch-comparison-')+name),e=name=>host.querySelector(wallet?'.wallet-comparison-evidence-'+name:'.rehearsal-batch-comparison-evidence-'+(name==='receipt'?'review-save':name)),d=name=>host.querySelector('.batch-comparison-differences-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());};
+    try{panel.updateCurrent(before);q('hold').click();panel.updateCurrent(after);const files=new DataTransfer();files.items.add(new File([bundle.text],'comparison.json'));e('file').files=files.files;e('file').dispatchEvent(new Event('change'));await wait(()=>!e('receipt').disabled);for(const detail of host.querySelectorAll('details'))detail.open=true;d('choice').value=name;d('choice').dispatchEvent(new Event('change'));d('run').click();await tick();assert(host.scrollWidth<=host.clientWidth+2,'File comparison escaped its 320px pane: '+host.scrollWidth+'/'+host.clientWidth);const regions=[...host.querySelectorAll('.file-review-table-wrap')];assert(regions.length===2);for(const region of regions){assert(region.tabIndex===0&&region.getAttribute('role')==='region'&&region.getAttribute('aria-label'));region.focus();assert(document.activeElement===region);assert(region.scrollWidth>region.clientWidth);region.scrollLeft=region.scrollWidth;assert(region.scrollLeft>0);}const output=d('output');assert(output.textContent.includes(key));assert(output.scrollWidth<=output.clientWidth+2);output.focus();assert(document.activeElement===output&&output.getAttribute('aria-label'));assert(host.querySelector('input[type=checkbox]').getBoundingClientRect().width<40);if(!wallet){const page=await(await fetch('/rehearsal/')).text();assert(page.includes('href="/examples/security.css"'));}
+    }finally{panel.dispose();host.remove();}
+  });
+  test('wallet batch list: 320px native file selection keeps full results inside its own scroll region',async()=>{
+    const host=document.createElement('div');host.style.cssText='width:320px;max-width:320px;box-sizing:border-box';document.body.append(host);const panel=mountSavedFileBatchPanel({document,parent:host,download:()=>{}}),q=name=>host.querySelector('.saved-file-batch-'+name);
+    try{const files=new DataTransfer();files.items.add(new File(['{}'],'x'.repeat(100)+'.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);host.querySelector('.saved-file-batch').open=true;await tick();const wrap=q('table-wrap');assert(host.scrollWidth<=host.clientWidth+2,'Batch list escaped its narrow pane');assert(wrap.scrollWidth>wrap.clientWidth);wrap.focus();assert(document.activeElement===wrap);wrap.scrollLeft=wrap.scrollWidth;assert(wrap.scrollLeft>0);assert(q('rows').rows.length===1&&panel.getState().result.files[0].status==='invalid');}finally{panel.dispose();host.remove();}
+  });
+  test('portable comparison difference viewer: native page boundaries, pending filters and exact scope exports', async()=>{
+    const core=await import('/src/file-read-status.js'),{mountBatchComparisonDifferencePanel}=await import('/examples/file-read-panel.js'),before=JSON.stringify({schema:'threecore.test.v1',rows:Array.from({length:85},(_,i)=>i)}),after=JSON.stringify({schema:'threecore.test.v1',rows:Array.from({length:85},(_,i)=>i+1)}),left=await core.inspectWalletSavedTextBatch([{name:'source.json',text:before}]),right=await core.inspectWalletSavedTextBatch([{name:'source.json',text:after}]),bundle=await core.prepareWalletBatchComparisonEvidence(left,right),review=await core.reviewWalletBatchComparisonEvidence(bundle.text),host=document.createElement('div'),downloads=[];document.body.append(host);
+    const panel=mountBatchComparisonDifferencePanel({document,parent:host,open:core.openReviewedWalletBatchComparisonEvidence,query:core.queryWalletBatchComparisonDifferences,encode:core.encodeWalletBatchComparisonDifferences,download:value=>downloads.push(value)}),q=name=>host.querySelector('.batch-comparison-differences-'+name);
+    try{panel.updateReview(review);q('choice').value='source.json';q('choice').dispatchEvent(new Event('change'));q('run').click();assert(panel.getState().page.shownDifferences===40);q('next').click();q('next').click();assert(panel.getState().page.offset===80&&panel.getState().page.shownDifferences===5&&q('next').disabled);q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(downloads.at(-1).text===core.encodeWalletBatchComparisonDifferences(core.queryWalletBatchComparisonDifferences(review,'source.json',{offset:80})));q('path').value='/absent';q('path').dispatchEvent(new Event('input'));assert(q('save').disabled&&q('previous').disabled);q('run').click();assert(panel.getState().page.matchedDifferences===0&&panel.getState().page.totalDifferences===85&&q('status').textContent.includes('全体の一致を意味しません'));q('clear').click();assert(panel.getState().page.shownDifferences===40);panel.updateReview(null);assert(q('run').disabled&&q('output').textContent==='');}finally{panel.dispose();host.remove();}
+  });
+  for (const kind of ['wallet','rehearsal']) test(kind+' portable comparison: native saved evidence displays all sources and exports the exact selected role', async()=>{
+    const wallet=kind==='wallet',core=await import(wallet?'/src/file-read-status.js':'/src/operation-rehearsal-report-review.js'),ui=await import(wallet?'/examples/file-read-panel.js':'/examples/operation-rehearsal-review-panel.js'),inspect=core[wallet?'inspectWalletSavedTextBatch':'reviewRehearsalReportBatch'],prepare=core[wallet?'prepareWalletBatchComparisonEvidence':'prepareRehearsalBatchComparisonEvidence'],text=savedRehearsalGuideFixtures()[0].text,negative='\uFEFF{broken 日本語\r\n',before=await inspect([{name:'same.json',text},{name:'negative.json',text:negative}]),after=await inspect([{name:'same.json',text:text+' '},{name:'negative.json',text:negative}]),bundle=await prepare(before,after),host=document.createElement('div'),downloads=[];document.body.append(host);
+    const panel=wallet?ui.mountSavedBatchComparisonPanel({document,parent:host,download:value=>downloads.push(value)}):ui.mountRehearsalBatchComparisonPanel(document,{parent:host,download:({prepared})=>downloads.push(prepared)}),q=name=>host.querySelector((wallet?'.saved-batch-comparison-':'.rehearsal-batch-comparison-')+name),e=name=>host.querySelector(wallet?'.wallet-comparison-evidence-'+name:'.rehearsal-batch-comparison-evidence-'+(name==='receipt'?'review-save':name)),v=name=>host.querySelector('.reviewed-batch-comparison-'+name),s=name=>host.querySelector('.comparison-source-export-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());},choose=value=>{const files=new DataTransfer();files.items.add(new File([value],'pair.json'));e('file').files=files.files;e('file').dispatchEvent(new Event('change'));};
+    try{panel.updateCurrent(before);q('hold').click();panel.updateCurrent(after);const previous=panel.getState().comparison;choose(bundle.text);await wait(()=>!e('receipt').disabled);assert(v('rows').rows.length===2&&panel.getState().comparison===previous);assert(e('file').value==='');v('role').value='after';v('role').dispatchEvent(new Event('change'));s('choice').value='same.json';s('choice').dispatchEvent(new Event('change'));assert(s('save').disabled);s('ack').checked=true;s('ack').dispatchEvent(new Event('change'));s('save').click();assert(downloads.at(-1).text===text+' ');s('choice').value='negative.json';s('choice').dispatchEvent(new Event('change'));assert(s('status').textContent.includes('内容を確認できない')&&s('save').disabled);v('ack').checked=true;v('ack').dispatchEvent(new Event('change'));v('save').click();assert(JSON.parse(downloads.at(-1).text).files.length===2);const altered=JSON.parse(bundle.text);altered.authorizesExecution=true;choose(JSON.stringify(altered));await wait(()=>!e('receipt').disabled);assert(v('rows').rows.length===0&&panel.getState().comparison===previous&&s('save').disabled);panel.updateCurrent(null);assert(panel.getState().baseline===before);
+    }finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal batch comparison: native baseline retention and portable evidence preserve exact pair and negative scope',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[],panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared)}),q=name=>view.getElementById('report-batch-'+name),c=name=>host.querySelector('.rehearsal-batch-comparison-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());},choose=(input,rows)=>{const transfer=new DataTransfer();for(const row of rows)transfer.items.add(new File([row.text],row.name));input.files=transfer.files;input.dispatchEvent(new Event('change'));},input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,input),before=[{name:'same.json',text},{name:'changed.json',text},{name:'bad.json',text:'{'}],after=[{name:'same.json',text},{name:'changed.json',text:text+' '},{name:'bad.json',text:'{'}];
+    try{choose(q('files'),before);q('run').click();await wait(()=>q('status').getAttribute('aria-busy')==='false');c('hold').click();choose(q('files'),after);q('run').click();await wait(()=>q('status').getAttribute('aria-busy')==='false');const summary=q('summary').textContent;c('changed').checked=true;c('changed').dispatchEvent(new Event('change'));assert(c('rows').rows.length===1&&c('summary').textContent.includes('問題1件'));c('json').click();assert(JSON.parse(downloads.at(-1).text).files.length===3);assert(c('evidence-save').disabled);c('evidence-ack').checked=true;c('evidence-ack').dispatchEvent(new Event('change'));c('evidence-save').click();await wait(()=>c('evidence').getAttribute('aria-busy')==='false');const bundle=downloads.at(-1).text;assert(JSON.parse(bundle).before.files[0].text===text&&JSON.parse(bundle).after.files[1].text===text+' ');choose(c('evidence-file'),[{name:'comparison.json',text:bundle}]);await wait(()=>!c('evidence-review-save').disabled);assert(c('evidence-status').textContent.includes('一致しました')&&c('evidence-status').textContent.includes('元資料自体に'));c('evidence-review-save').click();const reviewed=JSON.parse(downloads.at(-1).text);assert(reviewed.matchesRecomputation&&!reviewed.allSourceReportsMatch&&reviewed.comparisonSummary.bytesChanged===1);assert(q('summary').textContent===summary&&c('rows').rows.length===1);q('clear').click();assert(c('json').disabled&&c('baseline').textContent.includes('全3件'));c('clear').click();assert(c('baseline').textContent.includes('まだ保持していません'));
+    }finally{panel.dispose();host.remove();}
+  });
+  for(const kind of ['wallet','rehearsal'])test(kind+' batch sources: native exact source export and rehearsal direct handoff preserve negative outcomes',async()=>{
+    const wallet=kind==='wallet',core=await import(wallet?'/src/file-read-status.js':'/src/operation-rehearsal-report-review.js'),inspect=core[wallet?'inspectWalletSavedTextBatch':'reviewRehearsalReportBatch'],prepare=core[wallet?'prepareWalletSavedBatchEvidence':'prepareRehearsalBatchEvidence'],negative='\uFEFF{broken 日本語\r\n',bundle=await prepare(await inspect([{name:'Original.json',text:savedRehearsalGuideFixtures()[0].text},{name:'日本語.json',text:negative}]));
+    const host=wallet?document.createElement('div'):document.importNode(new DOMParser().parseFromString(await(await fetch('/rehearsal/')).text(),'text/html').querySelector('main'),true);document.body.append(host);const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[],batch=wallet?mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value)}):mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared)}),review=wallet?null:mountRehearsalReviewPanel(view,{download:()=>{},reviewBatchEvidence:file=>batch.inspectEvidenceFile(file)}),s=name=>host.querySelector('.batch-source-export-'+name),q=name=>wallet?host.querySelector('.saved-file-batch-'+name):view.getElementById('report-batch-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());};
+    try{const files=new DataTransfer();files.items.add(new File([bundle.text],'bundle.json'));const input=wallet?q('evidence-file'):view.getElementById('report-review-file');input.files=files.files;input.dispatchEvent(new Event('change'));if(!wallet){const handoff=view.getElementById('report-review-batch-evidence');await wait(()=>!handoff.disabled);handoff.click();await wait(()=>view.getElementById('report-review-batch-evidence-status').textContent.includes('再確認を終えました'));assert(q('evidence-file').files.length===0);assert(q('evidence-file').closest('details').open);}
+      await wait(()=>!s('choice').disabled);s('choice').value='日本語.json';s('choice').dispatchEvent(new Event('change'));assert(s('save').disabled&&s('status').textContent.includes('内容を確認できない'));s('ack').checked=true;s('ack').dispatchEvent(new Event('change'));s('save').click();assert(downloads.length===1&&downloads[0].text===negative&&downloads[0].filename==='日本語.json'&&downloads[0].authorizesExecution===false);assert(s('save').disabled);
+      const c=name=>host.querySelector('.saved-bundle-receipt-check-'+name),reviewed=await core[wallet?'reviewWalletSavedBatchEvidence':'reviewRehearsalBatchEvidence'](bundle.text),receipt=core[wallet?'encodeWalletSavedBatchEvidenceReview':'encodeRehearsalBatchEvidenceReview'](reviewed),receiptFiles=new DataTransfer();receiptFiles.items.add(new File([receipt],'review.json'));c('file').files=receiptFiles.files;c('file').dispatchEvent(new Event('change'));await wait(()=>!c('ack').disabled);assert(c('output').textContent.includes('全項目が再計算と一致'));c('ack').checked=true;c('ack').dispatchEvent(new Event('change'));c('save').click();const savedCheck=JSON.parse(downloads.at(-1).text);assert(savedCheck.matchesRecomputation&&savedCheck.bundleTextBindingMatches&&savedCheck.expectedSummary.invalid===1&&!savedCheck.authorizesExecution);
+      if(!wallet){const summary=q('summary').textContent;for(const name of['files','reference-file']){q(name).files=new DataTransfer().files;q(name).dispatchEvent(new Event('change'));assert(q('summary').textContent===summary&&q('rows').rows.length===2);}}
+      q('filter-status').value='invalid';q('filter-status').dispatchEvent(new Event('change'));if(wallet){q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));}q('selection-save').click();const savedSelection=downloads.at(-1).text,selected=JSON.parse(savedSelection);assert(selected.matchedFiles===1&&selected.selectedBatchFiles===2&&selected.files[0].name==='日本語.json'&&!selected.fullBatchResultIncluded);
+      q('filter-clear').click();const sc=name=>host.querySelector('.batch-selection-check .saved-bundle-receipt-check-'+name),selectionFiles=new DataTransfer();selectionFiles.items.add(new File([savedSelection],'selected.json'));sc('file').files=selectionFiles.files;sc('file').dispatchEvent(new Event('change'));await wait(()=>!sc('ack').disabled);assert(!sc('apply').disabled);sc('apply').click();assert(q('filter-status').value==='invalid'&&Array.from(q('rows').rows).filter(row=>!row.hidden).length===1);assert(sc('status').textContent.includes('確認済みの条件を現在'));q('clear').click();assert(s('choice').disabled&&s('choice').value===''&&c('file').disabled&&c('save').disabled&&q('selection-save').disabled&&sc('apply').disabled);
+    }finally{review?.dispose();batch.dispose();host.remove();}
+  });
+  test('wallet batch guide: native selected bundle passes directly into independent verification without a second picker',async()=>{
+    const {prepareWalletSavedBatchEvidence}=await import('/src/file-read-status.js'),text=savedRehearsalGuideFixtures()[0].text,prepared=await prepareWalletSavedBatchEvidence(await inspectWalletSavedTextBatch([{name:'plain.json',text},{name:'invalid.json',text:'{'}])),host=document.createElement('div');document.body.append(host);const panel=mountFileReadPanel({document,parent:host}),q=(prefix,name)=>host.querySelector('.'+prefix+'-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());};
+    try{const files=new DataTransfer();files.items.add(new File([prepared.text],'bundle.json'));q('saved-file-guide','file').files=files.files;q('saved-file-guide','file').dispatchEvent(new Event('change'));await wait(()=>!q('saved-file-guide','batch-evidence').disabled);assert(q('saved-file-batch','rows').rows.length===0);q('saved-file-guide','batch-evidence').click();await wait(()=>q('saved-file-guide','batch-evidence-status').textContent.includes('再確認を終えました'));assert(q('saved-file-batch','rows').rows.length===2&&q('saved-file-batch','evidence-file').files.length===0);assert(host.querySelector('.saved-file-batch').open&&q('saved-file-batch','evidence').open);assert(q('saved-file-batch','evidence-status').textContent.includes('取り込みは行っていません'));
+    }finally{panel.dispose();host.remove();}
+  });
+  test('wallet batch evidence: native source consent and verified reopen keep exact detail files and negative scope',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],opened=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value),inspectOriginal:async(file,digest)=>{opened.push({name:file.name,text:await file.text(),digest});return true;}}),q=name=>host.querySelector('.saved-file-batch-'+name),wait=async()=>{const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);},choose=(id,files)=>{const transfer=new DataTransfer();for(const file of files)transfer.items.add(file);q(id).files=transfer.files;q(id).dispatchEvent(new Event('change'));};
+    try{const text=savedRehearsalGuideFixtures()[0].text;choose('file',[new File([text],'good.json'),new File(['{'],'invalid.json')]);q('start').click();await wait();assert(q('evidence-save').disabled);q('evidence-ack').checked=true;q('evidence-ack').dispatchEvent(new Event('change'));q('evidence-save').click();await wait();const saved=downloads.at(-1).text;assert(JSON.parse(saved).files[0].text===text);q('clear').click();choose('evidence-file',[new File([saved],'bundle.json')]);await wait();assert(q('rows').rows.length===2&&q('evidence-status').textContent.includes('保存内容と再確認の結果が一致'));q('rows').rows[0].querySelector('button').click();const detailDeadline=Date.now()+10000;while(opened.length===0&&Date.now()<detailDeadline)await tick();assert(opened.length===1&&opened[0].text===text&&opened[0].digest.length===64,'Exact original detail read did not complete');q('evidence-review-save').click();assert(JSON.parse(downloads.at(-1).text).allOriginalsValidated===false);const previous=panel.getState().result,changed=JSON.parse(saved);changed.receipt.summary.invalid=0;choose('evidence-file',[new File([JSON.stringify(changed)],'changed.json')]);await wait();assert(panel.getState().result===previous&&q('evidence-status').textContent.includes('一覧は置き換えていません'));q('evidence-review-save').click();assert(JSON.parse(downloads.at(-1).text).matchesRecomputation===false);
+    }finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal batch evidence: native whole-source save and verified reopen preserve negative results',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[],opened=[],panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared),inspectSource:row=>{opened.push(row);return true;}}),q=id=>view.getElementById('report-batch-'+id),wait=async()=>{const end=Date.now()+10000;while(q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q('status').getAttribute('aria-busy')==='false');},choose=(id,files)=>{const transfer=new DataTransfer();for(const file of files)transfer.items.add(file);q(id).files=transfer.files;q(id).dispatchEvent(new Event('change'));};
+    try{const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,input);choose('files',[new File([text],'good.json'),new File(['{'],'invalid.json')]);q('run').click();await wait();assert(q('evidence-save').disabled);q('evidence-ack').checked=true;q('evidence-ack').dispatchEvent(new Event('change'));q('evidence-save').click();await wait();const saved=downloads.at(-1).text;assert(JSON.parse(saved).files[0].text===text&&q('evidence-save').disabled);q('clear').click();choose('evidence-file',[new File([saved],'bundle.json')]);await wait();assert(q('rows').rows.length===2&&q('evidence-status').textContent.includes('保存内容と再計算が一致'));q('rows').rows[0].querySelector('button').click();assert(opened[0].text===text);q('evidence-review-save').click();assert(JSON.parse(downloads.at(-1).text).allSourceReportsMatch===false);const before=q('summary').textContent,changed=JSON.parse(saved);changed.receipt.summary.invalid=0;choose('evidence-file',[new File([JSON.stringify(changed)],'changed.json')]);await wait();assert(q('evidence-status').textContent.includes('一覧は置き換えていません')&&q('summary').textContent===before);q('evidence-review-save').click();assert(JSON.parse(downloads.at(-1).text).matchesRecomputation===false);
+    }finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal batch filter: native failed-expectation view preserves complete exports and original detail source',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[],opened=[],panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared),inspectSource:value=>{opened.push(value);return true;}}),q=id=>view.getElementById('report-batch-'+id),filter=(name,value)=>{q('filter-'+name).value=value;q('filter-'+name).dispatchEvent(new Event(name==='name'?'input':'change'));},visible=()=>Array.from(q('rows').rows).filter(row=>!row.hidden);
+    try{const input=rehearsalExampleV2(),suite=structuredClone(captureRehearsalCheckSuite({schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:'case',label:'Expected comparison',before:input,after:input}]}));suite.expected[0].after.metrics.cash='1';const negative=encodeRehearsalCheckReport(suite),files=new DataTransfer();files.items.add(new File([encodeRehearsalScenario(input,input)],'FIRST.json'));files.items.add(new File([negative],'negative.json'));files.items.add(new File(['{}'],'invalid.json'));q('files').files=files.files;q('files').dispatchEvent(new Event('change'));q('run').click();const end=Date.now()+10000;while(q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(!q('save').disabled);q('save').click();const original=downloads.pop().text;filter('status','matched');assert(visible().length===2);filter('status','expected-differences');assert(visible().length===1&&visible()[0].cells[0].textContent==='negative.json');q('rows').rows[0].querySelector('button').click();assert(opened.length===0);visible()[0].querySelector('button').click();assert(opened.length===1&&opened[0].text===negative);filter('name','absent');assert(visible().length===0&&q('filter-summary').textContent.includes('全 3件'));q('save').click();assert(downloads.pop().text===original);q('filter-clear').click();assert(visible().length===3);q('clear').click();assert(q('filter-name').disabled&&q('filter-status').value==='all');}finally{panel.dispose();host.remove();}
+  });
+  test('wallet file list: native filters preserve complete receipts and only open the visible original',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],opened=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value),inspectOriginal:async(file,hash)=>{opened.push({name:file.name,hash});return true;}}),q=name=>host.querySelector('.saved-file-batch-'+name),filter=(name,value)=>{q('filter-'+name).value=value;q('filter-'+name).dispatchEvent(new Event(name==='name'?'input':'change'));},visible=()=>Array.from(q('rows').rows).filter(row=>!row.hidden),save=()=>{q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();};
+    try{const text=savedRehearsalGuideFixtures()[0].text,files=new DataTransfer();files.items.add(new File([text],'FIRST.json'));files.items.add(new File(['{}'],'invalid.json'));files.items.add(new File([text],'last.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);save();const original=downloads.pop().text;filter('status','validated-structure');assert(visible().length===2);filter('name','LAST');assert(visible().length===1&&q('filter-summary').textContent.includes('全 3件'));q('rows').rows[0].querySelector('button').click();assert(opened.length===0);visible()[0].querySelector('button').click();await tick();assert(opened.length===1&&opened[0].name==='last.json'&&opened[0].hash.length===64);filter('name','absent');assert(visible().length===0);save();assert(downloads.pop().text===original);q('filter-clear').click();assert(visible().length===3);q('clear').click();assert(q('filter-name').disabled&&q('filter-name').value==='');
+    }finally{panel.dispose();host.remove();}
+  });
+  test('bundle receipt check: native saved receipts distinguish faithful negative evidence from edited claims',async()=>{
+    const {mountSavedComparisonBundlePanel}=await import('/examples/file-read-panel.js'),{prepareWalletSavedSourceBundle}=await import('/src/file-read-status.js'),host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedComparisonBundlePanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-bundle-'+name),c=name=>q('receipt-check-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());},load=async(select,text)=>{const files=new DataTransfer();files.items.add(new File([text],'record.json'));select('file').files=files.files;select('file').dispatchEvent(new Event('change'));await wait(()=>select('stop').disabled);},ack=(select,name)=>{select(name).checked=true;select(name).dispatchEvent(new Event('change'));};
+    try{const text=savedRehearsalGuideFixtures()[0].text,bundle=await prepareWalletSavedSourceBundle(text,text);assert(c('file').disabled);await load(q,bundle.text);ack(q,'review-ack');q('review-save').click();const receipt=downloads.pop().text;await load(c,receipt);assert(c('output').textContent.includes('再計算と一致しました'));assert(c('save').disabled);ack(c,'ack');c('save').click();assert(JSON.parse(downloads.pop().text).matchesRecomputation);const altered=JSON.parse(receipt);altered.authenticated=true;await load(c,JSON.stringify(altered));ack(c,'ack');c('save').click();assert(JSON.parse(downloads.pop().text).matchesRecomputation===false);
+      const broken=JSON.parse(bundle.text),comparison=JSON.parse(broken.comparisonText);comparison.sourceTextComparison.sameText=false;broken.comparisonText=JSON.stringify(comparison);await load(q,JSON.stringify(broken));assert(c('output').textContent===''&&c('save').disabled);assert(q('before').disabled);ack(q,'review-ack');q('review-save').click();await load(c,downloads.pop().text);assert(c('output').textContent.includes('この不一致を解消しません'));ack(c,'ack');c('save').click();const negative=JSON.parse(downloads.pop().text);assert(negative.matchesRecomputation&&!negative.expectedBundleComparisonMatches&&!negative.expectedSourceFilesAvailable);assert(q('before').disabled);
+    }finally{panel.dispose();host.remove();}
+  });
+  test('plain source bundle: native selection preserves both practice files and refuses altered comparison extraction',async()=>{
+    const host=document.createElement('div');document.body.append(host);const before=savedRehearsalGuideFixtures()[0].text,after=JSON.stringify(JSON.parse(before))+'\r\n',downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-bundle-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());},ack=name=>{q(name).checked=true;q(name).dispatchEvent(new Event('change'));},load=async text=>{const files=new DataTransfer();files.items.add(new File([text],'bundle.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));await wait(()=>q('stop').disabled);};
+    try{await panel.inspectFile(new File([before],'before.json'));await panel.compareFile(new File([after],'after.json'));assert(!q('export-ack').disabled&&q('export').disabled);ack('export-ack');q('export').click();await wait(()=>q('stop').disabled);const saved=downloads.at(-1).text;assert(JSON.parse(saved).schema==='threecore.saved-file-comparison-bundle.v2');await load(saved);assert(q('output').textContent.includes('内部チェックサムのない'));assert(q('review-save').disabled);ack('review-ack');q('review-save').click();const receipt=JSON.parse(downloads.at(-1).text);assert(receipt.sourceFilesAvailable===true&&receipt.containsOriginalEvidence===false&&!/0x[0-9a-f]{40}/.test(downloads.at(-1).text));ack('source-ack');q('before').click();assert(downloads.at(-1).text===before);assert(q('after').disabled);ack('source-ack');q('after').click();assert(downloads.at(-1).text===after&&downloads.at(-1).internalChecksumVerified===false);const altered=JSON.parse(saved),comparison=JSON.parse(altered.comparisonText);comparison.sourceTextComparison.sameText=true;altered.comparisonText=JSON.stringify(comparison);await load(JSON.stringify(altered));assert(q('before').disabled&&q('after').disabled&&q('output').textContent.includes('不一致'));ack('review-ack');q('review-save').click();assert(JSON.parse(downloads.at(-1).text).comparisonMatchesRecomputation===false);}
+    finally{panel.dispose();host.remove();}
+  });
+  for(const mode of ['pages','filter'])test('saved difference locations: native '+mode+' and scoped export retain source hashes and counts',async()=>{
+    const host=document.createElement('div');document.body.append(host);const pair=savedDifferencePageFixtures(),downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-differences-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());},save=name=>{q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q(name).click();};
+    try{await panel.inspectFile(new File([pair.before],'before.json'));await panel.compareFile(new File([pair.after],'after.json'));q('start').click();await wait(()=>!q('ack').disabled);if(mode==='pages'){q('next').click();assert(q('output').textContent.includes('41〜80'));save('page-save');const saved=JSON.parse(downloads.at(-1).text);assert(saved.offset===40&&saved.shownDifferences===40&&saved.totalDifferences===86);q('next').click();assert(q('next').disabled&&q('output').textContent.includes('81〜86'));q('previous').click();assert(q('output').textContent.includes('41〜80'));}else{q('path').value='/policy';q('path').dispatchEvent(new Event('input'));assert(q('ack').disabled);q('apply').click();assert(q('output').textContent.includes('絞り込み該当 1件'));save('csv');assert(downloads.at(-1).text.includes('"/policy/paused"'));q('path').value='/missing';q('path').dispatchEvent(new Event('input'));q('apply').click();save('page-save');const saved=JSON.parse(downloads.at(-1).text);assert(saved.totalDifferences===86&&saved.matchedDifferences===0&&saved.shownDifferences===0);assert(q('output').textContent.includes('全体の一致を意味しません'));q('clear-query').click();assert(q('output').textContent.includes('1〜40'));}}
+    finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal file batch: native undecodable file preserves other reviews and exports unknown byte scope',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[],panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared)}),q=id=>view.getElementById('report-batch-'+id);
+    try{const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,input),files=new DataTransfer();files.items.add(new File([text],'first.json'));files.items.add(new File([Uint8Array.of(255)],'unreadable.json'));files.items.add(new File([text],'last.json'));q('files').files=files.files;q('files').dispatchEvent(new Event('change'));q('run').click();const end=Date.now()+10000;while(q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(!q('save').disabled);q('save').click();const saved=JSON.parse(downloads.at(-1).text);assert(saved.schema==='threecore.operation-rehearsal-batch-review.v3'&&saved.summary.matching===2&&saved.summary.sourceUnavailable===1);assert(saved.files[1].byteLength===null&&saved.files[1].reportedByteLength===1);assert(q('manifest').disabled&&q('rows').children[1].querySelector('button').disabled);q('csv').click();assert(downloads.at(-1).text.includes('"sourceUnavailable"'));}
+    finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal file continuation: native Stop and Continue retains the first review and links the saved receipt',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[],reads=[];let release,calls=0;
+    const panel=mountRehearsalBatchReviewPanel(view,{subtle:{digest(...args){if(++calls===2)return new Promise(resolve=>{release=resolve;});return crypto.subtle.digest(...args);}},download:({prepared})=>downloads.push(prepared)}),q=id=>view.getElementById('report-batch-'+id),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());};
+    try{const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,input),files=new DataTransfer();for(const name of ['first.json','second.json','third.json']){const file=new File([text],name);file.stream=()=>{reads.push(name);return File.prototype.stream.call(file);};files.items.add(file);}q('files').files=files.files;q('files').dispatchEvent(new Event('change'));q('run').click();await wait(()=>Boolean(release));q('cancel').click();await wait(()=>q('status').getAttribute('aria-busy')==='false');q('save').click();const previous=downloads.at(-1).text;assert(!q('resume').disabled);q('resume').click();await wait(()=>q('status').getAttribute('aria-busy')==='false');q('save').click();const resumed=JSON.parse(downloads.at(-1).text);assert(resumed.complete&&resumed.continuation.retainedReviews===1);assert(reads.join(',')==='first.json,second.json,second.json,third.json');const digest=await crypto.subtle.digest('SHA-256',bytes(previous)),hex=Array.from(new Uint8Array(digest),value=>value.toString(16).padStart(2,'0')).join('');assert(resumed.continuation.previousBatchSha256===hex);assert(q('summary').textContent.includes('保持 1件'));release(new ArrayBuffer(32));await tick();assert(q('resume').disabled);}
+    finally{release?.(new ArrayBuffer(32));panel.dispose();host.remove();}
+  });
+  test('saved difference review: native UI verifies saved locations and rejects a changed conclusion',async()=>{
+    const host=document.createElement('div');document.body.append(host);const before=savedRehearsalGuideFixtures()[0].text,after=JSON.parse(before);after.policy.maxPerOperation='1';const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=(prefix,name)=>host.querySelector('.'+prefix+'-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());},choose=(prefix,name,text)=>{const files=new DataTransfer();files.items.add(new File([text],'selected.json'));const input=q(prefix,name);input.files=files.files;input.dispatchEvent(new Event('change'));},save=prefix=>{q(prefix,'ack').checked=true;q(prefix,'ack').dispatchEvent(new Event('change'));q(prefix,'save').click();};
+    try{choose('saved-file-guide','file',before);await wait(()=>!panel.getState().busy);choose('saved-file-guide','compare-file',JSON.stringify(after));await wait(()=>!panel.getState().busy);q('saved-differences','start').click();await wait(()=>!q('saved-difference-review','file').disabled);save('saved-differences');const saved=downloads.at(-1).text;choose('saved-difference-review','file',saved);await wait(()=>!q('saved-difference-review','ack').disabled);assert(q('saved-difference-review','output').textContent.includes('一致しています'));save('saved-difference-review');assert(JSON.parse(downloads.at(-1).text).matchesRecomputation===true);const bad=JSON.parse(saved);bad.parsedJSONValuesMatch=true;choose('saved-difference-review','file',JSON.stringify(bad));await wait(()=>!q('saved-difference-review','ack').disabled);assert(q('saved-difference-review','output').textContent.includes('不一致: JSONの値の一致判定'));}
+    finally{panel.dispose();host.remove();}
+  });
+  test('saved-file differences: native selection re-reads a plain pair and saves locations without values',async()=>{
+    const host=document.createElement('div');document.body.append(host);const text=savedRehearsalGuideFixtures()[0].text,changed=JSON.parse(text);changed.policy.maxPerOperation='1';const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name),d=name=>host.querySelector('.saved-differences-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());},choose=async(field,text,name)=>{const files=new DataTransfer();files.items.add(new File([text],name));q(field).files=files.files;q(field).dispatchEvent(new Event('change'));await wait(()=>!panel.getState().busy);};
+    try{await choose('file',text,'before.json');await choose('compare-file',JSON.stringify(changed),'after.json');assert(!d('start').disabled&&d('save').disabled);d('start').click();await wait(()=>!d('ack').disabled);assert(d('output').textContent.includes('/policy/maxPerOperation'));assert(!/0x[0-9a-f]{40}/.test(d('output').textContent));d('ack').checked=true;d('ack').dispatchEvent(new Event('change'));d('save').click();const saved=JSON.parse(downloads.at(-1).text);assert(saved.differenceCount===1&&saved.valuesIncluded===false&&saved.restorable===false);await choose('file',text,'replacement.json');assert(d('output').textContent===''&&d('start').disabled);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('saved-file destination: native wallet navigation locates report and workspace sections without wallet requests',async use=>{
+    const f=use(),q=name=>document.querySelector('.saved-file-guide-'+name),choose=async(text,name)=>{const files=new DataTransfer();files.items.add(new File([text],name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(q('destination').disabled&&Date.now()<end)await tick();assert(!q('destination').disabled);},target=label=>{const link=[...document.querySelectorAll('.wallet-navigation a')].find(link=>link.textContent===label);return document.getElementById(link.getAttribute('href').slice(1));};
+    await choose((await prepareReportHistoryFile(sampleHistory())).text,'history.json');assert(f.calls.length===0);q('destination').click();assert(document.activeElement===target('保存したレポート'));assert(q('destination-status').textContent.includes('まだ読み込んでいません'));
+    await choose((await savedWorkspaceGuideFixtures())[0].text,'workspace.json');q('destination').click();assert(document.activeElement===target('3ウォレットの保存・復元'));assert(document.activeElement.classList.contains('workspace-panel'));assert(f.calls.length===0,'Navigation must not request wallet access or state');
+  });
+  test('plain saved-file comparison: native UI compares exact text and rechecks a saved V2 conclusion',async()=>{
+    const host=document.createElement('div');document.body.append(host);const text=savedRehearsalGuideFixtures()[0].text,downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name),choose=(field,text,name)=>{const files=new DataTransfer();files.items.add(new File([text],name));q(field).files=files.files;q(field).dispatchEvent(new Event('change'));},wait=async()=>{const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);};
+    try{choose('file',text,'before.json');await wait();choose('compare-file',text,'after.json');await wait();assert(panel.getState().comparison?.sourceTextComparison.sameText===true);assert(panel.getState().comparison.sameOriginal===null);assert(q('comparison-output').textContent.includes('SHA-256が一致'));q('comparison-ack').checked=true;q('comparison-ack').dispatchEvent(new Event('change'));q('comparison-save').click();const saved=downloads.at(-1).text;assert(JSON.parse(saved).schema==='threecore.saved-file-comparison.v2');choose('review-file',saved,'comparison.json');await wait();assert(panel.getState().comparisonReview?.matchesRecomputation===true);assert(panel.getState().comparisonReview.originalPairValidated===false);assert(q('review-output').textContent.includes('元JSONの文字列との結び付け'));const altered=JSON.parse(saved);altered.sourceTextComparison.sameText=false;choose('review-file',JSON.stringify(altered),'changed.json');await wait();assert(panel.getState().comparisonReview?.matchesRecomputation===false);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet file continuation: native Stop then Continue retains the checked prefix and saves its receipt link',async()=>{
+    const host=document.createElement('div');document.body.append(host);const original=(await prepareReportHistoryFile(sampleHistory())).text,downloads=[],reads=[];let release;
+    const panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value),readText(file){reads.push(file.name);return reads.length===2?new Promise(resolve=>{release=resolve;}):file.text();}}),q=name=>host.querySelector('.saved-file-batch-'+name),wait=async predicate=>{const end=Date.now()+10000;while(!predicate()&&Date.now()<end)await tick();assert(predicate());},save=name=>{q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q(name).click();};
+    try{const files=new DataTransfer();for(const name of ['first.json','second.json','third.json'])files.items.add(new File([original],name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();await wait(()=>Boolean(release));q('stop').click();await wait(()=>!panel.getState().busy);const previous=panel.getState().result;save('save');assert(!q('resume').disabled);q('resume').click();await wait(()=>!panel.getState().busy);const result=panel.getState().result;assert(result.complete&&result.files[0]===previous.files[0]&&result.continuation.retainedChecks===1);assert(reads.join(',')==='first.json,second.json,second.json,third.json');assert(q('summary').textContent.includes('前回の結果を保持 1件'));save('save');save('csv');const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(downloads[0].text)),hex=[...new Uint8Array(digest)].map(value=>value.toString(16).padStart(2,'0')).join('');assert(JSON.parse(downloads[1].text).continuation.previousBatchSha256===hex);assert(downloads[2].text.includes('"retainedChecks"'));release(original);await tick();assert(panel.getState().result===result);}
+    finally{release?.(original);panel.dispose();host.remove();}
+  });
+  test('rehearsal saved-file guide: native selection distinguishes simulated sources and recalculates rejected records',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name);
+    try{for(const fixture of savedRehearsalGuideFixtures()){const files=new DataTransfer();files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.validation==='validated-structure'&&result.target===fixture.target&&result.simulationOnly===true);assert(result.scope.rehearsalRejectedRecordReferences===fixture.counts[2]);assert(q('output').textContent.includes('実際の入出金の証拠ではありません'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.at(-1).text).simulationOnly===true);}}
+    finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal saved-file batch: native exports retain simulation labels and hash-bound guidance navigation',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],guide=mountSavedFileInspectionPanel({document,parent:host}),opened=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value),inspectOriginal:async(file,digest)=>{const value=await guide.inspectFile(file,digest);opened.push(value);return value;}}),q=name=>host.querySelector('.saved-file-batch-'+name);
+    try{const fixtures=savedRehearsalGuideFixtures(),files=new DataTransfer();for(const fixture of fixtures)files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();let end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.summary.simulationFiles===5&&result.summary.structureValidated===5&&!result.allOriginalsValidated);assert(q('summary').textContent.includes('練習用 5件'));q('rows').children[4].querySelector('.saved-file-batch-open').click();end=Date.now()+10000;while(!opened.length&&Date.now()<end)await tick();assert(opened[0]===true&&guide.getState().result.scope.rehearsalRejectedRecordReferences===3);for(const name of ['save','csv']){q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q(name).click();}assert(JSON.parse(downloads[0].text).summary.simulationFiles===5);assert(downloads[1].text.includes('"simulationOnly"')&&downloads[1].text.includes('"rehearsalRejectedRecordReferences"'));}
+    finally{panel.dispose();guide.dispose();host.remove();}
+  });
+  test('wallet backup guide: native files keep checksummed workspace and plain history validation distinct',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name);
+    try{for(const fixture of await savedWorkspaceGuideFixtures()){const files=new DataTransfer();files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.validation===fixture.validation&&result.target===fixture.target);assert(!q('output').textContent.includes('null件'));if(fixture.validation==='validated-structure')assert(q('output').textContent.includes('内部チェックサムはなく'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.at(-1).text).checksumVerified===(fixture.validation==='validated-original'));}}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet backup batch: native exports retain structure-only rows without claiming all originals validated',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-batch-'+name);
+    try{const fixtures=await savedWorkspaceGuideFixtures(),files=new DataTransfer();for(const fixture of fixtures)files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.summary.validatedOriginals===1&&result.summary.structureValidated===3&&!result.allOriginalsValidated);assert(q('summary').textContent.includes('内部チェックサムなし 3件'));for(const name of ['save','csv']){q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q(name).click();}assert(JSON.parse(downloads[0].text).files[1].inspection.sourceDigest===null);assert(downloads[1].text.includes('"validated-structure"')&&!downloads[1].text.includes('"null"'));}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet observation originals: native file guide handles transfer, balance, allowance and reconciliation sources',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileInspectionPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-guide-'+name);
+    try{for(const fixture of await savedObservationFixtures()){const files=new DataTransfer();files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.validation==='validated-original'&&result.target===fixture.target);assert(!q('output').textContent.includes('null件')&&!q('output').textContent.includes('undefined')&&!q('output').textContent.includes('0x111111'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.at(-1).text).sourceDigest===JSON.parse(fixture.text).digest);}}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet observation batch: native selected originals retain per-type scope in saved JSON and CSV',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-batch-'+name);
+    try{const fixtures=await savedObservationFixtures(),files=new DataTransfer();for(const fixture of fixtures)files.items.add(new File([fixture.text],fixture.name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();const result=panel.getState().result;assert(result?.allOriginalsValidated&&result.summary.validatedOriginals===7);assert(result.files.find(row=>row.name==='reconciliation.json').inspection.scope.eventReferences===6);assert(!q('rows').textContent.includes('null件'));for(const name of ['save','csv']){q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q(name).click();}assert(JSON.parse(downloads[0].text).files[4].inspection.scope.allowanceObservationReferences===null);assert(downloads[1].text.includes('"identityObservationReferences"')&&!downloads[1].text.includes('"null"'));}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet streaming batch: native undecodable File does not discard other checked originals',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-batch-'+name);
+    try{const original=(await prepareReportHistoryFile(sampleHistory())).text,files=new DataTransfer();files.items.add(new File([original],'first.json'));files.items.add(new File([Uint8Array.of(255)],'bad.json'));files.items.add(new File([original],'last.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);const result=panel.getState().result;assert(result.schema==='threecore.wallet-saved-browser-batch.v3'&&result.summary.validatedOriginals===2&&result.summary.sourceUnavailable===1);assert(result.files[1].code==='FILE_ENCODING'&&result.files[1].byteLength===null&&result.files[1].reportedByteLength===1);q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));assert(q('manifest').disabled);q('save').click();assert(JSON.parse(downloads.pop().text).files[2].status==='validated-original');q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('csv').click();assert(downloads.pop().text.includes('"bad.json","","source-unavailable"'));}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet streaming batch: native stop retains a checked prefix before a stalled reader settles',async()=>{
+    const host=document.createElement('div');document.body.append(host);let release,reads=0;const original=(await prepareReportHistoryFile(sampleHistory())).text,panel=mountSavedFileBatchPanel({document,parent:host,readText(file,options){if(++reads===2){Object.defineProperty(options.signal,"aborted",{value:false});return new Promise(r=>{release=r;});}return Promise.resolve(original);}}),q=name=>host.querySelector('.saved-file-batch-'+name);
+    try{const files=new DataTransfer();files.items.add(new File([original],'first.json'));files.items.add(new File([original],'stalled.json'));files.items.add(new File([original],'pending.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();let end=Date.now()+10000;while(!release&&Date.now()<end)await tick();assert(Boolean(release));q('stop').click();end=Date.now()+1000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);const result=panel.getState().result;assert(result.phase==='cancelled'&&result.summary.checked===1&&result.summary.pending===2);assert(result.files[1].byteLength===null&&result.files[1].sha256===null&&reads===2);release(original);await tick();assert(panel.getState().result===result);}
+    finally{release?.(original);panel.dispose();host.remove();}
+  });
+  test('wallet batch navigation: native row actions open and compare hash-bound originals without selecting files again',async()=>{
+    const host=document.createElement('div');document.body.append(host);const panel=mountFileReadPanel({document,parent:host}),q=name=>host.querySelector('.saved-file-batch-'+name),g=name=>host.querySelector('.saved-file-guide-'+name),waitFor=async condition=>{const end=Date.now()+10000;while(!condition()&&Date.now()<end)await tick();assert(condition());};
+    try{const original=(await prepareReportHistoryFile(sampleHistory())).text,formatted=JSON.stringify(JSON.parse(original),null,2),files=new DataTransfer();files.items.add(new File([original],'history.json'));files.items.add(new File([formatted],'formatted.json'));files.items.add(new File(['{"schema":"threecore.saved-file-inspection.v1"}'],'auxiliary.json'));host.querySelector('.saved-file-batch').open=true;q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();await waitFor(()=>!q('start').disabled);const rows=q('rows').children,summary=q('summary').textContent;assert(rows[2].querySelector('.saved-file-batch-open').disabled);rows[0].querySelector('.saved-file-batch-open').click();await waitFor(()=>q('export-status').textContent.includes('詳細確認を上の案内欄に開きました'));assert(host.querySelector('.saved-file-guide').open);assert(document.activeElement===g('heading'));rows[1].querySelector('.saved-file-batch-compare').click();await waitFor(()=>g('comparison-output').textContent.includes('書式に違い'));assert(host.querySelector('.saved-file-guide-comparison').open);assert(q('summary').textContent===summary);assert(g('comparison-save').disabled);q('clear').click();assert(g('comparison-output').textContent.includes('書式に違い'));}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet batch comparison: native sequential selections preserve baseline and distinguish formatting from omission',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-file-batch-'+name),c=name=>host.querySelector('.saved-batch-comparison-'+name),choose=values=>{const files=new DataTransfer();for(const[name,text]of values)files.items.add(new File([text],name));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));},run=async()=>{q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);};
+    try{const original=(await prepareReportHistoryFile(sampleHistory())).text;choose([['history.json',original],['omitted.json',original]]);await run();c('hold').click();choose([['history.json',JSON.stringify(JSON.parse(original),null,2)],['added.json',original]]);assert(c('json').disabled&&c('baseline').textContent.includes('比較元を保持'));await run();assert(c('rows').children.length===3);assert(c('summary').textContent.includes('書式だけの違い 1件'));assert(c('summary').textContent.includes('比較元だけ 1件'));c('ack').checked=true;c('ack').dispatchEvent(new Event('change'));c('json').click();const saved=JSON.parse(downloads.pop().text);assert(saved.summary.onlyBefore===1&&saved.summary.onlyAfter===1&&saved.summary.formatOnly===1);assert(saved.reportsFilesystemDeletions===false);q('clear').click();assert(c('baseline').textContent.includes('比較元を保持'));c('clear').click();assert(c('baseline').textContent.includes('まだ保持していません'));}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet batch comparison review: native file detects altered conclusions and saves a separately acknowledged review',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedBatchComparisonPanel({document,parent:host,download:value=>downloads.push(value)}),q=name=>host.querySelector('.saved-batch-comparison-'+name),idle=async()=>{const end=Date.now()+10000;while(panel.getState().reviewing&&Date.now()<end)await tick();assert(!panel.getState().reviewing);},choose=text=>{const files=new DataTransfer();files.items.add(new File([text],'comparison.json'));q('review-file').files=files.files;q('review-file').dispatchEvent(new Event('change'));};
+    try{const original=(await prepareReportHistoryFile(sampleHistory())).text,before=await inspectWalletSavedTextBatch([{name:'history.json',text:original}]),after=await inspectWalletSavedTextBatch([{name:'history.json',text:JSON.stringify(JSON.parse(original),null,2)}]),comparison=encodeWalletSavedBatchComparison(compareWalletSavedTextBatches(before,after));panel.updateCurrent(before);q('hold').click();panel.updateCurrent(after);choose(comparison);await idle();assert(panel.getState().reviewed.matchesRecomputation&&!panel.getState().reviewed.allSelectedOriginalsIdentical);assert(q('review-status').textContent.includes('全件一致したという意味ではありません'));const changed=JSON.parse(comparison);changed.allSelectedOriginalsIdentical=true;choose(JSON.stringify(changed));await idle();assert(!panel.getState().reviewed.matchesRecomputation);q('review-ack').checked=true;q('review-ack').dispatchEvent(new Event('change'));q('review-save').click();const saved=JSON.parse(downloads.pop().text);assert(saved.matchesRecomputation===false&&saved.differences.includes('allSelectedOriginalsIdentical'));assert(!q('review-ack').checked);q('clear').click();assert(q('review-save').disabled&&panel.getState().reviewed===null);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet saved reference: native list upload binds every source and retains mismatches on export',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:prepared=>downloads.push(prepared)}),q=name=>host.querySelector('.saved-file-batch-'+name),idle=async()=>{const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);};
+    try{const original=await prepareReportHistoryFile(sampleHistory()),sources=new DataTransfer();sources.items.add(new File([original.text],'history.json'));q('file').files=sources.files;q('file').dispatchEvent(new Event('change'));const reference='0'.repeat(64)+'  history.json\n',list=new DataTransfer();list.items.add(new File([reference],'SHA256SUMS.txt'));q('reference-file').files=list.files;q('reference-file').dispatchEvent(new Event('change'));await idle();assert(panel.getState().result===null&&q('reference-text').value===reference);q('start').click();await idle();assert(panel.getState().result.files[0].status==='checksum-mismatch');assert(q('rows').textContent.includes('以前の照合値と不一致'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();const receipt=JSON.parse(downloads.pop().text);assert(receipt.reference.text===reference&&receipt.allExternalChecksumsMatch===false);q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('manifest').click();const current=downloads.pop();assert(current.filename==='ThreeCore-selected-content-SHA256SUMS.txt');assert(current.text!==reference&&q('reference-text').value===reference);q('reference-text').value='';q('reference-text').dispatchEvent(new Event('input'));assert(q('start').disabled&&panel.getState().result===null);q('reference-clear').click();assert(!q('start').disabled);q('start').click();await idle();assert(panel.getState().result.schema==='threecore.wallet-saved-browser-batch.v1'&&panel.getState().result.allOriginalsValidated);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet saved CSV: native cancelled batch export includes every pending and checked row',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],q=name=>host.querySelector('.saved-file-batch-'+name);let panel;panel=mountSavedFileBatchPanel({document,parent:host,download:prepared=>downloads.push(prepared),inspectFiles:(rows,readSource,options)=>inspectWalletSavedFileBatch(rows,readSource,{...options,onProgress:p=>{options.onProgress(p);if(p.checked===1)q('stop').click();}})});
+    try{const original=await prepareReportHistoryFile(sampleHistory()),files=new DataTransfer();files.items.add(new File([original.text],'=first.json'));files.items.add(new File([original.text],'pending.json'));q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);assert(q('csv').disabled);q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('csv').click();const saved=downloads.pop();assert(saved.filename==='ThreeCore-wallet-saved-batch.csv'&&saved.text.startsWith('\uFEFF'));assert(saved.text.includes('"\'=first.json"')&&saved.text.includes('"pending.json"'));assert(saved.text.includes('"cancelled"')&&saved.text.includes('"pending"'));assert(saved.text.trimEnd().split('\r\n').length===3);assert(!q('ack').checked&&q('csv').disabled&&q('manifest').disabled);}
+    finally{panel.dispose();host.remove();}
+  });
+  test('wallet saved batch: native multiple originals keep auxiliary declarations separate and export compatible hashes',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[],panel=mountSavedFileBatchPanel({document,parent:host,download:prepared=>downloads.push(prepared)}),q=name=>host.querySelector('.saved-file-batch-'+name),key='threecore-saved-batch-'+crypto.randomUUID();localStorage.setItem(key,'unchanged');
+    try{const original=await prepareReportHistoryFile(sampleHistory()),inputs=[['history.json',original.text],['auxiliary.json','{"schema":"threecore.saved-file-inspection.v1","checksumVerified":true}'],['broken.json','{']],files=new DataTransfer();for(const[name,text]of inputs)files.items.add(new File([text],name));host.querySelector('details').open=true;q('file').files=files.files;q('file').dispatchEvent(new Event('change'));assert(panel.getState().result===null,'explicit start');q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy,'batch finished');const result=panel.getState().result;assert(result.summary.validatedOriginals===1&&result.summary.declaredOnly===1&&result.summary.invalid===1);assert(q('rows').children.length===3&&q('rows').textContent.includes('補助資料'));
+      q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();assert(JSON.parse(downloads.pop().text).externalChecksumsCompared===false);assert(!q('ack').checked);q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('manifest').click();const manifest=downloads.pop();assert(manifest.filename==='SHA256SUMS.txt');for(const[name,text]of inputs){const digest=await crypto.subtle.digest('SHA-256',bytes(text)),hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');assert(manifest.text.includes(hex+'  '+name+'\n'));}assert(localStorage.getItem(key)==='unchanged');q('clear').click();assert(q('save').disabled&&q('rows').children.length===0);
+    }finally{panel.dispose();host.remove();localStorage.removeItem(key);}
+  });
+  test('wallet saved batch: native stop keeps a partial JSON receipt and refuses an incomplete checksum list',async()=>{
+    const host=document.createElement('div');document.body.append(host);const downloads=[];let panel;const q=name=>host.querySelector('.saved-file-batch-'+name);
+    panel=mountSavedFileBatchPanel({document,parent:host,download:prepared=>downloads.push(prepared),inspectFiles:(rows,readSource,options)=>inspectWalletSavedFileBatch(rows,readSource,{...options,onProgress:p=>{options.onProgress(p);if(p.checked===1)q('stop').click();}})});
+    try{const original=await prepareReportHistoryFile(sampleHistory()),files=new DataTransfer();files.items.add(new File([original.text],'first.json'));files.items.add(new File([original.text],'second.json'));host.querySelector('details').open=true;q('file').files=files.files;q('file').dispatchEvent(new Event('change'));q('start').click();const end=Date.now()+10000;while(panel.getState().busy&&Date.now()<end)await tick();assert(!panel.getState().busy);const result=panel.getState().result;assert(result.phase==='cancelled'&&result.summary.checked===1&&result.summary.pending===1);q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));assert(!q('save').disabled&&q('manifest').disabled);q('save').click();assert(JSON.parse(downloads.pop().text).files[1].status==='pending');}
+    finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal batch detail: native selection hands exact source and earlier checksum to independent review',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const idle=async id=>{const end=Date.now()+10000;while(q(id).getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q(id).getAttribute('aria-busy')==='false');};
+    try{
+      q('example').click();q('session-save').click();const original=downloads.pop().text;q('record-browser-save').click();const good=downloads.pop().text,changed=JSON.parse(good);changed.matchedRecords=999;const text=JSON.stringify(changed,null,2).replaceAll('\n','\r\n')+'\r\n';
+      const files=new DataTransfer();files.items.add(new File([text],'detail.json'));q('report-batch-files').closest('details').open=true;q('report-batch-files').files=files.files;q('report-batch-files').dispatchEvent(new Event('change'));
+      const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes(good))),b=>b.toString(16).padStart(2,'0')).join('');q('report-batch-reference-text').value=hash+'  detail.json\n';q('report-batch-reference-text').dispatchEvent(new Event('input'));q('report-batch-run').click();await idle('report-batch-status');const summary=q('report-batch-summary').textContent;
+      q('report-batch-rows').querySelector('button').click();await idle('report-review-status');assert(document.activeElement===q('report-review-title'));assert(q('report-review-summary').textContent.includes('照合値: 不一致'));assert(!q('report-review-differences').textContent.includes('undefined'));assert(q('report-review-differences').textContent.includes('/matchedRecords'));assert(q('report-review-workspace-save').disabled);assert(q('report-batch-summary').textContent===summary);
+      q('report-review-source-save').click();assert(downloads.pop().text===text);q('session-save').click();assert(downloads.pop().text===original);
+      q('report-batch-clear').click();assert(!q('report-review-source-save').disabled);
+    }finally{page.dispose();host.remove();}
+  });
+  test('rehearsal batch CSV: native download keeps every selected filename and original receipt scope',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[];
+    const panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared)}),q=id=>view.getElementById('report-batch-'+id);
+    try{const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,input),files=new DataTransfer();files.items.add(new File([text],'=source.json'));files.items.add(new File(['{}'],'形式外.json'));q('files').closest('details').open=true;q('files').files=files.files;q('files').dispatchEvent(new Event('change'));q('run').click();const end=Date.now()+10000;while(q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();
+      q('csv').click();const csv=downloads.pop();assert(csv.filename==='ThreeCore-report-batch-summary.csv'&&csv.text.startsWith('\ufeff')&&csv.text.split('\r\n').length===4);assert(csv.text.includes("'=source.json")&&csv.text.includes('形式外.json')&&csv.text.includes('"unsupported"'));q('save').click();const saved=JSON.parse(downloads.pop().text);assert(saved.summary.selected===2&&saved.files[0].name==='=source.json');
+    }finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal batch: previous native checksum file detects changed bytes without replacing the reference',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[];
+    const panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared)}),q=id=>view.getElementById('report-batch-'+id);
+    const select=(id,files)=>{const transfer=new DataTransfer();for(const file of files)transfer.items.add(file);q(id).files=transfer.files;q(id).dispatchEvent(new Event('change'));};
+    const idle=async id=>{const end=Date.now()+10000;while(q(id).getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q(id).getAttribute('aria-busy')==='false');};
+    try{
+      const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,{...input,policy:{...input.policy,paused:true}}),digest=await crypto.subtle.digest('SHA-256',bytes(text)),hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join(''),reference=hex+'  original.json\n';
+      q('files').closest('details').open=true;select('reference-file',[new File([reference],'SHA256SUMS.txt')]);await idle('reference-status');
+      select('files',[new File([text+'\n'],'original.json')]);assert(!q('run').disabled);q('run').click();await idle('status');q('save').click();
+      const result=JSON.parse(downloads.pop().text);assert(result.schema==='threecore.operation-rehearsal-batch-review.v2'&&result.files[0].status==='checksum-mismatch'&&result.files[0].differenceCount===null&&result.reference.text===reference);
+      assert(q('rows').textContent.includes('再計算は未実施'));q('manifest').click();assert(downloads.pop().filename==='ThreeCore-selected-content-SHA256SUMS.txt');assert(q('reference-text').value===reference);
+      q('reference-clear').click();assert(!q('run').disabled);q('run').click();await idle('status');q('save').click();const without=JSON.parse(downloads.pop().text);assert(without.schema==='threecore.operation-rehearsal-batch-review.v1'&&without.files[0].status==='matched');
+    }finally{panel.dispose();host.remove();}
+  });
+  test('rehearsal batch: native multiple files retain exact hashes, failures and the original session',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{
+      q('example').click();q('session-save').click();const original=downloads.pop().text;
+      q('record-browser-save').click();const good=downloads.pop().text,changed=JSON.parse(good);changed.matchedRecords=999;
+      const before=rehearsalExampleV2(),suite=structuredClone(captureRehearsalCheckSuite({schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:'same',label:'Same',before,after:before}]}));
+      suite.expectationOrigin='manually-specified';suite.expected[0].before.metrics.cash='999';
+      const inputs=[['元資料.json',good],['changed.json',JSON.stringify(changed)],['invalid.json','{oops'],['expectations.json',encodeRehearsalCheckReport(suite)]];
+      const transfer=new DataTransfer();for(const[name,text]of inputs)transfer.items.add(new File([text],name,{type:'application/json'}));
+      q('report-batch-files').closest('details').open=true;q('report-batch-files').files=transfer.files;q('report-batch-files').dispatchEvent(new Event('change'));
+      assert(!q('report-batch-run').disabled&&q('report-batch-save').disabled);q('report-batch-run').click();const end=Date.now()+10000;
+      while(q('report-batch-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();
+      assert(!q('report-batch-save').disabled&&q('report-batch-rows').children.length===4);q('report-batch-save').click();const receipt=JSON.parse(downloads.pop().text);
+      assert(receipt.complete&&receipt.summary.matching===2&&receipt.summary.differing===1&&receipt.summary.invalid===1&&receipt.summary.reportsWithFailedExpectations===1);
+      q('report-batch-manifest').click();const manifest=downloads.pop();assert(manifest.filename==='SHA256SUMS.txt');
+      for(const[name,text]of inputs){const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)),hex=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');assert(manifest.text.includes(hex+'  '+name+'\n'));}
+      q('session-save').click();assert(downloads.pop().text===original);q('report-batch-clear').click();assert(q('report-batch-save').disabled&&q('report-batch-manifest').disabled);
+    }finally{page.dispose();host.remove();}
+  });
+  test('rehearsal batch: native cancel preserves checked rows and ignores a late digest',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[];let calls=0,release;
+    const panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared),subtle:{digest(...args){calls++;return calls===2?new Promise(resolve=>{release=resolve;}):crypto.subtle.digest(...args);}}}),q=id=>view.getElementById('report-batch-'+id);
+    try{
+      const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,{...input,policy:{...input.policy,paused:true}}),transfer=new DataTransfer();
+      transfer.items.add(new File([text],'first.json'));transfer.items.add(new File([text],'second.json'));q('files').closest('details').open=true;q('files').files=transfer.files;q('files').dispatchEvent(new Event('change'));q('run').click();let end=Date.now()+10000;
+      while(calls<2&&Date.now()<end)await tick();assert(calls===2);q('cancel').click();end=Date.now()+10000;
+      while(q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(!q('save').disabled&&q('manifest').disabled);
+      q('save').click();const result=JSON.parse(downloads.pop().text);assert(result.phase==='cancelled'&&result.summary.reviewed===1&&result.summary.pending===1);
+      const summary=q('summary').textContent;release(new Uint8Array(32).buffer);await tick();assert(q('summary').textContent===summary);
+    }finally{release?.(new Uint8Array(32).buffer);panel.dispose();host.remove();}
+  });
+  test('rehearsal query reuse: verified older criteria search current inputs without restoring older settlements',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{q('example').click();q('agent').value='EMA';q('agent').dispatchEvent(new Event('change'));q('example').click();
+      q('record-browser-agent').value='EMA';q('record-browser-agent').dispatchEvent(new Event('change'));q('record-browser-kind').value='settle';q('record-browser-kind').dispatchEvent(new Event('change'));q('record-browser-save').click();const old=downloads.pop().text;assert(JSON.parse(old).matchedRecords===1);
+      q('scenario').value='pending';q('example').click();q('record-browser-clear').click();q('session-save').click();const current=downloads.pop().text;
+      q('report-review-text').value=old;q('report-review-text').dispatchEvent(new Event('input'));q('report-review-paste').click();const end=Date.now()+10000;
+      while(q('report-review-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(!q('report-review-query-apply').disabled);
+      q('report-review-query-apply').click();assert(q('record-browser-agent').value==='EMA'&&q('record-browser-kind').value==='settle');assert(q('record-browser-status').textContent.includes('一致 0件'));
+      assert(q('report-review-query-status').textContent.includes('現在の履歴から再計算'));assert(document.activeElement===q('record-browser-search'));
+      q('record-browser-save').click();const fresh=JSON.parse(downloads.pop().text);assert(fresh.matchedRecords===0&&fresh.inputs.ledgers.find(row=>row.agent==='EMA').events.length===1);
+      q('session-save').click();assert(downloads.pop().text===current);q('report-review-clear').click();assert(q('report-review-query-apply').disabled);
+    }finally{page.dispose();host.remove();}
+  });
+  for(const mode of ['summary','prefix'])test('rehearsal record analysis: '+mode+' exports recomputable data without changing the session',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{q('example').click();q('agent').value='EMA';q('agent').dispatchEvent(new Event('change'));q('scenario').value='pending';q('example').click();q('session-save').click();const current=downloads.pop().text;let text;
+      if(mode==='summary'){
+        q('record-browser-kind').value='settle';q('record-browser-kind').dispatchEvent(new Event('change'));assert(q('record-browser-summary').textContent.includes('DAT: 一致 1件'));assert(q('record-browser-summary').textContent.includes('CAWELON: 未作成'));
+        q('record-browser-summary-csv-save').click();const csv=downloads.pop();assert(csv.text.startsWith('\uFEFF')&&csv.mimeType==='text/csv;charset=utf-8');
+        q('record-browser-summary-save').click();text=downloads.pop().text;const data=JSON.parse(text);assert(data.rows[0].balanceChanges.cash==='129000000'&&data.rows[1].balanceChanges.cash==='0'&&data.rows[2].balanceChanges.cash===null);
+      }else{
+        q('record-browser-select').value='DAT:open-one';q('record-browser-select').dispatchEvent(new Event('change'));assert(q('record-browser-prefix-note').textContent.includes('後続1件'));
+        q('record-browser-prefix-save').click();const input=JSON.parse(downloads.pop().text);assert(input.agent==='DAT'&&input.events.length===1&&input.events[0].id==='open-one');
+        q('record-browser-prefix-report-save').click();text=downloads.pop().text;const data=JSON.parse(text);assert(data.inputs.ledgers.length===2&&data.includedRecords===1&&data.result.openPositions===1);
+      }
+      q('session-save').click();assert(downloads.pop().text===current);
+      q('report-review-text').value=text;q('report-review-text').dispatchEvent(new Event('input'));q('report-review-paste').click();const end=Date.now()+10000;
+      while(q('report-review-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q('report-review-status').getAttribute('aria-busy')==='false'&&q('report-review-status').textContent.includes('再計算と一致'));
+      if(mode==='prefix'){q('report-review-input-part').value='record-prefix';q('report-review-input-part').dispatchEvent(new Event('change'));q('report-review-input-save').click();assert(JSON.parse(downloads.pop().text).events.length===1);}
+      q('session-save').click();assert(downloads.pop().text===current);
+    }finally{page.dispose();host.remove();}
+  });
+  for(const kind of ['workspace','scenario','scenario-set','check-suite'])test('rehearsal source parts: '+kind+' requires explicit selection and preserves current session',async()=>{
+    const before=rehearsalExampleV2(),after={...before,policy:{...before.policy,paused:true}},workspace={schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:'DAT',ledgers:[before]},nextWorkspace={...workspace,ledgers:[after]};
+    const cases={schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:'paused',label:'停止条件',before,after}]};
+    const suite=structuredClone(captureRehearsalCheckSuite(cases));suite.expectationOrigin='manually-specified';suite.expected[0].before.metrics.cash='999';
+    const sample={workspace:{text:encodeRehearsalComparison(workspace,nextWorkspace),part:'workspace-after',output:encodeRehearsalWorkspace(nextWorkspace)},
+      scenario:{text:encodeRehearsalScenario(before,after),part:'scenario-after',output:encodeRehearsal(after)},
+      'scenario-set':{text:encodeRehearsalScenarioSetReport(cases),part:'scenario-set',output:encodeRehearsalScenarioSet(cases)},
+      'check-suite':{text:encodeRehearsalCheckReport(suite),part:'check-suite',output:encodeRehearsalCheckSuite(suite)}}[kind];
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{q('example').click();q('session-save').click();const current=downloads.pop().text;
+      q('report-review-text').value=sample.text;q('report-review-text').dispatchEvent(new Event('input'));q('report-review-paste').click();
+      const end=Date.now()+10000;while(q('report-review-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q('report-review-status').getAttribute('aria-busy')==='false');
+      assert(q('report-review-input-part').value===''&&q('report-review-input-save').disabled);q('report-review-input-part').value=sample.part;q('report-review-input-part').dispatchEvent(new Event('change'));
+      assert(!q('report-review-input-save').disabled&&q('report-review-input-note').textContent.includes('読み込む場所'));q('report-review-input-save').click();const file=downloads.pop();assert(file.text===sample.output&&file.filename==='ThreeCore-recovered-'+sample.part+'.json');
+      if(kind==='check-suite'){assert(q('report-review-status').textContent.includes('期待結果との差'));assert(JSON.parse(file.text).expected[0].before.metrics.cash==='999');}
+      q('session-save').click();assert(downloads.pop().text===current);q('report-review-clear').click();assert(q('report-review-input-recovery').hidden&&q('report-review-input-save').disabled);
+    }finally{page.dispose();host.remove();}
+  });
+  for(const mode of ['agent','comparison'])test('rehearsal reviewed inputs: '+mode+' action leaves newer current session unchanged',async()=>{
+    const response=await fetch('/rehearsal/'),parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const agent=value=>{q('agent').value=value;q('agent').dispatchEvent(new Event('change'));};
+    async function review(text){q('report-review-text').value=text;q('report-review-text').dispatchEvent(new Event('input'));q('report-review-paste').click();
+      const end=Date.now()+10000;while(q('report-review-status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q('report-review-status').getAttribute('aria-busy')==='false');}
+    try{q('example').click();agent('EMA');q('scenario').value='pending';q('example').click();
+      q('record-browser-agent').value='DAT';q('record-browser-agent').dispatchEvent(new Event('change'));q('record-browser-save').click();const report=downloads.pop().text;
+      agent('CAWELON');q('scenario').value='loss';q('example').click();q('session-save').click();const current=downloads.pop().text;await review(report);
+      if(mode==='agent'){
+        assert(Array.from(q('report-review-agent-select').options).map(o=>o.value).join(',')==='DAT,EMA');q('report-review-agent-select').value='EMA';q('report-review-agent-save').click();
+        const file=downloads.pop(),input=JSON.parse(file.text);assert(file.filename==='ThreeCore-EMA-recovered-rehearsal.json'&&input.agent==='EMA'&&input.events.length===1);
+      }else{
+        q('report-review-workspace-compare').click();assert(!q('report-review-workspace-comparison').hidden);
+        assert(q('report-review-workspace-comparison-details').textContent.includes('現在側だけにある'));assert(!q('report-review-workspace-comparison-details').textContent.includes('履歴を消去する'));
+        q('report-review-workspace-comparison-save').click();const comparison=downloads.pop();const data=JSON.parse(comparison.text);
+        assert(data.inputs.before.ledgers.length===3&&data.inputs.after.ledgers.length===2&&data.inputs.after.activeAgent==='EMA');
+        q('session-save').click();assert(downloads.pop().text===current);q('scenario').value='profit';q('example').click();assert(q('report-review-workspace-comparison-save').disabled);
+        assert(!q('report-review-agent-save').disabled);await review(comparison.text);assert(q('report-review-status').textContent.includes('一致'));return;
+      }
+      q('session-save').click();assert(downloads.pop().text===current,'Viewing or extracting old inputs must not restore the session');
+    }finally{page.dispose();host.remove();}
+  });
+  test("rehearsal reference CSV: includes hidden settlement and retires when the selected reference disappears",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("record-browser-search").value="open-one";q("record-browser-search").dispatchEvent(new Event("input"));
+      assert(q("record-browser-rows").children.length===1);q("record-browser-reference-csv-save").click();const file=downloads.pop();
+      assert(file.mimeType==="text/csv;charset=utf-8"&&file.text.startsWith("\uFEFF"));
+      const rows=file.text.slice(1,-2).split("\r\n").map(line=>JSON.parse("["+line+"]"));assert(rows.length===3);
+      assert(rows[2][rows[0].indexOf("recordId")]==="settle-one");assert(rows[1][rows[0].indexOf("realizedPnlUnits")]==="28000000");
+      q("record-browser-search").value="absent";q("record-browser-search").dispatchEvent(new Event("input"));assert(q("record-browser-reference-csv-save").disabled);
+      q("session-save").click();assert(downloads.pop().text===before);
+    }finally{page.dispose();host.remove();}
+  });
+  test("rehearsal reviewed workspace: extracts all original inputs without applying them to the newer live session",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const agent=value=>{q("agent").value=value;q("agent").dispatchEvent(new Event("change"));};
+    async function review(text){q("report-review-text").value=text;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();
+      const end=Date.now()+10000;while(q("report-review-status").getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q("report-review-status").getAttribute("aria-busy")==="false");}
+    try{q("example").click();agent("EMA");q("scenario").value="pending";q("example").click();
+      q("record-browser-agent").value="DAT";q("record-browser-agent").dispatchEvent(new Event("change"));q("record-browser-save").click();const report=downloads.pop().text;
+      agent("CAWELON");q("scenario").value="loss";q("example").click();q("session-save").click();const current=downloads.pop().text;
+      await review(report);assert(!q("report-review-workspace-save").disabled&&!q("report-review-workspace-save").hidden);
+      q("report-review-workspace-save").click();const recovered=JSON.parse(downloads.pop().text);assert(recovered.ledgers.length===2&&recovered.activeAgent==="EMA");
+      q("session-save").click();assert(downloads.pop().text===current,"Extracting an older workspace must not restore it automatically");
+      const altered=JSON.parse(report);altered.matchedRecords=999;await review(JSON.stringify(altered));assert(q("report-review-workspace-save").disabled&&q("report-review-workspace-save").hidden);
+    }finally{page.dispose();host.remove();}
+  });
+  test("rehearsal exact reason: structured reason filters, navigation Back and independent report review preserve the original session",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const change=(id,value)=>{q(id).value=value;q(id).dispatchEvent(new Event(id==="record-browser-search"?"input":"change"));};
+    try{
+      q("scenario").value="limit";q("example").click();q("session-save").click();const before=downloads.pop().text;
+      change("record-browser-reason","PER_OPERATION_LIMIT");assert(q("record-browser-status").textContent.includes("一致 1件"));
+      change("record-browser-decision","accepted");assert(q("record-browser-status").textContent.includes("一致 0件")&&q("record-browser-decision").value==="accepted");
+      change("record-browser-decision","all");q("record-browser-save").click();const text=downloads.pop().text;
+      const button=q("overview-rows").querySelector("button");button.click();assert(q("record-browser-reason").value==="all");q("record-browser-back").click();assert(q("record-browser-reason").value==="PER_OPERATION_LIMIT");
+      q("report-review-text").value=text;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();
+      const end=Date.now()+10000;while(q("report-review-status").getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();
+      assert(q("report-review-status").className==="passed");assert(q("report-review-outcome").textContent.includes("1回の上限超過"));
+      q("session-save").click();assert(downloads.pop().text===before);
+    }finally{page.dispose();host.remove();}
+  });
+
+  test("rehearsal overview: opens an exact pending record and restores the previous empty search without changing history",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    try{
+      q("scenario").value="pending";q("example").click();q("record-browser-search").value="absent";q("record-browser-search").dispatchEvent(new Event("input"));
+      const before=q("rows").innerHTML,button=q("overview-rows").querySelector("button");assert(button?.getAttribute("aria-label").includes("open-one"));
+      q("append-amount").value="2";q("append-amount").dispatchEvent(new Event("input"));
+      button.click();assert(q("record-browser-select").value==="DAT:open-one"&&document.activeElement===q("record-browser-select"));
+      q("record-browser-back").click();assert(q("record-browser-search").value==="absent"&&q("record-browser-select").disabled);assert(q("rows").innerHTML===before);
+      q("scenario").value="profit";q("example").click();q("record-browser-search").value="absent";q("record-browser-search").dispatchEvent(new Event("input"));
+      button.click();assert(q("record-browser-search").value==="absent"&&q("record-browser-select").disabled,"Detached overview button cannot select from a newer source");
+    }finally{page.dispose();host.remove();}
+  });
+  test("rehearsal reference lifecycle: whole operation summary survives a narrow search and its exported report detects altered profit",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    async function review(text){q("report-review-text").value=text;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();const end=Date.now()+10000;while(q("report-review-status").getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q("report-review-status").getAttribute("aria-busy")==="false");}
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("record-browser-search").value="open-one";q("record-browser-search").dispatchEvent(new Event("input"));
+      assert(q("record-browser-reference-summary").textContent.includes("関連する全2件"));assert(q("record-browser-reference-summary").textContent.includes("累計実現損益: 28 SIM"));
+      q("record-browser-reference-save").click();const source=downloads.pop().text;await review(source);
+      assert(q("report-review-status").className==="passed"&&q("report-review-outcome").textContent.includes("関連記録 2件"));
+      const altered=JSON.parse(source);altered.summary.realizedPnlUnits="999";await review(JSON.stringify(altered));
+      assert(q("report-review-status").className==="blocked"&&q("report-review-differences").textContent.includes("realizedPnlUnits"));
+      q("session-save").click();assert(downloads.pop().text===before,"Navigation and report review preserve original session");
+    }finally{page.dispose();host.remove();}
+  });
+
+  test("saved comparison review: rechecks both current originals and detects altered claims before any receipt save",async()=>{
+    const parent=document.createElement("div");document.body.append(parent);const files=[];
+    const guide=mountSavedFileInspectionPanel({document,parent,download:file=>files.push(file)}),q=name=>parent.querySelector(".saved-file-guide-"+name);
+    async function load(name,text){const transfer=new DataTransfer();transfer.items.add(new File([text],"synthetic.json"));q(name).files=transfer.files;q(name).dispatchEvent(new Event("change",{bubbles:true}));while(guide.getState().busy)await tick();}
+    try{
+      const source=(await prepareReportHistoryFile(sampleHistory())).text;await load("file",source);await load("compare-file",JSON.stringify(JSON.parse(source),null,2));
+      const comparison=guide.getState().comparison;await load("review-file",JSON.stringify(comparison));
+      assert(guide.getState().comparisonReview.matchesRecomputation&&q("review-save").disabled);
+      q("review-ack").checked=true;q("review-ack").dispatchEvent(new Event("change",{bubbles:true}));q("review-save").click();
+      assert(files.length===1&&JSON.parse(files[0].text).matchesRecomputation&&!files[0].restorable);
+      await load("review-file",JSON.stringify({...comparison,sameOriginal:false}));
+      assert(!guide.getState().comparisonReview.matchesRecomputation&&guide.getState().comparison===comparison&&!q("review-ack").checked);
+    }finally{guide.dispose();parent.remove();}
+  });
+  test("saved bundle: original File bytes survive acknowledged bundle export and two separately acknowledged extractions",async()=>{
+    const parent=document.createElement("div");document.body.append(parent);const files=[];
+    const guide=mountSavedFileInspectionPanel({document,parent,download:file=>files.push(file)}),q=name=>parent.querySelector(".saved-file-guide-"+name),b=name=>parent.querySelector(".saved-bundle-"+name);
+    async function load(field,text){const transfer=new DataTransfer();transfer.items.add(new File([text],"synthetic.json"));field.files=transfer.files;field.dispatchEvent(new Event("change",{bubbles:true}));while(guide.getState().busy||!b("stop").disabled)await tick();}
+    function ack(field){field.checked=true;field.dispatchEvent(new Event("change",{bubbles:true}));}
+    try{
+      const before=(await prepareReportHistoryFile(sampleHistory())).text,after=JSON.stringify(JSON.parse(before),null,2)+"\r\n";
+      await load(q("file"),before);await load(q("compare-file"),after);assert(b("export").disabled);ack(b("export-ack"));b("export").click();while(!b("stop").disabled)await tick();
+      assert(files.length===1&&JSON.parse(files[0].text).afterFileText===after&&!b("export-ack").checked);
+      await load(b("file"),files[0].text);assert(b("before").disabled);ack(b("source-ack"));b("before").click();assert(files[1].text===before&&b("after").disabled);
+      ack(b("source-ack"));b("after").click();assert(files[2].text===after&&files[2].automaticallyImported===false);
+      await load(q("file"),before);assert(b("export").disabled&&b("output").textContent.includes("再計算と一致"));
+    }finally{guide.dispose();parent.remove();}
+  });
+  test("saved bundle: substituted comparison claims disable extraction and corrupt new files clear old results",async()=>{
+    const parent=document.createElement("div");document.body.append(parent);const files=[];
+    const guide=mountSavedFileInspectionPanel({document,parent,download:file=>files.push(file)}),q=name=>parent.querySelector(".saved-file-guide-"+name),b=name=>parent.querySelector(".saved-bundle-"+name);
+    async function load(field,text){const transfer=new DataTransfer();transfer.items.add(new File([text],"synthetic.json"));field.files=transfer.files;field.dispatchEvent(new Event("change",{bubbles:true}));while(guide.getState().busy||!b("stop").disabled)await tick();}
+    try{
+      const source=(await prepareReportHistoryFile(sampleHistory())).text;await load(q("file"),source);await load(q("compare-file"),source);
+      b("export-ack").checked=true;b("export-ack").dispatchEvent(new Event("change",{bubbles:true}));b("export").click();while(!b("stop").disabled)await tick();
+      const bundle=JSON.parse(files[0].text),comparison=JSON.parse(bundle.comparisonText);comparison.sameOriginal=false;bundle.comparisonText=JSON.stringify(comparison);
+      await load(b("file"),JSON.stringify(bundle));assert(b("source-ack").disabled&&b("before").disabled&&b("output").textContent.includes("不一致"));assert(files.length===1);
+      await load(b("file"),"{}");assert(b("before").disabled&&b("output").textContent==="");
+    }finally{guide.dispose();parent.remove();}
+  });
+
+  test("saved file comparison: identical originals with different formatting keep the baseline and require a separate save acknowledgement", async () => {
+    const parent = document.createElement("div"); document.body.append(parent); const files = [];
+    const guide = mountSavedFileInspectionPanel({ document, parent, download: file => files.push(file) });
+    const q = name => parent.querySelector(".saved-file-guide-" + name);
+    async function load(name, text) {
+      const transfer = new DataTransfer(); transfer.items.add(new File([text], "original.json", { type: "application/json" }));
+      q(name).files = transfer.files; q(name).dispatchEvent(new Event("change", { bubbles: true })); while (guide.getState().busy) await tick();
+    }
+    try {
+      parent.querySelector("details").open = true; q("comparison").open = true;
+      assert(q("compare-file").disabled); const source = (await prepareReportHistoryFile(sampleHistory())).text; await load("file", source);
+      const baseline = guide.getState().result; await load("compare-file", JSON.stringify(JSON.parse(source), null, 2));
+      assert(guide.getState().result === baseline && guide.getState().comparison.kind === "format-only");
+      assert(q("comparison-output").textContent.includes("書式に違い") && q("comparison-save").disabled);
+      q("comparison-ack").checked = true; q("comparison-ack").dispatchEvent(new Event("change", { bubbles: true })); q("comparison-save").click();
+      assert(files.length === 1 && JSON.parse(files[0].text).sameOriginal === true && files[0].restorable === false);
+      await load("file", source); assert(!guide.getState().comparison && q("comparison-output").textContent === "");
+    } finally { guide.dispose(); parent.remove(); }
+  });
+  test("saved file comparison: corruption cannot replace the baseline and auxiliary claims do not establish equality", async () => {
+    const parent = document.createElement("div"); document.body.append(parent);
+    const guide = mountSavedFileInspectionPanel({ document, parent }); const q = name => parent.querySelector(".saved-file-guide-" + name);
+    async function load(name, text) {
+      const transfer = new DataTransfer(); transfer.items.add(new File([text], "original.json"));
+      q(name).files = transfer.files; q(name).dispatchEvent(new Event("change", { bubbles: true })); while (guide.getState().busy) await tick();
+    }
+    try {
+      const source = (await prepareReportHistoryFile(sampleHistory())).text; await load("file", source); const baseline = guide.getState().result;
+      await load("compare-file", source); assert(guide.getState().comparison.kind === "identical");
+      const corrupt = JSON.parse(source); corrupt.digest = "0".repeat(64); await load("compare-file", JSON.stringify(corrupt));
+      assert(guide.getState().result === baseline && !guide.getState().comparison && q("comparison-save").disabled);
+      assert(q("status").textContent.includes("チェックサムが一致しません"));
+      await load("compare-file", JSON.stringify({ schema: "threecore.saved-file-comparison.v1", sameOriginal: true }));
+      assert(guide.getState().comparison.kind === "unverified" && guide.getState().comparison.sameOriginal === null);
+      assert(q("comparison-output").textContent.includes("一致を判断していません"));
+    } finally { guide.dispose(); parent.remove(); }
+  });
+  test("saved file guide: verifies an original backup, gives its destination and saves only an inspection", async () => {
+    const parent = document.createElement("div"); document.body.append(parent); const files = [];
+    const guide = mountSavedFileInspectionPanel({ document, parent, download: file => files.push(file) });
+    const q = name => parent.querySelector(".saved-file-guide-" + name);
+    async function load(text) {
+      const transfer = new DataTransfer(); transfer.items.add(new File([text], "history.json", { type: "application/json" }));
+      q("file").files = transfer.files; q("file").dispatchEvent(new Event("change", { bubbles: true }));
+      while (guide.getState().busy) await tick();
+    }
+    try {
+      parent.querySelector("details").open = true;
+      assert(!guide.getState().result && q("save").disabled);
+      const source = (await prepareReportHistoryFile(sampleHistory())).text; await load(source);
+      assert(guide.getState().result.checksumVerified && guide.getState().result.scope.reportCount === 4);
+      assert(q("output").textContent.includes("報告履歴のバックアップJSONから追加復元")); assert(!q("output").textContent.includes("担当メモ"));
+      q("ack").checked = true; q("ack").dispatchEvent(new Event("change", { bubbles: true })); q("save").click();
+      assert(files.length === 1 && JSON.parse(files[0].text).restorable === false && !q("ack").checked);
+      const bad = JSON.parse(source); bad.digest = "0".repeat(64); await load(JSON.stringify(bad));
+      assert(!guide.getState().result && q("save").disabled && q("status").textContent.includes("チェックサムが一致しません"));
+    } finally { guide.dispose(); parent.remove(); }
+  });
+  test("saved file guide: auxiliary claims remain unverified and stopped reads cannot replace the result", async () => {
+    const parent = document.createElement("div"); document.body.append(parent); const gate = deferred(); let delayed = false;
+    const guide = mountSavedFileInspectionPanel({ document, parent, readText: async file => delayed ? gate.promise : file.text() });
+    const q = name => parent.querySelector(".saved-file-guide-" + name);
+    function choose(text) { const transfer = new DataTransfer(); transfer.items.add(new File([text], "guide.json")); q("file").files = transfer.files; q("file").dispatchEvent(new Event("change", { bubbles: true })); }
+    try {
+      parent.querySelector("details").open = true;
+      choose(JSON.stringify({ schema: "threecore.report-set-history-coverage.v1", checksumVerified: true, privateText: "PRIVATE" }));
+      while (guide.getState().busy) await tick();
+      assert(guide.getState().result.validation === "declared-only" && !guide.getState().result.checksumVerified);
+      assert(q("output").textContent.includes("検証していません") && !q("output").textContent.includes("PRIVATE"));
+      delayed = true; choose("{}"); assert(guide.getState().busy); q("stop").click();
+      gate.resolve((await prepareReportHistoryFile(sampleHistory())).text); await tick(); await tick();
+      assert(!guide.getState().result && !guide.getState().busy && q("status").textContent.includes("中止"));
+    } finally { guide.dispose(); parent.remove(); }
+  });
+  test("file-read: narrow discrepancy previews wrap exact values and remain keyboard scrollable",async()=>{
+    const [html,css]=await Promise.all([fetch("/rehearsal/").then(r=>r.text()),fetch("/examples/operation-rehearsal.css").then(r=>r.text())]);
+    const parsed=new DOMParser().parseFromString(html,"text/html"),host=document.createElement("div");host.style.width="360px";document.body.append(host);
+    const shadow=host.attachShadow({mode:"open"}),style=document.createElement("style");style.textContent=css;shadow.append(style);
+    const main=document.createElement("main"),section=document.createElement("section");main.append(section);shadow.append(main);
+    try{
+      for(const target of ["review","evidence"]){
+        const detail=document.importNode(parsed.getElementById("report-"+target+"-difference-detail"),true);detail.hidden=false;section.append(detail);
+        const text="<img src=x>"+"long-value-".repeat(190)+"\n"+"比較する値\n".repeat(100);detail.textContent=text;detail.focus();
+        assert(shadow.activeElement===detail,"Detail focus is retained");assert(detail.textContent===text&&!detail.querySelector("img"),"Long value remains exact plain text");
+        assert(detail.clientWidth>0&&detail.scrollWidth<=detail.clientWidth+1,"Long value must not cause horizontal overflow");
+        assert(detail.getBoundingClientRect().right<=section.getBoundingClientRect().right,"Preview remains inside its section");
+        assert(detail.scrollHeight>detail.clientHeight,"Long detail can scroll vertically");detail.scrollTop=detail.scrollHeight;assert(detail.scrollTop>0);detail.remove();
+      }
+    }finally{host.remove();}
+  });
+  test("file-read: rehearsal navigation focuses every destination and opens evidence without changing records",async()=>{
+    const response=await fetch("/rehearsal/"),parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),querySelectorAll:selector=>host.querySelectorAll(selector),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      const links=[...host.querySelectorAll("a[data-rehearsal-target]")];assert(links.length>=18);
+      for(const link of links){link.addEventListener("click",event=>event.preventDefault());link.click();assert(document.activeElement===q(link.dataset.rehearsalTarget),"Link must move keyboard focus to its own destination");}
+      const summary=q("report-evidence-title");assert(summary.parentElement.open,"Evidence disclosure opens");assert(!summary.hasAttribute("tabindex"),"Evidence summary remains a normal Tab stop");
+      q("session-save").click();assert(downloads.pop().text===before,"Navigation preserves rehearsal data");
+      page.dispose();q("example").focus();const prior=document.activeElement;links[0].click();assert(document.activeElement===prior,"Retired navigation does not move focus");
+    }finally{page.dispose();host.remove();}
+  });
+
+
+  test("file-read: native discrepancy filters retain full totals and select the original value",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,event="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(event));};
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("overview-save").click();const source=JSON.parse(downloads.pop().text);source.sourceVerified=true;
+      for(let i=0;i<83;i++)source["extra"+String(i).padStart(3,"0")]=i;
+      edit("report-review-text",JSON.stringify(source));q("report-review-paste").click();await finish("report-review-status");
+      edit("report-review-difference-search","extra08");edit("report-review-difference-type","unexpected","change");
+      assert(q("report-review-differences").children.length===3);
+      q("report-review-difference-query-save").click();const allFiltered=JSON.parse(downloads.pop().text);
+      assert(allFiltered.allMatchingDifferencesIncluded&&allFiltered.matchedDifferences===3&&allFiltered.totalDifferences===84&&allFiltered.differences[2].index===83);
+      q("report-review-differences").querySelectorAll("button")[2].click();q("report-review-difference-save").click();
+      const selected=JSON.parse(downloads.pop().text);assert(selected.actual.value===82&&selected.index===83&&selected.totalDifferences===84);
+      edit("report-review-difference-type","value","change");
+      assert(q("report-review-differences").children.length===0&&q("report-review-difference-status").textContent.includes("相違は84箇所"));
+      assert(q("report-review-status").className==="blocked"&&q("report-review-difference-save").disabled);
+      q("report-review-save").click();assert(JSON.parse(downloads.pop().text).differenceCount===84);
+      q("report-review-difference-query-save").click();const empty=JSON.parse(downloads.pop().text);assert(empty.matchedDifferences===0&&empty.totalDifferences===84&&!empty.summary.matchesRecomputation);
+      q("report-review-difference-filter-clear").click();assert(q("report-review-differences").children.length===40);
+      q("report-review-next").click();q("report-review-difference-query-save").click();assert(JSON.parse(downloads.pop().text).differences.length===84);
+      q("report-review-evidence-save").click();const evidence=JSON.parse(downloads.pop().text);evidence.receipt.differenceCount=9;evidence.receipt.extra="receipt";
+      edit("report-evidence-text",JSON.stringify(evidence));q("report-evidence-paste").click();await finish("report-evidence-status");
+      edit("report-evidence-difference-search","/differenceCount");edit("report-evidence-difference-type","value","change");
+      assert(q("report-evidence-differences").children.length===1);q("report-evidence-differences").querySelector("button").click();q("report-evidence-difference-save").click();
+      const saved=JSON.parse(downloads.pop().text);assert(saved.actual.value===9&&saved.totalDifferences===2);
+      q("report-evidence-difference-query-save").click();const allReceipt=JSON.parse(downloads.pop().text);assert(allReceipt.target==="evidence-receipt"&&allReceipt.matchedDifferences===1&&allReceipt.totalDifferences===2&&!allReceipt.summary.matchesReceipt);
+      edit("report-evidence-difference-kind","source","change");assert(q("report-evidence-difference-search").value===""&&q("report-evidence-differences").children.length===40);
+      q("report-evidence-difference-query-save").click();const allSource=JSON.parse(downloads.pop().text);assert(allSource.target==="evidence-source"&&allSource.differences.length===84&&!allSource.summary.matchesReceipt);
+      q("session-save").click();assert(downloads.pop().text===before,"Filtered inspection preserves rehearsal data");
+    }finally{page.dispose();host.remove();}
+  });
+
+
+
+  test("file-read: discrepancy values remain exact, readable and tied to the current native review",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,event="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(event));};
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("overview-save").click();const source=JSON.parse(downloads.pop().text);
+      source.extra="<img src=x>"+"x".repeat(3000);edit("report-review-text",JSON.stringify(source));q("report-review-paste").click();await finish("report-review-status");
+      const old=q("report-review-differences").querySelector("button");old.click();
+      const detail=q("report-review-difference-detail");assert(document.activeElement===detail&&!detail.hidden);
+      assert(detail.textContent.includes("<img src=x>")&&detail.textContent.includes("表示を省略")&&!detail.querySelector("img"));
+      q("report-review-difference-save").click();const fullReport=JSON.parse(downloads.pop().text);assert(fullReport.valuesComplete&&fullReport.actual.value===source.extra);
+      q("report-review-evidence-save").click();const evidence=JSON.parse(downloads.pop().text);evidence.receipt.differenceCount=81;
+      edit("report-evidence-text",JSON.stringify(evidence));q("report-evidence-paste").click();await finish("report-evidence-status");
+      const receiptButton=q("report-evidence-differences").querySelector("button");receiptButton.click();
+      assert(q("report-evidence-difference-detail").textContent.includes("再計算で得た値: 1"));
+      assert(q("report-evidence-difference-detail").textContent.includes("控えにある値: 81"));
+      q("report-evidence-difference-save").click();const fullReceipt=JSON.parse(downloads.pop().text);assert(fullReceipt.target==="evidence-receipt"&&fullReceipt.actual.value===81&&fullReceipt.expected.value===1);
+      edit("report-evidence-difference-kind","source","change");receiptButton.click();assert(q("report-evidence-difference-detail").hidden);
+      q("report-evidence-differences").querySelector("button").click();assert(q("report-evidence-difference-detail").textContent.includes("<img src=x>"));
+      q("report-evidence-difference-save").click();const fullSource=JSON.parse(downloads.pop().text);assert(fullSource.target==="evidence-source"&&fullSource.actual.value===source.extra&&!fullSource.summary.matchesReceipt);
+      edit("report-review-text","{}");old.click();assert(detail.hidden&&q("report-review-difference-save").disabled);
+      q("session-save").click();assert(downloads.pop().text===before,"Inspection keeps current rehearsal exactly unchanged");
+    }finally{page.dispose();host.remove();}
+  });
+
+
+
+  for (const kind of ["settings", "workspace"]) test("file-read: "+kind+" input cancellation preserves a newer native preview", async () => {
+    const host=document.createElement("div");document.body.append(host);
+    const fields=["DAT","EMA","CAWELON"].map((agent,index)=>({agent,account:"0x"+String(index+1).repeat(40),chainId:84532}));
+    const draft=fields.map(row=>({...row,tokenAddress:"",tokens:"",history:createPortfolioHistory().exportText()}));
+    const source=kind==="settings"?JSON.stringify({schema:WALLET_SETUP_SCHEMA,entries:fields}):JSON.stringify(workspaceFromDraft(draft));
+    let writes=0,entered=false,armed=false;
+    const panel=kind==="settings"?mountWalletSetupPanel({document,parent:host,readFields:()=>fields,applyPlan(){writes++;}})
+      :mountWorkspacePanel({document,parent:host,readDraft:()=>draft,writeDraft(){writes++;}});
+    const prefix=kind==="settings"?"wallet-setup-":"workspace-",field=name=>host.querySelector("."+prefix+name);
+    const baseline=walletFileReadService.state().cancelled,off=walletFileReadService.subscribe(state=>{
+      if(!armed||entered||state.cancelled<=baseline)return;entered=true;
+      field("json").value=source;field("json").dispatchEvent(new Event("input"));field("preview").click();
+    });
+    try {
+      const transfer=new DataTransfer();transfer.items.add(new File(["{}"],"older.json",{type:"application/json"}));
+      field("file").files=transfer.files;field("file").dispatchEvent(new Event("change"));armed=true;
+      field("json").value="{}";field("json").dispatchEvent(new Event("input"));await tick();
+      assert(entered,"Cancellation observer ran");
+      assert(field(kind==="settings"?"details":"detail").textContent.length>0,"New preview survives");
+      assert(!field(kind==="settings"?"confirm":"confirmed").disabled,"New preview remains confirmable");
+      assert(field("status").textContent.includes("まだ")&&writes===0,"Preview only, no writes");
+    }finally{armed=false;off();panel.dispose();host.remove();await tick();}
+  });
+
+  test("file-read: checkpoint replacement respects cancellation before admitting its file",async()=>{
+    const host=document.createElement("div");document.body.append(host);
+    const source=emptyCheckpointDocument(),storage={async read(){return source;},async change(){throw Error("Must not write");},close(){}};
+    let entered=false,armed=false;
+    const panel=mountCheckpointPanel({document,parent:host,storage,readDraft:()=>[],onStage(){throw Error("Must not stage");}});
+    const field=name=>host.querySelector(".checkpoint-"+name);
+    const choose=name=>{const transfer=new DataTransfer();transfer.items.add(new File(["{}"],name,{type:"application/json"}));field("import-file").files=transfer.files;field("import-file").dispatchEvent(new Event("change"));};
+    const baseline=walletFileReadService.state().cancelled,off=walletFileReadService.subscribe(state=>{
+      if(!armed||entered||state.cancelled<=baseline)return;entered=true;field("import-cancel").click();
+    });
+    try{
+      field("refresh").click();await tick();
+      choose("older.json");armed=true;choose("replacement.json");await tick();
+      assert(entered,"Cancellation observer ran");
+      assert(field("panel").getAttribute("aria-busy")==="false","Cancelled replacement does not start another read");
+      assert(field("status").textContent.includes("取り消しました"),"Newer cancellation guidance survives");
+      assert(source.entries.length===0,"No checkpoint writes");
+    }finally{armed=false;off();panel.dispose();host.remove();await tick();}
+  });
+
+
+  for(const kind of ["check","cases","session","report","workspace"])test("file-read: "+kind+" keeps a newer review started during native file cancellation",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    let armed=false,entered=false,unsubscribe=()=>{};
+    try{
+      q("agent").value="EMA";q("agent").dispatchEvent(new Event("change"));q("example").click();q("overview-save").click();const report=downloads.pop().text;
+      q("agent").value="DAT";q("agent").dispatchEvent(new Event("change"));q("example").click();q("session-save").click();const before=downloads.pop().text;
+      const input=rehearsalExampleV2("EMA"),workspace={schema:"threecore.operation-rehearsal-workspace.v1",simulationOnly:true,activeAgent:"EMA",ledgers:[input]},cases={schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:"newer",label:"Newer review",before:input,after:input}]};
+      const sources={workspace:JSON.stringify(workspace),cases:JSON.stringify(cases),check:encodeRehearsalCheckSuite(captureRehearsalCheckSuite(cases)),report,session:JSON.stringify({schema:"threecore.operation-rehearsal-session.v1",simulationOnly:true,workspace,cases})};
+      const prefix={check:"check-suite-",cases:"scenario-set-",session:"session-",report:"report-review-",workspace:"workspace-"}[kind],field=name=>q(prefix+name),ready=()=>!field(["check","report"].includes(kind)?"save":"apply").disabled;
+      const baseline=walletFileReadService.state().cancelled;unsubscribe=walletFileReadService.subscribe(state=>{if(armed&&!entered&&state.cancelled>baseline){entered=true;field("text").value=sources[kind];field("text").dispatchEvent(new Event("input"));field(kind==="workspace"?"text-review":"paste").click();}});
+      const transfer=new DataTransfer();transfer.items.add(new File(["{}"],"older.json",{type:"application/json"}));field("file").files=transfer.files;field("file").dispatchEvent(new Event("change"));armed=true;
+      field(["check","report"].includes(kind)?"clear":"cancel").click();assert(entered,"Native cancellation observer ran");
+      for(let i=0;i<100&&!ready();i++)await tick();assert(ready(),"Newer review remains usable");assert(field("status").getAttribute("aria-busy")!=="true");
+      q("session-save").click();assert(downloads.pop().text===before,"Review never applies new source data");
+    }finally{armed=false;unsubscribe();page.dispose();host.remove();await tick();}
+  });
+
+  test("file-read: recorded-account search saves and rechecks the exact new scope without changing the ledger",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,event="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(event));};
+    try{
+      const source=rehearsalExampleV2(),account="0x"+"2".repeat(40),input={schema:"threecore.operation-rehearsal-workspace.v1",simulationOnly:true,activeAgent:"DAT",ledgers:[{...source,events:[{...source.events[0],account},source.events[1]]}]};
+      edit("workspace-text",JSON.stringify(input));q("workspace-text-review").click();q("workspace-apply").click();q("session-save").click();const before=downloads.pop().text;
+      edit("record-browser-search",account);assert(q("record-browser-rows").rows.length===0);edit("record-browser-search-scope","recorded","change");assert(q("record-browser-rows").rows.length===1);
+      q("record-browser-save").click();const text=downloads.pop().text,report=JSON.parse(text);assert(report.schema.endsWith(".v2")&&report.query.searchScope==="recorded");assert(report.rows[0].agent==="DAT");assert(report.rows[0].event.account===account);
+      edit("report-review-text",text);q("report-review-paste").click();for(let i=0;i<100&&q("report-review-save").disabled;i++)await tick();assert(!q("report-review-save").disabled);
+      q("report-review-save").click();const receipt=JSON.parse(downloads.pop().text);assert(receipt.differenceCount===0&&receipt.reportOutcome.query.searchScope==="recorded");
+      q("session-save").click();assert(downloads.pop().text===before);q("record-browser-clear").click();assert(q("record-browser-search-scope").value==="stored");
+    }finally{page.dispose();host.remove();}
+  });
+
+  test('file-read: rehearsal report retry preserves successful recomputations and their detail sources',async()=>{
+    const response=await fetch('/rehearsal/');assert(response.ok);const parsed=new DOMParser().parseFromString(await response.text(),'text/html'),host=document.importNode(parsed.querySelector('main'),true);document.body.append(host);const view={getElementById:id=>host.querySelector('#'+CSS.escape(id)),createElement:tag=>document.createElement(tag)},downloads=[],reads=[],opened=[];let recovered=false;
+    const panel=mountRehearsalBatchReviewPanel(view,{download:({prepared})=>downloads.push(prepared),inspectSource:value=>opened.push(value)}),q=name=>view.getElementById('report-batch-'+name),done=async()=>{const end=Date.now()+10000;while(q('status').getAttribute('aria-busy')==='true'&&Date.now()<end)await tick();assert(q('status').getAttribute('aria-busy')==='false');};
+    try{const input=rehearsalExampleV2(),text=encodeRehearsalScenario(input,input),selection=new DataTransfer();for(const name of['a.json','b.json','c.json']){const file=new File([text],name);file.stream=()=>{reads.push(name);if(name==='b.json'&&!recovered)throw Error('temporary read failure');return File.prototype.stream.call(file);};selection.items.add(file);}q('files').files=selection.files;q('files').dispatchEvent(new Event('change'));q('run').click();await done();assert(!q('retry').disabled);q('save').click();const previous=downloads.pop().text;recovered=true;q('retry').click();await done();q('save').click();const result=JSON.parse(downloads.pop().text);assert(result.schema.endsWith('.v5')&&result.allRecomputationsMatch&&result.retry.retainedReviews===2);assert(reads.join(',')==='a.json,b.json,c.json,b.json');const digest=await crypto.subtle.digest('SHA-256',bytes(previous)),hex=Array.from(new Uint8Array(digest),v=>v.toString(16).padStart(2,'0')).join('');assert(result.retry.previousBatchSha256===hex);q('rows').rows[0].querySelector('button').click();q('rows').rows[1].querySelector('button').click();assert(opened.length===2&&opened.every(row=>row.text===text));assert(q('retry').disabled);q('clear').click();assert(q('retry').disabled&&q('save').disabled);
+    }finally{panel.dispose();host.remove();}
+  });
+
+  test('file-read: retry reopens only a previously unreadable selected file and saves its linked receipt',async()=>{
+    const host=document.createElement('div');document.body.append(host);const text=savedRehearsalGuideFixtures()[0].text,downloads=[],calls=[];let retry=false;
+    const panel=mountSavedFileBatchPanel({document,parent:host,download:value=>downloads.push(value),readText:async(file,options)=>{calls.push(file.name);if(file.name==='b.json'&&!retry)throw Error('temporary read failure');return new TextDecoder('utf-8',{fatal:true}).decode(await readSecurityFileBytes(file,options));}}),q=name=>host.querySelector('.saved-file-batch-'+name),done=async()=>{const until=Date.now()+10000;while(panel.getState().busy&&Date.now()<until)await tick();assert(!panel.getState().busy);};
+    try{const chosen=new DataTransfer();for(const name of['a.json','b.json','c.json'])chosen.items.add(new File([text],name));q('file').files=chosen.files;q('file').dispatchEvent(new Event('change'));q('start').click();await done();const previous=panel.getState().result;assert(previous.summary.sourceUnavailable===1&&!q('retry').disabled);retry=true;q('retry').click();await done();assert(JSON.stringify(calls)===JSON.stringify(['a.json','b.json','c.json','b.json']));assert(panel.getState().result.files[0]===previous.files[0]);assert(q('retry').disabled&&q('save').disabled);assert(q('summary').textContent.includes('再試行済み 1件'));q('ack').checked=true;q('ack').dispatchEvent(new Event('change'));q('save').click();const receipt=JSON.parse(downloads[0].text);assert(receipt.schema.endsWith('.v5')&&receipt.retry.retainedChecks===2&&receipt.retry.completedIndexes[0]===1);assert(receipt.retry.previousBatchSha256.length===64);q('clear').click();assert(q('retry').disabled&&panel.getState().result===null);
+    }finally{panel.dispose();host.remove();}
+  });
+
+  test("file-read: search CSV exports all 600 matching rows and retains the original session",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{
+      const input={schema:"threecore.operation-rehearsal-workspace.v1",simulationOnly:true,activeAgent:"DAT",ledgers:["DAT","EMA","CAWELON"].map(agent=>{
+        const source=rehearsalExampleV2(agent,"deposit");return {...source,events:Array.from({length:200},(_,i)=>({...source.events[0],id:"deposit-"+i,amount:"1"}))};})};
+      q("workspace-text").value=JSON.stringify(input);q("workspace-text").dispatchEvent(new Event("input"));q("workspace-text-review").click();assert(!q("workspace-apply").disabled);q("workspace-apply").click();
+      q("session-save").click();const before=downloads.pop().text;q("record-browser-next").click();assert(q("record-browser-rows").rows.length===10);
+      q("record-browser-csv-save").click();const csv=downloads.pop();assert(csv.filename==="ThreeCore-record-query.csv");assert(csv.text.startsWith("\uFEFF"));assert(csv.text.split("\r\n").length===602);
+      assert(q("record-browser-export-status").textContent.includes("全600件"));assert(q("record-browser-status").textContent.includes("11～20"));
+      q('record-browser-last').click();assert(q('record-browser-page').value==='60');assert(q('record-browser-select').value==='CAWELON:deposit-190');assert(document.activeElement===q('record-browser-select'));
+      q('record-browser-page').value='21';q('record-browser-page').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));assert(q('record-browser-select').value==='EMA:deposit-0');
+      q('record-browser-detail-prev').click();assert(q('record-browser-select').value==='DAT:deposit-199');assert(q('record-browser-page').value==='20');assert(q('record-browser-detail-position').textContent.includes('全600件中、200件目'));
+      q('record-browser-detail-next').click();assert(q('record-browser-select').value==='EMA:deposit-0');assert(q('record-browser-page').value==='21');
+      q('record-browser-page').value='61';q('record-browser-go').click();assert(q('record-browser-select').value==='EMA:deposit-0');assert(q('record-browser-page').getAttribute('aria-invalid')==='true');
+      q('record-browser-first').click();assert(q('record-browser-select').value==='DAT:deposit-0');assert(q('record-browser-page').getAttribute('aria-invalid')==='false');
+      q('record-browser-search').value='deposit-199';q('record-browser-search').dispatchEvent(new Event('input'));assert(q('record-browser-select').value==='DAT:deposit-199');q('record-browser-detail-next').click();assert(q('record-browser-select').value==='EMA:deposit-199');q('record-browser-detail-next').click();assert(q('record-browser-select').value==='CAWELON:deposit-199');assert(q('record-browser-detail-next').disabled);assert(q('record-browser-search').value==='deposit-199');
+      q("record-browser-search").value="absent";q("record-browser-search").dispatchEvent(new Event("input"));q("record-browser-csv-save").click();assert(downloads.pop().text.split("\r\n").length===2);
+      assert(q("record-browser-export-status").textContent.includes("列名だけ"));
+      for(const name of['first','last','page','go','detail-prev','detail-next'])assert(q('record-browser-'+name).disabled);
+      q("session-save").click();assert(downloads.pop().text===before);
+    }finally{page.dispose();host.remove();}
+  });
+
+  test("file-read: confirmed restores keep keyboard focus on their completed outcomes",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,event="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(event));};
+    try{
+      q("example").click();q("session-save").click();const original=downloads.pop().text;
+      q("whatif-compare").click();edit("scenario-set-id","focus-case");edit("scenario-set-label","Focus case");q("scenario-set-add").click();
+      q("scenario-set-apply").focus();q("scenario-set-apply").click();assert(document.activeElement===q("scenario-set-status"));
+      assert(q("scenario-set-rows").rows.length===1);
+      edit("session-text",original);q("session-paste").click();q("session-apply").focus();q("session-apply").click();
+      assert(document.activeElement===q("session-status"));assert(q("session-status").textContent.includes("まとめて復旧しました"));
+      assert(q("scenario-set-rows").rows.length===0);assert(q("session-receipt").textContent.includes("比較ケース 0件"));
+      const transfer=new DataTransfer();transfer.items.add(new File([JSON.stringify(rehearsalExampleV2("EMA"))],"synthetic-record.json",{type:"application/json"}));q("file").files=transfer.files;q("file").dispatchEvent(new Event("change"));
+      for(let i=0;i<100&&q("apply").disabled;i++)await tick();assert(!q("apply").disabled);
+      q("apply").focus();q("apply").click();assert(document.activeElement===q("result-title"));assert(q("agent").value==="EMA");assert(q("rows").rows.length===2);
+    }finally{page.dispose();host.remove();}
+  });
+
+  test("file-read: each searched record row opens its own detail without changing saved history",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      const row=q("record-browser-rows").rows[1],pick=row.querySelector("button");assert(pick.getAttribute("aria-label").includes("settle-one"));pick.click();
+      assert(q("record-browser-select").value==="DAT:settle-one");assert(document.activeElement===q("record-browser-select"));assert(q("record-browser-detail").textContent.includes("2番目"));
+      q("session-save").click();assert(downloads.pop().text===before);
+      q("record-browser-search").value="open-one";q("record-browser-search").dispatchEvent(new Event("input"));pick.click();
+      assert(q("record-browser-select").value==="DAT:open-one");assert(q("record-browser-detail").textContent.includes("1番目"));
+    }finally{page.dispose();host.remove();}
+  });
+
+  test("file-read: report and evidence difference pages expose the complete native DOM result",async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("overview-save").click();const source=JSON.parse(downloads.pop().text);for(let i=0;i<103;i++)source["extra"+i]=i;
+      q("report-review-text").value=JSON.stringify(source);q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();await finish("report-review-status");
+      assert(q("report-review-differences").children.length===40);q("report-review-next").click();q("report-review-next").click();
+      assert(q("report-review-differences").children.length===23&&q("report-review-next").disabled);assert(q("report-review-difference-status").textContent.includes("81〜103"));
+      q("report-review-evidence-save").click();const evidence=JSON.parse(downloads.pop().text);for(let i=0;i<87;i++)evidence.receipt["extra"+i]=i;
+      q("report-evidence-text").value=JSON.stringify(evidence);q("report-evidence-text").dispatchEvent(new Event("input"));q("report-evidence-paste").click();await finish("report-evidence-status");
+      assert(q("report-evidence-difference-kind").value==="receipt");q("report-evidence-next").click();q("report-evidence-next").click();
+      assert(q("report-evidence-differences").children.length===7&&q("report-evidence-next").disabled);
+      q("report-evidence-difference-kind").value="source";q("report-evidence-difference-kind").dispatchEvent(new Event("change"));
+      assert(q("report-evidence-previous").disabled&&q("report-evidence-differences").children.length===40);q("report-evidence-next").click();q("report-evidence-next").click();
+      assert(q("report-evidence-differences").children.length===23);q("report-evidence-save").click();const result=JSON.parse(downloads.pop().text);
+      assert(result.differenceCount===87&&result.reportReview.differenceCount===103&&result.reportReview.differences.length===40);
+    }finally{page.dispose();host.remove();}
+  });
+
+  for(const altered of [false,true])test("file-read: portable evidence native round trip"+(altered?" detects a changed receipt":" preserves independent views"),async()=>{
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    const pick=(id,text)=>{const transfer=new DataTransfer();transfer.items.add(new File([text],"evidence.json",{type:"application/json"}));q(id).files=transfer.files;q(id).dispatchEvent(new Event("change"));};
+    try{
+      q("example").click();q("session-save").click();const before=downloads.pop().text;
+      q("overview-save").click();const source=downloads.pop().text;
+      q("report-review-text").value=source;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();await finish("report-review-status");
+      const ordinaryStatus=q("report-review-status").textContent;q("report-review-evidence-save").click();const encoded=downloads.pop().text;
+      const evidence=JSON.parse(encoded);assert(evidence.sourceText===source);
+      if(altered)evidence.receipt["<img src=x onerror=alert(1)>"]=true;
+      pick("report-evidence-file",JSON.stringify(evidence));await finish("report-evidence-status");
+      assert(q("report-evidence-status").className===(altered?"blocked":"passed"));assert(!q("report-evidence-save").disabled);
+      assert(q("report-review-status").textContent===ordinaryStatus&&!q("report-review-evidence-save").disabled,"Separate verification retains the original review");
+      assert(!q("report-evidence-results").querySelector("img"));
+      q("report-evidence-source-save").click();assert(downloads.pop().text===source);
+      q("report-evidence-save").click();assert(JSON.parse(downloads.pop().text).matchesReceipt===!altered);
+      q("session-save").click();assert(downloads.pop().text===before,"Evidence inspection never restores or modifies live ledgers");
+      q("report-evidence-file").dispatchEvent(new Event("cancel"));assert(!q("report-evidence-save").disabled);
+      if(!altered){pick("report-review-file",encoded);await finish("report-review-status");assert(q("report-review-status").textContent.includes("まとめて保存した証拠を再確認する"));
+        pick("report-evidence-file",source);await finish("report-evidence-status");assert(q("report-evidence-status").textContent.includes("保存した資料を再計算して確認"));}
+    }finally{page.dispose();host.remove();}
+  });
+
+  test("file-read: saved checksum text uses a native file picker and retains its selected source", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const finish=async id=>{const end=Date.now()+10000;while(q(id).getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q(id).getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("overview-save").click();const source=downloads.pop().text;
+      q("report-review-text").value=source;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();await finish("report-review-status");
+      q("report-review-checksum-save").click();const checksum=downloads.pop().text;
+      const transfer=new DataTransfer();transfer.items.add(new File([checksum],"saved-checksum.txt",{type:"text/plain"}));
+      q("report-review-checksum-file").files=transfer.files;q("report-review-checksum-file").dispatchEvent(new Event("change"));await finish("report-review-checksum-file-status");
+      assert(q("report-review-expected").value===checksum.trim());assert(!q("report-review-run").disabled&&q("report-review-save").disabled);
+      q("report-review-run").click();await finish("report-review-status");assert(q("report-review-summary").textContent.includes("照合値: 一致"));
+      q("report-review-checksum-file").dispatchEvent(new Event("cancel"));assert(!q("report-review-save").disabled);assert(q("report-review-checksum-file-note").textContent.includes("変更していません"));
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: unfinished numeric edits retain the saved ledger and restore native undo", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const edit=(id,value,type="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(type));};
+    try{
+      q("example").click();edit("append-kind","reserve","change");edit("append-reference","reward");edit("append-amount","1");q("append-preview").click();q("append-confirm").click();
+      q("workspace-save").click();const before=downloads.pop().text;assert(!q("undo").disabled);
+      edit("principal","invalid");q("calculate").click();assert(!q("form-draft-note").hidden&&!q("form-restore").disabled);assert(q("save").disabled);
+      q("workspace-save").click();assert(downloads.pop().text===before);q("form-restore").focus();q("form-restore").click();
+      assert(document.activeElement===q("result-title"));assert(q("status").textContent.startsWith("入力変更前の履歴を再表示しました。"));
+      assert(q("rows").children.length===3&&!q("undo").disabled&&q("form-draft-note").hidden);q("undo").click();assert(q("rows").children.length===2);
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: expected-result filters expose later differences in a native browser", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    try{
+      const source=rehearsalExampleV2(),many={...source,events:Array.from({length:25},(_,i)=>({id:"deposit-"+i,kind:"deposit",agent:source.agent,chainId:source.chainId,account:source.account,amount:"1"}))};
+      const suite=JSON.parse(JSON.stringify(captureRehearsalCheckSuite({schema:REHEARSAL_SCENARIO_SET_SCHEMA,simulationOnly:true,cases:[{id:"all",label:"相違のあるケース",before:many,after:many}]})));
+      for(const side of ["before","after"])for(const row of suite.expected[0][side].records){row.withinEnteredLimits=false;row.reasons=["EXPECTED_ONLY"];}
+      q("check-suite-text").value=encodeRehearsalCheckSuite(suite);q("check-suite-text").dispatchEvent(new Event("input"));q("check-suite-paste").click();
+      q("check-suite-rows").querySelector("button").click();assert(document.activeElement===q("check-suite-case"));assert(q("check-suite-case").value==="all");
+      assert(q("check-suite-differences").children.length===40);q("check-suite-next").click();q("check-suite-next").click();
+      assert(q("check-suite-differences").children.length===20&&q("check-suite-next").disabled);assert(q("check-suite-difference-status").textContent.includes("81〜100"));
+      q("check-suite-filter").value="matched";q("check-suite-filter").dispatchEvent(new Event("change"));assert(q("check-suite-rows").children.length===0);assert(q("check-suite-difference-status").textContent.includes("該当するケースはありません"));assert(!q("check-suite-save").disabled);
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: reviewed source and checksum exports match the real digest and invalid checksum focus", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html"),host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window},downloads=[];
+    const page=mountOperationRehearsal(view,({prepared})=>downloads.push(prepared)),q=id=>view.getElementById(id);
+    const finish=async()=>{const end=Date.now()+10000;while(q("report-review-status").getAttribute("aria-busy")==="true"&&Date.now()<end)await tick();assert(q("report-review-status").getAttribute("aria-busy")==="false");};
+    try{
+      q("example").click();q("overview-save").click();const source=downloads.pop().text;
+      q("report-review-expected").value="invalid";q("report-review-expected").dispatchEvent(new Event("input"));
+      q("report-review-text").value=source;q("report-review-text").dispatchEvent(new Event("input"));q("report-review-paste").click();await finish();
+      assert(document.activeElement===q("report-review-expected"));assert(q("report-review-expected").getAttribute("aria-invalid")==="true");
+      q("report-review-expected").value="";q("report-review-expected").dispatchEvent(new Event("input"));q("report-review-run").click();await finish();
+      q("report-review-source-save").click();q("report-review-checksum-save").click();q("report-review-save").click();
+      assert(downloads.length===3);assert(downloads[0].text===source);const receipt=JSON.parse(downloads[2].text);assert(downloads[1].text===receipt.sha256+"\n");assert(receipt.matchesRecomputation);
+      q("report-review-clear").click();assert(q("report-review-source-save").disabled&&q("report-review-checksum-save").disabled);
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: append kinds and recorded ID choices guide the native form", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html");
+    const host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    const edit=(id,value,type="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(type));};
+    try{
+      assert(q("append-amount").disabled&&q("append-reference-choice").disabled);
+      edit("scenario","pending","change");q("example").click();edit("append-kind","settle","change");
+      assert(q("append-exit-reserve").disabled&&!q("append-fee").disabled);assert(!q("append-reference-choice").disabled);
+      assert([...q("append-reference-choice").options].some(option=>option.value==="one"));
+      edit("append-reference-choice","one","change");assert(q("append-reference").value==="one");
+      edit("append-amount","130");edit("append-fee","1");q("append-preview").click();assert(!q("append-confirm").disabled);
+      q("append-confirm").click();assert(q("append-reference-choice").disabled);assert(q("append-capacity").textContent.includes("あと198件"));
+      edit("append-kind","deposit","change");assert(q("append-reference").disabled&&q("append-fee").disabled&&!q("append-amount").disabled);
+      for(const id of ["append-kind","append-reference-choice","append-reference"]){for(const ref of q(id).getAttribute("aria-describedby").split(" "))assert(q(ref),"Append description target exists");}
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: case editing identifies duplicate IDs and row buttons select saved details", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html");
+    const host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    const edit=(id,value)=>{q(id).value=value;q(id).dispatchEvent(new Event("input"));};
+    try{
+      q("example").click();q("whatif-compare").click();edit("scenario-set-id","case-one");edit("scenario-set-label","比較ケース");
+      q("scenario-set-add").click();q("scenario-set-apply").click();assert(q("scenario-set-capacity").textContent.includes("あと11件"));
+      q("scenario-set-add").click();assert(document.activeElement===q("scenario-set-id"));assert(q("scenario-set-id").getAttribute("aria-invalid")==="true");assert(q("scenario-set-status").textContent.includes("すでに使われています"));
+      edit("scenario-set-id","changed-draft");const button=q("scenario-set-rows").querySelector("button");assert(button?.getAttribute("aria-label").includes("case-one"));button.click();
+      assert(document.activeElement===q("scenario-set-select"));assert(q("scenario-set-id").value==="case-one"&&q("scenario-set-label").value==="比較ケース");assert(!q("scenario-set-id").hasAttribute("aria-invalid"));
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: rehearsal invalid fields receive native focus and clear after correction", async () => {
+    const response=await fetch("/rehearsal/");assert(response.ok);
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html");
+    const host=document.importNode(parsed.querySelector("main"),true);document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    const edit=(id,value,type="input")=>{q(id).value=value;q(id).dispatchEvent(new Event(type));};
+    const marked=(id,status)=>{assert(document.activeElement===q(id),"Focus must identify the failed field");assert(q(id).getAttribute("aria-invalid")==="true");assert(q(id).getAttribute("aria-errormessage")===status);assert(q(id).getAttribute("aria-describedby").split(" ").includes(status));};
+    try{
+      q("example").click();edit("principal","bad");q("calculate").click();marked("principal","status");
+      edit("principal","10");assert(!q("principal").hasAttribute("aria-invalid"));q("calculate").click();assert(!q("save").disabled);
+      const before=q("rows").innerHTML;
+      edit("whatif-buybackBps","101");q("whatif-compare").click();marked("whatif-buybackBps","whatif-status");
+      q("whatif-reset").click();assert(!q("whatif-buybackBps").hasAttribute("aria-invalid"));
+      edit("append-kind","deposit","change");edit("append-amount","bad");q("append-preview").click();marked("append-amount","append-summary");assert(q("append-confirm").disabled);
+      edit("append-amount","1");q("append-preview").click();assert(!q("append-confirm").disabled);assert(!q("append-amount").hasAttribute("aria-invalid"));assert(q("rows").innerHTML===before,"Invalid drafts and previews preserve committed rows");
+    }finally{page.dispose();host.remove();}
+  });
+  test("file-read: rehearsal related navigation restores its search and focuses the detail chooser", async () => {
+    const response=await fetch("/rehearsal/");
+    assert(response.ok,"Rehearsal template must be served");
+    const parsed=new DOMParser().parseFromString(await response.text(),"text/html");
+    const host=document.importNode(parsed.querySelector("main"),true);
+    document.body.append(host);
+    const view={getElementById:id=>host.querySelector("#"+CSS.escape(id)),createElement:tag=>document.createElement(tag),defaultView:window};
+    const page=mountOperationRehearsal(view,()=>{}),q=id=>view.getElementById(id);
+    try{
+      for(const link of host.querySelectorAll(".file-format-guide a")){
+        const href=link.getAttribute("href");
+        assert(href.startsWith("#")&&q(href.slice(1)),"Guide links to an existing local section");
+      }
+      q("example").click();
+      q("record-browser-search").value="open-one";
+      q("record-browser-search").dispatchEvent(new Event("input"));
+      const before=q("rows").innerHTML;
+      const button=q("record-browser-related").querySelector("button");
+      assert(button?.getAttribute("aria-label").includes("settle-one"),"Related action identifies its destination");
+      button.click();
+      assert(q("record-browser-select").value==="DAT:settle-one","Related settlement is selected");
+      assert(document.activeElement===q("record-browser-select"),"Keyboard focus follows the opened record");
+      assert(q("record-browser-search").value===""&&!q("record-browser-back").disabled,"Expanded query exposes a return action");
+      q("record-browser-back").click();
+      assert(q("record-browser-search").value==="open-one"&&q("record-browser-select").value==="DAT:open-one","Return restores search and selected record");
+      assert(q("record-browser-back").disabled&&q("rows").innerHTML===before,"Navigation leaves the source ledger unchanged");
+    }finally{page.dispose();host.remove();}
+  });
+
+  test("file-read: rehearsal picker guidance is linked and preserves real DOM selection state", async () => {
+    const response = await fetch("/rehearsal/");
+    assert(response.ok, "Rehearsal template must be served");
+    const pageDocument = new DOMParser().parseFromString(await response.text(), "text/html");
+    const page = mountOperationRehearsal(pageDocument, () => {});
+    const q = id => pageDocument.getElementById(id);
+    try {
+      q("example").click();
+      for (const id of ["file","workspace-file","session-file","scenario-set-file","check-suite-file","report-review-file"]) {
+        const picker=q(id),note=q(id+"-note");
+        assert(picker instanceof HTMLInputElement, id+" is a native picker");
+        assert(note?.getAttribute("role")==="status",id+" has an accessible notice");
+        assert(picker.getAttribute("aria-describedby").split(/\s+/).includes(id+"-note"),id+" links its notice");
+        picker.dispatchEvent(new Event("cancel"));
+        assert(note.textContent.includes("変更していません"),id+" explains unchanged records");
+      }
+      const picker=q("file"),transfer=new DataTransfer();
+      transfer.items.add(new File([JSON.stringify(rehearsalExampleV2("EMA"))],"ema.json",{type:"application/json"}));
+      picker.files=transfer.files;
+      picker.dispatchEvent(new Event("change",{bubbles:true}));
+      assert(q("file-note").textContent==="","New selection clears dismissal");
+      for(let i=0;i<200&&q("apply").disabled;i++)await new Promise(resolve=>setTimeout(resolve,10));
+      assert(!q("apply").disabled,"Valid File reaches preview");
+      assert(picker.files.length===0,"Native FileList was cleared only after capture");
+      const preview=q("preview").textContent,status=q("status").textContent;
+      picker.dispatchEvent(new Event("cancel"));
+      assert(q("preview").textContent===preview&&q("status").textContent===status&&!q("apply").disabled,"Picker dismissal preserves preview authority");
+      const currentRows=q("rows").innerHTML;
+      q("session-text").value=JSON.stringify(rehearsalExampleV2("EMA"));
+      q("session-text").dispatchEvent(new Event("input"));
+      q("session-paste").click();
+      assert(q("session-status").textContent.includes("記録を保存・再確認"),"Wrong format names the correct section");
+      assert(q("session-apply").disabled&&q("rows").innerHTML===currentRows,"Format guidance does not restore data");
+      page.dispose();
+      picker.dispatchEvent(new Event("cancel"));
+      assert(q("file-note").textContent==="","Disposed notices cannot revive");
+    } finally {page.dispose();}
+  });
+
   for (const kind of ["settings", "workspace", "history"]) {
     test(`file-read: ${kind} native import clears content before cleanup and contains rejected notifications`, async () => {
       const fields = ["DAT", "EMA", "CAWELON"].map((agent, index) => ({

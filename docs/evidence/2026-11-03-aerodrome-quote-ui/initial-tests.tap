@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: ordinary quote page/module graph and fixed Base reader work; upstream implementation is not public
+ok 1 - ordinary quote page/module graph and fixed Base reader work; upstream implementation is not public
+  ---
+  duration_ms: 945.5663
+  type: 'test'
+  ...
+# Subtest: foreign origin, extra fields, injected methods, invalid numbers, oversized and invalid UTF-8 bodies cannot reach upstream
+ok 2 - foreign origin, extra fields, injected methods, invalid numbers, oversized and invalid UTF-8 bodies cannot reach upstream
+  ---
+  duration_ms: 155.6111
+  type: 'test'
+  ...
+# Subtest: upstream errors are generic and partial quotes never leak
+ok 3 - upstream errors are generic and partial quotes never leak
+  ---
+  duration_ms: 34.0902
+  type: 'test'
+  ...
+# Subtest: two simultaneous jobs are allowed; disconnect cancels upstream and releases capacity
+ok 4 - two simultaneous jobs are allowed; disconnect cancels upstream and releases capacity
+  ---
+  duration_ms: 83.7579
+  type: 'test'
+  ...
+# Subtest: quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+ok 5 - quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+  ---
+  duration_ms: 816.9448
+  type: 'test'
+  ...
+# Subtest: client binds response to agent, direction, amount, slippage and requested block using only the local endpoint
+ok 6 - client binds response to agent, direction, amount, slippage and requested block using only the local endpoint
+  ---
+  duration_ms: 119.0288
+  type: 'test'
+  ...
+# Subtest: unsupported request fields and pre-cancellation never start transport; malformed, forged and oversized replies fail
+ok 7 - unsupported request fields and pre-cancellation never start transport; malformed, forged and oversized replies fail
+  ---
+  duration_ms: 10.6461
+  type: 'test'
+  ...
+# Subtest: deadline and caller cancellation interrupt stalled response headers and body
+ok 8 - deadline and caller cancellation interrupt stalled response headers and body
+  ---
+  duration_ms: 28.9484
+  type: 'test'
+  ...
+# Subtest: UI decimal input is exact, buyer unit changes, and saved file reproduces validated amounts
+ok 9 - UI decimal input is exact, buyer unit changes, and saved file reproduces validated amounts
+  ---
+  duration_ms: 52.4836
+  type: 'test'
+  ...
+# Subtest: invalid, overprecise, exponential, zero and oversized values never dispatch
+ok 10 - invalid, overprecise, exponential, zero and oversized values never dispatch
+  ---
+  duration_ms: 6.8845
+  type: 'test'
+  ...
+# Subtest: cancel cancels outstanding requests and discards their eventual result
+ok 11 - cancel cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 3.3589
+  type: 'test'
+  ...
+# Subtest: input cancels outstanding requests and discards their eventual result
+ok 12 - input cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 2.3449
+  type: 'test'
+  ...
+# Subtest: pagehide cancels outstanding requests and discards their eventual result
+ok 13 - pagehide cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 2.2434
+  type: 'test'
+  ...
+# Subtest: dispose cancels outstanding requests and discards their eventual result
+ok 14 - dispose cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 2.4531
+  type: 'test'
+  ...
+# Subtest: changed source context, RPC failure and arithmetic mismatch never expose a usable result
+ok 15 - changed source context, RPC failure and arithmetic mismatch never expose a usable result
+  ---
+  duration_ms: 23.2189
+  type: 'test'
+  ...
+# Subtest: failed download preserves output while reentrant cancellation never reports success
+ok 16 - failed download preserves output while reentrant cancellation never reports success
+  ---
+  duration_ms: 10.5669
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2462.9292

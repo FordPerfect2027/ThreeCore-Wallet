@@ -1,4 +1,5 @@
-import { readFormatFileBytes } from "./security-file.js";
+import { sha256Hex } from "./security-data.js";
+import { readFormatFileBytes, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { identityObject, identityFail } from "./token-identity-codec.js";
 import { validateTokenObservation } from "./token-identity-model.js";
@@ -15,13 +16,9 @@ function bytesFor(text) {
   return bytes;
 }
 
-async function checksum(text, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") identityFail("IDENTITY_CRYPTO");
-  let value;
-  try { value = await subtle.digest("SHA-256", bytesFor(text)); }
+async function checksum(text, subtle, options) {
+  try { return await sha256Hex(bytesFor(text), subtle, options); }
   catch { identityFail("IDENTITY_CRYPTO"); }
-  if (!(value instanceof ArrayBuffer) || value.byteLength !== 32) identityFail("IDENTITY_CRYPTO");
-  return [...new Uint8Array(value)].map(byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
 export function encodeTokenObservation(input) {
@@ -37,10 +34,10 @@ export function decodeTokenObservation(text) {
 }
 
 /** A checksum proves local consistency, never authorship or chain provenance. */
-export async function prepareTokenIdentityFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareTokenIdentityFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const observation = validateTokenObservation(input);
   const canonical = encodeTokenObservation(observation);
-  const digest = await checksum(canonical, subtle);
+  const digest = await checksum(canonical, subtle, { signal, timeoutMs });
   const text = JSON.stringify({
     schema: IDENTITY_FILE_SCHEMA,
     algorithm: "SHA-256",
@@ -59,7 +56,7 @@ export async function prepareTokenIdentityFile(input, { subtle = globalThis.cryp
   });
 }
 
-export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   if (!(input instanceof Uint8Array) || !input.byteLength || input.byteLength > IDENTITY_FILE_LIMIT) {
     identityFail("IDENTITY_FILE_SIZE");
   }
@@ -71,20 +68,19 @@ export async function decodeTokenIdentityFile(input, { subtle = globalThis.crypt
   let document;
   try { document = parseSecurityJson(text); }
   catch { identityFail("IDENTITY_FILE_JSON"); }
-  identityObject(document, ["schema", "algorithm", "digest", "observation"]);
+  document = identityObject(document, ["schema", "algorithm", "digest", "observation"]);
   if (document.schema !== IDENTITY_FILE_SCHEMA || document.algorithm !== "SHA-256" ||
       typeof document.digest !== "string" || !/^[0-9a-f]{64}$/.test(document.digest)) {
     identityFail("IDENTITY_FILE_SCHEMA");
   }
   const observation = validateTokenObservation(document.observation);
-  const actual = await checksum(encodeTokenObservation(observation), subtle);
+  const actual = await checksum(encodeTokenObservation(observation), subtle, { signal, timeoutMs });
   if (actual !== document.digest) identityFail("IDENTITY_CHECKSUM");
   return Object.freeze({ observation, digest: actual, checksumVerified: true, authenticated: false });
 }
 
 export async function readTokenIdentityFile(file, options) {
-  if (!file || typeof file.name !== "string" || !file.name.length || file.name.length > 240 ||
-      !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) identityFail("IDENTITY_FILENAME");
+  readFormatFileName(file, { maxLength: 240, fail: identityFail, code: "IDENTITY_FILENAME" });
   const bytes = await readFormatFileBytes(file, { maxBytes: IDENTITY_FILE_LIMIT, fail: identityFail,
     sizeCode: "IDENTITY_FILE_SIZE", readCode: "IDENTITY_FILE_READ", signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeTokenIdentityFile(bytes, options);

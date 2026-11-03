@@ -1,3 +1,4 @@
+import { captureOptionalDataFields } from "./security-data.js";
 /**
  * Read-only Aerodrome Classic v2 pool discovery on Base Mainnet.
  * Checks published PoolFactory.getPool(token, USDC, stable) at one block.
@@ -7,6 +8,7 @@
  * (concentrated liquidity), other factories and third-party DEXes are excluded.
  */
 import { AERODROME_BASE, THREECORE_BASE_TOKENS } from "./aerodrome-readonly.js";
+import { createPublicBaseRpcReader, PublicBaseRpcError } from "./public-base-rpc.js";
 
 export const BASE_NATIVE_USDC = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913";
 export const USDC_SOURCE = "https://www.circle.com/blog/usdc-now-available-natively-on-base";
@@ -56,42 +58,37 @@ function toHexBlock(value) {
  * Return stable + volatile Classic v2 pool locations for all 3 tokens vs native
  * Base USDC, and existing reserves if contracts are found and match the pair.
  */
-export async function inspectAerodromePools({
-  fetchImpl = globalThis.fetch,
-  timeoutMs = 12000,
-} = {}) {
+export async function inspectAerodromePools(input = {}) {
+  let options;try { options=captureOptionalDataFields(input,["fetchImpl","timeoutMs","signal"]); }
+  catch { fail("INVALID_OPTIONS","Diagnostic options must contain own data fields"); }
+  const {fetchImpl=globalThis.fetch,timeoutMs=12000,signal}=options;
   if (typeof fetchImpl !== "function") fail("NO_TRANSPORT", "Fetch is required");
   if (!Number.isInteger(timeoutMs) || timeoutMs < 100 || timeoutMs > 30000) {
     fail("INVALID_TIMEOUT", "Timeout must be between 100 and 30000 milliseconds");
   }
 
-  let nextId = 0;
-  async function rpc(method, params) {
-    if (!["eth_chainId", "eth_blockNumber", "eth_call", "eth_getCode"].includes(method)) {
-      fail("FORBIDDEN_METHOD", "Only read-only RPC methods are enabled");
+  let reader;
+  try { reader=createPublicBaseRpcReader({rpcUrl:AERODROME_BASE.rpcUrl,fetchImpl,timeoutMs,signal}); }
+  catch(error){if(error instanceof PublicBaseRpcError)fail(error.code,error.message);throw error;}
+  async function rpc(method, params = []) {
+    try { return await reader(method, params); }
+    catch (error) {
+      if (!(error instanceof PublicBaseRpcError)) throw error;
+      const code = error.code === "INVALID_RPC_RESPONSE" ? "INVALID_RPC_RESULT" :
+        error.code === "METHOD_BLOCKED" ? "FORBIDDEN_METHOD" : error.code;
+      throw new AerodromePoolReadError(code, error.message);
     }
-    const id = ++nextId;
-    const response = await fetchImpl(AERODROME_BASE.rpcUrl, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ jsonrpc: "2.0", id, method, params }),
-      signal: AbortSignal.timeout(timeoutMs),
-    });
-    if (!response?.ok) fail("HTTP_ERROR", "Base RPC rejected the request");
-    const json = await response.json();
-    if (!json || json.jsonrpc !== "2.0" || json.id !== id || json.error ||
-        typeof json.result !== "string") {
-      fail("INVALID_RPC_RESULT", "Malformed JSON-RPC response");
-    }
-    return json.result;
   }
+
   const chain = toHexBlock(await rpc("eth_chainId", []));
   if (chain !== 8453n) fail("WRONG_CHAIN", "Expected Base Mainnet chain 8453");
   const block = toHexBlock(await rpc("eth_blockNumber", []));
   const blockTag = "0x" + block.toString(16);
+  const initialBlock = await rpc("eth_getBlockByNumber", [blockTag, false]);
+  const blockSelector = Object.freeze({ blockHash: initialBlock.hash, requireCanonical: true });
 
   async function call(to, data) {
-    return rpc("eth_call", [{ to, data }, blockTag]);
+    return rpc("eth_call", [{ to, data }, blockSelector]);
   }
 
   const results = {};
@@ -110,7 +107,7 @@ export async function inspectAerodromePools({
         continue;
       }
 
-      const code = await rpc("eth_getCode", [poolAddress, blockTag]);
+      const code = await rpc("eth_getCode", [poolAddress, blockSelector]);
       if (!/^0x(?:[0-9a-fA-F]{2})*$/.test(code)) {
         fail("INVALID_RPC_RESULT", "Malformed pool bytecode");
       }
@@ -142,9 +139,13 @@ export async function inspectAerodromePools({
     results[agent] = Object.freeze(poolTypes);
   }
 
+  const finalBlock = await rpc("eth_getBlockByNumber", [blockTag, false]);
+  if (finalBlock.hash !== initialBlock.hash) fail("BLOCK_CHANGED", "Canonical Base block changed during pool inspection");
   return Object.freeze({
     chainId: 8453,
     checkedBlockNumber: block.toString(),
+    checkedBlockHash: initialBlock.hash,
+    canonicalBlockRechecked: true,
     factoryAddress: AERODROME_BASE.poolFactory,
     quoteTokenAddress: BASE_NATIVE_USDC,
     pools: Object.freeze(results),

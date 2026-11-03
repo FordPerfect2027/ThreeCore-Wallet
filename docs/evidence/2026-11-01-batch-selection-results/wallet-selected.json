@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.wallet-saved-batch-selection.v1",
+  "query": {
+    "name": "",
+    "status": "invalid"
+  },
+  "selectedBatchFiles": 2,
+  "matchedFiles": 1,
+  "fullBatchSummary": {
+    "selected": 2,
+    "checked": 2,
+    "pending": 0,
+    "validatedOriginals": 1,
+    "declaredOnly": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "totalBytes": 5848
+  },
+  "sourcePhase": "complete",
+  "sourceComplete": true,
+  "files": [
+    {
+      "name": "invalid.json",
+      "byteLength": 1,
+      "sha256": "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96",
+      "status": "invalid",
+      "code": "FILE_INSPECTION_JSON",
+      "inspection": null
+    }
+  ],
+  "sourceReceiptRequiredForRecheck": true,
+  "fullBatchResultIncluded": false,
+  "containsOriginalEvidence": false,
+  "readOnly": true,
+  "authenticated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "authorizesExecution": false
+}

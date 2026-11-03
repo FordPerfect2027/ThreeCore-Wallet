@@ -1,0 +1,1476 @@
+✔ identity: inherited constructor is not a message (6.9503ms)
+✔ identity: inherited toString is not a message (0.3612ms)
+✔ identity: inherited __proto__ is not a message (0.3025ms)
+✔ identity: inherited hasOwnProperty is not a message (0.3458ms)
+✖ identity: primitive-hook is not coerced into a code (3.1239ms)
+✖ identity: toString is not coerced into a code (0.7257ms)
+✖ identity: proxy is not coerced into a code (0.4844ms)
+✖ identity: boxed is not coerced into a code (0.5761ms)
+✔ identity: ordinary unknown primitive codes have safe text (0.5737ms)
+✔ allowance: inherited constructor is not a message (0.5141ms)
+✔ allowance: inherited toString is not a message (0.3604ms)
+✔ allowance: inherited __proto__ is not a message (0.2763ms)
+✔ allowance: inherited hasOwnProperty is not a message (0.214ms)
+✖ allowance: primitive-hook is not coerced into a code (0.5625ms)
+✖ allowance: toString is not coerced into a code (0.5132ms)
+✖ allowance: proxy is not coerced into a code (0.3062ms)
+✖ allowance: boxed is not coerced into a code (2.7251ms)
+✔ allowance: ordinary unknown primitive codes have safe text (0.4785ms)
+✔ transfer: inherited constructor is not a message (0.256ms)
+✔ transfer: inherited toString is not a message (0.2501ms)
+✔ transfer: inherited __proto__ is not a message (0.1764ms)
+✔ transfer: inherited hasOwnProperty is not a message (0.4578ms)
+✖ transfer: primitive-hook is not coerced into a code (0.4767ms)
+✖ transfer: toString is not coerced into a code (0.4332ms)
+✖ transfer: proxy is not coerced into a code (0.2332ms)
+✖ transfer: boxed is not coerced into a code (0.5051ms)
+✔ transfer: ordinary unknown primitive codes have safe text (0.2186ms)
+✖ vault: inherited constructor is not a message (0.574ms)
+✖ vault: inherited toString is not a message (0.4081ms)
+✖ vault: inherited __proto__ is not a message (0.4936ms)
+✖ vault: inherited hasOwnProperty is not a message (0.5453ms)
+✖ vault: primitive-hook is not coerced into a code (0.4239ms)
+✖ vault: toString is not coerced into a code (0.4322ms)
+✖ vault: proxy is not coerced into a code (0.2335ms)
+✖ vault: boxed is not coerced into a code (0.5258ms)
+✔ vault: ordinary unknown primitive codes have safe text (0.2899ms)
+✖ period: inherited constructor is not a message (0.4158ms)
+✖ period: inherited toString is not a message (0.4495ms)
+✖ period: inherited __proto__ is not a message (0.4152ms)
+✖ period: inherited hasOwnProperty is not a message (0.3706ms)
+✖ period: primitive-hook is not coerced into a code (0.4377ms)
+✖ period: toString is not coerced into a code (0.4338ms)
+✖ period: proxy is not coerced into a code (0.2646ms)
+✖ period: boxed is not coerced into a code (0.4098ms)
+✔ period: ordinary unknown primitive codes have safe text (0.3215ms)
+✔ library: inherited constructor is not a message (0.1923ms)
+✔ library: inherited toString is not a message (0.1657ms)
+✔ library: inherited __proto__ is not a message (0.1354ms)
+✔ library: inherited hasOwnProperty is not a message (0.137ms)
+✖ library: primitive-hook is not coerced into a code (0.8145ms)
+✖ library: toString is not coerced into a code (0.4117ms)
+✖ library: proxy is not coerced into a code (0.2045ms)
+✖ library: boxed is not coerced into a code (0.353ms)
+✔ library: ordinary unknown primitive codes have safe text (0.1739ms)
+✔ report: inherited constructor is not a message (0.5904ms)
+✔ report: inherited toString is not a message (0.1718ms)
+✔ report: inherited __proto__ is not a message (0.1386ms)
+✔ report: inherited hasOwnProperty is not a message (0.1353ms)
+✖ report: primitive-hook is not coerced into a code (0.395ms)
+✖ report: toString is not coerced into a code (0.3888ms)
+✖ report: proxy is not coerced into a code (0.229ms)
+✖ report: boxed is not coerced into a code (0.3813ms)
+✔ report: ordinary unknown primitive codes have safe text (0.1755ms)
+✔ report-status: inherited constructor is not a message (0.1454ms)
+✔ report-status: inherited toString is not a message (0.1297ms)
+✔ report-status: inherited __proto__ is not a message (0.1894ms)
+✔ report-status: inherited hasOwnProperty is not a message (0.1714ms)
+✖ report-status: primitive-hook is not coerced into a code (0.4519ms)
+✖ report-status: toString is not coerced into a code (0.5813ms)
+✖ report-status: proxy is not coerced into a code (0.3004ms)
+✖ report-status: boxed is not coerced into a code (0.4356ms)
+✔ report-status: ordinary unknown primitive codes have safe text (0.2115ms)
+✔ report-issue: inherited constructor is not a message (0.3091ms)
+✔ report-issue: inherited toString is not a message (0.1516ms)
+✔ report-issue: inherited __proto__ is not a message (0.1473ms)
+✔ report-issue: inherited hasOwnProperty is not a message (0.1327ms)
+✖ report-issue: primitive-hook is not coerced into a code (0.3733ms)
+✖ report-issue: toString is not coerced into a code (0.3496ms)
+✖ report-issue: proxy is not coerced into a code (0.1989ms)
+✖ report-issue: boxed is not coerced into a code (0.3897ms)
+✔ report-issue: ordinary unknown primitive codes have safe text (0.1713ms)
+✔ history: inherited constructor is not a message (0.1473ms)
+✔ history: inherited toString is not a message (0.134ms)
+✔ history: inherited __proto__ is not a message (0.1688ms)
+✔ history: inherited hasOwnProperty is not a message (0.1387ms)
+✖ history: primitive-hook is not coerced into a code (1.2173ms)
+✖ history: toString is not coerced into a code (0.4425ms)
+✖ history: proxy is not coerced into a code (0.2245ms)
+✖ history: boxed is not coerced into a code (0.3731ms)
+✔ history: ordinary unknown primitive codes have safe text (0.1579ms)
+✖ set: inherited constructor is not a message (0.5892ms)
+✖ set: inherited toString is not a message (0.4074ms)
+✖ set: inherited __proto__ is not a message (0.3743ms)
+✖ set: inherited hasOwnProperty is not a message (0.411ms)
+✖ set: primitive-hook is not coerced into a code (0.3874ms)
+✖ set: toString is not coerced into a code (0.4732ms)
+✖ set: proxy is not coerced into a code (0.2073ms)
+✖ set: boxed is not coerced into a code (0.3733ms)
+✔ set: ordinary unknown primitive codes have safe text (0.172ms)
+✖ set-issue: inherited constructor is not a message (0.3464ms)
+✖ set-issue: inherited toString is not a message (0.3238ms)
+✖ set-issue: inherited __proto__ is not a message (1.3272ms)
+✖ set-issue: inherited hasOwnProperty is not a message (0.3671ms)
+✖ set-issue: primitive-hook is not coerced into a code (0.3787ms)
+✖ set-issue: toString is not coerced into a code (0.3652ms)
+✖ set-issue: proxy is not coerced into a code (0.205ms)
+✖ set-issue: boxed is not coerced into a code (0.3612ms)
+✔ set-issue: ordinary unknown primitive codes have safe text (0.1599ms)
+✔ known ordinary diagnostics keep their specific messages (0.5781ms)
+ℹ tests 109
+ℹ suites 0
+ℹ pass 45
+ℹ fail 64
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 605.3593
+
+✖ failing tests:
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ identity: primitive-hook is not coerced into a code (3.1239ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ファイル保存を開始できませんでした。'
+  - '照合を完了できませんでした。接続と入力を確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ファイル保存を開始できませんでした。',
+    expected: '照合を完了できませんでした。接続と入力を確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ identity: toString is not coerced into a code (0.7257ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ファイル保存を開始できませんでした。'
+  - '照合を完了できませんでした。接続と入力を確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ファイル保存を開始できませんでした。',
+    expected: '照合を完了できませんでした。接続と入力を確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ identity: proxy is not coerced into a code (0.4844ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at tokenIdentityErrorMessage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-view.js:140:18)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ identity: boxed is not coerced into a code (0.5761ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ファイル保存を開始できませんでした。'
+  - '照合を完了できませんでした。接続と入力を確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ファイル保存を開始できませんでした。',
+    expected: '照合を完了できませんでした。接続と入力を確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ allowance: primitive-hook is not coerced into a code (0.5625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '相手の完全な公開アドレスを確認してください。'
+  - '確認を完了できませんでした。接続・入力・ファイルを確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '相手の完全な公開アドレスを確認してください。',
+    expected: '確認を完了できませんでした。接続・入力・ファイルを確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ allowance: toString is not coerced into a code (0.5132ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '相手の完全な公開アドレスを確認してください。'
+  - '確認を完了できませんでした。接続・入力・ファイルを確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '相手の完全な公開アドレスを確認してください。',
+    expected: '確認を完了できませんでした。接続・入力・ファイルを確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ allowance: proxy is not coerced into a code (0.3062ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at Object.hasOwn (<anonymous>)
+      at Object.hasOwn (<anonymous>)
+      at allowanceErrorMessage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-view.js:125:14)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ allowance: boxed is not coerced into a code (2.7251ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '相手の完全な公開アドレスを確認してください。'
+  - '確認を完了できませんでした。接続・入力・ファイルを確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '相手の完全な公開アドレスを確認してください。',
+    expected: '確認を完了できませんでした。接続・入力・ファイルを確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ transfer: primitive-hook is not coerced into a code (0.4767ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '読み込み内容をプレビューしてから反映してください。'
+  - '履歴の形式や取得内容を確認できなかったため、処理を中止しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読み込み内容をプレビューしてから反映してください。',
+    expected: '履歴の形式や取得内容を確認できなかったため、処理を中止しました。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ transfer: toString is not coerced into a code (0.4332ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '読み込み内容をプレビューしてから反映してください。'
+  - '履歴の形式や取得内容を確認できなかったため、処理を中止しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読み込み内容をプレビューしてから反映してください。',
+    expected: '履歴の形式や取得内容を確認できなかったため、処理を中止しました。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ transfer: proxy is not coerced into a code (0.2332ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at Object.hasOwn (<anonymous>)
+      at Object.hasOwn (<anonymous>)
+      at transferErrorText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-messages.js:46:17)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ transfer: boxed is not coerced into a code (0.5051ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '読み込み内容をプレビューしてから反映してください。'
+  - '履歴の形式や取得内容を確認できなかったため、処理を中止しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読み込み内容をプレビューしてから反映してください。',
+    expected: '履歴の形式や取得内容を確認できなかったため、処理を中止しました。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ vault: inherited constructor is not a message (0.574ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ vault: inherited toString is not a message (0.4081ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ vault: inherited __proto__ is not a message (0.4936ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'object' !== 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'object',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ vault: inherited hasOwnProperty is not a message (0.5453ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ vault: primitive-hook is not coerced into a code (0.4239ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '保管する履歴がありません。まず履歴を取得するか保存ファイルを開いてください。'
+  - '履歴の形式や取得内容を確認できなかったため、処理を中止しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '保管する履歴がありません。まず履歴を取得するか保存ファイルを開いてください。',
+    expected: '履歴の形式や取得内容を確認できなかったため、処理を中止しました。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ vault: toString is not coerced into a code (0.4322ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '保管する履歴がありません。まず履歴を取得するか保存ファイルを開いてください。'
+  - '履歴の形式や取得内容を確認できなかったため、処理を中止しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '保管する履歴がありません。まず履歴を取得するか保存ファイルを開いてください。',
+    expected: '履歴の形式や取得内容を確認できなかったため、処理を中止しました。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ vault: proxy is not coerced into a code (0.2335ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at vaultErrorText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-vault-messages.js:55:18)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ vault: boxed is not coerced into a code (0.5258ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '保管する履歴がありません。まず履歴を取得するか保存ファイルを開いてください。'
+  - '履歴の形式や取得内容を確認できなかったため、処理を中止しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '保管する履歴がありません。まず履歴を取得するか保存ファイルを開いてください。',
+    expected: '履歴の形式や取得内容を確認できなかったため、処理を中止しました。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ period: inherited constructor is not a message (0.4158ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ period: inherited toString is not a message (0.4495ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ period: inherited __proto__ is not a message (0.4152ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'object' !== 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'object',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ period: inherited hasOwnProperty is not a message (0.3706ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ period: primitive-hook is not coerced into a code (0.4377ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ブロック番号は0以上の整数を半角数字で入力してください。'
+  - '入力または保存記録を確認できませんでした。元のデータは保持しています。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ブロック番号は0以上の整数を半角数字で入力してください。',
+    expected: '入力または保存記録を確認できませんでした。元のデータは保持しています。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ period: toString is not coerced into a code (0.4338ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ブロック番号は0以上の整数を半角数字で入力してください。'
+  - '入力または保存記録を確認できませんでした。元のデータは保持しています。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ブロック番号は0以上の整数を半角数字で入力してください。',
+    expected: '入力または保存記録を確認できませんでした。元のデータは保持しています。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ period: proxy is not coerced into a code (0.2646ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at periodMessage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-view.js:46:54)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ period: boxed is not coerced into a code (0.4098ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ブロック番号は0以上の整数を半角数字で入力してください。'
+  - '入力または保存記録を確認できませんでした。元のデータは保持しています。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ブロック番号は0以上の整数を半角数字で入力してください。',
+    expected: '入力または保存記録を確認できませんでした。元のデータは保持しています。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ library: primitive-hook is not coerced into a code (0.8145ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '最初にPC内の保存一覧を開いてください。'
+  - '保存内容を扱えませんでした。既存の記録を消さず、JSONと保存先を確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '最初にPC内の保存一覧を開いてください。',
+    expected: '保存内容を扱えませんでした。既存の記録を消さず、JSONと保存先を確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ library: toString is not coerced into a code (0.4117ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '最初にPC内の保存一覧を開いてください。'
+  - '保存内容を扱えませんでした。既存の記録を消さず、JSONと保存先を確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '最初にPC内の保存一覧を開いてください。',
+    expected: '保存内容を扱えませんでした。既存の記録を消さず、JSONと保存先を確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ library: proxy is not coerced into a code (0.2045ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at Object.hasOwn (<anonymous>)
+      at Object.hasOwn (<anonymous>)
+      at libraryErrorText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-library-view.js:45:18)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ library: boxed is not coerced into a code (0.353ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '最初にPC内の保存一覧を開いてください。'
+  - '保存内容を扱えませんでした。既存の記録を消さず、JSONと保存先を確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '最初にPC内の保存一覧を開いてください。',
+    expected: '保存内容を扱えませんでした。既存の記録を消さず、JSONと保存先を確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report: primitive-hook is not coerced into a code (0.395ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '先にPC内の保存一覧を読み込んでください。'
+  - '処理を完了できませんでした。元の記録は変更されていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '先にPC内の保存一覧を読み込んでください。',
+    expected: '処理を完了できませんでした。元の記録は変更されていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report: toString is not coerced into a code (0.3888ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '先にPC内の保存一覧を読み込んでください。'
+  - '処理を完了できませんでした。元の記録は変更されていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '先にPC内の保存一覧を読み込んでください。',
+    expected: '処理を完了できませんでした。元の記録は変更されていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report: proxy is not coerced into a code (0.229ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at Object.hasOwn (<anonymous>)
+      at Object.hasOwn (<anonymous>)
+      at reportErrorText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-view.js:69:17)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report: boxed is not coerced into a code (0.3813ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '先にPC内の保存一覧を読み込んでください。'
+  - '処理を完了できませんでした。元の記録は変更されていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '先にPC内の保存一覧を読み込んでください。',
+    expected: '処理を完了できませんでした。元の記録は変更されていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report-status: primitive-hook is not coerced into a code (0.4519ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '記録が選ばれていません'
+  - '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '記録が選ばれていません',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report-status: toString is not coerced into a code (0.5813ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '記録が選ばれていません'
+  - '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '記録が選ばれていません',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report-status: proxy is not coerced into a code (0.3004ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at Object.hasOwn (<anonymous>)
+      at Object.hasOwn (<anonymous>)
+      at reportStatusText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-view.js:73:17)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report-status: boxed is not coerced into a code (0.4356ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '記録が選ばれていません'
+  - '未確認'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '記録が選ばれていません',
+    expected: '未確認',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report-issue: primitive-hook is not coerced into a code (0.3733ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '3トークンすべての記録が選ばれていません。'
+  - '記録の追加確認が必要です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '3トークンすべての記録が選ばれていません。',
+    expected: '記録の追加確認が必要です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report-issue: toString is not coerced into a code (0.3496ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '3トークンすべての記録が選ばれていません。'
+  - '記録の追加確認が必要です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '3トークンすべての記録が選ばれていません。',
+    expected: '記録の追加確認が必要です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report-issue: proxy is not coerced into a code (0.1989ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at Object.hasOwn (<anonymous>)
+      at Object.hasOwn (<anonymous>)
+      at reportIssueText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-report-view.js:77:17)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ report-issue: boxed is not coerced into a code (0.3897ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '3トークンすべての記録が選ばれていません。'
+  - '記録の追加確認が必要です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '3トークンすべての記録が選ばれていません。',
+    expected: '記録の追加確認が必要です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ history: primitive-hook is not coerced into a code (1.2173ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '処理を完了できませんでした。保存一覧を再読み込みして状態を確認してください。'
+  - '処理を完了できませんでした。元の記録は変更されていません。'
+                   ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '処理を完了できませんでした。保存一覧を再読み込みして状態を確認してください。',
+    expected: '処理を完了できませんでした。元の記録は変更されていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ history: toString is not coerced into a code (0.4425ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '処理を完了できませんでした。保存一覧を再読み込みして状態を確認してください。'
+  - '処理を完了できませんでした。元の記録は変更されていません。'
+                   ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '処理を完了できませんでした。保存一覧を再読み込みして状態を確認してください。',
+    expected: '処理を完了できませんでした。元の記録は変更されていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ history: proxy is not coerced into a code (0.2245ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at Object.hasOwn (<anonymous>)
+      at Object.hasOwn (<anonymous>)
+      at historyErrorText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-history-view.js:41:17)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ history: boxed is not coerced into a code (0.3731ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '処理を完了できませんでした。保存一覧を再読み込みして状態を確認してください。'
+  - '処理を完了できませんでした。元の記録は変更されていません。'
+                   ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '処理を完了できませんでした。保存一覧を再読み込みして状態を確認してください。',
+    expected: '処理を完了できませんでした。元の記録は変更されていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ set: inherited constructor is not a message (0.5892ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ set: inherited toString is not a message (0.4074ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ set: inherited __proto__ is not a message (0.3743ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'object' !== 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'object',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ set: inherited hasOwnProperty is not a message (0.411ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ set: primitive-hook is not coerced into a code (0.3874ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '処理を完了できませんでした。元の報告履歴は変更していません。'
+  - '処理を完了できませんでした。元の記録は変更されていません。'
+                     ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '処理を完了できませんでした。元の報告履歴は変更していません。',
+    expected: '処理を完了できませんでした。元の記録は変更されていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ set: toString is not coerced into a code (0.4732ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '処理を完了できませんでした。元の報告履歴は変更していません。'
+  - '処理を完了できませんでした。元の記録は変更されていません。'
+                     ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '処理を完了できませんでした。元の報告履歴は変更していません。',
+    expected: '処理を完了できませんでした。元の記録は変更されていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ set: proxy is not coerced into a code (0.2073ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at setErrorText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-set-view.js:45:51)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ set: boxed is not coerced into a code (0.3733ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '処理を完了できませんでした。元の報告履歴は変更していません。'
+  - '処理を完了できませんでした。元の記録は変更されていません。'
+                     ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '処理を完了できませんでした。元の報告履歴は変更していません。',
+    expected: '処理を完了できませんでした。元の記録は変更されていません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ set-issue: inherited constructor is not a message (0.3464ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ set-issue: inherited toString is not a message (0.3238ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ set-issue: inherited __proto__ is not a message (1.3272ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'object' !== 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'object',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:23:78
+✖ set-issue: inherited hasOwnProperty is not a message (0.3671ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ set-issue: primitive-hook is not coerced into a code (0.3787ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '報告が1件のため、複数期間のつながりは確認できません。'
+  - '確認が必要です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '報告が1件のため、複数期間のつながりは確認できません。',
+    expected: '確認が必要です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ set-issue: toString is not coerced into a code (0.3652ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '報告が1件のため、複数期間のつながりは確認できません。'
+  - '確認が必要です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '報告が1件のため、複数期間のつながりは確認できません。',
+    expected: '確認が必要です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ set-issue: proxy is not coerced into a code (0.205ms)
+  Error: synthetic coercion
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:30:57)
+      at setIssueText (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/report-set-view.js:52:55)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\diagnostic-message-lookup.test.js:26:68
+✖ set-issue: boxed is not coerced into a code (0.3612ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '報告が1件のため、複数期間のつながりは確認できません。'
+  - '確認が必要です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/diagnostic-message-lookup.test.js:31:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '報告が1件のため、複数期間のつながりは確認できません。',
+    expected: '確認が必要です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

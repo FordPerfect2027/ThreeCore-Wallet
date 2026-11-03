@@ -1,0 +1,93 @@
+{
+  "recordedAt": "2026-11-01T20:47:13.501Z",
+  "sourceRevision": "0405370b38c43e599dda0b475c88e1ec1850034a",
+  "originalFiles": [
+    {
+      "name": "ThreeCore-workspace-backup (5).json",
+      "sha256": "11f414cc8c45cd92f2a912e4f17e0a5f318284d02cf10b5ad90523eec8fa708c",
+      "bytes": 13703,
+      "entries": 3
+    }
+  ],
+  "distinctFileContents": 1,
+  "phases": [
+    {
+      "phase": 1,
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "unexpectedErrors": 0,
+      "fault": null,
+      "observations": [
+        {
+          "phase": 1,
+          "sourceSha256": "11f414cc8c45cd92f2a912e4f17e0a5f318284d02cf10b5ad90523eec8fa708c",
+          "configuredCards": 2,
+          "historyReports": 10,
+          "previewAndCancelPreservedInitialPage": true,
+          "fullRestoredContentsMatch": true,
+          "nativeCheckpointSaved": true,
+          "walletRequests": 0
+        }
+      ],
+      "unexpected": [],
+      "fileInputMode": "Native File/FileReader through input.files; OS file chooser not exercised",
+      "actualDownloadedFileBytes": true,
+      "nativeIndexedDb": true,
+      "providerFixturesPresentButNeverCalled": true,
+      "userWalletUsed": false,
+      "originalUserProfileUsed": false
+    },
+    {
+      "phase": 2,
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "unexpectedErrors": 0,
+      "fault": null,
+      "observations": [
+        {
+          "phase": 2,
+          "sourceSha256": "11f414cc8c45cd92f2a912e4f17e0a5f318284d02cf10b5ad90523eec8fa708c",
+          "nativeDownloadRequested": true,
+          "fullContentsMatchAfterBrowserRestart": true,
+          "explicitRestoreRequired": true,
+          "fileComparisonReportsExactMatch": true,
+          "walletRequests": 0,
+          "connectionPermissionsRestored": false
+        }
+      ],
+      "unexpected": [],
+      "fileInputMode": "Native File/FileReader through input.files; OS file chooser not exercised",
+      "actualDownloadedFileBytes": true,
+      "nativeIndexedDb": true,
+      "providerFixturesPresentButNeverCalled": true,
+      "userWalletUsed": false,
+      "originalUserProfileUsed": false
+    }
+  ],
+  "nativeDownload": {
+    "filename": "ThreeCore-workspace-backup.json",
+    "sha256": "11f414cc8c45cd92f2a912e4f17e0a5f318284d02cf10b5ad90523eec8fa708c",
+    "bytes": 13703,
+    "decodedContentsMatch": true,
+    "sourceByteIdentical": true,
+    "defaultBrowserDownloadAdapter": true,
+    "osSaveDialogExercised": false
+  },
+  "allPassed": true,
+  "independentBrowserProcesses": 2,
+  "processIds": [
+    14588,
+    19616
+  ],
+  "usedSameOwnedProfileAcrossPhases": true,
+  "temporaryProfileRemoved": true,
+  "ownServerClosed": true,
+  "originalUserBrowserTouched": false,
+  "original4231ServerTouched": false,
+  "realWalletUsed": false,
+  "osFilePickerExercised": false,
+  "sourceFilesUnmodified": true,
+  "privateOriginalReceiptSha256": "5ff6ef5007101d83d642cff63af31425bb4ed36ef0b1720171b4d1d83228e917"
+}

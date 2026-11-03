@@ -1,10 +1,78 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { summarizeWorkspace, describeWorkspaceOverview, describeWorkspacePreview,
-  describeWorkspaceUndo, formatWorkspaceUnits } from "../src/workspace-overview.js";
-import { previewWorkspace } from "../src/workspace-format.js";
+  describeWorkspaceUndo, formatWorkspaceUnits, compareWorkspaceContents, describeWorkspaceComparison } from "../src/workspace-overview.js";
+import { previewWorkspace, workspaceFromDraft } from "../src/workspace-format.js";
 import { draft, snapshot, ACCOUNTS, CONTRACTS, OPTIONS, text } from "./helpers/workspace-fixtures.js";
 import { archive } from "./helpers/history-fixtures.js";
+
+test("workspace content comparison checks all supported contents without exposing account data", () => {
+  const current = draft(), saved = workspaceFromDraft(current);
+  const result = compareWorkspaceContents(saved, current);
+  assert.equal(result.sameContents, true);
+  assert.equal(result.authorizesRestoration, false);
+  assert.equal(result.connectionVerified, false);
+  assert.equal(result.currentBalanceVerified, false);
+  assert.ok(Object.isFrozen(result.cards[0]));
+  const display = describeWorkspaceComparison(saved, current);
+  assert.match(display, /全3カード.*一致しました/);
+  assert.match(display, /別保存の資料は含みません/);
+  assert.ok(ACCOUNTS.every(address => !display.includes(address)));
+});
+
+test("workspace content comparison distinguishes changed observations with the same counts", () => {
+  const current = draft(), saved = workspaceFromDraft(current);
+  current[1].history = archive([snapshot(1, "42", { nativeBalanceBaseUnits: "9007199254740993123456789" })]);
+  const result = compareWorkspaceContents(saved, current);
+  assert.equal(result.sameContents, false);
+  assert.equal(result.cards[1].configurationMatches, true);
+  assert.equal(result.cards[1].historyMatches, false);
+  assert.equal(result.cards[1].savedObservations, result.cards[1].currentObservations);
+  assert.ok(result.cards[0].historyMatches && result.cards[2].historyMatches);
+});
+
+test("workspace content comparison detects extra records that a no-op merge would retain", () => {
+  const current = draft(), saved = workspaceFromDraft(current);
+  current[0].history = archive([snapshot(0, "42"), snapshot(0, "43")]);
+  const result = compareWorkspaceContents(saved, current);
+  assert.equal(result.sameContents, false);
+  assert.equal(result.cards[0].savedObservations, 1);
+  assert.equal(result.cards[0].currentObservations, 2);
+});
+
+test("workspace content comparison distinguishes unknown token balances from known zero", () => {
+  const current = draft();
+  current[0].history = archive([snapshot(0, "42", { holdings: [
+    { address: CONTRACTS[0], hasCode: true, balanceBaseUnits: "0", notice: null },
+  ] })]);
+  const saved = workspaceFromDraft(current);
+  current[0].history = archive([snapshot(0, "42", { holdings: [
+    { address: CONTRACTS[0], hasCode: false, balanceBaseUnits: null, notice: "TOKEN_CODE_MISSING" },
+  ] })]);
+  assert.equal(compareWorkspaceContents(saved, current).cards[0].historyMatches, false);
+});
+
+test("workspace content comparison normalizes form spelling but checks every configuration field", () => {
+  const current = draft(), saved = workspaceFromDraft(current);
+  current[0].tokens = " \n" + CONTRACTS[0] + "\n";
+  current[1].account = " " + current[1].account + " ";
+  assert.equal(compareWorkspaceContents(saved, current).sameContents, true);
+  current[0].tokenAddress = CONTRACTS[1];
+  current[1].chainId = 8453;
+  current[2].account = "0x" + "99".repeat(20);
+  const result = compareWorkspaceContents(saved, current);
+  assert.ok(result.cards.every(card => !card.configurationMatches && card.historyMatches));
+});
+
+test("workspace content comparison rejects invalid data and does not invoke accessors", () => {
+  const current = draft(), saved = workspaceFromDraft(current);
+  current[0].account = "unfinished";
+  assert.throws(() => compareWorkspaceContents(saved, current), { code: "WORKSPACE_ADDRESS" });
+  let invoked = false;
+  const bad = { get entries() { invoked = true; return []; } };
+  assert.throws(() => compareWorkspaceContents(bad, draft()), { code: "WORKSPACE_SHAPE" });
+  assert.equal(invoked, false);
+});
 
 test("workspace overview reports three independently configured cards and histories", () => {
   const summary = summarizeWorkspace(draft());
@@ -42,8 +110,10 @@ test("workspace overview distinguishes invalid duplicate and missing assignments
   assert.deepEqual(summary.cards.map(card => card.accountStatus), ["invalid", "missing", "configured"]);
   current[0].account = current[2].account;
   summary = summarizeWorkspace(current);
-  assert.deepEqual(summary.cards.map(card => card.accountStatus), ["duplicate", "missing", "duplicate"]);
-  assert.equal(summary.configured, 0);
+  assert.deepEqual(summary.cards.map(card => card.accountStatus), ["configured", "missing", "configured"]);
+  assert.deepEqual(summary.cards.map(card => card.sharedAccount), [true, false, true]);
+  assert.equal(summary.configured, 2);
+  assert.equal(summary.distinctAccounts, 1);
 });
 
 test("workspace overview marks historical accounts that differ from the current assignment", () => {

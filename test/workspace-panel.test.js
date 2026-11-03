@@ -47,6 +47,68 @@ test("workspace panel starts with no read write download or automatic connection
   assert.equal(f.field("settings").checked, true);
   assert.equal(f.field("histories").checked, true);
   assert.equal(f.field("replace").checked, false);
+  assert.equal(f.field("compare").disabled, true);
+});
+
+test("workspace comparison requires a verified file and never writes or authorizes restore", async () => {
+  const f = fixture();
+  f.input(text({ block: "10" }));
+  f.click("compare");
+  assert.equal(f.field("comparison-detail").textContent, "");
+  const saved = await prepareWorkspaceFile(bundle({ block: "10" }));
+  f.choose([fileObject(saved.text)]);
+  await until(() => !f.field("file").disabled);
+  f.click("compare");
+  assert.match(f.field("comparison-detail").textContent, /全3カード.*一致しました/);
+  assert.equal(f.field("confirmed").checked, false);
+  assert.equal(f.field("apply").disabled, true);
+  assert.equal(f.writes.length, 0);
+  assert.equal(f.downloads.length, 0);
+});
+
+test("workspace comparison reports extra retained history after a confirmed merge", async () => {
+  const f = fixture();
+  const saved = await prepareWorkspaceFile(bundle({ block: "20" }));
+  f.choose([fileObject(saved.text)]);
+  await until(() => !f.field("file").disabled);
+  f.click("preview"); f.apply(); f.click("compare");
+  assert.match(f.field("comparison-detail").textContent, /一致していない/);
+  assert.match(f.field("comparison-detail").textContent, /ファイル 1件 \/ 画面 2件/);
+  assert.equal(f.writes.length, 1);
+});
+
+test("workspace comparison clears after edits, cancellation and a failed replacement file", async () => {
+  const f = fixture(), saved = await prepareWorkspaceFile(bundle({ block: "10" }));
+  for (const retire of [
+    () => f.input(text({ block: "20" })),
+    () => { f.edit(value => { value[0].tokens = CONTRACTS.join("\n"); }); f.panel.invalidate(); },
+    () => f.click("cancel"),
+    () => f.choose([fileObject('{"bad":"file"}')]),
+  ]) {
+    f.choose([fileObject(saved.text)]);
+    await until(() => !f.field("file").disabled);
+    f.click("compare");
+    assert.notEqual(f.field("comparison-detail").textContent, "");
+    retire();
+    await until(() => !f.field("file").disabled);
+    assert.equal(f.field("comparison-detail").textContent, "");
+    assert.equal(f.field("compare").disabled, true);
+  }
+  assert.equal(f.writes.length, 0);
+});
+
+test("workspace comparison rejects silent JSON replacement and cancels reentrant publication", async () => {
+  let interrupt = false, f;
+  f = fixture({ readDraft: () => { if (interrupt) f.panel.invalidate(); return draft({ block: "10" }); } });
+  const saved = await prepareWorkspaceFile(bundle({ block: "10" }));
+  f.choose([fileObject(saved.text)]);
+  await until(() => !f.field("file").disabled);
+  const original = f.field("json").value;
+  f.field("json").value = text({ block: "20" }); f.click("compare");
+  assert.equal(f.field("comparison-detail").textContent, "");
+  f.field("json").value = original; interrupt = true; f.click("compare");
+  assert.equal(f.field("comparison-detail").textContent, "");
+  assert.equal(f.writes.length, 0);
 });
 
 test("workspace panel overview reads local observations and labels them honestly", () => {

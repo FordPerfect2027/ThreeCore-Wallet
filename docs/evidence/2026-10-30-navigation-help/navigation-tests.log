@@ -1,0 +1,28 @@
+✔ RPC relay targets only official Base and preserves the canonical hash selector (173.1677ms)
+✔ origin, permission/write methods, destination injection and malformed input cannot reach upstream (191.603ms)
+✔ remote failures and mismatched response IDs never become a successful result (24.245ms)
+✔ full wallet + HTTP state path succeeds although the wallet rejects all state calls (58.4121ms)
+✔ relay caps concurrent upstream work and releases capacity after completion (73.6076ms)
+✔ closing the client aborts outstanding upstream work (29.4099ms)
+✔ closing clients cancels stalled upstream bodies and releases all twelve relay slots (136.4467ms)
+✔ client closure frees all slots while initial fetch ignores abort, and late replies are discarded (145.303ms)
+✔ relay refuses a redirected upstream success and retains generic local error text (25.7283ms)
+✔ demo serves production modules and gates browser fixtures (uiTest=false) (476.6351ms)
+✔ demo serves production modules and gates browser fixtures (uiTest=true) (417.9509ms)
+✔ refused rehearsal navigation stays 403 and gives a passive Japanese direct-entry guide (99.4191ms)
+✔ wallet entry guide uses only the local listening port and fixed root route (15.609ms)
+✔ RPC, assets, unknown paths, embedding and write requests do not get the HTML guide (28.6094ms)
+✔ invalid Host remains a plain rejection and is never echoed in a recovery URL (9.466ms)
+✔ ordinary direct navigation still serves the actual rehearsal page (11.6425ms)
+✔ guide helper refuses invalid local ports and unrelated verdicts (0.8525ms)
+✔ rehearsal is reachable from the wallet and explicitly disconnects network access (155.7249ms)
+✔ all module imports resolve from the explicit allowlist with safe content types (332.9197ms)
+✔ rehearsal exposes no files outside allowlist or writable endpoint (160.0456ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2338.7856

@@ -1,14 +1,19 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
+import { readOwnErrorCode } from "./provider-error.js";
 import { validateSiteOrigin } from "./wallet-session.js";
+import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
+import { captureOptionalDataFields } from "./security-data.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { readTransferSnapshot } from "./transfer-reader.js";
-import { periodFail, PeriodError, validatePeriodPlan, periodPlanKey, periodContextKey, periodWindows } from "./period-plan.js";
+import { periodFail, PeriodError, periodShape, validatePeriodPlan, periodPlanKey, periodContextKey, periodWindows } from "./period-plan.js";
 import { emptyPeriodDraft, validatePeriodDraft, periodDraftAnchors, periodDraftProgress,
   appendPeriodObservation, appendPeriodRecord } from "./period-draft.js";
 
 const METHODS = ["getBlockSnapshot", "getContractCode", "getNativeBalance", "getTokenMetadata", "getTokenBalance", "getTransferEvents"];
 
 function binding(session, plan) {
-  const state = session?.state;
+  let state;try { state=captureWalletReadState(session); } catch { periodFail("PERIOD_SESSION"); }
   if (!state || state.connected !== true) periodFail("PERIOD_NOT_CONNECTED");
   if (state.canSign !== false || state.canSendTransactions !== false || state.canBridge !== false) {
     periodFail("PERIOD_CAPABILITIES");
@@ -24,6 +29,8 @@ function binding(session, plan) {
 }
 
 function validateHeader(value, expected) {
+  try { value = periodShape(value, ["number", "hash"]); }
+  catch { periodFail("PERIOD_HEADER"); }
   if (!value || typeof value.number !== "string" || !/^0x(?:0|[1-9a-fA-F][0-9a-fA-F]{0,63})$/.test(value.number) ||
       BigInt(value.number).toString() !== expected || typeof value.hash !== "string" ||
       !/^0x[0-9a-fA-F]{64}$/.test(value.hash)) periodFail("PERIOD_HEADER");
@@ -32,7 +39,7 @@ function validateHeader(value, expected) {
 
 export function periodFailureCode(error) {
   try {
-    const code = error?.code;
+    const code = readOwnErrorCode(error);
     return typeof code === "string" && /^(PERIOD|IDENTITY|TRANSFER)_[A-Z_]+$/.test(code)
       ? code : "PERIOD_READ_FAILED";
   } catch { return "PERIOD_READ_FAILED"; }
@@ -46,6 +53,8 @@ export function periodFailureCode(error) {
  * supplied by that provider; resumption does not authenticate imported records.
  */
 export async function collectPeriod(session, planInput, options = {}) {
+  try { options = captureOptionalDataFields(options, ["draft", "timeoutMs", "stepTimeoutMs", "signal", "onProgress", "onCheckpoint"]); }
+  catch { periodFail("PERIOD_OPTIONS"); }
   const plan = validatePeriodPlan(planInput);
   let draft = options.draft === undefined ? emptyPeriodDraft(plan) : validatePeriodDraft(options.draft);
   let draftProgress = periodDraftProgress(draft);
@@ -56,13 +65,12 @@ export async function collectPeriod(session, planInput, options = {}) {
   for (const value of [timeoutMs, stepTimeoutMs]) {
     if (!Number.isInteger(value) || value < 1 || value > 120000) periodFail("PERIOD_TIMEOUT_OPTION");
   }
-  if (options.signal !== undefined && !(options.signal instanceof AbortSignal)) periodFail("PERIOD_SIGNAL");
   for (const callback of [options.onProgress, options.onCheckpoint]) {
     if (callback !== undefined && typeof callback !== "function") periodFail("PERIOD_OBSERVER");
   }
-  if (options.signal?.aborted) periodFail("PERIOD_CANCELLED");
   const aborter = new AbortController();
   let stopped = false;
+  let cancellation;
   let reason = "PERIOD_CANCELLED";
   let rejectInterrupt;
   const interrupted = new Promise((resolve, reject) => { rejectInterrupt = reject; });
@@ -74,15 +82,14 @@ export async function collectPeriod(session, planInput, options = {}) {
     rejectInterrupt(new PeriodError(code));
   }
   function guard() {
-    if (stopped) periodFail(reason);
+    if (stopped || cancellation?.aborted()) periodFail(reason);
     try { if (binding(session, plan) !== initial) periodFail("PERIOD_SESSION_CHANGED"); }
     catch { periodFail("PERIOD_SESSION_CHANGED"); }
   }
   function notify(callback, value) {
     guard();
     if (callback) {
-      try { Promise.resolve(callback(value)).catch(() => {}); }
-      catch { /* Display/save callbacks cannot replace or authorize evidence. */ }
+      consumeCallback(() => callback(value));
     }
     guard();
   }
@@ -107,8 +114,7 @@ export async function collectPeriod(session, planInput, options = {}) {
     }
   }
   const cancel = () => stop("PERIOD_CANCELLED");
-  options.signal?.addEventListener("abort", cancel, { once: true });
-  const timer = setTimeout(() => stop("PERIOD_TIMEOUT"), timeoutMs);
+  let timer;
   const stepOptions = { signal: aborter.signal, timeoutMs: stepTimeoutMs };
   async function recheck(stage) {
     const anchors = periodDraftAnchors(draft);
@@ -150,11 +156,19 @@ export async function collectPeriod(session, planInput, options = {}) {
     progress("complete");
     return draft;
   }
-  try { return await Promise.race([collect(), interrupted]); }
+  // Observe interruption before registration can synchronously cancel or fail.
+  interrupted.catch(() => {});
+  try {
+    try { cancellation = subscribeReadAbort(options.signal, cancel); }
+    catch { periodFail("PERIOD_SIGNAL"); }
+    guard();
+    timer = setTimeout(() => stop("PERIOD_TIMEOUT"), timeoutMs);
+    return await Promise.race([collect(), interrupted]);
+  }
   finally {
     stopped = true;
     aborter.abort();
     clearTimeout(timer);
-    options.signal?.removeEventListener("abort", cancel);
+    cancellation?.dispose();
   }
 }

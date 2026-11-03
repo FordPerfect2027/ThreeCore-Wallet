@@ -1,0 +1,84 @@
+{
+  "revision": "212601977bc6dad8da298f11ebb9e7a421052571",
+  "origin": "http://127.0.0.1:52918",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/rehearsal/",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/examples/wallet-entry.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/examples/wallet-demo.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/examples/wallet-setup-panel.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/src/wallet-session.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/src/security-rpc.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/src/file-read-status.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/.env",
+      "status": 404,
+      "foreignOrigin": false,
+      "passed": true
+    },
+    {
+      "path": "/test/browser/",
+      "status": 404,
+      "foreignOrigin": false,
+      "passed": true
+    },
+    {
+      "path": "/",
+      "status": 403,
+      "foreignOrigin": true,
+      "passed": true
+    }
+  ],
+  "allPassed": true,
+  "ownServerClosed": true,
+  "realWalletUsed": false,
+  "browserNavigationTested": false
+}

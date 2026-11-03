@@ -11,7 +11,7 @@ function units(value) {
   catch { allowanceFail("ALLOWANCE_AMOUNT"); }
 }
 export function validateAllowanceRow(input, tokenHasCode) {
-  allowanceObject(input, ["spenderAddress", "label", "hasCode", "codeError", "allowanceBaseUnits", "allowanceError"]);
+  input = allowanceObject(input, ["spenderAddress", "label", "hasCode", "codeError", "allowanceBaseUnits", "allowanceError"]);
   const spenderAddress = allowanceAddress(input.spenderAddress);
   const label = allowanceLabel(input.label);
   if (!ERRORS.includes(input.codeError) || !ERRORS.includes(input.allowanceError)) allowanceFail("ALLOWANCE_ROW");
@@ -28,7 +28,7 @@ export function validateAllowanceRow(input, tokenHasCode) {
   });
 }
 export function validateAllowanceObservation(input) {
-  allowanceObject(input, ["schema", "identity", "targets", "rows", "readOnly", "completeDiscovery", "securityAudit"]);
+  input = allowanceObject(input, ["schema", "identity", "targets", "rows", "readOnly", "completeDiscovery", "securityAudit"]);
   if (input.schema !== ALLOWANCE_OBSERVATION_SCHEMA || input.readOnly !== true ||
       input.completeDiscovery !== false || input.securityAudit !== false) allowanceFail("ALLOWANCE_SCHEMA");
   const identity = validateTokenObservation(input.identity);

@@ -1,0 +1,6 @@
+{
+  "command": "npm run test:toolchain",
+  "finishedAt": "2026-11-02T12:25:55.5452622Z",
+  "exitCode": 0,
+  "log": "clean-install-toolchain-test.log"
+}

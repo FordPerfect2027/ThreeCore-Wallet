@@ -1,0 +1,20 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { readProposalStateReview } from '../../../src/proposal-state-reader.js';
+import { inspectProposalStateReviewFile } from '../../../src/proposal-state-review.js';
+const out = name => new URL(name, import.meta.url);
+const text = await readFile(new URL('../2026-11-03-proposal-simulation-plan/account2-blocked-plan.json', import.meta.url), 'utf8');
+const trace = [], nativeFetch = globalThis.fetch;
+const result = await readProposalStateReview(text, { fetchImpl: async (url, options) => {
+  if (url !== 'https://mainnet.base.org') throw Error('ENDPOINT');
+  const request = JSON.parse(options.body);
+  if (!['eth_chainId', 'eth_blockNumber', 'eth_getBlockByNumber', 'eth_getCode', 'eth_getBalance', 'eth_call', 'eth_estimateGas', 'eth_maxPriorityFeePerGas'].includes(request.method)) throw Error('METHOD');
+  const response = await nativeFetch(url, options), copy = await response.clone().json(); trace.push({ request, response: copy }); return response;
+} });
+const checked = await inspectProposalStateReviewFile(result.review.text);
+if (checked.files.simulationPlanFile !== text || result.review.result.checksSatisfied || result.review.result.observation.simulation.status !== 'skipped') throw Error('EXPECTED_BLOCK');
+const hash = s => createHash('sha256').update(s).digest('hex');
+await writeFile(out('public-review.json'), result.review.text, { flag: 'wx' });
+await writeFile(out('public-rpc-trace.json'), JSON.stringify(trace, null, 2) + '\n', { flag: 'wx' });
+await writeFile(out('public-result.json'), JSON.stringify({ sourceSha256: hash(text), reviewSha256: hash(result.review.text), diagnostics: result.diagnostics, result: result.review.result }, null, 2) + '\n', { flag: 'wx' });
+console.log(JSON.stringify({ block: result.review.result.observation.blockNumber, reasons: result.review.result.reasons, calls: trace.length, readOnly: true }));

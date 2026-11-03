@@ -1,0 +1,14 @@
+
+> @0628dao/datcore@0.1.0 test:toolchain
+> node --test integration/toolchain-data.test.mjs
+
+✔ toolchain preserves empty RPC data separately from a zero byte (11.048ms)
+✔ toolchain rejects malformed RPC data without repairing it into bytes (1.2969ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 470.8653

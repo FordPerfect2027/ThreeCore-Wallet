@@ -1,0 +1,370 @@
+{
+  "startedAt": "2026-11-02T01:40:05.827Z",
+  "chainId": 84532,
+  "endpoint": "https://sepolia.base.org",
+  "rows": [
+    {
+      "token": "EMA",
+      "contract": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+      "transaction": "0x15f2353c67409fce705522945bcd0d2496e182d72cea6f8dd93b1bd5326d9f20",
+      "blockNumber": "47046084",
+      "blockHash": "0x10b77bbe155f82595465e4d52aafd1bba85a2a86d563557205823560d07177a9",
+      "deployer": "0xfbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "initialHolder": "0xfbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "initialSupply": "777000000000000000000000000",
+      "codeAbsentAtPrecedingBlock": true,
+      "codeMatchesSavedRuntime": true,
+      "directCreateAddressMatches": true,
+      "fullCreationBytecodeMatches": true,
+      "initialMintMatches": true,
+      "canonicalHeaderRechecked": true,
+      "searches": [
+        {
+          "blockNumber": "46500000",
+          "blockHash": "0xf4ccdb3b97a8a18c5e3b6c3d2386000a3dad06ec19322aeb170155c7934bd3a4",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "53308684",
+          "blockHash": "0xbb0230aa0b620fa86e19071508ff5f0e52a404985da422277519c832e2bf472d",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "49904342",
+          "blockHash": "0xd97b64cbedf721dac0c93c7e010c5f81be12e01715c3b13a2b49a2c901e8a9fb",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "48202171",
+          "blockHash": "0x1e8678d6d41d8dfe00a6e6d08f29a4601cf2cb49ede7382706111a00b8a92f69",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47351085",
+          "blockHash": "0xab965ce72eb8f4a1c792f8483c3536f132a888bceea99574c20236373753b313",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "46925542",
+          "blockHash": "0x1d879cccb643db42f648f1809ac0ccbad05ab7f20509919cba2dc8d483d4ef6f",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47138313",
+          "blockHash": "0xf7c7bf673637e7dfe78a03be60f322404942da425116c097b00a2bab210394ba",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47031927",
+          "blockHash": "0x7ac696d95988633d061e755666cd6b6b0ee59174d8f439a710759d30defb9de0",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47085120",
+          "blockHash": "0x171dde1915f6b7db29fbb4f52d28a63f1deac8d850c061f6ea0ea15c6bae69c7",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47058523",
+          "blockHash": "0xc534725e2451a574337c5b8e3c11a096ed01275b7140b1c5c1c12d349a11d16e",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47045225",
+          "blockHash": "0x0495922a0bb106b8b8561fe8462f8f30ee3737baad2299e0c537ff939d9228e8",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47051874",
+          "blockHash": "0x453356d12ebc5842188c57bee28b25209d49d4154a4766ea96f816277ef2f7e1",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47048549",
+          "blockHash": "0xea4d1a06c6946023004fa0bc84da7e1276f3f7c7d929a1925b77c9598c8dd754",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47046887",
+          "blockHash": "0x5d81e0f00edb550a85336612916b658f03bccec041b2b75c8effe8eb45be169b",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47046056",
+          "blockHash": "0x2b71704cb01b9ab97727f5e85c1acbf2b6cd427377c732409330b82bf3dfa62b",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47046471",
+          "blockHash": "0x04210cc2786ff5c98b344066743a2649f629a4b4871c05a42a9cd2c254622aa7",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47046263",
+          "blockHash": "0x458388fd8baa562ab2a7a6d5096353a089dbb21244fea28ac92d082669a7b6ff",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47046159",
+          "blockHash": "0x43dbcd4a94a954676171f8c6da0afa71fd2b188fcc2d12ec2ebc4fc36349c3ff",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47046107",
+          "blockHash": "0x59dbf2ab74c3bb1dd45f56cb5515454db7c8d69135cd4efa7126a8e1c199b327",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47046081",
+          "blockHash": "0x7831d2567e69d9335ad4631360360013b08a9789f164a75d105bfff56295a625",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47046094",
+          "blockHash": "0xe4ba383ec25c85c85c758aa9568e50b03f1a51e1cf2a8dbcdaf6a1eaea1a74b2",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47046087",
+          "blockHash": "0x8b35cc05009fcc963eec77b6f28fbfca61cf6a407c87b42ff90ca0490cf23242",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47046084",
+          "blockHash": "0x10b77bbe155f82595465e4d52aafd1bba85a2a86d563557205823560d07177a9",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        },
+        {
+          "blockNumber": "47046082",
+          "blockHash": "0x10cfa78507b0c650de9eec4f77e5ebc394ffe8edac6fb2ce5fb27392c789906e",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47046083",
+          "blockHash": "0x345444855b35471b17a21b8b8750d47648e47f467d2883f6fd08bc4209499a00",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47046083",
+          "blockHash": "0x345444855b35471b17a21b8b8750d47648e47f467d2883f6fd08bc4209499a00",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47046084",
+          "blockHash": "0x10b77bbe155f82595465e4d52aafd1bba85a2a86d563557205823560d07177a9",
+          "codePresent": true,
+          "codeKeccak256": "0x25b6c9ea02a2e7c5d981d0e62d2f01c6f7860b6b8b000ef79f292edbd891e3bb"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "contract": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+      "transaction": "0x4731e7ead96c674706cb6acae4de3e5574e4528a73f602bdc37b9142315d5aea",
+      "blockNumber": "47045524",
+      "blockHash": "0xf56244671a714d84a22763938db135502dfa8d06c76ca8e7ee6581025e95a5ef",
+      "deployer": "0xfbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "initialHolder": "0xfbe494b465efe6d0daff80dc715302d0fa0ac5d9",
+      "initialSupply": "420000000000000000000000000000000",
+      "codeAbsentAtPrecedingBlock": true,
+      "codeMatchesSavedRuntime": true,
+      "directCreateAddressMatches": true,
+      "fullCreationBytecodeMatches": true,
+      "initialMintMatches": true,
+      "canonicalHeaderRechecked": true,
+      "searches": [
+        {
+          "blockNumber": "46500000",
+          "blockHash": "0xf4ccdb3b97a8a18c5e3b6c3d2386000a3dad06ec19322aeb170155c7934bd3a4",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "53308684",
+          "blockHash": "0xbb0230aa0b620fa86e19071508ff5f0e52a404985da422277519c832e2bf472d",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "49904342",
+          "blockHash": "0xd97b64cbedf721dac0c93c7e010c5f81be12e01715c3b13a2b49a2c901e8a9fb",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "48202171",
+          "blockHash": "0x1e8678d6d41d8dfe00a6e6d08f29a4601cf2cb49ede7382706111a00b8a92f69",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47351085",
+          "blockHash": "0xab965ce72eb8f4a1c792f8483c3536f132a888bceea99574c20236373753b313",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "46925542",
+          "blockHash": "0x1d879cccb643db42f648f1809ac0ccbad05ab7f20509919cba2dc8d483d4ef6f",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47138313",
+          "blockHash": "0xf7c7bf673637e7dfe78a03be60f322404942da425116c097b00a2bab210394ba",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47031927",
+          "blockHash": "0x7ac696d95988633d061e755666cd6b6b0ee59174d8f439a710759d30defb9de0",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47085120",
+          "blockHash": "0x171dde1915f6b7db29fbb4f52d28a63f1deac8d850c061f6ea0ea15c6bae69c7",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47058523",
+          "blockHash": "0xc534725e2451a574337c5b8e3c11a096ed01275b7140b1c5c1c12d349a11d16e",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47045225",
+          "blockHash": "0x0495922a0bb106b8b8561fe8462f8f30ee3737baad2299e0c537ff939d9228e8",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47051874",
+          "blockHash": "0x453356d12ebc5842188c57bee28b25209d49d4154a4766ea96f816277ef2f7e1",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47048549",
+          "blockHash": "0xea4d1a06c6946023004fa0bc84da7e1276f3f7c7d929a1925b77c9598c8dd754",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47046887",
+          "blockHash": "0x5d81e0f00edb550a85336612916b658f03bccec041b2b75c8effe8eb45be169b",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47046056",
+          "blockHash": "0x2b71704cb01b9ab97727f5e85c1acbf2b6cd427377c732409330b82bf3dfa62b",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47045640",
+          "blockHash": "0x8be1b8d741d2b3a4eee10b1f688ff874ee02306fc8b9f6296efc97bce9cda29b",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47045432",
+          "blockHash": "0xfe0fc49fb7de142f8eaa92876938db45ab9c2994ccc006078f45e73cd0cf83ea",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47045536",
+          "blockHash": "0x0e37f671b998350ce5dfd8c4cfa156a6c17c898fd7b46b227aa9731ecc3bbd2e",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47045484",
+          "blockHash": "0x85b571a117059d56d2f907c2baa00ea9f9046660550c62c2c0d434ff0e9d7a57",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47045510",
+          "blockHash": "0xa94d82922ddda58665daf83727728e188f42cb002afa8fa287798042e7224cf7",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47045523",
+          "blockHash": "0x3108a80361d0394b41d1bf438a31f6a70a72a1b87c299965b68031a1ff56d92b",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47045529",
+          "blockHash": "0x3f60925f686cca99d9a31d36321944feaf7347ba42cc652dc291f490ae6c93fd",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47045526",
+          "blockHash": "0x88bfd49019c6affecab8313479ba6513c6e9930fb0d7f95d94dc4e79e50d72cc",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47045524",
+          "blockHash": "0xf56244671a714d84a22763938db135502dfa8d06c76ca8e7ee6581025e95a5ef",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        },
+        {
+          "blockNumber": "47045523",
+          "blockHash": "0x3108a80361d0394b41d1bf438a31f6a70a72a1b87c299965b68031a1ff56d92b",
+          "codePresent": false,
+          "codeKeccak256": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        },
+        {
+          "blockNumber": "47045524",
+          "blockHash": "0xf56244671a714d84a22763938db135502dfa8d06c76ca8e7ee6581025e95a5ef",
+          "codePresent": true,
+          "codeKeccak256": "0x714f6c8343b248f3337c158c961280f34bbfcc412c3371aa50df0b479b8aa219"
+        }
+      ]
+    }
+  ],
+  "lowerBoundBlock": "46500000",
+  "readOnly": true,
+  "signatureCreated": false,
+  "transactionSent": false,
+  "searchAssumption": "Locate a code-absent/code-present boundary, then require a matching direct CREATE transaction and successful mint receipt at that exact block.",
+  "chainAndObservationHeaderRechecked": true,
+  "finishedAt": "2026-11-02T01:40:30.004Z",
+  "requests": 96,
+  "rawSha256": "6e1a4a464976d93ddeb903c8ba1e68b7946bbef74defc679e7b70d63d21baee4"
+}

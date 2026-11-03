@@ -1,0 +1,199 @@
+✔ archive source dispose prevents an old record being added (7.3324ms)
+✖ archive source invalidate prevents an old record being added (13.1058ms)
+✖ archive source asynchronous failures are consumed (30.9383ms)
+✖ archive refresh cannot rewrite controls after source disposal (2.3012ms)
+✖ archive false download receipt reports refusal (22.3284ms)
+✖ archive resolved download receipt reports refusal (7.971ms)
+✔ archive rejected download receipt reports refusal (4.988ms)
+✖ archive asynchronous download receipt cannot hold the handler open (41.1422ms)
+✖ archive cancellation queued after preparation prevents delivery (5.6867ms)
+✔ archive download dispose cannot overwrite newer status (4.8128ms)
+✖ archive download invalidate cannot overwrite newer status (4.1371ms)
+✖ archive cancelled selection ignores a late display failure (3.6622ms)
+✔ archive ordinary add, select and download remain explicit (6.3171ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 4
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 497.0096
+
+✖ failing tests:
+
+test at test\transfer-archive-panel-lifecycle.test.js:20:47
+✖ archive source invalidate prevents an old record being added (13.1058ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'DAT / chain 8453\n' +
+  +   '0x1111111111111111111111111111111111111111\n' +
+  +   '1記録 / 重複を除いて1イベント / 1取引\n' +
+  +   '問い合わせた範囲（合計13ブロック）:\n' +
+  +   '30 ～ 42\n' +
+  +   '記録の間の未確認範囲:\n' +
+  +   'この記録間にはありません。\n' +
+  +   '範囲の前後や取得元による省略は未確認です。全履歴を確認したことにはなりません。\n' +
+  +   '各記録は別々の時点で取得した内容です。現在のチェーン状態とは異なる場合があります。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-archive-panel-lifecycle.test.js:23:38)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'DAT / chain 8453\n0x1111111111111111111111111111111111111111\n1記録 / 重複を除いて1イベント / 1取引\n問い合わせた範囲（合計13ブロック）:\n30 ～ 42\n記録の間の未確認範囲:\nこの記録間にはありません。\n範囲の前後や取得元による省略は未確認です。全履歴を確認したことにはなりません。\n各記録は別々の時点で取得した内容です。現在のチェーン状態とは異なる場合があります。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-archive-panel-lifecycle.test.js:25:1
+✖ archive source asynchronous failures are consumed (30.9383ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-archive-panel-lifecycle.test.js:28:51)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-archive-panel-lifecycle.test.js:30:1
+✖ archive refresh cannot rewrite controls after source disposal (2.3012ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-archive-panel-lifecycle.test.js:33:52)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-archive-panel-lifecycle.test.js:35:55
+✖ archive false download receipt reports refusal (22.3284ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません/. Input:
+  
+  '画面内に記録があります。保存はJSONボタンから行えます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-archive-panel-lifecycle.test.js:37:47)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '画面内に記録があります。保存はJSONボタンから行えます。',
+    expected: /保存できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-archive-panel-lifecycle.test.js:35:55
+✖ archive resolved download receipt reports refusal (7.971ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /保存できません/. Input:
+  
+  '画面内に記録があります。保存はJSONボタンから行えます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-archive-panel-lifecycle.test.js:37:47)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '画面内に記録があります。保存はJSONボタンから行えます。',
+    expected: /保存できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\transfer-archive-panel-lifecycle.test.js:39:1
+✖ archive asynchronous download receipt cannot hold the handler open (41.1422ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-archive-panel-lifecycle.test.js:42:153)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-archive-panel-lifecycle.test.js:45:1
+✖ archive cancellation queued after preparation prevents delivery (5.6867ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-archive-panel-lifecycle.test.js:49:58)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-archive-panel-lifecycle.test.js:52:47
+✖ archive download invalidate cannot overwrite newer status (4.1371ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'まとめファイルを保存できませんでした。'
+  - 'まとめた記録はありません。'
+        ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-archive-panel-lifecycle.test.js:55:47)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'まとめファイルを保存できませんでした。',
+    expected: 'まとめた記録はありません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\transfer-archive-panel-lifecycle.test.js:57:1
+✖ archive cancelled selection ignores a late display failure (3.6622ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '選択した記録を表示できませんでした。'
+  - '画面内に記録があります。保存はJSONボタンから行えます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/transfer-archive-panel-lifecycle.test.js:60:76)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '選択した記録を表示できませんでした。',
+    expected: '画面内に記録があります。保存はJSONボタンから行えます。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

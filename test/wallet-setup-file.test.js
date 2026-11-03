@@ -19,8 +19,10 @@ test("prepared file contains only validated settings and a safe filename", () =>
   assert(Object.isFrozen(file));
 });
 
-test("duplicate addresses cannot be exported through file preparation", () => {
-  assert.throws(() => prepareWalletSetupFile(setup([A, A, C])), { code: "SETUP_DUPLICATE" });
+test("shared addresses retain separate agent settings through file preparation", () => {
+  const original = setup([A, A, C]);
+  const file = prepareWalletSetupFile(original);
+  assert.deepEqual(JSON.parse(decodeWalletSetupBytes(new TextEncoder().encode(file.text))), original);
 });
 
 test("UTF-8 settings file round trips without authorization data", () => {

@@ -1,0 +1,478 @@
+# Requested continuation: 600 completed development and verification items
+
+The user explicitly clarified that the next continuation is **20 × 30 = 600 items**, with a break after that scope. This is a work target, not a claim of completed features or mainnet readiness. The previous twenty-item condition-comparison batch is complete at `e71d04c` and is not counted again.
+
+Only completed, evidenced work counts. Repeated executions of the same check, renamed copies of a feature and individual test assertions do not create additional development items. Batch records will link source commits, relevant validation and artifacts; running totals must follow those records.
+
+Current continuation: **600 / 600 complete**.
+
+[Items 598–600: reuse comparison source observations, select the exact saved predecessor and confirm per-identity retention](FINAL_HISTORY_WORKFLOWS_2026-11-01.md) are complete with 170 related checks, 16391 full-wallet tests, 1001 native browser cases and exact source/retention/recovery captures at `3fd2836`.
+
+[Item 597: replay saved history conditions offline across search, subset, CSV and cleanup preparation](HISTORY_QUERY_REPLAY_2026-11-01.md) is complete with 21 related checks and four exact command/API captures with unchanged sources at `a87cf5a`.
+
+[Item 596: identify saved history queries in shared inspection without treating filters as wallet evidence](HISTORY_QUERY_INSPECTION_2026-11-01.md) is complete with 39 related checks, 150 focused native browser cases and exact CLI/API and evidence-recomputation captures at `5d0b6e9`.
+
+[Item 595: save and explicitly reuse bounded history search conditions without importing records](HISTORY_QUERY_FILES_2026-11-01.md) is complete with 159 related checks, 149 focused native browser cases and exact query round-trip captures at `15ff3b9`.
+
+[Item 594: export complete historical balance rows with exact integers and preserved query scope](HISTORY_BALANCE_CSV_2026-11-01.md) is complete with 144 related checks, 148 focused native browser cases and exact UI/API/CLI CSV captures at `6da1674`.
+
+[Item 593: prepare consolidated and scoped-cleanup history candidates offline without source writes](HISTORY_OFFLINE_PREPARATION_2026-11-01.md) is complete with 94 related checks and exact command/API outputs with unchanged source files at `7cc02d7`.
+
+[Item 592: consolidate multiple bounded history archives into a reviewed import candidate](HISTORY_ARCHIVE_BATCHES_2026-11-01.md) is complete with 106 related checks, 147 focused native browser cases and exact multi-file candidate/merge captures at `4ee99df`.
+
+[Item 591: stage a selected historical observation as a validated balance-comparison baseline](HISTORY_COMPARISON_BASELINE_2026-11-01.md) is complete with 141 related checks, 146 focused native browser cases and exact baseline/comparison captures at `ae73567`.
+
+[Item 590: preview, confirm and recover removal of an exact filtered history subset](HISTORY_SCOPED_CLEANUP_2026-11-01.md) is complete with 943 related checks, 145 focused native browser cases and exact complement/recovery captures at `7722aca`.
+
+[Item 589: filter by exact site origin and search the selected historical account/network/site identity](HISTORY_IDENTITY_FILTER_2026-11-01.md) is complete with 157 related checks, 143 focused native browser cases and exact UI/API/CLI identity scopes at `7ea5bcb`.
+
+[Item 588: diagnose capacity and every conflicting observation before a blocked history merge](HISTORY_MERGE_ASSESSMENT_2026-11-01.md) is complete with 921 history-related checks, 142 focused native browser cases and exact blocked/corrected merge captures at `dcafee4`.
+
+[Item 587: review exact token-list replacement impact and reject application after current-input changes](TOKEN_PLAN_REPLACEMENT_2026-11-01.md) is complete with 154 related checks, 141 focused native browser cases and exact replacement/stale-input captures at `ccc5acb`.
+
+[Item 586: stage bounded portfolio report batches as explicit history candidates with duplicate and conflict checks](HISTORY_REPORT_BATCHES_2026-11-01.md) is complete with 233 related checks, 140 focused native browser cases and exact staged-history captures at `e3b067e`.
+
+[Item 585: reuse a historical contract list through an explicit configuration preview without restoring balances](HISTORY_TOKEN_REUSE_2026-11-01.md) is complete with 102 related checks, 139 focused native browser cases and exact staged/applied configuration captures at `02e7ae2`.
+
+[Items 583–584: inspect complete historical record details and compare the preceding matching observation](HISTORY_RECORD_NAVIGATION_2026-11-01.md) are complete with 217 related checks, all 986 native browser cases and exact mixed-identity predecessor captures at `b3254c9`.
+
+[Item 582: reproduce portfolio history queries, exports and comparisons without a browser connection](PORTFOLIO_HISTORY_OFFLINE_2026-11-01.md) is complete with 203 related checks and five exact child-process CLI/API output captures at `7181885`.
+
+[Items 580–581: save independently reviewable historical pairs and filter exact token observation states](HISTORY_COMPARISON_TOKEN_SCOPE_2026-11-01.md) are complete with 193 related checks, 137 focused native browser cases and exact pair/subset source captures at `3184850`.
+
+[Items 578–579: select exact filtered history rows and save one past observation without changing the archive](HISTORY_RESULT_ACTIONS_2026-11-01.md) are complete with 192 related checks, 136 focused native browser cases and exact source-index/report captures at `5e0a3e8`.
+
+[Item 577: save normalized portfolio comparison sources and independently recompute every saved result](PORTFOLIO_COMPARISON_REPORT_2026-11-01.md) is complete with 178 selected checks, 135 focused native browser cases and exact UI/API/CLI portable comparisons at `47c3d26`.
+
+[Item 576: independently inspect token input configuration and compare its exact saved sources](TOKEN_PLAN_INSPECTION_2026-11-01.md) is complete with 66 selected checks, 134 focused native browser cases and exact UI/API/CLI configuration inspections at `f0f871a`.
+
+[Item 575: load an exact saved balance observation as an explicit local comparison baseline](COMPARISON_BASELINE_FILE_2026-11-01.md) is complete with 120 selected checks, 133 focused native browser cases and exact UI/API comparison of large balances at `39ce850`.
+
+[Items 573–574: save and reopen token input lists and individual portfolio observations through bounded file workflows](CARD_FILE_WORKFLOWS_2026-11-01.md) are complete with 201 selected checks, all 980 native browser cases and exact captured UI/API files at `431dcfd`.
+
+[Item 572: show current source-group processing and comparison stages without changing verdicts](COMPARISON_PROGRESS_2026-11-01.md) is complete with 30 selected checks, 130 focused native browser cases and identical observed/unobserved evidence at `ef2256f`.
+
+[Item 571: hand the initially selected comparison file directly to its independent verifier](COMPARISON_FILE_HANDOFF_2026-11-01.md) is complete with 41 selected checks, 128 focused native browser cases and exact same-file UI/API reviews at `026d7f9`.
+
+[Item 570: contain file review tables and long paths in keyboard-accessible narrow panes](FILE_REVIEW_LAYOUT_2026-11-01.md) is complete with 49 selected checks, 126 focused native browser cases and live 4231 page/style/module verification at `42a0f7e`.
+
+[Item 569: reuse bounded parsed JSON sources and recent difference pages for repeated inspection](SAVED_JSON_DIFFERENCE_CACHE_2026-11-01.md) is complete with 45 selected checks, 123 focused native browser cases and identical measured old/new query outputs at `a331320`.
+
+[Item 568: inspect and export bounded JSON difference locations inside verified source comparisons](COMPARISON_SOURCE_DIFFERENCES_2026-11-01.md) is complete with 46 selected checks, 123 focused native browser cases and exact UI/API/offline pages covering 86 differences at `0fb437b`.
+
+[Items 566–567: preserve wallet comparison sources and independently inspect both verified source groups](PORTABLE_BATCH_PAIRS_2026-11-01.md) are complete with 62 selected checks, 122 focused native browser cases and exact UI/API/offline source extraction at `075f47a`.
+
+[Items 564–565: compare rehearsal batches and preserve independently verifiable evidence of both source groups](REHEARSAL_BATCH_COMPARISON_2026-11-01.md) are complete with 74 selected checks, 968 full native browser cases and exact UI/API/offline source-comparison evidence at `5b34eec`.
+
+[Items 562–563: verify selected-scope reports and reuse their checked filters without importing old results](BATCH_SELECTION_REVIEW_2026-11-01.md) are complete with 74 selected checks, 119 scoped native browser cases and exact independent API/UI review captures at `63c9580`.
+
+[Items 560–561: preserve cancelled batch selections and export explicitly filtered result scope](BATCH_SELECTION_RESULTS_2026-11-01.md) are complete with 70 selected checks, 119 scoped native browser cases and exact full/selected/empty receipt captures at `0fae24b`.
+
+[Item 559: verify saved batch receipts against exact source bundles and fresh owned reviews](BATCH_EVIDENCE_RECEIPTS_2026-11-01.md) is complete with 28 selected checks, 66 integration checks, 119 scoped native browser cases and eight actual CLI captures at `8a99a02`.
+
+[Items 557–558: download original sources and hand selected rehearsal bundles directly to verification](BATCH_SOURCE_ACTIONS_2026-11-01.md) are complete with 104 selected checks, six final source-action checks, 119 scoped native browser cases and exact UI source captures at `52d21ec`.
+
+[Item 556: extract exact named originals from verified wallet and rehearsal batches](BATCH_EVIDENCE_EXTRACTION_2026-11-01.md) is complete with 27 selected checks, 965 full native browser cases and exact original-byte CLI captures at `f9856c3`.
+
+[Item 555: hand the selected wallet batch bundle directly from its guide to full verification](BATCH_EVIDENCE_GUIDE_2026-11-01.md) is complete with 31 selected checks, 117 scoped native browser cases and captured direct handoff/altered-claim rejection at `83cb205`.
+
+[Item 554: save and independently reopen complete wallet source-file batches](WALLET_BATCH_EVIDENCE_2026-11-01.md) is complete with 76 selected checks, 18 lifecycle checks, 116 scoped native browser cases and four actual offline CLI/API captures at `8fd952f`.
+
+Shared local-reader follow-up at `d1fc0d8` extends item 552 without incrementing the total: 156 focused/related and 142 additional CLI checks passed; all 14 item-553 evidence files reverified. [Details](REHEARSAL_FILTER_AND_EXACT_FILE_IDENTITY_2026-11-01.md#shared-local-reader-follow-up-no-additional-item).
+
+[Item 553: save and independently reopen complete rehearsal batch source evidence](REHEARSAL_BATCH_EVIDENCE_2026-11-01.md) is complete with 130 selected checks, 115 scoped native browser cases and four actual offline CLI/API captures at `7edd434`.
+
+[Items 551–552: filter rehearsal results and preserve exact local file identities](REHEARSAL_FILTER_AND_EXACT_FILE_IDENTITY_2026-11-01.md) are complete with 57 filter checks, 84 related checks, 48 exact-identity/batch checks, 114 scoped native browser cases and actual offline CLI captures at `5234986`.
+
+[Item 550: filter saved-file result rows while retaining complete batch scope and exports](WALLET_BATCH_FILTER_2026-11-01.md) is complete with 36 focused checks, 57 related checks, 113 focused native file-read cases and exact unchanged complete-result captures at `55f9913`.
+
+[Item 549: verify saved bundle review receipts against owned source recomputation](WALLET_BUNDLE_RECEIPT_CHECK_2026-11-01.md) is complete with 10 focused checks, 67 related checks, 112 focused native file-read cases and exact faithful/altered/negative CLI captures at `e826829`.
+
+[Item 548: reuse unchanged record searches and financial summaries without stale source results](REHEARSAL_RECORD_QUERY_REUSE_2026-11-01.md) is complete with 105 focused checks, 217 related checks, 959 full native browser cases and 44 exact baseline comparisons with bounded performance measurements at `ccbbbe3`.
+
+[Item 547: retry failed rehearsal reports without repeating successful recomputations](REHEARSAL_FAILED_FILE_RETRY_2026-11-01.md) is complete with 54 focused checks, 271 related checks, 111 focused native file-read cases and exact linked retry captures at `03fbb57`.
+
+[Item 546: retry only failed selected-file reads while preserving prior results and exact lineage](WALLET_FAILED_FILE_RETRY_2026-11-01.md) is complete with 22 focused checks, 182 related checks, 110 focused native file-read cases and linked partial/retried captures at `63698e4`.
+
+[Items 544–545: jump to matching pages and walk adjacent record details across pages](REHEARSAL_RECORD_NAVIGATION_2026-11-01.md) are complete with 63 focused checks, 118 related checks, 109 focused native file-read cases and unchanged 600-record source/report captures at `0388e28`.
+
+[Items 542–543: preserve validated plain source pairs and save bundle review receipts separately](WALLET_SOURCE_BUNDLES_2026-11-01.md) are complete with 23 focused checks, 114 related checks, 109 focused native file-read cases and exact source/receipt CLI captures at `ecb8bc1`.
+
+[Items 540–541: navigate all difference locations and filter paths with exact exported scope](WALLET_DIFFERENCE_PAGES_2026-11-01.md) are complete with 32 focused checks, 204 related checks, 108 focused native file-read cases and complete/scoped page captures at `9a89b87`.
+
+[Items 538–539: preserve completed report-file reviews and continue only pending sources](REHEARSAL_FILE_BATCH_2026-11-01.md) are complete with 128 focused checks, 179 related checks, 106 focused native file-read cases and linked partial/resumed receipts at `53d2e9c`.
+
+[Item 537: verify saved difference conclusions against owned source recomputations](WALLET_DIFFERENCE_REVIEW_2026-11-01.md) is complete with 1032 related checks, 104 focused native file-read cases and exact accepted/rejected CLI receipts at `0681a42`.
+
+[Item 536: locate differing JSON fields without exposing source values](WALLET_SAVED_DIFFERENCES_2026-11-01.md) is complete with 1178 related checks, 103 focused native file-read cases and exact offline API/CLI receipts at `7b42cd5`.
+
+[Item 535: navigate validated saved files to existing wallet sections without importing them](WALLET_SAVED_DESTINATION_2026-11-01.md) is complete with 1009 related checks, 950 full native Chrome cases and nine captured guide dispatches at `a2eb7e5`.
+
+[Item 534: compare exact selected source text while retaining separate original-checksum scope](WALLET_PLAIN_TEXT_COMPARISON_2026-11-01.md) is complete with 1002 related checks, 101 focused native file-read cases and matching panel/CLI comparisons at `bfd1396`.
+
+[Item 533: continue pending selected-file checks while retaining and linking the checked prefix](WALLET_FILE_CONTINUATION_2026-11-01.md) is complete with 990 related checks, 100 focused native file-read cases and captured linked continuation receipts at `e83dfef`.
+
+[Item 532: inspect saved rehearsal sources with explicit simulation-only scope and recalculated practice counts](WALLET_REHEARSAL_GUIDES_2026-11-01.md) is complete with 1843 related checks, 947 native Chrome cases and matching scoped browser/CLI captures at `ef8f1a0`.
+
+[Items 530–531: inspect workspace backups and plain historical/configuration files with distinct checksum scope](WALLET_WORKSPACE_LEGACY_GUIDES_2026-11-01.md) are complete with 2905 related checks, 945 native Chrome cases and matching scoped browser/CLI captures at `e199796`.
+
+[Item 529: avoid duplicate source hashing while preserving original validation and byte-identical receipts](WALLET_BATCH_HASH_REUSE_2026-11-01.md) is complete with 939 related checks and 28 byte-identical before/after receipts with measured reduction of repeated hash work at `22435d1`.
+
+[Items 526–528: inspect transfer-history, token/balance/allowance and reconciliation originals from the shared guide](WALLET_OBSERVATION_GUIDES_2026-11-01.md) are complete with 1,284 related checks, 943 native Chrome cases and matching shared-panel/local CLI evidence at `9699e13`.
+
+[Item 525: preserve completed checks across unreadable and stalled selected files](WALLET_FILE_BATCH_2026-11-01.md) is complete with 1,210 related checks, 941 native Chrome cases and captured mixed, cancelled and timed-out file batches at `fed0bee`.
+
+[Item 524: open and compare verified batch originals without repeated file selection](WALLET_BATCH_NAVIGATION_2026-11-01.md) is complete with 247 related checks, 939 native Chrome cases and byte-identical guide/CLI comparison captures at `f711092`.
+
+[Items 522–523: compare local original-file batches and verify saved CLI comparisons against both manifests](WALLET_LOCAL_BATCH_COMPARISON_2026-11-01.md) are complete with 531 related checks and seven actual CLI captures at `122e1ea`.
+
+[Items 520–521: compare two original-file batches and recompute saved batch comparison conclusions](WALLET_BATCH_COMPARISON_2026-11-01.md) are complete with 1,168 related checks, 938 native Chrome cases and exact comparison/review captures at `2fab027`.
+
+[Items 518–519: compare original wallet batches with prior checksum lists and export every row to CSV](WALLET_SAVED_BATCH_REFERENCE_2026-11-01.md) are complete with 1,118 related checks, 936 native Chrome cases and independent CLI captures at `d294bab`.
+
+[Item 517: inspect multiple original wallet saves through an explicit cancellable browser workflow](WALLET_SAVED_BROWSER_BATCH_2026-11-01.md) is complete with 1,076 related checks, 934 native Chrome cases and CLI cross-check captures at `a4d6535`.
+
+[Item 516: inspect explicit batches of original wallet save files with external and internal checksum checks](WALLET_SAVED_BATCH_2026-11-01.md) is complete with 398 related checks and four captured CLI runs at `2f87c4c`.
+
+[Item 515: finish cancelled local portfolio waits independently of uncooperative readers](PORTFOLIO_LOCAL_INTERRUPTION_2026-11-01.md) is complete with 673 related checks and 932 native Chrome cases at `621a50b`.
+
+[Items 513–514: open exact batch sources for detailed review and preserve complete scope in CSV exports](BROWSER_BATCH_DETAIL_AND_CSV_2026-11-01.md) are complete with 1804 related checks and 931 native Chrome cases at `dec79bf`.
+
+[Item 512: compare an exact selected report batch with a previously saved checksum reference](BROWSER_BATCH_REFERENCE_2026-11-01.md) is complete with 1783 related checks and 929 native Chrome cases at `646af16`.
+
+[Item 511: review multiple saved reports in the browser with partial results and portable checksums](BROWSER_REPORT_BATCH_2026-11-01.md) is complete with 1750 related checks and 928 native Chrome cases at `567b7fa`.
+
+[Items 509–510: capture coordinated account plans and card period inputs before callbacks](COMPOSITE_READ_INPUTS_2026-11-01.md) are complete with 15581 full-wallet checks and 926 native Chrome cases at `db69d73`.
+
+[Item 508: bind wallet observation cancellation to native state with protected cleanup](NATIVE_READ_CANCELLATION_2026-11-01.md) is complete with 5181 related checks and 924 native Chrome cases at `726723a`.
+
+[Item 507: batch-check explicit saved reports with bounded local reads and independent recomputation](REHEARSAL_BATCH_REPORT_REVIEW_2026-10-31.md) is complete with 1700 related checks, 13 report recomputations and five negative controls at `3e80f6e`.
+
+[Item 506: reuse verified saved search criteria against current inputs without restoring old history](REHEARSAL_VERIFIED_QUERY_REUSE_2026-10-31.md) is complete with 1618 related checks and 920 native Chrome UI cases at `78fafd0`.
+
+[Items 504–505: summarize matched records per agent and extract source-backed replay prefixes](REHEARSAL_RECORD_SUMMARY_AND_PREFIX_2026-10-31.md) are complete with 1606 related checks and 919 native Chrome UI cases at `ced7ce0`.
+
+[Items 501–503: recover explicit comparison sides, named cases and unchanged expectations](REHEARSAL_REVIEWED_REPORT_PARTS_2026-10-31.md) are complete with 1593 related checks and 917 native Chrome UI cases at `e6ef7a1`.
+
+[Items 499–500: extract selected reviewed inputs and compare them with the current workspace](REHEARSAL_REVIEWED_INPUT_ACTIONS_2026-10-31.md) are complete with 1572 related checks and 913 native Chrome UI cases at `648ca1d`.
+
+[Items 496–498: filter exact rejection reasons, export lifecycle CSVs and recover reviewed workspace inputs](REHEARSAL_REASONS_AND_INPUT_RECOVERY_2026-10-31.md) are complete with 1550 related checks and 911 native Chrome UI cases at `ac20b03`.
+
+[Items 493–495: navigate from overviews and independently review complete operation lifecycles](REHEARSAL_REFERENCE_LIFECYCLE_2026-10-31.md) are complete with 200 focused checks, 1530 related checks and 908 native Chrome UI cases at `441bc1a`.
+
+[Items 489–492: compare saved originals, recheck comparisons and preserve recoverable source pairs](SAVED_ORIGINAL_COMPARISON_AND_RECOVERY_2026-10-31.md) are complete with 67 focused checks and 906 native Chrome UI cases, with full-run failures and passing diagnostic retries documented at `cbb04fa`.
+
+[Item 488: inspect saved originals and explain their opening destination](SAVED_FILE_INSPECTION_GUIDE_2026-10-31.md) is complete with 3123 related checks and 901 native Chrome UI cases at `102253e`.
+
+[Items 484–487: preserve annotated history subsets and review selective imports](HISTORY_SUBSETS_AND_SELECTIVE_IMPORT_2026-10-31.md) are complete with 15294 full checks and 899 native Chrome UI cases at `c94b3fe`.
+
+[Item 483: recover original annotated report history from accepted sets](REPORT_SET_HISTORY_RECOVERY_2026-10-31.md) is complete with 2095 related checks and 895 native Chrome UI cases at `4e884d6`.
+
+[Item 482: recover a token library from original report-set entries](REPORT_SET_TOKEN_LIBRARY_2026-10-31.md) is complete with 1737 related checks and 893 native Chrome UI cases at `209af71`.
+
+[Item 481: explain period-library import differences before writing](PERIOD_LIBRARY_IMPORT_INSPECTION_2026-10-31.md) is complete with 1721 related checks and 891 native Chrome UI cases at `a7e54ea`.
+
+[Item 480: extract original token entries with restrictions intact](ORIGINAL_PERIOD_ENTRY_EXTRACTION_2026-10-31.md) is complete with 1712 related checks and 890 native Chrome UI cases at `7ab0bcd`.
+
+[Item 479: verify saved history-coverage files against their original source](SAVED_HISTORY_COVERAGE_REVIEW_2026-10-31.md) is complete with 15227 full checks and 889 native Chrome UI cases at `5cc20fe`.
+
+[Item 478: verify saved event-comparison files against the original source](SAVED_EVENT_COMPARISON_REVIEW_2026-10-31.md) is complete with 2784 related checks and 888 native Chrome UI cases at `5ef9ea5`.
+
+[Items 476–477: find reports by history block and preserve catalog export scope](REPORT_BLOCK_AND_CSV_SCOPE_2026-10-31.md) are complete with 15193 full checks and 887 native Chrome UI cases at `8e8061e`.
+
+[Item 475: hand off unread period proposals directly for review](DIRECT_PERIOD_PROPOSAL_HANDOFF_2026-10-31.md) is complete with 2733 related checks and 885 native Chrome UI cases at `3d2fc3d`.
+
+[Item 474: prepare unread recheck drafts from selected saved discrepancies](DISCREPANCY_RECHECK_DRAFTS_2026-10-31.md) is complete with 2707 related checks and 884 native Chrome UI cases at `4d27b1b`.
+
+[Item 473: compare saved events only within mutually recorded ranges](SAVED_EVENT_COMPARISON_2026-10-31.md) is complete with 15154 full-wallet checks and 883 native Chrome UI cases at `6c76e88`.
+
+[Item 472: recover either verified original from portable comparison evidence](COMPARISON_EVIDENCE_SOURCE_RECOVERY_2026-10-31.md) is complete with 2683 related checks and 882 native Chrome UI cases at `48a804e`.
+
+[Item 471: save and independently verify portable paired-source comparison evidence](PORTABLE_COMPARISON_EVIDENCE_2026-10-31.md) is complete with 2672 related checks and 881 native Chrome UI cases at `a96dfeb`.
+
+[Item 470: explain saved report-workflow file destinations](WALLET_SAVED_FILE_GUIDANCE_2026-10-31.md) is complete with 2656 related checks and 880 native Chrome UI cases at `7d12bf3`.
+
+[Item 469: export saved history coverage with original-record references](HISTORY_COVERAGE_EXPORT_2026-10-31.md) is complete with 15,097 full-wallet checks and 879 native Chrome UI cases at `5c0a5a5`.
+
+[Item 468: verify saved replacement comparisons against both originals](REPORT_SET_COMPARISON_REVIEW_2026-10-31.md) is complete with 1119 related checks and 878 native Chrome UI cases at `2e3078b`.
+
+[Item 467: compare replacement report sets before applying them](REPORT_SET_REPLACEMENT_COMPARISON_2026-10-31.md) is complete with 1104 related checks and 877 native Chrome UI cases at `3371de9`.
+
+[Item 466: reuse immutable derived report analysis](IMMUTABLE_REPORT_ANALYSIS_2026-10-31.md) is complete with 15,052 full-wallet cases, 876 native Chrome cases and six unchanged benchmark outputs at `77e103a`.
+
+[Item 465: save missing-history scopes as unread period drafts](MISSING_HISTORY_DRAFT_2026-10-31.md) is complete with 1,497 related tests and 876 native Chrome UI cases at `08d00c9`.
+
+[Item 464: offline missing-history proposal reproduction](MISSING_HISTORY_QUEUE_CLI_2026-10-31.md) is complete with 395 related tests and five standalone captures at `0b9b889`.
+
+[Item 463: preview ten missing-history windows at a time](MISSING_HISTORY_QUEUE_2026-10-31.md) is complete with 15,020 full-wallet cases and 874 native Chrome UI cases at `f1be6ab`.
+
+[Item 462: distinguish saved query coverage from planned ranges](REPORT_HISTORY_COVERAGE_2026-10-31.md) is complete with 695 related tests and 873 native Chrome UI cases at `000950c`.
+
+[Item 461: extract reloadable original period reports from a set](REPORT_SET_SOURCE_EXPORT_2026-10-31.md) is complete with 773 related tests and 872 native Chrome UI cases at `0f0f131`.
+
+[Item 460: on-screen check-detail comparison and saved results](REPORT_CHECK_SCREEN_REVIEW_2026-10-31.md) is complete with 1,078 related tests and 871 native Chrome UI cases at `aa114b2`.
+
+[Item 459: independent recomputation of saved report-check details](REPORT_CHECK_RECOMPUTATION_2026-10-31.md) is complete with 537 related tests and five captured offline comparisons at `8c3052c`.
+
+[Item 458: source-linked structured report-check details](REPORT_CHECK_DETAILS_2026-10-31.md) is complete with 14,968 full-wallet cases and 870 native Chrome UI cases at `40c28e1`.
+
+[Item 457: locating report checks by exported references and stored observations](REPORT_REFERENCE_SEARCH_2026-10-31.md) is complete with 326 related cases and 869 native Chrome UI cases at `8440316`.
+
+[Item 456: offline reproduction of filtered report checklists](REPORT_CHECKLIST_EXPORT_CLI_2026-10-31.md) is complete with 124 related export, diagnostic, file and CLI cases at `0a3535d`.
+
+[Item 455: faster repeated review of immutable historical evidence](IMMUTABLE_HISTORY_VALIDATION_2026-10-31.md) is complete with 4,700 related tests, 868 native Chrome cases and six unchanged benchmark outputs at `51c4e42`.
+
+[Items 453–454: exported report checklists and repeated validation](REPORT_CHECKLISTS_AND_VALIDATION_2026-10-31.md) are complete with 14,921 full-wallet and 868 native Chrome cases, with preserved benchmark outputs at `db8fb98`.
+
+[Item 452: Offline reproduction of filtered historical-event exports](HISTORICAL_EVENT_EXPORT_CLI_2026-10-31.md) is complete with 89 related local-file, export and CLI tests at `efcef8a`.
+
+[Items 450–451: Complete filtered event CSVs in reconciliation and period reports](FILTERED_EVENT_EXPORTS_2026-10-31.md) are complete with 706 related tests and 867 native Chrome UI cases at `56fb266`.
+
+[Item 449: Interruptible read-only diagnostic commands](PUBLIC_DIAGNOSTIC_INTERRUPT_2026-10-31.md) is complete with 130 related diagnostic, CLI and lifecycle tests at `70ce926`.
+
+[Items 445–448: Caller cancellation for bounded public diagnostics](PUBLIC_DIAGNOSTIC_CANCELLATION_2026-10-31.md) are complete with 115 focused and 145 related diagnostic/HTTP/server tests at `2c7a03c`.
+
+[Items 438–444: Stable reader state and historical query inputs](READER_STATE_CAPTURE_2026-10-31.md) are complete with 14,836 full-wallet tests, 4,664 related tests and 865 native browser cases at `b69f5e5`.
+
+[Items 436–437: Readable discrepancy previews and keyboard destinations](REHEARSAL_READABILITY_NAVIGATION_2026-10-31.md) are complete with 127 focused tests, 1,361 related tests and 865 native browser cases at `ce12d98`.
+
+[Item 435: Complete filtered discrepancy exports](REHEARSAL_COMPLETE_DIFFERENCE_QUERY_2026-10-31.md) is complete with 97 focused tests, 1,357 related tests and 863 native browser cases at `f420e7d`.
+
+[Items 433–434: Bounded discrepancy filtering in the review screen and offline query tool](REHEARSAL_DIFFERENCE_QUERY_2026-10-31.md) are complete with 82 focused tests, 1,331 related tests and 863 native browser cases at `565c379`.
+
+[Item 432: save complete selected discrepancy values](REHEARSAL_COMPLETE_DIFFERENCE_VALUES_2026-10-31.md) is complete with 1,313 related tests and 862 native Chrome cases at `2298deb`.
+
+[Items 429–431: inspect saved and recalculated difference values](REHEARSAL_DIFFERENCE_VALUES_2026-10-31.md) are complete with 14,726 full-wallet tests, 1,281 related checks and 862 native Chrome cases at `94d734a`.
+
+[Items 426–428: wallet input cancellation and native picker continuity](WALLET_INPUT_CANCELLATION_2026-10-31.md) are complete with 2,185 related tests, 16 regressions and 861 native Chrome cases at `da47108`.
+
+[Items 421–425: preserve newer work during panel file cancellation](REHEARSAL_PANEL_CANCELLATION_2026-10-31.md) are complete with 1,254 related tests, 33 cancellation regressions and 858 native Chrome cases at `ec2c7c4`.
+
+[Items 419–420: complete CSV exports and versioned recorded-context searches](REHEARSAL_RECORD_CONTEXT_2026-10-31.md) are complete with 14,650 full-wallet tests and 853 native Chrome UI cases passing at `18fa5d5`.
+
+[Items 417–418: accessible restore outcomes and preservation of newer recovery work](REHEARSAL_RESTORE_CONTINUITY_2026-10-31.md) are complete with 1,176 related rehearsal/server tests and 851 native Chrome UI cases passing at `47341e0`.
+
+[Items 415–416: direct record detail navigation and retained-result focus](REHEARSAL_RECORD_NAVIGATION_2026-10-31.md) are complete with 1,165 related rehearsal/server tests and 850 native Chrome UI cases passing at `e9c2c9a`.
+
+[Item 414: bounded verification of all tracked evidence collections](EVIDENCE_COLLECTION_VERIFICATION_2026-10-31.md) is complete with 76 targeted/local-file tests passing and all 544 files across 99 tracked manifests matching at `1acf7f2`.
+
+[Items 411–413: portable read-only evidence-manifest verification](EVIDENCE_MANIFEST_VERIFICATION_2026-10-31.md) are complete with 66 targeted/local-file tests passing and all 540 files across 98 tracked manifests matching at `e3b9958`.
+
+[Items 408–410: complete review-difference inspection in the browser and offline](REHEARSAL_REVIEW_DIFFERENCE_PAGES_2026-10-31.md) are complete with 1,157 related rehearsal/server tests and 849 native Chrome UI cases passing at `9f93f32`.
+
+[Items 402–407: portable review evidence, independent verification and evidence recovery](REHEARSAL_REVIEW_EVIDENCE_2026-10-31.md) are complete with 14,512 full-wallet tests and 848 native Chrome UI cases passing at `0cd49b6`.
+
+[Item 401: keyboard-accessible wallet task navigation](WALLET_TASK_NAVIGATION_2026-10-31.md) is complete with 846 native Chrome UI tests passing and 58 integration checks before line-ending restoration at `9255bfc`.
+
+[Items 397–400: offline difference inspection, checksum files and retained rehearsal history](REHEARSAL_OFFLINE_GUIDANCE_2026-10-31.md) are complete with 1,076 related tests and 845 native Chrome UI tests passing at `6293ade`.
+
+[Items 392–396: complete difference browsing and exact review evidence](REHEARSAL_REVIEW_CHECKPOINT_2026-10-31.md) are complete with 14,415 full-wallet tests and 843 native Chrome UI tests passing at `4d4329b`.
+
+[Items 386–391: guided record entry and comparison-case management](REHEARSAL_ENTRY_AND_CASES_2026-10-31.md) are complete with 1,008 related tests and 841 native Chrome UI tests passing at `84c9c6f`.
+
+[Items 383–385: field-specific rehearsal correction guidance](REHEARSAL_FIELD_FEEDBACK_2026-10-31.md) are complete with 978 related tests and 839 native Chrome UI tests passing at `38bc3ec`.
+
+[Items 377–382: rehearsal continuity, record navigation and file guidance](REHEARSAL_SOURCE_BOUNDARIES_2026-10-31.md) are complete with 14,334 full-wallet tests and 838 native Chrome UI tests passing at `9f3eab3`.
+
+[Item 376: saved-format destination guidance](REHEARSAL_FILE_TARGET_2026-10-31.md) is complete with 1,110 related tests and 837 native Chrome UI tests passing at `6655a56`.
+
+[Item 375: rehearsal picker-dismissal guidance](REHEARSAL_PICKER_NOTICE_2026-10-31.md) is complete with 855 related tests and 837 native Chrome UI tests passing at `87b9c16`.
+
+[Items 372–374: provider observer boundaries](PROVIDER_OBSERVER_BOUNDARIES_2026-10-31.md) are complete with 340 related tests passing at `a08160b`.
+
+[Items 369–371: captured HTTP packets and bounded intrinsic byte accounting](STATE_RPC_BYTES_2026-10-31.md) are complete with 11 regression cases and 226 HTTP/RPC/server integration tests passing at `7f3c8cd`.
+
+[Items 365–368: cleanup and observer failure containment](CLEANUP_OBSERVERS_2026-10-31.md) are complete with 899 related tests and 836 native Chrome cases passing at `4515f64`.
+
+[Items 361–364: bounded and stable offline file inspection](LOCAL_FILE_INSPECTION_2026-10-31.md) are complete with 23 regression cases, 86 draft compatibility cases and 345 final CLI integration tests passing at `001ef8a`.
+
+[Items 359–360: current file-read ownership during cancellation and option capture](FILE_READ_SCOPE_2026-10-31.md) are complete with 786 focused tests, 14,181 full wallet tests and 836 native Chrome cases passing at `a4d6952`.
+
+[Items 355–358: single filename observations and retired rehearsal selections](FILE_NAME_CAPTURE_2026-10-31.md) are complete with 103 focused tests and 5,438 related integration tests passing at `0b8f082`.
+
+[Items 353–354: terminal protection fault escalation and current protection display](PROTECTION_FAULT_ESCALATION_2026-10-31.md) are complete with 1,523 protection integration tests, 403 final focused tests and 836 native Chrome cases passing at `565f960`.
+
+[Items 351–352: crypto status and encrypted-library handoff ownership](SECURE_PANEL_STATE_2026-10-31.md) are complete with 1,355 integration tests passing at `afe5437`.
+
+[Items 336–350: current operation ownership across wallet and protection panels](PANEL_STATE_CONTINUITY_2026-10-31.md) are complete with 5,272 integration tests and 836 native browser cases passing at `cc1e1c3`.
+
+[Item 335: Windows native browser validation](WINDOWS_BROWSER_VALIDATION_2026-10-31.md) is complete with 836 native browser cases and 2 error-detection controls passing at `a49a6b9`.
+
+[Items 330–334: history file handoffs and backup state](HISTORY_FILES_PANEL_LIFECYCLE_2026-10-31.md) are complete with 2,095 integration tests passing at `6c4530d`.
+
+[Items 326–329: history recovery panel lifecycle](HISTORY_RECOVERY_PANEL_LIFECYCLE_2026-10-31.md) are complete with 2,065 integration tests passing at `8da2428`.
+
+[Items 323–325: history review source and download lifecycle](HISTORY_REVIEW_PANEL_LIFECYCLE_2026-10-31.md) are complete with 2,036 integration tests passing at `9062bce`.
+
+[Items 319–322: vault export and panel lifecycle](TRANSFER_VAULT_PANEL_LIFECYCLE_2026-10-31.md) are complete with 1,632 integration tests passing at `fa0a84d`.
+
+[Items 317–318: cooperative archive selection cancellation](TRANSFER_SELECTION_CANCELLATION_2026-10-31.md) are complete with 1,637 integration tests passing at `aca341b`.
+
+[Items 315–316: transfer archive panel lifecycle](TRANSFER_ARCHIVE_PANEL_LIFECYCLE_2026-10-31.md) are complete with 1,183 integration tests passing at `cc8823f`.
+
+[Items 311–314: transfer panel lifecycle](TRANSFER_PANEL_LIFECYCLE_2026-10-31.md) are complete with 830 integration tests passing at `9855659`.
+
+[Items 309–310: export policy capture](EXPORT_POLICY_CAPTURE_2026-10-31.md) are complete with 1,027 integration tests passing at `512c87d`.
+
+[Items 307–308: diagnostic message lookup](DIAGNOSTIC_MESSAGE_LOOKUP_2026-10-31.md) are complete with 480 integration tests passing at `89ecede`.
+
+[Items 301–306: identity and allowance panel lifecycle](IDENTITY_ALLOWANCE_PANELS_2026-10-31.md) are complete with 1,133 integration tests passing at `324eab2`.
+
+[Items 299–300: wallet setup panel lifecycle](WALLET_SETUP_PANEL_LIFECYCLE_2026-10-31.md) are complete with 199 integration tests passing at `23eb408`.
+
+[Items 295–298: local history panel lifecycle](LOCAL_HISTORY_PANEL_LIFECYCLE_2026-10-31.md) are complete with 1,283 integration tests passing at `690b7f8`.
+
+[Items 291–294: checkpoint data capture](CHECKPOINT_CAPTURE_2026-10-31.md) are complete with 368 integration tests passing at `ae82834`.
+
+[Items 289–290: workspace export lifecycle](WORKSPACE_EXPORT_LIFECYCLE_2026-10-31.md) are complete with 956 integration tests passing at `3640a54`.
+
+[Items 286–288: allowance bundle lifecycle](ALLOWANCE_BUNDLE_LIFECYCLE_2026-10-31.md) are complete with 1,339 integration tests passing at `7fa4dca`.
+
+[Items 283–285: checkpoint lifecycle](CHECKPOINT_LIFECYCLE_2026-10-31.md) are complete with 343 integration tests passing at `122e84d`.
+
+[Items 281–282: checkpoint hash cancellation](CHECKPOINT_HASH_CANCELLATION_2026-10-31.md) are complete with 335 integration tests passing at `279c8e9`.
+
+[Item 280: rehearsal hash cancellation](REHEARSAL_HASH_CANCELLATION_2026-10-31.md) is complete with 122 related tests passing at `4905dda`.
+
+[Items 277–279: export checksum cancellation](EXPORT_CHECKSUM_CANCELLATION_2026-10-31.md) are complete with 609 integration tests passing at `422724b`.
+
+[Items 275–276: identity and allowance file cancellation](IDENTITY_ALLOWANCE_FILE_CANCELLATION_2026-10-31.md) are complete with 1,084 integration tests passing at `47d1248`.
+
+[Items 269–274: bounded checksum cancellation](CHECKSUM_CANCELLATION_2026-10-31.md) are complete with 1,095 final integration tests passing at `7ebff6d`.
+
+[Items 263–268: public checksum boundaries](PUBLIC_CHECKSUM_BOUNDARY_2026-10-31.md) are complete with 894 final integration tests passing at `7c476d8`.
+
+[Items 261–262: library-file cancellation](LIBRARY_FILE_CANCELLATION_2026-10-31.md) are complete with 248 controller, panel and native-file tests passing at `465865a`.
+
+[Items 258–260: history-file cancellation](HISTORY_FILE_CANCELLATION_2026-10-31.md) are complete with 257 targeted and 156 panel/native-file integration tests passing at `48eb566`.
+
+[Items 255–257: portfolio refresh lifecycle](PORTFOLIO_CONTROLLER_LIFECYCLE_2026-10-30.md) are complete with 171 targeted and 566 integration tests passing at `e8a89ae`.
+
+[Items 252–254: portfolio capture](PORTFOLIO_CAPTURE_2026-10-30.md) are complete with 153 targeted and 585 integration tests passing at `a403d66`.
+
+[Items 248–251: reconciliation lifecycle](RECONCILIATION_LIFECYCLE_2026-10-30.md) are complete with 55 targeted and 865 integration tests passing at `a43869a`.
+
+[Items 244–247: three-token vault lifecycle](TRANSFER_VAULT_LIFECYCLE_2026-10-30.md) are complete with 107 targeted and 501 integration tests passing at `b40a107`.
+
+[Items 241–243: archive lifecycle](TRANSFER_ARCHIVE_LIFECYCLE_2026-10-30.md) are complete with 120 targeted and 116 integration tests passing at `afb1d74`.
+
+[Items 239–240: read-response and diagnostic capture](READ_BOUNDARY_COMPLETION_2026-10-30.md) are complete, with 25 targeted and 13,194 full-wallet tests passing at fixed source `e50123f`.
+
+[Items 235–238: period-read checkpoint and handoff lifecycle](PERIOD_READ_LIFECYCLE_2026-10-30.md) are complete with 94 targeted and 208 integration tests passing at `2fb6b3f`.
+
+[Items 232–234: period-report review and history handoff](PERIOD_REPORT_LIFECYCLE_2026-10-30.md) are complete with 51 targeted and 122 integration tests passing at `f5c7ed4`.
+
+[Items 229–231: report-set selection and import lifecycle](REPORT_SET_LIFECYCLE_2026-10-30.md) are complete with 55 targeted and 194 integration tests passing at `d631183`.
+
+[Items 226–228: report-history review and commit lifecycle](REPORT_HISTORY_LIFECYCLE_2026-10-30.md) are complete with 411 related tests passing at `cdd31bd`.
+
+[Items 223–225: report records and presentation settings](REPORT_RECORD_CAPTURE_2026-10-30.md) are complete with 592 related tests passing at `0e8bcd9`.
+
+[Items 220–222: period-library review and storage lifecycle](PERIOD_LIBRARY_LIFECYCLE_2026-10-30.md) are complete with 479 related tests passing at `7f078de`.
+
+[Items 217–219: transfer lifecycle and reviewed files](TRANSFER_LIFECYCLE_2026-10-30.md) are complete with 784 related tests passing at `45e736e`.
+
+[Items 214–216: read observers and option ownership](READ_OBSERVER_OPTIONS_2026-10-30.md) are complete with 347 related tests and 13,073 full-wallet tests passing at fixed source `f239e04`.
+
+[Items 211–213: allowance lifecycle and review ownership](ALLOWANCE_LIFECYCLE_2026-10-30.md) are complete with 571 related tests passing at `9ceb9ad`.
+
+[Items 208–210: identity controller lifecycle and captured UI inputs](IDENTITY_LIFECYCLE_2026-10-30.md) are complete with 571 related tests passing at `7054037`.
+
+[Items 1–20: saved-report verification](OPERATION_REPORT_REVIEW_2026-10-29.md), [items 21–40: named comparison collections](OPERATION_SCENARIO_SET_2026-10-29.md), [items 41–60: expected-outcome checks](OPERATION_EXPECTED_OUTCOMES_2026-10-30.md), [items 61–80: record navigation](OPERATION_RECORD_NAVIGATION_2026-10-30.md), [items 81–100: combined recovery](OPERATION_COMBINED_RECOVERY_2026-10-30.md), and [items 101–110: saved expectation/search report review](OPERATION_EXTENDED_REPORT_REVIEW_2026-10-30.md) are complete.
+
+[Items 111–120: capacity and selected expectation export](OPERATION_CAPACITY_2026-10-30.md) are complete, including actual Edge downloads and exact restoration of the original session.
+
+[Items 121–130: RPC diagnostic bounds and cancellation](RPC_DIAGNOSTIC_HARDENING_2026-10-30.md) are complete with 71 related passing tests at `2932b41`.
+
+[Items 131–138: shared public diagnostics](PUBLIC_DIAGNOSTIC_READS_2026-10-30.md) are complete with 78 related passing tests at `472d3b2`.
+
+[Items 139–147: liquidity input validation and diagnostic CLI behavior](LIQUIDITY_INPUT_VALIDATION_2026-10-30.md) are complete with 32 related passing tests at `029d6a4`.
+
+[Items 148–153: state-read header cancellation](STATE_FETCH_CANCELLATION_2026-10-30.md) are complete with 56 related passing tests at `78d9e3c`.
+
+[Items 154–161: canonical public observations](PUBLIC_CANONICAL_READS_2026-10-30.md) are complete with 116 related passing tests at `d7f7009`.
+
+[Items 162–163: liquidity data capture](LIQUIDITY_DATA_CAPTURE_2026-10-30.md) are complete with 39 passing tests at `723042b`.
+
+[Items 164–166: local navigation help](LOCAL_NAVIGATION_HELP_2026-10-30.md) are complete with 20 related passing tests and actual Edge rendering at `d374f07`; the new server-side guide is verified on a temporary server and is not loaded into the existing 4231 process.
+
+[Items 167–169: rehearsal download delivery](REHEARSAL_DOWNLOAD_DELIVERY_2026-10-30.md) are complete with 287 related passing tests at `15c1b22` and an exact original-session download match.
+
+[Items 170–174: download lifecycle and full wallet validation](REHEARSAL_DOWNLOAD_LIFECYCLE_2026-10-30.md) are complete: 351 related tests and 12,778 applicable wallet tests passed at fixed source `96abefd`, with a real exact-match download from the fresh UI. [Normal Edge control was recovered](CONTROL_RECOVERY_2026-10-30.md) and exercised without changing protections.
+
+[Items 175–178: bounded rehearsal file reading](REHEARSAL_FILE_READING_2026-10-30.md) are complete with 1,429 related tests and 12,835 full wallet tests passing at fixed source `809378a`. The paste-based round trip was followed by [successful native file selection, restoration and exact-byte re-export](NATIVE_FILE_IMPORT_2026-10-30.md), after the user enabled the Edge extension’s file-URL access. Routine reconnection does not add development items.
+
+[Items 179–182: recovery observer isolation](REHEARSAL_SESSION_OBSERVERS_2026-10-30.md) are complete with 75 targeted and 801 broader rehearsal tests passing at `ede2382`.
+
+[Items 183–184: file-reading guidance and cancelled selection](REHEARSAL_FILE_GUIDANCE_2026-10-30.md) are complete with 920 related tests and six actual Edge input checks at `801f24a`.
+
+[Item 185: consistent offline text decoding](REHEARSAL_CLI_ENCODING_2026-10-30.md) is complete with 49 related tests.
+
+[Items 186–188: visible save checkpoints and recovery lifecycle](REHEARSAL_SAVE_CHECKPOINT_2026-10-30.md) are complete with 219 targeted, 810 rehearsal and 12,893 full wallet tests at `9a0e477`, plus actual Edge save/rename/undo/file checks. Tool-driven reload did not show a confirmation; that limitation is recorded.
+
+[Items 189–190: stable configuration capture](CONFIGURATION_CAPTURE_2026-10-30.md) are complete with 230 targeted and 940 related passing tests.
+
+[Items 191–192: stable identity observations and catalog confirmation](IDENTITY_CAPTURE_2026-10-30.md) are complete with 543 identity and 2,484 related passing tests at `184e91b`.
+
+[Items 193–194: stable bounded transfer observations](TRANSFER_CAPTURE_2026-10-30.md) are complete with 175 targeted and 2,039 related passing tests at `48b9798`.
+
+[Item 195: RPC array capture](RPC_ARRAY_CAPTURE_2026-10-30.md) is complete with 362 related passing tests.
+
+[Items 196–198: history storage and query capture](TRANSFER_STORAGE_CAPTURE_2026-10-30.md) are complete with 206 targeted and 694 transfer tests at `3047dbf`.
+
+[Items 199–200: read-only allowance record capture](ALLOWANCE_CAPTURE_2026-10-30.md) are complete with 479 related passing tests. A subsequent full wallet run passed 12,960 tests at fixed code source `3a895d1`, including items 189–200.
+
+[Items 201–204: period checkpoints, library, reports and reconciliation capture](PERIOD_CAPTURE_2026-10-30.md) are complete with 1,371 related passing tests at `2dc7e96`.
+
+[Item 205: period review lifecycle](PERIOD_REVIEW_LIFECYCLE_2026-10-30.md) is complete with 111 targeted and 231 related passing tests at `964f5da`.
+
+[Items 206–207: observations across sequential reads](READ_OBSERVATION_CAPTURE_2026-10-30.md) are complete with 335 combined passing tests at `fdd3be7`. Completed range is 1–600. Remaining work follows concrete product gaps and integration findings.
+
+## Completed first group: saved-report verification (items 1–20)
+
+1. Recognize the three existing report schemas with a strict bounded parser.
+2. Recompute an overview from its included workspace.
+3. Recompute restore comparisons from their before/after workspaces.
+4. Recompute condition comparisons while enforcing unchanged identity/events.
+5. Detect altered derived values rather than accepting a report's own claims.
+6. Compare object content independently of property ordering while retaining array order.
+7. Report a bounded, structured set of differences with field paths.
+8. Preserve the distinction between recomputation agreement and source authenticity.
+9. Compute a SHA-256 of the exact reviewed text bytes.
+10. Optionally compare an explicitly supplied expected checksum.
+11. Add a separate read-only report-review panel.
+12. Support bounded file reading with honest source identification.
+13. Provide an ordinary paste fallback for the current browser's file-selection limitation.
+14. Keep the live workspace and undo state unchanged during review.
+15. Cancel stale reads and clear stale results on new input.
+16. Show report scope, agents, counts and comparison outcome in plain language.
+17. Export a review receipt containing the reviewed digest and recomputation outcome.
+18. Add an offline verifier producing the same receipt from explicit input files.
+19. Cover malformed input, tampering, stale completion and supported schemas in meaningful tests.
+20. Verify actual browser review/download, offline reproduction and preserved original records; save evidence.
+
+Later work will be selected from evidence and product needs: saved comparison collections, reproducible replay cases, record provenance and navigation, input/recovery robustness, accessible interaction, CLI workflows and wallet integration checks. Unnecessary features will not be invented just to fill the requested count.
+
+Persistent boundaries: local development and fictional/read-only operations; no wallet signatures, transfers, approvals or private-key retrieval. No new publication or deployment authorization is inferred. Progress reporting is kept brief at the user's request.
+
+## October 31 maintenance follow-up
+
+[Diagnostic cancellation lifecycle repair](PUBLIC_DIAGNOSTIC_SIGNAL_REPAIR_2026-10-31.md) closes registration and cleanup failure paths in item 445 at `b56237a`. It passed 107 related cases and adds no new completed item; the count remains 457 / 600.
+
+[Export scope stability repair](EXPORT_SCOPE_STABILITY_REPAIR_2026-10-31.md) retains missing-history and activity export queries across callbacks. 1634 related checks passed at `6bb6fb8`; before/after reproductions are saved. This repair adds zero items; completed count remains 478 / 600.
+
+[Library file guidance repair](LIBRARY_FILE_GUIDANCE_REPAIR_2026-10-31.md) improves destination guidance for existing workflows without adding an item. 15249 full tests and 892 native Chrome cases passed at `3069815`; the count remains 481.
+
+## November 1 maintenance follow-up
+
+[State RPC cancellation repair](STATE_RPC_SIGNAL_REPAIR_2026-11-01.md) closes native-signal and stream-ownership cleanup gaps in the existing HTTP read path at `d253e8d`. It passed 97 related checks and 15,720 full-wallet tests and adds zero items; the count remains 515 / 600.
+
+[Saved-file batch cancellation repair](WALLET_BATCH_CANCELLATION_REPAIR_2026-11-01.md) preserves native cancellation and releases delayed decoder-import waits at `2c476f6`. It passed 965 related checks and 945 native Chrome cases. This maintenance adds zero items; the completed count remains 531 / 600.
+
+[Focused browser validation](BROWSER_FOCUSED_VALIDATION_2026-11-01.md) adds explicit module-scoped development checks at `a493ace`, with 137 harness tests, 99 native file-read cases and two native error controls. It adds zero items; completed count remains 532 / 600, and the last full browser checkpoint remains ef8f1a0 (947 cases).
+
+[History selection and regression maintenance](HISTORY_SELECTION_AND_REGRESSION_REPAIR_2026-11-01.md) fixes empty-selection deletion and recovery downloads at db873d3, with 54 affected checks and 144 focused native browser cases. It preserves the failed full-run log (16,331 pass / 2 stale fixture-route assertions) and adds zero completed items; count remains 589.
+
+## Completion audit
+
+[600-item completion audit](CONTINUATION_600_COMPLETION_2026-11-01.md) confirms all numbered ranges, linked documents, source commits and 2171 committed evidence entries. Fixed source 3fd2836 passed 16391 full-wallet tests and 1001 native browser cases. No additional item is counted for this audit. The requested local continuation target is complete; mainnet readiness is not inferred.

@@ -1,0 +1,243 @@
+✖ RPC request parameters use bounded own data before normalizing selectors (11.2515ms)
+✖ RPC log-filter topics do not invoke live array reads (1.6723ms)
+✖ RPC account results are copied without reading a live length (1.1785ms)
+✖ RPC log rows and nested topics use captured array descriptors (0.6811ms)
+✖ a shrinking length cannot turn a nonempty eth_accounts result into zero rows (7.5872ms)
+✖ a shrinking length cannot turn a nonempty eth_getLogs result into zero rows (3.0981ms)
+✖ revoked eth_accounts arrays receive a bounded public error (3.241ms)
+✖ revoked eth_getLogs arrays receive a bounded public error (0.8533ms)
+✖ wallet read cannot publish empty logs because provider length changes (29.9233ms)
+✔ oversized raw logs retain the session's existing public limit error (14.9818ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 1
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 604.9548
+
+✖ failing tests:
+
+test at test\rpc-array-capture.test.js:12:1
+✖ RPC request parameters use bounded own data before normalizing selectors (11.2515ms)
+  Error [RpcSecurityError]: RPC_REQUEST_SHAPE
+      at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:9:30)
+      at array (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:63:5)
+      at guardRpcRequest (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:85:18)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:14:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    code: 'RPC_REQUEST_SHAPE'
+  }
+
+test at test\rpc-array-capture.test.js:17:1
+✖ RPC log-filter topics do not invoke live array reads (1.6723ms)
+  Error [RpcSecurityError]: RPC_REQUEST_SHAPE
+      at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:9:30)
+      at array (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:63:5)
+      at guardRpcRequest (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:91:20)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:19:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    code: 'RPC_REQUEST_SHAPE'
+  }
+
+test at test\rpc-array-capture.test.js:23:1
+✖ RPC account results are copied without reading a live length (1.1785ms)
+  Error [RpcSecurityError]: RPC_RESULT_LIMIT
+      at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:9:30)
+      at array (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:63:5)
+      at guardRpcResponse (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:163:26)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:24:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    code: 'RPC_RESULT_LIMIT'
+  }
+
+test at test\rpc-array-capture.test.js:27:1
+✖ RPC log rows and nested topics use captured array descriptors (0.6811ms)
+  Error: Unexpected live array read: length
+      at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:9:9)
+      at guardRpcResponse (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:171:40)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:29:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\rpc-array-capture.test.js:33:3
+✖ a shrinking length cannot turn a nonempty eth_accounts result into zero rows (7.5872ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   '0x1111111111111111111111111111111111111111'
+  - ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:38:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ '0x1111111111111111111111111111111111111111' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\rpc-array-capture.test.js:33:3
+✖ a shrinking length cannot turn a nonempty eth_getLogs result into zero rows (3.0981ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   {
+  -     address: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5',
+  -     blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  -     blockNumber: '0x28',
+  -     data: '0x000000000000000000000000000000000000000000000000112210f47de98115',
+  -     logIndex: '0x0',
+  -     removed: false,
+  -     topics: [
+  -       '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+  -       '0x0000000000000000000000002222222222222222222222222222222222222222',
+  -       '0x0000000000000000000000001111111111111111111111111111111111111111'
+  -     ],
+  -     transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044c',
+  -     transactionIndex: '0x0'
+  -   }
+  - ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:38:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { address: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', topics: [Array], data: '0x000000000000000000000000000000000000000000000000112210f47de98115', blockNumber: '0x28', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410', transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044c', transactionIndex: '0x0', logIndex: '0x0', removed: false } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\rpc-array-capture.test.js:44:3
+✖ revoked eth_accounts arrays receive a bounded public error (3.241ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'RPC_RESULT_LIMIT'
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:46:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Cannot perform 'IsArray' on a proxy that has been revoked
+        at Array.isArray (<anonymous>)
+        at guardRpcResponse (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:162:16)
+        at assert.throws.code (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:46:25)
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:46:12)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: { code: 'RPC_RESULT_LIMIT' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\rpc-array-capture.test.js:44:3
+✖ revoked eth_getLogs arrays receive a bounded public error (0.8533ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'RPC_RESULT_LIMIT'
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:46:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Cannot perform 'IsArray' on a proxy that has been revoked
+        at Array.isArray (<anonymous>)
+        at guardRpcResponse (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-rpc.js:171:16)
+        at assert.throws.code (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:46:25)
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:46:12)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: { code: 'RPC_RESULT_LIMIT' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\rpc-array-capture.test.js:50:1
+✖ wallet read cannot publish empty logs because provider length changes (29.9233ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   {
+  -     amountBaseUnits: '1234567890123456789',
+  -     blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  -     blockNumber: '40',
+  -     from: '0x2222222222222222222222222222222222222222',
+  -     logIndex: '0',
+  -     to: '0x1111111111111111111111111111111111111111',
+  -     transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044c',
+  -     transactionIndex: '0'
+  -   }
+  - ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rpc-array-capture.test.js:59:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { blockNumber: '40', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410', transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044c', transactionIndex: '0', logIndex: '0', from: '0x2222222222222222222222222222222222222222', to: '0x1111111111111111111111111111111111111111', amountBaseUnits: '1234567890123456789' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

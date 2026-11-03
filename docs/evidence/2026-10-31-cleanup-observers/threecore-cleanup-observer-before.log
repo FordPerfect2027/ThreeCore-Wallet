@@ -1,0 +1,124 @@
+✔ file cleanup consumes rejected asynchronous adapter results: native (10.6133ms)
+✖ file cleanup consumes rejected asynchronous adapter results: malformed (5.4535ms)
+✖ secure expiry consumes malformed asynchronous notification and remains expired (9.044ms)
+✖ read-scope eligibility rejection is consumed without invoking a wallet method (5.1312ms)
+✖ read completion observer failure cannot escape or replace the method result (2.9857ms)
+✖ wallet card view notification failure is consumed after disconnect (3.8085ms)
+✖ wallet card asynchronous access result cannot create a wallet session (3.4104ms)
+✖ discarded HTTP headers consume malformed body-cancellation failures (3.3253ms)
+✖ pre-aborted body reads consume cancellation failures without reading (3.3108ms)
+✖ oversized declared responses consume body-cancellation failures before opening a reader (2.7754ms)
+✖ HTTP reader cancel failure cannot escape a rejected response (4.2181ms)
+✖ HTTP reader releaseLock failure cannot escape a rejected response (2.4383ms)
+✖ public RPC response cleanup cannot escape its transport error (4.5983ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 1
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 542.5135
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:11:84
+✖ file cleanup consumes rejected asynchronous adapter results: malformed (5.4535ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:14:1
+✖ secure expiry consumes malformed asynchronous notification and remains expired (9.044ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:18:1
+✖ read-scope eligibility rejection is consumed without invoking a wallet method (5.1312ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at accepted (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-read-scope.js:39:49)
+      at new Promise (<anonymous>)
+      at check (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-read-scope.js:39:11)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-read-scope.js:52:12
+      at new Promise (<anonymous>)
+      at Object.invoke (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-read-scope.js:50:12)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:20:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:22:1
+✖ read completion observer failure cannot escape or replace the method result (2.9857ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:26:1
+✖ wallet card view notification failure is consumed after disconnect (3.8085ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:39:43
+      at new Promise (<anonymous>)
+      at consume (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:39:5)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:44:60
+      at boundary (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:33:18)
+      at cleanup (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:44:14)
+      at publish (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:75:9)
+      at Object.disconnect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:96:5)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:28:17)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:30:1
+✖ wallet card asynchronous access result cannot create a wallet session (3.4104ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:39:43
+      at new Promise (<anonymous>)
+      at consume (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:39:5)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:122:15
+      at boundary (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:33:18)
+      at allowed (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:120:18)
+      at Object.connect (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/wallet-card-controller.js:127:10)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:32:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:34:1
+✖ discarded HTTP headers consume malformed body-cancellation failures (3.3253ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:39:1
+✖ pre-aborted body reads consume cancellation failures without reading (3.3108ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:43:1
+✖ oversized declared responses consume body-cancellation failures before opening a reader (2.7754ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:46:46
+✖ HTTP reader cancel failure cannot escape a rejected response (4.2181ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:46:46
+✖ HTTP reader releaseLock failure cannot escape a rejected response (2.4383ms)
+  Error: release failed
+      at Object.releaseLock (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:47:168)
+      at readStateRpcJson (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/state-rpc-http.js:78:18)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async waitForActual (node:assert:646:5)
+      at async strict.rejects (node:assert:769:25)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:48:2)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-cleanup-observer-next.test.mjs:50:1
+✖ public RPC response cleanup cannot escape its transport error (4.5983ms)
+  Error: malformed asynchronous observer
+      at Object.then (file:///C:/Users/aseet/AppData/Local/Temp/threecore-cleanup-observer-next.test.mjs:10:39)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)

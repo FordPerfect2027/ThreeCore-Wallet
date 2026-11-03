@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import { createDemoServer } from "../examples/dev-server.js";
 import { createBaseStateProvider } from "../src/base-state-provider.js";
 import { ThreeCoreWalletSession } from "../src/wallet-session.js";
+import { catalogToken } from "../src/token-catalog.js";
+import { TRANSFER_TOPIC } from "../src/transfer-codec.js";
 const A = "0x1111111111111111111111111111111111111111";
 const HASH = "0x" + "ab".repeat(32);
 const rpc = { method: "eth_getBalance", params: [A, { blockHash: HASH, requireCanonical: true }] };
@@ -23,6 +25,7 @@ test("RPC relay targets only official Base and preserves the canonical hash sele
     assert.equal(result.status, 200); assert.deepEqual(await result.json(), { result: "0x2a" });
     assert.equal(seen.url, "https://mainnet.base.org");
     assert.equal(seen.options.redirect, "error"); assert.equal(seen.options.credentials, "omit");
+    assert.equal(seen.options.referrerPolicy, "no-referrer");
     assert.deepEqual(JSON.parse(seen.options.body), { jsonrpc: "2.0", id: 1, ...rpc });
   });
 });
@@ -40,6 +43,29 @@ test("origin, permission/write methods, destination injection and malformed inpu
     assert.equal((await post(base, '{"agent":"DAT","agent":"EMA"}')).status, 400);
     assert.equal((await post(base, "x".repeat(8193))).status, 413);
     assert.equal(calls, 0);
+  });
+});
+
+test("the HTTP relay enforces the history span even when the browser guard is bypassed", async () => {
+  const calls = [];
+  await withServer(async (_url, options) => {
+    calls.push(JSON.parse(options.body));
+    return Response.json({ jsonrpc: "2.0", id: 1, result: [] });
+  }, async base => {
+    const query = { method: "eth_getLogs", params: [{ address: catalogToken({ agent: "DAT", chainId: 8453 }).address,
+      fromBlock: "0x0", toBlock: "0x7d0", topics: [TRANSFER_TOPIC, null, "0x" + A.slice(2).padStart(64, "0")] }] };
+    for (const end of ["0x7d0", "0x" + "f".repeat(64)]) {
+      query.params[0].toBlock = end;
+      const rejected = await post(base, envelope(query));
+      assert.equal(rejected.status, 400);
+      assert.deepEqual(await rejected.json(), { error: "STATE_RPC_REQUEST" });
+    }
+    assert.equal(calls.length, 0);
+    query.params[0].toBlock = "0x7cf";
+    const accepted = await post(base, envelope(query));
+    assert.equal(accepted.status, 200);
+    assert.deepEqual(await accepted.json(), { result: [] });
+    assert.deepEqual(calls, [{ jsonrpc: "2.0", id: 1, ...query }]);
   });
 });
 
@@ -119,4 +145,69 @@ test("closing the client aborts outstanding upstream work", async () => {
     await entered.promise; aborter.abort(); await rejected; await aborted.promise;
     const next = await post(base, envelope(rpc)); assert.equal(next.status, 200); await next.text();
   });
+});
+test("closing clients cancels stalled upstream bodies and releases all twelve relay slots",async()=>{
+  const entered=Promise.withResolvers(),cancelled=Promise.withResolvers();let calls=0,cancellations=0;
+  await withServer(async()=>{
+    if(++calls>12)return Response.json({jsonrpc:"2.0",id:1,result:"0x2a"});
+    return new Response(new ReadableStream({
+      start(){if(calls===12)entered.resolve();},
+      pull(){return new Promise(()=>{});},
+      cancel(){if(++cancellations===12)cancelled.resolve();return new Promise(()=>{});}
+    }));
+  },async base=>{
+    const aborters=Array.from({length:12},()=>new AbortController());
+    const pending=aborters.map(aborter=>fetch(base+"/rpc/base-mainnet",{method:"POST",signal:aborter.signal,
+      headers:{origin:base,"content-type":"application/json"},body:JSON.stringify(envelope(rpc))}));
+    const rejected=Promise.all(pending.map(p=>assert.rejects(p)));
+    await entered.promise;
+    try{assert.equal((await post(base,envelope(rpc))).status,429);}
+    finally{aborters.forEach(a=>a.abort());}
+    await rejected;await cancelled.promise;
+    const next=await Promise.all(Array.from({length:12},()=>post(base,envelope(rpc))));
+    for(const response of next){assert.equal(response.status,200);assert.deepEqual(await response.json(),{result:"0x2a"});}
+    assert.equal(cancellations,12);assert.equal(calls,24);
+  });
+});
+
+test("client closure frees all slots while initial fetch ignores abort, and late replies are discarded", async () => {
+  const entered = Promise.withResolvers(), aborted = Promise.withResolvers();
+  let calls = 0, aborts = 0, cancellations = 0;
+  const late = [];
+  await withServer(async (_url, options) => {
+    if (++calls > 12) return Response.json({ jsonrpc: "2.0", id: 1, result: "0x2a" });
+    options.signal.addEventListener("abort", () => { if (++aborts === 12) aborted.resolve(); }, { once: true });
+    const pending = new Promise(resolve => late.push(resolve));
+    if (calls === 12) entered.resolve();
+    return pending;
+  }, async base => {
+    const controllers = Array.from({ length: 12 }, () => new AbortController());
+    const pending = controllers.map(controller => fetch(base + "/rpc/base-mainnet", { method: "POST",
+      signal: controller.signal, headers: { origin: base, "content-type": "application/json" },
+      body: JSON.stringify(envelope(rpc)) }));
+    const rejected = Promise.all(pending.map(p => assert.rejects(p)));
+    await entered.promise;
+    try { assert.equal((await post(base, envelope(rpc))).status, 429); }
+    finally { controllers.forEach(controller => controller.abort()); }
+    await rejected; await aborted.promise;
+    const next = await Promise.all(Array.from({ length: 12 }, () => post(base, envelope(rpc))));
+    for (const response of next) { assert.equal(response.status, 200); await response.text(); }
+    late.forEach(resolve => resolve({ ok: true, body: {
+      cancel() { cancellations++; return new Promise(() => {}); },
+    } }));
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(cancellations, 12); assert.equal(calls, 24);
+  });
+});
+
+test("relay refuses a redirected upstream success and retains generic local error text", async () => {
+  let cancelled = false;
+  await withServer(async () => ({ ok: true, redirected: true,
+    body: { cancel() { cancelled = true; return new Promise(() => {}); } },
+  }), async base => {
+    const response = await post(base, envelope(rpc));
+    assert.equal(response.status, 502);
+    assert.deepEqual(await response.json(), { error: "STATE_RPC_UNAVAILABLE" });
+  });
+  assert.equal(cancelled, true);
 });

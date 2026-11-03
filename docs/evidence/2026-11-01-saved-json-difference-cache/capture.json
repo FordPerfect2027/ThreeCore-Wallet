@@ -1,0 +1,12 @@
+{
+  "source": "a331320",
+  "baseline": "0fb437b",
+  "synthetic": true,
+  "selectedTests": 45,
+  "nativeBrowserCases": 123,
+  "fullBrowserRun": false,
+  "queryPagesRetainedPerReader": 8,
+  "parsedPairsRetainedPerComparisonReview": 1,
+  "externalRpcCalls": 0,
+  "realWalletVerified": false
+}

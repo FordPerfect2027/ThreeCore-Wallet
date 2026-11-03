@@ -1,0 +1,225 @@
+{
+  "schema": "threecore.wallet-saved-browser-batch.v5",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "externalChecksumsCompared": true,
+  "phase": "cancelled",
+  "complete": false,
+  "allOriginalsValidated": false,
+  "summary": {
+    "selected": 4,
+    "checked": 4,
+    "pending": 0,
+    "validatedOriginals": 0,
+    "declaredOnly": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "totalBytes": 3777,
+    "checksumsCompared": 3,
+    "checksumsMatching": 3,
+    "checksumMismatches": 0,
+    "sourceUnavailable": 1,
+    "selectedReportedBytes": 5036,
+    "unreadSourceReportedBytes": 1259,
+    "structureValidated": 3,
+    "simulationFiles": 3
+  },
+  "files": [
+    {
+      "name": "source-0.json",
+      "byteLength": 1259,
+      "sha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "status": "validated-structure",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v3",
+        "sourceSchema": "threecore.operation-rehearsal.v1",
+        "byteLength": 1259,
+        "title": "運用リハーサルの旧形式の記録",
+        "target": "rehearsal-record",
+        "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+        "validation": "validated-structure",
+        "simulationOnly": true,
+        "checksumVerified": false,
+        "sourceDigest": null,
+        "textDigest": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": null,
+          "draftReferences": null,
+          "archivedEntryReferences": null,
+          "restrictedEntryReferences": null,
+          "incompleteDraftReferences": null,
+          "emptyDraftReferences": null,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true,
+          "rehearsalLedgerReferences": 1,
+          "rehearsalRecordReferences": 2,
+          "rehearsalRejectedRecordReferences": 0,
+          "rehearsalScenarioReferences": null
+        },
+        "originalEvidenceValidated": false,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "expectedSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "checksumMatches": true
+    },
+    {
+      "name": "source-1.json",
+      "byteLength": 1259,
+      "sha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "status": "validated-structure",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v3",
+        "sourceSchema": "threecore.operation-rehearsal.v1",
+        "byteLength": 1259,
+        "title": "運用リハーサルの旧形式の記録",
+        "target": "rehearsal-record",
+        "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+        "validation": "validated-structure",
+        "simulationOnly": true,
+        "checksumVerified": false,
+        "sourceDigest": null,
+        "textDigest": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": null,
+          "draftReferences": null,
+          "archivedEntryReferences": null,
+          "restrictedEntryReferences": null,
+          "incompleteDraftReferences": null,
+          "emptyDraftReferences": null,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true,
+          "rehearsalLedgerReferences": 1,
+          "rehearsalRecordReferences": 2,
+          "rehearsalRejectedRecordReferences": 0,
+          "rehearsalScenarioReferences": null
+        },
+        "originalEvidenceValidated": false,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "expectedSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "checksumMatches": true
+    },
+    {
+      "name": "source-2.json",
+      "byteLength": 1259,
+      "sha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "status": "validated-structure",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v3",
+        "sourceSchema": "threecore.operation-rehearsal.v1",
+        "byteLength": 1259,
+        "title": "運用リハーサルの旧形式の記録",
+        "target": "rehearsal-record",
+        "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+        "validation": "validated-structure",
+        "simulationOnly": true,
+        "checksumVerified": false,
+        "sourceDigest": null,
+        "textDigest": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": null,
+          "draftReferences": null,
+          "archivedEntryReferences": null,
+          "restrictedEntryReferences": null,
+          "incompleteDraftReferences": null,
+          "emptyDraftReferences": null,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true,
+          "rehearsalLedgerReferences": 1,
+          "rehearsalRecordReferences": 2,
+          "rehearsalRejectedRecordReferences": 0,
+          "rehearsalScenarioReferences": null
+        },
+        "originalEvidenceValidated": false,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "expectedSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "checksumMatches": true
+    },
+    {
+      "name": "source-3.json",
+      "byteLength": null,
+      "reportedByteLength": 1259,
+      "sha256": null,
+      "status": "source-unavailable",
+      "code": "FILE_READ",
+      "inspection": null,
+      "expectedSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "checksumMatches": null
+    }
+  ],
+  "retry": {
+    "sequence": 1,
+    "previousPhase": "complete",
+    "previousBatchSha256": "a1b5075888735b29e5e33f1a4615531e1dc394456a05d4480289406727e997d7",
+    "targetIndexes": [
+      1,
+      3
+    ],
+    "completedIndexes": [
+      1
+    ],
+    "remainingIndexes": [
+      3
+    ],
+    "retainedChecks": 3
+  },
+  "referenceProvided": true,
+  "reference": {
+    "text": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe  source-0.json\n1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe  source-1.json\n1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe  source-2.json\n1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe  source-3.json\n",
+    "sha256": "474ec08317048f43e2d263aac94a1dd2055f480030130403c0c5046f4ce3ab76",
+    "entries": [
+      {
+        "name": "source-0.json",
+        "expectedSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe"
+      },
+      {
+        "name": "source-1.json",
+        "expectedSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe"
+      },
+      {
+        "name": "source-2.json",
+        "expectedSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe"
+      },
+      {
+        "name": "source-3.json",
+        "expectedSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe"
+      }
+    ]
+  },
+  "allExternalChecksumsMatch": false
+}

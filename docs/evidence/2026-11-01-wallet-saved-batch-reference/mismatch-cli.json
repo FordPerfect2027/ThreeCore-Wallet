@@ -1,0 +1,237 @@
+{
+  "schema": "threecore.wallet-saved-batch-inspection.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "manifestSha256": "10dee28c2aa524251a580f5a96b6cd8774740bb1b220676d43557fbb3ce0df3e",
+  "allOriginalsValidated": false,
+  "allChecksumsMatch": false,
+  "limits": {
+    "maxFiles": 50,
+    "maxFileBytes": 16777216,
+    "maxTotalBytes": 67108864
+  },
+  "summary": {
+    "files": 7,
+    "validatedOriginals": 4,
+    "declaredOnly": 1,
+    "checksumMismatched": 1,
+    "unreadable": 1,
+    "admittedBytes": 146849,
+    "readBytes": 146849
+  },
+  "files": [
+    {
+      "path": "period-source.json",
+      "expectedSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "actualSha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "byteLength": 5847,
+      "status": "checksum-mismatch",
+      "inspection": null
+    },
+    {
+      "path": "library-source.json",
+      "expectedSha256": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+      "actualSha256": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+      "byteLength": 4551,
+      "status": "validated-original",
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-library-file.v1",
+        "byteLength": 4551,
+        "title": "期間の保存一覧",
+        "target": "library",
+        "destinationMessage": "「途中の控えを、名前を付けて保管する」の「期間の保存一覧JSONを読み込む」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "94a72fa1997466939ad83bdc8e687add2a9f5839ee48fbc7017071e42ac3bc72",
+        "textDigest": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": 1,
+          "draftReferences": 1,
+          "archivedEntryReferences": 1,
+          "restrictedEntryReferences": 1,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "path": "report-source.json",
+      "expectedSha256": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89",
+      "actualSha256": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89",
+      "byteLength": 13491,
+      "status": "validated-original",
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-report-file.v1",
+        "byteLength": 13491,
+        "title": "3トークンの期間レポート",
+        "target": "report",
+        "destinationMessage": "「3つの記録を、一つの報告に」で、この元のファイルを選んで確認してください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "a993e73336008eeec979448a7f6741ec235eff60e951fc5760d7dfc15f871c1b",
+        "textDigest": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89",
+        "scope": {
+          "reportCount": 1,
+          "archivedReports": null,
+          "entryReferences": 3,
+          "draftReferences": 3,
+          "archivedEntryReferences": 1,
+          "restrictedEntryReferences": 1,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "path": "history-source.json",
+      "expectedSha256": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f",
+      "actualSha256": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f",
+      "byteLength": 40882,
+      "status": "validated-original",
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-history-file.v1",
+        "byteLength": 40882,
+        "title": "報告履歴のバックアップ",
+        "target": "history",
+        "destinationMessage": "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "0c485afe426a836388c851653f5fec42391bf918ac1b2e831bae3afb4f0f20e7",
+        "textDigest": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f",
+        "scope": {
+          "reportCount": 3,
+          "archivedReports": 1,
+          "entryReferences": 9,
+          "draftReferences": 9,
+          "archivedEntryReferences": 1,
+          "restrictedEntryReferences": 1,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "path": "set-source.json",
+      "expectedSha256": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3",
+      "actualSha256": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3",
+      "byteLength": 40965,
+      "status": "validated-original",
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-set-file.v1",
+        "byteLength": 40965,
+        "title": "報告の確認セット",
+        "target": "set",
+        "destinationMessage": "「保存した確認セットを開く」で、この元のファイルを選んで確認してください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "13dba85f0f0e12838108b8c6fb3a42247ace683f8c3da1615d0ab215ab5e12d2",
+        "textDigest": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3",
+        "scope": {
+          "reportCount": 3,
+          "archivedReports": 1,
+          "entryReferences": 9,
+          "draftReferences": 9,
+          "archivedEntryReferences": 1,
+          "restrictedEntryReferences": 1,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "path": "corrupt-set-source.json",
+      "expectedSha256": "b4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3",
+      "actualSha256": "b4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3",
+      "byteLength": 40965,
+      "status": "unreadable",
+      "code": "PERIOD_CHECKSUM",
+      "inspection": null
+    },
+    {
+      "path": "auxiliary-declaration-source.json",
+      "expectedSha256": "e4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2",
+      "actualSha256": "e4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2",
+      "byteLength": 148,
+      "status": "declared-only",
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-set-history-coverage.v1",
+        "byteLength": 148,
+        "title": "補助資料の形式指定",
+        "target": "coverage",
+        "destinationMessage": "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、「保存した履歴範囲JSONを元資料と照合」で選んでください。",
+        "validation": "declared-only",
+        "checksumVerified": false,
+        "sourceDigest": null,
+        "textDigest": null,
+        "scope": null,
+        "originalEvidenceValidated": false,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    }
+  ]
+}

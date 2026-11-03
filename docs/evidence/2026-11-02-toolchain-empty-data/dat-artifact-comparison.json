@@ -1,0 +1,12 @@
+{
+  "baselineSource": "502944c94ffed408356b487abc9a710807697ee2",
+  "changedArtifactFields": [
+    "buildInfoId"
+  ],
+  "abiEqual": true,
+  "creationBytecodeEqual": true,
+  "runtimeBytecodeEqual": true,
+  "baselineArtifactSha256": "bd996621a5f7d3bea50a1792d07f8007888c650d5656311d7af71b11aa976f29",
+  "candidateArtifactSha256": "ee5993ac0526aff0f9d75e1de75e0a544acdcd1bd384b94c692aa72f25d78722",
+  "contractSourceEqual": true
+}

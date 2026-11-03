@@ -1,0 +1,400 @@
+✖ setup refresh: source dispose wins over old view (12.6075ms)
+✖ setup refresh: source invalidate wins over old view (4.5314ms)
+✖ setup export: source dispose wins over old view (1.477ms)
+✖ setup export: source invalidate wins over old view (1.4274ms)
+✔ setup preview: source dispose wins over old view (1.1956ms)
+✖ setup preview: source invalidate wins over old view (2.7339ms)
+✖ setup a failed refresh cannot display successful confirmation (0.9528ms)
+✖ setup diagnostic code accessor is not evaluated (0.8864ms)
+✖ setup diagnostic dispose cannot be overwritten (1.5762ms)
+✖ setup diagnostic invalidate cannot be overwritten (1.3979ms)
+✖ setup unknown constructor diagnostic is plain text (0.9371ms)
+✖ setup unknown toString diagnostic is plain text (0.4668ms)
+✖ setup unknown __proto__ diagnostic is plain text (0.426ms)
+✖ setup post-apply refresh disposal cannot write a late success message (4.7962ms)
+✔ setup normal explicit preview and apply retain verified success (3.0944ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 2
+ℹ fail 13
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 414.3254
+
+✖ failing tests:
+
+test at test\wallet-setup-panel-lifecycle.test.js:21:99
+✖ setup refresh: source dispose wins over old view (12.6075ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   '設定状況を確認しました。実ウォレットの所有・接続は別途確認してください。',
+  -   '各カードの設定を確認してから保存できます。',
+      '別アドレスの設定: 0 / 3\n' +
+        'DAT: 未設定 / Base Sepolia\n' +
+        'EMA: 未設定 / Base Sepolia\n' +
+        'CAWELON: 未設定 / Base Sepolia',
+      '{\n' +
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:27:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '設定状況を確認しました。実ウォレットの所有・接続は別途確認してください。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": "0xabababababababababababababababababababab",\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n      "chainId": 84532\n    }\n  ]\n}' ],
+    expected: [ '各カードの設定を確認してから保存できます。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": "0xabababababababababababababababababababab",\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n      "chainId": 84532\n    }\n  ]\n}' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:21:99
+✖ setup refresh: source invalidate wins over old view (4.5314ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   '設定状況を確認しました。実ウォレットの所有・接続は別途確認してください。',
+  -   'カード設定が変わりました。必要な場合はプレビューをやり直してください。',
+      '別アドレスの設定: 0 / 3\n' +
+        'DAT: 未設定 / Base Sepolia\n' +
+        'EMA: 未設定 / Base Sepolia\n' +
+        'CAWELON: 未設定 / Base Sepolia',
+      '{\n' +
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:27:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '設定状況を確認しました。実ウォレットの所有・接続は別途確認してください。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": "0xabababababababababababababababababababab",\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n      "chainId": 84532\n    }\n  ]\n}' ],
+    expected: [ 'カード設定が変わりました。必要な場合はプレビューをやり直してください。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": "0xabababababababababababababababababababab",\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n      "chainId": 84532\n    }\n  ]\n}' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:21:99
+✖ setup export: source dispose wins over old view (1.477ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+  +   '現在の設定をJSONにしました。まだファイル保存はしていません。',
+  -   '各カードの設定を確認してから保存できます。',
+      '別アドレスの設定: 0 / 3\n' +
+        'DAT: 未設定 / Base Sepolia\n' +
+        'EMA: 未設定 / Base Sepolia\n' +
+        'CAWELON: 未設定 / Base Sepolia',
+      '{\n' +
+  ...
+        '      "agent": "DAT",\n' +
+  +     '      "account": null,\n' +
+  -     '      "account": "0xabababababababababababababababababababab",\n' +
+        '      "chainId": 84532\n' +
+        '    },\n' +
+        '    {\n' +
+        '      "agent": "EMA",\n' +
+  +     '      "account": null,\n' +
+  -     '      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n' +
+        '      "chainId": 84532\n' +
+        '    },\n' +
+        '    {\n' +
+        '      "agent": "CAWELON",\n' +
+  +     '      "account": null,\n' +
+  -     '      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n' +
+        '      "chainId": 84532\n' +
+        '    }\n' +
+        '  ]\n' +
+        '}'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:27:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '現在の設定をJSONにしました。まだファイル保存はしていません。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": null,\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": null,\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": null,\n      "chainId": 84532\n    }\n  ]\n}' ],
+    expected: [ '各カードの設定を確認してから保存できます。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": "0xabababababababababababababababababababab",\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n      "chainId": 84532\n    }\n  ]\n}' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:21:99
+✖ setup export: source invalidate wins over old view (1.4274ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+  +   '現在の設定をJSONにしました。まだファイル保存はしていません。',
+  -   'カード設定が変わりました。必要な場合はプレビューをやり直してください。',
+      '別アドレスの設定: 0 / 3\n' +
+        'DAT: 未設定 / Base Sepolia\n' +
+        'EMA: 未設定 / Base Sepolia\n' +
+        'CAWELON: 未設定 / Base Sepolia',
+      '{\n' +
+  ...
+        '      "agent": "DAT",\n' +
+  +     '      "account": null,\n' +
+  -     '      "account": "0xabababababababababababababababababababab",\n' +
+        '      "chainId": 84532\n' +
+        '    },\n' +
+        '    {\n' +
+        '      "agent": "EMA",\n' +
+  +     '      "account": null,\n' +
+  -     '      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n' +
+        '      "chainId": 84532\n' +
+        '    },\n' +
+        '    {\n' +
+        '      "agent": "CAWELON",\n' +
+  +     '      "account": null,\n' +
+  -     '      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n' +
+        '      "chainId": 84532\n' +
+        '    }\n' +
+        '  ]\n' +
+        '}'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:27:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '現在の設定をJSONにしました。まだファイル保存はしていません。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": null,\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": null,\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": null,\n      "chainId": 84532\n    }\n  ]\n}' ],
+    expected: [ 'カード設定が変わりました。必要な場合はプレビューをやり直してください。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": "0xabababababababababababababababababababab",\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n      "chainId": 84532\n    }\n  ]\n}' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:21:99
+✖ setup preview: source invalidate wins over old view (2.7339ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   '設定JSONの内容をプレビューしてから適用してください。',
+  -   'カード設定が変わりました。必要な場合はプレビューをやり直してください。',
+      '別アドレスの設定: 0 / 3\n' +
+        'DAT: 未設定 / Base Sepolia\n' +
+        'EMA: 未設定 / Base Sepolia\n' +
+        'CAWELON: 未設定 / Base Sepolia',
+      '{\n' +
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:27:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '設定JSONの内容をプレビューしてから適用してください。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": "0xabababababababababababababababababababab",\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n      "chainId": 84532\n    }\n  ]\n}' ],
+    expected: [ 'カード設定が変わりました。必要な場合はプレビューをやり直してください。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia', '{\n  "schema": "threecore-wallet-setup-v1",\n  "entries": [\n    {\n      "agent": "DAT",\n      "account": "0xabababababababababababababababababababab",\n      "chainId": 84532\n    },\n    {\n      "agent": "EMA",\n      "account": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",\n      "chainId": 84532\n    },\n    {\n      "agent": "CAWELON",\n      "account": "0xefefefefefefefefefefefefefefefefefefefef",\n      "chainId": 84532\n    }\n  ]\n}' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:30:1
+✖ setup a failed refresh cannot display successful confirmation (0.9528ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:32:42)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:36:1
+✖ setup diagnostic code accessor is not evaluated (0.8864ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:39:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:41:47
+✖ setup diagnostic dispose cannot be overwritten (1.5762ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '公開アドレスの形式を確認してください。未設定なら空欄にできます。'
+  - '各カードの設定を確認してから保存できます。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:46:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '公開アドレスの形式を確認してください。未設定なら空欄にできます。',
+    expected: '各カードの設定を確認してから保存できます。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:41:47
+✖ setup diagnostic invalidate cannot be overwritten (1.3979ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '公開アドレスの形式を確認してください。未設定なら空欄にできます。'
+  - 'カード設定が変わりました。必要な場合はプレビューをやり直してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:46:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '公開アドレスの形式を確認してください。未設定なら空欄にできます。',
+    expected: 'カード設定が変わりました。必要な場合はプレビューをやり直してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:48:59
+✖ setup unknown constructor diagnostic is plain text (0.9371ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:50:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:48:59
+✖ setup unknown toString diagnostic is plain text (0.4668ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'function'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:50:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'function',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:48:59
+✖ setup unknown __proto__ diagnostic is plain text (0.426ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'object' !== 'string'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:50:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'object',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\wallet-setup-panel-lifecycle.test.js:52:1
+✖ setup post-apply refresh disposal cannot write a late success message (4.7962ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'DAT・EMA・CAWELONの設定を反映しました。必要なカードで改めてWalletを選び、接続してください。',
+  +   '別アドレスの設定: 3 / 3\n' +
+  +     'DAT: 設定済み・接続未確認 / Base Sepolia\n' +
+  +     'EMA: 設定済み・接続未確認 / Base Sepolia\n' +
+  +     'CAWELON: 設定済み・接続未確認 / Base Sepolia'
+  -   'まだ設定は変更していません。変更内容を確認してください。',
+  -   '別アドレスの設定: 0 / 3\n' +
+  -     'DAT: 未設定 / Base Sepolia\n' +
+  -     'EMA: 未設定 / Base Sepolia\n' +
+  -     'CAWELON: 未設定 / Base Sepolia'
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-setup-panel-lifecycle.test.js:57:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'DAT・EMA・CAWELONの設定を反映しました。必要なカードで改めてWalletを選び、接続してください。', '別アドレスの設定: 3 / 3\nDAT: 設定済み・接続未確認 / Base Sepolia\nEMA: 設定済み・接続未確認 / Base Sepolia\nCAWELON: 設定済み・接続未確認 / Base Sepolia' ],
+    expected: [ 'まだ設定は変更していません。変更内容を確認してください。', '別アドレスの設定: 0 / 3\nDAT: 未設定 / Base Sepolia\nEMA: 未設定 / Base Sepolia\nCAWELON: 未設定 / Base Sepolia' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

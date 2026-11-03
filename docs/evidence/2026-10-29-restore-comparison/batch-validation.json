@@ -1,0 +1,108 @@
+{
+  "schema": "threecore.restore-comparison-checkpoint.v1",
+  "dateJst": "2026-10-29",
+  "completed": true,
+  "itemsCompleted": 10,
+  "totalItems": 10,
+  "sourceCommit": "aaa4489a2cf941ee5d6745f735ecc2375d823763",
+  "workItems": [
+    "Canonical change classification",
+    "Recorded account and chain comparison",
+    "Asset identity and separate accounting contexts",
+    "Recorded destination and format comparison",
+    "Exact policy changes with absent old-version fields",
+    "Added removed modified and reordered events",
+    "Recalculated modeled findings",
+    "Bounded review-only comparison download",
+    "Bounded offline comparison command",
+    "Regression and actual browser verification"
+  ],
+  "tests": {
+    "passed": 230,
+    "failed": 0,
+    "newTests": 41,
+    "pageTestsIncluded": 61,
+    "fullWalletRegressionRerun": false,
+    "command": "node --test --test-concurrency=2 test/operation-rehearsal*.test.js integration/operation-rehearsal-server.test.mjs integration/demo-server.test.mjs"
+  },
+  "browser": {
+    "name": "Microsoft Edge",
+    "url": "http://127.0.0.1:4231/rehearsal/",
+    "observations": 13,
+    "inputMethod": "Ordinary paste field",
+    "proposedChangesApplied": false,
+    "originalRecordsPreserved": true,
+    "derivedReportImportRejected": true
+  },
+  "comparison": {
+    "bytes": 20352,
+    "browserAndOfflineBytesMatch": true,
+    "sha256": "245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193",
+    "cliExit": 0,
+    "exitZeroMeaning": "Comparison completed, not equality, modeled constraint success or authorization"
+  },
+  "finalWorkspace": {
+    "downloadFilename": "ThreeCore-operation-workspace (4).json",
+    "bytes": 4771,
+    "matchesBefore": true,
+    "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302",
+    "offlineCheckerExit": 0,
+    "recordCounts": {
+      "DAT": 3,
+      "EMA": 2,
+      "CAWELON": 1
+    }
+  },
+  "files": [
+    {
+      "name": "before-workspace.json",
+      "bytes": 4771,
+      "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+    },
+    {
+      "name": "proposed-workspace.json",
+      "bytes": 3746,
+      "sha256": "3adef8ebdd198ed9dffd84919960dc2451d9956b48f68acf6c23973e5c626118"
+    },
+    {
+      "name": "edge-workspace-comparison.json",
+      "bytes": 20352,
+      "sha256": "245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193"
+    },
+    {
+      "name": "offline-comparison.json",
+      "bytes": 20352,
+      "sha256": "245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193"
+    },
+    {
+      "name": "edge-ui-observations.json",
+      "bytes": 17553,
+      "sha256": "44538761c6c67cb29af34972e4ba691eccccdee491a826ae9a560a8178a145c3"
+    },
+    {
+      "name": "edge-DAT-context-comparison.png",
+      "bytes": 64686,
+      "sha256": "289b36fa13b7cfcd0149723ca143517abf05902274c9cacd4047343a6b359c87"
+    },
+    {
+      "name": "edge-final-original-workspace.png",
+      "bytes": 82210,
+      "sha256": "3ff49c15c88250cd20a1e84f1756604bbcd891d7f1010eb69266550756bbf8eb"
+    },
+    {
+      "name": "edge-final-workspace.json",
+      "bytes": 4771,
+      "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+    },
+    {
+      "name": "final-workspace-offline-check.json",
+      "bytes": 6906,
+      "sha256": "35adcf272e80d5bd18bbb35688d87b7c117870d75139795599fcad89993b82ee"
+    },
+    {
+      "name": "rehearsal-tests.log",
+      "bytes": 18078,
+      "sha256": "4cac91a5a0d3c8cf6af0047f74fb47314b2a09feb8f1c5133a4cd57f3d0714ec"
+    }
+  ]
+}

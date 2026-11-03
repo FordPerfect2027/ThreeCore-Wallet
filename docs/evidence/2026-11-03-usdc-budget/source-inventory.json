@@ -1,0 +1,97 @@
+{
+  "baseCommit": "d363308a4da988941d6f8e85978fedbd38e5bb08",
+  "sources": [
+    {
+      "path": "examples/aerodrome-quote.html",
+      "sha256": "cd106ec47c17f41202c0f6b3feaf238d8be66ec2da28b14df3a5e8ab77bfefa7"
+    },
+    {
+      "path": "examples/dev-server.js",
+      "sha256": "e286e6fe2e4ce70f52257ce4574aed03399dd2920689e56db40abb7a0544aec7"
+    },
+    {
+      "path": "examples/operation-budget-evidence-page.js",
+      "sha256": "48ea977fabeec5a82df54d670d5fd4a4bdc4a0f920d344eae207d79c6679e93a"
+    },
+    {
+      "path": "examples/operation-budget-evidence.html",
+      "sha256": "1c5434772323c8c431c7945931e46f490ac927841efe9349223ab03a8fb9a78b"
+    },
+    {
+      "path": "examples/operation-budget-page.js",
+      "sha256": "55e4211201c2ee1976d9f76dfdfba4b71d6bd06327a871d5bab8bb6fc76ca03c"
+    },
+    {
+      "path": "examples/operation-budget.html",
+      "sha256": "2b032722b77aa98c5636561bf42a4d028c209c2f39de5c1648367b63159cf4d3"
+    },
+    {
+      "path": "examples/proposal-quote.html",
+      "sha256": "b3a3c57cf0ced1baf9e2cba1f368cb973f34b3f60613297759a44206aa79110b"
+    },
+    {
+      "path": "examples/shared-operation-budget-page.js",
+      "sha256": "6ab8fa9c3b44b76ec21a805638c0c16bdad462c618afe36a378da95f3f539e27"
+    },
+    {
+      "path": "examples/shared-operation-budget.html",
+      "sha256": "5bd8cb6c0b0d78f3e9530a96381ab6cc07b439c66cc38ef243a92bb0048673a3"
+    },
+    {
+      "path": "package.json",
+      "sha256": "aae90c6d2329147de11e0c36800a572a94cec6c40a67400374fe45ea127fb000"
+    },
+    {
+      "path": "src/operation-budget-evidence.js",
+      "sha256": "94b53e263c9ffcad1e3c5decf2249a90780c0da04d30df9ea4df0df916aa2860"
+    },
+    {
+      "path": "src/operation-budget.js",
+      "sha256": "445237f6955cfbb7ac3b33b2a8f7ab960c5301c9acb9da4aa4d1696599ba4ae4"
+    },
+    {
+      "path": "src/shared-operation-budget.js",
+      "sha256": "133f1f676b0b23405605401d5fccacf6ff6e4f6a56de3cb4a334e0ba1bafa5d7"
+    },
+    {
+      "path": "test/operation-budget-page.test.js",
+      "sha256": "2d34d8750c0e25809efd2706cb87533416ac4d2408bedf98f5b8063ab0d67b9e"
+    },
+    {
+      "path": "test/operation-budget-public-source.test.js",
+      "sha256": "b0b2f8a8200e0903580d76c1aa5ff6966d5122802f78520fa3aca1fd57dc6dba"
+    },
+    {
+      "path": "test/shared-operation-budget-page.test.js",
+      "sha256": "3980db26cdf9aa95d9e9d0cffcefd5aea4916a272f28d1492dc9153eece40861"
+    },
+    {
+      "path": "scripts/public-usdc.js",
+      "sha256": "c9959f76af4a1aef0886e8becb1c190fe0637c63898a7ccd9cc7d398e003e74b"
+    },
+    {
+      "path": "src/public-usdc-model.js",
+      "sha256": "15ed821a614116ba60a7619fee2b6d748ee67e423c58973ff201099188734e08"
+    },
+    {
+      "path": "src/public-usdc-reader.js",
+      "sha256": "8563acd0f2e8c922a24f1358219b8a735ee3cac0a83d394c2a552fb434f8829a"
+    },
+    {
+      "path": "test/helpers/usdc-fixture.js",
+      "sha256": "3eaa70b05d880795a3bdbde280cd24d1e3c5c3505454d89c2212b51b62e3117b"
+    },
+    {
+      "path": "test/public-usdc-cli.test.js",
+      "sha256": "a23d6599aa1568b8196f1bfb395fd73f8ff774a810efa931e0f249abb85913dc"
+    },
+    {
+      "path": "test/public-usdc-reader.test.js",
+      "sha256": "d4a4a306d9a82cf8baa5258669b309a359c6501895d02d42fe109d9728f2e0a4"
+    },
+    {
+      "path": "test/usdc-budget.test.js",
+      "sha256": "c738b722741042ec9deb9a51964874dc4ced57c512353270b321afe6b6357ad3"
+    }
+  ]
+}

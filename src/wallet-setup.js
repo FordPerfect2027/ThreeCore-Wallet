@@ -1,4 +1,5 @@
 import { parseSecurityJson } from "./security-json.js";
+import { captureDataRecord, captureDataArray } from "./security-data.js";
 import { AGENT_IDS, normalizeAddress } from "./wallet-session.js";
 import { observeCallbackResult } from "./security-callback.js";
 
@@ -16,24 +17,17 @@ export class WalletSetupError extends Error {
 const fail = code => { throw new WalletSetupError(code); };
 
 function fields(value, names) {
-  if (!value || typeof value !== "object" || Array.isArray(value) ||
-      ![Object.prototype, null].includes(Object.getPrototypeOf(value))) fail("SETUP_SHAPE");
-  const keys = Reflect.ownKeys(value);
-  if (keys.length !== names.length || keys.some(key => !names.includes(key))) fail("SETUP_SHAPE");
-  for (const key of keys) {
-    if (!("value" in Object.getOwnPropertyDescriptor(value, key))) fail("SETUP_SHAPE");
-  }
+  try { return captureDataRecord(value, names); }
+  catch { fail("SETUP_SHAPE"); }
 }
 
 function rows(value) {
-  if (!Array.isArray(value) || value.length !== AGENT_IDS.length ||
-      Reflect.ownKeys(value).some(key => !["0", "1", "2", "length"].includes(key))) fail("SETUP_ROWS");
+  let entries;
+  try { entries = captureDataArray(value, AGENT_IDS.length, AGENT_IDS.length); }
+  catch { fail("SETUP_ROWS"); }
   const result = [];
-  for (let index = 0; index < value.length; index++) {
-    const descriptor = Object.getOwnPropertyDescriptor(value, String(index));
-    if (!descriptor || !("value" in descriptor)) fail("SETUP_ROWS");
-    const row = descriptor.value;
-    fields(row, ["agent", "account", "chainId"]);
+  for (const entry of entries) {
+    const row = fields(entry, ["agent", "account", "chainId"]);
     if (!AGENT_IDS.includes(row.agent) || result.some(item => item.agent === row.agent)) fail("SETUP_AGENT");
     if (!CHAINS.includes(row.chainId)) fail("SETUP_CHAIN");
     result.push(row);
@@ -52,13 +46,10 @@ function address(value) {
 /** Configuration data only. A saved address never proves wallet ownership. */
 export function validateWalletSetup(value) {
   try {
-    fields(value, ["schema", "entries"]);
+    value = fields(value, ["schema", "entries"]);
     if (value.schema !== WALLET_SETUP_SCHEMA) fail("SETUP_SCHEMA");
-    const seen = new Set();
     const entries = rows(value.entries).map(row => {
       const account = address(row.account);
-      if (account && seen.has(account)) fail("SETUP_DUPLICATE");
-      if (account) seen.add(account);
       return Object.freeze({ agent: row.agent, account, chainId: row.chainId });
     });
     return Object.freeze({ schema: WALLET_SETUP_SCHEMA, entries: Object.freeze(entries) });
@@ -110,11 +101,11 @@ export function inspectWalletFields(value) {
     catch { return { ...row, account: null, status: "invalid" }; }
   });
   const entries = normalized.map(row => Object.freeze({ ...row,
-    status: row.account && normalized.filter(other => other.account === row.account).length > 1
-      ? "duplicate" : row.status,
+    sharedAccount: Boolean(row.account && normalized.filter(other => other.account === row.account).length > 1),
   }));
   const configured = entries.filter(row => row.status === "configured").length;
   return Object.freeze({ entries: Object.freeze(entries), configured,
+    distinctAccounts: new Set(entries.filter(row => row.account).map(row => row.account)).size,
     readyForManualConnection: configured === 3, ownershipVerified: false });
 }
 

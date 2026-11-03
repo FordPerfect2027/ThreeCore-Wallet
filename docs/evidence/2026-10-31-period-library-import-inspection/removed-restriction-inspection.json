@@ -1,0 +1,64 @@
+{
+  "schema": "threecore.period-library-import-inspection.v1",
+  "beforeCount": 1,
+  "incomingCount": 1,
+  "additions": 0,
+  "identical": 0,
+  "conflicts": 1,
+  "retainedIds": [],
+  "rows": [
+    {
+      "id": "12345678-1234-4234-8234-000000000001",
+      "kind": "conflict",
+      "before": {
+        "agent": "DAT",
+        "chainId": 8453,
+        "earlierBlock": "30",
+        "laterBlock": "42",
+        "archived": true,
+        "requiresNewPlan": true,
+        "completed": 3,
+        "total": 5,
+        "events": 1
+      },
+      "incoming": {
+        "agent": "DAT",
+        "chainId": 8453,
+        "earlierBlock": "30",
+        "laterBlock": "42",
+        "archived": false,
+        "requiresNewPlan": false,
+        "completed": 2,
+        "total": 5,
+        "events": 0
+      },
+      "changedFields": [
+        "archived",
+        "requiresNewPlan",
+        "draft"
+      ],
+      "removedRestriction": true,
+      "draftComparison": {
+        "kind": "shorter",
+        "changedParts": []
+      }
+    }
+  ],
+  "capacity": {
+    "entriesAfter": 1,
+    "maxEntries": 12,
+    "bytesAfter": 2810,
+    "maxBytes": 50331648,
+    "fits": true
+  },
+  "compatible": false,
+  "addOnly": true,
+  "historicalOnly": true,
+  "automaticallyApplied": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false,
+  "sourceChecksumsVerified": true,
+  "beforeDigest": "bbeeeebc6f4e3267e3d4db0b1a0d57e7b3394b54b809c2fc30e5998725ed65fd",
+  "incomingDigest": "090e80a919d7f26db0623d06a259c5f4dab7aa914fda371b0836c8010a4fdcff"
+}

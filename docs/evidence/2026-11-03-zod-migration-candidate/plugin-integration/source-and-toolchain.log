@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: contract source checker accepts every actual UTF-8 LF contract
+ok 1 - contract source checker accepts every actual UTF-8 LF contract
+  ---
+  duration_ms: 28.169
+  type: 'test'
+  ...
+# Subtest: actual source bytes survive Git checkouts with both autocrlf settings
+ok 2 - actual source bytes survive Git checkouts with both autocrlf settings
+  ---
+  duration_ms: 6717.0834
+  type: 'test'
+  ...
+# Subtest: the CLI rejects CRLF before compilation without rewriting the source
+ok 3 - the CLI rejects CRLF before compilation without rewriting the source
+  ---
+  duration_ms: 380.311
+  type: 'test'
+  ...
+# Subtest: source checker refuses missing sources, BOM, lone CR and invalid UTF-8
+ok 4 - source checker refuses missing sources, BOM, lone CR and invalid UTF-8
+  ---
+  duration_ms: 87.334
+  type: 'test'
+  ...
+# Subtest: actual runner includes TypeScript specs and excludes operational/support files
+ok 5 - actual runner includes TypeScript specs and excludes operational/support files
+  ---
+  duration_ms: 3535.3325
+  type: 'test'
+  ...
+# Subtest: actual runner propagates a failing Hardhat result
+ok 6 - actual runner propagates a failing Hardhat result
+  ---
+  duration_ms: 1094.888
+  type: 'test'
+  ...
+# Subtest: actual runner rejects an empty TypeScript suite before starting Hardhat
+ok 7 - actual runner rejects an empty TypeScript suite before starting Hardhat
+  ---
+  duration_ms: 520.8481
+  type: 'test'
+  ...
+# Subtest: toolchain preserves empty RPC data separately from a zero byte
+ok 8 - toolchain preserves empty RPC data separately from a zero byte
+  ---
+  duration_ms: 14.4007
+  type: 'test'
+  ...
+# Subtest: toolchain rejects malformed RPC data without repairing it into bytes
+ok 9 - toolchain rejects malformed RPC data without repairing it into bytes
+  ---
+  duration_ms: 1.0304
+  type: 'test'
+  ...
+# Subtest: toolchain accepts a valid fictional configuration without loading Hardhat settings
+ok 10 - toolchain accepts a valid fictional configuration without loading Hardhat settings
+  ---
+  duration_ms: 13.5666
+  type: 'test'
+  ...
+# Subtest: toolchain reports a nested invalid field as a structured error rather than throwing
+ok 11 - toolchain reports a nested invalid field as a structured error rather than throwing
+  ---
+  duration_ms: 4.2017
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8204.8028

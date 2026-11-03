@@ -1,0 +1,4 @@
+"simulationOnly","sourceVerified","authorizesExecution","agent","chainId","account","asset","decimals","id","kind","accepted","reasons","cashUnits","outstandingUnits","realizedPnlUnits","reservedExitFeeUnits","reservedAllocationUnits","availableCashUnits"
+"true","false","false","DAT","84532","0x1111111111111111111111111111111111111111","SIM","6","open-one","open","true","","899000000","100000000","-1000000","2000000","0","897000000"
+"true","false","false","DAT","84532","0x1111111111111111111111111111111111111111","SIM","6","step-2","settle","true","","1028000000","0","28000000","0","0","1028000000"
+"true","false","false","DAT","84532","0x1111111111111111111111111111111111111111","SIM","6","step-3","reserve","true","","1028000000","0","28000000","0","2800000","1025200000"

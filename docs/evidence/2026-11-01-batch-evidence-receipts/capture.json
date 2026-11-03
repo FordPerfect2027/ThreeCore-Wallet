@@ -1,0 +1,81 @@
+{
+  "source": "8a99a02",
+  "captures": [
+    {
+      "kind": "wallet",
+      "label": "matching",
+      "alteredReceipt": false,
+      "exitCode": 0,
+      "expectedEvidenceMatches": true,
+      "matchesRecomputation": true,
+      "file": "wallet-matching-check.json"
+    },
+    {
+      "kind": "wallet",
+      "label": "matching",
+      "alteredReceipt": true,
+      "exitCode": 2,
+      "expectedEvidenceMatches": true,
+      "matchesRecomputation": false,
+      "file": "wallet-matching-altered-check.json"
+    },
+    {
+      "kind": "wallet",
+      "label": "negative",
+      "alteredReceipt": false,
+      "exitCode": 0,
+      "expectedEvidenceMatches": false,
+      "matchesRecomputation": true,
+      "file": "wallet-negative-check.json"
+    },
+    {
+      "kind": "wallet",
+      "label": "negative",
+      "alteredReceipt": true,
+      "exitCode": 2,
+      "expectedEvidenceMatches": false,
+      "matchesRecomputation": false,
+      "file": "wallet-negative-altered-check.json"
+    },
+    {
+      "kind": "rehearsal",
+      "label": "matching",
+      "alteredReceipt": false,
+      "exitCode": 0,
+      "expectedEvidenceMatches": true,
+      "matchesRecomputation": true,
+      "file": "rehearsal-matching-check.json"
+    },
+    {
+      "kind": "rehearsal",
+      "label": "matching",
+      "alteredReceipt": true,
+      "exitCode": 2,
+      "expectedEvidenceMatches": true,
+      "matchesRecomputation": false,
+      "file": "rehearsal-matching-altered-check.json"
+    },
+    {
+      "kind": "rehearsal",
+      "label": "negative",
+      "alteredReceipt": false,
+      "exitCode": 0,
+      "expectedEvidenceMatches": false,
+      "matchesRecomputation": true,
+      "file": "rehearsal-negative-check.json"
+    },
+    {
+      "kind": "rehearsal",
+      "label": "negative",
+      "alteredReceipt": true,
+      "exitCode": 2,
+      "expectedEvidenceMatches": false,
+      "matchesRecomputation": false,
+      "file": "rehearsal-negative-altered-check.json"
+    }
+  ],
+  "actualOfflineCommands": 8,
+  "syntheticSources": true,
+  "externalRpcCalls": 0,
+  "userTabConnectionVerified": false
+}

@@ -1,0 +1,100 @@
+TAP version 13
+# Subtest: read-only CLI response-body deadlines
+    # Subtest: verify-base-mainnet.js
+    ok 1 - verify-base-mainnet.js
+      ---
+      duration_ms: 19909.1706
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11633 ms
+    # Subtest: inspect-wallet-readiness.js
+    ok 2 - inspect-wallet-readiness.js
+      ---
+      duration_ms: 20314.6004
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11801 ms
+    # Subtest: quote-dex.js
+    ok 3 - quote-dex.js
+      ---
+      duration_ms: 19929.8346
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11594 ms
+    # Subtest: inspect-transfers.js
+    ok 4 - inspect-transfers.js
+      ---
+      duration_ms: 20188.9381
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11797 ms
+    # Subtest: inspect-approvals.js
+    ok 5 - inspect-approvals.js
+      ---
+      duration_ms: 20033.6488
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11645 ms
+    1..5
+ok 1 - read-only CLI response-body deadlines
+  ---
+  duration_ms: 20360.5265
+  type: 'test'
+  ...
+# Subtest: body deadline aborts an unfinished stream without retries
+ok 2 - body deadline aborts an unfinished stream without retries
+  ---
+  duration_ms: 696.3205
+  type: 'test'
+  ...
+# Subtest: each request receives a fresh deadline and preserves split UTF-8 JSON
+ok 3 - each request receives a fresh deadline and preserves split UTF-8 JSON
+  ---
+  duration_ms: 1501.844
+  type: 'test'
+  ...
+# Subtest: an unexpired caller signal cannot disable the body deadline
+ok 4 - an unexpired caller signal cannot disable the body deadline
+  ---
+  duration_ms: 359.9266
+  type: 'test'
+  ...
+# Subtest: caller cancellation during a body read remains effective
+ok 5 - caller cancellation during a body read remains effective
+  ---
+  duration_ms: 126.5431
+  type: 'test'
+  ...
+# Subtest: oversized declared body is refused without retries
+ok 6 - oversized declared body is refused without retries
+  ---
+  duration_ms: 16.6498
+  type: 'test'
+  ...
+# Subtest: oversized chunked body is refused without retries
+ok 7 - oversized chunked body is refused without retries
+  ---
+  duration_ms: 121.5442
+  type: 'test'
+  ...
+# Subtest: complete HTTP JSON-RPC errors retain their error code
+ok 8 - complete HTTP JSON-RPC errors retain their error code
+  ---
+  duration_ms: 17.2518
+  type: 'test'
+  ...
+# Subtest: transport limits cannot be disabled or raised beyond the supported caps
+ok 9 - transport limits cannot be disabled or raised beyond the supported caps
+  ---
+  duration_ms: 1.1379
+  type: 'test'
+  ...
+1..9
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 20714.8947

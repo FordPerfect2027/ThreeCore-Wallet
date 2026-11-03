@@ -1,0 +1,55 @@
+{
+  "source": "2fab027",
+  "syntheticFixture": "test/helpers/report-history-fixtures.js sampleHistory; one synthetic annotation change",
+  "originals": [
+    {
+      "name": "before-history.json",
+      "sha256": "93eba56d0464ed26e535599a4f9bcba368a617ef7243779f805295f95be0e0ae"
+    },
+    {
+      "name": "after-history.json",
+      "sha256": "4be81406af89bb689dbc0c8e304e97d783f936bd8ae5bdb7279f1ad2860e37ca"
+    },
+    {
+      "name": "after-report.json",
+      "sha256": "712f800dcfe01bbfdd180d289c863f11a539c28a5e3e53f39a593a5216d5be15"
+    },
+    {
+      "name": "auxiliary.json",
+      "sha256": "73ff18c17d8bf28dd9c2ac3c4341989d6935f545017d9bd46ad9c4c9b3d2dfe6"
+    },
+    {
+      "name": "after-format-history.json",
+      "sha256": "90391c8d2c8498e2e4fff5af2fe514cb706a7bd1a1211baab1776418cdbb74ad"
+    }
+  ],
+  "comparisonSummary": {
+    "files": 8,
+    "bothSelected": 6,
+    "onlyBefore": 1,
+    "onlyAfter": 1,
+    "identical": 2,
+    "formatOnly": 1,
+    "changedOriginal": 1,
+    "differentFormat": 1,
+    "unverified": 1
+  },
+  "validReviewMatches": true,
+  "originalsAllIdentical": false,
+  "tamperedDifferences": [
+    "allSelectedOriginalsIdentical",
+    "summary"
+  ],
+  "reversedPairRejected": true,
+  "partial": {
+    "checked": 2,
+    "pending": 5,
+    "reviewReproducible": true,
+    "bothBatchesComplete": false
+  },
+  "artifactOrigin": "browser-shared APIs under Node; actual panel tested separately by native Chrome suite",
+  "originalsUnchanged": true,
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}

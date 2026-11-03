@@ -1,0 +1,146 @@
+{
+  "schema": "threecore.rehearsal-report-batch-review.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "manifestSha256": "634a5b08545c7a6093692f1ad279cc4fbf6e9771cb2c912281ff5f070407b262",
+  "allChecksumsAndRecomputationsMatch": false,
+  "limits": {
+    "maxReports": 50,
+    "maxReportBytes": 2097152,
+    "maxTotalBytes": 33554432
+  },
+  "summary": {
+    "files": 5,
+    "matched": 0,
+    "different": 2,
+    "checksumMismatched": 1,
+    "unsupported": 1,
+    "unreadable": 1,
+    "reportsWithFailedExpectations": 0,
+    "readBytes": 25099,
+    "admittedBytes": 25099
+  },
+  "files": [
+    {
+      "path": "control-1-tampered.json",
+      "expectedSha256": "ae6b64c4e29691613c44c9a7fe7c89c4e25ea12c65c938a9733d5b1d67c17d89",
+      "status": "different",
+      "byteLength": 9264,
+      "actualSha256": "ae6b64c4e29691613c44c9a7fe7c89c4e25ea12c65c938a9733d5b1d67c17d89",
+      "review": {
+        "schema": "threecore.operation-rehearsal-report-review.v1",
+        "simulationOnly": true,
+        "sourceVerified": false,
+        "authorizesExecution": false,
+        "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+        "byteLength": 9264,
+        "sha256": "ae6b64c4e29691613c44c9a7fe7c89c4e25ea12c65c938a9733d5b1d67c17d89",
+        "expectedSha256": "ae6b64c4e29691613c44c9a7fe7c89c4e25ea12c65c938a9733d5b1d67c17d89",
+        "checksumMatches": true,
+        "matchesRecomputation": false,
+        "differenceCount": 2,
+        "differences": [
+          {
+            "path": "/sourceVerified",
+            "kind": "value"
+          },
+          {
+            "path": "/metrics/0/after",
+            "kind": "value"
+          }
+        ],
+        "differencesTruncated": false,
+        "scope": [
+          {
+            "agent": "DAT",
+            "beforeRecords": 3,
+            "afterRecords": 3
+          }
+        ]
+      }
+    },
+    {
+      "path": "control-2-tampered.json",
+      "expectedSha256": "a070e4b99570fe21f4c921d90885ca1533efee939afb031ac49f7de513857faa",
+      "status": "different",
+      "byteLength": 7614,
+      "actualSha256": "a070e4b99570fe21f4c921d90885ca1533efee939afb031ac49f7de513857faa",
+      "review": {
+        "schema": "threecore.operation-rehearsal-report-review.v1",
+        "simulationOnly": true,
+        "sourceVerified": false,
+        "authorizesExecution": false,
+        "inputSchema": "threecore.operation-rehearsal-record-query.v1",
+        "byteLength": 7614,
+        "sha256": "a070e4b99570fe21f4c921d90885ca1533efee939afb031ac49f7de513857faa",
+        "expectedSha256": "a070e4b99570fe21f4c921d90885ca1533efee939afb031ac49f7de513857faa",
+        "checksumMatches": true,
+        "matchesRecomputation": false,
+        "differenceCount": 2,
+        "differences": [
+          {
+            "path": "/matchedRecords",
+            "kind": "value"
+          },
+          {
+            "path": "/rows/0/changes/0/delta",
+            "kind": "value"
+          }
+        ],
+        "differencesTruncated": false,
+        "scope": [
+          {
+            "agent": "DAT",
+            "beforeRecords": 3,
+            "afterRecords": null
+          },
+          {
+            "agent": "EMA",
+            "beforeRecords": 2,
+            "afterRecords": null
+          },
+          {
+            "agent": "CAWELON",
+            "beforeRecords": 1,
+            "afterRecords": null
+          }
+        ],
+        "reportOutcome": {
+          "kind": "record-query",
+          "query": {
+            "agent": "DAT",
+            "kind": "settle",
+            "decision": "all",
+            "search": ""
+          },
+          "totalRecords": 6,
+          "matchedRecords": 1
+        }
+      }
+    },
+    {
+      "path": "01-saved-report.json",
+      "expectedSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "status": "checksum-mismatch",
+      "byteLength": 8218,
+      "actualSha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2"
+    },
+    {
+      "path": "control-unsupported.json",
+      "expectedSha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "status": "unsupported",
+      "code": "UNSUPPORTED_REVIEW_REPORT",
+      "byteLength": 3,
+      "actualSha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+    },
+    {
+      "path": "deliberately-missing.json",
+      "expectedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": "unreadable",
+      "code": "FILE_MISSING",
+      "byteLength": null,
+      "actualSha256": null
+    }
+  ]
+}

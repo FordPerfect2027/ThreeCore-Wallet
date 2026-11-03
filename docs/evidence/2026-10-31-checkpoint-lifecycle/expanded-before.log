@@ -1,0 +1,35 @@
+✔ checkpoint: disposal during document capture cannot retain late metadata (6.1747ms)
+✔ checkpoint: diagnostic getters are not executed or exposed (1.1016ms)
+✔ checkpoint: diagnostic capture cannot revive disposed status (1.2737ms)
+✔ checkpoint: terminal observer disposal revokes successful refresh (1.8945ms)
+✔ checkpoint: notification callbacks cannot recurse indefinitely (1.375ms)
+✔ checkpoint: ID callback disposal prevents the later clock callback (47.5025ms)
+✔ checkpoint: metadata clock disposal prevents a storage call (20.6521ms)
+✖ checkpoint: post-save draft callback cannot change disposed state (17.5288ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 413.6354
+
+✖ failing tests:
+
+test at test\checkpoint-lifecycle.test.js:50:1
+✖ checkpoint: post-save draft callback cannot change disposed state (17.5288ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/checkpoint-lifecycle.test.js:58:51)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

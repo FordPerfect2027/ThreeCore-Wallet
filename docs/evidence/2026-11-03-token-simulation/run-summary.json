@@ -1,0 +1,149 @@
+{
+  "recordedAt": "2026-11-03T04:49:21.596Z",
+  "node": "v24.19.0",
+  "isolatedSimulatedChain": true,
+  "realWalletUsed": false,
+  "realAssetsMoved": false,
+  "userKeysRead": false,
+  "publicChainWrites": false,
+  "dependenciesInstalled": false,
+  "compilationRerun": false,
+  "results": [
+    {
+      "name": "guard-control",
+      "startedAt": "2026-11-03T04:48:48.172Z",
+      "endedAt": "2026-11-03T04:48:48.502Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 2,
+      "blockedNamedPipeCalls": 0,
+      "networkAttempts": 2,
+      "logSha256": "4057714227229552784bf086f7dda744af08c620db7e78d8fd73980c66da7329"
+    },
+    {
+      "name": "EMA-configuration",
+      "startedAt": "2026-11-03T04:48:49.683Z",
+      "endedAt": "2026-11-03T04:48:51.965Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 0,
+      "blockedNamedPipeCalls": 0,
+      "networkAttempts": 0,
+      "logSha256": "0e4a9153ae342d2eecc873e22742fb43766ab1c707f96166f609f03c1fa9653f"
+    },
+    {
+      "name": "CAWELON-configuration",
+      "startedAt": "2026-11-03T04:48:49.692Z",
+      "endedAt": "2026-11-03T04:48:52.310Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 0,
+      "blockedNamedPipeCalls": 0,
+      "networkAttempts": 0,
+      "logSha256": "0e4a9153ae342d2eecc873e22742fb43766ab1c707f96166f609f03c1fa9653f"
+    },
+    {
+      "name": "DAT-configuration",
+      "startedAt": "2026-11-03T04:48:49.669Z",
+      "endedAt": "2026-11-03T04:48:52.558Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 0,
+      "blockedNamedPipeCalls": 0,
+      "networkAttempts": 0,
+      "logSha256": "0e4a9153ae342d2eecc873e22742fb43766ab1c707f96166f609f03c1fa9653f"
+    },
+    {
+      "name": "EMA-contracts",
+      "startedAt": "2026-11-03T04:48:51.967Z",
+      "endedAt": "2026-11-03T04:49:09.407Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 1,
+      "blockedNamedPipeCalls": 1,
+      "networkAttempts": 0,
+      "logSha256": "b8826d394eb215b75ea2fc1e026c5b7bb1013e39732359de981b559fec5805c3"
+    },
+    {
+      "name": "CAWELON-contracts",
+      "startedAt": "2026-11-03T04:48:52.311Z",
+      "endedAt": "2026-11-03T04:49:09.521Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 1,
+      "blockedNamedPipeCalls": 1,
+      "networkAttempts": 0,
+      "logSha256": "cbb075ba1a0471c17b4472112a3e227b0b4db69f0ba607f6e1e1ef4e0bb02cd8"
+    },
+    {
+      "name": "DAT-contracts",
+      "startedAt": "2026-11-03T04:48:52.559Z",
+      "endedAt": "2026-11-03T04:49:10.360Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 1,
+      "blockedNamedPipeCalls": 1,
+      "networkAttempts": 0,
+      "logSha256": "5011959c8beb14f4a20832953212ee85566715a31d8a3df62b0e85d7abc00620"
+    },
+    {
+      "name": "EMA-history",
+      "startedAt": "2026-11-03T04:49:09.408Z",
+      "endedAt": "2026-11-03T04:49:20.300Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 0,
+      "blockedNamedPipeCalls": 0,
+      "networkAttempts": 0,
+      "logSha256": "a02f3fc2f2b8d690effbe95036e459f29f1c27407c150536981a5d9f34659c0c"
+    },
+    {
+      "name": "CAWELON-history",
+      "startedAt": "2026-11-03T04:49:09.522Z",
+      "endedAt": "2026-11-03T04:49:20.733Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 0,
+      "blockedNamedPipeCalls": 0,
+      "networkAttempts": 0,
+      "logSha256": "6253e487d465ffab0d790a8eac3a031c4e262eb7df26d7fe07f8721cabb2e4a0"
+    },
+    {
+      "name": "DAT-history",
+      "startedAt": "2026-11-03T04:49:10.361Z",
+      "endedAt": "2026-11-03T04:49:21.290Z",
+      "code": 0,
+      "signal": null,
+      "blockedCalls": 0,
+      "blockedNamedPipeCalls": 0,
+      "networkAttempts": 0,
+      "logSha256": "932aa3b8e1fdef4f1de729d749e15f0595098e3549af640cc6d2cc10c886b50d"
+    }
+  ],
+  "outcomes": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "token": "DAT",
+        "revision": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+        "workingTreeUnchanged": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "token": "EMA",
+        "revision": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+        "workingTreeUnchanged": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "token": "CAWELON",
+        "revision": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+        "workingTreeUnchanged": true
+      }
+    }
+  ]
+}

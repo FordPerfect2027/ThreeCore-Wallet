@@ -1,0 +1,122 @@
+{
+  "schema": "threecore.live-candidate-restore-progress.v1",
+  "recordedAt": "2026-11-02T10:09:27.707Z",
+  "candidateSource": "f52109a3a5d25665667b19b811584e33da035d15",
+  "recordingSource": "9393cf74118301d7da582acd03f853d5eb205244",
+  "origin": "http://127.0.0.1:4232",
+  "browser": "Microsoft Edge with existing MetaMask profile",
+  "actualTab": "148649803",
+  "initialHistories": [
+    0,
+    0,
+    0
+  ],
+  "restoredHistories": [
+    1,
+    1,
+    1
+  ],
+  "existingRecordsRemoved": 0,
+  "stepsObserved": {
+    "actualBrowserFileChooserUsed": true,
+    "internalChecksumAccepted": true,
+    "restorePreviewInspected": true,
+    "explicitRestoreConfirmed": true,
+    "restoredCardsRemainDisconnected": true,
+    "uiSettingsTokensAndHistoriesMatch": true,
+    "actualReexportDownloaded": true,
+    "reexportByteIdentical": true,
+    "permittedAccountReadCompleted": true,
+    "ordinaryConnectionRequestStarted": true,
+    "inactivityProtectionStoppedConnections": true,
+    "restoredHistoriesRetainedAfterInactivityStop": true
+  },
+  "connection": {
+    "permittedAccountCountBeforeRequest": 0,
+    "requestOutcome": "Application wait expired while the MetaMask confirmation remained unresolved. No second permission request was issued.",
+    "explicitLiveReconnectCompleted": false,
+    "newBalanceReadCompleted": false,
+    "returnToOriginalCompleted": false
+  },
+  "integrity": {
+    "recordedAt": "2026-11-02T10:02:49.085Z",
+    "source": "ThreeCore-workspace-backup (14).json",
+    "candidateExport": "ThreeCore-workspace-backup (15).json",
+    "bytes": 4371,
+    "sha256": "97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4",
+    "byteIdentical": true,
+    "networkReadPerformed": false,
+    "connectionRestored": false
+  },
+  "privateEvidence": [
+    {
+      "filename": "ThreeCore-workspace-backup (14).json",
+      "bytes": 4371,
+      "sha256": "97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4"
+    },
+    {
+      "filename": "ThreeCore-workspace-backup (15).json",
+      "bytes": 4371,
+      "sha256": "97f0ff6650a6beb26077cb2257e6668c337a7cb8d579f687451990c85988efe4"
+    },
+    {
+      "filename": "candidate-restore-preview.txt",
+      "bytes": 7453,
+      "sha256": "6314c79e7d65861c552bf20da33b989ff4d3810d3325a80d9c14f36610812162"
+    },
+    {
+      "filename": "candidate-restored-state.json",
+      "bytes": 869,
+      "sha256": "4b5915358513841ce9ee07d45da3f28bfadbc6a3871749448dae0128cbc23ed1"
+    },
+    {
+      "filename": "candidate-restore-comparison.txt",
+      "bytes": 7229,
+      "sha256": "4df5800b4d4e57cfe4ae880367a41569d19879ff20022778ec498e858ca2efe6"
+    },
+    {
+      "filename": "candidate-connection-pending.png",
+      "bytes": 27126,
+      "sha256": "6168443de25f7513ea4235b0800f02fb8a74482b9e9a89e160027fe9ebaebcb8"
+    },
+    {
+      "filename": "candidate-connection-pending.txt",
+      "bytes": 11016,
+      "sha256": "5d155406b88725ad04d01163d7bb62c529032e6c24b6e75a48ffada314c60662"
+    },
+    {
+      "filename": "candidate-export-comparison.json",
+      "bytes": 346,
+      "sha256": "f84557f487d77e43a9f801416062877ab81c80d0af05c01ff96061cbe5892107"
+    },
+    {
+      "filename": "candidate-restored-overview.png",
+      "bytes": 36151,
+      "sha256": "6ff82a4b5184907e3acb8ede955f2198e4263eb300db8281f3363164a27386c2"
+    },
+    {
+      "filename": "candidate-restored-overview.txt",
+      "bytes": 6613,
+      "sha256": "cab8cf4cefb77f03999728316b8254c0d26f4fa47ce025514da9ba177f0bf1be"
+    }
+  ],
+  "originalServer": {
+    "pid": 2108,
+    "restarted": false
+  },
+  "candidateServer": {
+    "pid": 28252,
+    "port": 4232
+  },
+  "limits": [
+    "The operator opened 4232 in the former Wallet tab; initial candidate inputs and histories were empty. The prior in-memory page is not claimed to survive. Original saved files and server were preserved.",
+    "This completes actual restore and byte-identical export in the new candidate, not MetaMask permission, live reads, or return to the original version.",
+    "The ordinary same-origin rehearsal link did not yield a visible new tab; direct navigation of the unused error tab remained refused. The duplicate error tab was closed; the restored Wallet remains open.",
+    "Native Windows extension control remains unavailable; the existing user connection question is pending.",
+    "No full regression, independent review or release-percentage calculation was performed."
+  ],
+  "transactionsSigned": 0,
+  "transactionsSubmitted": 0,
+  "secretKeysRead": false,
+  "githubModified": false
+}

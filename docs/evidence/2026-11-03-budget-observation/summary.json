@@ -1,0 +1,68 @@
+{
+  "recordedAt": "2026-11-03T08:59:25.859Z",
+  "baseCommit": "34effdc",
+  "scope": "Historical saved token-observation reconciliation against manual budget inputs",
+  "verification": {
+    "tests": 920,
+    "passed": 920,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "log": "focused-tests.tap",
+    "fullWalletRegressionRerun": false
+  },
+  "browser": {
+    "type": "Codex in-app browser",
+    "origin": "http://127.0.0.1:4243",
+    "originalSourceFilesUnchanged": true,
+    "sourceHashes": [
+      "55932a09f935d666a9629a71254497fcb822f0b67029b3691d65fae02fd0a190",
+      "faa969ac284175cab821a301915362d0ec1da2023f27783995aa73dc132cc00a",
+      "65c57ed9a1cfff1720957a3e99d5046eb3581485f5dce7cec1a327200aa5d4e4"
+    ],
+    "mixedBlocks": {
+      "DAT": "53413786",
+      "EMA": "53413786",
+      "CAWELON": "53413972",
+      "consistent": false,
+      "groupReasons": [
+        "SOURCE_BLOCK_MISMATCH"
+      ],
+      "allIndividualBalancesMatch": true,
+      "bytes": 5693,
+      "sha256": "de043fec88e2bea13dbadaf99a63d0017b19ed1fc3998b7d469ec675570eace1",
+      "saveRestoreReexportByteIdentical": true
+    },
+    "sameBlockPair": {
+      "agents": [
+        "DAT",
+        "EMA"
+      ],
+      "block": "53413786",
+      "consistent": true,
+      "budgetConstraintsSatisfied": false,
+      "bytes": 3862,
+      "sha256": "eb0a7d9d56b832a9496082bae589d5797d0c092f24c6e7ed7202e0d7817fc878"
+    },
+    "offlineAndBrowserAgree": true,
+    "screenshots": [
+      {
+        "name": "ThreeCore-budget-record-mismatch-20261103.jpg",
+        "bytes": 69311,
+        "sha256": "97fe1919a4c3ac04f4b9c104c9a8967356b5cd995e4a391485cecb3b5b13f353"
+      },
+      {
+        "name": "ThreeCore-budget-record-match-20261103.jpg",
+        "bytes": 64570,
+        "sha256": "9e09d3b4de5cfd08ea3eeab683a4eebf468dc6cefe967b23b8b8a97ca4451218"
+      }
+    ]
+  },
+  "historicalOnly": true,
+  "newChainReads": 0,
+  "walletRequests": 0,
+  "transactions": 0,
+  "githubWrites": 0,
+  "fullAddressEvidenceKeptInDownloads": true,
+  "overall90PercentEstablished": false
+}

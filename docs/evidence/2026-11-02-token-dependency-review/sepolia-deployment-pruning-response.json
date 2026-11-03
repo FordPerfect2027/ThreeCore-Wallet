@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-02T01:39:21.413Z",
+  "endpoint": "https://sepolia.base.org",
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "eth_getBlockByNumber",
+    "params": [
+      "0x0",
+      false
+    ]
+  },
+  "httpStatus": 200,
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "error": {
+      "code": 4444,
+      "message": "pruned history unavailable: requested 0, earliest available 46500000"
+    }
+  }
+}

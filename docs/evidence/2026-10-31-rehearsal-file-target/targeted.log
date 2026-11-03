@@ -1,0 +1,44 @@
+✔ declared format points to its actual destination: threecore.operation-rehearsal.v1 (7.2283ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal.v2 (0.6466ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-workspace.v1 (0.5855ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-session.v1 (0.4655ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-scenario-set.v1 (0.502ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-check-suite.v1 (0.5536ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-overview.v1 (0.4436ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-comparison.v1 (0.7066ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-scenario.v1 (0.5985ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-scenario-set-report.v1 (0.808ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-check-report.v1 (0.4511ms)
+✔ declared format points to its actual destination: threecore.operation-rehearsal-record-query.v1 (0.3647ms)
+✔ unknown or ambiguous declaration receives no guessed route: malformed (0.7634ms)
+✔ unknown or ambiguous declaration receives no guessed route: array (0.2225ms)
+✔ unknown or ambiguous declaration receives no guessed route: null (0.2108ms)
+✔ unknown or ambiguous declaration receives no guessed route: unknown (0.1933ms)
+✔ unknown or ambiguous declaration receives no guessed route: not-simulation (0.1806ms)
+✔ unknown or ambiguous declaration receives no guessed route: missing-simulation (0.2447ms)
+✔ unknown or ambiguous declaration receives no guessed route: duplicate (0.2521ms)
+✔ unknown or ambiguous declaration receives no guessed route: unsafe-key (0.2943ms)
+✔ unknown or ambiguous declaration receives no guessed route: deep (0.3112ms)
+✔ unknown or ambiguous declaration receives no guessed route: too-large (0.2714ms)
+✔ unknown or ambiguous declaration receives no guessed route: non-string (0.2196ms)
+✔ routing notices never replace successful validation or expose arbitrary exception messages (1.9226ms)
+✔ a saved review receipt requests its original source rather than routing back into review (0.3601ms)
+✔ file wrong-format file explains destination and preserves live records (123.4879ms)
+✔ workspace-file wrong-format file explains destination and preserves live records (32.7883ms)
+✔ workspace-file wrong-format paste explains destination and preserves live records (28.0695ms)
+✔ session-file wrong-format file explains destination and preserves live records (24.5427ms)
+✔ session-file wrong-format paste explains destination and preserves live records (24.0155ms)
+✔ scenario-set-file wrong-format file explains destination and preserves live records (21.5808ms)
+✔ scenario-set-file wrong-format paste explains destination and preserves live records (21.1897ms)
+✔ check-suite-file wrong-format file explains destination and preserves live records (34.0358ms)
+✔ check-suite-file wrong-format paste explains destination and preserves live records (16.8713ms)
+✔ report-review-file wrong-format file explains destination and preserves live records (22.926ms)
+✔ report-review-file wrong-format paste explains destination and preserves live records (22.5141ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 822.9927

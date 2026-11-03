@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-03T11:54:25.490Z",
+  "download": "ThreeCore-USDC-53457078.json",
+  "sha256": "7c05523135301f142280f7b661ab9ef3cb269359d9a474837badf1b7b17c674f",
+  "bytes": 915,
+  "sameChainFieldsAsEarlierCommand": true,
+  "acquisitionTimeChanged": true,
+  "blockNumber": "53457078",
+  "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+  "usdcUnits": "0",
+  "ethWei": "700000000000000",
+  "budgetEvidenceConsistent": true,
+  "budgetSatisfied": false
+}

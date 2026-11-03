@@ -1,0 +1,147 @@
+{
+  "schema": "threecore.toolchain-empty-data-review.v1",
+  "recordedAt": "2026-11-02T12:31:44.097Z",
+  "node": "v24.19.0",
+  "walletSource": "ed32d7cd2593f8fc73b5a46ac27b6b1b2454d6c2",
+  "tokens": [
+    {
+      "token": "DAT",
+      "parent": "502944c94ffed408356b487abc9a710807697ee2",
+      "commit": "47d8aa9db72e54e49fc9521f9b4022c416a7c6d1",
+      "clean": true,
+      "originalWorktreeClean": true,
+      "tests": {
+        "sourceAndRouting": 7,
+        "toolchain": 2,
+        "contracts": 37,
+        "readOnly": 251,
+        "localHistory": 10,
+        "walletCompatibility": 50
+      },
+      "standardPipeline": "All individual standard check components executed",
+      "finalTestResolution": "The pure regression resolves dependencies from Hardhat itself; all three final reruns passed.",
+      "logs": [
+        "candidate-source-test.log",
+        "dat-toolchain-final.log",
+        "candidate-compile.log",
+        "dat-contract-test.log",
+        "candidate-typecheck.log",
+        "candidate-read-only-test.log",
+        "dat-history-test.log",
+        "dat-wallet-compatibility.log"
+      ],
+      "snapshots": {
+        "package.json": {
+          "file": "dat-package.json",
+          "sha256": "3c78ae7299c279504ef94b6309c2c5e502ebf7a9d7eeec0034fe7e4e0364d96f"
+        },
+        "package-lock.json": {
+          "file": "dat-package-lock.json",
+          "sha256": "5608d4e5ead1c387174987a2b0e8e83b9bc660aa8a89220fc8194824c4bbad1c"
+        },
+        "integration/toolchain-data.test.mjs": {
+          "file": "dat-integration-toolchain-data.test.mjs",
+          "sha256": "b6a83086a04d57427dbf78e55b4999e7db32b88ee65ffb31b2c41f5b0e3ed6f6"
+        }
+      }
+    },
+    {
+      "token": "EMA",
+      "parent": "9cad39a196e8afc37abb5b99c260e00327c55d1c",
+      "commit": "5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac",
+      "clean": true,
+      "originalWorktreeClean": true,
+      "tests": {
+        "sourceAndRouting": 7,
+        "toolchain": 2,
+        "contracts": 39,
+        "readOnly": 227,
+        "localHistory": 10,
+        "walletCompatibility": 50
+      },
+      "standardPipeline": "npm run check completed through final local-history stage",
+      "finalTestResolution": "The pure regression resolves dependencies from Hardhat itself; all three final reruns passed.",
+      "logs": [
+        "ema-check.log",
+        "ema-toolchain-final.log",
+        "ema-wallet-compatibility.log"
+      ],
+      "snapshots": {
+        "package.json": {
+          "file": "ema-package.json",
+          "sha256": "26b2b5e6f2c2934ec92852e190714d864dcf3379f15493ce5352c2e2fb3ded5b"
+        },
+        "package-lock.json": {
+          "file": "ema-package-lock.json",
+          "sha256": "a71b7e901e7470b67d40687609b63b00eac0686e677305d5a960558b7ad7b35d"
+        },
+        "integration/toolchain-data.test.mjs": {
+          "file": "ema-integration-toolchain-data.test.mjs",
+          "sha256": "b6a83086a04d57427dbf78e55b4999e7db32b88ee65ffb31b2c41f5b0e3ed6f6"
+        }
+      }
+    },
+    {
+      "token": "CAWELON",
+      "parent": "e3a5fbb966008319b7b7204ddbfb705a3e9ab12c",
+      "commit": "4af9e1db98cac546e498b6f34531ba890cc2e3c0",
+      "clean": true,
+      "originalWorktreeClean": true,
+      "tests": {
+        "sourceAndRouting": 7,
+        "toolchain": 2,
+        "contracts": 39,
+        "readOnly": 227,
+        "localHistory": 10,
+        "walletCompatibility": 50
+      },
+      "standardPipeline": "npm run check completed through final local-history stage",
+      "finalTestResolution": "The pure regression resolves dependencies from Hardhat itself; all three final reruns passed.",
+      "logs": [
+        "cawelon-check.log",
+        "cawelon-toolchain-final.log",
+        "cawelon-wallet-compatibility.log"
+      ],
+      "snapshots": {
+        "package.json": {
+          "file": "cawelon-package.json",
+          "sha256": "55c1f251fb34b80555938cf9326e47819b54809f72521fe3cd7a79d3b69db2a7"
+        },
+        "package-lock.json": {
+          "file": "cawelon-package-lock.json",
+          "sha256": "6cf5bbcd7c38fe1d825c8f45e1c5618214ad6c2f9407767e7f2dec35800d9508"
+        },
+        "integration/toolchain-data.test.mjs": {
+          "file": "cawelon-integration-toolchain-data.test.mjs",
+          "sha256": "b6a83086a04d57427dbf78e55b4999e7db32b88ee65ffb31b2c41f5b0e3ed6f6"
+        }
+      }
+    }
+  ],
+  "installation": {
+    "primary": "One DAT dependency installation, shared by junction with EMA and CAWELON; three independent token sources/artifacts were tested.",
+    "cleanReproduction": "A separate initially empty installation reproduced the corrected lock and pure regression. Existing npm cache was reused; install scripts were disabled.",
+    "cleanInstallLog": "clean-install.log",
+    "cleanInstallTestLog": "clean-install-toolchain-test.log"
+  },
+  "artifactComparison": "artifact-comparisons.json",
+  "upstream": [
+    "https://github.com/NomicFoundation/hardhat/pull/8765",
+    "https://github.com/NomicFoundation/hardhat/issues/8790"
+  ],
+  "remainingAudit": {
+    "rootAdvisories": [
+      "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5"
+    ],
+    "packageEntries": 6,
+    "resolved": false
+  },
+  "scope": "Local Windows development-toolchain repair. Contract/history compatibility uses synthetic in-process EVM fixtures, including synthetic transactions/signatures. No user wallet, public transaction, private key or seed was accessed.",
+  "exclusions": [
+    "No new live-wallet switching result",
+    "No independent review",
+    "No deployment or release approval",
+    "No remote publication or CI rerun",
+    "Not a readiness percentage"
+  ]
+}

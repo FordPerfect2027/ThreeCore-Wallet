@@ -8,12 +8,19 @@
  * No wallet is connected. No signatures, swaps or funds are moved.
  */
 import { inspectAerodromePools } from "../src/aerodrome-pools.js";
+import { parsePublicDiagnosticArgs } from "./public-diagnostic-options.js";
+import { withDiagnosticInterrupt, DiagnosticInterruptError } from "./public-diagnostic-interrupt.js";
 
+const parsed = parsePublicDiagnosticArgs("pools", process.argv.slice(2));
+if (!parsed.ok || parsed.help) {
+  (parsed.ok ? process.stdout : process.stderr).write(parsed.usage + "\n");
+  process.exit(parsed.ok ? 0 : 2);
+}
 try {
-  const report = await inspectAerodromePools();
+  const report = await withDiagnosticInterrupt(signal => inspectAerodromePools({ signal }));
   process.stdout.write(JSON.stringify(report, null, 2) + "\n");
 } catch (error) {
   process.stderr.write("Aerodrome pool check failed: " +
     (error?.code ?? "RPC_ERROR") + " " + (error?.message ?? String(error)) + "\n");
-  process.exitCode = 1;
+  process.exitCode = error instanceof DiagnosticInterruptError ? error.exitCode : 1;
 }

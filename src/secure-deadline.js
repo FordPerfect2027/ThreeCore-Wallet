@@ -41,7 +41,7 @@ export function createSecureDeadline({
     if (reason === "SECURE_CLOCK" || reason === "SECURE_TIMER") fault = reason;
     expires = null;
     clearTimer();
-    try { Promise.resolve(onExpire(reason)).catch(() => {}); } catch {}
+    consumeCallback(() => onExpire(reason));
     return false;
   }
   function clock() {

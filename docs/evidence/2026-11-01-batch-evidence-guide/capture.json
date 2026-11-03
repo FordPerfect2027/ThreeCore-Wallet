@@ -1,0 +1,148 @@
+{
+  "source": "83cb205",
+  "synthetic": true,
+  "sourceBundleDigest": "901603b60a2a587f4751f23c1f41ba89e85e7579e41dae451843171ca3cd21dc",
+  "sourceBundle": "2026-11-01-wallet-batch-evidence/mixed-bundle.json",
+  "captures": [
+    {
+      "name": "declared-type-only",
+      "guideStatus": "形式の指定だけを判別しました。補助資料の中身は検証していません。",
+      "handoff": "",
+      "batchStatus": "",
+      "batchSummary": "",
+      "rows": [],
+      "secondPickerWasNotUsed": true,
+      "batchOpen": false
+    },
+    {
+      "name": "verified-originals-and-negative-scope",
+      "guideStatus": "形式の指定だけを判別しました。補助資料の中身は検証していません。",
+      "handoff": "同じファイルの再確認を終えました。一括資料の欄で結果をご確認ください。履歴や設定の復元は行っていません。",
+      "batchStatus": "保存内容と再確認の結果が一致しました。元ファイルを確認一覧に開きました。ウォレットの履歴や設定への取り込みは行っていません。 内部チェックサムのない資料・補助資料・確認できない資料は、各行で区別しています。",
+      "batchSummary": "3件中、確認済み 3件／未確認 0件。元記録 1件、補助資料 0件、形式・照合値の問題 1件。 練習用 1件（実際の入出金の証拠ではありません）。 データ形式を確認・内部チェックサムなし 1件。内部チェックサム付きの元記録とは分けています。",
+      "rows": [
+        {
+          "name": "period.json",
+          "status": "元記録の形式・内部チェックサムを確認"
+        },
+        {
+          "name": "plain.json",
+          "status": "データ形式を確認・内部チェックサムなし"
+        },
+        {
+          "name": "invalid.json",
+          "status": "元記録を確認できません"
+        }
+      ],
+      "secondPickerWasNotUsed": true,
+      "batchOpen": true
+    },
+    {
+      "name": "altered-claims-retain-prior-list",
+      "guideStatus": "形式の指定だけを判別しました。補助資料の中身は検証していません。",
+      "handoff": "再確認の完了を確認できませんでした。一括資料の欄の結果をご確認ください。この案内は保持しています。",
+      "batchStatus": "保存内容と再確認の結果に相違があります。現在の一覧は置き換えていません。照合結果の控えを保存できます。",
+      "batchSummary": "3件中、確認済み 3件／未確認 0件。元記録 1件、補助資料 0件、形式・照合値の問題 1件。 練習用 1件（実際の入出金の証拠ではありません）。 データ形式を確認・内部チェックサムなし 1件。内部チェックサム付きの元記録とは分けています。",
+      "rows": [
+        {
+          "name": "period.json",
+          "status": "元記録の形式・内部チェックサムを確認"
+        },
+        {
+          "name": "plain.json",
+          "status": "データ形式を確認・内部チェックサムなし"
+        },
+        {
+          "name": "invalid.json",
+          "status": "元記録を確認できません"
+        }
+      ],
+      "secondPickerWasNotUsed": true,
+      "batchOpen": true
+    }
+  ],
+  "guideTypes": [
+    {
+      "schema": "threecore.saved-file-inspection.v1",
+      "sourceSchema": "threecore.wallet-saved-batch-evidence.v1",
+      "byteLength": 101,
+      "title": "補助資料の形式指定",
+      "target": null,
+      "destinationMessage": "複数の元ファイルと確認結果をまとめる資料の形式です。ここでは中身や結論を検証していません。『このファイルを一括資料として再確認』から確認できます。元ファイル合計24 MiB、保存資料48 MiBまでです。この案内欄の上限16 MiBを超える資料は、一括確認欄の『まとめて保存した資料を再確認』で直接選んでください。",
+      "validation": "declared-only",
+      "checksumVerified": false,
+      "sourceDigest": null,
+      "textDigest": null,
+      "scope": null,
+      "originalEvidenceValidated": false,
+      "restorable": false,
+      "automaticallyImported": false,
+      "liveChainRechecked": false,
+      "authenticated": false,
+      "authorizesExecution": false
+    },
+    {
+      "schema": "threecore.saved-file-inspection.v1",
+      "sourceSchema": "threecore.wallet-saved-batch-evidence-review.v1",
+      "byteLength": 108,
+      "title": "補助資料の形式指定",
+      "target": null,
+      "destinationMessage": "これはまとめて保存した資料の照合結果の控えです。元ファイルの内容は含まれません。再確認には、この控えではなく元ファイルをまとめた資料を使ってください。",
+      "validation": "declared-only",
+      "checksumVerified": false,
+      "sourceDigest": null,
+      "textDigest": null,
+      "scope": null,
+      "originalEvidenceValidated": false,
+      "restorable": false,
+      "automaticallyImported": false,
+      "liveChainRechecked": false,
+      "authenticated": false,
+      "authorizesExecution": false
+    },
+    {
+      "schema": "threecore.saved-file-inspection.v1",
+      "sourceSchema": "threecore.operation-rehearsal-batch-evidence.v1",
+      "byteLength": 108,
+      "title": "補助資料の形式指定",
+      "target": null,
+      "destinationMessage": "運用リハーサルの元資料と確認結果をまとめる資料の形式です。ここでは中身や結論を検証していません。運用リハーサルの『資料の再確認』内にある『元資料と結果を一つにまとめて保存・再確認』で選んでください。実際の入出金の証明や履歴の復元には使いません。",
+      "validation": "declared-only",
+      "checksumVerified": false,
+      "sourceDigest": null,
+      "textDigest": null,
+      "scope": null,
+      "originalEvidenceValidated": false,
+      "restorable": false,
+      "automaticallyImported": false,
+      "liveChainRechecked": false,
+      "authenticated": false,
+      "authorizesExecution": false
+    },
+    {
+      "schema": "threecore.saved-file-inspection.v1",
+      "sourceSchema": "threecore.operation-rehearsal-batch-evidence-review.v1",
+      "byteLength": 115,
+      "title": "補助資料の形式指定",
+      "target": null,
+      "destinationMessage": "これはまとめて保存した資料の照合結果の控えです。元ファイルの内容は含まれません。再確認には、この控えではなく元ファイルをまとめた資料を使ってください。",
+      "validation": "declared-only",
+      "checksumVerified": false,
+      "sourceDigest": null,
+      "textDigest": null,
+      "scope": null,
+      "originalEvidenceValidated": false,
+      "restorable": false,
+      "automaticallyImported": false,
+      "liveChainRechecked": false,
+      "authenticated": false,
+      "authorizesExecution": false
+    }
+  ],
+  "nativeFocusedCases": 117,
+  "lastFullBrowserSource": "ccbbbe3",
+  "lastFullBrowserCases": 959,
+  "fullBrowserCoverage": false,
+  "userTabConnectionVerified": false,
+  "realProviderCalls": 0
+}

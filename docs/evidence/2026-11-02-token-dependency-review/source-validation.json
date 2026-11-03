@@ -1,0 +1,162 @@
+{
+  "node": "v24.19.0",
+  "runs": [
+    {
+      "token": "DAT",
+      "kind": "tooling",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "integration/source-portability.test.mjs",
+        "integration/test-routing.test.mjs"
+      ],
+      "started": "2026-11-01T23:42:07.023Z",
+      "finished": "2026-11-01T23:42:10.141Z",
+      "code": 0,
+      "logSha256": "3d99d1bd9a08af8003aa1f030534c154609435de582a24b8ea84245bb2edd605"
+    },
+    {
+      "token": "DAT",
+      "kind": "contracts-fixed",
+      "args": [
+        "scripts/test-contracts.js",
+        "--no-compile"
+      ],
+      "started": "2026-11-01T23:42:10.145Z",
+      "finished": "2026-11-01T23:42:17.265Z",
+      "code": 0,
+      "logSha256": "909333857de11ca94f6a108683ac1ecfeae750a8df201593b4cda72ebf26f26d"
+    },
+    {
+      "token": "DAT",
+      "kind": "history",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "integration/history-compatibility.test.mjs"
+      ],
+      "started": "2026-11-01T23:42:17.266Z",
+      "finished": "2026-11-01T23:42:22.953Z",
+      "code": 0,
+      "logSha256": "16b9ff0e2c3516300911a5e90983f2d35829c33a53f4f5443f6bec4c4fb745e4"
+    },
+    {
+      "token": "DAT",
+      "kind": "wallet",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/integration/token-compatibility.test.mjs"
+      ],
+      "started": "2026-11-01T23:42:22.954Z",
+      "finished": "2026-11-01T23:42:33.445Z",
+      "code": 0,
+      "logSha256": "96332958a22b1053fa0858a9a2b6c7d8788f3d132b63662668b4827424da9bbf"
+    },
+    {
+      "token": "EMA",
+      "kind": "tooling",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "integration/source-portability.test.mjs",
+        "integration/test-routing.test.mjs"
+      ],
+      "started": "2026-11-01T23:42:33.446Z",
+      "finished": "2026-11-01T23:42:37.129Z",
+      "code": 0,
+      "logSha256": "a6f5d5b349dc620c0ff03c2e843dd7f21635c6c727cc98b2719dcd5baea1d9f5"
+    },
+    {
+      "token": "EMA",
+      "kind": "contracts-fixed",
+      "args": [
+        "scripts/test-contracts.js",
+        "--no-compile"
+      ],
+      "started": "2026-11-01T23:42:37.130Z",
+      "finished": "2026-11-01T23:42:43.753Z",
+      "code": 0,
+      "logSha256": "6df6310830c3203f2108ed1d08d788f213936524ec2242753c583a5c6bf09d3f"
+    },
+    {
+      "token": "EMA",
+      "kind": "history",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "integration/history-compatibility.test.mjs"
+      ],
+      "started": "2026-11-01T23:42:43.754Z",
+      "finished": "2026-11-01T23:42:48.344Z",
+      "code": 0,
+      "logSha256": "9a3ebc35d2d6b07da7fed88489990e75ff6f3a69c8927afa91115cacf16d76e3"
+    },
+    {
+      "token": "EMA",
+      "kind": "wallet",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/integration/token-compatibility.test.mjs"
+      ],
+      "started": "2026-11-01T23:42:48.345Z",
+      "finished": "2026-11-01T23:42:58.451Z",
+      "code": 0,
+      "logSha256": "be97f797ba077fcc5bf9cb08a8d496b2f1f19b687c42d0161ef28316f8612fa4"
+    },
+    {
+      "token": "CAWELON",
+      "kind": "tooling",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "integration/source-portability.test.mjs",
+        "integration/test-routing.test.mjs"
+      ],
+      "started": "2026-11-01T23:42:58.457Z",
+      "finished": "2026-11-01T23:43:01.674Z",
+      "code": 0,
+      "logSha256": "f545ede1c020814189c6f59aa2862c1cc81ceb9db306f2af6dde41fd5bb26d28"
+    },
+    {
+      "token": "CAWELON",
+      "kind": "contracts-fixed",
+      "args": [
+        "scripts/test-contracts.js",
+        "--no-compile"
+      ],
+      "started": "2026-11-01T23:43:01.676Z",
+      "finished": "2026-11-01T23:43:09.956Z",
+      "code": 0,
+      "logSha256": "9e8924c55c70c7fa61bb39c7d873f5e1f197b4b9d4440cbdf44ab06b0b88b7a6"
+    },
+    {
+      "token": "CAWELON",
+      "kind": "history",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "integration/history-compatibility.test.mjs"
+      ],
+      "started": "2026-11-01T23:43:09.958Z",
+      "finished": "2026-11-01T23:43:15.056Z",
+      "code": 0,
+      "logSha256": "42cc8f9d89ccbfb654c36be29e9d407badca5e83b8d0b0c3f74bba4e27b30beb"
+    },
+    {
+      "token": "CAWELON",
+      "kind": "wallet",
+      "args": [
+        "--test",
+        "--test-reporter=tap",
+        "C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/integration/token-compatibility.test.mjs"
+      ],
+      "started": "2026-11-01T23:43:15.057Z",
+      "finished": "2026-11-01T23:43:26.802Z",
+      "code": 0,
+      "logSha256": "cbfa1ee3b40b54e96d2221dd19736d64a19acf891c012060e565106379f0592e"
+    }
+  ],
+  "scope": "Synthetic local EVM with fixture accounts; no user-wallet/private-key access or public-chain transactions; existing dependencies reused"
+}

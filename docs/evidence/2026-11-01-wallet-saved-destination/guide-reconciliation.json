@@ -1,0 +1,41 @@
+{
+  "schema": "threecore.saved-file-inspection.v2",
+  "sourceSchema": "threecore.reconciliation-file.v1",
+  "byteLength": 14094,
+  "title": "残高と履歴の照合用保存資料",
+  "target": "reconciliation",
+  "destinationMessage": "残高と履歴を照合する保存JSONです。残高と履歴の照合画面で元のJSONを確認してください。ここでは照合の結論を再計算せず、保存内容の形式とチェックサムを確認します。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "b9181878b79bc3a8b36aa48092c20fc66ea8a58c5f1a5b540b66588045b4e726",
+  "textDigest": "2b78f6088e443c900f24e6d775e20eac5a905d61b5a2911b2f34afdf147c4432",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT",
+      "EMA",
+      "CAWELON"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "archiveReferences": 3,
+    "transferRecordReferences": 4,
+    "eventReferences": 6,
+    "identityObservationReferences": 6,
+    "allowanceTargetReferences": null,
+    "allowanceObservationReferences": null
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

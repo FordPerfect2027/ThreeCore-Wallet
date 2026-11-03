@@ -1,0 +1,46 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": false,
+  "phase": "complete",
+  "complete": true,
+  "allRecomputationsMatch": false,
+  "summary": {
+    "selected": 2,
+    "reviewed": 2,
+    "pending": 0,
+    "matching": 1,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 6493
+  },
+  "files": [
+    {
+      "name": "Original.json",
+      "byteLength": 6492,
+      "status": "matched",
+      "sha256": "2e1081c79a8474507703cb2e3e73da073cf970ff1a70aff2adb02de9ceb67029",
+      "inputSchema": "threecore.operation-rehearsal-check-report.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": {
+        "cases": 1,
+        "matched": 1,
+        "differing": 0
+      }
+    },
+    {
+      "name": "invalid.json",
+      "byteLength": 1,
+      "status": "invalid",
+      "sha256": "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96",
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    }
+  ]
+}

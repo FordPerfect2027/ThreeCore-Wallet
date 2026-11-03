@@ -1,0 +1,196 @@
+{
+  "schema": "threecore.development-batch-checkpoint.v1",
+  "recordedAt": "2026-10-29T07:38:19.236Z",
+  "scope": "Offline fictional rehearsal only",
+  "batchComplete": true,
+  "workItems": [
+    {
+      "item": "fee_ceilings",
+      "status": "verified_automated"
+    },
+    {
+      "item": "closing_fee_reservation",
+      "status": "verified_automated"
+    },
+    {
+      "item": "allocation_reservation",
+      "status": "verified_automated"
+    },
+    {
+      "item": "reservation_release",
+      "status": "verified_automated"
+    },
+    {
+      "item": "sequential_ledger",
+      "status": "verified_automated"
+    },
+    {
+      "item": "review_before_append",
+      "status": "verified_automated"
+    },
+    {
+      "item": "undo",
+      "status": "verified_automated"
+    },
+    {
+      "item": "csv_export",
+      "status": "verified_automated"
+    },
+    {
+      "item": "offline_file_checker",
+      "status": "verified_automated"
+    },
+    {
+      "item": "chrome_end_to_end",
+      "status": "verified_chrome_and_offline"
+    }
+  ],
+  "tests": {
+    "fullUnit": {
+      "passed": 11707,
+      "failed": 0,
+      "concurrency": 2,
+      "log": "unit-tests-final.log"
+    },
+    "focusedFinal": {
+      "passed": 130,
+      "failed": 0,
+      "log": "focused-tests-final.log",
+      "note": "Overlaps full regression; includes two reentrancy cases added after full run loaded ledger tests."
+    },
+    "integration": {
+      "passed": 406,
+      "failed": 0,
+      "log": "integration-tests.log",
+      "excluded": "token-compatibility.test.mjs requires compiled token checkout"
+    },
+    "firstFullRun": {
+      "passed": 11706,
+      "failed": 1,
+      "log": "unit-tests.log",
+      "failure": "file-read-formats.test.js, 5 ms caller deadline; isolated 66-case rerun and full lower-concurrency rerun passed without a change to the test or implementation."
+    }
+  },
+  "artifacts": {
+    "syntheticFixtures": "generated-*-v2.json/csv are generated offline; they are not Chrome downloads.",
+    "legacyExport": "Previous v1 Chrome export independently recalculated and known hash matched.",
+    "newChromeExport": {
+      "json": "chrome-DAT-ledger-v2.json",
+      "csv": "chrome-DAT-ledger-v2.csv",
+      "observations": "chrome-ledger-validation.json",
+      "offlineCheck": "chrome-download-offline-check.json",
+      "screenshot": "chrome-ledger-result.png",
+      "observationCount": 16
+    }
+  },
+  "boundary": {
+    "simulationOnly": true,
+    "networkOrWalletExecution": false,
+    "mainnetReadinessClaim": null,
+    "publicRelease": false
+  },
+  "files": [
+    {
+      "name": "chrome-DAT-ledger-v2.csv",
+      "bytes": 786,
+      "sha256": "66156b636f6326fe49db923ae79446b485d479e9c193dd63cc987ba71cb2637d"
+    },
+    {
+      "name": "chrome-DAT-ledger-v2.json",
+      "bytes": 1581,
+      "sha256": "7d719172ede0bb3c54812d8c29850798177a821b25e773bdd98b91717848f1c9"
+    },
+    {
+      "name": "chrome-download-offline-check.json",
+      "bytes": 3195,
+      "sha256": "28a3a8b34db515af2abb5cf1366b836b36fde45c24148aa8605260f4e990d3ef"
+    },
+    {
+      "name": "chrome-ledger-restored.png",
+      "bytes": 256024,
+      "sha256": "6ce4fa2a5168d6f41476f5c40f190b0f5a06f3df2b8d5bc658a6e1e4b64528a5"
+    },
+    {
+      "name": "chrome-ledger-result.png",
+      "bytes": 72349,
+      "sha256": "33d59a9d1b16e8885595a43caaed87d5a6f5d2fddb69ce640bea8308669e4ed2"
+    },
+    {
+      "name": "chrome-ledger-validation.json",
+      "bytes": 16508,
+      "sha256": "3692cf2bddd7794e57de2a858fa2ac3f73db873f50f95789f34226093dd02b3c"
+    },
+    {
+      "name": "file-read-formats-rerun.log",
+      "bytes": 5645,
+      "sha256": "a6ee5feb25f7e181c4c796e926561a41933d4221aa4c66dcc31c87e6907f357a"
+    },
+    {
+      "name": "focused-tests-final.log",
+      "bytes": 9556,
+      "sha256": "9f4cfdec3e32d7a6a6463932d68d24f67a9f1d282e859bafad37693c5ef14e48"
+    },
+    {
+      "name": "generated-CAWELON-v2.csv",
+      "bytes": 809,
+      "sha256": "1a5dd91db6a068192a181d76cee9010d1cd9eafb6068e34fef0f6eb5749e1819"
+    },
+    {
+      "name": "generated-CAWELON-v2.json",
+      "bytes": 1610,
+      "sha256": "c3f1e00f5a12c941ca3500467267122ad35d62094826670429941569d098f6d4"
+    },
+    {
+      "name": "generated-DAT-v2.csv",
+      "bytes": 797,
+      "sha256": "493d654c8fa41b81067d4703dc7178e0b851835d9b1aaf1a1d383b8ed4f6b4fb"
+    },
+    {
+      "name": "generated-DAT-v2.json",
+      "bytes": 1594,
+      "sha256": "9990710760ab52c452dc438e433ea2a537569fd9eab91e75d3cd0245ab2e086c"
+    },
+    {
+      "name": "generated-EMA-v2.csv",
+      "bytes": 797,
+      "sha256": "ffbb21a72f1351891fb3fcccaf03a57a22ca3296f8521f19910b4b0277a92ee1"
+    },
+    {
+      "name": "generated-EMA-v2.json",
+      "bytes": 1594,
+      "sha256": "7bf0f1e16aca1442356dcf577f735f6511dfb7b308ddd8c0e1e5953176e9520f"
+    },
+    {
+      "name": "integration-tests.log",
+      "bytes": 36619,
+      "sha256": "48904a5635bf3f761308407e90c35a7521df9379977ee69562f3612f175717ad"
+    },
+    {
+      "name": "legacy-file-check.json",
+      "bytes": 2681,
+      "sha256": "aec25c91483061d081e0c55992cbc9b23fc19ce7aa7efb0f2b8de30e54963012"
+    },
+    {
+      "name": "three-agent-offline-checks.json",
+      "bytes": 9513,
+      "sha256": "06669392afa8337b20b943934a61b451468023c2f750639a6c350f72a19f714b"
+    },
+    {
+      "name": "unit-tests-final.log",
+      "bytes": 920862,
+      "sha256": "d62845bae194ca1320247cd37457c74cbe20ac3f2660584434f9618e6276b925"
+    },
+    {
+      "name": "unit-tests.log",
+      "bytes": 922584,
+      "sha256": "3156020889b4aaaee7865234d901462b020d7c088a899995df32665f8d6fc805"
+    }
+  ],
+  "sourceCommit": "221ac373eb96db6eac13c832ffc6d34be1cdf41e",
+  "completedAt": "2026-10-29T08:16:52.984Z",
+  "browserRecovery": {
+    "resolved": true,
+    "verifiedTabId": "989120268",
+    "route": "Attached to the newly opened tab already displaying the rehearsal; server origin protections unchanged."
+  }
+}

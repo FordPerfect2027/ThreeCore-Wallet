@@ -1,0 +1,50 @@
+{"completePackage":{"entries":51,"totalBytes":65199313,"allMatched":true,"manifestSha256":"1c3debdbb3f473fb873d29d8ad9944934334b591c2013e5714b5767b6314575b"}}
+{
+  "recordedAt": "2026-11-03T10:20:15.965Z",
+  "updateVerification": {
+    "entries": 7,
+    "totalBytes": 643829,
+    "allMatched": true,
+    "manifestSha256": "f698490a1f73cbe906e02e1a06c4e2fa2adda3fe14ec3d68dce617979a24a46f"
+  },
+  "baseVerification": {
+    "entries": 32,
+    "totalBytes": 57590298,
+    "allMatched": true,
+    "manifestSha256": "aa988e00eaad517f8f6d2d3e31f3ddb44cc703e50fc2da18449108c381d7876f"
+  },
+  "observations": [
+    {
+      "name": "Wallet",
+      "revision": "cd7f7edf49bafd1e529cfd23f8bc7d3c5fae782b",
+      "tree": "10033ddb306236a48bd517459791bc57ec5ac9ad",
+      "clean": true,
+      "noRemotes": true,
+      "objectIntegrityVerified": true
+    },
+    {
+      "name": "DAT",
+      "revision": "c50aae41b9c7aa496833e6260cc3314dc3c3fbfb",
+      "tree": "ffccb83b2b397f2a42d7fa19fd93de86817c4747",
+      "clean": true,
+      "noRemotes": true,
+      "objectIntegrityVerified": true
+    },
+    {
+      "name": "EMA",
+      "revision": "a37c60574e279980b5ce90775842d27b9c4ce5eb",
+      "tree": "555c7b4e2f14497d4e695d22e1a4a159d48418d9",
+      "clean": true,
+      "noRemotes": true,
+      "objectIntegrityVerified": true
+    },
+    {
+      "name": "CAWELON",
+      "revision": "0f5dfa00a6e1738df3706e12e59b48459ff875a0",
+      "tree": "cfd1c568071fe3908977af620ee9b5ef1a19b2c1",
+      "clean": true,
+      "noRemotes": true,
+      "objectIntegrityVerified": true
+    }
+  ]
+}

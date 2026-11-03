@@ -1,0 +1,39 @@
+
+> @0628dao/datcore@0.1.0 test:toolchain
+> node --test integration/toolchain-data.test.mjs
+
+✖ toolchain preserves empty RPC data separately from a zero byte (9.512ms)
+✔ toolchain rejects malformed RPC data without repairing it into bytes (1.756ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 454.1384
+
+✖ failing tests:
+
+test at integration\toolchain-data.test.mjs:7:1
+✖ toolchain preserves empty RPC data separately from a zero byte (9.512ms)
+  AssertionError [ERR_ASSERTION]: 0x
+  + actual - expected
+  
+  + [
+  +   0
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-toolchain-empty-data-DAT-20261102/integration/toolchain-data.test.mjs:10:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 0 ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

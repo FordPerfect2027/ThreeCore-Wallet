@@ -1,0 +1,318 @@
+{
+  "schema": "threecore.wallet-saved-browser-batch.v2",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "externalChecksumsCompared": true,
+  "phase": "complete",
+  "complete": true,
+  "allOriginalsValidated": false,
+  "summary": {
+    "selected": 7,
+    "checked": 7,
+    "pending": 0,
+    "validatedOriginals": 5,
+    "declaredOnly": 1,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "totalBytes": 146849,
+    "checksumsCompared": 7,
+    "checksumsMatching": 7,
+    "checksumMismatches": 0
+  },
+  "files": [
+    {
+      "name": "period-source.json",
+      "byteLength": 5847,
+      "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-file.v1",
+        "byteLength": 5847,
+        "title": "期間取得の控え",
+        "target": "period",
+        "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+        "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": 0,
+          "draftReferences": 1,
+          "archivedEntryReferences": null,
+          "restrictedEntryReferences": null,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "expectedSha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "checksumMatches": true
+    },
+    {
+      "name": "library-source.json",
+      "byteLength": 4551,
+      "sha256": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-library-file.v1",
+        "byteLength": 4551,
+        "title": "期間の保存一覧",
+        "target": "library",
+        "destinationMessage": "「途中の控えを、名前を付けて保管する」の「期間の保存一覧JSONを読み込む」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "94a72fa1997466939ad83bdc8e687add2a9f5839ee48fbc7017071e42ac3bc72",
+        "textDigest": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": 1,
+          "draftReferences": 1,
+          "archivedEntryReferences": 1,
+          "restrictedEntryReferences": 1,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "expectedSha256": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+      "checksumMatches": true
+    },
+    {
+      "name": "report-source.json",
+      "byteLength": 13491,
+      "sha256": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-report-file.v1",
+        "byteLength": 13491,
+        "title": "3トークンの期間レポート",
+        "target": "report",
+        "destinationMessage": "「3つの記録を、一つの報告に」で、この元のファイルを選んで確認してください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "a993e73336008eeec979448a7f6741ec235eff60e951fc5760d7dfc15f871c1b",
+        "textDigest": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89",
+        "scope": {
+          "reportCount": 1,
+          "archivedReports": null,
+          "entryReferences": 3,
+          "draftReferences": 3,
+          "archivedEntryReferences": 1,
+          "restrictedEntryReferences": 1,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "expectedSha256": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89",
+      "checksumMatches": true
+    },
+    {
+      "name": "history-source.json",
+      "byteLength": 40882,
+      "sha256": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-history-file.v1",
+        "byteLength": 40882,
+        "title": "報告履歴のバックアップ",
+        "target": "history",
+        "destinationMessage": "「報告を残して、後から確かめる」の「報告履歴のバックアップJSONから追加復元」で、この元のファイルを選んでください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "0c485afe426a836388c851653f5fec42391bf918ac1b2e831bae3afb4f0f20e7",
+        "textDigest": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f",
+        "scope": {
+          "reportCount": 3,
+          "archivedReports": 1,
+          "entryReferences": 9,
+          "draftReferences": 9,
+          "archivedEntryReferences": 1,
+          "restrictedEntryReferences": 1,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "expectedSha256": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f",
+      "checksumMatches": true
+    },
+    {
+      "name": "set-source.json",
+      "byteLength": 40965,
+      "sha256": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3",
+      "status": "validated-original",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-set-file.v1",
+        "byteLength": 40965,
+        "title": "報告の確認セット",
+        "target": "set",
+        "destinationMessage": "「保存した確認セットを開く」で、この元のファイルを選んで確認してください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "13dba85f0f0e12838108b8c6fb3a42247ace683f8c3da1615d0ab215ab5e12d2",
+        "textDigest": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3",
+        "scope": {
+          "reportCount": 3,
+          "archivedReports": 1,
+          "entryReferences": 9,
+          "draftReferences": 9,
+          "archivedEntryReferences": 1,
+          "restrictedEntryReferences": 1,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT",
+            "EMA",
+            "CAWELON"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": true
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "expectedSha256": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3",
+      "checksumMatches": true
+    },
+    {
+      "name": "corrupt-set-source.json",
+      "byteLength": 40965,
+      "sha256": "b4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3",
+      "status": "invalid",
+      "code": "PERIOD_CHECKSUM",
+      "inspection": null,
+      "expectedSha256": "b4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3",
+      "checksumMatches": true
+    },
+    {
+      "name": "auxiliary-declaration-source.json",
+      "byteLength": 148,
+      "sha256": "e4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2",
+      "status": "declared-only",
+      "code": null,
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-set-history-coverage.v1",
+        "byteLength": 148,
+        "title": "補助資料の形式指定",
+        "target": "coverage",
+        "destinationMessage": "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、「保存した履歴範囲JSONを元資料と照合」で選んでください。",
+        "validation": "declared-only",
+        "checksumVerified": false,
+        "sourceDigest": null,
+        "textDigest": null,
+        "scope": null,
+        "originalEvidenceValidated": false,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "expectedSha256": "e4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2",
+      "checksumMatches": true
+    }
+  ],
+  "referenceProvided": true,
+  "reference": {
+    "text": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce  period-source.json\n199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4  library-source.json\nbb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89  report-source.json\n353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f  history-source.json\ne08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3  set-source.json\nb4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3  corrupt-set-source.json\ne4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2  auxiliary-declaration-source.json\n",
+    "sha256": "c65dae90a64aab93e458c3175d0040b45a882480f69ada935aa90c6a605b3793",
+    "entries": [
+      {
+        "name": "period-source.json",
+        "expectedSha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce"
+      },
+      {
+        "name": "library-source.json",
+        "expectedSha256": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4"
+      },
+      {
+        "name": "report-source.json",
+        "expectedSha256": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89"
+      },
+      {
+        "name": "history-source.json",
+        "expectedSha256": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f"
+      },
+      {
+        "name": "set-source.json",
+        "expectedSha256": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3"
+      },
+      {
+        "name": "corrupt-set-source.json",
+        "expectedSha256": "b4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3"
+      },
+      {
+        "name": "auxiliary-declaration-source.json",
+        "expectedSha256": "e4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2"
+      }
+    ]
+  },
+  "allExternalChecksumsMatch": true
+}

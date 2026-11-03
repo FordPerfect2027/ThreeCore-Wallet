@@ -1,0 +1,34 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-evidence-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "automaticallyImported": false,
+  "recordedProcessVerified": false,
+  "sha256": "f638d54f9969ce1d5517598c2b20ee32068eb82894dc07f2a7579dfd3c4a3569",
+  "byteLength": 8455,
+  "matchesRecomputation": false,
+  "differenceCount": 1,
+  "differences": [
+    {
+      "path": "/receipt/summary/matching",
+      "kind": "value"
+    }
+  ],
+  "differencesTruncated": false,
+  "allSourceReportsMatch": true,
+  "expectedSummary": {
+    "selected": 1,
+    "reviewed": 1,
+    "pending": 0,
+    "matching": 1,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 6492
+  },
+  "externalChecksumsCompared": false,
+  "allExternalChecksumsMatch": null
+}

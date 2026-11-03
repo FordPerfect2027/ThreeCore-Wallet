@@ -1,0 +1,137 @@
+{
+  "source": "567b7fa",
+  "provenance": [
+    {
+      "name": "01-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/01-saved-report.json",
+      "sha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "02-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/02-saved-report.json",
+      "sha256": "e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "03-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/03-saved-report.json",
+      "sha256": "245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "04-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/04-saved-report.json",
+      "sha256": "d0740ccd499741396cff4999da58d510be018f4e1e1023baf188de4fd422650a",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "05-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/05-saved-report.json",
+      "sha256": "23700e3d71c74a84296128e1de8a4a19a2d5bdb431950d144d623d97aa1c8e0c",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "06-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/06-saved-report.json",
+      "sha256": "bc98a415c6a2d4bae88e2ec1999daa3c8e2fe06deda5b638bbab592c49b4cabf",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "07-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/07-saved-report.json",
+      "sha256": "ac8a3eb2fec1b300805b20033fa6feeac6ce9f116a65787146c15ae1cf2a6238",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "08-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/08-saved-report.json",
+      "sha256": "e1186413cc8e4a98dedef3b8d7e8e3211e8bf312a8439071264baeaf6c354d98",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "09-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/09-saved-report.json",
+      "sha256": "7c8834bb1d7558dd9df325da7301d857ea6de4b0b619db381b419d3620b9fdce",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "10-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/10-saved-report.json",
+      "sha256": "8799445f6f5262b0c4fbd4ed0f86900807bbd53789782ca0ace348eb623487dd",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "11-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/11-saved-report.json",
+      "sha256": "e6aa03de378a50b300820d3a2c0dcc067a87e000a719afaf9016b4184e014408",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "12-saved-report.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/12-saved-report.json",
+      "sha256": "7452796c18ac599f63926032765beb3c4bd53ad1c7285cc85c522751d57a02ce",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "13-context-query-generated.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/13-context-query-generated.json",
+      "sha256": "047d0f448e847dbb6d61b7ef3324b941e9c18f2c1d9c54bcf3d07b33580b86ef",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "control-1-tampered.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/control-1-tampered.json",
+      "sha256": "ae6b64c4e29691613c44c9a7fe7c89c4e25ea12c65c938a9733d5b1d67c17d89",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "control-2-tampered.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/control-2-tampered.json",
+      "sha256": "a070e4b99570fe21f4c921d90885ca1533efee939afb031ac49f7de513857faa",
+      "copiedByteExactly": true
+    },
+    {
+      "name": "control-unsupported.json",
+      "from": "docs/evidence/2026-10-31-rehearsal-batch-review/control-unsupported.json",
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "copiedByteExactly": true
+    }
+  ],
+  "generatedInvalidControl": "control-invalid.json",
+  "selectedFiles": 17,
+  "browserApiSummary": {
+    "selected": 17,
+    "reviewed": 17,
+    "pending": 0,
+    "matching": 13,
+    "differing": 2,
+    "unsupported": 1,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 1,
+    "totalBytes": 146153
+  },
+  "offlineExit": 2,
+  "allPerFileStatusesAndHashesAgree": true,
+  "invalidStatusMapping": "browser invalid = offline unreadable",
+  "suggestedManifestFilename": "SHA256SUMS.txt",
+  "storedManifestFilename": "SELECTED_REPORTS.txt",
+  "partialSummary": {
+    "selected": 17,
+    "reviewed": 2,
+    "pending": 15,
+    "matching": 2,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 146153
+  },
+  "partialManifestRefused": true,
+  "allCopiedOriginalsUnchanged": true,
+  "nativeInputPickerTested": false,
+  "userBrowserConnectionRestored": false,
+  "realProviderCalls": 0
+}

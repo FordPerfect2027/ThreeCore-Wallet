@@ -14,6 +14,34 @@ function fixture() {
   return { document, parent, eventTarget, clock, panel, q, j, report, close: () => panel.dispose() };
 }
 
+test("wallet-stop evidence survives later idle stop and resume without keeping payloads", () => {
+  const f = fixture();
+  assert.equal(f.panel.recordConnectionStop("wallet-account"), true);
+  f.report();
+  assert.equal(f.panel.recordConnectionStop("wallet-network"), true);
+  assert.equal(f.j("output").value, "");
+  f.clock.advance(300_000);
+  f.q("resume").click();
+  const report = f.report();
+  assert.equal(report.version, 2);
+  assert.deepEqual(report.events.map(event => event.kind), ["ready", "wallet-account", "wallet-network", "idle", "resumed"]);
+  assert.equal(report.events.every(event => Object.keys(event.detail).length === 0), true);
+  assert.match(f.j("list").children.map(row => row.textContent).join("\n"), /Walletの口座情報/);
+  f.close();
+  assert.equal(f.panel.recordConnectionStop("wallet-account"), false);
+});
+
+test("diagnostic entry point cannot forge a protection action or inspect an object payload", () => {
+  const f = fixture();
+  const hostile = { toString() { throw Error("Must not inspect payload"); } };
+  for (const value of ["manual", "idle", "PRIVATE-ADDRESS", hostile, null]) {
+    assert.equal(f.panel.recordConnectionStop(value), false);
+  }
+  assert.equal(f.report().total, 1);
+  assert.equal(f.panel.check(), true);
+  f.close();
+});
+
 test("protection history starts with one ready event and hides its export", () => {
   const f = fixture();
   assert.equal(f.j("list").children.length, 1);

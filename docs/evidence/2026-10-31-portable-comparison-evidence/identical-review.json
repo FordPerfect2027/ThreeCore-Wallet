@@ -1,0 +1,49 @@
+{
+  "schema": "threecore.report-set-comparison-evidence-review.v1",
+  "evidenceTextSha256": "301363454d5fb257ac53c967183478eaeef1e4cbec444cc4244209bebeb645c6",
+  "beforeChecksumVerified": true,
+  "afterChecksumVerified": true,
+  "comparisonReview": {
+    "schema": "threecore.report-set-comparison-review.v1",
+    "matchesRecomputation": true,
+    "beforePayloadDigest": "720a539642a98a8c5421e00636d2278a5488bb8d2e55bd36b6e6a7f27064c747",
+    "afterPayloadDigest": "720a539642a98a8c5421e00636d2278a5488bb8d2e55bd36b6e6a7f27064c747",
+    "beforeDigestMatches": true,
+    "afterDigestMatches": true,
+    "comparisonTextSha256": "7198da3f639b06a8d812be7ed3aa33466c1e048ae0fa6126adcfeb324f8d4ce8",
+    "differences": [],
+    "unexpectedFields": 0,
+    "counts": {
+      "added": 0,
+      "removed": 0,
+      "changed": 0,
+      "metadata-only": 0,
+      "unchanged": 3
+    },
+    "sameContents": true,
+    "beforeSummary": {
+      "allContinuous": true,
+      "issues": []
+    },
+    "afterSummary": {
+      "allContinuous": true,
+      "issues": []
+    },
+    "historicalOnly": true,
+    "readOnly": true,
+    "liveChainRechecked": false,
+    "authenticated": false,
+    "encrypted": false,
+    "restorable": false
+  },
+  "beforeReportCount": 3,
+  "afterReportCount": 3,
+  "readOnly": true,
+  "imported": false,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false,
+  "authorizesExecution": false
+}

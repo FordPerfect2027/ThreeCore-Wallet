@@ -1,0 +1,75 @@
+✔ empty source and missing agents are explicit, not assumed zero balances (12.8409ms)
+✔ paging shows bounded rows and exports every match, not only the current page (24.5952ms)
+✔ filter changes reset page; no matches clear old detail and related records (6.8295ms)
+✔ detail shows recorded event context, six before/after amounts and related record IDs (3.363ms)
+✔ a source replacement refreshes amounts and removes a vanished selection (4.5401ms)
+✔ foreign event identity is shown distinctly from stored identity (2.0065ms)
+✔ invalid query disables export until fixed and download failure preserves rows (3.8644ms)
+✔ dispose removes records and prevents later refresh or retained listeners from exposing them (2.9818ms)
+✖ related record jump crosses pages within its saved agent and can restore the original query (54.8609ms)
+✔ retired related-row button cannot change view after filter (6.5251ms)
+✔ retired related-row button cannot change view after refresh (10.2041ms)
+✔ retired related-row button cannot change view after clear (6.0148ms)
+✔ retired related-row button cannot change view after dispose (4.4275ms)
+✔ retired related-row button cannot change view after selection (4.6937ms)
+✔ return-to-search is revoked after filter (5.9729ms)
+✔ return-to-search is revoked after refresh (8.7567ms)
+✔ return-to-search is revoked after clear (5.9204ms)
+✔ record without a cross-reference exposes no misleading related-navigation action (4.0715ms)
+✔ records: source capture cannot outlive dispose (24.7298ms)
+✔ records: source capture cannot outlive dispose even when capture throws (11.8215ms)
+✔ records: source capture cannot outlive clear (9.2729ms)
+✔ records: source capture cannot outlive clear even when capture throws (9.6999ms)
+✔ records: source capture cannot outlive replace (9.4274ms)
+✔ records: source capture cannot outlive replace even when capture throws (4.038ms)
+✔ scenario: source capture cannot outlive dispose (4.1151ms)
+✔ scenario: source capture cannot outlive dispose even when capture throws (2.3461ms)
+✔ scenario: source capture cannot outlive clear (4.2071ms)
+✔ scenario: source capture cannot outlive clear even when capture throws (2.354ms)
+✔ scenario: source capture cannot outlive replace (3.387ms)
+✔ scenario: source capture cannot outlive replace even when capture throws (2.1711ms)
+✔ comparison refresh observer cannot overwrite dispose (3.5697ms)
+✔ comparison refresh observer cannot overwrite clear (2.2098ms)
+✔ comparison refresh observer cannot overwrite replace (2.9281ms)
+✔ comparison compare-start observer cannot overwrite dispose (1.5551ms)
+✔ comparison compare-start observer cannot overwrite clear (2.107ms)
+✔ comparison compare-start observer cannot overwrite replace (1.9054ms)
+✔ comparison compare-result observer cannot overwrite dispose (8.3058ms)
+✔ comparison compare-result observer cannot overwrite clear (4.8938ms)
+✔ comparison compare-result observer cannot overwrite replace (6.1196ms)
+✔ comparison observers do not discard valid work or leak failures: throw (31.6591ms)
+✔ comparison observers do not discard valid work or leak failures: native (5.5406ms)
+✔ comparison observers do not discard valid work or leak failures: malformed (5.2221ms)
+✔ comparison disposal marks the panel closed before notifying its owner (1.0205ms)
+✔ invalid replacement still reports its own failure without erasing a healthy source (2.122ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 43
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 478.7143
+
+✖ failing tests:
+
+test at test\rehearsal-related-navigation.test.js:26:1
+✖ related record jump crosses pages within its saved agent and can restore the original query (54.8609ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["agent","all","",false],["kind","open","",false],["decision","accepted","",false],["search","open-one","",false],["size","25","",false],["select","DAT:open-one","",false],["status","","一致 2件 / 全 29件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",false],["detail","","保存元 DAT の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内",false],["back","","",true]]'
+  - '[["agent","","",false],["kind","open","",false],["decision","accepted","",false],["search","open-one","",false],["size","25","",false],["select","DAT:open-one","",false],["status","","一致 2件 / 全 29件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",false],["detail","","保存元 DAT の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内",false],["back","","",true]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-related-navigation.test.js:35:34)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["agent","all","",false],["kind","open","",false],["decision","accepted","",false],["search","open-one","",false],["size","25","",false],["select","DAT:open-one","",false],["status","","一致 2件 / 全 29件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",false],["detail","","保存元 DAT の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内",false],["back","","",true]]',
+    expected: '[["agent","","",false],["kind","open","",false],["decision","accepted","",false],["search","open-one","",false],["size","25","",false],["select","DAT:open-one","",false],["status","","一致 2件 / 全 29件。1～2件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",false],["detail","","保存元 DAT の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内",false],["back","","",true]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

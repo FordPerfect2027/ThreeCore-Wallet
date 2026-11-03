@@ -1,0 +1,182 @@
+✔ offline review reproduces browser receipt exactly and does not modify report (104.7554ms)
+✔ wrong expected checksum produces a mismatch receipt and exit two (24.5638ms)
+✔ altered derived values produce a mismatch receipt and exit two (28.2132ms)
+✔ invalid JSON emits no partial receipt (9.3724ms)
+✔ invalid UTF-8 emits no partial receipt (8.139ms)
+✔ UTF-8 BOM emits no partial receipt (8.9496ms)
+✔ oversized emits no partial receipt (17.0877ms)
+✔ unsupported receipt emits no partial receipt (30.6271ms)
+✔ bad arguments, absent paths and directories fail (18.0606ms)
+✔ different line endings retain byte-specific checksum while recomputation still agrees (32.3951ms)
+✔ a faithful expectation discrepancy exits zero for report fidelity and preserves the failed outcome (107.3998ms)
+✔ filtered query receipt is exact and does not modify the source file (56.381ms)
+✔ query output tampering yields two while invalid source conditions yield one without receipt (33.7686ms)
+✖ offline evidence review matches the API and writes no files (109.4811ms)
+✖ offline receipt discrepancy returns two with a complete result (38.1139ms)
+✖ offline source discrepancy returns two with a complete result (70.5822ms)
+✖ offline recorded-calculation discrepancy returns two with a complete result (35.9045ms)
+✖ offline recorded-checksum discrepancy returns two with a complete result (39.1834ms)
+✖ faithfully recorded expectation mismatch remains visible without claiming report corruption (49.5193ms)
+✔ invalid JSON fails without partial output or input modification (74.2313ms)
+✔ invalid UTF-8 fails without partial output or input modification (58.2548ms)
+✔ BOM fails without partial output or input modification (34.5623ms)
+✔ oversized fails without partial output or input modification (82.7844ms)
+✔ ordinary report fails without partial output or input modification (26.1077ms)
+✔ invalid arguments and unavailable paths fail without output (28.232ms)
+✔ evidence round trip recomputes threecore.operation-rehearsal-overview.v1 (33.5972ms)
+✔ evidence round trip recomputes threecore.operation-rehearsal-comparison.v1 (13.6492ms)
+✔ evidence round trip recomputes threecore.operation-rehearsal-scenario.v1 (12.5068ms)
+✔ evidence round trip recomputes threecore.operation-rehearsal-scenario-set-report.v1 (13.2941ms)
+✔ evidence round trip recomputes threecore.operation-rehearsal-check-report.v1 (20.5346ms)
+✔ evidence round trip recomputes threecore.operation-rehearsal-record-query.v1 (12.4712ms)
+✔ evidence preserves exact CRLF source and can be regenerated from the recomputed receipt (9.9095ms)
+✔ encoder rejects invented or deserialized receipts and never evaluates their accessors (12.759ms)
+✔ source whitespace change is visible even when the recalculation still agrees (15.6076ms)
+✔ changed source calculation and a forged receipt cannot hide a discrepancy (6.8316ms)
+✔ a faithfully recorded calculation discrepancy stays a discrepancy (4.8233ms)
+✔ a faithfully recorded wrong expected hash stays a hash discrepancy (8.2862ms)
+✔ expected-outcome discrepancy remains separate from receipt and report fidelity (10.9638ms)
+✔ receipt authority flags, omission and type changes are compared rather than trusted (10.62ms)
+✔ receipt differences are bounded and JSON-pointer escaped (6.0185ms)
+✔ reordered receipt object keys remain equivalent (5.9771ms)
+✔ untrusted envelope flags, extra fields, wrong hash and missing receipt are rejected (25.7581ms)
+✔ nested, duplicate-key, unsafe and oversized envelopes fail before hashing (79.8213ms)
+✔ hash failures and cancellation produce no completed evidence review (11.3522ms)
+✔ self-consistent input changes cannot authenticate an author or actual assets (10.6305ms)
+✔ source, checksum and receipt downloads describe exactly the reviewed text including whitespace (26.0557ms)
+✔ mismatching derived results remain exact exportable evidence without being called an agreement (18.1428ms)
+✔ new evidence exports retire on clear (14.6406ms)
+✔ new evidence exports retire on edit (15.219ms)
+✔ new evidence exports retire on checksum (15.9547ms)
+✔ new evidence exports retire on dispose (15.6442ms)
+✔ source-save failure preserves reviewed evidence and permits retry (15.9787ms)
+✔ checksum-save failure preserves reviewed evidence and permits retry (15.4844ms)
+✔ source-save cannot report success over a source cleared inside the download (15.4804ms)
+✔ checksum-save cannot report success over a source cleared inside the download (15.6482ms)
+✔ invalid optional checksum focuses its own field and can be corrected without repasting (30.2109ms)
+✔ an absent optional checksum can be left blank after an error (30.2514ms)
+✔ combined evidence export includes exact source, receipt and original expectation (15.7559ms)
+✔ combined evidence export retires on clear (15.0575ms)
+✔ combined evidence export retires on edit (15.1574ms)
+✔ combined evidence export retires on checksum (15.0785ms)
+✔ combined evidence export retires on dispose (15.3268ms)
+✔ combined evidence export failure permits retry without losing source or receipt (16.631ms)
+✔ combined evidence export cannot overwrite a newer cleared view (15.3302ms)
+ℹ tests 64
+ℹ suites 0
+ℹ pass 58
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1607.6957
+
+✖ failing tests:
+
+test at test\rehearsal-review-evidence-cli.test.js:28:1
+✖ offline evidence review matches the API and writes no files (109.4811ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:30:10
+      at async fixture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:17:38)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\rehearsal-review-evidence-cli.test.js:35:3
+✖ offline receipt discrepancy returns two with a complete result (38.1139ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:45:46
+      at async fixture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:17:38)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\rehearsal-review-evidence-cli.test.js:35:3
+✖ offline source discrepancy returns two with a complete result (70.5822ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:45:46
+      at async fixture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:17:38)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\rehearsal-review-evidence-cli.test.js:35:3
+✖ offline recorded-calculation discrepancy returns two with a complete result (35.9045ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:45:46
+      at async fixture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:17:38)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\rehearsal-review-evidence-cli.test.js:35:3
+✖ offline recorded-checksum discrepancy returns two with a complete result (39.1834ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:45:46
+      at async fixture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:17:38)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\rehearsal-review-evidence-cli.test.js:48:1
+✖ faithfully recorded expectation mismatch remains visible without claiming report corruption (49.5193ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:51:44
+      at async fixture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-review-evidence-cli.test.js:17:38)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

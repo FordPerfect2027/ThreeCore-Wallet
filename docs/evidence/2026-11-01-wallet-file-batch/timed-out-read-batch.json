@@ -1,0 +1,37 @@
+{
+  "schema": "threecore.wallet-saved-browser-batch.v3",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "externalChecksumsCompared": false,
+  "phase": "timed-out",
+  "complete": false,
+  "allOriginalsValidated": false,
+  "summary": {
+    "selected": 1,
+    "checked": 0,
+    "pending": 1,
+    "validatedOriginals": 0,
+    "declaredOnly": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "totalBytes": 0,
+    "sourceUnavailable": 0,
+    "selectedReportedBytes": 5847,
+    "unreadSourceReportedBytes": 5847
+  },
+  "files": [
+    {
+      "name": "stalled.json",
+      "byteLength": null,
+      "reportedByteLength": 5847,
+      "sha256": null,
+      "status": "pending",
+      "code": null,
+      "inspection": null
+    }
+  ]
+}

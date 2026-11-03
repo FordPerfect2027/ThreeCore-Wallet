@@ -1,0 +1,24 @@
+
+> @0628dao/datcore@0.1.0 test:history
+> node --test integration/history-compatibility.test.mjs
+
+▶ DATCore: event history against the local EVM
+  ✔ reads actual mint, transfer, self-transfer and burn logs with mined identities (126.4386ms)
+  ✔ keeps Approval event amounts distinct from allowance consumed by transferFrom (47.4842ms)
+  ✔ preserves maximum approval and a later zero-amount revocation exactly (60.6538ms)
+  ✔ keeps the sampled allowance when the local chain advances during history reads (32.8826ms)
+  ✔ Transfer: refuses removed flags injected into otherwise real local logs (59.2514ms)
+  ✔ Transfer: refuses a conflicting duplicate of an actual local event (34.7336ms)
+  ✔ Transfer: rejects a local chain replacement and succeeds on a fresh snapshot (40.2631ms)
+  ✔ Approval: refuses removed flags injected into otherwise real local logs (41.2382ms)
+  ✔ Approval: refuses a conflicting duplicate of an actual local event (27.0575ms)
+  ✔ Approval: rejects a local chain replacement and succeeds on a fresh snapshot (41.2849ms)
+✔ DATCore: event history against the local EVM (521.8169ms)
+ℹ tests 10
+ℹ suites 1
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6996.3912

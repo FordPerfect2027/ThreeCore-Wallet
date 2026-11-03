@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>同じ口座のETH・USDC予算をまとめて確認 — ThreeCore</title>
+  <link rel="stylesheet" href="/examples/operation-rehearsal.css">
+</head><body><main>
+  <header><a href="/budget/" target="_blank" rel="noopener">トークンごとの予算入力を別タブで開く</a>
+    <p><a href="/budget/evidence/" target="_blank" rel="noopener">予算と保存済み残高を照合する</a></p>
+    <p class="eyebrow">DAT · EMA · CAWELON</p><h1>同じ口座のETH・USDC予算をまとめて確認</h1>
+    <p>各運用案では足りていても、同じ口座からまとめて払うとETHやUSDCが不足する場合があります。2〜3トークンの運用案をまとめて計算します。</p>
+    <p class="notice">入力は手入力の仮定です。現在の口座・残高・費用は確認しません。Wallet接続・署名・送金は行いません。</p>
+  </header>
+  <section aria-labelledby="shared-import-title"><h2 id="shared-import-title">1. 同じ口座で使う入力を選ぶ</h2>
+    <p>トークンごとの予算画面で保存したファイルを2〜3個選んでください。この画面で保存したまとめファイル1個も読み込めます。</p>
+    <p class="small">ネットワークとETH残高・別用途の確保額・予備資金は全ファイルで同じ値にしてください。USDCを使う案同士は、USDCの残高・確保額・予備資金もそろえます。同じ対象トークンの重複は使えません。別口座や異なる時点の残高を混ぜないでください。</p>
+    <label class="file-label">まとめる予算入力<input id="shared-file" type="file" accept=".json,application/json" multiple></label>
+    <button id="shared-cancel" type="button">ファイル確認を取り消す</button>
+    <p id="shared-status" role="status" aria-live="polite">保存した予算入力を選んでください。</p>
+    <div id="shared-preview" hidden>
+      <p id="shared-context"></p>
+      <div class="table-wrap"><table><caption>読み込んだ入力の確認</caption><thead><tr><th>トークン</th><th>使う元本</th><th>元本不足</th><th>費用以外に使うETH</th><th>費用の予算</th><th>単独の計算</th></tr></thead><tbody id="shared-preview-rows"></tbody></table></div>
+      <p id="shared-reserves"></p>
+      <label class="check"><input id="shared-assume" type="checkbox">同じ口座・同じ時点の入力という仮定でまとめる</label>
+      <button id="shared-apply" type="button" disabled>この仮定でまとめて計算</button>
+    </div>
+  </section>
+  <section id="shared-result" aria-labelledby="shared-result-title" hidden><h2 id="shared-result-title">2. 同じ口座の残高から払う場合</h2>
+    <p id="shared-outcome" class="notice"></p><p id="shared-reasons"></p>
+    <div class="table-wrap"><table><caption>共通のETH・USDC予算</caption><thead><tr><th>項目</th><th>入力から計算した額</th></tr></thead><tbody id="shared-rows"></tbody></table></div>
+    <p class="small">別用途の確保額と予備資金は口座全体で1回だけ計上し、各トークンの費用とETH使用額を合算します。どれかの費用が不明なら総額も未確定です。これは実行の許可や実際の請求上限ではありません。</p>
+    <button id="shared-save" type="button" disabled>まとめた入力を保存</button><p id="shared-save-status" role="status" aria-live="polite"></p>
+  </section>
+  <footer>USDCを使う案は共通のUSDC残高から合算します。DAT・EMA・CAWELON自体の元本は別々に扱い、通貨間の交換は行いません。1口座・1ネットワークで最大3トークンの運用案を検討できます。</footer>
+</main><script type="module" src="/examples/shared-operation-budget-page.js"></script></body></html>

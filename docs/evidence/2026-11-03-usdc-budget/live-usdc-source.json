@@ -1,0 +1,27 @@
+{
+  "schema": "threecore.public-usdc-file.v1",
+  "observation": {
+    "schema": "threecore.public-usdc-observation.v1",
+    "chainId": 8453,
+    "rpcUrl": "https://mainnet.base.org",
+    "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+    "tokenAddress": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "blockNumber": "53457078",
+    "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+    "blockTimestampSeconds": 1793703503,
+    "observedAtSeconds": 1793706162,
+    "metadata": {
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "decimals": 6,
+      "totalSupply": "4286770006941469"
+    },
+    "balanceBaseUnits": "0",
+    "nativeBalanceBaseUnits": "700000000000000",
+    "hasCode": true,
+    "canonicalBlockRechecked": true,
+    "readOnly": true,
+    "walletConnected": false
+  },
+  "digest": "da4c0d43472ce3fd1defe9504bb7b48e21f4e2710b0723fe8399b2b0e8b99f6f"
+}

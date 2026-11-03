@@ -1,0 +1,29 @@
+✖ report-review-save rejects thenable without a success message or data loss (145.34ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 571.1333
+
+✖ failing tests:
+
+test at test\operation-rehearsal-download.test.js:74:5
+✖ report-review-save rejects thenable without a success message or data loss (145.34ms)
+  AssertionError [ERR_ASSERTION]: report-review-save is ready
+  
+  true !== false
+  
+      at setup (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-download.test.js:49:10)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-download.test.js:75:15)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

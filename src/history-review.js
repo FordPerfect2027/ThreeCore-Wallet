@@ -1,4 +1,4 @@
-import { createPortfolioHistory } from "./portfolio-history.js";
+import { createPortfolioHistory, HISTORY_LIMIT } from "./portfolio-history.js";
 
 export const HISTORY_REVIEW_SCHEMA = "threecore-history-review-v1";
 function load(text) {
@@ -197,6 +197,50 @@ const WARNINGS = Object.freeze({
   SAMPLED_BLOCKS: "参照ブロックの間隔があります。連続した送金履歴ではありません。",
   TOKEN_COVERAGE_CHANGED: "確認対象のトークン契約が途中で変わっています。未確認はゼロではありません。",
 });
+
+/** Analyze even rejected merges without constructing an oversized or conflicting history. */
+export function assessHistoryMerge(currentText, incomingText) {
+  const current = load(currentText).state().snapshots, incoming = load(incomingText).state().snapshots;
+  const existing = new Map(current.map(row => [key(row), row]));
+  const additions = [], conflicts = []; let duplicateCount = 0;
+  for (const row of incoming) {
+    const previous = existing.get(key(row));
+    if (!previous) { additions.push(reference(row)); continue; }
+    // Match collection deduplication: epochs are local and holding order is presentation only.
+    const fields = changedFields(previous, row).filter(name => name !== "connectionEpoch");
+    if (!fields.length) { duplicateCount++; continue; }
+    conflicts.push(Object.freeze({ existing: reference(previous), incoming: reference(row), changedFields: Object.freeze(fields),
+      previousNativeBalanceBaseUnits: previous.nativeBalanceBaseUnits, incomingNativeBalanceBaseUnits: row.nativeBalanceBaseUnits,
+      tokenChanges: tokenChanges(previous, row) }));
+  }
+  const projectedSlotCount = current.length + additions.length, additionalSpaceNeeded = Math.max(0, projectedSlotCount - HISTORY_LIMIT);
+  return Object.freeze({ schema: "threecore-history-merge-assessment-v1", previousCount: current.length, incomingCount: incoming.length,
+    capacity: HISTORY_LIMIT, projectedSlotCount, additionalSpaceNeeded, duplicateCount, additions: Object.freeze(additions), conflicts: Object.freeze(conflicts),
+    admissible: conflicts.length === 0 && additionalSpaceNeeded === 0, requiresNewPreview: true, ...flags() });
+}
+
+export function describeHistoryMergeAssessment(currentText, incomingText) {
+  const value = assessHistoryMerge(currentText, incomingText);
+  const lines = ["履歴への追加内容の診断（まだ適用していません）", `現在${value.previousCount}件 / 入力${value.incomingCount}件 / 上限${value.capacity}件`,
+    `新しい位置${value.additions.length}件 / 重複${value.duplicateCount}件 / 矛盾${value.conflicts.length}件`,
+    `重複位置を除く件数: ${value.projectedSlotCount}件 / 追加に不足する空き: ${value.additionalSpaceNeeded}件`];
+  if (value.additionalSpaceNeeded) lines.push("必要な記録をファイル保存し、履歴を整理するか、入力を絞ってから再度プレビューしてください。自動削除は行いません。");
+  for (const conflict of value.conflicts) {
+    const row = conflict.incoming;
+    lines.push(`矛盾: ${row.agent} / ${row.account} / chain ${row.chainId} / ${row.siteOrigin} / block ${row.blockNumber}`);
+    lines.push("異なる項目: " + conflict.changedFields.join(", "));
+    if (conflict.changedFields.includes("blockHash")) lines.push("ハッシュ: " + conflict.existing.blockHash + " → " + row.blockHash);
+    if (conflict.changedFields.includes("nativeBalanceBaseUnits")) lines.push("ネイティブ残高（最小単位）: " + conflict.previousNativeBalanceBaseUnits + " → " + conflict.incomingNativeBalanceBaseUnits);
+    for (const token of conflict.tokenChanges) {
+      const previous = !token.previouslyObserved ? "対象外" : token.previousHasCode ? token.previousBalanceBaseUnits : "契約コードなし";
+      const next = !token.subsequentlyObserved ? "対象外" : token.subsequentHasCode ? token.subsequentBalanceBaseUnits : "契約コードなし";
+      lines.push("契約 " + token.address + ": " + previous + " → " + next);
+    }
+  }
+  if (value.conflicts.length) lines.push("矛盾する元資料を確認してください。どちらが正しいかは、この診断では決めません。");
+  lines.push("診断結果から履歴を自動変更しません。反映には現在の入力と履歴で改めてプレビューが必要です。");
+  return lines.join("\n");
+}
 export function describeHistoryReview(text) {
   const report = reviewPortfolioHistory(text);
   const lines = [

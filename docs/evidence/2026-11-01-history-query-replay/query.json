@@ -1,0 +1,16 @@
+{
+  "schema": "threecore-history-query-v1",
+  "query": {
+    "account": "",
+    "chainId": "",
+    "minimumBlock": null,
+    "maximumBlock": "20",
+    "order": "newest",
+    "tokenAddress": "",
+    "tokenStatus": "any",
+    "siteOrigin": ""
+  },
+  "configurationOnly": true,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false
+}

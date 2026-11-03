@@ -1,0 +1,73 @@
+{
+  "observedAt": "2026-11-03T04:21:52.450Z",
+  "sourceCommit": "5b82a00e8669f08d01bd2d29d2d42e5fdfbf6863",
+  "origin": "http://127.0.0.1:4233",
+  "operatorForegroundTab": "148649894",
+  "foregroundVerifiedBy": [
+    "operator reports Wallet visible",
+    "browser inventory shows tab 148649894 newly at 4233",
+    "native window title is ThreeCore Wallet"
+  ],
+  "photoFinding": "Earlier photo displayed edge://extensions with MetaMask Account 1 and Base Sepolia asset filter, not the ThreeCore connected-site panel",
+  "restoredCards": 3,
+  "restoredHistoryRecords": 9,
+  "removedRecords": 0,
+  "backupBytes": 10103,
+  "backupSha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc",
+  "byteIdenticalToOriginal": true,
+  "checkpoint": {
+    "name": "表示中Wallet復旧 1103 — 9件・接続未確認",
+    "countBefore": 0,
+    "countAfter": 1,
+    "slots": 5,
+    "reloaded": true,
+    "internalChecksumMatched": true,
+    "historyRecords": 9,
+    "savedAt": "2026-11-03T04:20:10.564Z"
+  },
+  "actualNetworkId": 8453,
+  "requestedCardNetworkId": 84532,
+  "permittedAccountCount": 1,
+  "accountMatchesKnownAccount1": true,
+  "nativeControl": "Prior turn stopped by tool because Windows URL could not be established; stop obeyed, no native retry this turn",
+  "pending": "Photo of the currently displayed Wallet together with MetaMask to locate the actual dapp network selector",
+  "newChainObserved": false,
+  "liveEventAccepted": false,
+  "signatures": false,
+  "transactions": false,
+  "privateKeysAccessed": false,
+  "githubWrites": false,
+  "internalChecksumValidatedByCLI": true,
+  "localEvidenceHashes": [
+    {
+      "name": "browser-checkpoint.txt",
+      "bytes": 6940,
+      "sha256": "89cef9540a0ae7e0c92a84696cb7453296fe0ef07bcf657ee35c99a1cc533bf1"
+    },
+    {
+      "name": "current-wallet-probe.txt",
+      "bytes": 1036,
+      "sha256": "f13c7f6d54c2192f013da71db7dd191ba8281518970b9d48d1e5ffb31cbe7837"
+    },
+    {
+      "name": "nine-records-restored.jpg",
+      "bytes": 40542,
+      "sha256": "63ce19fd79babaf1586b98115e2fc10f2e71a616e7808a5c7464965c791e3e44"
+    },
+    {
+      "name": "receipt.json",
+      "bytes": 1569,
+      "sha256": "b9ddf70ec74303218fc76c6e624581d8cfb3f16d003bb0bbabe6b06deef9f057"
+    },
+    {
+      "name": "restored-nine-records.json",
+      "bytes": 10103,
+      "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc"
+    },
+    {
+      "name": "restored-overview.txt",
+      "bytes": 8606,
+      "sha256": "f18eaafa6955d89754e181a7c73eb2da6a0350e035733f8c59ac2a1dfcdb41a2"
+    }
+  ]
+}

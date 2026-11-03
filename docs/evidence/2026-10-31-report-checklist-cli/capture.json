@@ -1,0 +1,47 @@
+{
+  "source": "0a3535d",
+  "synthetic": true,
+  "sourceUnchanged": true,
+  "inputSha256": "30d09d83933384472d4173b1519397165011ea974948ca4e572409ca735b38f3",
+  "rows": [
+    {
+      "name": "all",
+      "args": [],
+      "exitCode": 0,
+      "stderr": "",
+      "total": 15,
+      "matched": 15,
+      "allContinuous": false,
+      "csvMatchesPriorCapture": true
+    },
+    {
+      "name": "conflicts",
+      "args": [
+        "--agent",
+        "EMA",
+        "--severity",
+        "conflict"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "total": 15,
+      "matched": 8,
+      "allContinuous": false,
+      "csvMatchesPriorCapture": true
+    },
+    {
+      "name": "empty",
+      "args": [
+        "--search",
+        "no matching record",
+        "--require-continuous"
+      ],
+      "exitCode": 2,
+      "stderr": "REPORT_CHECKS_CLI_NOT_CONTINUOUS\n",
+      "total": 15,
+      "matched": 0,
+      "allContinuous": false,
+      "csvMatchesPriorCapture": true
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+TAP version 13
+# Subtest: contract source checker accepts every actual UTF-8 LF contract
+ok 1 - contract source checker accepts every actual UTF-8 LF contract
+  ---
+  duration_ms: 3.2501
+  type: 'test'
+  ...
+# Subtest: actual source bytes survive Git checkouts with both autocrlf settings
+ok 2 - actual source bytes survive Git checkouts with both autocrlf settings
+  ---
+  duration_ms: 2317.6199
+  type: 'test'
+  ...
+# Subtest: the CLI rejects CRLF before compilation without rewriting the source
+ok 3 - the CLI rejects CRLF before compilation without rewriting the source
+  ---
+  duration_ms: 226.289
+  type: 'test'
+  ...
+# Subtest: source checker refuses missing sources, BOM, lone CR and invalid UTF-8
+ok 4 - source checker refuses missing sources, BOM, lone CR and invalid UTF-8
+  ---
+  duration_ms: 11.7976
+  type: 'test'
+  ...
+# Subtest: actual runner includes TypeScript specs and excludes operational/support files
+ok 5 - actual runner includes TypeScript specs and excludes operational/support files
+  ---
+  duration_ms: 438.064
+  type: 'test'
+  ...
+# Subtest: actual runner propagates a failing Hardhat result
+ok 6 - actual runner propagates a failing Hardhat result
+  ---
+  duration_ms: 401.6598
+  type: 'test'
+  ...
+# Subtest: actual runner rejects an empty TypeScript suite before starting Hardhat
+ok 7 - actual runner rejects an empty TypeScript suite before starting Hardhat
+  ---
+  duration_ms: 273.4513
+  type: 'test'
+  ...
+# Subtest: inspect-wallet-readiness.js real CLI/viem HTTP preserves every canonical parameter
+ok 8 - inspect-wallet-readiness.js real CLI/viem HTTP preserves every canonical parameter
+  ---
+  duration_ms: 3826.6576
+  type: 'test'
+  ...
+# Subtest: inspect-wallet-readiness.js reorganization exits unsuccessfully without output
+ok 9 - inspect-wallet-readiness.js reorganization exits unsuccessfully without output
+  ---
+  duration_ms: 3705.1193
+  type: 'test'
+  ...
+# Subtest: inspect-wallet-readiness.js unsupported hash cannot retry weaker reads or leak provider details
+ok 10 - inspect-wallet-readiness.js unsupported hash cannot retry weaker reads or leak provider details
+  ---
+  duration_ms: 4366.4418
+  type: 'test'
+  ...
+# Subtest: quote-dex.js real CLI/viem HTTP preserves every canonical parameter
+ok 11 - quote-dex.js real CLI/viem HTTP preserves every canonical parameter
+  ---
+  duration_ms: 3756.281
+  type: 'test'
+  ...
+# Subtest: quote-dex.js reorganization exits unsuccessfully without output
+ok 12 - quote-dex.js reorganization exits unsuccessfully without output
+  ---
+  duration_ms: 4595.2917
+  type: 'test'
+  ...
+# Subtest: quote-dex.js unsupported hash cannot retry weaker reads or leak provider details
+ok 13 - quote-dex.js unsupported hash cannot retry weaker reads or leak provider details
+  ---
+  duration_ms: 3666.0256
+  type: 'test'
+  ...
+# Subtest: quote CLI bounds integer text before conversion or network access
+ok 14 - quote CLI bounds integer text before conversion or network access
+  ---
+  duration_ms: 3429.8379
+  type: 'test'
+  ...
+# Subtest: state reader rejects a write ABI function before eth_call
+ok 15 - state reader rejects a write ABI function before eth_call
+  ---
+  duration_ms: 3.4483
+  type: 'test'
+  ...
+# Subtest: CLI preserves default, zero block and exact maximum uint256 inputs
+ok 16 - CLI preserves default, zero block and exact maximum uint256 inputs
+  ---
+  duration_ms: 4.9005
+  type: 'test'
+  ...
+# Subtest: invalid addresses and argument counts are rejected before parsing a range
+ok 17 - invalid addresses and argument counts are rejected before parsing a range
+  ---
+  duration_ms: 1.1143
+  type: 'test'
+  ...
+# Subtest: decimal block input is bounded before BigInt conversion
+ok 18 - decimal block input is bounded before BigInt conversion
+  ---
+  duration_ms: 3.7601
+  type: 'test'
+  ...
+# Subtest: known reversed or excessive ranges fail locally, including inclusive endpoints
+ok 19 - known reversed or excessive ranges fail locally, including inclusive endpoints
+  ---
+  duration_ms: 0.6672
+  type: 'test'
+  ...
+# Subtest: RPC URLs accept HTTPS only and do not echo credentials on refusal
+ok 20 - RPC URLs accept HTTPS only and do not echo credentials on refusal
+  ---
+  duration_ms: 1.5624
+  type: 'test'
+  ...
+# Subtest: transfer CLI decodes a positive event through real viem HTTP, not a hard-coded empty result
+ok 21 - transfer CLI decodes a positive event through real viem HTTP, not a hard-coded empty result
+  ---
+  duration_ms: 3688.4096
+  type: 'test'
+  ...
+# Subtest: transfer CLI default window remains exactly 250 blocks and empty history is allowed
+ok 22 - transfer CLI default window remains exactly 250 blocks and empty history is allowed
+  ---
+  duration_ms: 3548.1112
+  type: 'test'
+  ...
+# Subtest: transfer CLI rejects excessive ranges before any RPC
+ok 23 - transfer CLI rejects excessive ranges before any RPC
+  ---
+  duration_ms: 3388.9119
+  type: 'test'
+  ...
+# Subtest: transfer CLI rejects oversized block text before any RPC
+ok 24 - transfer CLI rejects oversized block text before any RPC
+  ---
+  duration_ms: 4157.7275
+  type: 'test'
+  ...
+# Subtest: transfer CLI rejects invalid account and credential-bearing URL without network or echoed input
+ok 25 - transfer CLI rejects invalid account and credential-bearing URL without network or echoed input
+  ---
+  duration_ms: 6930.4139
+  type: 'test'
+  ...
+# Subtest: transfer CLI fails on a changed canonical end block
+ok 26 - transfer CLI fails on a changed canonical end block
+  ---
+  duration_ms: 4105.8977
+  type: 'test'
+  ...
+# Subtest: transfer CLI reports one failed provider request without retry or leaked details
+ok 27 - transfer CLI reports one failed provider request without retry or leaked details
+  ---
+  duration_ms: 3429.5218
+  type: 'test'
+  ...
+# Subtest: approval CLI decodes a positive event through real viem HTTP, not a hard-coded empty result
+ok 28 - approval CLI decodes a positive event through real viem HTTP, not a hard-coded empty result
+  ---
+  duration_ms: 3746.4577
+  type: 'test'
+  ...
+# Subtest: approval CLI default window remains exactly 250 blocks and empty history is allowed
+ok 29 - approval CLI default window remains exactly 250 blocks and empty history is allowed
+  ---
+  duration_ms: 3689.0273
+  type: 'test'
+  ...
+# Subtest: approval CLI rejects excessive ranges before any RPC
+ok 30 - approval CLI rejects excessive ranges before any RPC
+  ---
+  duration_ms: 3312.6986
+  type: 'test'
+  ...
+# Subtest: approval CLI rejects oversized block text before any RPC
+ok 31 - approval CLI rejects oversized block text before any RPC
+  ---
+  duration_ms: 3398.9361
+  type: 'test'
+  ...
+# Subtest: approval CLI rejects invalid account and credential-bearing URL without network or echoed input
+ok 32 - approval CLI rejects invalid account and credential-bearing URL without network or echoed input
+  ---
+  duration_ms: 6679.3695
+  type: 'test'
+  ...
+# Subtest: approval CLI fails on a changed canonical end block
+ok 33 - approval CLI fails on a changed canonical end block
+  ---
+  duration_ms: 3558.5502
+  type: 'test'
+  ...
+# Subtest: approval CLI reports one failed provider request without retry or leaked details
+ok 34 - approval CLI reports one failed provider request without retry or leaked details
+  ---
+  duration_ms: 3468.453
+  type: 'test'
+  ...
+# Subtest: real viem HTTP transport preserves canonical block parameters and emits the observation
+ok 35 - real viem HTTP transport preserves canonical block parameters and emits the observation
+  ---
+  duration_ms: 3793.5574
+  type: 'test'
+  ...
+# Subtest: unsupported hash parameter fails once without printing RPC credentials or response details
+ok 36 - unsupported hash parameter fails once without printing RPC credentials or response details
+  ---
+  duration_ms: 3556.584
+  type: 'test'
+  ...
+# Subtest: reorganized final block cannot produce a successful CLI report
+ok 37 - reorganized final block cannot produce a successful CLI report
+  ---
+  duration_ms: 3589.1914
+  type: 'test'
+  ...
+# Subtest: body deadline aborts an unfinished stream without retries
+ok 38 - body deadline aborts an unfinished stream without retries
+  ---
+  duration_ms: 376.0949
+  type: 'test'
+  ...
+# Subtest: each request receives a fresh deadline and preserves split UTF-8 JSON
+ok 39 - each request receives a fresh deadline and preserves split UTF-8 JSON
+  ---
+  duration_ms: 1249.6417
+  type: 'test'
+  ...
+# Subtest: an unexpired caller signal cannot disable the body deadline
+ok 40 - an unexpired caller signal cannot disable the body deadline
+  ---
+  duration_ms: 313.3149
+  type: 'test'
+  ...
+# Subtest: caller cancellation during a body read remains effective
+ok 41 - caller cancellation during a body read remains effective
+  ---
+  duration_ms: 121.0466
+  type: 'test'
+  ...
+# Subtest: oversized declared body is refused without retries
+ok 42 - oversized declared body is refused without retries
+  ---
+  duration_ms: 20.0437
+  type: 'test'
+  ...
+# Subtest: oversized chunked body is refused without retries
+ok 43 - oversized chunked body is refused without retries
+  ---
+  duration_ms: 15.385
+  type: 'test'
+  ...
+# Subtest: complete HTTP JSON-RPC errors retain their error code
+ok 44 - complete HTTP JSON-RPC errors retain their error code
+  ---
+  duration_ms: 15.7777
+  type: 'test'
+  ...
+# Subtest: transport limits cannot be disabled or raised beyond the supported caps
+ok 45 - transport limits cannot be disabled or raised beyond the supported caps
+  ---
+  duration_ms: 1.3266
+  type: 'test'
+  ...
+1..45
+# tests 45
+# suites 0
+# pass 45
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 108490.0715

@@ -1,32 +1,37 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
+import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
+import { captureOptionalDataFields } from "./security-data.js";
 import { identityUnits } from "./token-identity-codec.js";
-import { allowanceFail, AllowanceError, validateAllowanceTargets, assertAllowanceContext } from "./allowance-targets.js";
+import { allowanceFail, allowanceObject, AllowanceError, validateAllowanceTargets, assertAllowanceContext } from "./allowance-targets.js";
 import { ALLOWANCE_OBSERVATION_SCHEMA, validateAllowanceObservation } from "./allowance-observation.js";
 
-function sessionKey(session) {
-  const state = session?.state;
+function sessionKey(session, targets = null) {
+  let state;try { state=captureWalletReadState(session); } catch { allowanceFail("ALLOWANCE_SESSION"); }
   if (!state || state.connected !== true || !state.account) allowanceFail("ALLOWANCE_NOT_CONNECTED");
   if (state.canSign !== false || state.canSendTransactions !== false || state.canBridge !== false) {
     allowanceFail("ALLOWANCE_CAPABILITIES");
   }
   if (!Number.isSafeInteger(state.connectionEpoch) || state.connectionEpoch < 0 ||
       typeof session.getTokenAllowance !== "function") allowanceFail("ALLOWANCE_SESSION");
+  if(targets)assertAllowanceContext(targets,state);
   return JSON.stringify([state.agent, state.account, state.chainId, state.siteOrigin, state.connectionEpoch]);
 }
 
 /** Only requested spenders are observed; there is no discovery or approval API. */
 export async function readAllowanceSnapshot(session, input, options = {}) {
+  try { options = captureOptionalDataFields(options, ["timeoutMs", "signal", "onProgress"]); }
+  catch { allowanceFail("ALLOWANCE_OPTIONS"); }
   const targets = validateAllowanceTargets(input);
-  const key = sessionKey(session);
-  assertAllowanceContext(targets, session.state);
+  const key = sessionKey(session, targets);
   const timeoutMs = options.timeoutMs ?? 60000;
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000) allowanceFail("ALLOWANCE_TIMEOUT_OPTION");
-  if (options.signal !== undefined && !(options.signal instanceof AbortSignal)) allowanceFail("ALLOWANCE_SIGNAL");
   if (options.onProgress !== undefined && typeof options.onProgress !== "function") allowanceFail("ALLOWANCE_OBSERVER");
   const observer = options.onProgress;
-  const signal = options.signal;
   const aborter = new AbortController();
   let stopped = false;
+  let cancellation;
   let timer;
   let interrupt;
   let stopReason = "ALLOWANCE_CANCELLED";
@@ -39,7 +44,7 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
     interrupt(new AllowanceError(code));
   }
   function guard() {
-    if (stopped || signal?.aborted) allowanceFail(stopReason);
+    if (stopped || cancellation?.aborted()) allowanceFail(stopReason);
     let current;
     try { current = sessionKey(session); }
     catch { allowanceFail("ALLOWANCE_SESSION_CHANGED"); }
@@ -48,9 +53,9 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
   function progress(stage, completed, spenderAddress = null) {
     guard();
     if (observer) {
-      try { Promise.resolve(observer(Object.freeze({
+      consumeCallback(() => observer(Object.freeze({
         agent: targets.agent, stage, completed, total: targets.targets.length, spenderAddress,
-      }))).catch(() => {}); } catch { /* Observers do not control read results. */ }
+      })));
     }
     guard();
   }
@@ -67,9 +72,7 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
     catch { return { value: null, error: "INVALID_RESPONSE" }; }
   }
   const cancel = () => stop("ALLOWANCE_CANCELLED");
-  if (signal?.aborted) allowanceFail("ALLOWANCE_CANCELLED");
-  signal?.addEventListener("abort", cancel, { once: true });
-  timer = setTimeout(() => stop("ALLOWANCE_TIMEOUT"), timeoutMs);
+
   async function collect() {
     progress("token", 0);
     const identity = await readTokenIdentity(session, {
@@ -82,6 +85,7 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
     for (const target of targets.targets) {
       progress("spender-code", rows.length, target.address);
       const code = await partial(() => session.getContractCode(target.address, identity.blockHash), result => {
+        result = allowanceObject(result, ["address", "deployed"]);
         if (!result || result.address !== target.address || typeof result.deployed !== "boolean") throw Error();
         return result.deployed;
       });
@@ -99,8 +103,11 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
       progress("row-complete", rows.length, target.address);
     }
     progress("canonical", rows.length);
-    const final = await session.getBlockSnapshot("0x" + BigInt(identity.blockNumber).toString(16));
+    const rawFinal = await session.getBlockSnapshot("0x" + BigInt(identity.blockNumber).toString(16));
     guard();
+    let final;
+    try { final = allowanceObject(rawFinal, ["number", "hash"]); }
+    catch { allowanceFail("ALLOWANCE_BLOCK_CHANGED"); }
     if (!final || typeof final.number !== "string" || !/^0x[0-9a-fA-F]{1,64}$/.test(final.number) ||
         BigInt(final.number).toString() !== identity.blockNumber ||
         typeof final.hash !== "string" || final.hash.toLowerCase() !== identity.blockHash) {
@@ -113,11 +120,19 @@ export async function readAllowanceSnapshot(session, input, options = {}) {
     progress("complete", rows.length);
     return result;
   }
-  try { return await Promise.race([collect(), interrupted]); }
+  // Observe interruption before registration can synchronously cancel or fail.
+  interrupted.catch(() => {});
+  try {
+    try { cancellation = subscribeReadAbort(options.signal, cancel); }
+    catch { allowanceFail("ALLOWANCE_SIGNAL"); }
+    guard();
+    timer = setTimeout(() => stop("ALLOWANCE_TIMEOUT"), timeoutMs);
+    return await Promise.race([collect(), interrupted]);
+  }
   finally {
     stopped = true;
     aborter.abort();
     clearTimeout(timer);
-    signal?.removeEventListener("abort", cancel);
+    cancellation?.dispose();
   }
 }

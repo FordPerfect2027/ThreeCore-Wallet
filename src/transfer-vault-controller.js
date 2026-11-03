@@ -1,10 +1,13 @@
 import { createVaultTimeline } from "./transfer-vault-timeline.js";
+import { createStateNotifier } from "./state-notifier.js";
+import { readOwnErrorCode } from "./provider-error.js";
+import { captureOptionalDataFields } from "./security-data.js";
 import { prepareVaultCollection, readVaultCollection, reviewVaultCollection } from "./transfer-vault-collection.js";
 import { transferFail } from "./transfer-codec.js";
 import { VAULT_AGENTS, vaultBundle, validateVaultBundle, vaultKey, vaultHasRecords, reviewVaultReplacement,
   mergeVaultBundles, validateVaultDocument, vaultMetadata, vaultLabel, vaultId, vaultTime } from "./transfer-vault-model.js";
 import { prepareVaultFile, readVaultFile, readLegacyVaultInput } from "./transfer-vault-file.js";
-import { vaultActivityCsv, vaultActivityText, vaultFilteredActivityCsv } from "./transfer-vault-analytics.js";
+import { vaultActivityCsv, vaultActivityText, vaultFilteredActivityCsv, validateActivityQuery } from "./transfer-vault-analytics.js";
 
 /** Offline working copy + opt-in storage. Nothing opens, reads or saves at mount. */
 export function createVaultController({ storage, readCards, stageArchive, onChange = () => {},
@@ -14,7 +17,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
     transferFail("TRANSFER_VAULT_ADAPTER");
   }
   const timeline = createVaultTimeline();
-  let disposed = false, sequence = 0, revision = 0;
+  let disposed = false, sequence = 0, revision = 0, cardsEpoch = 0, notification = 0;
   let working = vaultBundle(), document = null, selectedId = null, review = null;
   let collectionReview = null;
   let active = null, lastAction = null, error = null, savedKey = null, cardsChanged = false;
@@ -26,16 +29,21 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
       selectedId, selectedArchived: entry()?.archived ?? false,
       hasRecords: vaultHasRecords(working), saved: savedKey === vaultKey(working), cardsChanged, timeline: timeline.describe() });
   }
+  const observers = new Set([() => onChange(state())]);
+  const notifier = createStateNotifier({ observers, read: () => Object.freeze({ notification }) });
   function publish() {
     if (disposed) return;
-    try { Promise.resolve(onChange(state())).catch(() => {}); } catch { /* Observers cannot authorize a save. */ }
+    notification++;
+    notifier.notify();
   }
   function errorCode(value) {
-    try { return typeof value?.code === "string" && /^(TRANSFER|CHECKPOINT)_[A-Z_]+$/.test(value.code) ? value.code : "TRANSFER_VAULT_ACTION"; }
-    catch { return "TRANSFER_VAULT_ACTION"; }
+    const code = readOwnErrorCode(value);
+    return typeof code === "string" && /^(TRANSFER|CHECKPOINT)_[A-Z_]+$/.test(code) ? code : "TRANSFER_VAULT_ACTION";
   }
-  function report(value) {
-    error = errorCode(value);
+  function report(value, current = () => !disposed) {
+    const code = errorCode(value);
+    if (!current()) return false;
+    error = code;
     review = null;
     collectionReview = null;
     if (["TRANSFER_VAULT_STALE", "CHECKPOINT_STALE"].includes(error)) { document = null; selectedId = null; }
@@ -51,25 +59,30 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
     if (action !== "collectionApply") collectionReview = null;
     error = null;
     publish();
+    let completed = false, completedSequence;
     try {
       if (!alive(token)) return false;
       await fn(token);
       if (!alive(token)) return false;
       lastAction = action;
-      return true;
+      completed = true;
+      completedSequence = sequence;
     } catch (failure) {
-      if (alive(token)) report(failure);
+      if (alive(token)) report(failure, () => alive(token));
       return false;
     } finally {
       if (alive(token)) { active = null; publish(); }
     }
+    return completed && !disposed && sequence === completedSequence;
   }
-  function stage(bundle, source, merge = false, extra = {}) {
+  function stage(bundle, source, merge = false, extra = {}, current = () => !disposed) {
     const target = merge ? mergeVaultBundles(working, bundle) : validateVaultBundle(bundle);
     const replacement = reviewVaultReplacement(working, target);
+    if (!current()) return false;
     collectionReview = null;
     review = Object.freeze({ id: ++sequence, revision, source, ...replacement, ...extra });
     error = null;
+    return review;
   }
   function changeWorking(bundle) {
     working = validateVaultBundle(bundle);
@@ -78,10 +91,13 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
     error = null;
     cardsChanged = false;
   }
-  function updateDocument(value) {
-    document = validateVaultDocument(value);
+  function updateDocument(value, current) {
+    const next = validateVaultDocument(value);
+    if (!current()) return false;
+    document = next;
     if (savedKey && !document.entries.some(row => vaultKey(row.bundle) === savedKey)) savedKey = null;
     if (!entry()) selectedId = null;
+    return true;
   }
   function readyDocument() {
     if (!document) transferFail("TRANSFER_VAULT_REFRESH_REQUIRED");
@@ -104,41 +120,51 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
   }
   function capture(merge = false) {
     if (disposed || busy()) return false;
+    const token = ++sequence, epoch = cardsEpoch;
+    const current = () => !disposed && !busy() && sequence === token && cardsEpoch === epoch;
     try {
       const captured = validateVaultBundle(readCards());
+      if (!current()) return false;
       if (!vaultHasRecords(captured)) transferFail("TRANSFER_VAULT_EMPTY");
-      stage(captured, "cards", merge, { cardsKey: vaultKey(captured) });
+      const pending = stage(captured, "cards", merge, { cardsKey: vaultKey(captured) }, current);
+      if (!pending) return false;
       publish();
-      return true;
-    } catch (failure) { return report(failure); }
+      return !disposed && review === pending && cardsEpoch === epoch;
+    } catch (failure) { return current() ? report(failure, current) : false; }
   }
   function load(file, merge = false) {
     return operate("fileReview", async token => {
       review = null;
-      const result = await readVaultFile(file, { subtle });
-      if (alive(token)) stage(result.bundle, "file", merge, { digest: result.digest });
+      const result = await readVaultFile(file, { subtle, signal: active.aborter.signal });
+      if (alive(token)) stage(result.bundle, "file", merge, { digest: result.digest }, () => alive(token));
     });
   }
   function loadLegacy(file, kind, agent, merge = false) {
     return operate("legacyReview", async token => {
       review = null;
       if (!VAULT_AGENTS.includes(agent)) transferFail("TRANSFER_VAULT_CONTEXT");
-      const archive = await readLegacyVaultInput(file, kind, { subtle });
+      const archive = await readLegacyVaultInput(file, kind, { subtle, signal: active.aborter.signal });
       if (!alive(token)) return;
       if (archive.records[0].context.agent !== agent) transferFail("TRANSFER_VAULT_CONTEXT");
       const archives = working.slots.map(slot => slot.agent === agent ? archive : slot.archive);
       const single = vaultBundle(archives);
-      stage(single, "legacy", merge);
+      stage(single, "legacy", merge, {}, () => alive(token));
     });
   }
-  async function apply(id, { acknowledgeRemoval = false } = {}) {
+  async function apply(id, options = {}) {
     return operate("apply", async token => {
+      let acknowledgeRemoval;
+      try { ({ acknowledgeRemoval = false } = captureOptionalDataFields(options, ["acknowledgeRemoval"])); }
+      catch { transferFail("TRANSFER_VAULT_CONFIRMATION"); }
+      if (!alive(token)) return;
       const pending = review;
       if (!pending || pending.id !== id || pending.revision !== revision || pending.beforeKey !== vaultKey(working)) {
         transferFail("TRANSFER_VAULT_REVIEW_REQUIRED");
       }
       if (pending.removesRecords && acknowledgeRemoval !== true) transferFail("TRANSFER_VAULT_CONFIRMATION");
       if (pending.source === "cards" && pending.cardsKey !== vaultKey(readCards())) transferFail("TRANSFER_VAULT_CARDS_CHANGED");
+      if (!alive(token)) return;
+      if (pending !== review) transferFail("TRANSFER_VAULT_CARDS_CHANGED");
       if (pending.source === "stored") {
         const current = await freshSelection(token);
         if (!alive(token)) return;
@@ -177,7 +203,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
     return operate("refresh", async token => {
       review = null;
       const result = await storage.read({ signal: active?.aborter.signal });
-      if (alive(token)) updateDocument(result);
+      if (alive(token)) updateDocument(result, () => alive(token));
     });
   }
   function select(id) {
@@ -200,13 +226,16 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
       const stored = readyDocument();
       if (!vaultHasRecords(working)) transferFail("TRANSFER_VAULT_EMPTY");
       const bundle = validateVaultBundle(working), key = vaultKey(bundle), workingRevision = revision;
-      const operation = { kind: "save", id: vaultId(createId()), label: vaultLabel(label), time: vaultTime(now()), bundle };
+      const entryId = vaultId(createId());
+      if (!alive(token)) return;
+      const operation = { kind: "save", id: entryId, label: vaultLabel(label), time: vaultTime(now()), bundle };
+      if (!alive(token)) return;
       const result = await storage.change(stored.revision, operation, {
         canCommit: () => alive(token) && revision === workingRevision && vaultKey(working) === key,
         signal: active.aborter.signal,
       });
       if (!alive(token)) return;
-      updateDocument(result);
+      if (!updateDocument(result, () => alive(token))) return;
       selectedId = operation.id;
       savedKey = key;
     });
@@ -217,7 +246,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
       const row = await freshSelection(token);
       if (!alive(token)) return;
       if (row.archived) transferFail("TRANSFER_VAULT_ARCHIVED");
-      stage(row.bundle, "stored", merge, { entryId: row.id, entryKey: vaultKey(row.bundle) });
+      stage(row.bundle, "stored", merge, { entryId: row.id, entryKey: vaultKey(row.bundle) }, () => alive(token));
     });
   }
   function editSelected(kind, value) {
@@ -226,20 +255,31 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
       const row = selection();
       const operation = kind === "rename" ? { kind, id: row.id, label: vaultLabel(value), time: vaultTime(now()) } :
         kind === "purge" ? { kind, id: row.id, confirmed: value === true } : { kind, id: row.id, time: vaultTime(now()) };
+      if (!alive(token)) return;
       const result = await storage.change(document.revision, operation, { canCommit: () => alive(token), signal: active.aborter.signal });
-      if (alive(token)) updateDocument(result);
+      if (alive(token)) updateDocument(result, () => alive(token));
     });
   }
   async function prepare(kind = "json", stored = false, query) {
+    if (disposed || busy()) return null;
+    const own = sequence;
+    let capturedQuery;
+    try {
+      capturedQuery = kind === "filtered-csv" ? validateActivityQuery(query) : undefined;
+      if (disposed || sequence !== own || busy()) return null;
+    } catch (failure) {
+      if (!disposed && sequence === own && !busy()) report(failure, () => !disposed && sequence === own);
+      return null;
+    }
     let result = null;
     const completed = await operate("export", async token => {
       const source = stored ? (await freshSelection(token)).bundle : working;
       if (!alive(token)) return;
       if (!vaultHasRecords(source)) transferFail("TRANSFER_VAULT_EMPTY");
-      if (kind === "json") result = await prepareVaultFile(source, { subtle });
+      if (kind === "json") result = await prepareVaultFile(source, { subtle, signal: active.aborter.signal });
       else if (kind === "filtered-csv") {
         if (stored) transferFail("TRANSFER_VAULT_FILE_KIND");
-        const report = vaultFilteredActivityCsv(source, query);
+        const report = vaultFilteredActivityCsv(source, capturedQuery);
         if (!report.matched) transferFail("TRANSFER_VAULT_NO_MATCHES");
         result = Object.freeze({ ...report, filename: "ThreeCore-filtered-transfer-activity.csv",
           mimeType: "text/csv;charset=utf-8", byteLength: new TextEncoder().encode(report.text).length });
@@ -257,9 +297,10 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
     return operate("collectionReview", async token => {
       review = null;
       const before = readyDocument();
-      const result = await readVaultCollection(file, { subtle });
+      const result = await readVaultCollection(file, { subtle, signal: active.aborter.signal });
       if (!alive(token)) return;
-      collectionReview = Object.freeze({ id: ++sequence, ...reviewVaultCollection(before, result.document) });
+      const proposed = reviewVaultCollection(before, result.document);
+      if (alive(token)) collectionReview = Object.freeze({ id: ++sequence, ...proposed });
     });
   }
   function applyCollection(id) {
@@ -271,7 +312,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
       const result = await storage.change(pending.expectedRevision, { kind: "import", entries: pending.entries },
         { canCommit: () => alive(token), signal: active.aborter.signal });
       if (!alive(token)) return;
-      updateDocument(result);
+      if (!updateDocument(result, () => alive(token))) return;
       collectionReview = null;
     });
   }
@@ -282,7 +323,7 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
       const current = validateVaultDocument(await storage.read({ signal: active?.aborter.signal }));
       if (!alive(token)) return;
       if (current.revision !== expected) transferFail("TRANSFER_VAULT_STALE");
-      result = await prepareVaultCollection(current, { subtle });
+      result = await prepareVaultCollection(current, { subtle, signal: active.aborter.signal });
       if (!alive(token)) result = null;
     });
     return completed && !disposed ? result : null;
@@ -299,9 +340,10 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
   }
   function cancel() {
     if (disposed) return;
-    sequence++;
-    active?.aborter.abort();
+    const token = ++sequence, previous = active;
     active = null;
+    previous?.aborter.abort();
+    if (disposed || sequence !== token) return;
     review = null;
     collectionReview = null;
     error = null;
@@ -310,15 +352,27 @@ export function createVaultController({ storage, readCards, stageArchive, onChan
   }
   function invalidateCards() {
     if (disposed) return;
+    cardsEpoch++;
     cardsChanged = true;
     if (review?.source === "cards") review = null;
-    if (active?.action === "stageCard") { sequence++; active.aborter.abort(); active = null; }
+    if (active?.action === "stageCard") {
+      const token = ++sequence, previous = active;
+      active = null;
+      previous.aborter.abort();
+      if (disposed || sequence !== token) return;
+    }
     publish();
   }
   function dispose() {
     if (disposed) return;
-    cancel();
     disposed = true;
+    sequence++;
+    observers.clear();
+    const previous = active;
+    active = null;
+    review = null;
+    collectionReview = null;
+    previous?.aborter.abort();
     timeline.clear();
     storage.close();
   }

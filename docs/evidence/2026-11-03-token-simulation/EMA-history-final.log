@@ -1,0 +1,20 @@
+▶ EMACore: event history against the local EVM
+  ✔ reads actual mint, transfer, self-transfer and burn logs with mined identities (378.9864ms)
+  ✔ keeps Approval event amounts distinct from allowance consumed by transferFrom (233.7933ms)
+  ✔ preserves maximum approval and a later zero-amount revocation exactly (273.2411ms)
+  ✔ keeps the sampled allowance when the local chain advances during history reads (58.1496ms)
+  ✔ Transfer: refuses removed flags injected into otherwise real local logs (260.5782ms)
+  ✔ Transfer: refuses a conflicting duplicate of an actual local event (83.0141ms)
+  ✔ Transfer: rejects a local chain replacement and succeeds on a fresh snapshot (151.8859ms)
+  ✔ Approval: refuses removed flags injected into otherwise real local logs (98.1606ms)
+  ✔ Approval: refuses a conflicting duplicate of an actual local event (159.1508ms)
+  ✔ Approval: rejects a local chain replacement and succeeds on a fresh snapshot (128.5661ms)
+✔ EMACore: event history against the local EVM (1886.136ms)
+ℹ tests 10
+ℹ suites 1
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10511.4425

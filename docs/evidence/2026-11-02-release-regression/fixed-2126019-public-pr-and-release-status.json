@@ -1,0 +1,54 @@
+{
+  "method": "Unauthenticated public GET",
+  "checkedAt": "2026-11-02T13:23:25.1599750+00:00",
+  "releases": [],
+  "checks": [
+    {
+      "id": 124861882045,
+      "name": "token-integration (CAWELON-Draft, c62f63370f7bcbe559d07b4d757384cf5f43ff0f)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+      "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861882045"
+    },
+    {
+      "id": 124861882041,
+      "name": "evidence",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+      "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861882041"
+    },
+    {
+      "id": 124861882013,
+      "name": "token-integration (DAT, e0215f1a32824c19bcc89da96841e758928f4f29)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+      "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861882013"
+    },
+    {
+      "id": 124861882009,
+      "name": "token-integration (EMA-Draft, 362db49dcc5d5db5560b71ed5acd19bba326575e)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+      "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861882009"
+    },
+    {
+      "id": 124861881848,
+      "name": "test",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "07041f00efdb503cb76a06fbe12e5531cb380930",
+      "html_url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726/job/124861881848"
+    }
+  ],
+  "pr": {
+    "draft": true,
+    "state": "open",
+    "url": "https://github.com/FordPerfect2027/ThreeCore-Wallet/pull/4",
+    "merged": false,
+    "head": "07041f00efdb503cb76a06fbe12e5531cb380930"
+  }
+}

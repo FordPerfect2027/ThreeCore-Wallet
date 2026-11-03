@@ -1,0 +1,1391 @@
+TAP version 13
+# Subtest: Approval event is indexed and bounded to a short read-only window
+ok 1 - Approval event is indexed and bounded to a short read-only window
+  ---
+  duration_ms: 3.6047
+  type: 'test'
+  ...
+# Subtest: returns event history and pinned current allowance as DIFFERENT facts
+ok 2 - returns event history and pinned current allowance as DIFFERENT facts
+  ---
+  duration_ms: 22.4642
+  type: 'test'
+  ...
+# Subtest: an explicit historical block pins the allowance, not latest
+ok 3 - an explicit historical block pins the allowance, not latest
+  ---
+  duration_ms: 1.0415
+  type: 'test'
+  ...
+# Subtest: different public spender is explicit and never labelled Classic Router
+ok 4 - different public spender is explicit and never labelled Classic Router
+  ---
+  duration_ms: 1.0967
+  type: 'test'
+  ...
+# Subtest: deduplicates repeated RPC logs and sorts by transaction position
+ok 5 - deduplicates repeated RPC logs and sorts by transaction position
+  ---
+  duration_ms: 1.5299
+  type: 'test'
+  ...
+# Subtest: different values for one log ID cause a conflict
+ok 6 - different values for one log ID cause a conflict
+  ---
+  duration_ms: 2.0246
+  type: 'test'
+  ...
+# Subtest: refuses incorrect chain before requesting an allowance or history
+ok 7 - refuses incorrect chain before requesting an allowance or history
+  ---
+  duration_ms: 0.6749
+  type: 'test'
+  ...
+# Subtest: refuses invalid owner and spender addresses without any network requests
+ok 8 - refuses invalid owner and spender addresses without any network requests
+  ---
+  duration_ms: 1.8054
+  type: 'test'
+  ...
+# Subtest: rejects malformed block values, reversed ranges and too many blocks
+ok 9 - rejects malformed block values, reversed ranges and too many blocks
+  ---
+  duration_ms: 1.5987
+  type: 'test'
+  ...
+# Subtest: requires public read client with contract read and log support
+ok 10 - requires public read client with contract read and log support
+  ---
+  duration_ms: 0.9213
+  type: 'test'
+  ...
+# Subtest: rejects unrelated, malformed or out-of-range Approval logs
+ok 11 - rejects unrelated, malformed or out-of-range Approval logs
+  ---
+  duration_ms: 2.5963
+  type: 'test'
+  ...
+# Subtest: rejects unbounded Approval event sets or malformed allowances
+ok 12 - rejects unbounded Approval event sets or malformed allowances
+  ---
+  duration_ms: 1.4345
+  type: 'test'
+  ...
+# Subtest: RPC errors propagate and never cause transactions or approvals
+ok 13 - RPC errors propagate and never cause transactions or approvals
+  ---
+  duration_ms: 0.8283
+  type: 'test'
+  ...
+# Subtest: inspect-wallet-readiness.js real CLI/viem HTTP preserves every canonical parameter
+ok 14 - inspect-wallet-readiness.js real CLI/viem HTTP preserves every canonical parameter
+  ---
+  duration_ms: 4576.31
+  type: 'test'
+  ...
+# Subtest: inspect-wallet-readiness.js reorganization exits unsuccessfully without output
+ok 15 - inspect-wallet-readiness.js reorganization exits unsuccessfully without output
+  ---
+  duration_ms: 3903.4943
+  type: 'test'
+  ...
+# Subtest: inspect-wallet-readiness.js unsupported hash cannot retry weaker reads or leak provider details
+ok 16 - inspect-wallet-readiness.js unsupported hash cannot retry weaker reads or leak provider details
+  ---
+  duration_ms: 3873.3532
+  type: 'test'
+  ...
+# Subtest: quote-dex.js real CLI/viem HTTP preserves every canonical parameter
+ok 17 - quote-dex.js real CLI/viem HTTP preserves every canonical parameter
+  ---
+  duration_ms: 3615.2175
+  type: 'test'
+  ...
+# Subtest: quote-dex.js reorganization exits unsuccessfully without output
+ok 18 - quote-dex.js reorganization exits unsuccessfully without output
+  ---
+  duration_ms: 3482.611
+  type: 'test'
+  ...
+# Subtest: quote-dex.js unsupported hash cannot retry weaker reads or leak provider details
+ok 19 - quote-dex.js unsupported hash cannot retry weaker reads or leak provider details
+  ---
+  duration_ms: 3415.2672
+  type: 'test'
+  ...
+# Subtest: quote CLI bounds integer text before conversion or network access
+ok 20 - quote CLI bounds integer text before conversion or network access
+  ---
+  duration_ms: 3400.4405
+  type: 'test'
+  ...
+# Subtest: state reader rejects a write ABI function before eth_call
+ok 21 - state reader rejects a write ABI function before eth_call
+  ---
+  duration_ms: 3.0697
+  type: 'test'
+  ...
+# Subtest: buy quote uses the registered volatile pool and one canonical state
+ok 22 - buy quote uses the registered volatile pool and one canonical state
+  ---
+  duration_ms: 80.0578
+  type: 'test'
+  ...
+# Subtest: sell quote switches exact base units and reserve direction
+ok 23 - sell quote switches exact base units and reserve direction
+  ---
+  duration_ms: 24.1302
+  type: 'test'
+  ...
+# Subtest: reverse token ordering is handled without assuming pool order
+ok 24 - reverse token ordering is handled without assuming pool order
+  ---
+  duration_ms: 10.2231
+  type: 'test'
+  ...
+# Subtest: invalid directions and amounts fail before RPC
+ok 25 - invalid directions and amounts fail before RPC
+  ---
+  duration_ms: 3.6152
+  type: 'test'
+  ...
+# Subtest: wrong network fails before pool lookup
+ok 26 - wrong network fails before pool lookup
+  ---
+  duration_ms: 0.6476
+  type: 'test'
+  ...
+# Subtest: missing or transaction-only clients fail
+ok 27 - missing or transaction-only clients fail
+  ---
+  duration_ms: 0.7969
+  type: 'test'
+  ...
+# Subtest: absent pool fails before quote
+ok 28 - absent pool fails before quote
+  ---
+  duration_ms: 1.4189
+  type: 'test'
+  ...
+# Subtest: unregistered pool and missing bytecode fail before pricing
+ok 29 - unregistered pool and missing bytecode fail before pricing
+  ---
+  duration_ms: 3.3532
+  type: 'test'
+  ...
+# Subtest: wrong pair or stable flag: {"token0":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+ok 30 - wrong pair or stable flag: {"token0":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+  ---
+  duration_ms: 13.8587
+  type: 'test'
+  ...
+# Subtest: wrong pair or stable flag: {"token1":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+ok 31 - wrong pair or stable flag: {"token1":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+  ---
+  duration_ms: 21.735
+  type: 'test'
+  ...
+# Subtest: wrong pair or stable flag: {"token0":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913","token1":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"}
+ok 32 - wrong pair or stable flag: {"token0":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913","token1":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"}
+  ---
+  duration_ms: 8.4253
+  type: 'test'
+  ...
+# Subtest: wrong pair or stable flag: {"stable":true}
+ok 33 - wrong pair or stable flag: {"stable":true}
+  ---
+  duration_ms: 10.2583
+  type: 'test'
+  ...
+# Subtest: empty reserves and wrong decimals fail
+ok 34 - empty reserves and wrong decimals fail
+  ---
+  duration_ms: 25.128
+  type: 'test'
+  ...
+# Subtest: zero or excessive output is rejected
+ok 35 - zero or excessive output is rejected
+  ---
+  duration_ms: 21.3576
+  type: 'test'
+  ...
+# Subtest: malformed ABI cannot produce a quote: getPool
+ok 36 - malformed ABI cannot produce a quote: getPool
+  ---
+  duration_ms: 2.1288
+  type: 'test'
+  ...
+# Subtest: malformed ABI cannot produce a quote: isPool
+ok 37 - malformed ABI cannot produce a quote: isPool
+  ---
+  duration_ms: 2.6905
+  type: 'test'
+  ...
+# Subtest: malformed ABI cannot produce a quote: token0
+ok 38 - malformed ABI cannot produce a quote: token0
+  ---
+  duration_ms: 14.3521
+  type: 'test'
+  ...
+# Subtest: malformed ABI cannot produce a quote: token1
+ok 39 - malformed ABI cannot produce a quote: token1
+  ---
+  duration_ms: 19.2776
+  type: 'test'
+  ...
+# Subtest: malformed ABI cannot produce a quote: stable
+ok 40 - malformed ABI cannot produce a quote: stable
+  ---
+  duration_ms: 4.6789
+  type: 'test'
+  ...
+# Subtest: malformed ABI cannot produce a quote: getReserves
+ok 41 - malformed ABI cannot produce a quote: getReserves
+  ---
+  duration_ms: 6.6777
+  type: 'test'
+  ...
+# Subtest: malformed ABI cannot produce a quote: decimals
+ok 42 - malformed ABI cannot produce a quote: decimals
+  ---
+  duration_ms: 7.2406
+  type: 'test'
+  ...
+# Subtest: malformed ABI cannot produce a quote: getAmountOut
+ok 43 - malformed ABI cannot produce a quote: getAmountOut
+  ---
+  duration_ms: 9.5307
+  type: 'test'
+  ...
+# Subtest: reorganized block cannot produce a successful quote
+ok 44 - reorganized block cannot produce a successful quote
+  ---
+  duration_ms: 5.58
+  type: 'test'
+  ...
+# Subtest: network switch cannot produce a successful quote
+ok 45 - network switch cannot produce a successful quote
+  ---
+  duration_ms: 5.8173
+  type: 'test'
+  ...
+# Subtest: missing final header fails instead of returning output
+ok 46 - missing final header fails instead of returning output
+  ---
+  duration_ms: 15.8637
+  type: 'test'
+  ...
+# Subtest: failed hash selector never falls back: eth_getCode
+ok 47 - failed hash selector never falls back: eth_getCode
+  ---
+  duration_ms: 2.0619
+  type: 'test'
+  ...
+# Subtest: failed hash selector never falls back: eth_call
+ok 48 - failed hash selector never falls back: eth_call
+  ---
+  duration_ms: 1.2857
+  type: 'test'
+  ...
+# Subtest: Transfer: removed events fail the whole report
+ok 49 - Transfer: removed events fail the whole report
+  ---
+  duration_ms: 17.3062
+  type: 'test'
+  ...
+# Subtest: Transfer: pending or incomplete log identities fail closed
+ok 50 - Transfer: pending or incomplete log identities fail closed
+  ---
+  duration_ms: 11.6531
+  type: 'test'
+  ...
+# Subtest: Transfer: rejects uint256 overflow in event amounts
+ok 51 - Transfer: rejects uint256 overflow in event amounts
+  ---
+  duration_ms: 1.2231
+  type: 'test'
+  ...
+# Subtest: Transfer: preserves zero and maximum uint256 event amounts exactly
+ok 52 - Transfer: preserves zero and maximum uint256 event amounts exactly
+  ---
+  duration_ms: 2.2781
+  type: 'test'
+  ...
+# Subtest: Transfer: rejects oversized caller, tip and log heights
+ok 53 - Transfer: rejects oversized caller, tip and log heights
+  ---
+  duration_ms: 8.2954
+  type: 'test'
+  ...
+# Subtest: Transfer: accepts uint256 maximum height without rounding
+ok 54 - Transfer: accepts uint256 maximum height without rounding
+  ---
+  duration_ms: 2.0865
+  type: 'test'
+  ...
+# Subtest: Transfer: exact and differently cased duplicates are counted once
+ok 55 - Transfer: exact and differently cased duplicates are counted once
+  ---
+  duration_ms: 1.973
+  type: 'test'
+  ...
+# Subtest: Transfer: duplicate identities cannot change block hash or transaction index
+ok 56 - Transfer: duplicate identities cannot change block hash or transaction index
+  ---
+  duration_ms: 1.6738
+  type: 'test'
+  ...
+# Subtest: Transfer: different events at one height cannot claim different block hashes
+ok 57 - Transfer: different events at one height cannot claim different block hashes
+  ---
+  duration_ms: 0.9748
+  type: 'test'
+  ...
+# Subtest: Transfer: one block hash cannot claim two heights
+ok 58 - Transfer: one block hash cannot claim two heights
+  ---
+  duration_ms: 1.3797
+  type: 'test'
+  ...
+# Subtest: Transfer: block-wide log and transaction positions cannot be reused
+ok 59 - Transfer: block-wide log and transaction positions cannot be reused
+  ---
+  duration_ms: 1.5752
+  type: 'test'
+  ...
+# Subtest: Transfer: multiple logs in one transaction and multiple transactions remain valid
+ok 60 - Transfer: multiple logs in one transaction and multiple transactions remain valid
+  ---
+  duration_ms: 1.9354
+  type: 'test'
+  ...
+# Subtest: Transfer: each RPC response must match its requested direction
+ok 61 - Transfer: each RPC response must match its requested direction
+  ---
+  duration_ms: 1.2265
+  type: 'test'
+  ...
+# Subtest: Approval: removed events fail the whole report
+ok 62 - Approval: removed events fail the whole report
+  ---
+  duration_ms: 2.7609
+  type: 'test'
+  ...
+# Subtest: Approval: pending or incomplete log identities fail closed
+ok 63 - Approval: pending or incomplete log identities fail closed
+  ---
+  duration_ms: 3.8962
+  type: 'test'
+  ...
+# Subtest: Approval: rejects uint256 overflow in event amounts
+ok 64 - Approval: rejects uint256 overflow in event amounts
+  ---
+  duration_ms: 0.8045
+  type: 'test'
+  ...
+# Subtest: Approval: preserves zero and maximum uint256 event amounts exactly
+ok 65 - Approval: preserves zero and maximum uint256 event amounts exactly
+  ---
+  duration_ms: 1.1082
+  type: 'test'
+  ...
+# Subtest: Approval: rejects oversized caller, tip and log heights
+ok 66 - Approval: rejects oversized caller, tip and log heights
+  ---
+  duration_ms: 1.3948
+  type: 'test'
+  ...
+# Subtest: Approval: accepts uint256 maximum height without rounding
+ok 67 - Approval: accepts uint256 maximum height without rounding
+  ---
+  duration_ms: 0.4829
+  type: 'test'
+  ...
+# Subtest: Approval: exact and differently cased duplicates are counted once
+ok 68 - Approval: exact and differently cased duplicates are counted once
+  ---
+  duration_ms: 0.796
+  type: 'test'
+  ...
+# Subtest: Approval: duplicate identities cannot change block hash or transaction index
+ok 69 - Approval: duplicate identities cannot change block hash or transaction index
+  ---
+  duration_ms: 1.1533
+  type: 'test'
+  ...
+# Subtest: Approval: different events at one height cannot claim different block hashes
+ok 70 - Approval: different events at one height cannot claim different block hashes
+  ---
+  duration_ms: 4.6196
+  type: 'test'
+  ...
+# Subtest: Approval: one block hash cannot claim two heights
+ok 71 - Approval: one block hash cannot claim two heights
+  ---
+  duration_ms: 1.3203
+  type: 'test'
+  ...
+# Subtest: Approval: block-wide log and transaction positions cannot be reused
+ok 72 - Approval: block-wide log and transaction positions cannot be reused
+  ---
+  duration_ms: 4.01
+  type: 'test'
+  ...
+# Subtest: Approval: multiple logs in one transaction and multiple transactions remain valid
+ok 73 - Approval: multiple logs in one transaction and multiple transactions remain valid
+  ---
+  duration_ms: 2.8291
+  type: 'test'
+  ...
+# Subtest: Approval: rejects oversized sampled allowance
+ok 74 - Approval: rejects oversized sampled allowance
+  ---
+  duration_ms: 0.8236
+  type: 'test'
+  ...
+# Subtest: CLI preserves default, zero block and exact maximum uint256 inputs
+ok 75 - CLI preserves default, zero block and exact maximum uint256 inputs
+  ---
+  duration_ms: 8.1147
+  type: 'test'
+  ...
+# Subtest: invalid addresses and argument counts are rejected before parsing a range
+ok 76 - invalid addresses and argument counts are rejected before parsing a range
+  ---
+  duration_ms: 1.9066
+  type: 'test'
+  ...
+# Subtest: decimal block input is bounded before BigInt conversion
+ok 77 - decimal block input is bounded before BigInt conversion
+  ---
+  duration_ms: 1.7698
+  type: 'test'
+  ...
+# Subtest: known reversed or excessive ranges fail locally, including inclusive endpoints
+ok 78 - known reversed or excessive ranges fail locally, including inclusive endpoints
+  ---
+  duration_ms: 0.8371
+  type: 'test'
+  ...
+# Subtest: RPC URLs accept HTTPS only and do not echo credentials on refusal
+ok 79 - RPC URLs accept HTTPS only and do not echo credentials on refusal
+  ---
+  duration_ms: 1.7505
+  type: 'test'
+  ...
+# Subtest: transfer CLI decodes a positive event through real viem HTTP, not a hard-coded empty result
+ok 80 - transfer CLI decodes a positive event through real viem HTTP, not a hard-coded empty result
+  ---
+  duration_ms: 3792.6977
+  type: 'test'
+  ...
+# Subtest: transfer CLI default window remains exactly 250 blocks and empty history is allowed
+ok 81 - transfer CLI default window remains exactly 250 blocks and empty history is allowed
+  ---
+  duration_ms: 3804.5172
+  type: 'test'
+  ...
+# Subtest: transfer CLI rejects excessive ranges before any RPC
+ok 82 - transfer CLI rejects excessive ranges before any RPC
+  ---
+  duration_ms: 3096.1056
+  type: 'test'
+  ...
+# Subtest: transfer CLI rejects oversized block text before any RPC
+ok 83 - transfer CLI rejects oversized block text before any RPC
+  ---
+  duration_ms: 3161.6362
+  type: 'test'
+  ...
+# Subtest: transfer CLI rejects invalid account and credential-bearing URL without network or echoed input
+ok 84 - transfer CLI rejects invalid account and credential-bearing URL without network or echoed input
+  ---
+  duration_ms: 6598.4759
+  type: 'test'
+  ...
+# Subtest: transfer CLI fails on a changed canonical end block
+ok 85 - transfer CLI fails on a changed canonical end block
+  ---
+  duration_ms: 5193.5313
+  type: 'test'
+  ...
+# Subtest: transfer CLI reports one failed provider request without retry or leaked details
+ok 86 - transfer CLI reports one failed provider request without retry or leaked details
+  ---
+  duration_ms: 6807.7724
+  type: 'test'
+  ...
+# Subtest: approval CLI decodes a positive event through real viem HTTP, not a hard-coded empty result
+ok 87 - approval CLI decodes a positive event through real viem HTTP, not a hard-coded empty result
+  ---
+  duration_ms: 10532.5498
+  type: 'test'
+  ...
+# Subtest: approval CLI default window remains exactly 250 blocks and empty history is allowed
+ok 88 - approval CLI default window remains exactly 250 blocks and empty history is allowed
+  ---
+  duration_ms: 10334.8146
+  type: 'test'
+  ...
+# Subtest: approval CLI rejects excessive ranges before any RPC
+ok 89 - approval CLI rejects excessive ranges before any RPC
+  ---
+  duration_ms: 14706.6841
+  type: 'test'
+  ...
+# Subtest: approval CLI rejects oversized block text before any RPC
+not ok 90 - approval CLI rejects oversized block text before any RPC
+  ---
+  duration_ms: 15358.6773
+  type: 'test'
+  location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-dependency-repair-DAT-20261102\\test\\history-cli.test.mjs:108:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Command failed: C:\Program Files\nodejs\node.exe --import file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102/test/support/local-rpc-preload.mjs C:\Users\aseet\Documents\Codex\2026-10-26\test-4\work\token-dependency-repair-DAT-20261102\scripts\inspect-approvals.js 0x1111111111111111111111111111111111111111 9999999999999999999999999999999999999999999999999999999999999999999999999999999
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    genericNodeError (node:internal/errors:985:15)
+    wrappedFn (node:internal/errors:539:14)
+    ChildProcess.exithandler (node:child_process:417:12)
+    ChildProcess.emit (node:events:509:28)
+    maybeClose (node:internal/child_process:1141:16)
+    ChildProcess._handle.onexit (node:internal/child_process:306:5)
+  ...
+# Subtest: approval CLI rejects invalid account and credential-bearing URL without network or echoed input
+ok 91 - approval CLI rejects invalid account and credential-bearing URL without network or echoed input
+  ---
+  duration_ms: 16615.8632
+  type: 'test'
+  ...
+# Subtest: approval CLI fails on a changed canonical end block
+ok 92 - approval CLI fails on a changed canonical end block
+  ---
+  duration_ms: 8319.4161
+  type: 'test'
+  ...
+# Subtest: approval CLI reports one failed provider request without retry or leaked details
+ok 93 - approval CLI reports one failed provider request without retry or leaked details
+  ---
+  duration_ms: 7933.4988
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: records the range-end hash and checks distinct event heights once
+ok 94 - Transfer snapshot: records the range-end hash and checks distinct event heights once
+  ---
+  duration_ms: 11.9974
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: empty history still rechecks the sampled block
+ok 95 - Transfer snapshot: empty history still rechecks the sampled block
+  ---
+  duration_ms: 1.7344
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: empty history cannot hide an end-block replacement
+ok 96 - Transfer snapshot: empty history cannot hide an end-block replacement
+  ---
+  duration_ms: 2.6419
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: rejects a changed end block after successful log validation
+ok 97 - Transfer snapshot: rejects a changed end block after successful log validation
+  ---
+  duration_ms: 1.6092
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: rejects a stale event even when removed is false
+ok 98 - Transfer snapshot: rejects a stale event even when removed is false
+  ---
+  duration_ms: 1.4841
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: events at the sampled end must match its captured hash
+ok 99 - Transfer snapshot: events at the sampled end must match its captured hash
+  ---
+  duration_ms: 1.5542
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: invalid initial headers stop before querying logs or allowance
+ok 100 - Transfer snapshot: invalid initial headers stop before querying logs or allowance
+  ---
+  duration_ms: 2.7385
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: unavailable initial, event or final blocks reject the report
+ok 101 - Transfer snapshot: unavailable initial, event or final blocks reject the report
+  ---
+  duration_ms: 1.7225
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: malformed event-block headers are rejected
+ok 102 - Transfer snapshot: malformed event-block headers are rejected
+  ---
+  duration_ms: 1.0123
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: refuses a provider network change during reads
+ok 103 - Transfer snapshot: refuses a provider network change during reads
+  ---
+  duration_ms: 1.1847
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: captures header scalars rather than trusting a mutable object
+ok 104 - Transfer snapshot: captures header scalars rather than trusting a mutable object
+  ---
+  duration_ms: 0.9436
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: explicit historical end is checked rather than latest
+ok 105 - Transfer snapshot: explicit historical end is checked rather than latest
+  ---
+  duration_ms: 0.9949
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: header errors propagate without retry or fallback
+ok 106 - Transfer snapshot: header errors propagate without retry or fallback
+  ---
+  duration_ms: 1.5285
+  type: 'test'
+  ...
+# Subtest: Transfer snapshot: a client without header support is rejected before RPC
+ok 107 - Transfer snapshot: a client without header support is rejected before RPC
+  ---
+  duration_ms: 0.7104
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: records the range-end hash and checks distinct event heights once
+ok 108 - Approval snapshot: records the range-end hash and checks distinct event heights once
+  ---
+  duration_ms: 3.1126
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: empty history still rechecks the sampled block
+ok 109 - Approval snapshot: empty history still rechecks the sampled block
+  ---
+  duration_ms: 1.1277
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: empty history cannot hide an end-block replacement
+ok 110 - Approval snapshot: empty history cannot hide an end-block replacement
+  ---
+  duration_ms: 1.0442
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: rejects a changed end block after successful log validation
+ok 111 - Approval snapshot: rejects a changed end block after successful log validation
+  ---
+  duration_ms: 0.6385
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: rejects a stale event even when removed is false
+ok 112 - Approval snapshot: rejects a stale event even when removed is false
+  ---
+  duration_ms: 0.9498
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: events at the sampled end must match its captured hash
+ok 113 - Approval snapshot: events at the sampled end must match its captured hash
+  ---
+  duration_ms: 0.6713
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: invalid initial headers stop before querying logs or allowance
+ok 114 - Approval snapshot: invalid initial headers stop before querying logs or allowance
+  ---
+  duration_ms: 1.2224
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: unavailable initial, event or final blocks reject the report
+ok 115 - Approval snapshot: unavailable initial, event or final blocks reject the report
+  ---
+  duration_ms: 1.3199
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: malformed event-block headers are rejected
+ok 116 - Approval snapshot: malformed event-block headers are rejected
+  ---
+  duration_ms: 0.5408
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: refuses a provider network change during reads
+ok 117 - Approval snapshot: refuses a provider network change during reads
+  ---
+  duration_ms: 0.7198
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: captures header scalars rather than trusting a mutable object
+ok 118 - Approval snapshot: captures header scalars rather than trusting a mutable object
+  ---
+  duration_ms: 0.5198
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: explicit historical end is checked rather than latest
+ok 119 - Approval snapshot: explicit historical end is checked rather than latest
+  ---
+  duration_ms: 0.4048
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: header errors propagate without retry or fallback
+ok 120 - Approval snapshot: header errors propagate without retry or fallback
+  ---
+  duration_ms: 0.811
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: a client without header support is rejected before RPC
+ok 121 - Approval snapshot: a client without header support is rejected before RPC
+  ---
+  duration_ms: 0.3686
+  type: 'test'
+  ...
+# Subtest: Approval snapshot: unsupported hash selectors never fall back to number or latest
+ok 122 - Approval snapshot: unsupported hash selectors never fall back to number or latest
+  ---
+  duration_ms: 0.808
+  type: 'test'
+  ...
+# Subtest: real viem HTTP transport preserves canonical block parameters and emits the observation
+ok 123 - real viem HTTP transport preserves canonical block parameters and emits the observation
+  ---
+  duration_ms: 7175.6141
+  type: 'test'
+  ...
+# Subtest: unsupported hash parameter fails once without printing RPC credentials or response details
+ok 124 - unsupported hash parameter fails once without printing RPC credentials or response details
+  ---
+  duration_ms: 10778.0608
+  type: 'test'
+  ...
+# Subtest: reorganized final block cannot produce a successful CLI report
+ok 125 - reorganized final block cannot produce a successful CLI report
+  ---
+  duration_ms: 9295.0263
+  type: 'test'
+  ...
+# Subtest: published token specification remains immutable
+ok 126 - published token specification remains immutable
+  ---
+  duration_ms: 5.7018
+  type: 'test'
+  ...
+# Subtest: all state reads require the same canonical hash and final header/chain checks
+ok 127 - all state reads require the same canonical hash and final header/chain checks
+  ---
+  duration_ms: 571.3576
+  type: 'test'
+  ...
+# Subtest: wrong network fails before state reads
+ok 128 - wrong network fails before state reads
+  ---
+  duration_ms: 2.0608
+  type: 'test'
+  ...
+# Subtest: invalid chain: null
+ok 129 - invalid chain: null
+  ---
+  duration_ms: 0.6527
+  type: 'test'
+  ...
+# Subtest: invalid chain: 8453
+ok 130 - invalid chain: 8453
+  ---
+  duration_ms: 0.5404
+  type: 'test'
+  ...
+# Subtest: invalid chain: 8453
+ok 131 - invalid chain: 8453
+  ---
+  duration_ms: 0.6004
+  type: 'test'
+  ...
+# Subtest: invalid chain: 0x02105
+ok 132 - invalid chain: 0x02105
+  ---
+  duration_ms: 0.907
+  type: 'test'
+  ...
+# Subtest: invalid chain: 0x
+ok 133 - invalid chain: 0x
+  ---
+  duration_ms: 0.8616
+  type: 'test'
+  ...
+# Subtest: invalid chain: 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ok 134 - invalid chain: 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  ---
+  duration_ms: 1.373
+  type: 'test'
+  ...
+# Subtest: invalid numbered block: null
+ok 135 - invalid numbered block: null
+  ---
+  duration_ms: 1.4277
+  type: 'test'
+  ...
+# Subtest: invalid numbered block: {}
+ok 136 - invalid numbered block: {}
+  ---
+  duration_ms: 0.6833
+  type: 'test'
+  ...
+# Subtest: invalid numbered block: {"number":"pending","hash":"0xabababababababababababababababababababababababababababababababab"}
+ok 137 - invalid numbered block: {"number":"pending","hash":"0xabababababababababababababababababababababababababababababababab"}
+  ---
+  duration_ms: 0.5806
+  type: 'test'
+  ...
+# Subtest: invalid numbered block: {"number":"0x00","hash":"0xabababababababababababababababababababababababababababababababab"}
+ok 138 - invalid numbered block: {"number":"0x00","hash":"0xabababababababababababababababababababababababababababababababab"}
+  ---
+  duration_ms: 0.8536
+  type: 'test'
+  ...
+# Subtest: invalid numbered block: {"number":"0x1","hash":null}
+ok 139 - invalid numbered block: {"number":"0x1","hash":null}
+  ---
+  duration_ms: 0.4724
+  type: 'test'
+  ...
+# Subtest: invalid numbered block: {"number":"0x1","hash":"0x1234"}
+ok 140 - invalid numbered block: {"number":"0x1","hash":"0x1234"}
+  ---
+  duration_ms: 0.4918
+  type: 'test'
+  ...
+# Subtest: invalid contract code: null
+ok 141 - invalid contract code: null
+  ---
+  duration_ms: 0.6622
+  type: 'test'
+  ...
+# Subtest: invalid contract code: 0x
+ok 142 - invalid contract code: 0x
+  ---
+  duration_ms: 0.5703
+  type: 'test'
+  ...
+# Subtest: invalid contract code: not-hex
+ok 143 - invalid contract code: not-hex
+  ---
+  duration_ms: 0.4258
+  type: 'test'
+  ...
+# Subtest: invalid contract code: 0x1
+ok 144 - invalid contract code: 0x1
+  ---
+  duration_ms: 80.1312
+  type: 'test'
+  ...
+# Subtest: oversized code is bounded before metadata
+ok 145 - oversized code is bounded before metadata
+  ---
+  duration_ms: 0.8093
+  type: 'test'
+  ...
+# Subtest: metadata mismatch: {"name":"Wrong"}
+ok 146 - metadata mismatch: {"name":"Wrong"}
+  ---
+  duration_ms: 5.3875
+  type: 'test'
+  ...
+# Subtest: metadata mismatch: {"symbol":"Wrong"}
+ok 147 - metadata mismatch: {"symbol":"Wrong"}
+  ---
+  duration_ms: 152.7936
+  type: 'test'
+  ...
+# Subtest: metadata mismatch: {"decimals":6}
+ok 148 - metadata mismatch: {"decimals":6}
+  ---
+  duration_ms: 3.1017
+  type: 'test'
+  ...
+# Subtest: issuance limit and valid burn reductions remain checked
+ok 149 - issuance limit and valid burn reductions remain checked
+  ---
+  duration_ms: 94.0548
+  type: 'test'
+  ...
+# Subtest: invalid ABI response: null
+ok 150 - invalid ABI response: null
+  ---
+  duration_ms: 2.2865
+  type: 'test'
+  ...
+# Subtest: invalid ABI response: 0x
+ok 151 - invalid ABI response: 0x
+  ---
+  duration_ms: 3.6761
+  type: 'test'
+  ...
+# Subtest: invalid ABI response: 0x1234
+ok 152 - invalid ABI response: 0x1234
+  ---
+  duration_ms: 2.7043
+  type: 'test'
+  ...
+# Subtest: invalid ABI response: bad
+ok 153 - invalid ABI response: bad
+  ---
+  duration_ms: 1.881
+  type: 'test'
+  ...
+# Subtest: invalid ABI response: 42
+ok 154 - invalid ABI response: 42
+  ---
+  duration_ms: 1.7793
+  type: 'test'
+  ...
+# Subtest: invalid ABI response: 0x000000000000000000
+ok 155 - invalid ABI response: 0x000000000000000000
+  ---
+  duration_ms: 21.1007
+  type: 'test'
+  ...
+# Subtest: changed block rejected: 0x4d20xcdcdcd
+ok 156 - changed block rejected: 0x4d20xcdcdcd
+  ---
+  duration_ms: 16.1251
+  type: 'test'
+  ...
+# Subtest: changed block rejected: 0x4d30xababab
+ok 157 - changed block rejected: 0x4d30xababab
+  ---
+  duration_ms: 3.0034
+  type: 'test'
+  ...
+# Subtest: vanished final block fails verification
+ok 158 - vanished final block fails verification
+  ---
+  duration_ms: 41.5548
+  type: 'test'
+  ...
+# Subtest: network switch during reads fails verification
+ok 159 - network switch during reads fails verification
+  ---
+  duration_ms: 5.6107
+  type: 'test'
+  ...
+# Subtest: unsupported canonical code read propagates without weaker retry
+ok 160 - unsupported canonical code read propagates without weaker retry
+  ---
+  duration_ms: 1.7783
+  type: 'test'
+  ...
+# Subtest: metadata hash rejection has no latest/number fallback
+ok 161 - metadata hash rejection has no latest/number fallback
+  ---
+  duration_ms: 3.6163
+  type: 'test'
+  ...
+# Subtest: expected identity is captured before asynchronous reads
+ok 162 - expected identity is captured before asynchronous reads
+  ---
+  duration_ms: 2.4678
+  type: 'test'
+  ...
+# Subtest: invalid expected specification: null
+ok 163 - invalid expected specification: null
+  ---
+  duration_ms: 0.3925
+  type: 'test'
+  ...
+# Subtest: invalid expected specification: {"chainId":8453,"contractAddress":"0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5","tokenName":"DATCORE","tokenSymbol":"DAT","decimals":256,"supplyUnits":"1000000000"}
+ok 164 - invalid expected specification: {"chainId":8453,"contractAddress":"0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5","tokenName":"DATCORE","tokenSymbol":"DAT","decimals":256,"supplyUnits":"1000000000"}
+  ---
+  duration_ms: 0.2744
+  type: 'test'
+  ...
+# Subtest: invalid expected specification: {"chainId":8453,"contractAddress":"0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5","tokenName":"DATCORE","tokenSymbol":"DAT","decimals":18,"supplyUnits":"999999999999999999999999999999999999999999999999999999999999999999999999999999"}
+ok 165 - invalid expected specification: {"chainId":8453,"contractAddress":"0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5","tokenName":"DATCORE","tokenSymbol":"DAT","decimals":18,"supplyUnits":"999999999999999999999999999999999999999999999999999999999999999999999999999999"}
+  ---
+  duration_ms: 0.2409
+  type: 'test'
+  ...
+# Subtest: invalid expected specification: {"chainId":8453,"contractAddress":"bad","tokenName":"DATCORE","tokenSymbol":"DAT","decimals":18,"supplyUnits":"1000000000"}
+ok 166 - invalid expected specification: {"chainId":8453,"contractAddress":"bad","tokenName":"DATCORE","tokenSymbol":"DAT","decimals":18,"supplyUnits":"1000000000"}
+  ---
+  duration_ms: 0.2254
+  type: 'test'
+  ...
+# Subtest: missing and transaction-only clients are rejected
+ok 167 - missing and transaction-only clients are rejected
+  ---
+  duration_ms: 0.5162
+  type: 'test'
+  ...
+# Subtest: read-only CLI response-body deadlines
+    # Subtest: verify-base-mainnet.js
+    ok 1 - verify-base-mainnet.js
+      ---
+      duration_ms: 29566.1409
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11869 ms
+    # Subtest: inspect-wallet-readiness.js
+    ok 2 - inspect-wallet-readiness.js
+      ---
+      duration_ms: 28294.2944
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11703 ms
+    # Subtest: quote-dex.js
+    ok 3 - quote-dex.js
+      ---
+      duration_ms: 28214.4339
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11883 ms
+    # Subtest: inspect-transfers.js
+    ok 4 - inspect-transfers.js
+      ---
+      duration_ms: 27277.6074
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11486 ms
+    # Subtest: inspect-approvals.js
+    ok 5 - inspect-approvals.js
+      ---
+      duration_ms: 28636.5353
+      type: 'test'
+      ...
+    # Response body observed to process exit: 11851 ms
+    1..5
+ok 168 - read-only CLI response-body deadlines
+  ---
+  duration_ms: 29569.782
+  type: 'test'
+  ...
+# Subtest: body deadline aborts an unfinished stream without retries
+ok 169 - body deadline aborts an unfinished stream without retries
+  ---
+  duration_ms: 523.4901
+  type: 'test'
+  ...
+# Subtest: each request receives a fresh deadline and preserves split UTF-8 JSON
+ok 170 - each request receives a fresh deadline and preserves split UTF-8 JSON
+  ---
+  duration_ms: 1426.9022
+  type: 'test'
+  ...
+# Subtest: an unexpired caller signal cannot disable the body deadline
+ok 171 - an unexpired caller signal cannot disable the body deadline
+  ---
+  duration_ms: 346.491
+  type: 'test'
+  ...
+# Subtest: caller cancellation during a body read remains effective
+ok 172 - caller cancellation during a body read remains effective
+  ---
+  duration_ms: 234.3008
+  type: 'test'
+  ...
+# Subtest: oversized declared body is refused without retries
+ok 173 - oversized declared body is refused without retries
+  ---
+  duration_ms: 79.0925
+  type: 'test'
+  ...
+# Subtest: oversized chunked body is refused without retries
+ok 174 - oversized chunked body is refused without retries
+  ---
+  duration_ms: 35.4321
+  type: 'test'
+  ...
+# Subtest: complete HTTP JSON-RPC errors retain their error code
+ok 175 - complete HTTP JSON-RPC errors retain their error code
+  ---
+  duration_ms: 30.7436
+  type: 'test'
+  ...
+# Subtest: transport limits cannot be disabled or raised beyond the supported caps
+ok 176 - transport limits cannot be disabled or raised beyond the supported caps
+  ---
+  duration_ms: 4.5919
+  type: 'test'
+  ...
+# Subtest: Transfer history uses a standard indexed ERC-20 event, not a transaction method
+ok 177 - Transfer history uses a standard indexed ERC-20 event, not a transaction method
+  ---
+  duration_ms: 5.2058
+  type: 'test'
+  ...
+# Subtest: returns a frozen, deduplicated, block-pinned ThreeCore activity report
+ok 178 - returns a frozen, deduplicated, block-pinned ThreeCore activity report
+  ---
+  duration_ms: 24.6548
+  type: 'test'
+  ...
+# Subtest: explicit historical toBlock is honored and never exceeds the observed chain tip
+ok 179 - explicit historical toBlock is honored and never exceeds the observed chain tip
+  ---
+  duration_ms: 0.9132
+  type: 'test'
+  ...
+# Subtest: wrong chain refuses event scanning without calls to getLogs
+ok 180 - wrong chain refuses event scanning without calls to getLogs
+  ---
+  duration_ms: 1.7816
+  type: 'test'
+  ...
+# Subtest: invalid account address fails before any network access
+ok 181 - invalid account address fails before any network access
+  ---
+  duration_ms: 1.2387
+  type: 'test'
+  ...
+# Subtest: invalid public clients and malformed block values are rejected
+ok 182 - invalid public clients and malformed block values are rejected
+  ---
+  duration_ms: 2.1862
+  type: 'test'
+  ...
+# Subtest: rejects future, reversed and excessively long ranges before fetching logs
+ok 183 - rejects future, reversed and excessively long ranges before fetching logs
+  ---
+  duration_ms: 2.2831
+  type: 'test'
+  ...
+# Subtest: rejects logs outside requested block range and logs from another contract
+ok 184 - rejects logs outside requested block range and logs from another contract
+  ---
+  duration_ms: 2.2238
+  type: 'test'
+  ...
+# Subtest: rejects unrelated and malformed decoded Transfer logs
+ok 185 - rejects unrelated and malformed decoded Transfer logs
+  ---
+  duration_ms: 2.7209
+  type: 'test'
+  ...
+# Subtest: refuses conflicting logs for the same transaction hash and log index
+ok 186 - refuses conflicting logs for the same transaction hash and log index
+  ---
+  duration_ms: 1.1727
+  type: 'test'
+  ...
+# Subtest: refuses excessive or malformed RPC log sets rather than truncating silently
+ok 187 - refuses excessive or malformed RPC log sets rather than truncating silently
+  ---
+  duration_ms: 0.9446
+  type: 'test'
+  ...
+# Subtest: RPC errors propagate without retrying or sending transactions
+ok 188 - RPC errors propagate without retrying or sending transactions
+  ---
+  duration_ms: 0.8573
+  type: 'test'
+  ...
+# Subtest: readiness reports exact public balances and existing allowance at one canonical hash
+ok 189 - readiness reports exact public balances and existing allowance at one canonical hash
+  ---
+  duration_ms: 45.0071
+  type: 'test'
+  ...
+# Subtest: zero gas, balance and allowance remain separate facts
+ok 190 - zero gas, balance and allowance remain separate facts
+  ---
+  duration_ms: 4.3152
+  type: 'test'
+  ...
+# Subtest: maximum uint256 balances and existing allowance remain exact
+ok 191 - maximum uint256 balances and existing allowance remain exact
+  ---
+  duration_ms: 38.7046
+  type: 'test'
+  ...
+# Subtest: invalid or zero public addresses fail before RPC
+ok 192 - invalid or zero public addresses fail before RPC
+  ---
+  duration_ms: 2.2075
+  type: 'test'
+  ...
+# Subtest: mixed case public address normalizes before reads
+ok 193 - mixed case public address normalizes before reads
+  ---
+  duration_ms: 48.3466
+  type: 'test'
+  ...
+# Subtest: missing and transaction-only clients fail
+ok 194 - missing and transaction-only clients fail
+  ---
+  duration_ms: 5.8976
+  type: 'test'
+  ...
+# Subtest: wrong chain fails before contract reads
+ok 195 - wrong chain fails before contract reads
+  ---
+  duration_ms: 5.1161
+  type: 'test'
+  ...
+# Subtest: invalid sampled block: null
+ok 196 - invalid sampled block: null
+  ---
+  duration_ms: 0.8928
+  type: 'test'
+  ...
+# Subtest: invalid sampled block: {}
+ok 197 - invalid sampled block: {}
+  ---
+  duration_ms: 53.9588
+  type: 'test'
+  ...
+# Subtest: invalid sampled block: {"number":"0x-1","hash":"0xabababababababababababababababababababababababababababababababab"}
+ok 198 - invalid sampled block: {"number":"0x-1","hash":"0xabababababababababababababababababababababababababababababababab"}
+  ---
+  duration_ms: 1.3337
+  type: 'test'
+  ...
+# Subtest: invalid sampled block: {"number":"123","hash":"0xabababababababababababababababababababababababababababababababab"}
+ok 199 - invalid sampled block: {"number":"123","hash":"0xabababababababababababababababababababababababababababababababab"}
+  ---
+  duration_ms: 0.5722
+  type: 'test'
+  ...
+# Subtest: invalid sampled block: {"number":"0x11111111111111111111111111111111111111111111111111111111111111111","hash":"0xabababababababababababababababababababababababababababababababab"}
+ok 200 - invalid sampled block: {"number":"0x11111111111111111111111111111111111111111111111111111111111111111","hash":"0xabababababababababababababababababababababababababababababababab"}
+  ---
+  duration_ms: 0.5163
+  type: 'test'
+  ...
+# Subtest: invalid sampled block: {"number":"0x4d2","hash":null}
+ok 201 - invalid sampled block: {"number":"0x4d2","hash":null}
+  ---
+  duration_ms: 0.3691
+  type: 'test'
+  ...
+# Subtest: missing code aborts before balance reads: 0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5
+ok 202 - missing code aborts before balance reads: 0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5
+  ---
+  duration_ms: 0.9207
+  type: 'test'
+  ...
+# Subtest: missing code aborts before balance reads: 0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43
+ok 203 - missing code aborts before balance reads: 0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43
+  ---
+  duration_ms: 0.5526
+  type: 'test'
+  ...
+# Subtest: invalid bytecode: null
+ok 204 - invalid bytecode: null
+  ---
+  duration_ms: 0.5795
+  type: 'test'
+  ...
+# Subtest: invalid bytecode: 0x1
+ok 205 - invalid bytecode: 0x1
+  ---
+  duration_ms: 0.6472
+  type: 'test'
+  ...
+# Subtest: invalid bytecode: hello
+ok 206 - invalid bytecode: hello
+  ---
+  duration_ms: 0.4937
+  type: 'test'
+  ...
+# Subtest: invalid bytecode: 0xXX
+ok 207 - invalid bytecode: 0xXX
+  ---
+  duration_ms: 0.5283
+  type: 'test'
+  ...
+# Subtest: invalid bytecode: 123
+ok 208 - invalid bytecode: 123
+  ---
+  duration_ms: 0.6251
+  type: 'test'
+  ...
+# Subtest: oversized code is rejected before ABI decoding
+ok 209 - oversized code is rejected before ABI decoding
+  ---
+  duration_ms: 0.7017
+  type: 'test'
+  ...
+# Subtest: invalid native balance quantity: null
+ok 210 - invalid native balance quantity: null
+  ---
+  duration_ms: 32.5331
+  type: 'test'
+  ...
+# Subtest: invalid native balance quantity: 2
+ok 211 - invalid native balance quantity: 2
+  ---
+  duration_ms: 39.0292
+  type: 'test'
+  ...
+# Subtest: invalid native balance quantity: -1
+ok 212 - invalid native balance quantity: -1
+  ---
+  duration_ms: 2.6694
+  type: 'test'
+  ...
+# Subtest: invalid native balance quantity: 0x00
+ok 213 - invalid native balance quantity: 0x00
+  ---
+  duration_ms: 14.6307
+  type: 'test'
+  ...
+# Subtest: invalid native balance quantity: 0x-1
+ok 214 - invalid native balance quantity: 0x-1
+  ---
+  duration_ms: 2.4439
+  type: 'test'
+  ...
+# Subtest: invalid native balance quantity: 0x11111111111111111111111111111111111111111111111111111111111111111
+ok 215 - invalid native balance quantity: 0x11111111111111111111111111111111111111111111111111111111111111111
+  ---
+  duration_ms: 56.393
+  type: 'test'
+  ...
+# Subtest: malformed and oversized ABI response: balanceOf
+ok 216 - malformed and oversized ABI response: balanceOf
+  ---
+  duration_ms: 6.7063
+  type: 'test'
+  ...
+# Subtest: malformed and oversized ABI response: allowance
+ok 217 - malformed and oversized ABI response: allowance
+  ---
+  duration_ms: 6.2114
+  type: 'test'
+  ...
+# Subtest: reorganized block cannot produce a readiness report
+ok 218 - reorganized block cannot produce a readiness report
+  ---
+  duration_ms: 1.592
+  type: 'test'
+  ...
+# Subtest: network switch cannot produce a readiness report
+ok 219 - network switch cannot produce a readiness report
+  ---
+  duration_ms: 1.5743
+  type: 'test'
+  ...
+# Subtest: failed state read never falls back or dispatches a transaction: eth_getCode
+ok 220 - failed state read never falls back or dispatches a transaction: eth_getCode
+  ---
+  duration_ms: 1.1762
+  type: 'test'
+  ...
+# Subtest: failed state read never falls back or dispatches a transaction: eth_getBalance
+ok 221 - failed state read never falls back or dispatches a transaction: eth_getBalance
+  ---
+  duration_ms: 1.5437
+  type: 'test'
+  ...
+# Subtest: failed state read never falls back or dispatches a transaction: eth_call
+ok 222 - failed state read never falls back or dispatches a transaction: eth_call
+  ---
+  duration_ms: 1.0166
+  type: 'test'
+  ...
+1..222
+# tests 227
+# suites 0
+# pass 226
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 124858.7668

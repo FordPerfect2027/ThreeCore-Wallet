@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-03",
+  "baseCommit": "31084e1",
+  "scope": "Public same-block balance UI and reviewed transfer into offline budgets",
+  "verification": "Related regression, actual in-app browser public reads/downloads and offline file checks; not whole-wallet regression or independent audit",
+  "tests": {
+    "total": 570,
+    "pass": 570,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "initialRegression": {
+    "total": 570,
+    "pass": 569,
+    "fail": 1,
+    "reason": "Budget notice wording no longer matched existing semantic-copy assertion; restored explicit no-live-read statement without weakening the test",
+    "log": "pre-fix-regression-tests.tap"
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:4245",
+    "sources": [
+      {
+        "chainId": 84532,
+        "blockNumber": "53876331",
+        "blockHash": "0x1b83626c098ad02101ee61ba4291a5762061afb9eb1200c3e627ff0575d4bc7c",
+        "bytes": 1678,
+        "sha256": "7d026b28e4016b956e22fc60b1b1f3f07d33210fbe4291e85ad57731a26dfca8",
+        "commandBytesMatch": true,
+        "checksumVerified": true,
+        "walletConnected": false
+      },
+      {
+        "chainId": 8453,
+        "blockNumber": "53454110",
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "bytes": 1692,
+        "sha256": "4a4596c54c600dad8201e894839d11be4d3f30a18310f510e79bc8f16c5ea470",
+        "commandBytesMatch": true,
+        "checksumVerified": true,
+        "walletConnected": false
+      }
+    ],
+    "cancelDuringReadObserved": true,
+    "firstCancelAttemptAfterCompletionDidNotCount": true,
+    "evidence": {
+      "bytes": 4453,
+      "sha256": "813dafd7780d83f92518a183b333a0125a41cb853677b9b6fa6ad9e5e97a95f0",
+      "expectedBytesMatch": true,
+      "sourceConsistent": true,
+      "budgetConstraintsSatisfied": false
+    },
+    "budgetTransfer": {
+      "agent": "DAT",
+      "chainId": 8453,
+      "bytes": 656,
+      "sha256": "c9a6bc9f8aa357c0f4603f1e2043d0b8b670cfc443ac5b3d7dc65804195ed3b2",
+      "onlyBalancesAndDecimalsChanged": true,
+      "manualSpendReserveFeeAssumptionsPreserved": true,
+      "unknownOperatorFeePreserved": true,
+      "originalRecordConsistency": true,
+      "budgetConstraintsSatisfied": false
+    },
+    "screenshots": [
+      {
+        "name": "ThreeCore-public-reading-screen-20261103.jpg",
+        "bytes": 71774,
+        "sha256": "c6ed1388e2388fe37da99f1835079b7244060ddd8f7193e9c5cf5f0029b9a772"
+      },
+      {
+        "name": "ThreeCore-budget-source-import-20261103.jpg",
+        "bytes": 49926,
+        "sha256": "9c4b433362ed78cb933c8032b036b71574d4fb777dddd15f6559d1074084a4bc"
+      }
+    ]
+  },
+  "oldEvidenceAudit": {
+    "manifestFiles": 5,
+    "sourceInventoryFiles": 15,
+    "pinnedSource": "31084e1",
+    "allMatched": true
+  },
+  "serverHealth": [
+    {
+      "port": 4231,
+      "status": 200
+    },
+    {
+      "port": 4232,
+      "status": 200
+    },
+    {
+      "port": 4233,
+      "status": 200
+    },
+    {
+      "port": 4245,
+      "status": 200
+    }
+  ],
+  "transactions": 0,
+  "walletRequests": 0,
+  "secretAccess": false,
+  "githubWrites": 0,
+  "overall90PercentEstablished": false,
+  "goalStatus": "active",
+  "privateEvidenceSavedOutsideRepository": true
+}

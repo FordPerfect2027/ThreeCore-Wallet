@@ -1,0 +1,85 @@
+{
+  "recordedAt": "2026-11-01T21:52:01.552Z",
+  "tokens": [
+    {
+      "token": "DAT",
+      "baseCommit": "62dee6aba8a092e179643e0e4b19d53473cd6e67",
+      "commit": "45f0aa3f897538f1dfccfe3299dcec793156bd8e",
+      "status": "",
+      "files": [
+        "README.md",
+        "docs/HISTORY_CLI_2026-11-02.md",
+        "src/history-cli-input.js",
+        "scripts/inspect-transfers.js",
+        "scripts/inspect-approvals.js",
+        "test/history-cli.test.mjs",
+        "test/support/local-rpc-preload.mjs"
+      ],
+      "sourceSha256": {
+        "src/history-cli-input.js": "b930a90f00e7ad9b3a2aa90044fa04527e93e7d1cc5fcbc4620bf438f5f59fd4",
+        "scripts/inspect-transfers.js": "776f0ca2f240f99e418f4d99816ffc2b994522af5cef68c2187a519d26984ae2",
+        "scripts/inspect-approvals.js": "3bafce7c510e9cbe2bfd665492d7823074065708e5f29364c392c006a99a9b64",
+        "test/history-cli.test.mjs": "5dd286308e566384f83427ad5998d4f953bb88cb3bc26cbed1dca10be1cfc0d5",
+        "test/support/local-rpc-preload.mjs": "8ab875d23da6c7af441be3838b0936cbf7bdb6211ea61e13779fd8e3dae7ab3a"
+      }
+    },
+    {
+      "token": "EMA",
+      "baseCommit": "05d86c6a29f93057fc09778f47f15fe4fd94b4cf",
+      "commit": "a292d6b81d1f1e754fcdb1d76af2e61e182375f6",
+      "status": "",
+      "files": [
+        "README.md",
+        "docs/HISTORY_CLI_2026-11-02.md",
+        "src/history-cli-input.js",
+        "scripts/inspect-transfers.js",
+        "scripts/inspect-approvals.js",
+        "test/history-cli.test.mjs",
+        "test/support/local-rpc-preload.mjs"
+      ],
+      "sourceSha256": {
+        "src/history-cli-input.js": "b930a90f00e7ad9b3a2aa90044fa04527e93e7d1cc5fcbc4620bf438f5f59fd4",
+        "scripts/inspect-transfers.js": "776f0ca2f240f99e418f4d99816ffc2b994522af5cef68c2187a519d26984ae2",
+        "scripts/inspect-approvals.js": "3bafce7c510e9cbe2bfd665492d7823074065708e5f29364c392c006a99a9b64",
+        "test/history-cli.test.mjs": "5dd286308e566384f83427ad5998d4f953bb88cb3bc26cbed1dca10be1cfc0d5",
+        "test/support/local-rpc-preload.mjs": "8ab875d23da6c7af441be3838b0936cbf7bdb6211ea61e13779fd8e3dae7ab3a"
+      }
+    },
+    {
+      "token": "CAWELON",
+      "baseCommit": "74c2c0fe001193915d45d9a4734bfa6714598717",
+      "commit": "1eee51c89ea9d6507b68ee017781125b321b7f2b",
+      "status": "",
+      "files": [
+        "README.md",
+        "docs/HISTORY_CLI_2026-11-02.md",
+        "src/history-cli-input.js",
+        "scripts/inspect-transfers.js",
+        "scripts/inspect-approvals.js",
+        "test/history-cli.test.mjs",
+        "test/support/local-rpc-preload.mjs"
+      ],
+      "sourceSha256": {
+        "src/history-cli-input.js": "b930a90f00e7ad9b3a2aa90044fa04527e93e7d1cc5fcbc4620bf438f5f59fd4",
+        "scripts/inspect-transfers.js": "776f0ca2f240f99e418f4d99816ffc2b994522af5cef68c2187a519d26984ae2",
+        "scripts/inspect-approvals.js": "3bafce7c510e9cbe2bfd665492d7823074065708e5f29364c392c006a99a9b64",
+        "test/history-cli.test.mjs": "5dd286308e566384f83427ad5998d4f953bb88cb3bc26cbed1dca10be1cfc0d5",
+        "test/support/local-rpc-preload.mjs": "8ab875d23da6c7af441be3838b0936cbf7bdb6211ea61e13779fd8e3dae7ab3a"
+      }
+    }
+  ],
+  "fullReadOnlyPassedPerToken": 213,
+  "failed": 0,
+  "historyCliSubset": 19,
+  "concurrency": 2,
+  "prior194CasesOverlap": true,
+  "baselineToken": "DAT",
+  "baselineExpectedFailures": 2,
+  "baselineInvalidRangeRpcCallsEach": 3,
+  "correctedInvalidRangeRpcCallsEach": 0,
+  "realNetworkUsed": false,
+  "realWalletUsed": false,
+  "transactionsPerformed": false,
+  "signaturesPerformed": false,
+  "historyLibrariesAndContractsUnchanged": true
+}

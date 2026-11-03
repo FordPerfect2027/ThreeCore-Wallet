@@ -1,0 +1,42 @@
+✖ owned successful and mismatching bundle receipts omit addresses, source bodies and private notes (288.5367ms)
+✔ receipt-only save uses a separate acknowledgement and works for a mismatch with extraction disabled (226.2777ms)
+✔ receipt delivery cannot overwrite a replacement review or execute after disposal (37.2033ms)
+✔ bundle export requires its own acknowledgement, reopens both originals and resets acknowledgement (974.1993ms)
+✔ bundle viewer is independent of the current comparison and each extraction needs fresh acknowledgement (1610.3352ms)
+✔ changed file bytes and changed comparison selection prevent stale exports (393.2318ms)
+✔ mismatching comparison, refused delivery and late cancelled reviews cannot release source files (691.712ms)
+✔ the combined guide binds bundle export to the selected files and clears it on replacement (547.6521ms)
+✔ bundle preserves exact source text, notes and restrictions through a complete checked round trip (1190.5262ms)
+✔ different supported original formats can be preserved without claiming equal evidence (258.6117ms)
+✔ a valid source substituted into a bundle breaks the saved comparison binding and prevents extraction (312.6436ms)
+✔ forged or deserialized bundle reviews cannot release originals (359.167ms)
+✔ bundle checks nested checksums, false authority flags, exact framing and originals-only inputs (349.9538ms)
+✔ bundle work has explicit combined bounds and honours cancellation without reading option getters (282.6081ms)
+✔ CLI creates, verifies and extracts exact originals; comparison mismatch never emits extracted text (4317.3711ms)
+✔ offline tools reject ambiguous commands without partial output or path disclosure (1652.9153ms)
+✔ plain-source CLI create/check/extract preserves exact inputs and emits no source for mismatches (1681.9261ms)
+✔ combined guide packs plain sources only after acknowledgement and extracts each exact file separately (109.3691ms)
+✔ a plain-source comparison mismatch leaves both extraction controls disabled (33.0066ms)
+✔ all eight plain source families round-trip exact bytes with explicit non-checksummed scope (208.2518ms)
+✔ checksummed V1 output stays byte-identical and mixed source pairs retain per-side scope (62.9525ms)
+✔ valid source substitution, changed claims and old comparison versions cannot release plain sources (17.1258ms)
+✔ auxiliary claims, invalid sources, extra fields and forged review copies cannot authorize extraction (8.9235ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 22
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11557.9351
+
+✖ failing tests:
+
+test at test\wallet-saved-bundle-receipt.test.js:3:1
+✖ owned successful and mismatching bundle receipts omit addresses, source bodies and private notes (288.5367ms)
+  TypeError: Cannot assign to read only property 'note' of object '#<Object>'
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-bundle-receipt.test.js:4:55)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)

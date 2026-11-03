@@ -1,0 +1,43 @@
+{
+  "recordedAt": "2026-11-03T08:44:25.843Z",
+  "baseCommit": "2f45900",
+  "scope": "Manual shared-account budget development; same account is an assumption, not an on-chain observation",
+  "verification": {
+    "focusedTests": 683,
+    "passed": 683,
+    "failed": 0,
+    "skipped": 0,
+    "log": "focused-tests.tap",
+    "subsetBudgetTests": 45,
+    "notAdditionalFeatures": true
+  },
+  "browser": {
+    "type": "Codex in-app browser",
+    "origin": "http://127.0.0.1:4242",
+    "sourceFiles": 3,
+    "agents": [
+      "DAT",
+      "EMA",
+      "CAWELON"
+    ],
+    "requiresExplicitSameAccountAssumption": true,
+    "individualConstraintsSatisfied": true,
+    "sharedConstraintsSatisfied": false,
+    "nativeShortfallWei": "60000000000000",
+    "savedBytes": 2476,
+    "sha256": "e0062324c488e1ff341d828ce38aba3cbad24251500697b64d9a7cffc9f58736",
+    "savedRestoredReexportedByteIdentical": true,
+    "offlineExit": 2,
+    "screenshot": {
+      "name": "ThreeCore-shared-budget-20261103.jpg",
+      "bytes": 53358,
+      "sha256": "20d5deec16599183e2ea4f4a8d2c75e0d3d567d44b486f37ee2c839963441c1f"
+    }
+  },
+  "walletRequests": 0,
+  "transactions": 0,
+  "externalRequestsByBudgetPages": 0,
+  "githubWrites": 0,
+  "oldPackageUnchanged": true,
+  "overall90PercentEstablished": false
+}

@@ -1,0 +1,1954 @@
+{
+  "recordedAt": "2026-11-02T19:49:46.006Z",
+  "baseline": {
+    "helperVersion": "3.0.8",
+    "zodVersion": "3.25.76",
+    "helperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48",
+    "observations": [
+      {
+        "name": "data / empty",
+        "success": true,
+        "value": {
+          "bytes": ""
+        }
+      },
+      {
+        "name": "data / zero byte",
+        "success": true,
+        "value": {
+          "bytes": "00"
+        }
+      },
+      {
+        "name": "data / mixed-case bytes",
+        "success": true,
+        "value": {
+          "bytes": "abcd"
+        }
+      },
+      {
+        "name": "data / buffer",
+        "success": true,
+        "value": {
+          "bytes": "00ff"
+        }
+      },
+      {
+        "name": "data / odd length",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "data / non-hex",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "data / number",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "data / null",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "quantity / zero",
+        "success": true,
+        "value": {
+          "bigint": "0"
+        }
+      },
+      {
+        "name": "quantity / one",
+        "success": true,
+        "value": {
+          "bigint": "1"
+        }
+      },
+      {
+        "name": "quantity / large exact integer",
+        "success": true,
+        "value": {
+          "bigint": "9007199254740993"
+        }
+      },
+      {
+        "name": "quantity / bigint",
+        "success": true,
+        "value": {
+          "bigint": "9007199254740993"
+        }
+      },
+      {
+        "name": "quantity / empty",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "quantity / leading zero",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "quantity / negative hex",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "quantity / decimal number",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "quantity / null",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "address / hex",
+        "success": true,
+        "value": {
+          "bytes": "1111111111111111111111111111111111111111"
+        }
+      },
+      {
+        "name": "address / buffer",
+        "success": true,
+        "value": {
+          "bytes": "1111111111111111111111111111111111111111"
+        }
+      },
+      {
+        "name": "address / short string",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "address / long string",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "address / short buffer",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "address / null",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "nullable address / null",
+        "success": true,
+        "value": null
+      },
+      {
+        "name": "nullable address / absent",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Invalid input"
+        ]
+      },
+      {
+        "name": "hash / hex",
+        "success": true,
+        "value": {
+          "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      {
+        "name": "hash / buffer",
+        "success": true,
+        "value": {
+          "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      {
+        "name": "hash / short",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with the correct length or a valid RPC hash string"
+        ]
+      },
+      {
+        "name": "hash / long",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with the correct length or a valid RPC hash string"
+        ]
+      },
+      {
+        "name": "parity encoding / zero",
+        "success": true,
+        "value": {
+          "bytes": "00"
+        }
+      },
+      {
+        "name": "parity encoding / one",
+        "success": true,
+        "value": {
+          "bytes": "01"
+        }
+      },
+      {
+        "name": "parity encoding / two-character one",
+        "success": true,
+        "value": {
+          "bytes": "01"
+        }
+      },
+      {
+        "name": "parity encoding / invalid hex",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or valid parity string"
+        ]
+      },
+      {
+        "name": "access list / empty",
+        "success": true,
+        "value": []
+      },
+      {
+        "name": "access list / encoded values",
+        "success": true,
+        "value": [
+          {
+            "address": {
+              "bytes": "1111111111111111111111111111111111111111"
+            },
+            "storageKeys": [
+              {
+                "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "access list / nullable keys",
+        "success": true,
+        "value": [
+          {
+            "address": {
+              "bytes": "1111111111111111111111111111111111111111"
+            },
+            "storageKeys": null
+          }
+        ]
+      },
+      {
+        "name": "access list / invalid nested bytes",
+        "success": false,
+        "paths": [
+          [
+            "0",
+            "storageKeys",
+            "0"
+          ]
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "access list / missing address",
+        "success": false,
+        "paths": [
+          [
+            "0",
+            "address"
+          ]
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "request schema / minimal",
+        "success": true,
+        "value": {
+          "from": {
+            "bytes": "1111111111111111111111111111111111111111"
+          }
+        }
+      },
+      {
+        "name": "request schema / empty data and exact quantity",
+        "success": true,
+        "value": {
+          "data": {
+            "bytes": ""
+          },
+          "from": {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          "to": null,
+          "value": {
+            "bigint": "9007199254740993"
+          }
+        }
+      },
+      {
+        "name": "request schema / nested values",
+        "success": true,
+        "value": {
+          "accessList": [
+            {
+              "address": {
+                "bytes": "1111111111111111111111111111111111111111"
+              },
+              "storageKeys": [
+                {
+                  "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+                }
+              ]
+            }
+          ],
+          "blobVersionedHashes": [
+            {
+              "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+            }
+          ],
+          "from": {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          "gas": {
+            "bigint": "21000"
+          },
+          "to": {
+            "bytes": "1111111111111111111111111111111111111111"
+          }
+        }
+      },
+      {
+        "name": "request schema / missing sender",
+        "success": false,
+        "paths": [
+          [
+            "from"
+          ]
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "request schema / malformed amount",
+        "success": false,
+        "paths": [
+          [
+            "value"
+          ]
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "request schema / invalid nested hash",
+        "success": false,
+        "paths": [
+          [
+            "blobVersionedHashes",
+            "0"
+          ]
+        ],
+        "messages": [
+          "Expected a Buffer with the correct length or a valid RPC hash string"
+        ]
+      },
+      {
+        "name": "configuration variable / valid",
+        "success": true,
+        "value": {
+          "_type": "ConfigurationVariable",
+          "default": "fictional",
+          "format": "{variable}",
+          "name": "FICTIONAL_NAME"
+        }
+      },
+      {
+        "name": "configuration variable / invalid name",
+        "success": false,
+        "paths": [
+          [
+            "name"
+          ]
+        ],
+        "messages": [
+          "Expected string, received number"
+        ]
+      },
+      {
+        "name": "configuration variable / invalid marker",
+        "success": false,
+        "paths": [
+          [
+            "_type"
+          ]
+        ],
+        "messages": [
+          "Invalid literal value, expected \"ConfigurationVariable\""
+        ]
+      },
+      {
+        "name": "resolved variable / functions remain uncalled",
+        "success": true,
+        "value": {
+          "_type": "ResolvedConfigurationVariable",
+          "get": {
+            "function": true
+          },
+          "getBigInt": {
+            "function": true
+          },
+          "getHexString": {
+            "function": true
+          },
+          "getUrl": {
+            "function": true
+          }
+        }
+      },
+      {
+        "name": "resolved variable / nonfunction rejected",
+        "success": false,
+        "paths": [
+          [
+            "get"
+          ]
+        ],
+        "messages": [
+          "Expected function, received boolean"
+        ]
+      },
+      {
+        "name": "sensitive string / literal",
+        "success": true,
+        "value": "fictional"
+      },
+      {
+        "name": "sensitive string / variable",
+        "success": true,
+        "value": {
+          "_type": "ConfigurationVariable",
+          "default": "fictional",
+          "format": "{variable}",
+          "name": "FICTIONAL_NAME"
+        }
+      },
+      {
+        "name": "sensitive string / wrong type",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a string or a Configuration Variable"
+        ]
+      },
+      {
+        "name": "sensitive URL / literal",
+        "success": true,
+        "value": "https://example.invalid/path"
+      },
+      {
+        "name": "sensitive URL / variable",
+        "success": true,
+        "value": {
+          "_type": "ConfigurationVariable",
+          "default": "fictional",
+          "format": "{variable}",
+          "name": "FICTIONAL_NAME"
+        }
+      },
+      {
+        "name": "sensitive URL / malformed",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a URL or a Configuration Variable"
+        ]
+      },
+      {
+        "name": "parameter arity / exact",
+        "success": true,
+        "value": [
+          {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          {
+            "bigint": "0"
+          }
+        ],
+        "expected": true
+      },
+      {
+        "name": "parameter arity / too few",
+        "success": false,
+        "paths": [],
+        "messages": [
+          "HHE719: Validation of parameters against the schemas failed for the following reason: Expected exactly 2 arguments and got 1"
+        ],
+        "expected": false
+      },
+      {
+        "name": "parameter arity / too many",
+        "success": false,
+        "paths": [],
+        "messages": [
+          "HHE719: Validation of parameters against the schemas failed for the following reason: Expected exactly 2 arguments and got 3"
+        ],
+        "expected": false
+      },
+      {
+        "name": "parameter arity / omitted optional",
+        "success": true,
+        "value": [
+          {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          {
+            "undefined": true
+          }
+        ],
+        "expected": true
+      },
+      {
+        "name": "parameter arity / explicit optional",
+        "success": true,
+        "value": [
+          {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          {
+            "bigint": "1"
+          }
+        ],
+        "expected": true
+      },
+      {
+        "name": "parameter arity / no arguments",
+        "success": true,
+        "value": [],
+        "expected": true
+      },
+      {
+        "name": "parameter arity / unexpected argument",
+        "success": false,
+        "paths": [],
+        "messages": [
+          "HHE719: Validation of parameters against the schemas failed for the following reason: Expected exactly 0 arguments and got 1"
+        ],
+        "expected": false
+      },
+      {
+        "name": "parameter value / wrong type",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Expected a Buffer with correct length or a valid RPC address string\",\n    \"path\": []\n  }\n]"
+        ],
+        "expected": false
+      },
+      {
+        "name": "incompatible field / undefined",
+        "success": true,
+        "paths": [],
+        "messages": [],
+        "expected": true
+      },
+      {
+        "name": "incompatible field / null",
+        "success": false,
+        "paths": [
+          [
+            "field"
+          ]
+        ],
+        "messages": [
+          "Mutually exclusive field"
+        ],
+        "expected": false
+      },
+      {
+        "name": "incompatible field / 0",
+        "success": false,
+        "paths": [
+          [
+            "field"
+          ]
+        ],
+        "messages": [
+          "Mutually exclusive field"
+        ],
+        "expected": false
+      },
+      {
+        "name": "incompatible field / false",
+        "success": false,
+        "paths": [
+          [
+            "field"
+          ]
+        ],
+        "messages": [
+          "Mutually exclusive field"
+        ],
+        "expected": false
+      },
+      {
+        "name": "incompatible field / fictional",
+        "success": false,
+        "paths": [
+          [
+            "field"
+          ]
+        ],
+        "messages": [
+          "Mutually exclusive field"
+        ],
+        "expected": false
+      }
+    ]
+  },
+  "candidate": {
+    "helperVersion": "3.0.8-threecore-zod4.1",
+    "zodVersion": "4.6.6",
+    "helperSha256": "79e75336c8277f1d8d0a48b007e569f1a313c516260b7067c80db3c2a76bb52f",
+    "observations": [
+      {
+        "name": "data / empty",
+        "success": true,
+        "value": {
+          "bytes": ""
+        }
+      },
+      {
+        "name": "data / zero byte",
+        "success": true,
+        "value": {
+          "bytes": "00"
+        }
+      },
+      {
+        "name": "data / mixed-case bytes",
+        "success": true,
+        "value": {
+          "bytes": "abcd"
+        }
+      },
+      {
+        "name": "data / buffer",
+        "success": true,
+        "value": {
+          "bytes": "00ff"
+        }
+      },
+      {
+        "name": "data / odd length",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "data / non-hex",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "data / number",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "data / null",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "quantity / zero",
+        "success": true,
+        "value": {
+          "bigint": "0"
+        }
+      },
+      {
+        "name": "quantity / one",
+        "success": true,
+        "value": {
+          "bigint": "1"
+        }
+      },
+      {
+        "name": "quantity / large exact integer",
+        "success": true,
+        "value": {
+          "bigint": "9007199254740993"
+        }
+      },
+      {
+        "name": "quantity / bigint",
+        "success": true,
+        "value": {
+          "bigint": "9007199254740993"
+        }
+      },
+      {
+        "name": "quantity / empty",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "quantity / leading zero",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "quantity / negative hex",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "quantity / decimal number",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "quantity / null",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "address / hex",
+        "success": true,
+        "value": {
+          "bytes": "1111111111111111111111111111111111111111"
+        }
+      },
+      {
+        "name": "address / buffer",
+        "success": true,
+        "value": {
+          "bytes": "1111111111111111111111111111111111111111"
+        }
+      },
+      {
+        "name": "address / short string",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "address / long string",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "address / short buffer",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "address / null",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "nullable address / null",
+        "success": true,
+        "value": null
+      },
+      {
+        "name": "nullable address / absent",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Invalid input"
+        ]
+      },
+      {
+        "name": "hash / hex",
+        "success": true,
+        "value": {
+          "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      {
+        "name": "hash / buffer",
+        "success": true,
+        "value": {
+          "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      {
+        "name": "hash / short",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with the correct length or a valid RPC hash string"
+        ]
+      },
+      {
+        "name": "hash / long",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer with the correct length or a valid RPC hash string"
+        ]
+      },
+      {
+        "name": "parity encoding / zero",
+        "success": true,
+        "value": {
+          "bytes": "00"
+        }
+      },
+      {
+        "name": "parity encoding / one",
+        "success": true,
+        "value": {
+          "bytes": "01"
+        }
+      },
+      {
+        "name": "parity encoding / two-character one",
+        "success": true,
+        "value": {
+          "bytes": "01"
+        }
+      },
+      {
+        "name": "parity encoding / invalid hex",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a Buffer or valid parity string"
+        ]
+      },
+      {
+        "name": "access list / empty",
+        "success": true,
+        "value": []
+      },
+      {
+        "name": "access list / encoded values",
+        "success": true,
+        "value": [
+          {
+            "address": {
+              "bytes": "1111111111111111111111111111111111111111"
+            },
+            "storageKeys": [
+              {
+                "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "access list / nullable keys",
+        "success": true,
+        "value": [
+          {
+            "address": {
+              "bytes": "1111111111111111111111111111111111111111"
+            },
+            "storageKeys": null
+          }
+        ]
+      },
+      {
+        "name": "access list / invalid nested bytes",
+        "success": false,
+        "paths": [
+          [
+            "0",
+            "storageKeys",
+            "0"
+          ]
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "access list / missing address",
+        "success": false,
+        "paths": [
+          [
+            "0",
+            "address"
+          ]
+        ],
+        "messages": [
+          "Expected a Buffer or a valid RPC data string"
+        ]
+      },
+      {
+        "name": "request schema / minimal",
+        "success": true,
+        "value": {
+          "from": {
+            "bytes": "1111111111111111111111111111111111111111"
+          }
+        }
+      },
+      {
+        "name": "request schema / empty data and exact quantity",
+        "success": true,
+        "value": {
+          "data": {
+            "bytes": ""
+          },
+          "from": {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          "to": null,
+          "value": {
+            "bigint": "9007199254740993"
+          }
+        }
+      },
+      {
+        "name": "request schema / nested values",
+        "success": true,
+        "value": {
+          "accessList": [
+            {
+              "address": {
+                "bytes": "1111111111111111111111111111111111111111"
+              },
+              "storageKeys": [
+                {
+                  "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+                }
+              ]
+            }
+          ],
+          "blobVersionedHashes": [
+            {
+              "bytes": "2222222222222222222222222222222222222222222222222222222222222222"
+            }
+          ],
+          "from": {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          "gas": {
+            "bigint": "21000"
+          },
+          "to": {
+            "bytes": "1111111111111111111111111111111111111111"
+          }
+        }
+      },
+      {
+        "name": "request schema / missing sender",
+        "success": false,
+        "paths": [
+          [
+            "from"
+          ]
+        ],
+        "messages": [
+          "Expected a Buffer with correct length or a valid RPC address string"
+        ]
+      },
+      {
+        "name": "request schema / malformed amount",
+        "success": false,
+        "paths": [
+          [
+            "value"
+          ]
+        ],
+        "messages": [
+          "Expected a bigint or a valid RPC quantity string"
+        ]
+      },
+      {
+        "name": "request schema / invalid nested hash",
+        "success": false,
+        "paths": [
+          [
+            "blobVersionedHashes",
+            "0"
+          ]
+        ],
+        "messages": [
+          "Expected a Buffer with the correct length or a valid RPC hash string"
+        ]
+      },
+      {
+        "name": "configuration variable / valid",
+        "success": true,
+        "value": {
+          "_type": "ConfigurationVariable",
+          "default": "fictional",
+          "format": "{variable}",
+          "name": "FICTIONAL_NAME"
+        }
+      },
+      {
+        "name": "configuration variable / invalid name",
+        "success": false,
+        "paths": [
+          [
+            "name"
+          ]
+        ],
+        "messages": [
+          "Invalid input: expected string, received number"
+        ]
+      },
+      {
+        "name": "configuration variable / invalid marker",
+        "success": false,
+        "paths": [
+          [
+            "_type"
+          ]
+        ],
+        "messages": [
+          "Invalid input: expected \"ConfigurationVariable\""
+        ]
+      },
+      {
+        "name": "resolved variable / functions remain uncalled",
+        "success": true,
+        "value": {
+          "_type": "ResolvedConfigurationVariable",
+          "get": {
+            "function": true
+          },
+          "getBigInt": {
+            "function": true
+          },
+          "getHexString": {
+            "function": true
+          },
+          "getUrl": {
+            "function": true
+          }
+        }
+      },
+      {
+        "name": "resolved variable / nonfunction rejected",
+        "success": false,
+        "paths": [
+          [
+            "get"
+          ]
+        ],
+        "messages": [
+          "Invalid input: expected function, received boolean"
+        ]
+      },
+      {
+        "name": "sensitive string / literal",
+        "success": true,
+        "value": "fictional"
+      },
+      {
+        "name": "sensitive string / variable",
+        "success": true,
+        "value": {
+          "_type": "ConfigurationVariable",
+          "default": "fictional",
+          "format": "{variable}",
+          "name": "FICTIONAL_NAME"
+        }
+      },
+      {
+        "name": "sensitive string / wrong type",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a string or a Configuration Variable"
+        ]
+      },
+      {
+        "name": "sensitive URL / literal",
+        "success": true,
+        "value": "https://example.invalid/path"
+      },
+      {
+        "name": "sensitive URL / variable",
+        "success": true,
+        "value": {
+          "_type": "ConfigurationVariable",
+          "default": "fictional",
+          "format": "{variable}",
+          "name": "FICTIONAL_NAME"
+        }
+      },
+      {
+        "name": "sensitive URL / malformed",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "Expected a URL or a Configuration Variable"
+        ]
+      },
+      {
+        "name": "parameter arity / exact",
+        "success": true,
+        "value": [
+          {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          {
+            "bigint": "0"
+          }
+        ],
+        "expected": true
+      },
+      {
+        "name": "parameter arity / too few",
+        "success": false,
+        "paths": [],
+        "messages": [
+          "HHE719: Validation of parameters against the schemas failed for the following reason: Expected exactly 2 arguments and got 1"
+        ],
+        "expected": false
+      },
+      {
+        "name": "parameter arity / too many",
+        "success": false,
+        "paths": [],
+        "messages": [
+          "HHE719: Validation of parameters against the schemas failed for the following reason: Expected exactly 2 arguments and got 3"
+        ],
+        "expected": false
+      },
+      {
+        "name": "parameter arity / omitted optional",
+        "success": true,
+        "value": [
+          {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          {
+            "undefined": true
+          }
+        ],
+        "expected": true
+      },
+      {
+        "name": "parameter arity / explicit optional",
+        "success": true,
+        "value": [
+          {
+            "bytes": "1111111111111111111111111111111111111111"
+          },
+          {
+            "bigint": "1"
+          }
+        ],
+        "expected": true
+      },
+      {
+        "name": "parameter arity / no arguments",
+        "success": true,
+        "value": [],
+        "expected": true
+      },
+      {
+        "name": "parameter arity / unexpected argument",
+        "success": false,
+        "paths": [],
+        "messages": [
+          "HHE719: Validation of parameters against the schemas failed for the following reason: Expected exactly 0 arguments and got 1"
+        ],
+        "expected": false
+      },
+      {
+        "name": "parameter value / wrong type",
+        "success": false,
+        "paths": [
+          []
+        ],
+        "messages": [
+          "[\n  {\n    \"code\": \"custom\",\n    \"message\": \"Expected a Buffer with correct length or a valid RPC address string\",\n    \"path\": []\n  }\n]"
+        ],
+        "expected": false
+      },
+      {
+        "name": "incompatible field / undefined",
+        "success": true,
+        "paths": [],
+        "messages": [],
+        "expected": true
+      },
+      {
+        "name": "incompatible field / null",
+        "success": false,
+        "paths": [
+          [
+            "field"
+          ]
+        ],
+        "messages": [
+          "Mutually exclusive field"
+        ],
+        "expected": false
+      },
+      {
+        "name": "incompatible field / 0",
+        "success": false,
+        "paths": [
+          [
+            "field"
+          ]
+        ],
+        "messages": [
+          "Mutually exclusive field"
+        ],
+        "expected": false
+      },
+      {
+        "name": "incompatible field / false",
+        "success": false,
+        "paths": [
+          [
+            "field"
+          ]
+        ],
+        "messages": [
+          "Mutually exclusive field"
+        ],
+        "expected": false
+      },
+      {
+        "name": "incompatible field / fictional",
+        "success": false,
+        "paths": [
+          [
+            "field"
+          ]
+        ],
+        "messages": [
+          "Mutually exclusive field"
+        ],
+        "expected": false
+      }
+    ]
+  },
+  "comparisons": [
+    {
+      "name": "data / empty",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "data / zero byte",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "data / mixed-case bytes",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "data / buffer",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "data / odd length",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "data / non-hex",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "data / number",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "data / null",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "quantity / zero",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "quantity / one",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "quantity / large exact integer",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "quantity / bigint",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "quantity / empty",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "quantity / leading zero",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "quantity / negative hex",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "quantity / decimal number",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "quantity / null",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "address / hex",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "address / buffer",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "address / short string",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "address / long string",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "address / short buffer",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "address / null",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "nullable address / null",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "nullable address / absent",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "hash / hex",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "hash / buffer",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "hash / short",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "hash / long",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parity encoding / zero",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parity encoding / one",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parity encoding / two-character one",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parity encoding / invalid hex",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "access list / empty",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "access list / encoded values",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "access list / nullable keys",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "access list / invalid nested bytes",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "access list / missing address",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "request schema / minimal",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "request schema / empty data and exact quantity",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "request schema / nested values",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "request schema / missing sender",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "request schema / malformed amount",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "request schema / invalid nested hash",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "configuration variable / valid",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "configuration variable / invalid name",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": false
+    },
+    {
+      "name": "configuration variable / invalid marker",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": false
+    },
+    {
+      "name": "resolved variable / functions remain uncalled",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "resolved variable / nonfunction rejected",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": false
+    },
+    {
+      "name": "sensitive string / literal",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "sensitive string / variable",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "sensitive string / wrong type",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "sensitive URL / literal",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "sensitive URL / variable",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "sensitive URL / malformed",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parameter arity / exact",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parameter arity / too few",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parameter arity / too many",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parameter arity / omitted optional",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parameter arity / explicit optional",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parameter arity / no arguments",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parameter arity / unexpected argument",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "parameter value / wrong type",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "incompatible field / undefined",
+      "expected": true,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "incompatible field / null",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "incompatible field / 0",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "incompatible field / false",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    },
+    {
+      "name": "incompatible field / fictional",
+      "expected": false,
+      "bothMatchExpected": true,
+      "sameDecodedValue": true,
+      "sameErrorPaths": true,
+      "sameMessages": true
+    }
+  ],
+  "cases": 68,
+  "passed": true,
+  "messageDifferences": [
+    "configuration variable / invalid name",
+    "configuration variable / invalid marker",
+    "resolved variable / nonfunction rejected"
+  ],
+  "configurationFunctionCalls": 0,
+  "scope": "Pure schema and parameter decoding only; no provider, wallet, signature, transaction execution, keystore, or external RPC."
+}

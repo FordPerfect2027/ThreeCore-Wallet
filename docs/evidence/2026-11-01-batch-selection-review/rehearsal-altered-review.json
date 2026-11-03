@@ -1,0 +1,25 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-selection-review.v1",
+  "matchesRecomputation": false,
+  "selectionTextDigest": "073decef607fd46d4415f93a6440b45b46830413fcd9f91d887565b99f4738f9",
+  "sourceBatchTextDigest": "1cd2d5aee20e747e2546ae33183e69bbeb25d54b563f7e03a61f51dcda7c1bd6",
+  "query": {
+    "name": "",
+    "status": "invalid"
+  },
+  "selectedBatchFiles": 2,
+  "matchedFiles": 1,
+  "differences": [
+    "matchedFiles"
+  ],
+  "unexpectedFields": 0,
+  "sourceComplete": true,
+  "sourcePhase": "complete",
+  "unselectedSourceContentsCompared": false,
+  "recordedProcessVerified": false,
+  "readOnly": true,
+  "authorizesExecution": false,
+  "automaticallyImported": false,
+  "containsOriginalEvidence": false,
+  "restorable": false
+}

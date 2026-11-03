@@ -1,0 +1,27 @@
+{
+  "sourceRevision": "fb5a5f6940563b1efa5c5bb5006b270b086e303b",
+  "initialSummary": {
+    "files": 67,
+    "matched": 65,
+    "mismatched": 2,
+    "unreadable": 0,
+    "unexpected": 0,
+    "inspectedBytes": 364397
+  },
+  "differences": [
+    {
+      "path": "DEPENDENCY_SECURITY_2026-11-02.md",
+      "onlyCrLfConversion": true,
+      "sourceBytes": 1611,
+      "exportedBytes": 1637
+    },
+    {
+      "path": "MIGRATION.md",
+      "onlyCrLfConversion": true,
+      "sourceBytes": 402,
+      "exportedBytes": 405
+    }
+  ],
+  "correction": "Use git -c core.autocrlf=false archive to retain exact committed bytes in source ZIPs. Do not change expected source hashes or application code. Original failed export is retained.",
+  "sourceFilesModified": false
+}

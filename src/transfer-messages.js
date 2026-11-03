@@ -43,7 +43,7 @@ const messages = Object.freeze({
 });
 
 export function transferErrorText(code) {
-  return Object.hasOwn(messages, code) ? messages[code] : "履歴の形式や取得内容を確認できなかったため、処理を中止しました。";
+  return typeof code === "string" && Object.hasOwn(messages, code) ? messages[code] : "履歴の形式や取得内容を確認できなかったため、処理を中止しました。";
 }
 
 const stages = Object.freeze({ range: "期間を確認", token: "トークンを照合", incoming: "受信履歴を取得",

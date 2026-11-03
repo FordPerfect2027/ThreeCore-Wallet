@@ -1,0 +1,20 @@
+[
+  {
+    "token": "DAT",
+    "commit": "47d8aa9db72e54e49fc9521f9b4022c416a7c6d1",
+    "branch": "codex/toolchain-empty-data-20261102",
+    "clean": true
+  },
+  {
+    "token": "EMA",
+    "commit": "5d36704ec1a5f5fb89febd7f414eee9fe41fd3ac",
+    "branch": "codex/toolchain-empty-data-20261102",
+    "clean": true
+  },
+  {
+    "token": "CAWELON",
+    "commit": "4af9e1db98cac546e498b6f34531ba890cc2e3c0",
+    "branch": "codex/toolchain-empty-data-20261102",
+    "clean": true
+  }
+]

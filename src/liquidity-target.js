@@ -5,6 +5,9 @@
  * Never initiates LP deposits, swaps, approvals, signing or wallet access.
  * The "gap" is an OBSERVED RESERVE SHORTFALL, not a required cash contribution.
  */
+import { AERODROME_BASE } from "./aerodrome-readonly.js";
+import { BASE_NATIVE_USDC } from "./aerodrome-pools.js";
+
 export const TARGET_USDC_PER_POOL = 5_000n;
 export const USDC_DECIMALS = 6;
 export const TARGET_USDC_RAW = TARGET_USDC_PER_POOL * 10n ** BigInt(USDC_DECIMALS);
@@ -21,15 +24,28 @@ export class LiquidityTargetError extends Error {
 function reject(code, message) {
   throw new LiquidityTargetError(code, message);
 }
-function parseRaw(value, field) {
-  if (typeof value !== "string" || !/^(0|[1-9][0-9]*)$/.test(value)) {
+const MAX_UINT256 = (1n << 256n) - 1n;
+const ADDRESS = /^0x[0-9a-fA-F]{40}$/;
+const HASH = /^0x[0-9a-fA-F]{64}$/;
+const ZERO_ADDRESS = "0x" + "0".repeat(40);
+function decimal(value, maximum = MAX_UINT256) {
+  return typeof value === "string" && value.length <= maximum.toString().length &&
+    /^(0|[1-9][0-9]*)$/.test(value) && BigInt(value) <= maximum;
+}
+function sameAddress(value, expected) {
+  return typeof value === "string" && ADDRESS.test(value) && value.toLowerCase() === expected;
+}
+function parseRaw(value, field, maximum = MAX_UINT256) {
+  if (!decimal(value, maximum)) {
     reject("INVALID_RESERVE", field + " must be a nonnegative decimal string of base units");
   }
   return BigInt(value);
 }
 export function formatUsdcRaw(value) {
-  const units = typeof value === "bigint" ? value : parseRaw(value, "USDC");
-  if (units < 0n) reject("INVALID_RESERVE", "USDC reserve cannot be negative");
+  // Three uint256 pool reserves can sum above uint256 without being invalid.
+  const maximum = MAX_UINT256 * BigInt(TRACKED_TOKENS.length);
+  const units = typeof value === "bigint" ? value : parseRaw(value, "USDC", maximum);
+  if (units < 0n || units > maximum) reject("INVALID_RESERVE", "USDC amount is outside the supported range");
   const dollars = units / 1_000_000n;
   const fraction = (units % 1_000_000n).toString().padStart(6, "0");
   return dollars.toString() + "." + fraction;
@@ -41,32 +57,71 @@ function percent2(reserveRaw) {
     (basisPoints % 100n).toString().padStart(2, "0");
 }
 
+// Copy only the fields this calculation uses, through own data descriptors.
+// Unused fields (including stable pools) are not evaluated or traversed.
+function captureFields(input, names) {
+  try {
+    if (!input || typeof input !== "object" || Array.isArray(input) ||
+        ![Object.prototype, null].includes(Object.getPrototypeOf(input))) throw Error();
+    const result = Object.create(null);
+    for (const name of names) {
+      const descriptor = Object.getOwnPropertyDescriptor(input, name);
+      if (descriptor && !Object.hasOwn(descriptor, "value")) throw Error();
+      result[name] = descriptor?.value;
+    }
+    return Object.freeze(result);
+  } catch { reject("INVALID_REPORT", "Liquidity input must contain plain own data fields"); }
+}
+function captureObservation(input) {
+  const root = captureFields(input, ["chainId", "classicFactoryOnly", "readOnly", "transactionsExecuted",
+    "walletConnected", "factoryAddress", "quoteTokenAddress", "checkedBlockNumber", "checkedBlockHash",
+    "canonicalBlockRechecked", "pools"]);
+  const sourcePools = captureFields(root.pools, TRACKED_TOKENS), pools = Object.create(null);
+  for (const agent of TRACKED_TOKENS) {
+    const item = captureFields(sourcePools[agent], ["volatile"]);
+    pools[agent] = captureFields(item.volatile, ["poolAddress", "contractCodePresent",
+      "usdcReserveBaseUnits", "tokenReserveBaseUnits", "reserveTimestamp"]);
+  }
+  return Object.freeze({ ...root, pools: Object.freeze(pools) });
+}
+
 /**
  * Convert inspectAerodromePools() output into exact-integer target progress.
  * No ERC-20 decimal assumption is made for each project's token reserve.
  */
 export function assessLiquidityTargets(report) {
-  if (!report || report.chainId !== 8453 || !report.classicFactoryOnly ||
+  report = captureObservation(report);
+  if (!report || report.chainId !== 8453 || report.classicFactoryOnly !== true ||
       report.readOnly !== true || report.transactionsExecuted !== false ||
-      !/^(0|[1-9][0-9]*)$/.test(report.checkedBlockNumber ?? "")) {
+      report.walletConnected !== false ||
+      !sameAddress(report.factoryAddress, AERODROME_BASE.poolFactory) ||
+      !sameAddress(report.quoteTokenAddress, BASE_NATIVE_USDC) ||
+      typeof report.checkedBlockHash !== "string" || !HASH.test(report.checkedBlockHash) ||
+      report.canonicalBlockRechecked !== true ||
+      !decimal(report.checkedBlockNumber)) {
     reject("INVALID_REPORT", "Expected a read-only Base Mainnet Classic factory observation");
   }
   const byToken = {};
   let verifiedTotal = 0n;
   let verifiedGapTotal = 0n;
   let verifiedCount = 0;
+  const seenPools = new Set();
   for (const agent of TRACKED_TOKENS) {
-    const pool = report.pools?.[agent]?.volatile;
-    if (!pool) reject("INVALID_REPORT", "Missing Classic volatile pool entry for " + agent);
-    const verified = typeof pool.poolAddress === "string" &&
-      /^0x[0-9a-fA-F]{40}$/.test(pool.poolAddress) &&
-      pool.contractCodePresent === true &&
-      pool.usdcReserveBaseUnits != null &&
-      pool.tokenReserveBaseUnits != null;
+    const pool = report.pools[agent];
+    if (!pool || typeof pool !== "object" || Array.isArray(pool))
+      reject("INVALID_REPORT", "Missing Classic volatile pool entry for " + agent);
+    const validAddress = typeof pool.poolAddress === "string" && ADDRESS.test(pool.poolAddress) &&
+      pool.poolAddress.toLowerCase() !== ZERO_ADDRESS;
+    if ((pool.poolAddress !== null && !validAddress) || typeof pool.contractCodePresent !== "boolean" ||
+        (pool.contractCodePresent && !validAddress))
+      reject("INVALID_REPORT", "Invalid Classic volatile pool identity for " + agent);
+    const verified = pool.contractCodePresent;
     if (!verified) {
+      if (pool.usdcReserveBaseUnits != null || pool.tokenReserveBaseUnits != null || pool.reserveTimestamp != null)
+        reject("INVALID_REPORT", "Undeployed pool cannot carry observed reserves for " + agent);
       byToken[agent] = Object.freeze({
         status: "UNVERIFIED",
-        poolAddress: pool.poolAddress ?? null,
+        poolAddress: pool.poolAddress === null ? null : pool.poolAddress.toLowerCase(),
         targetUsdc: TARGET_USDC_PER_POOL.toString(),
         observedUsdc: null,
         observedUsdcRaw: null,
@@ -81,6 +136,10 @@ export function assessLiquidityTargets(report) {
 
     const usdcRaw = parseRaw(pool.usdcReserveBaseUnits, agent + " USDC");
     const tokenRaw = parseRaw(pool.tokenReserveBaseUnits, agent + " token");
+    parseRaw(pool.reserveTimestamp, agent + " reserve timestamp");
+    const poolKey = pool.poolAddress.toLowerCase();
+    if (seenPools.has(poolKey)) reject("INVALID_REPORT", "A pool cannot be counted for more than one token");
+    seenPools.add(poolKey);
     const gap = usdcRaw >= TARGET_USDC_RAW ? 0n : TARGET_USDC_RAW - usdcRaw;
 
     // Ratio illustration only; not a quote or executable LP deposit amount.
@@ -107,6 +166,8 @@ export function assessLiquidityTargets(report) {
   const remaining = verifiedGapTotal;
   return Object.freeze({
     observedBlockNumber: report.checkedBlockNumber,
+    observedBlockHash: report.checkedBlockHash.toLowerCase(),
+    canonicalBlockRechecked: true,
     chainId: 8453,
     targetUsdcPerPool: TARGET_USDC_PER_POOL.toString(),
     totalTargetUsdc: formatUsdcRaw(aggregateTarget),

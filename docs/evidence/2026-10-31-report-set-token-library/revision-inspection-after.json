@@ -1,0 +1,25 @@
+{
+  "source": "209af71",
+  "synthetic": true,
+  "storageWrites": 0,
+  "rows": [
+    {
+      "revision": 9,
+      "inspectionCompatible": true,
+      "inspectionRevisionAvailable": true,
+      "inspectionBytes": 5560,
+      "actualImportAllowed": true,
+      "actualImportBytes": 5560,
+      "actualImportError": null
+    },
+    {
+      "revision": 9007199254740991,
+      "inspectionCompatible": false,
+      "inspectionRevisionAvailable": false,
+      "inspectionBytes": null,
+      "actualImportAllowed": false,
+      "actualImportBytes": null,
+      "actualImportError": "PERIOD_LIBRARY_REVISION_LIMIT"
+    }
+  ]
+}

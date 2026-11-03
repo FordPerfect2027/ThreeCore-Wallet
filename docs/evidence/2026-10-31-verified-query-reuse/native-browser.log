@@ -1,0 +1,5 @@
+Browser shard 1/2 completion received: 460 passing cases; isolated cleanup pending.
+Browser shard 1/2: 460 cases passed.
+Browser shard 2/2 completion received: 460 passing cases; isolated cleanup pending.
+Browser shard 2/2: 460 cases passed.
+920 browser UI tests passed with a synthetic provider and no external RPC.

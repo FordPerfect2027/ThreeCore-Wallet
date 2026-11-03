@@ -1,0 +1,111 @@
+{
+  "schema": "threecore.workspace-development-checkpoint.v1",
+  "dateJst": "2026-10-29",
+  "completed": true,
+  "itemsCompleted": 10,
+  "totalItems": 10,
+  "tests": {
+    "focusedPassed": 168,
+    "unitPassed": 11747,
+    "integrationPassed": 406,
+    "failures": 0,
+    "overlap": true,
+    "excluded": "token-compatibility.test.mjs requires compiled token checkout"
+  },
+  "pending": null,
+  "files": [
+    {
+      "name": "chrome-observed-checks-before-reconnect.json",
+      "bytes": 2463,
+      "sha256": "65d96090250262390bab837fb54b0ebd9e71eb798adaccd5d9ac0a7c4b51a77b"
+    },
+    {
+      "name": "chrome-operation-workspace.json",
+      "bytes": 4771,
+      "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+    },
+    {
+      "name": "chrome-workspace-offline-check.json",
+      "bytes": 7030,
+      "sha256": "f4d3ed5037da530c4b89032282c3e0a7f5e4cc9a2cc97c09a8e623ab0a830754"
+    },
+    {
+      "name": "duplicate-agent-negative-control.json",
+      "bytes": 5041,
+      "sha256": "02ff9e1da1030ceec0e7bcde7f0922a1bc561d2c4aa25ee0a574e83d84028fc0"
+    },
+    {
+      "name": "edge-workspace-restore-observations.json",
+      "bytes": 7540,
+      "sha256": "c2793fb67c9a4cfc1168bf11b01e4cb93a2dbbb9437a11287e10ac616c77df6c"
+    },
+    {
+      "name": "edge-restored-workspace.json",
+      "bytes": 4771,
+      "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302"
+    },
+    {
+      "name": "edge-workspace-offline-check.json",
+      "bytes": 7315,
+      "sha256": "0cbebfbce494052f5887521aa379b6284b3ba002fe5803897367dd7481bb6885"
+    },
+    {
+      "name": "edge-workspace-restored.png",
+      "bytes": 87128,
+      "sha256": "2a8b1cb4e003cc3b244c6335ee89516cedcf964779afa17d8396653b00b40ca5"
+    },
+    {
+      "name": "focused-tests.log",
+      "bytes": 12709,
+      "sha256": "2372eddf1446e873b69002076b943ee503a3a2689ca0b659b1a6c3f96b9950b8"
+    },
+    {
+      "name": "integration-tests.log",
+      "bytes": 36512,
+      "sha256": "bdd7f7522b9eec030109d5223770a154ef23a828b1aebea6f43c765cc0422089"
+    },
+    {
+      "name": "unit-tests.log",
+      "bytes": 924233,
+      "sha256": "745a72e1392a3760f9dda74df33289cc541f79c99eab4f39b82bccb63a435552"
+    }
+  ],
+  "sourceCommit": "8e16dbd",
+  "negativeControl": {
+    "file": "duplicate-agent-negative-control.json",
+    "expectedExit": 1,
+    "observedExit": 1,
+    "reason": "DUPLICATE_AGENT"
+  },
+  "browser": {
+    "originalExportBrowser": "Chrome",
+    "finalRestoreBrowser": "Microsoft Edge",
+    "restoredTabId": "148649138",
+    "pendingUserNavigation": false,
+    "fileSelection": "User selected the saved file",
+    "agentActions": [
+      "Reviewed pending replacement of absent ledgers",
+      "Confirmed restore",
+      "Switched through DAT, EMA and CAWELON",
+      "Returned to DAT",
+      "Exported restored workspace"
+    ],
+    "chromeOnlyRestoreVerified": false,
+    "crossBrowserRoundTripVerified": true,
+    "originProtectionsChanged": false,
+    "extensionFilePermissionsChanged": false
+  },
+  "restoredAtUtc": "2026-10-29T11:49:05.8475366Z",
+  "restoredExport": {
+    "file": "edge-restored-workspace.json",
+    "bytes": 4771,
+    "sha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302",
+    "byteIdenticalToOriginalChromeDownload": true,
+    "offlineCheckerExit": 0,
+    "recordCounts": {
+      "DAT": 3,
+      "EMA": 2,
+      "CAWELON": 1
+    }
+  }
+}

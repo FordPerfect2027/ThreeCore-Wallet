@@ -1,4 +1,5 @@
-import { readFormatFileText } from "./security-file.js";
+import { sha256Hex } from "./security-data.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail } from "./transfer-codec.js";
 import { VAULT_DOCUMENT_SCHEMA, validateVaultDocument, mutateVaultDocument, vaultMetadata } from "./transfer-vault-model.js";
@@ -15,27 +16,23 @@ function checkSize(text) {
   if (typeof text !== "string" || !text.length || text.length > VAULT_COLLECTION_LIMIT ||
       encoder.encode(text).byteLength > VAULT_COLLECTION_LIMIT) transferFail("TRANSFER_VAULT_COLLECTION_SIZE");
 }
-async function checksum(document, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") transferFail("TRANSFER_CRYPTO_UNAVAILABLE");
-  let result;
-  try { result = await subtle.digest("SHA-256", encoder.encode(JSON.stringify(document))); }
-  catch { transferFail("TRANSFER_CRYPTO_FAILED"); }
-  if (!(result instanceof ArrayBuffer) || result.byteLength !== 32) transferFail("TRANSFER_CRYPTO_FAILED");
-  return [...new Uint8Array(result)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+async function checksum(document, subtle, options) {
+  try { return await sha256Hex(encoder.encode(JSON.stringify(document)), subtle, options); }
+  catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
 /** Includes archived records. Browser revision is intentionally not portable. */
-export async function prepareVaultCollection(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareVaultCollection(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const document = portable(input);
   if (!document.entries.length) transferFail("TRANSFER_VAULT_EMPTY");
-  const digest = await checksum(document, subtle);
+  const digest = await checksum(document, subtle, { signal, timeoutMs });
   const text = JSON.stringify({ schema: VAULT_COLLECTION_SCHEMA, algorithm: "SHA-256", digest, document }, null, 2) + "\n";
   checkSize(text);
   return Object.freeze({ text, digest, byteLength: encoder.encode(text).byteLength, authenticated: false,
     filename: "ThreeCore-transfer-vault-collection.json", mimeType: "application/json;charset=utf-8" });
 }
 
-export async function decodeVaultCollection(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeVaultCollection(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   checkSize(text);
   let envelope;
   try { envelope = parseSecurityJson(text); }
@@ -45,13 +42,12 @@ export async function decodeVaultCollection(text, { subtle = globalThis.crypto?.
       typeof envelope.digest !== "string" || !/^[a-f0-9]{64}$/.test(envelope.digest)) transferFail("TRANSFER_VAULT_COLLECTION_SCHEMA");
   const document = portable(envelope.document);
   if (envelope.document.revision !== 0 || !document.entries.length) transferFail("TRANSFER_VAULT_COLLECTION_SCHEMA");
-  if (await checksum(document, subtle) !== envelope.digest) transferFail("TRANSFER_CHECKSUM_MISMATCH");
+  if (await checksum(document, subtle, { signal, timeoutMs }) !== envelope.digest) transferFail("TRANSFER_CHECKSUM_MISMATCH");
   return Object.freeze({ document, digest: envelope.digest, authenticated: false });
 }
 
 export async function readVaultCollection(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 180 || !/\.json$/i.test(file.name) ||
-      /[/\\\u0000-\u001f\u007f]/.test(file.name)) transferFail("TRANSFER_FILE_NAME");
+  readFormatFileName(file, { maxLength: 180, fail: transferFail, code: "TRANSFER_FILE_NAME" });
   const text = await readFormatFileText(file, { maxBytes: VAULT_COLLECTION_LIMIT, fail: transferFail,
     sizeCode: "TRANSFER_VAULT_COLLECTION_SIZE", readCode: "TRANSFER_FILE_READ",
     encodingCode: "TRANSFER_FILE_ENCODING", signal: options?.signal, timeoutMs: options?.timeoutMs });

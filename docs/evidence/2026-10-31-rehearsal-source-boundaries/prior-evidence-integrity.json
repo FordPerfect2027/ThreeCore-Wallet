@@ -1,0 +1,459 @@
+{
+  "source": "9f3eab36b702f929990a9400b5695ba68e5373bf",
+  "manifests": 90,
+  "files": 493,
+  "bytes": 30282942,
+  "passed": true,
+  "results": [
+    {
+      "manifest": "docs/evidence/2026-10-29-operation-ledger/SHA256SUMS.txt",
+      "checked": 7,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-29-operation-workspace/SHA256SUMS.txt",
+      "checked": 9,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-29-report-review/SHA256SUMS.txt",
+      "checked": 23,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-29-restore-comparison/SHA256SUMS.txt",
+      "checked": 11,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-29-restore-usability/SHA256SUMS.txt",
+      "checked": 8,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-29-scenario-comparison/SHA256SUMS.txt",
+      "checked": 16,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-29-scenario-set/SHA256SUMS.txt",
+      "checked": 13,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-29-workspace-overview/SHA256SUMS.txt",
+      "checked": 13,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-allowance-capture/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-allowance-lifecycle/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-capacity/SHA256SUMS.txt",
+      "checked": 15,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-cli-encoding/SHA256SUMS.txt",
+      "checked": 1,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-combined-recovery/SHA256SUMS.txt",
+      "checked": 17,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-configuration-capture/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-control-recovery/SHA256SUMS.txt",
+      "checked": 2,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-download-lifecycle/SHA256SUMS.txt",
+      "checked": 9,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-expected-outcomes/SHA256SUMS.txt",
+      "checked": 14,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-extended-report-review/SHA256SUMS.txt",
+      "checked": 20,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-file-guidance/SHA256SUMS.txt",
+      "checked": 8,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-identity-capture/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-identity-lifecycle/SHA256SUMS.txt",
+      "checked": 5,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-liquidity-capture/SHA256SUMS.txt",
+      "checked": 1,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-native-file-import/SHA256SUMS.txt",
+      "checked": 5,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-navigation-help/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-period-capture/SHA256SUMS.txt",
+      "checked": 7,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-period-library-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-period-read-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-period-report-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-period-review-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-portfolio-capture/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-portfolio-controller-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-public-canonical/SHA256SUMS.txt",
+      "checked": 1,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-public-diagnostics/SHA256SUMS.txt",
+      "checked": 1,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-read-boundary-completion/SHA256SUMS.txt",
+      "checked": 5,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-read-observation-capture/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-read-observers/SHA256SUMS.txt",
+      "checked": 6,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-reconciliation-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-record-navigation/SHA256SUMS.txt",
+      "checked": 14,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-regression/SHA256SUMS.txt",
+      "checked": 1,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-rehearsal-download/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-rehearsal-file-reading/SHA256SUMS.txt",
+      "checked": 7,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-report-history-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-report-record-capture/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-report-set-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-rpc-array-capture/SHA256SUMS.txt",
+      "checked": 2,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-rpc-diagnostic/SHA256SUMS.txt",
+      "checked": 1,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-save-checkpoint/SHA256SUMS.txt",
+      "checked": 10,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-session-observers/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-state-fetch/SHA256SUMS.txt",
+      "checked": 1,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-transfer-archive-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-transfer-capture/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-transfer-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-transfer-storage-capture/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-30-transfer-vault-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-allowance-bundle-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-checkpoint-capture/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-checkpoint-hash-cancellation/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-checkpoint-lifecycle/SHA256SUMS.txt",
+      "checked": 5,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-checksum-cancellation/SHA256SUMS.txt",
+      "checked": 6,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-cleanup-observers/SHA256SUMS.txt",
+      "checked": 5,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-diagnostic-message-lookup/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-export-checksum-cancellation/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-export-policy-capture/SHA256SUMS.txt",
+      "checked": 2,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-file-name-capture/SHA256SUMS.txt",
+      "checked": 5,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-file-read-scope/SHA256SUMS.txt",
+      "checked": 6,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-history-file-cancellation/SHA256SUMS.txt",
+      "checked": 6,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-history-files-panel-lifecycle/SHA256SUMS.txt",
+      "checked": 6,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-history-recovery-panel-lifecycle/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-history-review-panel-lifecycle/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-identity-allowance-file-cancellation/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-identity-allowance-panels/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-library-file-cancellation/SHA256SUMS.txt",
+      "checked": 2,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-local-file-inspection/SHA256SUMS.txt",
+      "checked": 6,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-local-history-panel-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-panel-state-continuity/SHA256SUMS.txt",
+      "checked": 14,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-protection-fault-escalation/SHA256SUMS.txt",
+      "checked": 8,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-provider-observer-boundaries/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-public-checksum-boundary/SHA256SUMS.txt",
+      "checked": 6,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-rehearsal-file-target/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-rehearsal-hash-cancellation/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-rehearsal-picker-notice/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-secure-panel-state/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-state-rpc-bytes/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-transfer-archive-panel-lifecycle/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-transfer-panel-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-transfer-selection-cancellation/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-transfer-vault-panel-lifecycle/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-wallet-setup-panel-lifecycle/SHA256SUMS.txt",
+      "checked": 4,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-windows-browser-validation/SHA256SUMS.txt",
+      "checked": 14,
+      "failures": []
+    },
+    {
+      "manifest": "docs/evidence/2026-10-31-workspace-export-lifecycle/SHA256SUMS.txt",
+      "checked": 3,
+      "failures": []
+    }
+  ]
+}

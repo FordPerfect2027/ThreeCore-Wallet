@@ -1,0 +1,26 @@
+{
+  "original": "C:/Users/aseet/Downloads/ThreeCore-workspace-backup (40).json",
+  "downloaded": "C:/Users/aseet/Downloads/ThreeCore-workspace-backup (41).json",
+  "bytes": 10103,
+  "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+  "byteIdentical": true,
+  "historyCounts": {
+    "DAT": 3,
+    "EMA": 3,
+    "CAWELON": 3
+  },
+  "totalHistories": 9,
+  "settingsRestored": true,
+  "publicRpcUsed": false,
+  "walletConnected": false,
+  "origin": "http://127.0.0.1:4259/",
+  "feeRecord": {
+    "original": "ThreeCore-proposal-fee-review (3).json",
+    "downloaded": "ThreeCore-proposal-fee-review (4).json",
+    "bytes": 29277,
+    "sha256": "7a21385fbc86a9d7c1ec8748e6492e82b2a2962f9a8d1255615fce3382df5dc1",
+    "byteIdentical": true,
+    "savedResultReplayed": true,
+    "expiredAndUnknownReasonsPreserved": true
+  }
+}

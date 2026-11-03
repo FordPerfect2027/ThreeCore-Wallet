@@ -1,0 +1,97 @@
+{
+  "recordedAt": "2026-11-03T06:42:00.876Z",
+  "scope": "Actual Edge read-only permitted-account input and file restoration; no new wallet connection, balances, signing or transactions",
+  "implementation": "7bdb23d3398e1e92582a602bb22f06d364825412",
+  "baseline": {
+    "revision": "36ed4318806b8ee0921471dba5600d0e048b7d7f",
+    "origin": "http://127.0.0.1:51031",
+    "restoredRecords": 9,
+    "exportMatchesOriginal": true
+  },
+  "corrected": {
+    "origin": "http://127.0.0.1:61862",
+    "restoredRecords": 9,
+    "exportMatchesOriginal": true,
+    "noExistingPermission": true
+  },
+  "liveFix": {
+    "origin": "http://127.0.0.1:4233",
+    "providerAccountLabel": "Account 2",
+    "providerChainId": 84532,
+    "permittedAccountCount": 1,
+    "configuredDistinctAccountsBefore": 2,
+    "configuredDistinctAccountsAfter": 1,
+    "backupBefore": "current-offered",
+    "backupAfter": "changed",
+    "preWriteInvalidationRetained": true,
+    "automaticallyConnected": false,
+    "historiesPreservedThroughTemporaryConfiguration": true,
+    "finalExportMatchesOriginal": true
+  },
+  "servedSources": [
+    {
+      "path": "examples/wallet-demo.js",
+      "status": 200,
+      "sha256": "755ed36c24cc64c1e067690eaa26e95b07633b475ae734aac837e4ead7f8131a",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "examples/wallet-setup-panel.js",
+      "status": 200,
+      "sha256": "f678be440144a738b564dd6c0910cb2fc59fec6dc29eb7f6c070ba5503748c8b",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "examples/workspace-panel.js",
+      "status": 200,
+      "sha256": "103667d9d80e8c3dbd24f2df3c6f19b3388dafd1a8a47a3b419b0248e0afbde9",
+      "cacheControl": "no-store"
+    }
+  ],
+  "files": [
+    {
+      "filename": "ThreeCore-workspace-backup (32).json",
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "modifiedAt": "2026-11-03T05:59:14.833Z"
+    },
+    {
+      "filename": "ThreeCore-workspace-backup (33).json",
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "modifiedAt": "2026-11-03T06:28:36.140Z"
+    },
+    {
+      "filename": "ThreeCore-workspace-backup (34).json",
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "modifiedAt": "2026-11-03T06:35:18.653Z"
+    },
+    {
+      "filename": "ThreeCore-workspace-backup (35).json",
+      "bytes": 10103,
+      "sha256": "6a0ac2af6a5a680b000f7e1462e61a877d1bdc7a9e63dc78320dd9183e0c879b",
+      "modifiedAt": "2026-11-03T06:39:24.756Z"
+    },
+    {
+      "filename": "ThreeCore-workspace-backup (36).json",
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "modifiedAt": "2026-11-03T06:40:31.052Z"
+    }
+  ],
+  "nativeWindowsPickerExercised": false,
+  "downloadObservation": "Download event waits timed out; actual files were found and compared on disk before continuing.",
+  "screenshots": [
+    {
+      "filename": "corrected-restored.png",
+      "bytes": 36408,
+      "sha256": "d53b3e22be99df825fd8adf04d065b8e62662a3c238ade8ba872929343958d6e"
+    },
+    {
+      "filename": "live-backup-changed.png",
+      "bytes": 33606,
+      "sha256": "2f823ba5dcfbafb57e3bb916a1cf26db89e60b534ae3d40afaf36a4a13a7432a"
+    }
+  ]
+}

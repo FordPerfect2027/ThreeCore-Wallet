@@ -12,8 +12,11 @@ export const TOKEN_OBSERVATION_FIELDS = Object.freeze([
 ]);
 
 /** A recorded observation is not an authenticated statement from a blockchain. */
+// Only immutable snapshots produced by this validator receive the fast path.
+const validatedTokenObservations = new WeakSet();
 export function validateTokenObservation(input) {
-  identityObject(input, TOKEN_OBSERVATION_FIELDS);
+  if (validatedTokenObservations.has(input)) return input;
+  input = identityObject(input, TOKEN_OBSERVATION_FIELDS);
   if (input.schema !== TOKEN_IDENTITY_SCHEMA || input.catalogVersion !== TOKEN_CATALOG_VERSION ||
       input.readOnly !== true || input.securityAudit !== false) identityFail("IDENTITY_SCHEMA");
   const expected = catalogToken({ agent: input.agent, chainId: input.chainId });
@@ -39,7 +42,7 @@ export function validateTokenObservation(input) {
   } else if (input.metadata !== null || input.balanceBaseUnits !== null) {
     identityFail("IDENTITY_MISSING_CODE_DATA");
   }
-  return Object.freeze({
+  const result = Object.freeze({
     schema: TOKEN_IDENTITY_SCHEMA,
     catalogVersion: TOKEN_CATALOG_VERSION,
     agent: expected.agent,
@@ -57,6 +60,8 @@ export function validateTokenObservation(input) {
     readOnly: true,
     securityAudit: false,
   });
+  validatedTokenObservations.add(result);
+  return result;
 }
 
 /** Identity and arithmetic consistency checks, not investment/security ratings. */

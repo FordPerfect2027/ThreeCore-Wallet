@@ -1,0 +1,86 @@
+TAP version 13
+# Subtest: draft screen and both old/new review module graphs are reachable under offline page policy
+ok 1 - draft screen and both old/new review module graphs are reachable under offline page policy
+  ---
+  duration_ms: 844.3681
+  type: 'test'
+  ...
+# Subtest: source import does not overwrite limits; explicit fill and build yield a directly replayable manual review
+not ok 2 - source import does not overwrite limits; explicit fill and build yield a directly replayable manual review
+  ---
+  duration_ms: 103.5194
+  type: 'test'
+  location: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\threecore-wallet-operation-rehearsal-20261029\\test\\operation-proposal-draft-page.test.js:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    '50' !== '100'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '100'
+  actual: '50'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-proposal-draft-page.test.js:21:32)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: editing a limit shows actual failure and never silently raises it; non-source agent disables creation
+ok 3 - editing a limit shows actual failure and never silently raises it; non-source agent disables creation
+  ---
+  duration_ms: 222.7564
+  type: 'test'
+  ...
+# Subtest: cancelled source reads and cancelled validation cannot repopulate input context
+ok 4 - cancelled source reads and cancelled validation cannot repopulate input context
+  ---
+  duration_ms: 41.581
+  type: 'test'
+  ...
+# Subtest: edits, cancellation, new source, pagehide and disposal invalidate late draft results
+ok 5 - edits, cancellation, new source, pagehide and disposal invalidate late draft results
+  ---
+  duration_ms: 125.1056
+  type: 'test'
+  ...
+# Subtest: invalid files and fields cannot leave a completed result; failed save preserves it
+ok 6 - invalid files and fields cannot leave a completed result; failed save preserves it
+  ---
+  duration_ms: 14.007
+  type: 'test'
+  ...
+# Subtest: manual draft binds all three shared-budget choices to original context and saves directly reviewable sources
+ok 7 - manual draft binds all three shared-budget choices to original context and saves directly reviewable sources
+  ---
+  duration_ms: 153.6327
+  type: 'test'
+  ...
+# Subtest: USDC limits use six decimals; insufficient budgets and smaller limits cannot be promoted to pass
+ok 8 - USDC limits use six decimals; insufficient budgets and smaller limits cannot be promoted to pass
+  ---
+  duration_ms: 32.3402
+  type: 'test'
+  ...
+# Subtest: unknown fees remain blocked despite an entered zero ceiling; inconsistent sources and invalid fields cannot create a draft
+ok 9 - unknown fees remain blocked despite an entered zero ceiling; inconsistent sources and invalid fields cannot create a draft
+  ---
+  duration_ms: 30.5802
+  type: 'test'
+  ...
+# Subtest: saved draft does not extend its validity when replayed and exact budget bytes remain bound
+ok 10 - saved draft does not extend its validity when replayed and exact budget bytes remain bound
+  ---
+  duration_ms: 17.0771
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 9
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1701.8496

@@ -1,0 +1,32 @@
+{
+  "recordedAt": "2026-11-01T14:29:23.112Z",
+  "check": "existing-server-source-availability",
+  "serverRestarted": false,
+  "browserStateRead": false,
+  "browserStateModified": false,
+  "externalRpcRequested": false,
+  "allPassed": true,
+  "checks": [
+    {
+      "path": "src/transfer-archive-controller.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "517a2849f5f3a0217230bfd862349126a502588d58bd9f3f4c95a1acf0a95cbb",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "examples/transfer-archive-panel.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "ebd10c3ccd337b3d122c60d31b2fd6642f50d57bebd55b6ecca13aace766b9b1",
+      "cacheControl": "no-store"
+    },
+    {
+      "path": "examples/transfer-panel.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "0c3f7db860f0ccf631a9c44662e54df6e13c0c9bfb90f12b1cb60d5131348858",
+      "cacheControl": "no-store"
+    }
+  ]
+}

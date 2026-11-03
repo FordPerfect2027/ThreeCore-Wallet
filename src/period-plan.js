@@ -16,7 +16,7 @@ export class PeriodError extends Error {
 export function periodFail(code) { throw new PeriodError(code); }
 
 export function periodShape(value, fields) {
-  try { identityObject(value, fields); }
+  try { return identityObject(value, fields); }
   catch { periodFail("PERIOD_SHAPE"); }
 }
 
@@ -36,7 +36,7 @@ export function periodContextKey(value) {
 
 /** No provider access: pin explicit decimal endpoints before the first request. */
 export function createPeriodPlan(input) {
-  periodShape(input, ["context", "earlierBlock", "laterBlock", "windowSize"]);
+  input = periodShape(input, ["context", "earlierBlock", "laterBlock", "windowSize"]);
   const context = periodContext(input.context);
   const earlierBlock = periodBlock(input.earlierBlock);
   const laterBlock = periodBlock(input.laterBlock);
@@ -52,7 +52,7 @@ export function createPeriodPlan(input) {
 }
 
 export function validatePeriodPlan(input) {
-  periodShape(input, ["schema", "context", "earlierBlock", "laterBlock", "windowSize"]);
+  input = periodShape(input, ["schema", "context", "earlierBlock", "laterBlock", "windowSize"]);
   if (input.schema !== PERIOD_PLAN_SCHEMA) periodFail("PERIOD_PLAN_SCHEMA");
   return createPeriodPlan({ context: input.context, earlierBlock: input.earlierBlock,
     laterBlock: input.laterBlock, windowSize: input.windowSize });

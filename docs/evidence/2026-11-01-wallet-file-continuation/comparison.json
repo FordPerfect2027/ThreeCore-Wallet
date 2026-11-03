@@ -1,0 +1,543 @@
+{
+  "schema": "threecore.wallet-saved-batch-comparison.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "containsOriginalEvidence": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "reportsFilesystemDeletions": false,
+  "before": {
+    "schema": "threecore.wallet-saved-browser-batch.v3",
+    "readOnly": true,
+    "authenticatesOrigin": false,
+    "authorizesExecution": false,
+    "restorable": false,
+    "liveChainRechecked": false,
+    "atomicSnapshot": false,
+    "externalChecksumsCompared": false,
+    "phase": "cancelled",
+    "complete": false,
+    "allOriginalsValidated": false,
+    "summary": {
+      "selected": 3,
+      "checked": 1,
+      "pending": 2,
+      "validatedOriginals": 1,
+      "declaredOnly": 0,
+      "invalid": 0,
+      "hashUnavailable": 0,
+      "totalBytes": 5847,
+      "sourceUnavailable": 0,
+      "selectedReportedBytes": 17541,
+      "unreadSourceReportedBytes": 11694
+    },
+    "files": [
+      {
+        "name": "first.json",
+        "byteLength": 5847,
+        "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "status": "validated-original",
+        "code": null,
+        "inspection": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        }
+      },
+      {
+        "name": "second.json",
+        "byteLength": null,
+        "reportedByteLength": 5847,
+        "sha256": null,
+        "status": "pending",
+        "code": null,
+        "inspection": null
+      },
+      {
+        "name": "third.json",
+        "byteLength": null,
+        "reportedByteLength": 5847,
+        "sha256": null,
+        "status": "pending",
+        "code": null,
+        "inspection": null
+      }
+    ]
+  },
+  "after": {
+    "schema": "threecore.wallet-saved-browser-batch.v4",
+    "readOnly": true,
+    "authenticatesOrigin": false,
+    "authorizesExecution": false,
+    "restorable": false,
+    "liveChainRechecked": false,
+    "atomicSnapshot": false,
+    "externalChecksumsCompared": false,
+    "phase": "complete",
+    "complete": true,
+    "allOriginalsValidated": true,
+    "summary": {
+      "selected": 3,
+      "checked": 3,
+      "pending": 0,
+      "validatedOriginals": 3,
+      "declaredOnly": 0,
+      "invalid": 0,
+      "hashUnavailable": 0,
+      "totalBytes": 17541
+    },
+    "files": [
+      {
+        "name": "first.json",
+        "byteLength": 5847,
+        "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "status": "validated-original",
+        "code": null,
+        "inspection": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        }
+      },
+      {
+        "name": "second.json",
+        "byteLength": 5847,
+        "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "status": "validated-original",
+        "code": null,
+        "inspection": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        }
+      },
+      {
+        "name": "third.json",
+        "byteLength": 5847,
+        "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "status": "validated-original",
+        "code": null,
+        "inspection": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        }
+      }
+    ],
+    "continuation": {
+      "sequence": 1,
+      "retainedChecks": 1,
+      "previousPhase": "cancelled",
+      "previousBatchSha256": "a4267f48a5b84068fb42fe2b801b772c238b2fa12140176c5e5e3006299db16c"
+    }
+  },
+  "sameSelection": true,
+  "allSelectedOriginalsIdentical": false,
+  "summary": {
+    "files": 3,
+    "bothSelected": 3,
+    "onlyBefore": 0,
+    "onlyAfter": 0,
+    "identical": 1,
+    "formatOnly": 0,
+    "changedOriginal": 0,
+    "differentFormat": 0,
+    "unverified": 2
+  },
+  "files": [
+    {
+      "name": "first.json",
+      "selection": "both",
+      "before": {
+        "name": "first.json",
+        "byteLength": 5847,
+        "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "status": "validated-original",
+        "code": null,
+        "inspection": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        }
+      },
+      "after": {
+        "name": "first.json",
+        "byteLength": 5847,
+        "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "status": "validated-original",
+        "code": null,
+        "inspection": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        }
+      },
+      "sameBytes": true,
+      "comparison": {
+        "schema": "threecore.saved-file-comparison.v1",
+        "kind": "identical",
+        "before": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        },
+        "after": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        },
+        "sameFormat": true,
+        "sameOriginal": true,
+        "sameText": true,
+        "byteDifference": 0,
+        "scopeChanges": [],
+        "unchangedScopeWithChangedOriginal": false,
+        "containsOriginalEvidence": false,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      },
+      "kind": "identical"
+    },
+    {
+      "name": "second.json",
+      "selection": "both",
+      "before": {
+        "name": "second.json",
+        "byteLength": null,
+        "reportedByteLength": 5847,
+        "sha256": null,
+        "status": "pending",
+        "code": null,
+        "inspection": null
+      },
+      "after": {
+        "name": "second.json",
+        "byteLength": 5847,
+        "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "status": "validated-original",
+        "code": null,
+        "inspection": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        }
+      },
+      "sameBytes": null,
+      "comparison": null,
+      "kind": "unverified"
+    },
+    {
+      "name": "third.json",
+      "selection": "both",
+      "before": {
+        "name": "third.json",
+        "byteLength": null,
+        "reportedByteLength": 5847,
+        "sha256": null,
+        "status": "pending",
+        "code": null,
+        "inspection": null
+      },
+      "after": {
+        "name": "third.json",
+        "byteLength": 5847,
+        "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "status": "validated-original",
+        "code": null,
+        "inspection": {
+          "schema": "threecore.saved-file-inspection.v1",
+          "sourceSchema": "threecore.period-file.v1",
+          "byteLength": 5847,
+          "title": "期間取得の控え",
+          "target": "period",
+          "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+          "validation": "validated-original",
+          "checksumVerified": true,
+          "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+          "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": 0,
+            "draftReferences": 1,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": 0,
+            "emptyDraftReferences": 0,
+            "agents": [
+              "DAT"
+            ],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": false
+          },
+          "originalEvidenceValidated": true,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        }
+      },
+      "sameBytes": null,
+      "comparison": null,
+      "kind": "unverified"
+    }
+  ]
+}

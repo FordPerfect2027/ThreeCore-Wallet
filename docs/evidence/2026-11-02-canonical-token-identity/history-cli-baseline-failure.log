@@ -1,0 +1,48 @@
+✖ transfer CLI rejects excessive ranges before any RPC (3686.2505ms)
+✖ approval CLI rejects excessive ranges before any RPC (3000.4415ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9023.4866
+
+✖ failing tests:
+
+test at test\history-cli.test.mjs:105:3
+✖ transfer CLI rejects excessive ranges before any RPC (3686.2505ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore%20history%20baseline%2072f02dbc-e9e8-48f9-a139-915c89aaec07/source/test/history-cli.test.mjs:106:60)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-cli.test.mjs:105:3
+✖ approval CLI rejects excessive ranges before any RPC (3000.4415ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore%20history%20baseline%2072f02dbc-e9e8-48f9-a139-915c89aaec07/source/test/history-cli.test.mjs:106:60)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

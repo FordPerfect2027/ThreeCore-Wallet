@@ -1,0 +1,4 @@
+*.log -text whitespace=-trailing-space,-space-before-tab,cr-at-eol
+*.csv -text whitespace=trailing-space,space-before-tab,cr-at-eol
+SHA256SUMS.txt text eol=lf
+collection-audit.json -text whitespace=-trailing-space,-space-before-tab,cr-at-eol

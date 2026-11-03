@@ -1,0 +1,272 @@
+✖ probe-base.js: interrupt-fetch cancels the active read without partial output or later calls (240.5396ms)
+✖ probe-base.js: interrupt-body cancels the active read without partial output or later calls (270.1442ms)
+✖ probe-base.js: terminate-fetch cancels the active read without partial output or later calls (195.4448ms)
+✖ inspect-aerodrome.js: interrupt-fetch cancels the active read without partial output or later calls (208.8676ms)
+✖ inspect-aerodrome.js: interrupt-body cancels the active read without partial output or later calls (308.7816ms)
+✖ inspect-aerodrome.js: terminate-fetch cancels the active read without partial output or later calls (157.167ms)
+✖ inspect-aerodrome-pools.js: interrupt-fetch cancels the active read without partial output or later calls (161.3679ms)
+✖ inspect-aerodrome-pools.js: interrupt-body cancels the active read without partial output or later calls (234.4145ms)
+✖ inspect-aerodrome-pools.js: terminate-fetch cancels the active read without partial output or later calls (180.4341ms)
+✖ liquidity-progress.js: interrupt-fetch cancels the active read without partial output or later calls (182.0033ms)
+✖ liquidity-progress.js: interrupt-body cancels the active read without partial output or later calls (220.505ms)
+✖ liquidity-progress.js: terminate-fetch cancels the active read without partial output or later calls (178.1678ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 0
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2803.9671
+
+✖ failing tests:
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ probe-base.js: interrupt-fetch cancels the active read without partial output or later calls (240.5396ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 130
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 130,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ probe-base.js: interrupt-body cancels the active read without partial output or later calls (270.1442ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 130
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 130,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ probe-base.js: terminate-fetch cancels the active read without partial output or later calls (195.4448ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 143
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 143,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ inspect-aerodrome.js: interrupt-fetch cancels the active read without partial output or later calls (208.8676ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 130
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 130,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ inspect-aerodrome.js: interrupt-body cancels the active read without partial output or later calls (308.7816ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 130
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 130,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ inspect-aerodrome.js: terminate-fetch cancels the active read without partial output or later calls (157.167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 143
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 143,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ inspect-aerodrome-pools.js: interrupt-fetch cancels the active read without partial output or later calls (161.3679ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 130
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 130,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ inspect-aerodrome-pools.js: interrupt-body cancels the active read without partial output or later calls (234.4145ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 130
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 130,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ inspect-aerodrome-pools.js: terminate-fetch cancels the active read without partial output or later calls (180.4341ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 143
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 143,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ liquidity-progress.js: interrupt-fetch cancels the active read without partial output or later calls (182.0033ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 130
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 130,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ liquidity-progress.js: interrupt-body cancels the active read without partial output or later calls (220.505ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 130
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 130,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-interrupt.test.js:9:5
+✖ liquidity-progress.js: terminate-fetch cancels the active read without partial output or later calls (178.1678ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 143
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-interrupt.test.js:15:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 143,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

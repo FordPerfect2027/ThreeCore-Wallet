@@ -1,0 +1,38 @@
+[
+  {
+    "step": "faithful report with two expectation differences",
+    "details": "資料: 期待結果の確認資料 / 再計算との不一致 0箇所 / 照合値: 指定なし\n\n確認した文字列のSHA-256: d0740ccd499741396cff4999da58d510be018f4e1e1023baf188de4fd422650a / 21301 bytes\n\n含まれる期待結果: 3ケース中、一致 1件、差あり 2件。期待値の作成方法: 手動で指定した期待値。資料の再計算の一致と、期待値への一致は別に確認してください。\n\n資料に含まれる入力の範囲\n対象\t元入力の件数\t比較後の件数\nDAT / dat-limit-50\t3件\t3件\nDAT / dat-quota-5\t3件\t3件\nEMA / ema-opening-1001\t2件\t2件\n再計算と異なる項目（最大40箇所）\n資料内の場所\t違い",
+    "outcome": "含まれる期待結果: 3ケース中、一致 1件、差あり 2件。期待値の作成方法: 手動で指定した期待値。資料の再計算の一致と、期待値への一致は別に確認してください。",
+    "saveEnabled": true,
+    "status": "資料の計算結果は再計算と一致しました。資料内には期待結果との差があります。下の内訳を確認してください。",
+    "summary": "資料: 期待結果の確認資料 / 再計算との不一致 0箇所 / 照合値: 指定なし",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "faithful report with all expectations matching",
+    "details": "資料: 期待結果の確認資料 / 再計算との不一致 0箇所 / 照合値: 指定なし\n\n確認した文字列のSHA-256: 23700e3d71c74a84296128e1de8a4a19a2d5bdb431950d144d623d97aa1c8e0c / 20626 bytes\n\n含まれる期待結果: 3ケース中、一致 3件、差あり 0件。期待値の作成方法: 計算結果から記録した基準。資料の再計算の一致と、期待値への一致は別に確認してください。\n\n資料に含まれる入力の範囲\n対象\t元入力の件数\t比較後の件数\nDAT / dat-limit-50\t3件\t3件\nDAT / dat-quota-5\t3件\t3件\nEMA / ema-opening-1001\t2件\t2件\n再計算と異なる項目（最大40箇所）\n資料内の場所\t違い",
+    "outcome": "含まれる期待結果: 3ケース中、一致 3件、差あり 0件。期待値の作成方法: 計算結果から記録した基準。資料の再計算の一致と、期待値への一致は別に確認してください。",
+    "saveEnabled": true,
+    "status": "資料の計算結果は再計算と一致しました。入力の出所や実際の残高を証明するものではありません。",
+    "summary": "資料: 期待結果の確認資料 / 再計算との不一致 0箇所 / 照合値: 指定なし",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "zero matches within six source records",
+    "details": "資料: 記録の検索資料 / 再計算との不一致 0箇所 / 照合値: 指定なし\n\n確認した文字列のSHA-256: bc98a415c6a2d4bae88e2ec1999daa3c8e2fe06deda5b638bbab592c49b4cabf / 5679 bytes\n\n検索対象の全記録 6件 / 条件に一致 0件。対象: すべて / 種類: すべて / 判定: すべて / 検索語: missing-record。件数は資料に含まれる試算記録の範囲です。\n\n資料に含まれる入力の範囲\n対象\t元入力の件数\t比較後の件数\nDAT\t3件\t比較なし\nEMA\t2件\t比較なし\nCAWELON\t1件\t比較なし\n再計算と異なる項目（最大40箇所）\n資料内の場所\t違い",
+    "outcome": "検索対象の全記録 6件 / 条件に一致 0件。対象: すべて / 種類: すべて / 判定: すべて / 検索語: missing-record。件数は資料に含まれる試算記録の範囲です。",
+    "saveEnabled": true,
+    "status": "資料の計算結果は再計算と一致しました。入力の出所や実際の残高を証明するものではありません。",
+    "summary": "資料: 記録の検索資料 / 再計算との不一致 0箇所 / 照合値: 指定なし",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "altered search count and settlement delta detected",
+    "details": "資料: 記録の検索資料 / 再計算との不一致 2箇所 / 照合値: 指定なし\n\n確認した文字列のSHA-256: a070e4b99570fe21f4c921d90885ca1533efee939afb031ac49f7de513857faa / 7614 bytes\n\n検索対象の全記録 6件 / 条件に一致 1件。対象: DAT / 種類: 決済 / 判定: すべて / 検索語: 指定なし。件数は資料に含まれる試算記録の範囲です。\n\n資料に含まれる入力の範囲\n対象\t元入力の件数\t比較後の件数\nDAT\t3件\t比較なし\nEMA\t2件\t比較なし\nCAWELON\t1件\t比較なし\n再計算と異なる項目（最大40箇所）\n資料内の場所\t違い\n/matchedRecords\t値が異なる\n/rows/0/changes/0/delta\t値が異なる",
+    "outcome": "検索対象の全記録 6件 / 条件に一致 1件。対象: DAT / 種類: 決済 / 判定: すべて / 検索語: 指定なし。件数は資料に含まれる試算記録の範囲です。",
+    "saveEnabled": true,
+    "status": "資料の計算結果に不一致があります。下の項目を確認してください。",
+    "summary": "資料: 記録の検索資料 / 再計算との不一致 2箇所 / 照合値: 指定なし",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  }
+]

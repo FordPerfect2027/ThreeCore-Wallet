@@ -1,0 +1,633 @@
+✖ snapshot reuses only its own fully validated immutable snapshot (8.084ms)
+✔ snapshot mutable caller input is never cached as valid (1.7916ms)
+✔ snapshot a frozen wrapper cannot hide changed nested data (1.93ms)
+✖ snapshot proxies and revoked proxies do not inherit snapshot identity (3.509ms)
+✖ archive reuses only its own fully validated immutable snapshot (2.5ms)
+✔ archive mutable caller input is never cached as valid (1.0628ms)
+✔ archive a frozen wrapper cannot hide changed nested data (1.4522ms)
+✖ archive proxies and revoked proxies do not inherit snapshot identity (2.1512ms)
+✖ reconciliation reuses only its own fully validated immutable snapshot (5.4528ms)
+✔ reconciliation mutable caller input is never cached as valid (1.6734ms)
+✔ reconciliation a frozen wrapper cannot hide changed nested data (1.4736ms)
+✖ reconciliation proxies and revoked proxies do not inherit snapshot identity (3.1452ms)
+✖ observation reuses only its own fully validated immutable snapshot (1.0168ms)
+✔ observation mutable caller input is never cached as valid (0.8876ms)
+✔ observation a frozen wrapper cannot hide changed nested data (0.8963ms)
+✖ observation proxies and revoked proxies do not inherit snapshot identity (1.4807ms)
+✖ individually valid cached records still undergo cross-record context, duplicate and overlap checks (5.7091ms)
+✖ cached observations retain metadata mismatch and missing-code facts (1.2677ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 8
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 408.8582
+
+✖ failing tests:
+
+test at test\immutable-history-validation.test.js:22:3
+✖ snapshot reuses only its own fully validated immutable snapshot (8.084ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  {
+    completeHistory: false,
+    context: {
+      account: '0x1111111111111111111111111111111111111111',
+      agent: 'DAT',
+      chainId: 8453
+    },
+    events: [
+      {
+        amountBaseUnits: '10000000000000000000',
+        blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+        blockNumber: '35',
+        from: '0x2222222222222222222222222222222222222222',
+        logIndex: '1',
+        to: '0x1111111111111111111111111111111111111111',
+        transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+        transactionIndex: '1'
+      },
+      {
+        amountBaseUnits: '3000000000000000000',
+        blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+        blockNumber: '40',
+        from: '0x1111111111111111111111111111111111111111',
+        logIndex: '2',
+        to: '0x2222222222222222222222222222222222222222',
+        transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+        transactionIndex: '2'
+      }
+    ],
+    fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+    independentVerification: false,
+    metadata: {
+      decimals: 18,
+      name: 'DATCORE',
+      symbol: 'DAT',
+      totalSupply: '1000000000000000000000000000'
+    },
+    range: {
+      fromBlock: '30',
+      toBlock: '42'
+    },
+    readOnly: true,
+    schema: 'threecore.transfer-observation.v1',
+    toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+    tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:24:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.transfer-observation.v1', context: { agent: 'DAT', chainId: 8453, account: '0x1111111111111111111111111111111111111111' }, tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, range: { fromBlock: '30', toBlock: '42' }, fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412', events: [ [Object], [Object] ], readOnly: true, completeHistory: false, independentVerification: false },
+    expected: { schema: 'threecore.transfer-observation.v1', context: { agent: 'DAT', chainId: 8453, account: '0x1111111111111111111111111111111111111111' }, tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, range: { fromBlock: '30', toBlock: '42' }, fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412', events: [ [Object], [Object] ], readOnly: true, completeHistory: false, independentVerification: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-history-validation.test.js:36:3
+✖ snapshot proxies and revoked proxies do not inherit snapshot identity (3.509ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  {
+    completeHistory: false,
+    context: {
+      account: '0x1111111111111111111111111111111111111111',
+      agent: 'DAT',
+      chainId: 8453
+    },
+    events: [
+      {
+        amountBaseUnits: '10000000000000000000',
+        blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+        blockNumber: '35',
+        from: '0x2222222222222222222222222222222222222222',
+        logIndex: '1',
+        to: '0x1111111111111111111111111111111111111111',
+        transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+        transactionIndex: '1'
+      },
+      {
+        amountBaseUnits: '3000000000000000000',
+        blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+        blockNumber: '40',
+        from: '0x1111111111111111111111111111111111111111',
+        logIndex: '2',
+        to: '0x2222222222222222222222222222222222222222',
+        transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+        transactionIndex: '2'
+      }
+    ],
+    fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+    independentVerification: false,
+    metadata: {
+      decimals: 18,
+      name: 'DATCORE',
+      symbol: 'DAT',
+      totalSupply: '1000000000000000000000000000'
+    },
+    range: {
+      fromBlock: '30',
+      toBlock: '42'
+    },
+    readOnly: true,
+    schema: 'threecore.transfer-observation.v1',
+    toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+    tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:41:58)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.transfer-observation.v1', context: { agent: 'DAT', chainId: 8453, account: '0x1111111111111111111111111111111111111111' }, tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, range: { fromBlock: '30', toBlock: '42' }, fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412', events: [ [Object], [Object] ], readOnly: true, completeHistory: false, independentVerification: false },
+    expected: { schema: 'threecore.transfer-observation.v1', context: { agent: 'DAT', chainId: 8453, account: '0x1111111111111111111111111111111111111111' }, tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, range: { fromBlock: '30', toBlock: '42' }, fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412', events: [ [Object], [Object] ], readOnly: true, completeHistory: false, independentVerification: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-history-validation.test.js:22:3
+✖ archive reuses only its own fully validated immutable snapshot (2.5ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    completeHistory: false,
+    readOnly: true,
+    records: [
+      {
+        completeHistory: false,
+        context: {
+          account: '0x1111111111111111111111111111111111111111',
+          agent: 'DAT',
+          chainId: 8453
+        },
+        events: [
+          {
+            amountBaseUnits: '10000000000000000000',
+            blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+            blockNumber: '35',
+            from: '0x2222222222222222222222222222222222222222',
+            logIndex: '1',
+            to: '0x1111111111111111111111111111111111111111',
+            transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+            transactionIndex: '1'
+          },
+          {
+            amountBaseUnits: '3000000000000000000',
+            blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+            blockNumber: '40',
+            from: '0x1111111111111111111111111111111111111111',
+            logIndex: '2',
+            to: '0x2222222222222222222222222222222222222222',
+            transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+            transactionIndex: '2'
+          }
+        ],
+        fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+        independentVerification: false,
+        metadata: {
+          decimals: 18,
+          name: 'DATCORE',
+          symbol: 'DAT',
+          totalSupply: '1000000000000000000000000000'
+        },
+        range: {
+          fromBlock: '30',
+          toBlock: '42'
+        },
+        readOnly: true,
+        schema: 'threecore.transfer-observation.v1',
+        toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+        tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+      }
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:24:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.transfer-archive.v1', records: [ [Object] ], readOnly: true, completeHistory: false },
+    expected: { schema: 'threecore.transfer-archive.v1', records: [ [Object] ], readOnly: true, completeHistory: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-history-validation.test.js:36:3
+✖ archive proxies and revoked proxies do not inherit snapshot identity (2.1512ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    completeHistory: false,
+    readOnly: true,
+    records: [
+      {
+        completeHistory: false,
+        context: {
+          account: '0x1111111111111111111111111111111111111111',
+          agent: 'DAT',
+          chainId: 8453
+        },
+        events: [
+          {
+            amountBaseUnits: '10000000000000000000',
+            blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+            blockNumber: '35',
+            from: '0x2222222222222222222222222222222222222222',
+            logIndex: '1',
+            to: '0x1111111111111111111111111111111111111111',
+            transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+            transactionIndex: '1'
+          },
+          {
+            amountBaseUnits: '3000000000000000000',
+            blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+            blockNumber: '40',
+            from: '0x1111111111111111111111111111111111111111',
+            logIndex: '2',
+            to: '0x2222222222222222222222222222222222222222',
+            transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+            transactionIndex: '2'
+          }
+        ],
+        fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+        independentVerification: false,
+        metadata: {
+          decimals: 18,
+          name: 'DATCORE',
+          symbol: 'DAT',
+          totalSupply: '1000000000000000000000000000'
+        },
+        range: {
+          fromBlock: '30',
+          toBlock: '42'
+        },
+        readOnly: true,
+        schema: 'threecore.transfer-observation.v1',
+        toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+        tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+      }
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:41:58)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.transfer-archive.v1', records: [ [Object] ], readOnly: true, completeHistory: false },
+    expected: { schema: 'threecore.transfer-archive.v1', records: [ [Object] ], readOnly: true, completeHistory: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-history-validation.test.js:22:3
+✖ reconciliation reuses only its own fully validated immutable snapshot (5.4528ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    independentlyVerified: false,
+    readOnly: true,
+    schema: 'threecore.reconciliation-workspace.v1',
+    slots: [
+      {
+        agent: 'DAT',
+        archive: {
+          completeHistory: false,
+          readOnly: true,
+          records: [
+            {
+              completeHistory: false,
+              context: {
+                account: '0x1111111111111111111111111111111111111111',
+                agent: 'DAT',
+                chainId: 8453
+              },
+              events: [
+                {
+                  amountBaseUnits: '10000000000000000000',
+                  blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+                  blockNumber: '35',
+                  from: '0x2222222222222222222222222222222222222222',
+                  logIndex: '1',
+                  to: '0x1111111111111111111111111111111111111111',
+                  transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+                  transactionIndex: '1'
+                },
+                {
+                  amountBaseUnits: '3000000000000000000',
+                  blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+                  blockNumber: '40',
+                  from: '0x1111111111111111111111111111111111111111',
+                  logIndex: '2',
+                  to: '0x2222222222222222222222222222222222222222',
+                  transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+                  transactionIndex: '2'
+                }
+              ],
+              fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+              independentVerification: false,
+              metadata: {
+                decimals: 18,
+                name: 'DATCORE',
+                symbol: 'DAT',
+                totalSupply: '1000000000000000000000000000'
+              },
+              range: {
+                fromBlock: '30',
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:24:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.reconciliation-workspace.v1', slots: [ [Object], [Object], [Object] ], readOnly: true, independentlyVerified: false },
+    expected: { schema: 'threecore.reconciliation-workspace.v1', slots: [ [Object], [Object], [Object] ], readOnly: true, independentlyVerified: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-history-validation.test.js:36:3
+✖ reconciliation proxies and revoked proxies do not inherit snapshot identity (3.1452ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    independentlyVerified: false,
+    readOnly: true,
+    schema: 'threecore.reconciliation-workspace.v1',
+    slots: [
+      {
+        agent: 'DAT',
+        archive: {
+          completeHistory: false,
+          readOnly: true,
+          records: [
+            {
+              completeHistory: false,
+              context: {
+                account: '0x1111111111111111111111111111111111111111',
+                agent: 'DAT',
+                chainId: 8453
+              },
+              events: [
+                {
+                  amountBaseUnits: '10000000000000000000',
+                  blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+                  blockNumber: '35',
+                  from: '0x2222222222222222222222222222222222222222',
+                  logIndex: '1',
+                  to: '0x1111111111111111111111111111111111111111',
+                  transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+                  transactionIndex: '1'
+                },
+                {
+                  amountBaseUnits: '3000000000000000000',
+                  blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+                  blockNumber: '40',
+                  from: '0x1111111111111111111111111111111111111111',
+                  logIndex: '2',
+                  to: '0x2222222222222222222222222222222222222222',
+                  transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+                  transactionIndex: '2'
+                }
+              ],
+              fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+              independentVerification: false,
+              metadata: {
+                decimals: 18,
+                name: 'DATCORE',
+                symbol: 'DAT',
+                totalSupply: '1000000000000000000000000000'
+              },
+              range: {
+                fromBlock: '30',
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:41:58)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.reconciliation-workspace.v1', slots: [ [Object], [Object], [Object] ], readOnly: true, independentlyVerified: false },
+    expected: { schema: 'threecore.reconciliation-workspace.v1', slots: [ [Object], [Object], [Object] ], readOnly: true, independentlyVerified: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-history-validation.test.js:22:3
+✖ observation reuses only its own fully validated immutable snapshot (1.0168ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  {
+    account: '0x1111111111111111111111111111111111111111',
+    agent: 'DAT',
+    balanceBaseUnits: '100000000000000000000',
+    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+    blockNumber: '30',
+    catalogVersion: 'threecore-erc20-2026-10-23',
+    chainId: 8453,
+    connectionEpoch: 1,
+    hasCode: true,
+    metadata: {
+      decimals: 18,
+      name: 'DATCORE',
+      symbol: 'DAT',
+      totalSupply: '1000000000000000000000000000'
+    },
+    nativeBalanceBaseUnits: '1000000000000000000',
+    readOnly: true,
+    schema: 'threecore-token-observation-v1',
+    securityAudit: false,
+    siteOrigin: 'http://127.0.0.1:4192',
+    tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:24:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 8453, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', hasCode: true, metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, balanceBaseUnits: '100000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false },
+    expected: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 8453, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', hasCode: true, metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, balanceBaseUnits: '100000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-history-validation.test.js:36:3
+✖ observation proxies and revoked proxies do not inherit snapshot identity (1.4807ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  {
+    account: '0x1111111111111111111111111111111111111111',
+    agent: 'DAT',
+    balanceBaseUnits: '100000000000000000000',
+    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+    blockNumber: '30',
+    catalogVersion: 'threecore-erc20-2026-10-23',
+    chainId: 8453,
+    connectionEpoch: 1,
+    hasCode: true,
+    metadata: {
+      decimals: 18,
+      name: 'DATCORE',
+      symbol: 'DAT',
+      totalSupply: '1000000000000000000000000000'
+    },
+    nativeBalanceBaseUnits: '1000000000000000000',
+    readOnly: true,
+    schema: 'threecore-token-observation-v1',
+    securityAudit: false,
+    siteOrigin: 'http://127.0.0.1:4192',
+    tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:41:58)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 8453, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', hasCode: true, metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, balanceBaseUnits: '100000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false },
+    expected: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 8453, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', hasCode: true, metadata: { name: 'DATCORE', symbol: 'DAT', decimals: 18, totalSupply: '1000000000000000000000000000' }, balanceBaseUnits: '100000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-history-validation.test.js:44:1
+✖ individually valid cached records still undergo cross-record context, duplicate and overlap checks (5.7091ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  {
+    completeHistory: false,
+    readOnly: true,
+    records: [
+      {
+        completeHistory: false,
+        context: {
+          account: '0x1111111111111111111111111111111111111111',
+          agent: 'DAT',
+          chainId: 8453
+        },
+        events: [
+          {
+            amountBaseUnits: '1234567890123456789',
+            blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+            blockNumber: '35',
+            from: '0x2222222222222222222222222222222222222222',
+            logIndex: '1',
+            to: '0x1111111111111111111111111111111111111111',
+            transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+            transactionIndex: '1'
+          }
+        ],
+        fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+        independentVerification: false,
+        metadata: {
+          decimals: 18,
+          name: 'DATCORE',
+          symbol: 'DAT',
+          totalSupply: '1000000000000000000000000000'
+        },
+        range: {
+          fromBlock: '30',
+          toBlock: '42'
+        },
+        readOnly: true,
+        schema: 'threecore.transfer-observation.v1',
+        toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+        tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+      }
+    ],
+    schema: 'threecore.transfer-archive.v1'
+  }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:52:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.transfer-archive.v1', records: [ [Object] ], readOnly: true, completeHistory: false },
+    expected: { schema: 'threecore.transfer-archive.v1', records: [ [Object] ], readOnly: true, completeHistory: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-history-validation.test.js:54:1
+✖ cached observations retain metadata mismatch and missing-code facts (1.2677ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  {
+    account: '0x1111111111111111111111111111111111111111',
+    agent: 'DAT',
+    balanceBaseUnits: null,
+    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+    blockNumber: '30',
+    catalogVersion: 'threecore-erc20-2026-10-23',
+    chainId: 8453,
+    connectionEpoch: 1,
+    hasCode: false,
+    metadata: null,
+    nativeBalanceBaseUnits: '1000000000000000000',
+    readOnly: true,
+    schema: 'threecore-token-observation-v1',
+    securityAudit: false,
+    siteOrigin: 'http://127.0.0.1:4192',
+    tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5'
+  }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-history-validation.test.js:58:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 8453, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', hasCode: false, metadata: null, balanceBaseUnits: null, nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false },
+    expected: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 8453, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5', hasCode: false, metadata: null, balanceBaseUnits: null, nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

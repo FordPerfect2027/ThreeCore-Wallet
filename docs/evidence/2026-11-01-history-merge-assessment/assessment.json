@@ -1,0 +1,63 @@
+{
+  "schema": "threecore-history-merge-assessment-v1",
+  "previousCount": 64,
+  "incomingCount": 4,
+  "capacity": 64,
+  "projectedSlotCount": 66,
+  "additionalSpaceNeeded": 2,
+  "duplicateCount": 1,
+  "additions": [
+    {
+      "agent": "DAT",
+      "account": "0x1111111111111111111111111111111111111111",
+      "chainId": 84532,
+      "siteOrigin": "http://localhost:4184",
+      "blockNumber": "65",
+      "blockHash": "0xabababababababababababababababababababababababababababababababab"
+    },
+    {
+      "agent": "DAT",
+      "account": "0x1111111111111111111111111111111111111111",
+      "chainId": 84532,
+      "siteOrigin": "http://localhost:4184",
+      "blockNumber": "66",
+      "blockHash": "0xabababababababababababababababababababababababababababababababab"
+    }
+  ],
+  "conflicts": [
+    {
+      "existing": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "blockNumber": "2",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab"
+      },
+      "incoming": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "blockNumber": "2",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab"
+      },
+      "changedFields": [
+        "nativeBalanceBaseUnits"
+      ],
+      "previousNativeBalanceBaseUnits": "16",
+      "incomingNativeBalanceBaseUnits": "17",
+      "tokenChanges": []
+    }
+  ],
+  "admissible": false,
+  "requiresNewPreview": true,
+  "historicalObservation": true,
+  "provesCurrentBalance": false,
+  "provesOwnership": false,
+  "provesTransfers": false,
+  "provesProfit": false,
+  "securityAudit": false,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false
+}

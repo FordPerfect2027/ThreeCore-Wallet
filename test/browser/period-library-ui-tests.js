@@ -1,3 +1,5 @@
+import { preparePeriodReportFile } from "/src/period-report-file.js";
+import { reportInput } from "/test/helpers/period-report-fixtures.js";
 import { createPeriodLibraryStorage } from "/src/period-library-storage.js";
 import { mountPeriodLibraryPanel } from "/examples/period-library-panel.js";
 import { mountPeriodPanel } from "/examples/period-panel.js";
@@ -87,6 +89,31 @@ function fixture(options = {}) {
 }
 
 export function registerPeriodLibraryUITests(test) {
+  test("period library: misplaced report points to the report reader without importing", async () => {
+    const f = fixture({ initial: sampleLibrary() });
+    try {
+      await f.open(); const original = f.mounted.getDocument();
+      await f.file((await preparePeriodReportFile(reportInput())).text);
+      assert(f.q("status").textContent.includes("3つの記録を、一つの報告に"));
+      assert(f.q("review").hidden && f.mounted.getDocument() === original);
+      assert(!f.store.calls.some(row => row[0] === "change"));
+    } finally { f.dispose(); }
+  });
+  test("period library: show why an import conflicts without replacing stored evidence", async () => {
+    const f = fixture({ initial: library([entry(1, { requiresNewPlan: true }), entry(2)]) });
+    try {
+      await f.open(); const original = f.mounted.getDocument();
+      const file = await preparePeriodLibraryFile(library([entry(1)]));
+      const transfer = new DataTransfer(); transfer.items.add(new File([file.text], "incoming.json", { type: "application/json" }));
+      f.q("file").files = transfer.files; f.q("file").dispatchEvent(new Event("change", { bubbles: true })); await f.settled();
+      assert(!f.q("import-inspection").hidden && f.q("apply").disabled && f.q("review").hidden);
+      assert(f.q("import-inspection-text").textContent.includes("再取得の印が外れています"));
+      assert(f.q("import-inspection-text").textContent.includes("そのまま残る既存の控え: 1件"));
+      assert(f.mounted.getDocument() === original && !f.store.calls.some(row => row[0] === "change"));
+      f.click("refresh"); await f.settled(); assert(f.q("import-inspection").hidden);
+    } finally { f.dispose(); }
+  });
+
   test("period library: IndexedDB remains unopened until explicit read", () => database(async ({ name, connect }) => {
     const adapter = connect();
     const before = await indexedDB.databases();

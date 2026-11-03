@@ -1,0 +1,22 @@
+{
+  "sourceRevision": "9838e5ba1b097fa998cb95d36f8d7fec4834143d",
+  "zip": "C:/Users/aseet/Downloads/ThreeCore-source-verification-9838e5b-20261102-final.zip",
+  "bytes": 358656,
+  "sha256": "867bef2f9a75fc3807c19c48f786d780403b4acc59ccd79e43249cb8330d7161",
+  "manifestEntries": 48,
+  "freshCompilerPackages": 21,
+  "advisoryCounts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "offlineReplaysPassed": 3,
+  "zipExtractedAndMatched": true,
+  "owned": "C:/Users/aseet/AppData/Local/Temp/threecore compiler replay d1434c75-f0c0-4cd0-b0cb-21afd5f273ea",
+  "documentationLinksAdjusted": true,
+  "originalVerificationZipSha256": "2a976cbb70b1f7f82469039c2a304341128b124e43b35d921a44881b27658393",
+  "verificationCodeAndDataUnchanged": true
+}

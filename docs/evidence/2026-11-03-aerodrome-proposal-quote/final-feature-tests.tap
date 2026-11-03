@@ -1,0 +1,238 @@
+TAP version 13
+# Subtest: CLI read preserves explicit agent, input, direction, slippage and optional height
+ok 1 - CLI read preserves explicit agent, input, direction, slippage and optional height
+  ---
+  duration_ms: 36.5195
+  type: 'test'
+  ...
+# Subtest: CLI saved quote validates files read-only and does not report tampered source contents
+ok 2 - CLI saved quote validates files read-only and does not report tampered source contents
+  ---
+  duration_ms: 43.0092
+  type: 'test'
+  ...
+# Subtest: quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+ok 3 - quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+  ---
+  duration_ms: 12.069
+  type: 'test'
+  ...
+# Subtest: quote files revalidate arithmetic and checksum rather than trusting saved output
+ok 4 - quote files revalidate arithmetic and checksum rather than trusting saved output
+  ---
+  duration_ms: 48.1525
+  type: 'test'
+  ...
+# Subtest: proposal, exact input amount, router, original budget block and current limits bind the quote
+ok 5 - proposal, exact input amount, router, original budget block and current limits bind the quote
+  ---
+  duration_ms: 167.9735
+  type: 'test'
+  ...
+# Subtest: comparison limits must be explicit and valid; cancellation interrupts archived source validation
+ok 6 - comparison limits must be explicit and valid; cancellation interrupts archived source validation
+  ---
+  duration_ms: 10.7207
+  type: 'test'
+  ...
+# Subtest: all three agents and both quote directions compare pool, router and reserve arithmetic at one hash
+ok 7 - all three agents and both quote directions compare pool, router and reserve arithmetic at one hash
+  ---
+  duration_ms: 209.1543
+  type: 'test'
+  ...
+# Subtest: single-route encoding matches independently generated viem 2.56.6 ABI vector
+ok 8 - single-route encoding matches independently generated viem 2.56.6 ABI vector
+  ---
+  duration_ms: 0.5937
+  type: 'test'
+  ...
+# Subtest: invalid amounts, source options and cancellation fail before network access
+ok 9 - invalid amounts, source options and cancellation fail before network access
+  ---
+  duration_ms: 8.2289
+  type: 'test'
+  ...
+# Subtest: explicit historical height skips latest and still rechecks its exact canonical hash
+ok 10 - explicit historical height skips latest and still rechecks its exact canonical hash
+  ---
+  duration_ms: 18.5348
+  type: 'test'
+  ...
+# Subtest: identity, empty pool, decimals, output, timestamps and network transitions cannot produce a quote
+ok 11 - identity, empty pool, decimals, output, timestamps and network transitions cannot produce a quote
+  ---
+  duration_ms: 195.0439
+  type: 'test'
+  ...
+# Subtest: stalled requests, body timeout and mid-read cancellation settle and never fall back to an unpinned read
+ok 12 - stalled requests, body timeout and mid-read cancellation settle and never fall back to an unpinned read
+  ---
+  duration_ms: 232.2471
+  type: 'test'
+  ...
+# Subtest: quote view selectors accept only exact lengths and canonical single-route ABI
+ok 13 - quote view selectors accept only exact lengths and canonical single-route ABI
+  ---
+  duration_ms: 110.3038
+  type: 'test'
+  ...
+# Subtest: timestamp-aware headers fail on missing or noncanonical time while old header shape stays unchanged
+ok 14 - timestamp-aware headers fail on missing or noncanonical time while old header shape stays unchanged
+  ---
+  duration_ms: 9.2624
+  type: 'test'
+  ...
+# Subtest: CLI reports acceptable comparisons, mismatches and invalid input separately without modifying original files
+ok 15 - CLI reports acceptable comparisons, mismatches and invalid input separately without modifying original files
+  ---
+  duration_ms: 87.5633
+  type: 'test'
+  ...
+# Subtest: CLI bounds bytes, rejects invalid UTF-8 and validates argument shape before opening files
+ok 16 - CLI bounds bytes, rejects invalid UTF-8 and validates argument shape before opening files
+  ---
+  duration_ms: 25.6546
+  type: 'test'
+  ...
+# Subtest: CLI saved review replays its original time and rejects a modified verdict without modifying the archive
+ok 17 - CLI saved review replays its original time and rejects a modified verdict without modifying the archive
+  ---
+  duration_ms: 87.3361
+  type: 'test'
+  ...
+# Subtest: saved proposal review retains original text and recomputes historical success and failure
+ok 18 - saved proposal review retains original text and recomputes historical success and failure
+  ---
+  duration_ms: 68.4085
+  type: 'test'
+  ...
+# Subtest: saved verdict, reasons, time and permissions cannot substitute for recomputation
+ok 19 - saved verdict, reasons, time and permissions cannot substitute for recomputation
+  ---
+  duration_ms: 38.8372
+  type: 'test'
+  ...
+# Subtest: page previews text without executing it, then saves and reloads exact sources with current-time recheck
+ok 20 - page previews text without executing it, then saves and reloads exact sources with current-time recheck
+  ---
+  duration_ms: 93.1261
+  type: 'test'
+  ...
+# Subtest: historical pass is not retained as a current pass after expiry
+ok 21 - historical pass is not retained as a current pass after expiry
+  ---
+  duration_ms: 24.9864
+  type: 'test'
+  ...
+# Subtest: cancel discards stale comparison and aborts work
+ok 22 - cancel discards stale comparison and aborts work
+  ---
+  duration_ms: 11.3128
+  type: 'test'
+  ...
+# Subtest: new-file discards stale comparison and aborts work
+ok 23 - new-file discards stale comparison and aborts work
+  ---
+  duration_ms: 12.3562
+  type: 'test'
+  ...
+# Subtest: pagehide discards stale comparison and aborts work
+ok 24 - pagehide discards stale comparison and aborts work
+  ---
+  duration_ms: 9.3889
+  type: 'test'
+  ...
+# Subtest: dispose discards stale comparison and aborts work
+ok 25 - dispose discards stale comparison and aborts work
+  ---
+  duration_ms: 10.9776
+  type: 'test'
+  ...
+# Subtest: wrong file count, duplicate types, changed evidence and changed saved verdict never retain old result
+ok 26 - wrong file count, duplicate types, changed evidence and changed saved verdict never retain old result
+  ---
+  duration_ms: 41.1614
+  type: 'test'
+  ...
+# Subtest: cancelled reads and saved-record verification cannot repopulate the page
+ok 27 - cancelled reads and saved-record verification cannot repopulate the page
+  ---
+  duration_ms: 8.1024
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download does not lose result or report revoked export success
+ok 28 - failed or reentrant download does not lose result or report revoked export success
+  ---
+  duration_ms: 36.7654
+  type: 'test'
+  ...
+# Subtest: all three agents bind original evidence and budget without granting authority to an AI label
+ok 29 - all three agents bind original evidence and budget without granting authority to an AI label
+  ---
+  duration_ms: 52.5181
+  type: 'test'
+  ...
+# Subtest: an exact source-file hash prevents substituting or reformatting the linked budget evidence
+ok 30 - an exact source-file hash prevents substituting or reformatting the linked budget evidence
+  ---
+  duration_ms: 8.2834
+  type: 'test'
+  ...
+# Subtest: policy context and exact origin/contract pair must match, independently of reassuring rationale
+ok 31 - policy context and exact origin/contract pair must match, independently of reassuring rationale
+  ---
+  duration_ms: 27.3598
+  type: 'test'
+  ...
+# Subtest: policy and proposal time windows use exclusive expiry and bounded lifetimes
+ok 32 - policy and proposal time windows use exclusive expiry and bounded lifetimes
+  ---
+  duration_ms: 19.9021
+  type: 'test'
+  ...
+# Subtest: spend, native value and known fee limits are exact uint256 comparisons
+ok 33 - spend, native value and known fee limits are exact uint256 comparisons
+  ---
+  duration_ms: 15.8865
+  type: 'test'
+  ...
+# Subtest: a proposal and policy agreeing with each other cannot replace the evidence account or token
+ok 34 - a proposal and policy agreeing with each other cannot replace the evidence account or token
+  ---
+  duration_ms: 9.7431
+  type: 'test'
+  ...
+# Subtest: unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+ok 35 - unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+  ---
+  duration_ms: 6.0234
+  type: 'test'
+  ...
+# Subtest: shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+ok 36 - shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+  ---
+  duration_ms: 18.0583
+  type: 'test'
+  ...
+# Subtest: strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+ok 37 - strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+  ---
+  duration_ms: 6.11
+  type: 'test'
+  ...
+# Subtest: async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+ok 38 - async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+  ---
+  duration_ms: 7.3576
+  type: 'test'
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 38
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2638.7947

@@ -1,0 +1,13 @@
+PORTFOLIO_HISTORY_EMPTY_SELECTION
+Usage: node scripts/inspect-portfolio-history.js query|subset history.json [filters]
+  Filters: --account ADDRESS --chain ID --min-block DECIMAL --max-block DECIMAL
+           --order oldest|newest --token CONTRACT --token-state any|known|unknown|not-observed
+  subset requires at least one filter and exports whole matching observations, including other holdings.
+  record history.json --index INDEX
+  compare history.json --before INDEX --after INDEX
+  timeline history.json
+Indices are zero-based positions in the original archive, as returned by query; not sorted row numbers.
+Reads one local portfolio-history JSON up to 1 MiB. Output includes public addresses and balances.
+No network, wallet connection, import or source writes. Output goes only to stdout.
+Exit 0: requested local analysis/export completed; 1: invalid input, incompatible pair or empty subset.
+Structure and arithmetic checks do not authenticate observations, establish current balances or prove transfers/profit.

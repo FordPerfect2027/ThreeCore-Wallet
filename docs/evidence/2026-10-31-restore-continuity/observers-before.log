@@ -1,0 +1,135 @@
+✔ combined export contains committed workspace and cases without applying a pending import (100.0755ms)
+✔ paste preview exposes both replacements, confirms once and records the source (65.6694ms)
+✔ same-input preview is visible but does not need reapplication (56.3429ms)
+✔ cancel preserves both old stores and their independent undo (60.3722ms)
+✔ source edits and invalid input revoke old review without silently replacing either source (68.3674ms)
+✔ file review uses bounded bytes and chooser cancellation preserves preview (94.1847ms)
+✔ cancel supersedes a late combined-file read (30.5105ms)
+✔ edit supersedes a late combined-file read (21.7785ms)
+✔ source supersedes a late combined-file read (26.2269ms)
+✔ dispose supersedes a late combined-file read (23.1709ms)
+✔ paste supersedes a late combined-file read (52.8411ms)
+✔ a view failure after commit accurately reports that data restoration completed (56.787ms)
+✔ save failure retains both stores and disposal removes callbacks (23.5522ms)
+✔ successful combined restore focuses the outcome after its final receipt is visible (55.8976ms)
+✔ restore outcome focus cannot overwrite a newer edit made by a focus listener (66.7365ms)
+✖ new recovery preview from a restore callback survives its older return (109.1827ms)
+✖ new recovery preview from a restore callback survives its older throw (139.7867ms)
+✖ new recovery preview from a restore callback survives its older then-getter (79.0371ms)
+✖ store edits during a restore callback cannot receive an obsolete complete message (50.0743ms)
+✖ new recovery entered by a commit observer prevents the old restore callback (74.9505ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 15
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1667.564
+
+✖ failing tests:
+
+test at test\operation-rehearsal-session-panel.test.js:67:55
+✖ new recovery preview from a restore callback survives its older return (109.1827ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-panel.test.js:71:53)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-panel.test.js:67:55
+✖ new recovery preview from a restore callback survives its older throw (139.7867ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-panel.test.js:71:53)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-panel.test.js:67:55
+✖ new recovery preview from a restore callback survives its older then-getter (79.0371ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-panel.test.js:71:53)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-panel.test.js:77:1
+✖ store edits during a restore callback cannot receive an obsolete complete message (50.0743ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /履歴またはケースの操作がありました/. Input:
+  
+  '履歴とケース集をまとめて復旧しました。両方の取り消し履歴は新しく開始します。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-panel.test.js:81:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '履歴とケース集をまとめて復旧しました。両方の取り消し履歴は新しく開始します。',
+    expected: /履歴またはケースの操作がありました/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-session-panel.test.js:85:1
+✖ new recovery entered by a commit observer prevents the old restore callback (74.9505ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-session-panel.test.js:88:64)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

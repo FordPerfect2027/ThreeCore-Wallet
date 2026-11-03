@@ -1,0 +1,1185 @@
+✖ period report cancel during clock cannot restore old selection review (77.9199ms)
+✖ period report invalidateReview during clock cannot restore old selection review (59.552ms)
+✖ period report select during clock cannot restore old selection review (58.6618ms)
+✖ period report cancelled history capture cannot stage evidence (46.134ms)
+✖ period report invalid new history handoff retires previous review (83.3523ms)
+✖ period report cancelled storage capture cannot adopt records (32.1713ms)
+✖ period report cancelled import input cannot recreate review (49.0073ms)
+✖ period report cancelled import checksum cannot recreate review (42.6035ms)
+✖ period report recursive observer cancellation is bounded (8.0924ms)
+✖ period report cancellation during ready notification retires return status (17.2344ms)
+✖ period report malformed asynchronous observer rejection is contained (315.9981ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 0
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1331.9041
+
+✖ failing tests:
+
+test at test\period-report-lifecycle.test.js:17:3
+✖ period report cancel during clock cannot restore old selection review (77.9199ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:21:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:17:3
+✖ period report invalidateReview during clock cannot restore old selection review (59.552ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:21:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:17:3
+✖ period report select during clock cannot restore old selection review (58.6618ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:21:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:26:1
+✖ period report cancelled history capture cannot stage evidence (46.134ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:31:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:35:1
+✖ period report invalid new history handoff retires previous review (83.3523ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   authenticated: false,
+  +   checksumVerified: false,
+  +   comparison: null,
+  +   input: {
+  +     createdAt: '2026-10-24T02:00:00.000Z',
+  +     historicalOnly: true,
+  +     independentlyVerified: false,
+  +     schema: 'threecore.period-report-input.v1',
+  +     slots: [
+  +       {
+  +         agent: 'DAT',
+  +         entry: {
+  +           archived: false,
+  +           createdAt: '2026-10-24T01:00:00.000Z',
+  +           draft: {
+  +             earlier: {
+  +               account: '0x1111111111111111111111111111111111111111',
+  +               agent: 'DAT',
+  +               balanceBaseUnits: '100000000000000000000',
+  +               blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +               blockNumber: '30',
+  +               catalogVersion: 'threecore-erc20-2026-10-23',
+  +               chainId: 84532,
+  +               connectionEpoch: 1,
+  +               hasCode: true,
+  +               metadata: {
+  +                 decimals: 18,
+  +                 name: 'DATCORE',
+  +                 symbol: 'DAT',
+  +                 totalSupply: '1000000000000000000000000000'
+  +               },
+  +               nativeBalanceBaseUnits: '1000000000000000000',
+  +               readOnly: true,
+  +               schema: 'threecore-token-observation-v1',
+  +               securityAudit: false,
+  +               siteOrigin: 'http://127.0.0.1:4192',
+  +               tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+  +             },
+  +             independentlyVerified: false,
+  +             later: {
+  +               account: '0x1111111111111111111111111111111111111111',
+  +               agent: 'DAT',
+  +               balanceBaseUnits: '107000000000000000000',
+  +               blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +               blockNumber: '42',
+  +               catalogVersion: 'threecore-erc20-2026-10-23',
+  +               chainId: 84532,
+  +               connectionEpoch: 1,
+  +               hasCode: true,
+  +               metadata: {
+  +                 decimals: 18,
+  +                 name: 'DATCORE',
+  +                 symbol: 'DAT',
+  +                 totalSupply: '1000000000000000000000000000'
+  +               },
+  +               nativeBalanceBaseUnits: '1000000000000000000',
+  +               readOnly: true,
+  +               schema: 'threecore-token-observation-v1',
+  +               securityAudit: false,
+  +               siteOrigin: 'http://127.0.0.1:4192',
+  +               tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+  +             },
+  +             plan: {
+  +               context: {
+  +                 account: '0x1111111111111111111111111111111111111111',
+  +                 agent: 'DAT',
+  +                 chainId: 84532
+  +               },
+  +               earlierBlock: '30',
+  +               laterBlock: '42',
+  +               schema: 'threecore.period-plan.v1',
+  +               windowSize: 5
+  +             },
+  +             readOnly: true,
+  +             records: [
+  +               {
+  +                 completeHistory: false,
+  +                 context: {
+  +                   account: '0x1111111111111111111111111111111111111111',
+  +                   agent: 'DAT',
+  +                   chainId: 84532
+  +                 },
+  +                 events: [
+  +                   {
+  +                     amountBaseUnits: '10000000000000000000',
+  +                     blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+  +                     blockNumber: '35',
+  +                     from: '0x2222222222222222222222222222222222222222',
+  +                     logIndex: '1',
+  +                     to: '0x1111111111111111111111111111111111111111',
+  +                     transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+  +                     transactionIndex: '1'
+  +                   }
+  +                 ],
+  +                 fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000407',
+  +                 independentVerification: false,
+  +                 metadata: {
+  +                   decimals: 18,
+  +                   name: 'DATCORE',
+  +                   symbol: 'DAT',
+  +                   totalSupply: '1000000000000000000000000000'
+  +                 },
+  +                 range: {
+  +                   fromBlock: '31',
+  +                   toBlock: '35'
+  +                 },
+  +                 readOnly: true,
+  +                 schema: 'threecore.transfer-observation.v1',
+  +                 toBlockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+  +                 tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+  +               },
+  +               {
+  +                 completeHistory: false,
+  +                 context: {
+  +                   account: '0x1111111111111111111111111111111111111111',
+  +                   agent: 'DAT',
+  +                   chainId: 84532
+  +                 },
+  +                 events: [
+  +                   {
+  +                     amountBaseUnits: '3000000000000000000',
+  +                     blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +                     blockNumber: '40',
+  +                     from: '0x1111111111111111111111111111111111111111',
+  +                     logIndex: '2',
+  +                     to: '0x2222222222222222222222222222222222222222',
+  +                     transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+  +                     transactionIndex: '2'
+  +                   }
+  +                 ],
+  +                 fromBlockHash: '0x000000000000000000000000000000000000000000000000000000000000040c',
+  +                 independentVerification: false,
+  +                 metadata: {
+  +                   decimals: 18,
+  +                   name: 'DATCORE',
+  +                   symbol: 'DAT',
+  +                   totalSupply: '1000000000000000000000000000'
+  +                 },
+  +                 range: {
+  +                   fromBlock: '36',
+  +                   toBlock: '40'
+  +                 },
+  +                 readOnly: true,
+  +                 schema: 'threecore.transfer-observation.v1',
+  +                 toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +                 tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+  +               },
+  +               {
+  +                 completeHistory: false,
+  +                 context: {
+  +                   account: '0x1111111111111111111111111111111111111111',
+  +                   agent: 'DAT',
+  +                   chainId: 84532
+  +                 },
+  +                 events: [],
+  +                 fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000411',
+  +                 independentVerification: false,
+  +                 metadata: {
+  +                   decimals: 18,
+  +                   name: 'DATCORE',
+  +                   symbol: 'DAT',
+  +                   totalSupply: '1000000000000000000000000000'
+  +                 },
+  +                 range: {
+  +                   fromBlock: '41',
+  +                   toBlock: '42'
+  +                 },
+  +                 readOnly: true,
+  +                 schema: 'threecore.transfer-observation.v1',
+  +                 toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +                 tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+  +               }
+  +             ],
+  +             schema: 'threecore.period-draft.v1'
+  +           },
+  +           id: '12345678-1234-4234-8234-000000000001',
+  +           label: 'DAT 期間30–42',
+  +           requiresNewPlan: false,
+  +           updatedAt: '2026-10-24T01:00:00.000Z'
+  +         }
+  +       },
+  +       {
+  +         agent: 'EMA',
+  +         entry: {
+  +           archived: false,
+  +           createdAt: '2026-10-24T01:00:00.000Z',
+  +           draft: {
+  +             earlier: {
+  +               account: '0x2222222222222222222222222222222222222222',
+  +               agent: 'EMA',
+  +               balanceBaseUnits: '100000000000000000000',
+  +               blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +               blockNumber: '30',
+  +               catalogVersion: 'threecore-erc20-2026-10-23',
+  +               chainId: 84532,
+  +               connectionEpoch: 1,
+  +               hasCode: true,
+  +               metadata: {
+  +                 decimals: 18,
+  +                 name: 'EMA CORE',
+  +                 symbol: 'EMA',
+  +                 totalSupply: '777000000000000000000000000'
+  +               },
+  +               nativeBalanceBaseUnits: '1000000000000000000',
+  +               readOnly: true,
+  +               schema: 'threecore-token-observation-v1',
+  +               securityAudit: false,
+  +               siteOrigin: 'http://127.0.0.1:4192',
+  +               tokenAddress: '0x20c3bb2548a1ce188229a6128df0e9612259185e'
+  +             },
+  +             independentlyVerified: false,
+  +             later: {
+  +               account: '0x2222222222222222222222222222222222222222',
+  +               agent: 'EMA',
+  +               balanceBaseUnits: '107000000000000000000',
+  +               blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +               blockNumber: '42',
+  +               catalogVersion: 'threecore-erc20-2026-10-23',
+  +               chainId: 84532,
+  +               connectionEpoch: 1,
+  +               hasCode: true,
+  +               metadata: {
+  +                 decimals: 18,
+  +                 name: 'EMA CORE',
+  +                 symbol: 'EMA',
+  +                 totalSupply: '777000000000000000000000000'
+  +               },
+  +               nativeBalanceBaseUnits: '1000000000000000000',
+  +               readOnly: true,
+  +               schema: 'threecore-token-observation-v1',
+  +               securityAudit: false,
+  +               siteOrigin: 'http://127.0.0.1:4192',
+  +               tokenAddress: '0x20c3bb2548a1ce188229a6128df0e9612259185e'
+  +             },
+  +             plan: {
+  +               context: {
+  +                 account: '0x2222222222222222222222222222222222222222',
+  +                 agent: 'EMA',
+  +                 chainId: 84532
+  +               },
+  +               earlierBlock: '30',
+  +               laterBlock: '42',
+  +               schema: 'threecore.period-plan.v1',
+  +               windowSize: 5
+  +             },
+  +             readOnly: true,
+  +             records: [
+  +               {
+  +                 completeHistory: false,
+  +                 context: {
+  +                   account: '0x2222222222222222222222222222222222222222',
+  +                   agent: 'EMA',
+  +                   chainId: 84532
+  +                 },
+  +                 events: [
+  +                   {
+  +                     amountBaseUnits: '10000000000000000000',
+  +                     blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+  +                     blockNumber: '35',
+  +                     from: '0x3333333333333333333333333333333333333333',
+  +                     logIndex: '1',
+  +                     to: '0x2222222222222222222222222222222222222222',
+  +                     transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+  +                     transactionIndex: '1'
+  +                   }
+  +                 ],
+  +                 fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000407',
+  +                 independentVerification: false,
+  +                 metadata: {
+  +                   decimals: 18,
+  +                   name: 'EMA CORE',
+  +                   symbol: 'EMA',
+  +                   totalSupply: '777000000000000000000000000'
+  +                 },
+  +                 range: {
+  +                   fromBlock: '31',
+  +                   toBlock: '35'
+  +                 },
+  +                 readOnly: true,
+  +                 schema: 'threecore.transfer-observation.v1',
+  +                 toBlockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+  +                 tokenAddress: '0x20c3bb2548a1ce188229a6128df0e9612259185e'
+  +               },
+  +               {
+  +                 completeHistory: false,
+  +                 context: {
+  +                   account: '0x2222222222222222222222222222222222222222',
+  +                   agent: 'EMA',
+  +                   chainId: 84532
+  +                 },
+  +                 events: [
+  +                   {
+  +                     amountBaseUnits: '3000000000000000000',
+  +                     blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +                     blockNumber: '40',
+  +                     from: '0x2222222222222222222222222222222222222222',
+  +                     logIndex: '2',
+  +                     to: '0x3333333333333333333333333333333333333333',
+  +                     transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+  +                     transactionIndex: '2'
+  +                   }
+  +                 ],
+  +                 fromBlockHash: '0x000000000000000000000000000000000000000000000000000000000000040c',
+  +                 independentVerification: false,
+  +                 metadata: {
+  +                   decimals: 18,
+  +                   name: 'EMA CORE',
+  +                   symbol: 'EMA',
+  +                   totalSupply: '777000000000000000000000000'
+  +                 },
+  +                 range: {
+  +                   fromBlock: '36',
+  +                   toBlock: '40'
+  +                 },
+  +                 readOnly: true,
+  +                 schema: 'threecore.transfer-observation.v1',
+  +                 toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +                 tokenAddress: '0x20c3bb2548a1ce188229a6128df0e9612259185e'
+  +               },
+  +               {
+  +                 completeHistory: false,
+  +                 context: {
+  +                   account: '0x2222222222222222222222222222222222222222',
+  +                   agent: 'EMA',
+  +                   chainId: 84532
+  +                 },
+  +                 events: [],
+  +                 fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000411',
+  +                 independentVerification: false,
+  +                 metadata: {
+  +                   decimals: 18,
+  +                   name: 'EMA CORE',
+  +                   symbol: 'EMA',
+  +                   totalSupply: '777000000000000000000000000'
+  +                 },
+  +                 range: {
+  +                   fromBlock: '41',
+  +                   toBlock: '42'
+  +                 },
+  +                 readOnly: true,
+  +                 schema: 'threecore.transfer-observation.v1',
+  +                 toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +                 tokenAddress: '0x20c3bb2548a1ce188229a6128df0e9612259185e'
+  +               }
+  +             ],
+  +             schema: 'threecore.period-draft.v1'
+  +           },
+  +           id: '12345678-1234-4234-8234-000000000002',
+  +           label: 'EMA 期間30–42',
+  +           requiresNewPlan: false,
+  +           updatedAt: '2026-10-24T01:00:00.000Z'
+  +         }
+  +       },
+  +       {
+  +         agent: 'CAWELON',
+  +         entry: {
+  +           archived: false,
+  +           createdAt: '2026-10-24T01:00:00.000Z',
+  +           draft: {
+  +             earlier: {
+  +               account: '0x3333333333333333333333333333333333333333',
+  +               agent: 'CAWELON',
+  +               balanceBaseUnits: '100000000000000000000',
+  +               blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +               blockNumber: '30',
+  +               catalogVersion: 'threecore-erc20-2026-10-23',
+  +               chainId: 84532,
+  +               connectionEpoch: 1,
+  +               hasCode: true,
+  +               metadata: {
+  +                 decimals: 18,
+  +                 name: 'CAWELON CORE',
+  +                 symbol: 'CAWELON',
+  +                 totalSupply: '420000000000000000000000000000000'
+  +               },
+  +               nativeBalanceBaseUnits: '1000000000000000000',
+  +               readOnly: true,
+  +               schema: 'threecore-token-observation-v1',
+  +               securityAudit: false,
+  +               siteOrigin: 'http://127.0.0.1:4192',
+  +               tokenAddress: '0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f'
+  +             },
+  +             independentlyVerified: false,
+  +             later: {
+  +               account: '0x3333333333333333333333333333333333333333',
+  +               agent: 'CAWELON',
+  +               balanceBaseUnits: '107000000000000000000',
+  +               blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +               blockNumber: '42',
+  +               catalogVersion: 'threecore-erc20-2026-10-23',
+  +               chainId: 84532,
+  +               connectionEpoch: 1,
+  +               hasCode: true,
+  +               metadata: {
+  +                 decimals: 18,
+  +                 name: 'CAWELON CORE',
+  +                 symbol: 'CAWELON',
+  +                 totalSupply: '420000000000000000000000000000000'
+  +               },
+  +               nativeBalanceBaseUnits: '1000000000000000000',
+  +               readOnly: true,
+  +               schema: 'threecore-token-observation-v1',
+  +               securityAudit: false,
+  +               siteOrigin: 'http://127.0.0.1:4192',
+  +               tokenAddress: '0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f'
+  +             },
+  +             plan: {
+  +               context: {
+  +                 account: '0x3333333333333333333333333333333333333333',
+  +                 agent: 'CAWELON',
+  +                 chainId: 84532
+  +               },
+  +               earlierBlock: '30',
+  +               laterBlock: '42',
+  +               schema: 'threecore.period-plan.v1',
+  +               windowSize: 5
+  +             },
+  +             readOnly: true,
+  +             records: [
+  +               {
+  +                 completeHistory: false,
+  +                 context: {
+  +                   account: '0x3333333333333333333333333333333333333333',
+  +                   agent: 'CAWELON',
+  +                   chainId: 84532
+  +                 },
+  +                 events: [
+  +                   {
+  +                     amountBaseUnits: '10000000000000000000',
+  +                     blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+  +                     blockNumber: '35',
+  +                     from: '0x2222222222222222222222222222222222222222',
+  +                     logIndex: '1',
+  +                     to: '0x3333333333333333333333333333333333333333',
+  +                     transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+  +                     transactionIndex: '1'
+  +                   }
+  +                 ],
+  +                 fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000407',
+  +                 independentVerification: false,
+  +                 metadata: {
+  +                   decimals: 18,
+  +                   name: 'CAWELON CORE',
+  +                   symbol: 'CAWELON',
+  +                   totalSupply: '420000000000000000000000000000000'
+  +                 },
+  +                 range: {
+  +                   fromBlock: '31',
+  +                   toBlock: '35'
+  +                 },
+  +                 readOnly: true,
+  +                 schema: 'threecore.transfer-observation.v1',
+  +                 toBlockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+  +                 tokenAddress: '0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f'
+  +               },
+  +               {
+  +                 completeHistory: false,
+  +                 context: {
+  +                   account: '0x3333333333333333333333333333333333333333',
+  +                   agent: 'CAWELON',
+  +                   chainId: 84532
+  +                 },
+  +                 events: [
+  +                   {
+  +                     amountBaseUnits: '3000000000000000000',
+  +                     blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +                     blockNumber: '40',
+  +                     from: '0x3333333333333333333333333333333333333333',
+  +                     logIndex: '2',
+  +                     to: '0x2222222222222222222222222222222222222222',
+  +                     transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+  +                     transactionIndex: '2'
+  +                   }
+  +                 ],
+  +                 fromBlockHash: '0x000000000000000000000000000000000000000000000000000000000000040c',
+  +                 independentVerification: false,
+  +                 metadata: {
+  +                   decimals: 18,
+  +                   name: 'CAWELON CORE',
+  +                   symbol: 'CAWELON',
+  +                   totalSupply: '420000000000000000000000000000000'
+  +                 },
+  +                 range: {
+  +                   fromBlock: '36',
+  +                   toBlock: '40'
+  +                 },
+  +                 readOnly: true,
+  +                 schema: 'threecore.transfer-observation.v1',
+  +                 toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +                 tokenAddress: '0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f'
+  +               },
+  +               {
+  +                 completeHistory: false,
+  +                 context: {
+  +                   account: '0x3333333333333333333333333333333333333333',
+  +                   agent: 'CAWELON',
+  +                   chainId: 84532
+  +                 },
+  +                 events: [],
+  +                 fromBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000411',
+  +                 independentVerification: false,
+  +                 metadata: {
+  +                   decimals: 18,
+  +                   name: 'CAWELON CORE',
+  +                   symbol: 'CAWELON',
+  +                   totalSupply: '420000000000000000000000000000000'
+  +                 },
+  +                 range: {
+  +                   fromBlock: '41',
+  +                   toBlock: '42'
+  +                 },
+  +                 readOnly: true,
+  +                 schema: 'threecore.transfer-observation.v1',
+  +                 toBlockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +                 tokenAddress: '0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f'
+  +               }
+  +             ],
+  +             schema: 'threecore.period-draft.v1'
+  +           },
+  +           id: '12345678-1234-4234-8234-000000000003',
+  +           label: 'CAWELON 期間30–42',
+  +           requiresNewPlan: false,
+  +           updatedAt: '2026-10-24T01:00:00.000Z'
+  +         }
+  +       }
+  +     ],
+  +     title: '3トークンの期間確認'
+  +   },
+  +   origin: 'history',
+  +   report: {
+  +     allArithmeticAgreement: true,
+  +     anchors: {
+  +       comparedBlocks: 7,
+  +       conflicts: [],
+  +       invalidAgents: [],
+  +       liveChainRechecked: false
+  +     },
+  +     chainId: 84532,
+  +     combinesTokenValues: false,
+  +     completeHistory: false,
+  +     createdAt: '2026-10-24T02:00:00.000Z',
+  +     earlierBlock: '30',
+  +     eventCount: 6,
+  +     eventCountsArePerToken: true,
+  +     historicalOnly: true,
+  +     independentlyVerified: false,
+  +     issues: [],
+  +     laterBlock: '42',
+  +     liveChainRechecked: false,
+  +     provesProfit: false,
+  +     sameChainAndPeriod: true,
+  +     schema: 'threecore.period-report-analysis.v1',
+  +     securityAudit: false,
+  +     selectedCount: 3,
+  +     sharedAccounts: [],
+  +     slots: [
+  +       {
+  +         agent: 'DAT',
+  +         archived: false,
+  +         arithmetic: {
+  +           account: '0x1111111111111111111111111111111111111111',
+  +           agent: 'DAT',
+  +           anchors: {
+  +             earlier: {
+  +               archiveHash: null,
+  +               blockNumber: '30',
+  +               observationHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +               status: 'unchecked'
+  +             },
+  +             later: {
+  +               archiveHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +               blockNumber: '42',
+  +               observationHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +               status: 'agrees'
+  +             }
+  +           },
+  +           archiveRecords: 3,
+  +           assessments: {
+  +             earlier: 'matched',
+  +             later: 'matched'
+  +           },
+  +           chainId: 84532,
+  +           completeHistory: false,
+  +           coverage: {
+  +             coveredBlocks: '12',
+  +             expectedBlocks: '12',
+  +             fromBlockExclusive: '30',
+  +             gaps: [],
+  +             missingBlocks: '0',
+  +             provesCompleteHistory: false,
+  +             queriedEveryBlock: true,
+  +             ranges: [
+  +               {
+  +                 fromBlock: '31',
+  +                 toBlock: '42'
+  +               }
+  +             ],
+  +             toBlockInclusive: '42'
+  +           },
+  +           earlierBalanceBaseUnits: '100000000000000000000',
+  +           earlierBlock: '30',
+  +           events: [
+  +             {
+  +               amountBaseUnits: '10000000000000000000',
+  +               blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+  +               blockNumber: '35',
+  +               cumulativeBaseUnits: '10000000000000000000',
+  +               deltaBaseUnits: '10000000000000000000',
+  +               direction: 'incoming',
+  +               from: '0x2222222222222222222222222222222222222222',
+  +               impliedBalanceBaseUnits: '110000000000000000000',
+  +               logIndex: '1',
+  +               to: '0x1111111111111111111111111111111111111111',
+  +               transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+  +               transactionIndex: '1'
+  +             },
+  +             {
+  +               amountBaseUnits: '3000000000000000000',
+  +               blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +               blockNumber: '40',
+  +               cumulativeBaseUnits: '7000000000000000000',
+  +               deltaBaseUnits: '-3000000000000000000',
+  +               direction: 'outgoing',
+  +               from: '0x1111111111111111111111111111111111111111',
+  +               impliedBalanceBaseUnits: '107000000000000000000',
+  +               logIndex: '2',
+  +               to: '0x2222222222222222222222222222222222222222',
+  +               transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+  +               transactionIndex: '2'
+  +             }
+  +           ],
+  +           excludedEvents: 0,
+  +           historicalOnly: true,
+  +           independentlyVerified: false,
+  +           issues: [],
+  +           laterBalanceBaseUnits: '107000000000000000000',
+  +           laterBlock: '42',
+  +           origins: {
+  +             earlier: 'http://127.0.0.1:4192',
+  +             later: 'http://127.0.0.1:4192'
+  +           },
+  +           provesProfit: false,
+  +           status: 'arithmetic-agreement',
+  +           tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4',
+  +           totals: {
+  +             decimals: 18,
+  +             eventCount: 2,
+  +             impliedLaterBalanceBaseUnits: '107000000000000000000',
+  +             incomingBaseUnits: '10000000000000000000',
+  +             netTransferBaseUnits: '7000000000000000000',
+  +             observedDeltaBaseUnits: '7000000000000000000',
+  +             outgoingBaseUnits: '3000000000000000000',
+  +             residualBaseUnits: '0',
+  +             selfTransferCount: 0,
+  +             symbol: 'DAT',
+  +             transactionCount: 2,
+  +             zeroValueCount: 0
+  +           },
+  +           warnings: [
+  +             'ENDPOINT_HASH_UNCHECKED'
+  +           ]
+  +         },
+  +         entryId: '12345678-1234-4234-8234-000000000001',
+  +         label: 'DAT 期間30–42',
+  +         plan: {
+  +           context: {
+  +             account: '0x1111111111111111111111111111111111111111',
+  +             agent: 'DAT',
+  +             chainId: 84532
+  +           },
+  +           earlierBlock: '30',
+  +           laterBlock: '42',
+  +           schema: 'threecore.period-plan.v1',
+  +           windowSize: 5
+  +         },
+  +         progress: {
+  +           complete: true,
+  +           completed: 5,
+  +           events: 2,
+  +           next: 'recheck',
+  +           nextWindow: null,
+  +           total: 5,
+  +           windowsCompleted: 3,
+  +           windowsTotal: 3
+  +         },
+  +         requiresNewPlan: false,
+  +         status: 'arithmetic-agreement'
+  +       },
+  +       {
+  +         agent: 'EMA',
+  +         archived: false,
+  +         arithmetic: {
+  +           account: '0x2222222222222222222222222222222222222222',
+  +           agent: 'EMA',
+  +           anchors: {
+  +             earlier: {
+  +               archiveHash: null,
+  +               blockNumber: '30',
+  +               observationHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +               status: 'unchecked'
+  +             },
+  +             later: {
+  +               archiveHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +               blockNumber: '42',
+  +               observationHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +               status: 'agrees'
+  +             }
+  +           },
+  +           archiveRecords: 3,
+  +           assessments: {
+  +             earlier: 'matched',
+  +             later: 'matched'
+  +           },
+  +           chainId: 84532,
+  +           completeHistory: false,
+  +           coverage: {
+  +             coveredBlocks: '12',
+  +             expectedBlocks: '12',
+  +             fromBlockExclusive: '30',
+  +             gaps: [],
+  +             missingBlocks: '0',
+  +             provesCompleteHistory: false,
+  +             queriedEveryBlock: true,
+  +             ranges: [
+  +               {
+  +                 fromBlock: '31',
+  +                 toBlock: '42'
+  +               }
+  +             ],
+  +             toBlockInclusive: '42'
+  +           },
+  +           earlierBalanceBaseUnits: '100000000000000000000',
+  +           earlierBlock: '30',
+  +           events: [
+  +             {
+  +               amountBaseUnits: '10000000000000000000',
+  +               blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+  +               blockNumber: '35',
+  +               cumulativeBaseUnits: '10000000000000000000',
+  +               deltaBaseUnits: '10000000000000000000',
+  +               direction: 'incoming',
+  +               from: '0x3333333333333333333333333333333333333333',
+  +               impliedBalanceBaseUnits: '110000000000000000000',
+  +               logIndex: '1',
+  +               to: '0x2222222222222222222222222222222222222222',
+  +               transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+  +               transactionIndex: '1'
+  +             },
+  +             {
+  +               amountBaseUnits: '3000000000000000000',
+  +               blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +               blockNumber: '40',
+  +               cumulativeBaseUnits: '7000000000000000000',
+  +               deltaBaseUnits: '-3000000000000000000',
+  +               direction: 'outgoing',
+  +               from: '0x2222222222222222222222222222222222222222',
+  +               impliedBalanceBaseUnits: '107000000000000000000',
+  +               logIndex: '2',
+  +               to: '0x3333333333333333333333333333333333333333',
+  +               transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+  +               transactionIndex: '2'
+  +             }
+  +           ],
+  +           excludedEvents: 0,
+  +           historicalOnly: true,
+  +           independentlyVerified: false,
+  +           issues: [],
+  +           laterBalanceBaseUnits: '107000000000000000000',
+  +           laterBlock: '42',
+  +           origins: {
+  +             earlier: 'http://127.0.0.1:4192',
+  +             later: 'http://127.0.0.1:4192'
+  +           },
+  +           provesProfit: false,
+  +           status: 'arithmetic-agreement',
+  +           tokenAddress: '0x20c3bb2548a1ce188229a6128df0e9612259185e',
+  +           totals: {
+  +             decimals: 18,
+  +             eventCount: 2,
+  +             impliedLaterBalanceBaseUnits: '107000000000000000000',
+  +             incomingBaseUnits: '10000000000000000000',
+  +             netTransferBaseUnits: '7000000000000000000',
+  +             observedDeltaBaseUnits: '7000000000000000000',
+  +             outgoingBaseUnits: '3000000000000000000',
+  +             residualBaseUnits: '0',
+  +             selfTransferCount: 0,
+  +             symbol: 'EMA',
+  +             transactionCount: 2,
+  +             zeroValueCount: 0
+  +           },
+  +           warnings: [
+  +             'ENDPOINT_HASH_UNCHECKED'
+  +           ]
+  +         },
+  +         entryId: '12345678-1234-4234-8234-000000000002',
+  +         label: 'EMA 期間30–42',
+  +         plan: {
+  +           context: {
+  +             account: '0x2222222222222222222222222222222222222222',
+  +             agent: 'EMA',
+  +             chainId: 84532
+  +           },
+  +           earlierBlock: '30',
+  +           laterBlock: '42',
+  +           schema: 'threecore.period-plan.v1',
+  +           windowSize: 5
+  +         },
+  +         progress: {
+  +           complete: true,
+  +           completed: 5,
+  +           events: 2,
+  +           next: 'recheck',
+  +           nextWindow: null,
+  +           total: 5,
+  +           windowsCompleted: 3,
+  +           windowsTotal: 3
+  +         },
+  +         requiresNewPlan: false,
+  +         status: 'arithmetic-agreement'
+  +       },
+  +       {
+  +         agent: 'CAWELON',
+  +         archived: false,
+  +         arithmetic: {
+  +           account: '0x3333333333333333333333333333333333333333',
+  +           agent: 'CAWELON',
+  +           anchors: {
+  +             earlier: {
+  +               archiveHash: null,
+  +               blockNumber: '30',
+  +               observationHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+  +               status: 'unchecked'
+  +             },
+  +             later: {
+  +               archiveHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +               blockNumber: '42',
+  +               observationHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+  +               status: 'agrees'
+  +             }
+  +           },
+  +           archiveRecords: 3,
+  +           assessments: {
+  +             earlier: 'matched',
+  +             later: 'matched'
+  +           },
+  +           chainId: 84532,
+  +           completeHistory: false,
+  +           coverage: {
+  +             coveredBlocks: '12',
+  +             expectedBlocks: '12',
+  +             fromBlockExclusive: '30',
+  +             gaps: [],
+  +             missingBlocks: '0',
+  +             provesCompleteHistory: false,
+  +             queriedEveryBlock: true,
+  +             ranges: [
+  +               {
+  +                 fromBlock: '31',
+  +                 toBlock: '42'
+  +               }
+  +             ],
+  +             toBlockInclusive: '42'
+  +           },
+  +           earlierBalanceBaseUnits: '100000000000000000000',
+  +           earlierBlock: '30',
+  +           events: [
+  +             {
+  +               amountBaseUnits: '10000000000000000000',
+  +               blockHash: '0x000000000000000000000000000000000000000000000000000000000000040b',
+  +               blockNumber: '35',
+  +               cumulativeBaseUnits: '10000000000000000000',
+  +               deltaBaseUnits: '10000000000000000000',
+  +               direction: 'incoming',
+  +               from: '0x2222222222222222222222222222222222222222',
+  +               impliedBalanceBaseUnits: '110000000000000000000',
+  +               logIndex: '1',
+  +               to: '0x3333333333333333333333333333333333333333',
+  +               transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044d',
+  +               transactionIndex: '1'
+  +             },
+  +             {
+  +               amountBaseUnits: '3000000000000000000',
+  +               blockHash: '0x0000000000000000000000000000000000000000000000000000000000000410',
+  +               blockNumber: '40',
+  +               cumulativeBaseUnits: '7000000000000000000',
+  +               deltaBaseUnits: '-3000000000000000000',
+  +               direction: 'outgoing',
+  +               from: '0x3333333333333333333333333333333333333333',
+  +               impliedBalanceBaseUnits: '107000000000000000000',
+  +               logIndex: '2',
+  +               to: '0x2222222222222222222222222222222222222222',
+  +               transactionHash: '0x000000000000000000000000000000000000000000000000000000000000044e',
+  +               transactionIndex: '2'
+  +             }
+  +           ],
+  +           excludedEvents: 0,
+  +           historicalOnly: true,
+  +           independentlyVerified: false,
+  +           issues: [],
+  +           laterBalanceBaseUnits: '107000000000000000000',
+  +           laterBlock: '42',
+  +           origins: {
+  +             earlier: 'http://127.0.0.1:4192',
+  +             later: 'http://127.0.0.1:4192'
+  +           },
+  +           provesProfit: false,
+  +           status: 'arithmetic-agreement',
+  +           tokenAddress: '0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f',
+  +           totals: {
+  +             decimals: 18,
+  +             eventCount: 2,
+  +             impliedLaterBalanceBaseUnits: '107000000000000000000',
+  +             incomingBaseUnits: '10000000000000000000',
+  +             netTransferBaseUnits: '7000000000000000000',
+  +             observedDeltaBaseUnits: '7000000000000000000',
+  +             outgoingBaseUnits: '3000000000000000000',
+  +             residualBaseUnits: '0',
+  +             selfTransferCount: 0,
+  +             symbol: 'CAWELON',
+  +             transactionCount: 2,
+  +             zeroValueCount: 0
+  +           },
+  +           warnings: [
+  +             'ENDPOINT_HASH_UNCHECKED'
+  +           ]
+  +         },
+  +         entryId: '12345678-1234-4234-8234-000000000003',
+  +         label: 'CAWELON 期間30–42',
+  +         plan: {
+  +           context: {
+  +             account: '0x3333333333333333333333333333333333333333',
+  +             agent: 'CAWELON',
+  +             chainId: 84532
+  +           },
+  +           earlierBlock: '30',
+  +           laterBlock: '42',
+  +           schema: 'threecore.period-plan.v1',
+  +           windowSize: 5
+  +         },
+  +         progress: {
+  +           complete: true,
+  +           completed: 5,
+  +           events: 2,
+  +           next: 'recheck',
+  +           nextWindow: null,
+  +           total: 5,
+  +           windowsCompleted: 3,
+  +           windowsTotal: 3
+  +         },
+  +         requiresNewPlan: false,
+  +         status: 'arithmetic-agreement'
+  +       }
+  +     ],
+  +     status: 'arithmetic-agreement',
+  +     title: '3トークンの期間確認',
+  +     warnings: []
+  +   }
+  + }
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:38:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { origin: 'history', input: { schema: 'threecore.period-report-input.v1', title: '3トークンの期間確認', createdAt: '2026-10-24T02:00:00.000Z', slots: [Array], historicalOnly: true, independentlyVerified: false }, report: { schema: 'threecore.period-report-analysis.v1', title: '3トークンの期間確認', createdAt: '2026-10-24T02:00:00.000Z', status: 'arithmetic-agreement', slots: [Array], issues: [], warnings: [], anchors: [Object], sharedAccounts: [], selectedCount: 3, sameChainAndPeriod: true, allArithmeticAgreement: true, chainId: 84532, earlierBlock: '30', laterBlock: '42', eventCount: 6, eventCountsArePerToken: true, combinesTokenValues: false, historicalOnly: true, liveChainRechecked: false, independentlyVerified: false, completeHistory: false, securityAudit: false, provesProfit: false }, checksumVerified: false, authenticated: false, comparison: null },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:43:1
+✖ period report cancelled storage capture cannot adopt records (32.1713ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:49:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:55:3
+✖ period report cancelled import input cannot recreate review (49.0073ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:62:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:55:3
+✖ period report cancelled import checksum cannot recreate review (42.6035ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:62:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:67:1
+✖ period report recursive observer cancellation is bounded (8.0924ms)
+  AssertionError [ERR_ASSERTION]: received 16 notifications
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:71:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:75:1
+✖ period report cancellation during ready notification retires return status (17.2344ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:78:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\period-report-lifecycle.test.js:83:1
+✖ period report malformed asynchronous observer rejection is contained (315.9981ms)
+  AssertionError [ERR_ASSERTION]: file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5
+      const controller=createPeriodReportController({storage:store.storage,onChange:()=>({async then(){throw Error('synthetic callback');}})});
+                                                                                                             ^
+  
+  Error: synthetic callback
+      at Object.then (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/[eval1]:5:108)
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/period-report-lifecycle.test.js:94:46)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

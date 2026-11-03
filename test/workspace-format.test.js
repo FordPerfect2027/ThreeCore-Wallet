@@ -88,11 +88,12 @@ for (const chainId of [1, 0, -1, "84532", 8453.5, null]) {
   });
 }
 
-test("workspace rejects one public account assigned to two agents", () => {
+test("workspace preserves one public account assigned to two agents on different chains", () => {
   const value = bundle();
   value.entries[1].account = value.entries[0].account;
   value.entries[1].chainId = 8453;
-  assert.throws(() => validateWorkspace(value), { code: "WORKSPACE_DUPLICATE" });
+  assert.deepEqual(decodeWorkspace(encodeWorkspace(value)), value);
+  assert.notDeepEqual(value.entries[0].history, value.entries[1].history);
 });
 
 for (const field of ["account", "tokenAddress"]) {

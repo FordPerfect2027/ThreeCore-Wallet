@@ -1,0 +1,404 @@
+{
+  "recordedAt": "2026-11-02T18:39:31.369Z",
+  "results": [
+    {
+      "profile": "baseline",
+      "hardhatVersion": "3.21.2",
+      "zodVersion": "3.25.76",
+      "helperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48",
+      "observations": [
+        {
+          "name": "empty config",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "valid HTTP config and headers",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "invalid HTTP URL",
+          "errors": [
+            {
+              "path": [
+                "networks",
+                "demo",
+                "url"
+              ],
+              "message": "Expected a URL or a Configuration Variable"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "invalid HTTP header value",
+          "errors": [
+            {
+              "path": [
+                "networks",
+                "demo",
+                "httpHeaders",
+                "X-ThreeCore-Probe"
+              ],
+              "message": "Expected string, received number"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "invalid network discriminator",
+          "errors": [
+            {
+              "path": [
+                "networks",
+                "demo",
+                "type"
+              ],
+              "message": "Invalid discriminator value. Expected 'http' | 'edr-simulated'"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "valid simulated network shape only",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "invalid mining interval",
+          "errors": [
+            {
+              "path": [
+                "networks",
+                "demo",
+                "mining",
+                "interval"
+              ],
+              "message": "mining.interval is set to less than 1000 ms. To avoid the block timestamp diverging from clock time, please set allowBlocksWithSameTimestamp: true on the network config"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "valid compiler string",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "valid compiler settings",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "incompatible compiler configuration",
+          "errors": [
+            {
+              "path": [
+                "solidity",
+                "compilers"
+              ],
+              "message": "This field is incompatible with `version`"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "valid compiler profiles",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "missing default compiler profile",
+          "errors": [
+            {
+              "message": "The 'default' profile is required when using Solidity build profiles",
+              "path": [
+                "solidity",
+                "profiles"
+              ]
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "invalid source paths",
+          "errors": [
+            {
+              "path": [
+                "paths",
+                "sources",
+                0
+              ],
+              "message": "Expected string, received number"
+            }
+          ],
+          "thrown": null
+        }
+      ],
+      "boundedSizeCheck": {
+        "elements": 3,
+        "limit": 2,
+        "elementVisits": 3,
+        "issues": 4
+      }
+    },
+    {
+      "profile": "candidate",
+      "hardhatVersion": "3.21.2",
+      "zodVersion": "4.6.6",
+      "helperSha256": "79e75336c8277f1d8d0a48b007e569f1a313c516260b7067c80db3c2a76bb52f",
+      "observations": [
+        {
+          "name": "empty config",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "valid HTTP config and headers",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "invalid HTTP URL",
+          "errors": [
+            {
+              "path": [
+                "networks",
+                "demo",
+                "url"
+              ],
+              "message": "Expected a URL or a Configuration Variable"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "invalid HTTP header value",
+          "errors": [
+            {
+              "path": [
+                "networks",
+                "demo",
+                "httpHeaders",
+                "X-ThreeCore-Probe"
+              ],
+              "message": "Invalid input: expected string, received number"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "invalid network discriminator",
+          "errors": [
+            {
+              "path": [
+                "networks",
+                "demo",
+                "type"
+              ],
+              "message": "Invalid discriminator value. Expected 'http' | 'edr-simulated'"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "valid simulated network shape only",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "invalid mining interval",
+          "errors": [
+            {
+              "path": [
+                "networks",
+                "demo",
+                "mining",
+                "interval"
+              ],
+              "message": "mining.interval is set to less than 1000 ms. To avoid the block timestamp diverging from clock time, please set allowBlocksWithSameTimestamp: true on the network config"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "valid compiler string",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "valid compiler settings",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "incompatible compiler configuration",
+          "errors": [
+            {
+              "path": [
+                "solidity",
+                "compilers"
+              ],
+              "message": "This field is incompatible with `version`"
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "valid compiler profiles",
+          "errors": [],
+          "thrown": null
+        },
+        {
+          "name": "missing default compiler profile",
+          "errors": [
+            {
+              "message": "The 'default' profile is required when using Solidity build profiles",
+              "path": [
+                "solidity",
+                "profiles"
+              ]
+            }
+          ],
+          "thrown": null
+        },
+        {
+          "name": "invalid source paths",
+          "errors": [
+            {
+              "path": [
+                "paths",
+                "sources",
+                0
+              ],
+              "message": "Invalid input: expected string, received number"
+            }
+          ],
+          "thrown": null
+        }
+      ],
+      "boundedSizeCheck": {
+        "elements": 3,
+        "limit": 2,
+        "elementVisits": 0,
+        "issues": 1
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "name": "empty config",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": true,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "valid HTTP config and headers",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": true,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "invalid HTTP URL",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": false,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "invalid HTTP header value",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": false,
+      "pathsMatch": true,
+      "messagesMatch": false
+    },
+    {
+      "name": "invalid network discriminator",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": false,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "valid simulated network shape only",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": true,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "invalid mining interval",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": false,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "valid compiler string",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": true,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "valid compiler settings",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": true,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "incompatible compiler configuration",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": false,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "valid compiler profiles",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": true,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "missing default compiler profile",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": false,
+      "pathsMatch": true,
+      "messagesMatch": true
+    },
+    {
+      "name": "invalid source paths",
+      "baselineThrew": false,
+      "candidateThrew": false,
+      "bothAccepted": false,
+      "pathsMatch": true,
+      "messagesMatch": false
+    }
+  ],
+  "allCasesStructurallyCompatible": true,
+  "candidateEarlySizeGate": true,
+  "projectConfigurationLoaded": false,
+  "accountOrKeystoreLoaded": false,
+  "providersCreated": false,
+  "externalRpc": false,
+  "signatures": false,
+  "fullToolchainCompatibilityProven": false,
+  "remediationApproved": false
+}

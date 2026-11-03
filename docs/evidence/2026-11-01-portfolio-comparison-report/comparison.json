@@ -1,0 +1,85 @@
+{
+  "schema": "threecore-portfolio-comparison-v1",
+  "historicalObservation": true,
+  "readOnly": true,
+  "authenticated": false,
+  "securityAudit": false,
+  "provesTransfers": false,
+  "provesProfit": false,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false,
+  "earlier": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4231",
+    "connectionEpoch": 1,
+    "blockNumber": "42",
+    "blockHash": "0xabababababababababababababababababababababababababababababababab",
+    "nativeBalanceBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639931",
+    "holdings": [
+      {
+        "address": "0x2222222222222222222222222222222222222222",
+        "hasCode": false,
+        "balanceBaseUnits": null,
+        "notice": "TOKEN_CODE_MISSING"
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  },
+  "later": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4231",
+    "connectionEpoch": 1,
+    "blockNumber": "43",
+    "blockHash": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+    "nativeBalanceBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+    "holdings": [
+      {
+        "address": "0x2222222222222222222222222222222222222222",
+        "hasCode": false,
+        "balanceBaseUnits": null,
+        "notice": "TOKEN_CODE_MISSING"
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  },
+  "comparison": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4231",
+    "earlierBlockNumber": "42",
+    "earlierBlockHash": "0xabababababababababababababababababababababababababababababababab",
+    "laterBlockNumber": "43",
+    "laterBlockHash": "0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+    "sameBlock": false,
+    "native": {
+      "earlierBalanceBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639931",
+      "laterBalanceBaseUnits": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "deltaBaseUnits": "4",
+      "direction": "increased"
+    },
+    "holdings": [
+      {
+        "address": "0x2222222222222222222222222222222222222222",
+        "earlierBalanceBaseUnits": null,
+        "laterBalanceBaseUnits": null,
+        "deltaBaseUnits": null,
+        "direction": "unknown",
+        "availability": "contract_code_missing"
+      }
+    ],
+    "historicalObservation": true,
+    "readOnly": true,
+    "securityAudit": false,
+    "provesTransfers": false,
+    "provesProfit": false,
+    "canAuthorizeConnection": false,
+    "canAuthorizeTransaction": false
+  }
+}

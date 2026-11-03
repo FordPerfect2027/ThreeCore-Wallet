@@ -1,0 +1,218 @@
+{
+  "schema": "threecore.zod-boundary-export-probe.v1",
+  "recordedAt": "2026-11-02T02:49:46.999Z",
+  "upstreamFix": "https://github.com/colinhacks/zod/commit/a0ebf970f2d752e5f58527cd2942ff48be4f46bd",
+  "maximumInputItems": 64,
+  "rows": [
+    {
+      "label": "v3 installed",
+      "installedPackageVersion": "3.25.76",
+      "moduleSpecifier": "zod",
+      "entrySha256": "69025493407e0f37f24e01e363452d75ae43a89aac18eb24806706b5b534b459",
+      "packageLockSha256": "14c15661de5ca76a986f18b9f5a12c92ac0655351dc88b10af377e4c995a335c",
+      "validAtLimitAccepted": true,
+      "samples": [
+        {
+          "inputItems": 2,
+          "configuredMaximum": null,
+          "visitedElements": 2,
+          "issues": 2,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 2,
+          "configuredMaximum": 2,
+          "visitedElements": 2,
+          "issues": 2,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 3,
+          "configuredMaximum": null,
+          "visitedElements": 3,
+          "issues": 3,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 3,
+          "configuredMaximum": 2,
+          "visitedElements": 3,
+          "issues": 4,
+          "issueCodes": [
+            "too_big",
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 64,
+          "configuredMaximum": null,
+          "visitedElements": 64,
+          "issues": 64,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 64,
+          "configuredMaximum": 2,
+          "visitedElements": 64,
+          "issues": 65,
+          "issueCodes": [
+            "too_big",
+            "invalid_type"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "v4 patched",
+      "installedPackageVersion": "4.6.6",
+      "moduleSpecifier": "zod",
+      "entrySha256": "d93a8730d52c0fedab13619c8bc971cc99934c13d8dce7c97ee4d03a98d4096e",
+      "packageLockSha256": "f7a26d57b88f16855c3d65fa691bf4a07e2b747d619106fd6417eafb4fddc50f",
+      "validAtLimitAccepted": true,
+      "samples": [
+        {
+          "inputItems": 2,
+          "configuredMaximum": null,
+          "visitedElements": 2,
+          "issues": 2,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 2,
+          "configuredMaximum": 2,
+          "visitedElements": 2,
+          "issues": 2,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 3,
+          "configuredMaximum": null,
+          "visitedElements": 3,
+          "issues": 3,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 3,
+          "configuredMaximum": 2,
+          "visitedElements": 0,
+          "issues": 1,
+          "issueCodes": [
+            "too_big"
+          ]
+        },
+        {
+          "inputItems": 64,
+          "configuredMaximum": null,
+          "visitedElements": 64,
+          "issues": 64,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 64,
+          "configuredMaximum": 2,
+          "visitedElements": 0,
+          "issues": 1,
+          "issueCodes": [
+            "too_big"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "v3 compatibility export in patched package",
+      "installedPackageVersion": "4.6.6",
+      "moduleSpecifier": "zod/v3",
+      "entrySha256": "80849f43fee80f567614da950ab7b1393bae87197a95c0298c55cb2fec765000",
+      "packageLockSha256": "f7a26d57b88f16855c3d65fa691bf4a07e2b747d619106fd6417eafb4fddc50f",
+      "validAtLimitAccepted": true,
+      "samples": [
+        {
+          "inputItems": 2,
+          "configuredMaximum": null,
+          "visitedElements": 2,
+          "issues": 2,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 2,
+          "configuredMaximum": 2,
+          "visitedElements": 2,
+          "issues": 2,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 3,
+          "configuredMaximum": null,
+          "visitedElements": 3,
+          "issues": 3,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 3,
+          "configuredMaximum": 2,
+          "visitedElements": 3,
+          "issues": 4,
+          "issueCodes": [
+            "too_big",
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 64,
+          "configuredMaximum": null,
+          "visitedElements": 64,
+          "issues": 64,
+          "issueCodes": [
+            "invalid_type"
+          ]
+        },
+        {
+          "inputItems": 64,
+          "configuredMaximum": 2,
+          "visitedElements": 64,
+          "issues": 65,
+          "issueCodes": [
+            "too_big",
+            "invalid_type"
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusions": {
+    "v4MaximumRejectsBeforeElementParsing": true,
+    "v4UnconstrainedArrayStillVisitsEveryElement": true,
+    "v3CompatibilityExportDoesNotApplyTheV4SizeGate": true,
+    "packageVersionAloneNotARemediationOfUnboundedSchemas": true
+  },
+  "dependencyInstallationsChanged": false,
+  "projectSourcesChanged": false,
+  "realNetworkExploitAttempted": false,
+  "configurationLoaded": false,
+  "keystoreLoaded": false,
+  "walletUsed": false,
+  "fullHardhatCompatibilityEstablished": false,
+  "advisoryClosed": false
+}

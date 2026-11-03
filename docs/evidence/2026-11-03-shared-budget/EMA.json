@@ -1,0 +1,26 @@
+{
+  "schema": "threecore.operation-budget.v1",
+  "simulationOnly": true,
+  "agent": "EMA",
+  "chainId": 84532,
+  "token": {
+    "decimals": 18,
+    "balanceUnits": "1000000000000000000000",
+    "reservedUnits": "100000000000000000000",
+    "reserveFloorUnits": "200000000000000000000",
+    "spendUnits": "50000000000000000000"
+  },
+  "native": {
+    "balanceWei": "3060000000000000",
+    "reservedWei": "1000000000000000",
+    "reserveFloorWei": "2000000000000000",
+    "valueWei": "0"
+  },
+  "fees": {
+    "gasLimit": "200000",
+    "maxFeePerGasWei": "100000000",
+    "l1FeeBudgetWei": "10000000000000",
+    "operatorFeeBudgetWei": "0",
+    "bufferWei": "10000000000000"
+  }
+}

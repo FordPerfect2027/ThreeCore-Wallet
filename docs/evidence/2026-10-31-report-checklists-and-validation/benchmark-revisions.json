@@ -1,0 +1,11 @@
+{
+  "before": {
+    "commit": "57090d9",
+    "clean": true
+  },
+  "after": {
+    "baseHeadRecordedInOriginalFile": "57090d9",
+    "workingTreeContentsCommittedAs": "db8fb98"
+  },
+  "limitation": "Local repeated validation of seven synthetic reports; not a throughput guarantee or live-chain recheck."
+}

@@ -1,0 +1,239 @@
+{
+  "schema": "threecore.combined-review-package.v5",
+  "recordedAt": "2026-11-02T19:56:40.350Z",
+  "node": "v24.19.0",
+  "sourceRevision": "128ee11fefc263a11e36c026fbf786655c4cf8f6",
+  "walletImplementation": "f6f378cc9b44f33fc7e147f4626e23573de06a6c",
+  "latestCompleteWalletRegression": "bf690f38b070362aab1369fbf22c8e68b1a6567f",
+  "walletImplementationAndTestFilesUnchangedSinceRegression": true,
+  "earlierRegression": {
+    "nodeHttp": 16470,
+    "syntheticBrowser": 1024,
+    "rerunDuringPackaging": false
+  },
+  "walletSourceSummary": {
+    "files": 5022,
+    "matched": 5022,
+    "mismatched": 0,
+    "unreadable": 0,
+    "unexpected": 0,
+    "inspectedBytes": 136018248
+  },
+  "evidenceSummary": {
+    "manifests": 264,
+    "matchedManifests": 264,
+    "failedManifests": 0,
+    "files": 2903,
+    "mismatchedFiles": 0,
+    "unreadableFiles": 0,
+    "verifiedBytes": 124314622,
+    "admittedBytes": 124314622
+  },
+  "tokenSources": [
+    {
+      "token": "DAT",
+      "revision": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+      "sourceSummary": {
+        "files": 105,
+        "matched": 105,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 543527
+      },
+      "completeHistoryVerified": true,
+      "restoredWorkingTreeClean": true,
+      "sourceSha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6",
+      "artifactSha256": "ee5993ac0526aff0f9d75e1de75e0a544acdcd1bd384b94c692aa72f25d78722",
+      "creationBytecodeSha256": "020b75b4c2d6eb1a0c5ed4fff5ca20e6d951b427d1e007e5495c79a900f2a47e",
+      "runtimeBytecodeSha256": "ef220d542d00ffc51e662dc60b1387d95f17afbe7d1f8a917444398a2008b1ba",
+      "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "helperVersion": "3.0.8-threecore-zod4.1",
+      "zodVersion": "4.6.6",
+      "appliedVerification": [
+        {
+          "name": "schema-final",
+          "startedAt": "2026-11-02T19:21:13.206Z",
+          "endedAt": "2026-11-02T19:21:16.873Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "compile-final",
+          "startedAt": "2026-11-02T19:21:16.900Z",
+          "endedAt": "2026-11-02T19:21:32.378Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "types-final",
+          "startedAt": "2026-11-02T19:21:32.380Z",
+          "endedAt": "2026-11-02T19:21:54.375Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "audit-final",
+          "startedAt": "2026-11-02T19:21:54.381Z",
+          "endedAt": "2026-11-02T19:21:57.643Z",
+          "code": 0,
+          "signal": null
+        }
+      ],
+      "auditAtRecordedTime": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "compatibilityCases": 68,
+      "dependenciesInstalledDuringPackaging": false,
+      "contractsRebuiltDuringPackaging": false,
+      "contractExecutionTestsRerun": false
+    },
+    {
+      "token": "EMA",
+      "revision": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+      "sourceSummary": {
+        "files": 90,
+        "matched": 90,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 472776
+      },
+      "completeHistoryVerified": true,
+      "restoredWorkingTreeClean": true,
+      "sourceSha256": "8234f4b8a94d9a2d25cde34bc2900ae080223e698633420cad7ad533390d7444",
+      "artifactSha256": "c0c37c5107798e11e3ed137deda6917f2793cd7286c8981ef07cc2e5e20ac11b",
+      "creationBytecodeSha256": "682f3f86499820ba17e35112ac9e92f9f4712177bcf685a41230d2c6253b7ed1",
+      "runtimeBytecodeSha256": "bd159fe5dc1c45a8e94494b52e5b26d20028c13a54fd39ce31a3b4c3592ee8a1",
+      "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "helperVersion": "3.0.8-threecore-zod4.1",
+      "zodVersion": "4.6.6",
+      "appliedVerification": [
+        {
+          "name": "schema",
+          "startedAt": "2026-11-02T19:18:38.006Z",
+          "endedAt": "2026-11-02T19:18:39.963Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "compile",
+          "startedAt": "2026-11-02T19:18:39.966Z",
+          "endedAt": "2026-11-02T19:18:56.165Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "types",
+          "startedAt": "2026-11-02T19:18:56.166Z",
+          "endedAt": "2026-11-02T19:19:18.238Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "audit",
+          "startedAt": "2026-11-02T19:19:18.239Z",
+          "endedAt": "2026-11-02T19:19:21.743Z",
+          "code": 0,
+          "signal": null
+        }
+      ],
+      "auditAtRecordedTime": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "compatibilityCases": 68,
+      "dependenciesInstalledDuringPackaging": false,
+      "contractsRebuiltDuringPackaging": false,
+      "contractExecutionTestsRerun": false
+    },
+    {
+      "token": "CAWELON",
+      "revision": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+      "sourceSummary": {
+        "files": 90,
+        "matched": 90,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 490759
+      },
+      "completeHistoryVerified": true,
+      "restoredWorkingTreeClean": true,
+      "sourceSha256": "51adf4a8edecc3d9e0fb79d359d57129085487661171c9174d77ad5c3497a2b5",
+      "artifactSha256": "3029fc8833a522b5bf34bb2171317fca3c4029985904677e8f8e70ea9e87aaac",
+      "creationBytecodeSha256": "7062666990f900e167dd1ac72a8279b58dd911e3e91ed3832cf17af172db959a",
+      "runtimeBytecodeSha256": "0f5370d0d395d44281c8c9f6db808ef755d4887d0d206bffe2a01af5ea697f40",
+      "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "helperVersion": "3.0.8-threecore-zod4.1",
+      "zodVersion": "4.6.6",
+      "appliedVerification": [
+        {
+          "name": "schema",
+          "startedAt": "2026-11-02T19:21:13.204Z",
+          "endedAt": "2026-11-02T19:21:17.278Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "compile",
+          "startedAt": "2026-11-02T19:21:17.292Z",
+          "endedAt": "2026-11-02T19:21:32.782Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "types",
+          "startedAt": "2026-11-02T19:21:32.783Z",
+          "endedAt": "2026-11-02T19:21:55.266Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "audit",
+          "startedAt": "2026-11-02T19:21:55.274Z",
+          "endedAt": "2026-11-02T19:21:57.996Z",
+          "code": 0,
+          "signal": null
+        }
+      ],
+      "auditAtRecordedTime": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "compatibilityCases": 68,
+      "dependenciesInstalledDuringPackaging": false,
+      "contractsRebuiltDuringPackaging": false,
+      "contractExecutionTestsRerun": false
+    }
+  ],
+  "sourceHistoryComplete": true,
+  "restoredCheckoutsHaveNoRemotes": true,
+  "packageContainsDependencyInstallations": false,
+  "privateHelperArchiveIncluded": true,
+  "privateWalletBackupsIncluded": false,
+  "remaining": [
+    "Actual connected MetaMask account/chain-switch invalidation",
+    "Native Windows picker traversal",
+    "Older immutable public-release rollback if required",
+    "Independent private-helper review and maintenance approval",
+    "Independent candidate review and explicit release decision"
+  ],
+  "originalServersRestarted": false,
+  "realWalletUsedDuringPackaging": false,
+  "githubWrites": false,
+  "percentageCalculated": false
+}

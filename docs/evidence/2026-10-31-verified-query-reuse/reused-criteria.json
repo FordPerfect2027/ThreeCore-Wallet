@@ -1,0 +1,8 @@
+{
+  "agent": "EMA",
+  "kind": "settle",
+  "decision": "all",
+  "search": "",
+  "searchScope": "stored",
+  "reason": "all"
+}

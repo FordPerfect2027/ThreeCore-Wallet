@@ -1,0 +1,35 @@
+{
+  "source": "648ca1d",
+  "synthetic": true,
+  "agent": {
+    "requested": "EMA",
+    "recordCount": 0,
+    "filteredReportAgent": "DAT",
+    "recoveredExactCanonicalInput": true,
+    "absentAgentExit": 2,
+    "absentAgentOutputBytes": 0,
+    "wrongHashExit": 2,
+    "wrongHashOutputBytes": 0
+  },
+  "comparison": {
+    "direction": "current workspace -> report inputs",
+    "actions": [
+      {
+        "agent": "DAT",
+        "action": "replaced"
+      },
+      {
+        "agent": "EMA",
+        "action": "added"
+      },
+      {
+        "agent": "CAWELON",
+        "action": "removed"
+      }
+    ],
+    "independentReviewMatches": true
+  },
+  "currentInputsUnchanged": true,
+  "appliesToLiveWorkspace": false,
+  "providerCalls": 0
+}

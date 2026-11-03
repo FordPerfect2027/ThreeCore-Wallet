@@ -1,0 +1,3 @@
+Harness correctly rejected synthetic error despite 836 passing UI cases.
+Harness correctly rejected synthetic unhandledrejection despite 836 passing UI cases.
+2 browser error-detection controls passed.

@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-11-02T17:15:04.817Z",
+  "sourceRevision": "9374845d440910f7ecb27c73d35fe2cfda37f934",
+  "zip": "C:/Users/aseet/Downloads/ThreeCore-review-9374845-20261103.zip",
+  "bytes": 52200092,
+  "sha256": "bfc859d5033fd866c7e75f089dcced7785c3467213d8ee1f9b32aa62ee3acb94",
+  "before": {
+    "entries": 31,
+    "totalBytes": 55239498,
+    "allMatched": true,
+    "manifestSha256": "8cc36674e040b9b0d7e44637b1b2ad4fd51bfd5ad1f084f6ef5ac121a19e9b9c"
+  },
+  "after": {
+    "entries": 31,
+    "totalBytes": 55239498,
+    "allMatched": true,
+    "manifestSha256": "8cc36674e040b9b0d7e44637b1b2ad4fd51bfd5ad1f084f6ef5ac121a19e9b9c"
+  },
+  "outerZipFreshlyExtracted": true,
+  "alteredFileRejected": true,
+  "alteredFileRestoredAndReverified": true,
+  "fullGitHistoryRestoredFor": [
+    "Wallet",
+    "DAT",
+    "EMA",
+    "CAWELON"
+  ],
+  "newPublicRpcReads": false,
+  "newUserWalletOperations": false,
+  "original4231Restarted": false,
+  "candidate4232Restarted": false,
+  "githubWrites": false,
+  "releaseApproved": false
+}

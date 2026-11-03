@@ -1,0 +1,346 @@
+TAP version 13
+# Subtest: collection verifies tracked working files, ignores untracked lists and leaves Git unchanged
+ok 1 - collection verifies tracked working files, ignores untracked lists and leaves Git unchanged
+  ---
+  duration_ms: 4614.9069
+  type: 'test'
+  ...
+# Subtest: collection CLI reports working-tree corruption with exit two without changing HEAD or the file
+ok 2 - collection CLI reports working-tree corruption with exit two without changing HEAD or the file
+  ---
+  duration_ms: 2158.5604
+  type: 'test'
+  ...
+# Subtest: missing tracked manifest is explicit while other evidence remains checkable
+ok 3 - missing tracked manifest is explicit while other evidence remains checkable
+  ---
+  duration_ms: 2528.6722
+  type: 'test'
+  ...
+# Subtest: missing artifact and invalid checksum list cannot be counted as a match
+ok 4 - missing artifact and invalid checksum list cannot be counted as a match
+  ---
+  duration_ms: 1467.5104
+  type: 'test'
+  ...
+# Subtest: one total admission budget is shared by all manifests
+ok 5 - one total admission budget is shared by all manifests
+  ---
+  duration_ms: 1173.0742
+  type: 'test'
+  ...
+# Subtest: growing evidence history supports 257 through 512 manifests, but rejects 513
+ok 6 - growing evidence history supports 257 through 512 manifests, but rejects 513
+  ---
+  duration_ms: 20643.3296
+  type: 'test'
+  ...
+# Subtest: a nested path never silently expands to the whole repository
+ok 7 - a nested path never silently expands to the whole repository
+  ---
+  duration_ms: 918.5825
+  type: 'test'
+  ...
+# Subtest: a tracked directory replaced by a junction outside the repository is rejected
+ok 8 - a tracked directory replaced by a junction outside the repository is rejected
+  ---
+  duration_ms: 1668.9165
+  type: 'test'
+  ...
+# Subtest: duplicate resolved manifest aliases cannot inflate matched counts
+ok 9 - duplicate resolved manifest aliases cannot inflate matched counts
+  ---
+  duration_ms: 1184.5426
+  type: 'test'
+  ...
+# Subtest: absence of tracked manifests is not reported as a successful empty check
+ok 10 - absence of tracked manifests is not reported as a successful empty check
+  ---
+  duration_ms: 985.4012
+  type: 'test'
+  ...
+# Subtest: invalid options and CLI arguments cannot start repository inspection
+ok 11 - invalid options and CLI arguments cannot start repository inspection
+  ---
+  duration_ms: 1.3032
+  type: 'test'
+  ...
+# Subtest: Git checkout preserves original evidence bytes with core.autocrlf=false
+ok 12 - Git checkout preserves original evidence bytes with core.autocrlf=false
+  ---
+  duration_ms: 5701.1458
+  type: 'test'
+  ...
+# Subtest: Git checkout preserves original evidence bytes with core.autocrlf=true
+ok 13 - Git checkout preserves original evidence bytes with core.autocrlf=true
+  ---
+  duration_ms: 4401.0968
+  type: 'test'
+  ...
+# Subtest: manifest accepts standard text/binary sums, CRLF, BOM and portable relative names
+ok 14 - manifest accepts standard text/binary sums, CRLF, BOM and portable relative names
+  ---
+  duration_ms: 36.3793
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "../outside"
+ok 15 - manifest rejects unsafe or ambiguous path "../outside"
+  ---
+  duration_ms: 8.6945
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a/../outside"
+ok 16 - manifest rejects unsafe or ambiguous path "a/../outside"
+  ---
+  duration_ms: 0.5681
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "/absolute"
+ok 17 - manifest rejects unsafe or ambiguous path "/absolute"
+  ---
+  duration_ms: 3.1712
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "\\\\servershare\\file"
+ok 18 - manifest rejects unsafe or ambiguous path "\\\\servershare\\file"
+  ---
+  duration_ms: 0.5325
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "C:/outside"
+ok 19 - manifest rejects unsafe or ambiguous path "C:/outside"
+  ---
+  duration_ms: 0.4809
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "C:relative"
+ok 20 - manifest rejects unsafe or ambiguous path "C:relative"
+  ---
+  duration_ms: 0.5741
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a:stream"
+ok 21 - manifest rejects unsafe or ambiguous path "a:stream"
+  ---
+  duration_ms: 0.712
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "."
+ok 22 - manifest rejects unsafe or ambiguous path "."
+  ---
+  duration_ms: 2.0995
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path ".."
+ok 23 - manifest rejects unsafe or ambiguous path ".."
+  ---
+  duration_ms: 1.2934
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a//b"
+ok 24 - manifest rejects unsafe or ambiguous path "a//b"
+  ---
+  duration_ms: 1.1935
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a/./b"
+ok 25 - manifest rejects unsafe or ambiguous path "a/./b"
+  ---
+  duration_ms: 0.9533
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a/"
+ok 26 - manifest rejects unsafe or ambiguous path "a/"
+  ---
+  duration_ms: 0.4386
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "ending."
+ok 27 - manifest rejects unsafe or ambiguous path "ending."
+  ---
+  duration_ms: 0.3406
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "ending "
+ok 28 - manifest rejects unsafe or ambiguous path "ending "
+  ---
+  duration_ms: 0.354
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "nul"
+ok 29 - manifest rejects unsafe or ambiguous path "nul"
+  ---
+  duration_ms: 0.3213
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "CON.txt"
+ok 30 - manifest rejects unsafe or ambiguous path "CON.txt"
+  ---
+  duration_ms: 0.2743
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "COM1.log"
+ok 31 - manifest rejects unsafe or ambiguous path "COM1.log"
+  ---
+  duration_ms: 0.2619
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "lpt9"
+ok 32 - manifest rejects unsafe or ambiguous path "lpt9"
+  ---
+  duration_ms: 0.2658
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a?b"
+ok 33 - manifest rejects unsafe or ambiguous path "a?b"
+  ---
+  duration_ms: 0.2304
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a*b"
+ok 34 - manifest rejects unsafe or ambiguous path "a*b"
+  ---
+  duration_ms: 0.221
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a|b"
+ok 35 - manifest rejects unsafe or ambiguous path "a|b"
+  ---
+  duration_ms: 0.2453
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a<b"
+ok 36 - manifest rejects unsafe or ambiguous path "a<b"
+  ---
+  duration_ms: 0.3101
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a\\"b"
+ok 37 - manifest rejects unsafe or ambiguous path "a\\"b"
+  ---
+  duration_ms: 0.3205
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a\\u0000b"
+ok 38 - manifest rejects unsafe or ambiguous path "a\\u0000b"
+  ---
+  duration_ms: 0.2419
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a\\tb"
+ok 39 - manifest rejects unsafe or ambiguous path "a\\tb"
+  ---
+  duration_ms: 0.1948
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a‮b"
+ok 40 - manifest rejects unsafe or ambiguous path "a‮b"
+  ---
+  duration_ms: 0.4357
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+ok 41 - manifest rejects unsafe or ambiguous path "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ---
+  duration_ms: 0.3339
+  type: 'test'
+  ...
+# Subtest: manifest rejects unsafe or ambiguous path "a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a"
+ok 42 - manifest rejects unsafe or ambiguous path "a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a"
+  ---
+  duration_ms: 0.2567
+  type: 'test'
+  ...
+# Subtest: manifest rejects duplicate portable identity ["a.log","a.log"]
+ok 43 - manifest rejects duplicate portable identity ["a.log","a.log"]
+  ---
+  duration_ms: 0.5581
+  type: 'test'
+  ...
+# Subtest: manifest rejects duplicate portable identity ["A.log","a.log"]
+ok 44 - manifest rejects duplicate portable identity ["A.log","a.log"]
+  ---
+  duration_ms: 0.3215
+  type: 'test'
+  ...
+# Subtest: manifest rejects duplicate portable identity ["a/b.log","a\\\\b.log"]
+ok 45 - manifest rejects duplicate portable identity ["a/b.log","a\\\\b.log"]
+  ---
+  duration_ms: 1.1562
+  type: 'test'
+  ...
+# Subtest: manifest rejects duplicate portable identity ["é.log","é.log"]
+ok 46 - manifest rejects duplicate portable identity ["é.log","é.log"]
+  ---
+  duration_ms: 2.4442
+  type: 'test'
+  ...
+# Subtest: manifest bounds bytes, entries and row syntax before reading artifacts
+ok 47 - manifest bounds bytes, entries and row syntax before reading artifacts
+  ---
+  duration_ms: 43.8713
+  type: 'test'
+  ...
+# Subtest: verification reads exact binary, empty and Unicode artifacts without modifying them
+ok 48 - verification reads exact binary, empty and Unicode artifacts without modifying them
+  ---
+  duration_ms: 243.8286
+  type: 'test'
+  ...
+# Subtest: mismatched content is distinct from a missing file and preserves matches
+ok 49 - mismatched content is distinct from a missing file and preserves matches
+  ---
+  duration_ms: 34.7789
+  type: 'test'
+  ...
+# Subtest: directory entries and self-reference cannot be presented as verified files
+ok 50 - directory entries and self-reference cannot be presented as verified files
+  ---
+  duration_ms: 29.8672
+  type: 'test'
+  ...
+# Subtest: a junction outside the evidence directory is refused before producing a file hash
+ok 51 - a junction outside the evidence directory is refused before producing a file hash
+  ---
+  duration_ms: 37.9257
+  type: 'test'
+  ...
+# Subtest: two aliases of one resolved file are not counted as two independently checked paths
+ok 52 - two aliases of one resolved file are not counted as two independently checked paths
+  ---
+  duration_ms: 26.5104
+  type: 'test'
+  ...
+# Subtest: per-file and aggregate budgets are enforced while empty files remain valid
+ok 53 - per-file and aggregate budgets are enforced while empty files remain valid
+  ---
+  duration_ms: 68.1075
+  type: 'test'
+  ...
+# Subtest: inspection limits cannot be widened or supplied through executable accessors
+ok 54 - inspection limits cannot be widened or supplied through executable accessors
+  ---
+  duration_ms: 2.2627
+  type: 'test'
+  ...
+# Subtest: CLI returns zero, two and one for agreement, mismatch and unreadable evidence
+ok 55 - CLI returns zero, two and one for agreement, mismatch and unreadable evidence
+  ---
+  duration_ms: 31.6706
+  type: 'test'
+  ...
+# Subtest: invalid manifests, encoding and arguments never produce partial verification
+ok 56 - invalid manifests, encoding and arguments never produce partial verification
+  ---
+  duration_ms: 54.3392
+  type: 'test'
+  ...
+1..56
+# tests 56
+# suites 0
+# pass 56
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 37927.1747

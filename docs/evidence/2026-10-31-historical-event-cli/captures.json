@@ -1,0 +1,101 @@
+{
+  "source": "efcef8a",
+  "synthetic": true,
+  "externalRpc": false,
+  "records": [
+    {
+      "kind": "reconciliation",
+      "name": "incoming",
+      "argv": [
+        "reconciliation",
+        "docs/evidence/2026-10-31-historical-event-cli/reconciliation-source.json",
+        "--agent",
+        "DAT",
+        "--format",
+        "json",
+        "--direction",
+        "incoming"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "matched": 31,
+      "total": 61,
+      "allArithmeticAgreement": false,
+      "csvMatchesBrowser": true,
+      "sourceUnchanged": true,
+      "output": "reconciliation-incoming.json",
+      "outputSha256": "5e344cdee7497447d2fc4fe062f0bd1d325ece571db184155f7a33bb19e1b0f6"
+    },
+    {
+      "kind": "reconciliation",
+      "name": "empty",
+      "argv": [
+        "reconciliation",
+        "docs/evidence/2026-10-31-historical-event-cli/reconciliation-source.json",
+        "--agent",
+        "DAT",
+        "--format",
+        "json",
+        "--search",
+        "no result",
+        "--require-agreement"
+      ],
+      "exitCode": 2,
+      "stderr": "HISTORY_EVENTS_CLI_NOT_ALL_AGREE\n",
+      "matched": 0,
+      "total": 61,
+      "allArithmeticAgreement": false,
+      "csvMatchesBrowser": true,
+      "sourceUnchanged": true,
+      "output": "reconciliation-empty.json",
+      "outputSha256": "2001d65ba64d73f6656f92a52b53715e102590c6fdbc3a571c42914b465bb9e9"
+    },
+    {
+      "kind": "period",
+      "name": "incoming",
+      "argv": [
+        "period",
+        "docs/evidence/2026-10-31-historical-event-cli/period-source.json",
+        "--agent",
+        "DAT",
+        "--format",
+        "json",
+        "--direction",
+        "incoming"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "matched": 57,
+      "total": 57,
+      "allArithmeticAgreement": true,
+      "csvMatchesBrowser": true,
+      "sourceUnchanged": true,
+      "output": "period-incoming.json",
+      "outputSha256": "a0ce7ae8205fd0c0da197f0dd5183df21edd3a08e59860c6e81208a95bdd86fa"
+    },
+    {
+      "kind": "period",
+      "name": "empty",
+      "argv": [
+        "period",
+        "docs/evidence/2026-10-31-historical-event-cli/period-source.json",
+        "--agent",
+        "DAT",
+        "--format",
+        "json",
+        "--search",
+        "no result",
+        "--require-agreement"
+      ],
+      "exitCode": 0,
+      "stderr": "",
+      "matched": 0,
+      "total": 57,
+      "allArithmeticAgreement": true,
+      "csvMatchesBrowser": true,
+      "sourceUnchanged": true,
+      "output": "period-empty.json",
+      "outputSha256": "ed2269083c83cc570949119003cdcd2ede38f755bc81fd0969228b0595996540"
+    }
+  ]
+}

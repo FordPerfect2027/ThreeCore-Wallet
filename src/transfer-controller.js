@@ -4,6 +4,9 @@ import {
 } from "./transfer-codec.js";
 import { prepareTransferDownload, readTransferFile } from "./transfer-file.js";
 import { compareTransferSnapshots } from "./transfer-view.js";
+import { readOwnErrorCode } from "./provider-error.js";
+import { captureDataRecord } from "./security-data.js";
+import { createStateNotifier } from "./state-notifier.js";
 
 /** All reads, imports and downloads start with a caller action. Nothing auto-saves. */
 export function createTransferController({ getContext, read, onChange = () => {}, subtle }) {
@@ -18,49 +21,63 @@ export function createTransferController({ getContext, read, onChange = () => {}
     phase: "idle", snapshot: null, baseline: null, preview: null, comparison: null,
     provenance: null, progress: null, error: null,
   });
+  let revision = 0;
+  const observers = new Set([() => onChange(state)]);
+  const notifier = createStateNotifier({ observers, read: () => Object.freeze({ revision }) });
+  const owns = operation => !disposed && operation.id === generation;
   function publish(patch) {
     if (disposed) return;
     state = Object.freeze({ ...state, ...patch });
-    try { Promise.resolve(onChange(state)).catch(() => {}); } catch { /* A view failure cannot approve an operation. */ }
+    revision++;
+    notifier.notify();
   }
-  function interrupt() {
-    generation++;
-    aborter?.abort();
+  function interrupt(operation) {
+    const id = ++generation;
+    if (operation) operation.id = id;
+    const previous = aborter;
     aborter = null;
+    previous?.abort();
+    return id;
   }
   function reset(phase = "idle") {
-    interrupt();
+    if (disposed) return;
+    const id = interrupt();
+    if (disposed || generation !== id) return;
     contextKey = null;
     publish({ phase, snapshot: null, baseline: null, preview: null, comparison: null,
       provenance: null, progress: null, error: null });
   }
-  function context() {
+  function context(operation, acceptChange = false) {
+    if (!owns(operation)) return null;
     const value = validateTransferContext(getContext());
+    if (!owns(operation)) return null;
     const key = transferContextKey(value);
-    if (contextKey !== null && contextKey !== key) reset();
+    if (contextKey !== null && contextKey !== key) {
+      if (!acceptChange) { reset(); return null; }
+      // begin() will publish this cleared context with its new phase once.
+      state = Object.freeze({ phase: "idle", snapshot: null, baseline: null, preview: null, comparison: null,
+        provenance: null, progress: null, error: null });
+    }
     contextKey = key;
     return value;
   }
-  function begin(phase, patch = {}) {
+  function begin(operation, phase, patch = {}) {
     if (disposed) transferFail("TRANSFER_DISPOSED");
-    const selected = context();
-    interrupt();
-    const id = generation;
+    interrupt(operation);
+    if (!owns(operation)) return false;
+    const selected = context(operation, true);
+    if (!selected || !owns(operation)) return false;
     const key = transferContextKey(selected);
+    Object.assign(operation, { key, selected });
     publish({ phase, error: null, progress: null, preview: null, ...patch });
-    return { id, key, selected };
+    return owns(operation);
   }
   function current(operation) {
-    if (disposed || generation !== operation.id) return false;
-    try {
-      if (transferContextKey(getContext()) !== operation.key) {
-        reset();
-        return false;
-      }
-    } catch {
-      reset();
-      return false;
-    }
+    if (!owns(operation)) return false;
+    let key;
+    try { key = transferContextKey(getContext()); } catch {}
+    if (!owns(operation)) return false;
+    if (key !== operation.key) { reset(); return false; }
     return true;
   }
   function assertContext(snapshot, selected) {
@@ -69,23 +86,26 @@ export function createTransferController({ getContext, read, onChange = () => {}
   function errorCode(error) {
     // Do not show raw provider/file messages, which can contain untrusted markup
     // or sensitive server details. Every displayed error has a local explanation.
-    try {
-      return typeof error?.code === "string" && /^TRANSFER_[A-Z_]+$/.test(error.code)
-        ? error.code : "TRANSFER_OPERATION_FAILED";
-    } catch { return "TRANSFER_OPERATION_FAILED"; }
+    const code = readOwnErrorCode(error);
+    return typeof code === "string" && /^TRANSFER_[A-Z_]+$/.test(code) ? code : "TRANSFER_OPERATION_FAILED";
   }
   function fail(operation, error) {
-    if (operation && !current(operation)) return false;
+    if (operation && (!owns(operation) || (operation.key !== null && !current(operation)))) return false;
     if (disposed) return false;
-    if (!operation) interrupt();
-    publish({ phase: "error", error: errorCode(error), progress: null, preview: null });
+    const previous = generation;
+    const code = errorCode(error);
+    if (disposed || generation !== previous) return false;
+    const id = interrupt(operation);
+    if (disposed || generation !== id) return false;
+    publish({ phase: "error", error: code, progress: null, preview: null });
     return false;
   }
   async function inspect(input) {
-    let operation;
+    const operation = { id: generation, key: null };
     try {
       const request = validateTransferRequest(input);
-      operation = begin("reading", { snapshot: null, provenance: null, comparison: null });
+      if (!owns(operation)) return false;
+      if (!begin(operation, "reading", { snapshot: null, provenance: null, comparison: null })) return false;
       if (!current(operation)) return false;
       const localAborter = new AbortController();
       aborter = localAborter;
@@ -93,6 +113,8 @@ export function createTransferController({ getContext, read, onChange = () => {}
         signal: localAborter.signal,
         onProgress(value) {
           if (!current(operation)) return;
+          try { value = captureDataRecord(value, ["stage", "completed", "total"]); } catch { return; }
+          if (!owns(operation) || state.phase !== "reading") return;
           if (!value || !["range", "token", "incoming", "outgoing", "blocks", "canonical", "complete"].includes(value.stage) ||
               !Number.isInteger(value.completed) || !Number.isInteger(value.total) || value.completed < 0 ||
               value.total < value.completed || value.total > 100) return;
@@ -102,73 +124,86 @@ export function createTransferController({ getContext, read, onChange = () => {}
       if (!current(operation)) return false;
       const snapshot = validateTransferSnapshot(result);
       assertContext(snapshot, operation.selected);
+      if (!current(operation)) return false;
       aborter = null;
       publish({ phase: "ready", snapshot, provenance: "live", progress: null });
-      return true;
+      return owns(operation);
     } catch (error) { return fail(operation, error); }
   }
   async function stageFile(file, target = "snapshot") {
-    let operation;
+    const operation = { id: generation, key: null };
+    let localAborter;
     try {
       if (!["snapshot", "baseline"].includes(target)) transferFail("TRANSFER_IMPORT_TARGET");
-      operation = begin("loading");
-      const decoded = await readTransferFile(file, { subtle });
+      if (!begin(operation, "loading") || !current(operation)) return false;
+      localAborter = new AbortController();
+      aborter = localAborter;
+      const decoded = await readTransferFile(file, { subtle, signal: localAborter.signal });
       if (!current(operation)) return false;
       assertContext(decoded.snapshot, operation.selected);
       const preview = Object.freeze({ id: operation.id, target, snapshot: decoded.snapshot,
         digest: decoded.digest, authenticated: false });
       publish({ phase: "preview", preview });
-      return true;
+      return owns(operation);
     } catch (error) { return fail(operation, error); }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
   function applyImport(id) {
     if (disposed) return false;
+    const operation = { id: generation, key: null };
     try {
-      const selected = context();
       const preview = state.preview;
       if (!preview || preview.id !== id || generation !== id) transferFail("TRANSFER_REVIEW_REQUIRED");
+      const selected = context(operation);
+      if (!selected || !owns(operation) || state.preview !== preview) return false;
       assertContext(preview.snapshot, selected);
-      interrupt();
+      interrupt(operation);
+      if (!owns(operation)) return false;
       if (preview.target === "baseline") {
         publish({ phase: state.snapshot ? "ready" : "idle", baseline: preview.snapshot, preview: null, comparison: null, error: null });
       } else {
         publish({ phase: "ready", snapshot: preview.snapshot, provenance: "imported", preview: null, comparison: null, error: null });
       }
-      return true;
-    } catch (error) { return fail(null, error); }
+      return owns(operation);
+    } catch (error) { return fail(operation, error); }
   }
   function cancel() {
     if (disposed) return;
-    interrupt();
+    const id = interrupt();
+    if (disposed || generation !== id) return;
     publish({ phase: state.snapshot ? "ready" : "cancelled", preview: null, progress: null, error: null });
   }
   function keepBaseline() {
     if (disposed) return false;
+    const operation = { id: generation, key: null };
     try {
-      context();
+      if (!context(operation)) return false;
       if (!state.snapshot || state.phase !== "ready") transferFail("TRANSFER_SNAPSHOT_REQUIRED");
       publish({ baseline: state.snapshot, comparison: null, error: null });
-      return true;
-    } catch (error) { return fail(null, error); }
+      return owns(operation);
+    } catch (error) { return fail(operation, error); }
   }
   function compare() {
     if (disposed) return false;
+    const operation = { id: generation, key: null };
     try {
-      context();
+      if (!context(operation)) return false;
       if (!state.snapshot || !state.baseline || state.phase !== "ready") transferFail("TRANSFER_BASELINE_REQUIRED");
       const comparison = compareTransferSnapshots(state.baseline, state.snapshot);
       publish({ comparison, error: null });
-      return true;
-    } catch (error) { return fail(null, error); }
+      return owns(operation);
+    } catch (error) { return fail(operation, error); }
   }
   async function prepare(kind = "json") {
-    let operation;
+    const operation = { id: generation, key: null };
+    let localAborter;
     try {
-      context();
+      if (!context(operation)) return null;
       if (!state.snapshot || state.phase !== "ready") transferFail("TRANSFER_SNAPSHOT_REQUIRED");
       const snapshot = state.snapshot;
-      operation = begin("preparing");
-      const download = await prepareTransferDownload(snapshot, kind, { subtle });
+      if (!begin(operation, "preparing") || !current(operation)) return null;
+      localAborter = new AbortController(); aborter = localAborter;
+      const download = await prepareTransferDownload(snapshot, kind, { subtle, signal: localAborter.signal });
       if (!current(operation)) return null;
       publish({ phase: "ready" });
       return current(operation) ? download : null;
@@ -176,12 +211,19 @@ export function createTransferController({ getContext, read, onChange = () => {}
       fail(operation, error);
       return null;
     }
+    finally { if (localAborter && aborter === localAborter) aborter = null; }
   }
   function dispose() {
     if (disposed) return;
-    reset();
     disposed = true;
-    state = Object.freeze({ ...state, phase: "disposed" });
+    observers.clear();
+    generation++;
+    const previous = aborter;
+    aborter = null;
+    contextKey = null;
+    state = Object.freeze({ phase: "disposed", snapshot: null, baseline: null, preview: null, comparison: null,
+      provenance: null, progress: null, error: null });
+    previous?.abort();
   }
   return Object.freeze({
     get state() { return state; },

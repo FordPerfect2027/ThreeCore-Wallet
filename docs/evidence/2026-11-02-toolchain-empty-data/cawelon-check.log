@@ -1,0 +1,373 @@
+
+> @0628dao/caweloncore@0.1.0 check
+> npm run test:source && npm run test:toolchain && npm run compile && npm run test && npm run typecheck && npm run test:read-only && npm run test:history
+
+
+> @0628dao/caweloncore@0.1.0 test:source
+> node --test integration/source-portability.test.mjs integration/test-routing.test.mjs
+
+✔ contract source checker accepts every actual UTF-8 LF contract (3.457ms)
+✔ actual source bytes survive Git checkouts with both autocrlf settings (3126.9838ms)
+✔ the CLI rejects CRLF before compilation without rewriting the source (234.6334ms)
+✔ source checker refuses missing sources, BOM, lone CR and invalid UTF-8 (10.899ms)
+✔ actual runner includes TypeScript specs and excludes operational/support files (794.1279ms)
+✔ actual runner propagates a failing Hardhat result (852.5766ms)
+✔ actual runner rejects an empty TypeScript suite before starting Hardhat (463.3373ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3709.1129
+
+> @0628dao/caweloncore@0.1.0 test:toolchain
+> node --test integration/toolchain-data.test.mjs
+
+✔ toolchain preserves empty RPC data separately from a zero byte (9.2474ms)
+✔ toolchain rejects malformed RPC data without repairing it into bytes (3.4983ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 469.5103
+
+> @0628dao/caweloncore@0.1.0 compile
+> node scripts/check-contract-source.js && hardhat compile
+
+{"sourceEncoding":"UTF-8 without BOM","lineEndings":"LF","files":["contracts/CAWELONCore.sol"]}
+No contracts to compile
+
+> @0628dao/caweloncore@0.1.0 test
+> node scripts/test-contracts.js
+
+No contracts to compile
+
+Running node:test tests
+
+  CAWELONCore
+    ✔ uses CAWELON CORE as the token name
+    ✔ uses CAWELON as the token symbol
+    ✔ uses 18 decimals
+    ✔ publishes the fixed supply unit constant
+    ✔ publishes the fixed base-unit supply constant
+    ✔ mints the complete supply exactly once
+    ✔ assigns the complete supply to the initial holder
+    ✔ rejects the zero address as initial holder
+    ✔ transfers CAWELON between holders
+    ✔ rejects transfers greater than the holder balance
+    ✔ mints to a separate initial holder, not the transaction sender
+    ✔ rejects a burn exceeding the spender allowance
+    ✔ rejects a permit signed for another contract (87ms)
+    ✔ records ERC-20 allowances
+    ✔ supports allowance-based transfers
+    ✔ lets a holder burn its own CAWELON (75ms)
+    ✔ allows burnFrom only through an explicit allowance (82ms)
+    ✔ blocks burnFrom without an allowance
+    ✔ blocks transfers to the zero address
+    ✔ supports EIP-2612 nonce tracking
+    ✔ executes a signed EIP-2612 permit and rejects its replay (141ms)
+    ✔ rejects an expired EIP-2612 permit
+    ✔ publishes the expected EIP-712 domain
+    ✔ does not expose administrator mint, pause, or upgrade functions
+    ✔ does not expose an owner or administrator getter
+
+  CAWELONCore permit authorization boundaries
+    ✔ rejects wrong chain without changing state or consuming the valid permit
+    ✔ rejects wrong contract without changing state or consuming the valid permit
+    ✔ rejects wrong domain name without changing state or consuming the valid permit (85ms)
+    ✔ rejects wrong version without changing state or consuming the valid permit
+    ✔ rejects wrong nonce without changing state or consuming the valid permit
+    ✔ rejects wrong signer without changing state or consuming the valid permit
+    ✔ rejects changed owner without changing state or consuming the valid permit
+    ✔ rejects changed spender without changing state or consuming the valid permit
+    ✔ rejects changed value without changing state or consuming the valid permit
+    ✔ rejects changed deadline without changing state or consuming the valid permit
+
+  CAWELONCore balance and allowance invariants
+    ✔ preserves total supply and account balances across delegated transfers
+    ✔ rejects an unapproved transferFrom without changing balances
+    ✔ does not allow delegated spending beyond remaining allowance
+    ✔ reduces supply exactly by cumulative burns without changing other balances
+
+
+  39 passing (8997ms)
+
+
+
+> @0628dao/caweloncore@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @0628dao/caweloncore@0.1.0 test:read-only
+> node --test --test-concurrency=1 test/*.test.mjs
+
+✔ Approval event is indexed and bounded to a short read-only window (3.13ms)
+✔ returns event history and pinned current allowance as DIFFERENT facts (7.8712ms)
+✔ an explicit historical block pins the allowance, not latest (1.7134ms)
+✔ different public spender is explicit and never labelled Classic Router (1.445ms)
+✔ deduplicates repeated RPC logs and sorts by transaction position (1.3705ms)
+✔ different values for one log ID cause a conflict (2.1998ms)
+✔ refuses incorrect chain before requesting an allowance or history (1.0397ms)
+✔ refuses invalid owner and spender addresses without any network requests (2.0982ms)
+✔ rejects malformed block values, reversed ranges and too many blocks (2ms)
+✔ requires public read client with contract read and log support (1.0319ms)
+✔ rejects unrelated, malformed or out-of-range Approval logs (2.848ms)
+✔ rejects unbounded Approval event sets or malformed allowances (1.508ms)
+✔ RPC errors propagate and never cause transactions or approvals (0.7601ms)
+✔ inspect-wallet-readiness.js real CLI/viem HTTP preserves every canonical parameter (3903.9815ms)
+✔ inspect-wallet-readiness.js reorganization exits unsuccessfully without output (3984.1876ms)
+✔ inspect-wallet-readiness.js unsupported hash cannot retry weaker reads or leak provider details (4453.1119ms)
+✔ quote-dex.js real CLI/viem HTTP preserves every canonical parameter (4049.7391ms)
+✔ quote-dex.js reorganization exits unsuccessfully without output (3732.1723ms)
+✔ quote-dex.js unsupported hash cannot retry weaker reads or leak provider details (5309.2656ms)
+✔ quote CLI bounds integer text before conversion or network access (3243.0636ms)
+✔ state reader rejects a write ABI function before eth_call (2.5799ms)
+✔ buy quote uses the registered volatile pool and one canonical state (71.6426ms)
+✔ sell quote switches exact base units and reserve direction (14.6109ms)
+✔ reverse token ordering is handled without assuming pool order (18.311ms)
+✔ invalid directions and amounts fail before RPC (9.402ms)
+✔ wrong network fails before pool lookup (0.6067ms)
+✔ missing or transaction-only clients fail (0.8895ms)
+✔ absent pool fails before quote (1.7349ms)
+✔ unregistered pool and missing bytecode fail before pricing (3.3572ms)
+✔ wrong pair or stable flag: {"token0":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (6.88ms)
+✔ wrong pair or stable flag: {"token1":"0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} (6.8301ms)
+✔ wrong pair or stable flag: {"token0":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913","token1":"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"} (8.1509ms)
+✔ wrong pair or stable flag: {"stable":true} (6.9088ms)
+✔ empty reserves and wrong decimals fail (21.2229ms)
+✔ zero or excessive output is rejected (19.2822ms)
+✔ malformed ABI cannot produce a quote: getPool (1.7784ms)
+✔ malformed ABI cannot produce a quote: isPool (1.3638ms)
+✔ malformed ABI cannot produce a quote: token0 (4.3082ms)
+✔ malformed ABI cannot produce a quote: token1 (5.4725ms)
+✔ malformed ABI cannot produce a quote: stable (5.9193ms)
+✔ malformed ABI cannot produce a quote: getReserves (4.2943ms)
+✔ malformed ABI cannot produce a quote: decimals (5.6149ms)
+✔ malformed ABI cannot produce a quote: getAmountOut (5.6561ms)
+✔ reorganized block cannot produce a successful quote (4.9316ms)
+✔ network switch cannot produce a successful quote (7.9819ms)
+✔ missing final header fails instead of returning output (5.7879ms)
+✔ failed hash selector never falls back: eth_getCode (1.4923ms)
+✔ failed hash selector never falls back: eth_call (0.4869ms)
+✔ Transfer: removed events fail the whole report (7.2821ms)
+✔ Transfer: pending or incomplete log identities fail closed (6.6038ms)
+✔ Transfer: rejects uint256 overflow in event amounts (0.9535ms)
+✔ Transfer: preserves zero and maximum uint256 event amounts exactly (1.9281ms)
+✔ Transfer: rejects oversized caller, tip and log heights (3.1218ms)
+✔ Transfer: accepts uint256 maximum height without rounding (0.8665ms)
+✔ Transfer: exact and differently cased duplicates are counted once (1.6477ms)
+✔ Transfer: duplicate identities cannot change block hash or transaction index (2.3757ms)
+✔ Transfer: different events at one height cannot claim different block hashes (1.2324ms)
+✔ Transfer: one block hash cannot claim two heights (1.0493ms)
+✔ Transfer: block-wide log and transaction positions cannot be reused (1.5311ms)
+✔ Transfer: multiple logs in one transaction and multiple transactions remain valid (1.2816ms)
+✔ Transfer: each RPC response must match its requested direction (1.0629ms)
+✔ Approval: removed events fail the whole report (2.0888ms)
+✔ Approval: pending or incomplete log identities fail closed (3.5916ms)
+✔ Approval: rejects uint256 overflow in event amounts (0.8611ms)
+✔ Approval: preserves zero and maximum uint256 event amounts exactly (0.9222ms)
+✔ Approval: rejects oversized caller, tip and log heights (0.6779ms)
+✔ Approval: accepts uint256 maximum height without rounding (4.3917ms)
+✔ Approval: exact and differently cased duplicates are counted once (0.5272ms)
+✔ Approval: duplicate identities cannot change block hash or transaction index (0.7569ms)
+✔ Approval: different events at one height cannot claim different block hashes (0.6997ms)
+✔ Approval: one block hash cannot claim two heights (1.1149ms)
+✔ Approval: block-wide log and transaction positions cannot be reused (1.3846ms)
+✔ Approval: multiple logs in one transaction and multiple transactions remain valid (0.6713ms)
+✔ Approval: rejects oversized sampled allowance (0.921ms)
+✔ CLI preserves default, zero block and exact maximum uint256 inputs (5.4707ms)
+✔ invalid addresses and argument counts are rejected before parsing a range (1.3971ms)
+✔ decimal block input is bounded before BigInt conversion (1.0487ms)
+✔ known reversed or excessive ranges fail locally, including inclusive endpoints (0.5093ms)
+✔ RPC URLs accept HTTPS only and do not echo credentials on refusal (1.4217ms)
+✔ transfer CLI decodes a positive event through real viem HTTP, not a hard-coded empty result (4206.71ms)
+✔ transfer CLI default window remains exactly 250 blocks and empty history is allowed (4462.4026ms)
+✔ transfer CLI rejects excessive ranges before any RPC (3801.1291ms)
+✔ transfer CLI rejects oversized block text before any RPC (3563.7328ms)
+✔ transfer CLI rejects invalid account and credential-bearing URL without network or echoed input (6880.6505ms)
+✔ transfer CLI fails on a changed canonical end block (3857.2107ms)
+✔ transfer CLI reports one failed provider request without retry or leaked details (3749.9137ms)
+✔ approval CLI decodes a positive event through real viem HTTP, not a hard-coded empty result (3605.2064ms)
+✔ approval CLI default window remains exactly 250 blocks and empty history is allowed (3931.3428ms)
+✔ approval CLI rejects excessive ranges before any RPC (3810.5349ms)
+✔ approval CLI rejects oversized block text before any RPC (3578.3259ms)
+✔ approval CLI rejects invalid account and credential-bearing URL without network or echoed input (6456.2894ms)
+✔ approval CLI fails on a changed canonical end block (3791.2398ms)
+✔ approval CLI reports one failed provider request without retry or leaked details (3638.8195ms)
+✔ Transfer snapshot: records the range-end hash and checks distinct event heights once (6.1982ms)
+✔ Transfer snapshot: empty history still rechecks the sampled block (1.3648ms)
+✔ Transfer snapshot: empty history cannot hide an end-block replacement (2.2998ms)
+✔ Transfer snapshot: rejects a changed end block after successful log validation (2.311ms)
+✔ Transfer snapshot: rejects a stale event even when removed is false (1.743ms)
+✔ Transfer snapshot: events at the sampled end must match its captured hash (2.1838ms)
+✔ Transfer snapshot: invalid initial headers stop before querying logs or allowance (3.0488ms)
+✔ Transfer snapshot: unavailable initial, event or final blocks reject the report (1.4474ms)
+✔ Transfer snapshot: malformed event-block headers are rejected (0.8111ms)
+✔ Transfer snapshot: refuses a provider network change during reads (6.0051ms)
+✔ Transfer snapshot: captures header scalars rather than trusting a mutable object (10.6829ms)
+✔ Transfer snapshot: explicit historical end is checked rather than latest (0.8686ms)
+✔ Transfer snapshot: header errors propagate without retry or fallback (0.9423ms)
+✔ Transfer snapshot: a client without header support is rejected before RPC (0.4214ms)
+✔ Approval snapshot: records the range-end hash and checks distinct event heights once (2.2663ms)
+✔ Approval snapshot: empty history still rechecks the sampled block (0.8762ms)
+✔ Approval snapshot: empty history cannot hide an end-block replacement (1.1272ms)
+✔ Approval snapshot: rejects a changed end block after successful log validation (0.7831ms)
+✔ Approval snapshot: rejects a stale event even when removed is false (2.1914ms)
+✔ Approval snapshot: events at the sampled end must match its captured hash (0.6008ms)
+✔ Approval snapshot: invalid initial headers stop before querying logs or allowance (1.1271ms)
+✔ Approval snapshot: unavailable initial, event or final blocks reject the report (2.3226ms)
+✔ Approval snapshot: malformed event-block headers are rejected (0.899ms)
+✔ Approval snapshot: refuses a provider network change during reads (1.3388ms)
+✔ Approval snapshot: captures header scalars rather than trusting a mutable object (0.7656ms)
+✔ Approval snapshot: explicit historical end is checked rather than latest (0.7253ms)
+✔ Approval snapshot: header errors propagate without retry or fallback (0.5388ms)
+✔ Approval snapshot: a client without header support is rejected before RPC (0.463ms)
+✔ Approval snapshot: unsupported hash selectors never fall back to number or latest (0.8276ms)
+✔ real viem HTTP transport preserves canonical block parameters and emits the observation (3890.8292ms)
+✔ unsupported hash parameter fails once without printing RPC credentials or response details (5046.8295ms)
+✔ reorganized final block cannot produce a successful CLI report (3862.676ms)
+✔ published token specification remains immutable (4.4341ms)
+✔ all state reads require the same canonical hash and final header/chain checks (22.5798ms)
+✔ wrong network fails before state reads (1.7588ms)
+✔ invalid chain: null (0.5656ms)
+✔ invalid chain: 8453 (0.5182ms)
+✔ invalid chain: 8453 (0.4583ms)
+✔ invalid chain: 0x02105 (0.3627ms)
+✔ invalid chain: 0x (0.4644ms)
+✔ invalid chain: 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff (0.4247ms)
+✔ invalid numbered block: null (0.743ms)
+✔ invalid numbered block: {} (0.4982ms)
+✔ invalid numbered block: {"number":"pending","hash":"0xabababababababababababababababababababababababababababababababab"} (0.3589ms)
+✔ invalid numbered block: {"number":"0x00","hash":"0xabababababababababababababababababababababababababababababababab"} (0.3412ms)
+✔ invalid numbered block: {"number":"0x1","hash":null} (0.2822ms)
+✔ invalid numbered block: {"number":"0x1","hash":"0x1234"} (0.2388ms)
+✔ invalid contract code: null (0.8251ms)
+✔ invalid contract code: 0x (0.5148ms)
+✔ invalid contract code: not-hex (0.3537ms)
+✔ invalid contract code: 0x1 (0.5338ms)
+✔ oversized code is bounded before metadata (0.8125ms)
+✔ metadata mismatch: {"name":"Wrong"} (8.7748ms)
+✔ metadata mismatch: {"symbol":"Wrong"} (26.7792ms)
+✔ metadata mismatch: {"decimals":6} (3.8098ms)
+✔ issuance limit and valid burn reductions remain checked (11.2754ms)
+✔ invalid ABI response: null (3.9949ms)
+✔ invalid ABI response: 0x (5.7113ms)
+✔ invalid ABI response: 0x1234 (4.857ms)
+✔ invalid ABI response: bad (2.5163ms)
+✔ invalid ABI response: 42 (2.7068ms)
+✔ invalid ABI response: 0x000000000000000000 (5.7776ms)
+✔ changed block rejected: 0x4d20xcdcdcd (3.7183ms)
+✔ changed block rejected: 0x4d30xababab (2.4311ms)
+✔ vanished final block fails verification (3.0323ms)
+✔ network switch during reads fails verification (2.2876ms)
+✔ unsupported canonical code read propagates without weaker retry (0.8662ms)
+✔ metadata hash rejection has no latest/number fallback (2.3217ms)
+✔ expected identity is captured before asynchronous reads (2.7618ms)
+✔ invalid expected specification: null (0.4833ms)
+✔ invalid expected specification: {"chainId":8453,"contractAddress":"0xB4654b5a4617Fe2c27a0DD6EAEe98F8AA941b895","tokenName":"CAWELON CORE","tokenSymbol":"CAWELON","decimals":256,"supplyUnits":"420000000000000"} (0.2653ms)
+✔ invalid expected specification: {"chainId":8453,"contractAddress":"0xB4654b5a4617Fe2c27a0DD6EAEe98F8AA941b895","tokenName":"CAWELON CORE","tokenSymbol":"CAWELON","decimals":18,"supplyUnits":"999999999999999999999999999999999999999999999999999999999999999999999999999999"} (0.2693ms)
+✔ invalid expected specification: {"chainId":8453,"contractAddress":"bad","tokenName":"CAWELON CORE","tokenSymbol":"CAWELON","decimals":18,"supplyUnits":"420000000000000"} (0.287ms)
+✔ missing and transaction-only clients are rejected (0.7673ms)
+▶ read-only CLI response-body deadlines
+  ✔ verify-base-mainnet.js (18651.211ms)
+  ℹ Response body observed to process exit: 11784 ms
+  ✔ inspect-wallet-readiness.js (18810.5159ms)
+  ℹ Response body observed to process exit: 11837 ms
+  ✔ quote-dex.js (18645.1275ms)
+  ℹ Response body observed to process exit: 11818 ms
+  ✔ inspect-transfers.js (19044.7821ms)
+  ℹ Response body observed to process exit: 11947 ms
+  ✔ inspect-approvals.js (18912.1292ms)
+  ℹ Response body observed to process exit: 11865 ms
+✔ read-only CLI response-body deadlines (19083.8519ms)
+✔ body deadline aborts an unfinished stream without retries (389.7668ms)
+✔ each request receives a fresh deadline and preserves split UTF-8 JSON (1253.1743ms)
+✔ an unexpired caller signal cannot disable the body deadline (311.1552ms)
+✔ caller cancellation during a body read remains effective (119.7899ms)
+✔ oversized declared body is refused without retries (16.3279ms)
+✔ oversized chunked body is refused without retries (17.1678ms)
+✔ complete HTTP JSON-RPC errors retain their error code (33.4533ms)
+✔ transport limits cannot be disabled or raised beyond the supported caps (1.5367ms)
+✔ Transfer history uses a standard indexed ERC-20 event, not a transaction method (1.9654ms)
+✔ returns a frozen, deduplicated, block-pinned ThreeCore activity report (5.8489ms)
+✔ explicit historical toBlock is honored and never exceeds the observed chain tip (0.871ms)
+✔ wrong chain refuses event scanning without calls to getLogs (1.7692ms)
+✔ invalid account address fails before any network access (1.3908ms)
+✔ invalid public clients and malformed block values are rejected (2.3945ms)
+✔ rejects future, reversed and excessively long ranges before fetching logs (1.7783ms)
+✔ rejects logs outside requested block range and logs from another contract (2.1017ms)
+✔ rejects unrelated and malformed decoded Transfer logs (2.0496ms)
+✔ refuses conflicting logs for the same transaction hash and log index (1.8234ms)
+✔ refuses excessive or malformed RPC log sets rather than truncating silently (0.9067ms)
+✔ RPC errors propagate without retrying or sending transactions (0.8322ms)
+✔ readiness reports exact public balances and existing allowance at one canonical hash (33.9373ms)
+✔ zero gas, balance and allowance remain separate facts (4.6143ms)
+✔ maximum uint256 balances and existing allowance remain exact (3.0797ms)
+✔ invalid or zero public addresses fail before RPC (2.0826ms)
+✔ mixed case public address normalizes before reads (3.7711ms)
+✔ missing and transaction-only clients fail (1.7186ms)
+✔ wrong chain fails before contract reads (1.0501ms)
+✔ invalid sampled block: null (0.9463ms)
+✔ invalid sampled block: {} (10.9618ms)
+✔ invalid sampled block: {"number":"0x-1","hash":"0xabababababababababababababababababababababababababababababababab"} (1.5929ms)
+✔ invalid sampled block: {"number":"123","hash":"0xabababababababababababababababababababababababababababababababab"} (9.5074ms)
+✔ invalid sampled block: {"number":"0x11111111111111111111111111111111111111111111111111111111111111111","hash":"0xabababababababababababababababababababababababababababababababab"} (0.5624ms)
+✔ invalid sampled block: {"number":"0x4d2","hash":null} (0.3442ms)
+✔ missing code aborts before balance reads: 0xB4654b5a4617Fe2c27a0DD6EAEe98F8AA941b895 (1.0218ms)
+✔ missing code aborts before balance reads: 0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43 (0.8519ms)
+✔ invalid bytecode: null (1.7305ms)
+✔ invalid bytecode: 0x1 (0.5729ms)
+✔ invalid bytecode: hello (0.4869ms)
+✔ invalid bytecode: 0xXX (0.6146ms)
+✔ invalid bytecode: 123 (0.6416ms)
+✔ oversized code is rejected before ABI decoding (0.6295ms)
+✔ invalid native balance quantity: null (2.8969ms)
+✔ invalid native balance quantity: 2 (3.0454ms)
+✔ invalid native balance quantity: -1 (1.9245ms)
+✔ invalid native balance quantity: 0x00 (2.0982ms)
+✔ invalid native balance quantity: 0x-1 (14.1796ms)
+✔ invalid native balance quantity: 0x11111111111111111111111111111111111111111111111111111111111111111 (3.5369ms)
+✔ malformed and oversized ABI response: balanceOf (11.9559ms)
+✔ malformed and oversized ABI response: allowance (8.7711ms)
+✔ reorganized block cannot produce a readiness report (4.0671ms)
+✔ network switch cannot produce a readiness report (1.5948ms)
+✔ failed state read never falls back or dispatches a transaction: eth_getCode (1.7466ms)
+✔ failed state read never falls back or dispatches a transaction: eth_getBalance (2.0343ms)
+✔ failed state read never falls back or dispatches a transaction: eth_call (1.904ms)
+ℹ tests 227
+ℹ suites 0
+ℹ pass 227
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 143219.51
+
+> @0628dao/caweloncore@0.1.0 test:history
+> node --test integration/history-compatibility.test.mjs
+
+▶ CAWELONCore: event history against the local EVM
+  ✔ reads actual mint, transfer, self-transfer and burn logs with mined identities (313.0238ms)
+  ✔ keeps Approval event amounts distinct from allowance consumed by transferFrom (167.7914ms)
+  ✔ preserves maximum approval and a later zero-amount revocation exactly (139.2722ms)
+  ✔ keeps the sampled allowance when the local chain advances during history reads (38.9175ms)
+  ✔ Transfer: refuses removed flags injected into otherwise real local logs (45.1413ms)
+  ✔ Transfer: refuses a conflicting duplicate of an actual local event (42.0592ms)
+  ✔ Transfer: rejects a local chain replacement and succeeds on a fresh snapshot (68.4904ms)
+  ✔ Approval: refuses removed flags injected into otherwise real local logs (166.9143ms)
+  ✔ Approval: refuses a conflicting duplicate of an actual local event (49.8378ms)
+  ✔ Approval: rejects a local chain replacement and succeeds on a fresh snapshot (92.3572ms)
+✔ CAWELONCore: event history against the local EVM (1137.9805ms)
+ℹ tests 10
+ℹ suites 1
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8460.5951

@@ -1,0 +1,60 @@
+{
+  "source": "621a50b",
+  "beforeSource": "0c4f5a5",
+  "cases": [
+    {
+      "action": "cancel",
+      "accepted": false,
+      "waitFinishedBeforeUnderlyingReader": true,
+      "status": "cancelled",
+      "resultLabel": null,
+      "externalListenersAfterWait": 0,
+      "lateResultPreservedState": true,
+      "readInvocations": 1
+    },
+    {
+      "action": "clear",
+      "accepted": false,
+      "waitFinishedBeforeUnderlyingReader": true,
+      "status": "idle",
+      "resultLabel": null,
+      "externalListenersAfterWait": 0,
+      "lateResultPreservedState": true,
+      "readInvocations": 1
+    },
+    {
+      "action": "dispose",
+      "accepted": false,
+      "waitFinishedBeforeUnderlyingReader": true,
+      "status": "disposed",
+      "resultLabel": null,
+      "externalListenersAfterWait": 0,
+      "lateResultPreservedState": true,
+      "readInvocations": 1
+    },
+    {
+      "action": "replace",
+      "accepted": false,
+      "waitFinishedBeforeUnderlyingReader": true,
+      "status": "ready",
+      "resultLabel": "new",
+      "externalListenersAfterWait": 0,
+      "lateResultPreservedState": true,
+      "readInvocations": 2
+    },
+    {
+      "action": "external",
+      "accepted": false,
+      "waitFinishedBeforeUnderlyingReader": true,
+      "status": "cancelled",
+      "resultLabel": null,
+      "externalListenersAfterWait": 0,
+      "lateResultPreservedState": true,
+      "readInvocations": 1
+    }
+  ],
+  "realProviderCalls": 0,
+  "underlyingTransportCancellationNotClaimed": true,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}

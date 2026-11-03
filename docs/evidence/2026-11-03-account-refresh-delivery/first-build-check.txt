@@ -1,0 +1,16 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: MANIFEST_FORMAT
+    at verifyPackage (file:///C:/Users/aseet/Downloads/ThreeCore-update-4dfa300-20261103/verify-package.mjs:14:68)
+    at async file:///C:/Users/aseet/Downloads/ThreeCore-update-4dfa300-20261103/verify-package.mjs:41:30 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: null,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

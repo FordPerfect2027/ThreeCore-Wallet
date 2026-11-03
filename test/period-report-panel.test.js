@@ -192,3 +192,40 @@ test("selected source changes are explained without constructing a stale report"
   assert.equal(f.q("review").hidden, true);
   f.dispose();
 });
+
+test("filtered event CSV saves every matching page under the existing acknowledgement",async()=>{
+  const f=fixture();
+  try{
+    await f.import(manyEventsInput());f.click("apply");await f.settled();const original=f.mounted.getInput();
+    assert.equal(f.q("event-csv").disabled,true);f.acknowledge();f.click("next");f.click("event-csv");await f.settled();
+    assert.equal(f.files.length,1);assert.equal(f.files[0].matched,57);
+    assert.equal(f.files[0].text.trimEnd().split("\r\n").length,58);
+    f.set("direction","outgoing");f.click("event-csv");await f.settled();assert.equal(f.files[1].matched,0);
+    f.set("search","x".repeat(101),"input");assert.equal(f.q("event-csv").disabled,true);
+    f.set("search","","input");f.q("export-ack").checked=false;f.q("export-ack").dispatchEvent(new Event("change"));
+    assert.equal(f.q("event-csv").disabled,true);assert.equal(f.mounted.getInput(),original);
+    const button=f.q("event-csv");f.dispose();button.click();assert.equal(f.files.length,2);
+  }finally{f.dispose();}
+});
+
+test("individual original export keeps restrictions, pending report and independent acknowledgements", async () => {
+  const f = fixture();
+  try {
+    const input = reportInput({ changes: { DAT: { archived: true, requiresNewPlan: true } }, selection: { ...selection(), EMA: null } });
+    await f.import(input); f.click("apply"); await f.settled(); const original = f.mounted.getInput();
+    assert.equal(f.q("entry-json").disabled, true); f.acknowledge(); assert.equal(f.q("entry-json").disabled, true);
+    assert.match(f.q("entry-description").textContent, /再取得が必要: はい/);
+    assert.match(f.q("entry-description").textContent, /非表示保管: はい/);
+    await f.import(reportInput()); assert.equal(f.q("review").hidden, false);
+    f.q("entry-ack").checked = true; f.q("entry-ack").dispatchEvent(new Event("change"));
+    f.click("entry-json"); await f.settled();
+    const { decodePeriodLibraryFile } = await import("../src/period-library-file.js");
+    assert.deepEqual((await decodePeriodLibraryFile(f.files[0].text)).document.entries, [input.slots[0].entry]);
+    assert.equal(f.mounted.getInput(), original); assert.equal(f.q("review").hidden, false); assert.deepEqual(f.store.calls, []);
+    f.set("entry-agent", "EMA"); assert.equal(f.q("entry-ack").checked, false); assert.equal(f.q("entry-json").disabled, true);
+    assert.match(f.q("entry-description").textContent, /含まれていません/);
+    f.set("entry-agent", "CAWELON"); assert.equal(f.q("entry-json").disabled, true);
+    f.q("entry-ack").checked = true; f.q("entry-ack").dispatchEvent(new Event("change"));
+    f.click("apply"); await f.settled(); assert.equal(f.q("entry-ack").checked, false); assert.equal(f.q("entry-json").disabled, true);
+  } finally { f.dispose(); }
+});

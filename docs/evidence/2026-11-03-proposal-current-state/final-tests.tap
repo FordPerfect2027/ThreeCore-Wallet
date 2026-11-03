@@ -1,0 +1,1108 @@
+TAP version 13
+# Subtest: refused rehearsal navigation stays 403 and offers one fixed same-origin link
+ok 1 - refused rehearsal navigation stays 403 and offers one fixed same-origin link
+  ---
+  duration_ms: 117.5088
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /
+ok 2 - explicit same-origin navigation loads only the fixed screen after a refusal: /
+  ---
+  duration_ms: 32.6847
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+ok 3 - explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+  ---
+  duration_ms: 22.2838
+  type: 'test'
+  ...
+# Subtest: wallet entry guide uses only the local listening port and fixed root route
+ok 4 - wallet entry guide uses only the local listening port and fixed root route
+  ---
+  duration_ms: 14.9505
+  type: 'test'
+  ...
+# Subtest: RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+ok 5 - RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+  ---
+  duration_ms: 70.337
+  type: 'test'
+  ...
+# Subtest: invalid Host remains a plain rejection and is never echoed in a recovery URL
+ok 6 - invalid Host remains a plain rejection and is never echoed in a recovery URL
+  ---
+  duration_ms: 16.2708
+  type: 'test'
+  ...
+# Subtest: ordinary direct navigation still serves the actual rehearsal page
+ok 7 - ordinary direct navigation still serves the actual rehearsal page
+  ---
+  duration_ms: 15.4353
+  type: 'test'
+  ...
+# Subtest: guide helper refuses invalid local ports and unrelated verdicts
+ok 8 - guide helper refuses invalid local ports and unrelated verdicts
+  ---
+  duration_ms: 0.757
+  type: 'test'
+  ...
+# Subtest: budget page serves its complete local graph and denies network/write/file exposure
+ok 9 - budget page serves its complete local graph and denies network/write/file exposure
+  ---
+  duration_ms: 770.6469
+  type: 'test'
+  ...
+# Subtest: allowance screen and complete browser module graph load, reader remains private and endpoint reads canonical state
+ok 10 - allowance screen and complete browser module graph load, reader remains private and endpoint reads canonical state
+  ---
+  duration_ms: 1128.4052
+  type: 'test'
+  ...
+# Subtest: external origin, duplicate keys, invalid UTF8, extra RPC/contract fields and oversized bodies make no upstream calls
+ok 11 - external origin, duplicate keys, invalid UTF8, extra RPC/contract fields and oversized bodies make no upstream calls
+  ---
+  duration_ms: 119.6405
+  type: 'test'
+  ...
+# Subtest: two active jobs limit concurrency, disconnect releases capacity and errors reveal no transport details
+ok 12 - two active jobs limit concurrency, disconnect releases capacity and errors reveal no transport details
+  ---
+  duration_ms: 110.4299
+  type: 'test'
+  ...
+# Subtest: draft screen and both old/new review module graphs are reachable under offline page policy
+ok 13 - draft screen and both old/new review module graphs are reachable under offline page policy
+  ---
+  duration_ms: 1102.2441
+  type: 'test'
+  ...
+# Subtest: quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+ok 14 - quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+  ---
+  duration_ms: 1140.7525
+  type: 'test'
+  ...
+# Subtest: CLI preserves its source and separates sufficient, unknown/short and invalid input
+ok 15 - CLI preserves its source and separates sufficient, unknown/short and invalid input
+  ---
+  duration_ms: 99.2556
+  type: 'test'
+  ...
+# Subtest: CLI rejects malformed bytes and file limits without exposing file contents
+ok 16 - CLI rejects malformed bytes and file limits without exposing file contents
+  ---
+  duration_ms: 77.5857
+  type: 'test'
+  ...
+# Subtest: offline proof inspection keeps original bytes, reports discrepancies and rejects malformed input
+ok 17 - offline proof inspection keeps original bytes, reports discrepancies and rejects malformed input
+  ---
+  duration_ms: 161.9264
+  type: 'test'
+  ...
+# Subtest: selected original files are reviewed before hashing and preserve exact bytes through saved evidence
+ok 18 - selected original files are reviewed before hashing and preserve exact bytes through saved evidence
+  ---
+  duration_ms: 88.4086
+  type: 'test'
+  ...
+# Subtest: checksum failure clears old results and mismatched balances remain a visible non-pass
+ok 19 - checksum failure clears old results and mismatched balances remain a visible non-pass
+  ---
+  duration_ms: 86.5111
+  type: 'test'
+  ...
+# Subtest: cancel revokes pending checksum work and discards late completion
+ok 20 - cancel revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 8.6739
+  type: 'test'
+  ...
+# Subtest: new-file revokes pending checksum work and discards late completion
+ok 21 - new-file revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 75.4231
+  type: 'test'
+  ...
+# Subtest: pagehide revokes pending checksum work and discards late completion
+ok 22 - pagehide revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 46.9205
+  type: 'test'
+  ...
+# Subtest: dispose revokes pending checksum work and discards late completion
+ok 23 - dispose revokes pending checksum work and discards late completion
+  ---
+  duration_ms: 29.2606
+  type: 'test'
+  ...
+# Subtest: cancelled file read cannot later offer its old review
+ok 24 - cancelled file read cannot later offer its old review
+  ---
+  duration_ms: 7.1392
+  type: 'test'
+  ...
+# Subtest: excess file count, duplicate budget files and malformed bytes are rejected
+ok 25 - excess file count, duplicate budget files and malformed bytes are rejected
+  ---
+  duration_ms: 26.8699
+  type: 'test'
+  ...
+# Subtest: reentrant export does not report a saved revoked result
+ok 26 - reentrant export does not report a saved revoked result
+  ---
+  duration_ms: 17.1798
+  type: 'test'
+  ...
+# Subtest: public RPC batch is labelled separately from a connected-wallet observation
+ok 27 - public RPC batch is labelled separately from a connected-wallet observation
+  ---
+  duration_ms: 24.7047
+  type: 'test'
+  ...
+# Subtest: matching historical records bind original bytes and amounts without claiming current or authenticated balances
+ok 28 - matching historical records bind original bytes and amounts without claiming current or authenticated balances
+  ---
+  duration_ms: 92.8566
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_ACCOUNT_MISMATCH context differences
+ok 29 - shared records reject SOURCE_ACCOUNT_MISMATCH context differences
+  ---
+  duration_ms: 16.5301
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_BLOCK_MISMATCH context differences
+ok 30 - shared records reject SOURCE_BLOCK_MISMATCH context differences
+  ---
+  duration_ms: 61.6331
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_BLOCK_MISMATCH context differences
+ok 31 - shared records reject SOURCE_BLOCK_MISMATCH context differences
+  ---
+  duration_ms: 17.9859
+  type: 'test'
+  ...
+# Subtest: shared records reject SOURCE_ETH_MISMATCH context differences
+ok 32 - shared records reject SOURCE_ETH_MISMATCH context differences
+  ---
+  duration_ms: 7.2649
+  type: 'test'
+  ...
+# Subtest: individual budget balance, decimals and network discrepancies are kept distinct
+ok 33 - individual budget balance, decimals and network discrepancies are kept distinct
+  ---
+  duration_ms: 35.1588
+  type: 'test'
+  ...
+# Subtest: sources from different supported networks cannot form a shared-account observation
+ok 34 - sources from different supported networks cannot form a shared-account observation
+  ---
+  duration_ms: 21.0279
+  type: 'test'
+  ...
+# Subtest: matching zero balance and insufficient budget are different conclusions
+ok 35 - matching zero balance and insufficient budget are different conclusions
+  ---
+  duration_ms: 6.7659
+  type: 'test'
+  ...
+# Subtest: missing, extra and duplicate token sources do not produce an accepted shared proof
+ok 36 - missing, extra and duplicate token sources do not produce an accepted shared proof
+  ---
+  duration_ms: 31.8487
+  type: 'test'
+  ...
+# Subtest: missing code or mismatched token metadata cannot be treated as a verified budget balance
+ok 37 - missing code or mismatched token metadata cannot be treated as a verified budget balance
+  ---
+  duration_ms: 16.0292
+  type: 'test'
+  ...
+# Subtest: changed source bytes fail checksum while rechecksummed statements remain unauthenticated
+ok 38 - changed source bytes fail checksum while rechecksummed statements remain unauthenticated
+  ---
+  duration_ms: 17.1983
+  type: 'test'
+  ...
+# Subtest: bounded strict data capture prevents getters and protects asynchronous input comparison
+ok 39 - bounded strict data capture prevents getters and protects asynchronous input comparison
+  ---
+  duration_ms: 24.7054
+  type: 'test'
+  ...
+# Subtest: aborted hashing cannot finish a source-linked result
+ok 40 - aborted hashing cannot finish a source-linked result
+  ---
+  duration_ms: 10.9409
+  type: 'test'
+  ...
+# Subtest: page distinguishes an unknown fee from an explicitly entered zero and invalidates old results
+ok 41 - page distinguishes an unknown fee from an explicitly entered zero and invalidates old results
+  ---
+  duration_ms: 19.679
+  type: 'test'
+  ...
+# Subtest: page rejects excess precision and blank required fields without retaining an old pass
+ok 42 - page rejects excess precision and blank required fields without retaining an old pass
+  ---
+  duration_ms: 4.8855
+  type: 'test'
+  ...
+# Subtest: saved inputs round-trip and unnoticed programmatic edits cannot export stale results
+ok 43 - saved inputs round-trip and unnoticed programmatic edits cannot export stale results
+  ---
+  duration_ms: 8.5747
+  type: 'test'
+  ...
+# Subtest: file preview preserves current input until explicit restore and then recalculates
+ok 44 - file preview preserves current input until explicit restore and then recalculates
+  ---
+  duration_ms: 61.2435
+  type: 'test'
+  ...
+# Subtest: edit prevents late file completion replacing the current review
+ok 45 - edit prevents late file completion replacing the current review
+  ---
+  duration_ms: 5.0337
+  type: 'test'
+  ...
+# Subtest: cancel prevents late file completion replacing the current review
+ok 46 - cancel prevents late file completion replacing the current review
+  ---
+  duration_ms: 2.6132
+  type: 'test'
+  ...
+# Subtest: pagehide prevents late file completion replacing the current review
+ok 47 - pagehide prevents late file completion replacing the current review
+  ---
+  duration_ms: 3.1791
+  type: 'test'
+  ...
+# Subtest: dispose prevents late file completion replacing the current review
+ok 48 - dispose prevents late file completion replacing the current review
+  ---
+  duration_ms: 3.5537
+  type: 'test'
+  ...
+# Subtest: new-file prevents late file completion replacing the current review
+ok 49 - new-file prevents late file completion replacing the current review
+  ---
+  duration_ms: 8.2422
+  type: 'test'
+  ...
+# Subtest: invalid or overflowing imported data does not replace an existing calculation
+ok 50 - invalid or overflowing imported data does not replace an existing calculation
+  ---
+  duration_ms: 5.3673
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download cannot falsely report a saved current input
+ok 51 - failed or reentrant download cannot falsely report a saved current input
+  ---
+  duration_ms: 8.0812
+  type: 'test'
+  ...
+# Subtest: USDC restoration preserves its asset and six-decimal amounts through calculation and download
+ok 52 - USDC restoration preserves its asset and six-decimal amounts through calculation and download
+  ---
+  duration_ms: 11.6231
+  type: 'test'
+  ...
+# Subtest: DAT source preview changes nothing until apply; only exact balances/decimals change
+ok 53 - DAT source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 120.4035
+  type: 'test'
+  ...
+# Subtest: EMA source preview changes nothing until apply; only exact balances/decimals change
+ok 54 - EMA source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 15.8348
+  type: 'test'
+  ...
+# Subtest: CAWELON source preview changes nothing until apply; only exact balances/decimals change
+ok 55 - CAWELON source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 12.0217
+  type: 'test'
+  ...
+# Subtest: wrong network, missing contract, mismatched token metadata, corrupt checksum and excessive size cannot replace input
+ok 56 - wrong network, missing contract, mismatched token metadata, corrupt checksum and excessive size cannot replace input
+  ---
+  duration_ms: 46.3906
+  type: 'test'
+  ...
+# Subtest: cancel aborts source hashing and rejects its late result
+ok 57 - cancel aborts source hashing and rejects its late result
+  ---
+  duration_ms: 13.1342
+  type: 'test'
+  ...
+# Subtest: edit aborts source hashing and rejects its late result
+ok 58 - edit aborts source hashing and rejects its late result
+  ---
+  duration_ms: 5.8279
+  type: 'test'
+  ...
+# Subtest: pagehide aborts source hashing and rejects its late result
+ok 59 - pagehide aborts source hashing and rejects its late result
+  ---
+  duration_ms: 8.4593
+  type: 'test'
+  ...
+# Subtest: dispose aborts source hashing and rejects its late result
+ok 60 - dispose aborts source hashing and rejects its late result
+  ---
+  duration_ms: 4.321
+  type: 'test'
+  ...
+# Subtest: regular-import aborts source hashing and rejects its late result
+ok 61 - regular-import aborts source hashing and rejects its late result
+  ---
+  duration_ms: 11.9331
+  type: 'test'
+  ...
+# Subtest: a context change without an input event still cannot apply a preview for the previous token
+ok 62 - a context change without an input event still cannot apply a preview for the previous token
+  ---
+  duration_ms: 5.426
+  type: 'test'
+  ...
+# Subtest: USDC preview applies only balance and precision, preserves spending and remains evidence-linked
+ok 63 - USDC preview applies only balance and precision, preserves spending and remains evidence-linked
+  ---
+  duration_ms: 15.5747
+  type: 'test'
+  ...
+# Subtest: token capital and ETH fees remain separate, with existing reservations preserved
+ok 64 - token capital and ETH fees remain separate, with existing reservations preserved
+  ---
+  duration_ms: 8.4922
+  type: 'test'
+  ...
+# Subtest: abundant tokens never pay for missing ETH, and abundant ETH never pays for missing tokens
+ok 65 - abundant tokens never pay for missing ETH, and abundant ETH never pays for missing tokens
+  ---
+  duration_ms: 2.0204
+  type: 'test'
+  ...
+# Subtest: exactly sufficient budgets pass, a one-wei or one-token-unit shortage fails
+ok 66 - exactly sufficient budgets pass, a one-wei or one-token-unit shortage fails
+  ---
+  duration_ms: 1.3036
+  type: 'test'
+  ...
+# Subtest: unknown fee components keep total and affordability unknown rather than filling zero
+ok 67 - unknown fee components keep total and affordability unknown rather than filling zero
+  ---
+  duration_ms: 1.0568
+  type: 'test'
+  ...
+# Subtest: explicit extra fee, native value and buffer all consume ETH only
+ok 68 - explicit extra fee, native value and buffer all consume ETH only
+  ---
+  duration_ms: 1.1267
+  type: 'test'
+  ...
+# Subtest: existing reservations and floors cannot be double-counted as spendable balance
+ok 69 - existing reservations and floors cannot be double-counted as spendable balance
+  ---
+  duration_ms: 2.6809
+  type: 'test'
+  ...
+# Subtest: large exact integers never go through floating point
+ok 70 - large exact integers never go through floating point
+  ---
+  duration_ms: 0.7906
+  type: 'test'
+  ...
+# Subtest: all three agents and supported chains keep their own identity in a stable round trip
+ok 71 - all three agents and supported chains keep their own identity in a stable round trip
+  ---
+  duration_ms: 8.659
+  type: 'test'
+  ...
+# Subtest: zero token spend is not an accepted operation budget
+ok 72 - zero token spend is not an accepted operation budget
+  ---
+  duration_ms: 1.4748
+  type: 'test'
+  ...
+# Subtest: rejects uint256 multiplication and addition overflow
+ok 73 - rejects uint256 multiplication and addition overflow
+  ---
+  duration_ms: 3.6635
+  type: 'test'
+  ...
+# Subtest: rejects ambiguous amounts, absent fields and inappropriate contexts
+ok 74 - rejects ambiguous amounts, absent fields and inappropriate contexts
+  ---
+  duration_ms: 5.477
+  type: 'test'
+  ...
+# Subtest: input accessors are not invoked and later mutations cannot change a captured result
+ok 75 - input accessors are not invoked and later mutations cannot change a captured result
+  ---
+  duration_ms: 1.011
+  type: 'test'
+  ...
+# Subtest: JSON rejects duplicate keys, BOM, extra data and oversized documents
+ok 76 - JSON rejects duplicate keys, BOM, extra data and oversized documents
+  ---
+  duration_ms: 3.4981
+  type: 'test'
+  ...
+# Subtest: screen reads explicitly, displays precise USDC, saves exact source and reopens before current recheck
+ok 77 - screen reads explicitly, displays precise USDC, saves exact source and reopens before current recheck
+  ---
+  duration_ms: 221.0215
+  type: 'test'
+  ...
+# Subtest: insufficient and expired observations are displayed and saved honestly; invalid input cannot replace them
+ok 78 - insufficient and expired observations are displayed and saved honestly; invalid input cannot replace them
+  ---
+  duration_ms: 89.0371
+  type: 'test'
+  ...
+# Subtest: cancel, replacement, condition edits, leaving, disposal and file-read cancellation discard late work
+ok 79 - cancel, replacement, condition edits, leaving, disposal and file-read cancellation discard late work
+  ---
+  duration_ms: 115.9708
+  type: 'test'
+  ...
+# Subtest: failed/wrong-context reads, download errors and reentrant cancellation preserve consistent controls
+ok 80 - failed/wrong-context reads, download errors and reentrant cancellation preserve consistent controls
+  ---
+  duration_ms: 43.193
+  type: 'test'
+  ...
+# Subtest: DAT sell and all three USDC buy proposals retain exact amount, original source, expiry and replay
+ok 81 - DAT sell and all three USDC buy proposals retain exact amount, original source, expiry and replay
+  ---
+  duration_ms: 426.0395
+  type: 'test'
+  ...
+# Subtest: amount insufficiency, unknown code, wrong context, reorg, stale/future times and differing balance cannot pass
+ok 82 - amount insufficiency, unknown code, wrong context, reorg, stale/future times and differing balance cannot pass
+  ---
+  duration_ms: 186.9923
+  type: 'test'
+  ...
+# Subtest: saved result, observation hash and recorded time cannot be silently changed
+ok 83 - saved result, observation hash and recorded time cannot be silently changed
+  ---
+  duration_ms: 87.9736
+  type: 'test'
+  ...
+# Subtest: reader fixes RPC, contracts and canonical hash for every state read and rechecks chain/header
+ok 84 - reader fixes RPC, contracts and canonical hash for every state read and rechecks chain/header
+  ---
+  duration_ms: 357.434
+  type: 'test'
+  ...
+# Subtest: reader rejects changed blocks/chains, malformed amounts and unrequested target without latest fallback
+ok 85 - reader rejects changed blocks/chains, malformed amounts and unrequested target without latest fallback
+  ---
+  duration_ms: 49.0438
+  type: 'test'
+  ...
+# Subtest: reader/client cancellation and deadlines release stalled requests; client binds each request field
+ok 86 - reader/client cancellation and deadlines release stalled requests; client binds each request field
+  ---
+  duration_ms: 179.3521
+  type: 'test'
+  ...
+# Subtest: CLI validates source and returns a complete replayable review without altering original file
+ok 87 - CLI validates source and returns a complete replayable review without altering original file
+  ---
+  duration_ms: 598.9039
+  type: 'test'
+  ...
+# Subtest: CLI bounds retain inputs and distinguish unknown components from failure without publishing remote error text
+ok 88 - CLI bounds retain inputs and distinguish unknown components from failure without publishing remote error text
+  ---
+  duration_ms: 5.4499
+  type: 'test'
+  ...
+# Subtest: recorded results remain distinct from current expiry and reexport preserves the complete original
+ok 89 - recorded results remain distinct from current expiry and reexport preserves the complete original
+  ---
+  duration_ms: 524.2961
+  type: 'test'
+  ...
+# Subtest: two-file import accepts either order, shows unknown totals and rejects duplicates or malformed files
+ok 90 - two-file import accepts either order, shows unknown totals and rejects duplicates or malformed files
+  ---
+  duration_ms: 528.0167
+  type: 'test'
+  ...
+# Subtest: cancel, edit, replacement, navigation and disposal suppress delayed results
+ok 91 - cancel, edit, replacement, navigation and disposal suppress delayed results
+  ---
+  duration_ms: 770.6771
+  type: 'test'
+  ...
+# Subtest: invalid age, failed comparison and failed download cannot advertise an unsaved or stale success
+ok 92 - invalid age, failed comparison and failed download cannot advertise an unsaved or stale success
+  ---
+  duration_ms: 219.0177
+  type: 'test'
+  ...
+# Subtest: one-plan import reads only on explicit click, preserves source and saves a replayable acquired review
+ok 93 - one-plan import reads only on explicit click, preserves source and saves a replayable acquired review
+  ---
+  duration_ms: 536.6598
+  type: 'test'
+  ...
+# Subtest: failed or wrong-context acquisition retains input; cancelling or replacing rejects delayed acquired results
+ok 94 - failed or wrong-context acquisition retains input; cancelling or replacing rejects delayed acquired results
+  ---
+  duration_ms: 475.656
+  type: 'test'
+  ...
+# Subtest: public fee path binds all buys and selling to exact source calls, canonical block, caps and saved review
+ok 95 - public fee path binds all buys and selling to exact source calls, canonical block, caps and saved review
+  ---
+  duration_ms: 1535.7325
+  type: 'test'
+  ...
+# Subtest: wrong chain/header/time, failed simulation, changed output, excessive gas and price are blocked
+ok 96 - wrong chain/header/time, failed simulation, changed output, excessive gas and price are blocked
+  ---
+  duration_ms: 793.4462
+  type: 'test'
+  ...
+# Subtest: unsupported oracle functions remain unknown; malformed oracle output is never treated as zero
+ok 97 - unsupported oracle functions remain unknown; malformed oracle output is never treated as zero
+  ---
+  duration_ms: 271.093
+  type: 'test'
+  ...
+# Subtest: expired/forged inputs and cancelled requests do not reach transport
+ok 98 - expired/forged inputs and cancelled requests do not reach transport
+  ---
+  duration_ms: 223.4621
+  type: 'test'
+  ...
+# Subtest: non-cooperating transport is interrupted by request deadline, whole deadline and caller cancellation
+ok 99 - non-cooperating transport is interrupted by request deadline, whole deadline and caller cancellation
+  ---
+  duration_ms: 216.6452
+  type: 'test'
+  ...
+# Subtest: generic public fee bounds do not claim swap execution and validate caller size, gas and block selection
+ok 100 - generic public fee bounds do not claim swap execution and validate caller size, gas and block selection
+  ---
+  duration_ms: 65.6651
+  type: 'test'
+  ...
+# Subtest: fee review retains source caps for three buys, selling and shared-agent budgets
+ok 101 - fee review retains source caps for three buys, selling and shared-agent budgets
+  ---
+  duration_ms: 1277.3723
+  type: 'test'
+  ...
+# Subtest: each component cap is enforced with exact integers, including the total policy ceiling
+ok 102 - each component cap is enforced with exact integers, including the total policy ceiling
+  ---
+  duration_ms: 521.2036
+  type: 'test'
+  ...
+# Subtest: unknown L1/operator fees stay unknown; zero is distinct and partial totals cannot pass
+ok 103 - unknown L1/operator fees stay unknown; zero is distinct and partial totals cannot pass
+  ---
+  duration_ms: 253.5189
+  type: 'test'
+  ...
+# Subtest: source hash, canonical block and observation time cannot be replaced or extended
+ok 104 - source hash, canonical block and observation time cannot be replaced or extended
+  ---
+  duration_ms: 617.6781
+  type: 'test'
+  ...
+# Subtest: malformed, accessor, oversized, aborted and forged saved fee results are rejected
+ok 105 - malformed, accessor, oversized, aborted and forged saved fee results are rejected
+  ---
+  duration_ms: 379.4495
+  type: 'test'
+  ...
+# Subtest: offline command distinguishes complete, blocked, historical and invalid evidence
+ok 106 - offline command distinguishes complete, blocked, historical and invalid evidence
+  ---
+  duration_ms: 315.7926
+  type: 'test'
+  ...
+# Subtest: browser client and ordinary HTTP server round trip preserve exact source and offline-replayable result
+ok 107 - browser client and ordinary HTTP server round trip preserve exact source and offline-replayable result
+  ---
+  duration_ms: 774.4708
+  type: 'test'
+  ...
+# Subtest: HTTP rejects cross-origin, extra fields, malformed UTF-8 and oversized requests before public RPC
+ok 108 - HTTP rejects cross-origin, extra fields, malformed UTF-8 and oversized requests before public RPC
+  ---
+  duration_ms: 145.018
+  type: 'test'
+  ...
+# Subtest: a valid source at the 512 KiB input boundary survives both JSON envelopes with exact bytes
+ok 109 - a valid source at the 512 KiB input boundary survives both JSON envelopes with exact bytes
+  ---
+  duration_ms: 772.1404
+  type: 'test'
+  ...
+# Subtest: HTTP capacity is bounded and cancelling requests releases both public reads and capacity
+ok 110 - HTTP capacity is bounded and cancelling requests releases both public reads and capacity
+  ---
+  duration_ms: 401.4784
+  type: 'test'
+  ...
+# Subtest: client rejects another source, synthetic response, extra envelope fields, malformed and oversized replies
+ok 111 - client rejects another source, synthetic response, extra envelope fields, malformed and oversized replies
+  ---
+  duration_ms: 690.1439
+  type: 'test'
+  ...
+# Subtest: client input validation, pre-cancellation and deadlines prevent or interrupt transport
+ok 112 - client input validation, pre-cancellation and deadlines prevent or interrupt transport
+  ---
+  duration_ms: 32.3122
+  type: 'test'
+  ...
+# Subtest: saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+ok 113 - saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+  ---
+  duration_ms: 114.6531
+  type: 'test'
+  ...
+# Subtest: changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+ok 114 - changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+  ---
+  duration_ms: 59.7813
+  type: 'test'
+  ...
+# Subtest: page previews units, compares, saves exact inputs and limits, then reopens without assuming current success
+ok 115 - page previews units, compares, saves exact inputs and limits, then reopens without assuming current success
+  ---
+  duration_ms: 111.8849
+  type: 'test'
+  ...
+# Subtest: recorded success is re-evaluated as stale at current time; stricter slippage invalidates the visible result
+ok 116 - recorded success is re-evaluated as stale at current time; stricter slippage invalidates the visible result
+  ---
+  duration_ms: 60.108
+  type: 'test'
+  ...
+# Subtest: cancel aborts and discards a delayed comparison
+ok 117 - cancel aborts and discards a delayed comparison
+  ---
+  duration_ms: 22.5385
+  type: 'test'
+  ...
+# Subtest: new-file aborts and discards a delayed comparison
+ok 118 - new-file aborts and discards a delayed comparison
+  ---
+  duration_ms: 50.5966
+  type: 'test'
+  ...
+# Subtest: limit-change aborts and discards a delayed comparison
+ok 119 - limit-change aborts and discards a delayed comparison
+  ---
+  duration_ms: 26.7947
+  type: 'test'
+  ...
+# Subtest: pagehide aborts and discards a delayed comparison
+ok 120 - pagehide aborts and discards a delayed comparison
+  ---
+  duration_ms: 26.673
+  type: 'test'
+  ...
+# Subtest: dispose aborts and discards a delayed comparison
+ok 121 - dispose aborts and discards a delayed comparison
+  ---
+  duration_ms: 23.4678
+  type: 'test'
+  ...
+# Subtest: invalid or duplicate files and forged saved verdict clear old results; cancelled file reads cannot restore them
+ok 122 - invalid or duplicate files and forged saved verdict clear old results; cancelled file reads cannot restore them
+  ---
+  duration_ms: 48.3429
+  type: 'test'
+  ...
+# Subtest: blank, out-of-range, exponent and overprecise conditions never produce a saved result
+ok 123 - blank, out-of-range, exponent and overprecise conditions never produce a saved result
+  ---
+  duration_ms: 31.1172
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download keeps state consistent
+ok 124 - failed or reentrant download keeps state consistent
+  ---
+  duration_ms: 41.7517
+  type: 'test'
+  ...
+# Subtest: simulation call fixes source recipient, route, minimum, expiry and budget caps for sell and three USDC buys
+ok 125 - simulation call fixes source recipient, route, minimum, expiry and budget caps for sell and three USDC buys
+  ---
+  duration_ms: 564.2083
+  type: 'test'
+  ...
+# Subtest: expired/failing preconditions cannot produce call data; reading saved success does not extend its window
+ok 126 - expired/failing preconditions cannot produce call data; reading saved success does not extend its window
+  ---
+  duration_ms: 225.4874
+  type: 'test'
+  ...
+# Subtest: shared source selects the intended agent fee budget and missing agent leaves an explicitly blocked plan
+ok 127 - shared source selects the intended agent fee budget and missing agent leaves an explicitly blocked plan
+  ---
+  duration_ms: 217.0843
+  type: 'test'
+  ...
+# Subtest: saved plan rejects recipient, amounts, calldata, source, fee limits and expiry tampering
+ok 128 - saved plan rejects recipient, amounts, calldata, source, fee limits and expiry tampering
+  ---
+  duration_ms: 327.4488
+  type: 'test'
+  ...
+# Subtest: offline command prepares, verifies, rejects malformed inputs and distinguishes blocked plan from errors
+ok 129 - offline command prepares, verifies, rejects malformed inputs and distinguishes blocked plan from errors
+  ---
+  duration_ms: 236.9335
+  type: 'test'
+  ...
+# Subtest: CLI read/verify exit codes distinguish recorded failure from acquisition errors
+ok 130 - CLI read/verify exit codes distinguish recorded failure from acquisition errors
+  ---
+  duration_ms: 619.9461
+  type: 'test'
+  ...
+# Subtest: page imports a source without RPC, explicitly acquires, shows values and saves an exact replayable result
+ok 131 - page imports a source without RPC, explicitly acquires, shows values and saves an exact replayable result
+  ---
+  duration_ms: 961.8148
+  type: 'test'
+  ...
+# Subtest: saved archive is replayed and reexported unchanged; new-time check shows expiry and preserves original bytes
+ok 132 - saved archive is replayed and reexported unchanged; new-time check shows expiry and preserves original bytes
+  ---
+  duration_ms: 802.2514
+  type: 'test'
+  ...
+# Subtest: late acquisition after cancel, source replacement, page navigation or disposal is ignored
+ok 133 - late acquisition after cancel, source replacement, page navigation or disposal is ignored
+  ---
+  duration_ms: 459.956
+  type: 'test'
+  ...
+# Subtest: bad imports and failed acquisition/download do not advertise success or discard source for retry
+ok 134 - bad imports and failed acquisition/download do not advertise success or discard source for retry
+  ---
+  duration_ms: 426.231
+  type: 'test'
+  ...
+# Subtest: ordinary server and client return the exact plan, pinned fresh block and replayable result
+ok 135 - ordinary server and client return the exact plan, pinned fresh block and replayable result
+  ---
+  duration_ms: 927.8475
+  type: 'test'
+  ...
+# Subtest: new route rejects cross origin, bad body, alternate endpoint and oversized requests before RPC
+ok 136 - new route rejects cross origin, bad body, alternate endpoint and oversized requests before RPC
+  ---
+  duration_ms: 148.6432
+  type: 'test'
+  ...
+# Subtest: 512 KiB source survives both HTTP envelopes without weakening the saved source binding
+ok 137 - 512 KiB source survives both HTTP envelopes without weakening the saved source binding
+  ---
+  duration_ms: 997.4325
+  type: 'test'
+  ...
+# Subtest: client rejects wrong-source, synthetic, malformed and extra-field server responses
+ok 138 - client rejects wrong-source, synthetic, malformed and extra-field server responses
+  ---
+  duration_ms: 652.6141
+  type: 'test'
+  ...
+# Subtest: cancel and deadline interrupt a noncooperating HTTP transport; precancel never calls it
+ok 139 - cancel and deadline interrupt a noncooperating HTTP transport; precancel never calls it
+  ---
+  duration_ms: 93.6645
+  type: 'test'
+  ...
+# Subtest: new block checks preserve fixed calldata, budgets, source bytes and all three token routes
+ok 140 - new block checks preserve fixed calldata, budgets, source bytes and all three token routes
+  ---
+  duration_ms: 1842.7813
+  type: 'test'
+  ...
+# Subtest: shared USDC and ETH reservations remain required when checking a single proposal
+ok 141 - shared USDC and ETH reservations remain required when checking a single proposal
+  ---
+  duration_ms: 829.6846
+  type: 'test'
+  ...
+# Subtest: insufficiency, missing code, fee caps, oracle unknown and source reorg produce saveable blocked diagnostics before swap
+ok 142 - insufficiency, missing code, fee caps, oracle unknown and source reorg produce saveable blocked diagnostics before swap
+  ---
+  duration_ms: 1691.3781
+  type: 'test'
+  ...
+# Subtest: expired/blocked original source is readable but never repaired, extended or simulated
+ok 143 - expired/blocked original source is readable but never repaired, extended or simulated
+  ---
+  duration_ms: 348.6967
+  type: 'test'
+  ...
+# Subtest: changed output is acceptable only above the original minimum; rejection and excessive gas are saved
+ok 144 - changed output is acceptable only above the original minimum; rejection and excessive gas are saved
+  ---
+  duration_ms: 5331.7297
+  type: 'test'
+  ...
+# Subtest: chain changes, new-block reorg, malformed results and source forgery cannot create successful archives
+ok 145 - chain changes, new-block reorg, malformed results and source forgery cannot create successful archives
+  ---
+  duration_ms: 1924.4018
+  type: 'test'
+  ...
+# Subtest: saved result, source hash, time, and simulation claims are replayed and checked
+ok 146 - saved result, source hash, time, and simulation claims are replayed and checked
+  ---
+  duration_ms: 661.9875
+  type: 'test'
+  ...
+# Subtest: caller cancellation and noncooperating RPC timeouts terminate without any signed operation
+ok 147 - caller cancellation and noncooperating RPC timeouts terminate without any signed operation
+  ---
+  duration_ms: 206.5819
+  type: 'test'
+  ...
+# Subtest: source expiry during RPC is checked again before a result can pass
+ok 148 - source expiry during RPC is checked again before a result can pass
+  ---
+  duration_ms: 403.7063
+  type: 'test'
+  ...
+# Subtest: offline checker binds source hashes, detects cumulative insufficiency and preserves source files
+ok 149 - offline checker binds source hashes, detects cumulative insufficiency and preserves source files
+  ---
+  duration_ms: 60.2926
+  type: 'test'
+  ...
+# Subtest: three separate files require explicit shared-account assumption and reveal aggregate shortfall
+ok 150 - three separate files require explicit shared-account assumption and reveal aggregate shortfall
+  ---
+  duration_ms: 53.726
+  type: 'test'
+  ...
+# Subtest: saved shared inputs require renewed assumption and reproduce exact inputs
+ok 151 - saved shared inputs require renewed assumption and reproduce exact inputs
+  ---
+  duration_ms: 7.0522
+  type: 'test'
+  ...
+# Subtest: unknown fees remain unknown; changing selection clears the old result and assumption
+ok 152 - unknown fees remain unknown; changing selection clears the old result and assumption
+  ---
+  duration_ms: 16.6629
+  type: 'test'
+  ...
+# Subtest: mixed, duplicated, inconsistent and oversized sets cannot be applied
+ok 153 - mixed, duplicated, inconsistent and oversized sets cannot be applied
+  ---
+  duration_ms: 17.4194
+  type: 'test'
+  ...
+# Subtest: cancel cancels unfinished imports without applying late content
+ok 154 - cancel cancels unfinished imports without applying late content
+  ---
+  duration_ms: 7.8649
+  type: 'test'
+  ...
+# Subtest: new-file cancels unfinished imports without applying late content
+ok 155 - new-file cancels unfinished imports without applying late content
+  ---
+  duration_ms: 6.1233
+  type: 'test'
+  ...
+# Subtest: pagehide cancels unfinished imports without applying late content
+ok 156 - pagehide cancels unfinished imports without applying late content
+  ---
+  duration_ms: 5.653
+  type: 'test'
+  ...
+# Subtest: dispose cancels unfinished imports without applying late content
+ok 157 - dispose cancels unfinished imports without applying late content
+  ---
+  duration_ms: 2.9351
+  type: 'test'
+  ...
+# Subtest: failed or reentrant export never falsely reports a completed save
+ok 158 - failed or reentrant export never falsely reports a completed save
+  ---
+  duration_ms: 12.9094
+  type: 'test'
+  ...
+# Subtest: USDC plans show combined shortfall despite individually sufficient budgets and survive export
+ok 159 - USDC plans show combined shortfall despite individually sufficient budgets and survive export
+  ---
+  duration_ms: 17.0157
+  type: 'test'
+  ...
+# Subtest: three individually sufficient plans cannot each reuse the same ETH balance
+ok 160 - three individually sufficient plans cannot each reuse the same ETH balance
+  ---
+  duration_ms: 23.3985
+  type: 'test'
+  ...
+# Subtest: shared reserves are counted once and each operation's native value and fees are counted
+ok 161 - shared reserves are counted once and each operation's native value and fees are counted
+  ---
+  duration_ms: 7.0123
+  type: 'test'
+  ...
+# Subtest: tokens retain separate balances, decimals and shortfalls
+ok 162 - tokens retain separate balances, decimals and shortfalls
+  ---
+  duration_ms: 4.4052
+  type: 'test'
+  ...
+# Subtest: one unknown component makes the whole shared requirement unknown while preserving known insufficiency
+ok 163 - one unknown component makes the whole shared requirement unknown while preserving known insufficiency
+  ---
+  duration_ms: 2.3825
+  type: 'test'
+  ...
+# Subtest: mixed networks, duplicate tokens and inconsistent shared account assumptions are rejected
+ok 164 - mixed networks, duplicate tokens and inconsistent shared account assumptions are rejected
+  ---
+  duration_ms: 5.4882
+  type: 'test'
+  ...
+# Subtest: combined totals reject uint256 overflow even when each separate operation fits
+ok 165 - combined totals reject uint256 overflow even when each separate operation fits
+  ---
+  duration_ms: 1.3759
+  type: 'test'
+  ...
+# Subtest: two plans are supported, one or four plans and sparse arrays are not
+ok 166 - two plans are supported, one or four plans and sparse arrays are not
+  ---
+  duration_ms: 4.9717
+  type: 'test'
+  ...
+# Subtest: captures immutable data without invoking accessors, and round trips only inputs
+ok 167 - captures immutable data without invoking accessors, and round trips only inputs
+  ---
+  duration_ms: 10.3324
+  type: 'test'
+  ...
+# Subtest: archive string allowance is explicitly bounded without changing the RPC default or byte cap
+ok 168 - archive string allowance is explicitly bounded without changing the RPC default or byte cap
+  ---
+  duration_ms: 172.7606
+  type: 'test'
+  ...
+# Subtest: pre-aborted read cancels body without acquiring a reader
+ok 169 - pre-aborted read cancels body without acquiring a reader
+  ---
+  duration_ms: 1.439
+  type: 'test'
+  ...
+# Subtest: abort rejects a pending read without awaiting an uncooperative cancellation
+ok 170 - abort rejects a pending read without awaiting an uncooperative cancellation
+  ---
+  duration_ms: 14.4523
+  type: 'test'
+  ...
+# Subtest: successful split UTF-8 read removes abort listener and releases stream lock
+ok 171 - successful split UTF-8 read removes abort listener and releases stream lock
+  ---
+  duration_ms: 7.105
+  type: 'test'
+  ...
+# Subtest: declared oversize rejection is not delayed by body cancellation
+ok 172 - declared oversize rejection is not delayed by body cancellation
+  ---
+  duration_ms: 2.2172
+  type: 'test'
+  ...
+# Subtest: parsing failure also cleans up listener and lock
+ok 173 - parsing failure also cleans up listener and lock
+  ---
+  duration_ms: 1.7999
+  type: 'test'
+  ...
+# Subtest: header read rejects a pre-aborted signal without invoking fetch
+ok 174 - header read rejects a pre-aborted signal without invoking fetch
+  ---
+  duration_ms: 1.3666
+  type: 'test'
+  ...
+# Subtest: header read aborts promptly and cancels a late response without retaining the listener
+ok 175 - header read aborts promptly and cancels a late response without retaining the listener
+  ---
+  duration_ms: 15.3952
+  type: 'test'
+  ...
+# Subtest: late header rejection is consumed after the caller has aborted
+ok 176 - late header rejection is consumed after the caller has aborted
+  ---
+  duration_ms: 1.8936
+  type: 'test'
+  ...
+# Subtest: accepted headers remove their listener without cancelling the body
+ok 177 - accepted headers remove their listener without cancelling the body
+  ---
+  duration_ms: 2.3179
+  type: 'test'
+  ...
+# Subtest: redirected headers are cancelled even if the transport ignored redirect policy
+ok 178 - redirected headers are cancelled even if the transport ignored redirect policy
+  ---
+  duration_ms: 1.1283
+  type: 'test'
+  ...
+# Subtest: USDC budgets have a separate schema, fixed network and precision; legacy budgets keep their currency
+ok 179 - USDC budgets have a separate schema, fixed network and precision; legacy budgets keep their currency
+  ---
+  duration_ms: 8.7086
+  type: 'test'
+  ...
+# Subtest: separate agents cannot each spend the same USDC; shared reserves are counted once
+ok 180 - separate agents cannot each spend the same USDC; shared reserves are counted once
+  ---
+  duration_ms: 9.8812
+  type: 'test'
+  ...
+# Subtest: USDC source is checksum-bound and rejects bridged token, wrong decimals, supply overflow and tampering
+ok 181 - USDC source is checksum-bound and rejects bridged token, wrong decimals, supply overflow and tampering
+  ---
+  duration_ms: 23.3178
+  type: 'test'
+  ...
+# Subtest: one USDC source expands only to matching budgets and retains aggregate insufficiency
+ok 182 - one USDC source expands only to matching budgets and retains aggregate insufficiency
+  ---
+  duration_ms: 25.171
+  type: 'test'
+  ...
+# Subtest: USDC-funded buy quote binds proposal, original source account/block, price, limits and budget
+ok 183 - USDC-funded buy quote binds proposal, original source account/block, price, limits and budget
+  ---
+  duration_ms: 34.8242
+  type: 'test'
+  ...
+1..183
+# tests 183
+# suites 0
+# pass 183
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 35095.472

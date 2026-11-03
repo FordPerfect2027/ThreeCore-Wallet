@@ -1,0 +1,529 @@
+{
+  "schema": "threecore-runtime-immutable-comparison-v1",
+  "observedAt": "2026-11-02T00:23:42.902Z",
+  "comparisonSha256": "1f3e83e29b997ac1ca67fb34fb3137b63b7d450085ff4270aba880beacfa454d",
+  "offline": true,
+  "signingPerformed": false,
+  "networkRequests": 0,
+  "rows": [
+    {
+      "token": "DAT",
+      "chainId": 8453,
+      "blockNumber": "53394765",
+      "blockHash": "0xabb9e2d52c308ddfb79f0d044c267b86ada079a77c09a032051df411a9421d30",
+      "contract": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+      "artifactSha256": "bd996621a5f7d3bea50a1792d07f8007888c650d5656311d7af71b11aa976f29",
+      "buildInfoSha256": "e467fe0462222b9cc1ec5baa3fbe2299e9756913f6689fdf392e9dbc6126f4ad",
+      "compilerOutputSha256": "925e578704e9bccb7ef7751ff1baaa4c03b87fadc6adc28f2457774e7c0ef6b6",
+      "eip712AstSource": "npm/@openzeppelin/contracts@5.6.1/utils/cryptography/EIP712.sol",
+      "slots": [
+        {
+          "astId": "4298",
+          "name": "_cachedDomainSeparator",
+          "start": 2655,
+          "length": 32,
+          "expected": "0xde24cc6fc1d1e12efb0a3045866af4db2266a8e0793a112f6a6fa454b1b4599d",
+          "actual": "0xde24cc6fc1d1e12efb0a3045866af4db2266a8e0793a112f6a6fa454b1b4599d",
+          "matches": true
+        },
+        {
+          "astId": "4300",
+          "name": "_cachedChainId",
+          "start": 2614,
+          "length": 32,
+          "expected": "0x0000000000000000000000000000000000000000000000000000000000002105",
+          "actual": "0x0000000000000000000000000000000000000000000000000000000000002105",
+          "matches": true
+        },
+        {
+          "astId": "4302",
+          "name": "_cachedThis",
+          "start": 2528,
+          "length": 32,
+          "expected": "0x0000000000000000000000006c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+          "actual": "0x0000000000000000000000006c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+          "matches": true
+        },
+        {
+          "astId": "4304",
+          "name": "_hashedName",
+          "start": 4212,
+          "length": 32,
+          "expected": "0x9223f23654b118b2a5d4fb1b6907b1d61570d3b49d986ffdaa72ba485c4b54e3",
+          "actual": "0x9223f23654b118b2a5d4fb1b6907b1d61570d3b49d986ffdaa72ba485c4b54e3",
+          "matches": true
+        },
+        {
+          "astId": "4306",
+          "name": "_hashedVersion",
+          "start": 4245,
+          "length": 32,
+          "expected": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "actual": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "matches": true
+        },
+        {
+          "astId": "4309",
+          "name": "_name",
+          "start": 2913,
+          "length": 32,
+          "expected": "0x444154434f524500000000000000000000000000000000000000000000000007",
+          "actual": "0x444154434f524500000000000000000000000000000000000000000000000007",
+          "matches": true
+        },
+        {
+          "astId": "4312",
+          "name": "_version",
+          "start": 2972,
+          "length": 32,
+          "expected": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "actual": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "matches": true
+        }
+      ],
+      "allSlotsMatch": true,
+      "executableWithExpectedImmutablesMatches": true,
+      "fullRuntimeWithExpectedImmutablesMatches": false,
+      "negativeImmutableAndExecutableControls": 8,
+      "metadataExclusionControl": true,
+      "limits": [
+        "Compiler metadata remains compared separately.",
+        "No constructor transaction or storage/initial-holder proof.",
+        "No signature, transaction or private wallet material was used."
+      ]
+    },
+    {
+      "token": "EMA",
+      "chainId": 8453,
+      "blockNumber": "53394765",
+      "blockHash": "0xabb9e2d52c308ddfb79f0d044c267b86ada079a77c09a032051df411a9421d30",
+      "contract": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+      "artifactSha256": "ddddfa632efc130d64ce46b4e388ba6dc8024c96ea986a1c46443bfba0b227a5",
+      "buildInfoSha256": "7a469de80bafad5596b23546f2b1685f2ca7f256773869bd7fa03b6520000a2d",
+      "compilerOutputSha256": "30749490e2332cddf0de03b7f895e542cd16487c23cf34f25b3d10f8e58e658e",
+      "eip712AstSource": "npm/@openzeppelin/contracts@5.6.1/utils/cryptography/EIP712.sol",
+      "slots": [
+        {
+          "astId": "4298",
+          "name": "_cachedDomainSeparator",
+          "start": 2655,
+          "length": 32,
+          "expected": "0xbf841da2083acff58fd0092d914c9e798680aae062d61f88362c962428e0e1ce",
+          "actual": "0xbf841da2083acff58fd0092d914c9e798680aae062d61f88362c962428e0e1ce",
+          "matches": true
+        },
+        {
+          "astId": "4300",
+          "name": "_cachedChainId",
+          "start": 2614,
+          "length": 32,
+          "expected": "0x0000000000000000000000000000000000000000000000000000000000002105",
+          "actual": "0x0000000000000000000000000000000000000000000000000000000000002105",
+          "matches": true
+        },
+        {
+          "astId": "4302",
+          "name": "_cachedThis",
+          "start": 2528,
+          "length": 32,
+          "expected": "0x000000000000000000000000bae0933d509b83b7bbab3aab9fed413504382a76",
+          "actual": "0x000000000000000000000000bae0933d509b83b7bbab3aab9fed413504382a76",
+          "matches": true
+        },
+        {
+          "astId": "4304",
+          "name": "_hashedName",
+          "start": 4212,
+          "length": 32,
+          "expected": "0x7c02ed65213b78c5d62a306b28a06b01faed4117f4a13478d90a75793ee708e9",
+          "actual": "0x7c02ed65213b78c5d62a306b28a06b01faed4117f4a13478d90a75793ee708e9",
+          "matches": true
+        },
+        {
+          "astId": "4306",
+          "name": "_hashedVersion",
+          "start": 4245,
+          "length": 32,
+          "expected": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "actual": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "matches": true
+        },
+        {
+          "astId": "4309",
+          "name": "_name",
+          "start": 2913,
+          "length": 32,
+          "expected": "0x454d4120434f5245000000000000000000000000000000000000000000000008",
+          "actual": "0x454d4120434f5245000000000000000000000000000000000000000000000008",
+          "matches": true
+        },
+        {
+          "astId": "4312",
+          "name": "_version",
+          "start": 2972,
+          "length": 32,
+          "expected": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "actual": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "matches": true
+        }
+      ],
+      "allSlotsMatch": true,
+      "executableWithExpectedImmutablesMatches": true,
+      "fullRuntimeWithExpectedImmutablesMatches": false,
+      "negativeImmutableAndExecutableControls": 8,
+      "metadataExclusionControl": true,
+      "limits": [
+        "Compiler metadata remains compared separately.",
+        "No constructor transaction or storage/initial-holder proof.",
+        "No signature, transaction or private wallet material was used."
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "chainId": 8453,
+      "blockNumber": "53394765",
+      "blockHash": "0xabb9e2d52c308ddfb79f0d044c267b86ada079a77c09a032051df411a9421d30",
+      "contract": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+      "artifactSha256": "022ecc2221c5b92b99846bb42d19e0dd48413dbbaa1a1aa0c298390d57af3d0d",
+      "buildInfoSha256": "a5fa656f4e32ba1a3d83e8458a39cd07049de84f726a3c0b6bd950723e6ee50c",
+      "compilerOutputSha256": "beceb645508bed14763aba7b5cdfbbd62fa725cdacc8e199a96f5e51f7a8f0de",
+      "eip712AstSource": "npm/@openzeppelin/contracts@5.6.1/utils/cryptography/EIP712.sol",
+      "slots": [
+        {
+          "astId": "4298",
+          "name": "_cachedDomainSeparator",
+          "start": 2661,
+          "length": 32,
+          "expected": "0xd7d64f27feb3aaf051bf63990ebf3dedaf2eec912722e4ca422b3593d24b34e2",
+          "actual": "0xd7d64f27feb3aaf051bf63990ebf3dedaf2eec912722e4ca422b3593d24b34e2",
+          "matches": true
+        },
+        {
+          "astId": "4300",
+          "name": "_cachedChainId",
+          "start": 2620,
+          "length": 32,
+          "expected": "0x0000000000000000000000000000000000000000000000000000000000002105",
+          "actual": "0x0000000000000000000000000000000000000000000000000000000000002105",
+          "matches": true
+        },
+        {
+          "astId": "4302",
+          "name": "_cachedThis",
+          "start": 2534,
+          "length": 32,
+          "expected": "0x000000000000000000000000b4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+          "actual": "0x000000000000000000000000b4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+          "matches": true
+        },
+        {
+          "astId": "4304",
+          "name": "_hashedName",
+          "start": 4218,
+          "length": 32,
+          "expected": "0x071b7c4087813f0a10c7e03d4970261a52413174fdf77e3484b8c948ba3ec9a9",
+          "actual": "0x071b7c4087813f0a10c7e03d4970261a52413174fdf77e3484b8c948ba3ec9a9",
+          "matches": true
+        },
+        {
+          "astId": "4306",
+          "name": "_hashedVersion",
+          "start": 4251,
+          "length": 32,
+          "expected": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "actual": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "matches": true
+        },
+        {
+          "astId": "4309",
+          "name": "_name",
+          "start": 2919,
+          "length": 32,
+          "expected": "0x434157454c4f4e20434f5245000000000000000000000000000000000000000c",
+          "actual": "0x434157454c4f4e20434f5245000000000000000000000000000000000000000c",
+          "matches": true
+        },
+        {
+          "astId": "4312",
+          "name": "_version",
+          "start": 2978,
+          "length": 32,
+          "expected": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "actual": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "matches": true
+        }
+      ],
+      "allSlotsMatch": true,
+      "executableWithExpectedImmutablesMatches": true,
+      "fullRuntimeWithExpectedImmutablesMatches": false,
+      "negativeImmutableAndExecutableControls": 8,
+      "metadataExclusionControl": true,
+      "limits": [
+        "Compiler metadata remains compared separately.",
+        "No constructor transaction or storage/initial-holder proof.",
+        "No signature, transaction or private wallet material was used."
+      ]
+    },
+    {
+      "token": "DAT",
+      "chainId": 84532,
+      "blockNumber": "53285052",
+      "blockHash": "0x996fa4ce213c4fb558a3c245531c756e9b077bfce41a6600ccec5b622f72920c",
+      "contract": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+      "artifactSha256": "bd996621a5f7d3bea50a1792d07f8007888c650d5656311d7af71b11aa976f29",
+      "buildInfoSha256": "e467fe0462222b9cc1ec5baa3fbe2299e9756913f6689fdf392e9dbc6126f4ad",
+      "compilerOutputSha256": "925e578704e9bccb7ef7751ff1baaa4c03b87fadc6adc28f2457774e7c0ef6b6",
+      "eip712AstSource": "npm/@openzeppelin/contracts@5.6.1/utils/cryptography/EIP712.sol",
+      "slots": [
+        {
+          "astId": "4298",
+          "name": "_cachedDomainSeparator",
+          "start": 2655,
+          "length": 32,
+          "expected": "0x07d9c0bc868d3d3d19caca805eaf07005f1bf0b7f59a9224dc0aff54c3f67345",
+          "actual": "0x07d9c0bc868d3d3d19caca805eaf07005f1bf0b7f59a9224dc0aff54c3f67345",
+          "matches": true
+        },
+        {
+          "astId": "4300",
+          "name": "_cachedChainId",
+          "start": 2614,
+          "length": 32,
+          "expected": "0x0000000000000000000000000000000000000000000000000000000000014a34",
+          "actual": "0x0000000000000000000000000000000000000000000000000000000000014a34",
+          "matches": true
+        },
+        {
+          "astId": "4302",
+          "name": "_cachedThis",
+          "start": 2528,
+          "length": 32,
+          "expected": "0x0000000000000000000000002474a062ec669c1912ed41bc491e8a97db4743d4",
+          "actual": "0x0000000000000000000000002474a062ec669c1912ed41bc491e8a97db4743d4",
+          "matches": true
+        },
+        {
+          "astId": "4304",
+          "name": "_hashedName",
+          "start": 4212,
+          "length": 32,
+          "expected": "0x9223f23654b118b2a5d4fb1b6907b1d61570d3b49d986ffdaa72ba485c4b54e3",
+          "actual": "0x9223f23654b118b2a5d4fb1b6907b1d61570d3b49d986ffdaa72ba485c4b54e3",
+          "matches": true
+        },
+        {
+          "astId": "4306",
+          "name": "_hashedVersion",
+          "start": 4245,
+          "length": 32,
+          "expected": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "actual": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "matches": true
+        },
+        {
+          "astId": "4309",
+          "name": "_name",
+          "start": 2913,
+          "length": 32,
+          "expected": "0x444154434f524500000000000000000000000000000000000000000000000007",
+          "actual": "0x444154434f524500000000000000000000000000000000000000000000000007",
+          "matches": true
+        },
+        {
+          "astId": "4312",
+          "name": "_version",
+          "start": 2972,
+          "length": 32,
+          "expected": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "actual": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "matches": true
+        }
+      ],
+      "allSlotsMatch": true,
+      "executableWithExpectedImmutablesMatches": true,
+      "fullRuntimeWithExpectedImmutablesMatches": true,
+      "negativeImmutableAndExecutableControls": 8,
+      "metadataExclusionControl": true,
+      "limits": [
+        "Compiler metadata remains compared separately.",
+        "No constructor transaction or storage/initial-holder proof.",
+        "No signature, transaction or private wallet material was used."
+      ]
+    },
+    {
+      "token": "EMA",
+      "chainId": 84532,
+      "blockNumber": "53285052",
+      "blockHash": "0x996fa4ce213c4fb558a3c245531c756e9b077bfce41a6600ccec5b622f72920c",
+      "contract": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+      "artifactSha256": "ddddfa632efc130d64ce46b4e388ba6dc8024c96ea986a1c46443bfba0b227a5",
+      "buildInfoSha256": "7a469de80bafad5596b23546f2b1685f2ca7f256773869bd7fa03b6520000a2d",
+      "compilerOutputSha256": "30749490e2332cddf0de03b7f895e542cd16487c23cf34f25b3d10f8e58e658e",
+      "eip712AstSource": "npm/@openzeppelin/contracts@5.6.1/utils/cryptography/EIP712.sol",
+      "slots": [
+        {
+          "astId": "4298",
+          "name": "_cachedDomainSeparator",
+          "start": 2655,
+          "length": 32,
+          "expected": "0x2b30b568c8dc7b37e7b4cddcaecfc904201efe7fe0b930b7fb25ac7fb07b2be2",
+          "actual": "0x2b30b568c8dc7b37e7b4cddcaecfc904201efe7fe0b930b7fb25ac7fb07b2be2",
+          "matches": true
+        },
+        {
+          "astId": "4300",
+          "name": "_cachedChainId",
+          "start": 2614,
+          "length": 32,
+          "expected": "0x0000000000000000000000000000000000000000000000000000000000014a34",
+          "actual": "0x0000000000000000000000000000000000000000000000000000000000014a34",
+          "matches": true
+        },
+        {
+          "astId": "4302",
+          "name": "_cachedThis",
+          "start": 2528,
+          "length": 32,
+          "expected": "0x00000000000000000000000020c3bb2548a1ce188229a6128df0e9612259185e",
+          "actual": "0x00000000000000000000000020c3bb2548a1ce188229a6128df0e9612259185e",
+          "matches": true
+        },
+        {
+          "astId": "4304",
+          "name": "_hashedName",
+          "start": 4212,
+          "length": 32,
+          "expected": "0x7c02ed65213b78c5d62a306b28a06b01faed4117f4a13478d90a75793ee708e9",
+          "actual": "0x7c02ed65213b78c5d62a306b28a06b01faed4117f4a13478d90a75793ee708e9",
+          "matches": true
+        },
+        {
+          "astId": "4306",
+          "name": "_hashedVersion",
+          "start": 4245,
+          "length": 32,
+          "expected": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "actual": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "matches": true
+        },
+        {
+          "astId": "4309",
+          "name": "_name",
+          "start": 2913,
+          "length": 32,
+          "expected": "0x454d4120434f5245000000000000000000000000000000000000000000000008",
+          "actual": "0x454d4120434f5245000000000000000000000000000000000000000000000008",
+          "matches": true
+        },
+        {
+          "astId": "4312",
+          "name": "_version",
+          "start": 2972,
+          "length": 32,
+          "expected": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "actual": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "matches": true
+        }
+      ],
+      "allSlotsMatch": true,
+      "executableWithExpectedImmutablesMatches": true,
+      "fullRuntimeWithExpectedImmutablesMatches": false,
+      "negativeImmutableAndExecutableControls": 8,
+      "metadataExclusionControl": true,
+      "limits": [
+        "Compiler metadata remains compared separately.",
+        "No constructor transaction or storage/initial-holder proof.",
+        "No signature, transaction or private wallet material was used."
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "chainId": 84532,
+      "blockNumber": "53285052",
+      "blockHash": "0x996fa4ce213c4fb558a3c245531c756e9b077bfce41a6600ccec5b622f72920c",
+      "contract": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+      "artifactSha256": "022ecc2221c5b92b99846bb42d19e0dd48413dbbaa1a1aa0c298390d57af3d0d",
+      "buildInfoSha256": "a5fa656f4e32ba1a3d83e8458a39cd07049de84f726a3c0b6bd950723e6ee50c",
+      "compilerOutputSha256": "beceb645508bed14763aba7b5cdfbbd62fa725cdacc8e199a96f5e51f7a8f0de",
+      "eip712AstSource": "npm/@openzeppelin/contracts@5.6.1/utils/cryptography/EIP712.sol",
+      "slots": [
+        {
+          "astId": "4298",
+          "name": "_cachedDomainSeparator",
+          "start": 2661,
+          "length": 32,
+          "expected": "0xdcda6896555f0f960f33c5057f17d368efbdf74918c951aff2d09821b7bdd1be",
+          "actual": "0xdcda6896555f0f960f33c5057f17d368efbdf74918c951aff2d09821b7bdd1be",
+          "matches": true
+        },
+        {
+          "astId": "4300",
+          "name": "_cachedChainId",
+          "start": 2620,
+          "length": 32,
+          "expected": "0x0000000000000000000000000000000000000000000000000000000000014a34",
+          "actual": "0x0000000000000000000000000000000000000000000000000000000000014a34",
+          "matches": true
+        },
+        {
+          "astId": "4302",
+          "name": "_cachedThis",
+          "start": 2534,
+          "length": 32,
+          "expected": "0x0000000000000000000000009c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+          "actual": "0x0000000000000000000000009c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+          "matches": true
+        },
+        {
+          "astId": "4304",
+          "name": "_hashedName",
+          "start": 4218,
+          "length": 32,
+          "expected": "0x071b7c4087813f0a10c7e03d4970261a52413174fdf77e3484b8c948ba3ec9a9",
+          "actual": "0x071b7c4087813f0a10c7e03d4970261a52413174fdf77e3484b8c948ba3ec9a9",
+          "matches": true
+        },
+        {
+          "astId": "4306",
+          "name": "_hashedVersion",
+          "start": 4251,
+          "length": 32,
+          "expected": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "actual": "0xc89efdaa54c0f20c7adf612882df0950f5a951637e0307cdcb4c672f298b8bc6",
+          "matches": true
+        },
+        {
+          "astId": "4309",
+          "name": "_name",
+          "start": 2919,
+          "length": 32,
+          "expected": "0x434157454c4f4e20434f5245000000000000000000000000000000000000000c",
+          "actual": "0x434157454c4f4e20434f5245000000000000000000000000000000000000000c",
+          "matches": true
+        },
+        {
+          "astId": "4312",
+          "name": "_version",
+          "start": 2978,
+          "length": 32,
+          "expected": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "actual": "0x3100000000000000000000000000000000000000000000000000000000000001",
+          "matches": true
+        }
+      ],
+      "allSlotsMatch": true,
+      "executableWithExpectedImmutablesMatches": true,
+      "fullRuntimeWithExpectedImmutablesMatches": false,
+      "negativeImmutableAndExecutableControls": 8,
+      "metadataExclusionControl": true,
+      "limits": [
+        "Compiler metadata remains compared separately.",
+        "No constructor transaction or storage/initial-holder proof.",
+        "No signature, transaction or private wallet material was used."
+      ]
+    }
+  ],
+  "provesInitialHolderOrStorage": false,
+  "authenticatesCompilerSource": false,
+  "independentAudit": false
+}

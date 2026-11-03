@@ -1,0 +1,26 @@
+✔ native-like source files reopen only after matching evidence and preserve complete negative scope (205.7279ms)
+✔ stopped evidence preparation retains a usable list and a late result cannot overwrite a new selection (58.011ms)
+✔ failed evidence delivery preserves originals and allows a deliberate retry (37.4746ms)
+✔ batch UI requires explicit start and acknowledged exports and retains each exact source fingerprint (209.0736ms)
+✔ invalid UI selection duplicate cannot start a file read (3.2744ms)
+✔ invalid UI selection unsafe cannot start a file read (1.2018ms)
+✔ invalid UI selection count cannot start a file read (1.6308ms)
+✔ invalid UI selection large cannot start a file read (11.438ms)
+✔ cancelled verification preserves one checked and one unchecked row for a JSON receipt (32.2056ms)
+✔ late file read cannot overwrite clear (14.9207ms)
+✔ late file read cannot overwrite replace (30.7472ms)
+✔ late file read cannot overwrite dispose (21.1159ms)
+✔ picker dismissal preserves the current result and incomplete loading never becomes a successful empty batch (27.9141ms)
+✔ batch read size failures explain the batch limit rather than the single-file guide limit (13.6983ms)
+✔ save callback throws cannot claim a completed download (38.7199ms)
+✔ save callback false cannot claim a completed download (55.2144ms)
+✔ save callback async cannot claim a completed download (31.9183ms)
+✔ save callback clears cannot claim a completed download (30.9974ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1158.4248

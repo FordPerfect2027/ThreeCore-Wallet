@@ -1,0 +1,121 @@
+diff --git a/integration/base-state-rpc-server.test.mjs b/integration/base-state-rpc-server.test.mjs
+index 9355d3f..5b15773 100644
+--- a/integration/base-state-rpc-server.test.mjs
++++ b/integration/base-state-rpc-server.test.mjs
+@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
+ import { createDemoServer } from "../examples/dev-server.js";
+ import { createBaseStateProvider } from "../src/base-state-provider.js";
+ import { ThreeCoreWalletSession } from "../src/wallet-session.js";
++import { catalogToken } from "../src/token-catalog.js";
++import { TRANSFER_TOPIC } from "../src/transfer-codec.js";
+ const A = "0x1111111111111111111111111111111111111111";
+ const HASH = "0x" + "ab".repeat(32);
+ const rpc = { method: "eth_getBalance", params: [A, { blockHash: HASH, requireCanonical: true }] };
+@@ -44,6 +46,29 @@ test("origin, permission/write methods, destination injection and malformed inpu
+   });
+ });
+ 
++test("the HTTP relay enforces the history span even when the browser guard is bypassed", async () => {
++  const calls = [];
++  await withServer(async (_url, options) => {
++    calls.push(JSON.parse(options.body));
++    return Response.json({ jsonrpc: "2.0", id: 1, result: [] });
++  }, async base => {
++    const query = { method: "eth_getLogs", params: [{ address: catalogToken({ agent: "DAT", chainId: 8453 }).address,
++      fromBlock: "0x0", toBlock: "0x7d0", topics: [TRANSFER_TOPIC, null, "0x" + A.slice(2).padStart(64, "0")] }] };
++    for (const end of ["0x7d0", "0x" + "f".repeat(64)]) {
++      query.params[0].toBlock = end;
++      const rejected = await post(base, envelope(query));
++      assert.equal(rejected.status, 400);
++      assert.deepEqual(await rejected.json(), { error: "STATE_RPC_REQUEST" });
++    }
++    assert.equal(calls.length, 0);
++    query.params[0].toBlock = "0x7cf";
++    const accepted = await post(base, envelope(query));
++    assert.equal(accepted.status, 200);
++    assert.deepEqual(await accepted.json(), { result: [] });
++    assert.deepEqual(calls, [{ jsonrpc: "2.0", id: 1, ...query }]);
++  });
++});
++
+ test("remote failures and mismatched response IDs never become a successful result", async () => {
+   for (const reply of [{ jsonrpc: "2.0", id: 2, result: "0x1" },
+     { jsonrpc: "2.0", id: 1, error: { message: "secret malicious instructions" } }]) {
+diff --git a/src/security-rpc.js b/src/security-rpc.js
+index 594b8b6..61ff4ea 100644
+--- a/src/security-rpc.js
++++ b/src/security-rpc.js
+@@ -1,5 +1,6 @@
+ /** A second, explicit capability boundary before any provider request. */
+ import { captureDataArray } from "./security-data.js";
++import { MAX_TRANSFER_BLOCKS } from "./transfer-codec.js";
+ export class RpcSecurityError extends Error {
+   constructor(code) {
+     super(code);
+@@ -77,7 +78,8 @@ export function guardRpcRequest(input, { account, tokenAddress, allowPermission
+     if (params.length !== 1 || !address(account) || !address(tokenAddress)) fail("RPC_REQUEST_SHAPE");
+     const query = object(params[0], ["address", "fromBlock", "toBlock", "topics"]);
+     if (query.address !== tokenAddress || !quantity(query.fromBlock) || !quantity(query.toBlock) ||
+-        BigInt(query.fromBlock) > BigInt(query.toBlock)) fail("RPC_LOG_FILTER");
++        BigInt(query.fromBlock) > BigInt(query.toBlock) ||
++        BigInt(query.toBlock) - BigInt(query.fromBlock) + 1n > BigInt(MAX_TRANSFER_BLOCKS)) fail("RPC_LOG_FILTER");
+     const topics = array(query.topics, 3);
+     const owner = "0x" + account.slice(2).toLowerCase().padStart(64, "0");
+     const incoming = topics.length === 3 && topics[1] === null && topics[2] === owner;
+diff --git a/test/base-state-provider.test.js b/test/base-state-provider.test.js
+index b988e41..f458911 100644
+--- a/test/base-state-provider.test.js
++++ b/test/base-state-provider.test.js
+@@ -1,6 +1,8 @@
+ import test from "node:test";
+ import assert from "node:assert/strict";
+ import { createBaseStateProvider } from "../src/base-state-provider.js";
++import { catalogToken } from "../src/token-catalog.js";
++import { TRANSFER_TOPIC } from "../src/transfer-codec.js";
+ import { readStateRpcJson, STATE_RPC_RESPONSE_LIMIT, STATE_RPC_TIMEOUT_MS } from "../src/state-rpc-http.js";
+ const A = "0x1111111111111111111111111111111111111111";
+ const HASH = "0x" + "ab".repeat(32);
+@@ -29,6 +31,18 @@ test("wrong account and unpinned selectors are refused before HTTP", async () =>
+   await assert.rejects(p.request({ ...request, params: [A, { blockHash: HASH, requireCanonical: false }] }));
+   assert.equal(calls, 0);
+ });
++
++test("direct state-provider log requests cannot exceed 2000 blocks before HTTP", async () => {
++  const calls = [];
++  const p = provider(async (_url, options) => { calls.push(JSON.parse(options.body).request); return Response.json({ result: [] }); });
++  const query = { method: "eth_getLogs", params: [{ address: catalogToken({ agent: "DAT", chainId: 8453 }).address,
++    fromBlock: "0x0", toBlock: "0x7d0", topics: [TRANSFER_TOPIC, null, "0x" + A.slice(2).padStart(64, "0")] }] };
++  await assert.rejects(p.request(query), { code: "RPC_LOG_FILTER" });
++  assert.equal(calls.length, 0);
++  query.params[0].toBlock = "0x7cf";
++  assert.deepEqual(await p.request(query), []);
++  assert.deepEqual(calls, [query]);
++});
+ test("transport errors are bounded local text, not provider instructions", async () => {
+   for (const response of [new Response("secret instruction", { status: 502 }), Response.json({ result: "0x1", extra: "secret" }),
+     Response.json({ error: { message: "secret" } }), new Response('{"result":"0x1","result":"0x2"}')]) {
+diff --git a/test/security-rpc.test.js b/test/security-rpc.test.js
+index d8c8f64..40d014b 100644
+--- a/test/security-rpc.test.js
++++ b/test/security-rpc.test.js
+@@ -103,6 +103,20 @@ test("both supported Transfer directions remain account and token bound", () =>
+   assert.deepEqual(guardRpcRequest(outgoing, context), outgoing);
+ });
+ 
++test("the dispatch boundary enforces the inclusive 2000-block limit without losing uint256 precision", () => {
++  const maximum = (1n << 256n) - 1n;
++  for (const [start, end] of [[0n, 0n], [0n, 1999n], [maximum - 1999n, maximum]]) {
++    const request = logs();
++    Object.assign(request.params[0], { fromBlock: "0x" + start.toString(16), toBlock: "0x" + end.toString(16) });
++    assert.deepEqual(guardRpcRequest(request, context), request);
++  }
++  for (const [start, end] of [[0n, 2000n], [maximum - 2000n, maximum], [0n, maximum]]) {
++    const request = logs();
++    Object.assign(request.params[0], { fromBlock: "0x" + start.toString(16), toBlock: "0x" + end.toString(16) });
++    assert.throws(() => guardRpcRequest(request, context), code("RPC_LOG_FILTER"));
++  }
++});
++
+ for (const alter of [
+   args => { args.params[0].address = A; },
+   args => { args.params[0].topics[0] = HASH; },

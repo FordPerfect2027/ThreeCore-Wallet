@@ -1,5 +1,5 @@
 import { periodShape, periodFail } from "./period-plan.js";
-import { libraryArray, libraryId, libraryLabel, libraryTime } from "./period-library-model.js";
+import { validatePeriodLibrary, PERIOD_LIBRARY_SCHEMA, libraryArray, libraryId, libraryLabel, libraryTime } from "./period-library-model.js";
 import { validateReportHistory, REPORT_HISTORY_SCHEMA } from "./report-history-model.js";
 
 export const REPORT_SET_SCHEMA = "threecore.report-set.v1";
@@ -23,8 +23,11 @@ export function validateSetSelection(value, { allowEmpty = true } = {}) {
 }
 
 /** Input stores original evidence only. Imported conclusions are not accepted. */
+// Only snapshots produced here can skip repeated validation; frozen caller data still undergoes full capture.
+const validatedSets = new WeakSet();
 export function validateReportSet(value) {
-  periodShape(value, ["schema", "title", "createdAt", "sourceRevision", "entries", "historicalOnly"]);
+  if (validatedSets.has(value)) return value;
+  value = periodShape(value, ["schema", "title", "createdAt", "sourceRevision", "entries", "historicalOnly"]);
   if (value.schema !== REPORT_SET_SCHEMA || value.historicalOnly !== true ||
       !Number.isSafeInteger(value.sourceRevision) || value.sourceRevision < 0) {
     periodFail("PERIOD_SET_SCHEMA");
@@ -37,6 +40,7 @@ export function validateReportSet(value) {
   const result = Object.freeze({ schema: REPORT_SET_SCHEMA, title, createdAt,
     sourceRevision: value.sourceRevision, entries: history.entries, historicalOnly: true });
   if (new TextEncoder().encode(JSON.stringify(result)).byteLength > REPORT_SET_LIMIT) periodFail("PERIOD_SET_SIZE");
+  validatedSets.add(result);
   return result;
 }
 
@@ -74,11 +78,47 @@ export function assertSetSourcesUnchanged(input, history) {
 }
 
 export function validateSetExportOptions(value = {}) {
-  periodShape(value, Object.keys(value));
+  try { value = periodShape(value, Object.keys(value)); }
+  catch { periodFail("PERIOD_SHAPE"); }
   const options = { includeNotes: false, shortAddresses: true, ...value };
   periodShape(options, ["includeNotes", "shortAddresses"]);
   if (typeof options.includeNotes !== "boolean" || typeof options.shortAddresses !== "boolean") {
     periodFail("PERIOD_SET_EXPORT_OPTIONS");
   }
   return Object.freeze(options);
+}
+
+/** Collect one token's original entries, refusing conflicting reuse of an original identifier. */
+export function reportSetTokenLibrary(value, agent) {
+  const input = validateReportSet(value);
+  if (!REPORT_SET_AGENTS.includes(agent)) periodFail("PERIOD_SET_LIBRARY_AGENT");
+  const byId = new Map(), conflicts = [], sourceRows = [];
+  let missingReports = 0, duplicateReferences = 0;
+  for (const report of input.entries) {
+    const entry = report.report.slots.find(slot => slot.agent === agent).entry;
+    if (!entry) { missingReports++; continue; }
+    sourceRows.push(Object.freeze({ reportId: report.id, entryId: entry.id, reportArchived: report.archived,
+      entryArchived: entry.archived, requiresNewPlan: entry.requiresNewPlan }));
+    const previous = byId.get(entry.id);
+    if (!previous) byId.set(entry.id, { entry, reportId: report.id });
+    else if (JSON.stringify(previous.entry) === JSON.stringify(entry)) duplicateReferences++;
+    else conflicts.push(Object.freeze({ entryId: entry.id, firstReportId: previous.reportId, conflictingReportId: report.id }));
+  }
+  let document = null, error = null;
+  if (conflicts.length) error = "PERIOD_SET_LIBRARY_CONFLICT";
+  else if (!byId.size) error = "PERIOD_SET_LIBRARY_EMPTY";
+  else {
+    try { document = validatePeriodLibrary({ schema: PERIOD_LIBRARY_SCHEMA, revision: 0, entries: [...byId.values()].map(row => row.entry) }); }
+    catch (failure) { if (failure?.code !== "PERIOD_LIBRARY_CAPACITY") throw failure; error = "PERIOD_SET_LIBRARY_CAPACITY"; }
+  }
+  return Object.freeze({ agent, reportCount: input.entries.length, missingReports, duplicateReferences,
+    entryCount: byId.size, conflicts: Object.freeze(conflicts), sourceRows: Object.freeze(sourceRows),
+    document, error, containsOriginalEvidence: true, historicalOnly: true,
+    liveChainRechecked: false, automaticallyImported: false, authorizesExecution: false });
+}
+
+/** Recover the set's unchanged history entries, including local annotations and archive flags. */
+export function reportSetHistoryDocument(value) {
+  const input = validateReportSet(value);
+  return validateReportHistory({ schema: REPORT_HISTORY_SCHEMA, revision: 0, entries: input.entries });
 }

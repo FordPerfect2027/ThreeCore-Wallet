@@ -14,7 +14,7 @@ export function archiveEvents(input) {
 }
 
 export function validateActivityQuery(input = { agent: "all", direction: "all", search: "", order: "newest", page: 0, pageSize: 20 }) {
-  shape(input, ["agent", "direction", "search", "order", "page", "pageSize"]);
+  input = shape(input, ["agent", "direction", "search", "order", "page", "pageSize"]);
   if (!["all", ...VAULT_AGENTS].includes(input.agent)) transferFail("TRANSFER_VAULT_QUERY");
   if (!TRANSFER_DIRECTIONS.includes(input.direction) || !["newest", "oldest"].includes(input.order)) transferFail("TRANSFER_VAULT_QUERY");
   if (typeof input.search !== "string" || input.search.length > 100 || /[\u0000-\u001f\u007f]/.test(input.search)) {

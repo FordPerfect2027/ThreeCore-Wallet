@@ -1,0 +1,99 @@
+{
+  "recordedAt": "2026-11-01T23:53:48.728Z",
+  "node": "v24.19.0",
+  "advisoryUrl": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+  "packageVersions": {
+    "zod": "3.25.76",
+    "hardhat": "3.16.0",
+    "@nomicfoundation/hardhat-zod-utils": "3.0.6"
+  },
+  "sourceHashes": {
+    "node_modules/@nomicfoundation/hardhat-zod-utils/dist/src/rpc/types/access-list.js": "68be12a48d6ebf21f062fcb4f763ab838ccb84b5d8a8c1dfd18326bf4c1284e0",
+    "node_modules/@nomicfoundation/hardhat-zod-utils/dist/src/rpc/types/authorization-list.js": "e7a5b229c94cf984b5ae22e1c9bb5920962ce37d52030b04b30d9085e154a75c",
+    "node_modules/@nomicfoundation/hardhat-zod-utils/dist/src/rpc/validate-params.js": "f0e72810422a4acf39a9cef42f4c45896c9048a04be44a886e88542a9eae9b5f",
+    "node_modules/hardhat/dist/src/internal/builtin-plugins/network-manager/request-handlers/handlers/accounts/local-accounts.js": "eb83015c7183b1ec1fcfd215819b05b93677786a17aebf00e5e8c05b9d413ea1"
+  },
+  "observations": [
+    {
+      "schema": "rpcAccessList",
+      "inputElements": 0,
+      "success": true,
+      "validationIssueCount": 0,
+      "elapsedMs": 1.4406999999999925
+    },
+    {
+      "schema": "rpcAccessList",
+      "inputElements": 1,
+      "success": false,
+      "validationIssueCount": 2,
+      "elapsedMs": 4.239900000000034
+    },
+    {
+      "schema": "rpcAccessList",
+      "inputElements": 4,
+      "success": false,
+      "validationIssueCount": 8,
+      "elapsedMs": 0.7887999999999806
+    },
+    {
+      "schema": "rpcAccessList",
+      "inputElements": 16,
+      "success": false,
+      "validationIssueCount": 32,
+      "elapsedMs": 1.3285999999999945
+    },
+    {
+      "schema": "rpcAccessList",
+      "inputElements": 64,
+      "success": false,
+      "validationIssueCount": 128,
+      "elapsedMs": 3.5025999999999726
+    },
+    {
+      "schema": "rpcAuthorizationList",
+      "inputElements": 0,
+      "success": true,
+      "validationIssueCount": 0,
+      "elapsedMs": 0.048699999999996635
+    },
+    {
+      "schema": "rpcAuthorizationList",
+      "inputElements": 1,
+      "success": false,
+      "validationIssueCount": 6,
+      "elapsedMs": 0.5479000000000269
+    },
+    {
+      "schema": "rpcAuthorizationList",
+      "inputElements": 4,
+      "success": false,
+      "validationIssueCount": 24,
+      "elapsedMs": 0.5824999999999818
+    },
+    {
+      "schema": "rpcAuthorizationList",
+      "inputElements": 16,
+      "success": false,
+      "validationIssueCount": 96,
+      "elapsedMs": 2.0517999999999574
+    },
+    {
+      "schema": "rpcAuthorizationList",
+      "inputElements": 64,
+      "success": false,
+      "validationIssueCount": 384,
+      "elapsedMs": 18.090100000000007
+    }
+  ],
+  "walletSourceScan": {
+    "files": 230,
+    "roots": [
+      "src",
+      "examples"
+    ],
+    "directZodOrHardhatImports": [],
+    "scope": "Static direct-import search in local JS/MJS/HTML only, not a universal dynamic reachability proof"
+  },
+  "scope": "Installed schemas only, fictional bounded input up to 64 objects. No Hardhat account handler instantiated, no config/keystore/private-key access, no RPC, no signature or transaction.",
+  "conclusion": "Both installed RPC collection schemas collect proportional per-element issues at these bounded sizes. This confirms a development dependency surface to review, not an out-of-memory reproduction or network exploit. No exception waiver or security clearance is asserted."
+}

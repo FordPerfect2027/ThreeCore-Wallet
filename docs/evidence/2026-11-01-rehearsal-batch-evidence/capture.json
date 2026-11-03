@@ -1,0 +1,81 @@
+{
+  "source": "7edd434",
+  "synthetic": true,
+  "captures": [
+    {
+      "name": "matching",
+      "exitCode": 0,
+      "bundleDigest": "48bcc5a13955fa68759aeac47b926374107271798686f76d2d8e7d1a4716842f",
+      "matchesRecomputation": true,
+      "allSourceReportsMatch": true,
+      "expectedSummary": {
+        "selected": 1,
+        "reviewed": 1,
+        "pending": 0,
+        "matching": 1,
+        "differing": 0,
+        "unsupported": 0,
+        "invalid": 0,
+        "hashUnavailable": 0,
+        "reportsWithFailedExpectations": 0,
+        "totalBytes": 6492
+      },
+      "exactSourceBytesRecovered": true
+    },
+    {
+      "name": "altered",
+      "exitCode": 2,
+      "matchesRecomputation": false,
+      "sourceExtractionAllowed": false
+    },
+    {
+      "name": "negative",
+      "exitCode": 0,
+      "bundleDigest": "5bd13f82d79997aebdae5f9def83f0be4e020f3c1a4d0887e63692ec1921dac4",
+      "matchesRecomputation": true,
+      "allSourceReportsMatch": false,
+      "expectedSummary": {
+        "selected": 2,
+        "reviewed": 2,
+        "pending": 0,
+        "matching": 1,
+        "differing": 0,
+        "unsupported": 0,
+        "invalid": 1,
+        "hashUnavailable": 0,
+        "reportsWithFailedExpectations": 1,
+        "totalBytes": 6655
+      },
+      "exactSourceBytesRecovered": true
+    },
+    {
+      "name": "checksum-mismatch",
+      "exitCode": 0,
+      "bundleDigest": "cb179ebabf2ac27f8e550b0bebbc7763217d00906d7016e38c9dc6e34fa0aa19",
+      "matchesRecomputation": true,
+      "allSourceReportsMatch": false,
+      "expectedSummary": {
+        "selected": 1,
+        "reviewed": 1,
+        "pending": 0,
+        "matching": 0,
+        "differing": 0,
+        "unsupported": 0,
+        "invalid": 0,
+        "hashUnavailable": 0,
+        "reportsWithFailedExpectations": 0,
+        "totalBytes": 6492,
+        "checksumsCompared": 1,
+        "checksumsMatching": 0,
+        "checksumMismatches": 1
+      },
+      "exactSourceBytesRecovered": true
+    }
+  ],
+  "nativeFocusedCases": 115,
+  "lastFullBrowserSource": "ccbbbe3",
+  "lastFullBrowserCases": 959,
+  "fullBrowserCoverage": false,
+  "userTabConnectionVerified": false,
+  "realProviderCalls": 0
+}

@@ -1,0 +1,10 @@
+import {spawn} from 'node:child_process';
+import {createWriteStream} from 'node:fs';
+import {writeFile,readFile} from 'node:fs/promises';
+const root='C:/Users/aseet/AppData/Local/Temp/threecore-zod4-repro-20261103';
+const env=Object.fromEntries(Object.entries(process.env).filter(([key])=>/^(path|systemroot|systemdrive|windir|temp|tmp|comspec|pathext)$/i.test(key)));
+const log=createWriteStream(root+'/compile.log',{flags:'wx'}),startedAt=new Date().toISOString();
+const pkg=JSON.parse(await readFile(root+'/node_modules/hardhat/package.json','utf8'));
+const cli=typeof pkg.bin==='string'?pkg.bin:pkg.bin.hardhat;
+const child=spawn(process.execPath,[root+'/node_modules/hardhat/'+cli,'compile'],{cwd:root,env,windowsHide:true,stdio:['ignore','pipe','pipe']});child.stdout.pipe(log,{end:false});child.stderr.pipe(log,{end:false});
+const timer=setTimeout(()=>child.kill(),180000);child.on('error',error=>{clearTimeout(timer);console.error(error.message);process.exitCode=1;});child.on('close',async(code,signal)=>{clearTimeout(timer);log.end();await writeFile(root+'/compile-result.json',JSON.stringify({startedAt,endedAt:new Date().toISOString(),code,signal,config:'new minimal fixture',originalProjectConfigurationLoaded:false,userWalletUsed:false,signatures:false},null,2)+'\n');console.log(JSON.stringify({code,signal}));process.exitCode=code??1;});

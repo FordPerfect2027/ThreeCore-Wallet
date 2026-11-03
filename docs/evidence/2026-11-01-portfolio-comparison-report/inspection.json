@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.saved-file-inspection.v3",
+  "sourceSchema": "threecore-portfolio-comparison-v1",
+  "byteLength": 2885,
+  "title": "前後の残高記録と再計算できる比較結果",
+  "target": "portfolio-comparison",
+  "destinationMessage": "前後の残高記録と比較結果です。対象のカードの「前に保存した記録と比較」にある「保存した比較資料を再確認」で開けます。保存値は再計算しますが、出所・現在の残高・送金・利益を証明しません。内部チェックサムはありません。",
+  "validation": "validated-structure",
+  "checksumVerified": false,
+  "sourceDigest": null,
+  "textDigest": "e8c548750c46831dc1a5a94198e70933e6d88921c239d8d328502aba52319a98",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "configurationReferences": null,
+    "configuredAccountReferences": null,
+    "configuredTokenReferences": null,
+    "portfolioObservationReferences": 2,
+    "holdingReferences": 2,
+    "unknownHoldingReferences": 2
+  },
+  "originalEvidenceValidated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

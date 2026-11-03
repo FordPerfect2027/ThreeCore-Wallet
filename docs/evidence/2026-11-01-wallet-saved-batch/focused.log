@@ -1,0 +1,23 @@
+✔ five saved-original formats validate without importing, exposing contents or summing repeated references (919.5956ms)
+✔ mixed inventory separates auxiliary claims, external mismatch, internal checksum failure and missing files (255.0947ms)
+✔ auxiliary-only list can match its bytes without becoming validated originals (25.8943ms)
+✔ limits cannot be widened and option accessors never execute (2.0647ms)
+✔ byte budgets retain earlier originals and never read files that exceed admission (200.2118ms)
+✔ unsafe manifest paths, extra entry counts and non-JSON inputs fail before producing output (45.6547ms)
+✔ outside junctions and duplicate path or physical aliases are refused (208.1473ms)
+✔ directories, empty and malformed files and manifest self-reference cannot validate (29.5307ms)
+✔ JSON and formula-safe CSV CLI outputs match owned receipts; forged receipts and arguments fail (632.5399ms)
+✔ file change during checksum inspection cannot leave a matching aggregate (209.1192ms)
+✔ manifest changes suppress the complete result (178.8486ms)
+✔ opened source replacement closes its owned handle (172.6466ms)
+✔ opened source growth closes its owned handle (178.3343ms)
+✔ opened source invalid-read closes its owned handle (175.0326ms)
+✔ opened source read-error closes its owned handle (195.1868ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4510.6562

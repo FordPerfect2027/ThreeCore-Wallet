@@ -1,0 +1,52 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-comparison-evidence-review.v1",
+  "sha256": "696ecbda8eafebb9b32219ca9ffe157cf9e0bd0c2af5bb622c49abe4e1e5b614",
+  "matchesRecomputation": true,
+  "differences": [],
+  "unexpectedFields": 0,
+  "beforeEvidenceMatches": true,
+  "afterEvidenceMatches": true,
+  "comparisonMatches": true,
+  "beforeSummary": {
+    "selected": 2,
+    "reviewed": 2,
+    "pending": 0,
+    "matching": 1,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 6516
+  },
+  "afterSummary": {
+    "selected": 2,
+    "reviewed": 2,
+    "pending": 0,
+    "matching": 1,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 6517
+  },
+  "comparisonSummary": {
+    "files": 2,
+    "bothSelected": 2,
+    "onlyBefore": 0,
+    "onlyAfter": 0,
+    "unchanged": 1,
+    "bytesChanged": 1,
+    "resultChanged": 0,
+    "uncompared": 0
+  },
+  "allSourceReportsMatch": false,
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "automaticallyImported": false,
+  "recordedProcessVerified": false,
+  "containsOriginalEvidence": false,
+  "restorable": false
+}

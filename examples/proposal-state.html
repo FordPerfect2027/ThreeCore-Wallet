@@ -1,0 +1,13 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>最新の状態で提案を確認 — ThreeCore</title><link rel="stylesheet" href="/examples/operation-rehearsal.css"></head><body><main>
+<header><a href="/proposals/fees/" target="_blank" rel="noopener">費用の確認を別タブで開く</a><h1>最新の状態で提案を確認</h1>
+<p>保存した提案の残高・許可額・費用を、新しく取得したブロックで確認します。元の金額、期限、上限と、別の提案に確保した予算を維持します。</p>
+<p>接続や署名・送金は不要です。条件が不足する提案も理由を確認して保存できます。期限切れの提案を延長したり、許可額を増やしたりする操作はありません。</p></header>
+<section><h2>1. 資料を選ぶ</h2><label>検証用データ、またはこの画面で保存した記録1個 <input id="state-file" type="file" accept=".json,application/json"></label>
+<p id="state-context"></p><p id="state-status" role="status">資料を選んでください。</p></section>
+<section><h2>2. 確認する</h2><p>公開取得は512 KiBまでの検証用データに対応します。取得開始時のブロックに読み取りを固定し、条件が整う場合だけ同じ提案をシミュレーションします。取得後も状態は変わるため、この結果は実行許可にはなりません。</p>
+<button id="state-read" disabled>最新の公開情報を取得して確認</button><button id="state-check" disabled>保存データを今の時刻で再確認</button><button id="state-cancel">取り消す</button></section>
+<section id="state-result" hidden><h2 id="state-period"></h2><p id="state-outcome"></p><p id="state-block"></p><p id="state-balances"></p><p id="state-required"></p><p id="state-fee"></p><p id="state-simulation"></p><p id="state-time"></p><ul id="state-reasons"></ul></section>
+<button id="state-save" disabled>元の資料と結果を保存</button><p id="state-save-status" role="status"></p>
+</main><script type="module" src="/examples/proposal-state-page.js"></script></body></html>

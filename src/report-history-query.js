@@ -1,12 +1,13 @@
-import { periodShape, periodFail } from "./period-plan.js";
-import { validateReportHistory, REPORT_HISTORY_LIMIT } from "./report-history-model.js";
+import { periodShape, periodFail, periodBlock } from "./period-plan.js";
+import { validateReportHistory, REPORT_HISTORY_LIMIT, selectHistoryEntries } from "./report-history-model.js";
 import { analyzePeriodReport } from "./period-report-engine.js";
 
 export function historyQuery(input = {}) {
   if (!input || typeof input !== "object") periodFail("PERIOD_HISTORY_QUERY");
-  periodShape(input, Object.keys(input));
-  const query = { archive: "active", status: "all", agent: "all", search: "", tag: "", order: "newest", ...input };
-  periodShape(query, ["archive", "status", "agent", "search", "tag", "order"]);
+  try { input = periodShape(input, Object.keys(input)); }
+  catch { periodFail("PERIOD_SHAPE"); }
+  const query = { archive: "active", status: "all", agent: "all", search: "", tag: "", order: "newest", block: "", blockScope: "planned", ...input };
+  periodShape(query, ["archive", "status", "agent", "search", "tag", "order", "block", "blockScope"]);
   if (!["active", "archived", "all"].includes(query.archive) ||
       !["all", "arithmetic-agreement", "attention", "incomplete"].includes(query.status) ||
       !["all", "DAT", "EMA", "CAWELON"].includes(query.agent) ||
@@ -14,6 +15,11 @@ export function historyQuery(input = {}) {
       typeof query.tag !== "string" || (query.tag && !/^[a-z0-9][a-z0-9-]{0,23}$/.test(query.tag)) ||
       typeof query.search !== "string" || query.search.length > 100 ||
       /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/.test(query.search)) periodFail("PERIOD_HISTORY_QUERY");
+  if (typeof query.block !== "string" || query.block.trim() !== query.block || !["planned", "saved"].includes(query.blockScope)) periodFail("PERIOD_HISTORY_QUERY");
+  if (query.block !== "") {
+    try { if (periodBlock(query.block) !== query.block) periodFail("PERIOD_HISTORY_QUERY"); }
+    catch { periodFail("PERIOD_HISTORY_QUERY"); }
+  }
   return Object.freeze({ ...query, search: query.search.trim().toLowerCase() });
 }
 
@@ -30,6 +36,8 @@ export function reportHistoryIndex(input) {
       contexts: Object.freeze(report.slots.filter(slot => slot.plan).map(slot => Object.freeze({
         agent: slot.agent, account: slot.plan.context.account, chainId: slot.plan.context.chainId,
         earlierBlock: slot.plan.earlierBlock, laterBlock: slot.plan.laterBlock,
+        savedRanges: Object.freeze(entry.report.slots.find(source => source.agent === slot.agent).entry.draft.records.map(observation =>
+          Object.freeze({ fromBlock: observation.range.fromBlock, toBlock: observation.range.toBlock }))),
       }))),
       issues: report.issues, warnings: report.warnings });
   });
@@ -47,6 +55,12 @@ export function queryReportHistory(input, options) {
     if (query.status !== "all" && row.status !== query.status) return false;
     if (query.agent !== "all" && !row.agents.includes(query.agent)) return false;
     if (query.tag && !row.tags.includes(query.tag)) return false;
+    if (query.block !== "") {
+      const block = BigInt(query.block);
+      if (!row.contexts.some(context => (query.agent === "all" || query.agent === context.agent) &&
+        (query.blockScope === "planned" ? BigInt(context.earlierBlock) < block && block <= BigInt(context.laterBlock) :
+          context.savedRanges.some(range => BigInt(range.fromBlock) <= block && block <= BigInt(range.toBlock))))) return false;
+    }
     const words = [row.id, row.label, row.note, row.reportTitle, ...row.tags,
       ...row.contexts.flatMap(context => [context.agent, context.account, String(context.chainId), context.earlierBlock, context.laterBlock])];
     return !query.search || words.some(value => value.toLowerCase().includes(query.search));
@@ -78,4 +92,10 @@ export function reportHistoryCSV(input, options) {
   return Object.freeze({ text: [header, ...rows].map(row => row.map(cell).join(",")).join("\r\n") + "\r\n",
     filename: "ThreeCore-report-history-index.csv", mimeType: "text/csv;charset=utf-8",
     rows: result.matched, restorable: false, containsEvidence: false });
+}
+
+/** Recoverable subset of original history entries, not the lossy CSV catalog. */
+export function filteredReportHistory(input, options) {
+  const document = validateReportHistory(input), result = queryReportHistory(document, options);
+  return selectHistoryEntries(document, result.rows.map(row => row.id));
 }

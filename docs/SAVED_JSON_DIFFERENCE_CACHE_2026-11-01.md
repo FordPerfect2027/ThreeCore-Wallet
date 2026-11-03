@@ -1,0 +1,13 @@
+# Reuse bounded JSON readers during repeated source inspection
+
+Item 569. Source: a331320.
+
+The saved-JSON difference browser and the verified comparison source viewer now parse the same bounded source pair once. A private reader retains at most eight immutable location pages with least-recently-used eviction; it does not retain every possible difference path. Each comparison review retains only the most recently selected source pair, and selecting another source drops that cache. Independent reviews do not share cached sources. Whole source texts, parsed values and caches remain behind owned results rather than appearing in exported location pages. Existing size/depth/node/query bounds, source bindings and negative-source classifications remain unchanged.
+
+45 selected tests passed (9084.7082 ms), including exact one-shot output equivalence, bounded cache eviction, hostile query descriptors, copied-review rejection, source switching, independent reviews, browser panel state and offline page output. 123 focused native browser file-read cases passed. The full browser suite was not repeated.
+
+An actual local benchmark against the preceding 0fb437b implementation used two fictional 6,000-row JSON sources and 160 repeated queries across four query shapes. The previous routine took 10605.3678 ms. Creating the new reader took 117.5600 ms, and its queries took 105.2410 ms (222.8010 ms including creation). The combined output SHA-256 was identical: 7073b47296d765d369da5ad61a92c866052d8176336a753d259d36800558a131. This measures repeated JSON-location browsing only, not general wallet performance, file reading, cryptographic verification, blockchain access or development completion speed. Timings are illustrative and machine/run dependent; no speed threshold is asserted by the tests.
+
+[Evidence](evidence/2026-11-01-saved-json-difference-cache/) contains both validation logs, benchmark parameters/results and a replay helper. To reproduce, run `node docs/evidence/2026-11-01-saved-json-difference-cache/benchmark.mjs /absolute/path/to/repository`. It reads the old function fragment from local Git, uses the current bounded security parsers, creates a temporary benchmark module and writes a temporary result plus stdout. It makes no network calls and does not alter wallet files. Node v24.19.0 was used for the recorded run.
+
+The last full browser checkpoint remains 5b34eec (968 cases); last full-wallet remains d253e8d (15,720 tests). No signature, transfer, approval, private-key retrieval, external RPC, publication, deployment or existing-server restart occurred. This is one performance change; cached pages, test assertions and benchmark iterations are not separate completion items.

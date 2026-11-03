@@ -1,0 +1,346 @@
+TAP version 13
+# Subtest: ordinary quote page/module graph and fixed Base reader work; upstream implementation is not public
+ok 1 - ordinary quote page/module graph and fixed Base reader work; upstream implementation is not public
+  ---
+  duration_ms: 856.2769
+  type: 'test'
+  ...
+# Subtest: foreign origin, extra fields, injected methods, invalid numbers, oversized and invalid UTF-8 bodies cannot reach upstream
+ok 2 - foreign origin, extra fields, injected methods, invalid numbers, oversized and invalid UTF-8 bodies cannot reach upstream
+  ---
+  duration_ms: 144.845
+  type: 'test'
+  ...
+# Subtest: upstream errors are generic and partial quotes never leak
+ok 3 - upstream errors are generic and partial quotes never leak
+  ---
+  duration_ms: 16.6185
+  type: 'test'
+  ...
+# Subtest: two simultaneous jobs are allowed; disconnect cancels upstream and releases capacity
+ok 4 - two simultaneous jobs are allowed; disconnect cancels upstream and releases capacity
+  ---
+  duration_ms: 82.7504
+  type: 'test'
+  ...
+# Subtest: demo serves production modules and gates browser fixtures (uiTest=false)
+ok 5 - demo serves production modules and gates browser fixtures (uiTest=false)
+  ---
+  duration_ms: 762.8675
+  type: 'test'
+  ...
+# Subtest: demo serves production modules and gates browser fixtures (uiTest=true)
+ok 6 - demo serves production modules and gates browser fixtures (uiTest=true)
+  ---
+  duration_ms: 599.9618
+  type: 'test'
+  ...
+# Subtest: refused rehearsal navigation stays 403 and offers one fixed same-origin link
+ok 7 - refused rehearsal navigation stays 403 and offers one fixed same-origin link
+  ---
+  duration_ms: 115.3402
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /
+ok 8 - explicit same-origin navigation loads only the fixed screen after a refusal: /
+  ---
+  duration_ms: 49.7876
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+ok 9 - explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+  ---
+  duration_ms: 23.8042
+  type: 'test'
+  ...
+# Subtest: wallet entry guide uses only the local listening port and fixed root route
+ok 10 - wallet entry guide uses only the local listening port and fixed root route
+  ---
+  duration_ms: 12.9682
+  type: 'test'
+  ...
+# Subtest: RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+ok 11 - RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+  ---
+  duration_ms: 36.4602
+  type: 'test'
+  ...
+# Subtest: invalid Host remains a plain rejection and is never echoed in a recovery URL
+ok 12 - invalid Host remains a plain rejection and is never echoed in a recovery URL
+  ---
+  duration_ms: 28.2921
+  type: 'test'
+  ...
+# Subtest: ordinary direct navigation still serves the actual rehearsal page
+ok 13 - ordinary direct navigation still serves the actual rehearsal page
+  ---
+  duration_ms: 20.6688
+  type: 'test'
+  ...
+# Subtest: guide helper refuses invalid local ports and unrelated verdicts
+ok 14 - guide helper refuses invalid local ports and unrelated verdicts
+  ---
+  duration_ms: 0.7263
+  type: 'test'
+  ...
+# Subtest: quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+ok 15 - quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+  ---
+  duration_ms: 775.0409
+  type: 'test'
+  ...
+# Subtest: page/module routes exist and same-origin batch reads return validated data without a generic RPC proxy
+ok 16 - page/module routes exist and same-origin batch reads return validated data without a generic RPC proxy
+  ---
+  duration_ms: 224.6107
+  type: 'test'
+  ...
+# Subtest: wrong origin, cross-site fetch, unknown fields, invalid amounts and oversized bodies cannot reach upstream
+ok 17 - wrong origin, cross-site fetch, unknown fields, invalid amounts and oversized bodies cannot reach upstream
+  ---
+  duration_ms: 190.2075
+  type: 'test'
+  ...
+# Subtest: upstream failure sends only a bounded generic error without partial results or upstream secrets
+ok 18 - upstream failure sends only a bounded generic error without partial results or upstream secrets
+  ---
+  duration_ms: 27.9807
+  type: 'test'
+  ...
+# Subtest: disconnect aborts ongoing upstream and releases batch capacity for the next request
+ok 19 - disconnect aborts ongoing upstream and releases batch capacity for the next request
+  ---
+  duration_ms: 42.0834
+  type: 'test'
+  ...
+# Subtest: only three simultaneous batch jobs are admitted; cancelled requests release all slots
+ok 20 - only three simultaneous batch jobs are admitted; cancelled requests release all slots
+  ---
+  duration_ms: 90.6537
+  type: 'test'
+  ...
+# Subtest: missing POST origin, duplicate JSON keys and invalid UTF-8 fail before any upstream read
+ok 21 - missing POST origin, duplicate JSON keys and invalid UTF-8 fail before any upstream read
+  ---
+  duration_ms: 38.9535
+  type: 'test'
+  ...
+# Subtest: client binds response to agent, direction, amount, slippage and requested block using only the local endpoint
+ok 22 - client binds response to agent, direction, amount, slippage and requested block using only the local endpoint
+  ---
+  duration_ms: 131.627
+  type: 'test'
+  ...
+# Subtest: unsupported request fields and pre-cancellation never start transport; malformed, forged and oversized replies fail
+ok 23 - unsupported request fields and pre-cancellation never start transport; malformed, forged and oversized replies fail
+  ---
+  duration_ms: 11.2906
+  type: 'test'
+  ...
+# Subtest: deadline and caller cancellation interrupt stalled response headers and body
+ok 24 - deadline and caller cancellation interrupt stalled response headers and body
+  ---
+  duration_ms: 40.6586
+  type: 'test'
+  ...
+# Subtest: quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+ok 25 - quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+  ---
+  duration_ms: 7.4623
+  type: 'test'
+  ...
+# Subtest: quote files revalidate arithmetic and checksum rather than trusting saved output
+ok 26 - quote files revalidate arithmetic and checksum rather than trusting saved output
+  ---
+  duration_ms: 25.6926
+  type: 'test'
+  ...
+# Subtest: proposal, exact input amount, router, original budget block and current limits bind the quote
+ok 27 - proposal, exact input amount, router, original budget block and current limits bind the quote
+  ---
+  duration_ms: 130.0614
+  type: 'test'
+  ...
+# Subtest: comparison limits must be explicit and valid; cancellation interrupts archived source validation
+ok 28 - comparison limits must be explicit and valid; cancellation interrupts archived source validation
+  ---
+  duration_ms: 13.7314
+  type: 'test'
+  ...
+# Subtest: UI decimal input is exact, buyer unit changes, and saved file reproduces validated amounts
+ok 29 - UI decimal input is exact, buyer unit changes, and saved file reproduces validated amounts
+  ---
+  duration_ms: 47.8523
+  type: 'test'
+  ...
+# Subtest: invalid, overprecise, exponential, zero and oversized values never dispatch
+ok 30 - invalid, overprecise, exponential, zero and oversized values never dispatch
+  ---
+  duration_ms: 7.1707
+  type: 'test'
+  ...
+# Subtest: cancel cancels outstanding requests and discards their eventual result
+ok 31 - cancel cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 2.9949
+  type: 'test'
+  ...
+# Subtest: input cancels outstanding requests and discards their eventual result
+ok 32 - input cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 9.7586
+  type: 'test'
+  ...
+# Subtest: pagehide cancels outstanding requests and discards their eventual result
+ok 33 - pagehide cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 4.091
+  type: 'test'
+  ...
+# Subtest: dispose cancels outstanding requests and discards their eventual result
+ok 34 - dispose cancels outstanding requests and discards their eventual result
+  ---
+  duration_ms: 7.1832
+  type: 'test'
+  ...
+# Subtest: changed source context, RPC failure and arithmetic mismatch never expose a usable result
+ok 35 - changed source context, RPC failure and arithmetic mismatch never expose a usable result
+  ---
+  duration_ms: 21.2553
+  type: 'test'
+  ...
+# Subtest: failed download preserves output while reentrant cancellation never reports success
+ok 36 - failed download preserves output while reentrant cancellation never reports success
+  ---
+  duration_ms: 6.8701
+  type: 'test'
+  ...
+# Subtest: all three agents and both quote directions compare pool, router and reserve arithmetic at one hash
+ok 37 - all three agents and both quote directions compare pool, router and reserve arithmetic at one hash
+  ---
+  duration_ms: 336.0882
+  type: 'test'
+  ...
+# Subtest: single-route encoding matches independently generated viem 2.56.6 ABI vector
+ok 38 - single-route encoding matches independently generated viem 2.56.6 ABI vector
+  ---
+  duration_ms: 0.426
+  type: 'test'
+  ...
+# Subtest: invalid amounts, source options and cancellation fail before network access
+ok 39 - invalid amounts, source options and cancellation fail before network access
+  ---
+  duration_ms: 8.5341
+  type: 'test'
+  ...
+# Subtest: explicit historical height skips latest and still rechecks its exact canonical hash
+ok 40 - explicit historical height skips latest and still rechecks its exact canonical hash
+  ---
+  duration_ms: 34.4068
+  type: 'test'
+  ...
+# Subtest: identity, empty pool, decimals, output, timestamps and network transitions cannot produce a quote
+ok 41 - identity, empty pool, decimals, output, timestamps and network transitions cannot produce a quote
+  ---
+  duration_ms: 215.1899
+  type: 'test'
+  ...
+# Subtest: stalled requests, body timeout and mid-read cancellation settle and never fall back to an unpinned read
+ok 42 - stalled requests, body timeout and mid-read cancellation settle and never fall back to an unpinned read
+  ---
+  duration_ms: 226.7568
+  type: 'test'
+  ...
+# Subtest: quote view selectors accept only exact lengths and canonical single-route ABI
+ok 43 - quote view selectors accept only exact lengths and canonical single-route ABI
+  ---
+  duration_ms: 132.4387
+  type: 'test'
+  ...
+# Subtest: timestamp-aware headers fail on missing or noncanonical time while old header shape stays unchanged
+ok 44 - timestamp-aware headers fail on missing or noncanonical time while old header shape stays unchanged
+  ---
+  duration_ms: 12.2919
+  type: 'test'
+  ...
+# Subtest: saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+ok 45 - saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+  ---
+  duration_ms: 208.8949
+  type: 'test'
+  ...
+# Subtest: changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+ok 46 - changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+  ---
+  duration_ms: 120.3971
+  type: 'test'
+  ...
+# Subtest: page previews units, compares, saves exact inputs and limits, then reopens without assuming current success
+ok 47 - page previews units, compares, saves exact inputs and limits, then reopens without assuming current success
+  ---
+  duration_ms: 116.6178
+  type: 'test'
+  ...
+# Subtest: recorded success is re-evaluated as stale at current time; stricter slippage invalidates the visible result
+ok 48 - recorded success is re-evaluated as stale at current time; stricter slippage invalidates the visible result
+  ---
+  duration_ms: 44.2531
+  type: 'test'
+  ...
+# Subtest: cancel aborts and discards a delayed comparison
+ok 49 - cancel aborts and discards a delayed comparison
+  ---
+  duration_ms: 26.3293
+  type: 'test'
+  ...
+# Subtest: new-file aborts and discards a delayed comparison
+ok 50 - new-file aborts and discards a delayed comparison
+  ---
+  duration_ms: 23.846
+  type: 'test'
+  ...
+# Subtest: limit-change aborts and discards a delayed comparison
+ok 51 - limit-change aborts and discards a delayed comparison
+  ---
+  duration_ms: 21.3241
+  type: 'test'
+  ...
+# Subtest: pagehide aborts and discards a delayed comparison
+ok 52 - pagehide aborts and discards a delayed comparison
+  ---
+  duration_ms: 31.7776
+  type: 'test'
+  ...
+# Subtest: dispose aborts and discards a delayed comparison
+ok 53 - dispose aborts and discards a delayed comparison
+  ---
+  duration_ms: 30.7852
+  type: 'test'
+  ...
+# Subtest: invalid or duplicate files and forged saved verdict clear old results; cancelled file reads cannot restore them
+ok 54 - invalid or duplicate files and forged saved verdict clear old results; cancelled file reads cannot restore them
+  ---
+  duration_ms: 62.3478
+  type: 'test'
+  ...
+# Subtest: blank, out-of-range, exponent and overprecise conditions never produce a saved result
+ok 55 - blank, out-of-range, exponent and overprecise conditions never produce a saved result
+  ---
+  duration_ms: 30.0941
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download keeps state consistent
+ok 56 - failed or reentrant download keeps state consistent
+  ---
+  duration_ms: 37.9242
+  type: 'test'
+  ...
+1..56
+# tests 56
+# suites 0
+# pass 56
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6529.2744

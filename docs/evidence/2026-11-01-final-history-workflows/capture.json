@@ -1,0 +1,31 @@
+{
+  "source": "3fd2836",
+  "synthetic": true,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false,
+  "unitCount": 16391,
+  "browserCount": 1001,
+  "item598": {
+    "sourcesExact": true,
+    "reuseRequiresExplicitComparison": true
+  },
+  "item599": {
+    "selectedOriginalIndex": 0,
+    "selectedBlock": "30",
+    "displayedBlock": "40",
+    "mockReads": 1,
+    "currentAndHistoryUnchanged": true
+  },
+  "item600": {
+    "keepCount": 1,
+    "removedIndices": [
+      3,
+      2,
+      1
+    ],
+    "remainingCount": 3,
+    "preview": "表示した記録内で、同じエージェント・アカウント・チェーン・サイトごとに新しい1件を残します。\n削除予定3件 / 残す記録3件。まだ変更していません。\n元の位置3: 0x2222222222222222222222222222222222222222 / chain 84532 / http://localhost:4184 / block 1\n元の位置1: 0x1111111111111111111111111111111111111111 / chain 84532 / http://localhost:4184 / block 10\n元の位置2: 0x1111111111111111111111111111111111111111 / chain 84532 / http://localhost:4184 / block 20\n必要な履歴は先にファイルへ保存してください。適用後は直前の履歴を復元できます。ページを閉じると復元用データも消えます。",
+    "confirmedApplyRequired": true,
+    "exactRecovery": true
+  }
+}

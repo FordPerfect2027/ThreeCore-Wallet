@@ -1,0 +1,24 @@
+{
+  "source": "02e7ae2",
+  "stagedStatus": "契約一覧を入力リストの確認欄へ準備しました。内容確認・反映が必要です。アカウント・残高は移していません。",
+  "configurationOnlyKeys": [
+    "schema",
+    "agent",
+    "chainId",
+    "tokens"
+  ],
+  "currentObservationRetainedWhileStaging": true,
+  "explicitPreviewAndApplyRequired": true,
+  "appliedContractLines": "0x3333333333333333333333333333333333333333\n0x2222222222222222222222222222222222222222",
+  "appliedStatus": "入力欄へ反映しました。残高照会はまだ行っていません。",
+  "historicalMissingCodeContractRetained": true,
+  "historyUnchanged": true,
+  "providerReads": 1,
+  "extraReads": 0,
+  "exactUiApi": true,
+  "synthetic": true,
+  "nativeBrowserCases": 139,
+  "externalRpcCalls": 0,
+  "osPickerVerified": false,
+  "userWalletConnectionVerified": false
+}

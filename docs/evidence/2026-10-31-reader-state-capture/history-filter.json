@@ -1,0 +1,39 @@
+{
+  "totalCount": 2,
+  "matchCount": 1,
+  "query": {
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": "",
+    "minimumBlock": null,
+    "maximumBlock": null,
+    "order": "oldest"
+  },
+  "rows": [
+    {
+      "snapshot": {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "siteOrigin": "http://localhost:4184",
+        "connectionEpoch": 1,
+        "blockNumber": "2",
+        "blockHash": "0xabababababababababababababababababababababababababababababababab",
+        "nativeBalanceBaseUnits": "16",
+        "holdings": [
+          {
+            "address": "0x3333333333333333333333333333333333333333",
+            "hasCode": true,
+            "balanceBaseUnits": "42",
+            "notice": null
+          }
+        ],
+        "readOnly": true,
+        "securityAudit": false
+      },
+      "index": 0
+    }
+  ],
+  "historicalObservation": true,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false
+}

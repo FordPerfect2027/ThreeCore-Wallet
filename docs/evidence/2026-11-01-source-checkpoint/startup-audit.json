@@ -1,0 +1,59 @@
+{
+  "sourceRevision": "df9690f7d1b2c1d3a66e104e506a6ac8c732d86f",
+  "check": "fresh-export-local-server-startup",
+  "loopbackOnly": true,
+  "externalRpcRequested": false,
+  "browserWalletUsed": false,
+  "testPort": 59244,
+  "existing4231Restarted": false,
+  "ownServerClosed": true,
+  "allPassed": true,
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "57c641523f430c39e4587798b381313e346ad7380f5982745eadcdc188fa4bd3",
+      "passed": true
+    },
+    {
+      "path": "/rehearsal/",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "d05e88d250d5d88af0e7e655532c1a8230e7d608c030b955ad6050ca343c3d00",
+      "passed": true
+    },
+    {
+      "path": "/examples/wallet-entry.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "691fc62f83fdd6acdc7957f2837d8228b6175459ed5aa108d6992c7c01414c76",
+      "passed": true
+    },
+    {
+      "path": "/src/wallet-session.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "sha256": "194d7b2f917db37f84195116908cba5b067418da63fdfacbf9596b7788c3f676",
+      "passed": true
+    },
+    {
+      "path": "/.env",
+      "foreignOrigin": false,
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/test/browser/",
+      "foreignOrigin": false,
+      "status": 404,
+      "passed": true
+    },
+    {
+      "path": "/",
+      "foreignOrigin": true,
+      "status": 403,
+      "passed": true
+    }
+  ]
+}

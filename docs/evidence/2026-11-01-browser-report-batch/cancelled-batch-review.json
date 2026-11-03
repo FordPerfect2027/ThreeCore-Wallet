@@ -1,0 +1,177 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": false,
+  "phase": "cancelled",
+  "complete": false,
+  "allRecomputationsMatch": false,
+  "summary": {
+    "selected": 17,
+    "reviewed": 2,
+    "pending": 15,
+    "matching": 2,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 146153
+  },
+  "files": [
+    {
+      "name": "01-saved-report.json",
+      "byteLength": 8218,
+      "status": "matched",
+      "sha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2",
+      "inputSchema": "threecore.operation-rehearsal-overview.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "02-saved-report.json",
+      "byteLength": 9274,
+      "status": "matched",
+      "sha256": "e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "03-saved-report.json",
+      "byteLength": 20352,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "04-saved-report.json",
+      "byteLength": 21301,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "05-saved-report.json",
+      "byteLength": 20626,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "06-saved-report.json",
+      "byteLength": 5679,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "07-saved-report.json",
+      "byteLength": 6015,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "08-saved-report.json",
+      "byteLength": 7999,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "09-saved-report.json",
+      "byteLength": 10158,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "10-saved-report.json",
+      "byteLength": 6734,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "11-saved-report.json",
+      "byteLength": 6572,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "12-saved-report.json",
+      "byteLength": 2124,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "13-context-query-generated.json",
+      "byteLength": 4193,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "control-1-tampered.json",
+      "byteLength": 9264,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "control-2-tampered.json",
+      "byteLength": 7614,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "control-unsupported.json",
+      "byteLength": 3,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    },
+    {
+      "name": "control-invalid.json",
+      "byteLength": 27,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    }
+  ]
+}

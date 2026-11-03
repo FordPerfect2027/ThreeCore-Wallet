@@ -1,0 +1,16 @@
+✔ check export parses every option, captures normalized filters and rejects ambiguous flags (10.9195ms)
+✔ help needs no file and explains unfiltered summary and privacy scope (0.9269ms)
+✔ standalone command reproduces all matching browser CSV bytes without changing source (1645.6261ms)
+✔ JSON carries original digest and complete query/summary despite zero matching checks (427.6661ms)
+✔ strict continuity cannot be concealed by token or search selection (559.1555ms)
+✔ note and address options reproduce browser export without claiming anonymization (813.3395ms)
+✔ checksum tampering has no partial stdout (225.2147ms)
+✔ wrong file type, malformed UTF-8 and missing paths fail without disclosing paths (182.1649ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4328.4736

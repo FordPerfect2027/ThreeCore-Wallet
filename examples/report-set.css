@@ -83,7 +83,19 @@
 .report-set-panel .report-set-timeline-cell[data-tone=review] { border-top-color: #e5b96b; }
 .report-set-panel .report-set-timeline-cell[data-tone=conflict] { border-top-color: #f5b1a9; }
 .report-set-panel .report-set-timeline-cell[aria-pressed=true] { outline: 2px solid #80e3ff; outline-offset: 2px; background: #1a4559; }
-.report-set-timeline-detail { border-left: 2px solid #608093; padding: 12px; background: #102737; }
+.report-set-timeline-detail, .report-set-history-coverage-detail { border-left: 2px solid #608093; padding: 12px; background: #102737; }
+.report-set-history-coverage { margin-top: 14px; }
+.report-set-history-coverage summary { cursor: pointer; padding: 8px 0; }
+.report-set-panel .report-set-history-coverage-cell { text-align: left; overflow-wrap: anywhere; border-top: 3px solid #6dbca8; }
+.report-set-panel .report-set-history-coverage-cell[data-kind=pending],
+.report-set-panel .report-set-history-coverage-cell[data-kind=unplanned] { border-top: 3px dashed #d8b16d; }
+.report-set-panel .report-set-history-coverage-cell[data-review=true] { border-top-color: #f5b1a9; }
+.report-set-panel .report-set-history-coverage-cell[aria-pressed=true] { outline: 2px solid #80e3ff; outline-offset: 2px; }
+.report-set-history-queue { margin-top: 18px; border-top: 1px solid #375263; padding-top: 10px; }
+.report-set-history-queue h6 { font-size: 14px; margin: 8px 0; }
+.report-set-history-queue label { display: block; margin: 8px 0; }
+.report-set-history-queue input, .report-set-history-queue select { display: block; max-width: 100%; }
+.report-set-history-queue-output { overflow-wrap: anywhere; white-space: pre-wrap; }
 .report-set-selection-section, .report-set-result, .report-set-restore, .report-set-export-section { margin-top: 22px; border-top: 1px solid #375263; padding-top: 18px; }
 .report-set-limitation { padding: 14px; background: #152d3c; border-left: 3px solid #a9c8d6; color: #c6dce6; }
 @media (max-width: 800px) {

@@ -2,6 +2,7 @@ import { createSecurityLock } from "../src/security-lock.js";
 import { createSecurityJournal } from "../src/security-journal.js";
 import { mountSecurityJournalPanel } from "./security-journal-panel.js";
 import { mountTabGuardPanel } from "./tab-guard-panel.js";
+import { observeCallbackResult } from "../src/security-callback.js";
 
 const reasons = Object.freeze({ manual: "操作により", idle: "一定時間操作がなかったため",
   hidden: "画面を離れたため", "page-exit": "ページを離れたため",
@@ -60,13 +61,8 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
   let protecting = false;
   let protectionVersion = 0;
   let checkingResume = false;
-  function isAsync(value) {
-    if (!value || !["object", "function"].includes(typeof value)) return false;
-    const then = value.then;
-    if (typeof then !== "function") return false;
-    new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
-    return true;
-  }
+  let renderVersion = 0;
+  function isAsync(value) { return observeCallbackResult(value) !== "synchronous"; }
   function protect(state) {
     if (protecting) return false;
     protecting = true;
@@ -100,11 +96,15 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
     finally { checkingResume = false; }
   }
   function render(state) {
+    if (disposed) return;
+    const id = ++renderVersion, protection = protectionVersion;
+    const resumable = state.canResume && protectionCompleted && mayResume();
+    if (disposed || id !== renderVersion || protection !== protectionVersion) return;
     status.textContent = state.locked
       ? (reasons[state.reason] ?? "保護のため") + "、接続を停止しました。"
       : "接続操作を受け付けています。読み取りには各トークンの接続が必要です。";
     stop.disabled = state.locked || state.disposed;
-    resume.disabled = !state.canResume || !protectionCompleted || !mayResume();
+    resume.disabled = !resumable;
     cleanupWarning.hidden = cleanupRetry.hidden = protectionCompleted;
     cleanupRetry.disabled = state.disposed;
     cleanupWarning.textContent = protectionCompleted ? "" :
@@ -122,9 +122,14 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
     listeners.push(() => target.removeEventListener(type, callback, options));
   }
   function protectAgain(reason = "manual") {
-    if (disposed || protecting) return false;
+    if (disposed) return false;
+    if (protecting) {
+      if (reason === "clock" || reason === "timer") { protectionVersion++; lock.lock(reason); }
+      return false;
+    }
     protectionVersion++;
     if (!lock.state().locked) return lock.lock(reason);
+    lock.lock(reason);
     lock.retryCleanup();
     // Repeat cleanup, but do not inflate history for repeated identical stops.
     if (reason !== lastReportedReason) {
@@ -183,6 +188,12 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
     check: lock.check,
     state: lock.state,
     lock: protectAgain,
+    recordConnectionStop(kind) {
+      if (disposed || !["wallet-account", "wallet-network", "wallet-unavailable"].includes(kind)) return false;
+      const recorded = journal.record(kind);
+      journalPanel.render();
+      return recorded;
+    },
     dispose() {
       if (disposed) return;
       disposed = true;

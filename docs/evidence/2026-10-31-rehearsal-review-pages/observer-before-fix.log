@@ -1,0 +1,97 @@
+✔ evidence file verification exports exact source and a reproducible result (62.2618ms)
+✔ pasting clears raw input and evaluates receipt differences as text (27.4224ms)
+✔ faithfully recorded calculation discrepancy is not shown as success (31.2684ms)
+✔ faithfully recorded checksum discrepancy is not shown as success (15.3839ms)
+✔ faithfully recorded expectation discrepancy is not shown as success (46.875ms)
+✔ late evidence hash completion cannot undo clear (31.3619ms)
+✔ late evidence hash completion cannot undo edit (30.7149ms)
+✔ late evidence hash completion cannot undo dispose (30.7048ms)
+✔ a newer input wins over a late file read (63.6841ms)
+✔ filename capture cannot continue after clear (15.0826ms)
+✔ picker dismissal preserves a completed verification (14.9496ms)
+✔ picker dismissal does not cancel an in-flight verification (30.8388ms)
+✔ oversized and invalidly encoded files fail before result export (31.0032ms)
+✔ source-save failure and observer cancellation retain correct ownership (11.4406ms)
+✔ save failure and observer cancellation retain correct ownership (19.8819ms)
+✖ a file-cancellation observer keeps its newer evidence over an older clear (30.7342ms)
+✖ a file-cancellation observer keeps its newer evidence over an older paste (45.7075ms)
+✖ a file-cancellation observer keeps its newer evidence over an older file (46.5757ms)
+✖ disposal closes evidence input before cancellation observers can start a replacement (45.396ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 15
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1043.2059
+
+✖ failing tests:
+
+test at test\rehearsal-evidence-panel.test.js:127:46
+✖ a file-cancellation observer keeps its newer evidence over an older clear (30.7342ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '' !== 'passed'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-evidence-panel.test.js:136:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: 'passed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\rehearsal-evidence-panel.test.js:127:46
+✖ a file-cancellation observer keeps its newer evidence over an older paste (45.7075ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '' !== 'passed'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-evidence-panel.test.js:136:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: 'passed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\rehearsal-evidence-panel.test.js:127:46
+✖ a file-cancellation observer keeps its newer evidence over an older file (46.5757ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '' !== 'passed'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-evidence-panel.test.js:136:57)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: 'passed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\rehearsal-evidence-panel.test.js:140:1
+✖ disposal closes evidence input before cancellation observers can start a replacement (45.396ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/rehearsal-evidence-panel.test.js:145:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

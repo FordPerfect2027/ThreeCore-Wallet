@@ -175,23 +175,24 @@ export function mountReconciliationPanel({
   const exports = element("div", "reconciliation-actions");
   const exportButtons = {};
   for (const [kind, text] of [["json", "照合データを保存"], ["text", "照合結果をテキスト保存"],
-    ["summary", "照合結果をCSV保存"], ["events", "全照合イベントをCSV保存"], ["ledger", "ブロック集計をCSV保存"], ["windows", "未取得期間メモをCSV保存"]]) {
+    ["summary", "照合結果をCSV保存"], ["events", "全照合イベントをCSV保存"], ["filtered-events", "絞り込み結果を全件CSV保存"], ["ledger", "ブロック集計をCSV保存"], ["windows", "未取得期間メモをCSV保存"]]) {
     exportButtons[kind] = button("export-" + kind, text);
     exports.append(exportButtons[kind]);
   }
   const exportStatus = element("p", "reconciliation-export-status");
   host.append(element("h3", "", "4. ファイルに保存する"), exports, exportStatus,
-    element("p", "", "JSONには元の記録と公開アドレスを含みます。CSVは全トークン・全方向が対象で、上の表示フィルターは適用しません。検査値は出所や内容の正しさを保証しません。"));
+    element("p", "", "JSONには元の記録と公開アドレスを含みます。「絞り込み結果」は上の条件に合う全ページを保存します。ほかのCSVは表示フィルターを適用しません。CSVは閲覧用で、再読込みにはJSONを使用してください。検査値は出所や内容の正しさを保証しません。"));
   parent.append(host);
 
+  const eventQuery = () => ({ agent: filterAgent.node.value, direction: direction.node.value, search: search.node.value, page });
   function renderEvents(state) {
     tbody.replaceChildren();
+    exportButtons["filtered-events"].disabled = true;
     eventSection.hidden = !state.report;
     if (!state.report) return;
     try {
-      const found = queryReconciliationEvents(state.workspace, {
-        agent: filterAgent.node.value, direction: direction.node.value, search: search.node.value, page,
-      });
+      const found = queryReconciliationEvents(state.workspace, eventQuery());
+      exportButtons["filtered-events"].disabled = state.busy;
       page = found.page;
       for (const row of found.rows) {
         const tr = element("tr");
@@ -295,7 +296,7 @@ export function mountReconciliationPanel({
   listen(search.node, "input", () => { page = 0; renderEvents(currentState); });
   listen(previous, "click", () => { page--; renderEvents(currentState); });
   listen(next, "click", () => { page++; renderEvents(currentState); });
-  for (const [kind, node] of Object.entries(exportButtons)) listen(node, "click", () => { void controller.exportFile(kind, download); });
+  for (const [kind, node] of Object.entries(exportButtons)) listen(node, "click", () => { void controller.exportFile(kind, download, kind === "filtered-events" ? eventQuery() : undefined); });
   render(controller.state);
   return Object.freeze({
     getWorkspace: () => controller.state.workspace,

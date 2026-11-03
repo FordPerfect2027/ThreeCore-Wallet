@@ -1,0 +1,47 @@
+{
+  "schema": "threecore-backup-check-v1",
+  "byteLength": 10103,
+  "checksumVerified": true,
+  "digest": "e2134d6f55364ce1cdcf5487513983b6bd8be7b858f7ff03fcc0027acc9da37d",
+  "configuredCards": 3,
+  "totalObservations": 9,
+  "cards": [
+    {
+      "agent": "DAT",
+      "chainId": 84532,
+      "accountConfigured": true,
+      "configuredTokens": 1,
+      "observations": 3,
+      "remainingCapacity": 61,
+      "observationGroups": 3,
+      "historicalRecordsOutsideConfiguration": 2,
+      "unknownTokenBalances": 0
+    },
+    {
+      "agent": "EMA",
+      "chainId": 84532,
+      "accountConfigured": true,
+      "configuredTokens": 1,
+      "observations": 3,
+      "remainingCapacity": 61,
+      "observationGroups": 3,
+      "historicalRecordsOutsideConfiguration": 2,
+      "unknownTokenBalances": 0
+    },
+    {
+      "agent": "CAWELON",
+      "chainId": 84532,
+      "accountConfigured": true,
+      "configuredTokens": 1,
+      "observations": 3,
+      "remainingCapacity": 61,
+      "observationGroups": 3,
+      "historicalRecordsOutsideConfiguration": 2,
+      "unknownTokenBalances": 0
+    }
+  ],
+  "restored": false,
+  "currentBalanceVerified": false,
+  "ownershipVerified": false,
+  "independentSecurityAudit": false
+}

@@ -1,3 +1,4 @@
+import { captureOptionalDataFields } from "./security-data.js";
 /**
  * Read-only Aerodrome / ThreeCore integration preflight on Base Mainnet.
  * Addresses must be independently cross-checked against official published
@@ -5,6 +6,7 @@
  *
  * NEVER signs, grants approvals, sends transactions, or handles private keys.
  */
+import { createPublicBaseRpcReader, PublicBaseRpcError } from "./public-base-rpc.js";
 export const AERODROME_BASE = Object.freeze({
   chainId: 8453,
   rpcUrl: "https://mainnet.base.org",
@@ -65,11 +67,10 @@ function decodeUint256Word(result) {
  * this says nothing about UniversalRouter, Slipstream, Permit2 or other routers.
  * The data is a point-in-time observation, not a DEX trade recommendation.
  */
-export async function inspectAerodromeBase({
-  publicWalletAddress,
-  fetchImpl = globalThis.fetch,
-  timeoutMs = 12000,
-} = {}) {
+export async function inspectAerodromeBase(input = {}) {
+  let options;try { options=captureOptionalDataFields(input,["publicWalletAddress","fetchImpl","timeoutMs","signal"]); }
+  catch { fail("INVALID_OPTIONS","Diagnostic options must contain own data fields"); }
+  const {publicWalletAddress,fetchImpl=globalThis.fetch,timeoutMs=12000,signal}=options;
   // Validate everything before network access; no wallet is connected here.
   const wallet = publicWalletAddress == null ? null : address(publicWalletAddress);
   if (typeof fetchImpl !== "function") fail("NO_TRANSPORT", "No JSON-RPC transport");
@@ -77,25 +78,17 @@ export async function inspectAerodromeBase({
     fail("INVALID_TIMEOUT", "Timeout must be between 100 and 30000 milliseconds");
   }
 
-  let id = 0;
+  let reader;
+  try { reader=createPublicBaseRpcReader({rpcUrl:AERODROME_BASE.rpcUrl,fetchImpl,timeoutMs,signal}); }
+  catch(error){if(error instanceof PublicBaseRpcError)fail(error.code,error.message);throw error;}
   async function read(method, params = []) {
-    if (!["eth_chainId", "eth_blockNumber", "eth_getCode", "eth_call"].includes(method)) {
-      fail("FORBIDDEN_METHOD", "Only read-only JSON-RPC requests are permitted");
+    try { return await reader(method, params); }
+    catch (error) {
+      if (!(error instanceof PublicBaseRpcError)) throw error;
+      const code = error.code === "INVALID_RPC_RESPONSE" ? "INVALID_RPC_RESULT" :
+        error.code === "METHOD_BLOCKED" ? "FORBIDDEN_METHOD" : error.code;
+      throw new AerodromeReadError(code, error.message);
     }
-    const currentId = ++id;
-    const response = await fetchImpl(AERODROME_BASE.rpcUrl, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ jsonrpc: "2.0", id: currentId, method, params }),
-      signal: AbortSignal.timeout(timeoutMs),
-    });
-    if (!response?.ok) fail("HTTP_ERROR", "Base RPC rejected the request");
-    const value = await response.json();
-    if (!value || value.jsonrpc !== "2.0" || value.id !== currentId ||
-        value.error || typeof value.result !== "string") {
-      fail("INVALID_RPC_RESULT", "Unexpected JSON-RPC response");
-    }
-    return value.result;
   }
 
   const actualChain = BigInt(decodeQuantity(await read("eth_chainId")));
@@ -104,6 +97,8 @@ export async function inspectAerodromeBase({
   }
   const block = decodeQuantity(await read("eth_blockNumber"));
   const blockTag = "0x" + BigInt(block).toString(16);
+  const initialBlock = await read("eth_getBlockByNumber", [blockTag, false]);
+  const blockSelector = Object.freeze({ blockHash: initialBlock.hash, requireCanonical: true });
 
   const contracts = Object.freeze({
     aerodromeRouter: AERODROME_BASE.router,
@@ -113,7 +108,7 @@ export async function inspectAerodromeBase({
   });
   const deployed = {};
   for (const [name, contractAddress] of Object.entries(contracts)) {
-    const bytecode = await read("eth_getCode", [contractAddress, blockTag]);
+    const bytecode = await read("eth_getCode", [contractAddress, blockSelector]);
     if (!/^0x(?:[0-9a-fA-F]{2})*$/.test(bytecode)) {
       fail("INVALID_RPC_RESULT", "Malformed contract code");
     }
@@ -127,12 +122,12 @@ export async function inspectAerodromeBase({
       const balanceHex = await read("eth_call", [{
         to: token,
         data: "0x70a08231" + encodeWord(wallet),
-      }, blockTag]);
+      }, blockSelector]);
       // allowance(owner,spender), Classic Router only. NO approve() call.
       const allowanceHex = await read("eth_call", [{
         to: token,
         data: "0xdd62ed3e" + encodeWord(wallet) + encodeWord(AERODROME_BASE.router),
-      }, blockTag]);
+      }, blockSelector]);
       account[agent] = Object.freeze({
         balanceBaseUnits: decodeUint256Word(balanceHex),
         classicRouterAllowanceBaseUnits: decodeUint256Word(allowanceHex),
@@ -140,9 +135,13 @@ export async function inspectAerodromeBase({
     }
   }
 
+  const finalBlock = await read("eth_getBlockByNumber", [blockTag, false]);
+  if (finalBlock.hash !== initialBlock.hash) fail("BLOCK_CHANGED", "Canonical Base block changed during inspection");
   return Object.freeze({
     chainId: AERODROME_BASE.chainId,
     blockNumber: block,
+    blockHash: initialBlock.hash,
+    canonicalBlockRechecked: true,
     rpcUrl: AERODROME_BASE.rpcUrl,
     contractAddresses: contracts,
     codePresent: Object.freeze(deployed),

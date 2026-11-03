@@ -1,0 +1,122 @@
+[
+  {
+    "step": "initial-source-restored",
+    "differences": "",
+    "digest": "",
+    "resultsHidden": true,
+    "saveDisabled": true,
+    "scope": "",
+    "source": "",
+    "status": "保存した確認一覧・復旧前の照合資料・条件比較資料を選んでください。現在の履歴には反映しません。",
+    "summary": "",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "scenario-matches-recomputation-and-checksum",
+    "differences": "",
+    "digest": "確認した文字列のSHA-256: e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22 / 9274 bytes",
+    "resultsHidden": false,
+    "saveDisabled": false,
+    "scope": "DAT\t3件\t3件",
+    "source": "確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）",
+    "status": "資料の計算結果は再計算と一致しました。入力の出所や実際の残高を証明するものではありません。",
+    "summary": "形式: threecore.operation-rehearsal-scenario.v1 / 不一致箇所 0件 / 照合値: 一致",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "edited-checksum-revokes-result",
+    "differences": "",
+    "digest": "",
+    "resultsHidden": true,
+    "saveDisabled": true,
+    "scope": "",
+    "source": "確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）",
+    "status": "照合値が変わりました。「選択済みの資料を再確認」を押してください。",
+    "summary": "",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "checksum-mismatch-with-recomputation-match",
+    "differences": "",
+    "digest": "確認した文字列のSHA-256: e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22 / 9274 bytes",
+    "resultsHidden": false,
+    "saveDisabled": false,
+    "scope": "DAT\t3件\t3件",
+    "source": "確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）",
+    "status": "再計算は一致しましたが、指定された照合値と一致しません。別の資料の可能性があります。",
+    "summary": "形式: threecore.operation-rehearsal-scenario.v1 / 不一致箇所 0件 / 照合値: 不一致",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "derived-value-and-authority-flag-tampering-detected",
+    "differences": "/sourceVerified\t値が異なる\n/metrics/0/after\t値が異なる",
+    "digest": "確認した文字列のSHA-256: ae6b64c4e29691613c44c9a7fe7c89c4e25ea12c65c938a9733d5b1d67c17d89 / 9264 bytes",
+    "resultsHidden": false,
+    "saveDisabled": false,
+    "scope": "DAT\t3件\t3件",
+    "source": "確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）",
+    "status": "資料の計算結果に不一致があります。下の項目を確認してください。",
+    "summary": "形式: threecore.operation-rehearsal-scenario.v1 / 不一致箇所 2件 / 照合値: 指定なし",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "overview-report-recomputed",
+    "differences": "",
+    "digest": "確認した文字列のSHA-256: 2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2 / 8218 bytes",
+    "resultsHidden": false,
+    "saveDisabled": false,
+    "scope": "DAT\t3件\t比較なし\nEMA\t2件\t比較なし\nCAWELON\t1件\t比較なし",
+    "source": "確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）",
+    "status": "資料の計算結果は再計算と一致しました。入力の出所や実際の残高を証明するものではありません。",
+    "summary": "形式: threecore.operation-rehearsal-overview.v1 / 不一致箇所 0件 / 照合値: 指定なし",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "restore-comparison-recomputed-without-applying",
+    "differences": "",
+    "digest": "確認した文字列のSHA-256: 245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193 / 20352 bytes",
+    "resultsHidden": false,
+    "saveDisabled": false,
+    "scope": "DAT\t3件\t3件\nEMA\t2件\t3件\nCAWELON\t1件\t未作成",
+    "source": "確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）",
+    "status": "資料の計算結果は再計算と一致しました。入力の出所や実際の残高を証明するものではありません。",
+    "summary": "形式: threecore.operation-rehearsal-comparison.v1 / 不一致箇所 0件 / 照合値: 指定なし",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "malformed-report-preserves-six",
+    "differences": "",
+    "digest": "",
+    "resultsHidden": true,
+    "saveDisabled": true,
+    "scope": "",
+    "source": "確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）",
+    "status": "資料の形式や含まれる入力記録を確認できませんでした。2 MiB以内の保存済み資料を選んでください。 現在の履歴は保持しています。",
+    "summary": "",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "cleared-review-preserves-six",
+    "differences": "",
+    "digest": "",
+    "resultsHidden": true,
+    "saveDisabled": true,
+    "scope": "",
+    "source": "",
+    "status": "保存した確認一覧・復旧前の照合資料・条件比較資料を選んでください。現在の履歴には反映しません。",
+    "summary": "",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "final-overview-review-with-original-workspace",
+    "differences": "",
+    "digest": "確認した文字列のSHA-256: 2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2 / 8218 bytes",
+    "resultsHidden": false,
+    "saveDisabled": false,
+    "scope": "DAT\t3件\t比較なし\nEMA\t2件\t比較なし\nCAWELON\t1件\t比較なし",
+    "source": "確認する資料: 貼り付けた文字列（元ファイルのバイト列とは異なる場合があります）",
+    "status": "資料の計算結果は再計算と一致しました。入力の出所や実際の残高を証明するものではありません。",
+    "summary": "形式: threecore.operation-rehearsal-overview.v1 / 不一致箇所 0件 / 照合値: 指定なし",
+    "workspace": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  }
+]

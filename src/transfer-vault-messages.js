@@ -52,7 +52,7 @@ const messages = Object.freeze({
 });
 
 export function vaultErrorText(code) {
-  return messages[code] ?? transferErrorText(code);
+  return typeof code === "string" && Object.hasOwn(messages, code) ? messages[code] : transferErrorText(code);
 }
 
 export function vaultReviewText(review) {

@@ -1,0 +1,14 @@
+{
+  "baseRevision": "97dae0f43104ec80ae387e671a86389db9156aad",
+  "testedRevision": "c36ce33f16bfb42dc099324382281300ba9c9f30",
+  "changedPaths": [
+    "docs/OPERATOR_ACCEPTANCE_JA.md",
+    "test/browser/transfer-vault-ui-tests.js",
+    "test/file-read-deadline.test.js",
+    "test/file-read-formats.test.js"
+  ],
+  "applicationSourceUnchanged": true,
+  "newBrowserTestData": "synthetic",
+  "realEmptyDatabaseRecoveryVerified": false,
+  "githubPublished": false
+}

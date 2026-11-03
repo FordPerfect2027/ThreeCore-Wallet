@@ -1,0 +1,324 @@
+TAP version 13
+# Subtest: CAWELON: Wallet against the local EVM with chain ID 8453
+    # Subtest: retains the validated EIP-6963 provider through duplicate discovery and actual token reads
+    ok 1 - retains the validated EIP-6963 provider through duplicate discovery and actual token reads
+      ---
+      duration_ms: 76.1107
+      type: 'test'
+      ...
+    # Subtest: recovers from a malformed provider rejection without retaining balances or mutating the token
+    ok 2 - recovers from a malformed provider rejection without retaining balances or mutating the token
+      ---
+      duration_ms: 69.847
+      type: 'test'
+      ...
+    # Subtest: reads identity, full raw supply and native balance without precision loss
+    ok 3 - reads identity, full raw supply and native balance without precision loss
+      ---
+      duration_ms: 23.9573
+      type: 'test'
+      ...
+    # Subtest: reports an EOA spender and zero allowance without misreporting token code
+    ok 4 - reports an EOA spender and zero allowance without misreporting token code
+      ---
+      duration_ms: 33.3524
+      type: 'test'
+      ...
+    # Subtest: reads an existing contract-spender allowance without granting approval
+    ok 5 - reads an existing contract-spender allowance without granting approval
+      ---
+      duration_ms: 34.1008
+      type: 'test'
+      ...
+    # Subtest: round-trips the maximum uint256 allowance through ABI and JSON
+    ok 6 - round-trips the maximum uint256 allowance through ABI and JSON
+      ---
+      duration_ms: 32.4447
+      type: 'test'
+      ...
+    # Subtest: reads exact balance and allowance after a simulated delegated spend
+    ok 7 - reads exact balance and allowance after a simulated delegated spend
+      ---
+      duration_ms: 34.6624
+      type: 'test'
+      ...
+    # Subtest: reflects a simulated burn and allowance revocation
+    ok 8 - reflects a simulated burn and allowance revocation
+      ---
+      duration_ms: 34.2176
+      type: 'test'
+      ...
+    # Subtest: reports missing token code without issuing ERC-20 calls
+    ok 9 - reports missing token code without issuing ERC-20 calls
+      ---
+      duration_ms: 15.7955
+      type: 'test'
+      ...
+    # Subtest: rejects the other chain before requesting synthetic account permission
+    ok 10 - rejects the other chain before requesting synthetic account permission
+      ---
+      duration_ms: 10.2666
+      type: 'test'
+      ...
+    # Subtest: keeps an empty account isolated from the initial holder
+    ok 11 - keeps an empty account isolated from the initial holder
+      ---
+      duration_ms: 13.8434
+      type: 'test'
+      ...
+    # Subtest: presents actual token data through the UI controller and clears it on disconnect
+    ok 12 - presents actual token data through the UI controller and clears it on disconnect
+      ---
+      duration_ms: 24.2385
+      type: 'test'
+      ...
+    # Subtest: invalidates actual token inspection on injected provider error 4100 and reconnects without writes
+    ok 13 - invalidates actual token inspection on injected provider error 4100 and reconnects without writes
+      ---
+      duration_ms: 53.0241
+      type: 'test'
+      ...
+    # Subtest: invalidates actual token inspection on injected provider error 4900 and reconnects without writes
+    ok 14 - invalidates actual token inspection on injected provider error 4900 and reconnects without writes
+      ---
+      duration_ms: 53.0184
+      type: 'test'
+      ...
+    # Subtest: invalidates actual token inspection on injected provider error 4901 and reconnects without writes
+    ok 15 - invalidates actual token inspection on injected provider error 4901 and reconnects without writes
+      ---
+      duration_ms: 52.4201
+      type: 'test'
+      ...
+    # Subtest: ends an unresponsive actual token read by timeout without accepting its late result
+    ok 16 - ends an unresponsive actual token read by timeout without accepting its late result
+      ---
+      duration_ms: 554.9886
+      type: 'test'
+      ...
+    # Subtest: ends an unresponsive actual token read by manual disconnect without accepting its late result
+    ok 17 - ends an unresponsive actual token read by manual disconnect without accepting its late result
+      ---
+      duration_ms: 45.3012
+      type: 'test'
+      ...
+    # Subtest: recovers from an unresponsive connection chain before inspecting actual token state
+    ok 18 - recovers from an unresponsive connection chain before inspecting actual token state
+      ---
+      duration_ms: 557.581
+      type: 'test'
+      ...
+    # Subtest: recovers from an unresponsive connection permission timeout before inspecting actual token state
+    ok 19 - recovers from an unresponsive connection permission timeout before inspecting actual token state
+      ---
+      duration_ms: 563.5363
+      type: 'test'
+      ...
+    # Subtest: recovers from an unresponsive connection account before inspecting actual token state
+    ok 20 - recovers from an unresponsive connection account before inspecting actual token state
+      ---
+      duration_ms: 543.5898
+      type: 'test'
+      ...
+    # Subtest: recovers from an unresponsive connection permission cancellation before inspecting actual token state
+    ok 21 - recovers from an unresponsive connection permission cancellation before inspecting actual token state
+      ---
+      duration_ms: 26.8825
+      type: 'test'
+      ...
+    # Subtest: stops a composite read while a real EVM block reply is delayed, then reconnects explicitly
+    ok 22 - stops a composite read while a real EVM block reply is delayed, then reconnects explicitly
+      ---
+      duration_ms: 38.6367
+      type: 'test'
+      ...
+    # Subtest: delivers the final stopped view after an observer stops a completed real-token balance read
+    ok 23 - delivers the final stopped view after an observer stops a completed real-token balance read
+      ---
+      duration_ms: 38.113
+      type: 'test'
+      ...
+    # Subtest: keeps the earlier balance and allowance when the local chain advances between reads
+    ok 24 - keeps the earlier balance and allowance when the local chain advances between reads
+      ---
+      duration_ms: 51.6951
+      type: 'test'
+      ...
+    # Subtest: rejects a snapshot removed by a local chain rollback and can inspect afresh
+    ok 25 - rejects a snapshot removed by a local chain rollback and can inspect afresh
+      ---
+      duration_ms: 78.7582
+      type: 'test'
+      ...
+    1..25
+ok 1 - CAWELON: Wallet against the local EVM with chain ID 8453
+  ---
+  duration_ms: 3070.2542
+  type: 'suite'
+  ...
+# Subtest: CAWELON: Wallet against the local EVM with chain ID 84532
+    # Subtest: retains the validated EIP-6963 provider through duplicate discovery and actual token reads
+    ok 1 - retains the validated EIP-6963 provider through duplicate discovery and actual token reads
+      ---
+      duration_ms: 90.2372
+      type: 'test'
+      ...
+    # Subtest: recovers from a malformed provider rejection without retaining balances or mutating the token
+    ok 2 - recovers from a malformed provider rejection without retaining balances or mutating the token
+      ---
+      duration_ms: 51.1235
+      type: 'test'
+      ...
+    # Subtest: reads identity, full raw supply and native balance without precision loss
+    ok 3 - reads identity, full raw supply and native balance without precision loss
+      ---
+      duration_ms: 32.77
+      type: 'test'
+      ...
+    # Subtest: reports an EOA spender and zero allowance without misreporting token code
+    ok 4 - reports an EOA spender and zero allowance without misreporting token code
+      ---
+      duration_ms: 63.7945
+      type: 'test'
+      ...
+    # Subtest: reads an existing contract-spender allowance without granting approval
+    ok 5 - reads an existing contract-spender allowance without granting approval
+      ---
+      duration_ms: 82.3464
+      type: 'test'
+      ...
+    # Subtest: round-trips the maximum uint256 allowance through ABI and JSON
+    ok 6 - round-trips the maximum uint256 allowance through ABI and JSON
+      ---
+      duration_ms: 32.9965
+      type: 'test'
+      ...
+    # Subtest: reads exact balance and allowance after a simulated delegated spend
+    ok 7 - reads exact balance and allowance after a simulated delegated spend
+      ---
+      duration_ms: 34.5269
+      type: 'test'
+      ...
+    # Subtest: reflects a simulated burn and allowance revocation
+    ok 8 - reflects a simulated burn and allowance revocation
+      ---
+      duration_ms: 54.9915
+      type: 'test'
+      ...
+    # Subtest: reports missing token code without issuing ERC-20 calls
+    ok 9 - reports missing token code without issuing ERC-20 calls
+      ---
+      duration_ms: 28.9824
+      type: 'test'
+      ...
+    # Subtest: rejects the other chain before requesting synthetic account permission
+    ok 10 - rejects the other chain before requesting synthetic account permission
+      ---
+      duration_ms: 24.1396
+      type: 'test'
+      ...
+    # Subtest: keeps an empty account isolated from the initial holder
+    ok 11 - keeps an empty account isolated from the initial holder
+      ---
+      duration_ms: 23.4308
+      type: 'test'
+      ...
+    # Subtest: presents actual token data through the UI controller and clears it on disconnect
+    ok 12 - presents actual token data through the UI controller and clears it on disconnect
+      ---
+      duration_ms: 78.944
+      type: 'test'
+      ...
+    # Subtest: invalidates actual token inspection on injected provider error 4100 and reconnects without writes
+    ok 13 - invalidates actual token inspection on injected provider error 4100 and reconnects without writes
+      ---
+      duration_ms: 76.8957
+      type: 'test'
+      ...
+    # Subtest: invalidates actual token inspection on injected provider error 4900 and reconnects without writes
+    ok 14 - invalidates actual token inspection on injected provider error 4900 and reconnects without writes
+      ---
+      duration_ms: 64.6043
+      type: 'test'
+      ...
+    # Subtest: invalidates actual token inspection on injected provider error 4901 and reconnects without writes
+    ok 15 - invalidates actual token inspection on injected provider error 4901 and reconnects without writes
+      ---
+      duration_ms: 65.1385
+      type: 'test'
+      ...
+    # Subtest: ends an unresponsive actual token read by timeout without accepting its late result
+    ok 16 - ends an unresponsive actual token read by timeout without accepting its late result
+      ---
+      duration_ms: 560.6077
+      type: 'test'
+      ...
+    # Subtest: ends an unresponsive actual token read by manual disconnect without accepting its late result
+    ok 17 - ends an unresponsive actual token read by manual disconnect without accepting its late result
+      ---
+      duration_ms: 33.8569
+      type: 'test'
+      ...
+    # Subtest: recovers from an unresponsive connection chain before inspecting actual token state
+    ok 18 - recovers from an unresponsive connection chain before inspecting actual token state
+      ---
+      duration_ms: 529.7832
+      type: 'test'
+      ...
+    # Subtest: recovers from an unresponsive connection permission timeout before inspecting actual token state
+    ok 19 - recovers from an unresponsive connection permission timeout before inspecting actual token state
+      ---
+      duration_ms: 550.7207
+      type: 'test'
+      ...
+    # Subtest: recovers from an unresponsive connection account before inspecting actual token state
+    ok 20 - recovers from an unresponsive connection account before inspecting actual token state
+      ---
+      duration_ms: 868.4153
+      type: 'test'
+      ...
+    # Subtest: recovers from an unresponsive connection permission cancellation before inspecting actual token state
+    ok 21 - recovers from an unresponsive connection permission cancellation before inspecting actual token state
+      ---
+      duration_ms: 523.0573
+      type: 'test'
+      ...
+    # Subtest: stops a composite read while a real EVM block reply is delayed, then reconnects explicitly
+    ok 22 - stops a composite read while a real EVM block reply is delayed, then reconnects explicitly
+      ---
+      duration_ms: 234.2855
+      type: 'test'
+      ...
+    # Subtest: delivers the final stopped view after an observer stops a completed real-token balance read
+    ok 23 - delivers the final stopped view after an observer stops a completed real-token balance read
+      ---
+      duration_ms: 31.0835
+      type: 'test'
+      ...
+    # Subtest: keeps the earlier balance and allowance when the local chain advances between reads
+    ok 24 - keeps the earlier balance and allowance when the local chain advances between reads
+      ---
+      duration_ms: 42.1519
+      type: 'test'
+      ...
+    # Subtest: rejects a snapshot removed by a local chain rollback and can inspect afresh
+    ok 25 - rejects a snapshot removed by a local chain rollback and can inspect afresh
+      ---
+      duration_ms: 70.5507
+      type: 'test'
+      ...
+    1..25
+ok 2 - CAWELON: Wallet against the local EVM with chain ID 84532
+  ---
+  duration_ms: 4254.8086
+  type: 'suite'
+  ...
+1..2
+# tests 50
+# suites 2
+# pass 50
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 11507.5573

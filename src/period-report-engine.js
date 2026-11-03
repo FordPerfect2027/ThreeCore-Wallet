@@ -50,9 +50,14 @@ function crossAnchors(input) {
   return { comparedBlocks, conflicts, invalidAgents, liveChainRechecked: false };
 }
 
+// Keys are validator-owned immutable snapshots. Caller objects still pass through validation.
+const analyses = new WeakMap();
+
 /** Reuse exact integer reconciliation. Never add balances belonging to different tokens. */
 export function analyzePeriodReport(inputValue) {
   const input = validatePeriodReportInput(inputValue);
+  const previous = analyses.get(input);
+  if (previous) return Object.freeze({ ...previous });
   const reconciliation = reconcileWorkspace(workspaceFor(input));
   const anchors = crossAnchors(input);
   const selected = input.slots.filter(slot => slot.entry);
@@ -100,7 +105,7 @@ export function analyzePeriodReport(inputValue) {
   const status = allArithmeticAgreement ? "arithmetic-agreement" :
     issues.some(code => ["BLOCK_HASH_CONFLICT", "QUARANTINED_SOURCE", "UNEXPLAINED_DIFFERENCE", "UNUSABLE_HISTORY"].includes(code))
       ? "attention" : "incomplete";
-  return freeze({ schema: "threecore.period-report-analysis.v1", title: input.title,
+  const result = freeze({ schema: "threecore.period-report-analysis.v1", title: input.title,
     createdAt: input.createdAt, status, slots, issues, warnings, anchors, sharedAccounts,
     selectedCount: selected.length, sameChainAndPeriod, allArithmeticAgreement,
     chainId: sameChainAndPeriod ? chains[0] : null,
@@ -110,4 +115,7 @@ export function analyzePeriodReport(inputValue) {
     eventCountsArePerToken: true, combinesTokenValues: false, historicalOnly: true,
     liveChainRechecked: false, independentlyVerified: false, completeHistory: false,
     securityAudit: false, provesProfit: false });
+  analyses.set(input, result);
+  // Keep a fresh outer result for consumers that recognize accepted/replaced reports by identity.
+  return Object.freeze({ ...result });
 }

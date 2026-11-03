@@ -1,0 +1,192 @@
+{
+  "source": "9a89b87",
+  "synthetic": true,
+  "sourceHashes": {
+    "before": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+    "after": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1"
+  },
+  "captures": [
+    {
+      "name": "first",
+      "query": {
+        "offset": 0
+      },
+      "total": 86,
+      "matched": 86,
+      "shown": 40,
+      "ordinals": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ]
+    },
+    {
+      "name": "second",
+      "query": {
+        "offset": 40
+      },
+      "total": 86,
+      "matched": 86,
+      "shown": 40,
+      "ordinals": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80
+      ]
+    },
+    {
+      "name": "last",
+      "query": {
+        "offset": 80
+      },
+      "total": 86,
+      "matched": 86,
+      "shown": 6,
+      "ordinals": [
+        81,
+        82,
+        83,
+        84,
+        85,
+        86
+      ]
+    },
+    {
+      "name": "policy",
+      "query": {
+        "pathIncludes": "/policy"
+      },
+      "total": 86,
+      "matched": 1,
+      "shown": 1,
+      "ordinals": [
+        1
+      ]
+    },
+    {
+      "name": "events-last",
+      "query": {
+        "pathIncludes": "/events",
+        "offset": 80
+      },
+      "total": 86,
+      "matched": 85,
+      "shown": 5,
+      "ordinals": [
+        82,
+        83,
+        84,
+        85,
+        86
+      ]
+    },
+    {
+      "name": "empty",
+      "query": {
+        "pathIncludes": "/missing"
+      },
+      "total": 86,
+      "matched": 0,
+      "shown": 0,
+      "ordinals": []
+    }
+  ],
+  "cli": [
+    {
+      "name": "events-last",
+      "format": "json",
+      "exitCode": 2,
+      "exactAPIMatch": true
+    },
+    {
+      "name": "empty",
+      "format": "csv",
+      "exitCode": 2,
+      "exactAPIMatch": true
+    }
+  ],
+  "fullPageCoverageWithoutDuplicates": true,
+  "originalBoundedReceiptUnchanged": true,
+  "nativeFocus": "file-read",
+  "nativeFocusedCases": 108,
+  "fullBrowserCoverage": false,
+  "lastFullBrowserSource": "a2eb7e5",
+  "lastFullBrowserCases": 950,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false,
+  "realProviderCalls": 0
+}

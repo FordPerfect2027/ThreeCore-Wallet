@@ -6,6 +6,7 @@ import {
 } from "../src/aerodrome-readonly.js";
 
 const WALLET = "0x1111111111111111111111111111111111111111";
+const HASH = "0x" + "ab".repeat(32);
 
 function mockTransport({
   chain = "0x2105",
@@ -27,22 +28,18 @@ function mockTransport({
     switch (input.method) {
       case "eth_chainId": result = chain; break;
       case "eth_blockNumber": result = block; break;
+      case "eth_getBlockByNumber": result = { number: input.params[0], hash: HASH }; break;
       case "eth_getCode": result = bytecode; break;
       case "eth_call":
         result = input.params[0].data.startsWith("0xdd62ed3e") ? allowance : balance;
         break;
       default: throw Error("Forbidden RPC method " + input.method);
     }
-    return {
-      ok: httpOk,
-      async json() {
-        return rpcError ? {
-          jsonrpc: "2.0", id: input.id, error: { code: -32000 },
-        } : {
-          jsonrpc: "2.0", id: input.id + (corruptId ? 1 : 0), result,
-        };
-      },
-    };
+    return new Response(JSON.stringify(rpcError ? {
+      jsonrpc: "2.0", id: input.id, error: { code: -32000 },
+    } : {
+      jsonrpc: "2.0", id: input.id + (corruptId ? 1 : 0), result,
+    }), { status: httpOk ? 200 : 503 });
   };
   return { calls, fetchImpl };
 }
@@ -84,8 +81,9 @@ test("reads Base chain, block and code for six published addresses", async () =>
   ]);
   assert.ok(Object.values(result.codePresent).every(Boolean));
   assert.deepEqual(calls.map(c => c.method), [
-    "eth_chainId", "eth_blockNumber",
+    "eth_chainId", "eth_blockNumber", "eth_getBlockByNumber",
     ...Array(6).fill("eth_getCode"),
+    "eth_getBlockByNumber",
   ]);
   assert.deepEqual(
     calls.filter(c => c.method === "eth_getCode").map(c => c.params[0]),
@@ -193,9 +191,9 @@ test("rejects mismatched response IDs, JSON-RPC errors and HTTP errors", async (
 test("all network operations are read-only and do not request wallet credentials", async () => {
   const { fetchImpl, calls } = mockTransport();
   await inspectAerodromeBase({ fetchImpl, publicWalletAddress: WALLET });
-  assert.equal(calls.length, 14);
+  assert.equal(calls.length, 16);
   assert.ok(calls.every(c =>
-    ["eth_chainId", "eth_blockNumber", "eth_getCode", "eth_call"].includes(c.method)
+    ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber", "eth_getCode", "eth_call"].includes(c.method)
   ));
   assert.equal(calls.some(c => /sign|sendTransaction|requestAccounts|privateKey|approve/i.test(c.method)), false);
 });
@@ -205,7 +203,7 @@ test("code, balances and allowances share the reported block despite advancing l
   await inspectAerodromeBase({ fetchImpl, publicWalletAddress: WALLET });
   const stateReads = calls.filter(c => ["eth_getCode", "eth_call"].includes(c.method));
   assert.equal(stateReads.length, 12);
-  assert.ok(stateReads.every(c => c.params[1] === "0x1234"));
+  for (const c of stateReads) assert.deepEqual(c.params[1], { blockHash: HASH, requireCanonical: true });
 });
 
 test("overflow balances and allowances cannot produce a snapshot", async () => {

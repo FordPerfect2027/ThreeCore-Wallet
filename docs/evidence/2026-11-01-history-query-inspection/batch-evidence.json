@@ -1,0 +1,96 @@
+{
+  "schema": "threecore.wallet-saved-batch-evidence.v1",
+  "readOnly": true,
+  "authenticated": false,
+  "encrypted": false,
+  "authorizesExecution": false,
+  "referenceText": null,
+  "files": [
+    {
+      "name": "query.json",
+      "text": "{\n  \"schema\": \"threecore-history-query-v1\",\n  \"query\": {\n    \"account\": \"0x1111111111111111111111111111111111111111\",\n    \"chainId\": 84532,\n    \"minimumBlock\": \"100\",\n    \"maximumBlock\": null,\n    \"order\": \"oldest\",\n    \"tokenAddress\": \"\",\n    \"tokenStatus\": \"any\",\n    \"siteOrigin\": \"\"\n  },\n  \"configurationOnly\": true,\n  \"canAuthorizeConnection\": false,\n  \"canAuthorizeTransaction\": false\n}\n"
+    },
+    {
+      "name": "invalid.json",
+      "text": "{"
+    }
+  ],
+  "receipt": {
+    "schema": "threecore.wallet-saved-browser-batch.v1",
+    "readOnly": true,
+    "authenticatesOrigin": false,
+    "authorizesExecution": false,
+    "restorable": false,
+    "liveChainRechecked": false,
+    "atomicSnapshot": false,
+    "externalChecksumsCompared": false,
+    "phase": "complete",
+    "complete": true,
+    "allOriginalsValidated": false,
+    "summary": {
+      "selected": 2,
+      "checked": 2,
+      "pending": 0,
+      "validatedOriginals": 0,
+      "declaredOnly": 0,
+      "invalid": 1,
+      "hashUnavailable": 0,
+      "totalBytes": 394,
+      "structureValidated": 1
+    },
+    "files": [
+      {
+        "name": "query.json",
+        "byteLength": 393,
+        "sha256": "a744b07e2da4893b7f77e8c3fc8438959630e1f75c4af917be2a9118e6187579",
+        "status": "validated-structure",
+        "code": null,
+        "inspection": {
+          "schema": "threecore.saved-file-inspection.v3",
+          "sourceSchema": "threecore-history-query-v1",
+          "byteLength": 393,
+          "title": "保存履歴の検索条件（観測データを含まない設定）",
+          "target": "history-query",
+          "destinationMessage": "履歴の検索条件です。対象のカードの履歴欄にある「保存した検索条件ファイル」で開き、条件を確認してから検索してください。公開アドレスなどの絞り込み条件を含む場合がありますが、ウォレット設定・履歴・残高の記録ではありません。内部チェックサムはありません。",
+          "validation": "validated-structure",
+          "checksumVerified": false,
+          "sourceDigest": null,
+          "textDigest": "a744b07e2da4893b7f77e8c3fc8438959630e1f75c4af917be2a9118e6187579",
+          "scope": {
+            "reportCount": null,
+            "archivedReports": null,
+            "entryReferences": null,
+            "draftReferences": null,
+            "archivedEntryReferences": null,
+            "restrictedEntryReferences": null,
+            "incompleteDraftReferences": null,
+            "emptyDraftReferences": null,
+            "agents": [],
+            "annotationValuesIncluded": false,
+            "repeatedReferencesMayExist": true,
+            "configurationReferences": null,
+            "configuredAccountReferences": null,
+            "configuredTokenReferences": null,
+            "portfolioObservationReferences": null,
+            "holdingReferences": null,
+            "unknownHoldingReferences": null
+          },
+          "originalEvidenceValidated": false,
+          "restorable": false,
+          "automaticallyImported": false,
+          "liveChainRechecked": false,
+          "authenticated": false,
+          "authorizesExecution": false
+        }
+      },
+      {
+        "name": "invalid.json",
+        "byteLength": 1,
+        "sha256": "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96",
+        "status": "invalid",
+        "code": "FILE_INSPECTION_JSON",
+        "inspection": null
+      }
+    ]
+  }
+}

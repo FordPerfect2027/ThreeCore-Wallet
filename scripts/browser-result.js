@@ -6,14 +6,14 @@ const ATTRIBUTES = ["suite-status", "tests-count", "tests-passed", "tests-failed
   "unexpected-errors", "error-kinds", "injected-fault"];
 
 /** Read Chrome's serialized body summary, never a fixture's nested attributes. */
-export function readBrowserSummary(html) {
+function readAttributes(html, attributes) {
   if (typeof html !== "string" || !html.length || html.length > MAX_HTML_LENGTH) {
     throw Error("Missing or oversized browser output");
   }
   const body = html.match(/<body\b[^>]*>/i)?.[0];
   if (!body) throw Error("Browser output has no body summary");
   const summary = {};
-  for (const key of ATTRIBUTES) {
+  for (const key of attributes) {
     const pattern = new RegExp('\\sdata-' + key + '="([^"<>]*)"', "g");
     const matches = [...body.matchAll(pattern)];
     if (matches.length !== 1) throw Error("Missing or ambiguous browser summary: " + key);
@@ -21,6 +21,8 @@ export function readBrowserSummary(html) {
   }
   return Object.freeze(summary);
 }
+
+export function readBrowserSummary(html) { return readAttributes(html, ATTRIBUTES); }
 
 function count(summary, key) {
   const value = summary[key];
@@ -54,4 +56,58 @@ export function checkBrowserResult(html, fault, minimumCases = MIN_BROWSER_CASES
     throw Error(fault ? "Harness did not reject exactly the injected fault" : "Unexpected browser errors");
   }
   return Object.freeze({ total, passed, failed, unexpectedErrors: errors, fault: fault ?? null });
+}
+
+const SHARD_ATTRIBUTES = ["shard-index", "shard-count", "registered-count", "registered-digest", "selected-indices", "suite-filter", "control-only"];
+
+/** Explicit development coverage only; a focused receipt never satisfies a full shard. */
+export function checkBrowserFocus(html, suite) {
+  if (suite !== "file-read") throw Error("Unknown focused browser suite");
+  const summary = readAttributes(html, [...SHARD_ATTRIBUTES, "registered-groups"]);
+  const registered = count(summary, "registered-count"), groups = summary["registered-groups"].split(",");
+  if (registered < MIN_BROWSER_CASES || registered > 10000 || groups.length !== registered ||
+      groups.some(group => !["general", "file-read"].includes(group)) || summary["shard-count"] !== "1" ||
+      summary["shard-index"] !== "0" || summary["suite-filter"] !== "focus:" + suite ||
+      summary["control-only"] !== "false" || !/^[0-9a-f]{64}$/.test(summary["registered-digest"])) throw Error("Invalid focused browser registry");
+  const indices = groups.flatMap((group, index) => group === suite ? [index] : []);
+  if (!indices.length || summary["selected-indices"] !== indices.join(",")) throw Error("Missing or extra focused browser cases");
+  const result = checkBrowserResult(html, undefined, indices.length);
+  if (result.total !== indices.length) throw Error("Focused browser totals do not match its case indices");
+  return Object.freeze({ ...result, suite, registered, digest: summary["registered-digest"], fullCoverage: false });
+}
+
+/** A half-suite is accepted only with its exact share of the full registry. */
+export function checkBrowserShard(html, index, fault) {
+  return checkShard(html, index, fault, false);
+}
+
+/** Dedicated fault detection does not masquerade as full feature coverage. */
+export function checkBrowserErrorControl(html, fault) {
+  if (!["error", "unhandledrejection"].includes(fault)) throw Error("An explicit control fault is required");
+  return checkShard(html, 0, fault, true);
+}
+
+function checkShard(html, index, fault, controlOnly) {
+  if (index !== 0 && index !== 1) throw Error("Unknown browser shard");
+  const summary = readAttributes(html, SHARD_ATTRIBUTES);
+  const registered = count(summary, "registered-count");
+  if (registered < MIN_BROWSER_CASES || registered > 10000 || summary["shard-count"] !== "2" ||
+      summary["shard-index"] !== String(index) || summary["suite-filter"] !== "" || summary["control-only"] !== String(controlOnly) ||
+      !/^[0-9a-f]{64}$/.test(summary["registered-digest"])) throw Error("Invalid full browser shard registry");
+  const indices = controlOnly ? [0] : Array.from({ length: registered }, (_, i) => i).filter(i => i % 2 === index);
+  if (summary["selected-indices"] !== indices.join(",")) throw Error("Missing or overlapping browser shard cases");
+  const result = checkBrowserResult(html, fault, indices.length);
+  if (result.total !== indices.length) throw Error("Browser shard totals do not match its case indices");
+  return Object.freeze({ ...result, index, registered, digest: summary["registered-digest"] });
+}
+
+/** Both fresh profiles must report the same registry and every case exactly once. */
+export function checkBrowserShards(pages) {
+  if (!Array.isArray(pages) || pages.length !== 2) throw Error("Both browser shards are required");
+  const parts = pages.map((html, index) => checkBrowserShard(html, index));
+  if (parts[0].registered !== parts[1].registered || parts[0].digest !== parts[1].digest)
+    throw Error("Browser registry changed between shards");
+  const total = parts.reduce((sum, part) => sum + part.total, 0);
+  if (total !== parts[0].registered) throw Error("Incomplete combined browser suite");
+  return Object.freeze({ total, passed: total, failed: 0, unexpectedErrors: 0, fault: null });
 }

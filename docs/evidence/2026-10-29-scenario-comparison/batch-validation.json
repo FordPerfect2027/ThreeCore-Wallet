@@ -1,0 +1,29 @@
+{
+  "schema": "threecore.development-batch-validation.v1",
+  "date": "2026-10-29",
+  "sourceCommit": "3a0cb9982ee8731513675c80eff6a1afb5fb6e7c",
+  "completedItems": 20,
+  "plannedItems": 20,
+  "relatedTestsPassed": 309,
+  "relatedTestsFailed": 0,
+  "addedTests": 54,
+  "actualBrowser": "Edge",
+  "uiObservations": 18,
+  "consoleErrors": 0,
+  "originalAndFinalWorkspaceSha256": "b3ab23fb3c2af4d1b88051fb6c976f2437bfc721b3a0e8764d965b80da770302",
+  "finalRecordCounts": {
+    "DAT": 3,
+    "CAWELON": 1,
+    "EMA": 2
+  },
+  "browserSourceMatchesOriginalWorkspace": true,
+  "browserAndOfflineReportsMatch": true,
+  "lowerLimitComparisonSha256": "e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22",
+  "filteredQuotaComparisonSha256": "45e4287b35e48b8ee8e937930f0c39861ef53007d8ed1e2d9ba4867e14ff86f0",
+  "filteredVisibleRecords": 1,
+  "filteredExportedRecords": 3,
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "published": false
+}

@@ -1,0 +1,11 @@
+✔ the HTTP relay enforces the history span even when the browser guard is bypassed (144.4593ms)
+✔ direct state-provider log requests cannot exceed 2000 blocks before HTTP (85.856ms)
+✔ the dispatch boundary enforces the inclusive 2000-block limit without losing uint256 precision (8.049ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 950.8796

@@ -1,0 +1,15 @@
+✔ destination navigation is explicit and keeps the inspected file without importing it (118.4907ms)
+✔ auxiliary claims and missing routes cannot trigger a destination callback (18.3734ms)
+✔ callback descriptors are captured without invoking getters or following later replacement (21.2634ms)
+✔ failed destination callbacks stay bounded and do not leak private error text: false (11.9717ms)
+✔ failed destination callbacks stay bounded and do not leak private error text: throw (15.3597ms)
+✔ failed destination callbacks stay bounded and do not leak private error text: async (5.5666ms)
+✔ a destination callback replacing the selected source cannot publish stale navigation success (11.6987ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 540.6872

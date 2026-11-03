@@ -1,0 +1,76 @@
+{
+  "schema": "threecore.report-set-history-coverage-review.v1",
+  "matchesRecomputation": true,
+  "sourcePayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+  "sourceDigestMatches": true,
+  "coverageTextSha256": "3572c7a666ebc4ed7175bf66257e6219a82e142752f06a216a9a8e40e0717479",
+  "options": {
+    "shortAddresses": true
+  },
+  "differences": [],
+  "unexpectedFields": 0,
+  "summary": {
+    "reportCount": 3,
+    "allContinuous": true,
+    "issues": [],
+    "conclusionsUseAllSourceEvidence": true
+  },
+  "missingAgents": [],
+  "groupCount": 3,
+  "groups": [
+    {
+      "id": "DAT-1",
+      "agent": "DAT",
+      "chainId": 84532,
+      "fromBlock": "31",
+      "toBlock": "66",
+      "plannedUniqueBlocks": "36",
+      "recordedUniqueBlocks": "36",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "0",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "0",
+      "savedQueryRecords": 9
+    },
+    {
+      "id": "EMA-1",
+      "agent": "EMA",
+      "chainId": 84532,
+      "fromBlock": "31",
+      "toBlock": "66",
+      "plannedUniqueBlocks": "36",
+      "recordedUniqueBlocks": "36",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "0",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "0",
+      "savedQueryRecords": 9
+    },
+    {
+      "id": "CAWELON-1",
+      "agent": "CAWELON",
+      "chainId": 84532,
+      "fromBlock": "31",
+      "toBlock": "66",
+      "plannedUniqueBlocks": "36",
+      "recordedUniqueBlocks": "36",
+      "pendingPlannedBlocks": "0",
+      "unplannedBlocks": "0",
+      "multipleRecordBlocks": "0",
+      "reviewRecordedBlocks": "0",
+      "savedQueryRecords": 9
+    }
+  ],
+  "blockCountsCombinedAcrossGroups": false,
+  "savedQueryPresenceOnly": true,
+  "completeHistory": false,
+  "readOnly": true,
+  "historicalOnly": true,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "encrypted": false,
+  "restorable": false,
+  "containsOriginalEvidence": false,
+  "authorizesExecution": false,
+  "sourceChecksumVerified": true
+}

@@ -1,0 +1,1510 @@
+TAP version 13
+# Subtest: cancellation resolves local waiting without waiting for the provider
+ok 1 - cancellation resolves local waiting without waiting for the provider
+  ---
+  duration_ms: 33.8977
+  type: 'test'
+  ...
+# Subtest: all outstanding reads discard a late resolve after cancellation
+ok 2 - all outstanding reads discard a late resolve after cancellation
+  ---
+  duration_ms: 7.8919
+  type: 'test'
+  ...
+# Subtest: all outstanding reads discard a late reject after cancellation
+ok 3 - all outstanding reads discard a late reject after cancellation
+  ---
+  duration_ms: 2.1367
+  type: 'test'
+  ...
+# Subtest: capacity rejects the next call before its operation executes
+ok 4 - capacity rejects the next call before its operation executes
+  ---
+  duration_ms: 4.2398
+  type: 'test'
+  ...
+# Subtest: permission false is not an exact synchronous true
+ok 5 - permission false is not an exact synchronous true
+  ---
+  duration_ms: 0.7196
+  type: 'test'
+  ...
+# Subtest: permission 0 is not an exact synchronous true
+ok 6 - permission 0 is not an exact synchronous true
+  ---
+  duration_ms: 1.9541
+  type: 'test'
+  ...
+# Subtest: permission 1 is not an exact synchronous true
+ok 7 - permission 1 is not an exact synchronous true
+  ---
+  duration_ms: 0.4105
+  type: 'test'
+  ...
+# Subtest: permission null is not an exact synchronous true
+ok 8 - permission null is not an exact synchronous true
+  ---
+  duration_ms: 0.6301
+  type: 'test'
+  ...
+# Subtest: permission undefined is not an exact synchronous true
+ok 9 - permission undefined is not an exact synchronous true
+  ---
+  duration_ms: 0.8207
+  type: 'test'
+  ...
+# Subtest: permission true is not an exact synchronous true
+ok 10 - permission true is not an exact synchronous true
+  ---
+  duration_ms: 1.2807
+  type: 'test'
+  ...
+# Subtest: async permission resolve is consumed without admitting an operation
+ok 11 - async permission resolve is consumed without admitting an operation
+  ---
+  duration_ms: 13.8371
+  type: 'test'
+  ...
+# Subtest: async permission reject is consumed without admitting an operation
+ok 12 - async permission reject is consumed without admitting an operation
+  ---
+  duration_ms: 1.594
+  type: 'test'
+  ...
+# Subtest: async permission throw is consumed without admitting an operation
+ok 13 - async permission throw is consumed without admitting an operation
+  ---
+  duration_ms: 1.1462
+  type: 'test'
+  ...
+# Subtest: operation generation invalidation before rejects its result
+ok 14 - operation generation invalidation before rejects its result
+  ---
+  duration_ms: 0.7702
+  type: 'test'
+  ...
+# Subtest: operation generation invalidation during rejects its result
+ok 15 - operation generation invalidation during rejects its result
+  ---
+  duration_ms: 0.3882
+  type: 'test'
+  ...
+# Subtest: operation generation invalidation after rejects its result
+ok 16 - operation generation invalidation after rejects its result
+  ---
+  duration_ms: 0.2409
+  type: 'test'
+  ...
+# Subtest: a reentrant currentness predicate cannot recurse indefinitely
+ok 17 - a reentrant currentness predicate cannot recurse indefinitely
+  ---
+  duration_ms: 0.3898
+  type: 'test'
+  ...
+# Subtest: bound method getBlockSnapshot retains its receiver and captures the original function
+ok 18 - bound method getBlockSnapshot retains its receiver and captures the original function
+  ---
+  duration_ms: 1.1272
+  type: 'test'
+  ...
+# Subtest: getter cancellation while binding getBlockSnapshot cannot expose a live operation
+ok 19 - getter cancellation while binding getBlockSnapshot cannot expose a live operation
+  ---
+  duration_ms: 0.7959
+  type: 'test'
+  ...
+# Subtest: bound method getNativeBalance retains its receiver and captures the original function
+ok 20 - bound method getNativeBalance retains its receiver and captures the original function
+  ---
+  duration_ms: 0.4418
+  type: 'test'
+  ...
+# Subtest: getter cancellation while binding getNativeBalance cannot expose a live operation
+ok 21 - getter cancellation while binding getNativeBalance cannot expose a live operation
+  ---
+  duration_ms: 0.3565
+  type: 'test'
+  ...
+# Subtest: bound method getContractCode retains its receiver and captures the original function
+ok 22 - bound method getContractCode retains its receiver and captures the original function
+  ---
+  duration_ms: 0.4696
+  type: 'test'
+  ...
+# Subtest: getter cancellation while binding getContractCode cannot expose a live operation
+ok 23 - getter cancellation while binding getContractCode cannot expose a live operation
+  ---
+  duration_ms: 2.4476
+  type: 'test'
+  ...
+# Subtest: bound method getTokenBalance retains its receiver and captures the original function
+ok 24 - bound method getTokenBalance retains its receiver and captures the original function
+  ---
+  duration_ms: 2.6437
+  type: 'test'
+  ...
+# Subtest: getter cancellation while binding getTokenBalance cannot expose a live operation
+ok 25 - getter cancellation while binding getTokenBalance cannot expose a live operation
+  ---
+  duration_ms: 0.2902
+  type: 'test'
+  ...
+# Subtest: bound method getTokenAllowance retains its receiver and captures the original function
+ok 26 - bound method getTokenAllowance retains its receiver and captures the original function
+  ---
+  duration_ms: 0.473
+  type: 'test'
+  ...
+# Subtest: getter cancellation while binding getTokenAllowance cannot expose a live operation
+ok 27 - getter cancellation while binding getTokenAllowance cannot expose a live operation
+  ---
+  duration_ms: 0.264
+  type: 'test'
+  ...
+# Subtest: bound method getTokenMetadata retains its receiver and captures the original function
+ok 28 - bound method getTokenMetadata retains its receiver and captures the original function
+  ---
+  duration_ms: 0.3843
+  type: 'test'
+  ...
+# Subtest: getter cancellation while binding getTokenMetadata cannot expose a live operation
+ok 29 - getter cancellation while binding getTokenMetadata cannot expose a live operation
+  ---
+  duration_ms: 0.2754
+  type: 'test'
+  ...
+# Subtest: bound method getTransferEvents retains its receiver and captures the original function
+ok 30 - bound method getTransferEvents retains its receiver and captures the original function
+  ---
+  duration_ms: 0.3787
+  type: 'test'
+  ...
+# Subtest: getter cancellation while binding getTransferEvents cannot expose a live operation
+ok 31 - getter cancellation while binding getTransferEvents cannot expose a live operation
+  ---
+  duration_ms: 0.2752
+  type: 'test'
+  ...
+# Subtest: bound views expose no wallet authority or arbitrary request passthrough
+ok 32 - bound views expose no wallet authority or arbitrary request passthrough
+  ---
+  duration_ms: 0.6964
+  type: 'test'
+  ...
+# Subtest: state getter invalidation is checked after reading as well as before
+ok 33 - state getter invalidation is checked after reading as well as before
+  ---
+  duration_ms: 1.1167
+  type: 'test'
+  ...
+# Subtest: synchronous operation value releases its local slot
+ok 34 - synchronous operation value releases its local slot
+  ---
+  duration_ms: 0.6107
+  type: 'test'
+  ...
+# Subtest: synchronous operation throw releases its local slot
+ok 35 - synchronous operation throw releases its local slot
+  ---
+  duration_ms: 0.5198
+  type: 'test'
+  ...
+# Subtest: synchronous operation rejected releases its local slot
+ok 36 - synchronous operation rejected releases its local slot
+  ---
+  duration_ms: 0.3152
+  type: 'test'
+  ...
+# Subtest: settlement observer throw cannot create an unhandled rejection
+ok 37 - settlement observer throw cannot create an unhandled rejection
+  ---
+  duration_ms: 41.2695
+  type: 'test'
+  ...
+# Subtest: settlement observer reject cannot create an unhandled rejection
+ok 38 - settlement observer reject cannot create an unhandled rejection
+  ---
+  duration_ms: 1.4997
+  type: 'test'
+  ...
+# Subtest: settlement observer cancel cannot create an unhandled rejection
+ok 39 - settlement observer cancel cannot create an unhandled rejection
+  ---
+  duration_ms: 1.5814
+  type: 'test'
+  ...
+# Subtest: a thenable cancelling while adopted cannot deliver its later success
+ok 40 - a thenable cancelling while adopted cannot deliver its later success
+  ---
+  duration_ms: 1.4528
+  type: 'test'
+  ...
+# Subtest: scope replacement cannot overtake a newer stop raised by stream cleanup
+ok 41 - scope replacement cannot overtake a newer stop raised by stream cleanup
+  ---
+  duration_ms: 25.9274
+  type: 'test'
+  ...
+# Subtest: scope replacement cannot overtake a newer replace raised by stream cleanup
+ok 42 - scope replacement cannot overtake a newer replace raised by stream cleanup
+  ---
+  duration_ms: 9.4085
+  type: 'test'
+  ...
+# Subtest: scope maxBytes capture retains a newer stop
+ok 43 - scope maxBytes capture retains a newer stop
+  ---
+  duration_ms: 3.2028
+  type: 'test'
+  ...
+# Subtest: scope maxBytes capture retains a newer replace
+ok 44 - scope maxBytes capture retains a newer replace
+  ---
+  duration_ms: 4.3642
+  type: 'test'
+  ...
+# Subtest: scope timeoutMs capture retains a newer stop
+ok 45 - scope timeoutMs capture retains a newer stop
+  ---
+  duration_ms: 1.4946
+  type: 'test'
+  ...
+# Subtest: scope timeoutMs capture retains a newer replace
+ok 46 - scope timeoutMs capture retains a newer replace
+  ---
+  duration_ms: 2.8786
+  type: 'test'
+  ...
+# Subtest: scope invalid options release ownership and allow a later native File
+ok 47 - scope invalid options release ownership and allow a later native File
+  ---
+  duration_ms: 20.8259
+  type: 'test'
+  ...
+# Subtest: ordinary scope replacement still preserves a newer read after old worker settlement
+ok 48 - ordinary scope replacement still preserves a newer read after old worker settlement
+  ---
+  duration_ms: 2.8401
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on wrong-account without implicit reconnection
+ok 49 - DAT fails closed on wrong-account without implicit reconnection
+  ---
+  duration_ms: 20.3105
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on empty-accounts without implicit reconnection
+ok 50 - DAT fails closed on empty-accounts without implicit reconnection
+  ---
+  duration_ms: 2.7428
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on wrong-chain without implicit reconnection
+ok 51 - DAT fails closed on wrong-chain without implicit reconnection
+  ---
+  duration_ms: 4.8004
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on invalid-chain without implicit reconnection
+ok 52 - DAT fails closed on invalid-chain without implicit reconnection
+  ---
+  duration_ms: 1.7851
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on disconnect without implicit reconnection
+ok 53 - DAT fails closed on disconnect without implicit reconnection
+  ---
+  duration_ms: 2.3414
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on account-accessor without implicit reconnection
+ok 54 - DAT fails closed on account-accessor without implicit reconnection
+  ---
+  duration_ms: 2.5413
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on extra-account-field without implicit reconnection
+ok 55 - DAT fails closed on extra-account-field without implicit reconnection
+  ---
+  duration_ms: 3.8591
+  type: 'test'
+  ...
+# Subtest: DAT fails closed on too-many-accounts without implicit reconnection
+ok 56 - DAT fails closed on too-many-accounts without implicit reconnection
+  ---
+  duration_ms: 1.8672
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on wrong-account without implicit reconnection
+ok 57 - EMA fails closed on wrong-account without implicit reconnection
+  ---
+  duration_ms: 1.774
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on empty-accounts without implicit reconnection
+ok 58 - EMA fails closed on empty-accounts without implicit reconnection
+  ---
+  duration_ms: 2.0425
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on wrong-chain without implicit reconnection
+ok 59 - EMA fails closed on wrong-chain without implicit reconnection
+  ---
+  duration_ms: 1.9134
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on invalid-chain without implicit reconnection
+ok 60 - EMA fails closed on invalid-chain without implicit reconnection
+  ---
+  duration_ms: 1.2467
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on disconnect without implicit reconnection
+ok 61 - EMA fails closed on disconnect without implicit reconnection
+  ---
+  duration_ms: 1.2813
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on account-accessor without implicit reconnection
+ok 62 - EMA fails closed on account-accessor without implicit reconnection
+  ---
+  duration_ms: 1.7941
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on extra-account-field without implicit reconnection
+ok 63 - EMA fails closed on extra-account-field without implicit reconnection
+  ---
+  duration_ms: 3.1197
+  type: 'test'
+  ...
+# Subtest: EMA fails closed on too-many-accounts without implicit reconnection
+ok 64 - EMA fails closed on too-many-accounts without implicit reconnection
+  ---
+  duration_ms: 1.0569
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on wrong-account without implicit reconnection
+ok 65 - CAWELON fails closed on wrong-account without implicit reconnection
+  ---
+  duration_ms: 1.0519
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on empty-accounts without implicit reconnection
+ok 66 - CAWELON fails closed on empty-accounts without implicit reconnection
+  ---
+  duration_ms: 1.0114
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on wrong-chain without implicit reconnection
+ok 67 - CAWELON fails closed on wrong-chain without implicit reconnection
+  ---
+  duration_ms: 1.1677
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on invalid-chain without implicit reconnection
+ok 68 - CAWELON fails closed on invalid-chain without implicit reconnection
+  ---
+  duration_ms: 1.447
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on disconnect without implicit reconnection
+ok 69 - CAWELON fails closed on disconnect without implicit reconnection
+  ---
+  duration_ms: 1.4267
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on account-accessor without implicit reconnection
+ok 70 - CAWELON fails closed on account-accessor without implicit reconnection
+  ---
+  duration_ms: 1.0122
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on extra-account-field without implicit reconnection
+ok 71 - CAWELON fails closed on extra-account-field without implicit reconnection
+  ---
+  duration_ms: 1.3221
+  type: 'test'
+  ...
+# Subtest: CAWELON fails closed on too-many-accounts without implicit reconnection
+ok 72 - CAWELON fails closed on too-many-accounts without implicit reconnection
+  ---
+  duration_ms: 1.4937
+  type: 'test'
+  ...
+# Subtest: malformed account event during a provider wait rejects late balance
+ok 73 - malformed account event during a provider wait rejects late balance
+  ---
+  duration_ms: 8.1029
+  type: 'test'
+  ...
+# Subtest: registration function replaced during first subscription is not executed
+ok 74 - registration function replaced during first subscription is not executed
+  ---
+  duration_ms: 1.2014
+  type: 'test'
+  ...
+# Subtest: removal method replaced after connection cannot prevent captured cleanup
+ok 75 - removal method replaced after connection cannot prevent captured cleanup
+  ---
+  duration_ms: 1.7841
+  type: 'test'
+  ...
+# Subtest: all listener removals are attempted even if one removal throws
+ok 76 - all listener removals are attempted even if one removal throws
+  ---
+  duration_ms: 3.632
+  type: 'test'
+  ...
+# Subtest: failed session registration after installing accountsChanged leaves no active listener
+ok 77 - failed session registration after installing accountsChanged leaves no active listener
+  ---
+  duration_ms: 1.9513
+  type: 'test'
+  ...
+# Subtest: failed session registration after installing chainChanged leaves no active listener
+ok 78 - failed session registration after installing chainChanged leaves no active listener
+  ---
+  duration_ms: 0.4774
+  type: 'test'
+  ...
+# Subtest: failed session registration after installing disconnect leaves no active listener
+ok 79 - failed session registration after installing disconnect leaves no active listener
+  ---
+  duration_ms: 0.3938
+  type: 'test'
+  ...
+# Subtest: synchronous disconnect event emitted from on() cannot continue connecting
+ok 80 - synchronous disconnect event emitted from on() cannot continue connecting
+  ---
+  duration_ms: 0.758
+  type: 'test'
+  ...
+# Subtest: same-account notifications preserve access without causing reads
+ok 81 - same-account notifications preserve access without causing reads
+  ---
+  duration_ms: 1.167
+  type: 'test'
+  ...
+# Subtest: retained old callbacks cannot invalidate a replacement session
+ok 82 - retained old callbacks cannot invalidate a replacement session
+  ---
+  duration_ms: 2.45
+  type: 'test'
+  ...
+# Subtest: controller and session observers both reject accessor-based account impersonation
+ok 83 - controller and session observers both reject accessor-based account impersonation
+  ---
+  duration_ms: 2.9434
+  type: 'test'
+  ...
+# Subtest: controller registration errors are fixed text rather than extension instructions
+ok 84 - controller registration errors are fixed text rather than extension instructions
+  ---
+  duration_ms: 1.0552
+  type: 'test'
+  ...
+# Subtest: a generation change inside account descriptor traps cannot revive an older session
+ok 85 - a generation change inside account descriptor traps cannot revive an older session
+  ---
+  duration_ms: 1.5365
+  type: 'test'
+  ...
+# Subtest: malformed asynchronous registration result is consumed after listeners close
+ok 86 - malformed asynchronous registration result is consumed after listeners close
+  ---
+  duration_ms: 20.2549
+  type: 'test'
+  ...
+# Subtest: malformed asynchronous removal result is consumed after listeners close
+ok 87 - malformed asynchronous removal result is consumed after listeners close
+  ---
+  duration_ms: 2.1842
+  type: 'test'
+  ...
+# Subtest: asynchronous owner guard cannot register listeners: native
+ok 88 - asynchronous owner guard cannot register listeners: native
+  ---
+  duration_ms: 2.4284
+  type: 'test'
+  ...
+# Subtest: asynchronous owner guard blocks event delivery: native
+ok 89 - asynchronous owner guard blocks event delivery: native
+  ---
+  duration_ms: 3.5929
+  type: 'test'
+  ...
+# Subtest: asynchronous owner guard cannot register listeners: malformed
+ok 90 - asynchronous owner guard cannot register listeners: malformed
+  ---
+  duration_ms: 2.6498
+  type: 'test'
+  ...
+# Subtest: asynchronous owner guard blocks event delivery: malformed
+ok 91 - asynchronous owner guard blocks event delivery: malformed
+  ---
+  duration_ms: 2.6864
+  type: 'test'
+  ...
+# Subtest: guard that disposes its observer cannot authorize payload inspection
+ok 92 - guard that disposes its observer cannot authorize payload inspection
+  ---
+  duration_ms: 0.9866
+  type: 'test'
+  ...
+# Subtest: then accessor that closes observer cannot authorize payload inspection
+ok 93 - then accessor that closes observer cannot authorize payload inspection
+  ---
+  duration_ms: 0.73
+  type: 'test'
+  ...
+# Subtest: provider identity returned from listener methods is never inspected as a promise
+ok 94 - provider identity returned from listener methods is never inspected as a promise
+  ---
+  duration_ms: 3.1127
+  type: 'test'
+  ...
+# Subtest: asynchronous event clock closes gate without leaking rejection: native
+ok 95 - asynchronous event clock closes gate without leaking rejection: native
+  ---
+  duration_ms: 8.6457
+  type: 'test'
+  ...
+# Subtest: asynchronous event clock closes gate without leaking rejection: malformed
+ok 96 - asynchronous event clock closes gate without leaking rejection: malformed
+  ---
+  duration_ms: 1.2009
+  type: 'test'
+  ...
+# Subtest: reentrant event clock closes both nested and outer ingress permanently
+ok 97 - reentrant event clock closes both nested and outer ingress permanently
+  ---
+  duration_ms: 0.599
+  type: 'test'
+  ...
+# Subtest: clock-result inspection cannot reopen a gate stopped during reentry
+ok 98 - clock-result inspection cannot reopen a gate stopped during reentry
+  ---
+  duration_ms: 0.4572
+  type: 'test'
+  ...
+# Subtest: ordinary event clock still renews the bounded window
+ok 99 - ordinary event clock still renews the bounded window
+  ---
+  duration_ms: 0.3627
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: accountsChanged/0x2222222222222222222222222222222222222222
+ok 100 - connection diagnostic follows invalidation and contains only its fixed reason: accountsChanged/0x2222222222222222222222222222222222222222
+  ---
+  duration_ms: 21.7886
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: accountsChanged/
+ok 101 - connection diagnostic follows invalidation and contains only its fixed reason: accountsChanged/
+  ---
+  duration_ms: 3.2401
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: chainChanged/0x14a34
+ok 102 - connection diagnostic follows invalidation and contains only its fixed reason: chainChanged/0x14a34
+  ---
+  duration_ms: 3.117
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: chainChanged/invalid
+ok 103 - connection diagnostic follows invalidation and contains only its fixed reason: chainChanged/invalid
+  ---
+  duration_ms: 1.6223
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: disconnect/[object Object]
+ok 104 - connection diagnostic follows invalidation and contains only its fixed reason: disconnect/[object Object]
+  ---
+  duration_ms: 2.1057
+  type: 'test'
+  ...
+# Subtest: unchanged provider events and explicit disconnect do not become wallet-change evidence
+ok 105 - unchanged provider events and explicit disconnect do not become wallet-change evidence
+  ---
+  duration_ms: 1.6773
+  type: 'test'
+  ...
+# Subtest: a failing diagnostic cannot reconnect or interrupt connection cleanup: async=false
+ok 106 - a failing diagnostic cannot reconnect or interrupt connection cleanup: async=false
+  ---
+  duration_ms: 2.2844
+  type: 'test'
+  ...
+# Subtest: a failing diagnostic cannot reconnect or interrupt connection cleanup: async=true
+ok 107 - a failing diagnostic cannot reconnect or interrupt connection cleanup: async=true
+  ---
+  duration_ms: 2.0239
+  type: 'test'
+  ...
+# Subtest: repeated pending Connect actions share a single permission request
+ok 108 - repeated pending Connect actions share a single permission request
+  ---
+  duration_ms: 21.8493
+  type: 'test'
+  ...
+# Subtest: disconnect during connection ignores the delayed success
+ok 109 - disconnect during connection ignores the delayed success
+  ---
+  duration_ms: 5.1421
+  type: 'test'
+  ...
+# Subtest: disconnect during connection ignores the delayed error
+ok 110 - disconnect during connection ignores the delayed error
+  ---
+  duration_ms: 4.9543
+  type: 'test'
+  ...
+# Subtest: readBalances cannot overwrite a later disconnect
+ok 111 - readBalances cannot overwrite a later disconnect
+  ---
+  duration_ms: 22.0087
+  type: 'test'
+  ...
+# Subtest: inspect cannot overwrite a later disconnect
+ok 112 - inspect cannot overwrite a later disconnect
+  ---
+  duration_ms: 6.0489
+  type: 'test'
+  ...
+# Subtest: a slow older read cannot overwrite a newer completed result
+ok 113 - a slow older read cannot overwrite a newer completed result
+  ---
+  duration_ms: 12.316
+  type: 'test'
+  ...
+# Subtest: changing token inputs clears visible results and discards pending reads
+ok 114 - changing token inputs clears visible results and discards pending reads
+  ---
+  duration_ms: 14.8503
+  type: 'test'
+  ...
+# Subtest: read inputs are captured and every displayed amount uses the same hash
+ok 115 - read inputs are captured and every displayed amount uses the same hash
+  ---
+  duration_ms: 44.3607
+  type: 'test'
+  ...
+# Subtest: accountsChanged immediately clears a previously displayed result
+ok 116 - accountsChanged immediately clears a previously displayed result
+  ---
+  duration_ms: 12.0262
+  type: 'test'
+  ...
+# Subtest: accountsChanged immediately clears a previously displayed result
+ok 117 - accountsChanged immediately clears a previously displayed result
+  ---
+  duration_ms: 6.3594
+  type: 'test'
+  ...
+# Subtest: chainChanged immediately clears a previously displayed result
+ok 118 - chainChanged immediately clears a previously displayed result
+  ---
+  duration_ms: 48.2681
+  type: 'test'
+  ...
+# Subtest: disconnect immediately clears a previously displayed result
+ok 119 - disconnect immediately clears a previously displayed result
+  ---
+  duration_ms: 16.6058
+  type: 'test'
+  ...
+# Subtest: unchanged account and chain events preserve the connection
+ok 120 - unchanged account and chain events preserve the connection
+  ---
+  duration_ms: 1.684
+  type: 'test'
+  ...
+# Subtest: old callbacks and delayed permission errors cannot clear a replacement connection
+ok 121 - old callbacks and delayed permission errors cannot clear a replacement connection
+  ---
+  duration_ms: 1.7287
+  type: 'test'
+  ...
+# Subtest: missing token code yields unknown amounts rather than a zero balance
+ok 122 - missing token code yields unknown amounts rather than a zero balance
+  ---
+  duration_ms: 3.6
+  type: 'test'
+  ...
+# Subtest: a replaced block clears results instead of presenting mixed balances
+ok 123 - a replaced block clears results instead of presenting mixed balances
+  ---
+  duration_ms: 4.0974
+  type: 'test'
+  ...
+# Subtest: disposing a card removes listeners and blocks later actions
+ok 124 - disposing a card removes listeners and blocks later actions
+  ---
+  duration_ms: 1.0049
+  type: 'test'
+  ...
+# Subtest: readBalances: provider error 4100 clears the view without a disconnect event
+ok 125 - readBalances: provider error 4100 clears the view without a disconnect event
+  ---
+  duration_ms: 20.9193
+  type: 'test'
+  ...
+# Subtest: inspect: provider error 4100 clears the view without a disconnect event
+ok 126 - inspect: provider error 4100 clears the view without a disconnect event
+  ---
+  duration_ms: 37.3299
+  type: 'test'
+  ...
+# Subtest: an older read's 4100 clears a newer result from the same invalidated session
+ok 127 - an older read's 4100 clears a newer result from the same invalidated session
+  ---
+  duration_ms: 137.007
+  type: 'test'
+  ...
+# Subtest: an older read's 4100 preserves a replacement connection and its result
+ok 128 - an older read's 4100 preserves a replacement connection and its result
+  ---
+  duration_ms: 15.1361
+  type: 'test'
+  ...
+# Subtest: readBalances: provider error 4900 clears the view without a disconnect event
+ok 129 - readBalances: provider error 4900 clears the view without a disconnect event
+  ---
+  duration_ms: 21.1957
+  type: 'test'
+  ...
+# Subtest: inspect: provider error 4900 clears the view without a disconnect event
+ok 130 - inspect: provider error 4900 clears the view without a disconnect event
+  ---
+  duration_ms: 18.343
+  type: 'test'
+  ...
+# Subtest: an older read's 4900 clears a newer result from the same invalidated session
+ok 131 - an older read's 4900 clears a newer result from the same invalidated session
+  ---
+  duration_ms: 12.9446
+  type: 'test'
+  ...
+# Subtest: an older read's 4900 preserves a replacement connection and its result
+ok 132 - an older read's 4900 preserves a replacement connection and its result
+  ---
+  duration_ms: 12.8788
+  type: 'test'
+  ...
+# Subtest: readBalances: provider error 4901 clears the view without a disconnect event
+ok 133 - readBalances: provider error 4901 clears the view without a disconnect event
+  ---
+  duration_ms: 18.5881
+  type: 'test'
+  ...
+# Subtest: inspect: provider error 4901 clears the view without a disconnect event
+ok 134 - inspect: provider error 4901 clears the view without a disconnect event
+  ---
+  duration_ms: 32.2124
+  type: 'test'
+  ...
+# Subtest: an older read's 4901 clears a newer result from the same invalidated session
+ok 135 - an older read's 4901 clears a newer result from the same invalidated session
+  ---
+  duration_ms: 11.1727
+  type: 'test'
+  ...
+# Subtest: an older read's 4901 preserves a replacement connection and its result
+ok 136 - an older read's 4901 preserves a replacement connection and its result
+  ---
+  duration_ms: 8.2735
+  type: 'test'
+  ...
+# Subtest: a late connection failure after clearResult cannot leave stale connected UI
+ok 137 - a late connection failure after clearResult cannot leave stale connected UI
+  ---
+  duration_ms: 3.593
+  type: 'test'
+  ...
+# Subtest: a late connection failure after dispose cannot leave stale connected UI
+ok 138 - a late connection failure after dispose cannot leave stale connected UI
+  ---
+  duration_ms: 4.1576
+  type: 'test'
+  ...
+# Subtest: an unsupported pinned call clears the report but permits another explicit read
+ok 139 - an unsupported pinned call clears the report but permits another explicit read
+  ---
+  duration_ms: 8.046
+  type: 'test'
+  ...
+# Subtest: portfolio controller requires a previously connected wallet
+ok 140 - portfolio controller requires a previously connected wallet
+  ---
+  duration_ms: 1.5767
+  type: 'test'
+  ...
+# Subtest: portfolio controller publishes a pinned immutable snapshot without new permissions
+ok 141 - portfolio controller publishes a pinned immutable snapshot without new permissions
+  ---
+  duration_ms: 16.1378
+  type: 'test'
+  ...
+# Subtest: portfolio drops a late result after disconnect
+ok 142 - portfolio drops a late result after disconnect
+  ---
+  duration_ms: 3.0513
+  type: 'test'
+  ...
+# Subtest: portfolio drops a late result after clearResult
+ok 143 - portfolio drops a late result after clearResult
+  ---
+  duration_ms: 2.9931
+  type: 'test'
+  ...
+# Subtest: portfolio drops a late result after dispose
+ok 144 - portfolio drops a late result after dispose
+  ---
+  duration_ms: 2.2085
+  type: 'test'
+  ...
+# Subtest: portfolio cancellation releases controls without granting permission again
+ok 145 - portfolio cancellation releases controls without granting permission again
+  ---
+  duration_ms: 7.5696
+  type: 'test'
+  ...
+# Subtest: portfolio invalidates pending observations on provider accountsChanged
+ok 146 - portfolio invalidates pending observations on provider accountsChanged
+  ---
+  duration_ms: 2.963
+  type: 'test'
+  ...
+# Subtest: portfolio invalidates pending observations on provider chainChanged
+ok 147 - portfolio invalidates pending observations on provider chainChanged
+  ---
+  duration_ms: 3.4901
+  type: 'test'
+  ...
+# Subtest: portfolio invalidates pending observations on provider disconnect
+ok 148 - portfolio invalidates pending observations on provider disconnect
+  ---
+  duration_ms: 4.219
+  type: 'test'
+  ...
+# Subtest: a reorganized block never becomes an exportable portfolio
+ok 149 - a reorganized block never becomes an exportable portfolio
+  ---
+  duration_ms: 7.6031
+  type: 'test'
+  ...
+# Subtest: portfolio rejects duplicate token plans without issuing balance reads
+ok 150 - portfolio rejects duplicate token plans without issuing balance reads
+  ---
+  duration_ms: 1.7848
+  type: 'test'
+  ...
+# Subtest: missing code remains unknown and is not queried as an ERC-20 contract
+ok 151 - missing code remains unknown and is not queried as an ERC-20 contract
+  ---
+  duration_ms: 5.0834
+  type: 'test'
+  ...
+# Subtest: newer balance reads supersede a pending portfolio result
+ok 152 - newer balance reads supersede a pending portfolio result
+  ---
+  duration_ms: 10.4994
+  type: 'test'
+  ...
+# Subtest: portfolio errors preserve only a safe code for an invalid token plan
+ok 153 - portfolio errors preserve only a safe code for an invalid token plan
+  ---
+  duration_ms: 2.4123
+  type: 'test'
+  ...
+# Subtest: portfolio timeout preserves retry guidance without a provider diagnostic payload
+ok 154 - portfolio timeout preserves retry guidance without a provider diagnostic payload
+  ---
+  duration_ms: 35.8306
+  type: 'test'
+  ...
+# Subtest: portfolio provider errors outside the known allowlist become a generic code
+ok 155 - portfolio provider errors outside the known allowlist become a generic code
+  ---
+  duration_ms: 6.1419
+  type: 'test'
+  ...
+# Subtest: portfolio card forwards progress without enabling another permission request
+ok 156 - portfolio card forwards progress without enabling another permission request
+  ---
+  duration_ms: 6.8538
+  type: 'test'
+  ...
+# Subtest: disconnecting from a card progress callback cannot publish a completed portfolio
+ok 157 - disconnecting from a card progress callback cannot publish a completed portfolio
+  ---
+  duration_ms: 4.1785
+  type: 'test'
+  ...
+# Subtest: clearing from a complete progress callback still suppresses the old result
+ok 158 - clearing from a complete progress callback still suppresses the old result
+  ---
+  duration_ms: 9.2125
+  type: 'test'
+  ...
+# Subtest: a progress callback exception cannot leak a private message into the connected card
+ok 159 - a progress callback exception cannot leak a private message into the connected card
+  ---
+  duration_ms: 16.28
+  type: 'test'
+  ...
+# Subtest: invalid progress observer fails before RPC and returns only a finite failure code
+ok 160 - invalid progress observer fails before RPC and returns only a finite failure code
+  ---
+  duration_ms: 1.6423
+  type: 'test'
+  ...
+# Subtest: workspace backup file contains a SHA-256 of canonical data
+ok 161 - workspace backup file contains a SHA-256 of canonical data
+  ---
+  duration_ms: 15.0022
+  type: 'test'
+  ...
+# Subtest: workspace file round trip restores data without claiming authenticity
+ok 162 - workspace file round trip restores data without claiming authenticity
+  ---
+  duration_ms: 42.3326
+  type: 'test'
+  ...
+# Subtest: workspace file checksum is independent of JSON whitespace and key order
+ok 163 - workspace file checksum is independent of JSON whitespace and key order
+  ---
+  duration_ms: 21.0275
+  type: 'test'
+  ...
+# Subtest: workspace file accepts UTF-8 BOM while retaining canonical digest
+ok 164 - workspace file accepts UTF-8 BOM while retaining canonical digest
+  ---
+  duration_ms: 8.9231
+  type: 'test'
+  ...
+# Subtest: workspace file rejects a modified balance even when structure is valid
+ok 165 - workspace file rejects a modified balance even when structure is valid
+  ---
+  duration_ms: 21.1995
+  type: 'test'
+  ...
+# Subtest: workspace file rejects reassigned account under the old checksum
+ok 166 - workspace file rejects reassigned account under the old checksum
+  ---
+  duration_ms: 24.355
+  type: 'test'
+  ...
+# Subtest: workspace file rejects removed observations under the old checksum
+ok 167 - workspace file rejects removed observations under the old checksum
+  ---
+  duration_ms: 33.6325
+  type: 'test'
+  ...
+# Subtest: workspace file rejects invalid envelope {"schema":"workspace-v2"}
+ok 168 - workspace file rejects invalid envelope {"schema":"workspace-v2"}
+  ---
+  duration_ms: 1.2618
+  type: 'test'
+  ...
+# Subtest: workspace file rejects invalid envelope {"algorithm":"MD5"}
+ok 169 - workspace file rejects invalid envelope {"algorithm":"MD5"}
+  ---
+  duration_ms: 2.3783
+  type: 'test'
+  ...
+# Subtest: workspace file rejects invalid envelope {"algorithm":"sha-256"}
+ok 170 - workspace file rejects invalid envelope {"algorithm":"sha-256"}
+  ---
+  duration_ms: 4.1148
+  type: 'test'
+  ...
+# Subtest: workspace file rejects invalid envelope {"digest":"000000000000000000000000000000000000000000000000000000000000000"}
+ok 171 - workspace file rejects invalid envelope {"digest":"000000000000000000000000000000000000000000000000000000000000000"}
+  ---
+  duration_ms: 7.3722
+  type: 'test'
+  ...
+# Subtest: workspace file rejects invalid envelope {"digest":"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"}
+ok 172 - workspace file rejects invalid envelope {"digest":"GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"}
+  ---
+  duration_ms: 1.7079
+  type: 'test'
+  ...
+# Subtest: workspace file rejects invalid envelope {"digest":123}
+ok 173 - workspace file rejects invalid envelope {"digest":123}
+  ---
+  duration_ms: 4.126
+  type: 'test'
+  ...
+# Subtest: workspace file will not accept extra fields or signing instructions
+ok 174 - workspace file will not accept extra fields or signing instructions
+  ---
+  duration_ms: 4.3687
+  type: 'test'
+  ...
+# Subtest: workspace file refuses a raw settings file instead of silently misreading it
+ok 175 - workspace file refuses a raw settings file instead of silently misreading it
+  ---
+  duration_ms: 53.6782
+  type: 'test'
+  ...
+# Subtest: workspace file validates observations before checking integrity
+ok 176 - workspace file validates observations before checking integrity
+  ---
+  duration_ms: 7.7085
+  type: 'test'
+  ...
+# Subtest: workspace file rejects empty invalid or oversized byte buffers object/0
+ok 177 - workspace file rejects empty invalid or oversized byte buffers object/0
+  ---
+  duration_ms: 2.0471
+  type: 'test'
+  ...
+# Subtest: workspace file rejects empty invalid or oversized byte buffers string/4
+ok 178 - workspace file rejects empty invalid or oversized byte buffers string/4
+  ---
+  duration_ms: 0.4152
+  type: 'test'
+  ...
+# Subtest: workspace file rejects empty invalid or oversized byte buffers object/0
+ok 179 - workspace file rejects empty invalid or oversized byte buffers object/0
+  ---
+  duration_ms: 0.3555
+  type: 'test'
+  ...
+# Subtest: workspace file rejects empty invalid or oversized byte buffers object/0
+ok 180 - workspace file rejects empty invalid or oversized byte buffers object/0
+  ---
+  duration_ms: 0.516
+  type: 'test'
+  ...
+# Subtest: workspace file rejects empty invalid or oversized byte buffers object/8388609
+ok 181 - workspace file rejects empty invalid or oversized byte buffers object/8388609
+  ---
+  duration_ms: 2.255
+  type: 'test'
+  ...
+# Subtest: workspace file refuses malformed UTF-8 without replacement characters
+ok 182 - workspace file refuses malformed UTF-8 without replacement characters
+  ---
+  duration_ms: 1.1622
+  type: 'test'
+  ...
+# Subtest: workspace file refuses incomplete JSON
+ok 183 - workspace file refuses incomplete JSON
+  ---
+  duration_ms: 1.4052
+  type: 'test'
+  ...
+# Subtest: workspace file refuses a checksum service that fails or returns wrong width
+ok 184 - workspace file refuses a checksum service that fails or returns wrong width
+  ---
+  duration_ms: 57.61
+  type: 'test'
+  ...
+# Subtest: workspace reader publishes reading then ready without applying state
+ok 185 - workspace reader publishes reading then ready without applying state
+  ---
+  duration_ms: 39.9331
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects unsafe filename "backup.txt"
+ok 186 - workspace reader rejects unsafe filename "backup.txt"
+  ---
+  duration_ms: 2.3184
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects unsafe filename "../backup.json"
+ok 187 - workspace reader rejects unsafe filename "../backup.json"
+  ---
+  duration_ms: 1.7093
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects unsafe filename "C:\\\\backup.json"
+ok 188 - workspace reader rejects unsafe filename "C:\\\\backup.json"
+  ---
+  duration_ms: 0.7981
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects unsafe filename "a/b.json"
+ok 189 - workspace reader rejects unsafe filename "a/b.json"
+  ---
+  duration_ms: 0.9791
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects unsafe filename "backup\\u0000.json"
+ok 190 - workspace reader rejects unsafe filename "backup\\u0000.json"
+  ---
+  duration_ms: 0.4274
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects unsafe filename "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.json"
+ok 191 - workspace reader rejects unsafe filename "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.json"
+  ---
+  duration_ms: 0.6033
+  type: 'test'
+  ...
+# Subtest: workspace reader accepts uppercase JSON extension and Unicode names
+ok 192 - workspace reader accepts uppercase JSON extension and Unicode names
+  ---
+  duration_ms: 14.3279
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects invalid declared size 0
+ok 193 - workspace reader rejects invalid declared size 0
+  ---
+  duration_ms: 0.9089
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects invalid declared size -1
+ok 194 - workspace reader rejects invalid declared size -1
+  ---
+  duration_ms: 0.4159
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects invalid declared size 1.5
+ok 195 - workspace reader rejects invalid declared size 1.5
+  ---
+  duration_ms: 0.3384
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects invalid declared size 100
+ok 196 - workspace reader rejects invalid declared size 100
+  ---
+  duration_ms: 0.4732
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects invalid declared size Infinity
+ok 197 - workspace reader rejects invalid declared size Infinity
+  ---
+  duration_ms: 0.4043
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects invalid declared size 8388609
+ok 198 - workspace reader rejects invalid declared size 8388609
+  ---
+  duration_ms: 0.4884
+  type: 'test'
+  ...
+# Subtest: workspace reader rejects actual bytes inconsistent with declared size
+ok 199 - workspace reader rejects actual bytes inconsistent with declared size
+  ---
+  duration_ms: 0.678
+  type: 'test'
+  ...
+# Subtest: workspace reader reports IO failures without exposing their raw message
+ok 200 - workspace reader reports IO failures without exposing their raw message
+  ---
+  duration_ms: 0.815
+  type: 'test'
+  ...
+# Subtest: workspace reader cancellation prevents a late read from filling the import field
+ok 201 - workspace reader cancellation prevents a late read from filling the import field
+  ---
+  duration_ms: 0.716
+  type: 'test'
+  ...
+# Subtest: workspace reader cancellation also covers the checksum computation
+ok 202 - workspace reader cancellation also covers the checksum computation
+  ---
+  duration_ms: 27.0555
+  type: 'test'
+  ...
+# Subtest: workspace reader newer selection wins even if the older one completes last
+ok 203 - workspace reader newer selection wins even if the older one completes last
+  ---
+  duration_ms: 12.8651
+  type: 'test'
+  ...
+# Subtest: workspace reader stale errors cannot overwrite a successful new selection
+ok 204 - workspace reader stale errors cannot overwrite a successful new selection
+  ---
+  duration_ms: 7.3287
+  type: 'test'
+  ...
+# Subtest: workspace reader disposal prevents notifications and new reads
+ok 205 - workspace reader disposal prevents notifications and new reads
+  ---
+  duration_ms: 1.005
+  type: 'test'
+  ...
+# Subtest: workspace reader cancellation from a reading callback avoids opening the file
+ok 206 - workspace reader cancellation from a reading callback avoids opening the file
+  ---
+  duration_ms: 3.8611
+  type: 'test'
+  ...
+# Subtest: workspace backup tracker never claims browser initiation proves disk persistence
+ok 207 - workspace backup tracker never claims browser initiation proves disk persistence
+  ---
+  duration_ms: 34.9441
+  type: 'test'
+  ...
+# Subtest: workspace backup tracker marks settings and history edits as needing a new save
+ok 208 - workspace backup tracker marks settings and history edits as needing a new save
+  ---
+  duration_ms: 22.6656
+  type: 'test'
+  ...
+# Subtest: workspace backup tracker uses detached data and can be cleared
+ok 209 - workspace backup tracker uses detached data and can be cleared
+  ---
+  duration_ms: 17.5517
+  type: 'test'
+  ...
+# Subtest: restore requires literal true at final write boundary: false
+ok 210 - restore requires literal true at final write boundary: false
+  ---
+  duration_ms: 83.7416
+  type: 'test'
+  ...
+# Subtest: restore requires literal true at final write boundary: undefined
+ok 211 - restore requires literal true at final write boundary: undefined
+  ---
+  duration_ms: 61.249
+  type: 'test'
+  ...
+# Subtest: restore requires literal true at final write boundary: null
+ok 212 - restore requires literal true at final write boundary: null
+  ---
+  duration_ms: 63.7361
+  type: 'test'
+  ...
+# Subtest: restore requires literal true at final write boundary: 0
+ok 213 - restore requires literal true at final write boundary: 0
+  ---
+  duration_ms: 44.5986
+  type: 'test'
+  ...
+# Subtest: restore requires literal true at final write boundary: true
+ok 214 - restore requires literal true at final write boundary: true
+  ---
+  duration_ms: 56.923
+  type: 'test'
+  ...
+# Subtest: restore requires literal true at final write boundary: [object Object]
+ok 215 - restore requires literal true at final write boundary: [object Object]
+  ---
+  duration_ms: 53.2902
+  type: 'test'
+  ...
+# Subtest: expired authorization consumes review rather than allowing later retry
+ok 216 - expired authorization consumes review rather than allowing later retry
+  ---
+  duration_ms: 185.5718
+  type: 'test'
+  ...
+# Subtest: final authorization errors have static safe messages
+ok 217 - final authorization errors have static safe messages
+  ---
+  duration_ms: 45.8398
+  type: 'test'
+  ...
+# Subtest: async authorization is rejected and its rejection is consumed
+ok 218 - async authorization is rejected and its rejection is consumed
+  ---
+  duration_ms: 104.8558
+  type: 'test'
+  ...
+# Subtest: authorization callback cannot recursively apply or preview
+ok 219 - authorization callback cannot recursively apply or preview
+  ---
+  duration_ms: 67.181
+  type: 'test'
+  ...
+# Subtest: authorization callback cancellation blocks the first write
+ok 220 - authorization callback cancellation blocks the first write
+  ---
+  duration_ms: 34.6284
+  type: 'test'
+  ...
+# Subtest: readDraft cancellation invalidates a newly created review
+ok 221 - readDraft cancellation invalidates a newly created review
+  ---
+  duration_ms: 5.7947
+  type: 'test'
+  ...
+# Subtest: readDraft cancellation prevents applying a previously reviewed file
+ok 222 - readDraft cancellation prevents applying a previously reviewed file
+  ---
+  duration_ms: 28.7748
+  type: 'test'
+  ...
+# Subtest: readDraft cannot start a second review recursively
+ok 223 - readDraft cannot start a second review recursively
+  ---
+  duration_ms: 23.5501
+  type: 'test'
+  ...
+# Subtest: readDraft disposal cannot leave an applicable review
+ok 224 - readDraft disposal cannot leave an applicable review
+  ---
+  duration_ms: 8.4596
+  type: 'test'
+  ...
+# Subtest: adapter cannot mutate expected output and pass verification against itself
+ok 225 - adapter cannot mutate expected output and pass verification against itself
+  ---
+  duration_ms: 43.0029
+  type: 'test'
+  ...
+# Subtest: adapter receives copies and cannot modify a retained preview
+ok 226 - adapter receives copies and cannot modify a retained preview
+  ---
+  duration_ms: 57.0472
+  type: 'test'
+  ...
+# Subtest: rollback adapter mutation cannot corrupt preserved emergency draft
+ok 227 - rollback adapter mutation cannot corrupt preserved emergency draft
+  ---
+  duration_ms: 45.2736
+  type: 'test'
+  ...
+# Subtest: rollback remains permitted if authorization expires after first write
+ok 228 - rollback remains permitted if authorization expires after first write
+  ---
+  duration_ms: 40.9395
+  type: 'test'
+  ...
+# Subtest: async writer failure retains recovery data without racing another write
+ok 229 - async writer failure retains recovery data without racing another write
+  ---
+  duration_ms: 75.5713
+  type: 'test'
+  ...
+# Subtest: async rollback is rejected and preserves emergency recovery data
+ok 230 - async rollback is rejected and preserves emergency recovery data
+  ---
+  duration_ms: 59.2524
+  type: 'test'
+  ...
+# Subtest: failed adapter text is never copied into rollback exception
+ok 231 - failed adapter text is never copied into rollback exception
+  ---
+  duration_ms: 55.0437
+  type: 'test'
+  ...
+# Subtest: undo requires fresh final authorization
+ok 232 - undo requires fresh final authorization
+  ---
+  duration_ms: 86.3272
+  type: 'test'
+  ...
+# Subtest: undo read cancellation cannot become a new valid review
+ok 233 - undo read cancellation cannot become a new valid review
+  ---
+  duration_ms: 76.4807
+  type: 'test'
+  ...
+# Subtest: undo application read cancellation does not write
+ok 234 - undo application read cancellation does not write
+  ---
+  duration_ms: 56.2816
+  type: 'test'
+  ...
+# Subtest: status called from readDraft cannot recurse while checking undo
+ok 235 - status called from readDraft cannot recurse while checking undo
+  ---
+  duration_ms: 51.9186
+  type: 'test'
+  ...
+# Subtest: successful restore and undo preserve distinct DAT EMA CAWELON records
+ok 236 - successful restore and undo preserve distinct DAT EMA CAWELON records
+  ---
+  duration_ms: 58.9387
+  type: 'test'
+  ...
+# Subtest: restore: editing a draft during final authorization never overwrites that edit
+ok 237 - restore: editing a draft during final authorization never overwrites that edit
+  ---
+  duration_ms: 102.519
+  type: 'test'
+  ...
+# Subtest: restore: cancellation inside the writer rolls back instead of reporting success
+ok 238 - restore: cancellation inside the writer rolls back instead of reporting success
+  ---
+  duration_ms: 134.7772
+  type: 'test'
+  ...
+# Subtest: restore: cancellation while checking the written state rolls back
+ok 239 - restore: cancellation while checking the written state rolls back
+  ---
+  duration_ms: 66.283
+  type: 'test'
+  ...
+# Subtest: restore: authorization expiring during a write cannot leave the target committed
+ok 240 - restore: authorization expiring during a write cannot leave the target committed
+  ---
+  duration_ms: 59.9805
+  type: 'test'
+  ...
+# Subtest: restore: failed rollback retains a detached recovery copy of the pre-operation data
+ok 241 - restore: failed rollback retains a detached recovery copy of the pre-operation data
+  ---
+  duration_ms: 86.771
+  type: 'test'
+  ...
+# Subtest: undo: editing a draft during final authorization never overwrites that edit
+ok 242 - undo: editing a draft during final authorization never overwrites that edit
+  ---
+  duration_ms: 86.9684
+  type: 'test'
+  ...
+# Subtest: undo: cancellation inside the writer rolls back instead of reporting success
+ok 243 - undo: cancellation inside the writer rolls back instead of reporting success
+  ---
+  duration_ms: 115.8666
+  type: 'test'
+  ...
+# Subtest: undo: cancellation while checking the written state rolls back
+ok 244 - undo: cancellation while checking the written state rolls back
+  ---
+  duration_ms: 71.5283
+  type: 'test'
+  ...
+# Subtest: undo: authorization expiring during a write cannot leave the target committed
+ok 245 - undo: authorization expiring during a write cannot leave the target committed
+  ---
+  duration_ms: 74.5779
+  type: 'test'
+  ...
+# Subtest: undo: failed rollback retains a detached recovery copy of the pre-operation data
+ok 246 - undo: failed rollback retains a detached recovery copy of the pre-operation data
+  ---
+  duration_ms: 81.1202
+  type: 'test'
+  ...
+# Subtest: a cancelled second restore preserves the previous successful undo point
+ok 247 - a cancelled second restore preserves the previous successful undo point
+  ---
+  duration_ms: 103.7199
+  type: 'test'
+  ...
+# Subtest: successful restore and undo still have exactly one write each
+ok 248 - successful restore and undo still have exactly one write each
+  ---
+  duration_ms: 119.4724
+  type: 'test'
+  ...
+# Subtest: a cancelled write does not invoke another authorization callback
+ok 249 - a cancelled write does not invoke another authorization callback
+  ---
+  duration_ms: 47.0805
+  type: 'test'
+  ...
+# Subtest: an asynchronous post-write authorization is consumed and cannot commit
+ok 250 - an asynchronous post-write authorization is consumed and cannot commit
+  ---
+  duration_ms: 105.5424
+  type: 'test'
+  ...
+1..250
+# tests 250
+# suites 0
+# pass 250
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3908.0164

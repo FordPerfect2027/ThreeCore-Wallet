@@ -1,3 +1,4 @@
+import { consumeCallback } from "../src/security-callback.js";
 import { walletStorageGuard } from "../src/storage-guard.js";
 import { mountStorageGuardPanel } from "./storage-guard-panel.js";
 import { getDocumentExportGuard } from "./export-download.js";
@@ -21,7 +22,7 @@ import { createWalletCardController } from "../src/wallet-card-controller.js";
 import { createWalletProviderRegistry } from "../src/provider-registry.js";
 import { AGENT_IDS, normalizeAddress } from "../src/wallet-session.js";
 import { mountPortfolioPanel } from "./portfolio-panel.js";
-import { mountWalletSetupPanel } from "./wallet-setup-panel.js";
+import { mountWalletSetupPanel, mountPermittedAccountPanel } from "./wallet-setup-panel.js";
 import { mountWorkspacePanel } from "./workspace-panel.js";
 import { captureWorkspaceDraft } from "../src/workspace-format.js";
 import { mountCheckpointPanel } from "./checkpoint-panel.js";
@@ -33,11 +34,29 @@ import { mountAllowanceBundlePanel } from "./allowance-bundle-panel.js";
 import { mountTransferPanel } from "./transfer-panel.js";
 
 /** Dependencies are explicit so browser tests never consult a real extension. */
+let navigationSequence=0;
+function mountWalletNavigation(document,entries){
+  const nav=document.createElement("nav");nav.className="wallet-navigation";nav.setAttribute("aria-label","ウォレットの各機能");
+  const prefix="threecore-navigation-"+(++navigationSequence)+"-",cleanups=[],destinations=new Map();let disposed=false;
+  const goTo=key=>{if(disposed||!destinations.has(key))return false;const target=destinations.get(key);target.focus?.({preventScroll:true});target.scrollIntoView?.({block:"start",behavior:"auto"});return true;};
+  for(const [key,label,target]of entries){
+    const attributes=["id","tabindex","aria-label"],before=attributes.map(name=>target.getAttribute(name));
+    const id=before[0]||prefix+key;target.setAttribute("id",id);target.setAttribute("tabindex","-1");target.setAttribute("aria-label",label);
+    destinations.set(key,target);
+    const link=document.createElement("a");link.href="#"+id;link.textContent=label;
+    const jump=event=>{event.preventDefault();goTo(key);};
+    link.addEventListener("click",jump);nav.append(link);
+    cleanups.push(()=>{link.removeEventListener("click",jump);attributes.forEach((name,index)=>{if(before[index]==null)target.removeAttribute(name);else target.setAttribute(name,before[index]);});});
+  }
+  return{element:nav,goTo,dispose(){if(disposed)return;disposed=true;destinations.clear();for(const cleanup of cleanups)cleanup();nav.remove();}};
+}
+
 export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions, rpcSupervisor = walletRpcSupervisor, fileReadService = walletFileReadService, storageGuard = walletStorageGuard, exportGuard = getDocumentExportGuard(document) }) {
   const grid = document.querySelector("#grid");
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
   const allowancePanels = [];
   const transferPanels = [];
+  const accountPanels = [];
   let transferVaultPanel;
   let reconciliationPanel;
   let periodPanel;
@@ -51,10 +70,15 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       if (workspacePanel) steps.push({ name: "backup", run: () => workspacePanel.protect() });
       if (periodPanel) steps.push({ name: "period", run: () => periodPanel.invalidate() });
       for (const [card, controller] of controllers) steps.push({ name: card.dataset.agent,
-        run: () => controller.disconnect("保護のため接続を停止しました。再開後に接続し直してください。") });
+        run: () => {
+          let cleared = true;
+          try { accountPanels[cards.indexOf(card)]?.invalidate(); } catch { cleared = false; }
+          return controller.disconnect("保護のため接続を停止しました。再開後に接続し直してください。") && cleared;
+        } });
       return runProtectionBatch(steps).completed;
     },
     onChange(state) {
+      for (const panel of accountPanels) panel.refresh();
       for (const card of cards) {
         const current = controllers.get(card)?.state;
         if (current) render(card, current);
@@ -66,7 +90,14 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   cleanup.push(() => rpcStatusPanel.dispose());
   const storagePanel = mountStorageGuardPanel({ document, parent: securityHost, guard: storageGuard });
   cleanup.push(() => storagePanel.dispose());
-  const fileReadPanel = mountFileReadPanel({ document, parent: securityHost, service: fileReadService });
+  const savedFileDestinations = Object.freeze({ ...Object.fromEntries(Object.entries({ setup: "setup", workspace: "workspace",
+    "token-plan": "accounts", portfolio: "accounts", "portfolio-history": "accounts", "portfolio-comparison": "accounts", "history-query": "accounts",
+    "transfer-vault": "history", period: "period", library: "period-library", report: "period-report",
+    history: "report-history", set: "report-set", reconciliation: "reconciliation" })
+    .map(([target, key]) => [target, () => navigation.goTo(key)])),
+    "transfer-vault-collection": () => transferVaultPanel.showCollectionReader(),
+  });
+  const fileReadPanel = mountFileReadPanel({ document, parent: securityHost, service: fileReadService, savedFileDestinations });
   cleanup.push(() => fileReadPanel.dispose());
   const exportPanel = mountExportGuardPanel({ document, parent: securityHost, guard: exportGuard });
   cleanup.push(() => exportPanel.dispose());
@@ -160,6 +191,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       '<label>接続するWallet<select class="provider"></select></label>' +
       '<label>このエージェントのWallet公開アドレス<input class="account" placeholder="0x..." autocomplete="off" spellcheck="false"></label>' +
       '<label>チェーン<select class="chain"><option value="84532">Base Sepolia / testnet</option><option value="8453">Base Mainnet / read only</option></select></label>' +
+      '<p class="notice">このカードで確認したいネットワークを選びます。この選択だけではMetaMask側の接続先は変わりません。</p>' +
       '<label>トークンの契約アドレス（任意）<input class="token" placeholder="0x..." autocomplete="off" spellcheck="false"></label>' +
       '<label>承認先の契約アドレス（任意）<input class="spender" placeholder="0x..." autocomplete="off" spellcheck="false"></label>' +
       '<button class="connect">接続</button><button class="read secondary">残高を参照</button>' +
@@ -171,10 +203,14 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     let identityPanel;
     let allowancePanel;
     let transferPanel;
+    let accountPanel;
     let wasConnected = false;
     const controller = createWalletCardController({ agent, siteOrigin, createSession, rpcSupervisor,
+      onConnectionInvalidated: securityPanel.recordConnectionStop,
       isAccessAllowed: securityPanel.check, onChange: state => {
       render(card, state);
+      if (state.phase !== "disconnected") accountPanel?.invalidate();
+      else accountPanel?.refresh();
       if (wasConnected && !state.connection?.connected) periodPanel?.invalidate();
       if (wasConnected && !state.connection?.connected) panel?.invalidate();
       if (wasConnected && !state.connection?.connected) identityPanel?.invalidate();
@@ -236,16 +272,35 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         () => { identityPanel.invalidate(); allowancePanel.invalidate(); transferPanel.invalidate(); });
     }
     const value = selector => card.querySelector(selector).value.trim();
+    const selectedProvider = () => value(".provider") === "legacy" ? getLegacyProvider() : registry.getProvider(value(".provider"));
+    accountPanel = mountPermittedAccountPanel({ document, parent: card, siteOrigin, supervisor: rpcSupervisor,
+      canRead: () => securityPanel.check() && controller.state.phase === "disconnected",
+      readContext: () => ({ provider: selectedProvider(), account: value(".account"), chainId: Number(value(".chain")) }),
+      applyAccount: (result, checkCurrent) => {
+        checkCurrent();
+        for (const target of [panel, identityPanel, allowancePanel, transferPanel]) { target.invalidate(); checkCurrent(); }
+        setupPanel?.invalidate(); checkCurrent();
+        workspacePanel?.invalidate(); checkCurrent();
+        checkpointPanel?.invalidateDraft(); checkCurrent();
+        card.querySelector(".account").value = result.account;
+        // Retire old reads and restore previews before committing the address;
+        // then render summaries from the committed inputs without a new input event.
+        setupPanel?.refreshReadiness();
+        workspacePanel?.refreshBackupStatus();
+      },
+    });
+    accountPanels.push(accountPanel);
+    card.querySelector(".account").parentElement.after(accountPanel.element);
+    cleanup.push(() => accountPanel.dispose());
+    for (const selector of [".account", ".chain", ".provider"])
+      listen(card.querySelector(selector), selector === ".account" ? "input" : "change", () => accountPanel.invalidate());
     listen(card.querySelector(".connect"), "click", () => {
+      accountPanel.invalidate();
       try {
         const choice = value(".provider");
         const provider = choice === "legacy" ? getLegacyProvider() : registry.getProvider(choice);
         if (!provider) throw Error("接続するWalletを選択してください。");
         const account = normalizeAddress(value(".account"));
-        for (const other of cards.filter(item => item !== card)) {
-          const address = other.querySelector(".account").value.trim();
-          if (address && normalizeAddress(address) === account) throw Error("別のエージェントと同一のWalletアドレスです。");
-        }
         controller.connect({ provider, account, chainId: Number(value(".chain")) });
       } catch (error) { controller.disconnect(error.message); }
     });
@@ -416,7 +471,20 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     getReport: periodReport.getInput, stageReport: periodReport.stageHistory });
   const reportSetHost = document.createElement("div");
   reconciliationHost.before(reportSetHost);
-  const reportSet = mountReportSetPanel({ document, parent: reportSetHost });
+  const reportSet = mountReportSetPanel({ document, parent: reportSetHost,
+    stagePeriodProposal: draft => {
+      const accepted = periodPanel.stageProposed(draft);
+      if (accepted) consumeCallback(() => { periodHost.focus?.({ preventScroll: true }); periodHost.scrollIntoView?.({ block: "start", behavior: "auto" }); });
+      return accepted;
+    } });
+  const navigation=mountWalletNavigation(document,[
+    ["accounts","接続・残高",grid],["setup","口座の設定・保存",setupHost],["identity","3トークンの照合",identityHost],
+    ["workspace","3ウォレットの保存・復元",setupHost.querySelector(".workspace-panel")],
+    ["allowances","承認額の確認",allowanceHost],["history","保存した送受信履歴",transferVaultHost],["period","過去の期間を読む",periodHost],
+    ["period-library","保存した期間",periodLibraryHost],["period-report","期間のレポート",periodReportHost],
+    ["report-history","保存したレポート",reportHistoryHost],["report-set","レポートの比較",reportSetHost],
+    ["reconciliation","残高と履歴の照合",reconciliationHost],["protection","保護・読み込み状況",securityHost],
+  ]);securityHost.before(navigation.element);
   for (const event of ["input", "change"]) listen(grid, event, () => periodPanel.invalidate());
   for (const event of ["input", "change", "click"]) listen(grid, event, () => {
     workspacePanel.invalidate();
@@ -450,6 +518,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   renderWalletProviders(registry.list());
   return Object.freeze({
     dispose() {
+      navigation.dispose();
       securityPanel.dispose();
       securityHost.remove();
       reportSet.dispose();

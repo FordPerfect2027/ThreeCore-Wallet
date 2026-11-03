@@ -1,0 +1,29 @@
+{
+  "source": "a87cf5a",
+  "captures": [
+    {
+      "mode": "query",
+      "exitCode": 0,
+      "exactSharedResult": true
+    },
+    {
+      "mode": "subset",
+      "exitCode": 0,
+      "exactSharedResult": true
+    },
+    {
+      "mode": "csv",
+      "exitCode": 0,
+      "exactSharedResult": true
+    },
+    {
+      "mode": "prune",
+      "exitCode": 0,
+      "exactSharedResult": true
+    }
+  ],
+  "sourceFilesUnchanged": true,
+  "overridesAllowed": false,
+  "synthetic": true,
+  "externalRpcCalls": 0
+}

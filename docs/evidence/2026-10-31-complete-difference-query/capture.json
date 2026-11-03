@@ -1,0 +1,77 @@
+{
+  "source": "f420e7d",
+  "syntheticOnly": true,
+  "inputFilesUnchanged": true,
+  "results": [
+    {
+      "input": "source-report.json",
+      "output": "all-report-differences.json",
+      "args": [
+        "--all"
+      ],
+      "exitCode": 2,
+      "matchesCore": true,
+      "totalDifferences": 103,
+      "matchedDifferences": 103,
+      "allMatchingDifferencesIncluded": true
+    },
+    {
+      "input": "source-report.json",
+      "output": "filtered-report-differences.json",
+      "args": [
+        "--all",
+        "--path",
+        "extra0",
+        "--kind",
+        "unexpected"
+      ],
+      "exitCode": 2,
+      "matchesCore": true,
+      "totalDifferences": 103,
+      "matchedDifferences": 100,
+      "allMatchingDifferencesIncluded": true
+    },
+    {
+      "input": "source-report.json",
+      "output": "no-matching-differences.json",
+      "args": [
+        "--all",
+        "--path",
+        "absent"
+      ],
+      "exitCode": 2,
+      "matchesCore": true,
+      "totalDifferences": 103,
+      "matchedDifferences": 0,
+      "allMatchingDifferencesIncluded": true
+    },
+    {
+      "input": "source-evidence.json",
+      "output": "all-receipt-differences.json",
+      "args": [
+        "--all",
+        "--evidence",
+        "receipt"
+      ],
+      "exitCode": 2,
+      "matchesCore": true,
+      "totalDifferences": 87,
+      "matchedDifferences": 87,
+      "allMatchingDifferencesIncluded": true
+    },
+    {
+      "input": "source-evidence.json",
+      "output": "all-evidence-source-differences.json",
+      "args": [
+        "--all",
+        "--evidence",
+        "source"
+      ],
+      "exitCode": 2,
+      "matchesCore": true,
+      "totalDifferences": 103,
+      "matchedDifferences": 103,
+      "allMatchingDifferencesIncluded": true
+    }
+  ]
+}

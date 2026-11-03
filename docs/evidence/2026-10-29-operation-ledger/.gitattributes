@@ -1,0 +1,4 @@
+# Preserve the original evidence bytes across checkout and line-ending settings.
+chrome-* -text
+batch-validation.json -text
+chrome-DAT-ledger-v2.csv whitespace=trailing-space,space-before-tab,cr-at-eol

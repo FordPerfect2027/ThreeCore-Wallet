@@ -1,0 +1,11 @@
+{
+  "name": "threecore-helper-compatibility-baseline",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@nomicfoundation/hardhat-errors": "3.1.4",
+    "@nomicfoundation/hardhat-utils": "5.1.1",
+    "@nomicfoundation/hardhat-zod-utils": "3.0.8",
+    "zod": "3.25.76"
+  }
+}

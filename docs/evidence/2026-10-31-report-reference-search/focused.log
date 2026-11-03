@@ -1,0 +1,44 @@
+✔ check export parses every option, captures normalized filters and rejects ambiguous flags (10.3801ms)
+✔ help needs no file and explains unfiltered summary and privacy scope (0.6822ms)
+✔ an exported check reference can be located again through the offline command (937.4813ms)
+✔ standalone command reproduces all matching browser CSV bytes without changing source (1876.2334ms)
+✔ JSON carries original digest and complete query/summary despite zero matching checks (389.3021ms)
+✔ strict continuity cannot be concealed by token or search selection (585.9819ms)
+✔ note and address options reproduce browser export without claiming anonymization (909.4307ms)
+✔ checksum tampering has no partial stdout (215.0943ms)
+✔ wrong file type, malformed UTF-8 and missing paths fail without disclosing paths (177.8088ms)
+✔ an exported check ID locates the same check without changing global findings (716.3984ms)
+✔ source report IDs find every referencing check even when the display name differs (539.7937ms)
+✔ a complete stored hash locates contradictory observations with case-insensitive literal search (416.2722ms)
+✔ exact integer text in a conflicting stored balance is searchable without conversion (146.0448ms)
+✔ reference search still respects token and severity and treats punctuation literally (545.5377ms)
+✔ set panel mounts with accessible labels and no reads or wallet calls (125.0994ms)
+✔ loading retains explicit empty selection and native checkboxes (139.2353ms)
+✔ selection changes keep focused checkbox nodes and do not duplicate handlers (109.7336ms)
+✔ filtering never silently deselects hidden reports (159.0769ms)
+✔ clearing selection clears hidden choices too (92.5466ms)
+✔ archive filtering adds an archived report explicitly without restoring it (242.6561ms)
+✔ invalid filter input shows a useful message and preserves selected evidence (106.3193ms)
+✔ review and application are separate actions with three token cards (206.6122ms)
+✔ editing the name invalidates a pending review (126.7502ms)
+✔ source change during review is shown and never overwrites old accepted evidence (258.4139ms)
+✔ source inspection keeps the frozen set and describes later metadata changes (223.9887ms)
+✔ new result clears export acknowledgement; selection editing does not replace that result (208.43ms)
+✔ privacy controls apply to explanation files while JSON retains complete evidence (365.1735ms)
+✔ JSON import stages a review before display and never inserts history rows (223.0024ms)
+✔ tampered file keeps previous output visible and reports checksum failure (280.0721ms)
+✔ diagnostic filtering narrows visible checks without changing the result (559.718ms)
+✔ diagnostic malformed query never reports zero unresolved checks (460.685ms)
+✔ all untrusted names are rendered as text nodes, including diagnostics (132.0736ms)
+✔ busy state disables edits and cancelling suppresses a late read (133.2439ms)
+✔ panel disposal removes listeners and closes only its own storage adapter (70.2836ms)
+✔ filtered checklist CSV preserves source summary on zero matches and respects export controls (986.3326ms)
+✔ visible check references can be searched and exported without changing source conclusions (161.1645ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8790.5387

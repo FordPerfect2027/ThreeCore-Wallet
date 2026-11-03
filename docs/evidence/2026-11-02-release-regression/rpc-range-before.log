@@ -1,0 +1,62 @@
+✖ the HTTP relay enforces the history span even when the browser guard is bypassed (168.0064ms)
+✖ direct state-provider log requests cannot exceed 2000 blocks before HTTP (78.0442ms)
+✖ the dispatch boundary enforces the inclusive 2000-block limit without losing uint256 precision (13.9481ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 0
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1277.5812
+
+✖ failing tests:
+
+test at integration\base-state-rpc-server.test.mjs:49:1
+✖ the HTTP relay enforces the history span even when the browser guard is bypassed (168.0064ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  200 !== 400
+  
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/integration/base-state-rpc-server.test.mjs:60:14
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async withServer (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/integration/base-state-rpc-server.test.mjs:16:9)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/integration/base-state-rpc-server.test.mjs:51:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\base-state-provider.test.js:35:1
+✖ direct state-provider log requests cannot exceed 2000 blocks before HTTP (78.0442ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/base-state-provider.test.js:40:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'RPC_LOG_FILTER' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\security-rpc.test.js:106:1
+✖ the dispatch boundary enforces the inclusive 2000-block limit without losing uint256 precision (13.9481ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/security-rpc.test.js:116:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }

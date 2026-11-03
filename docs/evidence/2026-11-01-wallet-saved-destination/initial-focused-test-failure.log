@@ -1,0 +1,24 @@
+✖ destination navigation is explicit and keeps the inspected file without importing it (114.5158ms)
+✔ auxiliary claims and missing routes cannot trigger a destination callback (14.914ms)
+✔ callback descriptors are captured without invoking getters or following later replacement (17.4041ms)
+✔ failed destination callbacks stay bounded and do not leak private error text: false (18.5253ms)
+✔ failed destination callbacks stay bounded and do not leak private error text: throw (15.7647ms)
+✔ failed destination callbacks stay bounded and do not leak private error text: async (15.5623ms)
+✔ a destination callback replacing the selected source cannot publish stale navigation success (16.5621ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 508.9491
+
+✖ failing tests:
+
+test at test\wallet-saved-destination.test.js:5:1
+✖ destination navigation is explicit and keeps the inspected file without importing it (114.5158ms)
+  TypeError: Cannot read properties of null (reading 'click')
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/wallet-saved-destination.test.js:7:372)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)

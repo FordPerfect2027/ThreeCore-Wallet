@@ -1,0 +1,125 @@
+{
+  "source": "d1fc0d8",
+  "priorSource": "7edd434",
+  "priorEvidence": "2026-11-01-rehearsal-batch-evidence",
+  "additionalProductItems": 0,
+  "result": {
+    "schema": "threecore.local-evidence-verification.v1",
+    "readOnly": true,
+    "authenticatesOrigin": false,
+    "manifestSha256": "145f082dd9081801cac30190043fd521ff5fa59b5161a9dc4472689ff788b3f4",
+    "allMatched": true,
+    "limits": {
+      "maxFileBytes": 67108864,
+      "maxTotalBytes": 536870912
+    },
+    "summary": {
+      "files": 14,
+      "matched": 14,
+      "mismatched": 0,
+      "unreadable": 0,
+      "verifiedBytes": 54916,
+      "admittedBytes": 54916
+    },
+    "files": [
+      {
+        "path": "altered-bundle.json",
+        "expectedSha256": "f638d54f9969ce1d5517598c2b20ee32068eb82894dc07f2a7579dfd3c4a3569",
+        "status": "matched",
+        "bytes": 8455,
+        "actualSha256": "f638d54f9969ce1d5517598c2b20ee32068eb82894dc07f2a7579dfd3c4a3569"
+      },
+      {
+        "path": "altered-cli.json",
+        "expectedSha256": "dc87d7d866e2bafc280a1e919ecd972e3f41681f622febb313a54182745db5e8",
+        "status": "matched",
+        "bytes": 881,
+        "actualSha256": "dc87d7d866e2bafc280a1e919ecd972e3f41681f622febb313a54182745db5e8"
+      },
+      {
+        "path": "capture.json",
+        "expectedSha256": "c38d1146a648d4bc92c508254e0bce712fcda40da937b7c4d1d05024404d04c4",
+        "status": "matched",
+        "bytes": 2193,
+        "actualSha256": "c38d1146a648d4bc92c508254e0bce712fcda40da937b7c4d1d05024404d04c4"
+      },
+      {
+        "path": "checksum-mismatch-bundle.json",
+        "expectedSha256": "cb179ebabf2ac27f8e550b0bebbc7763217d00906d7016e38c9dc6e34fa0aa19",
+        "status": "matched",
+        "bytes": 9100,
+        "actualSha256": "cb179ebabf2ac27f8e550b0bebbc7763217d00906d7016e38c9dc6e34fa0aa19"
+      },
+      {
+        "path": "checksum-mismatch-cli.json",
+        "expectedSha256": "11969a18b6d61f815e6d903c76cf034ca253ccf85e01af0812d91c335f57ac8c",
+        "status": "matched",
+        "bytes": 886,
+        "actualSha256": "11969a18b6d61f815e6d903c76cf034ca253ccf85e01af0812d91c335f57ac8c"
+      },
+      {
+        "path": "checksum-mismatch-review.json",
+        "expectedSha256": "11969a18b6d61f815e6d903c76cf034ca253ccf85e01af0812d91c335f57ac8c",
+        "status": "matched",
+        "bytes": 886,
+        "actualSha256": "11969a18b6d61f815e6d903c76cf034ca253ccf85e01af0812d91c335f57ac8c"
+      },
+      {
+        "path": "matching-bundle.json",
+        "expectedSha256": "48bcc5a13955fa68759aeac47b926374107271798686f76d2d8e7d1a4716842f",
+        "status": "matched",
+        "bytes": 8455,
+        "actualSha256": "48bcc5a13955fa68759aeac47b926374107271798686f76d2d8e7d1a4716842f"
+      },
+      {
+        "path": "matching-cli.json",
+        "expectedSha256": "f832538c22a2f51ab4718f5c658fce23f6249de21a5cc30a552a72bb37c7618a",
+        "status": "matched",
+        "bytes": 800,
+        "actualSha256": "f832538c22a2f51ab4718f5c658fce23f6249de21a5cc30a552a72bb37c7618a"
+      },
+      {
+        "path": "matching-review.json",
+        "expectedSha256": "f832538c22a2f51ab4718f5c658fce23f6249de21a5cc30a552a72bb37c7618a",
+        "status": "matched",
+        "bytes": 800,
+        "actualSha256": "f832538c22a2f51ab4718f5c658fce23f6249de21a5cc30a552a72bb37c7618a"
+      },
+      {
+        "path": "native-browser.log",
+        "expectedSha256": "62254c0be78f570682787440deee642cacb217ff711bf99e0cfb1762ce3050b6",
+        "status": "matched",
+        "bytes": 243,
+        "actualSha256": "62254c0be78f570682787440deee642cacb217ff711bf99e0cfb1762ce3050b6"
+      },
+      {
+        "path": "negative-bundle.json",
+        "expectedSha256": "5bd13f82d79997aebdae5f9def83f0be4e020f3c1a4d0887e63692ec1921dac4",
+        "status": "matched",
+        "bytes": 9015,
+        "actualSha256": "5bd13f82d79997aebdae5f9def83f0be4e020f3c1a4d0887e63692ec1921dac4"
+      },
+      {
+        "path": "negative-cli.json",
+        "expectedSha256": "2bbe2eafd49dab7970c721559b4b45d2459148f4976d9901e2e2c3f0af25c53c",
+        "status": "matched",
+        "bytes": 801,
+        "actualSha256": "2bbe2eafd49dab7970c721559b4b45d2459148f4976d9901e2e2c3f0af25c53c"
+      },
+      {
+        "path": "negative-review.json",
+        "expectedSha256": "2bbe2eafd49dab7970c721559b4b45d2459148f4976d9901e2e2c3f0af25c53c",
+        "status": "matched",
+        "bytes": 801,
+        "actualSha256": "2bbe2eafd49dab7970c721559b4b45d2459148f4976d9901e2e2c3f0af25c53c"
+      },
+      {
+        "path": "related.log",
+        "expectedSha256": "ab7f66d83b158fc3caf663f4ec2d6395bc0e1366f5a386fe230812cf79dd2fdc",
+        "status": "matched",
+        "bytes": 11600,
+        "actualSha256": "ab7f66d83b158fc3caf663f4ec2d6395bc0e1366f5a386fe230812cf79dd2fdc"
+      }
+    ]
+  }
+}

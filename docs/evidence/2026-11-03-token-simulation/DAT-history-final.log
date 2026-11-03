@@ -1,0 +1,20 @@
+▶ DATCore: event history against the local EVM
+  ✔ reads actual mint, transfer, self-transfer and burn logs with mined identities (251.1451ms)
+  ✔ keeps Approval event amounts distinct from allowance consumed by transferFrom (184.9339ms)
+  ✔ preserves maximum approval and a later zero-amount revocation exactly (245.9712ms)
+  ✔ keeps the sampled allowance when the local chain advances during history reads (91.6193ms)
+  ✔ Transfer: refuses removed flags injected into otherwise real local logs (159.4778ms)
+  ✔ Transfer: refuses a conflicting duplicate of an actual local event (161.4081ms)
+  ✔ Transfer: rejects a local chain replacement and succeeds on a fresh snapshot (137.426ms)
+  ✔ Approval: refuses removed flags injected into otherwise real local logs (93.3292ms)
+  ✔ Approval: refuses a conflicting duplicate of an actual local event (154.1405ms)
+  ✔ Approval: rejects a local chain replacement and succeeds on a fresh snapshot (123.7174ms)
+✔ DATCore: event history against the local EVM (1630.4725ms)
+ℹ tests 10
+ℹ suites 1
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10513.4966

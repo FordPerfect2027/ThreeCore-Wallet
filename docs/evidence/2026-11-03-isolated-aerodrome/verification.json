@@ -1,0 +1,11 @@
+{
+  "isolatedSwaps": 6,
+  "rejectedControls": 24,
+  "savedPlansReplayed": 6,
+  "feeReviewsReplayed": 6,
+  "feeBreakdownsMatched": 6,
+  "upstreamSourcesHashed": 35,
+  "sourceAndArtifactsMatch": true,
+  "networkAttempts": 0,
+  "scope": "Saved local evidence replay only; not a fresh simulation, public observation or authenticated attestation"
+}

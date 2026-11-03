@@ -1,0 +1,51 @@
+✔ secure operation: dispose retires a captured status (6.4124ms)
+✔ secure operation: nested retires a captured status (0.7371ms)
+✔ secure operation labels and counts use one captured source (0.9552ms)
+✔ secure operation async state failure is consumed (13.2182ms)
+✔ secure operation async subscription is retired and late cleanup runs (6.7864ms)
+✔ secure operation async unsubscribe rejection is consumed (6.5439ms)
+✔ encrypted library: protect during source read cannot start a new review (16.053ms)
+✔ encrypted library: cancel during source read cannot start a new review (1.5855ms)
+✔ encrypted library: unready during source read cannot start a new review (1.2118ms)
+✔ encrypted library: dispose during source read cannot start a new review (2.8069ms)
+✔ encrypted library: asynchronous rejected source is consumed without preparing storage (4.5897ms)
+✔ encrypted library: late source failure cannot overwrite disposed status (0.8686ms)
+✔ encrypted library: replacement file value survives an import callback (5.4732ms)
+✔ encrypted library: accepted current ciphertext reaches review without writing (10.3161ms)
+✖ encrypted library: clearing a live FileList preserves the selected File handoff (4.7758ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 426.5829
+
+✖ failing tests:
+
+test at test\secure-panels-lifecycle.test.js:66:1
+✖ encrypted library: clearing a live FileList preserves the selected File handoff (4.7758ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + null
+  - {
+  -   name: 'synthetic.json',
+  -   size: 2
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/secure-panels-lifecycle.test.js:70:59)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: { name: 'synthetic.json', size: 2 },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

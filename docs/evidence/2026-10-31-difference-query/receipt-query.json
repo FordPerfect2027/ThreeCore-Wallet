@@ -1,0 +1,73 @@
+{
+  "schema": "threecore.operation-rehearsal-difference-query.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "target": "evidence-receipt",
+  "sourceSha256": "64c2b1dce79a1b52637c3b157b8cdda034b3081d6e93e9b2d31622c68ca09af8",
+  "summary": {
+    "matchesReceipt": false,
+    "matchesRecomputation": false,
+    "checksumMatches": null,
+    "reportOutcome": {
+      "kind": "record-query",
+      "query": {
+        "agent": "EMA",
+        "kind": "settle",
+        "decision": "all",
+        "search": ""
+      },
+      "totalRecords": 5,
+      "matchedRecords": 1
+    }
+  },
+  "query": {
+    "path": "extra08",
+    "kind": "unexpected"
+  },
+  "offset": 0,
+  "limit": 40,
+  "page": 1,
+  "totalPages": 1,
+  "totalDifferences": 87,
+  "matchedDifferences": 7,
+  "differences": [
+    {
+      "index": 80,
+      "path": "/extra080",
+      "kind": "unexpected"
+    },
+    {
+      "index": 81,
+      "path": "/extra081",
+      "kind": "unexpected"
+    },
+    {
+      "index": 82,
+      "path": "/extra082",
+      "kind": "unexpected"
+    },
+    {
+      "index": 83,
+      "path": "/extra083",
+      "kind": "unexpected"
+    },
+    {
+      "index": 84,
+      "path": "/extra084",
+      "kind": "unexpected"
+    },
+    {
+      "index": 85,
+      "path": "/extra085",
+      "kind": "unexpected"
+    },
+    {
+      "index": 86,
+      "path": "/extra086",
+      "kind": "unexpected"
+    }
+  ],
+  "hasPrevious": false,
+  "hasNext": false
+}

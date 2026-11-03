@@ -247,6 +247,35 @@ export function registerVaultUITests(test) {
     } finally { f.dispose(); }
   }));
 
+  test("vault: whole-list file restores into a different empty native database and survives reopen", async () => isolated(async source => isolated(async target => {
+    const origin = panel(source.storage());
+    let destination = panel(target.storage());
+    try {
+      await origin.capture(); await origin.save(); await origin.click("archive");
+      await origin.click("collection-export"); await waitFor(() => origin.downloads.length === 1);
+      const backup = origin.downloads[0].text;
+      const original = await source.storage().read();
+      assert(original.entries.length === 1 && original.entries[0].archived, "source must contain an archived record");
+      assert((await target.storage().read()).entries.length === 0, "destination must start empty");
+      const emptyWorking = destination.q("overview").textContent;
+      await destination.click("refresh"); await destination.file(backup, "collection-file");
+      assert(destination.q("collection-review").textContent.includes("保存一覧への追加: 1件（うち非表示保管1件）"), "fresh import must propose one archived addition");
+      assert((await target.storage().read()).entries.length === 0, "preview must not write storage");
+      await destination.click("cancel");
+      assert(destination.q("collection-apply").disabled && (await target.storage().read()).entries.length === 0, "cancel must preserve the empty destination");
+      await destination.file(backup, "collection-file"); await destination.click("collection-apply");
+      const restored = await target.storage().read();
+      assert(restored.revision === 1 && JSON.stringify(restored.entries) === JSON.stringify(original.entries), "reviewed import must retain every stored field");
+      assert(destination.q("overview").textContent === emptyWorking && destination.stages.length === 0, "collection import must not stage or populate individual cards");
+      destination.dispose(); destination = panel(target.storage());
+      assert(destination.q("overview").textContent === emptyWorking, "remount must not auto-restore a working copy");
+      await destination.click("refresh"); await destination.click("collection-export");
+      await waitFor(() => destination.downloads.length === 1);
+      assert(destination.downloads[0].text === backup, "reopened collection must re-export exact bytes");
+      assert(JSON.stringify((await source.storage().read()).entries) === JSON.stringify(original.entries), "the source database must be unchanged");
+    } finally { origin.dispose(); destination.dispose(); }
+  })));
+
   test("vault: stale tab reports conflict and retains both historical working copies", async () => isolated(async ({ storage }) => {
     const left = panel(storage()), right = panel(storage(), { createId: () => id(2) });
     try {

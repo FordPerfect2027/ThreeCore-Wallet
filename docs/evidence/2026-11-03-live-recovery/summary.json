@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-11-02T19:52:20.390Z",
+  "origin": "http://127.0.0.1:4233",
+  "sourceImplementation": "f6f378cc9b44f33fc7e147f4626e23573de06a6c",
+  "walletReviewPin": "bf690f38b070362aab1369fbf22c8e68b1a6567f",
+  "restored": {
+    "cards": 3,
+    "records": 9,
+    "recordsPerCard": 3,
+    "removedRecords": 0
+  },
+  "export": {
+    "bytes": 10103,
+    "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc",
+    "byteIdenticalToOriginal": true
+  },
+  "browserDownloadEvent": "timed out; actual file verified without second download",
+  "permissionRead": "no permitted accounts at this origin",
+  "subsequentCardEdit": "DAT requested chain changed from Sepolia to Mainnet for connection diagnosis; not included in the earlier byte-identical export",
+  "permissionOutcome": "waiting for operator; protected stop observed before grant was confirmed",
+  "newBalanceRead": false,
+  "liveSwitchEventVerified": false,
+  "nativePickerTraversed": false,
+  "signatures": false,
+  "transactions": false,
+  "privateKeysAccessed": false,
+  "githubWrites": false,
+  "privateLocalFiles": [
+    {
+      "name": "current-dat-connection.txt",
+      "bytes": 1227,
+      "sha256": "81c6a4fc28190bb59dad8e520fe226df2ae0f828b8e079a65c9672cd0b2bde2b"
+    },
+    {
+      "name": "restored-nine-records.jpg",
+      "bytes": 36469,
+      "sha256": "d398b44f09c972ee93628b674d97ba0d036dd3b1a5eb0400a6e512353a7e9d0c"
+    },
+    {
+      "name": "restored-nine-records.json",
+      "bytes": 10103,
+      "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "synthetic": true,
+  "modelCalled": false,
+  "source": "test/helpers/proposal-fixtures.js",
+  "createdAtSeconds": 1793702439,
+  "matchingExpiresAt": 1793704239,
+  "actualChainQuery": false,
+  "actualWalletCall": false
+}

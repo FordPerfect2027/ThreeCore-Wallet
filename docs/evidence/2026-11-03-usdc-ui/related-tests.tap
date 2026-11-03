@@ -1,0 +1,340 @@
+TAP version 13
+# Subtest: ordinary quote page/module graph and fixed Base reader work; upstream implementation is not public
+ok 1 - ordinary quote page/module graph and fixed Base reader work; upstream implementation is not public
+  ---
+  duration_ms: 1094.8056
+  type: 'test'
+  ...
+# Subtest: foreign origin, extra fields, injected methods, invalid numbers, oversized and invalid UTF-8 bodies cannot reach upstream
+ok 2 - foreign origin, extra fields, injected methods, invalid numbers, oversized and invalid UTF-8 bodies cannot reach upstream
+  ---
+  duration_ms: 114.2448
+  type: 'test'
+  ...
+# Subtest: upstream errors are generic and partial quotes never leak
+ok 3 - upstream errors are generic and partial quotes never leak
+  ---
+  duration_ms: 25.279
+  type: 'test'
+  ...
+# Subtest: two simultaneous jobs are allowed; disconnect cancels upstream and releases capacity
+ok 4 - two simultaneous jobs are allowed; disconnect cancels upstream and releases capacity
+  ---
+  duration_ms: 86.9293
+  type: 'test'
+  ...
+# Subtest: budget page serves its complete local graph and denies network/write/file exposure
+ok 5 - budget page serves its complete local graph and denies network/write/file exposure
+  ---
+  duration_ms: 884.2452
+  type: 'test'
+  ...
+# Subtest: quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+ok 6 - quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+  ---
+  duration_ms: 755.0159
+  type: 'test'
+  ...
+# Subtest: page/module routes exist and same-origin batch reads return validated data without a generic RPC proxy
+ok 7 - page/module routes exist and same-origin batch reads return validated data without a generic RPC proxy
+  ---
+  duration_ms: 261.1997
+  type: 'test'
+  ...
+# Subtest: wrong origin, cross-site fetch, unknown fields, invalid amounts and oversized bodies cannot reach upstream
+ok 8 - wrong origin, cross-site fetch, unknown fields, invalid amounts and oversized bodies cannot reach upstream
+  ---
+  duration_ms: 153.4058
+  type: 'test'
+  ...
+# Subtest: upstream failure sends only a bounded generic error without partial results or upstream secrets
+ok 9 - upstream failure sends only a bounded generic error without partial results or upstream secrets
+  ---
+  duration_ms: 22.3511
+  type: 'test'
+  ...
+# Subtest: disconnect aborts ongoing upstream and releases batch capacity for the next request
+ok 10 - disconnect aborts ongoing upstream and releases batch capacity for the next request
+  ---
+  duration_ms: 31.3161
+  type: 'test'
+  ...
+# Subtest: only three simultaneous batch jobs are admitted; cancelled requests release all slots
+ok 11 - only three simultaneous batch jobs are admitted; cancelled requests release all slots
+  ---
+  duration_ms: 62.9716
+  type: 'test'
+  ...
+# Subtest: missing POST origin, duplicate JSON keys and invalid UTF-8 fail before any upstream read
+ok 12 - missing POST origin, duplicate JSON keys and invalid UTF-8 fail before any upstream read
+  ---
+  duration_ms: 35.1858
+  type: 'test'
+  ...
+# Subtest: USDC page and browser dependencies are served; server reader is private; fixed RPC returns canonical data
+ok 13 - USDC page and browser dependencies are served; server reader is private; fixed RPC returns canonical data
+  ---
+  duration_ms: 393.9552
+  type: 'test'
+  ...
+# Subtest: origin, body, extra fields and UTF-8 checks reject unsafe requests before upstream
+ok 14 - origin, body, extra fields and UTF-8 checks reject unsafe requests before upstream
+  ---
+  duration_ms: 185.8981
+  type: 'test'
+  ...
+# Subtest: only two jobs run together; disconnect aborts requests and releases capacity
+ok 15 - only two jobs run together; disconnect aborts requests and releases capacity
+  ---
+  duration_ms: 66.0248
+  type: 'test'
+  ...
+# Subtest: upstream error produces no partial balance or private error text
+ok 16 - upstream error produces no partial balance or private error text
+  ---
+  duration_ms: 18.6355
+  type: 'test'
+  ...
+# Subtest: page distinguishes an unknown fee from an explicitly entered zero and invalidates old results
+ok 17 - page distinguishes an unknown fee from an explicitly entered zero and invalidates old results
+  ---
+  duration_ms: 27.8729
+  type: 'test'
+  ...
+# Subtest: page rejects excess precision and blank required fields without retaining an old pass
+ok 18 - page rejects excess precision and blank required fields without retaining an old pass
+  ---
+  duration_ms: 4.9786
+  type: 'test'
+  ...
+# Subtest: saved inputs round-trip and unnoticed programmatic edits cannot export stale results
+ok 19 - saved inputs round-trip and unnoticed programmatic edits cannot export stale results
+  ---
+  duration_ms: 5.8548
+  type: 'test'
+  ...
+# Subtest: file preview preserves current input until explicit restore and then recalculates
+ok 20 - file preview preserves current input until explicit restore and then recalculates
+  ---
+  duration_ms: 60.4563
+  type: 'test'
+  ...
+# Subtest: edit prevents late file completion replacing the current review
+ok 21 - edit prevents late file completion replacing the current review
+  ---
+  duration_ms: 4.3558
+  type: 'test'
+  ...
+# Subtest: cancel prevents late file completion replacing the current review
+ok 22 - cancel prevents late file completion replacing the current review
+  ---
+  duration_ms: 3.0721
+  type: 'test'
+  ...
+# Subtest: pagehide prevents late file completion replacing the current review
+ok 23 - pagehide prevents late file completion replacing the current review
+  ---
+  duration_ms: 11.3302
+  type: 'test'
+  ...
+# Subtest: dispose prevents late file completion replacing the current review
+ok 24 - dispose prevents late file completion replacing the current review
+  ---
+  duration_ms: 5.1896
+  type: 'test'
+  ...
+# Subtest: new-file prevents late file completion replacing the current review
+ok 25 - new-file prevents late file completion replacing the current review
+  ---
+  duration_ms: 5.8881
+  type: 'test'
+  ...
+# Subtest: invalid or overflowing imported data does not replace an existing calculation
+ok 26 - invalid or overflowing imported data does not replace an existing calculation
+  ---
+  duration_ms: 6.4684
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download cannot falsely report a saved current input
+ok 27 - failed or reentrant download cannot falsely report a saved current input
+  ---
+  duration_ms: 37.1531
+  type: 'test'
+  ...
+# Subtest: USDC restoration preserves its asset and six-decimal amounts through calculation and download
+ok 28 - USDC restoration preserves its asset and six-decimal amounts through calculation and download
+  ---
+  duration_ms: 15.1668
+  type: 'test'
+  ...
+# Subtest: DAT source preview changes nothing until apply; only exact balances/decimals change
+ok 29 - DAT source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 65.2092
+  type: 'test'
+  ...
+# Subtest: EMA source preview changes nothing until apply; only exact balances/decimals change
+ok 30 - EMA source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 11.5191
+  type: 'test'
+  ...
+# Subtest: CAWELON source preview changes nothing until apply; only exact balances/decimals change
+ok 31 - CAWELON source preview changes nothing until apply; only exact balances/decimals change
+  ---
+  duration_ms: 16.4782
+  type: 'test'
+  ...
+# Subtest: wrong network, missing contract, mismatched token metadata, corrupt checksum and excessive size cannot replace input
+ok 32 - wrong network, missing contract, mismatched token metadata, corrupt checksum and excessive size cannot replace input
+  ---
+  duration_ms: 43.0063
+  type: 'test'
+  ...
+# Subtest: cancel aborts source hashing and rejects its late result
+ok 33 - cancel aborts source hashing and rejects its late result
+  ---
+  duration_ms: 7.9516
+  type: 'test'
+  ...
+# Subtest: edit aborts source hashing and rejects its late result
+ok 34 - edit aborts source hashing and rejects its late result
+  ---
+  duration_ms: 5.7157
+  type: 'test'
+  ...
+# Subtest: pagehide aborts source hashing and rejects its late result
+ok 35 - pagehide aborts source hashing and rejects its late result
+  ---
+  duration_ms: 15.5705
+  type: 'test'
+  ...
+# Subtest: dispose aborts source hashing and rejects its late result
+ok 36 - dispose aborts source hashing and rejects its late result
+  ---
+  duration_ms: 14.8073
+  type: 'test'
+  ...
+# Subtest: regular-import aborts source hashing and rejects its late result
+ok 37 - regular-import aborts source hashing and rejects its late result
+  ---
+  duration_ms: 19.1592
+  type: 'test'
+  ...
+# Subtest: a context change without an input event still cannot apply a preview for the previous token
+ok 38 - a context change without an input event still cannot apply a preview for the previous token
+  ---
+  duration_ms: 6.5882
+  type: 'test'
+  ...
+# Subtest: USDC preview applies only balance and precision, preserves spending and remains evidence-linked
+ok 39 - USDC preview applies only balance and precision, preserves spending and remains evidence-linked
+  ---
+  duration_ms: 26.9653
+  type: 'test'
+  ...
+# Subtest: USDC command binds requested public account and height and propagates cancellation
+ok 40 - USDC command binds requested public account and height and propagates cancellation
+  ---
+  duration_ms: 26.5425
+  type: 'test'
+  ...
+# Subtest: USDC command verifies saved bytes without modifying them and rejects tampering, encoding and size
+ok 41 - USDC command verifies saved bytes without modifying them and rejects tampering, encoding and size
+  ---
+  duration_ms: 89.2664
+  type: 'test'
+  ...
+# Subtest: USDC and ETH use one account, canonical block and fixed contract; explicit height has no latest fallback
+ok 42 - USDC and ETH use one account, canonical block and fixed contract; explicit height has no latest fallback
+  ---
+  duration_ms: 242.6465
+  type: 'test'
+  ...
+# Subtest: network, metadata, missing code, malformed balance and reorganization fail closed
+ok 43 - network, metadata, missing code, malformed balance and reorganization fail closed
+  ---
+  duration_ms: 71.5356
+  type: 'test'
+  ...
+# Subtest: invalid inputs and pre-abort never dispatch; stalled fetch and body can be stopped
+ok 44 - invalid inputs and pre-abort never dispatch; stalled fetch and body can be stopped
+  ---
+  duration_ms: 228.9205
+  type: 'test'
+  ...
+# Subtest: client restricts transport, binds account/height and rejects caller-selected networks or endpoints
+ok 45 - client restricts transport, binds account/height and rejects caller-selected networks or endpoints
+  ---
+  duration_ms: 138.4011
+  type: 'test'
+  ...
+# Subtest: client deadlines and cancellation stop a stalled fetch and stalled body
+ok 46 - client deadlines and cancellation stop a stalled fetch and stalled body
+  ---
+  duration_ms: 41.6013
+  type: 'test'
+  ...
+# Subtest: screen reads only explicitly, shows exact balances, saves decodable source and rejects unnoticed context change
+ok 47 - screen reads only explicitly, shows exact balances, saves decodable source and rejects unnoticed context change
+  ---
+  duration_ms: 14.5549
+  type: 'test'
+  ...
+# Subtest: editing, cancellation and leaving the page reject late reads and late checksums
+ok 48 - editing, cancellation and leaving the page reject late reads and late checksums
+  ---
+  duration_ms: 6.7051
+  type: 'test'
+  ...
+# Subtest: failure, wrong account and wrong height remain unavailable; explicit retry succeeds
+ok 49 - failure, wrong account and wrong height remain unavailable; explicit retry succeeds
+  ---
+  duration_ms: 12.0994
+  type: 'test'
+  ...
+# Subtest: failed download keeps a result; reentrant edits cannot report saved stale data
+ok 50 - failed download keeps a result; reentrant edits cannot report saved stale data
+  ---
+  duration_ms: 4.0859
+  type: 'test'
+  ...
+# Subtest: USDC budgets have a separate schema, fixed network and precision; legacy budgets keep their currency
+ok 51 - USDC budgets have a separate schema, fixed network and precision; legacy budgets keep their currency
+  ---
+  duration_ms: 7.1784
+  type: 'test'
+  ...
+# Subtest: separate agents cannot each spend the same USDC; shared reserves are counted once
+ok 52 - separate agents cannot each spend the same USDC; shared reserves are counted once
+  ---
+  duration_ms: 9.003
+  type: 'test'
+  ...
+# Subtest: USDC source is checksum-bound and rejects bridged token, wrong decimals, supply overflow and tampering
+ok 53 - USDC source is checksum-bound and rejects bridged token, wrong decimals, supply overflow and tampering
+  ---
+  duration_ms: 25.9462
+  type: 'test'
+  ...
+# Subtest: one USDC source expands only to matching budgets and retains aggregate insufficiency
+ok 54 - one USDC source expands only to matching budgets and retains aggregate insufficiency
+  ---
+  duration_ms: 29.0401
+  type: 'test'
+  ...
+# Subtest: USDC-funded buy quote binds proposal, original source account/block, price, limits and budget
+ok 55 - USDC-funded buy quote binds proposal, original source account/block, price, limits and budget
+  ---
+  duration_ms: 48.2359
+  type: 'test'
+  ...
+1..55
+# tests 55
+# suites 0
+# pass 55
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5900.2176

@@ -12,6 +12,9 @@ body{max-width:1060px;margin:auto;padding:28px 18px}
 header{margin-bottom:25px}h1{margin-bottom:0}
 small,p{color:#c7d1e3}
 .notice{background:#1b2940;border:1px solid #7283a3;padding:12px 16px;border-radius:12px}
+.wallet-navigation{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 24px;padding:14px;background:#172139;border:1px solid #405275;border-radius:12px}
+.wallet-navigation a{display:inline-block;color:#baf4e4;padding:7px 10px;border:1px solid #52647f;border-radius:6px;text-decoration:none}
+.wallet-navigation a:hover{background:#253d52}.wallet-navigation a:focus-visible{outline:3px solid #ffd369;outline-offset:2px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
 .card{padding:18px;border-radius:15px;background:#172139;border:1px solid #405275}
 .card:nth-child(1){border-top:4px solid #e5b84d}
@@ -31,7 +34,7 @@ output{display:block;min-height:60px;word-wrap:break-word;white-space:pre-wrap;m
 .history-list{padding-left:20px;overflow-wrap:anywhere;font-size:12px}.history-panel input[type=checkbox]{display:inline-block;width:auto;margin:6px}.history-panel select{font-size:12px}
 .wallet-setup-panel{border:1px solid #7283a3;border-radius:14px;padding:18px;margin-bottom:24px;background:#172139}
 .wallet-setup-panel textarea{box-sizing:border-box;width:100%;background:#0b1426;color:#fff;border:1px solid #8292af;border-radius:8px;padding:12px}
-.wallet-setup-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+.wallet-setup-panel pre,.account-probe-details{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
 .wallet-setup-panel input[type=checkbox]{display:inline-block;width:auto;margin:6px}
 .wallet-setup-panel button:focus-visible,.wallet-setup-panel input:focus-visible,.wallet-setup-panel textarea:focus-visible{outline:3px solid #ffd369;outline-offset:3px}
 .workspace-panel {margin:1.5rem 0;padding:1.25rem;border:1px solid #64748b;border-radius:14px;background:#172139;}
@@ -102,11 +105,14 @@ output{display:block;min-height:60px;word-wrap:break-word;white-space:pre-wrap;m
 <header>
 <h1>ThreeCore Wallet <span aria-hidden="true">👽</span></h1>
 <p>DAT • EMA • CAWELON — Ford Prefect</p>
+<p><a href="/rehearsal/" target="_blank" rel="noopener" style="color:#9ce6d5">運用リハーサルを別タブで開く — 仮の利用条件と損益を確認</a></p>
+<p><a href="/tokens/read/" target="_blank" rel="noopener" style="color:#9ce6d5">3トークンの公開残高を別タブで確認 — 同じブロックから取得・保存</a></p>
+<p class="small">リハーサルを開いても、このタブの履歴は残ります。閉じる・再読み込みする前には、必要な記録をファイルに保存してください。</p>
 <p class="notice"><strong>開発用デモ・読み取り専用。</strong> Walletの接続、残高・承認額・送受信履歴などの読み取りに対応。署名・送金・スワップ・ブリッジは実装していません。外部の分散型サービスへの接続実績を示すものではありません。秘密鍵やシードフレーズを入力しないでください。</p>
 <p class="state-source-note">Base本番の残高・契約情報は、Base公式RPC（mainnet.base.org）からブロックを固定して読み取ります。公開アドレスと読み取り条件を送信します。送受信履歴は接続中のWalletのRPCから指定したブロック範囲で読み取ります。接続許可・アカウント・ネットワークもWalletで確認します。失敗時に別の接続先へ自動再送しません。</p>
 </header>
 <main class="grid" id="grid"></main>
-<footer><p>各エージェントには別々のEVM公開アドレスを設定してください。接続時にWallet拡張の許可確認が必要です。残高表示は最小単位です。</p>DON'T PANIC. JUST CODE.</footer>
+<footer><p>DAT・EMA・CAWELONで同じEVM公開アドレスを使えます。各カードのトークン・ネットワークを確認してください。接続時にWallet拡張の許可確認が必要です。残高表示は最小単位です。</p>DON'T PANIC. JUST CODE.</footer>
 <script type="module" src="/examples/wallet-entry.js"></script>
 </body>
 </html>

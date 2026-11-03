@@ -1,0 +1,30 @@
+✔ pre-aborted diagnostic signals prevent transport even if aborted is shadowed (9.4695ms)
+✔ caller cancellation ends a hanging fetch, aborts its transport signal and consumes late failure (71.3375ms)
+✔ late headers after cancellation release their unread body (6.6879ms)
+✔ cancellation during response-body reading does not return an empty or zero result (83.0623ms)
+✔ request capture that cancels cannot start a subsequent fetch (2.9461ms)
+✔ completed reads release cancellation listeners and preserve reusable transport (36.9437ms)
+✔ per-request timeout remains distinguishable from later caller cancellation (114.344ms)
+✔ invalid signal and accessor options fail before transport (1.7257ms)
+✔ network pre-aborted diagnostics do not start a read (1.3614ms)
+✔ network cancellation at the first response prevents subsequent requests (1.8154ms)
+✔ network options are captured without running input getters (0.9747ms)
+✔ contracts pre-aborted diagnostics do not start a read (1.8741ms)
+✔ contracts cancellation at the first response prevents subsequent requests (0.9705ms)
+✔ contracts options are captured without running input getters (0.5477ms)
+✔ pools pre-aborted diagnostics do not start a read (1.5361ms)
+✔ pools cancellation at the first response prevents subsequent requests (1.1461ms)
+✔ pools options are captured without running input getters (1.4045ms)
+✔ a signal proxy that rejects event registration produces a public error before transport (14.7244ms)
+✔ partial registration failure removes the installed callback and does not call fetch (2.2455ms)
+✔ an abort during failed registration keeps cancellation and consumes its rejected stop promise (28.9102ms)
+✔ failure reading signal state after registration still releases the installed callback (1.7412ms)
+✔ a cleanup exception after listener removal cannot replace a successful public result (102.9681ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 702.9843

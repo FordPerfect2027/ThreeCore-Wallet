@@ -1,0 +1,179 @@
+{
+  "schema": "threecore-immutable-ast-bindings-v1",
+  "bindings": [
+    {
+      "token": "DAT",
+      "artifactSha256": "bd996621a5f7d3bea50a1792d07f8007888c650d5656311d7af71b11aa976f29",
+      "buildInfoSha256": "e467fe0462222b9cc1ec5baa3fbe2299e9756913f6689fdf392e9dbc6126f4ad",
+      "compilerOutputSha256": "925e578704e9bccb7ef7751ff1baaa4c03b87fadc6adc28f2457774e7c0ef6b6",
+      "astSource": "npm/@openzeppelin/contracts@5.6.1/utils/cryptography/EIP712.sol",
+      "variables": [
+        {
+          "id": "4298",
+          "name": "_cachedDomainSeparator",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "bytes32"
+        },
+        {
+          "id": "4300",
+          "name": "_cachedChainId",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "uint256"
+        },
+        {
+          "id": "4302",
+          "name": "_cachedThis",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "address"
+        },
+        {
+          "id": "4304",
+          "name": "_hashedName",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "bytes32"
+        },
+        {
+          "id": "4306",
+          "name": "_hashedVersion",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "bytes32"
+        },
+        {
+          "id": "4309",
+          "name": "_name",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "ShortString"
+        },
+        {
+          "id": "4312",
+          "name": "_version",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "ShortString"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "artifactSha256": "ddddfa632efc130d64ce46b4e388ba6dc8024c96ea986a1c46443bfba0b227a5",
+      "buildInfoSha256": "7a469de80bafad5596b23546f2b1685f2ca7f256773869bd7fa03b6520000a2d",
+      "compilerOutputSha256": "30749490e2332cddf0de03b7f895e542cd16487c23cf34f25b3d10f8e58e658e",
+      "astSource": "npm/@openzeppelin/contracts@5.6.1/utils/cryptography/EIP712.sol",
+      "variables": [
+        {
+          "id": "4298",
+          "name": "_cachedDomainSeparator",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "bytes32"
+        },
+        {
+          "id": "4300",
+          "name": "_cachedChainId",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "uint256"
+        },
+        {
+          "id": "4302",
+          "name": "_cachedThis",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "address"
+        },
+        {
+          "id": "4304",
+          "name": "_hashedName",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "bytes32"
+        },
+        {
+          "id": "4306",
+          "name": "_hashedVersion",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "bytes32"
+        },
+        {
+          "id": "4309",
+          "name": "_name",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "ShortString"
+        },
+        {
+          "id": "4312",
+          "name": "_version",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "ShortString"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "artifactSha256": "022ecc2221c5b92b99846bb42d19e0dd48413dbbaa1a1aa0c298390d57af3d0d",
+      "buildInfoSha256": "a5fa656f4e32ba1a3d83e8458a39cd07049de84f726a3c0b6bd950723e6ee50c",
+      "compilerOutputSha256": "beceb645508bed14763aba7b5cdfbbd62fa725cdacc8e199a96f5e51f7a8f0de",
+      "astSource": "npm/@openzeppelin/contracts@5.6.1/utils/cryptography/EIP712.sol",
+      "variables": [
+        {
+          "id": "4298",
+          "name": "_cachedDomainSeparator",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "bytes32"
+        },
+        {
+          "id": "4300",
+          "name": "_cachedChainId",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "uint256"
+        },
+        {
+          "id": "4302",
+          "name": "_cachedThis",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "address"
+        },
+        {
+          "id": "4304",
+          "name": "_hashedName",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "bytes32"
+        },
+        {
+          "id": "4306",
+          "name": "_hashedVersion",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "bytes32"
+        },
+        {
+          "id": "4309",
+          "name": "_name",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "ShortString"
+        },
+        {
+          "id": "4312",
+          "name": "_version",
+          "nodeType": "VariableDeclaration",
+          "mutability": "immutable",
+          "type": "ShortString"
+        }
+      ]
+    }
+  ]
+}

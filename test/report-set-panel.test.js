@@ -1,9 +1,17 @@
+import { decodeReportHistoryFile } from "../src/report-history-file.js";
+import { decodePeriodLibraryFile } from "../src/period-library-file.js";
+import { mountPeriodPanel } from "../examples/period-panel.js";
+import { checkpoint as proposalCheckpoint } from "./helpers/period-fixtures.js";
+import { manyEventsInput } from "./helpers/period-report-fixtures.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { Element } from "./helpers/panel-dom.js";
 import { mountReportSetPanel } from "../examples/report-set-panel.js";
 import { prepareReportSetFile, decodeReportSetFile } from "../src/report-set-file.js";
-import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument,
+import { prepareReportSetEventComparisonFile, prepareReportSetChecksFile, prepareReportSetComparisonFile, prepareReportSetCoverageFile, prepareReportSetComparisonEvidenceFile, reviewReportSetComparisonEvidence } from "../src/report-set-export.js";
+import { decodePeriodReportFile } from "../src/period-report-file.js";
+import { decodePeriodFile, preparePeriodFile } from "../src/period-file.js";
+import { sequenceHistory, sequenceSet, demoSetHistory, historyMemory, historyDocument, historyRecord,
   clone, id, AFTER, fileFrom, waitUntil, deferred } from "./helpers/report-set-fixtures.js";
 
 function fixture(initial = sequenceHistory(), options = {}) {
@@ -33,6 +41,61 @@ function fixture(initial = sequenceHistory(), options = {}) {
   };
   return f;
 }
+
+test("choosing a proposed window exports an unread draft and changes clear selection and acknowledgement", async () => {
+  const initial = sequenceHistory([0n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+  const f = fixture(initial);
+  try {
+    await f.accept(); const before = f.mounted.getState().input;
+    f.click("history-queue-show"); f.set("history-queue-window", "1"); f.click("history-queue-choose");
+    assert.match(f.q("queue-window-selection").textContent, /36 ～ 42/); assert.equal(f.q("queue-window-json").disabled, true);
+    f.check("ack"); f.click("queue-window-json");
+    assert.equal(f.q("history-queue-size").disabled, true); assert.equal(f.q("history-queue-window").disabled, true);
+    await f.settled(); assert.equal(f.files.length, 1);
+    const decoded = await decodePeriodFile(f.files[0].text); assert.equal(decoded.draft.plan.earlierBlock, "35"); assert.equal(decoded.draft.plan.laterBlock, "42");
+    assert.equal(decoded.draft.earlier, null); assert.equal(decoded.draft.records.length, 0);
+    f.set("history-queue-size", "3", "input"); assert.equal(f.q("queue-window-json").disabled, true); assert.equal(f.q("ack").checked, false);
+    f.click("history-queue-show"); f.set("history-queue-window", "2"); f.click("history-queue-choose");
+    assert.match(f.q("queue-window-selection").textContent, /37 ～ 39/);
+    assert.equal(f.mounted.getState().input, before);
+    const oldChoose = f.q("history-queue-choose");
+    await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled(); oldChoose.click();
+    assert.match(f.q("queue-window-selection").textContent, /選択なし/); assert.equal(f.q("queue-window-json").disabled, true);
+  } finally { f.dispose(); }
+});
+
+test("whole-page draft selection is offered only for contiguous windows and keeps the saved span exact", async () => {
+  const transform = report => { const draft = report.slots[0].entry.draft; draft.earlier = null; draft.later = null; draft.records = []; };
+  const f = fixture(sequenceHistory([0n], transform));
+  try {
+    await f.accept(); f.set("history-queue-size", "1", "input"); f.click("history-queue-show");
+    assert.ok(f.q("history-queue-window").children.some(option => option.value === "page"));
+    f.set("history-queue-window", "page"); f.click("history-queue-choose"); f.check("ack"); f.click("queue-window-json"); await f.settled();
+    const decoded = await decodePeriodFile(f.files[0].text); assert.equal(decoded.draft.plan.earlierBlock, "32"); assert.equal(decoded.draft.plan.laterBlock, "42");
+    await f.file((await prepareReportSetFile(sequenceSet(sequenceHistory([0n, 24n], transform)))).text);
+    f.click("apply"); await f.settled(); f.click("history-queue-show");
+    assert.ok(!f.q("history-queue-window").children.some(option => option.value === "page"));
+    f.set("history-queue-window", "page"); assert.equal(f.q("history-queue-choose").disabled, true);
+  } finally { f.dispose(); }
+});
+
+test("replacement comparison is readable and can be saved before applying with separate acknowledgement", async () => {
+  const f = fixture();
+  try {
+    await f.accept(); const before = f.mounted.getState().input;
+    const after = clone(sequenceSet()); after.entries[0].label = "<img src=x>"; after.entries[0].note = "PRIVATE_COMPARISON_NOTE";
+    await f.file((await prepareReportSetFile(after)).text);
+    assert.match(f.q("review-text").textContent, /現在表示中の確認セットとの差/); assert.match(f.q("review-text").textContent, /<img src=x>/);
+    assert.equal(f.q("review-text").children.length, 0); assert.equal(f.q("comparison-json").disabled, true);
+    f.check("ack"); assert.equal(f.q("comparison-json").disabled, true);
+    f.check("comparison-ack"); f.click("comparison-json"); await f.settled();
+    assert.equal(f.files.length, 1); assert.doesNotMatch(f.files[0].text, /PRIVATE_COMPARISON_NOTE/);
+    assert.equal(f.mounted.getState().input, before); assert.equal(f.mounted.getState().phase, "review");
+    await f.file((await prepareReportSetFile(sequenceSet(demoSetHistory()))).text);
+    assert.equal(f.q("comparison-ack").checked, false); assert.equal(f.q("comparison-json").disabled, true);
+    f.click("apply"); await f.settled(); assert.equal(f.mounted.getState().input.entries.length, 7);
+  } finally { f.dispose(); }
+});
 
 test("set panel mounts with accessible labels and no reads or wallet calls", () => {
   const f = fixture();
@@ -270,4 +333,348 @@ test("panel disposal removes listeners and closes only its own storage adapter",
   assert.equal(f.parent.children.length, 0);
   assert.equal(f.store.closed, true);
   assert.equal(f.mounted.getState().disposed, true);
+});
+
+test("filtered checklist CSV preserves source summary on zero matches and respects export controls",async()=>{
+  const f=fixture(demoSetHistory());
+  try{
+    await f.accept();const original=f.mounted.getState().input;
+    assert.equal(f.q("checks-csv").disabled,true);f.check("ack");
+    f.set("check-severity","conflict");f.click("checks-csv");await f.settled();
+    assert.equal(f.files.length,1);assert.ok(f.files[0].matched>0);assert.equal(f.files[0].summaryRow,true);
+    assert.equal(f.files[0].query.severity,"conflict");
+    f.set("check-search","no matching check","input");f.click("checks-csv");await f.settled();
+    assert.equal(f.files[1].matched,0);assert.ok(f.files[1].total>0);assert.equal(f.files[1].text.trimEnd().split("\r\n").length,2);
+    f.set("check-search","x".repeat(101),"input");assert.equal(f.q("checks-csv").disabled,true);
+    assert.equal(f.mounted.getState().input,original);
+    const button=f.q("checks-csv");f.dispose();button.click();assert.equal(f.files.length,2);
+  }finally{f.dispose();}
+});
+
+test("visible check references can be searched and exported without changing source conclusions", async () => {
+  const f = fixture(sequenceHistory([0n, 24n]));
+  try {
+    await f.accept(); const original = f.mounted.getState().input;
+    const id = f.q("check-list").children[0].getAttribute("data-check-id");
+    assert.match(id, /^check-\d+$/); assert.match(f.q("check-search-help").textContent, /確認セット内/);
+    f.set("check-search", id.toUpperCase(), "input");
+    assert.equal(f.q("check-list").children.length, 1);
+    assert.ok(f.q("check-list").children[0].children[0].textContent.startsWith(id + " / "));
+    f.check("ack"); f.click("checks-csv"); await f.settled();
+    assert.equal(f.files[0].matched, 1); assert.equal(f.files[0].total, 3);
+    assert.equal(f.files[0].query.search, id); assert.equal(f.mounted.getState().input, original);
+    assert.equal(f.mounted.getState().result.allContinuous, false);
+    f.set("check-search", "", "input"); assert.equal(f.q("check-list").children.length, 3);
+  } finally { f.dispose(); }
+});
+
+test("check-detail JSON saves exact observations with the selected disclosure controls", async () => {
+  const f = fixture(sequenceHistory([0n, 0n]));
+  try {
+    await f.accept(); const original = f.mounted.getState().input;
+    assert.equal(f.q("checks-json").disabled, true); f.check("ack"); f.set("check-severity", "conflict");
+    f.click("checks-json"); await f.settled(); const data = JSON.parse(f.files[0].text);
+    assert.ok(data.items.some(item => item.observations.length > 0)); assert.equal(data.options.includeNotes, false);
+    assert.equal(data.sourcePayloadDigest, (await prepareReportSetFile(original)).digest);
+    assert.match(f.q("json-help").textContent, /保存値・ハッシュ/);
+    f.set("check-search", "x".repeat(101), "input"); assert.equal(f.q("checks-json").disabled, true);
+    assert.equal(f.mounted.getState().input, original);
+  } finally { f.dispose(); }
+});
+
+test("saved check details are compared on screen and the completed result can be saved", async () => {
+  const f = fixture(sequenceHistory([0n, 0n]));
+  try {
+    assert.equal(f.q("check-file").disabled, true); await f.accept(); const input = f.mounted.getState().input;
+    const file = await prepareReportSetChecksFile(input);
+    f.q("check-file").files = [fileFrom(file.text)]; f.q("check-file").dispatchEvent(new Event("change"));
+    await f.settled(); assert.match(f.q("check-review-output").textContent, /再計算と一致/);
+    assert.match(f.q("check-review-output").textContent, /確認が必要な箇所あり/);
+    assert.equal(f.q("check-review").disabled, true); f.check("ack"); f.click("check-review"); await f.settled();
+    assert.equal(JSON.parse(f.files[0].text).matchesRecomputation, true);
+    const changed = JSON.parse(file.text); changed.items = [];
+    f.q("check-file").files = [fileFrom(JSON.stringify(changed))]; f.q("check-file").dispatchEvent(new Event("change"));
+    await f.settled(); assert.match(f.q("check-review-output").textContent, /食い違い/);
+    assert.equal(f.mounted.getState().input, input); assert.equal(f.q("check-file").value, "");
+    f.q("check-file").files = [fileFrom("{")]; f.q("check-file").dispatchEvent(new Event("change"));
+    await f.settled(); assert.match(f.q("check-review-output").textContent, /最後に完了した/);
+    assert.equal(f.mounted.getState().checkReview.matchesRecomputation, false);
+  } finally { f.dispose(); }
+});
+
+test("an accepted original report can be selected and exported with its full evidence", async () => {
+  const f = fixture();
+  try {
+    assert.equal(f.q("source-report").disabled, true); await f.accept(); const input = f.mounted.getState().input;
+    assert.equal(f.q("source-report").children.length, input.entries.length + 1);
+    assert.equal(f.q("source-report-json").disabled, true); f.set("source-report", input.entries[1].id);
+    assert.equal(f.q("source-report-json").disabled, true); f.check("ack"); f.click("source-report-json"); await f.settled();
+    assert.deepEqual((await decodePeriodReportFile(f.files[0].text)).input, input.entries[1].report);
+    assert.equal(f.mounted.getState().input, input); assert.match(f.q("source-report-help").textContent, /全アドレス/);
+    f.set("source-report", id(999)); assert.equal(f.q("source-report-json").disabled, true);
+    f.set("title", "Another set", "input"); f.click("prepare"); f.click("apply"); await f.settled();
+    assert.equal(f.q("source-report").value, ""); assert.equal(f.q("source-report-json").disabled, true);
+  } finally { f.dispose(); }
+});
+
+test("saved comparisons are reviewed against the pending pair and saved without applying it", async () => {
+  const f = fixture();
+  const choose = async text => {
+    f.q("comparison-file").files = [fileFrom(text)]; f.q("comparison-file").dispatchEvent(new Event("change")); await f.settled();
+  };
+  try {
+    assert.equal(f.q("comparison-file").disabled, true); await f.accept(); const before = f.mounted.getState().input;
+    const after = sequenceSet(demoSetHistory()); await f.file((await prepareReportSetFile(after)).text);
+    const saved = await prepareReportSetComparisonFile(before, after); await choose(saved.text);
+    assert.match(f.q("comparison-review-output").textContent, /再計算と一致/);
+    assert.equal(f.q("comparison-review-json").disabled, true); f.check("comparison-ack"); f.click("comparison-review-json"); await f.settled();
+    assert.equal(JSON.parse(f.files[0].text).matchesRecomputation, true); assert.equal(f.mounted.getState().input, before);
+    const altered = JSON.parse(saved.text); altered.comparison.rows = []; await choose(JSON.stringify(altered));
+    assert.match(f.q("comparison-review-output").textContent, /食い違い/); assert.equal(f.q("comparison-file").value, "");
+    await f.file((await prepareReportSetFile(after)).text);
+    assert.equal(f.mounted.getState().comparisonReview, null); assert.equal(f.q("comparison-review-json").disabled, true);
+    assert.equal(f.q("comparison-ack").checked, false); assert.equal(f.mounted.getState().input, before);
+    const control = f.q("comparison-file"); f.dispose(); control.files = [fileFrom(saved.text)]; control.dispatchEvent(new Event("change"));
+    assert.equal(f.files.length, 1);
+  } finally { f.dispose(); }
+});
+
+test("saved-history coverage exports all groups independently of check filters", async () => {
+  const f = fixture(demoSetHistory());
+  try {
+    assert.equal(f.q("coverage-json").disabled, true); await f.accept(); const before = f.mounted.getState().input;
+    assert.equal(f.q("coverage-csv").disabled, true); f.check("ack"); f.set("check-search", "not in any check", "input");
+    f.click("coverage-json"); await f.settled(); const data = JSON.parse(f.files[0].text);
+    assert.equal(data.groupCount, 3); assert.equal(data.summary.allContinuous, false); assert.equal(data.options.shortAddresses, true);
+    f.check("short-addresses", false); f.click("coverage-csv"); await f.settled();
+    assert.match(f.files[1].text, /"group-summary"/); assert.ok(f.files[1].text.includes(before.entries[0].report.slots[0].entry.draft.plan.context.account));
+    assert.match(f.q("coverage-export-help").textContent, /イベント本体は含めません/); assert.equal(f.mounted.getState().input, before);
+    const control = f.q("coverage-json"); f.dispose(); control.click(); assert.equal(f.files.length, 2);
+  } finally { f.dispose(); }
+});
+
+test("wrong saved-artifact inputs explain the correct destination without replacing current evidence", async () => {
+  const f = fixture();
+  try {
+    await f.accept(); const original = f.mounted.getState().input, saved = JSON.stringify(f.store.document);
+    const period = await preparePeriodFile(original.entries[0].report.slots[0].entry.draft);
+    await f.file(period.text); assert.match(f.q("status").textContent, /控えの保存と復元/);
+    assert.equal(f.mounted.getState().input, original); assert.equal(f.q("apply").disabled, true);
+    const coverage = await prepareReportSetCoverageFile(original); await f.file(coverage.text);
+    assert.match(f.q("status").textContent, /元の履歴を復元するファイルではありません/);
+    const comparison = await prepareReportSetComparisonFile(original, sequenceSet(demoSetHistory())); await f.file(comparison.text);
+    assert.match(f.q("status").textContent, /保存した比較JSONを照合/);
+    assert.equal(f.mounted.getState().input, original); assert.equal(JSON.stringify(f.store.document), saved);
+    assert.ok(f.store.calls.every(row => row[0] === "read"));
+  } finally { f.dispose(); }
+});
+
+test("portable comparison evidence is independently reviewed and requires separate full-source export acknowledgement", async () => {
+  const f = fixture(), before = sequenceSet(), after = sequenceSet(demoSetHistory());
+  const choose = async text => {
+    f.q("comparison-evidence-file").files = [fileFrom(text)]; f.q("comparison-evidence-file").dispatchEvent(new Event("change")); await f.settled();
+  };
+  try {
+    assert.equal(f.q("comparison-evidence-file").disabled, false);
+    await choose((await prepareReportSetComparisonEvidenceFile(before, after)).text);
+    assert.equal(f.mounted.getState().input, null); assert.match(f.q("comparison-evidence-output").textContent, /再計算と一致/);
+    assert.equal(f.q("comparison-evidence-review-json").disabled, true); f.check("comparison-evidence-review-ack"); f.click("comparison-evidence-review-json"); await f.settled();
+    assert.equal(JSON.parse(f.files[0].text).imported, false);
+    await f.accept(); const accepted = f.mounted.getState().input;
+    await f.file((await prepareReportSetFile(after)).text); f.check("ack"); f.check("comparison-ack");
+    assert.equal(f.q("comparison-evidence-json").disabled, true);
+    f.check("comparison-evidence-ack"); f.click("comparison-evidence-json"); await f.settled();
+    assert.equal(f.files[1].containsOriginalEvidence, true); assert.equal(f.mounted.getState().input, accepted);
+    assert.equal((await reviewReportSetComparisonEvidence(f.files[1].text)).comparisonReview.matchesRecomputation, true);
+    await f.file((await prepareReportSetFile(after)).text); assert.equal(f.q("comparison-evidence-ack").checked, false);
+    assert.equal(f.q("comparison-evidence-json").disabled, true); assert.equal(f.mounted.getState().evidenceReview.imported, false);
+    const control = f.q("comparison-evidence-file"); f.dispose(); control.files = [fileFrom("{}")]; control.dispatchEvent(new Event("change")); assert.equal(f.files.length, 2);
+  } finally { f.dispose(); }
+});
+
+test("verified source recovery resets disclosure on side changes and never replaces the displayed set", async () => {
+  const f = fixture(), before = sequenceSet(), after = sequenceSet(demoSetHistory());
+  const choose = async text => { f.q("comparison-evidence-file").files = [fileFrom(text)]; f.q("comparison-evidence-file").dispatchEvent(new Event("change")); await f.settled(); };
+  try {
+    assert.equal(f.q("evidence-source-role").disabled, true);
+    const bundle = await prepareReportSetComparisonEvidenceFile(before, after); await choose(bundle.text);
+    assert.equal(f.q("evidence-source-json").disabled, true); f.set("evidence-source-role", "before");
+    f.check("comparison-evidence-review-ack"); assert.equal(f.q("evidence-source-json").disabled, true);
+    f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
+    assert.deepEqual((await decodeReportSetFile(f.files[0].text)).input, before); assert.equal(f.mounted.getState().input, null);
+    f.set("evidence-source-role", "after"); assert.equal(f.q("evidence-source-ack").checked, false); assert.equal(f.q("evidence-source-json").disabled, true);
+    f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
+    assert.deepEqual((await decodeReportSetFile(f.files[1].text)).input, after);
+    await f.accept(); const accepted = f.mounted.getState().input;
+    await choose(bundle.text); assert.equal(f.q("evidence-source-role").value, ""); assert.equal(f.q("evidence-source-ack").checked, false);
+    f.set("evidence-source-role", "before"); f.check("evidence-source-ack"); f.click("evidence-source-json"); await f.settled();
+    assert.equal(f.mounted.getState().input, accepted); assert.ok(f.store.calls.every(row => row[0] === "read"));
+    const control = f.q("evidence-source-json"); f.dispose(); control.click(); assert.equal(f.files.length, 3);
+  } finally { f.dispose(); }
+});
+
+test("saved-event comparison pages differences but saves all of them and invalidates edited selections", async () => {
+  const report = manyEventsInput(57), changed = clone(report);
+  for (const row of changed.slots[0].entry.draft.records[0].events) row.amountBaseUnits = "2";
+  const f = fixture(historyDocument([historyRecord(1, { label: "<img src=x>", report }), historyRecord(2, { report: changed })]));
+  try {
+    assert.equal(f.q("event-compare").disabled, true); await f.accept(); const accepted = f.mounted.getState().input;
+    f.set("event-before", id(101)); f.set("event-after", id(102)); f.click("event-compare");
+    assert.match(f.q("event-output").textContent, /内容違い 57/); assert.match(f.q("event-output").textContent, /1\/2ページ/);
+    assert.match(f.q("event-output").textContent, /<img src=x>/); assert.equal(f.q("event-output").children.length, 0);
+    f.click("event-next"); assert.match(f.q("event-output").textContent, /2\/2ページ/); assert.equal(f.q("event-next").disabled, true);
+    f.check("ack"); assert.equal(f.q("event-json").disabled, true); f.check("event-ack"); f.click("event-json"); await f.settled();
+    assert.equal(JSON.parse(f.files[0].text).comparison.differences.length, 57); assert.equal(f.mounted.getState().input, accepted);
+    f.set("event-agent", "EMA"); assert.equal(f.q("event-ack").checked, false); assert.equal(f.q("event-json").disabled, true);
+    f.click("event-compare"); assert.match(f.q("event-output").textContent, /一致しています/);
+    await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled();
+    assert.equal(f.q("event-before").value, ""); assert.equal(f.q("event-json").disabled, true);
+    const old = f.q("event-compare"); f.dispose(); old.disabled = false; old.click(); assert.equal(f.files.length, 1);
+  } finally { f.dispose(); }
+});
+
+test("event recheck selection previews an unread range and resets when the side, page or source changes", async () => {
+  const report = manyEventsInput(57), changed = clone(report);
+  for (const row of changed.slots[0].entry.draft.records[0].events) row.amountBaseUnits = "2";
+  const f = fixture(historyDocument([historyRecord(1, { report }), historyRecord(2, { report: changed })]));
+  try {
+    await f.accept(); const accepted = f.mounted.getState().input;
+    f.set("event-before", id(101)); f.set("event-after", id(102)); f.click("event-compare");
+    assert.equal(f.q("event-recheck-json").disabled, true); f.set("event-recheck-choice", "e:1");
+    assert.match(f.q("event-recheck-range").textContent, /35 ～ 35/); f.check("event-ack"); assert.equal(f.q("event-recheck-json").disabled, true);
+    f.check("event-recheck-ack"); f.click("event-recheck-json"); await f.settled();
+    const decoded = await decodePeriodFile(f.files[0].text); assert.equal(decoded.draft.plan.earlierBlock, "34"); assert.equal(decoded.draft.records.length, 0);
+    assert.equal(f.mounted.getState().input, accepted); f.set("event-recheck-choice", "e:2"); assert.equal(f.q("event-recheck-ack").checked, false);
+    f.check("event-recheck-ack"); f.click("event-next"); assert.equal(f.q("event-recheck-choice").value, ""); assert.equal(f.q("event-recheck-ack").checked, false);
+    assert.ok(f.q("event-recheck-choice").children.some(option => option.value === "e:51"));
+    f.set("event-recheck-choice", "e:51"); f.check("event-recheck-ack"); f.set("event-agent", "EMA"); assert.equal(f.q("event-recheck-json").disabled, true);
+    assert.equal(f.q("event-recheck-choice").value, "");
+    const control = f.q("event-recheck-json"); f.dispose(); control.disabled = false; control.click(); assert.equal(f.files.length, 1);
+  } finally { f.dispose(); }
+});
+
+test("direct discrepancy handoff opens an explicit period review and preserves the collected destination until acknowledged", async () => {
+  let destination, reads = 0, contexts = 0;
+  const initial = sequenceHistory([0n, 0n], (report, index) => { if (index === 1) report.slots[0].entry.draft.records[0].events[0].amountBaseUnits = "1"; });
+  const f = fixture(initial, { panel: { stagePeriodProposal: draft => destination.stageProposed(draft) } });
+  const target = new Element("div"), q = name => target.find("period-" + name);
+  destination = mountPeriodPanel({ document: f.document, parent: target, getContext() { contexts++; throw Error("NO_CONNECTION"); }, read() { reads++; throw Error("NO_READ"); } });
+  try {
+    destination.stageSaved(proposalCheckpoint(3), { requiresNewPlan: false }); q("apply").click(); const oldDraft = destination.getDraft();
+    await f.accept(); const accepted = f.mounted.getState().input;
+    f.set("event-before", id(101)); f.set("event-after", id(102)); f.click("event-compare"); f.set("event-recheck-choice", "e:1");
+    assert.equal(f.q("event-recheck-ack").checked, false); f.click("event-recheck-send"); await f.settled();
+    assert.match(q("review-text").textContent, /新しい未取得/); assert.doesNotMatch(q("review-text").textContent, /保存一覧に保管した/);
+    assert.equal(destination.getDraft(), oldDraft); assert.equal(q("start").disabled, true); assert.equal(q("apply").disabled, true);
+    q("ack").checked = true; q("ack").dispatchEvent(new Event("change")); q("apply").click();
+    assert.equal(destination.getDraft().plan.earlierBlock, "34"); assert.equal(destination.getDraft().records.length, 0);
+    assert.equal(f.mounted.getState().input, accepted); assert.equal(f.files.length, 0); assert.equal(reads, 0); assert.equal(contexts, 0);
+    f.set("event-agent", "EMA"); assert.equal(f.q("event-recheck-send").disabled, true);
+  } finally { f.dispose(); destination.dispose(); }
+});
+
+test("missing-range handoff shares the selected empty draft and standalone panels explain file fallback", async () => {
+  const initial = sequenceHistory([0n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+  const delivered = [], f = fixture(initial, { panel: { stagePeriodProposal: draft => { delivered.push(draft); return true; } } });
+  try {
+    await f.accept(); f.click("history-queue-show"); f.set("history-queue-window", "1"); f.click("history-queue-choose");
+    f.click("queue-window-send"); await f.settled(); assert.equal(delivered.length, 1);
+    assert.equal(delivered[0].plan.earlierBlock, "35"); assert.equal(delivered[0].plan.laterBlock, "42"); assert.equal(delivered[0].records.length, 0);
+    assert.equal(f.files.length, 0); f.set("history-queue-size", "3", "input"); assert.equal(f.q("queue-window-send").disabled, true);
+  } finally { f.dispose(); }
+  const single = fixture(initial);
+  try { assert.equal(single.q("queue-window-send").disabled, true); assert.match(single.q("proposal-help").textContent, /JSON保存/); }
+  finally { single.dispose(); }
+});
+
+test("set block scope keeps selected and accepted sources while filtering the same token", async () => {
+  const initial = sequenceHistory([0n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+  const f = fixture(initial);
+  try {
+    await f.accept(); const accepted = f.mounted.getState().input, before = JSON.stringify(f.store.document);
+    f.set("agent-filter", "DAT"); f.set("block-filter", "36", "input"); f.set("block-scope", "saved");
+    assert.ok(f.q("count").textContent.includes("0/1")); assert.ok(f.q("select-visible").disabled);
+    assert.ok(f.q("selection-count").textContent.includes("絞り込み対象外 1件"));
+    assert.ok(f.mounted.getState().selection.length === 1 && f.mounted.getState().input === accepted);
+    f.set("agent-filter", "CAWELON"); assert.ok(f.q("count").textContent.includes("1/1")); assert.ok(!f.q("select-visible").disabled);
+    f.set("agent-filter", "DAT"); f.set("block-scope", "planned"); assert.ok(f.q("count").textContent.includes("1/1"));
+    f.set("block-filter", "01", "input"); assert.ok(f.q("count").textContent.includes("検索条件")); assert.ok(f.q("select-visible").disabled);
+    f.set("block-filter", "", "input"); assert.ok(f.q("count").textContent.includes("1/1"));
+    assert.ok(f.mounted.getState().input === accepted && JSON.stringify(f.store.document) === before);
+    assert.ok(f.files.length === 0 && f.store.calls.every(call => call[0] === "read"));
+  } finally { f.dispose(); }
+});
+
+  test("saved event comparison review distinguishes file fidelity and observed differences", async () => {
+  const initial = sequenceHistory([0n, 0n], (report, index) => { if (index) report.slots[0].entry.draft.records[0].events[0].amountBaseUnits = "1"; });
+  const f = fixture(initial);
+  try {
+    await f.accept(); const before = f.mounted.getState().input;
+    const comparison = await prepareReportSetEventComparisonFile(before, { beforeId: id(101), afterId: id(102), agent: "DAT" });
+    f.q("event-review-file").files = [fileFrom(comparison.text)]; f.q("event-review-file").dispatchEvent(new Event("change"));
+    await f.settled(); assert.ok(f.q("event-review-output").textContent.includes("ファイルの内容は再計算と一致"));
+    assert.ok(f.q("event-review-output").textContent.includes("保存観測に食い違いあり"));
+    assert.ok(f.q("event-review-json").disabled); f.check("event-ack"); assert.ok(f.q("event-review-json").disabled);
+    f.check("event-review-ack"); f.click("event-review-json"); await f.settled();
+    assert.ok(f.files.length === 1 && JSON.parse(f.files[0].text).matchesRecomputation);
+    assert.ok(f.mounted.getState().input === before && f.store.calls.every(row => row[0] === "read"));
+    await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled();
+    assert.ok(f.mounted.getState().eventComparisonReview === null && f.q("event-review-json").disabled && !f.q("event-review-ack").checked);
+  } finally { f.dispose(); }
+  });
+
+  test("saved coverage review keeps pending ranges visible and detects changed coverage", async () => {
+  const initial = sequenceHistory([0n, 24n], report => { report.slots[0].entry.draft.records = report.slots[0].entry.draft.records.slice(0, 1); });
+  const f = fixture(initial);
+  try {
+    assert.ok(f.q("coverage-review-file").disabled); await f.accept(); const before = f.mounted.getState().input;
+    f.q("coverage-review-heading").click();
+    const file = await prepareReportSetCoverageFile(before);
+    const feed = async text => { f.q("coverage-review-file").files = [fileFrom(text)]; f.q("coverage-review-file").dispatchEvent(new Event("change")); await f.settled(); };
+    await feed(file.text); assert.ok(f.q("coverage-review-output").textContent.includes("ファイルの内容は再計算と一致"));
+    assert.ok(f.q("coverage-review-output").textContent.includes("計画内で履歴記録なし 14"));
+    assert.ok(f.q("coverage-review-output").textContent.includes("合算しません"));
+    assert.ok(f.q("coverage-review-json").disabled); f.check("ack"); assert.ok(f.q("coverage-review-json").disabled);
+    f.check("coverage-review-ack"); f.click("coverage-review-json"); await f.settled();
+    assert.ok(f.files.length === 1 && JSON.parse(f.files[0].text).groups[0].pendingPlannedBlocks === "14");
+    const altered = JSON.parse(file.text); altered.groups[0].recordedUniqueBlocks = "900";
+    await feed(JSON.stringify(altered)); assert.ok(f.q("coverage-review-output").textContent.includes("再計算との食い違い"));
+    assert.ok(f.q("coverage-review-json").disabled && !f.q("coverage-review-ack").checked);
+    assert.ok(f.mounted.getState().input === before && f.store.calls.every(row => row[0] === "read"));
+    await f.file((await prepareReportSetFile(sequenceSet())).text); f.click("apply"); await f.settled();
+    assert.ok(f.mounted.getState().coverageReview === null && f.q("coverage-review-json").disabled);
+  } finally { f.dispose(); }
+  });
+
+test("token library extraction preserves a pending set, requires its own acknowledgement and refuses conflicts", async () => {
+  const source = sequenceSet(sequenceHistory([0n,12n], (report,index) => report.slots.forEach((slot,n) => { slot.entry.id=id(1000+3*index+n); })));
+  const f = fixture();
+  try {
+    await f.file((await prepareReportSetFile(source)).text); f.click("apply"); await f.settled(); const original=f.mounted.getState().input;
+    assert.equal(f.q("token-library-json").disabled,true); f.check("ack"); assert.equal(f.q("token-library-json").disabled,true);
+    await f.file((await prepareReportSetFile(sequenceSet())).text); const pending=f.mounted.getState().review;
+    f.check("token-library-ack"); f.click("token-library-json"); await f.settled();
+    const library=(await decodePeriodLibraryFile(f.files[0].text)).document;
+    assert.deepEqual(library.entries,source.entries.map(row=>row.report.slots[0].entry));
+    assert.equal(f.mounted.getState().input,original); assert.equal(f.mounted.getState().review,pending);
+    assert.equal(f.store.calls.length,0); f.set("token-library-agent","EMA");
+    assert.equal(f.q("token-library-ack").checked,false); assert.equal(f.q("token-library-json").disabled,true);
+    f.check("token-library-ack"); f.click("apply"); await f.settled();
+    assert.equal(f.q("token-library-json").disabled,true); assert.equal(f.q("token-library-ack").checked,false);
+    assert.match(f.q("token-library-description").textContent,/同じ保存番号に異なる/);
+  } finally { f.dispose(); }
+});
+
+test("recover history backup preserves annotations and pending review under a separate acknowledgement", async () => {
+  const source = sequenceSet(demoSetHistory()), f = fixture();
+  try {
+    await f.file((await prepareReportSetFile(source)).text); f.click("apply"); await f.settled(); const original = f.mounted.getState().input;
+    f.check("ack"); assert.equal(f.q("history-backup-json").disabled, true);
+    assert.match(f.q("history-backup-description").textContent, /7件.*非表示保管 1件/);
+    await f.file((await prepareReportSetFile(sequenceSet())).text); const pending = f.mounted.getState().review;
+    f.check("history-backup-ack"); f.click("history-backup-json"); await f.settled();
+    assert.deepEqual((await decodeReportHistoryFile(f.files[0].text)).document.entries, source.entries);
+    assert.equal(f.mounted.getState().input, original); assert.equal(f.mounted.getState().review, pending); assert.equal(f.store.calls.length, 0);
+    f.click("apply"); await f.settled(); assert.equal(f.q("history-backup-ack").checked, false); assert.equal(f.q("history-backup-json").disabled, true);
+  } finally { f.dispose(); }
 });

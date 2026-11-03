@@ -1,0 +1,31 @@
+保存記録の時系列一覧
+現在の残高・所有権・送金履歴・利益を証明するものではありません。
+記録数: 3
+アカウント・チェーン等の組み合わせ: 1
+
+DAT / 0x1111111111111111111111111111111111111111
+チェーン: 84532
+サイト: http://localhost:4184
+ブロック: 10
+ハッシュ: 0xabababababababababababababababababababababababababababababababab
+ネイティブ残高（最小単位）: 16
+トークン契約数: 1
+残高未確認の契約数: 1
+ブロック: 20
+ハッシュ: 0xabababababababababababababababababababababababababababababababab
+ネイティブ残高（最小単位）: 16
+トークン契約数: 1
+残高未確認の契約数: 0
+ブロック: 30
+ハッシュ: 0xabababababababababababababababababababababababababababababababab
+ネイティブ残高（最小単位）: 16
+トークン契約数: 2
+残高未確認の契約数: 0
+比較: 10 → 20
+ネイティブ差分（最小単位）: 0
+0xabababababababababababababababababababab: 比較不可 / not_observed_after
+0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd: 比較不可 / not_observed_before
+比較: 20 → 30
+ネイティブ差分（最小単位）: 0
+0xcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd: 115792089237316195423570985008687907853269984665640564039457584007913129639934 / comparable
+0xabababababababababababababababababababab: 比較不可 / not_observed_before

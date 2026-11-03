@@ -1,0 +1,93 @@
+{
+  "recordedAt": "2026-11-02T16:23:25.525Z",
+  "sourceCommit": "f6f378cc9b44f33fc7e147f4626e23573de06a6c",
+  "serverTests": {
+    "passed": 62,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "navigation": {
+    "newCandidatePort": 4233,
+    "newCandidatePid": 19964,
+    "initialCrossOriginStatus": 403,
+    "explicitSameOriginLink": "Wallet rendered successfully in actual Microsoft Edge.",
+    "existingOriginRecovery": "Claimed existing rehearsal tab 148649861 and followed its visible open-Wallet link to a fresh tab 148649883 at port 4231.",
+    "originalServerRestarted": false,
+    "originalWorkingPagesReloaded": false,
+    "oldAutomationTabs": "148649854 and 148649857 were absent from the later inventory; saved-file recovery was used. Their in-memory state was not claimed to survive.",
+    "requestGuardChanged": false,
+    "automaticRedirect": false,
+    "automaticWalletConnection": false
+  },
+  "wallet": {
+    "actualAccountLabel": "Account 1, as reported by the operator and matched to the existing recorded public address",
+    "chainId": 84532,
+    "permittedAccounts": 2,
+    "staleAccount2Configuration": "DAT explicit connection rejected wrong account; no read was counted for that attempt.",
+    "threeCardsExplicitlyConnected": true,
+    "threeActualPortfolioReads": true,
+    "blockNumber": "53572089",
+    "blockHash": "0x545c664840af2782aa11a84dc140c5c8f1b126757b62b76b7af1cba2c06a7922",
+    "nativeAndTokenBalancesAtRead": "0 base units for each observed token and native balance",
+    "liveAccountChangeEventObserved": false
+  },
+  "files": {
+    "initialAndRestoredBackup": {
+      "basenames": [
+        "ThreeCore-workspace-backup (17).json",
+        "ThreeCore-workspace-backup (18).json"
+      ],
+      "bytes": 7237,
+      "sha256": "4fabece09fba893fc7339bb976eee752845db8bfa05a6e0411b747f32afc0fdb",
+      "byteIdentical": true
+    },
+    "newBackup": {
+      "basename": "ThreeCore-workspace-backup (19).json",
+      "bytes": 10103,
+      "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc",
+      "internalChecksumVerified": true,
+      "observations": 9,
+      "priorObservationsPreserved": 6,
+      "newObservations": 3
+    }
+  },
+  "privateReceipts": [
+    {
+      "basename": "live-read-results.json",
+      "bytes": 5273,
+      "sha256": "2dded80f943a4e6337b3fe322da5c185415d8f7fbee2ac0c755cc7fd2af94702",
+      "location": "Local Downloads evidence folder; not copied into the repository."
+    },
+    {
+      "basename": "recovered-account1.png",
+      "bytes": 33053,
+      "sha256": "2b9616904f4115762b2c3b9eb9251840838bd73233ae92b040969df35baea777",
+      "location": "Local Downloads evidence folder; not copied into the repository."
+    },
+    {
+      "basename": "checkpoint-readback.txt",
+      "bytes": 6346,
+      "sha256": "880238d13a84805ead6619066bb43f558cde31d9119945e279bda6aa7e2df6bb",
+      "location": "Local Downloads evidence folder; not copied into the repository."
+    }
+  ],
+  "scope": {
+    "userSignatures": 0,
+    "transfers": 0,
+    "keyAccess": false,
+    "githubWrites": 0,
+    "planningTarget90Verified": false
+  },
+  "browserCheckpoint": {
+    "origin": "http://127.0.0.1:4231",
+    "name": "復旧確認 1103 — Account 1 / Sepolia / 9件",
+    "savedCountBefore": 2,
+    "savedCountAfter": 3,
+    "capacity": 5,
+    "reloadedList": true,
+    "inspectedStoredContent": true,
+    "observations": 9,
+    "checksumVerifiedInUi": true
+  }
+}

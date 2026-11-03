@@ -138,7 +138,7 @@ export function validateWorkspace(input) {
     validateWalletSetup({ schema: WALLET_SETUP_SCHEMA,
       entries: entries.map(({ agent, account, chainId }) => ({ agent, account, chainId })) });
   } catch (error) {
-    workspaceFail(error?.code === "SETUP_DUPLICATE" ? "WORKSPACE_DUPLICATE" : "WORKSPACE_ADDRESS");
+    workspaceFail("WORKSPACE_ADDRESS");
   }
   const result = { schema: WORKSPACE_SCHEMA, historicalObservation: true, entries };
   if (JSON.stringify(result).length > WORKSPACE_TEXT_LIMIT) workspaceFail("WORKSPACE_SIZE");

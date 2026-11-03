@@ -1,0 +1,367 @@
+{
+  "source": "7d12bf3",
+  "synthetic": true,
+  "captureEnvironment": "Node shared decoders and fixed UI message resolver; actual native file selection checked separately",
+  "routes": [
+    {
+      "file": "period.json",
+      "declaredSchema": "threecore.period-file.v1",
+      "target": "period",
+      "accepted": true,
+      "code": null,
+      "message": null
+    },
+    {
+      "file": "period.json",
+      "declaredSchema": "threecore.period-file.v1",
+      "target": "report",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_PERIOD",
+      "message": "ファイルの形式指定は期間取得の控えです。「期間を選んで、残高の変化を確かめる」の「控えの保存と復元」で選んでください。内容の検証や読み取り開始は行っていません。"
+    },
+    {
+      "file": "period.json",
+      "declaredSchema": "threecore.period-file.v1",
+      "target": "set",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_PERIOD",
+      "message": "ファイルの形式指定は期間取得の控えです。「期間を選んで、残高の変化を確かめる」の「控えの保存と復元」で選んでください。内容の検証や読み取り開始は行っていません。"
+    },
+    {
+      "file": "period.json",
+      "declaredSchema": "threecore.period-file.v1",
+      "target": "checks",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_PERIOD",
+      "message": "ファイルの形式指定は期間取得の控えです。「期間を選んで、残高の変化を確かめる」の「控えの保存と復元」で選んでください。内容の検証や読み取り開始は行っていません。"
+    },
+    {
+      "file": "period.json",
+      "declaredSchema": "threecore.period-file.v1",
+      "target": "comparison",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_PERIOD",
+      "message": "ファイルの形式指定は期間取得の控えです。「期間を選んで、残高の変化を確かめる」の「控えの保存と復元」で選んでください。内容の検証や読み取り開始は行っていません。"
+    },
+    {
+      "file": "report.json",
+      "declaredSchema": "threecore.period-report-file.v1",
+      "target": "period",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_REPORT",
+      "message": "ファイルの形式指定は3トークンの期間報告です。「3つの記録を、一つの報告に」のファイル読込みで選んでください。内容の検証や反映は行っていません。"
+    },
+    {
+      "file": "report.json",
+      "declaredSchema": "threecore.period-report-file.v1",
+      "target": "report",
+      "accepted": true,
+      "code": null,
+      "message": null
+    },
+    {
+      "file": "report.json",
+      "declaredSchema": "threecore.period-report-file.v1",
+      "target": "set",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_REPORT",
+      "message": "ファイルの形式指定は3トークンの期間報告です。「3つの記録を、一つの報告に」のファイル読込みで選んでください。内容の検証や反映は行っていません。"
+    },
+    {
+      "file": "report.json",
+      "declaredSchema": "threecore.period-report-file.v1",
+      "target": "checks",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_REPORT",
+      "message": "ファイルの形式指定は3トークンの期間報告です。「3つの記録を、一つの報告に」のファイル読込みで選んでください。内容の検証や反映は行っていません。"
+    },
+    {
+      "file": "report.json",
+      "declaredSchema": "threecore.period-report-file.v1",
+      "target": "comparison",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_REPORT",
+      "message": "ファイルの形式指定は3トークンの期間報告です。「3つの記録を、一つの報告に」のファイル読込みで選んでください。内容の検証や反映は行っていません。"
+    },
+    {
+      "file": "set.json",
+      "declaredSchema": "threecore.report-set-file.v1",
+      "target": "period",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_SET",
+      "message": "ファイルの形式指定は確認セットです。「複数の報告を、期間で見渡す」の「保存した確認セットを開く」で選んでください。内容の検証や反映は行っていません。"
+    },
+    {
+      "file": "set.json",
+      "declaredSchema": "threecore.report-set-file.v1",
+      "target": "report",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_SET",
+      "message": "ファイルの形式指定は確認セットです。「複数の報告を、期間で見渡す」の「保存した確認セットを開く」で選んでください。内容の検証や反映は行っていません。"
+    },
+    {
+      "file": "set.json",
+      "declaredSchema": "threecore.report-set-file.v1",
+      "target": "set",
+      "accepted": true,
+      "code": null,
+      "message": null
+    },
+    {
+      "file": "set.json",
+      "declaredSchema": "threecore.report-set-file.v1",
+      "target": "checks",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_SET",
+      "message": "ファイルの形式指定は確認セットです。「複数の報告を、期間で見渡す」の「保存した確認セットを開く」で選んでください。内容の検証や反映は行っていません。"
+    },
+    {
+      "file": "set.json",
+      "declaredSchema": "threecore.report-set-file.v1",
+      "target": "comparison",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_SET",
+      "message": "ファイルの形式指定は確認セットです。「複数の報告を、期間で見渡す」の「保存した確認セットを開く」で選んでください。内容の検証や反映は行っていません。"
+    },
+    {
+      "file": "checks.json",
+      "declaredSchema": "threecore.report-set-check-details.v1",
+      "target": "period",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_CHECKS",
+      "message": "ファイルの形式指定は確認箇所の説明用JSONです。元の確認セットを表示してから「保存した確認箇所JSONを元資料と照合」で選んでください。元の証拠を復元するファイルではありません。"
+    },
+    {
+      "file": "checks.json",
+      "declaredSchema": "threecore.report-set-check-details.v1",
+      "target": "report",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_CHECKS",
+      "message": "ファイルの形式指定は確認箇所の説明用JSONです。元の確認セットを表示してから「保存した確認箇所JSONを元資料と照合」で選んでください。元の証拠を復元するファイルではありません。"
+    },
+    {
+      "file": "checks.json",
+      "declaredSchema": "threecore.report-set-check-details.v1",
+      "target": "set",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_CHECKS",
+      "message": "ファイルの形式指定は確認箇所の説明用JSONです。元の確認セットを表示してから「保存した確認箇所JSONを元資料と照合」で選んでください。元の証拠を復元するファイルではありません。"
+    },
+    {
+      "file": "checks.json",
+      "declaredSchema": "threecore.report-set-check-details.v1",
+      "target": "checks",
+      "accepted": true,
+      "code": null,
+      "message": null
+    },
+    {
+      "file": "checks.json",
+      "declaredSchema": "threecore.report-set-check-details.v1",
+      "target": "comparison",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_CHECKS",
+      "message": "ファイルの形式指定は確認箇所の説明用JSONです。元の確認セットを表示してから「保存した確認箇所JSONを元資料と照合」で選んでください。元の証拠を復元するファイルではありません。"
+    },
+    {
+      "file": "comparison.json",
+      "declaredSchema": "threecore.report-set-comparison-file.v1",
+      "target": "period",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_COMPARISON",
+      "message": "ファイルの形式指定は差し替え前後の比較です。差し替え前の確認セットを表示し、候補の確認セットを読み込んでから「保存した比較JSONを照合」で選んでください。比較だけでは元の証拠を復元できません。"
+    },
+    {
+      "file": "comparison.json",
+      "declaredSchema": "threecore.report-set-comparison-file.v1",
+      "target": "report",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_COMPARISON",
+      "message": "ファイルの形式指定は差し替え前後の比較です。差し替え前の確認セットを表示し、候補の確認セットを読み込んでから「保存した比較JSONを照合」で選んでください。比較だけでは元の証拠を復元できません。"
+    },
+    {
+      "file": "comparison.json",
+      "declaredSchema": "threecore.report-set-comparison-file.v1",
+      "target": "set",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_COMPARISON",
+      "message": "ファイルの形式指定は差し替え前後の比較です。差し替え前の確認セットを表示し、候補の確認セットを読み込んでから「保存した比較JSONを照合」で選んでください。比較だけでは元の証拠を復元できません。"
+    },
+    {
+      "file": "comparison.json",
+      "declaredSchema": "threecore.report-set-comparison-file.v1",
+      "target": "checks",
+      "accepted": false,
+      "code": "PERIOD_FILE_USE_COMPARISON",
+      "message": "ファイルの形式指定は差し替え前後の比較です。差し替え前の確認セットを表示し、候補の確認セットを読み込んでから「保存した比較JSONを照合」で選んでください。比較だけでは元の証拠を復元できません。"
+    },
+    {
+      "file": "comparison.json",
+      "declaredSchema": "threecore.report-set-comparison-file.v1",
+      "target": "comparison",
+      "accepted": true,
+      "code": null,
+      "message": null
+    },
+    {
+      "file": "check-review.json",
+      "declaredSchema": "threecore.report-set-check-review.v1",
+      "target": "period",
+      "accepted": false,
+      "code": "PERIOD_FILE_CHECK_REVIEW_ONLY",
+      "message": "これは確認箇所JSONの照合結果を記した控えの形式です。再確認には、元の確認セットJSONと確認箇所JSONを使ってください。この控えから元の履歴は復元できません。"
+    },
+    {
+      "file": "check-review.json",
+      "declaredSchema": "threecore.report-set-check-review.v1",
+      "target": "report",
+      "accepted": false,
+      "code": "PERIOD_FILE_CHECK_REVIEW_ONLY",
+      "message": "これは確認箇所JSONの照合結果を記した控えの形式です。再確認には、元の確認セットJSONと確認箇所JSONを使ってください。この控えから元の履歴は復元できません。"
+    },
+    {
+      "file": "check-review.json",
+      "declaredSchema": "threecore.report-set-check-review.v1",
+      "target": "set",
+      "accepted": false,
+      "code": "PERIOD_FILE_CHECK_REVIEW_ONLY",
+      "message": "これは確認箇所JSONの照合結果を記した控えの形式です。再確認には、元の確認セットJSONと確認箇所JSONを使ってください。この控えから元の履歴は復元できません。"
+    },
+    {
+      "file": "check-review.json",
+      "declaredSchema": "threecore.report-set-check-review.v1",
+      "target": "checks",
+      "accepted": false,
+      "code": "PERIOD_FILE_CHECK_REVIEW_ONLY",
+      "message": "これは確認箇所JSONの照合結果を記した控えの形式です。再確認には、元の確認セットJSONと確認箇所JSONを使ってください。この控えから元の履歴は復元できません。"
+    },
+    {
+      "file": "check-review.json",
+      "declaredSchema": "threecore.report-set-check-review.v1",
+      "target": "comparison",
+      "accepted": false,
+      "code": "PERIOD_FILE_CHECK_REVIEW_ONLY",
+      "message": "これは確認箇所JSONの照合結果を記した控えの形式です。再確認には、元の確認セットJSONと確認箇所JSONを使ってください。この控えから元の履歴は復元できません。"
+    },
+    {
+      "file": "comparison-review.json",
+      "declaredSchema": "threecore.report-set-comparison-review.v1",
+      "target": "period",
+      "accepted": false,
+      "code": "PERIOD_FILE_COMPARISON_REVIEW_ONLY",
+      "message": "これは比較ファイルの照合結果を記した控えの形式です。再確認には、差し替え前と候補の確認セットJSON、および元の比較JSONを使ってください。"
+    },
+    {
+      "file": "comparison-review.json",
+      "declaredSchema": "threecore.report-set-comparison-review.v1",
+      "target": "report",
+      "accepted": false,
+      "code": "PERIOD_FILE_COMPARISON_REVIEW_ONLY",
+      "message": "これは比較ファイルの照合結果を記した控えの形式です。再確認には、差し替え前と候補の確認セットJSON、および元の比較JSONを使ってください。"
+    },
+    {
+      "file": "comparison-review.json",
+      "declaredSchema": "threecore.report-set-comparison-review.v1",
+      "target": "set",
+      "accepted": false,
+      "code": "PERIOD_FILE_COMPARISON_REVIEW_ONLY",
+      "message": "これは比較ファイルの照合結果を記した控えの形式です。再確認には、差し替え前と候補の確認セットJSON、および元の比較JSONを使ってください。"
+    },
+    {
+      "file": "comparison-review.json",
+      "declaredSchema": "threecore.report-set-comparison-review.v1",
+      "target": "checks",
+      "accepted": false,
+      "code": "PERIOD_FILE_COMPARISON_REVIEW_ONLY",
+      "message": "これは比較ファイルの照合結果を記した控えの形式です。再確認には、差し替え前と候補の確認セットJSON、および元の比較JSONを使ってください。"
+    },
+    {
+      "file": "comparison-review.json",
+      "declaredSchema": "threecore.report-set-comparison-review.v1",
+      "target": "comparison",
+      "accepted": false,
+      "code": "PERIOD_FILE_COMPARISON_REVIEW_ONLY",
+      "message": "これは比較ファイルの照合結果を記した控えの形式です。再確認には、差し替え前と候補の確認セットJSON、および元の比較JSONを使ってください。"
+    },
+    {
+      "file": "coverage.json",
+      "declaredSchema": "threecore.report-set-history-coverage.v1",
+      "target": "period",
+      "accepted": false,
+      "code": "PERIOD_FILE_COVERAGE_ONLY",
+      "message": "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、履歴範囲を再計算してください。"
+    },
+    {
+      "file": "coverage.json",
+      "declaredSchema": "threecore.report-set-history-coverage.v1",
+      "target": "report",
+      "accepted": false,
+      "code": "PERIOD_FILE_COVERAGE_ONLY",
+      "message": "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、履歴範囲を再計算してください。"
+    },
+    {
+      "file": "coverage.json",
+      "declaredSchema": "threecore.report-set-history-coverage.v1",
+      "target": "set",
+      "accepted": false,
+      "code": "PERIOD_FILE_COVERAGE_ONLY",
+      "message": "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、履歴範囲を再計算してください。"
+    },
+    {
+      "file": "coverage.json",
+      "declaredSchema": "threecore.report-set-history-coverage.v1",
+      "target": "checks",
+      "accepted": false,
+      "code": "PERIOD_FILE_COVERAGE_ONLY",
+      "message": "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、履歴範囲を再計算してください。"
+    },
+    {
+      "file": "coverage.json",
+      "declaredSchema": "threecore.report-set-history-coverage.v1",
+      "target": "comparison",
+      "accepted": false,
+      "code": "PERIOD_FILE_COVERAGE_ONLY",
+      "message": "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、履歴範囲を再計算してください。"
+    },
+    {
+      "file": "queue.json",
+      "declaredSchema": "threecore.missing-history-queue.v1",
+      "target": "period",
+      "accepted": false,
+      "code": "PERIOD_FILE_QUEUE_ONLY",
+      "message": "これは未取得範囲の予定を示す資料の形式です。読み取りの再開用ファイルではありません。元の確認セットから範囲を選び「未取得の期間控え」として保存してください。"
+    },
+    {
+      "file": "queue.json",
+      "declaredSchema": "threecore.missing-history-queue.v1",
+      "target": "report",
+      "accepted": false,
+      "code": "PERIOD_FILE_QUEUE_ONLY",
+      "message": "これは未取得範囲の予定を示す資料の形式です。読み取りの再開用ファイルではありません。元の確認セットから範囲を選び「未取得の期間控え」として保存してください。"
+    },
+    {
+      "file": "queue.json",
+      "declaredSchema": "threecore.missing-history-queue.v1",
+      "target": "set",
+      "accepted": false,
+      "code": "PERIOD_FILE_QUEUE_ONLY",
+      "message": "これは未取得範囲の予定を示す資料の形式です。読み取りの再開用ファイルではありません。元の確認セットから範囲を選び「未取得の期間控え」として保存してください。"
+    },
+    {
+      "file": "queue.json",
+      "declaredSchema": "threecore.missing-history-queue.v1",
+      "target": "checks",
+      "accepted": false,
+      "code": "PERIOD_FILE_QUEUE_ONLY",
+      "message": "これは未取得範囲の予定を示す資料の形式です。読み取りの再開用ファイルではありません。元の確認セットから範囲を選び「未取得の期間控え」として保存してください。"
+    },
+    {
+      "file": "queue.json",
+      "declaredSchema": "threecore.missing-history-queue.v1",
+      "target": "comparison",
+      "accepted": false,
+      "code": "PERIOD_FILE_QUEUE_ONLY",
+      "message": "これは未取得範囲の予定を示す資料の形式です。読み取りの再開用ファイルではありません。元の確認セットから範囲を選び「未取得の期間控え」として保存してください。"
+    }
+  ]
+}

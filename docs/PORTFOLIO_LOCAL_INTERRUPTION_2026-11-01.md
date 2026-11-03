@@ -1,0 +1,15 @@
+# Finish a cancelled local portfolio wait independently of its reader
+
+Item 515. Source: `621a50b`.
+
+The portfolio controller now resolves its own refresh waiter with accepted:false when cancelled, cleared, disposed, replaced or externally aborted, even when an injected reader ignores its cancellation signal and never settles. Previously those callers kept waiting for the underlying reader. Late reader resolution or rejection remains observed and cannot replace the current state. This is a new local wait guarantee; it does not claim to stop an RPC request already sent or to release another component's transport reservation.
+
+Cancellation forwarding uses native signal state and captured listener operations. Artificial abort events do not consume genuine cancellation, instance accessors cannot conceal a pre-cancelled request or break cleanup, and invalid native signal shapes are rejected before replacing an existing view. A loading observer can cancel before any reader call. A ready observer cannot abort and still return an accepted snapshot. Listener cleanup occurs on every exit; reader adapters remain trusted application dependencies and outputs retain the existing validation. These supporting boundary repairs are not counted as separate items or repetitions of earlier portfolio lifecycle work.
+
+## Validation
+
+At 0c4f5a5 the corrected 16-case reproduction had 13 failures and 3 passes (2580.788 ms). An earlier fixture had 14 failures because it treated a transparent proxy around a genuine Node AbortSignal as necessarily invalid; the invalid-shape case was corrected to a non-native prototype proxy. Both logs are retained and the fixture issue is not a product defect count. The final focused run passed 115 cases (1313.3292 ms), including two additional late-settlement controls and the default snapshot integration. All 673 related portfolio, reader-signal and abort-boundary cases passed (7528.2058 ms), with zero failed/skipped/cancelled cases.
+
+Native Chrome passed 932 cases across two reconciled isolated profiles with cleanup. The additional native-runtime case uses a real AbortController with overridden instance accessors, dispatches an artificial abort, then genuinely cancels a deliberately uncooperative reader; the waiter finishes and its late value cannot publish. Existing browser UI cases also pass. This does not establish control of the user's existing tab and adds no real-wallet operation.
+
+[Evidence](evidence/2026-11-01-portfolio-local-interruption/) captures all five interruption actions, proving waiter settlement before the underlying reader is released, zero external listeners afterward and unchanged state after late completion. Before/after logs and committed-byte hashes are included. Last clean full-wallet checkpoint remains db69d73 (15,581 tests); this source has the scoped/native validation above. No signatures, transfers, approvals, keys, external RPC, publication, deployment or existing-server restart occurred. The item count does not measure mainnet readiness.

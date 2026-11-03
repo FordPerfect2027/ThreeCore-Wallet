@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 4218319599025n
+- 2224672601445n
+
+    at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/integration/local-aerodrome-simulation.mjs:75:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 4218319599025n,
+  expected: 2224672601445n,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

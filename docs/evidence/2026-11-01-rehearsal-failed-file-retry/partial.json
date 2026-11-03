@@ -1,0 +1,116 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v5",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": true,
+  "phase": "cancelled",
+  "complete": false,
+  "allRecomputationsMatch": false,
+  "summary": {
+    "selected": 4,
+    "reviewed": 4,
+    "pending": 0,
+    "matching": 3,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 22998,
+    "sourceUnavailable": 1,
+    "selectedReportedBytes": 30664,
+    "unreadSourceReportedBytes": 7666,
+    "checksumsCompared": 3,
+    "checksumsMatching": 3,
+    "checksumMismatches": 0
+  },
+  "files": [
+    {
+      "name": "0.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": true
+    },
+    {
+      "name": "1.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": true
+    },
+    {
+      "name": "2.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": true
+    },
+    {
+      "name": "3.json",
+      "byteLength": null,
+      "reportedByteLength": 7666,
+      "status": "source-unavailable",
+      "code": "FILE_READ",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": null
+    }
+  ],
+  "retry": {
+    "sequence": 1,
+    "previousPhase": "complete",
+    "previousBatchSha256": "1fc07f8e404efd592e04cd41bea9114424f2ecf6120097ea4b2e3718786b0054",
+    "targetIndexes": [
+      1,
+      3
+    ],
+    "completedIndexes": [
+      1
+    ],
+    "remainingIndexes": [
+      3
+    ],
+    "retainedReviews": 3
+  },
+  "referenceProvided": true,
+  "reference": {
+    "text": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  0.json\n0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  1.json\n0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  2.json\n0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  3.json\n",
+    "sha256": "bfce8de1ae63ac74fd7cf751c1e702b33f6aa7b288e0ac94aadc10d16ec64f36",
+    "entries": [
+      {
+        "name": "0.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      },
+      {
+        "name": "1.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      },
+      {
+        "name": "2.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      },
+      {
+        "name": "3.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      }
+    ]
+  },
+  "allExternalChecksumsMatch": false
+}

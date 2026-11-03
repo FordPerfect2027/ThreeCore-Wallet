@@ -1,4 +1,5 @@
-import { readFormatFileBytes } from "./security-file.js";
+import { sha256Hex } from "./security-data.js";
+import { readFormatFileBytes, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { allowanceObject, allowanceFail, validateAllowanceTargets } from "./allowance-targets.js";
 import { validateAllowanceObservation } from "./allowance-observation.js";
@@ -17,19 +18,15 @@ function encode(text) {
   if (bytes.length > ALLOWANCE_FILE_LIMIT) allowanceFail("ALLOWANCE_FILE_SIZE");
   return bytes;
 }
-async function digest(text, subtle) {
-  if (typeof subtle?.digest !== "function") allowanceFail("ALLOWANCE_CRYPTO");
-  let result;
-  try { result = await subtle.digest("SHA-256", encode(text)); }
+async function digest(text, subtle, options) {
+  try { return await sha256Hex(encode(text), subtle, options); }
   catch { allowanceFail("ALLOWANCE_CRYPTO"); }
-  if (!(result instanceof ArrayBuffer) || result.byteLength !== 32) allowanceFail("ALLOWANCE_CRYPTO");
-  return [...new Uint8Array(result)].map(byte => byte.toString(16).padStart(2, "0")).join("");
 }
 const canonical = (kind, payload) => JSON.stringify({ kind, payload }, null, 2);
 
-export async function prepareAllowanceFile(kind, value, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareAllowanceFile(kind, value, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const payload = payloadFor(kind, value);
-  const checksum = await digest(canonical(kind, payload), subtle);
+  const checksum = await digest(canonical(kind, payload), subtle, { signal, timeoutMs });
   const text = JSON.stringify({ schema: ALLOWANCE_FILE_SCHEMA, kind, algorithm: "SHA-256",
     digest: checksum, payload }, null, 2);
   const bytes = encode(text);
@@ -41,7 +38,7 @@ export async function prepareAllowanceFile(kind, value, { subtle = globalThis.cr
     mimeType: "application/json;charset=utf-8", kind, authenticated: false,
   });
 }
-export async function decodeAllowanceFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeAllowanceFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   if (!(input instanceof Uint8Array) || !input.length || input.length > ALLOWANCE_FILE_LIMIT) allowanceFail("ALLOWANCE_FILE_SIZE");
   const bytes = input.slice();
   let text;
@@ -54,13 +51,12 @@ export async function decodeAllowanceFile(input, { subtle = globalThis.crypto?.s
   if (record.schema !== ALLOWANCE_FILE_SCHEMA || record.algorithm !== "SHA-256" ||
       typeof record.digest !== "string" || !/^[0-9a-f]{64}$/.test(record.digest)) allowanceFail("ALLOWANCE_FILE_SCHEMA");
   const payload = payloadFor(record.kind, record.payload);
-  const checksum = await digest(canonical(record.kind, payload), subtle);
+  const checksum = await digest(canonical(record.kind, payload), subtle, { signal, timeoutMs });
   if (checksum !== record.digest) allowanceFail("ALLOWANCE_CHECKSUM");
   return Object.freeze({ kind: record.kind, payload, digest: checksum, checksumVerified: true, authenticated: false });
 }
 export async function readAllowanceFile(file, options) {
-  if (!file || typeof file.name !== "string" || !file.name.length || file.name.length > 240 ||
-      !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) allowanceFail("ALLOWANCE_FILENAME");
+  readFormatFileName(file, { maxLength: 240, fail: allowanceFail, code: "ALLOWANCE_FILENAME" });
   const bytes = await readFormatFileBytes(file, { maxBytes: ALLOWANCE_FILE_LIMIT, fail: allowanceFail,
     sizeCode: "ALLOWANCE_FILE_SIZE", readCode: "ALLOWANCE_FILE_READ", signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeAllowanceFile(bytes, options);

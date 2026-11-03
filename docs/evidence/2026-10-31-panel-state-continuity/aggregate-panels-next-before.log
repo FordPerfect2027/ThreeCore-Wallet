@@ -1,0 +1,387 @@
+✖ file status capture cannot revive a disposed panel (8.7738ms)
+✖ export status capture cannot revive a disposed panel (5.8439ms)
+✖ file nested status notification wins over its outer capture (1.4533ms)
+✖ export nested status notification wins over its outer capture (1.3818ms)
+✖ file stop completion after disposal cannot update UI, throw=false (1.9124ms)
+✖ file stop completion after disposal cannot update UI, throw=true (0.884ms)
+✖ export stop completion after disposal cannot update UI, throw=false (1.3693ms)
+✖ export stop completion after disposal cannot update UI, throw=true (1.0018ms)
+✖ file asynchronous stop failure is consumed without claiming success (76.9875ms)
+✖ export asynchronous stop failure is consumed without claiming success (5.0129ms)
+✖ file asynchronous subscription is retired and its late cleanup runs (6.1231ms)
+✖ export asynchronous subscription is retired and its late cleanup runs (3.6922ms)
+✔ file unsubscribe rejection is consumed (1.8584ms)
+✖ export unsubscribe rejection is consumed (6.8183ms)
+✖ export controls and labels use one captured status (12.479ms)
+✖ export missing initial status disables actions and explains unavailability (1.3315ms)
+✖ file asynchronous initial state rejection is consumed (6.9538ms)
+✖ file nested explicit action owns the final status (2.1716ms)
+✖ export nested explicit action owns the final status (1.1804ms)
+✔ file synchronous stop receipt remains visible (0.7658ms)
+✔ export synchronous stop receipt remains visible (0.8505ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 3
+ℹ fail 18
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 595.066
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:20:37
+✖ file status capture cannot revive a disposed panel (8.7738ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ファイル読み込みを停止しました'
+  - 'ファイルを確認しています'
+         ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:24:24)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ファイル読み込みを停止しました',
+    expected: 'ファイルを確認しています',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:20:37
+✖ export status capture cannot revive a disposed panel (5.8439ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '保存ファイルの保護を終了しました'
+  - 'ブラウザーへ渡した一時URLを保持しています'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:24:24)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '保存ファイルの保護を終了しました',
+    expected: 'ブラウザーへ渡した一時URLを保持しています',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:26:37
+✖ file nested status notification wins over its outer capture (1.4533ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /取得できません|確認できません/. Input:
+  
+  'ファイルを確認しています'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:29:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ファイルを確認しています',
+    expected: /取得できません|確認できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:26:37
+✖ export nested status notification wins over its outer capture (1.3818ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /取得できません|確認できません/. Input:
+  
+  'ブラウザーへ渡した一時URLを保持しています'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:29:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ブラウザーへ渡した一時URLを保持しています',
+    expected: /取得できません|確認できません/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:32:68
+✖ file stop completion after disposal cannot update UI, throw=false (1.9124ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '読み込み 1件の待機を停止しました。保存済みの内容は変更していません。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:35:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読み込み 1件の待機を停止しました。保存済みの内容は変更していません。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:32:68
+✖ file stop completion after disposal cannot update UI, throw=true (0.884ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '読み込みの停止を確認できませんでした。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:35:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読み込みの停止を確認できませんでした。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:32:68
+✖ export stop completion after disposal cannot update UI, throw=false (1.3693ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '一時URLの解放を確認しました。保存済みファイルは変更していません。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:35:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '一時URLの解放を確認しました。保存済みファイルは変更していません。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:32:68
+✖ export stop completion after disposal cannot update UI, throw=true (1.0018ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '解放状態を確認できませんでした。保存済みファイルは変更していません。'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:35:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '解放状態を確認できませんでした。保存済みファイルは変更していません。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:37:37
+✖ file asynchronous stop failure is consumed without claiming success (76.9875ms)
+  Error: late stop
+      at Object.cancelAll (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:38:80)
+      at Element.cancel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/file-read-panel.js:41:29)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)
+      at Element.dispatchEvent (node:internal/event_target:789:26)
+      at Element.click (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/helpers/panel-dom.js:29:38)
+      at Object.action (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:18:106)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:39:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:37:37
+✖ export asynchronous stop failure is consumed without claiming success (5.0129ms)
+  Error: late stop
+      at Object.clear (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:38:80)
+      at action (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/export-guard-panel.js:41:35)
+      at Element.onClear (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/export-guard-panel.js:46:25)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:856:20)
+      at Element.dispatchEvent (node:internal/event_target:789:26)
+      at Element.click (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/helpers/panel-dom.js:29:38)
+      at Object.action (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:18:106)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:39:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:41:37
+✖ file asynchronous subscription is retired and its late cleanup runs (6.1231ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:45:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:41:37
+✖ export asynchronous subscription is retired and its late cleanup runs (3.6922ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:45:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:48:37
+✖ export unsubscribe rejection is consumed (6.8183ms)
+  Error: late cleanup
+      at file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:49:108
+      at Object.dispose (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/export-guard-panel.js:56:24)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:50:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:52:1
+✖ export controls and labels use one captured status (12.479ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok([...seen.values()].every(n=>n===1))
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:55:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:58:1
+✖ export missing initial status disables actions and explains unavailability (1.3315ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:60:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:62:1
+✖ file asynchronous initial state rejection is consumed (6.9538ms)
+  Error: state unavailable
+      at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:63:52)
+      at mountFileReadPanel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/file-read-panel.js:49:20)
+      at fixture (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:16:29)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:63:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:66:37
+✖ file nested explicit action owns the final status (2.1716ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /2件/. Input:
+  
+  '読み込み 1件の待機を停止しました。保存済みの内容は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:69:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '読み込み 1件の待機を停止しました。保存済みの内容は変更していません。',
+    expected: /2件/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-aggregate-panels-next.test.mjs:66:37
+✖ export nested explicit action owns the final status (1.1804ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /まだ解放/. Input:
+  
+  '一時URLの解放を確認しました。保存済みファイルは変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-aggregate-panels-next.test.mjs:69:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '一時URLの解放を確認しました。保存済みファイルは変更していません。',
+    expected: /まだ解放/,
+    operator: 'match',
+    diff: 'simple'
+  }

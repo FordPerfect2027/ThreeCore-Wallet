@@ -1,9 +1,12 @@
+import { captureDataArray } from "./security-data.js";
+
 /** Bounded, page-local protection history. Never stores wallet or RPC payloads. */
 export const SECURITY_JOURNAL_LIMIT = 64;
 export const SECURITY_JOURNAL_EVENTS = Object.freeze([
   "ready", "manual", "idle", "hidden", "page-exit", "clock", "timer", "disposed",
   "resumed", "idle-policy", "hidden-policy", "broadcast-stop", "peer-stop",
   "channel-error", "page-freeze", "page-restored",
+  "wallet-account", "wallet-network", "wallet-unavailable",
 ]);
 export const SECURITY_JOURNAL_TEXT = Object.freeze({
   ready: "保護機能を開始しました",
@@ -22,6 +25,9 @@ export const SECURITY_JOURNAL_TEXT = Object.freeze({
   "channel-error": "停止通知の通信を確認できず保護停止しました",
   "page-freeze": "ページの一時停止により保護停止しました",
   "page-restored": "保存されたページの再表示により保護停止しました",
+  "wallet-account": "Walletの口座情報が変わったか確認できなくなったため、カードの接続を停止しました",
+  "wallet-network": "Walletのネットワークが変わったか確認できなくなったため、カードの接続を停止しました",
+  "wallet-unavailable": "Walletとの接続を確認できなくなったため、カードの接続を停止しました",
 });
 const intervals = [60_000, 300_000, 900_000];
 const fail = () => { throw new TypeError("Invalid protection journal data"); };
@@ -99,16 +105,14 @@ export function validateSecurityJournal(value) {
     if (!Number.isSafeInteger(value) || value < 0 || !Number.isSafeInteger(sum + value)) fail();
     sum += value;
   }
-  if (sum !== input.total || !Array.isArray(input.events) || input.events.length > input.capacity ||
-      Reflect.ownKeys(input.events).length !== input.events.length + 1 ||
-      input.events.length !== Math.min(input.capacity, input.total) ||
-      input.dropped !== input.total - input.events.length) fail();
+  let capturedEvents;
+  try { capturedEvents = captureDataArray(input.events, input.capacity); } catch { fail(); }
+  if (sum !== input.total || capturedEvents.length !== Math.min(input.capacity, input.total) ||
+      input.dropped !== input.total - capturedEvents.length) fail();
   const events = [];
   const retainedCounts = Object.fromEntries(SECURITY_JOURNAL_EVENTS.map(kind => [kind, 0]));
-  for (let index = 0; index < input.events.length; index++) {
-    const descriptor = Object.getOwnPropertyDescriptor(input.events, String(index));
-    if (!descriptor || !("value" in descriptor)) fail();
-    const event = ownRecord(descriptor.value, ["sequence", "kind", "detail"]);
+  for (let index = 0; index < capturedEvents.length; index++) {
+    const event = ownRecord(capturedEvents[index], ["sequence", "kind", "detail"]);
     if (event.sequence !== input.dropped + index + 1 || !SECURITY_JOURNAL_EVENTS.includes(event.kind)) fail();
     const detail = eventDetails(event.kind, event.detail);
     retainedCounts[event.kind]++;
@@ -134,7 +138,7 @@ export function exportSecurityJournal(value) {
   const snapshot = validateSecurityJournal(value);
   return JSON.stringify({
     schema: "threecore.local-protection-journal",
-    version: 1,
+    version: 2,
     scope: "This page session only. Not a security audit or wallet permission revocation record.",
     containsWalletAddresses: false,
     containsBalances: false,

@@ -1,0 +1,19 @@
+{
+  "startedAt": "2026-11-02T19:16:53.665Z",
+  "endedAt": "2026-11-02T19:16:55.655Z",
+  "code": 1,
+  "signal": null,
+  "problems": [
+    "missing: @nomicfoundation/hardhat-keystore@3.1.2, required by @0628dao/datcore@0.1.0",
+    "missing: @nomicfoundation/hardhat-node-test-runner@3.1.2, required by @0628dao/datcore@0.1.0",
+    "missing: @nomicfoundation/hardhat-viem@3.1.0, required by @0628dao/datcore@0.1.0",
+    "missing: @nomicfoundation/hardhat-zod-utils@file:./vendor/helper.tgz, required by @0628dao/datcore@0.1.0",
+    "missing: @openzeppelin/contracts@5.6.1, required by @0628dao/datcore@0.1.0",
+    "missing: @types/node@22.8.5, required by @0628dao/datcore@0.1.0",
+    "missing: hardhat@3.21.2, required by @0628dao/datcore@0.1.0",
+    "missing: solc@0.8.34, required by @0628dao/datcore@0.1.0",
+    "missing: typescript@6.0.3, required by @0628dao/datcore@0.1.0",
+    "missing: viem@2.56.6, required by @0628dao/datcore@0.1.0",
+    "missing: zod@4.6.6, required by @0628dao/datcore@0.1.0"
+  ]
+}

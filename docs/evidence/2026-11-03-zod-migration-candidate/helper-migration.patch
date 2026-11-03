@@ -1,0 +1,65 @@
+diff --git a/src/index.ts b/src/index.ts
+index 0d34086..a14c427 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -1,4 +1,4 @@
+-import type { ZodTypeDef, ZodType } from "zod";
++import type { ZodType } from "zod";
+ 
+ import { z } from "zod";
+ 
+@@ -30,7 +30,7 @@ export interface HardhatUserConfigValidationError {
+  */
+ // TODO: improve the return type of this function to be more specific
+ export const unionType = (
+-  types: Parameters<typeof z.union>[0],
++  types: readonly z.ZodType[],
+   errorMessage: string,
+ ) =>
+   // NOTE: The reason we use `z.any().superRefine` instead of `z.union` is that
+@@ -100,7 +100,7 @@ export const conditionalUnionType = (
+     const parsedData = zodType.safeParse(data);
+     if (parsedData.error !== undefined) {
+       for (const issue of parsedData.error.issues) {
+-        ctx.addIssue(issue);
++        ctx.addIssue({ ...issue });
+       }
+     }
+   });
+@@ -137,11 +137,7 @@ export const conditionalUnionType = (
+  */
+ export const incompatibleFieldType = (errorMessage = "Unexpected field") =>
+   z
+-    .never({
+-      errorMap: () => ({
+-        message: errorMessage,
+-      }),
+-    })
++    .never({ error: () => errorMessage })
+     .optional();
+ 
+ /**
+@@ -205,19 +201,18 @@ export const sensitiveUrlSchema: z.ZodType<
+  */
+ export function validateUserConfigZodType<
+   Output,
+-  Def extends ZodTypeDef = ZodTypeDef,
+-  Input = Output,
++  Input = unknown,
+ >(
+   hardhatUserConfig: HardhatUserConfigToValidate,
+-  configType: ZodType<Output, Def, Input>,
++  configType: ZodType<Output, Input>,
+ ): HardhatUserConfigValidationError[] {
+   const result = configType.safeParse(hardhatUserConfig);
+ 
+   if (result.success) {
+     return [];
+   } else {
+-    return result.error.errors.map((issue) => ({
+-      path: issue.path,
++    return result.error.issues.map((issue) => ({
++      path: issue.path.map((segment) => typeof segment === "symbol" ? String(segment) : segment),
+       message: issue.message,
+     }));
+   }

@@ -1,0 +1,85 @@
+{
+  "schema": "threecore-portfolio-comparison-v1",
+  "historicalObservation": true,
+  "readOnly": true,
+  "authenticated": false,
+  "securityAudit": false,
+  "provesTransfers": false,
+  "provesProfit": false,
+  "canAuthorizeConnection": false,
+  "canAuthorizeTransaction": false,
+  "earlier": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "connectionEpoch": 1,
+    "blockNumber": "10",
+    "blockHash": "0xabababababababababababababababababababababababababababababababab",
+    "nativeBalanceBaseUnits": "16",
+    "holdings": [
+      {
+        "address": "0x3333333333333333333333333333333333333333",
+        "hasCode": true,
+        "balanceBaseUnits": "42",
+        "notice": null
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  },
+  "later": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "connectionEpoch": 1,
+    "blockNumber": "40",
+    "blockHash": "0xabababababababababababababababababababababababababababababababab",
+    "nativeBalanceBaseUnits": "0",
+    "holdings": [
+      {
+        "address": "0x3333333333333333333333333333333333333333",
+        "hasCode": true,
+        "balanceBaseUnits": "42",
+        "notice": null
+      }
+    ],
+    "readOnly": true,
+    "securityAudit": false
+  },
+  "comparison": {
+    "agent": "DAT",
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "earlierBlockNumber": "10",
+    "earlierBlockHash": "0xabababababababababababababababababababababababababababababababab",
+    "laterBlockNumber": "40",
+    "laterBlockHash": "0xabababababababababababababababababababababababababababababababab",
+    "sameBlock": false,
+    "native": {
+      "earlierBalanceBaseUnits": "16",
+      "laterBalanceBaseUnits": "0",
+      "deltaBaseUnits": "-16",
+      "direction": "decreased"
+    },
+    "holdings": [
+      {
+        "address": "0x3333333333333333333333333333333333333333",
+        "earlierBalanceBaseUnits": "42",
+        "laterBalanceBaseUnits": "42",
+        "deltaBaseUnits": "0",
+        "direction": "unchanged",
+        "availability": "comparable"
+      }
+    ],
+    "historicalObservation": true,
+    "readOnly": true,
+    "securityAudit": false,
+    "provesTransfers": false,
+    "provesProfit": false,
+    "canAuthorizeConnection": false,
+    "canAuthorizeTransaction": false
+  }
+}

@@ -1,0 +1,37 @@
+✔ checklist CSV retains a source-wide summary and every matching diagnostic in deterministic order (8717.4474ms)
+✔ token and severity filtering keep full-source counts while selecting only matching checks (5324.8176ms)
+✔ zero matches never erase existing conflicts or become a clean report (3574.3898ms)
+✔ continuous evidence exports a truthful empty checklist without invented checks (1564.8063ms)
+✔ export options control structured addresses and notes while preserving exact labels and IDs (1561.6399ms)
+✔ query formula text is inert and invalid option accessors are never executed (6877.3626ms)
+✔ checklist export requires acknowledgement and retries refused delivery without changing evidence (11490.6742ms)
+✔ checklist export captures options before observers and does not deliver after cancellation (6532.4003ms)
+✔ set panel mounts with accessible labels and no reads or wallet calls (664.0661ms)
+✔ loading retains explicit empty selection and native checkboxes (829.424ms)
+✔ selection changes keep focused checkbox nodes and do not duplicate handlers (624.5322ms)
+✔ filtering never silently deselects hidden reports (1607.653ms)
+✔ clearing selection clears hidden choices too (851.7468ms)
+✔ archive filtering adds an archived report explicitly without restoring it (2150.2517ms)
+✔ invalid filter input shows a useful message and preserves selected evidence (789.2175ms)
+✔ review and application are separate actions with three token cards (3114.3821ms)
+✔ editing the name invalidates a pending review (669.3382ms)
+✔ source change during review is shown and never overwrites old accepted evidence (3613.8381ms)
+✔ source inspection keeps the frozen set and describes later metadata changes (3063.7305ms)
+✔ new result clears export acknowledgement; selection editing does not replace that result (3572.7067ms)
+✔ privacy controls apply to explanation files while JSON retains complete evidence (4539.0138ms)
+✔ JSON import stages a review before display and never inserts history rows (2653.3261ms)
+✔ tampered file keeps previous output visible and reports checksum failure (4484.0456ms)
+✔ diagnostic filtering narrows visible checks without changing the result (11500.4768ms)
+✔ diagnostic malformed query never reports zero unresolved checks (6456.4417ms)
+✔ all untrusted names are rendered as text nodes, including diagnostics (1370.874ms)
+✔ busy state disables edits and cancelling suppresses a late read (617.4135ms)
+✔ panel disposal removes listeners and closes only its own storage adapter (441.907ms)
+✔ filtered checklist CSV preserves source summary on zero matches and respects export controls (15174.4592ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69485.7917

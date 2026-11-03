@@ -1,0 +1,113 @@
+{
+  "sourceBaseCommit": "3939297db460b0eda9e2880c0ab18a02329bc5ba",
+  "sourceFiles": [
+    {
+      "path": "src/base-fee-reader.js",
+      "bytes": 7633,
+      "sha256": "cfc1aa17a90c79ab17472e53f515a4a351344733dd17e8a908f3281cfe58543b"
+    },
+    {
+      "path": "src/proposal-state-review.js",
+      "bytes": 10694,
+      "sha256": "e487d9effe0ab5b862e32ba2751f4857092bb82a474ced20ae5f8211fc3bcca4"
+    },
+    {
+      "path": "src/proposal-state-reader.js",
+      "bytes": 5726,
+      "sha256": "141bf86b9e29908ecefba99a2dc5b1d8d5f69002ee1e7d389f2112dbc12e48db"
+    },
+    {
+      "path": "src/proposal-state-client.js",
+      "bytes": 1729,
+      "sha256": "a039f01122cf04dfab5c72c89298f2094fe84946dc5c47a3e30f290ec10a9328"
+    },
+    {
+      "path": "examples/dev-server.js",
+      "bytes": 40553,
+      "sha256": "f9bdf2a5bb10973afcb03fd84000b6a0b0beea3b452c798f8a6b384751b4df3c"
+    },
+    {
+      "path": "examples/proposal-fee-http.js",
+      "bytes": 2078,
+      "sha256": "5ed9667db466f132fed3cde231d6aae85caadcffc90a49924e1b37b50402d3e8"
+    },
+    {
+      "path": "examples/proposal-fee.html",
+      "bytes": 2888,
+      "sha256": "a60875c96349618f4f5a93ed2c8c1cc1f50e5de165a6575eb9d4132264ce452f"
+    },
+    {
+      "path": "examples/proposal-state.html",
+      "bytes": 2412,
+      "sha256": "60270d13b417c5f48a283aa547ccb3f07bdfdafa74bfa4491035b350ef30db00"
+    },
+    {
+      "path": "examples/proposal-state-page.js",
+      "bytes": 9758,
+      "sha256": "876770035a2abfd1cc746c40d045356a5777d84b93f1e3f09c2bf4ed9e30159a"
+    },
+    {
+      "path": "scripts/read-proposal-state.js",
+      "bytes": 2200,
+      "sha256": "e0d67728c832187a8200f2ae504afefc0a2021b5282717ccfa60916790ddb999"
+    },
+    {
+      "path": "test/helpers/proposal-state-rpc-fixture.js",
+      "bytes": 2207,
+      "sha256": "83e81f87b082fc87d856a46dd036cc91bcd2d94dd1c496da247a3b94a5f84271"
+    },
+    {
+      "path": "test/proposal-state.test.js",
+      "bytes": 10388,
+      "sha256": "1b946997717eee02f4907e2e06d1dbc78f5b608ef5c6cfe77a5e41fc0aa6161b"
+    },
+    {
+      "path": "test/proposal-state-page.test.js",
+      "bytes": 5256,
+      "sha256": "030122e94ae588e4c994842da35579b4a46f845b9a364c1caa7ae4c8483e8432"
+    },
+    {
+      "path": "test/proposal-state-transport.test.js",
+      "bytes": 4369,
+      "sha256": "47fbb63e1fdcdceb9eaacbe54230b6d9c8a60dba8f13b2537801239b6cedd40d"
+    },
+    {
+      "path": "test/proposal-state-cli.test.js",
+      "bytes": 1736,
+      "sha256": "e6734714f79c1f50751a02a87c5f3c80545ceaab3a4deb884154b6f9dd780fbd"
+    }
+  ],
+  "publicReadBlock": "53463194",
+  "actualBrowserReadBlock": "53463239",
+  "tests": {
+    "related": 183,
+    "ordinaryServer": 2,
+    "failed": 0,
+    "earlierFocusedRunOverlaps": true
+  },
+  "originalServers": [
+    {
+      "port": 4231,
+      "status": 200
+    },
+    {
+      "port": 4232,
+      "status": 200
+    },
+    {
+      "port": 4233,
+      "status": 200
+    },
+    {
+      "port": 4260,
+      "status": 200
+    }
+  ],
+  "priorZipUnchanged": true,
+  "publicSwapSuccessClaimed": false,
+  "sourceAuthorityAuthenticated": false,
+  "currentStateGuaranteed": false,
+  "userWalletSigned": false,
+  "transactionBroadcast": false,
+  "githubPublished": false
+}

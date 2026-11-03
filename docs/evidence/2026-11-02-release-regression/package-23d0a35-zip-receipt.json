@@ -1,0 +1,49 @@
+{
+  "schema": "threecore.review-zip-receipt.v2",
+  "recordedAt": "2026-11-02T01:10:31.851Z",
+  "sourceRevision": "23d0a35b129c32be581bf1a3ffad57e228b9b65c",
+  "applicationSourceRevision": "96b59459a0f593246c60f0bed4b52052211a464a",
+  "regressionRevision": "e5841f0d1b412b516b3e3eb4a81d75eabaf81edd",
+  "liveAcceptance": {
+    "network": "Base Mainnet",
+    "distinctExistingAccounts": 1,
+    "connectedCards": 3,
+    "restoreAndStopHistoryBytesIdentical": true,
+    "remaining": [
+      "two-account switch",
+      "chain switch",
+      "Sepolia acceptance",
+      "complete candidate migration",
+      "independent review"
+    ]
+  },
+  "zip": "C:/Users/aseet/Downloads/ThreeCore-review-23d0a35-20261102.zip",
+  "bytes": 50030551,
+  "sha256": "31a88b5c015fd4adb71100d8b66fb8fd06b4eae5ad14defd868e76ce9d80aadc",
+  "before": {
+    "entries": 60,
+    "totalBytes": 54019831,
+    "manifestSha256": "358bf7444a36d5c2e9f1362d77922f2fc743292c2762ef022292193c526be919",
+    "allMatched": true
+  },
+  "after": {
+    "entries": 60,
+    "totalBytes": 54019831,
+    "manifestSha256": "358bf7444a36d5c2e9f1362d77922f2fc743292c2762ef022292193c526be919",
+    "allMatched": true
+  },
+  "outerArchiveExtracted": true,
+  "sourceFiles": 4577,
+  "evidenceFiles": 2483,
+  "fullWalletCasesPassed": 16454,
+  "fullSyntheticBrowserCasesPassed": 1021,
+  "tokenSourceUnchanged": true,
+  "tokenPackageCopiedFromVerifiedPriorZip": "79e5329634c0634e7528a27272a202d553c7101467a146eb82b82e85ee08ed17",
+  "runtimeReplayUsesFreshMinimalInstallation": true,
+  "preexistingNpmCacheUsed": true,
+  "npmDependenciesVendored": false,
+  "publicHistoricalReadPerformedDuringPackaging": false,
+  "original4231Restarted": false,
+  "realWalletAcceptanceComplete": false,
+  "independentReviewComplete": false
+}

@@ -1,4 +1,4 @@
-import { open } from "node:fs/promises";
+import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { resolve, extname } from "node:path";
 import { pathToFileURL } from "node:url";
 import { decodeWorkspaceFile, WORKSPACE_FILE_LIMIT } from "../src/workspace-file.js";
@@ -9,31 +9,12 @@ import { summarizeWorkspace } from "../src/workspace-overview.js";
 export async function inspectWorkspaceBackup(filename) {
   if (typeof filename !== "string" || !filename || filename.includes("\0") ||
       extname(filename).toLowerCase() !== ".json") throw Error("Choose one .json workspace backup");
-  const handle = await open(resolve(filename), "r");
-  let decoded;
-  let byteLength;
-  try {
-    const stat = await handle.stat();
-    if (!stat.isFile() || !Number.isSafeInteger(stat.size) || stat.size < 1 || stat.size > WORKSPACE_FILE_LIMIT) {
-      throw Error("Backup file is empty, not a regular file, or exceeds the size limit");
-    }
-    byteLength = stat.size;
-    const bytes = new Uint8Array(byteLength);
-    let offset = 0;
-    while (offset < byteLength) {
-      const read = await handle.read(bytes, offset, byteLength - offset, offset);
-      if (!read.bytesRead) throw Error("Backup file changed while being read");
-      offset += read.bytesRead;
-    }
-    const extra = await handle.read(new Uint8Array(1), 0, 1, byteLength);
-    const after = await handle.stat();
-    if (extra.bytesRead || after.size !== byteLength || after.mtimeMs !== stat.mtimeMs) {
-      throw Error("Backup file changed while being read");
-    }
-    decoded = await decodeWorkspaceFile(bytes);
-  } finally {
-    await handle.close();
-  }
+  const bytes = await readBoundedLocalBytes(resolve(filename), WORKSPACE_FILE_LIMIT, {
+    fail: message => { throw Error(message); },
+    sizeCode: "Backup file is empty, not a regular file, or exceeds the size limit",
+    changedCode: "Backup file changed while being read",
+  });
+  const byteLength = bytes.length, decoded = await decodeWorkspaceFile(bytes);
   const summary = summarizeWorkspace(workspaceToDraft(decoded.workspace));
   // Keep routine reports free of full addresses and balances. The source backup
   // still contains public account data and should be shared deliberately.

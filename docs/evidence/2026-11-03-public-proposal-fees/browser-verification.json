@@ -1,0 +1,18 @@
+{
+  "browser": "Codex in-app browser",
+  "url": "http://127.0.0.1:4256/proposals/fees/",
+  "blockedSourceRetained": true,
+  "originalDownloadSha256": "79c40bab97b7640724710a45836e44ff09b97e0e103a73665949b1528edad4dc",
+  "originalReexportByteIdentical": true,
+  "currentDownloadSha256": "7a21385fbc86a9d7c1ec8748e6492e82b2a2962f9a8d1255615fce3382df5dc1",
+  "originalSourceAndObservationPreserved": true,
+  "currentReasons": [
+    "FEE_PLAN_BLOCKED",
+    "FEE_OBSERVATION_EXPIRED",
+    "FEE_L1_UNKNOWN",
+    "FEE_OPERATOR_UNKNOWN"
+  ],
+  "sourceEnvironment": "isolated-evm",
+  "publicSwapSimulated": false,
+  "userWalletUsed": false
+}

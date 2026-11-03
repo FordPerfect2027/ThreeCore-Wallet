@@ -1,0 +1,97 @@
+✔ wallet receipt verification binds every known claim and exact source bundle without promoting negatives (216.5796ms)
+✔ wallet receipt validation bounds inputs and observes cancellation/timeouts before releasing results (70.6851ms)
+✔ wallet receipt CLI returns faithful negative checks, rejects changed claims and leaves inputs unchanged (2573.302ms)
+✔ wallet receipt panel opens faithful negative checks, exports exact checks and revokes them on source changes (72.7856ms)
+✔ rehearsal receipt verification binds every known claim and exact source bundle without promoting negatives (62.8059ms)
+✔ rehearsal receipt validation bounds inputs and observes cancellation/timeouts before releasing results (26.0332ms)
+✔ rehearsal receipt CLI returns faithful negative checks, rejects changed claims and leaves inputs unchanged (1557.3054ms)
+✔ rehearsal receipt panel opens faithful negative checks, exports exact checks and revokes them on source changes (43.4865ms)
+✔ wallet source export retains exact negative bytes, requires fresh consent and clears obsolete choices (281.3663ms)
+✔ rehearsal source export retains exact negative bytes, requires fresh consent and clears obsolete choices (81.5459ms)
+✔ source export rejects forged owners, failed/asynchronous delivery and stale callback feedback (15.0078ms)
+✔ rehearsal source picker hands the same file to full batch verification and rejection preserves prior rows (89.0864ms)
+✔ rehearsal handoff prevents repeat submission and obsolete feedback after selecting another source (53.1447ms)
+✔ oversized individual source remains available to the bounded batch verifier without another picker (19.2242ms)
+✔ wallet selected-result exports retain exact rows, original scope and explicit empty matches (74.8403ms)
+✔ rehearsal selected-result exports retain exact rows, original scope and explicit empty matches (38.0836ms)
+✖ wallet UI exports the visible scope without changing full results and suppresses obsolete save feedback (247.7484ms)
+✔ rehearsal UI exports the visible scope without changing full results and suppresses obsolete save feedback (122.3759ms)
+✔ rehearsal cancelling either picker retains selected files, the reference and completed result (38.7551ms)
+✔ rehearsal cancelling a picker cannot abort an in-progress file review (23.8646ms)
+✔ batch filters separate failed expectations from faithful recomputation and retain complete exports (213.1687ms)
+✔ batch evidence uses explicit source consent, reopens exact details and preserves the list on altered claims (62.477ms)
+✔ stopped evidence work retains usable details and selection changes suppress a late download (34.7336ms)
+✔ batch filters reject invalid conditions, reset on new references and suppress obsolete detail feedback (25.1622ms)
+✔ batch retry refreshes the current failure filter without rereading a successful file (37.3392ms)
+✔ failed-file retry reads only the failure and retains successful detail sources (30.4411ms)
+✔ stopped retry keeps old failures and late completion cannot replace a newer selection (48.4318ms)
+✔ stopped file loading resumes only pending files and keeps earlier detail sources (45.358ms)
+✔ unreadable middle file does not erase prior or later report reviews (13.9691ms)
+✔ failed continuation linkage retains a saveable prior result (64.2892ms)
+✔ batch detail handoff retains original bytes and reference instead of substituting its actual hash (15.3403ms)
+✔ stopped batches expose only completed sources and CSV retains pending scope (32.7684ms)
+✔ detail handoff failure or stale completion preserves honest state throws (15.1231ms)
+✔ detail handoff failure or stale completion preserves honest state false (36.2457ms)
+✔ detail handoff failure or stale completion preserves honest state async (10.83ms)
+✔ detail handoff failure or stale completion preserves honest state clears (15.2897ms)
+✔ detail handoff failure or stale completion preserves honest state disposes (31.251ms)
+✔ CSV failed delivery retains the owned result for retry (16.3024ms)
+✔ reference digest failure displays useful retry guidance without null or undefined (13.9284ms)
+✔ previous checksum paste binds exact files and preserves the reference when the selected bytes differ (47.5648ms)
+✔ invalid or unmatched reference never silently falls back invalid (2.5632ms)
+✔ invalid or unmatched reference never silently falls back ec5457e68d (1.6855ms)
+✔ invalid or unmatched reference never silently falls back ec5457e68d (1.5308ms)
+✔ native reference File preserves its exact bytes and rejects an unreadable replacement (25.786ms)
+✔ late reference read cannot overwrite replace (29.9045ms)
+✔ late reference read cannot overwrite clear (30.8563ms)
+✔ late reference read cannot overwrite paste (31.9476ms)
+✔ late reference read cannot overwrite dispose (31.0471ms)
+✔ an explicitly selected empty checksum file is not treated as an absent reference (15.8169ms)
+✔ reference edit retires pending verification before a late digest returns (35.1872ms)
+✔ batch panel waits for explicit start, shows every result and exports compatible filenames (8.3429ms)
+✔ batch panel refuses selection count before reading (1.9401ms)
+✔ batch panel refuses selection duplicate before reading (0.8834ms)
+✔ batch panel refuses selection oversized before reading (0.8263ms)
+✔ batch panel refuses selection combined before reading (0.979ms)
+✔ batch panel refuses selection unsafe-name before reading (0.6977ms)
+✔ cancel during digest retains completed results and leaves the remaining file unchecked (59.3003ms)
+✔ pending digest cannot overwrite clear (32.098ms)
+✔ pending digest cannot overwrite replace (48.2436ms)
+✔ pending digest cannot overwrite dispose (29.0749ms)
+✔ loading cancellation does not claim any recomputation and permits explicit retry (46.6504ms)
+✔ unreadable file is not reported as an empty or matching report (20.3651ms)
+✔ batch export failure keeps results for retry ()=>false (9.9492ms)
+✔ batch export failure keeps results for retry ()=>{throw Error("private marker");} (30.0598ms)
+✔ batch export failure keeps results for retry ()=>Promise.reject(Error("private marker")) (15.0876ms)
+✔ clearing during download delivery cannot claim stale export success (16.5903ms)
+✔ name and exact-status filters intersect without changing full result or exports (80.3771ms)
+✔ hidden actions cannot open the wrong source and changed views suppress stale detail feedback (20.3723ms)
+✔ invalid filter input is explicit, replacement clears it and disposed controls are inert (12.8447ms)
+✔ retry refreshes the current status filter without replaying retained successful rows (13.1341ms)
+ℹ tests 70
+ℹ suites 0
+ℹ pass 69
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5375.5504
+
+✖ failing tests:
+
+test at test\batch-selection-export.test.js:11:41
+✖ wallet UI exports the visible scope without changing full results and suppresses obsolete save feedback (247.7484ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(!f.q('export-status').textContent.includes('保存し始めました'))
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/batch-selection-export.test.js:12:768)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

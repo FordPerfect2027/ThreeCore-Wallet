@@ -1,0 +1,156 @@
+TAP version 13
+# Subtest: read-only CLI response-body deadlines
+    # Subtest: verify-base-mainnet.js
+    not ok 1 - verify-base-mainnet.js
+      ---
+      duration_ms: 21954.8851
+      type: 'test'
+      location: 'C:\\Users\\aseet\\AppData\\Local\\Temp\\ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446\\source\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:52:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 0)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Response body observed to process exit: 15027 ms
+    # Subtest: inspect-wallet-readiness.js
+    not ok 2 - inspect-wallet-readiness.js
+      ---
+      duration_ms: 21996.3894
+      type: 'test'
+      location: 'C:\\Users\\aseet\\AppData\\Local\\Temp\\ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446\\source\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:52:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 1)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Response body observed to process exit: 15037 ms
+    # Subtest: quote-dex.js
+    not ok 3 - quote-dex.js
+      ---
+      duration_ms: 21894.898
+      type: 'test'
+      location: 'C:\\Users\\aseet\\AppData\\Local\\Temp\\ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446\\source\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:52:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 2)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Response body observed to process exit: 15042 ms
+    # Subtest: inspect-transfers.js
+    not ok 4 - inspect-transfers.js
+      ---
+      duration_ms: 22262.7327
+      type: 'test'
+      location: 'C:\\Users\\aseet\\AppData\\Local\\Temp\\ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446\\source\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:52:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 3)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Response body observed to process exit: 15044 ms
+    # Subtest: inspect-approvals.js
+    not ok 5 - inspect-approvals.js
+      ---
+      duration_ms: 22038.4177
+      type: 'test'
+      location: 'C:\\Users\\aseet\\AppData\\Local\\Temp\\ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446\\source\\test\\read-only-http-cli.test.mjs:19:66'
+      failureType: 'testCodeFailure'
+      error: |-
+        CLI stalled after response headers and required external termination
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:52:14)
+        process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async Promise.all (index 4)
+        async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446/source/test/read-only-http-cli.test.mjs:19:3)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Response body observed to process exit: 15026 ms
+    1..5
+not ok 1 - read-only CLI response-body deadlines
+  ---
+  duration_ms: 22298.4321
+  type: 'test'
+  location: 'C:\\Users\\aseet\\AppData\\Local\\Temp\\ThreeCore-body-deadline-baseline-d514a789-767c-42db-84fe-e024f1fff446\\source\\test\\read-only-http-cli.test.mjs:18:1'
+  failureType: 'subtestsFailed'
+  error: '5 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 6
+# suites 0
+# pass 0
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 22612.5736

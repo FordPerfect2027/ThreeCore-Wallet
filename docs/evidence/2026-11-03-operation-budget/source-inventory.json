@@ -1,0 +1,60 @@
+{
+  "recordedAt": "2026-11-03T08:32:07.392Z",
+  "files": [
+    {
+      "path": "src/operation-budget.js",
+      "bytes": 6060,
+      "sha256": "0ceb8fbd0038a3de0fc2c40df6053c0146ba233ade52f24e78ecff63f2799bb7"
+    },
+    {
+      "path": "scripts/check-operation-budget.js",
+      "bytes": 1798,
+      "sha256": "c9b6f22da2dc25559614c10a7a1fee5003c772b5a64315880296dfdb4f6eb00b"
+    },
+    {
+      "path": "examples/operation-budget-page.js",
+      "bytes": 10010,
+      "sha256": "61728478acd4f0c3cee7e61e39cccc4a834e8b259042f4f930ccb374ecb671d6"
+    },
+    {
+      "path": "examples/operation-budget.html",
+      "bytes": 6272,
+      "sha256": "746ce1c036527862ef91fd10e1ca54fa4444c857c192b5491ac8c5b6e1cf1c5e"
+    },
+    {
+      "path": "examples/dev-server.js",
+      "bytes": 33823,
+      "sha256": "ed788be5358dae2084cdb4321021fc944c34df9d24b7d12339752b93b774308f"
+    },
+    {
+      "path": "examples/operation-rehearsal.html",
+      "bytes": 61012,
+      "sha256": "f532a616f075baf9238d7a30de052ed9d7167341af328643372cc900c11289ec"
+    },
+    {
+      "path": "package.json",
+      "bytes": 4388,
+      "sha256": "2ef11905b95de40cd193f19f465a4d76e959fb39fef2bf17d08e56050c362390"
+    },
+    {
+      "path": "test/operation-budget.test.js",
+      "bytes": 7370,
+      "sha256": "ed47386161df0f25f0fa0c9983f77f4f5c590ffc5c0885b29bbd45342263bc97"
+    },
+    {
+      "path": "test/operation-budget-cli.test.js",
+      "bytes": 2576,
+      "sha256": "d4029ca302cc15dd93a56229e26642f3c002deca2d00fbd0c8174ad250345f27"
+    },
+    {
+      "path": "test/operation-budget-page.test.js",
+      "bytes": 6188,
+      "sha256": "24cf4d2fdf60f84f4fe31b3f4fe3a6e7aaa7716c36a3c212dd34f9e3ad647a88"
+    },
+    {
+      "path": "integration/operation-budget-server.test.mjs",
+      "bytes": 2135,
+      "sha256": "c66df7f526594193d7a3ff6cba4a34cf11b0e07f9481a33837434ec51afce5cd"
+    }
+  ]
+}

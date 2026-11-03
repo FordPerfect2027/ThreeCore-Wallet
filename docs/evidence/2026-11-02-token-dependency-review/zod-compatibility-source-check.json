@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-11-01T22:14:16.413Z",
+  "helperParity": [
+    {
+      "token": "DAT",
+      "commit": "6c455914df26d52de75bd2c6d3ae0aefb1215d29",
+      "installedHelperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48",
+      "workingTreeClean": true
+    },
+    {
+      "token": "EMA",
+      "commit": "c027e68cd1974dc31f2619d04b4fb9059843424f",
+      "installedHelperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48",
+      "workingTreeClean": true
+    },
+    {
+      "token": "CAWELON",
+      "commit": "b77a6b31af135c0461dd66d95bc837c8e7d9e88f",
+      "installedHelperSha256": "ed7daa506d8a6283b4071036f866168dddf831b5bb39f1735d12138eb3bbbb48",
+      "workingTreeClean": true
+    }
+  ],
+  "executionScope": "Probe executed once using the DAT installed helper; its source bytes match the installed helper for all three tokens",
+  "adoptedOverride": false
+}

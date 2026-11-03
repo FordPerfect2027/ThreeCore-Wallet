@@ -1,0 +1,5 @@
+# Keep recorded evidence bytes stable across checkout.
+*.json -text whitespace=trailing-space,space-before-tab,cr-at-eol
+*.log -text whitespace=trailing-space,space-before-tab,cr-at-eol
+*.png -text
+SHA256SUMS.txt text eol=lf

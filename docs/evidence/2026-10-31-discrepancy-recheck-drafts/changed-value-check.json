@@ -1,0 +1,23 @@
+{
+  "agent": "DAT",
+  "chainId": 84532,
+  "earlierBlock": "34",
+  "laterBlock": "35",
+  "completed": 0,
+  "total": 3,
+  "complete": false,
+  "windowsCompleted": 0,
+  "windowsTotal": 1,
+  "events": 0,
+  "next": "earlier",
+  "nextWindow": {
+    "index": 0,
+    "fromBlock": "35",
+    "toBlock": "35",
+    "blocks": "1"
+  },
+  "digest": "958c5fdf842196f3b32f10e69285f4eab35838d55e72edccf8675ca1743055ed",
+  "checksumVerified": true,
+  "authenticated": false,
+  "liveChainRechecked": false
+}

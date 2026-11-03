@@ -62,7 +62,6 @@ for (const uiTest of [false, true]) {
   test("identity server does not expose local test inputs or CLI sources: " + uiTest, async () => {
     await served(uiTest, async base => {
       for (const path of [
-        "/test/helpers/identity-fixtures.js",
         "/test/token-identity-report.test.js",
         "/scripts/check-token-identity.js",
         "/wallet-identity-baseline-20261023",
@@ -76,6 +75,13 @@ for (const uiTest of [false, true]) {
         const response = await fetch(base + "/src/token-catalog.js", { method });
         assert.equal(response.status, 404, method);
       }
+    });
+  });
+  test("identity server serves shared fictional observation fixtures only in explicit UI-test mode: " + uiTest, async () => {
+    await served(uiTest, async base => {
+      const response = await fetch(base + "/test/helpers/identity-fixtures.js");
+      assert.equal(response.status, uiTest ? 200 : 404);
+      if (uiTest) { assert((await response.text()).includes('export const ACCOUNT = "0x" + "11".repeat(20)')); assert.equal(response.headers.get("cache-control"), "no-store"); }
     });
   });
 }

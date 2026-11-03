@@ -1,0 +1,38 @@
+✔ wallet portable pair independently recomputes each source group and retains negative originals (166.3367ms)
+✔ wallet changed pair claims cannot expose owned original sources and do not echo unexpected fields (143.7716ms)
+✔ wallet pair processing shares cancellation and deadlines without overriding original checksum references (38.1944ms)
+✔ wallet offline portable pair review and exact-role extraction do not change files or return tampered sources (3790.0186ms)
+✔ wallet verified pair viewer keeps both source roles separate and requires fresh consent after role changes (23.5384ms)
+✔ wallet integrated portable pair shows independent verified rows and revokes them for replaced or altered evidence (74.7251ms)
+✔ rehearsal portable pair independently recomputes each source group and retains negative originals (25.2566ms)
+✔ rehearsal changed pair claims cannot expose owned original sources and do not echo unexpected fields (121.1967ms)
+✔ rehearsal pair processing shares cancellation and deadlines without overriding original checksum references (33.4642ms)
+✔ rehearsal offline portable pair review and exact-role extraction do not change files or return tampered sources (3149.4356ms)
+✔ rehearsal verified pair viewer keeps both source roles separate and requires fresh consent after role changes (20.5511ms)
+✔ rehearsal integrated portable pair shows independent verified rows and revokes them for replaced or altered evidence (131.5744ms)
+✔ wallet portable evidence cancellation and source changes suppress late reads and stale download claims (54.0119ms)
+✔ wallet guide routes a comparison package to the independent viewer with no second selection or batch import (329.6962ms)
+✔ wallet comparison guide cannot trust changed claims or invoke the ordinary batch importer (11.2923ms)
+✔ wallet handoff suppresses duplicate requests and late completion after source replacement or disposal (71.2ms)
+✔ rehearsal handoff suppresses duplicate requests and late completion after source replacement or disposal (79.979ms)
+✔ rehearsal direct handoff can verify a package above the individual 2 MiB limit without importing its records (503.5906ms)
+✔ wallet direct comparison verifier returns completion only for its current owned operation (118.7102ms)
+✔ rehearsal direct comparison verifier returns completion only for its current owned operation (90.8968ms)
+✔ wallet comparison reports ordered private-data-free stages without changing evidence or legacy progress (191.7144ms)
+✔ wallet comparison cancellation from a progress callback stops the next group and completion (52.9604ms)
+✔ wallet comparison deadlines include stage observers (10.4274ms)
+✔ wallet invalid observer descriptors are never invoked and observer failures cannot alter verdicts (167.0258ms)
+✔ wallet UI announces both groups and suppresses progress after cancellation or replacement (149.2865ms)
+✔ rehearsal comparison reports ordered private-data-free stages without changing evidence or legacy progress (181.1757ms)
+✔ rehearsal comparison cancellation from a progress callback stops the next group and completion (22.8552ms)
+✔ rehearsal comparison deadlines include stage observers (13.1171ms)
+✔ rehearsal invalid observer descriptors are never invoked and observer failures cannot alter verdicts (102.9731ms)
+✔ rehearsal UI announces both groups and suppresses progress after cancellation or replacement (124.7134ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8638.6087

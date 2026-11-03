@@ -1,0 +1,32 @@
+{
+  "source": "a7e54ea",
+  "synthetic": true,
+  "storageWrites": 0,
+  "providerCalls": 0,
+  "rows": [
+    {
+      "name": "entry-in-period-reader",
+      "accepted": false,
+      "code": "PERIOD_SHAPE",
+      "message": "入力または保存記録を確認できませんでした。元のデータは保持しています。"
+    },
+    {
+      "name": "report-in-library-reader",
+      "accepted": false,
+      "code": "PERIOD_SHAPE",
+      "message": "入力または保存記録を確認できませんでした。元のデータは保持しています。"
+    },
+    {
+      "name": "inspection-in-library-reader",
+      "accepted": false,
+      "code": "PERIOD_SHAPE",
+      "message": "入力または保存記録を確認できませんでした。元のデータは保持しています。"
+    },
+    {
+      "name": "corrupt-library-in-correct-reader",
+      "accepted": false,
+      "code": "PERIOD_CHECKSUM",
+      "message": "ファイルの検査値が一致しません。別の保存ファイルを確認してください。"
+    }
+  ]
+}

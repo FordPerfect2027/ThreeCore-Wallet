@@ -1,0 +1,17 @@
+{
+  "schema": "threecore.saved-file-bundle-receipt-check.v1",
+  "readOnly": true,
+  "matchesRecomputation": true,
+  "bundleTextDigest": "77354243b64d5bbeb956393ccc0012ebf199f287d755813b4a6c04838575a236",
+  "bundleTextBindingMatches": true,
+  "receiptTextDigest": "eff07728fe4ab470a886e1e7bd3715ff18662f22e23f70c4a34120cc80167d58",
+  "expectedBundleComparisonMatches": true,
+  "expectedSourceFilesAvailable": true,
+  "differences": [],
+  "unexpectedFields": 0,
+  "containsOriginalEvidence": false,
+  "restorable": false,
+  "authenticated": false,
+  "liveChainRechecked": false,
+  "authorizesExecution": false
+}

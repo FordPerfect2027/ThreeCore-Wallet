@@ -1,0 +1,26 @@
+✔ snapshot reuses only its own fully validated immutable snapshot (6.9168ms)
+✔ snapshot mutable caller input is never cached as valid (1.9549ms)
+✔ snapshot a frozen wrapper cannot hide changed nested data (1.0966ms)
+✔ snapshot proxies and revoked proxies do not inherit snapshot identity (1.3943ms)
+✔ archive reuses only its own fully validated immutable snapshot (1.9736ms)
+✔ archive mutable caller input is never cached as valid (1.0911ms)
+✔ archive a frozen wrapper cannot hide changed nested data (1.324ms)
+✔ archive proxies and revoked proxies do not inherit snapshot identity (1.0703ms)
+✔ reconciliation reuses only its own fully validated immutable snapshot (2.9823ms)
+✔ reconciliation mutable caller input is never cached as valid (3.3014ms)
+✔ reconciliation a frozen wrapper cannot hide changed nested data (1.8621ms)
+✔ reconciliation proxies and revoked proxies do not inherit snapshot identity (2.4821ms)
+✔ observation reuses only its own fully validated immutable snapshot (0.7563ms)
+✔ observation mutable caller input is never cached as valid (0.6244ms)
+✔ observation a frozen wrapper cannot hide changed nested data (0.5924ms)
+✔ observation proxies and revoked proxies do not inherit snapshot identity (0.705ms)
+✔ individually valid cached records still undergo cross-record context, duplicate and overlap checks (2.8362ms)
+✔ cached observations retain metadata mismatch and missing-code facts (1.0366ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 381.1451

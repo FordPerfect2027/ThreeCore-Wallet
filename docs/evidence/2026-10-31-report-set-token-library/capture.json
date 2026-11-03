@@ -1,0 +1,99 @@
+{
+  "source": "209af71",
+  "synthetic": true,
+  "storageWrites": 0,
+  "providerCalls": 0,
+  "rows": [
+    {
+      "name": "distinct-DAT",
+      "agent": "DAT",
+      "exitCode": 0,
+      "error": null,
+      "entryCount": 3,
+      "missingReports": 0,
+      "duplicateReferences": 0,
+      "conflicts": 0,
+      "libraryMatchesExactOriginals": true,
+      "sourceUnchanged": true,
+      "cliMessage": "Recovered 3 original DAT entries; 0 reports lacked this token; 0 identical references collapsed. No import performed."
+    },
+    {
+      "name": "distinct-EMA",
+      "agent": "EMA",
+      "exitCode": 0,
+      "error": null,
+      "entryCount": 3,
+      "missingReports": 0,
+      "duplicateReferences": 0,
+      "conflicts": 0,
+      "libraryMatchesExactOriginals": true,
+      "sourceUnchanged": true,
+      "cliMessage": "Recovered 3 original EMA entries; 0 reports lacked this token; 0 identical references collapsed. No import performed."
+    },
+    {
+      "name": "deduplicated-DAT",
+      "agent": "DAT",
+      "exitCode": 0,
+      "error": null,
+      "entryCount": 2,
+      "missingReports": 0,
+      "duplicateReferences": 1,
+      "conflicts": 0,
+      "libraryMatchesExactOriginals": true,
+      "sourceUnchanged": true,
+      "cliMessage": "Recovered 2 original DAT entries; 0 reports lacked this token; 1 identical references collapsed. No import performed."
+    },
+    {
+      "name": "restricted-DAT",
+      "agent": "DAT",
+      "exitCode": 0,
+      "error": null,
+      "entryCount": 3,
+      "missingReports": 0,
+      "duplicateReferences": 0,
+      "conflicts": 0,
+      "libraryMatchesExactOriginals": true,
+      "sourceUnchanged": true,
+      "cliMessage": "Recovered 3 original DAT entries; 0 reports lacked this token; 0 identical references collapsed. No import performed."
+    },
+    {
+      "name": "missing-DAT-slot",
+      "agent": "DAT",
+      "exitCode": 0,
+      "error": null,
+      "entryCount": 2,
+      "missingReports": 1,
+      "duplicateReferences": 0,
+      "conflicts": 0,
+      "libraryMatchesExactOriginals": true,
+      "sourceUnchanged": true,
+      "cliMessage": "Recovered 2 original DAT entries; 1 reports lacked this token; 0 identical references collapsed. No import performed."
+    },
+    {
+      "name": "absent-DAT",
+      "agent": "DAT",
+      "exitCode": 1,
+      "error": "PERIOD_SET_LIBRARY_EMPTY",
+      "entryCount": 0,
+      "missingReports": 3,
+      "duplicateReferences": 0,
+      "conflicts": 0,
+      "libraryMatchesExactOriginals": null,
+      "sourceUnchanged": true,
+      "cliMessage": "PERIOD_SET_LIBRARY_EMPTY\nUsage: node scripts/recover-report-set-token-library.js source-set.json --agent DAT|EMA|CAWELON\nVerifies the set checksum, keeps original entries and restriction flags, and emits a period-library JSON to stdout.\nContains all original addresses and events for that token. Conflicting IDs or excess capacity refuse the entire export.\nNo network, imports or writes. Exit 0 means extraction, not complete history; exit 1 means invalid or unrecoverable input."
+    },
+    {
+      "name": "conflicting-DAT",
+      "agent": "DAT",
+      "exitCode": 1,
+      "error": "PERIOD_SET_LIBRARY_CONFLICT",
+      "entryCount": 1,
+      "missingReports": 0,
+      "duplicateReferences": 0,
+      "conflicts": 2,
+      "libraryMatchesExactOriginals": null,
+      "sourceUnchanged": true,
+      "cliMessage": "PERIOD_SET_LIBRARY_CONFLICT\nUsage: node scripts/recover-report-set-token-library.js source-set.json --agent DAT|EMA|CAWELON\nVerifies the set checksum, keeps original entries and restriction flags, and emits a period-library JSON to stdout.\nContains all original addresses and events for that token. Conflicting IDs or excess capacity refuse the entire export.\nNo network, imports or writes. Exit 0 means extraction, not complete history; exit 1 means invalid or unrecoverable input."
+    }
+  ]
+}

@@ -1,0 +1,315 @@
+✖ bundle save: cancel settles before the underlying operation (76.4389ms)
+✖ bundle save: clear settles before the underlying operation (42.3425ms)
+✖ bundle save: dispose settles before the underlying operation (32.431ms)
+✖ bundle load-hash: cancel settles before the underlying operation (48.5064ms)
+✖ bundle load-hash: clear settles before the underlying operation (47.2186ms)
+✖ bundle load-hash: dispose settles before the underlying operation (43.0676ms)
+✖ bundle load-bytes: cancel settles before the underlying operation (32.3869ms)
+✖ bundle load-bytes: clear settles before the underlying operation (32.3799ms)
+✖ bundle load-bytes: dispose settles before the underlying operation (29.9083ms)
+✖ bundle review: a source callback cannot continue after disposal (6.2055ms)
+✖ bundle save-start: a source callback cannot continue after disposal (9.4818ms)
+✖ bundle save-finish: a source callback cannot continue after disposal (9.3367ms)
+✖ bundle diagnostic accessors are never evaluated (1.0504ms)
+✖ bundle diagnostic capture cannot write into a disposed panel (0.7567ms)
+✖ bundle download false receipt cannot report success (8.9318ms)
+✖ bundle download resolved receipt cannot report success (7.3068ms)
+✔ bundle download rejected receipt cannot report success (9.9463ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 1
+ℹ fail 16
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 785.4912
+
+✖ failing tests:
+
+test at test\allowance-bundle-lifecycle.test.js:32:3
+✖ bundle save: cancel settles before the underlying operation (76.4389ms)
+  AssertionError [ERR_ASSERTION]: cancelled panel task is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:48:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:32:3
+✖ bundle save: clear settles before the underlying operation (42.3425ms)
+  AssertionError [ERR_ASSERTION]: cancelled panel task is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:48:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:32:3
+✖ bundle save: dispose settles before the underlying operation (32.431ms)
+  AssertionError [ERR_ASSERTION]: cancelled panel task is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:48:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:32:3
+✖ bundle load-hash: cancel settles before the underlying operation (48.5064ms)
+  AssertionError [ERR_ASSERTION]: cancelled panel task is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:48:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:32:3
+✖ bundle load-hash: clear settles before the underlying operation (47.2186ms)
+  AssertionError [ERR_ASSERTION]: cancelled panel task is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:48:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:32:3
+✖ bundle load-hash: dispose settles before the underlying operation (43.0676ms)
+  AssertionError [ERR_ASSERTION]: cancelled panel task is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:48:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:32:3
+✖ bundle load-bytes: cancel settles before the underlying operation (32.3869ms)
+  AssertionError [ERR_ASSERTION]: cancelled panel task is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:48:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:32:3
+✖ bundle load-bytes: clear settles before the underlying operation (32.3799ms)
+  AssertionError [ERR_ASSERTION]: cancelled panel task is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:48:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:32:3
+✖ bundle load-bytes: dispose settles before the underlying operation (29.9083ms)
+  AssertionError [ERR_ASSERTION]: cancelled panel task is still waiting
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:48:14)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:54:3
+✖ bundle review: a source callback cannot continue after disposal (6.2055ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '3件のWallet・ネットワーク・ブロックを確認してから保存してください。'
+  - '保存内容は未確認です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:64:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '3件のWallet・ネットワーク・ブロックを確認してから保存してください。',
+    expected: '保存内容は未確認です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:54:3
+✖ bundle save-start: a source callback cannot continue after disposal (9.4818ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  4 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:66:37)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 4,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:54:3
+✖ bundle save-finish: a source callback cannot continue after disposal (9.3367ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:63:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:69:1
+✖ bundle diagnostic accessors are never evaluated (1.0504ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:72:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:74:1
+✖ bundle diagnostic capture cannot write into a disposed panel (0.7567ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'DAT・EMA・CAWELONの3件の確認記録が必要です。各カードを確認してください。'
+  - '保存内容は未確認です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:81:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'DAT・EMA・CAWELONの3件の確認記録が必要です。各カードを確認してください。',
+    expected: '保存内容は未確認です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:83:55
+✖ bundle download false receipt cannot report success (8.9318ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:88:50)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\allowance-bundle-lifecycle.test.js:83:55
+✖ bundle download resolved receipt cannot report success (7.3068ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/allowance-bundle-lifecycle.test.js:88:50)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

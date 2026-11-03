@@ -1,0 +1,34 @@
+✔ records: source capture cannot outlive dispose (20.2165ms)
+✔ records: source capture cannot outlive dispose even when capture throws (4.2621ms)
+✔ records: source capture cannot outlive clear (3.366ms)
+✔ records: source capture cannot outlive clear even when capture throws (2.8664ms)
+✔ records: source capture cannot outlive replace (9.3118ms)
+✔ records: source capture cannot outlive replace even when capture throws (4.2713ms)
+✔ scenario: source capture cannot outlive dispose (3.8338ms)
+✔ scenario: source capture cannot outlive dispose even when capture throws (2.2296ms)
+✔ scenario: source capture cannot outlive clear (2.6574ms)
+✔ scenario: source capture cannot outlive clear even when capture throws (2.7185ms)
+✔ scenario: source capture cannot outlive replace (2.7925ms)
+✔ scenario: source capture cannot outlive replace even when capture throws (2.6742ms)
+✔ comparison refresh observer cannot overwrite dispose (2.4266ms)
+✔ comparison refresh observer cannot overwrite clear (1.7373ms)
+✔ comparison refresh observer cannot overwrite replace (2.8073ms)
+✔ comparison compare-start observer cannot overwrite dispose (2.2525ms)
+✔ comparison compare-start observer cannot overwrite clear (2.5373ms)
+✔ comparison compare-start observer cannot overwrite replace (2.2066ms)
+✔ comparison compare-result observer cannot overwrite dispose (9.3279ms)
+✔ comparison compare-result observer cannot overwrite clear (5.3491ms)
+✔ comparison compare-result observer cannot overwrite replace (6.3265ms)
+✔ comparison observers do not discard valid work or leak failures: throw (33.2881ms)
+✔ comparison observers do not discard valid work or leak failures: native (4.1586ms)
+✔ comparison observers do not discard valid work or leak failures: malformed (7.6619ms)
+✔ comparison disposal marks the panel closed before notifying its owner (1.6521ms)
+✔ invalid replacement still reports its own failure without erasing a healthy source (3.5659ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 437.3145

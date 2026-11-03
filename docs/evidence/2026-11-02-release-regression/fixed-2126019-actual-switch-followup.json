@@ -1,0 +1,65 @@
+{
+  "schema": "threecore.actual-network-switch-followup.v1",
+  "recordedAt": "2026-11-02T13:27:05.811Z",
+  "observedAt": "2026-11-02T13:17:08.314Z",
+  "sourceRevision": "aec3942e4c7811356844983d64c57c29cbfc62bd",
+  "applicationRevision": "8fa0ed2739482b8df415e46c6c45491955d4bfc4",
+  "origin": "http://127.0.0.1:4231",
+  "browser": "Microsoft Edge",
+  "accountLabel": "Account 2",
+  "prepared": {
+    "connectedCards": 3,
+    "chainId": 84532,
+    "historyCounts": [
+      2,
+      2,
+      2
+    ],
+    "fileContentsMatched": true
+  },
+  "operatorReported": {
+    "changedToBase": true,
+    "connectedLabelDisappeared": true,
+    "confirmedVisibleMarker": "接続確認 1102-A"
+  },
+  "observedAfterReport": {
+    "threeCardsStillConnected": true,
+    "chainId": 84532,
+    "datNativeBalanceReadBlock": "53516193",
+    "nativeBalanceWei": "0",
+    "historyCounts": [
+      2,
+      2,
+      2
+    ]
+  },
+  "nativeInspection": "Blocked by Windows UI tool because it could not determine the current browser URL with sufficient confidence.",
+  "liveSwitchGatePassed": false,
+  "interpretation": "The same visible marker was confirmed, but the provider read still completed on Sepolia. This does not establish successful switch-event invalidation or identify a product handler defect.",
+  "publicWalletTransactions": false,
+  "signatures": false,
+  "keyAccess": false,
+  "githubWrites": false,
+  "privateEvidence": [
+    {
+      "fileName": "ThreeCore-live-switch-session-20261102.json",
+      "bytes": 156577,
+      "sha256": "492b9c075d467403f56df939e69cd004f97083b50f1c0622ead6706667fac55c"
+    },
+    {
+      "fileName": "ThreeCore-live-switch-after-20261102.txt",
+      "bytes": 121583,
+      "sha256": "7ccd0fb038de04b0bfc69ba7dbb170b2c68e940ad452eecd4feb17890bee69b3"
+    },
+    {
+      "fileName": "ThreeCore-live-switch-prepared-20261102.png",
+      "bytes": 29207,
+      "sha256": "62166c5f12da5de7ca80db84ba159942f1126176e44802b5cb0d2da7d592cea4"
+    },
+    {
+      "fileName": "ThreeCore-target-tab-1102-A.png",
+      "bytes": 33598,
+      "sha256": "8cba92b8ad0cbbcf51a5a54ed24f387000f24d54bd0e0a57b1f51ec953343132"
+    }
+  ]
+}

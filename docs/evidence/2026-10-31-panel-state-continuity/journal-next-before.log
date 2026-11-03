@@ -1,0 +1,363 @@
+✖ journal captures event array length without reading source properties (9.9737ms)
+✖ journal panel summary reads the validated snapshot instead of the original object (3.8551ms)
+✔ journal render: close during source capture retires display (4.4721ms)
+✔ journal render: dispose during source capture retires display (1.5866ms)
+✖ journal prepare: close during source capture retires display (8.9651ms)
+✖ journal prepare: dispose during source capture retires display (19ms)
+✖ journal unavailable throw state clears prior copy without leaking diagnostics (7.9177ms)
+✖ journal unavailable reject state clears prior copy without leaking diagnostics (1.515ms)
+✖ journal unavailable invalid state clears prior copy without leaking diagnostics (7.4668ms)
+✖ journal changed contents invalidate an open copy even when total count is unchanged (6.7041ms)
+✖ journal source reentry remains bounded and cannot refill a closed copy (1.0753ms)
+✖ journal retained close handler cannot update removed UI (1.2443ms)
+✔ journal normal current snapshot remains exportable and closing does not erase the journal (1.305ms)
+ℹ Error: Test "journal unavailable reject state clears prior copy without leaking diagnostics" at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:30:51 generated asynchronous activity after the test ended. This activity created the error "Error: sensitive diagnostic" and would have caused the test to fail, but instead triggered an unhandledRejection event.
+ℹ tests 13
+ℹ suites 0
+ℹ pass 3
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 529.4938
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:17:1
+✖ journal captures event array length without reading source properties (9.9737ms)
+  Error: array value read
+      at Object.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:18:93)
+      at validateSecurityJournal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-journal.js:102:75)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:19:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:21:1
+✖ journal panel summary reads the validated snapshot instead of the original object (3.8551ms)
+  Error: source read
+      at Object.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:22:67)
+      at render (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:37:44)
+      at mountSecurityJournalPanel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:64:3)
+      at fixture (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:14:51)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:23:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:25:80
+✖ journal prepare: close during source capture retires display (8.9651ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '{\n' +
+  +   '  "schema": "threecore.local-protection-journal",\n' +
+  +   '  "version": 1,\n' +
+  +   '  "scope": "This page session only. Not a security audit or wallet permission revocation record.",\n' +
+  +   '  "containsWalletAddresses": false,\n' +
+  +   '  "containsBalances": false,\n' +
+  +   '  "containsPrivateKeys": false,\n' +
+  +   '  "capacity": 64,\n' +
+  +   '  "total": 1,\n' +
+  +   '  "dropped": 0,\n' +
+  +   '  "disposed": false,\n' +
+  +   '  "events": [\n' +
+  +   '    {\n' +
+  +   '      "sequence": 1,\n' +
+  +   '      "kind": "manual",\n' +
+  +   '      "detail": {}\n' +
+  +   '    }\n' +
+  +   '  ],\n' +
+  +   '  "counts": {\n' +
+  +   '    "ready": 0,\n' +
+  +   '    "manual": 1,\n' +
+  +   '    "idle": 0,\n' +
+  +   '    "hidden": 0,\n' +
+  +   '    "page-exit": 0,\n' +
+  +   '    "clock": 0,\n' +
+  +   '    "timer": 0,\n' +
+  +   '    "disposed": 0,\n' +
+  +   '    "resumed": 0,\n' +
+  +   '    "idle-policy": 0,\n' +
+  +   '    "hidden-policy": 0,\n' +
+  +   '    "broadcast-stop": 0,\n' +
+  +   '    "peer-stop": 0,\n' +
+  +   '    "channel-error": 0,\n' +
+  +   '    "page-freeze": 0,\n' +
+  +   '    "page-restored": 0\n' +
+  +   '  }\n' +
+  +   '}'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:28:85)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{\n  "schema": "threecore.local-protection-journal",\n  "version": 1,\n  "scope": "This page session only. Not a security audit or wallet permission revocation record.",\n  "containsWalletAddresses": false,\n  "containsBalances": false,\n  "containsPrivateKeys": false,\n  "capacity": 64,\n  "total": 1,\n  "dropped": 0,\n  "disposed": false,\n  "events": [\n    {\n      "sequence": 1,\n      "kind": "manual",\n      "detail": {}\n    }\n  ],\n  "counts": {\n    "ready": 0,\n    "manual": 1,\n    "idle": 0,\n    "hidden": 0,\n    "page-exit": 0,\n    "clock": 0,\n    "timer": 0,\n    "disposed": 0,\n    "resumed": 0,\n    "idle-policy": 0,\n    "hidden-policy": 0,\n    "broadcast-stop": 0,\n    "peer-stop": 0,\n    "channel-error": 0,\n    "page-freeze": 0,\n    "page-restored": 0\n  }\n}',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:25:80
+✖ journal prepare: dispose during source capture retires display (19ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '{\n' +
+  +   '  "schema": "threecore.local-protection-journal",\n' +
+  +   '  "version": 1,\n' +
+  +   '  "scope": "This page session only. Not a security audit or wallet permission revocation record.",\n' +
+  +   '  "containsWalletAddresses": false,\n' +
+  +   '  "containsBalances": false,\n' +
+  +   '  "containsPrivateKeys": false,\n' +
+  +   '  "capacity": 64,\n' +
+  +   '  "total": 1,\n' +
+  +   '  "dropped": 0,\n' +
+  +   '  "disposed": false,\n' +
+  +   '  "events": [\n' +
+  +   '    {\n' +
+  +   '      "sequence": 1,\n' +
+  +   '      "kind": "manual",\n' +
+  +   '      "detail": {}\n' +
+  +   '    }\n' +
+  +   '  ],\n' +
+  +   '  "counts": {\n' +
+  +   '    "ready": 0,\n' +
+  +   '    "manual": 1,\n' +
+  +   '    "idle": 0,\n' +
+  +   '    "hidden": 0,\n' +
+  +   '    "page-exit": 0,\n' +
+  +   '    "clock": 0,\n' +
+  +   '    "timer": 0,\n' +
+  +   '    "disposed": 0,\n' +
+  +   '    "resumed": 0,\n' +
+  +   '    "idle-policy": 0,\n' +
+  +   '    "hidden-policy": 0,\n' +
+  +   '    "broadcast-stop": 0,\n' +
+  +   '    "peer-stop": 0,\n' +
+  +   '    "channel-error": 0,\n' +
+  +   '    "page-freeze": 0,\n' +
+  +   '    "page-restored": 0\n' +
+  +   '  }\n' +
+  +   '}'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:28:85)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{\n  "schema": "threecore.local-protection-journal",\n  "version": 1,\n  "scope": "This page session only. Not a security audit or wallet permission revocation record.",\n  "containsWalletAddresses": false,\n  "containsBalances": false,\n  "containsPrivateKeys": false,\n  "capacity": 64,\n  "total": 1,\n  "dropped": 0,\n  "disposed": false,\n  "events": [\n    {\n      "sequence": 1,\n      "kind": "manual",\n      "detail": {}\n    }\n  ],\n  "counts": {\n    "ready": 0,\n    "manual": 1,\n    "idle": 0,\n    "hidden": 0,\n    "page-exit": 0,\n    "clock": 0,\n    "timer": 0,\n    "disposed": 0,\n    "resumed": 0,\n    "idle-policy": 0,\n    "hidden-policy": 0,\n    "broadcast-stop": 0,\n    "peer-stop": 0,\n    "channel-error": 0,\n    "page-freeze": 0,\n    "page-restored": 0\n  }\n}',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:30:51
+✖ journal unavailable throw state clears prior copy without leaking diagnostics (7.9177ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "sensitive diagnostic"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:32:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: sensitive diagnostic
+        at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:31:92)
+        at Object.render (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:34:27)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:32:98
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:32:73)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:30:51
+✖ journal unavailable reject state clears prior copy without leaking diagnostics (1.515ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Invalid protection journal data"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:32:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Invalid protection journal data
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-journal.js:27:28)
+        at ownRecord (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-journal.js:31:73)
+        at validateSecurityJournal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-journal.js:91:17)
+        at securityJournalRows (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-journal.js:124:20)
+        at Object.render (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:36:23)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:32:98
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:32:73)
+        at Test.runInAsyncScope (node:async_hooks:227:14),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:30:51
+✖ journal unavailable invalid state clears prior copy without leaking diagnostics (7.4668ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Invalid protection journal data"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:32:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Invalid protection journal data
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-journal.js:27:28)
+        at validateSecurityJournal (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-journal.js:95:44)
+        at securityJournalRows (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/security-journal.js:124:20)
+        at Object.render (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:36:23)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:32:98
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:32:73)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:36:1
+✖ journal changed contents invalidate an open copy even when total count is unchanged (6.7041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '{\n' +
+  +   '  "schema": "threecore.local-protection-journal",\n' +
+  +   '  "version": 1,\n' +
+  +   '  "scope": "This page session only. Not a security audit or wallet permission revocation record.",\n' +
+  +   '  "containsWalletAddresses": false,\n' +
+  +   '  "containsBalances": false,\n' +
+  +   '  "containsPrivateKeys": false,\n' +
+  +   '  "capacity": 64,\n' +
+  +   '  "total": 1,\n' +
+  +   '  "dropped": 0,\n' +
+  +   '  "disposed": false,\n' +
+  +   '  "events": [\n' +
+  +   '    {\n' +
+  +   '      "sequence": 1,\n' +
+  +   '      "kind": "manual",\n' +
+  +   '      "detail": {}\n' +
+  +   '    }\n' +
+  +   '  ],\n' +
+  +   '  "counts": {\n' +
+  +   '    "ready": 0,\n' +
+  +   '    "manual": 1,\n' +
+  +   '    "idle": 0,\n' +
+  +   '    "hidden": 0,\n' +
+  +   '    "page-exit": 0,\n' +
+  +   '    "clock": 0,\n' +
+  +   '    "timer": 0,\n' +
+  +   '    "disposed": 0,\n' +
+  +   '    "resumed": 0,\n' +
+  +   '    "idle-policy": 0,\n' +
+  +   '    "hidden-policy": 0,\n' +
+  +   '    "broadcast-stop": 0,\n' +
+  +   '    "peer-stop": 0,\n' +
+  +   '    "channel-error": 0,\n' +
+  +   '    "page-freeze": 0,\n' +
+  +   '    "page-restored": 0\n' +
+  +   '  }\n' +
+  +   '}'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:38:69)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{\n  "schema": "threecore.local-protection-journal",\n  "version": 1,\n  "scope": "This page session only. Not a security audit or wallet permission revocation record.",\n  "containsWalletAddresses": false,\n  "containsBalances": false,\n  "containsPrivateKeys": false,\n  "capacity": 64,\n  "total": 1,\n  "dropped": 0,\n  "disposed": false,\n  "events": [\n    {\n      "sequence": 1,\n      "kind": "manual",\n      "detail": {}\n    }\n  ],\n  "counts": {\n    "ready": 0,\n    "manual": 1,\n    "idle": 0,\n    "hidden": 0,\n    "page-exit": 0,\n    "clock": 0,\n    "timer": 0,\n    "disposed": 0,\n    "resumed": 0,\n    "idle-policy": 0,\n    "hidden-policy": 0,\n    "broadcast-stop": 0,\n    "peer-stop": 0,\n    "channel-error": 0,\n    "page-freeze": 0,\n    "page-restored": 0\n  }\n}',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:40:1
+✖ journal source reentry remains bounded and cannot refill a closed copy (1.0753ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "unbounded"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:42:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: unbounded
+        at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:41:79)
+        at Object.render (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:34:27)
+        at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:41:106)
+        at Object.render (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:34:27)
+        at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:41:106)
+        at Object.render (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:34:27)
+        at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:41:106)
+        at Object.render (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:34:27)
+        at Object.state (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:41:106)
+        at Object.render (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/security-journal-panel.js:34:27),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-journal-next.test.mjs:44:1
+✖ journal retained close handler cannot update removed UI (1.2443ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '記録の表示を閉じました。' !== ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-journal-next.test.mjs:45:148)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '記録の表示を閉じました。',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

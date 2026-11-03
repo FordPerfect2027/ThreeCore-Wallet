@@ -1,0 +1,21 @@
+✔ offline differences CLI distinguishes equal JSON values, changed values and invalid sources without writes (1231.6435ms)
+✔ explicit field inspection re-reads both captured files and exports only after acknowledgement (56.6326ms)
+✔ a changed source on re-read cannot replace the previously selected comparison (11.3685ms)
+✔ pending inspection cannot publish after stop (3.4336ms)
+✔ pending inspection cannot publish after pair (0.7836ms)
+✔ pending inspection cannot publish after dispose (0.8704ms)
+✔ the parent saved-file guide wires the exact pair and clears differences on replacement (64.3893ms)
+✔ all supported plain source families distinguish formatting from JSON-value changes (196.2186ms)
+✔ same-count settings changes expose only field locations and exact source bindings (13.347ms)
+✔ rehearsal event differences count all changed positions but list at most 40 (31.698ms)
+✔ sources must validate independently, use the same format and fit the bounded comparison (32.6809ms)
+✔ cancellation and a stalled hash deadline return without publishing a result (36.2108ms)
+✔ difference helper escapes pointers, preserves type changes and bounds input before traversal (2.2457ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1679.691

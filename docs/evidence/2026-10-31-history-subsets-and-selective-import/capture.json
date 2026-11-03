@@ -1,0 +1,92 @@
+{
+  "source": "c94b3fe",
+  "synthetic": true,
+  "realStorageWrites": 0,
+  "providerCalls": 0,
+  "rows": [
+    {
+      "name": "filtered-archived",
+      "exitCode": 0,
+      "reportCount": 1,
+      "originalFieldsRetained": true,
+      "archived": true,
+      "requiresNewPlan": true,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "selected-one",
+      "exitCode": 0,
+      "reportCount": 1,
+      "originalFieldsRetained": true,
+      "archived": true,
+      "requiresNewPlan": true,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "mixed-all",
+      "exitCode": 2,
+      "selectedReports": 3,
+      "omittedReports": 0,
+      "additions": 1,
+      "duplicates": 1,
+      "conflicts": 1,
+      "metadataKept": 1,
+      "requiresNewPlanRemoval": [
+        "DAT"
+      ],
+      "capacityFits": true,
+      "sharedCliAndControllerReceiptsIdentical": true,
+      "simulatedApplied": false,
+      "existingEntriesUnchanged": true,
+      "sourceFilesUnchanged": true
+    },
+    {
+      "name": "mixed-selected",
+      "exitCode": 0,
+      "selectedReports": 2,
+      "omittedReports": 1,
+      "additions": 1,
+      "duplicates": 1,
+      "conflicts": 0,
+      "metadataKept": 1,
+      "requiresNewPlanRemoval": [],
+      "capacityFits": true,
+      "sharedCliAndControllerReceiptsIdentical": true,
+      "simulatedApplied": true,
+      "existingEntriesUnchanged": true,
+      "sourceFilesUnchanged": true
+    },
+    {
+      "name": "capacity-all",
+      "exitCode": 2,
+      "selectedReports": 2,
+      "omittedReports": 0,
+      "additions": 2,
+      "duplicates": 0,
+      "conflicts": 0,
+      "metadataKept": 0,
+      "requiresNewPlanRemoval": [],
+      "capacityFits": false,
+      "sharedCliAndControllerReceiptsIdentical": true,
+      "simulatedApplied": false,
+      "existingEntriesUnchanged": true,
+      "sourceFilesUnchanged": true
+    },
+    {
+      "name": "capacity-selected",
+      "exitCode": 0,
+      "selectedReports": 1,
+      "omittedReports": 1,
+      "additions": 1,
+      "duplicates": 0,
+      "conflicts": 0,
+      "metadataKept": 0,
+      "requiresNewPlanRemoval": [],
+      "capacityFits": true,
+      "sharedCliAndControllerReceiptsIdentical": true,
+      "simulatedApplied": true,
+      "existingEntriesUnchanged": true,
+      "sourceFilesUnchanged": true
+    }
+  ]
+}

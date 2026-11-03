@@ -1,0 +1,38 @@
+{
+  "source": "52d21ec",
+  "synthetic": true,
+  "captures": [
+    {
+      "kind": "wallet",
+      "bundleSha256": "43304d896dd7e66cf27301fd8344e548ed9cdaea19c02a6793ba9f53e6c0c419",
+      "sourceName": "日本語.json",
+      "sourceSha256": "18557e86b065ed5ba2046f180803aa034a8e623e112645d9d2cc1e00dd78a71c",
+      "negativeStatus": "選択: 日本語.json ／ 元資料の確認結果: 内容を確認できない ／ SHA-256: 18557e86b065ed5ba2046f180803aa034a8e623e112645d9d2cc1e00dd78a71c。取り出しても判定や現在の履歴は変わりません。",
+      "consentRequired": true,
+      "consentConsumed": true,
+      "sourceStatus": "invalid",
+      "handoff": null,
+      "secondPickerUnused": null,
+      "summary": "2件中、確認済み 2件／未確認 0件。元記録 1件、補助資料 0件、形式・照合値の問題 1件。",
+      "authorizesExecution": false
+    },
+    {
+      "kind": "rehearsal",
+      "bundleSha256": "df89300f99d76784b5855164609e94eccd81f59d465f393d8a06692f10bfa62f",
+      "sourceName": "日本語.json",
+      "sourceSha256": "18557e86b065ed5ba2046f180803aa034a8e623e112645d9d2cc1e00dd78a71c",
+      "negativeStatus": "選択: 日本語.json ／ 元資料の確認結果: 内容を確認できない ／ SHA-256: 18557e86b065ed5ba2046f180803aa034a8e623e112645d9d2cc1e00dd78a71c。取り出しても判定や現在の履歴は変わりません。",
+      "consentRequired": true,
+      "consentConsumed": true,
+      "sourceStatus": "invalid",
+      "handoff": "まとめ資料の再確認を終えました。一括確認欄に結果を開きました。現在の履歴は変更していません。",
+      "secondPickerUnused": true,
+      "summary": "2件中、確認済み 2件／未確認 0件。再計算の一致 1件、相違 0件、形式・照合値の問題 1件。期待結果との差が残る資料 0件。",
+      "authorizesExecution": false
+    }
+  ],
+  "scopedBrowserCases": 119,
+  "realFilePickerVerified": false,
+  "userTabConnectionVerified": false,
+  "externalRpcCalls": 0
+}

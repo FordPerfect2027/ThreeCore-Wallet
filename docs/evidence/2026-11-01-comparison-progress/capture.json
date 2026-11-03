@@ -1,0 +1,252 @@
+{
+  "source": "ef2256f",
+  "captures": [
+    {
+      "kind": "wallet",
+      "inputPath": "docs/evidence/2026-11-01-portable-batch-pairs/wallet-pair.json",
+      "inputSha256": "4b9fed73b32f84497b5818f32e7e8e08f4bc4ccbdc2f5144cb1d5ee49277e053",
+      "preparedSha256": "4b9fed73b32f84497b5818f32e7e8e08f4bc4ccbdc2f5144cb1d5ee49277e053",
+      "reviewSha256": "e6ca912f3611f4d2f2a49343d8c3635839f985f5eeec3d480cf02e6e5dfc2f08",
+      "prepareStages": [
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 1,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 2,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 1,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 2,
+          "selected": 2
+        },
+        {
+          "phase": "serializing"
+        },
+        {
+          "phase": "complete"
+        }
+      ],
+      "reviewStages": [
+        {
+          "phase": "parsing"
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 1,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 2,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 1,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 2,
+          "selected": 2
+        },
+        {
+          "phase": "comparing"
+        },
+        {
+          "phase": "hashing"
+        },
+        {
+          "phase": "complete"
+        }
+      ],
+      "cancelStages": [
+        {
+          "phase": "parsing"
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 1,
+          "selected": 2
+        }
+      ],
+      "cancelled": true,
+      "observedAndUnobservedOutputsEqual": true,
+      "negativeSourceResultPreserved": true
+    },
+    {
+      "kind": "rehearsal",
+      "inputPath": "docs/evidence/2026-11-01-portable-batch-pairs/rehearsal-pair.json",
+      "inputSha256": "696ecbda8eafebb9b32219ca9ffe157cf9e0bd0c2af5bb622c49abe4e1e5b614",
+      "preparedSha256": "696ecbda8eafebb9b32219ca9ffe157cf9e0bd0c2af5bb622c49abe4e1e5b614",
+      "reviewSha256": "ba452d58e66d1a9207522a4b35316810e6683b73dc22b558e0560472133b28ee",
+      "prepareStages": [
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 1,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 2,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 1,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 2,
+          "selected": 2
+        },
+        {
+          "phase": "serializing"
+        },
+        {
+          "phase": "complete"
+        }
+      ],
+      "reviewStages": [
+        {
+          "phase": "parsing"
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 1,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 2,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 1,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "after",
+          "checked": 2,
+          "selected": 2
+        },
+        {
+          "phase": "comparing"
+        },
+        {
+          "phase": "hashing"
+        },
+        {
+          "phase": "complete"
+        }
+      ],
+      "cancelStages": [
+        {
+          "phase": "parsing"
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 0,
+          "selected": 2
+        },
+        {
+          "phase": "sources",
+          "side": "before",
+          "checked": 1,
+          "selected": 2
+        }
+      ],
+      "cancelled": true,
+      "observedAndUnobservedOutputsEqual": true,
+      "negativeSourceResultPreserved": true
+    }
+  ],
+  "nativeBrowserCases": 130,
+  "synthetic": true,
+  "osPickerVerified": false,
+  "userTabConnectionVerified": false,
+  "externalRpcCalls": 0
+}

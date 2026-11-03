@@ -6,6 +6,7 @@ import { VAULT_AGENTS } from "../src/transfer-vault-model.js";
 import { activityRowText, queryVaultActivity, vaultActivityText, vaultCounterparties } from "../src/transfer-vault-analytics.js";
 import { vaultErrorText, vaultReviewText } from "../src/transfer-vault-messages.js";
 import { DIRECTION_LABELS, TRANSFER_DIRECTIONS } from "../src/transfer-view.js";
+import { observeCallbackResult } from "../src/security-callback.js";
 
 /** Public addresses are rendered as text, never HTML, hrefs, or provider requests. */
 export function mountTransferVaultPanel({ document, parent, readCards, stageArchive, storage = createVaultStorage(),
@@ -13,15 +14,22 @@ export function mountTransferVaultPanel({ document, parent, readCards, stageArch
   const cleanup = [];
   let disposed = false, state, page = 0, renderedWorking = null;
   let currentReview = null;
+  let generation = 0, filterGeneration = 0;
+  const current = id => !disposed && generation === id;
   function node(tag, name, text = "") {
     const element = document.createElement(tag);
     element.className = "transfer-vault-" + name;
     element.textContent = text;
     return element;
   }
-  function listen(element, type, callback) {
-    element.addEventListener(type, callback);
-    cleanup.push(() => element.removeEventListener(type, callback));
+  function listen(element, type, callback, mutating = true) {
+    const handler = (...args) => {
+      if (disposed) return;
+      const id = mutating ? ++generation : generation;
+      return callback(id, ...args);
+    };
+    element.addEventListener(type, handler);
+    cleanup.push(() => element.removeEventListener(type, handler));
   }
   function button(name, text) {
     const element = node("button", name, text);
@@ -149,6 +157,7 @@ export function mountTransferVaultPanel({ document, parent, readCards, stageArch
     refresh: "PC内の保存一覧を読み込みました。", archive: "選択した記録を非表示保管にしました。", unarchive: "記録を非表示保管から戻しました。",
     purge: "確認した保管記録を削除しました。", rename: "保存名を変更しました。", cancel: "処理を中止しました。保存中だった場合は一覧を再読み込みして結果を確認できます。" };
   function render(value) {
+    if (disposed) return;
     state = value;
     host.setAttribute("aria-busy", String(value.busy));
     if (renderedWorking !== value.working) { page = 0; renderedWorking = value.working; }
@@ -210,9 +219,9 @@ export function mountTransferVaultPanel({ document, parent, readCards, stageArch
   listen(redo, "click", () => controller.redo());
   listen(cancel, "click", () => controller.cancel());
   listen(strategy.element, "change", () => controller.cancel());
-  listen(acknowledge.element, "change", () => render(controller.state));
+  listen(acknowledge.element, "change", () => render(controller.state), false);
   listen(apply, "click", () => controller.apply(state.review?.id, { acknowledgeRemoval: acknowledge.element.checked }));
-  listen(restore.element, "change", () => render(controller.state));
+  listen(restore.element, "change", () => render(controller.state), false);
   listen(stage, "click", () => controller.stageCard(restore.element.value));
   listen(kind.element, "change", () => { controller.cancel(); render(controller.state); });
   listen(legacyAgent.element, "change", () => controller.cancel());
@@ -223,22 +232,33 @@ export function mountTransferVaultPanel({ document, parent, readCards, stageArch
     if (kind.element.value === "bundle") controller.load(selected, merge());
     else controller.loadLegacy(selected, kind.element.value, legacyAgent.element.value, merge());
   });
-  async function exportFile(kind, stored = false, query) {
-    const file = await controller.prepare(kind, stored, query);
-    if (!file || disposed) return;
-    try { await download(file, document); }
-    catch { if (!disposed) status.textContent = "ファイルを保存できませんでした。ダウンロード先を確認してください。"; }
+  function deliver(file, id, message, filterId) {
+    const owns = () => current(id) && (filterId === undefined || filterGeneration === filterId);
+    if (file && current(id) && filterId !== undefined && filterGeneration !== filterId) {
+      status.textContent = "検索条件が変わったため、CSVの保存を中止しました。条件を確認して、もう一度保存してください。";
+      return;
+    }
+    if (!file || !owns()) return;
+    try {
+      const receipt = download(file, document);
+      const kind = observeCallbackResult(receipt);
+      if (!owns()) return;
+      if (kind !== "synchronous" || receipt === false) throw Error("Download refused");
+    } catch { if (owns()) status.textContent = message; }
   }
-  for (const row of exports) listen(row.button, "click", () => exportFile(row.kind));
-  listen(filteredExport, "click", () => exportFile("filtered-csv", false, {
+  async function exportFile(id, kind, stored = false, query) {
+    const filterId = query === undefined ? undefined : filterGeneration;
+    const file = await controller.prepare(kind, stored, query);
+    deliver(file, id, "ファイルを保存できませんでした。ダウンロード先を確認してください。", filterId);
+  }
+  for (const row of exports) listen(row.button, "click", id => exportFile(id, row.kind));
+  listen(filteredExport, "click", id => exportFile(id, "filtered-csv", false, {
     agent: agent.element.value, direction: direction.element.value, search: search.element.value,
     order: order.element.value, page: 0, pageSize: 20,
   }));
-  listen(collectionExport, "click", async () => {
+  listen(collectionExport, "click", async id => {
     const file = await controller.prepareCollection();
-    if (!file || disposed) return;
-    try { await download(file, document); }
-    catch { if (!disposed) status.textContent = "保存一覧を書き出せませんでした。保存先を確認してください。"; }
+    deliver(file, id, "保存一覧を書き出せませんでした。保存先を確認してください。");
   });
   listen(collectionFile.element, "change", () => {
     const selected = collectionFile.element.files?.[0];
@@ -250,21 +270,30 @@ export function mountTransferVaultPanel({ document, parent, readCards, stageArch
   listen(save, "click", () => controller.save(label.element.value));
   listen(storedList.element, "change", () => { purgeAck.element.checked = false; controller.select(storedList.element.value); });
   listen(inspect, "click", () => controller.inspectSelected(merge()));
-  listen(storedExport, "click", () => exportFile("json", true));
+  listen(storedExport, "click", id => exportFile(id, "json", true));
   listen(rename, "click", () => controller.editSelected("rename", label.element.value));
   listen(archive, "click", () => { purgeAck.element.checked = false; controller.editSelected("archive"); });
   listen(unarchive, "click", () => { purgeAck.element.checked = false; controller.editSelected("unarchive"); });
-  listen(purgeAck.element, "change", () => render(controller.state));
+  listen(purgeAck.element, "change", () => render(controller.state), false);
   listen(purge, "click", () => { const confirmed = purgeAck.element.checked; purgeAck.element.checked = false; controller.editSelected("purge", confirmed); });
-  for (const control of [agent.element, direction.element, order.element]) listen(control, "change", () => { page = 0; renderActivity(); });
-  listen(search.element, "input", () => { page = 0; renderActivity(); });
-  listen(previous, "click", () => { page--; renderActivity(); });
-  listen(next, "click", () => { page++; renderActivity(); });
+  for (const control of [agent.element, direction.element, order.element]) listen(control, "change", () => { filterGeneration++; page = 0; renderActivity(); }, false);
+  listen(search.element, "input", () => { filterGeneration++; page = 0; renderActivity(); }, false);
+  listen(previous, "click", () => { page--; renderActivity(); }, false);
+  listen(next, "click", () => { page++; renderActivity(); }, false);
   render(controller.state);
-  return Object.freeze({ invalidateCards: () => controller.invalidateCards(),
+  return Object.freeze({ invalidateCards() { if (!disposed) { generation++; controller.invalidateCards(); } },
+    showCollectionReader() {
+      if (disposed || state.busy) return false;
+      saved.open = true;
+      const target = state.metadata ? collectionFile.element : refresh;
+      target.focus?.({ preventScroll: true });
+      (state.metadata ? collectionFile.label : refresh).scrollIntoView?.({ block: "center", behavior: "auto" });
+      return true;
+    },
     dispose() {
       if (disposed) return;
       disposed = true;
+      generation++;
       for (const stop of cleanup) stop();
       controller.dispose();
       host.remove();

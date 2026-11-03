@@ -1,0 +1,18 @@
+{
+  "steps": [
+    {
+      "name": "types-receipted",
+      "startedAt": "2026-11-02T18:51:21.029Z",
+      "endedAt": "2026-11-02T18:51:32.272Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "name": "integrated-probe",
+      "startedAt": "2026-11-02T18:51:32.272Z",
+      "endedAt": "2026-11-02T18:51:33.840Z",
+      "code": 0,
+      "signal": null
+    }
+  ]
+}

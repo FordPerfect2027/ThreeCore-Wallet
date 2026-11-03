@@ -1,0 +1,217 @@
+{
+  "schema": "threecore.local-evidence-verification.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "manifestSha256": "f0fde2400e8acd965c2dcbdad3a1f7d639169d4ddee91fbe2db381bd6014905c",
+  "allMatched": true,
+  "limits": {
+    "maxFileBytes": 67108864,
+    "maxTotalBytes": 536870912
+  },
+  "summary": {
+    "files": 28,
+    "matched": 28,
+    "mismatched": 0,
+    "unreadable": 0,
+    "verifiedBytes": 1207830,
+    "admittedBytes": 1207830
+  },
+  "files": [
+    {
+      "path": "history-preparation.json",
+      "expectedSha256": "bd35db9c4e1c95e23eeb05a3c0c2e03eeeb87166d3ed1695ca7d5bc273c4f547",
+      "status": "matched",
+      "bytes": 967,
+      "actualSha256": "bd35db9c4e1c95e23eeb05a3c0c2e03eeeb87166d3ed1695ca7d5bc273c4f547"
+    },
+    {
+      "path": "initial-export-diagnosis.json",
+      "expectedSha256": "b52b0b1c8ba5b98c43fb4950d9211cc2a6e20a6480e2b69c1c27540901a8a036",
+      "status": "matched",
+      "bytes": 760,
+      "actualSha256": "b52b0b1c8ba5b98c43fb4950d9211cc2a6e20a6480e2b69c1c27540901a8a036"
+    },
+    {
+      "path": "token-package-receipt.json",
+      "expectedSha256": "bdfc4def73f6a61814a3675b2d058da12af2cc7e35f55d5265b2edaf5bf7b571",
+      "status": "matched",
+      "bytes": 6304,
+      "actualSha256": "bdfc4def73f6a61814a3675b2d058da12af2cc7e35f55d5265b2edaf5bf7b571"
+    },
+    {
+      "path": "はじめに.txt",
+      "expectedSha256": "ca7d4e0422750faf21b8150dbd33ea14e79291690d2220a352ef8a843ccc7b0d",
+      "status": "matched",
+      "bytes": 1335,
+      "actualSha256": "ca7d4e0422750faf21b8150dbd33ea14e79291690d2220a352ef8a843ccc7b0d"
+    },
+    {
+      "path": "DAT/bundle-verification.txt",
+      "expectedSha256": "6fc5a961ca10ffcd7eb634dbdc2a05cc88cd8c90dec582ee76d7ce02c272b130",
+      "status": "matched",
+      "bytes": 157,
+      "actualSha256": "6fc5a961ca10ffcd7eb634dbdc2a05cc88cd8c90dec582ee76d7ce02c272b130"
+    },
+    {
+      "path": "DAT/DAT-review.bundle",
+      "expectedSha256": "096304615fce6cab41ec9b7345481316a5ab40c05ca49a673e7d6ffb73f047b6",
+      "status": "matched",
+      "bytes": 128268,
+      "actualSha256": "096304615fce6cab41ec9b7345481316a5ab40c05ca49a673e7d6ffb73f047b6"
+    },
+    {
+      "path": "DAT/DAT-source.zip",
+      "expectedSha256": "58c932844f7c52a9ed4222d6c6544bf441651e04b5e8b980f33df32c6d87f3a7",
+      "status": "matched",
+      "bytes": 135197,
+      "actualSha256": "58c932844f7c52a9ed4222d6c6544bf441651e04b5e8b980f33df32c6d87f3a7"
+    },
+    {
+      "path": "DAT/DATCore.json",
+      "expectedSha256": "5b0f20452adbd1e6645cd050f4e2c6ce674fd1e8bd3e204b0dfd1d839739fda0",
+      "status": "matched",
+      "bytes": 49487,
+      "actualSha256": "5b0f20452adbd1e6645cd050f4e2c6ce674fd1e8bd3e204b0dfd1d839739fda0"
+    },
+    {
+      "path": "DAT/DEPENDENCY_SECURITY_2026-11-02.md",
+      "expectedSha256": "9e21b715e0bdfb4d2fd0c1663a9345afb6d206423a6a07664ae13b9a7240e8c2",
+      "status": "matched",
+      "bytes": 1611,
+      "actualSha256": "9e21b715e0bdfb4d2fd0c1663a9345afb6d206423a6a07664ae13b9a7240e8c2"
+    },
+    {
+      "path": "DAT/receipt.json",
+      "expectedSha256": "809c3feaa911f3eae8341fcfb517225ffc12f10641115799b2789b62f67b1705",
+      "status": "matched",
+      "bytes": 1763,
+      "actualSha256": "809c3feaa911f3eae8341fcfb517225ffc12f10641115799b2789b62f67b1705"
+    },
+    {
+      "path": "DAT/SHA256SUMS.txt",
+      "expectedSha256": "9be49365b8a276bbc025873809072e86cfb5cadefb318b6228a5294c55b10c60",
+      "status": "matched",
+      "bytes": 604,
+      "actualSha256": "9be49365b8a276bbc025873809072e86cfb5cadefb318b6228a5294c55b10c60"
+    },
+    {
+      "path": "DAT/source-verification.json",
+      "expectedSha256": "8da5b31f08e57d52fa81d8764f293e90e68344ef46f7acb44d10553ffe8845dd",
+      "status": "matched",
+      "bytes": 13197,
+      "actualSha256": "8da5b31f08e57d52fa81d8764f293e90e68344ef46f7acb44d10553ffe8845dd"
+    },
+    {
+      "path": "EMA/bundle-verification.txt",
+      "expectedSha256": "20bf3cb2d1faa418e9a71bb0e2d56f6369c8b1132d59880cdb3b0b8516ea5cdd",
+      "status": "matched",
+      "bytes": 157,
+      "actualSha256": "20bf3cb2d1faa418e9a71bb0e2d56f6369c8b1132d59880cdb3b0b8516ea5cdd"
+    },
+    {
+      "path": "EMA/DEPENDENCY_SECURITY_2026-11-02.md",
+      "expectedSha256": "8438e46c79a47a5e575eab361a94c8866ee7ab4ce99b5b939b06432f06b7c65e",
+      "status": "matched",
+      "bytes": 1611,
+      "actualSha256": "8438e46c79a47a5e575eab361a94c8866ee7ab4ce99b5b939b06432f06b7c65e"
+    },
+    {
+      "path": "EMA/EMA-review.bundle",
+      "expectedSha256": "4b351173ae6c66d41910b18b6a2b1f84c5d4542ba7c945786b668e42acea3f09",
+      "status": "matched",
+      "bytes": 172011,
+      "actualSha256": "4b351173ae6c66d41910b18b6a2b1f84c5d4542ba7c945786b668e42acea3f09"
+    },
+    {
+      "path": "EMA/EMA-source.zip",
+      "expectedSha256": "6e78a9ff7ca484a4d813b106f439b249e68774c7c332098cffa507aff857ba96",
+      "status": "matched",
+      "bytes": 178732,
+      "actualSha256": "6e78a9ff7ca484a4d813b106f439b249e68774c7c332098cffa507aff857ba96"
+    },
+    {
+      "path": "EMA/EMACore.json",
+      "expectedSha256": "72d5e0e09d8640717f803a06cc02d82b0ed7fcee8b29c115f28e74744008a2a4",
+      "status": "matched",
+      "bytes": 49487,
+      "actualSha256": "72d5e0e09d8640717f803a06cc02d82b0ed7fcee8b29c115f28e74744008a2a4"
+    },
+    {
+      "path": "EMA/receipt.json",
+      "expectedSha256": "fce054e6fc03e58a86af40171a05a6c4ba5d0d7ce8eed3c2b3e121a2e4ffcc27",
+      "status": "matched",
+      "bytes": 1763,
+      "actualSha256": "fce054e6fc03e58a86af40171a05a6c4ba5d0d7ce8eed3c2b3e121a2e4ffcc27"
+    },
+    {
+      "path": "EMA/SHA256SUMS.txt",
+      "expectedSha256": "b1d95e00cf29f89f3b41640a94166d39839251c5cd736eab7fe44d8647dc25a4",
+      "status": "matched",
+      "bytes": 604,
+      "actualSha256": "b1d95e00cf29f89f3b41640a94166d39839251c5cd736eab7fe44d8647dc25a4"
+    },
+    {
+      "path": "EMA/source-verification.json",
+      "expectedSha256": "1627d6e68656207f48db3b16b429460709ca90c34adc13912cd06bfd39224615",
+      "status": "matched",
+      "bytes": 11908,
+      "actualSha256": "1627d6e68656207f48db3b16b429460709ca90c34adc13912cd06bfd39224615"
+    },
+    {
+      "path": "CAWELON/bundle-verification.txt",
+      "expectedSha256": "afc6d0cd39746907767afccbe9801690390131f70f2ec33c27b96b8fa3756924",
+      "status": "matched",
+      "bytes": 157,
+      "actualSha256": "afc6d0cd39746907767afccbe9801690390131f70f2ec33c27b96b8fa3756924"
+    },
+    {
+      "path": "CAWELON/CAWELON-review.bundle",
+      "expectedSha256": "3b8c1a37baae4659f0af8b7a817160525b23e6fdc75043d95bb37f4b2007e1c3",
+      "status": "matched",
+      "bytes": 190111,
+      "actualSha256": "3b8c1a37baae4659f0af8b7a817160525b23e6fdc75043d95bb37f4b2007e1c3"
+    },
+    {
+      "path": "CAWELON/CAWELON-source.zip",
+      "expectedSha256": "81b3c24ce641f13859950c19d700e3d20d69c507e92d25fad3e699f8799bb409",
+      "status": "matched",
+      "bytes": 196194,
+      "actualSha256": "81b3c24ce641f13859950c19d700e3d20d69c507e92d25fad3e699f8799bb409"
+    },
+    {
+      "path": "CAWELON/CAWELONCore.json",
+      "expectedSha256": "2cbc9945138e5639b23eb7187881a7aaf74514e4680916f6655768c8b972ce94",
+      "status": "matched",
+      "bytes": 49533,
+      "actualSha256": "2cbc9945138e5639b23eb7187881a7aaf74514e4680916f6655768c8b972ce94"
+    },
+    {
+      "path": "CAWELON/DEPENDENCY_SECURITY_2026-11-02.md",
+      "expectedSha256": "8438e46c79a47a5e575eab361a94c8866ee7ab4ce99b5b939b06432f06b7c65e",
+      "status": "matched",
+      "bytes": 1611,
+      "actualSha256": "8438e46c79a47a5e575eab361a94c8866ee7ab4ce99b5b939b06432f06b7c65e"
+    },
+    {
+      "path": "CAWELON/receipt.json",
+      "expectedSha256": "28beedb5c50d75dc639e1cbcd313a8012a657a031cdc91e4bf1d6706ea585d78",
+      "status": "matched",
+      "bytes": 1779,
+      "actualSha256": "28beedb5c50d75dc639e1cbcd313a8012a657a031cdc91e4bf1d6706ea585d78"
+    },
+    {
+      "path": "CAWELON/SHA256SUMS.txt",
+      "expectedSha256": "144675307df7509fa6e61c4f08c77bb00d0ea7dd2ce680183078effe16721c0b",
+      "status": "matched",
+      "bytes": 616,
+      "actualSha256": "144675307df7509fa6e61c4f08c77bb00d0ea7dd2ce680183078effe16721c0b"
+    },
+    {
+      "path": "CAWELON/source-verification.json",
+      "expectedSha256": "7606cca5cef6677ac1f26cb00cdd9ad4685826fbf84a5438b90730138f4ec597",
+      "status": "matched",
+      "bytes": 11906,
+      "actualSha256": "7606cca5cef6677ac1f26cb00cdd9ad4685826fbf84a5438b90730138f4ec597"
+    }
+  ]
+}

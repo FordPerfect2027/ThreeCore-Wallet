@@ -1,0 +1,32 @@
+{
+  "restored": {
+    "caseId": "dat-limit-50",
+    "label": "DAT 1回の上限を50に",
+    "state": "matched",
+    "text": "履歴とケース集の内容は、直前に読み込んだ保存ファイルと同じです。 確定記録 6件 / 比較ケース 3件。"
+  },
+  "changed": {
+    "state": "changed",
+    "text": "最後のまとめ保存・ファイル復旧の後に、履歴またはケース集が変わっています。残す場合はもう一度まとめ保存してください。 確定記録 6件 / 比較ケース 3件。",
+    "undo": true
+  },
+  "undo": {
+    "rows": "DAT3件28 SIM2.8 SIM0 SIMEMA2件-42 SIM0 SIM0 SIMCAWELON1件-1 SIM0 SIM0 SIM",
+    "state": "matched",
+    "text": "履歴とケース集の内容は、直前に読み込んだ保存ファイルと同じです。 確定記録 6件 / 比較ケース 3件。"
+  },
+  "final": {
+    "cases": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "receipt": "直前のまとめ復旧: ThreeCore-rehearsal-session (11).json / DAT 3件 / EMA 2件 / CAWELON 1件 / 比較ケース 3件。",
+    "rows": "DAT3件28 SIM2.8 SIM0 SIMEMA2件-42 SIM0 SIM0 SIMCAWELON1件-1 SIM0 SIM0 SIM",
+    "saveState": "履歴とケース集の内容は、直前にまとめ保存を開始した時と同じです。保存先にファイルができたことを確認してください。 確定記録 6件 / 比較ケース 3件。",
+    "state": "matched",
+    "url": "http://127.0.0.1:4231/rehearsal/#session-title"
+  },
+  "automatedReload": {
+    "confirmationShown": false,
+    "reloaded": true,
+    "originalRestoredFrom": "ThreeCore-rehearsal-session (11).json",
+    "claim": "No successful browser-confirmation assertion is made for tool-driven reload."
+  }
+}

@@ -1,0 +1,1252 @@
+TAP version 13
+# Subtest: already-stopped access retains a later clock fault and cannot resume
+ok 1 - already-stopped access retains a later clock fault and cannot resume
+  ---
+  duration_ms: 10.0129
+  type: 'test'
+  ...
+# Subtest: already-stopped access retains a later timer fault and cannot resume
+ok 2 - already-stopped access retains a later timer fault and cannot resume
+  ---
+  duration_ms: 1.008
+  type: 'test'
+  ...
+# Subtest: repeated ordinary stops do not invalidate successful cleanup or inflate lock version
+ok 3 - repeated ordinary stops do not invalidate successful cleanup or inflate lock version
+  ---
+  duration_ms: 1.5331
+  type: 'test'
+  ...
+# Subtest: protection panel records a later clock fault after a manual stop
+ok 4 - protection panel records a later clock fault after a manual stop
+  ---
+  duration_ms: 45.2424
+  type: 'test'
+  ...
+# Subtest: protection panel records a later timer fault after a manual stop
+ok 5 - protection panel records a later timer fault after a manual stop
+  ---
+  duration_ms: 4.8689
+  type: 'test'
+  ...
+# Subtest: protection onLock malformed async then failure is consumed without authorizing resume
+ok 6 - protection onLock malformed async then failure is consumed without authorizing resume
+  ---
+  duration_ms: 38.6908
+  type: 'test'
+  ...
+# Subtest: protection canResume malformed async then failure is consumed without authorizing resume
+ok 7 - protection canResume malformed async then failure is consumed without authorizing resume
+  ---
+  duration_ms: 3.6711
+  type: 'test'
+  ...
+# Subtest: eligibility callback that escalates a clock fault cannot hide the current recovery message
+ok 8 - eligibility callback that escalates a clock fault cannot hide the current recovery message
+  ---
+  duration_ms: 3.1759
+  type: 'test'
+  ...
+# Subtest: eligibility callback disposal prevents stale render from changing removed controls
+ok 9 - eligibility callback disposal prevents stale render from changing removed controls
+  ---
+  duration_ms: 2.4651
+  type: 'test'
+  ...
+# Subtest: fault clock raised inside cleanup is retained without recursive cleanup
+ok 10 - fault clock raised inside cleanup is retained without recursive cleanup
+  ---
+  duration_ms: 4.0782
+  type: 'test'
+  ...
+# Subtest: fault timer raised inside cleanup is retained without recursive cleanup
+ok 11 - fault timer raised inside cleanup is retained without recursive cleanup
+  ---
+  duration_ms: 1.6692
+  type: 'test'
+  ...
+# Subtest: journal captures event array length without reading source properties
+ok 12 - journal captures event array length without reading source properties
+  ---
+  duration_ms: 6.3242
+  type: 'test'
+  ...
+# Subtest: journal panel summary reads the validated snapshot instead of the original object
+ok 13 - journal panel summary reads the validated snapshot instead of the original object
+  ---
+  duration_ms: 4.2036
+  type: 'test'
+  ...
+# Subtest: journal render: close during source capture retires display
+ok 14 - journal render: close during source capture retires display
+  ---
+  duration_ms: 3.5947
+  type: 'test'
+  ...
+# Subtest: journal render: dispose during source capture retires display
+ok 15 - journal render: dispose during source capture retires display
+  ---
+  duration_ms: 1.0834
+  type: 'test'
+  ...
+# Subtest: journal prepare: close during source capture retires display
+ok 16 - journal prepare: close during source capture retires display
+  ---
+  duration_ms: 1.2157
+  type: 'test'
+  ...
+# Subtest: journal prepare: dispose during source capture retires display
+ok 17 - journal prepare: dispose during source capture retires display
+  ---
+  duration_ms: 1.2044
+  type: 'test'
+  ...
+# Subtest: journal unavailable throw state clears prior copy without leaking diagnostics
+ok 18 - journal unavailable throw state clears prior copy without leaking diagnostics
+  ---
+  duration_ms: 18.7029
+  type: 'test'
+  ...
+# Subtest: journal unavailable reject state clears prior copy without leaking diagnostics
+ok 19 - journal unavailable reject state clears prior copy without leaking diagnostics
+  ---
+  duration_ms: 8.5844
+  type: 'test'
+  ...
+# Subtest: journal unavailable invalid state clears prior copy without leaking diagnostics
+ok 20 - journal unavailable invalid state clears prior copy without leaking diagnostics
+  ---
+  duration_ms: 15.7518
+  type: 'test'
+  ...
+# Subtest: journal changed contents invalidate an open copy even when total count is unchanged
+ok 21 - journal changed contents invalidate an open copy even when total count is unchanged
+  ---
+  duration_ms: 4.9842
+  type: 'test'
+  ...
+# Subtest: journal source reentry remains bounded and cannot refill a closed copy
+ok 22 - journal source reentry remains bounded and cannot refill a closed copy
+  ---
+  duration_ms: 1.8814
+  type: 'test'
+  ...
+# Subtest: journal retained close handler cannot update removed UI
+ok 23 - journal retained close handler cannot update removed UI
+  ---
+  duration_ms: 0.819
+  type: 'test'
+  ...
+# Subtest: journal normal current snapshot remains exportable and closing does not erase the journal
+ok 24 - journal normal current snapshot remains exportable and closing does not erase the journal
+  ---
+  duration_ms: 3.4708
+  type: 'test'
+  ...
+# Subtest: wallet-stop evidence survives later idle stop and resume without keeping payloads
+ok 25 - wallet-stop evidence survives later idle stop and resume without keeping payloads
+  ---
+  duration_ms: 81.3923
+  type: 'test'
+  ...
+# Subtest: diagnostic entry point cannot forge a protection action or inspect an object payload
+ok 26 - diagnostic entry point cannot forge a protection action or inspect an object payload
+  ---
+  duration_ms: 4.5997
+  type: 'test'
+  ...
+# Subtest: protection history starts with one ready event and hides its export
+ok 27 - protection history starts with one ready event and hides its export
+  ---
+  duration_ms: 2.3059
+  type: 'test'
+  ...
+# Subtest: manual stop and resume record two distinct actions with no implicit reconnect
+ok 28 - manual stop and resume record two distinct actions with no implicit reconnect
+  ---
+  duration_ms: 4.8995
+  type: 'test'
+  ...
+# Subtest: repeated stop clicks cannot inflate the event record
+ok 29 - repeated stop clicks cannot inflate the event record
+  ---
+  duration_ms: 3.4428
+  type: 'test'
+  ...
+# Subtest: idle timer records the actual reason once
+ok 30 - idle timer records the actual reason once
+  ---
+  duration_ms: 6.1612
+  type: 'test'
+  ...
+# Subtest: hidden page records a stop but visible page never records an automatic resume
+ok 31 - hidden page records a stop but visible page never records an automatic resume
+  ---
+  duration_ms: 5.3337
+  type: 'test'
+  ...
+# Subtest: page lifecycle exit is recorded independently of tab hiding preference
+ok 32 - page lifecycle exit is recorded independently of tab hiding preference
+  ---
+  duration_ms: 3.7499
+  type: 'test'
+  ...
+# Subtest: configuration changes record typed values without reading wallet state
+ok 33 - configuration changes record typed values without reading wallet state
+  ---
+  duration_ms: 12.5895
+  type: 'test'
+  ...
+# Subtest: selecting the current idle policy does not record a false change
+ok 34 - selecting the current idle policy does not record a false change
+  ---
+  duration_ms: 3.716
+  type: 'test'
+  ...
+# Subtest: new stop invalidates displayed report instead of retaining an outdated summary
+ok 35 - new stop invalidates displayed report instead of retaining an outdated summary
+  ---
+  duration_ms: 3.4236
+  type: 'test'
+  ...
+# Subtest: closing the report removes its visible text without erasing the session history
+ok 36 - closing the report removes its visible text without erasing the session history
+  ---
+  duration_ms: 2.8517
+  type: 'test'
+  ...
+# Subtest: UI shows eight recent entries and explicitly reports eviction
+ok 37 - UI shows eight recent entries and explicitly reports eviction
+  ---
+  duration_ms: 102.4672
+  type: 'test'
+  ...
+# Subtest: disposal erases the export and removes its handlers
+ok 38 - disposal erases the export and removes its handlers
+  ---
+  duration_ms: 2.1596
+  type: 'test'
+  ...
+# Subtest: a new page session does not inherit the previous protection report
+ok 39 - a new page session does not inherit the previous protection report
+  ---
+  duration_ms: 6.0896
+  type: 'test'
+  ...
+# Subtest: journal starts empty and contains no wall clock, account or provider fields
+ok 40 - journal starts empty and contains no wall clock, account or provider fields
+  ---
+  duration_ms: 12.0014
+  type: 'test'
+  ...
+# Subtest: old details are evicted while aggregate counts remain accurate: capacity 1
+ok 41 - old details are evicted while aggregate counts remain accurate: capacity 1
+  ---
+  duration_ms: 7.8495
+  type: 'test'
+  ...
+# Subtest: old details are evicted while aggregate counts remain accurate: capacity 2
+ok 42 - old details are evicted while aggregate counts remain accurate: capacity 2
+  ---
+  duration_ms: 5.1696
+  type: 'test'
+  ...
+# Subtest: old details are evicted while aggregate counts remain accurate: capacity 8
+ok 43 - old details are evicted while aggregate counts remain accurate: capacity 8
+  ---
+  duration_ms: 3.0652
+  type: 'test'
+  ...
+# Subtest: old details are evicted while aggregate counts remain accurate: capacity 64
+ok 44 - old details are evicted while aggregate counts remain accurate: capacity 64
+  ---
+  duration_ms: 5.1353
+  type: 'test'
+  ...
+# Subtest: invalid journal capacity is refused: 0
+ok 45 - invalid journal capacity is refused: 0
+  ---
+  duration_ms: 4.0074
+  type: 'test'
+  ...
+# Subtest: invalid journal capacity is refused: -1
+ok 46 - invalid journal capacity is refused: -1
+  ---
+  duration_ms: 0.425
+  type: 'test'
+  ...
+# Subtest: invalid journal capacity is refused: 65
+ok 47 - invalid journal capacity is refused: 65
+  ---
+  duration_ms: 0.4119
+  type: 'test'
+  ...
+# Subtest: invalid journal capacity is refused: NaN
+ok 48 - invalid journal capacity is refused: NaN
+  ---
+  duration_ms: 0.5973
+  type: 'test'
+  ...
+# Subtest: invalid journal capacity is refused: Infinity
+ok 49 - invalid journal capacity is refused: Infinity
+  ---
+  duration_ms: 0.7046
+  type: 'test'
+  ...
+# Subtest: invalid journal capacity is refused: 1.5
+ok 50 - invalid journal capacity is refused: 1.5
+  ---
+  duration_ms: 0.5173
+  type: 'test'
+  ...
+# Subtest: invalid journal capacity is refused: 8
+ok 51 - invalid journal capacity is refused: 8
+  ---
+  duration_ms: 0.3519
+  type: 'test'
+  ...
+# Subtest: invalid journal capacity is refused: null
+ok 52 - invalid journal capacity is refused: null
+  ---
+  duration_ms: 0.2218
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: ready
+ok 53 - known event has an immutable typed representation: ready
+  ---
+  duration_ms: 0.8759
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: manual
+ok 54 - known event has an immutable typed representation: manual
+  ---
+  duration_ms: 0.6486
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: idle
+ok 55 - known event has an immutable typed representation: idle
+  ---
+  duration_ms: 0.7685
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: hidden
+ok 56 - known event has an immutable typed representation: hidden
+  ---
+  duration_ms: 0.5765
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: page-exit
+ok 57 - known event has an immutable typed representation: page-exit
+  ---
+  duration_ms: 0.9327
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: clock
+ok 58 - known event has an immutable typed representation: clock
+  ---
+  duration_ms: 0.6269
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: timer
+ok 59 - known event has an immutable typed representation: timer
+  ---
+  duration_ms: 0.5023
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: disposed
+ok 60 - known event has an immutable typed representation: disposed
+  ---
+  duration_ms: 0.4756
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: resumed
+ok 61 - known event has an immutable typed representation: resumed
+  ---
+  duration_ms: 0.5537
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: idle-policy
+ok 62 - known event has an immutable typed representation: idle-policy
+  ---
+  duration_ms: 0.6533
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: hidden-policy
+ok 63 - known event has an immutable typed representation: hidden-policy
+  ---
+  duration_ms: 0.5194
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: broadcast-stop
+ok 64 - known event has an immutable typed representation: broadcast-stop
+  ---
+  duration_ms: 0.3821
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: peer-stop
+ok 65 - known event has an immutable typed representation: peer-stop
+  ---
+  duration_ms: 0.4217
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: channel-error
+ok 66 - known event has an immutable typed representation: channel-error
+  ---
+  duration_ms: 0.5019
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: page-freeze
+ok 67 - known event has an immutable typed representation: page-freeze
+  ---
+  duration_ms: 0.3909
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: page-restored
+ok 68 - known event has an immutable typed representation: page-restored
+  ---
+  duration_ms: 0.3461
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: wallet-account
+ok 69 - known event has an immutable typed representation: wallet-account
+  ---
+  duration_ms: 0.4572
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: wallet-network
+ok 70 - known event has an immutable typed representation: wallet-network
+  ---
+  duration_ms: 0.4253
+  type: 'test'
+  ...
+# Subtest: known event has an immutable typed representation: wallet-unavailable
+ok 71 - known event has an immutable typed representation: wallet-unavailable
+  ---
+  duration_ms: 0.3627
+  type: 'test'
+  ...
+# Subtest: details are copied, not retained by reference
+ok 72 - details are copied, not retained by reference
+  ---
+  duration_ms: 0.3462
+  type: 'test'
+  ...
+# Subtest: an earlier snapshot is stable after later events and disposal
+ok 73 - an earlier snapshot is stable after later events and disposal
+  ---
+  duration_ms: 1.2912
+  type: 'test'
+  ...
+# Subtest: discarding the panel drops retained details and counts without external writes
+ok 74 - discarding the panel drops retained details and counts without external writes
+  ---
+  duration_ms: 1.2287
+  type: 'test'
+  ...
+# Subtest: unrecognized free-form event cannot enter the record
+ok 75 - unrecognized free-form event cannot enter the record
+  ---
+  duration_ms: 0.4801
+  type: 'test'
+  ...
+# Subtest: unrecognized free-form event cannot enter the record
+ok 76 - unrecognized free-form event cannot enter the record
+  ---
+  duration_ms: 0.2986
+  type: 'test'
+  ...
+# Subtest: unrecognized free-form event cannot enter the record
+ok 77 - unrecognized free-form event cannot enter the record
+  ---
+  duration_ms: 0.2695
+  type: 'test'
+  ...
+# Subtest: unrecognized free-form event cannot enter the record
+ok 78 - unrecognized free-form event cannot enter the record
+  ---
+  duration_ms: 0.2457
+  type: 'test'
+  ...
+# Subtest: unrecognized free-form event cannot enter the record
+ok 79 - unrecognized free-form event cannot enter the record
+  ---
+  duration_ms: 0.2577
+  type: 'test'
+  ...
+# Subtest: unrecognized free-form event cannot enter the record
+ok 80 - unrecognized free-form event cannot enter the record
+  ---
+  duration_ms: 0.2622
+  type: 'test'
+  ...
+# Subtest: unrecognized free-form event cannot enter the record
+ok 81 - unrecognized free-form event cannot enter the record
+  ---
+  duration_ms: 0.3027
+  type: 'test'
+  ...
+# Subtest: unrecognized free-form event cannot enter the record
+ok 82 - unrecognized free-form event cannot enter the record
+  ---
+  duration_ms: 0.3056
+  type: 'test'
+  ...
+# Subtest: private or free-form field is rejected before any partial record: account
+ok 83 - private or free-form field is rejected before any partial record: account
+  ---
+  duration_ms: 0.8575
+  type: 'test'
+  ...
+# Subtest: private or free-form field is rejected before any partial record: address
+ok 84 - private or free-form field is rejected before any partial record: address
+  ---
+  duration_ms: 0.4701
+  type: 'test'
+  ...
+# Subtest: private or free-form field is rejected before any partial record: balance
+ok 85 - private or free-form field is rejected before any partial record: balance
+  ---
+  duration_ms: 0.4527
+  type: 'test'
+  ...
+# Subtest: private or free-form field is rejected before any partial record: message
+ok 86 - private or free-form field is rejected before any partial record: message
+  ---
+  duration_ms: 2.9199
+  type: 'test'
+  ...
+# Subtest: private or free-form field is rejected before any partial record: error
+ok 87 - private or free-form field is rejected before any partial record: error
+  ---
+  duration_ms: 1.6542
+  type: 'test'
+  ...
+# Subtest: private or free-form field is rejected before any partial record: request
+ok 88 - private or free-form field is rejected before any partial record: request
+  ---
+  duration_ms: 0.5147
+  type: 'test'
+  ...
+# Subtest: private or free-form field is rejected before any partial record: seed
+ok 89 - private or free-form field is rejected before any partial record: seed
+  ---
+  duration_ms: 0.5079
+  type: 'test'
+  ...
+# Subtest: private or free-form field is rejected before any partial record: privateKey
+ok 90 - private or free-form field is rejected before any partial record: privateKey
+  ---
+  duration_ms: 0.4751
+  type: 'test'
+  ...
+# Subtest: private or free-form field is rejected before any partial record: toJSON
+ok 91 - private or free-form field is rejected before any partial record: toJSON
+  ---
+  duration_ms: 0.473
+  type: 'test'
+  ...
+# Subtest: idle policy accepts only the three UI intervals
+ok 92 - idle policy accepts only the three UI intervals
+  ---
+  duration_ms: 0.3713
+  type: 'test'
+  ...
+# Subtest: idle policy accepts only the three UI intervals
+ok 93 - idle policy accepts only the three UI intervals
+  ---
+  duration_ms: 0.2114
+  type: 'test'
+  ...
+# Subtest: idle policy accepts only the three UI intervals
+ok 94 - idle policy accepts only the three UI intervals
+  ---
+  duration_ms: 0.2051
+  type: 'test'
+  ...
+# Subtest: idle policy accepts only the three UI intervals
+ok 95 - idle policy accepts only the three UI intervals
+  ---
+  duration_ms: 0.1785
+  type: 'test'
+  ...
+# Subtest: idle policy accepts only the three UI intervals
+ok 96 - idle policy accepts only the three UI intervals
+  ---
+  duration_ms: 0.1823
+  type: 'test'
+  ...
+# Subtest: idle policy accepts only the three UI intervals
+ok 97 - idle policy accepts only the three UI intervals
+  ---
+  duration_ms: 0.1753
+  type: 'test'
+  ...
+# Subtest: idle policy accepts only the three UI intervals
+ok 98 - idle policy accepts only the three UI intervals
+  ---
+  duration_ms: 0.1811
+  type: 'test'
+  ...
+# Subtest: idle policy accepts only the three UI intervals
+ok 99 - idle policy accepts only the three UI intervals
+  ---
+  duration_ms: 0.1693
+  type: 'test'
+  ...
+# Subtest: idle policy display reflects the selected duration 60000
+ok 100 - idle policy display reflects the selected duration 60000
+  ---
+  duration_ms: 0.3508
+  type: 'test'
+  ...
+# Subtest: idle policy display reflects the selected duration 300000
+ok 101 - idle policy display reflects the selected duration 300000
+  ---
+  duration_ms: 0.3759
+  type: 'test'
+  ...
+# Subtest: idle policy display reflects the selected duration 900000
+ok 102 - idle policy display reflects the selected duration 900000
+  ---
+  duration_ms: 0.309
+  type: 'test'
+  ...
+# Subtest: hide policy cannot smuggle arbitrary values
+ok 103 - hide policy cannot smuggle arbitrary values
+  ---
+  duration_ms: 0.5447
+  type: 'test'
+  ...
+# Subtest: hide policy cannot smuggle arbitrary values
+ok 104 - hide policy cannot smuggle arbitrary values
+  ---
+  duration_ms: 0.2413
+  type: 'test'
+  ...
+# Subtest: hide policy cannot smuggle arbitrary values
+ok 105 - hide policy cannot smuggle arbitrary values
+  ---
+  duration_ms: 0.2994
+  type: 'test'
+  ...
+# Subtest: hide policy cannot smuggle arbitrary values
+ok 106 - hide policy cannot smuggle arbitrary values
+  ---
+  duration_ms: 0.2707
+  type: 'test'
+  ...
+# Subtest: hide policy cannot smuggle arbitrary values
+ok 107 - hide policy cannot smuggle arbitrary values
+  ---
+  duration_ms: 0.2287
+  type: 'test'
+  ...
+# Subtest: hide policy cannot smuggle arbitrary values
+ok 108 - hide policy cannot smuggle arbitrary values
+  ---
+  duration_ms: 0.2787
+  type: 'test'
+  ...
+# Subtest: detail accessors are refused without invoking them
+ok 109 - detail accessors are refused without invoking them
+  ---
+  duration_ms: 0.4305
+  type: 'test'
+  ...
+# Subtest: reflection reentry that disposes the journal cannot append afterward
+ok 110 - reflection reentry that disposes the journal cannot append afterward
+  ---
+  duration_ms: 0.3945
+  type: 'test'
+  ...
+# Subtest: display is latest first without changing the original event order
+ok 111 - display is latest first without changing the original event order
+  ---
+  duration_ms: 0.5709
+  type: 'test'
+  ...
+# Subtest: invalid presentation limit cannot bypass the record bound
+ok 112 - invalid presentation limit cannot bypass the record bound
+  ---
+  duration_ms: 0.3692
+  type: 'test'
+  ...
+# Subtest: invalid presentation limit cannot bypass the record bound
+ok 113 - invalid presentation limit cannot bypass the record bound
+  ---
+  duration_ms: 0.2699
+  type: 'test'
+  ...
+# Subtest: invalid presentation limit cannot bypass the record bound
+ok 114 - invalid presentation limit cannot bypass the record bound
+  ---
+  duration_ms: 0.2489
+  type: 'test'
+  ...
+# Subtest: invalid presentation limit cannot bypass the record bound
+ok 115 - invalid presentation limit cannot bypass the record bound
+  ---
+  duration_ms: 0.2618
+  type: 'test'
+  ...
+# Subtest: invalid presentation limit cannot bypass the record bound
+ok 116 - invalid presentation limit cannot bypass the record bound
+  ---
+  duration_ms: 0.2703
+  type: 'test'
+  ...
+# Subtest: export includes explicit scope and no external identity
+ok 117 - export includes explicit scope and no external identity
+  ---
+  duration_ms: 1.0604
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: oversized capacity
+ok 118 - invalid snapshot never becomes an exported security claim: oversized capacity
+  ---
+  duration_ms: 0.7251
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: wrong count
+ok 119 - invalid snapshot never becomes an exported security claim: wrong count
+  ---
+  duration_ms: 0.6151
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: wrong dropped count
+ok 120 - invalid snapshot never becomes an exported security claim: wrong dropped count
+  ---
+  duration_ms: 0.7661
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: negative count
+ok 121 - invalid snapshot never becomes an exported security claim: negative count
+  ---
+  duration_ms: 0.7984
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: fractional count
+ok 122 - invalid snapshot never becomes an exported security claim: fractional count
+  ---
+  duration_ms: 0.823
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: huge count
+ok 123 - invalid snapshot never becomes an exported security claim: huge count
+  ---
+  duration_ms: 0.7038
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: unknown count
+ok 124 - invalid snapshot never becomes an exported security claim: unknown count
+  ---
+  duration_ms: 0.57
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: missing count
+ok 125 - invalid snapshot never becomes an exported security claim: missing count
+  ---
+  duration_ms: 0.5406
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: unknown envelope field
+ok 126 - invalid snapshot never becomes an exported security claim: unknown envelope field
+  ---
+  duration_ms: 0.444
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: string total
+ok 127 - invalid snapshot never becomes an exported security claim: string total
+  ---
+  duration_ms: 0.4798
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: duplicate sequence
+ok 128 - invalid snapshot never becomes an exported security claim: duplicate sequence
+  ---
+  duration_ms: 0.6309
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: reordered events
+ok 129 - invalid snapshot never becomes an exported security claim: reordered events
+  ---
+  duration_ms: 0.6663
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: missing event
+ok 130 - invalid snapshot never becomes an exported security claim: missing event
+  ---
+  duration_ms: 0.5806
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: extra event field
+ok 131 - invalid snapshot never becomes an exported security claim: extra event field
+  ---
+  duration_ms: 2.2127
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: unknown event
+ok 132 - invalid snapshot never becomes an exported security claim: unknown event
+  ---
+  duration_ms: 0.7873
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: extra detail
+ok 133 - invalid snapshot never becomes an exported security claim: extra detail
+  ---
+  duration_ms: 0.6361
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: count redistribution
+ok 134 - invalid snapshot never becomes an exported security claim: count redistribution
+  ---
+  duration_ms: 0.7109
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: disposed but retained
+ok 135 - invalid snapshot never becomes an exported security claim: disposed but retained
+  ---
+  duration_ms: 1.5101
+  type: 'test'
+  ...
+# Subtest: invalid snapshot never becomes an exported security claim: sparse events
+ok 136 - invalid snapshot never becomes an exported security claim: sparse events
+  ---
+  duration_ms: 1.0984
+  type: 'test'
+  ...
+# Subtest: event accessors are not invoked by a report renderer
+ok 137 - event accessors are not invoked by a report renderer
+  ---
+  duration_ms: 0.9469
+  type: 'test'
+  ...
+# Subtest: validated records share no mutable object with the source snapshot
+ok 138 - validated records share no mutable object with the source snapshot
+  ---
+  duration_ms: 0.6159
+  type: 'test'
+  ...
+# Subtest: protection panel explains scope without requesting or storing wallet information
+ok 139 - protection panel explains scope without requesting or storing wallet information
+  ---
+  duration_ms: 28.9158
+  type: 'test'
+  ...
+# Subtest: manual stop and explicit resume update controls without a connection action
+ok 140 - manual stop and explicit resume update controls without a connection action
+  ---
+  duration_ms: 7.4181
+  type: 'test'
+  ...
+# Subtest: hiding the page stops access by default
+ok 141 - hiding the page stops access by default
+  ---
+  duration_ms: 6.0904
+  type: 'test'
+  ...
+# Subtest: optional hide behavior does not disable the idle deadline
+ok 142 - optional hide behavior does not disable the idle deadline
+  ---
+  duration_ms: 4.1612
+  type: 'test'
+  ...
+# Subtest: pagehide locks even when hide-on-tab-change is disabled
+ok 143 - pagehide locks even when hide-on-tab-change is disabled
+  ---
+  duration_ms: 3.7618
+  type: 'test'
+  ...
+# Subtest: synthetic activity events cannot indefinitely postpone the deadline
+ok 144 - synthetic activity events cannot indefinitely postpone the deadline
+  ---
+  duration_ms: 5.1735
+  type: 'test'
+  ...
+# Subtest: idle selector configures the actual gate rather than just its label
+ok 145 - idle selector configures the actual gate rather than just its label
+  ---
+  duration_ms: 49.6539
+  type: 'test'
+  ...
+# Subtest: dispose removes event listeners, controls and timers
+ok 146 - dispose removes event listeners, controls and timers
+  ---
+  duration_ms: 4.1554
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: accountsChanged/0x2222222222222222222222222222222222222222
+ok 147 - connection diagnostic follows invalidation and contains only its fixed reason: accountsChanged/0x2222222222222222222222222222222222222222
+  ---
+  duration_ms: 29.7057
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: accountsChanged/
+ok 148 - connection diagnostic follows invalidation and contains only its fixed reason: accountsChanged/
+  ---
+  duration_ms: 2.9089
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: chainChanged/0x14a34
+ok 149 - connection diagnostic follows invalidation and contains only its fixed reason: chainChanged/0x14a34
+  ---
+  duration_ms: 2.8669
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: chainChanged/invalid
+ok 150 - connection diagnostic follows invalidation and contains only its fixed reason: chainChanged/invalid
+  ---
+  duration_ms: 2.2224
+  type: 'test'
+  ...
+# Subtest: connection diagnostic follows invalidation and contains only its fixed reason: disconnect/[object Object]
+ok 151 - connection diagnostic follows invalidation and contains only its fixed reason: disconnect/[object Object]
+  ---
+  duration_ms: 2.4401
+  type: 'test'
+  ...
+# Subtest: unchanged provider events and explicit disconnect do not become wallet-change evidence
+ok 152 - unchanged provider events and explicit disconnect do not become wallet-change evidence
+  ---
+  duration_ms: 2.5156
+  type: 'test'
+  ...
+# Subtest: a failing diagnostic cannot reconnect or interrupt connection cleanup: async=false
+ok 153 - a failing diagnostic cannot reconnect or interrupt connection cleanup: async=false
+  ---
+  duration_ms: 2.2435
+  type: 'test'
+  ...
+# Subtest: a failing diagnostic cannot reconnect or interrupt connection cleanup: async=true
+ok 154 - a failing diagnostic cannot reconnect or interrupt connection cleanup: async=true
+  ---
+  duration_ms: 2.3811
+  type: 'test'
+  ...
+# Subtest: repeated pending Connect actions share a single permission request
+ok 155 - repeated pending Connect actions share a single permission request
+  ---
+  duration_ms: 2.8147
+  type: 'test'
+  ...
+# Subtest: disconnect during connection ignores the delayed success
+ok 156 - disconnect during connection ignores the delayed success
+  ---
+  duration_ms: 2.793
+  type: 'test'
+  ...
+# Subtest: disconnect during connection ignores the delayed error
+ok 157 - disconnect during connection ignores the delayed error
+  ---
+  duration_ms: 4.6587
+  type: 'test'
+  ...
+# Subtest: readBalances cannot overwrite a later disconnect
+ok 158 - readBalances cannot overwrite a later disconnect
+  ---
+  duration_ms: 5.5581
+  type: 'test'
+  ...
+# Subtest: inspect cannot overwrite a later disconnect
+ok 159 - inspect cannot overwrite a later disconnect
+  ---
+  duration_ms: 5.5928
+  type: 'test'
+  ...
+# Subtest: a slow older read cannot overwrite a newer completed result
+ok 160 - a slow older read cannot overwrite a newer completed result
+  ---
+  duration_ms: 7.725
+  type: 'test'
+  ...
+# Subtest: changing token inputs clears visible results and discards pending reads
+ok 161 - changing token inputs clears visible results and discards pending reads
+  ---
+  duration_ms: 13.0871
+  type: 'test'
+  ...
+# Subtest: read inputs are captured and every displayed amount uses the same hash
+ok 162 - read inputs are captured and every displayed amount uses the same hash
+  ---
+  duration_ms: 9.5352
+  type: 'test'
+  ...
+# Subtest: accountsChanged immediately clears a previously displayed result
+ok 163 - accountsChanged immediately clears a previously displayed result
+  ---
+  duration_ms: 10.167
+  type: 'test'
+  ...
+# Subtest: accountsChanged immediately clears a previously displayed result
+ok 164 - accountsChanged immediately clears a previously displayed result
+  ---
+  duration_ms: 6.448
+  type: 'test'
+  ...
+# Subtest: chainChanged immediately clears a previously displayed result
+ok 165 - chainChanged immediately clears a previously displayed result
+  ---
+  duration_ms: 9.3157
+  type: 'test'
+  ...
+# Subtest: disconnect immediately clears a previously displayed result
+ok 166 - disconnect immediately clears a previously displayed result
+  ---
+  duration_ms: 7.5434
+  type: 'test'
+  ...
+# Subtest: unchanged account and chain events preserve the connection
+ok 167 - unchanged account and chain events preserve the connection
+  ---
+  duration_ms: 1.0916
+  type: 'test'
+  ...
+# Subtest: old callbacks and delayed permission errors cannot clear a replacement connection
+ok 168 - old callbacks and delayed permission errors cannot clear a replacement connection
+  ---
+  duration_ms: 1.8863
+  type: 'test'
+  ...
+# Subtest: missing token code yields unknown amounts rather than a zero balance
+ok 169 - missing token code yields unknown amounts rather than a zero balance
+  ---
+  duration_ms: 6.5926
+  type: 'test'
+  ...
+# Subtest: a replaced block clears results instead of presenting mixed balances
+ok 170 - a replaced block clears results instead of presenting mixed balances
+  ---
+  duration_ms: 6.3725
+  type: 'test'
+  ...
+# Subtest: disposing a card removes listeners and blocks later actions
+ok 171 - disposing a card removes listeners and blocks later actions
+  ---
+  duration_ms: 1.2312
+  type: 'test'
+  ...
+# Subtest: readBalances: provider error 4100 clears the view without a disconnect event
+ok 172 - readBalances: provider error 4100 clears the view without a disconnect event
+  ---
+  duration_ms: 17.0733
+  type: 'test'
+  ...
+# Subtest: inspect: provider error 4100 clears the view without a disconnect event
+ok 173 - inspect: provider error 4100 clears the view without a disconnect event
+  ---
+  duration_ms: 13.4577
+  type: 'test'
+  ...
+# Subtest: an older read's 4100 clears a newer result from the same invalidated session
+ok 174 - an older read's 4100 clears a newer result from the same invalidated session
+  ---
+  duration_ms: 76.0488
+  type: 'test'
+  ...
+# Subtest: an older read's 4100 preserves a replacement connection and its result
+ok 175 - an older read's 4100 preserves a replacement connection and its result
+  ---
+  duration_ms: 7.1769
+  type: 'test'
+  ...
+# Subtest: readBalances: provider error 4900 clears the view without a disconnect event
+ok 176 - readBalances: provider error 4900 clears the view without a disconnect event
+  ---
+  duration_ms: 10.3812
+  type: 'test'
+  ...
+# Subtest: inspect: provider error 4900 clears the view without a disconnect event
+ok 177 - inspect: provider error 4900 clears the view without a disconnect event
+  ---
+  duration_ms: 17.2072
+  type: 'test'
+  ...
+# Subtest: an older read's 4900 clears a newer result from the same invalidated session
+ok 178 - an older read's 4900 clears a newer result from the same invalidated session
+  ---
+  duration_ms: 10.1914
+  type: 'test'
+  ...
+# Subtest: an older read's 4900 preserves a replacement connection and its result
+ok 179 - an older read's 4900 preserves a replacement connection and its result
+  ---
+  duration_ms: 10.7019
+  type: 'test'
+  ...
+# Subtest: readBalances: provider error 4901 clears the view without a disconnect event
+ok 180 - readBalances: provider error 4901 clears the view without a disconnect event
+  ---
+  duration_ms: 10.8804
+  type: 'test'
+  ...
+# Subtest: inspect: provider error 4901 clears the view without a disconnect event
+ok 181 - inspect: provider error 4901 clears the view without a disconnect event
+  ---
+  duration_ms: 11.1904
+  type: 'test'
+  ...
+# Subtest: an older read's 4901 clears a newer result from the same invalidated session
+ok 182 - an older read's 4901 clears a newer result from the same invalidated session
+  ---
+  duration_ms: 7.3459
+  type: 'test'
+  ...
+# Subtest: an older read's 4901 preserves a replacement connection and its result
+ok 183 - an older read's 4901 preserves a replacement connection and its result
+  ---
+  duration_ms: 5.1836
+  type: 'test'
+  ...
+# Subtest: a late connection failure after clearResult cannot leave stale connected UI
+ok 184 - a late connection failure after clearResult cannot leave stale connected UI
+  ---
+  duration_ms: 2.8761
+  type: 'test'
+  ...
+# Subtest: a late connection failure after dispose cannot leave stale connected UI
+ok 185 - a late connection failure after dispose cannot leave stale connected UI
+  ---
+  duration_ms: 4.0337
+  type: 'test'
+  ...
+# Subtest: an unsupported pinned call clears the report but permits another explicit read
+ok 186 - an unsupported pinned call clears the report but permits another explicit read
+  ---
+  duration_ms: 6.9444
+  type: 'test'
+  ...
+# Subtest: portfolio controller requires a previously connected wallet
+ok 187 - portfolio controller requires a previously connected wallet
+  ---
+  duration_ms: 1.4148
+  type: 'test'
+  ...
+# Subtest: portfolio controller publishes a pinned immutable snapshot without new permissions
+ok 188 - portfolio controller publishes a pinned immutable snapshot without new permissions
+  ---
+  duration_ms: 11.2485
+  type: 'test'
+  ...
+# Subtest: portfolio drops a late result after disconnect
+ok 189 - portfolio drops a late result after disconnect
+  ---
+  duration_ms: 2.343
+  type: 'test'
+  ...
+# Subtest: portfolio drops a late result after clearResult
+ok 190 - portfolio drops a late result after clearResult
+  ---
+  duration_ms: 1.79
+  type: 'test'
+  ...
+# Subtest: portfolio drops a late result after dispose
+ok 191 - portfolio drops a late result after dispose
+  ---
+  duration_ms: 1.9903
+  type: 'test'
+  ...
+# Subtest: portfolio cancellation releases controls without granting permission again
+ok 192 - portfolio cancellation releases controls without granting permission again
+  ---
+  duration_ms: 7.292
+  type: 'test'
+  ...
+# Subtest: portfolio invalidates pending observations on provider accountsChanged
+ok 193 - portfolio invalidates pending observations on provider accountsChanged
+  ---
+  duration_ms: 2.7052
+  type: 'test'
+  ...
+# Subtest: portfolio invalidates pending observations on provider chainChanged
+ok 194 - portfolio invalidates pending observations on provider chainChanged
+  ---
+  duration_ms: 1.8716
+  type: 'test'
+  ...
+# Subtest: portfolio invalidates pending observations on provider disconnect
+ok 195 - portfolio invalidates pending observations on provider disconnect
+  ---
+  duration_ms: 1.8591
+  type: 'test'
+  ...
+# Subtest: a reorganized block never becomes an exportable portfolio
+ok 196 - a reorganized block never becomes an exportable portfolio
+  ---
+  duration_ms: 4.0912
+  type: 'test'
+  ...
+# Subtest: portfolio rejects duplicate token plans without issuing balance reads
+ok 197 - portfolio rejects duplicate token plans without issuing balance reads
+  ---
+  duration_ms: 1.0345
+  type: 'test'
+  ...
+# Subtest: missing code remains unknown and is not queried as an ERC-20 contract
+ok 198 - missing code remains unknown and is not queried as an ERC-20 contract
+  ---
+  duration_ms: 4.3236
+  type: 'test'
+  ...
+# Subtest: newer balance reads supersede a pending portfolio result
+ok 199 - newer balance reads supersede a pending portfolio result
+  ---
+  duration_ms: 6.8651
+  type: 'test'
+  ...
+# Subtest: portfolio errors preserve only a safe code for an invalid token plan
+ok 200 - portfolio errors preserve only a safe code for an invalid token plan
+  ---
+  duration_ms: 1.1015
+  type: 'test'
+  ...
+# Subtest: portfolio timeout preserves retry guidance without a provider diagnostic payload
+ok 201 - portfolio timeout preserves retry guidance without a provider diagnostic payload
+  ---
+  duration_ms: 28.5493
+  type: 'test'
+  ...
+# Subtest: portfolio provider errors outside the known allowlist become a generic code
+ok 202 - portfolio provider errors outside the known allowlist become a generic code
+  ---
+  duration_ms: 4.2567
+  type: 'test'
+  ...
+# Subtest: portfolio card forwards progress without enabling another permission request
+ok 203 - portfolio card forwards progress without enabling another permission request
+  ---
+  duration_ms: 5.6358
+  type: 'test'
+  ...
+# Subtest: disconnecting from a card progress callback cannot publish a completed portfolio
+ok 204 - disconnecting from a card progress callback cannot publish a completed portfolio
+  ---
+  duration_ms: 3.0409
+  type: 'test'
+  ...
+# Subtest: clearing from a complete progress callback still suppresses the old result
+ok 205 - clearing from a complete progress callback still suppresses the old result
+  ---
+  duration_ms: 3.8677
+  type: 'test'
+  ...
+# Subtest: a progress callback exception cannot leak a private message into the connected card
+ok 206 - a progress callback exception cannot leak a private message into the connected card
+  ---
+  duration_ms: 4.1145
+  type: 'test'
+  ...
+# Subtest: invalid progress observer fails before RPC and returns only a finite failure code
+ok 207 - invalid progress observer fails before RPC and returns only a finite failure code
+  ---
+  duration_ms: 1.4738
+  type: 'test'
+  ...
+1..207
+# tests 207
+# suites 0
+# pass 207
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1912.9059

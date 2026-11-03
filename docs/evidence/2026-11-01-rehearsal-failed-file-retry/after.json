@@ -1,0 +1,108 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v5",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": true,
+  "phase": "complete",
+  "complete": true,
+  "allRecomputationsMatch": true,
+  "summary": {
+    "selected": 4,
+    "reviewed": 4,
+    "pending": 0,
+    "matching": 4,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 30664,
+    "checksumsCompared": 4,
+    "checksumsMatching": 4,
+    "checksumMismatches": 0
+  },
+  "files": [
+    {
+      "name": "0.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": true
+    },
+    {
+      "name": "1.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": true
+    },
+    {
+      "name": "2.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": true
+    },
+    {
+      "name": "3.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": true
+    }
+  ],
+  "retry": {
+    "sequence": 2,
+    "previousPhase": "cancelled",
+    "previousBatchSha256": "97cb997b37a91d448fab4d6681f0385c296d967fe19bbadae22694773b15db5f",
+    "targetIndexes": [
+      3
+    ],
+    "completedIndexes": [
+      3
+    ],
+    "remainingIndexes": [],
+    "retainedReviews": 3
+  },
+  "referenceProvided": true,
+  "reference": {
+    "text": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  0.json\n0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  1.json\n0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  2.json\n0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  3.json\n",
+    "sha256": "bfce8de1ae63ac74fd7cf751c1e702b33f6aa7b288e0ac94aadc10d16ec64f36",
+    "entries": [
+      {
+        "name": "0.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      },
+      {
+        "name": "1.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      },
+      {
+        "name": "2.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      },
+      {
+        "name": "3.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      }
+    ]
+  },
+  "allExternalChecksumsMatch": true
+}

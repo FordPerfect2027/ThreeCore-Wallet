@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-11-01T22:26:27.813Z",
+  "sourceRevision": "d9044422820973e53fa41e0c55908f6e34217d7f",
+  "zip": "C:/Users/aseet/Downloads/ThreeCore-review-d904442-20261102.zip",
+  "bytes": 46644072,
+  "sha256": "cb3ae5a3cec4abc8196c6b4d6fe5e8c769417aab51cc4c7f89774a53c63c57c5",
+  "before": {
+    "entries": 46,
+    "allMatched": true,
+    "rootManifestSha256": "a9f0174b7a692911e1942e1cbd6c0b4485f52159c0e96140933011f596d88577",
+    "totalBytes": 49479463
+  },
+  "after": {
+    "entries": 46,
+    "allMatched": true,
+    "rootManifestSha256": "a9f0174b7a692911e1942e1cbd6c0b4485f52159c0e96140933011f596d88577",
+    "totalBytes": 49479463
+  },
+  "outerArchiveExtracted": true,
+  "tokenCount": 3,
+  "restoredTokenCliCasesEach": 30,
+  "restoredNodeModulesReused": false,
+  "preexistingNpmCacheUsed": true,
+  "npmDependenciesVendored": false,
+  "completeOfflineBuildClaimed": false,
+  "original4231Restarted": false,
+  "realWalletAcceptanceComplete": false,
+  "independentReviewComplete": false
+}

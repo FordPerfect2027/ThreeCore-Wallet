@@ -1,0 +1,121 @@
+✖ a signal proxy that rejects event registration produces a public error before transport (13.7017ms)
+✖ partial registration failure removes the installed callback and does not call fetch (1.4717ms)
+✖ an abort during failed registration keeps cancellation and consumes its rejected stop promise (1.9361ms)
+✖ failure reading signal state after registration still releases the installed callback (2.5894ms)
+✖ a cleanup exception after listener removal cannot replace a successful public result (84.145ms)
+ℹ Error: Test "an abort during failed registration keeps cancellation and consumes its rejected stop promise" at test\public-diagnostic-signal-lifecycle.test.js:34:1 generated asynchronous activity after the test ended. This activity created the error "PublicBaseRpcError: Public diagnostic read was cancelled" and would have caused the test to fail, but instead triggered an unhandledRejection event.
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 447.2873
+
+✖ failing tests:
+
+test at test\public-diagnostic-signal-lifecycle.test.js:8:1
+✖ a signal proxy that rejects event registration produces a public error before transport (13.7017ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: PRIVATE_REGISTRATION
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:14:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE_REGISTRATION
+        at Object.get (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:11:75)
+        at getEventsMap (node:internal/event_target:561:11)
+        at Proxy.addEventListener (node:internal/event_target:669:23)
+        at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/public-base-rpc.js:103:67)
+        at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:16:11
+        at waitForActual (node:assert:632:21)
+        at strict.rejects (node:assert:769:31)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:14:16)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-signal-lifecycle.test.js:20:1
+✖ partial registration failure removes the installed callback and does not call fetch (1.4717ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: PRIVATE_AFTER_REGISTRATION
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:30:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE_AFTER_REGISTRATION
+        at EventTarget.addEventListener (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:25:43)
+        at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/public-base-rpc.js:103:67)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:30:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-signal-lifecycle.test.js:34:1
+✖ an abort during failed registration keeps cancellation and consumes its rejected stop promise (1.9361ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: PRIVATE_AFTER_ABORT
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:44:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE_AFTER_ABORT
+        at EventTarget.addEventListener (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:39:65)
+        at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/public-base-rpc.js:103:67)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:44:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-signal-lifecycle.test.js:48:1
+✖ failure reading signal state after registration still releases the installed callback (2.5894ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:65:63)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\public-diagnostic-signal-lifecycle.test.js:68:1
+✖ a cleanup exception after listener removal cannot replace a successful public result (84.145ms)
+  Error: PRIVATE_CLEANUP
+      at EventTarget.removeEventListener (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:72:43)
+      at read (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/public-base-rpc.js:148:81)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/public-diagnostic-signal-lifecycle.test.js:79:18)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

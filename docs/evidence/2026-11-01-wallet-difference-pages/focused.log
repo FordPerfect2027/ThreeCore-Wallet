@@ -1,0 +1,40 @@
+✔ offline page CLI preserves global difference exit status for empty filters and supports scoped CSV (2686.2513ms)
+✔ page command rejects ambiguous or invalid switches before file I/O (3.5768ms)
+✔ page navigation reaches later locations without re-reading files and saves the visible page (314.8146ms)
+✔ pending and invalid filters cannot be exported under a misleading selection (145.0362ms)
+✔ pair replacement clears query state and a download callback cannot overwrite newer page feedback (132.2964ms)
+✔ all pages cover the full difference sequence once while the original bounded receipt stays unchanged (35.8695ms)
+✔ path filters keep global ordinals and distinguish an empty subset from globally equal inputs (18.9438ms)
+✔ page query bounds, owned-source requirements and descriptor capture reject forged or hostile input (18.3225ms)
+✔ JSON pages remain auxiliary and CSV retains empty scope, source bindings and spreadsheet-safe fields (16.6673ms)
+✔ offline CLI independently accepts a changed-source receipt and rejects altered conclusions or invalid input (1236.2189ms)
+✔ saved review requires an explicit selected receipt, displays mismatch and gates each export (36.5831ms)
+✔ late saved review cannot survive stop (4.7642ms)
+✔ late saved review cannot survive replace (0.9226ms)
+✔ late saved review cannot survive dispose (1.037ms)
+✔ parent comparison exposes review only after computation and invalidates it on new sources (55.7602ms)
+✔ a faithful saved difference passes even when the two originals have different JSON values (15.3671ms)
+✔ changed locations, totals, bindings, scope and authority claims all fail independent review (27.6292ms)
+✔ review rejects uploaded authority, wrong schemas, duplicate keys and oversized input (2.529ms)
+✔ review cancellation and deadline discard an unfinished digest without accepting a claim (38.2296ms)
+✔ offline differences CLI distinguishes equal JSON values, changed values and invalid sources without writes (1138.7155ms)
+✔ explicit field inspection re-reads both captured files and exports only after acknowledgement (106.5018ms)
+✔ a changed source on re-read cannot replace the previously selected comparison (9.8189ms)
+✔ pending inspection cannot publish after stop (2.8908ms)
+✔ pending inspection cannot publish after pair (1.8337ms)
+✔ pending inspection cannot publish after dispose (0.9633ms)
+✔ the parent saved-file guide wires the exact pair and clears differences on replacement (59.0512ms)
+✔ all supported plain source families distinguish formatting from JSON-value changes (140.4827ms)
+✔ same-count settings changes expose only field locations and exact source bindings (20.6445ms)
+✔ rehearsal event differences count all changed positions but list at most 40 (40.2695ms)
+✔ sources must validate independently, use the same format and fit the bounded comparison (40.0384ms)
+✔ cancellation and a stalled hash deadline return without publishing a result (28.6095ms)
+✔ difference helper escapes pointers, preserves type changes and bounds input before traversal (1.7388ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5737.4179

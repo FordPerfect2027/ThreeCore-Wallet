@@ -1,0 +1,14 @@
+{
+  "schema": "threecore.review-supplement-zip.v1",
+  "recordedAt": "2026-11-02T02:28:06.630Z",
+  "sourceRevision": "9c8c81bfd2cdefa8f9419815b5de79f490e02fc0",
+  "zip": "ThreeCore-review-supplement-9c8c81b-20261102.zip",
+  "bytes": 468608,
+  "sha256": "df51633722500251b51cf8dde996e38fde284567d0363a8174ac913c13bb42de",
+  "rootManifestSha256": "32c4495f0f430a8cb68128ae408511d3ed53aa608dbdb7760d4a69cf1433fea0",
+  "manifestEntries": 9,
+  "zipEntries": 10,
+  "freshExtractionAllMatched": true,
+  "requiresBaseZip": "ThreeCore-review-23d0a35-20261102.zip",
+  "baseThenDeltaRestorePassed": true
+}

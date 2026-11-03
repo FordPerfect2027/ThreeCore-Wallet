@@ -159,7 +159,7 @@ export function mountPeriodPanel({ document, parent, getContext, read, stageWork
       const p = periodDraftProgress(state.review.candidate);
       nodes["review-text"].textContent = periodPlanText(state.review.candidate.plan) +
         `\n取得済み: ${p.completed} / ${p.total}` +
-        (state.review.source === "library" ? "\n保存一覧に保管した過去の記録です。現在の接続先で再確認していません。" :
+        (state.review.source === "proposal" ? "\n保存資料の比較から作った、新しい未取得の読み取り予定です。接続先での確認や読み取りは、まだ行っていません。" : state.review.source === "library" ? "\n保存一覧に保管した過去の記録です。現在の接続先で再確認していません。" :
           state.review.source === "file" ? "\nファイル内の過去の記録です。作成者と内容の真正性は未確認です。" : "");
     }
     nodes["ack-label"].hidden = !state.review?.requiresReplacement;
@@ -242,7 +242,7 @@ export function mountPeriodPanel({ document, parent, getContext, read, stageWork
       if (state.busy) periodFail("PERIOD_BUSY");
       return state.draft ? Object.freeze({ draft: state.draft, requiresNewPlan: state.requiresNewPlan }) : null;
     },
-    stageSaved: (draft, options) => controller.stageSaved(draft, options), invalidate: () => controller.invalidate(),
+    stageSaved: (draft, options) => controller.stageSaved(draft, options), stageProposed: draft => controller.stageProposed(draft), invalidate: () => controller.invalidate(),
     dispose() {
       if (disposed) return;
       disposed = true;

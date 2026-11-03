@@ -1,0 +1,14 @@
+{
+  "source": "ae73567",
+  "synthetic": true,
+  "mockReads": 1,
+  "baselineBlock": "10",
+  "targetBlock": "30",
+  "explicitComparisonRequired": true,
+  "historyUnchanged": true,
+  "currentDisplayUnchanged": true,
+  "comparisonExact": true,
+  "nativeBrowserCases": 146,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}

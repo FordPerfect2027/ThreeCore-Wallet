@@ -35,6 +35,7 @@ import { registerHistoryUITests } from "/test/browser/history-ui-tests.js";
 import { mountWalletDemo } from "/examples/wallet-demo.js";
 import { readErrorMessage } from "/src/provider-error.js";
 import { ThreeCoreWalletSession } from "/src/wallet-session.js";
+import { createPortfolioController } from "/src/portfolio-controller.js";
 
 const A = "0x1111111111111111111111111111111111111111";
 const B = "0x2222222222222222222222222222222222222222";
@@ -111,7 +112,104 @@ function fixture(override = () => undefined, { legacy = true, announced = false,
   };
 }
 const tests = [];
-function test(name, run) { tests.push({ name, run }); }
+function test(name, run, group = "general") { tests.push({ name, run, group }); }
+
+test("permitted-account: preview and reviewed input precede explicit connection", async use => {
+  const f = use(); f.input('.account', '');
+  assert(f.calls.length === 0, 'Mount or field edits must not inspect permission');
+  f.field('.account-probe-read').click();
+  await waitFor(() => !f.field('.account-probe-apply').disabled);
+  assert(f.field('.account').value === '', 'Preview changed the configured account');
+  assert(f.field('.read').disabled, 'Preview connected the wallet');
+  f.field('.account-probe-apply').click();
+  await waitFor(() => f.field('.account').value === A);
+  assert(f.calls.every(c => ['eth_chainId','eth_accounts'].includes(c.method)), 'Unexpected permission or financial request');
+  assert(f.field('.read').disabled, 'Applying an address connected the wallet');
+  await f.connect();
+  assert(f.calls.filter(c => c.method === 'eth_requestAccounts').length === 1, 'Only explicit Connect requests permission');
+});
+
+test("permitted-account: global stop clears a preview without losing configured inputs", async use => {
+  const f = use();
+  f.field('.account-probe-read').click();
+  await waitFor(() => !f.field('.account-probe-apply').disabled);
+  document.querySelector('.security-stop').click();
+  assert(f.field('.account-probe-details').textContent === '', 'Stop retained account preview');
+  assert(f.field('.account-probe-read').disabled && f.field('.account-probe-apply').disabled, 'Stop left account actions enabled');
+  assert(f.field('.account').value === A && f.field('.token').value === TOKEN, 'Stop erased configured inputs');
+  const before = f.calls.length;
+  document.querySelector('.security-resume').click();
+  assert(f.calls.length === before, 'Resume automatically inspected a wallet');
+});
+
+test("permitted-account: reviewed address can share another card's account without connecting", async use => {
+  const f = use(); f.input('.account', '');
+  const other = document.querySelector('[data-agent="EMA"] .account'); other.value = A;
+  f.field('.account-probe-read').click();
+  await waitFor(() => !f.field('.account-probe-apply').disabled);
+  f.field('.account-probe-apply').click();
+  await waitFor(() => f.field('.account').value === A);
+  assert(other.value === A, 'Other card was changed');
+  assert(f.field('.read').disabled, 'Shared address input connected the wallet');
+});
+
+test("permitted-account: final shared-account input refreshes all three card summaries", async use => {
+  const f = use();
+  const cards = ["DAT", "EMA", "CAWELON"].map(agent => document.querySelector('[data-agent="' + agent + '"]'));
+  for (const card of cards) {
+    for (const [selector, value, event] of [[".account", B, "input"], [".chain", "8453", "change"]]) {
+      card.querySelector(selector).value = value;
+      card.querySelector(selector).dispatchEvent(new Event(event, { bubbles: true }));
+    }
+  }
+  const histories = cards.map(card => card.querySelector('.history-list').textContent);
+  for (const card of cards) {
+    card.querySelector('.account-probe-read').click();
+    await waitFor(() => !card.querySelector('.account-probe-apply').disabled);
+    card.querySelector('.account-probe-apply').click();
+    await waitFor(() => card.querySelector('.account').value === A);
+  }
+  const summary = document.querySelector('.wallet-setup-readiness').textContent;
+  assert(summary.includes('カードの設定: 3 / 3') && summary.includes('異なる公開アドレス: 1（'), 'Summary retained a previous card address');
+  assert((summary.match(/他のカードと口座を共用/g) ?? []).length === 3, 'All three cards must show the shared account');
+  assert(cards.every((card, index) => card.querySelector('.history-list').textContent === histories[index]), 'Address input changed saved history');
+  assert(cards.every(card => card.querySelector('.read').disabled), 'Address input connected a wallet');
+  assert(f.calls.every(call => ['eth_chainId', 'eth_accounts'].includes(call.method)), 'Unexpected permission or financial request');
+});
+
+test("permitted-account: changing a saved address immediately marks the backup stale", async use => {
+  const f = use();
+  for (const agent of ['EMA', 'CAWELON']) {
+    for (const [selector, value, event] of [['.account', A, 'input'], ['.chain', '8453', 'change']]) {
+      const node = document.querySelector('[data-agent="' + agent + '"] ' + selector);
+      node.value = value; node.dispatchEvent(new Event(event, { bubbles: true }));
+    }
+  }
+  f.input('.account', B);
+  const originalClick = HTMLAnchorElement.prototype.click;
+  const downloads = [];
+  HTMLAnchorElement.prototype.click = function () { downloads.push(this.download); };
+  try {
+    document.querySelector('.workspace-save').click();
+    await waitFor(() => document.querySelector('.workspace-backup-status').textContent.includes('現在の内容でダウンロードを開始済み'));
+    assert(downloads.length === 1, 'Expected exactly one synthetic download offer');
+    f.field('.account-probe-read').click();
+    await waitFor(() => !f.field('.account-probe-apply').disabled);
+    f.field('.account-probe-apply').click();
+    await waitFor(() => f.field('.account').value === A);
+    assert(document.querySelector('.workspace-backup-status').textContent.includes('前回の保存開始時から内容が変わった'), 'Backup still describes the previous address as current');
+    assert(downloads.length === 1, 'Address input automatically saved data');
+    assert(f.calls.every(call => ['eth_chainId', 'eth_accounts'].includes(call.method)), 'Unexpected wallet request');
+  } finally { HTMLAnchorElement.prototype.click = originalClick; }
+});
+
+test("wallet-navigation: task links focus existing sections without wallet requests", async use => {
+  const f=use(),nav=document.querySelector(".wallet-navigation");assert(nav?.getAttribute("aria-label")==="ウォレットの各機能","Named task navigation");
+  const links=[...nav.querySelectorAll("a")],ids=links.map(link=>link.getAttribute("href").slice(1));assert(links.length===13&&new Set(ids).size===13,"Distinct navigation destinations");
+  const before=f.calls.length;
+  for(const link of links){const target=document.getElementById(link.getAttribute("href").slice(1));assert(target,"Destination exists");link.click();assert(document.activeElement===target,"Focus reaches "+link.textContent);}
+  assert(f.calls.length===before&&before===0,"Navigation never requests accounts or data");assert(document.getElementById("grid"),"Stable wallet grid remains available");
+});
 
 test("EIP-6963のみでも検出したWalletを選んで接続・読み取りできる", async use => {
   const f = use(undefined, { legacy: false, announced: true });
@@ -276,7 +374,7 @@ test("Wallet情報をHTMLとして実行せず、選択変更で切断する", a
   assert(f.output().includes("未接続") && f.field(".read").disabled, "Provider change retained session");
 });
 
-test("他エージェントの重複アドレスは接続要求の前に拒否する", async use => {
+test("別カードも同じ口座へ明示的に接続でき、元の接続を維持する", async use => {
   const f = use();
   await f.connect();
   const ema = document.querySelector('[data-agent="EMA"]');
@@ -284,8 +382,10 @@ test("他エージェントの重複アドレスは接続要求の前に拒否�
   ema.querySelector(".chain").value = "8453";
   const count = f.calls.length;
   ema.querySelector(".connect").click();
-  assert(ema.querySelector("output").textContent.includes("同一"), "Duplicate agent account accepted");
-  assert(f.calls.length === count && f.output().includes("接続済み"), "Another card's session was changed");
+  await waitFor(() => !ema.querySelector(".read").disabled);
+  assert(f.calls.length > count && f.output().includes("接続済み"), "Explicit connection did not preserve the first card");
+  ema.querySelector(".disconnect").click();
+  assert(ema.querySelector(".read").disabled && !f.field(".read").disabled, "One card's disconnect affected the other");
 });
 
 for (const code of [4100, 4900, 4901]) {
@@ -487,6 +587,15 @@ test("throwing listener cleanup cannot keep a disconnected card active", async u
   await f.connect();
   f.field(".read").click();
   await waitFor(() => f.output().includes("ETH残高"));
+});
+
+test("portfolio controller native cancellation releases an ignored wait and rejects a late value", async () => {
+  const gate=deferred(),external=new AbortController();let signal,settled=false,gets=0;
+  for(const name of ['aborted','addEventListener','removeEventListener'])Object.defineProperty(external.signal,name,{get(){gets++;throw Error('unused override');}});
+  const controller=createPortfolioController({reader(_session,options){signal=options.signal;return gate.promise;}});
+  const pending=controller.refresh({}, {signal:external.signal}).then(value=>{settled=true;return value;});
+  try{external.signal.dispatchEvent(new Event('abort'));assert(!signal.aborted,'artificial event ignored');external.abort();await waitFor(()=>settled);assert((await pending).accepted===false,'wait released');assert(gets===0,'native state used');const state=controller.state;gate.resolve(Object.freeze({readOnly:true,securityAudit:false,holdings:Object.freeze([])}));await new Promise(resolve=>setTimeout(resolve,0));assert(controller.state===state&&state.status==='cancelled','late result ignored');}
+  finally{gate.resolve(null);await pending.catch(()=>{});controller.dispose();}
 });
 
 test("portfolio panel reads two token balances pinned to one block", async make => {
@@ -1207,7 +1316,7 @@ registerStorageReceiptUITests(test);
 registerAdapterBoundaryUITests(test);
 registerObserverUITests(test);
 registerRpcSupervisorUITests(test);
-registerFileReadUITests(test);
+registerFileReadUITests((name, run) => test(name, run, "file-read"));
 registerExportGuardUITests(test);
 registerSecurityUITests(test);
 registerTabGuardUITests(test);
@@ -1239,7 +1348,44 @@ let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");
 const selectedTests = ["restore-confirmation", "storage-receipt", "adapter-boundary", "backup timer", "backup cleanup", "observer", "setup", "workspace", "acceptance", "access-lifecycle", "storage-guard", "history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
-for (const { name, run } of selectedTests) {
+const parameters = new URLSearchParams(location.search);
+const isSharded = parameters.has("shard-index") || parameters.has("shard-count");
+const controlOnly = parameters.has("harness-control");
+if (controlOnly && (!isSharded || !fault || parameters.getAll("harness-control").length !== 1 ||
+    parameters.get("harness-control") !== "1" || parameters.get("shard-index") !== "0")) throw Error("Invalid dedicated harness control");
+let executionTests = selectedTests;
+if (parameters.has("focus")) {
+  if (parameters.getAll("focus").length !== 1 || parameters.get("focus") !== "file-read" ||
+      isSharded || parameters.has("suite") || controlOnly || fault) throw Error("Invalid focused browser request");
+  const indices = tests.flatMap((item, index) => item.group === "file-read" ? [index] : []);
+  if (!indices.length) throw Error("No focused browser cases registered");
+  executionTests = indices.map(index => tests[index]);
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(tests.map(item => item.name))));
+  document.body.dataset.shardIndex = "0";
+  document.body.dataset.shardCount = "1";
+  document.body.dataset.registeredCount = String(tests.length);
+  document.body.dataset.registeredDigest = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+  document.body.dataset.registeredGroups = tests.map(item => item.group).join(",");
+  document.body.dataset.selectedIndices = indices.join(",");
+  document.body.dataset.suiteFilter = "focus:file-read";
+  document.body.dataset.controlOnly = "false";
+} else if (isSharded) {
+  if (parameters.getAll("shard-index").length !== 1 || parameters.getAll("shard-count").length !== 1 ||
+      parameters.get("shard-count") !== "2" || !["0", "1"].includes(parameters.get("shard-index")) || parameters.has("suite"))
+    throw Error("Invalid or filtered browser shard request");
+  const index = Number(parameters.get("shard-index"));
+  const indices = controlOnly ? [0] : tests.map((_, i) => i).filter(i => i % 2 === index);
+  executionTests = indices.map(i => tests[i]);
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(tests.map(item => item.name))));
+  document.body.dataset.shardIndex = String(index);
+  document.body.dataset.shardCount = "2";
+  document.body.dataset.registeredCount = String(tests.length);
+  document.body.dataset.registeredDigest = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+  document.body.dataset.selectedIndices = indices.join(",");
+  document.body.dataset.suiteFilter = "";
+  document.body.dataset.controlOnly = String(controlOnly);
+}
+for (const { name, run } of executionTests) {
   console.info("Starting synthetic UI case: " + name);
   const fixtures = [];
   const item = document.createElement("li");
@@ -1264,7 +1410,7 @@ for (const { name, run } of selectedTests) {
 await new Promise(resolve => setTimeout(resolve, 0));
 publishSummary = () => {
   document.querySelector("#summary").textContent = `${passed} passed / ${failed} failed / ${unexpectedErrors.length} unexpected browser errors`;
-  document.body.dataset.testsCount = String(selectedTests.length);
+  document.body.dataset.testsCount = String(executionTests.length);
   document.body.dataset.testsPassed = String(passed);
   document.body.dataset.testsFailed = String(failed);
   document.body.dataset.unexpectedErrors = String(unexpectedErrors.length);

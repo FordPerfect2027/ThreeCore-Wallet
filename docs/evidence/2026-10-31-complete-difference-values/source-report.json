@@ -1,0 +1,360 @@
+{
+  "schema": "threecore.operation-rehearsal-record-query.v1",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "inputs": {
+    "schema": "threecore.operation-rehearsal-workspace.v1",
+    "simulationOnly": true,
+    "activeAgent": "DAT",
+    "ledgers": [
+      {
+        "schema": "threecore.operation-rehearsal.v2",
+        "simulationOnly": true,
+        "agent": "DAT",
+        "chainId": 84532,
+        "account": "0x1111111111111111111111111111111111111111",
+        "asset": {
+          "address": "0x4444444444444444444444444444444444444444",
+          "symbol": "SIM",
+          "decimals": 6
+        },
+        "openingBalance": "1000000000",
+        "policy": {
+          "origin": "https://training.example",
+          "spender": "0x5555555555555555555555555555555555555555",
+          "maxPerOperation": "100000000",
+          "maxOutstanding": "200000000",
+          "reserveFloor": "200000000",
+          "lossLimit": "250000000",
+          "buybackBps": 1000,
+          "paused": false,
+          "maxEntryFee": "3000000",
+          "maxExitFee": "5000000"
+        },
+        "events": [
+          {
+            "id": "open-one",
+            "kind": "open",
+            "agent": "DAT",
+            "chainId": 84532,
+            "account": "0x1111111111111111111111111111111111111111",
+            "operationId": "one",
+            "origin": "https://training.example",
+            "spender": "0x5555555555555555555555555555555555555555",
+            "principal": "100000000",
+            "fee": "1000000",
+            "exitFeeReserve": "2000000"
+          },
+          {
+            "id": "settle-one",
+            "kind": "settle",
+            "agent": "DAT",
+            "chainId": 84532,
+            "account": "0x1111111111111111111111111111111111111111",
+            "operationId": "one",
+            "grossReturn": "130000000",
+            "fee": "1000000"
+          }
+        ]
+      },
+      {
+        "schema": "threecore.operation-rehearsal.v2",
+        "simulationOnly": true,
+        "agent": "EMA",
+        "chainId": 84532,
+        "account": "0x2222222222222222222222222222222222222222",
+        "asset": {
+          "address": "0x4444444444444444444444444444444444444444",
+          "symbol": "SIM",
+          "decimals": 6
+        },
+        "openingBalance": "1000000000",
+        "policy": {
+          "origin": "https://training.example",
+          "spender": "0x5555555555555555555555555555555555555555",
+          "maxPerOperation": "100000000",
+          "maxOutstanding": "200000000",
+          "reserveFloor": "200000000",
+          "lossLimit": "250000000",
+          "buybackBps": 1000,
+          "paused": false,
+          "maxEntryFee": "3000000",
+          "maxExitFee": "5000000"
+        },
+        "events": [
+          {
+            "id": "open-one",
+            "kind": "open",
+            "agent": "EMA",
+            "chainId": 84532,
+            "account": "0x2222222222222222222222222222222222222222",
+            "operationId": "one",
+            "origin": "https://training.example",
+            "spender": "0x5555555555555555555555555555555555555555",
+            "principal": "100000000",
+            "fee": "1000000",
+            "exitFeeReserve": "2000000"
+          },
+          {
+            "id": "settle-one",
+            "kind": "settle",
+            "agent": "EMA",
+            "chainId": 84532,
+            "account": "0x2222222222222222222222222222222222222222",
+            "operationId": "one",
+            "grossReturn": "60000000",
+            "fee": "1000000"
+          }
+        ]
+      },
+      {
+        "schema": "threecore.operation-rehearsal.v2",
+        "simulationOnly": true,
+        "agent": "CAWELON",
+        "chainId": 84532,
+        "account": "0x3333333333333333333333333333333333333333",
+        "asset": {
+          "address": "0x4444444444444444444444444444444444444444",
+          "symbol": "SIM",
+          "decimals": 6
+        },
+        "openingBalance": "1000000000",
+        "policy": {
+          "origin": "https://training.example",
+          "spender": "0x5555555555555555555555555555555555555555",
+          "maxPerOperation": "100000000",
+          "maxOutstanding": "200000000",
+          "reserveFloor": "200000000",
+          "lossLimit": "250000000",
+          "buybackBps": 1000,
+          "paused": false,
+          "maxEntryFee": "3000000",
+          "maxExitFee": "5000000"
+        },
+        "events": [
+          {
+            "id": "open-one",
+            "kind": "open",
+            "agent": "CAWELON",
+            "chainId": 84532,
+            "account": "0x3333333333333333333333333333333333333333",
+            "operationId": "one",
+            "origin": "https://training.example",
+            "spender": "0x5555555555555555555555555555555555555555",
+            "principal": "100000000",
+            "fee": "1000000",
+            "exitFeeReserve": "2000000"
+          }
+        ]
+      }
+    ]
+  },
+  "query": {
+    "agent": "EMA",
+    "kind": "settle",
+    "decision": "all",
+    "search": ""
+  },
+  "subjects": [
+    {
+      "agent": "DAT",
+      "present": true,
+      "recordCount": 2
+    },
+    {
+      "agent": "EMA",
+      "present": true,
+      "recordCount": 2
+    },
+    {
+      "agent": "CAWELON",
+      "present": true,
+      "recordCount": 1
+    }
+  ],
+  "totalRecords": 5,
+  "matchedRecords": 1,
+  "rows": [
+    {
+      "key": "EMA:settle-one",
+      "agent": "EMA",
+      "chainId": 84532,
+      "account": "0x2222222222222222222222222222222222222222",
+      "asset": {
+        "address": "0x4444444444444444444444444444444444444444",
+        "symbol": "SIM",
+        "decimals": 6
+      },
+      "recordNumber": 2,
+      "event": {
+        "id": "settle-one",
+        "kind": "settle",
+        "agent": "EMA",
+        "chainId": 84532,
+        "account": "0x2222222222222222222222222222222222222222",
+        "operationId": "one",
+        "grossReturn": "60000000",
+        "fee": "1000000"
+      },
+      "reference": {
+        "kind": "operation",
+        "id": "one"
+      },
+      "result": {
+        "id": "settle-one",
+        "kind": "settle",
+        "withinEnteredLimits": true,
+        "reasons": [],
+        "cash": "958000000",
+        "outstanding": "0",
+        "realizedPnl": "-42000000",
+        "pnlChange": "-41000000",
+        "reservedExitFees": "0",
+        "reservedAllocations": "0",
+        "availableCash": "958000000"
+      },
+      "changes": [
+        {
+          "field": "cash",
+          "before": "899000000",
+          "after": "958000000",
+          "delta": "59000000"
+        },
+        {
+          "field": "outstanding",
+          "before": "100000000",
+          "after": "0",
+          "delta": "-100000000"
+        },
+        {
+          "field": "realizedPnl",
+          "before": "-1000000",
+          "after": "-42000000",
+          "delta": "-41000000"
+        },
+        {
+          "field": "reservedExitFees",
+          "before": "2000000",
+          "after": "0",
+          "delta": "-2000000"
+        },
+        {
+          "field": "reservedAllocations",
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        },
+        {
+          "field": "availableCash",
+          "before": "897000000",
+          "after": "958000000",
+          "delta": "61000000"
+        }
+      ]
+    }
+  ],
+  "extra000": 0,
+  "extra001": 1,
+  "extra002": 2,
+  "extra003": 3,
+  "extra004": 4,
+  "extra005": 5,
+  "extra006": 6,
+  "extra007": 7,
+  "extra008": 8,
+  "extra009": 9,
+  "extra010": 10,
+  "extra011": 11,
+  "extra012": 12,
+  "extra013": 13,
+  "extra014": 14,
+  "extra015": 15,
+  "extra016": 16,
+  "extra017": 17,
+  "extra018": 18,
+  "extra019": 19,
+  "extra020": 20,
+  "extra021": 21,
+  "extra022": 22,
+  "extra023": 23,
+  "extra024": 24,
+  "extra025": 25,
+  "extra026": 26,
+  "extra027": 27,
+  "extra028": 28,
+  "extra029": 29,
+  "extra030": 30,
+  "extra031": 31,
+  "extra032": 32,
+  "extra033": 33,
+  "extra034": 34,
+  "extra035": 35,
+  "extra036": 36,
+  "extra037": 37,
+  "extra038": 38,
+  "extra039": 39,
+  "extra040": 40,
+  "extra041": 41,
+  "extra042": 42,
+  "extra043": 43,
+  "extra044": 44,
+  "extra045": 45,
+  "extra046": 46,
+  "extra047": 47,
+  "extra048": 48,
+  "extra049": 49,
+  "extra050": 50,
+  "extra051": 51,
+  "extra052": 52,
+  "extra053": 53,
+  "extra054": 54,
+  "extra055": 55,
+  "extra056": 56,
+  "extra057": 57,
+  "extra058": 58,
+  "extra059": 59,
+  "extra060": 60,
+  "extra061": 61,
+  "extra062": 62,
+  "extra063": 63,
+  "extra064": 64,
+  "extra065": 65,
+  "extra066": 66,
+  "extra067": 67,
+  "extra068": 68,
+  "extra069": 69,
+  "extra070": 70,
+  "extra071": 71,
+  "extra072": 72,
+  "extra073": 73,
+  "extra074": 74,
+  "extra075": 75,
+  "extra076": 76,
+  "extra077": 77,
+  "extra078": 78,
+  "extra079": 79,
+  "extra080": 80,
+  "extra081": 81,
+  "extra082": 82,
+  "extra083": 83,
+  "extra084": 84,
+  "extra085": 85,
+  "extra086": 86,
+  "extra087": 87,
+  "extra088": 88,
+  "extra089": 89,
+  "extra090": 90,
+  "extra091": 91,
+  "extra092": 92,
+  "extra093": 93,
+  "extra094": 94,
+  "extra095": 95,
+  "extra096": 96,
+  "extra097": 97,
+  "extra098": 98,
+  "extra099": 99,
+  "extra100": 100,
+  "extra101": 101,
+  "extra102": "<img src=x>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}

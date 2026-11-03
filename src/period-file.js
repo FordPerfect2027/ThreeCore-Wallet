@@ -1,4 +1,6 @@
-import { readFormatFileText } from "./security-file.js";
+import { walletSavedFileTargetCode } from "./file-read-status.js";
+import { sha256Hex } from "./security-data.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { periodFail, periodShape } from "./period-plan.js";
 import { validatePeriodDraft, PERIOD_DRAFT_LIMIT } from "./period-draft.js";
@@ -13,20 +15,16 @@ function bounded(text) {
   return text;
 }
 
-async function checksum(draft, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") periodFail("PERIOD_CRYPTO");
+async function checksum(draft, subtle, options) {
   const bytes = encoder.encode(JSON.stringify(draft));
   if (bytes.byteLength > PERIOD_DRAFT_LIMIT) periodFail("PERIOD_DRAFT_SIZE");
-  let result;
-  try { result = await subtle.digest("SHA-256", bytes); }
+  try { return await sha256Hex(bytes, subtle, options); }
   catch { periodFail("PERIOD_CRYPTO"); }
-  if (!(result instanceof ArrayBuffer) || result.byteLength !== 32) periodFail("PERIOD_CRYPTO");
-  return [...new Uint8Array(result)].map(value => value.toString(16).padStart(2, "0")).join("");
 }
 
-export async function preparePeriodFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function preparePeriodFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const draft = validatePeriodDraft(input);
-  const digest = await checksum(draft, subtle);
+  const digest = await checksum(draft, subtle, { signal, timeoutMs });
   const text = bounded(JSON.stringify({ schema: PERIOD_FILE_SCHEMA,
     algorithm: "SHA-256", digest, draft }, null, 2) + "\n");
   return Object.freeze({ text, digest, byteLength: encoder.encode(text).byteLength,
@@ -34,23 +32,24 @@ export async function preparePeriodFile(input, { subtle = globalThis.crypto?.sub
     mimeType: "application/json;charset=utf-8", containsPublicAccounts: true, authenticated: false });
 }
 
-export async function decodePeriodFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodePeriodFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   bounded(text);
   let envelope;
   try { envelope = parseSecurityJson(text); }
   catch { periodFail("PERIOD_FILE_JSON"); }
+  const targetCode = walletSavedFileTargetCode(envelope?.schema, "period");
+  if (targetCode) periodFail(targetCode);
   periodShape(envelope, ["schema", "algorithm", "digest", "draft"]);
   if (envelope.schema !== PERIOD_FILE_SCHEMA || envelope.algorithm !== "SHA-256" ||
       typeof envelope.digest !== "string" || !/^[0-9a-f]{64}$/.test(envelope.digest)) periodFail("PERIOD_FILE_SCHEMA");
   const draft = validatePeriodDraft(envelope.draft);
-  const digest = await checksum(draft, subtle);
+  const digest = await checksum(draft, subtle, { signal, timeoutMs });
   if (digest !== envelope.digest) periodFail("PERIOD_CHECKSUM");
   return Object.freeze({ draft, digest, checksumVerified: true, authenticated: false });
 }
 
 export async function readPeriodFile(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 180 ||
-      !/\.json$/i.test(file.name) || /[/\\\u0000-\u001f\u007f]/.test(file.name)) periodFail("PERIOD_FILENAME");
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
   const size = file.size;
   if (!Number.isSafeInteger(size) || size < 1 || size > PERIOD_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") periodFail("PERIOD_FILE_SIZE");

@@ -1,10 +1,14 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
 import { validateSiteOrigin } from "./wallet-session.js";
 import { catalogToken, TOKEN_CATALOG_VERSION, reviewCatalogAddress } from "./token-catalog.js";
-import { identityAddress, identityFail, identityUnits, TokenIdentityError } from "./token-identity-codec.js";
+import { identityAddress, identityFail, identityObject, identityUnits, validateTokenMetadata, TokenIdentityError } from "./token-identity-codec.js";
 import { TOKEN_IDENTITY_SCHEMA, validateTokenObservation } from "./token-identity-model.js";
+import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
+import { captureOptionalDataFields } from "./security-data.js";
 
 function sessionIdentity(session) {
-  const state = session?.state;
+  let state;try { state=captureWalletReadState(session); } catch { identityFail("IDENTITY_SESSION"); }
   if (!state || state.connected !== true) identityFail("IDENTITY_NOT_CONNECTED");
   const expected = catalogToken({ agent: state.agent, chainId: state.chainId });
   if (state.canSign !== false || state.canSendTransactions !== false || state.canBridge !== false) {
@@ -21,6 +25,8 @@ function sessionIdentity(session) {
 }
 
 function header(value) {
+  try { value = identityObject(value, ["number", "hash"]); }
+  catch { identityFail("IDENTITY_BLOCK"); }
   if (!value || typeof value.number !== "string" ||
       !/^0x(?:0|[1-9a-fA-F][0-9a-fA-F]{0,63})$/.test(value.number) ||
       typeof value.hash !== "string" || !/^0x[0-9a-fA-F]{64}$/.test(value.hash)) identityFail("IDENTITY_BLOCK");
@@ -38,6 +44,8 @@ function rawUnits(value) {
  * Aborting ends our wait; it cannot recall the provider's existing request.
  */
 export async function readTokenIdentity(session, options = {}) {
+  try { options = captureOptionalDataFields(options, ["tokenAddress", "timeoutMs", "signal", "onProgress", "blockNumber"]); }
+  catch { identityFail("IDENTITY_OPTIONS"); }
   const initial = sessionIdentity(session);
   const selected = catalogToken({ agent: initial.agent, chainId: initial.chainId });
   const tokenAddress = options.tokenAddress ?? selected.address;
@@ -46,7 +54,6 @@ export async function readTokenIdentity(session, options = {}) {
   const timeoutMs = options.timeoutMs ?? 30000;
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000) identityFail("IDENTITY_TIMEOUT_OPTION");
   const signal = options.signal;
-  if (signal !== undefined && !(signal instanceof AbortSignal)) identityFail("IDENTITY_SIGNAL");
   const observer = options.onProgress;
   if (observer !== undefined && typeof observer !== "function") identityFail("IDENTITY_OBSERVER");
   // Explicit historical reads keep the same hash-pinned subread contract as latest.
@@ -54,9 +61,18 @@ export async function readTokenIdentity(session, options = {}) {
   if (requestedBlock !== undefined) identityUnits(requestedBlock);
   let stopped = false;
   let timer;
-  let abort;
+  let cancellation;
+  let rejectInterrupt;
+  let reason = "IDENTITY_CANCELLED";
+  const interruption = new Promise((resolve, reject) => { rejectInterrupt = reject; });
+  function stop(code) {
+    if (stopped) return;
+    stopped = true;
+    reason = code;
+    rejectInterrupt(new TokenIdentityError(code));
+  }
   function guard() {
-    if (stopped || signal?.aborted) identityFail("IDENTITY_CANCELLED");
+    if (stopped || cancellation?.aborted()) identityFail(reason);
     let current;
     try { current = sessionIdentity(session); }
     catch { identityFail("IDENTITY_SESSION_CHANGED"); }
@@ -65,8 +81,7 @@ export async function readTokenIdentity(session, options = {}) {
   function progress(stage) {
     guard();
     if (observer) {
-      try { Promise.resolve(observer(Object.freeze({ stage, agent: initial.agent }))).catch(() => {}); }
-      catch { /* Display callbacks cannot alter the observed data. */ }
+      consumeCallback(() => observer(Object.freeze({ stage, agent: initial.agent })));
     }
     guard();
   }
@@ -76,31 +91,21 @@ export async function readTokenIdentity(session, options = {}) {
     guard();
     return result;
   }
-  guard();
-  const interruption = new Promise((resolve, reject) => {
-    timer = setTimeout(() => {
-      stopped = true;
-      reject(new TokenIdentityError("IDENTITY_TIMEOUT"));
-    }, timeoutMs);
-    if (signal) {
-      abort = () => {
-        stopped = true;
-        reject(new TokenIdentityError("IDENTITY_CANCELLED"));
-      };
-      signal.addEventListener("abort", abort, { once: true });
-    }
-  });
   async function collect() {
     const block = header(await read("block", () => session.getBlockSnapshot(
       requestedBlock === undefined ? undefined : "0x" + BigInt(requestedBlock).toString(16))));
     if (requestedBlock !== undefined && BigInt(block.number).toString() !== requestedBlock) {
       identityFail("IDENTITY_BLOCK");
     }
-    const code = await read("code", () => session.getContractCode(selected.address, block.hash));
-    if (!code || code.address !== selected.address || typeof code.deployed !== "boolean") identityFail("IDENTITY_CODE");
+    const rawCode = await read("code", () => session.getContractCode(selected.address, block.hash));
+    let code;
+    try { code = identityObject(rawCode, ["address", "deployed"]); }
+    catch { identityFail("IDENTITY_CODE"); }
+    if (code.address !== selected.address || typeof code.deployed !== "boolean") identityFail("IDENTITY_CODE");
     const native = rawUnits(await read("native", () => session.getNativeBalance(block.hash)));
     const metadata = code.deployed
-      ? await read("metadata", () => session.getTokenMetadata(selected.address, block.hash)) : null;
+      ? validateTokenMetadata(await read("metadata", () => session.getTokenMetadata(selected.address, block.hash))) : null;
+    guard();
     const balance = code.deployed
       ? rawUnits(await read("balance", () => session.getTokenBalance(selected.address, block.hash))) : null;
     const final = header(await read("canonical", () => session.getBlockSnapshot(block.number)));
@@ -122,10 +127,17 @@ export async function readTokenIdentity(session, options = {}) {
     progress("complete");
     return result;
   }
-  try { return await Promise.race([collect(), interruption]); }
+  interruption.catch(() => {});
+  try {
+    try { cancellation = subscribeReadAbort(signal, () => stop("IDENTITY_CANCELLED")); }
+    catch { identityFail("IDENTITY_SIGNAL"); }
+    guard();
+    timer = setTimeout(() => stop("IDENTITY_TIMEOUT"), timeoutMs);
+    return await Promise.race([collect(), interruption]);
+  }
   finally {
     stopped = true;
     clearTimeout(timer);
-    if (abort) signal.removeEventListener("abort", abort);
+    cancellation?.dispose();
   }
 }

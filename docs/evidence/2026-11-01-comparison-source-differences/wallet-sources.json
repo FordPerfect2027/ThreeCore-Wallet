@@ -1,0 +1,448 @@
+{
+  "schema": "threecore.wallet-batch-comparison-evidence.v1",
+  "readOnly": true,
+  "authenticated": false,
+  "authorizesExecution": false,
+  "recordedProcessVerified": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "before": {
+    "schema": "threecore.wallet-saved-batch-evidence.v1",
+    "readOnly": true,
+    "authenticated": false,
+    "encrypted": false,
+    "authorizesExecution": false,
+    "referenceText": null,
+    "files": [
+      {
+        "name": "source.json",
+        "text": "{\n  \"schema\": \"threecore.operation-rehearsal.v2\",\n  \"simulationOnly\": true,\n  \"agent\": \"DAT\",\n  \"chainId\": 84532,\n  \"account\": \"0x1111111111111111111111111111111111111111\",\n  \"asset\": {\n    \"address\": \"0x4444444444444444444444444444444444444444\",\n    \"symbol\": \"SIM\",\n    \"decimals\": 6\n  },\n  \"openingBalance\": \"1000000000\",\n  \"policy\": {\n    \"origin\": \"https://training.example\",\n    \"spender\": \"0x5555555555555555555555555555555555555555\",\n    \"maxPerOperation\": \"100000000\",\n    \"maxOutstanding\": \"200000000\",\n    \"reserveFloor\": \"200000000\",\n    \"lossLimit\": \"250000000\",\n    \"buybackBps\": 1000,\n    \"paused\": false,\n    \"maxEntryFee\": \"3000000\",\n    \"maxExitFee\": \"5000000\"\n  },\n  \"events\": [\n    {\n      \"id\": \"deposit-0\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-1\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-2\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-3\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-4\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-5\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-6\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-7\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-8\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-9\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-10\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-11\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-12\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-13\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-14\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-15\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-16\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-17\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-18\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-19\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-20\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-21\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-22\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-23\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-24\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-25\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-26\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-27\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-28\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-29\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-30\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-31\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-32\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-33\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-34\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-35\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-36\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-37\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-38\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-39\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-40\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-41\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-42\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-43\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-44\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-45\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-46\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-47\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-48\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-49\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-50\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-51\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-52\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-53\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-54\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-55\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-56\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-57\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-58\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-59\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-60\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-61\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-62\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-63\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-64\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-65\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-66\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-67\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-68\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-69\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-70\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-71\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-72\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-73\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-74\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-75\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-76\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-77\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-78\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-79\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-80\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-81\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-82\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-83\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    },\n    {\n      \"id\": \"deposit-84\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"1\"\n    }\n  ]\n}\n"
+      }
+    ],
+    "receipt": {
+      "schema": "threecore.wallet-saved-browser-batch.v1",
+      "readOnly": true,
+      "authenticatesOrigin": false,
+      "authorizesExecution": false,
+      "restorable": false,
+      "liveChainRechecked": false,
+      "atomicSnapshot": false,
+      "externalChecksumsCompared": false,
+      "phase": "complete",
+      "complete": true,
+      "allOriginalsValidated": false,
+      "summary": {
+        "selected": 1,
+        "checked": 1,
+        "pending": 0,
+        "validatedOriginals": 0,
+        "declaredOnly": 0,
+        "invalid": 0,
+        "hashUnavailable": 0,
+        "totalBytes": 17098,
+        "structureValidated": 1,
+        "simulationFiles": 1
+      },
+      "files": [
+        {
+          "name": "source.json",
+          "byteLength": 17098,
+          "sha256": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+          "status": "validated-structure",
+          "code": null,
+          "inspection": {
+            "schema": "threecore.saved-file-inspection.v3",
+            "sourceSchema": "threecore.operation-rehearsal.v2",
+            "byteLength": 17098,
+            "title": "運用リハーサルの記録",
+            "target": "rehearsal-record",
+            "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+            "validation": "validated-structure",
+            "simulationOnly": true,
+            "checksumVerified": false,
+            "sourceDigest": null,
+            "textDigest": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+            "scope": {
+              "reportCount": null,
+              "archivedReports": null,
+              "entryReferences": null,
+              "draftReferences": null,
+              "archivedEntryReferences": null,
+              "restrictedEntryReferences": null,
+              "incompleteDraftReferences": null,
+              "emptyDraftReferences": null,
+              "agents": [
+                "DAT"
+              ],
+              "annotationValuesIncluded": false,
+              "repeatedReferencesMayExist": true,
+              "rehearsalLedgerReferences": 1,
+              "rehearsalRecordReferences": 85,
+              "rehearsalRejectedRecordReferences": 0,
+              "rehearsalScenarioReferences": null
+            },
+            "originalEvidenceValidated": false,
+            "restorable": false,
+            "automaticallyImported": false,
+            "liveChainRechecked": false,
+            "authenticated": false,
+            "authorizesExecution": false
+          }
+        }
+      ]
+    }
+  },
+  "after": {
+    "schema": "threecore.wallet-saved-batch-evidence.v1",
+    "readOnly": true,
+    "authenticated": false,
+    "encrypted": false,
+    "authorizesExecution": false,
+    "referenceText": null,
+    "files": [
+      {
+        "name": "source.json",
+        "text": "{\n  \"schema\": \"threecore.operation-rehearsal.v2\",\n  \"simulationOnly\": true,\n  \"agent\": \"DAT\",\n  \"chainId\": 84532,\n  \"account\": \"0x1111111111111111111111111111111111111111\",\n  \"asset\": {\n    \"address\": \"0x4444444444444444444444444444444444444444\",\n    \"symbol\": \"SIM\",\n    \"decimals\": 6\n  },\n  \"openingBalance\": \"1000000000\",\n  \"policy\": {\n    \"origin\": \"https://training.example\",\n    \"spender\": \"0x5555555555555555555555555555555555555555\",\n    \"maxPerOperation\": \"100000000\",\n    \"maxOutstanding\": \"200000000\",\n    \"reserveFloor\": \"200000000\",\n    \"lossLimit\": \"250000000\",\n    \"buybackBps\": 1000,\n    \"paused\": true,\n    \"maxEntryFee\": \"3000000\",\n    \"maxExitFee\": \"5000000\"\n  },\n  \"events\": [\n    {\n      \"id\": \"deposit-0\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-1\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-2\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-3\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-4\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-5\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-6\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-7\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-8\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-9\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-10\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-11\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-12\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-13\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-14\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-15\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-16\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-17\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-18\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-19\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-20\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-21\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-22\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-23\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-24\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-25\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-26\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-27\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-28\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-29\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-30\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-31\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-32\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-33\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-34\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-35\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-36\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-37\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-38\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-39\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-40\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-41\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-42\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-43\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-44\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-45\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-46\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-47\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-48\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-49\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-50\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-51\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-52\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-53\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-54\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-55\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-56\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-57\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-58\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-59\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-60\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-61\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-62\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-63\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-64\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-65\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-66\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-67\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-68\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-69\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-70\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-71\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-72\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-73\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-74\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-75\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-76\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-77\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-78\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-79\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-80\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-81\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-82\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-83\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    },\n    {\n      \"id\": \"deposit-84\",\n      \"kind\": \"deposit\",\n      \"agent\": \"DAT\",\n      \"chainId\": 84532,\n      \"account\": \"0x1111111111111111111111111111111111111111\",\n      \"amount\": \"2\"\n    }\n  ]\n}\n"
+      }
+    ],
+    "receipt": {
+      "schema": "threecore.wallet-saved-browser-batch.v1",
+      "readOnly": true,
+      "authenticatesOrigin": false,
+      "authorizesExecution": false,
+      "restorable": false,
+      "liveChainRechecked": false,
+      "atomicSnapshot": false,
+      "externalChecksumsCompared": false,
+      "phase": "complete",
+      "complete": true,
+      "allOriginalsValidated": false,
+      "summary": {
+        "selected": 1,
+        "checked": 1,
+        "pending": 0,
+        "validatedOriginals": 0,
+        "declaredOnly": 0,
+        "invalid": 0,
+        "hashUnavailable": 0,
+        "totalBytes": 17097,
+        "structureValidated": 1,
+        "simulationFiles": 1
+      },
+      "files": [
+        {
+          "name": "source.json",
+          "byteLength": 17097,
+          "sha256": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1",
+          "status": "validated-structure",
+          "code": null,
+          "inspection": {
+            "schema": "threecore.saved-file-inspection.v3",
+            "sourceSchema": "threecore.operation-rehearsal.v2",
+            "byteLength": 17097,
+            "title": "運用リハーサルの記録",
+            "target": "rehearsal-record",
+            "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+            "validation": "validated-structure",
+            "simulationOnly": true,
+            "checksumVerified": false,
+            "sourceDigest": null,
+            "textDigest": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1",
+            "scope": {
+              "reportCount": null,
+              "archivedReports": null,
+              "entryReferences": null,
+              "draftReferences": null,
+              "archivedEntryReferences": null,
+              "restrictedEntryReferences": null,
+              "incompleteDraftReferences": null,
+              "emptyDraftReferences": null,
+              "agents": [
+                "DAT"
+              ],
+              "annotationValuesIncluded": false,
+              "repeatedReferencesMayExist": true,
+              "rehearsalLedgerReferences": 1,
+              "rehearsalRecordReferences": 85,
+              "rehearsalRejectedRecordReferences": 0,
+              "rehearsalScenarioReferences": null
+            },
+            "originalEvidenceValidated": false,
+            "restorable": false,
+            "automaticallyImported": false,
+            "liveChainRechecked": false,
+            "authenticated": false,
+            "authorizesExecution": false
+          }
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "schema": "threecore.wallet-saved-batch-comparison.v1",
+    "readOnly": true,
+    "authenticatesOrigin": false,
+    "authorizesExecution": false,
+    "containsOriginalEvidence": false,
+    "restorable": false,
+    "liveChainRechecked": false,
+    "atomicSnapshot": false,
+    "reportsFilesystemDeletions": false,
+    "before": {
+      "schema": "threecore.wallet-saved-browser-batch.v1",
+      "readOnly": true,
+      "authenticatesOrigin": false,
+      "authorizesExecution": false,
+      "restorable": false,
+      "liveChainRechecked": false,
+      "atomicSnapshot": false,
+      "externalChecksumsCompared": false,
+      "phase": "complete",
+      "complete": true,
+      "allOriginalsValidated": false,
+      "summary": {
+        "selected": 1,
+        "checked": 1,
+        "pending": 0,
+        "validatedOriginals": 0,
+        "declaredOnly": 0,
+        "invalid": 0,
+        "hashUnavailable": 0,
+        "totalBytes": 17098,
+        "structureValidated": 1,
+        "simulationFiles": 1
+      },
+      "files": [
+        {
+          "name": "source.json",
+          "byteLength": 17098,
+          "sha256": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+          "status": "validated-structure",
+          "code": null,
+          "inspection": {
+            "schema": "threecore.saved-file-inspection.v3",
+            "sourceSchema": "threecore.operation-rehearsal.v2",
+            "byteLength": 17098,
+            "title": "運用リハーサルの記録",
+            "target": "rehearsal-record",
+            "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+            "validation": "validated-structure",
+            "simulationOnly": true,
+            "checksumVerified": false,
+            "sourceDigest": null,
+            "textDigest": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+            "scope": {
+              "reportCount": null,
+              "archivedReports": null,
+              "entryReferences": null,
+              "draftReferences": null,
+              "archivedEntryReferences": null,
+              "restrictedEntryReferences": null,
+              "incompleteDraftReferences": null,
+              "emptyDraftReferences": null,
+              "agents": [
+                "DAT"
+              ],
+              "annotationValuesIncluded": false,
+              "repeatedReferencesMayExist": true,
+              "rehearsalLedgerReferences": 1,
+              "rehearsalRecordReferences": 85,
+              "rehearsalRejectedRecordReferences": 0,
+              "rehearsalScenarioReferences": null
+            },
+            "originalEvidenceValidated": false,
+            "restorable": false,
+            "automaticallyImported": false,
+            "liveChainRechecked": false,
+            "authenticated": false,
+            "authorizesExecution": false
+          }
+        }
+      ]
+    },
+    "after": {
+      "schema": "threecore.wallet-saved-browser-batch.v1",
+      "readOnly": true,
+      "authenticatesOrigin": false,
+      "authorizesExecution": false,
+      "restorable": false,
+      "liveChainRechecked": false,
+      "atomicSnapshot": false,
+      "externalChecksumsCompared": false,
+      "phase": "complete",
+      "complete": true,
+      "allOriginalsValidated": false,
+      "summary": {
+        "selected": 1,
+        "checked": 1,
+        "pending": 0,
+        "validatedOriginals": 0,
+        "declaredOnly": 0,
+        "invalid": 0,
+        "hashUnavailable": 0,
+        "totalBytes": 17097,
+        "structureValidated": 1,
+        "simulationFiles": 1
+      },
+      "files": [
+        {
+          "name": "source.json",
+          "byteLength": 17097,
+          "sha256": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1",
+          "status": "validated-structure",
+          "code": null,
+          "inspection": {
+            "schema": "threecore.saved-file-inspection.v3",
+            "sourceSchema": "threecore.operation-rehearsal.v2",
+            "byteLength": 17097,
+            "title": "運用リハーサルの記録",
+            "target": "rehearsal-record",
+            "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+            "validation": "validated-structure",
+            "simulationOnly": true,
+            "checksumVerified": false,
+            "sourceDigest": null,
+            "textDigest": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1",
+            "scope": {
+              "reportCount": null,
+              "archivedReports": null,
+              "entryReferences": null,
+              "draftReferences": null,
+              "archivedEntryReferences": null,
+              "restrictedEntryReferences": null,
+              "incompleteDraftReferences": null,
+              "emptyDraftReferences": null,
+              "agents": [
+                "DAT"
+              ],
+              "annotationValuesIncluded": false,
+              "repeatedReferencesMayExist": true,
+              "rehearsalLedgerReferences": 1,
+              "rehearsalRecordReferences": 85,
+              "rehearsalRejectedRecordReferences": 0,
+              "rehearsalScenarioReferences": null
+            },
+            "originalEvidenceValidated": false,
+            "restorable": false,
+            "automaticallyImported": false,
+            "liveChainRechecked": false,
+            "authenticated": false,
+            "authorizesExecution": false
+          }
+        }
+      ]
+    },
+    "sameSelection": true,
+    "allSelectedOriginalsIdentical": false,
+    "summary": {
+      "files": 1,
+      "bothSelected": 1,
+      "onlyBefore": 0,
+      "onlyAfter": 0,
+      "identical": 0,
+      "formatOnly": 0,
+      "changedOriginal": 0,
+      "differentFormat": 0,
+      "unverified": 1
+    },
+    "files": [
+      {
+        "name": "source.json",
+        "selection": "both",
+        "before": {
+          "name": "source.json",
+          "byteLength": 17098,
+          "sha256": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+          "status": "validated-structure",
+          "code": null,
+          "inspection": {
+            "schema": "threecore.saved-file-inspection.v3",
+            "sourceSchema": "threecore.operation-rehearsal.v2",
+            "byteLength": 17098,
+            "title": "運用リハーサルの記録",
+            "target": "rehearsal-record",
+            "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+            "validation": "validated-structure",
+            "simulationOnly": true,
+            "checksumVerified": false,
+            "sourceDigest": null,
+            "textDigest": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+            "scope": {
+              "reportCount": null,
+              "archivedReports": null,
+              "entryReferences": null,
+              "draftReferences": null,
+              "archivedEntryReferences": null,
+              "restrictedEntryReferences": null,
+              "incompleteDraftReferences": null,
+              "emptyDraftReferences": null,
+              "agents": [
+                "DAT"
+              ],
+              "annotationValuesIncluded": false,
+              "repeatedReferencesMayExist": true,
+              "rehearsalLedgerReferences": 1,
+              "rehearsalRecordReferences": 85,
+              "rehearsalRejectedRecordReferences": 0,
+              "rehearsalScenarioReferences": null
+            },
+            "originalEvidenceValidated": false,
+            "restorable": false,
+            "automaticallyImported": false,
+            "liveChainRechecked": false,
+            "authenticated": false,
+            "authorizesExecution": false
+          }
+        },
+        "after": {
+          "name": "source.json",
+          "byteLength": 17097,
+          "sha256": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1",
+          "status": "validated-structure",
+          "code": null,
+          "inspection": {
+            "schema": "threecore.saved-file-inspection.v3",
+            "sourceSchema": "threecore.operation-rehearsal.v2",
+            "byteLength": 17097,
+            "title": "運用リハーサルの記録",
+            "target": "rehearsal-record",
+            "destinationMessage": "運用リハーサルの練習用の記録です。「記録を保存・再確認」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+            "validation": "validated-structure",
+            "simulationOnly": true,
+            "checksumVerified": false,
+            "sourceDigest": null,
+            "textDigest": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1",
+            "scope": {
+              "reportCount": null,
+              "archivedReports": null,
+              "entryReferences": null,
+              "draftReferences": null,
+              "archivedEntryReferences": null,
+              "restrictedEntryReferences": null,
+              "incompleteDraftReferences": null,
+              "emptyDraftReferences": null,
+              "agents": [
+                "DAT"
+              ],
+              "annotationValuesIncluded": false,
+              "repeatedReferencesMayExist": true,
+              "rehearsalLedgerReferences": 1,
+              "rehearsalRecordReferences": 85,
+              "rehearsalRejectedRecordReferences": 0,
+              "rehearsalScenarioReferences": null
+            },
+            "originalEvidenceValidated": false,
+            "restorable": false,
+            "automaticallyImported": false,
+            "liveChainRechecked": false,
+            "authenticated": false,
+            "authorizesExecution": false
+          }
+        },
+        "sameBytes": false,
+        "comparison": null,
+        "kind": "unverified"
+      }
+    ]
+  }
+}

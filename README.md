@@ -1,5 +1,81 @@
 # ThreeCore Wallet
 
+## Current development checkpoint — November 3, 2026
+
+**ThreeCore whole-project progress: approximately 80% (provisional planning estimate).**
+The scope includes Token, Wallet, AI and dApp. The completed paths now connect
+public token/USDC reads, shared budgets, manual proposals, Aerodrome quotes,
+existing allowances, fee checks, fresh-state inspection and recoverable files.
+
+[English progress report with direct evidence links](docs/DEVELOPMENT_UPDATE_80_2026-11-03_EN.md) ·
+[全体の進捗・次の開発順](docs/WHOLE_PROJECT_SCOPE_2026-11-03.md) ·
+[Latest state-check evidence](docs/PROPOSAL_CURRENT_STATE_2026-11-03.md) ·
+[Consolidated development PR](https://github.com/FordPerfect2027/ThreeCore-Wallet/pull/4)
+
+The integrated baseline passed 16,730 Node/HTTP tests and 1,026 synthetic browser
+cases. The subsequent fresh-state feature passed 183 related checks and two
+ordinary-server checks, with actual public reads and byte-exact browser exports.
+These runs cover different snapshots and overlap; their counts are not added.
+
+Policy-author authentication, persistent replay prevention, final public contract
+configuration and product transaction execution remain open. Product AI connection
+is deferred. Existing user Wallets are used only for permitted read-only work.
+
+## Earlier checkpoint notes
+
+The dated notes below preserve the status of their original snapshots. The
+current scope and remaining work are maintained in the progress report above.
+
+**November 3 public quote screen:** [Aerodrome quote acquisition and download](docs/AERODROME_QUOTE_UI_2026-11-03.md) at `/quotes/` supports both directions, exact decimal input, optional fixed blocks and cancellation. The same-origin reader permits only fixed public Base reads. Related tests passed 56/56; browser downloads are compared against the earlier fixed-block CLI observations. USDC proposal budgets and isolated execution remain unfinished.
+
+**November 3 proposal/quote screen:** [Source-preserving comparison and file recovery](docs/PROPOSAL_QUOTE_UI_2026-11-03.md) at `/proposals/quote/` adds explicit age and percentage limits, current-time comparison and historical replay. All 48 related tests passed, with four verified browser downloads covering synthetic pass/limit/expiry and a deliberate live-quote mismatch. Acquisition was subsequently added in the public screen above; execution integration remains unfinished.
+
+日本語の操作手順: [接続するアカウントの確認、保存と別タブでの復旧](docs/OPERATOR_ACCEPTANCE_JA.md)。
+
+**November 3, 2026 dApp quote integration:** [Canonical Aerodrome quotes bound to proposal budgets](docs/AERODROME_PROPOSAL_QUOTE_2026-11-03.md) add Pool/Router/arithmetic comparison, explicit freshness and slippage limits, and source-block binding. Actual read-only buy and sell observations succeeded for all three tokens; two tiny CAWELON outputs were correctly rejected as zero. This command/API foundation now supports the screens described above; USDC spending budgets and execution simulation remain to be integrated.
+
+**November 3, 2026 proposal integration:** [Proposal, dApp target, usage conditions and source-linked budget review](docs/OPERATION_PROPOSAL_REVIEW_2026-11-03.md) now runs at `/proposals/` and through `proposal:check`. Exact source files, account/network/token bindings, expiry and shared-account costs are compared before saving a reproducible review. Recorded results are rechecked at their original time; the screen then requires a current-time comparison. Verified with 25 feature tests, 207 related tests and actual browser success/expiry/limit downloads using synthetic data. Product AI generation and transaction execution remain unfinished.
+
+**November 3, 2026 continuing development:** [Token capital, ETH fee budgets and shared-account totals](docs/OPERATION_BUDGET_2026-11-03.md). New `/budget/` and `/budget/shared/` pages keep token principal separate from ETH costs and detect plans that pass individually but exhaust the same ETH balance together. Saved inputs reproduce offline; 683 related checks and actual browser file round trips passed. These are manual assumptions, not current chain observations or transaction authorization. The earlier sealed ZIP does not contain this follow-up; the overall development goal remains active.
+
+The subsequent [saved-observation budget check](docs/OPERATION_BUDGET_EVIDENCE_2026-11-03.md) binds those inputs to original Wallet observation files. It rejects mixed accounts, networks, blocks and balances while keeping source consistency separate from budget sufficiency. Actual saved Account 2 files reproduced both a two-token match and a three-token block mismatch; all 920 related checks passed. No new chain read or wallet transaction is implied.
+
+The [same-block public token reader](docs/PUBLIC_TOKEN_BATCH_2026-11-03.md) now acquires all three tokens and ETH at one canonical hash without connecting a wallet. Live Sepolia and Mainnet reads succeeded, followed by saved-file checks and an actual browser budget-evidence round trip; 1,058 related checks passed. Public-RPC provenance remains explicit, and the observation does not authorize transactions.
+
+The [public balance screen and budget transfer](docs/PUBLIC_TOKEN_BATCH_UI_2026-11-03.md) add explicit read/cancel/save at `/tokens/read/` and preview-before-apply transfer of saved balances into `/budget/`. Actual browser files from both networks match the command results. Balance transfer preserves planned spending, reserves and unknown fees; source consistency remains separate from budget sufficiency.
+
+**November 3, 2026 consolidated local delivery:** [One-ZIP recovery and current completion record](docs/ACCOUNT_REFRESH_DELIVERY_2026-11-03.md). The corrected Wallet and three token projects were restored from a fresh extraction; all 62 package files matched. Existing folders are preserved and altered files are rejected before restoration.
+
+The [final package startup and browser recovery](docs/FINAL_STARTUP_RECOVERY_2026-11-03.md) also passed: the documented startup serves source-identical assets, and an actual browser file return through both fixed candidate versions preserves all nine saved histories byte-for-byte.
+
+**November 3, 2026 account-input correction:** [Current configuration and backup summaries](docs/ACCOUNT_INPUT_REFRESH_2026-11-03.md) now refresh immediately after a reviewed permitted-account input. The corrected source passed 16,470 Node/HTTP and 1,026 synthetic browser cases. Actual Edge verification confirmed the display change and preserved all nine saved histories through fixed-version restoration and re-export. Earlier cleanup failures remain recorded separately.
+
+**November 3, 2026 local review follow-up:** [Completed developer technical review](docs/DEVELOPER_REVIEW_2026-11-03.md) and [verified incremental delivery/recovery](docs/DEVELOPER_UPDATE_DELIVERY_2026-11-03.md). The three token projects now include actual Hardhat configuration-validator regression; the restored four-repository update retains the nine-record backup byte-for-byte. [Current source map and remaining scope](docs/RELEASE_HANDOFF_2026-11-02.md). These changes are local pending consolidated publication.
+
+**November 1, 2026 release preparation:** [Acceptance gates and remaining work](docs/RELEASE_READINESS_2026-11-01.md). The public CI timing failure was reproduced and fixed; all four original jobs passed. A new [source checkpoint verifier](docs/SOURCE_CHECKPOINT_2026-11-01.md) checks an extracted package against an exact Git commit, with a verified 4,227-file export and separate-directory startup check.
+
+**November 1, 2026 development update:** [English overview, direct evidence links and reproduction instructions](docs/DEVELOPMENT_UPDATE_2026-11-01_EN.md). The recorded continuation reached 600 completed work items; the fixed implementation passed 16,391 wallet regression tests and 1,001 native browser cases. This development checkpoint includes source and evidence; it does not deploy a service or certify mainnet readiness.
+
+**November 1, 2026 continuation checkpoint — 600 of 600 completed items:** [Completion audit](docs/CONTINUATION_600_COMPLETION_2026-11-01.md) verifies the [full evidence ledger](docs/DEVELOPMENT_CONTINUATION_600_2026-10-29.md), all numbered ranges and committed artifacts. Fixed source 3fd2836 passed 16391 full-wallet tests and 1001 native browser cases. Existing port 4231 remains running. Local development only; this is not a mainnet-readiness percentage.
+
+**October 30, 2026 local continuation:** [Progress and completed work](docs/DEVELOPMENT_CONTINUATION_600_2026-10-29.md) cover comparison collections, expected-result checks, record search, combined recovery and saved-report review. [Capacity findings](docs/OPERATION_CAPACITY_2026-10-30.md) include individual expectation export without deleting cases; its browser capacity check now confirms 600-record export, individual baseline saving and exact original-session restoration. [RPC diagnostic hardening](docs/RPC_DIAGNOSTIC_HARDENING_2026-10-30.md) adds bounded responses, deadline handling and stalled-body cleanup. [Public diagnostic reads](docs/PUBLIC_DIAGNOSTIC_READS_2026-10-30.md), [liquidity input checks](docs/LIQUIDITY_INPUT_VALIDATION_2026-10-30.md), [state-fetch cancellation](docs/STATE_FETCH_CANCELLATION_2026-10-30.md) and [canonical observations](docs/PUBLIC_CANONICAL_READS_2026-10-30.md) record the subsequent local work and its validation scope.
+
+**October 29, 2026 saved-report review:** [Continuation items 1–20](docs/OPERATION_REPORT_REVIEW_2026-10-29.md) recompute saved overview and comparison reports, expose altered fields, verify optional text checksums and save reproducible review receipts. Verified with 347 related tests and five exact browser/offline receipt matches. [Requested continuation status](docs/DEVELOPMENT_CONTINUATION_600_2026-10-29.md).
+
+**October 29, 2026 condition comparison:** [Twenty-item comparison update](docs/OPERATION_SCENARIO_COMPARISON_2026-10-29.md) replays the same events under hypothetical conditions without changing the source workspace. Adds exact differences, per-record reasons, changed-only filtering, separate input/report exports and offline reproduction. Verified with 309 related tests and two exact browser/offline report matches.
+
+**October 29, 2026 confirmation overview:** [Ten-item overview update](docs/OPERATION_WORKSPACE_OVERVIEW_2026-10-29.md) shows current unsettled positions, allocation reservations and rejected rehearsal records for each agent, with source context, filters, complete report downloads and offline reproduction. Verified with 255 related tests and byte-identical Edge/offline reports; the original six fictional records are preserved.
+
+**October 29, 2026 restore comparison:** [Ten-item comparison update](docs/OPERATION_RESTORE_COMPARISON_2026-10-29.md) compares recorded accounts, networks, assets, destinations, policy and event changes before applying a rehearsal workspace. A downloadable comparison can be independently regenerated with the new offline command. Verified with 230 related tests and actual Edge downloads.
+
+**October 29, 2026 recovery usability:** [Ten-item recovery update](docs/OPERATION_RESTORE_USABILITY_2026-10-29.md) adds a three-step guide, a retained source label, before/after comparison, preserved current results during review, specific error guidance and a reviewed paste option for saved rehearsal records. Verified in Edge with the existing six-record workspace and an identical downloaded export.
+
+**October 29, 2026 workspace continuation:** [Three-agent rehearsal workspace](docs/OPERATION_WORKSPACE_2026-10-29.md) preserves separate DAT/EMA/CAWELON histories and undo while switching, adds a per-agent overview, reviewed combined export/restore and an offline workspace checker. Page-local fictional records only; no transaction execution.
+
+**October 29, 2026 continuation:** [Ten-part offline operation ledger](docs/OPERATION_LEDGER_2026-10-29.md) adds fee reservations, allocation reservation/release, reviewed sequential records, undo, CSV and an offline file checker. Existing V1 rehearsal files keep their original policy semantics. No transaction execution is added.
+
+**October 29, 2026 local development:** [Offline operation rehearsal](docs/OPERATION_REHEARSAL_2026-10-29.md) adds a Japanese screen for hypothetical per-agent limits, exact single-asset P&L, and conditional own-token allocation estimates. Open `/rehearsal/` on the local demo. Chrome save/reload/import was verified with fictional SIM records. This feature does not execute, authorize, or verify real transactions; it is not a mainnet-readiness percentage.
+
 **October 26, 2026 source publication:** [Backup, file import and history confirmation update](docs/WALLET_SECURITY_UPDATE_2026-10-26_EN.md). Includes four previously local development iterations: stopped backup preparation, revoked library reviews, cleared file-import state and single-use history confirmation. Real-wallet acceptance remains pending.
 
 **October 25, 2026 source publication:** [Security, cancellation and recovery update](docs/WALLET_SECURITY_UPDATE_2026-10-25_EN.md). Publishes 15 accumulated development commits. Final local validation: 12,559 tests passed, zero failures; real-wallet acceptance remains pending.
@@ -36,7 +112,7 @@ The ThreeCore project's current liquidity-depth objective is **5,000 USDC held o
 Run `npm run liquidity:progress` (or `npm run liquidity:progress -- --json`) for a fresh, read-only on-chain progress report. The displayed block number anchors each observation. The target calculator reports an unverified pool as unknown, never as zero. No wallet authorization, LP deposit, swap or token transfer is performed.
 ## Current engineering focus
 
-1. Bind each DAT, EMA or CAWELON session to a separately assigned EVM account.
+1. Bind each DAT, EMA or CAWELON session to its explicitly configured EVM account. The same account may serve multiple token cards; their sessions and histories remain separate.
 2. Recognize the connected decentralized application's HTTPS origin and explicitly approved destinations.
 3. Request wallet connection only after a user presses Connect Wallet.
 4. Reject the wrong wallet account and the wrong chain, rather than silently switching.
@@ -61,7 +137,7 @@ npm test
 npm run demo
 ```
 
-For the demo open `http://127.0.0.1:4173` in a browser with a compatible injected EIP-1193 wallet (e.g. MetaMask). **Never enter a seed phrase or private key.** Set a distinct expected public address for the chosen agent. The demo asks the wallet extension for account permission; any wallet prompt must be confirmed by the actual user. No transaction-signing methods are used.
+For the demo open `http://127.0.0.1:4173` in a browser with a compatible injected EIP-1193 wallet (e.g. MetaMask). **Never enter a seed phrase or private key.** Set the expected public address for each chosen agent; an existing account may be shared by multiple cards. Wallet connection permission must be explicitly approved, and file restoration never grants it. No transaction-signing methods are used.
 
 ### Base Mainnet state reads with MetaMask
 
@@ -127,10 +203,13 @@ Base Mainnet chain ID is `8453`, Base Sepolia is `84532`. Network support here i
 
 | Capability | Status |
 | --- | --- |
-| Three named agent identities, each bound to an expected account | Mock-tested connector |
-| Explicit site origin and network validation | Mock-tested connector |
-| EIP-1193 account request, chain/account/disconnect handling | Mock-tested connector |
-| Read-only native/ERC-20 balance, existing allowance, and contract-code requests | Mock-tested connector |
+| Three named agent identities, each bound to an expected account | Implemented; synthetic isolation tests and actual three-card MetaMask connection records. The actual switch exercises used one shared account at a time, not three distinct custodial accounts. |
+| Explicit site origin and network validation | Implemented; local HTTP origin guards, synthetic connector checks and recorded live network validation. |
+| EIP-1193 account request, chain/account/disconnect handling | Synthetic regression plus actual Mainnet-to-Sepolia and Account-1-to-Account-2 invalidation, explicit reconnect and nine-record preservation. Other live directions and in-flight races are not inferred. |
+| Read-only native/ERC-20 balance and token identity | Wallet observations and separate public same-block DAT/EMA/CAWELON reads recorded on Base Mainnet and Base Sepolia. Public reads do not imply a wallet connection. |
+| Existing allowance and dApp contract-code preflight | Implemented read-only requests with synthetic regression; no grant/revoke or real dApp login is inferred. |
+| Token/ETH operation budgets | Separate token, native reserve and fee calculations, shared-account totals and reviewed source-file import. Unknown fees remain unknown; recorded balances do not establish current affordability. |
+| Saved records and local recovery | Actual nine-record Wallet and six-record rehearsal file returns; source-pinned local delivery records below distinguish each version. |
 | Wallet interaction on a third-party live decentralized site | Synthetic Aerodrome connection flow only; real-wallet login unverified |
 | User-approved transaction signatures and token allowances | Not implemented |
 | Autonomous trade execution, bridges and cross-chain settlements | Not implemented |
@@ -140,10 +219,16 @@ Base Mainnet chain ID is `8453`, Base Sepolia is `84532`. Network support here i
 ## What comes next (not a claim of delivery)
 
 - Agree on the permitted decentralized-site domains and their wallet connection methods.
-- Connect to a user-selected public test environment; verify chain, account, balances and error handling end-to-end.
+- Extend the recorded public-network and wallet exercises only for remaining acceptance scenarios; do not repeat completed connection checks as if no live evidence exists.
 - Define permission limits separately for DAT, EMA and CAWELON before any signature or asset movement.
 - Design robust limits for transaction simulation, explicit approvals, gas, price impact, nonces, replay prevention, and failure recovery if future transaction execution is authorized.
 - Any bridge or cross-chain movement requires separate risk assessment and explicit authorization.
+
+The [latest integrated delivery record](docs/INTEGRATED_PUBLIC_BUDGET_DELIVERY_2026-11-03.md),
+[same-block public reading record](docs/PUBLIC_TOKEN_BATCH_2026-11-03.md) and
+[on-screen balance import record](docs/PUBLIC_TOKEN_BATCH_UI_2026-11-03.md)
+identify the exact source versions, observed results and remaining scope.
+These capabilities do not establish a percentage for the wider Token/Wallet/AI/dApp vision.
 
 ### Security boundaries
 
@@ -174,6 +259,8 @@ All checks use an EIP-1193 browser wallet already selected in the local demo, an
 
 
 ## Public Base RPC live diagnostics (read-only)
+
+The four public diagnostic commands (Base probe, Aerodrome inspection, pool inspection and liquidity progress) accept Ctrl+C while a read is active. Cancellation prints no partial report and exits 130; SIGTERM exits 143. See [interrupt behavior and verification](docs/PUBLIC_DIAGNOSTIC_INTERRUPT_2026-10-31.md).
 
 `src/base-rpc-probe.js` and `scripts/probe-base.js` provide a repeatable **live-chain connectivity check** through the Base team's rate-limited public JSON-RPC endpoints. This is a separate diagnostic from the browser-Wallet connector and does not request accounts or connect to an external dApp.
 
@@ -289,7 +376,9 @@ Each card now owns its connection and visible operation through `createWalletCar
 
 [Phase 5 validation and reproduction](docs/VALIDATION_PHASE5_2026-10-21.md) records 196 offline tests and 24 local EVM cases per token (72 total). CI additionally runs two HTTP route tests and eight real DOM interaction tests in headless Chrome, using an isolated profile and a synthetic provider. The browser tests never use an installed Wallet or external RPC; they do not certify Wallet extension compatibility.
 
-Run `npm run test:demo-server` for HTTP routes and `npm run test:browser-ui` on Linux with `google-chrome` installed. For manual reproduction, `npm run demo -- --ui-test` exposes `/test/browser/` on the displayed local address. Normal demo mode does not serve test fixtures. The automated browser suite starts its own temporary loopback server and removes its temporary Chrome profile when finished.
+Run `npm run test:demo-server` for HTTP routes and `npm run test:browser-ui` on Windows with Chrome or Microsoft Edge installed in a standard location, or on Linux with `google-chrome` installed. For manual reproduction, `npm run demo -- --ui-test` exposes `/test/browser/` on the displayed local address. Normal demo mode does not serve test fixtures. The automated browser suite uses its own temporary loopback server and browser profile with extensions disabled. It stops only its own browser process before removing that profile; if shutdown cannot be confirmed, it preserves the profile and reports the cleanup failure. `node scripts/test-browser-ui.js --verify-error-detection` also checks that browser errors and unhandled rejections make validation fail.
+
+For scoped saved-file/read-panel development, `node scripts/test-browser-ui.js --focus=file-read` runs that registered module only and explicitly reports partial coverage. [Coverage rules and measured run](docs/BROWSER_FOCUSED_VALIDATION_2026-11-01.md). Keep the ordinary full command for broad changes and release checkpoints.
 
 ### Token history response validation
 
@@ -491,6 +580,27 @@ The wallet demo now compares saved DAT, EMA and CAWELON balances with saved Tran
 It includes interval-gap diagnostics, exact residuals, block summaries, reviewed JSON recovery, and CSV exports.
 See [the Japanese user guide](docs/BALANCE_RECONCILIATION_JA.md) and [the design and test notes](docs/RECONCILIATION_DESIGN.md).
 Run `npm run reconciliation:check -- saved.json --json` to inspect a backup without wallet access.
+The reconciliation and period-report screens can also save every filtered event across all pages. [Offline reproduction](docs/HISTORICAL_EVENT_EXPORT_CLI_2026-10-31.md) generates the same CSV from verified saved JSON and can retain query metadata for empty selections.
+
+Saved report-set checklists have a separate [offline export command](docs/REPORT_CHECKLIST_EXPORT_CLI_2026-10-31.md). It reproduces the browser CSV with token, severity and search filters while retaining the unfiltered summary, including when no checks match.
+
+The [structured check-detail export](docs/REPORT_CHECK_DETAILS_2026-10-31.md) includes contradictory stored values and hashes plus the canonical source digest. Save it from the screen or use `--format details` with the offline command. Keep the original report-set JSON separately for reproduction.
+
+[Independent checklist recomputation](docs/REPORT_CHECK_RECOMPUTATION_2026-10-31.md) compares a saved detail file with its verified original report set and reports altered counts, observations, claims or source identity.
+
+The same [check-detail comparison is available on screen](docs/REPORT_CHECK_SCREEN_REVIEW_2026-10-31.md): open the original report set, choose the detail JSON and save the completed comparison. File reading remains cancellable and neither source is overwritten.
+
+A proposed replacement now has a [saved-evidence comparison before applying it](docs/REPORT_SET_REPLACEMENT_COMPARISON_2026-10-31.md), with a source-linked JSON receipt reproducible from both original files. A [saved comparison can itself be checked](docs/REPORT_SET_COMPARISON_REVIEW_2026-10-31.md) against both originals on screen or offline. Both originals and their comparison can be [saved as one independently verifiable evidence file](docs/PORTABLE_COMPARISON_EVIDENCE_2026-10-31.md). Verified bundles can also [recover either original set](docs/COMPARISON_EVIDENCE_SOURCE_RECOVERY_2026-10-31.md). Saved event/hash discrepancies can [prepare a new unread recheck draft](docs/DISCREPANCY_RECHECK_DRAFTS_2026-10-31.md). Missing-history and discrepancy proposals can [go directly to the period review](docs/DIRECT_PERIOD_PROPOSAL_HANDOFF_2026-10-31.md). Saved event comparisons can [be verified against their original source](docs/SAVED_EVENT_COMPARISON_REVIEW_2026-10-31.md). A report can [export one original token entry with its restrictions intact](docs/ORIGINAL_PERIOD_ENTRY_EXTRACTION_2026-10-31.md). Library imports [explain conflicts and retained entries before writing](docs/PERIOD_LIBRARY_IMPORT_INSPECTION_2026-10-31.md). A report set can [recover one token’s original library without choosing conflicting records](docs/REPORT_SET_TOKEN_LIBRARY_2026-10-31.md). It can also [recover complete original history entries with their annotations](docs/REPORT_SET_HISTORY_RECOVERY_2026-10-31.md). The [saved-file guide](docs/SAVED_FILE_INSPECTION_GUIDE_2026-10-31.md) checks supported originals and explains where to open them before importing. Existing draft and activity exporters [retain the requested scope across callbacks](docs/EXPORT_SCOPE_STABILITY_REPAIR_2026-10-31.md).
+
+A displayed set can also [export one original period report](docs/REPORT_SET_SOURCE_EXPORT_2026-10-31.md) in the existing reloadable report format, preserving its full evidence while leaving the set and saved history unchanged.
+
+The timeline separately displays [saved Transfer-query coverage and missing ranges](docs/REPORT_HISTORY_COVERAGE_2026-10-31.md), without counting duplicate windows twice or treating planned ranges as acquired evidence.
+
+The same [ten-window missing-history proposals can be reproduced offline](docs/MISSING_HISTORY_QUEUE_CLI_2026-10-31.md) from a checksummed source file, with explicit account/chain context and source-wide findings retained.
+
+Saved, pending and unplanned history ranges can also be [exported with their original-record references](docs/HISTORY_COVERAGE_EXPORT_2026-10-31.md) as source-linked JSON or CSV, with exact offline reproduction. Selecting a file in the wrong report-workflow input now gives [specific destination guidance](docs/WALLET_SAVED_FILE_GUIDANCE_2026-10-31.md).
+
+A selected missing window or contiguous page can become a [new unread period draft](docs/MISSING_HISTORY_DRAFT_2026-10-31.md), ready for the existing import/review workflow without starting any provider reads.
 
 
 ### Resumable historical period collection (local development)

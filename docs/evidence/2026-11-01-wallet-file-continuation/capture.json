@@ -1,0 +1,24 @@
+{
+  "source": "e83dfef",
+  "synthetic": true,
+  "reads": [
+    "first.json",
+    "second.json",
+    "second.json",
+    "third.json"
+  ],
+  "selectedSourceSha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+  "beforeSha256": "a4267f48a5b84068fb42fe2b801b772c238b2fa12140176c5e5e3006299db16c",
+  "retainedChecks": 1,
+  "exactCheckedPrefixRetained": true,
+  "lateReadIgnored": true,
+  "uploadedReceiptRefused": true,
+  "comparisonRecomputed": true,
+  "fullBrowserCoverageRun": false,
+  "focusedBrowserCases": 100,
+  "focusedBrowserElapsedMs": 24164,
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false,
+  "captureMethod": "shared panel with real File objects in Node; separately logged isolated native file-read module"
+}

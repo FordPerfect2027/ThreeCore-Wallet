@@ -34,6 +34,30 @@ function isolatedPanel() {
 }
 
 export function registerSecurityUITests(test) {
+  for (const [event, value, reason] of [
+    ["accountsChanged", ["0x" + "22".repeat(20)], "wallet-account"],
+    ["chainChanged", "0x14a34", "wallet-network"],
+    ["disconnect", { message: "PRIVATE-PAYLOAD" }, "wallet-unavailable"],
+  ]) {
+    test("security: wallet event remains distinguishable after later protection: " + event, async make => {
+      const f = make(); await f.connect();
+      document.querySelector(".security-journal-prepare").click();
+      f.provider.emit(event, value);
+      assert(f.field(".read").disabled);
+      assert(document.querySelector(".security-journal-output").value === "");
+      q("stop").click(); q("resume").click();
+      document.querySelector(".security-journal-prepare").click();
+      const text = document.querySelector(".security-journal-output").value;
+      const report = JSON.parse(text);
+      assert(report.version === 2 && report.counts[reason] === 1);
+      assert(report.counts.manual === 1 && report.counts.resumed === 1);
+      assert(!text.includes(f.field(".account").value) && !text.includes("PRIVATE-PAYLOAD"));
+      assert(f.field(".read").disabled, "Recording and resuming must not reconnect");
+      await f.connect();
+      assert(!f.field(".read").disabled, "Explicit reconnect remains possible");
+    });
+  }
+
   test("security: displayed protection history excludes connected wallet addresses", async make => {
     const f = make(); await f.connect(); q("stop").click();
     document.querySelector(".security-journal-prepare").click();

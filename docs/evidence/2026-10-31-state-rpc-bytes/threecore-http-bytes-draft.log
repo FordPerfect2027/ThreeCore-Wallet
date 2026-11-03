@@ -1,0 +1,19 @@
+✔ HTTP byte accounting uses intrinsic length instead of a throw accessor (8.3296ms)
+✔ HTTP byte accounting uses intrinsic length instead of a oversized accessor (0.8268ms)
+✔ HTTP byte accounting uses intrinsic length instead of a changing accessor (0.7736ms)
+✔ oversized actual chunk is rejected without invoking an understated length getter (3.405ms)
+✔ HTTP stream packet done accessor is rejected without evaluating it (1.0519ms)
+✔ HTTP stream packet value accessor is rejected without evaluating it (0.8424ms)
+✔ non-byte stream chunks cannot be silently reinterpreted as a JSON body (0.7756ms)
+✔ split multibyte UTF-8 retains its exact JSON value (2.2128ms)
+✔ abort during packet descriptor capture prevents another read and discards the body (2.013ms)
+✔ HTTP chunk budget bounds zero-byte streams: 99999 empty chunks (997.6983ms)
+✔ HTTP chunk budget bounds zero-byte streams: 100000 empty chunks (954.4652ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2306.0579

@@ -1,0 +1,40 @@
+{
+  "files": [
+    {
+      "file": "browser-synthetic-pass.json",
+      "sha256": "34374d13f47cee003103f257758efd2d11fca7cc7a8904262209be662d72a123",
+      "bytes": 10344,
+      "checksSatisfied": true,
+      "reasons": [],
+      "evaluatedAtSeconds": 1793708636
+    },
+    {
+      "file": "browser-account2.json",
+      "sha256": "d4b47cc1e3a4a8455b599fe7da5303dac8bd2338040c6b81bfaf42bc4365f9a1",
+      "bytes": 10686,
+      "checksSatisfied": false,
+      "reasons": [
+        "QUOTE_CONDITIONS_UNSATISFIED",
+        "ALLOWANCE_SHORTFALL",
+        "ALLOWANCE_BALANCE_SHORTFALL"
+      ],
+      "evaluatedAtSeconds": 1793708671
+    },
+    {
+      "file": "browser-account2-recheck.json",
+      "sha256": "d799a98f8e4ab0f5b82b96f045c957909f601f8d95082d29cf01ed2ce9d99eba",
+      "bytes": 10686,
+      "checksSatisfied": false,
+      "reasons": [
+        "QUOTE_CONDITIONS_UNSATISFIED",
+        "ALLOWANCE_SHORTFALL",
+        "ALLOWANCE_BALANCE_SHORTFALL"
+      ],
+      "evaluatedAtSeconds": 1793708730
+    }
+  ],
+  "originalSourcesPreserved": true,
+  "livePublicRead": true,
+  "syntheticPassIsNotLiveEvidence": true,
+  "noSigningOrTransactions": true
+}

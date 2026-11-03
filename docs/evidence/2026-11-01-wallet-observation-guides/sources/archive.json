@@ -1,0 +1,48 @@
+{
+  "schema": "threecore.transfer-archive-file.v1",
+  "algorithm": "SHA-256",
+  "digest": "29e221b254d0a86331828ee0f44777f9d315b0203e69c42972ce8531fe18fbcc",
+  "payload": {
+    "schema": "threecore.transfer-archive.v1",
+    "records": [
+      {
+        "schema": "threecore.transfer-observation.v1",
+        "context": {
+          "agent": "DAT",
+          "chainId": 8453,
+          "account": "0x1111111111111111111111111111111111111111"
+        },
+        "tokenAddress": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+        "metadata": {
+          "name": "DATCORE",
+          "symbol": "DAT",
+          "decimals": 18,
+          "totalSupply": "1000000000000000000000000000"
+        },
+        "range": {
+          "fromBlock": "30",
+          "toBlock": "42"
+        },
+        "fromBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000406",
+        "toBlockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+        "events": [
+          {
+            "blockNumber": "42",
+            "blockHash": "0x0000000000000000000000000000000000000000000000000000000000000412",
+            "transactionHash": "0x000000000000000000000000000000000000000000000000000000000000a7f8",
+            "transactionIndex": "0",
+            "logIndex": "0",
+            "from": "0x2222222222222222222222222222222222222222",
+            "to": "0x1111111111111111111111111111111111111111",
+            "amountBaseUnits": "1000000000000000001"
+          }
+        ],
+        "readOnly": true,
+        "completeHistory": false,
+        "independentVerification": false
+      }
+    ],
+    "readOnly": true,
+    "completeHistory": false
+  }
+}

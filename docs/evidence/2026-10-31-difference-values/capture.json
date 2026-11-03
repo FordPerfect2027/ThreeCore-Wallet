@@ -1,0 +1,54 @@
+{
+  "source": "94d734a",
+  "syntheticOnly": true,
+  "inputFilesUnchanged": true,
+  "reportDifferences": 103,
+  "receiptDifferences": 87,
+  "sourceSha256": "64c2b1dce79a1b52637c3b157b8cdda034b3081d6e93e9b2d31622c68ca09af8",
+  "observations": [
+    {
+      "file": "source-report.json",
+      "args": [
+        "--difference",
+        "41"
+      ],
+      "output": "report-detail-41.json",
+      "exitCode": 2,
+      "matchesCore": true
+    },
+    {
+      "file": "source-report.json",
+      "args": [
+        "--difference",
+        "103"
+      ],
+      "output": "report-detail-103.json",
+      "exitCode": 2,
+      "matchesCore": true
+    },
+    {
+      "file": "source-evidence.json",
+      "args": [
+        "--difference",
+        "41",
+        "--evidence",
+        "receipt"
+      ],
+      "output": "receipt-detail-41.json",
+      "exitCode": 2,
+      "matchesCore": true
+    },
+    {
+      "file": "source-evidence.json",
+      "args": [
+        "--difference",
+        "103",
+        "--evidence",
+        "source"
+      ],
+      "output": "evidence-source-detail-103.json",
+      "exitCode": 2,
+      "matchesCore": true
+    }
+  ]
+}

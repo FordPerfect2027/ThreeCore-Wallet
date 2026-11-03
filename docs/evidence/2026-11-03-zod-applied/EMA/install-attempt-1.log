@@ -1,0 +1,16 @@
+npm error code EPERM
+npm error syscall rmdir
+npm error path C:\Users\aseet\Documents\Codex\2026-10-26\test-4\work\token-toolchain-empty-data-EMA-20261102\node_modules\@jest\react-is-19
+npm error errno -4048
+npm error [Error: EPERM: operation not permitted, rmdir 'C:\Users\aseet\Documents\Codex\2026-10-26\test-4\work\token-toolchain-empty-data-EMA-20261102\node_modules\@jest\react-is-19'] {
+npm error   errno: -4048,
+npm error   code: 'EPERM',
+npm error   syscall: 'rmdir',
+npm error   path: 'C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-toolchain-empty-data-EMA-20261102\\node_modules\\@jest\\react-is-19'
+npm error }
+npm error
+npm error The operation was rejected by your operating system.
+npm error It's possible that the file was already in use (by a text editor or antivirus), or that you lack permissions to access it.
+npm error
+npm error If you believe this might be a permissions issue, please double-check the permissions of the file and its containing directories, or try running the command again as root/Administrator.
+npm error A complete log of this run can be found in: C:\Users\aseet\AppData\Local\Temp\threecore-hardhat-zod4-migration-20261103\npm-cache\_logs\2026-11-02T19_12_12_051Z-debug-0.log

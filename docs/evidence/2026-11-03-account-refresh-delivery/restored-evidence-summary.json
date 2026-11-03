@@ -1,0 +1,15 @@
+{
+  "recordedAt": "2026-11-03T07:03:20.626Z",
+  "revision": "4dfa300aa2efc0b068ee5537df941282a21df1f4",
+  "allMatched": true,
+  "summary": {
+    "manifests": 273,
+    "matchedManifests": 273,
+    "failedManifests": 0,
+    "files": 2963,
+    "mismatchedFiles": 0,
+    "unreadableFiles": 0,
+    "verifiedBytes": 125898575,
+    "admittedBytes": 125898575
+  }
+}

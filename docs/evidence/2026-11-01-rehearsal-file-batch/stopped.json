@@ -1,0 +1,85 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v3",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": true,
+  "phase": "cancelled",
+  "complete": false,
+  "allRecomputationsMatch": false,
+  "summary": {
+    "selected": 3,
+    "reviewed": 1,
+    "pending": 2,
+    "matching": 1,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 7666,
+    "sourceUnavailable": 0,
+    "selectedReportedBytes": 22998,
+    "unreadSourceReportedBytes": 15332,
+    "checksumsCompared": 1,
+    "checksumsMatching": 1,
+    "checksumMismatches": 0
+  },
+  "files": [
+    {
+      "name": "0.json",
+      "byteLength": 7666,
+      "status": "matched",
+      "sha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "inputSchema": "threecore.operation-rehearsal-scenario.v1",
+      "differenceCount": 0,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": true
+    },
+    {
+      "name": "1.json",
+      "byteLength": null,
+      "reportedByteLength": 7666,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": null
+    },
+    {
+      "name": "2.json",
+      "byteLength": null,
+      "reportedByteLength": 7666,
+      "status": "pending",
+      "sha256": null,
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null,
+      "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+      "checksumMatches": null
+    }
+  ],
+  "referenceProvided": true,
+  "reference": {
+    "text": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  0.json\n0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  1.json\n0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff  2.json\n",
+    "sha256": "575d4ca2b3d42c41cc940a5845ea53bf0d49ac05259539cad6d0b9667f3bc890",
+    "entries": [
+      {
+        "name": "0.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      },
+      {
+        "name": "1.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      },
+      {
+        "name": "2.json",
+        "expectedSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff"
+      }
+    ]
+  },
+  "allExternalChecksumsMatch": false
+}

@@ -1,0 +1,25 @@
+✔ pre-aborted diagnostic signals prevent transport even if aborted is shadowed (5.8853ms)
+✔ caller cancellation ends a hanging fetch, aborts its transport signal and consumes late failure (19.5195ms)
+✔ late headers after cancellation release their unread body (3.9715ms)
+✔ cancellation during response-body reading does not return an empty or zero result (84.1497ms)
+✔ request capture that cancels cannot start a subsequent fetch (2.5347ms)
+✔ completed reads release cancellation listeners and preserve reusable transport (26.6964ms)
+✔ per-request timeout remains distinguishable from later caller cancellation (116.583ms)
+✔ invalid signal and accessor options fail before transport (1.3974ms)
+✔ network pre-aborted diagnostics do not start a read (1.1144ms)
+✔ network cancellation at the first response prevents subsequent requests (1.5136ms)
+✔ network options are captured without running input getters (0.5285ms)
+✔ contracts pre-aborted diagnostics do not start a read (1.7057ms)
+✔ contracts cancellation at the first response prevents subsequent requests (0.8089ms)
+✔ contracts options are captured without running input getters (0.4194ms)
+✔ pools pre-aborted diagnostics do not start a read (1.1612ms)
+✔ pools cancellation at the first response prevents subsequent requests (0.8841ms)
+✔ pools options are captured without running input getters (0.4399ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 650.1411

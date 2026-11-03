@@ -1,0 +1,93 @@
+{
+  "source": "a2eb7e5",
+  "synthetic": true,
+  "captures": [
+    {
+      "target": "period",
+      "path": "docs/evidence/2026-11-01-wallet-saved-batch/period-source.json",
+      "sourceSha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "navigationWasExplicit": true,
+      "calledTarget": "period",
+      "guideResultPreserved": true,
+      "sourceUnchanged": true
+    },
+    {
+      "target": "library",
+      "path": "docs/evidence/2026-11-01-wallet-saved-batch/library-source.json",
+      "sourceSha256": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+      "navigationWasExplicit": true,
+      "calledTarget": "library",
+      "guideResultPreserved": true,
+      "sourceUnchanged": true
+    },
+    {
+      "target": "report",
+      "path": "docs/evidence/2026-11-01-wallet-saved-batch/report-source.json",
+      "sourceSha256": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89",
+      "navigationWasExplicit": true,
+      "calledTarget": "report",
+      "guideResultPreserved": true,
+      "sourceUnchanged": true
+    },
+    {
+      "target": "history",
+      "path": "docs/evidence/2026-11-01-wallet-saved-batch/history-source.json",
+      "sourceSha256": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f",
+      "navigationWasExplicit": true,
+      "calledTarget": "history",
+      "guideResultPreserved": true,
+      "sourceUnchanged": true
+    },
+    {
+      "target": "set",
+      "path": "docs/evidence/2026-11-01-wallet-saved-batch/set-source.json",
+      "sourceSha256": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3",
+      "navigationWasExplicit": true,
+      "calledTarget": "set",
+      "guideResultPreserved": true,
+      "sourceUnchanged": true
+    },
+    {
+      "target": "workspace",
+      "path": "docs/evidence/2026-11-01-wallet-workspace-legacy-guides/sources/workspace.json",
+      "sourceSha256": "5a0908039849dcf2dcb586c256f884d5e03591cded0d251e3e9f0cb0132ff4e8",
+      "navigationWasExplicit": true,
+      "calledTarget": "workspace",
+      "guideResultPreserved": true,
+      "sourceUnchanged": true
+    },
+    {
+      "target": "setup",
+      "path": "docs/evidence/2026-11-01-wallet-workspace-legacy-guides/sources/setup.json",
+      "sourceSha256": "a126f16b849d177d4ec1c7916b9ab01e3ff667997aab10fb8ce155706ce4afd1",
+      "navigationWasExplicit": true,
+      "calledTarget": "setup",
+      "guideResultPreserved": true,
+      "sourceUnchanged": true
+    },
+    {
+      "target": "transfer-vault",
+      "path": "docs/evidence/2026-11-01-wallet-observation-guides/sources/vault.json",
+      "sourceSha256": "c222429943bcba893ba5328d8d0b05ca3c9c3b0d90a0980db2e81a5885d21087",
+      "navigationWasExplicit": true,
+      "calledTarget": "transfer-vault",
+      "guideResultPreserved": true,
+      "sourceUnchanged": true
+    },
+    {
+      "target": "reconciliation",
+      "path": "docs/evidence/2026-11-01-wallet-observation-guides/sources/reconciliation.json",
+      "sourceSha256": "2b78f6088e443c900f24e6d775e20eac5a905d61b5a2911b2f34afdf147c4432",
+      "navigationWasExplicit": true,
+      "calledTarget": "reconciliation",
+      "guideResultPreserved": true,
+      "sourceUnchanged": true
+    }
+  ],
+  "method": "shared file guide with controlled synchronous destination callbacks; actual wallet DOM focus covered separately by the logged native suite",
+  "nativeCase": "saved-file destination: native wallet navigation locates report and workspace sections without wallet requests",
+  "nativeCases": 950,
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}

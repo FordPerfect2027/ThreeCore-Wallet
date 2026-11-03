@@ -1,12 +1,16 @@
+import { captureWalletReadState } from "./wallet-read-scope.js";
 import { catalogToken } from "./token-catalog.js";
+import { consumeCallback } from "./security-callback.js";
+import { subscribeReadAbort } from "./security-abort.js";
+import { captureOptionalDataFields } from "./security-data.js";
 import {
-  MAX_TRANSFER_EVENTS, TRANSFER_SCHEMA, TransferError, hexQuantity,
-  normalizeTransferEvents, quantity, resolveTransferRange, transferFail,
-  transferHash, validateTransferContext, validateTransferRequest, validateTransferSnapshot,
+  captureTransferEvents, TRANSFER_SCHEMA, TransferError, hexQuantity,
+  normalizeTransferEvents, quantity, resolveTransferRange, shape, transferFail,
+  transferHash, validateTransferContext, validateTransferEvent, validateTransferRequest, validateTransferSnapshot,
 } from "./transfer-codec.js";
 
 function binding(session) {
-  const state = session?.state;
+  let state;try { state=captureWalletReadState(session); } catch { transferFail("TRANSFER_SESSION"); }
   if (!state || state.connected !== true) transferFail("TRANSFER_NOT_CONNECTED");
   if (state.canSign !== false || state.canBridge !== false || state.canSendTransactions !== false) {
     transferFail("TRANSFER_CAPABILITIES");
@@ -23,7 +27,8 @@ function binding(session) {
 }
 
 function header(value, expected = null) {
-  if (!value || typeof value !== "object") transferFail("TRANSFER_BLOCK_HEADER");
+  try { value = shape(value, ["number", "hash"]); }
+  catch { transferFail("TRANSFER_BLOCK_HEADER"); }
   const number = quantity(value.number);
   const hash = transferHash(value.hash);
   if (expected !== null && number !== expected) transferFail("TRANSFER_BLOCK_HEADER");
@@ -37,16 +42,17 @@ function header(value, expected = null) {
  * and prevents subsequent requests; it does not claim to stop an RPC already sent.
  */
 export async function readTransferSnapshot(session, input, options = {}) {
+  try { options = captureOptionalDataFields(options, ["timeoutMs", "signal", "onProgress"]); }
+  catch { transferFail("TRANSFER_OPTIONS"); }
   const request = validateTransferRequest(input);
   const initial = binding(session);
   const context = initial.context;
   const token = catalogToken({ agent: context.agent, chainId: context.chainId });
   const timeoutMs = options.timeoutMs ?? 60000;
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120000) transferFail("TRANSFER_TIMEOUT_OPTION");
-  if (options.signal !== undefined && !(options.signal instanceof AbortSignal)) transferFail("TRANSFER_SIGNAL");
   if (options.onProgress !== undefined && typeof options.onProgress !== "function") transferFail("TRANSFER_OBSERVER");
-  if (options.signal?.aborted) transferFail("TRANSFER_CANCELLED");
   let stopped = false;
+  let cancellation;
   let reason = "TRANSFER_CANCELLED";
   let rejectInterrupt;
   const interrupted = new Promise((resolve, reject) => { rejectInterrupt = reject; });
@@ -57,7 +63,7 @@ export async function readTransferSnapshot(session, input, options = {}) {
     rejectInterrupt(new TransferError(code));
   }
   function guard() {
-    if (stopped) transferFail(reason);
+    if (stopped || cancellation?.aborted()) transferFail(reason);
     let current;
     try { current = binding(session).key; }
     catch { transferFail("TRANSFER_SESSION_CHANGED"); }
@@ -66,9 +72,7 @@ export async function readTransferSnapshot(session, input, options = {}) {
   function progress(stage, completed = 0, total = 0) {
     guard();
     if (options.onProgress) {
-      try {
-        Promise.resolve(options.onProgress(Object.freeze({ stage, completed, total }))).catch(() => {});
-      } catch { /* Presentation callbacks cannot alter success or failure. */ }
+      consumeCallback(() => options.onProgress(Object.freeze({ stage, completed, total })));
     }
     guard();
   }
@@ -85,8 +89,7 @@ export async function readTransferSnapshot(session, input, options = {}) {
     return value;
   }
   const cancel = () => stop("TRANSFER_CANCELLED");
-  options.signal?.addEventListener("abort", cancel, { once: true });
-  const timer = setTimeout(() => stop("TRANSFER_TIMEOUT"), timeoutMs);
+  let timer;
   async function collect() {
     progress("range");
     const latest = header(await read(() => session.getBlockSnapshot()));
@@ -96,23 +99,29 @@ export async function readTransferSnapshot(session, input, options = {}) {
     const start = range.fromBlock === end.number ? end :
       header(await read(() => session.getBlockSnapshot(hexQuantity(range.fromBlock))), range.fromBlock);
     progress("token");
-    const code = await read(() => session.getContractCode(token.address, end.hash));
+    const rawCode = await read(() => session.getContractCode(token.address, end.hash));
+    let code;
+    try { code = shape(rawCode, ["address", "deployed"]); }
+    catch { guard(); transferFail("TRANSFER_TOKEN_UNAVAILABLE"); }
+    guard();
     if (!code || code.address !== token.address || code.deployed !== true) transferFail("TRANSFER_TOKEN_UNAVAILABLE");
-    const metadata = await read(() => session.getTokenMetadata(token.address, end.hash));
+    const rawMetadata = await read(() => session.getTokenMetadata(token.address, end.hash));
     // Reject a mismatched token before asking the provider for any events.
-    validateTransferSnapshot({
-      schema: TRANSFER_SCHEMA, context, tokenAddress: token.address, metadata, range,
+    const { metadata } = validateTransferSnapshot({
+      schema: TRANSFER_SCHEMA, context, tokenAddress: token.address, metadata: rawMetadata, range,
       fromBlockHash: start.hash, toBlockHash: end.hash, events: [],
       readOnly: true, completeHistory: false, independentVerification: false,
     });
     const observed = [];
     for (const direction of ["outgoing", "incoming"]) {
       progress(direction);
-      const rows = await read(() => session.getTransferEvents({ ...range, direction }));
-      if (!Array.isArray(rows) || rows.length > MAX_TRANSFER_EVENTS) transferFail("TRANSFER_EVENT_LIMIT");
+      const rows = captureTransferEvents(await read(() => session.getTransferEvents({ ...range, direction })));
+      guard();
       const keys = new Set();
-      for (const row of rows) {
-        if (row?.[direction === "outgoing" ? "from" : "to"] !== context.account) transferFail("TRANSFER_FILTER_MISMATCH");
+      for (const input of rows) {
+        const row = validateTransferEvent(input, context, range);
+        guard();
+        if (row[direction === "outgoing" ? "from" : "to"] !== context.account) transferFail("TRANSFER_FILTER_MISMATCH");
         const key = row.transactionHash + ":" + row.logIndex;
         if (keys.has(key)) transferFail("TRANSFER_DUPLICATE_RESPONSE");
         keys.add(key);
@@ -143,10 +152,18 @@ export async function readTransferSnapshot(session, input, options = {}) {
     progress("complete", completed, blocks.size);
     return snapshot;
   }
-  try { return await Promise.race([collect(), interrupted]); }
+  // Observe interruption before registration can synchronously cancel or fail.
+  interrupted.catch(() => {});
+  try {
+    try { cancellation = subscribeReadAbort(options.signal, cancel); }
+    catch { transferFail("TRANSFER_SIGNAL"); }
+    guard();
+    timer = setTimeout(() => stop("TRANSFER_TIMEOUT"), timeoutMs);
+    return await Promise.race([collect(), interrupted]);
+  }
   finally {
     stopped = true;
     clearTimeout(timer);
-    options.signal?.removeEventListener("abort", cancel);
+    cancellation?.dispose();
   }
 }

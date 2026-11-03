@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "name": "compile",
+      "startedAt": "2026-11-02T18:53:28.175Z",
+      "endedAt": "2026-11-02T18:53:55.143Z",
+      "code": 0,
+      "signal": null
+    }
+  ],
+  "originalProjectConfigLoaded": false,
+  "userWalletUsed": false,
+  "transactionsExecuted": false,
+  "keystoreLookupDisabledByCI": true
+}

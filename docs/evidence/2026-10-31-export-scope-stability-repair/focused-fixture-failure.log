@@ -1,0 +1,105 @@
+✔ missing-window export captures the requested plan before progress observers mutate the query (153.1228ms)
+✔ invalid missing-window requests retain an unapplied candidate and perform no delivery (259.7629ms)
+✖ cancelling during missing-window query reflection cannot revive the export (96.8574ms)
+✔ shared draft proposal exposes an immutable normalized query without changing existing file bytes (105.5808ms)
+✔ filtered activity export cannot broaden DAT to all tokens during the export observer (54.6946ms)
+✔ activity query capture rejects accessors and honors reflective cancellation or disposal (11.863ms)
+✔ unfiltered vault exports ignore unused queries (8.1944ms)
+✔ proposed empty draft stages and applies without looking up a connection or starting a read (144.1293ms)
+✔ a proposed plan cannot replace collected evidence without the existing explicit replacement acknowledgement (5.2683ms)
+✔ nonempty or invalid proposals preserve an existing review and collected draft (5.5451ms)
+✔ connection context is checked when explicitly starting an applied offline proposal (1.7922ms)
+✔ busy or disposed destinations refuse handoff without interrupting an in-flight read (6.6548ms)
+✔ synchronous draft builders exactly match existing saved-draft formats (183.4119ms)
+✔ report controller hands off pinned empty proposals while retaining source and candidate (419.1527ms)
+✔ source or destination cancellation during notification does not publish a successful handoff (221.5785ms)
+✔ a selected missing interval becomes one exact, empty, reloadable period draft (125.683ms)
+✔ a contiguous ten-window page becomes one empty twenty-thousand-block draft (58.958ms)
+✔ whole-page draft partitions from the earlier endpoint while preserving the exact missing union (54.1929ms)
+✔ disjoint pages cannot silently create a plan that reads the omitted gap (94.9031ms)
+✔ existing period import and review do not start a provider read (53.1614ms)
+✔ only a window on the requested proposal page can become a draft (357.7516ms)
+✔ empty-draft evidence is captured before delayed hashing and remains detached (60.0431ms)
+✔ draft delivery requires acknowledgement, handles refusal, and leaves accepted evidence/storage untouched (71.4289ms)
+✔ cancelled and disposed draft preparations cannot deliver a late file (54.2434ms)
+✔ vault controller mount performs no storage or wallet activity (17.0094ms)
+✔ capture requires explicit apply and never auto-saves (8.6092ms)
+✔ capture detects card changes even without an explicit invalidation event (5.8286ms)
+✔ card invalidation preserves a historical working copy but removes card preview (9.4263ms)
+✔ file review remains offline and valid after card input changes (44.4248ms)
+✔ removal acknowledgement is required for a replacing import (15.9755ms)
+✔ additive import preserves other tokens without requiring removal acknowledgement (9.2663ms)
+✔ replacing a context can be reviewed offline without changing card settings (10.264ms)
+✔ failed additive merge preserves all existing token records (7.4778ms)
+✔ save is refused until storage has explicitly been opened (5.6776ms)
+✔ save writes a new full bundle and waits for storage completion (11.8048ms)
+✔ cancel before save commit refuses late persistence and clears busy state (6.0885ms)
+✔ dispose prevents deferred storage result from changing UI (2.3029ms)
+✔ concurrent save refuses to overwrite another tab and requires refresh (12.1417ms)
+✔ double-click while saving cannot allocate a duplicate record (4.9091ms)
+✔ stored restore requires selection, fresh read, review and explicit apply (9.9006ms)
+✔ stored review cannot apply if another tab renamed or archived the entry (21.7717ms)
+✔ archived records are exportable but not restorable until unarchived (22.7535ms)
+✔ rename, archive and purge affect selected entry only (22.1871ms)
+✔ working export json does not imply browser persistence (5.1516ms)
+✔ working export csv does not imply browser persistence (41.9097ms)
+✔ working export txt does not imply browser persistence (6.1374ms)
+✔ selected export uses selected saved content, not current working copy (12.5657ms)
+✔ cancelled checksum calculation cannot deliver a file (4.6439ms)
+✔ late rejected file reads do not overwrite cancelled or newer reviews (3.1958ms)
+✔ legacy snapshot import changes only its own working slot (12.2211ms)
+✔ legacy archive import changes only its own working slot (9.0451ms)
+✔ legacy token mismatch is refused before any working-copy replacement (4.6898ms)
+✔ stage-card only stages one selected token and checks current-operation guard (3.4297ms)
+✔ stage-card refusal preserves historical data and does not report success (3.9823ms)
+✔ card invalidation cancels a deferred stage operation (2.9191ms)
+✔ storage and callback errors do not expose provider messages (2.0758ms)
+✔ host cancellation from progress callback prevents the storage read (1.0269ms)
+✔ all public actions after dispose are inert (1.412ms)
+✔ filtered CSV includes all matching rows across pages, with exact base units (68.6549ms)
+✔ filtered CSV empty result contains a header and does not invent a zero event (6.669ms)
+✔ filtered CSV can report an entirely empty working copy without assuming zero balance (0.7686ms)
+✔ filtered CSV uses the same public account search as the activity screen (5.171ms)
+✔ filtered CSV uses the same public from search as the activity screen (4.3147ms)
+✔ filtered CSV uses the same public to search as the activity screen (3.4838ms)
+✔ filtered CSV uses the same public transactionHash search as the activity screen (2.8761ms)
+✔ filtered CSV uses the same public blockNumber search as the activity screen (3.0064ms)
+✔ filtered CSV uses the same public tokenAddress search as the activity screen (3.8688ms)
+✔ filtered CSV direction includes only the chosen kind and respects visible block ordering (5.7ms)
+✔ filtered CSV uses a normalized isolated query and cannot mutate original history (2.1649ms)
+✔ filtered CSV rejects invalid criteria {"agent":"OTHER","direction":"all","search":"","order":"newest","page":0,"pageSize":20} (2.8918ms)
+✔ filtered CSV rejects invalid criteria {"agent":"all","direction":"approval","search":"","order":"newest","page":0,"pageSize":20} (1.474ms)
+✔ filtered CSV rejects invalid criteria {"agent":"all","direction":"all","search":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","order":"newest","page":0,"pageSize":20} (1.3725ms)
+✔ filtered CSV rejects invalid criteria {"agent":"all","direction":"all","search":"\n","order":"newest","page":0,"pageSize":20} (1.3873ms)
+✔ filtered CSV rejects invalid criteria {"agent":"all","direction":"all","search":"","order":"newest","page":-1,"pageSize":20} (1.3087ms)
+✔ filtered CSV rejects invalid criteria {"agent":"all","direction":"all","search":"","order":"random","page":0,"pageSize":20} (1.2001ms)
+✔ controller creates a filtered download without changing working data, saved entries or undo (26.8475ms)
+✔ controller reports no matches instead of initiating a misleading empty download (5.6839ms)
+✔ filtered export remains unavailable after disposal (3.6083ms)
+ℹ tests 78
+ℹ suites 0
+ℹ pass 77
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2771.9309
+
+✖ failing tests:
+
+test at test\export-scope-stability.test.js:33:1
+✖ cancelling during missing-window query reflection cannot revive the export (96.8574ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/export-scope-stability.test.js:39:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,32 @@
+{
+  "schema": "threecore.evidence-checker-growth-repair.v1",
+  "recordedAt": "2026-11-02T17:24:14.377Z",
+  "baseRevision": "9374845d440910f7ecb27c73d35fe2cfda37f934",
+  "trigger": "Adding the 257th tracked SHA256SUMS.txt caused EVIDENCE_COLLECTION_LIMIT.",
+  "oldMaxManifests": 256,
+  "newMaxManifests": 512,
+  "sharedMaxTotalBytes": 536870912,
+  "sharedByteBudgetChanged": false,
+  "gitOutputByteLimit": 524288,
+  "gitTimeoutMs": 10000,
+  "parserLimitsChanged": false,
+  "pathValidationChanged": false,
+  "syntheticBoundaryObservations": {
+    "manifests257": "accepted",
+    "manifests512": "accepted",
+    "manifests513": "rejected",
+    "corruptedArtifact": "mismatch retained",
+    "smallSharedBudget": "8-byte admission retained"
+  },
+  "tests": {
+    "command": "node --test --test-reporter=tap test/evidence-collection.test.js test/evidence-manifest.test.js test/evidence-git-roundtrip.test.js",
+    "passed": 56,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "sourceFiles": {
+    "scripts/evidence-collection.js": "153f7d99aa55c5f3d2bf59d74adc47e1edfec2e5c1c212c478d98b386f7bfe45",
+    "test/evidence-collection.test.js": "73f330df4bf213cd3b9aafba13a095b05b1524e23f002806bbbb668d344fb694"
+  }
+}

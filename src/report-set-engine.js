@@ -1,9 +1,10 @@
 import { validateReportSet, freezeSet, REPORT_SET_AGENTS } from "./report-set-model.js";
-import { periodContextKey } from "./period-plan.js";
+import { periodContextKey, periodShape, periodFail } from "./period-plan.js";
 import { periodDraftKey, periodDraftAnchors } from "./period-draft.js";
 import { analyzePeriodReport } from "./period-report-engine.js";
 import { inspectReportContinuity } from "./report-history-continuity.js";
 import { catalogToken } from "./token-catalog.js";
+import { comparePeriodReports } from "./period-report-comparison.js";
 
 const compareBlocks = (a, b) => BigInt(a) < BigInt(b) ? -1 : BigInt(a) > BigInt(b) ? 1 : 0;
 const sameEvidence = row => row.evidenceKey;
@@ -95,9 +96,13 @@ function summarizeGroup(rows, entriesById) {
   };
 }
 
+const analyses = new WeakMap();
+
 /** Group by full token/chain/contract/account context. No cross-context arithmetic. */
 export function analyzeReportSet(value) {
   const input = validateReportSet(value);
+  const previous = analyses.get(input);
+  if (previous) return Object.freeze({ ...previous });
   const entriesById = new Map(input.entries.map(entry => [entry.id, entry]));
   const reports = input.entries.map(entry => ({ entry, analysis: analyzePeriodReport(entry.report) }));
   const allRows = [];
@@ -142,7 +147,7 @@ export function analyzeReportSet(value) {
   if (anchors.conflicts.length || anchors.invalid.length) issues.push("HASH_CONFLICTS");
   if (reports.some(row => !row.analysis.allArithmeticAgreement)) issues.push("REPORTS_NEED_REVIEW");
   const allContinuous = issues.length === 0 && tokens.every(token => token.continuous);
-  return freezeSet({ title: input.title, createdAt: input.createdAt, reportCount: input.entries.length,
+  const result = freezeSet({ title: input.title, createdAt: input.createdAt, reportCount: input.entries.length,
     sourceRevision: input.sourceRevision, archivedCount: input.entries.filter(entry => entry.archived).length,
     reports: reports.map(({ entry, analysis }) => ({ id: entry.id, label: entry.label,
       title: entry.report.title, status: analysis.status, savedAt: entry.savedAt,
@@ -150,4 +155,138 @@ export function analyzeReportSet(value) {
     tokens, anchors, issues, allContinuous, status: allContinuous ? "continuous" : "review-needed",
     eventsCombined: false, tokenAmountsSummed: false, liveChainRechecked: false,
     independentlyVerified: false, provesProfit: false });
+  analyses.set(input, result);
+  return Object.freeze({ ...result });
+}
+
+
+/** Compare accepted/proposed saved sets by source ID; never merge or remove storage entries. */
+export function compareReportSets(beforeValue, afterValue) {
+  const before = validateReportSet(beforeValue), after = validateReportSet(afterValue);
+  const beforeAnalysis = analyzeReportSet(before), afterAnalysis = analyzeReportSet(after);
+  const oldRows = new Map(before.entries.map(row => [row.id, row])), newRows = new Map(after.entries.map(row => [row.id, row]));
+  const oldStatuses = new Map(beforeAnalysis.reports.map(row => [row.id, row.status]));
+  const newStatuses = new Map(afterAnalysis.reports.map(row => [row.id, row.status]));
+  const metadata = ["label", "note", "tags", "savedAt", "updatedAt", "archived"];
+  const ids = [...new Set([...oldRows.keys(), ...newRows.keys()])].sort();
+  const rows = ids.map(id => {
+    const old = oldRows.get(id), next = newRows.get(id);
+    const fields = old && next ? metadata.filter(key => JSON.stringify(old[key]) !== JSON.stringify(next[key])) : [];
+    const comparison = old && next ? comparePeriodReports(old.report, next.report) : null;
+    const reportMetadata = comparison ? [...(comparison.titleChanged ? ["title"] : []), ...(comparison.timestampChanged ? ["createdAt"] : [])] : [];
+    const tokenChanges = comparison ? comparison.slots.map(slot => ({
+      agent: slot.agent, kind: slot.kind, sameContext: slot.sameContext, samePeriod: slot.samePeriod,
+      evidenceChanged: slot.evidenceChanged, metadataChanges: slot.metadataChanges,
+      beforeStatus: slot.beforeStatus, afterStatus: slot.afterStatus, beforeSteps: slot.beforeSteps, afterSteps: slot.afterSteps,
+      eventChanges: slot.eventChanges, endpointChanges: slot.endpointChanges,
+      changedAnchorCount: slot.anchorChanges.length, restrictionChange: slot.restrictionChange,
+      archiveChange: slot.archiveChange, needsAttention: slot.attention,
+    })) : [];
+    const evidenceChanged = tokenChanges.some(slot => slot.evidenceChanged);
+    const changed = fields.length || reportMetadata.length || tokenChanges.some(slot => slot.kind !== "unchanged");
+    const kind = !old ? "added" : !next ? "removed" : evidenceChanged ? "changed" : changed ? "metadata-only" : "unchanged";
+    return { id, kind, beforeLabel: old?.label ?? null, afterLabel: next?.label ?? null,
+      beforeStatus: oldStatuses.get(id) ?? null, afterStatus: newStatuses.get(id) ?? null,
+      metadataChanges: fields, reportMetadataChanges: reportMetadata, tokenChanges,
+      needsAttention: ["added", "removed", "changed"].includes(kind) || comparison?.needsAttention === true };
+  });
+  const counts = Object.fromEntries(["added", "removed", "changed", "metadata-only", "unchanged"].map(kind => [kind, rows.filter(row => row.kind === kind).length]));
+  const metadataChanges = ["title", "createdAt", "sourceRevision"].filter(key => before[key] !== after[key]);
+  return freezeSet({ schema: "threecore.report-set-comparison.v1",
+    beforeTitle: before.title, afterTitle: after.title, beforeCount: before.entries.length, afterCount: after.entries.length,
+    metadataChanges, orderChanged: JSON.stringify(before.entries.map(row => row.id)) !== JSON.stringify(after.entries.map(row => row.id)),
+    beforeSummary: { allContinuous: beforeAnalysis.allContinuous, issues: beforeAnalysis.issues },
+    afterSummary: { allContinuous: afterAnalysis.allContinuous, issues: afterAnalysis.issues },
+    counts, rows, needsAttention: rows.some(row => row.needsAttention), sameContents: metadataChanges.length === 0 &&
+      JSON.stringify(before.entries.map(row => row.id)) === JSON.stringify(after.entries.map(row => row.id)) &&
+      rows.every(row => row.kind === "unchanged"),
+    historicalOnly: true, liveChainRechecked: false, independentlyVerified: false, automaticMerge: false, deletesStoredReports: false });
+}
+
+/** Compare two explicitly selected saved event lists only where both actually saved a query. */
+export function compareReportSetEvents(value, queryValue) {
+  const input = validateReportSet(value);
+  let query;
+  try { query = periodShape(queryValue, ["beforeId", "afterId", "agent"]); }
+  catch { periodFail("PERIOD_SET_EVENT_QUERY"); }
+  if (typeof query.beforeId !== "string" || typeof query.afterId !== "string" ||
+      query.beforeId === query.afterId || !REPORT_SET_AGENTS.includes(query.agent)) periodFail("PERIOD_SET_EVENT_QUERY");
+  const selected = [query.beforeId, query.afterId].map(id => input.entries.find(row => row.id === id));
+  if (selected.some(row => !row)) periodFail("PERIOD_SET_EVENT_SOURCE");
+  const sources = selected.map(row => row.report.slots.find(slot => slot.agent === query.agent).entry);
+  if (sources.some(row => !row)) periodFail("PERIOD_SET_EVENT_SLOT");
+  const drafts = sources.map(row => row.draft);
+  if (periodContextKey(drafts[0].plan.context) !== periodContextKey(drafts[1].plan.context)) periodFail("PERIOD_SET_EVENT_CONTEXT");
+  const ranges = [];
+  for (const left of drafts[0].records) for (const right of drafts[1].records) {
+    const from = BigInt(left.range.fromBlock) > BigInt(right.range.fromBlock) ? left.range.fromBlock : right.range.fromBlock;
+    const to = BigInt(left.range.toBlock) < BigInt(right.range.toBlock) ? left.range.toBlock : right.range.toBlock;
+    if (BigInt(from) <= BigInt(to)) ranges.push({ fromBlock: from, toBlock: to });
+  }
+  ranges.sort((a, b) => compareBlocks(a.fromBlock, b.fromBlock));
+  const commonRanges = [];
+  for (const row of ranges) {
+    const previous = commonRanges.at(-1);
+    if (previous && BigInt(row.fromBlock) <= BigInt(previous.toBlock) + 1n) {
+      if (BigInt(row.toBlock) > BigInt(previous.toBlock)) previous.toBlock = row.toBlock;
+    } else commonRanges.push({ ...row });
+  }
+  const inside = block => commonRanges.some(range => BigInt(block) >= BigInt(range.fromBlock) && BigInt(block) <= BigInt(range.toBlock));
+  const observed = drafts.map(draft => draft.records.flatMap((record, recordIndex) => record.events.map((event, eventIndex) => ({ recordIndex, eventIndex, event }))));
+  const included = observed.map(rows => rows.filter(row => inside(row.event.blockNumber)));
+  const key = row => row.event.transactionHash + ":" + row.event.logIndex;
+  const maps = included.map(rows => new Map(rows.map(row => [key(row), row])));
+  const counts = { matching: 0, changed: 0, onlyBefore: 0, onlyAfter: 0 };
+  const differences = [];
+  const fields = ["blockNumber", "blockHash", "transactionIndex", "from", "to", "amountBaseUnits"];
+  for (const id of new Set([...maps[0].keys(), ...maps[1].keys()])) {
+    const before = maps[0].get(id) ?? null, after = maps[1].get(id) ?? null;
+    const changedFields = before && after ? fields.filter(field => before.event[field] !== after.event[field]) : [];
+    const kind = !before ? "onlyAfter" : !after ? "onlyBefore" : changedFields.length ? "changed" : "matching";
+    counts[kind]++;
+    if (kind !== "matching") differences.push({ kind, transactionHash: (before ?? after).event.transactionHash,
+      logIndex: (before ?? after).event.logIndex, changedFields, before, after });
+  }
+  differences.sort((a, b) => compareBlocks((a.before ?? a.after).event.blockNumber, (b.before ?? b.after).event.blockNumber) ||
+    a.transactionHash.localeCompare(b.transactionHash) || compareBlocks(a.logIndex, b.logIndex));
+  const anchorSets = drafts.map(draft => {
+    try { return { valid: true, rows: periodDraftAnchors(draft) }; }
+    catch { return { valid: false, rows: [] }; }
+  });
+  const afterAnchors = new Map(anchorSets[1].rows.filter(row => inside(row.number)).map(row => [row.number, row.hash]));
+  const sharedAnchors = anchorSets[0].rows.filter(row => inside(row.number) && afterAnchors.has(row.number));
+  const anchorDifferences = sharedAnchors.filter(row => afterAnchors.get(row.number) !== row.hash)
+    .map(row => ({ blockNumber: row.number, beforeHash: row.hash, afterHash: afterAnchors.get(row.number) }));
+  const source = index => ({ reportId: selected[index].id, label: selected[index].label,
+    archivedReport: selected[index].archived, archivedSource: sources[index].archived,
+    restricted: sources[index].requiresNewPlan, internallyConsistentHashes: anchorSets[index].valid,
+    savedQueryRecords: drafts[index].records.length, totalSavedEvents: observed[index].length,
+    comparedEvents: included[index].length, excludedEvents: observed[index].length - included[index].length });
+  return freezeSet({ schema: "threecore.saved-event-comparison.v1", query: { ...query }, context: drafts[0].plan.context,
+    tokenAddress: catalogToken({ agent: query.agent, chainId: drafts[0].plan.context.chainId }).address, before: source(0), after: source(1),
+    commonRanges, comparedBlocks: commonRanges.reduce((n, row) => n + BigInt(row.toBlock) - BigInt(row.fromBlock) + 1n, 0n).toString(),
+    counts, differences, sharedAnchorCount: sharedAnchors.length, anchorDifferences,
+    status: !commonRanges.length ? "no-common-coverage" : differences.length || anchorDifferences.length || anchorSets.some(row => !row.valid)
+      ? "differences" : "saved-observations-match",
+    rangeNotation: "inclusive", eventsCombined: false, absenceProvesNoTransfer: false,
+    historicalOnly: true, liveChainRechecked: false, authenticated: false, authorizesExecution: false });
+}
+
+/** A proposed scope for an explicit saved discrepancy; never evidence that a reread happened. */
+export function reportSetEventRecheckRange(value, query, selection) {
+  const comparison = compareReportSetEvents(value, query);
+  if (typeof selection !== "string" || selection.trim() !== selection || !/^[eb]:[1-9][0-9]{0,4}$/.test(selection)) periodFail("PERIOD_SET_EVENT_RECHECK_SELECTION");
+  const [kind, indexText] = selection.split(":"), index = Number(indexText) - 1;
+  const selected = kind === "e" ? comparison.differences[index] : comparison.anchorDifferences[index];
+  if (!selected) periodFail("PERIOD_SET_EVENT_RECHECK_SELECTION");
+  const blocks = kind === "e" ? [selected.before?.event.blockNumber, selected.after?.event.blockNumber].filter(Boolean) : [selected.blockNumber];
+  blocks.sort(compareBlocks);
+  const fromBlock = blocks[0], toBlock = blocks.at(-1), width = BigInt(toBlock) - BigInt(fromBlock) + 1n;
+  if (BigInt(fromBlock) < 1n || width > 24000n) periodFail("PERIOD_SET_EVENT_RECHECK_RANGE");
+  return freezeSet({ selection, query: comparison.query, context: comparison.context,
+    fromBlock, toBlock, blocks: width.toString(), windowSize: Number(width > 2000n ? 2000n : width),
+    reason: kind === "e" ? selected.kind : "block-hash-disagreement",
+    transactionHash: kind === "e" ? selected.transactionHash : null, logIndex: kind === "e" ? selected.logIndex : null,
+    includesInterveningBlocks: BigInt(toBlock) > BigInt(fromBlock) + 1n,
+    historicalOnly: true, executed: false, originalEvidenceCopied: false });
 }

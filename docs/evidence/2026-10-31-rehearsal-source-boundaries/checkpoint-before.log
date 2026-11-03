@@ -1,0 +1,171 @@
+✖ save checkpoint cannot outlive clear (10.002ms)
+✖ save checkpoint cannot outlive clear when old capture also fails (1.3372ms)
+✖ save checkpoint cannot outlive replace (6.3328ms)
+✖ save checkpoint cannot outlive replace when old capture also fails (1.8146ms)
+✖ save checkpoint cannot outlive invalid-replacement (2.8768ms)
+✖ save checkpoint cannot outlive invalid-replacement when old capture also fails (1.203ms)
+✔ ordinary checkpoint replacement still records the offered content and source (4.1533ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 1
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 386.9779
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-save-checkpoint-boundaries.test.mjs:8:96
+✖ save checkpoint cannot outlive clear (10.002ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'matched'
+  - 'unrecorded'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:15:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'matched',
+    expected: 'unrecorded',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-save-checkpoint-boundaries.test.mjs:8:96
+✖ save checkpoint cannot outlive clear when old capture also fails (1.3372ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "INVALID_REHEARSAL_SESSION"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:14:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_REHEARSAL_SESSION
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:10:25)
+        at validateRehearsalSession (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:11:147)
+        at capture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:26:16)
+        at Object.record (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:32:18)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:14:37
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:14:9)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-save-checkpoint-boundaries.test.mjs:8:96
+✖ save checkpoint cannot outlive replace (6.3328ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'changed'
+  - 'matched'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:16:83)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'changed',
+    expected: 'matched',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-save-checkpoint-boundaries.test.mjs:8:96
+✖ save checkpoint cannot outlive replace when old capture also fails (1.8146ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "INVALID_REHEARSAL_SESSION"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:14:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_REHEARSAL_SESSION
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:10:25)
+        at validateRehearsalSession (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:11:147)
+        at capture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:26:16)
+        at Object.record (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:32:18)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:14:37
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:14:9)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-save-checkpoint-boundaries.test.mjs:8:96
+✖ save checkpoint cannot outlive invalid-replacement (2.8768ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'changed'
+  - 'matched'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:16:83)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'changed',
+    expected: 'matched',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-save-checkpoint-boundaries.test.mjs:8:96
+✖ save checkpoint cannot outlive invalid-replacement when old capture also fails (1.203ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "INVALID_REHEARSAL_SESSION"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:14:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: RehearsalError: INVALID_REHEARSAL_SESSION
+        at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:10:25)
+        at validateRehearsalSession (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:11:147)
+        at capture (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:26:16)
+        at Object.record (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:32:18)
+        at file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:14:37
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-save-checkpoint-boundaries.test.mjs:14:9)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }

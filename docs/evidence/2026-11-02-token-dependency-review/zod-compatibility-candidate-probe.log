@@ -1,0 +1,1 @@
+{"results":[{"name":"valid-config","status":"returned","errors":[]},{"name":"invalid-config","status":"threw","errorName":"TypeError","message":"Cannot read properties of undefined (reading 'map')"},{"name":"record-config","status":"returned","errors":[]}]}

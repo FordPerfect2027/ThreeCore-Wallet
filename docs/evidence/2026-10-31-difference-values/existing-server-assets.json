@@ -1,0 +1,40 @@
+{
+  "source": "94d734a",
+  "port": 4231,
+  "serverRestarted": false,
+  "userBrowserControlReconnected": false,
+  "assets": [
+    {
+      "path": "examples/operation-rehearsal.html",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "matchesSavedSource": true,
+      "bytes": 44354,
+      "sha256": "b9a4c0370d6c6bbda4ba804fb63075c72d91cb19fd0f8ee2a4003e0a222773ce"
+    },
+    {
+      "path": "examples/operation-rehearsal-review-panel.js",
+      "status": 200,
+      "contentType": "text/javascript; charset=utf-8",
+      "matchesSavedSource": true,
+      "bytes": 28533,
+      "sha256": "364137dbf78b4d7f71ed26a1d25e3c748312394b3da8341550be348264e06452"
+    },
+    {
+      "path": "src/operation-rehearsal-report-review.js",
+      "status": 200,
+      "contentType": "text/javascript; charset=utf-8",
+      "matchesSavedSource": true,
+      "bytes": 14662,
+      "sha256": "2c0d2d84e09b4bd94f1f9909577f444f8206f703a9238dc72f589f1ca8fe7773"
+    },
+    {
+      "path": "src/file-read-status.js",
+      "status": 200,
+      "contentType": "text/javascript; charset=utf-8",
+      "matchesSavedSource": true,
+      "bytes": 10265,
+      "sha256": "df7be54fb69f1cfcf0888482b868be8477f997622d942f6513d088c1888c49c1"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+PERIOD_CHECKSUM
+Usage: node scripts/recover-report-set-source.js evidence.json --source before|after
+Verifies the entire bundle, then writes the selected original JSON to stdout. No network, imports or input writes.
+Output includes full unencrypted original addresses, balances, history and notes. Redirect it only to an intended local file.
+Exit 0: original recovered and comparison matches; 2: original recovered but comparison differs; 1: invalid input with no original output.

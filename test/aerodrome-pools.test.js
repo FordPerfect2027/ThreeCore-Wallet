@@ -8,6 +8,7 @@ import {
 } from "../src/aerodrome-pools.js";
 
 const POOL = "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+const HASH = "0x" + "ab".repeat(32);
 const OTHER = "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 function word(n) {
   return BigInt(n).toString(16).padStart(64, "0");
@@ -29,10 +30,11 @@ function mock({
     let result;
     if (input.method === "eth_chainId") result = chain;
     else if (input.method === "eth_blockNumber") result = wrongBlock ? "not-a-block" : "0x11";
+    else if (input.method === "eth_getBlockByNumber") result = { number: input.params[0], hash: HASH };
     else if (input.method === "eth_getCode") result = code;
     else if (input.method === "eth_call") {
       const [{ to, data }, block] = input.params;
-      assert.equal(block, "0x11");
+      assert.deepEqual(block, { blockHash: HASH, requireCanonical: true });
       if (to === AERODROME_BASE.poolFactory) {
         assert.equal(data.slice(0, 10), "0x79bc57d5");
         assert.equal(data.length, 202);
@@ -48,16 +50,11 @@ function mock({
         else throw Error("Forbidden pool selector " + data);
       } else throw Error("Unexpected eth_call contract " + to);
     } else throw Error("Forbidden RPC method " + input.method);
-    return {
-      ok: true,
-      async json() {
-        return {
-          jsonrpc: "2.0",
-          id: corruptId ? input.id + 1 : input.id,
-          result,
-        };
-      },
-    };
+    return new Response(JSON.stringify({
+      jsonrpc: "2.0",
+      id: corruptId ? input.id + 1 : input.id,
+      result,
+    }));
   };
   return { calls, fetchImpl };
 }
@@ -111,7 +108,7 @@ test("absent pools are reported as null and reserve reads are not attempted", as
   const result = await inspectAerodromePools({ fetchImpl });
   assert.ok(Object.values(result.pools).every(p => p.stable.poolAddress === null &&
     p.volatile.poolAddress === null));
-  assert.equal(calls.length, 8);
+  assert.equal(calls.length, 10);
   assert.equal(calls.some(c => c.method === "eth_getCode"), false);
 });
 
@@ -157,8 +154,8 @@ test("transport and timeout validation happens before network access", async () 
 test("all operations use only read-only RPC methods at one block", async () => {
   const { calls, fetchImpl } = mock();
   await inspectAerodromePools({ fetchImpl });
-  assert.ok(calls.every(c => ["eth_chainId", "eth_blockNumber", "eth_call", "eth_getCode"].includes(c.method)));
-  assert.ok(calls.filter(c => ["eth_call", "eth_getCode"].includes(c.method))
-    .every(c => c.params.at(-1) === "0x11"));
+  assert.ok(calls.every(c => ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber", "eth_call", "eth_getCode"].includes(c.method)));
+  for (const c of calls.filter(c => ["eth_call", "eth_getCode"].includes(c.method)))
+    assert.deepEqual(c.params.at(-1), { blockHash: HASH, requireCanonical: true });
   assert.equal(calls.some(c => /sign|sendTransaction|approve|personal/i.test(c.method)), false);
 });

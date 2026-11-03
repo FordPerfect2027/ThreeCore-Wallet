@@ -196,3 +196,21 @@ test("dispose removes listeners and host, and can be called twice", () => {
   assert.equal(status.textContent, before);
   assert.equal(f.parent.children.length, 0);
 });
+
+test("filtered event CSV saves all pages and empty results while keeping JSON backup state unchanged", async () => {
+  const slot = scenario(); slot.archive = archive([record(30,42,Array.from({length:61},(_,i)=>event({amountBaseUnits:"1"},i)))]);
+  const f = fixture({ initial: workspace([slot]) });
+  try {
+    assert.equal(f.q("export-filtered-events").disabled,true);
+    f.click("calculate"); const before=reconciliationKey(f.app.getWorkspace());
+    f.click("next");f.click("export-filtered-events");await tick();
+    assert.equal(f.downloads.length,1);assert.equal(f.downloads[0].matched,61);
+    assert.equal(f.downloads[0].text.trimEnd().split("\r\n").length,62);
+    assert.match(f.q("export-status").textContent,/まだ/);
+    f.input("search","no results","input");f.click("export-filtered-events");await tick();
+    assert.equal(f.downloads[1].matched,0);assert.equal(f.downloads[1].text.trimEnd().split("\r\n").length,1);
+    f.input("search","x".repeat(161),"input");assert.equal(f.q("export-filtered-events").disabled,true);
+    assert.equal(reconciliationKey(f.app.getWorkspace()),before);
+    const button=f.q("export-filtered-events");f.app.dispose();button.click();assert.equal(f.downloads.length,2);
+  } finally { f.app.dispose(); }
+});

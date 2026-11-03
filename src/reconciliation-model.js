@@ -1,6 +1,7 @@
 import { identityObject } from "./token-identity-codec.js";
 import { validateTokenObservation } from "./token-identity-model.js";
 import { validateTransferArchive } from "./transfer-archive.js";
+import { captureDataArray } from "./security-data.js";
 
 export const RECONCILIATION_SCHEMA = "threecore.reconciliation-workspace.v1";
 export const RECONCILIATION_AGENTS = Object.freeze(["DAT", "EMA", "CAWELON"]);
@@ -20,7 +21,7 @@ export function reconciliationFail(code) {
 }
 
 export function reconciliationShape(input, fields) {
-  try { identityObject(input, fields); }
+  try { return identityObject(input, fields); }
   catch { reconciliationFail("RECONCILIATION_SHAPE"); }
 }
 
@@ -52,17 +53,19 @@ function validatePart(agent, part, input) {
 }
 
 /** Partial and conflicting evidence is retained for review; it is never corrected silently. */
+// Only immutable snapshots produced here are reused; caller data is always captured.
+const validatedWorkspaces = new WeakSet();
 export function validateReconciliationWorkspace(input) {
-  reconciliationShape(input, ["schema", "slots", "readOnly", "independentlyVerified"]);
+  if (validatedWorkspaces.has(input)) return input;
+  input = reconciliationShape(input, ["schema", "slots", "readOnly", "independentlyVerified"]);
   if (input.schema !== RECONCILIATION_SCHEMA || input.readOnly !== true || input.independentlyVerified !== false) {
     reconciliationFail("RECONCILIATION_SCHEMA");
   }
-  if (!Array.isArray(input.slots) || input.slots.length !== RECONCILIATION_AGENTS.length) {
-    reconciliationFail("RECONCILIATION_SLOTS");
-  }
+  let capturedSlots;
+  try { capturedSlots = captureDataArray(input.slots, RECONCILIATION_AGENTS.length, RECONCILIATION_AGENTS.length); }
+  catch { reconciliationFail("RECONCILIATION_SLOTS"); }
   const slots = RECONCILIATION_AGENTS.map((agent, index) => {
-    const slot = input.slots[index];
-    reconciliationShape(slot, ["agent", ...RECONCILIATION_PARTS]);
+    const slot = reconciliationShape(capturedSlots[index], ["agent", ...RECONCILIATION_PARTS]);
     if (slot.agent !== agent) reconciliationFail("RECONCILIATION_SLOTS");
     return Object.freeze({
       agent,
@@ -80,6 +83,7 @@ export function validateReconciliationWorkspace(input) {
   if (new TextEncoder().encode(JSON.stringify(value)).byteLength > RECONCILIATION_LIMIT) {
     reconciliationFail("RECONCILIATION_SIZE");
   }
+  validatedWorkspaces.add(value);
   return value;
 }
 

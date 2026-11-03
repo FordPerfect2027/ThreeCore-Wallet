@@ -1,0 +1,5 @@
+
+> @threecore/wallet-connector@0.1.0 test:browser-ui
+> node scripts/test-browser-ui.js
+
+836 browser UI tests passed with a synthetic provider and no external RPC.

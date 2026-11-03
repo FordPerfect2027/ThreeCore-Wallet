@@ -4,7 +4,7 @@ import { guardRpcRequest, guardRpcResponse, RPC_SECURITY_LIMITS } from "../src/s
 import { catalogToken } from "../src/token-catalog.js";
 import { normalizeAddress } from "../src/wallet-session.js";
 import { BASE_STATE_METHODS } from "../src/base-state-provider.js";
-import { readStateRpcJson, STATE_RPC_TIMEOUT_MS } from "../src/state-rpc-http.js";
+import { fetchStateRpcResponse, readStateRpcJson, STATE_RPC_TIMEOUT_MS } from "../src/state-rpc-http.js";
 
 export const BASE_MAINNET_RPC = "https://mainnet.base.org";
 const MAX_BODY = 8192;
@@ -50,20 +50,19 @@ export function createBaseStateRpcHandler(fetchImpl = globalThis.fetch) {
         if (!BASE_STATE_METHODS.includes(rpc.method)) throw Error();
       } catch { send(400, { error: "STATE_RPC_REQUEST" }); return; }
       if (aborter.signal.aborted) { send(504, { error: "STATE_RPC_UNAVAILABLE" }); return; }
-      const upstream = await fetchImpl(BASE_MAINNET_RPC, {
+      const upstream = await fetchStateRpcResponse(fetchImpl, BASE_MAINNET_RPC, {
         method: "POST", headers: { "content-type": "application/json" },
         body: JSON.stringify({ jsonrpc: "2.0", id: 1, ...rpc }),
-        credentials: "omit", redirect: "error", cache: "no-store", signal: aborter.signal,
+        credentials: "omit", redirect: "error", cache: "no-store", referrerPolicy: "no-referrer", signal: aborter.signal,
       });
-      if (!upstream.ok) { try { await upstream.body?.cancel(); } catch {} throw Error(); }
-      const body = await readStateRpcJson(upstream);
+      const body = await readStateRpcJson(upstream, { signal: aborter.signal });
       if (!body || body.id !== 1 || body.jsonrpc !== "2.0" || Object.hasOwn(body, "error") ||
           !Object.hasOwn(body, "result")) throw Error();
       if (rpc.method === "eth_getLogs" && (!Array.isArray(body.result) || body.result.length > RPC_SECURITY_LIMITS.logEntries)) throw Error();
       const result = guardRpcResponse(rpc.method, body.result);
       if (!aborter.signal.aborted) send(200, { result });
       else send(504, { error: "STATE_RPC_UNAVAILABLE" });
-    } catch { send(502, { error: "STATE_RPC_UNAVAILABLE" }); }
+    } catch { send(aborter.signal.aborted ? 504 : 502, { error: "STATE_RPC_UNAVAILABLE" }); }
     finally {
       active--; clearTimeout(timer); response.removeListener("close", close); aborter.abort();
     }

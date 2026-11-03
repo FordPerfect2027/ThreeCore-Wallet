@@ -1,0 +1,31 @@
+{
+  "schema": "threecore.aerodrome-classic-quote-file.v1",
+  "quote": {
+    "schema": "threecore.aerodrome-classic-quote.v1",
+    "agent": "DAT",
+    "chainId": 8453,
+    "dappOrigin": "https://aerodrome.finance",
+    "routerAddress": "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+    "factoryAddress": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+    "poolAddress": "0x5555555555555555555555555555555555555555",
+    "direction": "sell",
+    "inputToken": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+    "outputToken": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "inputDecimals": 18,
+    "outputDecimals": 6,
+    "inputBaseUnits": "50000000000000000000",
+    "reserveInBaseUnits": "2000000000000000000000000",
+    "reserveOutBaseUnits": "100000000",
+    "feeBps": 30,
+    "poolOutputBaseUnits": "2492",
+    "routerOutputBaseUnits": "2492",
+    "slippageBps": 50,
+    "blockNumber": "42",
+    "blockHash": "0xabababababababababababababababababababababababababababababababab",
+    "blockTimestampSeconds": 1793704523,
+    "observedAtSeconds": 1793704525,
+    "canonicalBlockRechecked": true,
+    "readOnly": true
+  },
+  "sha256": "b92e8f35b79082af21390ccb56c5d5dfedb482512786ff2edbb2a2c7cd9384d2"
+}

@@ -1,0 +1,154 @@
+TAP version 13
+# Subtest: proposal comparison serves complete offline module graph without exposing local inputs
+ok 1 - proposal comparison serves complete offline module graph without exposing local inputs
+  ---
+  duration_ms: 729.1804
+  type: 'test'
+  ...
+# Subtest: CLI reports acceptable comparisons, mismatches and invalid input separately without modifying original files
+ok 2 - CLI reports acceptable comparisons, mismatches and invalid input separately without modifying original files
+  ---
+  duration_ms: 91.7081
+  type: 'test'
+  ...
+# Subtest: CLI bounds bytes, rejects invalid UTF-8 and validates argument shape before opening files
+ok 3 - CLI bounds bytes, rejects invalid UTF-8 and validates argument shape before opening files
+  ---
+  duration_ms: 39.0126
+  type: 'test'
+  ...
+# Subtest: saved proposal review retains original text and recomputes historical success and failure
+ok 4 - saved proposal review retains original text and recomputes historical success and failure
+  ---
+  duration_ms: 88.5345
+  type: 'test'
+  ...
+# Subtest: saved verdict, reasons, time and permissions cannot substitute for recomputation
+ok 5 - saved verdict, reasons, time and permissions cannot substitute for recomputation
+  ---
+  duration_ms: 42.5812
+  type: 'test'
+  ...
+# Subtest: page previews text without executing it, then saves and reloads exact sources with current-time recheck
+ok 6 - page previews text without executing it, then saves and reloads exact sources with current-time recheck
+  ---
+  duration_ms: 144.0119
+  type: 'test'
+  ...
+# Subtest: historical pass is not retained as a current pass after expiry
+ok 7 - historical pass is not retained as a current pass after expiry
+  ---
+  duration_ms: 55.1699
+  type: 'test'
+  ...
+# Subtest: cancel discards stale comparison and aborts work
+ok 8 - cancel discards stale comparison and aborts work
+  ---
+  duration_ms: 13.9416
+  type: 'test'
+  ...
+# Subtest: new-file discards stale comparison and aborts work
+ok 9 - new-file discards stale comparison and aborts work
+  ---
+  duration_ms: 19.5018
+  type: 'test'
+  ...
+# Subtest: pagehide discards stale comparison and aborts work
+ok 10 - pagehide discards stale comparison and aborts work
+  ---
+  duration_ms: 18.7431
+  type: 'test'
+  ...
+# Subtest: dispose discards stale comparison and aborts work
+ok 11 - dispose discards stale comparison and aborts work
+  ---
+  duration_ms: 25.3297
+  type: 'test'
+  ...
+# Subtest: wrong file count, duplicate types, changed evidence and changed saved verdict never retain old result
+ok 12 - wrong file count, duplicate types, changed evidence and changed saved verdict never retain old result
+  ---
+  duration_ms: 43.2665
+  type: 'test'
+  ...
+# Subtest: cancelled reads and saved-record verification cannot repopulate the page
+ok 13 - cancelled reads and saved-record verification cannot repopulate the page
+  ---
+  duration_ms: 9.5141
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download does not lose result or report revoked export success
+ok 14 - failed or reentrant download does not lose result or report revoked export success
+  ---
+  duration_ms: 44.9004
+  type: 'test'
+  ...
+# Subtest: all three agents bind original evidence and budget without granting authority to an AI label
+ok 15 - all three agents bind original evidence and budget without granting authority to an AI label
+  ---
+  duration_ms: 104.3984
+  type: 'test'
+  ...
+# Subtest: an exact source-file hash prevents substituting or reformatting the linked budget evidence
+ok 16 - an exact source-file hash prevents substituting or reformatting the linked budget evidence
+  ---
+  duration_ms: 33.2218
+  type: 'test'
+  ...
+# Subtest: policy context and exact origin/contract pair must match, independently of reassuring rationale
+ok 17 - policy context and exact origin/contract pair must match, independently of reassuring rationale
+  ---
+  duration_ms: 44.1533
+  type: 'test'
+  ...
+# Subtest: policy and proposal time windows use exclusive expiry and bounded lifetimes
+ok 18 - policy and proposal time windows use exclusive expiry and bounded lifetimes
+  ---
+  duration_ms: 91.1267
+  type: 'test'
+  ...
+# Subtest: spend, native value and known fee limits are exact uint256 comparisons
+ok 19 - spend, native value and known fee limits are exact uint256 comparisons
+  ---
+  duration_ms: 38.3728
+  type: 'test'
+  ...
+# Subtest: a proposal and policy agreeing with each other cannot replace the evidence account or token
+ok 20 - a proposal and policy agreeing with each other cannot replace the evidence account or token
+  ---
+  duration_ms: 18.9347
+  type: 'test'
+  ...
+# Subtest: unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+ok 21 - unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+  ---
+  duration_ms: 10.6726
+  type: 'test'
+  ...
+# Subtest: shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+ok 22 - shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+  ---
+  duration_ms: 24.3796
+  type: 'test'
+  ...
+# Subtest: strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+ok 23 - strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+  ---
+  duration_ms: 6.1977
+  type: 'test'
+  ...
+# Subtest: async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+ok 24 - async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+  ---
+  duration_ms: 12.9323
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2151.9874

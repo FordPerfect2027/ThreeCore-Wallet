@@ -1,0 +1,562 @@
+✖ recovery download false receipt is refused (44.8859ms)
+✖ recovery download resolved receipt is refused (8.231ms)
+✖ recovery download rejected receipt is refused (8.0776ms)
+✖ recovery onCopyArchive false receipt is refused (9.5146ms)
+✖ recovery onCopyArchive resolved receipt is refused (4.5557ms)
+✖ recovery onCopyArchive rejected receipt is refused (3.7578ms)
+✖ recovery successful apply survives throw observer failure (12.0985ms)
+✖ recovery successful apply survives rejected observer failure (8.0376ms)
+✖ recovery download invalidate cannot overwrite the newer display (7.9664ms)
+✖ recovery download dispose cannot overwrite the newer display (4.007ms)
+✖ recovery onCopyArchive invalidate cannot overwrite the newer display (2.6972ms)
+✖ recovery onCopyArchive dispose cannot overwrite the newer display (2.3009ms)
+✖ recovery onRestore invalidate cannot overwrite the newer display (5.4145ms)
+✖ recovery onRestore dispose cannot overwrite the newer display (6.6478ms)
+✖ recovery preview invalidate prevents late UI or handoff (2.9782ms)
+✖ recovery preview dispose prevents late UI or handoff (3.853ms)
+✖ recovery report invalidate prevents late UI or handoff (5.1938ms)
+✖ recovery report dispose prevents late UI or handoff (5.1358ms)
+✖ recovery exportText invalidate prevents late UI or handoff (3.0449ms)
+✖ recovery exportText dispose prevents late UI or handoff (3.7255ms)
+✖ recovery state invalidate prevents late UI or handoff (2.2094ms)
+✖ recovery state dispose prevents late UI or handoff (2.6422ms)
+✖ recovery refresh bounds reentrant cleanup callbacks (1.3991ms)
+✖ recovery disposal survives cleanup failure and detaches the panel (1.0477ms)
+✔ recovery normal copy, save, preview and explicit apply remain available (8.1016ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 1
+ℹ fail 24
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 588.4011
+
+✖ failing tests:
+
+test at test\history-recovery-panel-lifecycle.test.js:21:131
+✖ recovery download false receipt is refused (44.8859ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始|入力欄へ出しました/. Input:
+  
+  '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:23:89)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。',
+    expected: /ダウンロードを開始|入力欄へ出しました/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:21:131
+✖ recovery download resolved receipt is refused (8.231ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始|入力欄へ出しました/. Input:
+  
+  '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:23:89)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。',
+    expected: /ダウンロードを開始|入力欄へ出しました/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:21:131
+✖ recovery download rejected receipt is refused (8.0776ms)
+  Error: synthetic refusal
+      at download (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:22:117)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:68:5
+      at action (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:24:13)
+      at TestElement.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:11:44)
+      at Object.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:18:130)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:23:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at test\history-recovery-panel-lifecycle.test.js:21:131
+✖ recovery onCopyArchive false receipt is refused (9.5146ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始|入力欄へ出しました/. Input:
+  
+  '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:23:89)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。',
+    expected: /ダウンロードを開始|入力欄へ出しました/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:21:131
+✖ recovery onCopyArchive resolved receipt is refused (4.5557ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /ダウンロードを開始|入力欄へ出しました/. Input:
+  
+  '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:23:89)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。',
+    expected: /ダウンロードを開始|入力欄へ出しました/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:21:131
+✖ recovery onCopyArchive rejected receipt is refused (3.7578ms)
+  Error: synthetic refusal
+      at onCopyArchive (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:22:117)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:75:5
+      at action (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:24:13)
+      at TestElement.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:11:44)
+      at Object.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:18:130)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:23:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at test\history-recovery-panel-lifecycle.test.js:26:43
+✖ recovery successful apply survives throw observer failure (12.0985ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /履歴へ戻しました/. Input:
+  
+  '復元操作は行えませんでした。新しい履歴は上書きしていません。必要なら復元用JSONを別途保存してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:29:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '復元操作は行えませんでした。新しい履歴は上書きしていません。必要なら復元用JSONを別途保存してください。',
+    expected: /履歴へ戻しました/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:26:43
+✖ recovery successful apply survives rejected observer failure (8.0376ms)
+  Error: synthetic observer
+      at onRestore (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:27:109)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:59:5
+      at action (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:24:13)
+      at TestElement.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:11:44)
+      at Object.run (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:18:130)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:28:37)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+
+test at test\history-recovery-panel-lifecycle.test.js:32:145
+✖ recovery download invalidate cannot overwrite the newer display (7.9664ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+           ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:34:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:32:145
+✖ recovery download dispose cannot overwrite the newer display (4.007ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+           ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:34:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:32:145
+✖ recovery onCopyArchive invalidate cannot overwrite the newer display (2.6972ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:34:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:32:145
+✖ recovery onCopyArchive dispose cannot overwrite the newer display (2.3009ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:34:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:32:145
+✖ recovery onRestore invalidate cannot overwrite the newer display (5.4145ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '直前の操作前の履歴へ戻しました。接続・署名・送金は行っていません。'
+  - '復元前の確認です。履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:34:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '直前の操作前の履歴へ戻しました。接続・署名・送金は行っていません。',
+    expected: '復元前の確認です。履歴は変更していません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:32:145
+✖ recovery onRestore dispose cannot overwrite the newer display (6.6478ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '直前の操作前の履歴へ戻しました。接続・署名・送金は行っていません。'
+  - '復元前の確認です。履歴は変更していません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:34:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '直前の操作前の履歴へ戻しました。接続・署名・送金は行っていません。',
+    expected: '復元前の確認です。履歴は変更していません。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:36:157
+✖ recovery preview invalidate prevents late UI or handoff (2.9782ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '復元前の確認です。履歴は変更していません。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:40:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '復元前の確認です。履歴は変更していません。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:36:157
+✖ recovery preview dispose prevents late UI or handoff (3.853ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '復元前の確認です。履歴は変更していません。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:40:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '復元前の確認です。履歴は変更していません。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:36:157
+✖ recovery report invalidate prevents late UI or handoff (5.1938ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '復元用控えの内容です。まだ履歴を変更していません。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:40:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '復元用控えの内容です。まだ履歴を変更していません。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:36:157
+✖ recovery report dispose prevents late UI or handoff (5.1358ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '復元用控えの内容です。まだ履歴を変更していません。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:40:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '復元用控えの内容です。まだ履歴を変更していません。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:36:157
+✖ recovery exportText invalidate prevents late UI or handoff (3.0449ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+           ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:40:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:36:157
+✖ recovery exportText dispose prevents late UI or handoff (3.7255ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+           ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:40:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:36:157
+✖ recovery state invalidate prevents late UI or handoff (2.2094ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:40:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:36:157
+✖ recovery state dispose prevents late UI or handoff (2.6422ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。'
+  - '操作前の履歴 2件を保持しています。戻す前に確認してください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:40:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '操作前のJSONを入力欄へ出しました。追加・置き換えの内容を別途確認してから適用してください。',
+    expected: '操作前の履歴 2件を保持しています。戻す前に確認してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:43:1
+✖ recovery refresh bounds reentrant cleanup callbacks (1.3991ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "unbounded refresh"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:46:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: unbounded refresh
+        at Object.cancelPreview (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:45:105)
+        at invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:91:14)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:98:5)
+        at Object.cancelPreview (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:45:140)
+        at invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:91:14)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:98:5)
+        at Object.cancelPreview (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:45:140)
+        at invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:91:14)
+        at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:98:5)
+        at Object.cancelPreview (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:45:140),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\history-recovery-panel-lifecycle.test.js:48:1
+✖ recovery disposal survives cleanup failure and detaches the panel (1.0477ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "synthetic cleanup"
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:50:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: synthetic cleanup
+        at Object.cancelPreview (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:49:85)
+        at invalidate (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:91:14)
+        at Object.dispose (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/history-recovery-panel.js:115:7)
+        at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:50:46
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/history-recovery-panel-lifecycle.test.js:50:21)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }

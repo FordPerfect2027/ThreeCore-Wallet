@@ -1,0 +1,26 @@
+{
+  "source": "ccc5acb",
+  "staleStatus": "確認後にJSONが変わりました。もう一度内容を確認してください。",
+  "freshApplyStatus": "入力欄へ反映しました。残高照会はまだ行っていません。",
+  "staleInputRejected": true,
+  "explicitPreviewRequired": true,
+  "appliedLines": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n0xcccccccccccccccccccccccccccccccccccccccc",
+  "invalidCurrentPreview": {
+    "agent": "DAT",
+    "chainId": 84532,
+    "currentInputValid": false,
+    "currentCount": null,
+    "targetCount": 2,
+    "added": null,
+    "removed": null,
+    "retainedCount": null,
+    "sameOrder": null,
+    "configurationOnly": true,
+    "canAuthorizeConnection": false,
+    "canAuthorizeTransaction": false
+  },
+  "synthetic": true,
+  "nativeBrowserCases": 141,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}

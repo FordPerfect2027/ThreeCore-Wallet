@@ -1,0 +1,8 @@
+{
+  "startedAt": "2026-11-02T17:59:52.0202034Z",
+  "revision": "bf690f38b070362aab1369fbf22c8e68b1a6567f",
+  "command": "node scripts/test-browser-ui.js",
+  "syntheticProvider": true,
+  "realExtensions": false,
+  "externalRpc": false
+}

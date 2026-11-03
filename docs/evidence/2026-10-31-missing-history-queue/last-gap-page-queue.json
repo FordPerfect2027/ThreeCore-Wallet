@@ -1,0 +1,40 @@
+{
+  "schema": "threecore.missing-history-queue.v1",
+  "groupId": "DAT-1",
+  "context": {
+    "agent": "DAT",
+    "chainId": 84532,
+    "account": "0x1111111111111111111111111111111111111111"
+  },
+  "tokenAddress": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+  "query": {
+    "groupId": "DAT-1",
+    "kind": "unplanned",
+    "windowSize": 2000,
+    "page": "450359962737"
+  },
+  "pageSize": 10,
+  "pageCount": "450359962738",
+  "totalWindows": "4503599627371",
+  "totalBlocks": "9007199254740999",
+  "pageBlocks": "999",
+  "items": [
+    {
+      "number": "4503599627371",
+      "fromBlock": "43",
+      "toBlock": "1041",
+      "blocks": "999",
+      "plannedReportIds": []
+    }
+  ],
+  "recordedUniqueBlocks": "24",
+  "reviewRecordedBlocks": "0",
+  "rangeNotation": "inclusive",
+  "newestFirst": true,
+  "readOnly": true,
+  "executed": false,
+  "automaticRetry": false,
+  "includesRecordedReviewRanges": false,
+  "completeHistory": false,
+  "liveChainRechecked": false
+}

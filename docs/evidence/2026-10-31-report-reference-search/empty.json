@@ -1,0 +1,20 @@
+{
+  "name": "empty",
+  "source": "normal-source.json",
+  "query": {
+    "agent": "all",
+    "severity": "all",
+    "search": "[check-8]"
+  },
+  "total": 15,
+  "matched": 0,
+  "counts": {
+    "conflict": 8,
+    "missing": 0,
+    "review": 6,
+    "information": 1
+  },
+  "items": [],
+  "csv": "﻿\"row_type\",\"query_agent\",\"query_severity\",\"query_search\",\"total_checks\",\"matched_checks\",\"source_conflicts\",\"source_missing\",\"source_review\",\"source_information\",\"all_continuous\",\"historical_only\",\"live_chain_rechecked\",\"automatic_repairs\",\"structured_addresses_shortened\",\"notes_included\",\"check_id\",\"kind\",\"severity\",\"title\",\"action\",\"agents\",\"chain_id\",\"account\",\"from_block\",\"to_block\",\"blocks\",\"range_notation\",\"report_ids\",\"report_labels\",\"notes\"\r\n\"summary\",\"all\",\"all\",\"[check-8]\",\"15\",\"0\",\"8\",\"0\",\"6\",\"1\",\"false\",\"true\",\"false\",\"false\",\"true\",\"false\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"\r\n",
+  "sourceUnchanged": true
+}

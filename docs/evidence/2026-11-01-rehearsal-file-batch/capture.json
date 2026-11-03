@@ -1,0 +1,36 @@
+{
+  "source": "53d2e9c",
+  "synthetic": true,
+  "compatibility": [
+    {
+      "referenceProvided": false,
+      "jsonCsvAndManifestByteIdentical": true,
+      "schema": "threecore.operation-rehearsal-batch-review.v1"
+    },
+    {
+      "referenceProvided": true,
+      "jsonCsvAndManifestByteIdentical": true,
+      "schema": "threecore.operation-rehearsal-batch-review.v2"
+    }
+  ],
+  "sourceSha256": "0f71237e4f08172d04c4d00c2612dbd5d6fb5655dcf633a971bbba21074331ff",
+  "readOrder": [
+    0,
+    1,
+    1,
+    2
+  ],
+  "retainedReviews": 1,
+  "previousReceiptSha256": "0fb3db6fd85b59a4d9909981e739de0ec8366ba0e234db0e90acc1370f5111c0",
+  "retainedPrefixIsSameOwnedObject": true,
+  "lateReadDoesNotChangeSavedReceipt": true,
+  "methods": "shared browser file-batch API with actual local source decoding and controlled stalled read; separate native UI log covers File selection, Stop, Continue and captured exports",
+  "nativeFocus": "file-read",
+  "nativeFocusedCases": 106,
+  "fullBrowserCoverage": false,
+  "lastFullBrowserSource": "a2eb7e5",
+  "lastFullBrowserCases": 950,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false,
+  "realProviderCalls": 0
+}

@@ -1,0 +1,2 @@
+Read-only Transfer history failed: INVALID_ADDRESS
+Usage: node scripts/inspect-transfers.js PUBLIC_ACCOUNT [FROM_BLOCK] [TO_BLOCK]

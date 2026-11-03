@@ -1,0 +1,313 @@
+{
+  "recordedAt": "2026-11-01T22:06:42.197Z",
+  "node": "v24.19.0",
+  "npm": "11.17.0",
+  "platform": "win32",
+  "verification": "Fresh isolated source exports with their own npm ci installations; no shared node_modules",
+  "installation": "npm ci --omit=dev --omit=optional --ignore-scripts --no-audit --no-fund",
+  "tokens": [
+    {
+      "token": "DAT",
+      "baseCommit": "45f0aa3f897538f1dfccfe3299dcec793156bd8e",
+      "sourcePackageSha256": {
+        "package.json": "a7a60e976b940271dcfd81cf28e2d4ee6a7b4b61cde32cfa1d23711c3d87d2c9",
+        "package-lock.json": "344fe0b079ba0468afbce767e037c887b5d26b58bd70837ffb021f627b653578"
+      },
+      "readOnlySuite": {
+        "tests": 213,
+        "pass": 213,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "rawRegressionLog": "minimal-readonly-regression.log",
+      "rawInstallLog": "minimal-production-install.log",
+      "rawRegressionSha256": "0803780ba7eb798ffc172932fdb4e87f79f21e8defd5c83b926751f924ab24fd",
+      "installedPackages": [
+        {
+          "name": "node_modules/@adraffy/ens-normalize",
+          "version": "1.11.1"
+        },
+        {
+          "name": "node_modules/@openzeppelin/contracts",
+          "version": "5.6.1"
+        },
+        {
+          "name": "node_modules/abitype",
+          "version": "1.2.3"
+        },
+        {
+          "name": "node_modules/eventemitter3",
+          "version": "5.0.1"
+        },
+        {
+          "name": "node_modules/isows",
+          "version": "1.0.7"
+        },
+        {
+          "name": "node_modules/ox",
+          "version": "0.14.44"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@noble/ciphers",
+          "version": "1.3.0"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@noble/curves",
+          "version": "1.9.1"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@noble/hashes",
+          "version": "1.8.0"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@scure/base",
+          "version": "1.2.6"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@scure/bip32",
+          "version": "1.7.0"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@scure/bip39",
+          "version": "1.6.0"
+        },
+        {
+          "name": "node_modules/viem",
+          "version": "2.56.6"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@noble/curves",
+          "version": "1.9.1"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@noble/hashes",
+          "version": "1.8.0"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@scure/base",
+          "version": "1.2.6"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@scure/bip32",
+          "version": "1.7.0"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@scure/bip39",
+          "version": "1.6.0"
+        },
+        {
+          "name": "node_modules/ws",
+          "version": "8.21.0"
+        }
+      ]
+    },
+    {
+      "token": "EMA",
+      "baseCommit": "a292d6b81d1f1e754fcdb1d76af2e61e182375f6",
+      "sourcePackageSha256": {
+        "package.json": "3870debe6f0d2eb0233477e6d27732db8f313ebdb4532afb878c1a31385ef175",
+        "package-lock.json": "36af1a11e4f940c4fb4655c8302d16adeb154421478cb0218fb89da4392887f7"
+      },
+      "readOnlySuite": {
+        "tests": 213,
+        "pass": 213,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "rawRegressionLog": "EMA-minimal-readonly.log",
+      "rawInstallLog": "EMA-minimal-install.log",
+      "rawRegressionSha256": "6e2daad296711ce6c6d5dffe6d13d8771a094ce5e56cfed2678cb536540168f5",
+      "installedPackages": [
+        {
+          "name": "node_modules/@adraffy/ens-normalize",
+          "version": "1.11.1"
+        },
+        {
+          "name": "node_modules/@openzeppelin/contracts",
+          "version": "5.6.1"
+        },
+        {
+          "name": "node_modules/abitype",
+          "version": "1.2.3"
+        },
+        {
+          "name": "node_modules/eventemitter3",
+          "version": "5.0.1"
+        },
+        {
+          "name": "node_modules/isows",
+          "version": "1.0.7"
+        },
+        {
+          "name": "node_modules/ox",
+          "version": "0.14.44"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@noble/ciphers",
+          "version": "1.3.0"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@noble/curves",
+          "version": "1.9.1"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@noble/hashes",
+          "version": "1.8.0"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@scure/base",
+          "version": "1.2.6"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@scure/bip32",
+          "version": "1.7.0"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@scure/bip39",
+          "version": "1.6.0"
+        },
+        {
+          "name": "node_modules/viem",
+          "version": "2.56.6"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@noble/curves",
+          "version": "1.9.1"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@noble/hashes",
+          "version": "1.8.0"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@scure/base",
+          "version": "1.2.6"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@scure/bip32",
+          "version": "1.7.0"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@scure/bip39",
+          "version": "1.6.0"
+        },
+        {
+          "name": "node_modules/ws",
+          "version": "8.21.0"
+        }
+      ]
+    },
+    {
+      "token": "CAWELON",
+      "baseCommit": "1eee51c89ea9d6507b68ee017781125b321b7f2b",
+      "sourcePackageSha256": {
+        "package.json": "e55b2f727bd9393b92373a440e31ce7e6628fb23dbfe85e5d4270d323497c0f0",
+        "package-lock.json": "e7e4e814cab7a8fe1c619f58714aa8c58df4e7cf6969ad66e90309089b0520ea"
+      },
+      "readOnlySuite": {
+        "tests": 213,
+        "pass": 213,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "rawRegressionLog": "CAWELON-minimal-readonly.log",
+      "rawInstallLog": "CAWELON-minimal-install.log",
+      "rawRegressionSha256": "8bcbcdc971aa4957d897c44336d89a61360335097ef661ffc80f6243054d25b3",
+      "installedPackages": [
+        {
+          "name": "node_modules/@adraffy/ens-normalize",
+          "version": "1.11.1"
+        },
+        {
+          "name": "node_modules/@openzeppelin/contracts",
+          "version": "5.6.1"
+        },
+        {
+          "name": "node_modules/abitype",
+          "version": "1.2.3"
+        },
+        {
+          "name": "node_modules/eventemitter3",
+          "version": "5.0.1"
+        },
+        {
+          "name": "node_modules/isows",
+          "version": "1.0.7"
+        },
+        {
+          "name": "node_modules/ox",
+          "version": "0.14.44"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@noble/ciphers",
+          "version": "1.3.0"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@noble/curves",
+          "version": "1.9.1"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@noble/hashes",
+          "version": "1.8.0"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@scure/base",
+          "version": "1.2.6"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@scure/bip32",
+          "version": "1.7.0"
+        },
+        {
+          "name": "node_modules/ox/node_modules/@scure/bip39",
+          "version": "1.6.0"
+        },
+        {
+          "name": "node_modules/viem",
+          "version": "2.56.6"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@noble/curves",
+          "version": "1.9.1"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@noble/hashes",
+          "version": "1.8.0"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@scure/base",
+          "version": "1.2.6"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@scure/bip32",
+          "version": "1.7.0"
+        },
+        {
+          "name": "node_modules/viem/node_modules/@scure/bip39",
+          "version": "1.6.0"
+        },
+        {
+          "name": "node_modules/ws",
+          "version": "8.21.0"
+        }
+      ]
+    }
+  ],
+  "packageVersionsAndResolvedIntegrityUnchanged": true,
+  "fullGraphPackagesExcludingRoot": 141,
+  "minimalInstalledPackages": 19,
+  "ordinaryOmitDevInstalledPackages": 21,
+  "ordinaryOmitDevStillInstallsZodAndTypescript": true,
+  "fullDevelopmentZodAdvisoryRemainsOpen": true,
+  "installLifecycleScripts": false,
+  "testsUseLoopbackFixturesOnly": true,
+  "realWallet": false,
+  "publicRpc": false,
+  "transactions": false,
+  "collectorNote": "Initial collectors required TAP-style # summaries, but Node emitted spec-style ℹ summaries. All three test subprocesses exited successfully before this summary-format assertion. Raw output and the collector failures are retained; corrected collection accepts either format without rerunning or changing the tests."
+}

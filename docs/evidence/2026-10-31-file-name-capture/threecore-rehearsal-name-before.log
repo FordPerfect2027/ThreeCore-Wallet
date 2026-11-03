@@ -1,0 +1,391 @@
+✖ workspace-: filename capture cannot revive a selection after cancel (65.7767ms)
+✖ workspace-: filename capture cannot revive a selection after dispose (8.2919ms)
+✖ workspace-: optional filename is read once and its safe value is shown (4.4732ms)
+✖ workspace-: unavailable optional filename does not reject valid content or expose details (5.5043ms)
+✖ workspace-: rejected asynchronous filename uses a fallback without leaking its failure (17.0595ms)
+✖ session-: filename capture cannot revive a selection after cancel (17.4547ms)
+✔ session-: filename capture cannot revive a selection after dispose (6.7441ms)
+✖ session-: optional filename is read once and its safe value is shown (5.5559ms)
+✖ session-: unavailable optional filename does not reject valid content or expose details (19.1081ms)
+✖ session-: rejected asynchronous filename uses a fallback without leaking its failure (12.5297ms)
+✖ scenario-set-: filename capture cannot revive a selection after cancel (24.7507ms)
+✔ scenario-set-: filename capture cannot revive a selection after dispose (9.2621ms)
+✖ scenario-set-: optional filename is read once and its safe value is shown (6.8979ms)
+✖ scenario-set-: unavailable optional filename does not reject valid content or expose details (8.7105ms)
+✖ scenario-set-: rejected asynchronous filename uses a fallback without leaking its failure (9.4178ms)
+✖ check-suite-: filename capture cannot revive a selection after cancel (11.4061ms)
+✖ check-suite-: filename capture cannot revive a selection after dispose (12.8732ms)
+✖ check-suite-: optional filename is read once and its safe value is shown (15.4535ms)
+✖ check-suite-: unavailable optional filename does not reject valid content or expose details (5.3705ms)
+✖ check-suite-: rejected asynchronous filename uses a fallback without leaking its failure (9.7158ms)
+✖ report-review-: filename capture cannot revive a selection after cancel (4.921ms)
+✖ report-review-: filename capture cannot revive a selection after dispose (5.2692ms)
+✖ report-review-: optional filename is read once and its safe value is shown (1.6499ms)
+✖ report-review-: unavailable optional filename does not reject valid content or expose details (2.0957ms)
+✖ report-review-: rejected asynchronous filename uses a fallback without leaking its failure (9.5839ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 2
+ℹ fail 23
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 710.6122
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:39:43
+✖ workspace-: filename capture cannot revive a selection after cancel (65.7767ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["workspace-save","","",true,null,null],["workspace-file","","",false,null,"false"],["workspace-review-save","","",false,null,null],["workspace-text","","",false,null,null],["workspace-text-review","","",false,null,null],["workspace-apply","","",false,null,null],["workspace-cancel","","",false,null,null],["workspace-rows","","",false,null,null],["workspace-stage","2 / 3 — 選択できています。次は復旧ボタンを押してください","",false,null,null],["workspace-status","上の一覧は現在の履歴です。下の変更内容を確認し、「確認した3トークンの履歴を復旧」を押してください。必要なら現在の履歴を先に一括保存できます。","",false,null,null],["workspace-review-status","","",false,null,null],["workspace-details","","",false,null,null],["workspace-preview","DAT: 未作成に戻す / EMA: 2件に置換 / CAWELON: 未作成に戻す。表示対象: EMA。復旧すると3トークンの現在の履歴をまとめて置き換え、取り消し履歴は消えます。まだ反映していません。","",false,null,null],["workspace-changes","","",false,null,null],["workspace-comparison","","",false,false,null],["workspace-source","確認する記録: old.json","",false,null,null],["workspace-file-note","","",false,null,null]]'
+  - '[["workspace-save","","",true,null,null],["workspace-file","","",false,null,"false"],["workspace-review-save","","",true,null,null],["workspace-text","","",false,null,null],["workspace-text-review","","",false,null,null],["workspace-apply","","",true,null,null],["workspace-cancel","","",false,null,null],["workspace-rows","","",false,null,null],["workspace-stage","1 / 3 — 保存した記録を選ぶ","",false,null,null],["workspace-status","一括読込を取り消しました。現在の履歴は保持しています。","",false,null,null],["workspace-review-status","","",false,null,null],["workspace-details","","",false,null,null],["workspace-preview","","",false,null,null],["workspace-changes","","",false,null,null],["workspace-comparison","","",false,true,null],["workspace-source","","",false,null,null]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:42:148)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["workspace-save","","",true,null,null],["workspace-file","","",false,null,"false"],["workspace-review-save","","",false,null,null],["workspace-text","","",false,null,null],["workspace-text-review","","",false,null,null],["workspace-apply","","",false,null,null],["workspace-cancel","","",false,null,null],["workspace-rows","","",false,null,null],["workspace-stage","2 / 3 — 選択できています。次は復旧ボタンを押してください","",false,null,null],["workspace-status","上の一覧は現在の履歴です。下の変更内容を確認し、「確認した3トークンの履歴を復旧」を押してください。必要なら現在の履歴を先に一括保存できます。","",false,null,null],["workspace-review-status","","",false,null,null],["workspace-details","","",false,null,null],["workspace-preview","DAT: 未作成に戻す / EMA: 2件に置換 / CAWELON: 未作成に戻す。表示対象: EMA。復旧すると3トークンの現在の履歴をまとめて置き換え、取り消し履歴は消えます。まだ反映していません。","",false,null,null],["workspace-changes","","",false,null,null],["workspace-comparison","","",false,false,null],["workspace-source","確認する記録: old.json","",false,null,null],["workspace-file-note","","",false,null,null]]',
+    expected: '[["workspace-save","","",true,null,null],["workspace-file","","",false,null,"false"],["workspace-review-save","","",true,null,null],["workspace-text","","",false,null,null],["workspace-text-review","","",false,null,null],["workspace-apply","","",true,null,null],["workspace-cancel","","",false,null,null],["workspace-rows","","",false,null,null],["workspace-stage","1 / 3 — 保存した記録を選ぶ","",false,null,null],["workspace-status","一括読込を取り消しました。現在の履歴は保持しています。","",false,null,null],["workspace-review-status","","",false,null,null],["workspace-details","","",false,null,null],["workspace-preview","","",false,null,null],["workspace-changes","","",false,null,null],["workspace-comparison","","",false,true,null],["workspace-source","","",false,null,null]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:39:43
+✖ workspace-: filename capture cannot revive a selection after dispose (8.2919ms)
+  Error [RehearsalError]: SESSION_DISPOSED
+      at fail (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:10:25)
+      at active (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:58:59)
+      at Object.cancel (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/operation-rehearsal-session.js:66:5)
+      at cancelAppend (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-page.js:80:33)
+      at beginWorkspaceRead (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-page.js:95:5)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-page.js:489:17
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:42:98)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18) {
+    code: 'SESSION_DISPOSED'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:45:2
+✖ workspace-: optional filename is read once and its safe value is shown (4.4732ms)
+  Error: read twice
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:47:97)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-page.js:488:55
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:48:98)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:51:2
+✖ workspace-: unavailable optional filename does not reject valid content or expose details (5.5043ms)
+  Error: secret metadata details
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:53:109)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-page.js:488:30
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:54:98)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:57:2
+✖ workspace-: rejected asynchronous filename uses a fallback without leaking its failure (17.0595ms)
+  Error: async filename
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:59:108)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-page.js:488:30
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:60:98)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:39:43
+✖ session-: filename capture cannot revive a selection after cancel (17.4547ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["session-save","","",true,null,null],["session-file","","",false,null,null],["session-paste","","",false,null,null],["session-text","","",false,null,null],["session-apply","","",false,null,null],["session-cancel","","",false,null,null],["session-source","確認元: old.json","",false,null,null],["session-summary","作成済みの履歴 0 → 1対象 / 比較ケース 0 → 0件。まだ反映していません。履歴とケース集の両方を置き換え、両方の取り消し履歴をクリアします。","",false,null,null],["session-cases","","",false,null,null],["session-workspace-details","","",false,null,null],["session-export-status","","",false,null,null],["session-review","","",false,false,null],["session-status","変更する履歴とケース集を確認してください。まだ現在の記録は変わっていません。","",false,null,"false"],["session-save-state","保存する確定済みの履歴・比較ケースはありません。","",false,null,null]]'
+  - '[["session-save","","",true,null,null],["session-file","","",false,null,null],["session-paste","","",false,null,null],["session-text","","",false,null,null],["session-apply","","",true,null,null],["session-cancel","","",false,null,null],["session-source","","",false,null,null],["session-summary","","",false,null,null],["session-cases","","",false,null,null],["session-workspace-details","","",false,null,null],["session-export-status","","",false,null,null],["session-review","","",false,true,null],["session-status","まとめ復旧の確認を取り消しました。現在の履歴とケース集は保持しています。","",false,null,"false"],["session-save-state","保存する確定済みの履歴・比較ケースはありません。","",false,null,null]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:42:148)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["session-save","","",true,null,null],["session-file","","",false,null,null],["session-paste","","",false,null,null],["session-text","","",false,null,null],["session-apply","","",false,null,null],["session-cancel","","",false,null,null],["session-source","確認元: old.json","",false,null,null],["session-summary","作成済みの履歴 0 → 1対象 / 比較ケース 0 → 0件。まだ反映していません。履歴とケース集の両方を置き換え、両方の取り消し履歴をクリアします。","",false,null,null],["session-cases","","",false,null,null],["session-workspace-details","","",false,null,null],["session-export-status","","",false,null,null],["session-review","","",false,false,null],["session-status","変更する履歴とケース集を確認してください。まだ現在の記録は変わっていません。","",false,null,"false"],["session-save-state","保存する確定済みの履歴・比較ケースはありません。","",false,null,null]]',
+    expected: '[["session-save","","",true,null,null],["session-file","","",false,null,null],["session-paste","","",false,null,null],["session-text","","",false,null,null],["session-apply","","",true,null,null],["session-cancel","","",false,null,null],["session-source","","",false,null,null],["session-summary","","",false,null,null],["session-cases","","",false,null,null],["session-workspace-details","","",false,null,null],["session-export-status","","",false,null,null],["session-review","","",false,true,null],["session-status","まとめ復旧の確認を取り消しました。現在の履歴とケース集は保持しています。","",false,null,"false"],["session-save-state","保存する確定済みの履歴・比較ケースはありません。","",false,null,null]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:45:2
+✖ session-: optional filename is read once and its safe value is shown (5.5559ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:48:122)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:51:2
+✖ session-: unavailable optional filename does not reject valid content or expose details (19.1081ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(f.q(row.source).textContent.length>0)
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:54:165)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:57:2
+✖ session-: rejected asynchronous filename uses a fallback without leaking its failure (12.5297ms)
+  Error: async filename
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:59:108)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-session-panel.js:50:30
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:60:63)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:39:43
+✖ scenario-set-: filename capture cannot revive a selection after cancel (24.7507ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["scenario-set-add","","",true,null,null],["scenario-set-replace","","",true,null,null],["scenario-set-rename","","",false,null,null],["scenario-set-remove","","",false,null,null],["scenario-set-apply","","",false,null,null],["scenario-set-cancel","","",false,null,null],["scenario-set-undo","","",true,null,null],["scenario-set-id","","",false,null,null],["scenario-set-label","","",false,null,null],["scenario-set-agent","","",false,null,null],["scenario-set-outcome","","",false,null,null],["scenario-set-select","","",true,null,null],["scenario-set-file","","",false,null,null],["scenario-set-text","","",false,null,null],["scenario-set-paste","","",false,null,null],["scenario-set-save","","",true,null,null],["scenario-set-report-save","","",true,null,null],["scenario-set-case-save","","",true,null,null],["scenario-set-baseline-save","","",true,null,null],["scenario-set-case-baseline-save","","",true,null,null],["scenario-set-rows","","",false,null,null],["scenario-set-count","表示 0件 / 保存中 0件（最大12件）。絞り込み中もケース集の保存は全件が対象です。","",false,null,null],["scenario-set-export-status","","",false,null,null],["scenario-set-metrics","","",false,null,null],["scenario-set-detail","表示するケースがありません。","",false,null,null],["scenario-set-status","変更内容を確認してください。元の試算履歴は変更しません。","",false,null,"false"],["scenario-set-preview","ケース数 0 → 1。まだ反映していません。変更する対象を確認して確定してください。","",false,null,null],["scenario-set-changes","","",false,null,null],["scenario-set-review","","",false,false,null],["scenario-set-source","確認元: old.json","",false,null,null]]'
+  - '[["scenario-set-add","","",true,null,null],["scenario-set-replace","","",true,null,null],["scenario-set-rename","","",false,null,null],["scenario-set-remove","","",false,null,null],["scenario-set-apply","","",true,null,null],["scenario-set-cancel","","",false,null,null],["scenario-set-undo","","",true,null,null],["scenario-set-id","","",false,null,null],["scenario-set-label","","",false,null,null],["scenario-set-agent","","",false,null,null],["scenario-set-outcome","","",false,null,null],["scenario-set-select","","",true,null,null],["scenario-set-file","","",false,null,null],["scenario-set-text","","",false,null,null],["scenario-set-paste","","",false,null,null],["scenario-set-save","","",true,null,null],["scenario-set-report-save","","",true,null,null],["scenario-set-case-save","","",true,null,null],["scenario-set-baseline-save","","",true,null,null],["scenario-set-case-baseline-save","","",true,null,null],["scenario-set-rows","","",false,null,null],["scenario-set-count","表示 0件 / 保存中 0件（最大12件）。絞り込み中もケース集の保存は全件が対象です。","",false,null,null],["scenario-set-export-status","","",false,null,null],["scenario-set-metrics","","",false,null,null],["scenario-set-detail","表示するケースがありません。","",false,null,null],["scenario-set-status","確認中の変更を取り消しました。確定したケースは保持しています。","",false,null,"false"],["scenario-set-preview","","",false,null,null],["scenario-set-changes","","",false,null,null],["scenario-set-review","","",false,true,null],["scenario-set-source","","",false,null,null]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:42:148)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["scenario-set-add","","",true,null,null],["scenario-set-replace","","",true,null,null],["scenario-set-rename","","",false,null,null],["scenario-set-remove","","",false,null,null],["scenario-set-apply","","",false,null,null],["scenario-set-cancel","","",false,null,null],["scenario-set-undo","","",true,null,null],["scenario-set-id","","",false,null,null],["scenario-set-label","","",false,null,null],["scenario-set-agent","","",false,null,null],["scenario-set-outcome","","",false,null,null],["scenario-set-select","","",true,null,null],["scenario-set-file","","",false,null,null],["scenario-set-text","","",false,null,null],["scenario-set-paste","","",false,null,null],["scenario-set-save","","",true,null,null],["scenario-set-report-save","","",true,null,null],["scenario-set-case-save","","",true,null,null],["scenario-set-baseline-save","","",true,null,null],["scenario-set-case-baseline-save","","",true,null,null],["scenario-set-rows","","",false,null,null],["scenario-set-count","表示 0件 / 保存中 0件（最大12件）。絞り込み中もケース集の保存は全件が対象です。","",false,null,null],["scenario-set-export-status","","",false,null,null],["scenario-set-metrics","","",false,null,null],["scenario-set-detail","表示するケースがありません。","",false,null,null],["scenario-set-status","変更内容を確認してください。元の試算履歴は変更しません。","",false,null,"false"],["scenario-set-preview","ケース数 0 → 1。まだ反映していません。変更する対象を確認して確定してください。","",false,null,null],["scenario-set-changes","","",false,null,null],["scenario-set-review","","",false,false,null],["scenario-set-source","確認元: old.json","",false,null,null]]',
+    expected: '[["scenario-set-add","","",true,null,null],["scenario-set-replace","","",true,null,null],["scenario-set-rename","","",false,null,null],["scenario-set-remove","","",false,null,null],["scenario-set-apply","","",true,null,null],["scenario-set-cancel","","",false,null,null],["scenario-set-undo","","",true,null,null],["scenario-set-id","","",false,null,null],["scenario-set-label","","",false,null,null],["scenario-set-agent","","",false,null,null],["scenario-set-outcome","","",false,null,null],["scenario-set-select","","",true,null,null],["scenario-set-file","","",false,null,null],["scenario-set-text","","",false,null,null],["scenario-set-paste","","",false,null,null],["scenario-set-save","","",true,null,null],["scenario-set-report-save","","",true,null,null],["scenario-set-case-save","","",true,null,null],["scenario-set-baseline-save","","",true,null,null],["scenario-set-case-baseline-save","","",true,null,null],["scenario-set-rows","","",false,null,null],["scenario-set-count","表示 0件 / 保存中 0件（最大12件）。絞り込み中もケース集の保存は全件が対象です。","",false,null,null],["scenario-set-export-status","","",false,null,null],["scenario-set-metrics","","",false,null,null],["scenario-set-detail","表示するケースがありません。","",false,null,null],["scenario-set-status","確認中の変更を取り消しました。確定したケースは保持しています。","",false,null,"false"],["scenario-set-preview","","",false,null,null],["scenario-set-changes","","",false,null,null],["scenario-set-review","","",false,true,null],["scenario-set-source","","",false,null,null]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:45:2
+✖ scenario-set-: optional filename is read once and its safe value is shown (6.8979ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:48:122)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:51:2
+✖ scenario-set-: unavailable optional filename does not reject valid content or expose details (8.7105ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(f.q(row.source).textContent.length>0)
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:54:165)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:57:2
+✖ scenario-set-: rejected asynchronous filename uses a fallback without leaking its failure (9.4178ms)
+  Error: async filename
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:59:108)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-scenario-set-panel.js:90:30
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:60:63)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:39:43
+✖ check-suite-: filename capture cannot revive a selection after cancel (11.4061ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["check-suite-file","","",false,null,null],["check-suite-paste","","",false,null,null],["check-suite-text","","",false,null,null],["check-suite-clear","","",false,null,null],["check-suite-save","","",false,null,null],["check-suite-rows","","",false,null,null],["check-suite-differences","","",false,null,null],["check-suite-summary","全 1ケース / 一致 1ケース / 相違 0ケース。","",false,null,null],["check-suite-source","確認元: old.json","",false,null,null],["check-suite-origin","資料上の期待結果: 保存時の計算結果。変更の検出用で、計算の正しさを独立に証明するものではありません。","",false,null,null],["check-suite-export-status","","",false,null,null],["check-suite-results","","",false,false,null],["check-suite-status","保存された期待結果と一致しました。実行の許可を示すものではありません。","",false,null,"false"]]'
+  - '[["check-suite-file","","",false,null,null],["check-suite-paste","","",false,null,null],["check-suite-text","","",false,null,null],["check-suite-clear","","",false,null,null],["check-suite-save","","",true,null,null],["check-suite-rows","","",false,null,null],["check-suite-differences","","",false,null,null],["check-suite-summary","","",false,null,null],["check-suite-source","","",false,null,null],["check-suite-origin","","",false,null,null],["check-suite-export-status","","",false,null,null],["check-suite-results","","",false,true,null],["check-suite-status","期待結果を記録したケース集を選んでください。現在の履歴やケース集は変更しません。","",false,null,"false"]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:42:148)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["check-suite-file","","",false,null,null],["check-suite-paste","","",false,null,null],["check-suite-text","","",false,null,null],["check-suite-clear","","",false,null,null],["check-suite-save","","",false,null,null],["check-suite-rows","","",false,null,null],["check-suite-differences","","",false,null,null],["check-suite-summary","全 1ケース / 一致 1ケース / 相違 0ケース。","",false,null,null],["check-suite-source","確認元: old.json","",false,null,null],["check-suite-origin","資料上の期待結果: 保存時の計算結果。変更の検出用で、計算の正しさを独立に証明するものではありません。","",false,null,null],["check-suite-export-status","","",false,null,null],["check-suite-results","","",false,false,null],["check-suite-status","保存された期待結果と一致しました。実行の許可を示すものではありません。","",false,null,"false"]]',
+    expected: '[["check-suite-file","","",false,null,null],["check-suite-paste","","",false,null,null],["check-suite-text","","",false,null,null],["check-suite-clear","","",false,null,null],["check-suite-save","","",true,null,null],["check-suite-rows","","",false,null,null],["check-suite-differences","","",false,null,null],["check-suite-summary","","",false,null,null],["check-suite-source","","",false,null,null],["check-suite-origin","","",false,null,null],["check-suite-export-status","","",false,null,null],["check-suite-results","","",false,true,null],["check-suite-status","期待結果を記録したケース集を選んでください。現在の履歴やケース集は変更しません。","",false,null,"false"]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:39:43
+✖ check-suite-: filename capture cannot revive a selection after dispose (12.8732ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["check-suite-file","","",false,null,null],["check-suite-paste","","",false,null,null],["check-suite-text","","",false,null,null],["check-suite-clear","","",false,null,null],["check-suite-save","","",false,null,null],["check-suite-rows","","",false,null,null],["check-suite-differences","","",false,null,null],["check-suite-summary","全 1ケース / 一致 1ケース / 相違 0ケース。","",false,null,null],["check-suite-source","確認元: old.json","",false,null,null],["check-suite-origin","資料上の期待結果: 保存時の計算結果。変更の検出用で、計算の正しさを独立に証明するものではありません。","",false,null,null],["check-suite-export-status","","",false,null,null],["check-suite-results","","",false,false,null],["check-suite-status","保存された期待結果と一致しました。実行の許可を示すものではありません。","",false,null,"false"]]'
+  - '[["check-suite-file","","",false,null,null],["check-suite-paste","","",false,null,null],["check-suite-text","","",false,null,null],["check-suite-clear","","",false,null,null],["check-suite-save","","",true,null,null],["check-suite-rows","","",false,null,null],["check-suite-differences","","",false,null,null],["check-suite-summary","","",false,null,null],["check-suite-source","","",false,null,null],["check-suite-origin","","",false,null,null],["check-suite-export-status","","",false,null,null],["check-suite-results","","",false,true,null],["check-suite-status","","",false,null,"false"]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:42:148)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["check-suite-file","","",false,null,null],["check-suite-paste","","",false,null,null],["check-suite-text","","",false,null,null],["check-suite-clear","","",false,null,null],["check-suite-save","","",false,null,null],["check-suite-rows","","",false,null,null],["check-suite-differences","","",false,null,null],["check-suite-summary","全 1ケース / 一致 1ケース / 相違 0ケース。","",false,null,null],["check-suite-source","確認元: old.json","",false,null,null],["check-suite-origin","資料上の期待結果: 保存時の計算結果。変更の検出用で、計算の正しさを独立に証明するものではありません。","",false,null,null],["check-suite-export-status","","",false,null,null],["check-suite-results","","",false,false,null],["check-suite-status","保存された期待結果と一致しました。実行の許可を示すものではありません。","",false,null,"false"]]',
+    expected: '[["check-suite-file","","",false,null,null],["check-suite-paste","","",false,null,null],["check-suite-text","","",false,null,null],["check-suite-clear","","",false,null,null],["check-suite-save","","",true,null,null],["check-suite-rows","","",false,null,null],["check-suite-differences","","",false,null,null],["check-suite-summary","","",false,null,null],["check-suite-source","","",false,null,null],["check-suite-origin","","",false,null,null],["check-suite-export-status","","",false,null,null],["check-suite-results","","",false,true,null],["check-suite-status","","",false,null,"false"]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:45:2
+✖ check-suite-: optional filename is read once and its safe value is shown (15.4535ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:48:122)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:51:2
+✖ check-suite-: unavailable optional filename does not reject valid content or expose details (5.3705ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(f.q(row.source).textContent.length>0)
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:54:165)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:57:2
+✖ check-suite-: rejected asynchronous filename uses a fallback without leaking its failure (9.7158ms)
+  Error: async filename
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:59:108)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-check-panel.js:36:30
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:60:63)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:39:43
+✖ report-review-: filename capture cannot revive a selection after cancel (4.921ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["report-review-file","","",false,null,null],["report-review-paste","","",false,null,null],["report-review-expected","","",false,null,null],["report-review-text","","",false,null,null],["report-review-run","","",true,null,null],["report-review-clear","","",false,null,null],["report-review-save","","",true,null,null],["report-review-scope","","",false,null,null],["report-review-differences","","",false,null,null],["report-review-digest","","",false,null,null],["report-review-summary","","",false,null,null],["report-review-outcome","","",false,null,null],["report-review-export-status","","",false,null,null],["report-review-results","","",false,true,null],["report-review-status","保存した確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を選んでください。現在の履歴には反映しません。","",false,null,"false"],["report-review-source","確認するファイル: old.json","",false,null,null]]'
+  - '[["report-review-file","","",false,null,null],["report-review-paste","","",false,null,null],["report-review-expected","","",false,null,null],["report-review-text","","",false,null,null],["report-review-run","","",true,null,null],["report-review-clear","","",false,null,null],["report-review-save","","",true,null,null],["report-review-scope","","",false,null,null],["report-review-differences","","",false,null,null],["report-review-digest","","",false,null,null],["report-review-summary","","",false,null,null],["report-review-outcome","","",false,null,null],["report-review-export-status","","",false,null,null],["report-review-results","","",false,true,null],["report-review-status","保存した確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を選んでください。現在の履歴には反映しません。","",false,null,"false"],["report-review-source","","",false,null,null]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:42:148)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["report-review-file","","",false,null,null],["report-review-paste","","",false,null,null],["report-review-expected","","",false,null,null],["report-review-text","","",false,null,null],["report-review-run","","",true,null,null],["report-review-clear","","",false,null,null],["report-review-save","","",true,null,null],["report-review-scope","","",false,null,null],["report-review-differences","","",false,null,null],["report-review-digest","","",false,null,null],["report-review-summary","","",false,null,null],["report-review-outcome","","",false,null,null],["report-review-export-status","","",false,null,null],["report-review-results","","",false,true,null],["report-review-status","保存した確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を選んでください。現在の履歴には反映しません。","",false,null,"false"],["report-review-source","確認するファイル: old.json","",false,null,null]]',
+    expected: '[["report-review-file","","",false,null,null],["report-review-paste","","",false,null,null],["report-review-expected","","",false,null,null],["report-review-text","","",false,null,null],["report-review-run","","",true,null,null],["report-review-clear","","",false,null,null],["report-review-save","","",true,null,null],["report-review-scope","","",false,null,null],["report-review-differences","","",false,null,null],["report-review-digest","","",false,null,null],["report-review-summary","","",false,null,null],["report-review-outcome","","",false,null,null],["report-review-export-status","","",false,null,null],["report-review-results","","",false,true,null],["report-review-status","保存した確認一覧・復旧比較・条件比較・ケース集の集計・期待結果の確認・記録の検索資料を選んでください。現在の履歴には反映しません。","",false,null,"false"],["report-review-source","","",false,null,null]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:39:43
+✖ report-review-: filename capture cannot revive a selection after dispose (5.2692ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '[["report-review-file","","",false,null,null],["report-review-paste","","",false,null,null],["report-review-expected","","",false,null,null],["report-review-text","","",false,null,null],["report-review-run","","",true,null,null],["report-review-clear","","",false,null,null],["report-review-save","","",true,null,null],["report-review-scope","","",false,null,null],["report-review-differences","","",false,null,null],["report-review-digest","","",false,null,null],["report-review-summary","","",false,null,null],["report-review-outcome","","",false,null,null],["report-review-export-status","","",false,null,null],["report-review-results","","",false,true,null],["report-review-status","","",false,null,"false"],["report-review-source","確認するファイル: old.json","",false,null,null]]'
+  - '[["report-review-file","","",false,null,null],["report-review-paste","","",false,null,null],["report-review-expected","","",false,null,null],["report-review-text","","",false,null,null],["report-review-run","","",true,null,null],["report-review-clear","","",false,null,null],["report-review-save","","",true,null,null],["report-review-scope","","",false,null,null],["report-review-differences","","",false,null,null],["report-review-digest","","",false,null,null],["report-review-summary","","",false,null,null],["report-review-outcome","","",false,null,null],["report-review-export-status","","",false,null,null],["report-review-results","","",false,true,null],["report-review-status","","",false,null,"false"],["report-review-source","","",false,null,null]]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:42:148)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '[["report-review-file","","",false,null,null],["report-review-paste","","",false,null,null],["report-review-expected","","",false,null,null],["report-review-text","","",false,null,null],["report-review-run","","",true,null,null],["report-review-clear","","",false,null,null],["report-review-save","","",true,null,null],["report-review-scope","","",false,null,null],["report-review-differences","","",false,null,null],["report-review-digest","","",false,null,null],["report-review-summary","","",false,null,null],["report-review-outcome","","",false,null,null],["report-review-export-status","","",false,null,null],["report-review-results","","",false,true,null],["report-review-status","","",false,null,"false"],["report-review-source","確認するファイル: old.json","",false,null,null]]',
+    expected: '[["report-review-file","","",false,null,null],["report-review-paste","","",false,null,null],["report-review-expected","","",false,null,null],["report-review-text","","",false,null,null],["report-review-run","","",true,null,null],["report-review-clear","","",false,null,null],["report-review-save","","",true,null,null],["report-review-scope","","",false,null,null],["report-review-differences","","",false,null,null],["report-review-digest","","",false,null,null],["report-review-summary","","",false,null,null],["report-review-outcome","","",false,null,null],["report-review-export-status","","",false,null,null],["report-review-results","","",false,true,null],["report-review-status","","",false,null,"false"],["report-review-source","","",false,null,null]]',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:45:2
+✖ report-review-: optional filename is read once and its safe value is shown (1.6499ms)
+  Error: read twice
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:47:97)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-review-panel.js:100:49
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:48:98)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:51:2
+✖ report-review-: unavailable optional filename does not reject valid content or expose details (2.0957ms)
+  Error: secret metadata details
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:53:109)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-review-panel.js:100:28
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:54:98)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-rehearsal-name-next.test.mjs:57:2
+✖ report-review-: rejected asynchronous filename uses a fallback without leaking its failure (9.5839ms)
+  Error: async filename
+      at get name (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:59:108)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/operation-rehearsal-review-panel.js:100:28
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-rehearsal-name-next.test.mjs:60:98)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

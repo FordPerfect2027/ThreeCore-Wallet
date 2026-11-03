@@ -1,0 +1,286 @@
+{
+  "schema": "threecore.shared-operation-budget-result.v1",
+  "input": {
+    "schema": "threecore.shared-operation-budget.v1",
+    "simulationOnly": true,
+    "sameAccount": true,
+    "budgets": [
+      {
+        "schema": "threecore.usdc-operation-budget.v1",
+        "simulationOnly": true,
+        "agent": "DAT",
+        "chainId": 8453,
+        "token": {
+          "decimals": 6,
+          "balanceUnits": "10000000",
+          "reservedUnits": "1000000",
+          "reserveFloorUnits": "1000000",
+          "spendUnits": "4000000"
+        },
+        "native": {
+          "balanceWei": "10000000000000000",
+          "reservedWei": "1000000000000000",
+          "reserveFloorWei": "2000000000000000",
+          "valueWei": "0"
+        },
+        "fees": {
+          "gasLimit": "200000",
+          "maxFeePerGasWei": "100000000",
+          "l1FeeBudgetWei": "10000000000000",
+          "operatorFeeBudgetWei": "0",
+          "bufferWei": "10000000000000"
+        }
+      },
+      {
+        "schema": "threecore.usdc-operation-budget.v1",
+        "simulationOnly": true,
+        "agent": "EMA",
+        "chainId": 8453,
+        "token": {
+          "decimals": 6,
+          "balanceUnits": "10000000",
+          "reservedUnits": "1000000",
+          "reserveFloorUnits": "1000000",
+          "spendUnits": "4000000"
+        },
+        "native": {
+          "balanceWei": "10000000000000000",
+          "reservedWei": "1000000000000000",
+          "reserveFloorWei": "2000000000000000",
+          "valueWei": "0"
+        },
+        "fees": {
+          "gasLimit": "200000",
+          "maxFeePerGasWei": "100000000",
+          "l1FeeBudgetWei": "10000000000000",
+          "operatorFeeBudgetWei": "0",
+          "bufferWei": "10000000000000"
+        }
+      },
+      {
+        "schema": "threecore.usdc-operation-budget.v1",
+        "simulationOnly": true,
+        "agent": "CAWELON",
+        "chainId": 8453,
+        "token": {
+          "decimals": 6,
+          "balanceUnits": "10000000",
+          "reservedUnits": "1000000",
+          "reserveFloorUnits": "1000000",
+          "spendUnits": "4000000"
+        },
+        "native": {
+          "balanceWei": "10000000000000000",
+          "reservedWei": "1000000000000000",
+          "reserveFloorWei": "2000000000000000",
+          "valueWei": "0"
+        },
+        "fees": {
+          "gasLimit": "200000",
+          "maxFeePerGasWei": "100000000",
+          "l1FeeBudgetWei": "10000000000000",
+          "operatorFeeBudgetWei": "0",
+          "bufferWei": "10000000000000"
+        }
+      }
+    ]
+  },
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "onchainFeeCap": false,
+  "constraintsSatisfied": false,
+  "reasons": [
+    "SHARED_USDC_SHORTFALL"
+  ],
+  "individuallySatisfied": true,
+  "results": [
+    {
+      "schema": "threecore.operation-budget-result.v1",
+      "input": {
+        "schema": "threecore.usdc-operation-budget.v1",
+        "simulationOnly": true,
+        "agent": "DAT",
+        "chainId": 8453,
+        "token": {
+          "decimals": 6,
+          "balanceUnits": "10000000",
+          "reservedUnits": "1000000",
+          "reserveFloorUnits": "1000000",
+          "spendUnits": "4000000"
+        },
+        "native": {
+          "balanceWei": "10000000000000000",
+          "reservedWei": "1000000000000000",
+          "reserveFloorWei": "2000000000000000",
+          "valueWei": "0"
+        },
+        "fees": {
+          "gasLimit": "200000",
+          "maxFeePerGasWei": "100000000",
+          "l1FeeBudgetWei": "10000000000000",
+          "operatorFeeBudgetWei": "0",
+          "bufferWei": "10000000000000"
+        }
+      },
+      "simulationOnly": true,
+      "sourceVerified": false,
+      "authorizesExecution": false,
+      "onchainFeeCap": false,
+      "constraintsSatisfied": true,
+      "reasons": [],
+      "token": {
+        "required": "6000000",
+        "shortfall": "0",
+        "surplus": "4000000"
+      },
+      "executionBudgetWei": "20000000000000",
+      "knownFeeBudgetWei": "40000000000000",
+      "unknownComponents": [],
+      "plannedFeeBudgetWei": "40000000000000",
+      "plannedNativeCostWei": "40000000000000",
+      "native": {
+        "required": "3040000000000000",
+        "shortfall": "0",
+        "surplus": "6960000000000000"
+      },
+      "knownNativeMinimum": {
+        "required": "3040000000000000",
+        "shortfall": "0",
+        "surplus": "6960000000000000"
+      }
+    },
+    {
+      "schema": "threecore.operation-budget-result.v1",
+      "input": {
+        "schema": "threecore.usdc-operation-budget.v1",
+        "simulationOnly": true,
+        "agent": "EMA",
+        "chainId": 8453,
+        "token": {
+          "decimals": 6,
+          "balanceUnits": "10000000",
+          "reservedUnits": "1000000",
+          "reserveFloorUnits": "1000000",
+          "spendUnits": "4000000"
+        },
+        "native": {
+          "balanceWei": "10000000000000000",
+          "reservedWei": "1000000000000000",
+          "reserveFloorWei": "2000000000000000",
+          "valueWei": "0"
+        },
+        "fees": {
+          "gasLimit": "200000",
+          "maxFeePerGasWei": "100000000",
+          "l1FeeBudgetWei": "10000000000000",
+          "operatorFeeBudgetWei": "0",
+          "bufferWei": "10000000000000"
+        }
+      },
+      "simulationOnly": true,
+      "sourceVerified": false,
+      "authorizesExecution": false,
+      "onchainFeeCap": false,
+      "constraintsSatisfied": true,
+      "reasons": [],
+      "token": {
+        "required": "6000000",
+        "shortfall": "0",
+        "surplus": "4000000"
+      },
+      "executionBudgetWei": "20000000000000",
+      "knownFeeBudgetWei": "40000000000000",
+      "unknownComponents": [],
+      "plannedFeeBudgetWei": "40000000000000",
+      "plannedNativeCostWei": "40000000000000",
+      "native": {
+        "required": "3040000000000000",
+        "shortfall": "0",
+        "surplus": "6960000000000000"
+      },
+      "knownNativeMinimum": {
+        "required": "3040000000000000",
+        "shortfall": "0",
+        "surplus": "6960000000000000"
+      }
+    },
+    {
+      "schema": "threecore.operation-budget-result.v1",
+      "input": {
+        "schema": "threecore.usdc-operation-budget.v1",
+        "simulationOnly": true,
+        "agent": "CAWELON",
+        "chainId": 8453,
+        "token": {
+          "decimals": 6,
+          "balanceUnits": "10000000",
+          "reservedUnits": "1000000",
+          "reserveFloorUnits": "1000000",
+          "spendUnits": "4000000"
+        },
+        "native": {
+          "balanceWei": "10000000000000000",
+          "reservedWei": "1000000000000000",
+          "reserveFloorWei": "2000000000000000",
+          "valueWei": "0"
+        },
+        "fees": {
+          "gasLimit": "200000",
+          "maxFeePerGasWei": "100000000",
+          "l1FeeBudgetWei": "10000000000000",
+          "operatorFeeBudgetWei": "0",
+          "bufferWei": "10000000000000"
+        }
+      },
+      "simulationOnly": true,
+      "sourceVerified": false,
+      "authorizesExecution": false,
+      "onchainFeeCap": false,
+      "constraintsSatisfied": true,
+      "reasons": [],
+      "token": {
+        "required": "6000000",
+        "shortfall": "0",
+        "surplus": "4000000"
+      },
+      "executionBudgetWei": "20000000000000",
+      "knownFeeBudgetWei": "40000000000000",
+      "unknownComponents": [],
+      "plannedFeeBudgetWei": "40000000000000",
+      "plannedNativeCostWei": "40000000000000",
+      "native": {
+        "required": "3040000000000000",
+        "shortfall": "0",
+        "surplus": "6960000000000000"
+      },
+      "knownNativeMinimum": {
+        "required": "3040000000000000",
+        "shortfall": "0",
+        "surplus": "6960000000000000"
+      }
+    }
+  ],
+  "knownFeeBudgetWei": "120000000000000",
+  "knownNativeCostWei": "120000000000000",
+  "plannedNativeCostWei": "120000000000000",
+  "native": {
+    "required": "3120000000000000",
+    "shortfall": "0",
+    "surplus": "6880000000000000"
+  },
+  "knownNativeMinimum": {
+    "required": "3120000000000000",
+    "shortfall": "0",
+    "surplus": "6880000000000000"
+  },
+  "unknownComponents": [],
+  "sharedUsdc": {
+    "asset": "USDC",
+    "decimals": 6,
+    "spendUnits": "12000000",
+    "required": "14000000",
+    "shortfall": "4000000",
+    "surplus": "0"
+  }
+}

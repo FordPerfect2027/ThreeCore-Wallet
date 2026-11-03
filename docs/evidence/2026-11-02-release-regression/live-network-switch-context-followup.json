@@ -1,0 +1,103 @@
+{
+  "schema": "threecore.live-network-switch-context-followup.v1",
+  "recordedAt": "2026-11-02T10:42:21.949Z",
+  "recordingSource": "dfc0746390f46eef8d544915135f5aa008a016bd",
+  "originalLiveApplicationSource": "7c12a280649ee56d52165d9412db3af4c5bd4770",
+  "browser": "Microsoft Edge with MetaMask",
+  "siteOrigin": "http://127.0.0.1:4231",
+  "accountValuesRedacted": true,
+  "prepared": {
+    "accountLabel": "Account 2",
+    "chainId": 84532,
+    "connectedCards": 3,
+    "histories": [
+      2,
+      2,
+      2
+    ]
+  },
+  "operatorReportedNetworkChangedToBase": true,
+  "observedAfterReport": {
+    "cardsStillShowChainId": 84532,
+    "datReadCompletedAtBlock": "53469807",
+    "datPermissionProbeChainId": 84532,
+    "datPermittedAccountCount": 2,
+    "histories": [
+      2,
+      2,
+      2
+    ],
+    "probeRequiredExplicitDatDisconnect": true
+  },
+  "conclusion": "The intended network switch was not observed by this tab. This does not demonstrate event invalidation or establish a product event-handler defect.",
+  "pendingClarification": "Which site origin was displayed in the MetaMask connection settings changed by the operator?",
+  "uiChange": {
+    "source": "dfc0746390f46eef8d544915135f5aa008a016bd",
+    "path": "examples/wallet-setup-panel.js",
+    "description": "Display the exact site origin beside each permitted-account panel as plain text.",
+    "observedInSeparateEmptyTab": true,
+    "reloadedWorkingTab": false,
+    "threeOriginLabelsMatched": true,
+    "clientWidths": [
+      261,
+      261,
+      261
+    ],
+    "scrollWidths": [
+      261,
+      261,
+      261
+    ],
+    "unitCommand": "node --test test/permitted-account.test.js test/wallet-setup-panel.test.js test/wallet-setup-panel-lifecycle.test.js",
+    "passed": 58,
+    "failed": 0,
+    "fullRegressionRerun": false,
+    "fixedF52109aArchiveModified": false
+  },
+  "privateEvidence": [
+    {
+      "filename": "switch-prepared-state.json",
+      "bytes": 791,
+      "sha256": "6b04dce315fd6b092d58acb03c06cac3ed97e02b97d4448b1612db5001ab03f6"
+    },
+    {
+      "filename": "switch-prepared.png",
+      "bytes": 28739,
+      "sha256": "44dd27f75118e2f3a1a46afdae6ba353383a2ea15ff1d393bf3c76d3daf236e5"
+    },
+    {
+      "filename": "switch-after-network-change.json",
+      "bytes": 2865,
+      "sha256": "53682116688c45d39f022944665eff8560817031d36ffeaa680de43b1c10d8b0"
+    },
+    {
+      "filename": "switch-after-network-change.png",
+      "bytes": 28739,
+      "sha256": "44dd27f75118e2f3a1a46afdae6ba353383a2ea15ff1d393bf3c76d3daf236e5"
+    },
+    {
+      "filename": "switch-after-context-read.json",
+      "bytes": 876,
+      "sha256": "612bcf1a97b9db5ccba027cc6e5459c6d789b28c6073e529fb66f9b18dc81970"
+    },
+    {
+      "filename": "switch-network-permission-probe.txt",
+      "bytes": 792,
+      "sha256": "aa4cab262d47a8fdc34cce22d231082ea586ba1686e54be491a1005ecffecb68"
+    },
+    {
+      "filename": "site-origin-display.json",
+      "bytes": 441,
+      "sha256": "f87bee7b4cb889683ee35548399725e3219eef09436b1300747fae711b507cf7"
+    },
+    {
+      "filename": "site-origin-display.png",
+      "bytes": 33700,
+      "sha256": "e2f4abc68e0373c89b31c531d89a307a4177bffac16fed56628e2a64c03255fb"
+    }
+  ],
+  "transactionsSigned": 0,
+  "transactionsSubmitted": 0,
+  "secretKeysRead": false,
+  "githubModified": false
+}

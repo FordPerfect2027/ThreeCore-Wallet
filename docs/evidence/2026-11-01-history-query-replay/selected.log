@@ -1,0 +1,29 @@
+✔ actual combine and prune commands emit exact shared candidates and do not change source files or create outputs (929.5911ms)
+✔ combine rejects conflicts, wrong-card input, capacity and empty archives without partial output (186.5331ms)
+✔ prune rejects whole-history, empty and order-only scopes while preserving unrelated identities (21.5539ms)
+✔ bounded files, total bytes, UTF-8 errors and directories fail without leaking source data (918.5088ms)
+✔ strict argument validation rejects ambiguous input and help explains candidate-only semantics (2.8486ms)
+✔ portable queries round-trip exact normalized filters without including evidence or authorization (21.5789ms)
+✔ query files reject unknown fields, forged authority, duplicate keys, malformed scopes and oversized data (11.1859ms)
+✔ query file metadata cannot initiate a byte read after disposing the panel (51.8231ms)
+✔ native query file stages only a draft; explicit use restores filters and searches current history without mutating it (74.9389ms)
+✔ malformed or oversized native query files preserve draft and filters, and picker cancellation is harmless (15.4937ms)
+✔ late query reads are retired by edits, search, cancel, archive selection and disposal (69.3079ms)
+✔ actual preset replay matches local search, subset, CSV and cleanup without rewriting either source file (1874.6292ms)
+✔ preset overrides, duplicate options, inappropriate modes and malformed filenames are rejected unambiguously (2.8782ms)
+✔ invalid, oversized, BOM, UTF-8, missing and directory query inputs never emit a partial candidate (61.173ms)
+✔ replay uses current archive data and distinguishes zero matches from a valid deletion candidate (20.9429ms)
+✔ actual CSV history command emits exact scoped balance text and preserves original JSON (452.3017ms)
+✔ actual offline CLI matches shared query, subset, record, pair and timeline results without source writes (1577.3413ms)
+✔ query retains original archive indices and zero results do not become a successful subset export (21.107ms)
+✔ out-of-range, reversed and identity-mismatched pairs produce no partial report (24.8168ms)
+✔ invalid, oversized, invalid-UTF8 and directory inputs return bounded errors without source contents (27.548ms)
+✔ strict argument parsing rejects duplicate filters, ambiguous positions, unknown flags and mixed modes (5.1993ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3469.7094

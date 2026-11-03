@@ -1,0 +1,11 @@
+# Open a selected wallet batch bundle directly from the file guide
+
+Item 555. Source: 83cb205.
+
+The saved-file guide now recognizes both wallet and rehearsal batch-evidence formats and their verification receipts. Declaration-only recognition explicitly grants no checksum, source, restoration or execution authority. Evidence receipts are distinguished from the source-containing bundle required for another check; rehearsal bundles point to the rehearsal review section. The guide retains its 16 MiB input cap, and directs larger wallet bundles to the dedicated 48 MiB picker.
+
+For a wallet batch bundle, a separate button hands the same selected File to the existing full verifier and opens that panel, without a second file-selection step. It verifies all embedded sources before replacing the list, preserving current results for altered claims or failures. This remains an explicit read-only action; it does not import wallet data. Duplicate submissions are disabled while a handoff is pending. New source selections or other guide operations suppress obsolete completion feedback and cannot leave a completed handoff marked as still running. Failed/unavailable handoffs preserve the guide for another attempt.
+
+All 31 selected Node checks passed (4105.8118 ms), along with 117 scoped native Chrome file-read cases. Tests cover declarations with forged authority flags, the actual composite guide/batch handoff, invalid bundle rejection, repeated clicks, selection changes, unrelated guide operations and thrown callbacks. Native File/DataTransfer tests confirm the dedicated picker remains empty while the intended batch panel opens with full negative scope retained. [Evidence](evidence/2026-11-01-batch-evidence-guide/) captures the declaration, complete verification, rejected altered claims, four guide classifications and exact source-bundle digest. Committed evidence hashes are checked after recording.
+
+Last full browser checkpoint: ccbbbe3 (959 cases); last full-wallet Node checkpoint: d253e8d (15,720 tests). Scoped checks do not establish current full-browser coverage or a connection to the user's tab. No signature, transfer, approval, private-key retrieval, external RPC, publication, deployment or existing-server restart occurred. This is one guided handoff capability; recognized schemas and tests are not extra items.

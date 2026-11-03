@@ -11,19 +11,21 @@
  * allowance information; it does not approve spending.
  */
 import { inspectAerodromeBase } from "../src/aerodrome-readonly.js";
+import { parsePublicDiagnosticArgs } from "./public-diagnostic-options.js";
+import { withDiagnosticInterrupt, DiagnosticInterruptError } from "./public-diagnostic-interrupt.js";
 
-const args = process.argv.slice(2);
-if (args.length > 1) {
-  process.stderr.write("Usage: node scripts/inspect-aerodrome.js [public-wallet-address]\n");
-  process.exit(2);
+const parsed = parsePublicDiagnosticArgs("holdings", process.argv.slice(2));
+if (!parsed.ok || parsed.help) {
+  (parsed.ok ? process.stdout : process.stderr).write(parsed.usage + "\n");
+  process.exit(parsed.ok ? 0 : 2);
 }
 try {
-  const report = await inspectAerodromeBase({ publicWalletAddress: args[0] });
+  const report = await withDiagnosticInterrupt(signal => inspectAerodromeBase({ ...parsed.options, signal }));
   process.stdout.write(JSON.stringify(report, null, 2) + "\n");
 } catch (error) {
   process.stderr.write(
     "Read-only Aerodrome inspection failed: " +
       (error?.code ?? "RPC_FAILURE") + " " + (error?.message ?? String(error)) + "\n",
   );
-  process.exitCode = 1;
+  process.exitCode = error instanceof DiagnosticInterruptError ? error.exitCode : 1;
 }

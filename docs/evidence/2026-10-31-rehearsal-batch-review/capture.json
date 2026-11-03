@@ -1,0 +1,111 @@
+{
+  "source": "3e80f6e",
+  "readOnly": true,
+  "providerCalls": 0,
+  "sourceCopies": [
+    {
+      "original": "docs/evidence/2026-10-29-report-review/source-overview-report.json",
+      "copy": "01-saved-report.json",
+      "sha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2"
+    },
+    {
+      "original": "docs/evidence/2026-10-29-report-review/source-scenario-report.json",
+      "copy": "02-saved-report.json",
+      "sha256": "e6fda59527db16b19c6d55107b050bf54fff5b43ff81e9e78045d12e4d9d0f22"
+    },
+    {
+      "original": "docs/evidence/2026-10-29-report-review/source-restore-comparison.json",
+      "copy": "03-saved-report.json",
+      "sha256": "245284bcc3672ae90eec54ada6837780775d8bc4670f6a0ee3fe4a612d144193"
+    },
+    {
+      "original": "docs/evidence/2026-10-30-extended-report-review/expectation-difference-report.json",
+      "copy": "04-saved-report.json",
+      "sha256": "d0740ccd499741396cff4999da58d510be018f4e1e1023baf188de4fd422650a"
+    },
+    {
+      "original": "docs/evidence/2026-10-30-extended-report-review/expectation-match-report.json",
+      "copy": "05-saved-report.json",
+      "sha256": "23700e3d71c74a84296128e1de8a4a19a2d5bdb431950d144d623d97aa1c8e0c"
+    },
+    {
+      "original": "docs/evidence/2026-10-30-extended-report-review/zero-match-report.json",
+      "copy": "06-saved-report.json",
+      "sha256": "bc98a415c6a2d4bae88e2ec1999daa3c8e2fe06deda5b638bbab592c49b4cabf"
+    },
+    {
+      "original": "docs/evidence/2026-10-31-reviewed-report-parts/case-collection-report.json",
+      "copy": "07-saved-report.json",
+      "sha256": "ac8a3eb2fec1b300805b20033fa6feeac6ce9f116a65787146c15ae1cf2a6238"
+    },
+    {
+      "original": "docs/evidence/2026-10-31-rehearsal-reasons-and-input-recovery/reason-query.json",
+      "copy": "08-saved-report.json",
+      "sha256": "e1186413cc8e4a98dedef3b8d7e8e3211e8bf312a8439071264baeaf6c354d98"
+    },
+    {
+      "original": "docs/evidence/2026-10-31-reference-lifecycle/dat-reference.json",
+      "copy": "09-saved-report.json",
+      "sha256": "7c8834bb1d7558dd9df325da7301d857ea6de4b0b619db381b419d3620b9fdce"
+    },
+    {
+      "original": "docs/evidence/2026-10-31-record-summary-and-prefix/settlement-summary.json",
+      "copy": "10-saved-report.json",
+      "sha256": "8799445f6f5262b0c4fbd4ed0f86900807bbd53789782ca0ace348eb623487dd"
+    },
+    {
+      "original": "docs/evidence/2026-10-31-record-summary-and-prefix/through-open-report.json",
+      "copy": "11-saved-report.json",
+      "sha256": "e6aa03de378a50b300820d3a2c0dcc067a87e000a719afaf9016b4184e014408"
+    },
+    {
+      "original": "docs/evidence/2026-10-31-verified-query-reuse/current-records.json",
+      "copy": "12-saved-report.json",
+      "sha256": "7452796c18ac599f63926032765beb3c4bd53ad1c7285cc85c522751d57a02ce"
+    }
+  ],
+  "negativeCopies": [
+    {
+      "original": "docs/evidence/2026-10-29-report-review/tampered-scenario-report.json",
+      "copy": "control-1-tampered.json",
+      "sha256": "ae6b64c4e29691613c44c9a7fe7c89c4e25ea12c65c938a9733d5b1d67c17d89"
+    },
+    {
+      "original": "docs/evidence/2026-10-30-extended-report-review/tampered-query-report.json",
+      "copy": "control-2-tampered.json",
+      "sha256": "a070e4b99570fe21f4c921d90885ca1533efee939afb031ac49f7de513857faa"
+    }
+  ],
+  "generatedContextQuery": "13-context-query-generated.json",
+  "positive": {
+    "exit": 0,
+    "summary": {
+      "files": 13,
+      "matched": 13,
+      "different": 0,
+      "checksumMismatched": 0,
+      "unsupported": 0,
+      "unreadable": 0,
+      "reportsWithFailedExpectations": 1,
+      "readBytes": 129245,
+      "admittedBytes": 129245
+    }
+  },
+  "negative": {
+    "exit": 2,
+    "summary": {
+      "files": 5,
+      "matched": 0,
+      "different": 2,
+      "checksumMismatched": 1,
+      "unsupported": 1,
+      "unreadable": 1,
+      "reportsWithFailedExpectations": 0,
+      "readBytes": 25099,
+      "admittedBytes": 25099
+    }
+  },
+  "originalsUnchanged": true,
+  "checksOnlyRecomputationAndBytes": true,
+  "faithfulFailedExpectationsRemainVisible": true
+}

@@ -1,0 +1,18 @@
+import { execFileSync } from 'node:child_process';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
+import assert from 'node:assert/strict';
+const root='C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-dependency-repair-DAT-20261102';
+const { runSepoliaCli }=await import(pathToFileURL(root+'/test/support/sepolia-cli-fixture.mjs'));
+const previous='355fb9322bbfeafc8e008bf7f7aa1db057099750';
+const beforeSource=execFileSync('git',['show',previous+':scripts/verify-base-sepolia.js'],{cwd:root,windowsHide:true});
+const before=await runSepoliaCli('rpc-error-negative',beforeSource);
+const after=await runSepoliaCli('rpc-error-negative');
+assert.equal(before.code,0);assert.equal(JSON.parse(before.stdout).result,'PASS');
+assert.deepEqual(JSON.parse(before.stdout).negativePaths,{replayedPermitRejected:true,zeroAddressTransferRejected:true});
+assert.equal(after.code,1);assert.equal(after.stdout,'');assert.equal(after.stderr,'Read-only Sepolia verification failed: NEGATIVE_PROBE_RPC_ERROR\n');
+const sha=b=>createHash('sha256').update(b).digest('hex');
+const result={recordedAt:new Date().toISOString(),node:process.version,baselineCommit:previous,baselineSourceSha256:sha(beforeSource),candidateSourceSha256:sha(readFileSync(root+'/scripts/verify-base-sepolia.js')),fixtureSha256:sha(readFileSync(root+'/test/support/sepolia-fixture.mjs')),mode:'rpc-error-negative',before,after,scope:'Fictional deployment/artifact fixtures; real child process and viem HTTP; public RPC and wallet not used',sourceOverride:'Only the baseline script is read from the prior Git commit; both use the same fictional fixture data and current installed viem'};
+writeFileSync('C:/Users/aseet/Downloads/ThreeCore-sepolia-verifier-before-after-20261102.json',JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify({before:{code:before.code,result:JSON.parse(before.stdout).result,negativePaths:JSON.parse(before.stdout).negativePaths},after:{code:after.code,stdout:after.stdout,stderr:after.stderr}}));

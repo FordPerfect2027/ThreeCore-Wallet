@@ -51,10 +51,16 @@ test("validated configuration is deeply frozen and detached", () => {
   assert.throws(() => { result.entries[0].account = B; }, TypeError);
 });
 
+for (const [name, account, chainId] of [["same address", A, 84532], ["same address different chain", A, 8453],
+  ["same address upper case", "0x" + "AB".repeat(20), 84532]]) {
+  test("configuration permits " + name + " while retaining each agent and chain", () => {
+    const input = setup(); input.entries[1].account = account; input.entries[1].chainId = chainId;
+    const result = decodeWalletSetup(encodeWalletSetup(input));
+    assert.equal(result.entries[1].account, A); assert.equal(result.entries[1].chainId, chainId);
+    assert.deepEqual(result.entries.map(row => row.agent), ["DAT", "EMA", "CAWELON"]);
+  });
+}
 for (const [name, mutate, code] of [
-  ["same address", p => { p.entries[1].account = A; }, "SETUP_DUPLICATE"],
-  ["same address different chain", p => { p.entries[1].account = A; p.entries[1].chainId = 8453; }, "SETUP_DUPLICATE"],
-  ["same address upper case", p => { p.entries[1].account = "0x" + "AB".repeat(20); }, "SETUP_DUPLICATE"],
   ["wrong chain", p => { p.entries[0].chainId = 1; }, "SETUP_CHAIN"],
   ["string chain", p => { p.entries[0].chainId = "84532"; }, "SETUP_CHAIN"],
   ["unknown schema", p => { p.schema += "-other"; }, "SETUP_SCHEMA"],
@@ -150,11 +156,14 @@ test("raw capture preserves incomplete input for comparison", () => {
   assert.throws(() => setupFromFields(fields), { code: "SETUP_ADDRESS" });
 });
 
-test("readiness identifies both ends of a duplicate", () => {
+test("readiness identifies shared accounts without rejecting configured cards", () => {
   const value = inspectWalletFields(raw([A, "0x" + "AB".repeat(20), C]));
-  assert.deepEqual(value.entries.map(row => row.status), ["duplicate", "duplicate", "configured"]);
-  assert.equal(value.configured, 1);
-  assert.equal(value.readyForManualConnection, false);
+  assert.deepEqual(value.entries.map(row => row.status), ["configured", "configured", "configured"]);
+  assert.deepEqual(value.entries.map(row => row.sharedAccount), [true, true, false]);
+  assert.equal(value.configured, 3);
+  assert.equal(value.distinctAccounts, 2);
+  assert.equal(value.readyForManualConnection, true);
+  assert.equal(value.ownershipVerified, false);
 });
 
 test("readiness distinguishes missing and malformed accounts", () => {

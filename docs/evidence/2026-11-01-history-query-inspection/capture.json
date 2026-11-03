@@ -1,0 +1,14 @@
+{
+  "source": "5d0b6e9",
+  "cliExit": 2,
+  "cliApiExact": true,
+  "sourceUnchanged": true,
+  "structureOnly": true,
+  "filterAddressesNotConfiguredAccounts": true,
+  "observationsAbsent": true,
+  "batchRecomputed": true,
+  "nativeBrowserCases": 150,
+  "synthetic": true,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}

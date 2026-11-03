@@ -1,0 +1,247 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { Element } from "./helpers/panel-dom.js";
+import { mountRehearsalRecordsPanel } from "../examples/operation-rehearsal-records-panel.js";
+import { rehearsalExampleV2 } from "../src/operation-rehearsal-examples.js";
+import { REHEARSAL_WORKSPACE_SCHEMA } from "../src/operation-rehearsal-workspace.js";
+import { encodeRehearsalRecordReport,rehearsalRecordCsv,encodeRehearsalContextRecordReport,rehearsalContextRecordCsv,REHEARSAL_RECORD_QUERY } from "../src/operation-rehearsal-records.js";
+import {encodeRehearsalRecordSummary,rehearsalRecordSummaryCsv,encodeRehearsalRecordPrefix,extractRehearsalRecordPrefix,REHEARSAL_SUMMARY_QUERY} from "../src/operation-rehearsal-records.js";
+const workspace=(...ledgers)=>({schema:REHEARSAL_WORKSPACE_SCHEMA,simulationOnly:true,activeAgent:"DAT",ledgers});
+class Node extends Element{set textContent(value){this.text=value;this.children=[];}get textContent(){return this.text;}}
+const rendered=n=>[n.textContent,...n.children.map(rendered)].join(" ");
+function setup(){const elements=new Map(),downloads=[];let throwDownload=false,downloadAction=()=>{};
+  const document={getElementById(id){if(!elements.has(id))elements.set(id,new Node("div"));return elements.get(id);},createElement:tag=>new Node(tag)};
+  const field=id=>document.getElementById("record-browser-"+id);
+  const panel=mountRehearsalRecordsPanel(document,{reasons:{WRONG_AGENT:"対象トークンが異なる"},kinds:{open:"投入",settle:"決済",deposit:"追加資金"},download:({prepared})=>{if(throwDownload)throw Error("Download");const result=downloadAction();downloads.push(prepared);return result;}});
+  const change=(id,value,event=id==="search"?"input":"change")=>{field(id).value=value;field(id).dispatchEvent(new Event(event));};
+  return{field,panel,change,downloads,failDownload:()=>{throwDownload=true;},onDownload:fn=>{downloadAction=fn;}};
+}
+const many=()=>{const source=rehearsalExampleV2();return workspace({...source,events:Array.from({length:27},(_,i)=>({id:"deposit-"+i,kind:"deposit",agent:source.agent,chainId:source.chainId,account:source.account,amount:"1"}))});};
+
+test('direct page navigation preserves full exports and supports first, last and Enter without invalid jumps',()=>{
+ const f=setup(),input=many();try{f.panel.refresh(input);f.field('save').click();const original=f.downloads.pop().text;assert.equal(f.field('page').value,'1');assert.match(f.field('page-count').textContent,/全3ページ/);
+  f.field('last').click();assert.equal(f.field('select').value,'DAT:deposit-20');assert(f.field('last').disabled);assert.equal(f.field('rows').children.length,7);
+  for(const invalid of ['','0','4','2.0','-1','1e0',' 2','２']){const selected=f.field('select').value;f.field('page').value=invalid;f.field('go').click();assert.equal(f.field('select').value,selected);assert.match(f.field('page-status').textContent,/現在の表示/);}
+  f.field('page').value='2';const event=new Event('keydown',{cancelable:true});Object.defineProperty(event,'key',{value:'Enter'});f.field('page').dispatchEvent(event);assert(event.defaultPrevented);assert.equal(f.field('select').value,'DAT:deposit-10');assert.equal(f.field('page-status').textContent,'');
+  f.field('first').click();assert.equal(f.field('select').value,'DAT:deposit-0');assert(f.field('first').disabled);f.field('save').click();assert.equal(f.downloads.pop().text,original);
+  f.change('size','25');assert.match(f.field('page-count').textContent,/全2ページ/);f.field('last').click();assert.equal(f.field('select').value,'DAT:deposit-25');
+ }finally{f.panel.dispose();}
+});
+
+test('adjacent detail navigation crosses pages and stays within matched records in both directions',()=>{
+ const f=setup();try{f.panel.refresh(many());f.change('search','deposit-1');assert.match(f.field('status').textContent,/一致 11件/);assert(f.field('detail-prev').disabled);
+  for(let i=0;i<10;i++)f.field('detail-next').click();assert.equal(f.field('select').value,'DAT:deposit-19');assert.equal(f.field('page').value,'2');assert.match(f.field('detail-position').textContent,/全11件中、11件目/);assert(f.field('detail-next').disabled);
+  f.field('detail-prev').click();assert.equal(f.field('select').value,'DAT:deposit-18');assert.equal(f.field('page').value,'1');assert.equal(f.field('search').value,'deposit-1');
+  f.field('save').click();assert.equal(JSON.parse(f.downloads.pop().text).matchedRecords,11);
+  f.change('search','absent');for(const name of['first','last','page','go','detail-prev','detail-next'])assert(f.field(name).disabled,name);assert.equal(f.field('detail-position').textContent,'');assert.match(f.field('page-count').textContent,/該当ページなし/);
+ }finally{f.panel.dispose();}
+});
+
+test('navigation resets on invalid filters, respects replacement sources and is inert after disposal',()=>{
+ const f=setup();f.panel.refresh(many());f.field('last').click();f.change('search','x'.repeat(81));for(const name of['first','last','page','go','detail-prev','detail-next'])assert(f.field(name).disabled,name);
+ f.change('search','');f.field('last').click();f.panel.refresh(workspace(rehearsalExampleV2()));assert.equal(f.field('page').value,'1');assert.match(f.field('page-count').textContent,/全1ページ/);f.field('detail-next').click();assert.equal(f.field('select').value,'DAT:settle-one');
+ const controls=['last','go','detail-next'].map(name=>f.field(name));f.panel.dispose();controls.forEach(node=>node.click());assert.equal(f.field('detail').textContent,'');assert.equal(f.field('page').value,'');
+});
+
+test('query reuse resets paging and matches current history without restoring another input',()=>{
+ const f=setup(),input=many();try{f.panel.refresh(input);f.field('next').click();let focus=0;f.field('select').focus=()=>{focus++;};
+  assert.equal(f.panel.applyQuery({...REHEARSAL_SUMMARY_QUERY,agent:'DAT',search:'deposit-26'}),true);assert.equal(f.field('select').value,'DAT:deposit-26');assert.equal(f.field('back').disabled,true);assert.match(f.field('status').textContent,/1～1/);assert.equal(focus,1);
+  f.field('save').click();assert.deepEqual(JSON.parse(f.downloads.pop().text).inputs,input);
+  f.field('search').focus=()=>{focus++;};assert.equal(f.panel.applyQuery({...REHEARSAL_SUMMARY_QUERY,kind:'settle',reason:'WRONG_ACCOUNT'}),true);assert.match(f.field('status').textContent,/一致 0件/);assert.equal(f.field('reason').value,'WRONG_ACCOUNT');assert.equal(focus,2);
+ }finally{f.panel.dispose();}
+});
+test('invalid reused criteria preserve existing filters and a focus replacement cannot report old success',()=>{
+ const f=setup();try{assert.equal(f.panel.applyQuery(REHEARSAL_SUMMARY_QUERY),false);f.panel.refresh(many());f.change('search','deposit-26');const detail=f.field('detail').textContent;
+  assert.equal(f.panel.applyQuery({...REHEARSAL_SUMMARY_QUERY,reason:'invalid'}),false);assert.equal(f.field('search').value,'deposit-26');assert.equal(f.field('detail').textContent,detail);
+  f.field('select').focus=()=>f.panel.refresh(workspace(rehearsalExampleV2()));assert.equal(f.panel.applyQuery(REHEARSAL_SUMMARY_QUERY),false);assert.match(f.field('detail').textContent,/open-one/);
+ }finally{f.panel.dispose();}assert.equal(f.panel.applyQuery(REHEARSAL_SUMMARY_QUERY),false);
+});
+
+test('summary counts and exports all matches independent of the displayed page',()=>{
+ const f=setup(),input=many();try{f.panel.refresh(input);f.field('next').click();assert.match(f.field('summary').textContent,/DAT: 一致 27件/);assert.match(f.field('summary').textContent,/EMA: 未作成/);
+  for(const [name,encode]of [['summary-save',encodeRehearsalRecordSummary],['summary-csv-save',rehearsalRecordSummaryCsv]]){f.field(name).click();assert.equal(f.downloads.pop().text,encode(input));}
+  f.change('search','deposit-26');assert.match(f.field('summary').textContent,/DAT: 一致 1件/);f.field('summary-save').click();assert.equal(f.downloads.pop().text,encodeRehearsalRecordSummary(input,{...REHEARSAL_SUMMARY_QUERY,search:'deposit-26'}));
+  f.change('search','absent');assert.match(f.field('summary').textContent,/DAT: 一致 0件/);assert.equal(f.field('summary-save').disabled,false);f.change('search','x'.repeat(81));assert.equal(f.field('summary-save').disabled,true);assert.equal(f.field('summary').textContent,'');
+ }finally{f.panel.dispose();}
+});
+test('selected prefix retains prior hidden records and clears its actions when selection disappears',()=>{
+ const f=setup(),input=many();try{f.panel.refresh(input);f.change('search','deposit-26');assert.match(f.field('prefix-note').textContent,/先頭からこの記録を含む27件/);
+  f.field('prefix-save').click();assert.equal(f.downloads.pop().text,extractRehearsalRecordPrefix(input,'DAT:deposit-26'));
+  f.field('prefix-report-save').click();assert.equal(f.downloads.pop().text,encodeRehearsalRecordPrefix(input,'DAT:deposit-26'));
+  f.change('search','absent');assert.equal(f.field('prefix-save').disabled,true);assert.equal(f.field('prefix-report-save').disabled,true);assert.equal(f.field('prefix-note').textContent,'');
+ }finally{f.panel.dispose();}
+});
+for(const name of ['summary-save','summary-csv-save','prefix-save','prefix-report-save'])test(name+' cannot publish after a source change inside download',()=>{
+ const f=setup();try{f.panel.refresh(many());f.onDownload(()=>f.panel.refresh(workspace(rehearsalExampleV2())));f.field(name).click();assert.equal(f.field('export-status').textContent,'');assert.match(f.field('detail').textContent,/open-one/);
+  f.failDownload();f.field(name).click();assert.match(f.field('export-status').textContent,/保存できません/);assert.equal(f.field(name).disabled,false);
+ }finally{f.panel.dispose();}
+});
+test('prefix export cannot overwrite a newer selection made during download',()=>{
+ const f=setup();try{f.panel.refresh(workspace(rehearsalExampleV2()));f.onDownload(()=>f.change('select','DAT:settle-one'));f.field('prefix-save').click();assert.equal(f.field('export-status').textContent,'');assert.match(f.field('prefix-note').textContent,/含む2件/);
+ }finally{f.panel.dispose();}
+});
+test("empty source and missing agents are explicit, not assumed zero balances",()=>{
+  const f=setup();assert.equal(f.field("save").disabled,true);f.panel.refresh(workspace({...rehearsalExampleV2(),events:[]}));assert.match(f.field("scope").textContent,/DAT: 0件 \/ EMA: 未作成/);assert.equal(f.field("select").disabled,true);
+});
+test("paging shows bounded rows and exports every match, not only the current page",()=>{
+  const f=setup(),input=many();f.panel.refresh(input);assert.equal(f.field("rows").children.length,10);assert.equal(f.field("prev").disabled,true);
+  f.field("next").click();assert.match(f.field("status").textContent,/11～20/);assert.match(f.field("detail").textContent,/11番目/);
+  f.field("save").click();assert.equal(f.downloads[0].text,encodeRehearsalRecordReport(input));
+  f.field("next").click();assert.equal(f.field("rows").children.length,7);assert.equal(f.field("next").disabled,true);
+  f.change("size","25");assert.equal(f.field("rows").children.length,25);assert.match(f.field("status").textContent,/1～25/);
+});
+test("filter changes reset page; no matches clear old detail and related records",()=>{
+  const f=setup();f.panel.refresh(many());f.field("next").click();f.change("search","deposit-26");assert.equal(f.field("rows").children.length,1);assert.match(f.field("status").textContent,/1～1/);
+  f.change("search","absent");assert.equal(f.field("event").children.length,0);assert.equal(f.field("related-status").textContent,"");assert.equal(f.field("select").disabled,true);
+  f.field("clear").click();assert.equal(f.field("rows").children.length,10);
+});
+test("detail shows recorded event context, six before/after amounts and related record IDs",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2()));assert.equal(f.field("balances").children.length,6);assert.match(rendered(f.field("related")),/settle-one/);
+  f.change("select","DAT:settle-one");assert.match(f.field("detail").textContent,/2番目/);assert.match(rendered(f.field("balances")),/-1 SIM 28 SIM \+29 SIM/);
+});
+test("a source replacement refreshes amounts and removes a vanished selection",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2()));f.change("select","DAT:settle-one");f.panel.refresh(workspace(rehearsalExampleV2("DAT","pending")));
+  assert.equal(f.field("select").value,"DAT:open-one");assert.equal(f.field("rows").children.length,1);assert.equal(f.field("related").children.length,0);
+});
+test("foreign event identity is shown distinctly from stored identity",()=>{
+  const f=setup(),source=rehearsalExampleV2();f.panel.refresh(workspace({...source,events:[{...source.events[0],agent:"EMA"}]}));
+  assert.match(f.field("detail").textContent,/保存元 DAT/);assert.match(rendered(f.field("event")),/記録上の対象 EMA/);assert.match(f.field("detail").textContent,/対象トークンが異なる/);
+});
+test("invalid query disables export until fixed and download failure preserves rows",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2()));f.change("search","x".repeat(81));assert.equal(f.field("save").disabled,true);
+  f.change("search","");f.failDownload();f.field("save").click();assert.match(f.field("export-status").textContent,/保存できません/);assert.equal(f.field("rows").children.length,2);
+});
+test("dispose removes records and prevents later refresh or retained listeners from exposing them",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2()));f.panel.dispose();f.panel.refresh(many());f.field("next").click();assert.equal(f.field("rows").children.length,0);assert.equal(f.field("save").disabled,true);
+});
+
+const rowButton=(f,index)=>f.field('rows').children[index].children[5].children[0];
+test('a record row opens its exact detail and moves focus without changing the query export',()=>{
+  const f=setup(),input=many();let focus=0;f.field('select').focus=()=>{focus++;};
+  try{f.panel.refresh(input);f.field('next').click();f.field('save').click();const before=f.downloads.pop().text;
+    const pick=rowButton(f,7);assert.match(pick.getAttribute('aria-label'),/DAT.*18番目.*deposit-17/);pick.click();
+    assert.equal(f.field('select').value,'DAT:deposit-17');assert.match(f.field('detail').textContent,/18番目.*deposit-17/);assert.equal(focus,1);
+    assert.match(f.field('status').textContent,/11～20/);f.field('save').click();assert.equal(f.downloads.pop().text,before);
+  }finally{f.panel.dispose();}
+});
+for(const change of ['filter','page','size','refresh','dispose'])test('detached record row cannot undo '+change,()=>{
+  const f=setup();try{f.panel.refresh(many());const old=rowButton(f,3);
+    if(change==='filter')f.change('search','deposit-26');if(change==='page')f.field('next').click();if(change==='size')f.change('size','25');
+    if(change==='refresh')f.panel.refresh(workspace(rehearsalExampleV2()));if(change==='dispose')f.panel.dispose();
+    const selection=f.field('select').value,detail=f.field('detail').textContent;old.click();assert.equal(f.field('select').value,selection);assert.equal(f.field('detail').textContent,detail);
+  }finally{f.panel.dispose();}
+});
+test('a focus observer that replaces the record source retains its newer detail',()=>{
+  const f=setup();try{f.panel.refresh(workspace(rehearsalExampleV2()));const pick=rowButton(f,1);
+    f.field('select').focus=()=>f.panel.refresh(workspace(rehearsalExampleV2('DAT','pending')));pick.click();
+    assert.equal(f.field('select').value,'DAT:open-one');assert.match(f.field('detail').textContent,/1番目.*open-one/);assert.equal(f.field('rows').children.length,1);
+  }finally{f.panel.dispose();}
+});
+
+test("CSV export includes matches beyond the visible page and preserves JSON inputs",()=>{
+  const f=setup(),input=many();try{assert.equal(f.field("csv-save").disabled,true);f.panel.refresh(input);f.field("next").click();
+    f.field("csv-save").click();const saved=f.downloads.pop();assert.equal(saved.filename,"ThreeCore-record-query.csv");assert.equal(saved.mimeType,"text/csv;charset=utf-8");
+    assert.equal(saved.text,rehearsalRecordCsv(input));assert.match(f.field("export-status").textContent,/全27件/);assert.match(f.field("status").textContent,/11～20/);
+    f.field("save").click();assert.equal(f.downloads.pop().text,encodeRehearsalRecordReport(input));
+  }finally{f.panel.dispose();}
+});
+test("no-match CSV is explicitly header-only while invalid queries disable the action",()=>{
+  const f=setup(),input=many();try{f.panel.refresh(input);f.change("search","absent");f.field("csv-save").click();
+    assert.equal(f.downloads.pop().text,rehearsalRecordCsv(input,{...REHEARSAL_RECORD_QUERY,search:"absent"}));assert.match(f.field("export-status").textContent,/全0件.*列名だけ/);
+    f.change("search","x".repeat(81));assert.equal(f.field("csv-save").disabled,true);f.field("csv-save").click();assert.equal(f.downloads.length,0);
+    f.change("search","");assert.equal(f.field("csv-save").disabled,false);
+  }finally{f.panel.dispose();assert.equal(f.field("csv-save").disabled,true);}
+});
+test("CSV delivery failure preserves the selected query and rows for a retry",()=>{
+  const f=setup();try{f.panel.refresh(many());f.change("search","deposit-2");f.failDownload();f.field("csv-save").click();
+    assert.match(f.field("export-status").textContent,/CSVを保存できません/);assert.equal(f.field("rows").children.length,8);assert.equal(f.field("search").value,"deposit-2");
+    assert.equal(f.field("csv-save").disabled,false);
+  }finally{f.panel.dispose();}
+});
+
+test("search scope finds recorded context and exports the same versioned query in JSON and CSV",()=>{
+  const f=setup(),source=rehearsalExampleV2(),account="0x"+"2".repeat(40),input=workspace({...source,events:[{...source.events[0],account},source.events[1]]});
+  try{f.panel.refresh(input);f.change("search",account);assert.equal(f.field("rows").children.length,0);f.change("search-scope","recorded");assert.equal(f.field("rows").children.length,1);
+    const query={...REHEARSAL_RECORD_QUERY,search:account,searchScope:"recorded"};f.field("save").click();assert.equal(f.downloads.pop().text,encodeRehearsalContextRecordReport(input,query));
+    f.field("csv-save").click();assert.equal(f.downloads.pop().text,rehearsalContextRecordCsv(input,query));
+    f.field("clear").click();assert.equal(f.field("search-scope").value,"stored");f.field("save").click();assert.equal(JSON.parse(f.downloads.pop().text).schema,"threecore.operation-rehearsal-record-query.v1");
+  }finally{f.panel.dispose();}
+});
+
+test("related navigation restores the recorded-context search and retires old row buttons",()=>{
+  const f=setup(),source=rehearsalExampleV2(),account="0x"+"2".repeat(40);try{f.panel.refresh(workspace({...source,events:[{...source.events[0],account},source.events[1]]}));
+    f.change("search-scope","recorded");f.change("search",account);const old=rowButton(f,0),related=f.field("related").children[0].children[3].children[0];
+    related.click();assert.equal(f.field("search-scope").value,"stored");assert.equal(f.field("select").value,"DAT:settle-one");old.click();assert.equal(f.field("select").value,"DAT:settle-one");
+    f.field("back").click();assert.equal(f.field("search-scope").value,"recorded");assert.equal(f.field("search").value,account);assert.equal(f.field("select").value,"DAT:open-one");
+  }finally{f.panel.dispose();}
+});
+
+test("an invalid scope disables exports until the user chooses a supported scope",()=>{
+  const f=setup();try{f.panel.refresh(many());f.change("search-scope","unexpected");assert.equal(f.field("save").disabled,true);assert.equal(f.field("csv-save").disabled,true);
+    f.change("search-scope","both");assert.equal(f.field("save").disabled,false);assert.equal(f.field("csv-save").disabled,false);
+  }finally{f.panel.dispose();}
+});
+
+test("an overview destination opens the exact original record beyond page one and Back restores the old query",()=>{
+  const f=setup(),input=many(),source=input.ledgers[0];source.events.push(rehearsalExampleV2().events[0]);
+  f.panel.refresh(input);f.change("search","deposit");f.field("next").click();f.change("select","DAT:deposit-15");
+  const before=f.field("status").textContent;assert.equal(f.panel.openRecord("DAT:open-one"),true);
+  assert.equal(f.field("select").value,"DAT:open-one");assert.match(f.field("status").textContent,/21～28/);
+  assert.equal(f.field("search").value,"");f.field("back").click();
+  assert.equal(f.field("search").value,"deposit");assert.equal(f.field("select").value,"DAT:deposit-15");assert.equal(f.field("status").textContent,before);
+  assert.equal(input.ledgers[0].events.length,28);f.panel.dispose();
+});
+test("external record navigation keeps agent identity and rejects missing, invalid and disposed destinations",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2(),rehearsalExampleV2("EMA")));
+  assert.equal(f.panel.openRecord("EMA:settle-one"),true);assert.equal(f.field("agent").value,"EMA");assert.equal(f.field("select").value,"EMA:settle-one");
+  const before=f.field("status").textContent;assert.equal(f.panel.openRecord("DAT:missing"),false);assert.equal(f.panel.openRecord({toString(){throw Error("Do not coerce");}}),false);
+  assert.equal(f.field("status").textContent,before);f.field("size").value="999";assert.equal(f.panel.openRecord("DAT:open-one"),false);
+  f.panel.dispose();assert.equal(f.panel.openRecord("DAT:open-one"),false);
+});
+
+test("selected operation detail shows the whole lifecycle even when the filter hides its settlement",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2()));f.change("search","open-one");
+  assert.equal(f.field("reference-summary").hidden,false);
+  assert.match(f.field("reference-summary").textContent,/決済済み（試算）/);assert.match(f.field("reference-summary").textContent,/関連する全2件/);
+  assert.match(f.field("reference-summary").textContent,/累計実現損益: 28 SIM/);assert.match(f.field("reference-summary").textContent,/費用合計: 2 SIM/);
+  f.field("reference-save").click();const report=JSON.parse(f.downloads[0].text);assert.equal(report.selectedKey,"DAT:open-one");assert.equal(report.recordCount,2);
+  f.change("search","absent");assert.equal(f.field("reference-summary").textContent,"");assert.equal(f.field("reference-summary").hidden,true);assert.equal(f.field("reference-save").disabled,true);f.panel.dispose();
+});
+test("reference exports handle a refused delivery without changing source records",()=>{
+  const f=setup();f.panel.refresh(workspace(rehearsalExampleV2("DAT","pending")));f.failDownload();f.field("reference-save").click();
+  assert.match(f.field("export-status").textContent,/保存できません/);assert.match(f.field("reference-summary").textContent,/未決済/);assert.match(f.field("reference-summary").textContent,/戻り額: 記録なし/);
+  f.panel.dispose();assert.equal(f.field("reference-summary").textContent,"");assert.equal(f.field("reference-save").disabled,true);
+});
+
+test("reference CSV exports hidden related rows and is retired with an empty or closed view",()=>{
+ const f=setup();try{f.panel.refresh(workspace(rehearsalExampleV2()));f.change("search","open-one");
+  f.field("reference-csv-save").click();const file=f.downloads.pop();assert.equal(file.mimeType,"text/csv;charset=utf-8");assert.equal(file.text.trim().split("\r\n").length,3);
+  assert.match(file.text,/"settle-one"/);assert.match(f.field("export-status").textContent,/CSVは閲覧用/);
+  f.failDownload();f.field("reference-csv-save").click();assert.match(f.field("export-status").textContent,/保存できません/);
+  f.change("search","absent");assert.equal(f.field("reference-csv-save").disabled,true);
+ }finally{f.panel.dispose();assert.equal(f.field("reference-csv-save").disabled,true);}
+});
+
+test("exact reason selection differs from text search, preserves decision and exports all matches",()=>{
+  const f=setup(),source=rehearsalExampleV2(),events=Array.from({length:27},(_,i)=>({...source.events[0],id:"wrong-"+i,account:"0x"+"9".repeat(40)}));
+  try{f.panel.refresh(workspace({...source,events}));f.change("reason","WRONG_ACCOUNT");
+    assert.equal(f.field("rows").children.length,10);assert.match(f.field("status").textContent,/一致 27件/);
+    f.field("save").click();const report=JSON.parse(f.downloads.pop().text);assert.equal(report.matchedRecords,27);assert.equal(report.query.reason,"WRONG_ACCOUNT");
+    f.field("csv-save").click();assert.equal(f.downloads.pop().text.trim().split("\r\n").length,28);
+    f.change("decision","accepted");assert.equal(f.field("decision").value,"accepted");assert.equal(f.field("rows").children.length,0);
+    f.field("save").click();assert.equal(JSON.parse(f.downloads.pop().text).matchedRecords,0);
+    f.field("clear").click();assert.equal(f.field("reason").value,"all");
+  }finally{f.panel.dispose();}
+});
+
+test("overview and related navigation restore the exact reason-filtered view on Back",()=>{
+  const f=setup(),source=rehearsalExampleV2(),bad={...source.events[0],id:"wrong-open",account:"0x"+"9".repeat(40)};
+  try{f.panel.refresh(workspace({...source,events:[bad,...source.events]}));f.change("reason","WRONG_ACCOUNT");
+    assert.equal(f.field("select").value,"DAT:wrong-open");const before=f.field("status").textContent;
+    assert.equal(f.panel.openRecord("DAT:settle-one"),true);assert.equal(f.field("reason").value,"all");
+    f.field("back").click();assert.equal(f.field("reason").value,"WRONG_ACCOUNT");assert.equal(f.field("select").value,"DAT:wrong-open");assert.equal(f.field("status").textContent,before);
+    const related=f.field("related").children[0].children[3].children[0];related.click();assert.equal(f.field("reason").value,"all");
+    f.field("back").click();assert.equal(f.field("reason").value,"WRONG_ACCOUNT");assert.equal(f.field("status").textContent,before);
+    f.change("reason","UNKNOWN");assert.equal(f.field("save").disabled,true);assert.equal(f.field("reference-save").disabled,true);
+  }finally{f.panel.dispose();}
+});

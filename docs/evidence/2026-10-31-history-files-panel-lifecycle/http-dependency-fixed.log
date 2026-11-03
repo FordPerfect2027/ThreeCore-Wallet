@@ -1,0 +1,38 @@
+✔ export HTTP: protected static module false//src/export-policy.js (98.1675ms)
+✔ export HTTP: protected static module false//src/export-payload.js (14.2053ms)
+✔ export HTTP: protected static module false//src/export-guard.js (9.7744ms)
+✔ export HTTP: protected static module false//src/export-status.js (7.8099ms)
+✔ export HTTP: protected static module false//examples/export-resource.js (7.75ms)
+✔ export HTTP: protected static module false//examples/export-download.js (7.8335ms)
+✔ export HTTP: protected static module false//examples/export-guard-panel.js (8.3441ms)
+✔ export HTTP: protected static module false//src/state-notifier.js (7.6511ms)
+✔ export HTTP: protected static module false//src/security-callback.js (8.7563ms)
+✔ export HTTP: protected static module false//src/provider-error.js (8.3691ms)
+✔ export HTTP: no download upload or status endpoint false (36.3357ms)
+✔ export HTTP: foreign request context cannot load modules false (113.7069ms)
+✔ export HTTP: synthetic UI is available only in explicit test mode false (12.5502ms)
+✔ export HTTP: normal app wires shared budget into protection stop false (17.1091ms)
+✔ export HTTP: protected static module true//src/export-policy.js (8.708ms)
+✔ export HTTP: protected static module true//src/export-payload.js (11.6449ms)
+✔ export HTTP: protected static module true//src/export-guard.js (7.661ms)
+✔ export HTTP: protected static module true//src/export-status.js (7.7998ms)
+✔ export HTTP: protected static module true//examples/export-resource.js (7.3616ms)
+✔ export HTTP: protected static module true//examples/export-download.js (9.0977ms)
+✔ export HTTP: protected static module true//examples/export-guard-panel.js (9.0616ms)
+✔ export HTTP: protected static module true//src/state-notifier.js (8.4613ms)
+✔ export HTTP: protected static module true//src/security-callback.js (7.777ms)
+✔ export HTTP: protected static module true//src/provider-error.js (11.2934ms)
+✔ export HTTP: no download upload or status endpoint true (39.2727ms)
+✔ export HTTP: foreign request context cannot load modules true (123.8559ms)
+✔ export HTTP: synthetic UI is available only in explicit test mode true (15.7672ms)
+✔ export HTTP: normal app wires shared budget into protection stop true (15.7558ms)
+✔ export HTTP: twelve former URL allocation sites all resolve the same guard (45.5459ms)
+✔ export HTTP: all new module imports resolve locally without new network privileges (39.2468ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1132.4594

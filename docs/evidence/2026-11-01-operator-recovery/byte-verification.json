@@ -1,0 +1,36 @@
+{
+  "schema": "threecore.operator-recovery-byte-verification.v1",
+  "checkedAt": "2026-11-01T12:45:35.551Z",
+  "byteEqual": true,
+  "simulationOnly": true,
+  "files": [
+    {
+      "file": "original-session.json",
+      "bytes": 17387,
+      "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c",
+      "originalDownloadModifiedAt": "2026-11-01T12:34:37.292Z"
+    },
+    {
+      "file": "restored-session.json",
+      "bytes": 17387,
+      "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c",
+      "originalDownloadModifiedAt": "2026-11-01T12:36:58.985Z"
+    }
+  ],
+  "recordCounts": [
+    {
+      "agent": "DAT",
+      "recordCount": 3
+    },
+    {
+      "agent": "EMA",
+      "recordCount": 2
+    },
+    {
+      "agent": "CAWELON",
+      "recordCount": 1
+    }
+  ],
+  "comparisonCases": 3,
+  "checker": "scripts/check-rehearsal-session.js"
+}

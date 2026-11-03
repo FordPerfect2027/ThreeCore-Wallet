@@ -1,4 +1,5 @@
-import { readFormatFileText } from "./security-file.js";
+import { sha256Hex } from "./security-data.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail } from "./transfer-codec.js";
 import { validateTransferArchive } from "./transfer-archive.js";
@@ -7,18 +8,14 @@ export const TRANSFER_ARCHIVE_FILE_LIMIT = 6 * 1024 * 1024;
 const FILE_SCHEMA = "threecore.transfer-archive-file.v1";
 const encoder = new TextEncoder();
 
-async function digestArchive(payload, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") transferFail("TRANSFER_CRYPTO_UNAVAILABLE");
-  let result;
-  try { result = await subtle.digest("SHA-256", encoder.encode(JSON.stringify(payload))); }
-  catch { transferFail("TRANSFER_CRYPTO_FAILED"); }
-  if (!(result instanceof ArrayBuffer) || result.byteLength !== 32) transferFail("TRANSFER_CRYPTO_FAILED");
-  return [...new Uint8Array(result)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+async function digestArchive(payload, subtle, options) {
+  try { return await sha256Hex(encoder.encode(JSON.stringify(payload)), subtle, options); }
+  catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
-export async function prepareTransferArchive(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareTransferArchive(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const payload = validateTransferArchive(input);
-  const digest = await digestArchive(payload, subtle);
+  const digest = await digestArchive(payload, subtle, { signal, timeoutMs });
   const text = JSON.stringify({ schema: FILE_SCHEMA, algorithm: "SHA-256", digest, payload }, null, 2) + "\n";
   const byteLength = encoder.encode(text).length;
   if (byteLength > TRANSFER_ARCHIVE_FILE_LIMIT) transferFail("TRANSFER_ARCHIVE_FILE_SIZE");
@@ -31,11 +28,17 @@ export async function prepareTransferArchive(input, { subtle = globalThis.crypto
 }
 
 export async function readTransferArchive(file, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
-  if (!file || typeof file.name !== "string" || !/\.json$/i.test(file.name) || file.name.length > 180 ||
-      /[/\\\u0000-\u001f\u007f]/.test(file.name)) transferFail("TRANSFER_FILE_NAME");
+  readFormatFileName(file, { maxLength: 180, fail: transferFail, code: "TRANSFER_FILE_NAME" });
   const text = await readFormatFileText(file, { maxBytes: TRANSFER_ARCHIVE_FILE_LIMIT, fail: transferFail,
     sizeCode: "TRANSFER_ARCHIVE_FILE_SIZE", readCode: "TRANSFER_FILE_READ",
     encodingCode: "TRANSFER_FILE_ENCODING", signal, timeoutMs });
+  return decodeTransferArchiveFile(text, { subtle, signal, timeoutMs });
+}
+
+/** Validate saved text without manufacturing a File or performing another read. */
+export async function decodeTransferArchiveFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
+  if (typeof text !== "string" || !text.length || text.length > TRANSFER_ARCHIVE_FILE_LIMIT ||
+      encoder.encode(text).byteLength > TRANSFER_ARCHIVE_FILE_LIMIT) transferFail("TRANSFER_ARCHIVE_FILE_SIZE");
   let envelope;
   try { envelope = parseSecurityJson(text); }
   catch { transferFail("TRANSFER_FILE_JSON"); }
@@ -43,7 +46,7 @@ export async function readTransferArchive(file, { subtle = globalThis.crypto?.su
   if (envelope.schema !== FILE_SCHEMA || envelope.algorithm !== "SHA-256" ||
       typeof envelope.digest !== "string" || !/^[\da-f]{64}$/.test(envelope.digest)) transferFail("TRANSFER_ARCHIVE_SCHEMA");
   const archive = validateTransferArchive(envelope.payload);
-  const digest = await digestArchive(archive, subtle);
+  const digest = await digestArchive(archive, subtle, { signal, timeoutMs });
   if (digest !== envelope.digest) transferFail("TRANSFER_CHECKSUM_MISMATCH");
   return Object.freeze({ archive, digest, authenticated: false });
 }

@@ -1,0 +1,18 @@
+✔ offline CLI independently accepts a changed-source receipt and rejects altered conclusions or invalid input (1868.8859ms)
+✔ saved review requires an explicit selected receipt, displays mismatch and gates each export (73.3808ms)
+✔ late saved review cannot survive stop (2.247ms)
+✔ late saved review cannot survive replace (0.8844ms)
+✔ late saved review cannot survive dispose (0.8879ms)
+✔ parent comparison exposes review only after computation and invalidates it on new sources (47.0124ms)
+✔ a faithful saved difference passes even when the two originals have different JSON values (20.1092ms)
+✔ changed locations, totals, bindings, scope and authority claims all fail independent review (37.7356ms)
+✔ review rejects uploaded authority, wrong schemas, duplicate keys and oversized input (3.0399ms)
+✔ review cancellation and deadline discard an unfinished digest without accepting a claim (37.8064ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2715.0901

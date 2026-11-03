@@ -1,0 +1,40 @@
+{
+  "schema": "threecore.saved-file-inspection.v3",
+  "sourceSchema": "threecore-portfolio-history-v1",
+  "byteLength": 1616,
+  "title": "複数トークン残高の保存履歴",
+  "target": "portfolio-history",
+  "destinationMessage": "過去の複数トークン残高の保存履歴です。「保存記録の履歴管理」で元のJSONを確認してください。この形式には内部チェックサムがありません。",
+  "validation": "validated-structure",
+  "checksumVerified": false,
+  "sourceDigest": null,
+  "textDigest": "c39b496d7d5af4e91cbc8ac650380d68c210b3feb48d35a39208719b889d2232",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT",
+      "EMA"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "configurationReferences": null,
+    "configuredAccountReferences": null,
+    "configuredTokenReferences": null,
+    "portfolioObservationReferences": 2,
+    "holdingReferences": 2,
+    "unknownHoldingReferences": 0
+  },
+  "originalEvidenceValidated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

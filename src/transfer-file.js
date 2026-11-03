@@ -1,4 +1,5 @@
-import { readFormatFileText } from "./security-file.js";
+import { sha256Hex } from "./security-data.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { shape, transferFail, validateTransferSnapshot } from "./transfer-codec.js";
 import { transferCsv, transferSummaryText } from "./transfer-view.js";
@@ -7,13 +8,9 @@ export const TRANSFER_FILE_SCHEMA = "threecore.transfer-file.v1";
 export const TRANSFER_FILE_LIMIT = 524288;
 const encoder = new TextEncoder();
 
-async function checksum(text, subtle) {
-  if (!subtle || typeof subtle.digest !== "function") transferFail("TRANSFER_CRYPTO_UNAVAILABLE");
-  let buffer;
-  try { buffer = await subtle.digest("SHA-256", encoder.encode(text)); }
-  catch { transferFail("TRANSFER_CRYPTO_FAILED"); }
-  if (!(buffer instanceof ArrayBuffer) || buffer.byteLength !== 32) transferFail("TRANSFER_CRYPTO_FAILED");
-  return [...new Uint8Array(buffer)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+async function checksum(text, subtle, options) {
+  try { return await sha256Hex(encoder.encode(text), subtle, options); }
+  catch (error) { transferFail(error.code === "CHECKSUM_UNAVAILABLE" ? "TRANSFER_CRYPTO_UNAVAILABLE" : "TRANSFER_CRYPTO_FAILED"); }
 }
 
 function boundedText(text) {
@@ -22,9 +19,9 @@ function boundedText(text) {
   return text;
 }
 
-export async function encodeTransferFile(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function encodeTransferFile(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const snapshot = validateTransferSnapshot(input);
-  const digest = await checksum(JSON.stringify(snapshot), subtle);
+  const digest = await checksum(JSON.stringify(snapshot), subtle, { signal, timeoutMs });
   const envelope = {
     schema: TRANSFER_FILE_SCHEMA,
     algorithm: "SHA-256",
@@ -34,7 +31,7 @@ export async function encodeTransferFile(input, { subtle = globalThis.crypto?.su
   return boundedText(JSON.stringify(envelope, null, 2) + "\n");
 }
 
-export async function decodeTransferFile(text, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeTransferFile(text, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   boundedText(text);
   let raw;
   try { raw = parseSecurityJson(text); }
@@ -43,15 +40,14 @@ export async function decodeTransferFile(text, { subtle = globalThis.crypto?.sub
   if (raw.schema !== TRANSFER_FILE_SCHEMA || raw.algorithm !== "SHA-256" ||
       typeof raw.digest !== "string" || !/^[\da-f]{64}$/.test(raw.digest)) transferFail("TRANSFER_FILE_SCHEMA");
   const snapshot = validateTransferSnapshot(raw.payload);
-  const digest = await checksum(JSON.stringify(snapshot), subtle);
+  const digest = await checksum(JSON.stringify(snapshot), subtle, { signal, timeoutMs });
   if (digest !== raw.digest) transferFail("TRANSFER_CHECKSUM_MISMATCH");
   // A checksum detects accidental changes. Anyone can recompute it.
   return Object.freeze({ snapshot, digest, authenticated: false });
 }
 
 export async function readTransferFile(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 180 ||
-      !/\.json$/i.test(file.name) || /[/\\\u0000-\u001f\u007f]/.test(file.name)) transferFail("TRANSFER_FILE_NAME");
+  readFormatFileName(file, { maxLength: 180, fail: transferFail, code: "TRANSFER_FILE_NAME" });
   if (!Number.isSafeInteger(file.size) || file.size < 1 || file.size > TRANSFER_FILE_LIMIT ||
       typeof file.arrayBuffer !== "function") transferFail("TRANSFER_FILE_SIZE");
   const text = await readFormatFileText(file, { maxBytes: TRANSFER_FILE_LIMIT, fail: transferFail,

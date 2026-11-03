@@ -1,0 +1,23 @@
+{
+  "source": "15ff3b9",
+  "query": {
+    "account": "0x1111111111111111111111111111111111111111",
+    "chainId": 84532,
+    "siteOrigin": "http://localhost:4184",
+    "minimumBlock": "10",
+    "maximumBlock": "20",
+    "order": "newest",
+    "tokenAddress": "0x3333333333333333333333333333333333333333",
+    "tokenStatus": "known"
+  },
+  "matchedRecords": 2,
+  "fileReadOnlyStagedDraft": true,
+  "explicitUseRequired": true,
+  "queryRoundTripExact": true,
+  "historyUnchanged": true,
+  "fullBackupMarkerUnchanged": true,
+  "synthetic": true,
+  "nativeBrowserCases": 149,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}

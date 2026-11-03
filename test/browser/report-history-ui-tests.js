@@ -52,6 +52,56 @@ async function seed(storage, source = sampleHistory()) {
 }
 
 export function registerReportHistoryUITests(test) {
+  test("history: filtered original backup requires a separate acknowledgement and includes annotations", async () => {
+    const f = fixture();
+    try {
+      await f.load(); f.check("export-ack"); assert(f.q("filtered-backup").disabled);
+      f.set("archive-filter", "archived"); assert(f.q("subset-scope").textContent.includes("絞り込んだ報告: 1件"));
+      f.check("subset-ack"); f.click("filtered-backup"); await f.settled();
+      assert(JSON.stringify((await decodeReportHistoryFile(f.files[0].text)).document.entries) === JSON.stringify([sampleHistory().entries[3]]));
+      f.check("subset-ack"); f.set("search", "no match", "input"); assert(!f.q("subset-ack").checked);
+      f.check("subset-ack"); assert(f.q("filtered-backup").disabled); assert(!f.store.calls.some(row => row[0] === "change"));
+    } finally { f.dispose(); }
+  });
+  test("history: one archived annotated original can be preserved outside the filter", async () => {
+    const f = fixture();
+    try {
+      await f.load(); f.set("archive-filter", "all"); f.set("selected", id(104)); f.set("archive-filter", "active");
+      f.check("subset-ack"); f.click("selected-backup"); await f.settled();
+      assert(JSON.stringify((await decodeReportHistoryFile(f.files[0].text)).document.entries) === JSON.stringify([sampleHistory().entries[3]]));
+      assert(!f.deliveries.length);
+    } finally { f.dispose(); }
+  });
+  test("history: import inspection receipt retains the chosen review and never applies it", async () => {
+    const initial = sampleHistory(), f = fixture({ initial }), duplicate = { ...initial.entries[0], id: id(201), note: "Private changed note" };
+    try {
+      await f.load(); await f.file((await prepareReportHistoryFile(historyDocument([duplicate, historyRecord(9)]))).text);
+      assert(f.q("import-inspection-text").textContent.includes("保存番号、メモ")); assert(!f.q("import-inspection-text").textContent.includes("Private changed note"));
+      assert(f.q("inspection-json").disabled); f.check("inspection-ack"); f.check("import-choice-0", false); assert(!f.q("inspection-ack").checked);
+      f.check("inspection-ack"); f.click("inspection-json"); await f.settled();
+      const receipt = JSON.parse(f.files[0].text); assert(receipt.incomingCount === 1 && receipt.additions === 1 && receipt.restorable === false);
+      assert(f.mounted.getState().review.selectedIncoming.entries[0].id === id(109)); assert(JSON.stringify(f.store.document) === JSON.stringify(initial));
+    } finally { f.dispose(); }
+  });
+  test("history: selective restore can fit one new report while preserving all eleven existing reports", async () => {
+    const initial = historyDocument(Array.from({ length: 11 }, (_, index) => historyRecord(index + 1))), f = fixture({ initial });
+    try {
+      await f.load(); await f.file((await prepareReportHistoryFile(historyDocument([historyRecord(20), historyRecord(21)]))).text);
+      assert(f.q("apply").disabled); f.check("import-choice-1", false); assert(!f.q("apply").disabled);
+      assert(f.q("import-selection-count").textContent.includes("対象 1/2件"));
+      f.check("import-choice-0", false); assert(f.q("apply").disabled); f.check("import-choice-0");
+      f.click("apply"); await f.settled(); assert(JSON.stringify(f.store.document.entries) === JSON.stringify([...initial.entries, historyRecord(20)]));
+    } finally { f.dispose(); }
+  });
+  test("history: exhausted revision disables import before any write attempt", async () => {
+    const initial=historyDocument([historyRecord(1)],Number.MAX_SAFE_INTEGER),f=fixture({initial});
+    try{
+      await f.load();await f.file((await prepareReportHistoryFile(historyDocument([historyRecord(2)]))).text);
+      assert(!f.q("review").hidden&&f.q("apply").disabled);
+      assert(f.q("review-text").textContent.includes("更新番号が上限"));
+      assert(JSON.stringify(f.store.document)===JSON.stringify(initial)&&!f.store.calls.some(row=>row[0]==="change"));
+    }finally{f.dispose();}
+  });
   test("history: source inspection identifies the original records without changing history", async () => {
     const f = fixture();
     try {
@@ -251,4 +301,22 @@ export function registerReportHistoryUITests(test) {
       assert(parent.querySelector(".period-report-result-meta").textContent.includes("PC内の報告履歴"));
     } finally { f.dispose(); report.dispose(); parent.remove(); }
   });
+  test("history block scope keeps hidden selection and exports only matching rows", async () => {
+  const initial = historyDocument([historyRecord(1, { report: reportInput({ counts: [3, 2, 5] }) })]);
+  const f = fixture({ initial });
+  try {
+    await f.load(); f.set("selected", id(101)); const before = JSON.stringify(f.store.document);
+    f.set("agent-filter", "DAT"); f.set("block-filter", "36", "input"); f.set("block-scope", "saved");
+    assert(f.q("count").textContent.includes("0/1")); assert(f.mounted.getState().selectedId === id(101));
+    assert(f.q("selected").value === id(101)); assert(f.q("selected-text").textContent.includes("DAT"));
+    f.check("export-ack"); f.click("csv"); await f.settled(); assert(f.files[0].rows === 0);
+    f.set("block-scope", "planned"); assert(f.q("count").textContent.includes("1/1"));
+    f.check("export-ack"); f.click("csv"); await f.settled(); assert(f.files[1].rows === 1 && f.files[1].text.includes(id(101)));
+    f.set("block-filter", "-1", "input"); assert(f.q("count").textContent.includes("検索条件"));
+    f.set("block-filter", "", "input"); assert(f.q("count").textContent.includes("1/1"));
+    assert(JSON.stringify(f.store.document) === before && f.deliveries.length === 0);
+    assert(f.store.calls.every(call => call[0] === "read"));
+  } finally { f.dispose(); }
+  });
+
 }

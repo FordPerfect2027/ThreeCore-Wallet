@@ -1,0 +1,7 @@
+
+> @0628dao/caweloncore@0.1.0 compile
+> node scripts/check-contract-source.js && hardhat compile --force
+
+{"sourceEncoding":"UTF-8 without BOM","lineEndings":"LF","files":["contracts/CAWELONCore.sol"]}
+
+Compiled 1 Solidity file with solc 0.8.34 (evm target: osaka)

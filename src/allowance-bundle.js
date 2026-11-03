@@ -1,26 +1,24 @@
-import { readFormatFileBytes } from "./security-file.js";
+import { sha256Hex } from "./security-data.js";
+import { readFormatFileBytes, readFormatFileName } from "./security-file.js";
 import { parseSecurityJson } from "./security-json.js";
 import { allowanceObject, allowanceFail } from "./allowance-targets.js";
 import { validateAllowanceObservation } from "./allowance-observation.js";
 import { prepareAllowanceFile, decodeAllowanceFile } from "./allowance-file.js";
 import { describeAllowanceOverview } from "./allowance-overview.js";
+import { captureDataArray } from "./security-data.js";
 
 export const ALLOWANCE_BUNDLE_SCHEMA = "threecore-allowance-bundle-v1";
 export const ALLOWANCE_BUNDLE_LIMIT = 196608;
 const agents = ["DAT", "EMA", "CAWELON"];
 export function validateAllowanceBundle(input) {
-  allowanceObject(input, ["schema", "records", "readOnly", "atomicSnapshot"]);
+  input = allowanceObject(input, ["schema", "records", "readOnly", "atomicSnapshot"]);
   if (input.schema !== ALLOWANCE_BUNDLE_SCHEMA || input.readOnly !== true || input.atomicSnapshot !== false) {
     allowanceFail("ALLOWANCE_BUNDLE_SCHEMA");
   }
-  if (!Array.isArray(input.records) || input.records.length !== 3 || Reflect.ownKeys(input.records).length !== 4) {
-    allowanceFail("ALLOWANCE_BUNDLE_RECORDS");
-  }
-  for (let i = 0; i < 3; i++) {
-    const descriptor = Object.getOwnPropertyDescriptor(input.records, String(i));
-    if (!descriptor || !("value" in descriptor)) allowanceFail("ALLOWANCE_BUNDLE_RECORDS");
-  }
-  const records = input.records.map(validateAllowanceObservation);
+  let captured;
+  try { captured = captureDataArray(input.records, 3, 3); }
+  catch { allowanceFail("ALLOWANCE_BUNDLE_RECORDS"); }
+  const records = captured.map(validateAllowanceObservation);
   if (new Set(records.map(record => record.identity.agent)).size !== 3) allowanceFail("ALLOWANCE_BUNDLE_RECORDS");
   records.sort((a, b) => agents.indexOf(a.identity.agent) - agents.indexOf(b.identity.agent));
   return Object.freeze({
@@ -45,23 +43,19 @@ export function describeAllowanceBundle(input) {
     "\n\n3件は別々の時点の観測です。同時刻・同一ブロックの資産一覧ではありません。" +
     "\n読込みは表示だけです。接続設定や現在のカードの記録を置き換えません。";
 }
-async function sha256(text, subtle) {
-  if (typeof subtle?.digest !== "function") allowanceFail("ALLOWANCE_CRYPTO");
-  let digest;
-  try { digest = await subtle.digest("SHA-256", new TextEncoder().encode(text)); }
+async function sha256(text, subtle, options) {
+  try { return await sha256Hex(new TextEncoder().encode(text), subtle, options); }
   catch { allowanceFail("ALLOWANCE_CRYPTO"); }
-  if (!(digest instanceof ArrayBuffer) || digest.byteLength !== 32) allowanceFail("ALLOWANCE_CRYPTO");
-  return [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, "0")).join("");
 }
 const signature = files => JSON.stringify({ schema: ALLOWANCE_BUNDLE_SCHEMA, files }, null, 2);
-export async function prepareAllowanceBundle(input, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function prepareAllowanceBundle(input, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   const bundle = validateAllowanceBundle(input);
   const files = [];
   for (const record of bundle.records) {
-    const prepared = await prepareAllowanceFile("observation", record, { subtle });
+    const prepared = await prepareAllowanceFile("observation", record, { subtle, signal, timeoutMs });
     files.push(JSON.parse(prepared.text));
   }
-  const digest = await sha256(signature(files), subtle);
+  const digest = await sha256(signature(files), subtle, { signal, timeoutMs });
   const text = JSON.stringify({
     schema: ALLOWANCE_BUNDLE_SCHEMA, algorithm: "SHA-256", digest, files,
   }, null, 2);
@@ -73,7 +67,7 @@ export async function prepareAllowanceBundle(input, { subtle = globalThis.crypto
     mimeType: "application/json;charset=utf-8",
   });
 }
-export async function decodeAllowanceBundle(bytes, { subtle = globalThis.crypto?.subtle } = {}) {
+export async function decodeAllowanceBundle(bytes, { subtle = globalThis.crypto?.subtle, signal, timeoutMs } = {}) {
   if (!(bytes instanceof Uint8Array) || bytes.length < 1 || bytes.length > ALLOWANCE_BUNDLE_LIMIT) allowanceFail("ALLOWANCE_FILE_SIZE");
   let text, wrapper;
   try { text = new TextDecoder("utf-8", { fatal: true }).decode(bytes.slice()); }
@@ -87,13 +81,13 @@ export async function decodeAllowanceBundle(bytes, { subtle = globalThis.crypto?
   const records = [];
   const canonicalFiles = [];
   for (const file of wrapper.files) {
-    const decoded = await decodeAllowanceFile(new TextEncoder().encode(JSON.stringify(file)), { subtle });
+    const decoded = await decodeAllowanceFile(new TextEncoder().encode(JSON.stringify(file)), { subtle, signal, timeoutMs });
     if (decoded.kind !== "observation") allowanceFail("ALLOWANCE_BUNDLE_RECORDS");
     records.push(decoded.payload);
     canonicalFiles.push({ schema: file.schema, kind: decoded.kind, algorithm: "SHA-256",
       digest: decoded.digest, payload: decoded.payload });
   }
-  const digest = await sha256(signature(canonicalFiles), subtle);
+  const digest = await sha256(signature(canonicalFiles), subtle, { signal, timeoutMs });
   if (digest !== wrapper.digest) allowanceFail("ALLOWANCE_CHECKSUM");
   return Object.freeze({
     bundle: captureAllowanceBundle(records), digest,
@@ -101,8 +95,7 @@ export async function decodeAllowanceBundle(bytes, { subtle = globalThis.crypto?
   });
 }
 export async function readAllowanceBundle(file, options) {
-  if (!file || typeof file.name !== "string" || file.name.length > 240 ||
-      !/\.json$/i.test(file.name) || /[\\/\u0000-\u001f\u007f]/.test(file.name)) allowanceFail("ALLOWANCE_FILENAME");
+  readFormatFileName(file, { maxLength: 240, fail: allowanceFail, code: "ALLOWANCE_FILENAME" });
   const bytes = await readFormatFileBytes(file, { maxBytes: ALLOWANCE_BUNDLE_LIMIT, fail: allowanceFail,
     sizeCode: "ALLOWANCE_FILE_SIZE", readCode: "ALLOWANCE_FILE_READ", signal: options?.signal, timeoutMs: options?.timeoutMs });
   return decodeAllowanceBundle(bytes, options);

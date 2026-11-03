@@ -1,0 +1,11 @@
+# Period-library file guidance repair: no item increment
+
+Source: `3069815`. Completed development count remains **481 / 600**.
+
+The original-entry extraction workflow correctly exported the existing period-library format, but opening that one-entry file in the individual-period reader produced only a generic shape error. A report file dropped into the library reader was similarly unhelpful. Reproductions at a7e54ea are retained in [before/after captures](evidence/2026-10-31-library-file-guidance-repair/).
+
+The shared declared-format routing now recognizes period-library originals and the non-restorable import-inspection result. The library reader participates in routing after strict JSON parsing, and the extraction interface names the actual destination control: “期間の保存一覧JSONを読み込む”. Other misplaced known formats receive their existing bounded destination guidance. A declared type is not treated as a validated file: the correct reader still checks all fields and checksums. Unknown, duplicate, unsafe and malformed declarations receive no guessed destination. No automatic page movement, import or storage write is added.
+
+150 focused checks passed (5,581.7627 ms), including all recognized formats against the expanded reader matrix and existing original round trips. The first full run at 62d0161 passed 15,247 of 15,249 checks: two older tests expected generic schema errors for known misplaced formats. They were updated to require the new specific destination codes; refusal of both files remains required and production code was unchanged. The failed run is retained. The final full fixed-source suite passed 15249 checks (371095.8888 ms), with zero failures, skips or cancellations. Native Chrome passed 892 UI cases using synthetic providers and no external RPC. The new browser case verifies that a misplaced report receives its proper destination while the stored library remains unchanged. The after-capture retains PERIOD_CHECKSUM for a corrupted library in the correct reader.
+
+This repairs discoverability of earlier counted workflows and adds **zero** development items. No real signatures, transfers, approvals, secrets, publication, deployment or restart of the user's server occurred. Native tests use an isolated profile; they do not establish connectivity to the user's existing browser tab.

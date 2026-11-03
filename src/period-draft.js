@@ -3,6 +3,7 @@ import { validateTransferSnapshot } from "./transfer-codec.js";
 import { addTransferArchiveRecord } from "./transfer-archive.js";
 import { emptyReconciliationWorkspace, validateReconciliationWorkspace } from "./reconciliation-model.js";
 import { periodFail, periodShape, periodContextKey, validatePeriodPlan, periodWindows } from "./period-plan.js";
+import { captureDataArray } from "./security-data.js";
 
 export const PERIOD_DRAFT_SCHEMA = "threecore.period-draft.v1";
 export const PERIOD_DRAFT_LIMIT = 16 * 1024 * 1024;
@@ -23,19 +24,24 @@ export function emptyPeriodDraft(plan) {
 }
 
 /** Only a contiguous completed prefix is resumable; incomplete RPC results are absent. */
+// Only snapshots produced here can skip repeated validation; frozen caller data still undergoes full capture.
+const validatedDrafts = new WeakSet();
 export function validatePeriodDraft(input) {
-  periodShape(input, ["schema", "plan", "earlier", "later", "records", "readOnly", "independentlyVerified"]);
+  if (validatedDrafts.has(input)) return input;
+  input = periodShape(input, ["schema", "plan", "earlier", "later", "records", "readOnly", "independentlyVerified"]);
   if (input.schema !== PERIOD_DRAFT_SCHEMA || input.readOnly !== true || input.independentlyVerified !== false) {
     periodFail("PERIOD_DRAFT_SCHEMA");
   }
   const plan = validatePeriodPlan(input.plan);
   const windows = periodWindows(plan);
-  if (!Array.isArray(input.records) || input.records.length > windows.length) periodFail("PERIOD_RECORDS");
+  let capturedRecords;
+  try { capturedRecords = captureDataArray(input.records, windows.length); }
+  catch { periodFail("PERIOD_RECORDS"); }
   const earlier = observation(input.earlier, plan, "earlier");
   const later = observation(input.later, plan, "later");
-  if ((!earlier && later) || (!later && input.records.length)) periodFail("PERIOD_PREFIX");
+  if ((!earlier && later) || (!later && capturedRecords.length)) periodFail("PERIOD_PREFIX");
   let archive = null;
-  const records = input.records.map((inputRecord, index) => {
+  const records = capturedRecords.map((inputRecord, index) => {
     const record = validateTransferSnapshot(inputRecord);
     if (periodContextKey(record.context) !== periodContextKey(plan.context)) periodFail("PERIOD_CONTEXT_MISMATCH");
     if (record.range.fromBlock !== windows[index].fromBlock || record.range.toBlock !== windows[index].toBlock) {
@@ -50,6 +56,7 @@ export function validatePeriodDraft(input) {
   const result = Object.freeze({ schema: PERIOD_DRAFT_SCHEMA, plan, earlier, later,
     records: Object.freeze(records), readOnly: true, independentlyVerified: false });
   if (new TextEncoder().encode(JSON.stringify(result)).byteLength > PERIOD_DRAFT_LIMIT) periodFail("PERIOD_DRAFT_SIZE");
+  validatedDrafts.add(result);
   return result;
 }
 

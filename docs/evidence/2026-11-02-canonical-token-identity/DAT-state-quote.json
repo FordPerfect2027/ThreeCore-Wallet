@@ -1,0 +1,18 @@
+{
+  "token": "DAT",
+  "kind": "quote",
+  "startedAt": "2026-11-01T21:27:24.685Z",
+  "finishedAt": "2026-11-01T21:27:30.793Z",
+  "endpoint": "https://mainnet.base.org",
+  "baseCommit": "d5ff32f898b75482dd6d211eae0750ae9d0b6d22",
+  "sourceSha256": {
+    "src/canonical-state-read.js": "1947bbf1d2ef78e5152523b4ec93602dab03f6d24d450484f85f4429176c765b",
+    "src/wallet-readiness.js": "8fd73a9885ab722982261bf1b5f9d8a2ecd47172f214258f183a0d0a8a30dcbf",
+    "src/dex-quote.js": "3df944fe80188d85878438f1b9fcc0e870760b779be874b36c48bab37afff116",
+    "scripts/inspect-wallet-readiness.js": "da2a2a66e748106bb4215e9fca9dcddf3e9ef3ab7618d9eeb41ede7140865206",
+    "scripts/quote-dex.js": "480518792ba9b3801326bd4883af17a372ff9cbafb76c4b4f43551458b5da11c"
+  },
+  "exitCode": 0,
+  "stdout": "{\n  \"agent\": \"DAT\",\n  \"network\": \"Base Mainnet\",\n  \"chainId\": 8453,\n  \"blockNumber\": \"53389551\",\n  \"blockHash\": \"0x2d633eb619c0f0c2892d3493e0d55c1247a20b6e6d962a66a88ebc1f671153a5\",\n  \"canonicalBlockRequired\": true,\n  \"canonicalBlockRechecked\": true,\n  \"dex\": \"Aerodrome Classic\",\n  \"factoryAddress\": \"0x420dd381b31aef6683db6b902084cb0ffece40da\",\n  \"poolAddress\": \"0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6\",\n  \"direction\": \"buy\",\n  \"inputToken\": \"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913\",\n  \"outputToken\": \"0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5\",\n  \"inputDecimals\": 6,\n  \"outputDecimals\": 18,\n  \"inputBaseUnits\": \"1000000\",\n  \"quotedOutputBaseUnits\": \"99500812650842146432022\",\n  \"reserveInBaseUnits\": \"99602785\",\n  \"reserveOutBaseUnits\": \"10039880000000000000000000\",\n  \"registeredPool\": true,\n  \"feeIncludedByPoolQuote\": true,\n  \"readOnly\": true,\n  \"walletConnected\": false,\n  \"thirdPartyWebsiteConnected\": false,\n  \"tradeExecuted\": false,\n  \"approvalGranted\": false,\n  \"securityAudited\": false\n}\n",
+  "stderr": ""
+}

@@ -1,3 +1,4 @@
+import { decodePeriodLibraryFile } from "/src/period-library-file.js";
 import { mountPeriodReportPanel } from "/examples/period-report-panel.js";
 import { createPeriodLibraryStorage } from "/src/period-library-storage.js";
 import { preparePeriodReportFile, decodePeriodReportFile } from "/src/period-report-file.js";
@@ -57,6 +58,38 @@ async function seed(storage, source = reportLibrary()) {
 }
 
 export function registerPeriodReportUITests(test) {
+  test("period report: extract one original with restrictions and a separate acknowledgement", async () => {
+    const f = fixture();
+    try {
+      const input = reportInput({ changes: { DAT: { requiresNewPlan: true, archived: true } }, selection: { ...selection(), EMA: null } });
+      await f.import(input); f.click("apply"); await f.settled(); const original = f.mounted.getInput();
+      f.click("entry-export-heading"); f.acknowledge(); assert(f.q("entry-json").disabled);
+      assert(f.q("entry-description").textContent.includes("再取得が必要: はい"));
+      await f.import(reportInput());
+      f.q("entry-ack").checked = true; f.q("entry-ack").dispatchEvent(new Event("change", { bubbles: true }));
+      f.click("entry-json"); await f.settled();
+      const decoded = await decodePeriodLibraryFile(f.files[0].text);
+      assert(decoded.document.entries.length === 1 && JSON.stringify(decoded.document.entries[0]) === JSON.stringify(input.slots[0].entry));
+      assert(f.mounted.getInput() === original && !f.q("review").hidden && f.store.calls.length === 0);
+      f.set("entry-agent", "EMA"); assert(!f.q("entry-ack").checked && f.q("entry-json").disabled);
+      assert(f.q("entry-description").textContent.includes("含まれていません"));
+      f.set("entry-agent", "CAWELON"); f.q("entry-ack").checked = true; f.q("entry-ack").dispatchEvent(new Event("change", { bubbles: true }));
+      f.click("apply"); await f.settled(); assert(!f.q("entry-ack").checked && f.q("entry-json").disabled);
+    } finally { f.dispose(); }
+  });
+
+  test("period report: filtered event CSV respects acknowledgement and saves all matching pages",async()=>{
+    const f=fixture();
+    try{
+      await f.import(manyEventsInput());f.click("apply");await f.settled();const original=f.mounted.getInput();
+      assert(f.q("event-csv").disabled);f.acknowledge();f.click("next");f.click("event-csv");await f.settled();
+      assert(f.files.length===1&&f.files[0].matched===57&&f.files[0].text.trimEnd().split("\r\n").length===58);
+      f.set("direction","outgoing");f.click("event-csv");await f.settled();assert(f.files[1].matched===0);
+      f.set("search","x".repeat(101),"input");assert(f.q("event-csv").disabled);
+      assert(f.mounted.getInput()===original);
+    }finally{f.dispose();}
+  });
+
   test("period report: replacement review shows less complete incoming evidence", async () => {
     const f = fixture();
     try {

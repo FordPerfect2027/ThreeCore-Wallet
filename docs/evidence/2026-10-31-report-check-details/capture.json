@@ -1,0 +1,72 @@
+{
+  "synthetic": true,
+  "source": "40c28e1",
+  "rows": [
+    {
+      "name": "conflicts",
+      "source": "balance-source.json",
+      "query": {
+        "agent": "all",
+        "severity": "conflict",
+        "search": ""
+      },
+      "options": {
+        "includeNotes": false,
+        "shortAddresses": true
+      },
+      "total": 9,
+      "matched": 6,
+      "sourcePayloadDigest": "244deb3286879d1ec6c8061e3e41296f654ee1a92df5513e306cb5507e120f79",
+      "exitCode": 0,
+      "stderr": "",
+      "bytes": 9257,
+      "cliMatchesBrowserBytes": true,
+      "sourceUnchanged": true,
+      "sha256": "ce1036cd3e68b13914763c7faf6ae53842cafa22826bf6f45552da6a8014cd59"
+    },
+    {
+      "name": "full",
+      "source": "balance-source.json",
+      "query": {
+        "agent": "all",
+        "severity": "all",
+        "search": ""
+      },
+      "options": {
+        "includeNotes": true,
+        "shortAddresses": false
+      },
+      "total": 9,
+      "matched": 9,
+      "sourcePayloadDigest": "244deb3286879d1ec6c8061e3e41296f654ee1a92df5513e306cb5507e120f79",
+      "exitCode": 0,
+      "stderr": "",
+      "bytes": 14182,
+      "cliMatchesBrowserBytes": true,
+      "sourceUnchanged": true,
+      "sha256": "d9c1c3c71b31e8d594b3b772ecccc15880429c7aab4e6a6371d3a397a703e6f6"
+    },
+    {
+      "name": "empty",
+      "source": "demo-source.json",
+      "query": {
+        "agent": "all",
+        "severity": "all",
+        "search": "no matching check"
+      },
+      "options": {
+        "includeNotes": false,
+        "shortAddresses": true
+      },
+      "total": 15,
+      "matched": 0,
+      "sourcePayloadDigest": "63cd88579ad7f91c1f2745bf5db30faa640815b868dd65898872bcf37f282a9e",
+      "exitCode": 2,
+      "stderr": "REPORT_CHECKS_CLI_NOT_CONTINUOUS\n",
+      "bytes": 814,
+      "cliMatchesBrowserBytes": true,
+      "sourceUnchanged": true,
+      "sha256": "b68f74cda50128187a8847e3d818832687df4afd92ba5bd7a5a953fed1b9aef5"
+    }
+  ]
+}

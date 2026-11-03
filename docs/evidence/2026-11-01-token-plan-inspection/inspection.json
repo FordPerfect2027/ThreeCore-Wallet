@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.saved-file-inspection.v3",
+  "sourceSchema": "threecore-token-plan-v1",
+  "byteLength": 147,
+  "title": "トークンの契約アドレス入力リスト",
+  "target": "token-plan",
+  "destinationMessage": "トークンの契約アドレス入力リストです。対象のカードの「トークン入力リストの保存・再利用」でファイルを読み込み、対象とチェーンを確認してから反映してください。内部チェックサム・アカウント・残高は含みません。",
+  "validation": "validated-structure",
+  "checksumVerified": false,
+  "sourceDigest": null,
+  "textDigest": "66d2aa4112f9eb8b6e234542cfa0cfca93cfdd54b86be3f255108a7f24f79203",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "configurationReferences": 1,
+    "configuredAccountReferences": 0,
+    "configuredTokenReferences": 1,
+    "portfolioObservationReferences": null,
+    "holdingReferences": null,
+    "unknownHoldingReferences": null
+  },
+  "originalEvidenceValidated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

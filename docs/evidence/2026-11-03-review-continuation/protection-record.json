@@ -1,0 +1,50 @@
+{
+  "schema": "threecore.local-protection-journal",
+  "version": 2,
+  "scope": "This page session only. Not a security audit or wallet permission revocation record.",
+  "containsWalletAddresses": false,
+  "containsBalances": false,
+  "containsPrivateKeys": false,
+  "capacity": 64,
+  "total": 3,
+  "dropped": 0,
+  "disposed": false,
+  "events": [
+    {
+      "sequence": 1,
+      "kind": "ready",
+      "detail": {}
+    },
+    {
+      "sequence": 2,
+      "kind": "manual",
+      "detail": {}
+    },
+    {
+      "sequence": 3,
+      "kind": "resumed",
+      "detail": {}
+    }
+  ],
+  "counts": {
+    "ready": 1,
+    "manual": 1,
+    "idle": 0,
+    "hidden": 0,
+    "page-exit": 0,
+    "clock": 0,
+    "timer": 0,
+    "disposed": 0,
+    "resumed": 1,
+    "idle-policy": 0,
+    "hidden-policy": 0,
+    "broadcast-stop": 0,
+    "peer-stop": 0,
+    "channel-error": 0,
+    "page-freeze": 0,
+    "page-restored": 0,
+    "wallet-account": 0,
+    "wallet-network": 0,
+    "wallet-unavailable": 0
+  }
+}

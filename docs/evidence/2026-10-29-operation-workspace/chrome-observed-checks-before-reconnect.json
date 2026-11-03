@@ -1,0 +1,57 @@
+{
+  "schema": "threecore.browser-observation-summary.v1",
+  "source": "Summary of actual Chrome tool-visible DOM observations from this task, recorded after a browser runtime reset; not a raw browser trace.",
+  "url": "http://127.0.0.1:4231/rehearsal/",
+  "tabId": "989120268",
+  "simulationOnly": true,
+  "checks": [
+    {
+      "label": "empty_workspace",
+      "observed": "DAT, EMA and CAWELON show 未作成; combined export disabled."
+    },
+    {
+      "label": "dat_reserved",
+      "observed": "DAT 3 records, P&L 28 SIM, reserved 2.8 SIM, remaining allocation 0; one undo checkpoint."
+    },
+    {
+      "label": "ema_loss_dat_preserved",
+      "observed": "EMA 2 records, P&L -42 SIM; DAT remains at 3 records and reservation 2.8 SIM."
+    },
+    {
+      "label": "three_distinct_agents",
+      "observed": "CAWELON 1 record, P&L -1 SIM, closing-fee reserve 2 SIM; DAT and EMA unchanged."
+    },
+    {
+      "label": "dat_switch_back_preserves_undo",
+      "observed": "Returning to DAT retained 3 records, reservation 2.8 SIM and one undo checkpoint."
+    },
+    {
+      "label": "dat_undo_other_agents_unchanged",
+      "observed": "DAT undo produced 2 records and reservation 0, remaining allocation 2.8 SIM; EMA 2 records/-42 SIM and CAWELON 1 record/-1 SIM unchanged."
+    },
+    {
+      "label": "switch_revokes_unapplied_review",
+      "observed": "After creating DAT preview and switching to EMA, append confirmation disabled and preview cleared."
+    },
+    {
+      "label": "workspace_ready_to_export",
+      "observed": "DAT reservation applied again: DAT 3, EMA 2, CAWELON 1 records. Combined export clicked; actual 4771-byte file found in Downloads and independently checked."
+    },
+    {
+      "label": "duplicate_agent_file_rejected",
+      "observed": "Restore confirmation disabled; overview retained all 6 records; status said current histories were not changed."
+    },
+    {
+      "label": "workspace_restore_preview_not_applied",
+      "observed": "Preview stated DAT 3/EMA 2/CAWELON 1 replacement and not-yet-applied status; current overview unchanged."
+    },
+    {
+      "label": "workspace_restore_cancelled",
+      "observed": "Restore confirmation disabled, overview unchanged and DAT one undo checkpoint preserved."
+    }
+  ],
+  "interruption": {
+    "stage": "Reload followed by file chooser",
+    "outcome": "File chooser notification timed out and browser automation reset. Final reload/restore not yet verified."
+  }
+}

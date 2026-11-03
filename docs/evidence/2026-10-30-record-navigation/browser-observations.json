@@ -1,0 +1,74 @@
+[
+  {
+    "step": "all-six-source-records",
+    "record-browser-balances": "手元資金\t1000 SIM\t899 SIM\t-101 SIM\n未決済元本\t0 SIM\t100 SIM\t+100 SIM\n累計実現損益\t0 SIM\t-1 SIM\t-1 SIM\n確保した決済費用\t0 SIM\t2 SIM\t+2 SIM\n予約済み還元\t0 SIM\t0 SIM\t0 SIM\n予約を除く手元資金\t1000 SIM\t897 SIM\t-103 SIM",
+    "record-browser-detail": "保存元 DAT の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内",
+    "record-browser-related": "2番目: settle-one\t決済\t仮の条件内",
+    "record-browser-related-status": "同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。",
+    "record-browser-rows": "DAT\t1番目: open-one\t投入\t仮の条件内\tone\nDAT\t2番目: settle-one\t決済\t仮の条件内\tone\nDAT\t3番目: step-3\t還元予約\t仮の条件内\tdat-reserve\nEMA\t1番目: open-one\t投入\t仮の条件内\tone\nEMA\t2番目: settle-one\t決済\t仮の条件内\tone\nCAWELON\t1番目: open-one\t投入\t仮の条件内\tone",
+    "record-browser-scope": "DAT: 3件 / EMA: 2件 / CAWELON: 1件",
+    "record-browser-status": "一致 6件 / 全 6件。1～6件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "dat-settlement-links-only-dat-open",
+    "record-browser-balances": "手元資金\t899 SIM\t1028 SIM\t+129 SIM\n未決済元本\t100 SIM\t0 SIM\t-100 SIM\n累計実現損益\t-1 SIM\t28 SIM\t+29 SIM\n確保した決済費用\t2 SIM\t0 SIM\t-2 SIM\n予約済み還元\t0 SIM\t0 SIM\t0 SIM\n予約を除く手元資金\t897 SIM\t1028 SIM\t+131 SIM",
+    "record-browser-detail": "保存元 DAT の 2番目 / ID settle-one / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内",
+    "record-browser-related": "1番目: open-one\t投入\t仮の条件内",
+    "record-browser-related-status": "同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。",
+    "record-browser-rows": "DAT\t2番目: settle-one\t決済\t仮の条件内\tone",
+    "record-browser-scope": "DAT: 3件 / EMA: 2件 / CAWELON: 1件",
+    "record-browser-status": "一致 1件 / 全 6件。1～1件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "literal-multiword-ema-search",
+    "record-browser-balances": "手元資金\t899 SIM\t958 SIM\t+59 SIM\n未決済元本\t100 SIM\t0 SIM\t-100 SIM\n累計実現損益\t-1 SIM\t-42 SIM\t-41 SIM\n確保した決済費用\t2 SIM\t0 SIM\t-2 SIM\n予約済み還元\t0 SIM\t0 SIM\t0 SIM\n予約を除く手元資金\t897 SIM\t958 SIM\t+61 SIM",
+    "record-browser-detail": "保存元 EMA の 2番目 / ID settle-one / ネットワーク 84532 / 口座 0x2222222222222222222222222222222222222222 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内",
+    "record-browser-related": "1番目: open-one\t投入\t仮の条件内",
+    "record-browser-related-status": "同じ保存元・同じ操作ID「one」を持つ他の記録 1件。対応付けはIDの一致で、実行の証明ではありません。",
+    "record-browser-rows": "EMA\t2番目: settle-one\t決済\t仮の条件内\tone",
+    "record-browser-scope": "DAT: 3件 / EMA: 2件 / CAWELON: 1件",
+    "record-browser-status": "一致 1件 / 全 6件。1～1件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "reservation-reference-and-funds",
+    "record-browser-balances": "手元資金\t1028 SIM\t1028 SIM\t0 SIM\n未決済元本\t0 SIM\t0 SIM\t0 SIM\n累計実現損益\t28 SIM\t28 SIM\t0 SIM\n確保した決済費用\t0 SIM\t0 SIM\t0 SIM\n予約済み還元\t0 SIM\t2.8 SIM\t+2.8 SIM\n予約を除く手元資金\t1028 SIM\t1025.2 SIM\t-2.8 SIM",
+    "record-browser-detail": "保存元 DAT の 3番目 / ID step-3 / ネットワーク 84532 / 口座 0x1111111111111111111111111111111111111111 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内",
+    "record-browser-related": "",
+    "record-browser-related-status": "同じ保存元・同じ予約ID「dat-reserve」を持つ他の記録 0件。対応付けはIDの一致で、実行の証明ではありません。",
+    "record-browser-rows": "DAT\t3番目: step-3\t還元予約\t仮の条件内\tdat-reserve",
+    "record-browser-scope": "DAT: 3件 / EMA: 2件 / CAWELON: 1件",
+    "record-browser-status": "一致 1件 / 全 6件。1～1件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "no-match-clears-selected-detail",
+    "record-browser-balances": "",
+    "record-browser-detail": "",
+    "record-browser-related": "",
+    "record-browser-related-status": "",
+    "record-browser-rows": "",
+    "record-browser-scope": "DAT: 3件 / EMA: 2件 / CAWELON: 1件",
+    "record-browser-status": "一致 0件 / 全 6件。一致する記録はありません。保存はページをまたぐ全一致記録と元入力が対象です。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  },
+  {
+    "step": "cawelon-pending-has-no-settlement",
+    "record-browser-balances": "手元資金\t1000 SIM\t899 SIM\t-101 SIM\n未決済元本\t0 SIM\t100 SIM\t+100 SIM\n累計実現損益\t0 SIM\t-1 SIM\t-1 SIM\n確保した決済費用\t0 SIM\t2 SIM\t+2 SIM\n予約済み還元\t0 SIM\t0 SIM\t0 SIM\n予約を除く手元資金\t1000 SIM\t897 SIM\t-103 SIM",
+    "record-browser-detail": "保存元 CAWELON の 1番目 / ID open-one / ネットワーク 84532 / 口座 0x3333333333333333333333333333333333333333 / 資産 SIM (0x4444444444444444444444444444444444444444)。仮の条件内",
+    "record-browser-related": "",
+    "record-browser-related-status": "同じ保存元・同じ操作ID「one」を持つ他の記録 0件。対応付けはIDの一致で、実行の証明ではありません。",
+    "record-browser-rows": "DAT\t1番目: open-one\t投入\t仮の条件内\tone\nDAT\t2番目: settle-one\t決済\t仮の条件内\tone\nDAT\t3番目: step-3\t還元予約\t仮の条件内\tdat-reserve\nEMA\t1番目: open-one\t投入\t仮の条件内\tone\nEMA\t2番目: settle-one\t決済\t仮の条件内\tone\nCAWELON\t1番目: open-one\t投入\t仮の条件内\tone",
+    "record-browser-scope": "DAT: 3件 / EMA: 2件 / CAWELON: 1件",
+    "record-browser-status": "一致 6件 / 全 6件。1～6件目を表示。保存はページをまたぐ全一致記録と元入力が対象です。",
+    "scenario-set-count": "表示 3件 / 保存中 3件（最大12件）。絞り込み中もケース集の保存は全件が対象です。",
+    "workspace-rows": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM"
+  }
+]

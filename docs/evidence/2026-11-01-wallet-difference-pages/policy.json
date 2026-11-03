@@ -1,0 +1,30 @@
+{
+  "schema": "threecore.saved-file-difference-page.v1",
+  "readOnly": true,
+  "sourceSchema": "threecore.operation-rehearsal.v2",
+  "beforeTextDigest": "9186553bca9077680e8e7749a2512685c7b09ce4c6f17fc59c8e79247eba5d57",
+  "afterTextDigest": "54abc5d67332408d0c07888ddac6ece32584248193814538bf5a36241e1817a1",
+  "query": {
+    "pathIncludes": "/policy"
+  },
+  "offset": 0,
+  "limit": 40,
+  "totalDifferences": 86,
+  "matchedDifferences": 1,
+  "shownDifferences": 1,
+  "differences": [
+    {
+      "ordinal": 1,
+      "path": "/policy/paused",
+      "kind": "value"
+    }
+  ],
+  "hasPrevious": false,
+  "hasNext": false,
+  "valuesIncluded": false,
+  "containsOriginalEvidence": false,
+  "restorable": false,
+  "authenticated": false,
+  "liveChainRechecked": false,
+  "authorizesExecution": false
+}

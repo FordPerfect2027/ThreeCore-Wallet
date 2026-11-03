@@ -1,0 +1,22 @@
+{
+  "steps": [
+    {
+      "name": "source-and-toolchain",
+      "startedAt": "2026-11-02T18:53:28.270Z",
+      "endedAt": "2026-11-02T18:53:36.930Z",
+      "code": 0,
+      "signal": null
+    },
+    {
+      "name": "readonly",
+      "startedAt": "2026-11-02T18:53:36.938Z",
+      "endedAt": "2026-11-02T18:56:56.637Z",
+      "code": 0,
+      "signal": null
+    }
+  ],
+  "originalProjectConfigLoaded": false,
+  "userWalletUsed": false,
+  "transactionsExecuted": false,
+  "keystoreLookupDisabledByCI": true
+}

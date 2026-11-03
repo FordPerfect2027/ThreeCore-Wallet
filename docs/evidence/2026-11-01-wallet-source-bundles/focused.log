@@ -1,0 +1,31 @@
+✔ owned successful and mismatching bundle receipts omit addresses, source bodies and private notes (1019.3584ms)
+✔ receipt-only save uses a separate acknowledgement and works for a mismatch with extraction disabled (131.1294ms)
+✔ receipt delivery cannot overwrite a replacement review or execute after disposal (40.4246ms)
+✔ bundle export requires its own acknowledgement, reopens both originals and resets acknowledgement (1125.0528ms)
+✔ bundle viewer is independent of the current comparison and each extraction needs fresh acknowledgement (851.9027ms)
+✔ changed file bytes and changed comparison selection prevent stale exports (662.2064ms)
+✔ mismatching comparison, refused delivery and late cancelled reviews cannot release source files (961.8744ms)
+✔ the combined guide binds bundle export to the selected files and clears it on replacement (746.7628ms)
+✔ bundle preserves exact source text, notes and restrictions through a complete checked round trip (1074.2254ms)
+✔ different supported original formats can be preserved without claiming equal evidence (312.1292ms)
+✔ a valid source substituted into a bundle breaks the saved comparison binding and prevents extraction (423.07ms)
+✔ forged or deserialized bundle reviews cannot release originals (450.318ms)
+✔ bundle checks nested checksums, false authority flags, exact framing and originals-only inputs (470.6879ms)
+✔ bundle work has explicit combined bounds and honours cancellation without reading option getters (389.0726ms)
+✔ CLI creates, verifies and extracts exact originals; comparison mismatch never emits extracted text (4494.1489ms)
+✔ offline tools reject ambiguous commands without partial output or path disclosure (1379.6391ms)
+✔ plain-source CLI create/check/extract preserves exact inputs and emits no source for mismatches (1973.3127ms)
+✔ combined guide packs plain sources only after acknowledgement and extracts each exact file separately (95.5052ms)
+✔ a plain-source comparison mismatch leaves both extraction controls disabled (31.404ms)
+✔ all eight plain source families round-trip exact bytes with explicit non-checksummed scope (178.6141ms)
+✔ checksummed V1 output stays byte-identical and mixed source pairs retain per-side scope (53.1783ms)
+✔ valid source substitution, changed claims and old comparison versions cannot release plain sources (14.449ms)
+✔ auxiliary claims, invalid sources, extra fields and forged review copies cannot authorize extraction (8.3217ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11895.0287

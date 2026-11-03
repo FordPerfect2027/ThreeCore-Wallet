@@ -1,0 +1,147 @@
+{
+  "recordedAt": "2026-11-02T19:01:12.204Z",
+  "observations": [
+    {
+      "profile": "baseline",
+      "cases": [
+        {
+          "name": "default",
+          "errors": []
+        },
+        {
+          "name": "test string",
+          "errors": []
+        },
+        {
+          "name": "test object",
+          "errors": []
+        },
+        {
+          "name": "test number",
+          "errors": [
+            {
+              "path": [
+                "paths",
+                "test"
+              ],
+              "message": "Expected a string or an object with an optional 'nodejs' property"
+            }
+          ]
+        },
+        {
+          "name": "nested invalid",
+          "errors": [
+            {
+              "path": [
+                "paths",
+                "test",
+                "nodejs"
+              ],
+              "message": "Expected string, received number"
+            }
+          ]
+        },
+        {
+          "name": "paths null",
+          "errors": [
+            {
+              "path": [
+                "paths"
+              ],
+              "message": "Expected object, received null"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "profile": "candidate",
+      "cases": [
+        {
+          "name": "default",
+          "errors": []
+        },
+        {
+          "name": "test string",
+          "errors": []
+        },
+        {
+          "name": "test object",
+          "errors": []
+        },
+        {
+          "name": "test number",
+          "errors": [
+            {
+              "path": [
+                "paths",
+                "test"
+              ],
+              "message": "Expected a string or an object with an optional 'nodejs' property"
+            }
+          ]
+        },
+        {
+          "name": "nested invalid",
+          "errors": [
+            {
+              "path": [
+                "paths",
+                "test",
+                "nodejs"
+              ],
+              "message": "Invalid input: expected string, received number"
+            }
+          ]
+        },
+        {
+          "name": "paths null",
+          "errors": [
+            {
+              "path": [
+                "paths"
+              ],
+              "message": "Invalid input: expected object, received null"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "name": "default",
+      "acceptedMatches": true,
+      "pathsMatch": true
+    },
+    {
+      "name": "test string",
+      "acceptedMatches": true,
+      "pathsMatch": true
+    },
+    {
+      "name": "test object",
+      "acceptedMatches": true,
+      "pathsMatch": true
+    },
+    {
+      "name": "test number",
+      "acceptedMatches": true,
+      "pathsMatch": true
+    },
+    {
+      "name": "nested invalid",
+      "acceptedMatches": true,
+      "pathsMatch": true
+    },
+    {
+      "name": "paths null",
+      "acceptedMatches": true,
+      "pathsMatch": true
+    }
+  ],
+  "projectConfigurationLoaded": false,
+  "keystoreLoaded": false,
+  "signatures": false,
+  "note": "Fixtures exercise the plugin own paths.test validator; this is not a claim about paths.tests routing."
+}

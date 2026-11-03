@@ -1,0 +1,20 @@
+{
+  "source": "7722aca",
+  "query": {
+    "account": "0x1111111111111111111111111111111111111111",
+    "siteOrigin": "http://localhost:4184",
+    "maximumBlock": "20",
+    "order": "newest"
+  },
+  "removedIndices": [
+    2,
+    1
+  ],
+  "preview": "削除予定2件 / 残す記録3件。まだ変更していません。\n元の位置2: 0x1111111111111111111111111111111111111111 / chain 84532 / http://localhost:4184 / block 20\n元の位置1: 0x1111111111111111111111111111111111111111 / chain 84532 / http://localhost:4184 / block 10\n必要な履歴は先にファイルへ保存してください。適用後は直前の履歴を復元できます。ページを閉じると復元用データも消えます。",
+  "restoredExact": true,
+  "downloadExact": true,
+  "synthetic": true,
+  "nativeBrowserCases": 145,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}

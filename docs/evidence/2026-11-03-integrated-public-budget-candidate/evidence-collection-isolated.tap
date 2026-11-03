@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: collection verifies tracked working files, ignores untracked lists and leaves Git unchanged
+ok 1 - collection verifies tracked working files, ignores untracked lists and leaves Git unchanged
+  ---
+  duration_ms: 1973.5109
+  type: 'test'
+  ...
+# Subtest: collection CLI reports working-tree corruption with exit two without changing HEAD or the file
+ok 2 - collection CLI reports working-tree corruption with exit two without changing HEAD or the file
+  ---
+  duration_ms: 1840.0049
+  type: 'test'
+  ...
+# Subtest: missing tracked manifest is explicit while other evidence remains checkable
+ok 3 - missing tracked manifest is explicit while other evidence remains checkable
+  ---
+  duration_ms: 1564.3885
+  type: 'test'
+  ...
+# Subtest: missing artifact and invalid checksum list cannot be counted as a match
+ok 4 - missing artifact and invalid checksum list cannot be counted as a match
+  ---
+  duration_ms: 1555.6856
+  type: 'test'
+  ...
+# Subtest: one total admission budget is shared by all manifests
+ok 5 - one total admission budget is shared by all manifests
+  ---
+  duration_ms: 1568.4398
+  type: 'test'
+  ...
+# Subtest: growing evidence history supports 257 through 512 manifests, but rejects 513
+ok 6 - growing evidence history supports 257 through 512 manifests, but rejects 513
+  ---
+  duration_ms: 24130.6215
+  type: 'test'
+  ...
+# Subtest: a nested path never silently expands to the whole repository
+ok 7 - a nested path never silently expands to the whole repository
+  ---
+  duration_ms: 1036.6141
+  type: 'test'
+  ...
+# Subtest: a tracked directory replaced by a junction outside the repository is rejected
+ok 8 - a tracked directory replaced by a junction outside the repository is rejected
+  ---
+  duration_ms: 1547.3741
+  type: 'test'
+  ...
+# Subtest: duplicate resolved manifest aliases cannot inflate matched counts
+ok 9 - duplicate resolved manifest aliases cannot inflate matched counts
+  ---
+  duration_ms: 1412.8998
+  type: 'test'
+  ...
+# Subtest: absence of tracked manifests is not reported as a successful empty check
+ok 10 - absence of tracked manifests is not reported as a successful empty check
+  ---
+  duration_ms: 2864.0532
+  type: 'test'
+  ...
+# Subtest: invalid options and CLI arguments cannot start repository inspection
+ok 11 - invalid options and CLI arguments cannot start repository inspection
+  ---
+  duration_ms: 2.2842
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 40067.331

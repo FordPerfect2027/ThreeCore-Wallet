@@ -1,0 +1,128 @@
+{
+  "schema": "threecore-workspace-file-v1",
+  "algorithm": "SHA-256",
+  "digest": "19521225127516f29b1478a7f1aa14c7c75414ae17b5dd416ecfd8000b82192d",
+  "workspace": {
+    "schema": "threecore-wallet-workspace-v1",
+    "historicalObservation": true,
+    "entries": [
+      {
+        "agent": "DAT",
+        "account": "0x1111111111111111111111111111111111111111",
+        "chainId": 84532,
+        "tokenAddress": "0x4444444444444444444444444444444444444444",
+        "tokens": [
+          "0x4444444444444444444444444444444444444444"
+        ],
+        "history": {
+          "schema": "threecore-portfolio-history-v1",
+          "historicalObservation": true,
+          "reports": [
+            {
+              "schema": "threecore-portfolio-snapshot-v1",
+              "historicalObservation": true,
+              "snapshot": {
+                "agent": "DAT",
+                "account": "0x1111111111111111111111111111111111111111",
+                "chainId": 84532,
+                "siteOrigin": "http://localhost:4184",
+                "connectionEpoch": 1,
+                "blockNumber": "42",
+                "blockHash": "0xabababababababababababababababababababababababababababababababab",
+                "nativeBalanceBaseUnits": "16",
+                "holdings": [
+                  {
+                    "address": "0x4444444444444444444444444444444444444444",
+                    "hasCode": true,
+                    "balanceBaseUnits": "42",
+                    "notice": null
+                  }
+                ],
+                "readOnly": true,
+                "securityAudit": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "agent": "EMA",
+        "account": "0x2222222222222222222222222222222222222222",
+        "chainId": 84532,
+        "tokenAddress": "0x5555555555555555555555555555555555555555",
+        "tokens": [
+          "0x5555555555555555555555555555555555555555"
+        ],
+        "history": {
+          "schema": "threecore-portfolio-history-v1",
+          "historicalObservation": true,
+          "reports": [
+            {
+              "schema": "threecore-portfolio-snapshot-v1",
+              "historicalObservation": true,
+              "snapshot": {
+                "agent": "EMA",
+                "account": "0x2222222222222222222222222222222222222222",
+                "chainId": 84532,
+                "siteOrigin": "http://localhost:4184",
+                "connectionEpoch": 1,
+                "blockNumber": "42",
+                "blockHash": "0xabababababababababababababababababababababababababababababababab",
+                "nativeBalanceBaseUnits": "16",
+                "holdings": [
+                  {
+                    "address": "0x5555555555555555555555555555555555555555",
+                    "hasCode": true,
+                    "balanceBaseUnits": "42",
+                    "notice": null
+                  }
+                ],
+                "readOnly": true,
+                "securityAudit": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "agent": "CAWELON",
+        "account": "0x3333333333333333333333333333333333333333",
+        "chainId": 84532,
+        "tokenAddress": "0x6666666666666666666666666666666666666666",
+        "tokens": [
+          "0x6666666666666666666666666666666666666666"
+        ],
+        "history": {
+          "schema": "threecore-portfolio-history-v1",
+          "historicalObservation": true,
+          "reports": [
+            {
+              "schema": "threecore-portfolio-snapshot-v1",
+              "historicalObservation": true,
+              "snapshot": {
+                "agent": "CAWELON",
+                "account": "0x3333333333333333333333333333333333333333",
+                "chainId": 84532,
+                "siteOrigin": "http://localhost:4184",
+                "connectionEpoch": 1,
+                "blockNumber": "42",
+                "blockHash": "0xabababababababababababababababababababababababababababababababab",
+                "nativeBalanceBaseUnits": "16",
+                "holdings": [
+                  {
+                    "address": "0x6666666666666666666666666666666666666666",
+                    "hasCode": true,
+                    "balanceBaseUnits": "42",
+                    "notice": null
+                  }
+                ],
+                "readOnly": true,
+                "securityAudit": false
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

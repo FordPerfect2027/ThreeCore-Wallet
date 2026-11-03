@@ -1,0 +1,574 @@
+{
+  "completed": 418,
+  "target": 600,
+  "rangeCount": 94,
+  "missing": [],
+  "duplicates": [],
+  "missingDocuments": [],
+  "ranges": [
+    {
+      "start": 1,
+      "end": 20,
+      "label": "saved-report verification",
+      "document": "OPERATION_REPORT_REVIEW_2026-10-29.md"
+    },
+    {
+      "start": 21,
+      "end": 40,
+      "label": "named comparison collections",
+      "document": "OPERATION_SCENARIO_SET_2026-10-29.md"
+    },
+    {
+      "start": 41,
+      "end": 60,
+      "label": "expected-outcome checks",
+      "document": "OPERATION_EXPECTED_OUTCOMES_2026-10-30.md"
+    },
+    {
+      "start": 61,
+      "end": 80,
+      "label": "record navigation",
+      "document": "OPERATION_RECORD_NAVIGATION_2026-10-30.md"
+    },
+    {
+      "start": 81,
+      "end": 100,
+      "label": "combined recovery",
+      "document": "OPERATION_COMBINED_RECOVERY_2026-10-30.md"
+    },
+    {
+      "start": 101,
+      "end": 110,
+      "label": "saved expectation/search report review",
+      "document": "OPERATION_EXTENDED_REPORT_REVIEW_2026-10-30.md"
+    },
+    {
+      "start": 111,
+      "end": 120,
+      "label": "capacity and selected expectation export",
+      "document": "OPERATION_CAPACITY_2026-10-30.md"
+    },
+    {
+      "start": 121,
+      "end": 130,
+      "label": "RPC diagnostic bounds and cancellation",
+      "document": "RPC_DIAGNOSTIC_HARDENING_2026-10-30.md"
+    },
+    {
+      "start": 131,
+      "end": 138,
+      "label": "shared public diagnostics",
+      "document": "PUBLIC_DIAGNOSTIC_READS_2026-10-30.md"
+    },
+    {
+      "start": 139,
+      "end": 147,
+      "label": "liquidity input validation and diagnostic CLI behavior",
+      "document": "LIQUIDITY_INPUT_VALIDATION_2026-10-30.md"
+    },
+    {
+      "start": 148,
+      "end": 153,
+      "label": "state-read header cancellation",
+      "document": "STATE_FETCH_CANCELLATION_2026-10-30.md"
+    },
+    {
+      "start": 154,
+      "end": 161,
+      "label": "canonical public observations",
+      "document": "PUBLIC_CANONICAL_READS_2026-10-30.md"
+    },
+    {
+      "start": 162,
+      "end": 163,
+      "label": "liquidity data capture",
+      "document": "LIQUIDITY_DATA_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 164,
+      "end": 166,
+      "label": "local navigation help",
+      "document": "LOCAL_NAVIGATION_HELP_2026-10-30.md"
+    },
+    {
+      "start": 167,
+      "end": 169,
+      "label": "rehearsal download delivery",
+      "document": "REHEARSAL_DOWNLOAD_DELIVERY_2026-10-30.md"
+    },
+    {
+      "start": 170,
+      "end": 174,
+      "label": "download lifecycle and full wallet validation",
+      "document": "REHEARSAL_DOWNLOAD_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 175,
+      "end": 178,
+      "label": "bounded rehearsal file reading",
+      "document": "REHEARSAL_FILE_READING_2026-10-30.md"
+    },
+    {
+      "start": 179,
+      "end": 182,
+      "label": "recovery observer isolation",
+      "document": "REHEARSAL_SESSION_OBSERVERS_2026-10-30.md"
+    },
+    {
+      "start": 183,
+      "end": 184,
+      "label": "file-reading guidance and cancelled selection",
+      "document": "REHEARSAL_FILE_GUIDANCE_2026-10-30.md"
+    },
+    {
+      "start": 185,
+      "end": 185,
+      "label": "consistent offline text decoding",
+      "document": "REHEARSAL_CLI_ENCODING_2026-10-30.md"
+    },
+    {
+      "start": 186,
+      "end": 188,
+      "label": "visible save checkpoints and recovery lifecycle",
+      "document": "REHEARSAL_SAVE_CHECKPOINT_2026-10-30.md"
+    },
+    {
+      "start": 189,
+      "end": 190,
+      "label": "stable configuration capture",
+      "document": "CONFIGURATION_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 191,
+      "end": 192,
+      "label": "stable identity observations and catalog confirmation",
+      "document": "IDENTITY_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 193,
+      "end": 194,
+      "label": "stable bounded transfer observations",
+      "document": "TRANSFER_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 195,
+      "end": 195,
+      "label": "RPC array capture",
+      "document": "RPC_ARRAY_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 196,
+      "end": 198,
+      "label": "history storage and query capture",
+      "document": "TRANSFER_STORAGE_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 199,
+      "end": 200,
+      "label": "read-only allowance record capture",
+      "document": "ALLOWANCE_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 201,
+      "end": 204,
+      "label": "period checkpoints, library, reports and reconciliation capture",
+      "document": "PERIOD_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 205,
+      "end": 205,
+      "label": "period review lifecycle",
+      "document": "PERIOD_REVIEW_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 206,
+      "end": 207,
+      "label": "observations across sequential reads",
+      "document": "READ_OBSERVATION_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 208,
+      "end": 210,
+      "label": "identity controller lifecycle and captured UI inputs",
+      "document": "IDENTITY_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 211,
+      "end": 213,
+      "label": "allowance lifecycle and review ownership",
+      "document": "ALLOWANCE_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 214,
+      "end": 216,
+      "label": "read observers and option ownership",
+      "document": "READ_OBSERVER_OPTIONS_2026-10-30.md"
+    },
+    {
+      "start": 217,
+      "end": 219,
+      "label": "transfer lifecycle and reviewed files",
+      "document": "TRANSFER_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 220,
+      "end": 222,
+      "label": "period-library review and storage lifecycle",
+      "document": "PERIOD_LIBRARY_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 223,
+      "end": 225,
+      "label": "report records and presentation settings",
+      "document": "REPORT_RECORD_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 226,
+      "end": 228,
+      "label": "report-history review and commit lifecycle",
+      "document": "REPORT_HISTORY_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 229,
+      "end": 231,
+      "label": "report-set selection and import lifecycle",
+      "document": "REPORT_SET_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 232,
+      "end": 234,
+      "label": "period-report review and history handoff",
+      "document": "PERIOD_REPORT_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 235,
+      "end": 238,
+      "label": "period-read checkpoint and handoff lifecycle",
+      "document": "PERIOD_READ_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 239,
+      "end": 240,
+      "label": "read-response and diagnostic capture",
+      "document": "READ_BOUNDARY_COMPLETION_2026-10-30.md"
+    },
+    {
+      "start": 241,
+      "end": 243,
+      "label": "archive lifecycle",
+      "document": "TRANSFER_ARCHIVE_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 244,
+      "end": 247,
+      "label": "three-token vault lifecycle",
+      "document": "TRANSFER_VAULT_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 248,
+      "end": 251,
+      "label": "reconciliation lifecycle",
+      "document": "RECONCILIATION_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 252,
+      "end": 254,
+      "label": "portfolio capture",
+      "document": "PORTFOLIO_CAPTURE_2026-10-30.md"
+    },
+    {
+      "start": 255,
+      "end": 257,
+      "label": "portfolio refresh lifecycle",
+      "document": "PORTFOLIO_CONTROLLER_LIFECYCLE_2026-10-30.md"
+    },
+    {
+      "start": 258,
+      "end": 260,
+      "label": "history-file cancellation",
+      "document": "HISTORY_FILE_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 261,
+      "end": 262,
+      "label": "library-file cancellation",
+      "document": "LIBRARY_FILE_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 263,
+      "end": 268,
+      "label": "public checksum boundaries",
+      "document": "PUBLIC_CHECKSUM_BOUNDARY_2026-10-31.md"
+    },
+    {
+      "start": 269,
+      "end": 274,
+      "label": "bounded checksum cancellation",
+      "document": "CHECKSUM_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 275,
+      "end": 276,
+      "label": "identity and allowance file cancellation",
+      "document": "IDENTITY_ALLOWANCE_FILE_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 277,
+      "end": 279,
+      "label": "export checksum cancellation",
+      "document": "EXPORT_CHECKSUM_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 280,
+      "end": 280,
+      "label": "rehearsal hash cancellation",
+      "document": "REHEARSAL_HASH_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 281,
+      "end": 282,
+      "label": "checkpoint hash cancellation",
+      "document": "CHECKPOINT_HASH_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 283,
+      "end": 285,
+      "label": "checkpoint lifecycle",
+      "document": "CHECKPOINT_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 286,
+      "end": 288,
+      "label": "allowance bundle lifecycle",
+      "document": "ALLOWANCE_BUNDLE_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 289,
+      "end": 290,
+      "label": "workspace export lifecycle",
+      "document": "WORKSPACE_EXPORT_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 291,
+      "end": 294,
+      "label": "checkpoint data capture",
+      "document": "CHECKPOINT_CAPTURE_2026-10-31.md"
+    },
+    {
+      "start": 295,
+      "end": 298,
+      "label": "local history panel lifecycle",
+      "document": "LOCAL_HISTORY_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 299,
+      "end": 300,
+      "label": "wallet setup panel lifecycle",
+      "document": "WALLET_SETUP_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 301,
+      "end": 306,
+      "label": "identity and allowance panel lifecycle",
+      "document": "IDENTITY_ALLOWANCE_PANELS_2026-10-31.md"
+    },
+    {
+      "start": 307,
+      "end": 308,
+      "label": "diagnostic message lookup",
+      "document": "DIAGNOSTIC_MESSAGE_LOOKUP_2026-10-31.md"
+    },
+    {
+      "start": 309,
+      "end": 310,
+      "label": "export policy capture",
+      "document": "EXPORT_POLICY_CAPTURE_2026-10-31.md"
+    },
+    {
+      "start": 311,
+      "end": 314,
+      "label": "transfer panel lifecycle",
+      "document": "TRANSFER_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 315,
+      "end": 316,
+      "label": "transfer archive panel lifecycle",
+      "document": "TRANSFER_ARCHIVE_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 317,
+      "end": 318,
+      "label": "cooperative archive selection cancellation",
+      "document": "TRANSFER_SELECTION_CANCELLATION_2026-10-31.md"
+    },
+    {
+      "start": 319,
+      "end": 322,
+      "label": "vault export and panel lifecycle",
+      "document": "TRANSFER_VAULT_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 323,
+      "end": 325,
+      "label": "history review source and download lifecycle",
+      "document": "HISTORY_REVIEW_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 326,
+      "end": 329,
+      "label": "history recovery panel lifecycle",
+      "document": "HISTORY_RECOVERY_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 330,
+      "end": 334,
+      "label": "history file handoffs and backup state",
+      "document": "HISTORY_FILES_PANEL_LIFECYCLE_2026-10-31.md"
+    },
+    {
+      "start": 335,
+      "end": 335,
+      "label": "Windows native browser validation",
+      "document": "WINDOWS_BROWSER_VALIDATION_2026-10-31.md"
+    },
+    {
+      "start": 336,
+      "end": 350,
+      "label": "current operation ownership across wallet and protection panels",
+      "document": "PANEL_STATE_CONTINUITY_2026-10-31.md"
+    },
+    {
+      "start": 351,
+      "end": 352,
+      "label": "crypto status and encrypted-library handoff ownership",
+      "document": "SECURE_PANEL_STATE_2026-10-31.md"
+    },
+    {
+      "start": 353,
+      "end": 354,
+      "label": "terminal protection fault escalation and current protection display",
+      "document": "PROTECTION_FAULT_ESCALATION_2026-10-31.md"
+    },
+    {
+      "start": 355,
+      "end": 358,
+      "label": "single filename observations and retired rehearsal selections",
+      "document": "FILE_NAME_CAPTURE_2026-10-31.md"
+    },
+    {
+      "start": 359,
+      "end": 360,
+      "label": "current file-read ownership during cancellation and option capture",
+      "document": "FILE_READ_SCOPE_2026-10-31.md"
+    },
+    {
+      "start": 361,
+      "end": 364,
+      "label": "bounded and stable offline file inspection",
+      "document": "LOCAL_FILE_INSPECTION_2026-10-31.md"
+    },
+    {
+      "start": 365,
+      "end": 368,
+      "label": "cleanup and observer failure containment",
+      "document": "CLEANUP_OBSERVERS_2026-10-31.md"
+    },
+    {
+      "start": 369,
+      "end": 371,
+      "label": "captured HTTP packets and bounded intrinsic byte accounting",
+      "document": "STATE_RPC_BYTES_2026-10-31.md"
+    },
+    {
+      "start": 372,
+      "end": 374,
+      "label": "provider observer boundaries",
+      "document": "PROVIDER_OBSERVER_BOUNDARIES_2026-10-31.md"
+    },
+    {
+      "start": 375,
+      "end": 375,
+      "label": "rehearsal picker-dismissal guidance",
+      "document": "REHEARSAL_PICKER_NOTICE_2026-10-31.md"
+    },
+    {
+      "start": 376,
+      "end": 376,
+      "label": "saved-format destination guidance",
+      "document": "REHEARSAL_FILE_TARGET_2026-10-31.md"
+    },
+    {
+      "start": 377,
+      "end": 382,
+      "label": "rehearsal continuity, record navigation and file guidance",
+      "document": "REHEARSAL_SOURCE_BOUNDARIES_2026-10-31.md"
+    },
+    {
+      "start": 383,
+      "end": 385,
+      "label": "field-specific rehearsal correction guidance",
+      "document": "REHEARSAL_FIELD_FEEDBACK_2026-10-31.md"
+    },
+    {
+      "start": 386,
+      "end": 391,
+      "label": "guided record entry and comparison-case management",
+      "document": "REHEARSAL_ENTRY_AND_CASES_2026-10-31.md"
+    },
+    {
+      "start": 392,
+      "end": 396,
+      "label": "complete difference browsing and exact review evidence",
+      "document": "REHEARSAL_REVIEW_CHECKPOINT_2026-10-31.md"
+    },
+    {
+      "start": 397,
+      "end": 400,
+      "label": "offline difference inspection, checksum files and retained rehearsal history",
+      "document": "REHEARSAL_OFFLINE_GUIDANCE_2026-10-31.md"
+    },
+    {
+      "start": 401,
+      "end": 401,
+      "label": "keyboard-accessible wallet task navigation",
+      "document": "WALLET_TASK_NAVIGATION_2026-10-31.md"
+    },
+    {
+      "start": 402,
+      "end": 407,
+      "label": "portable review evidence, independent verification and evidence recovery",
+      "document": "REHEARSAL_REVIEW_EVIDENCE_2026-10-31.md"
+    },
+    {
+      "start": 408,
+      "end": 410,
+      "label": "complete review-difference inspection in the browser and offline",
+      "document": "REHEARSAL_REVIEW_DIFFERENCE_PAGES_2026-10-31.md"
+    },
+    {
+      "start": 411,
+      "end": 413,
+      "label": "portable read-only evidence-manifest verification",
+      "document": "EVIDENCE_MANIFEST_VERIFICATION_2026-10-31.md"
+    },
+    {
+      "start": 414,
+      "end": 414,
+      "label": "bounded verification of all tracked evidence collections",
+      "document": "EVIDENCE_COLLECTION_VERIFICATION_2026-10-31.md"
+    },
+    {
+      "start": 415,
+      "end": 416,
+      "label": "direct record detail navigation and retained-result focus",
+      "document": "REHEARSAL_RECORD_NAVIGATION_2026-10-31.md"
+    },
+    {
+      "start": 417,
+      "end": 418,
+      "label": "accessible restore outcomes and preservation of newer recovery work",
+      "document": "REHEARSAL_RESTORE_CONTINUITY_2026-10-31.md"
+    }
+  ]
+}

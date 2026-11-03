@@ -1,3 +1,4 @@
+import { sha256Hex } from "./security-data.js";
 import { readSecurityFileBytes } from "./security-file.js";
 import { createStateNotifier } from "./state-notifier.js";
 import { readOwnErrorCode } from "./provider-error.js";
@@ -11,22 +12,17 @@ const FILE_ERRORS = new Set(["WORKSPACE_FILE_SIZE", "WORKSPACE_FILENAME", "WORKS
   "WORKSPACE_FILE_JSON", "WORKSPACE_FILE_SCHEMA", "WORKSPACE_FILE_READ", "WORKSPACE_CRYPTO",
   "WORKSPACE_CHECKSUM", "WORKSPACE_SIZE", "WORKSPACE_JSON", "WORKSPACE_SHAPE", "WORKSPACE_COMPLEXITY",
   "WORKSPACE_AGENT", "WORKSPACE_ADDRESS", "WORKSPACE_CHAIN", "WORKSPACE_TOKENS", "WORKSPACE_HISTORY",
-  "WORKSPACE_CONFLICT", "WORKSPACE_DUPLICATE", "WORKSPACE_ENTRIES", "WORKSPACE_SCHEMA"]);
+  "WORKSPACE_CONFLICT", "WORKSPACE_ENTRIES", "WORKSPACE_SCHEMA"]);
 
-async function digestText(text, subtle = globalThis.crypto?.subtle) {
-  if (!subtle || typeof subtle.digest !== "function") workspaceFail("WORKSPACE_CRYPTO");
-  const bytes = new TextEncoder().encode(text);
-  let result;
-  try { result = new Uint8Array(await subtle.digest("SHA-256", bytes)); }
+async function digestText(text, subtle, options) {
+  try { return await sha256Hex(new TextEncoder().encode(text), subtle, options); }
   catch { workspaceFail("WORKSPACE_CRYPTO"); }
-  if (result.length !== 32) workspaceFail("WORKSPACE_CRYPTO");
-  return [...result].map(value => value.toString(16).padStart(2, "0")).join("");
 }
 
 /** A checksum detects corruption, not ownership, authorship or authenticity. */
-export async function prepareWorkspaceFile(workspace, { subtle } = {}) {
+export async function prepareWorkspaceFile(workspace, { subtle, signal, timeoutMs } = {}) {
   const canonical = encodeWorkspace(workspace);
-  const digest = await digestText(canonical, subtle);
+  const digest = await digestText(canonical, subtle, { signal, timeoutMs });
   const text = JSON.stringify({ schema: WORKSPACE_FILE_SCHEMA, algorithm: "SHA-256", digest,
     workspace: JSON.parse(canonical) }, null, 2);
   const byteLength = new TextEncoder().encode(text).byteLength;
@@ -35,7 +31,7 @@ export async function prepareWorkspaceFile(workspace, { subtle } = {}) {
     filename: "ThreeCore-workspace-backup.json", mimeType: "application/json;charset=utf-8" });
 }
 
-export async function decodeWorkspaceFile(bytes, { subtle } = {}) {
+export async function decodeWorkspaceFile(bytes, { subtle, signal, timeoutMs } = {}) {
   if (!(bytes instanceof Uint8Array) || !bytes.byteLength || bytes.byteLength > WORKSPACE_FILE_LIMIT) {
     workspaceFail("WORKSPACE_FILE_SIZE");
   }
@@ -55,7 +51,7 @@ export async function decodeWorkspaceFile(bytes, { subtle } = {}) {
   if (workspaceText.length > WORKSPACE_TEXT_LIMIT) workspaceFail("WORKSPACE_SIZE");
   const workspace = decodeWorkspace(workspaceText);
   const canonical = encodeWorkspace(workspace);
-  const actual = await digestText(canonical, subtle);
+  const actual = await digestText(canonical, subtle, { signal, timeoutMs });
   if (actual !== parsed.digest) workspaceFail("WORKSPACE_CHECKSUM");
   return Object.freeze({ workspace, text: canonical, digest: actual, checksumVerified: true, authenticated: false });
 }
@@ -122,7 +118,7 @@ export function createWorkspaceFileReader({
         const bytes = await readBytes(file, { maxBytes: WORKSPACE_FILE_LIMIT, signal: activeRead.signal });
         if (disposed || id !== generation) return false;
         if (!(bytes instanceof Uint8Array) || bytes.byteLength !== size) workspaceFail("WORKSPACE_FILE_SIZE");
-        const result = await decodeWorkspaceFile(bytes, { subtle });
+        const result = await decodeWorkspaceFile(bytes, { subtle, signal: activeRead.signal });
         if (disposed || id !== generation) return false;
         publish("ready", result);
         return current(id);

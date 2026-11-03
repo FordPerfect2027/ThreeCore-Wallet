@@ -1,0 +1,82 @@
+{
+  "source": "3371de9",
+  "synthetic": true,
+  "captureEnvironment": "Node shared browser export helper versus standalone offline CLI; native UI callback delivery tested separately",
+  "rows": [
+    {
+      "name": "membership",
+      "exitCode": 2,
+      "exactSharedFileMatch": true,
+      "sourceFilesUnchanged": true,
+      "beforePayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+      "afterPayloadDigest": "85a88de939c494e8a3b8372d74159b32596eb96e356f8c1fe72f84d9eba2aa18",
+      "counts": {
+        "added": 1,
+        "removed": 1,
+        "changed": 0,
+        "metadata-only": 0,
+        "unchanged": 2
+      }
+    },
+    {
+      "name": "metadata",
+      "exitCode": 2,
+      "exactSharedFileMatch": true,
+      "sourceFilesUnchanged": true,
+      "beforePayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+      "afterPayloadDigest": "037cb3414c99fd617d5ad0e0b3fe17f240c8df6adfc4aa0f671d7aad5738ad6e",
+      "counts": {
+        "added": 0,
+        "removed": 0,
+        "changed": 0,
+        "metadata-only": 1,
+        "unchanged": 2
+      }
+    },
+    {
+      "name": "regressed",
+      "exitCode": 2,
+      "exactSharedFileMatch": true,
+      "sourceFilesUnchanged": true,
+      "beforePayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+      "afterPayloadDigest": "6b211d82303b0141852ac13b76e6e522083497384a3ca2eaec0732052f226f19",
+      "counts": {
+        "added": 0,
+        "removed": 0,
+        "changed": 1,
+        "metadata-only": 0,
+        "unchanged": 2
+      }
+    },
+    {
+      "name": "context",
+      "exitCode": 2,
+      "exactSharedFileMatch": true,
+      "sourceFilesUnchanged": true,
+      "beforePayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+      "afterPayloadDigest": "058bacf453c3c58c7e26a6087e182084907d1021ec6685e33e830e2cd6d0e4f6",
+      "counts": {
+        "added": 0,
+        "removed": 0,
+        "changed": 1,
+        "metadata-only": 0,
+        "unchanged": 2
+      }
+    },
+    {
+      "name": "identical",
+      "exitCode": 0,
+      "exactSharedFileMatch": true,
+      "sourceFilesUnchanged": true,
+      "beforePayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+      "afterPayloadDigest": "b5ccb38d1b4584dafa1b7c6c1be203ff89a466674d0393d817f23a7209c728a1",
+      "counts": {
+        "added": 0,
+        "removed": 0,
+        "changed": 0,
+        "metadata-only": 0,
+        "unchanged": 3
+      }
+    }
+  ]
+}

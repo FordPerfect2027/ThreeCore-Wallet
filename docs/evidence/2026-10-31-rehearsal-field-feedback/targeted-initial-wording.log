@@ -1,0 +1,231 @@
+✔ combined restore replaces workspace and case collection together and clears their undo histories (611.9542ms)
+✔ read-only search retains combined review while a hypothetical draft edit revokes it (86.8579ms)
+✔ record queries preserve pending append and restore and expose only committed inputs (60.475ms)
+✔ expected-outcome checking leaves ledger, undo and unconfirmed collection change intact (141.7105ms)
+✔ named comparison snapshots preserve all ledger inputs and undo across source changes (208.9707ms)
+✔ read-only saved-report review preserves workspace, undo and pending restore (136.6671ms)
+✔ scenario panel remains disabled until there is a displayed source (3.0238ms)
+✔ scenario panel copies recorded conditions and context without replacing the ledger (17.711ms)
+✔ hypothetical limits show cascading rejections and preserve existing reservations and undo (43.0501ms)
+✔ editing a hypothetical condition revokes its results and both downloads immediately (17.6267ms)
+✔ changed-only record filter includes accounting changes and exports the complete replay (25.8693ms)
+✔ comparison and separate candidate input exports agree and never change source (24.2588ms)
+✖ scenario amount rejects "-1" without discarding source (16.1166ms)
+✖ scenario amount rejects "0.0000001" without discarding source (11.3513ms)
+✖ scenario amount rejects "1e2" without discarding source (13.6438ms)
+✖ scenario amount rejects "" without discarding source (12.8501ms)
+✔ percentage bounds and pause are checked independently of the source policy (20.4076ms)
+✔ reset restores recorded parameters and clears only comparison results (18.405ms)
+✔ switching targets and clearing revokes hypothetical exports (54.043ms)
+✔ restore previews keep the current scenario source; applying replaces it (37.9832ms)
+✔ confirmed append and undo refresh source while a pending append does not (51.6213ms)
+✔ old-format scenario has disabled fee caps and preserves the old schema in candidate export (23.9386ms)
+✔ disposing clears scenario source, results and download handlers (20.0135ms)
+✔ overview starts explicitly uncreated and disabled, not as a zero balance or successful check (1.2967ms)
+✔ overview filters missing, present-empty and populated subjects separately (38.9527ms)
+✔ unconfirmed append and restore never enter the overview; filtering preserves both reviews (62.7646ms)
+✔ overview updates after confirm, undo, and clearing one target (101.2948ms)
+✔ overview rejected rows expose reason and source identity without crediting the requested amount (13.3267ms)
+✔ overview export includes all records even under an empty filter, and ignores pending replacement (53.2787ms)
+✔ applied replacement refreshes overview while disposal removes its data and export handler (37.1725ms)
+✔ review exposes changed identities, assets, destinations, policy and event contents without applying (22.9749ms)
+✔ comparison download is reproducible and never applies a pending review (26.4935ms)
+✔ cancel revokes comparison detail and its export (37.4343ms)
+✔ switch revokes comparison detail and its export (31.7831ms)
+✔ edit revokes comparison detail and its export (25.4795ms)
+✔ apply revokes comparison detail and its export (29.8341ms)
+✔ invalid revokes comparison detail and its export (21.9523ms)
+✔ dispose revokes comparison detail and its export (19.9968ms)
+✔ unchanged data is labeled separately from replacement and selection-only changes (21.451ms)
+✔ old-version missing fee caps remain explicit, with no assumed values in the comparison (31.3801ms)
+✔ a selected filename and next action survive native input clearing without hiding applied results (92.7387ms)
+✔ file chooser cancellation or no selection preserves the prior review and current records (31.5279ms)
+✔ successful restoration has a receipt naming the source and each restored count (32.9765ms)
+✔ zero-record ledgers are distinct from missing ledgers in the replacement preview (32.4792ms)
+✔ filenames are bounded plain text with directional and control characters removed (11.8797ms)
+✔ pasted workspace is reviewed, bounded, cleared and applied once using the same replacement rules (33.6069ms)
+✔ empty pasted input explains failure and preserves applied records and undo (45.4425ms)
+✔ malformed pasted input explains failure and preserves applied records and undo (40.696ms)
+✔ duplicate-agent pasted input explains failure and preserves applied records and undo (41.7905ms)
+✔ duplicate-key pasted input explains failure and preserves applied records and undo (37.8124ms)
+✔ oversized pasted input explains failure and preserves applied records and undo (95.9589ms)
+✔ multibyte-oversized pasted input explains failure and preserves applied records and undo (47.4645ms)
+✔ single-ledger pasted input explains failure and preserves applied records and undo (39.3472ms)
+✔ foreign-asset pasted input explains failure and preserves applied records and undo (43.8231ms)
+✔ a file read error preserves the displayed ledger and its exports (22.418ms)
+✔ an older file cannot replace a newer pasted review or its source label (14.7554ms)
+✔ an older file rejection cannot overwrite a newer completed restore (19.6284ms)
+✔ editing pasted input cancels both workspace and single-ledger pending reviews (9.7544ms)
+✔ cancel and dispose clear pasted text and file names without retaining import content (51.6424ms)
+✔ workspace overview labels missing agents and disables an empty export (10.8331ms)
+✔ three-agent switching preserves records, allocation and agent-specific undo (272.2414ms)
+✔ editing one agent removes only that result; other records remain exportable (73.8192ms)
+✔ single-agent import never discards another agent's applied ledger (40.674ms)
+✔ workspace review leaves the old export intact; cancel restores its displayed result (32.9936ms)
+✔ confirmed workspace replaces all three histories exactly once, clearing undo (102.2893ms)
+✔ workspace with one unsupported asset is rejected without replacing any current history (16.659ms)
+✔ cancel prevents a late workspace read from reviving a review (26.391ms)
+✔ switch prevents a late workspace read from reviving a review (19.841ms)
+✔ edit prevents a late workspace read from reviving a review (15.3467ms)
+✔ dispose prevents a late workspace read from reviving a review (14.7521ms)
+✔ a newer workspace file wins over a late older read (34.3604ms)
+✔ oversized workspace is not read and an empty restore requires explicit confirmation (20.6989ms)
+✔ append preview is explicit and cancellation never changes saved inputs (18.6885ms)
+✔ append confirm reserves once; undo restores amount and cancels a newer preview (52.3264ms)
+✔ edited append fields revoke confirmation while retaining the applied ledger (15.1781ms)
+✔ a rejected reservation is explained before adding it; undo removes its blocker (39.0848ms)
+✔ CSV exports the applied ledger, never an unconfirmed preview (31.3126ms)
+✔ v1 import is preserved with append disabled instead of inventing fee limits (30.3117ms)
+✔ switching agents and clearing revokes a ledger preview and undo (69.0289ms)
+✔ pending fee reserve and settlement append use the original operation id (32.0449ms)
+✔ explicit sample action is required; calculations never request a provider (9.9066ms)
+✔ editing makes old results and exports unavailable until recalculated (17.8316ms)
+✔ save produces re-importable input, not a trusted result (10.7392ms)
+✔ import needs a distinct apply action and cannot apply twice (18.8406ms)
+✔ cancelled file read cannot restore a candidate or old report (4.8475ms)
+✔ a newer file wins even if an older read finishes later (13.0562ms)
+✔ changing an agent revokes an imported candidate (8.2065ms)
+✔ large files are refused before reading bytes (3.8091ms)
+✔ foreign precision or asset cannot silently become editable SIM amounts (4.3522ms)
+✔ unsupported percentages and excess monetary precision are refused (28.7909ms)
+✔ dispose prevents a pending file or stale handler from bringing back results (8.6198ms)
+✔ calculation identifies invalid principal -1 (181.7498ms)
+✔ calculation identifies invalid principal 1,000 (34.0941ms)
+✔ calculation identifies invalid principal 0.0000001 (29.0978ms)
+✔ calculation identifies invalid principal 999999999999999 (27.7339ms)
+✔ percentage guidance identifies its field and accepts the exact upper boundary (27.9573ms)
+✔ pending calculation ignores settlement-only fields but complete calculation identifies them (60.3815ms)
+✔ clearing validation restores pre-existing accessibility descriptions (18.6573ms)
+✔ example replacement clears a stale field marker (23.6716ms)
+✔ comparison failure retains committed input and marks the actual fee field (39.5685ms)
+✔ comparison percentage error clears on a new source (32.0718ms)
+✔ superseded comparison failure cannot mark a new source during owner notification (2.0796ms)
+✔ append identifies deposit append-amount and preserves saved history (28.076ms)
+✔ append identifies open append-fee and preserves saved history (29.6698ms)
+✔ append identifies open append-exit-reserve and preserves saved history (30.755ms)
+✔ append identifies reserve append-reference and preserves saved history (32.869ms)
+✔ append identifies release append-reference and preserves saved history (27.1884ms)
+✔ deposit ignores unused ID and fee fields (21.3461ms)
+✔ withdraw ignores unused ID and fee fields (26.4234ms)
+✔ release ignores all unused money fields (20.8149ms)
+✔ disposing a form clears all outstanding invalid markers (17.2287ms)
+✔ records: source capture cannot outlive dispose (36.1772ms)
+✔ records: source capture cannot outlive dispose even when capture throws (4.8092ms)
+✔ records: source capture cannot outlive clear (4.7107ms)
+✔ records: source capture cannot outlive clear even when capture throws (4.7485ms)
+✔ records: source capture cannot outlive replace (6.0503ms)
+✔ records: source capture cannot outlive replace even when capture throws (8.8617ms)
+✔ scenario: source capture cannot outlive dispose (4.7831ms)
+✔ scenario: source capture cannot outlive dispose even when capture throws (2.8663ms)
+✔ scenario: source capture cannot outlive clear (3.413ms)
+✔ scenario: source capture cannot outlive clear even when capture throws (2.3067ms)
+✔ scenario: source capture cannot outlive replace (2.6661ms)
+✔ scenario: source capture cannot outlive replace even when capture throws (2.3524ms)
+✔ comparison refresh observer cannot overwrite dispose (2.5504ms)
+✔ comparison refresh observer cannot overwrite clear (1.6037ms)
+✔ comparison refresh observer cannot overwrite replace (2.8238ms)
+✔ comparison compare-start observer cannot overwrite dispose (1.8517ms)
+✔ comparison compare-start observer cannot overwrite clear (1.4179ms)
+✔ comparison compare-start observer cannot overwrite replace (11.5808ms)
+✔ comparison compare-result observer cannot overwrite dispose (14.188ms)
+✔ comparison compare-result observer cannot overwrite clear (7.8603ms)
+✔ comparison compare-result observer cannot overwrite replace (5.3951ms)
+✔ comparison observers do not discard valid work or leak failures: throw (54.3601ms)
+✔ comparison observers do not discard valid work or leak failures: native (5.8454ms)
+✔ comparison observers do not discard valid work or leak failures: malformed (5.2407ms)
+✔ comparison disposal marks the panel closed before notifying its owner (8.8611ms)
+✔ invalid replacement still reports its own failure without erasing a healthy source (4.7231ms)
+ℹ tests 137
+ℹ suites 0
+ℹ pass 133
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4684.5983
+
+✖ failing tests:
+
+test at test\operation-rehearsal-page.test.js:163:49
+✖ scenario amount rejects "-1" without discarding source (16.1166ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /比較条件を確認/. Input:
+  
+  '開始時の資金：0以上の数値を入力してください。小数は6桁までです。桁数が大きすぎる数値・符号・区切り文字は使えません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-page.test.js:165:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '開始時の資金：0以上の数値を入力してください。小数は6桁までです。桁数が大きすぎる数値・符号・区切り文字は使えません。',
+    expected: /比較条件を確認/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-page.test.js:163:49
+✖ scenario amount rejects "0.0000001" without discarding source (11.3513ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /比較条件を確認/. Input:
+  
+  '開始時の資金：0以上の数値を入力してください。小数は6桁までです。桁数が大きすぎる数値・符号・区切り文字は使えません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-page.test.js:165:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '開始時の資金：0以上の数値を入力してください。小数は6桁までです。桁数が大きすぎる数値・符号・区切り文字は使えません。',
+    expected: /比較条件を確認/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-page.test.js:163:49
+✖ scenario amount rejects "1e2" without discarding source (13.6438ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /比較条件を確認/. Input:
+  
+  '開始時の資金：0以上の数値を入力してください。小数は6桁までです。桁数が大きすぎる数値・符号・区切り文字は使えません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-page.test.js:165:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '開始時の資金：0以上の数値を入力してください。小数は6桁までです。桁数が大きすぎる数値・符号・区切り文字は使えません。',
+    expected: /比較条件を確認/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\operation-rehearsal-page.test.js:163:49
+✖ scenario amount rejects "" without discarding source (12.8501ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /比較条件を確認/. Input:
+  
+  '開始時の資金：0以上の数値を入力してください。小数は6桁までです。桁数が大きすぎる数値・符号・区切り文字は使えません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/operation-rehearsal-page.test.js:165:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '開始時の資金：0以上の数値を入力してください。小数は6桁までです。桁数が大きすぎる数値・符号・区切り文字は使えません。',
+    expected: /比較条件を確認/,
+    operator: 'match',
+    diff: 'simple'
+  }

@@ -1,0 +1,26 @@
+[
+  {
+    "token": "DAT",
+    "base": "ada78f5ecbd8654860d818b774ef31beb6f0b871",
+    "head": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+    "patchSha256": "65b95e8d872803fc4c8e7cd6ad56b2cd2ddaffaf4c580fcc6c1df442269a4685",
+    "originalBranch": "codex/toolchain-empty-data-20261102",
+    "worktreeClean": true
+  },
+  {
+    "token": "EMA",
+    "base": "c4765efe92857e7060c0efaa44b271c67d8d68c3",
+    "head": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+    "patchSha256": "4fdb29def71f5e1d2abe66d7fc8e14b52abe54f99c6442cc04b8e9d3da2d56b4",
+    "originalBranch": "codex/toolchain-empty-data-20261102",
+    "worktreeClean": true
+  },
+  {
+    "token": "CAWELON",
+    "base": "a94d61be77c0c14109910879cdd6a7f377176101",
+    "head": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+    "patchSha256": "8f427137503b61139c90eca3394395fff064e70952c203d33cdc1d5b5f43322d",
+    "originalBranch": "codex/toolchain-empty-data-20261102",
+    "worktreeClean": true
+  }
+]

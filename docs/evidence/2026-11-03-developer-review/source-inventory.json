@@ -1,0 +1,50 @@
+{
+  "walletBase": "95be8d63ad5726153f2204c79d7fabeb50f5db68",
+  "files": [
+    {
+      "path": "src/provider-events.js",
+      "bytes": 4464,
+      "sha256": "25444e7d4c8de90e6823ad3f8f0886a094803ed14f5b3c6d63185d9fd0093cbe"
+    },
+    {
+      "path": "src/provider-event-gate.js",
+      "bytes": 1711,
+      "sha256": "f5c6e18559b8c06af15091ffbe558b351c5fd4215d43c9fe9823c4c3fd77881f"
+    },
+    {
+      "path": "src/wallet-card-controller.js",
+      "bytes": 18351,
+      "sha256": "05e72c9e7b4d5b6e7d52bdb606cec0bf56ce0e6d64ec3cafc7384086d1d960fa"
+    },
+    {
+      "path": "src/wallet-read-scope.js",
+      "bytes": 4389,
+      "sha256": "77646d6ece947a1e3214289aafafc7991ba886899191c8716d340d041cce60c4"
+    },
+    {
+      "path": "src/wallet-session.js",
+      "bytes": 28894,
+      "sha256": "836638bf80386977c739d7301a52030a3e9488cc3a59f7e20716c73602f3e3ca"
+    },
+    {
+      "path": "src/workspace-file.js",
+      "bytes": 7488,
+      "sha256": "def9b3f96eb7dfe688db0dd9fd88933e4669b87661e11f444af0cbf2af213e65"
+    },
+    {
+      "path": "src/workspace-controller.js",
+      "bytes": 8107,
+      "sha256": "9d146bcf436086afcbee06807c3e564631d4baf212e0f5e796263958d0f9020d"
+    },
+    {
+      "path": "src/security-file.js",
+      "bytes": 3204,
+      "sha256": "a7d8f9d1ed6e436c6b0b19f381a6abb852bdbf1054f34d04c7642090358ac32f"
+    },
+    {
+      "path": "src/file-read-service.js",
+      "bytes": 10973,
+      "sha256": "73fd08ff9c88a8b4faa33c8d8195e203724aa78da5f924d23a16ee4f23a05fd6"
+    }
+  ]
+}

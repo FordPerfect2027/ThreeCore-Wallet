@@ -1,0 +1,493 @@
+✖ token plan save: context callback clear retires the operation (12.4544ms)
+✖ token plan save: context callback invalidate retires the operation (1.6982ms)
+✖ token plan save: context callback dispose retires the operation (1.2573ms)
+✖ token plan preview: context callback clear retires the operation (1.3473ms)
+✖ token plan preview: context callback invalidate retires the operation (1.2647ms)
+✖ token plan preview: context callback dispose retires the operation (1.461ms)
+✖ token plan apply: context callback clear retires the operation (1.3853ms)
+✖ token plan apply: context callback invalidate retires the operation (1.3906ms)
+✖ token plan apply: context callback dispose retires the operation (1.5074ms)
+✖ token plan preview: silent input changes during context capture require another preview (7.451ms)
+✖ token plan apply: silent input changes during context capture require another preview (1.1504ms)
+✖ token plan export consumes asynchronous getContext failure (35.7826ms)
+✖ token plan export consumes asynchronous readLines failure (3.8255ms)
+✖ token plan export rechecks context after reading its source list (2.5607ms)
+✖ token plan apply false receipt cannot claim confirmation (10.5803ms)
+✖ token plan apply reject receipt cannot claim confirmation (8.2356ms)
+✖ token plan apply resolve receipt cannot claim confirmation (3.7754ms)
+✖ token plan apply unreadable receipt cannot claim confirmation (2.6185ms)
+✖ token plan apply completion cannot revive removed UI, failure=false (1.0869ms)
+✖ token plan apply completion cannot revive removed UI, failure=true (1.3167ms)
+✖ token plan diagnostic accessor is not executed (0.9378ms)
+✖ token plan retained clear and input handlers cannot update removed UI (0.868ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 0
+ℹ fail 22
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 650.9501
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:22:1
+✖ token plan save: context callback clear retires the operation (12.4544ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '入力リストをJSONにしました。コピーして保存できます。'
+  - '保存・確認欄を消去しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:25:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力リストをJSONにしました。コピーして保存できます。',
+    expected: '保存・確認欄を消去しました。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:22:1
+✖ token plan save: context callback invalidate retires the operation (1.6982ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '入力リストをJSONにしました。コピーして保存できます。'
+  - '保存するリストを入力するか、JSONを貼り付けてください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:25:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力リストをJSONにしました。コピーして保存できます。',
+    expected: '保存するリストを入力するか、JSONを貼り付けてください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:22:1
+✖ token plan save: context callback dispose retires the operation (1.2573ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '入力リストをJSONにしました。コピーして保存できます。'
+  - '保存するリストを入力するか、JSONを貼り付けてください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:25:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力リストをJSONにしました。コピーして保存できます。',
+    expected: '保存するリストを入力するか、JSONを貼り付けてください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:22:1
+✖ token plan preview: context callback clear retires the operation (1.3473ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '内容を確認し、反映する場合だけ次のボタンを押してください。'
+  - '保存・確認欄を消去しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:25:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '内容を確認し、反映する場合だけ次のボタンを押してください。',
+    expected: '保存・確認欄を消去しました。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:22:1
+✖ token plan preview: context callback invalidate retires the operation (1.2647ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '内容を確認し、反映する場合だけ次のボタンを押してください。'
+  - '保存するリストを入力するか、JSONを貼り付けてください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:25:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '内容を確認し、反映する場合だけ次のボタンを押してください。',
+    expected: '保存するリストを入力するか、JSONを貼り付けてください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:22:1
+✖ token plan preview: context callback dispose retires the operation (1.461ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '内容を確認し、反映する場合だけ次のボタンを押してください。'
+  - '保存するリストを入力するか、JSONを貼り付けてください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:25:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '内容を確認し、反映する場合だけ次のボタンを押してください。',
+    expected: '保存するリストを入力するか、JSONを貼り付けてください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:22:1
+✖ token plan apply: context callback clear retires the operation (1.3853ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '入力欄へ反映しました。残高照会はまだ行っていません。'
+  - '保存・確認欄を消去しました。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:25:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力欄へ反映しました。残高照会はまだ行っていません。',
+    expected: '保存・確認欄を消去しました。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:22:1
+✖ token plan apply: context callback invalidate retires the operation (1.3906ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '入力欄へ反映しました。残高照会はまだ行っていません。'
+  - '保存するリストを入力するか、JSONを貼り付けてください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:25:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力欄へ反映しました。残高照会はまだ行っていません。',
+    expected: '保存するリストを入力するか、JSONを貼り付けてください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:22:1
+✖ token plan apply: context callback dispose retires the operation (1.5074ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '入力欄へ反映しました。残高照会はまだ行っていません。'
+  - '保存するリストを入力するか、JSONを貼り付けてください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:25:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力欄へ反映しました。残高照会はまだ行っていません。',
+    expected: '保存するリストを入力するか、JSONを貼り付けてください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:28:41
+✖ token plan preview: silent input changes during context capture require another preview (7.451ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:30:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:28:41
+✖ token plan apply: silent input changes during context capture require another preview (1.1504ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:30:91)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:33:48
+✖ token plan export consumes asynchronous getContext failure (35.7826ms)
+  Error: unavailable source
+      at getContext (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:34:48)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/token-plan-panel.js:78:52
+      at TestElement.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:12:53)
+      at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:19:45)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:35:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:33:48
+✖ token plan export consumes asynchronous readLines failure (3.8255ms)
+  Error: unavailable source
+      at readLines (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:34:48)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/token-plan-panel.js:78:66
+      at TestElement.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:12:53)
+      at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:19:45)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:35:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:38:1
+✖ token plan export rechecks context after reading its source list (2.5607ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '{\n' +
+  +   '  "schema": "threecore-token-plan-v1",\n' +
+  +   '  "agent": "DAT",\n' +
+  +   '  "chainId": 84532,\n' +
+  +   '  "tokens": [\n' +
+  +   '    "0x1111111111111111111111111111111111111111"\n' +
+  +   '  ]\n' +
+  +   '}'
+  - ''
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:40:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{\n  "schema": "threecore-token-plan-v1",\n  "agent": "DAT",\n  "chainId": 84532,\n  "tokens": [\n    "0x1111111111111111111111111111111111111111"\n  ]\n}',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:43:64
+✖ token plan apply false receipt cannot claim confirmation (10.5803ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /入力欄へ反映しました/. Input:
+  
+  '入力欄へ反映しました。残高照会はまだ行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:46:53)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力欄へ反映しました。残高照会はまだ行っていません。',
+    expected: /入力欄へ反映しました/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:43:64
+✖ token plan apply reject receipt cannot claim confirmation (8.2356ms)
+  Error: late
+      at applyLines (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:44:111)
+      at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/examples/token-plan-panel.js:102:7
+      at TestElement.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:12:53)
+      at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:19:45)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:46:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:43:64
+✖ token plan apply resolve receipt cannot claim confirmation (3.7754ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /入力欄へ反映しました/. Input:
+  
+  '入力欄へ反映しました。残高照会はまだ行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:46:53)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力欄へ反映しました。残高照会はまだ行っていません。',
+    expected: /入力欄へ反映しました/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:43:64
+✖ token plan apply unreadable receipt cannot claim confirmation (2.6185ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /入力欄へ反映しました/. Input:
+  
+  '入力欄へ反映しました。残高照会はまだ行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:46:53)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力欄へ反映しました。残高照会はまだ行っていません。',
+    expected: /入力欄へ反映しました/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:49:33
+✖ token plan apply completion cannot revive removed UI, failure=false (1.0869ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '入力欄へ反映しました。残高照会はまだ行っていません。'
+  - '保存するリストを入力するか、JSONを貼り付けてください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:51:36)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '入力欄へ反映しました。残高照会はまだ行っていません。',
+    expected: '保存するリストを入力するか、JSONを貼り付けてください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:49:33
+✖ token plan apply completion cannot revive removed UI, failure=true (1.3167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'リストを確認できませんでした。入力と設定を確認してください。'
+  - '保存するリストを入力するか、JSONを貼り付けてください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:51:36)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'リストを確認できませんでした。入力と設定を確認してください。',
+    expected: '保存するリストを入力するか、JSONを貼り付けてください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:53:1
+✖ token plan diagnostic accessor is not executed (0.9378ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:55:73)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-token-plan-next.test.mjs:57:1
+✖ token plan retained clear and input handlers cannot update removed UI (0.868ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'JSONが変わりました。もう一度内容を確認してください。'
+  - '保存するリストを入力するか、JSONを貼り付けてください。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-token-plan-next.test.mjs:59:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'JSONが変わりました。もう一度内容を確認してください。',
+    expected: '保存するリストを入力するか、JSONを貼り付けてください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

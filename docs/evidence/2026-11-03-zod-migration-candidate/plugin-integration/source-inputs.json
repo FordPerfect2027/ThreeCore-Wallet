@@ -1,0 +1,233 @@
+{
+  "sourceCommit": "ada78f5ecbd8654860d818b774ef31beb6f0b871",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "a51ae06cc3870833cd29f58cbc2eea9dfb94ff9148d3c80dfe6ecefaf4293e81"
+    },
+    {
+      "path": "contracts/DATCore.sol",
+      "sha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6"
+    },
+    {
+      "path": "deployments/base-mainnet.json",
+      "sha256": "361fd84ea7e5d5527bc78dd7f8c2bd73e8108217b8690f153bb3ebeb42a49098"
+    },
+    {
+      "path": "deployments/base-sepolia.json",
+      "sha256": "80658170ff0e7dff64c4d74aa70d4902c3717972191dfb5cef0394c8f7cef90e"
+    },
+    {
+      "path": "deployments/reference/DATCore-base-sepolia.json",
+      "sha256": "516e7046d4222b953d56828d96a2b9917ac670c8515cefad9837e98efbc7ca67"
+    },
+    {
+      "path": "deployments/reference/README.md",
+      "sha256": "906f67b29ce414fd6b92fb51f5cb2739c68b73c4a35ce097056845b4d5d67e80"
+    },
+    {
+      "path": "integration/history-compatibility.test.mjs",
+      "sha256": "e072518bac60e195adfa53bbfee28a4cc050dac00d5b1b7dca2c5e46b4e08cfd"
+    },
+    {
+      "path": "integration/source-portability.test.mjs",
+      "sha256": "13340e16736bdea857d8d8dea8b26128dd9ec189f809d4b2b04da2261bfe1db4"
+    },
+    {
+      "path": "integration/test-routing.test.mjs",
+      "sha256": "bc46c04ac8d0d0f52cbf27fbb03916b3afdbc5f86e0d44360686434a368c8cdf"
+    },
+    {
+      "path": "integration/toolchain-data.test.mjs",
+      "sha256": "1cbb6c1009e46276bbf11767505b1f6f004a31554262b845e277aed426665594"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "5608d4e5ead1c387174987a2b0e8e83b9bc660aa8a89220fc8194824c4bbad1c"
+    },
+    {
+      "path": "package.json",
+      "sha256": "3c78ae7299c279504ef94b6309c2c5e502ebf7a9d7eeec0034fe7e4e0364d96f"
+    },
+    {
+      "path": "scripts/check-contract-source.js",
+      "sha256": "9972e004e8b98195f2052cfcb3669334e855153fa52dd063af50e8e2c1389caa"
+    },
+    {
+      "path": "scripts/cmc-market-context.ts",
+      "sha256": "f1622b22727afb1cdc226b5ee4aa1973642bdc07fa47e39f683c98c4eef0126c"
+    },
+    {
+      "path": "scripts/deploy-base-sepolia.ts",
+      "sha256": "791e6037abff52045e5d4fe7610012dd1cacf632874d1d37f9d33d99a050e08d"
+    },
+    {
+      "path": "scripts/inspect-approvals.js",
+      "sha256": "1f013637b506f01bad82879400f2e4da58d535c7ee3ff11ca193f3f689f9280c"
+    },
+    {
+      "path": "scripts/inspect-transfers.js",
+      "sha256": "cc4d34ea56d5a92695a06b431b923aa18d8d617517d318ab0395b8476a0e459e"
+    },
+    {
+      "path": "scripts/inspect-wallet-readiness.js",
+      "sha256": "61c80cd27109d9b6bb2d6219d420e44b19aa5562b6a65563022beb14ed52dc81"
+    },
+    {
+      "path": "scripts/quote-dex.js",
+      "sha256": "3c4ddb06ede1d3d2636dd5bb72b0072782b8272ae689a5218c413af008af4dd8"
+    },
+    {
+      "path": "scripts/test-contracts.js",
+      "sha256": "7213961c10d4d47cb7198e99b1acdda1f0e738101f2c7aba68e3bf7ff0361bd9"
+    },
+    {
+      "path": "scripts/verify-base-mainnet.js",
+      "sha256": "9a3a2b5078b36615b17ad108a504cbca702d5b0105cad1a11eec0e10d6d492da"
+    },
+    {
+      "path": "scripts/verify-base-sepolia.js",
+      "sha256": "82c1d491516b50dd3d8ad564f74135cba4bbbd9e21033802339a3e7aa7c0e4a2"
+    },
+    {
+      "path": "src/approval-history.js",
+      "sha256": "d33ab2c8c45f241e7c2d265ba45f4f9d7f4f61d59b62900275a78e2d923cb079"
+    },
+    {
+      "path": "src/canonical-state-read.js",
+      "sha256": "ab7d9fb7d2f4aa7570195897fe6a93849c7f8f379ee114a02172160b932e4fe2"
+    },
+    {
+      "path": "src/canonical-token-read.js",
+      "sha256": "ddaf8c3c06866be7f3402c53f65fb019e6ea2a25e22375cdcf9ab122831c1c3c"
+    },
+    {
+      "path": "src/dex-quote.js",
+      "sha256": "3df944fe80188d85878438f1b9fcc0e870760b779be874b36c48bab37afff116"
+    },
+    {
+      "path": "src/history-cli-input.js",
+      "sha256": "87bbd36e21dcd514eb3d63bda8f4983a7195679d557ee9043789b3042a78b5be"
+    },
+    {
+      "path": "src/history-log.js",
+      "sha256": "c31b830c7916cb27fd962145458a9e3c11b65b85413fa0f831b28ef6976f9114"
+    },
+    {
+      "path": "src/history-snapshot.js",
+      "sha256": "ab0723244ae954fc0dab222d73cfc7361f0eebc5f7087a651285f2d4c211a767"
+    },
+    {
+      "path": "src/onchain-identity.js",
+      "sha256": "eaa7a221f8549ddf70de719e86fdb43e167fba3c19b4c17443f94f6eba52086e"
+    },
+    {
+      "path": "src/read-only-http.js",
+      "sha256": "830dcda2c124a22a3cb3969f3e97bcab33b5b689aa96b82dd6231f87900f920f"
+    },
+    {
+      "path": "src/sepolia-deployment-verifier.js",
+      "sha256": "7156363df3d94824eef40ad2c6699215f87c998ee0bec9fb896488c64e549d66"
+    },
+    {
+      "path": "src/transfer-history.js",
+      "sha256": "e2349cd4309908eaa7cbd6ea16ce20da0b48abe8f9e0284ec750836f9f6548c5"
+    },
+    {
+      "path": "src/wallet-readiness.js",
+      "sha256": "8fd73a9885ab722982261bf1b5f9d8a2ecd47172f214258f183a0d0a8a30dcbf"
+    },
+    {
+      "path": "test/DATCore.ts",
+      "sha256": "466f280adfcf1053ba6a2c7afe0430107c29ac21204c7d52373508936fa503ef"
+    },
+    {
+      "path": "test/PermitBoundaries.ts",
+      "sha256": "af5d92feccb3a4b775da04220fa81f37997d5ab9a108b822b0776af758836aba"
+    },
+    {
+      "path": "test/TransferInvariants.ts",
+      "sha256": "b6016ce887189b7608fe6d30604e6fd92ee715c8382238c7e742b927e5d98e68"
+    },
+    {
+      "path": "test/approval-history.test.mjs",
+      "sha256": "54c811e8d014bd472a32075d3b870eeb0b455a0d290eb522d6ffe0beef58513a"
+    },
+    {
+      "path": "test/canonical-state-cli.test.mjs",
+      "sha256": "ecac8ba5626ada46bdc248b620808cded51c50be4defd27c8a073089826b5d4a"
+    },
+    {
+      "path": "test/cmc-market-context.ts",
+      "sha256": "153ac0d9e16306d1d2a5822ee11b93a48bc2191173abe3e053c5b69faf8cd43a"
+    },
+    {
+      "path": "test/dex-quote.test.mjs",
+      "sha256": "409df3241fd300b3f05e0af732848c488552aacb21db9927bc0c597d72569f6f"
+    },
+    {
+      "path": "test/history-boundaries.test.mjs",
+      "sha256": "d03a9719de6b91cbce7c0a7e12c4e5fb2e0cb7b2113091524fc76ec59a8f090d"
+    },
+    {
+      "path": "test/history-cli.test.mjs",
+      "sha256": "e1b598390dbe8908aa9d11f7b4cd95cca8c5e175aafbfbc1424c6567fe468fd1"
+    },
+    {
+      "path": "test/history-snapshot.test.mjs",
+      "sha256": "87548994a56fe10ccdb816e57b8444fd54136e9d98f2005c3b4d147b0a824025"
+    },
+    {
+      "path": "test/onchain-identity-cli.test.mjs",
+      "sha256": "a17c072ce9f6f756a12b268309a828c5a23fc2d2102a267eec8c92447ed3727f"
+    },
+    {
+      "path": "test/onchain-identity.test.mjs",
+      "sha256": "2d5885605715705360cd083710277cd9e24e8ca31a07e8aeb4d49fb862440edc"
+    },
+    {
+      "path": "test/read-only-http-cli.test.mjs",
+      "sha256": "a325f5735458bce1682ac37105ae9a252c8ec177f00e500b885b1ba7ca6d1d11"
+    },
+    {
+      "path": "test/read-only-http.test.mjs",
+      "sha256": "5106eeec08467317d06b47c5ac10d7be79030c9f80426e7627ca13f0de8dd665"
+    },
+    {
+      "path": "test/sepolia-verifier-cli.test.mjs",
+      "sha256": "7cad87f74db235e48d868b910a9ce18fa12626e2fdd33bd325b4a7bfb92b6a8a"
+    },
+    {
+      "path": "test/sepolia-verifier.test.mjs",
+      "sha256": "ca901af5635710f27f8ba4bc84a5e0601b4981d55c478a5deb6eca9eb1b36a32"
+    },
+    {
+      "path": "test/support/local-rpc-preload.mjs",
+      "sha256": "1f87feef0c73c3287d1b12b30ac99a4e8d13de3a25d82718cc0f70562187fab5"
+    },
+    {
+      "path": "test/support/sepolia-cli-fixture.mjs",
+      "sha256": "0c91c905e7f90fac7017950c7bd7b6b8303bd1225489b13d5d281e0b379f8260"
+    },
+    {
+      "path": "test/support/sepolia-fixture.mjs",
+      "sha256": "a63b881cd954947436a76d649c64ac3650ad852884088f146279e00052040d7f"
+    },
+    {
+      "path": "test/support/state-rpc.mjs",
+      "sha256": "f0d728b6ffa11331c1cfbc25f9e3ef4c05d208318952a79ada2a4e4e8969b3ba"
+    },
+    {
+      "path": "test/transfer-history.test.mjs",
+      "sha256": "cb23c663978deaec399a1756ad113821298327646a538251881d85810519e2a0"
+    },
+    {
+      "path": "test/wallet-readiness.test.mjs",
+      "sha256": "184bbcd33acbd7f97ed2d7f7245a9c833ebef1a6d3a6f4f77e23629a3e90ac69"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "2500414db2cbcee288efa33c2534ba9a29e7e3bf09a81c6eed2d6896f84f3600"
+    }
+  ]
+}

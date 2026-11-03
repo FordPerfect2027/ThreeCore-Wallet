@@ -1,0 +1,22 @@
+{
+  "source": "7ea5bcb",
+  "sourceCount": 5,
+  "matchedIndices": [
+    0,
+    2
+  ],
+  "query": {
+    "siteOrigin": "https://one.example",
+    "chainId": 84532,
+    "account": "0x1111111111111111111111111111111111111111"
+  },
+  "status": "同じアカウント・チェーン・サイトの記録を検索欄に表示しました。履歴は変更していません。",
+  "exactUiApi": true,
+  "exactCliApi": true,
+  "cliExit": 0,
+  "historyUnchanged": true,
+  "synthetic": true,
+  "nativeBrowserCases": 143,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}

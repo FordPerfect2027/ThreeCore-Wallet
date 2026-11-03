@@ -1,0 +1,131 @@
+{
+  "schema": "threecore.aerodrome-quote-evidence.v1",
+  "baseCommit": "7e7fb33",
+  "quotes": [
+    {
+      "file": "CAWELON-buy-quote.json",
+      "sha256": "27fb958a945814edb86b1d68dfec9300fea41ed9ea532ebbc2d5b5ae36eda096",
+      "agent": "CAWELON",
+      "direction": "buy",
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "output": "41853288417310238740546419920"
+    },
+    {
+      "file": "CAWELON-derived-reverse-quote.json",
+      "sha256": "fe7084c998a5d09e995e8c740e7ca2f226387bdd8ad7893d9e60946a9fed0f70",
+      "agent": "CAWELON",
+      "direction": "sell",
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "output": "974514"
+    },
+    {
+      "file": "DAT-buy-quote.json",
+      "sha256": "0ed926b0203fc8291ef543f97a1ab3933e38b9aa9dec61e483b6b65768b073e5",
+      "agent": "DAT",
+      "direction": "buy",
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "output": "99500812650842146432022"
+    },
+    {
+      "file": "DAT-quote.json",
+      "sha256": "99a3d9df0b8353889585c2942d560350683c20dfe37dd2806688b03894008fbb",
+      "agent": "DAT",
+      "direction": "sell",
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "output": "9"
+    },
+    {
+      "file": "DAT-sell1000-quote.json",
+      "sha256": "7e3de6592b2592316df6823742f1e9b9ad745e03191b4a7460dd8bae57ad49a8",
+      "agent": "DAT",
+      "direction": "sell",
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "output": "9889"
+    },
+    {
+      "file": "EMA-buy-quote.json",
+      "sha256": "3b41d54a507792e8edc4ffb1d0e3ba1708ffced074bee59236a82df9f0f066f2",
+      "agent": "EMA",
+      "direction": "buy",
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "output": "83298950016060663452663"
+    },
+    {
+      "file": "EMA-quote.json",
+      "sha256": "1c49910c50ff253fe8df3b667ce423cc2da33004f10f54756da66f2ffec3cb56",
+      "agent": "EMA",
+      "direction": "sell",
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "output": "11"
+    },
+    {
+      "file": "EMA-sell1000-quote.json",
+      "sha256": "4c5d6ef181241c0ad40e4130f829dd40f159e85947faac4c23156e8d81fc9031",
+      "agent": "EMA",
+      "direction": "sell",
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "output": "11808"
+    }
+  ],
+  "sources": [
+    {
+      "path": "package.json",
+      "sha256": "7a206482b3d53ac477bb608474feadcf829ec8f14b6efff34d799bf599295f5e"
+    },
+    {
+      "path": "src/public-base-rpc.js",
+      "sha256": "27dcc562473bf63abfebf97befcefaeda202a35255d6c848985aca692eff61d8"
+    },
+    {
+      "path": "src/aerodrome-quote-model.js",
+      "sha256": "d584c8013ca5fe51e80f57e612c5f7a811f717aea60a6c83ccaa183482b89060"
+    },
+    {
+      "path": "src/aerodrome-quote-reader.js",
+      "sha256": "ed57979911fa02e61c5148c4156ab0cc5f14ec024f28da5023372d3dfa1d0f0c"
+    },
+    {
+      "path": "scripts/aerodrome-quote.js",
+      "sha256": "4059bd71f62feb254199d74059cdad8e14926c2de4a3c10d898d1828a684e8e7"
+    },
+    {
+      "path": "test/aerodrome-quote-cli.test.js",
+      "sha256": "f774442892758538e12d88efe87622c6528bc08baf8d434c070a79df107aab4a"
+    },
+    {
+      "path": "test/aerodrome-quote-model.test.js",
+      "sha256": "5c8e524dc3ce98458a73792ad3073e59d877d7392911eaa58835a8ce776965f5"
+    },
+    {
+      "path": "test/aerodrome-quote-reader.test.js",
+      "sha256": "cc4ef1e1eff57c9c57180a4115d2120c1ffa0a4e749cb81ca8dc3726206adcf7"
+    },
+    {
+      "path": "test/aerodrome-quote-rpc.test.js",
+      "sha256": "51dbf8405a1cdfa8123156eeeea2d62699e08130107664a4a022945f32dc1a00"
+    },
+    {
+      "path": "test/helpers/aerodrome-quote-fixture.js",
+      "sha256": "769f3084844bbccb908c0cfada8a0437dad9dc9ab56641407cc3fd4af8a763b0"
+    }
+  ],
+  "tests": {
+    "featureAndProposal": 38,
+    "related": 167,
+    "countsOverlap": true
+  },
+  "zeroOutputControls": 2,
+  "noTransactions": true,
+  "noWalletCalls": true,
+  "canonicalBlockRechecked": true,
+  "sequenceSimulation": false,
+  "overallReadinessPercent": null
+}

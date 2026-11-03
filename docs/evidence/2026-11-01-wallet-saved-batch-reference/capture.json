@@ -1,0 +1,193 @@
+{
+  "source": "d294bab",
+  "provenance": [
+    {
+      "name": "period-source.json",
+      "from": "docs/evidence/2026-11-01-wallet-saved-browser-batch/period-source.json",
+      "sha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce"
+    },
+    {
+      "name": "library-source.json",
+      "from": "docs/evidence/2026-11-01-wallet-saved-browser-batch/library-source.json",
+      "sha256": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4"
+    },
+    {
+      "name": "report-source.json",
+      "from": "docs/evidence/2026-11-01-wallet-saved-browser-batch/report-source.json",
+      "sha256": "bb185cb613be4a60794cac819157bd96b4a63a279cb86c4b4e2c583d81be2c89"
+    },
+    {
+      "name": "history-source.json",
+      "from": "docs/evidence/2026-11-01-wallet-saved-browser-batch/history-source.json",
+      "sha256": "353d396170a78885d59405e17638cf541611943d3c98ae69f0c4563b34c5686f"
+    },
+    {
+      "name": "set-source.json",
+      "from": "docs/evidence/2026-11-01-wallet-saved-browser-batch/set-source.json",
+      "sha256": "e08080c0cbfe4b8fbf61cb5d69c7f45ae36c5537751cf6720ec8d96a6544fac3"
+    },
+    {
+      "name": "corrupt-set-source.json",
+      "from": "docs/evidence/2026-11-01-wallet-saved-browser-batch/corrupt-set-source.json",
+      "sha256": "b4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3"
+    },
+    {
+      "name": "auxiliary-declaration-source.json",
+      "from": "docs/evidence/2026-11-01-wallet-saved-browser-batch/auxiliary-declaration-source.json",
+      "sha256": "e4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2"
+    }
+  ],
+  "comparisons": [
+    {
+      "label": "correct",
+      "rows": [
+        {
+          "name": "period-source.json",
+          "browserStatus": "validated-original",
+          "cliStatus": "validated-original",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "library-source.json",
+          "browserStatus": "validated-original",
+          "cliStatus": "validated-original",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "report-source.json",
+          "browserStatus": "validated-original",
+          "cliStatus": "validated-original",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "history-source.json",
+          "browserStatus": "validated-original",
+          "cliStatus": "validated-original",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "set-source.json",
+          "browserStatus": "validated-original",
+          "cliStatus": "validated-original",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "corrupt-set-source.json",
+          "browserStatus": "invalid",
+          "cliStatus": "unreadable",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "auxiliary-declaration-source.json",
+          "browserStatus": "declared-only",
+          "cliStatus": "declared-only",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        }
+      ],
+      "cliExit": 2,
+      "browserSummary": {
+        "selected": 7,
+        "checked": 7,
+        "pending": 0,
+        "validatedOriginals": 5,
+        "declaredOnly": 1,
+        "invalid": 1,
+        "hashUnavailable": 0,
+        "totalBytes": 146849,
+        "checksumsCompared": 7,
+        "checksumsMatching": 7,
+        "checksumMismatches": 0
+      }
+    },
+    {
+      "label": "mismatch",
+      "rows": [
+        {
+          "name": "period-source.json",
+          "browserStatus": "checksum-mismatch",
+          "cliStatus": "checksum-mismatch",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "library-source.json",
+          "browserStatus": "validated-original",
+          "cliStatus": "validated-original",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "report-source.json",
+          "browserStatus": "validated-original",
+          "cliStatus": "validated-original",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "history-source.json",
+          "browserStatus": "validated-original",
+          "cliStatus": "validated-original",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "set-source.json",
+          "browserStatus": "validated-original",
+          "cliStatus": "validated-original",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "corrupt-set-source.json",
+          "browserStatus": "invalid",
+          "cliStatus": "unreadable",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        },
+        {
+          "name": "auxiliary-declaration-source.json",
+          "browserStatus": "declared-only",
+          "cliStatus": "declared-only",
+          "rawAndExpectedHashesIdentical": true,
+          "inspectionIdentical": true
+        }
+      ],
+      "cliExit": 2,
+      "browserSummary": {
+        "selected": 7,
+        "checked": 7,
+        "pending": 0,
+        "validatedOriginals": 4,
+        "declaredOnly": 1,
+        "invalid": 1,
+        "hashUnavailable": 0,
+        "totalBytes": 146849,
+        "checksumsCompared": 7,
+        "checksumsMatching": 6,
+        "checksumMismatches": 1
+      }
+    }
+  ],
+  "v1ReceiptByteIdentical": true,
+  "currentContentManifestSeparateFromPrior": true,
+  "partial": {
+    "checked": 2,
+    "pending": 5,
+    "matching": 1,
+    "mismatching": 1,
+    "csvDataRows": 7
+  },
+  "browserReceiptGeneratedBy": "browser-shared text API under Node; native UI exercised separately",
+  "originalsUnchanged": true,
+  "liveChainRechecked": false,
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}

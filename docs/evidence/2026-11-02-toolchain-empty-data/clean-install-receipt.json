@@ -1,0 +1,9 @@
+{
+  "command": "npm ci --ignore-scripts --no-audit --no-fund",
+  "startedAt": "2026-11-02T12:23:11.3062620Z",
+  "finishedAt": "2026-11-02T12:24:49.1442987Z",
+  "exitCode": 0,
+  "log": "clean-install.log",
+  "usesExistingNpmCache": true,
+  "initiallyEmptyNodeModules": true
+}

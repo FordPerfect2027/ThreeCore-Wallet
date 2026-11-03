@@ -1,0 +1,120 @@
+{
+  "schema": "threecore.wallet-saved-batch-inspection.v1",
+  "readOnly": true,
+  "authenticatesOrigin": false,
+  "authorizesExecution": false,
+  "restorable": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "manifestSha256": "c1d287ce2465eda2e281582caa560873461fda205d7569c7b128367f791bf0f7",
+  "allOriginalsValidated": false,
+  "allChecksumsMatch": false,
+  "limits": {
+    "maxFiles": 50,
+    "maxFileBytes": 16777216,
+    "maxTotalBytes": 67108864
+  },
+  "summary": {
+    "files": 5,
+    "validatedOriginals": 1,
+    "declaredOnly": 1,
+    "checksumMismatched": 1,
+    "unreadable": 2,
+    "admittedBytes": 52807,
+    "readBytes": 52807
+  },
+  "files": [
+    {
+      "path": "period-source.json",
+      "expectedSha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "actualSha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "byteLength": 5847,
+      "status": "validated-original",
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.period-file.v1",
+        "byteLength": 5847,
+        "title": "期間取得の控え",
+        "target": "period",
+        "destinationMessage": "「控えの保存と復元」で、この元のファイルを選んで確認してください。",
+        "validation": "validated-original",
+        "checksumVerified": true,
+        "sourceDigest": "ca55ffc491760686806b3b117bfa08dd50a2c11d848bf53f33d153342fc2359f",
+        "textDigest": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+        "scope": {
+          "reportCount": null,
+          "archivedReports": null,
+          "entryReferences": 0,
+          "draftReferences": 1,
+          "archivedEntryReferences": null,
+          "restrictedEntryReferences": null,
+          "incompleteDraftReferences": 0,
+          "emptyDraftReferences": 0,
+          "agents": [
+            "DAT"
+          ],
+          "annotationValuesIncluded": false,
+          "repeatedReferencesMayExist": false
+        },
+        "originalEvidenceValidated": true,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "path": "corrupt-set-source.json",
+      "expectedSha256": "b4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3",
+      "actualSha256": "b4ce4f5706136726cc5f4022aef6501130ec6bdb3f1444d1e324b4e917b9ebf3",
+      "byteLength": 40965,
+      "status": "unreadable",
+      "code": "PERIOD_CHECKSUM",
+      "inspection": null
+    },
+    {
+      "path": "auxiliary-declaration-source.json",
+      "expectedSha256": "e4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2",
+      "actualSha256": "e4c9435c7b99d7968106d2b24c6c9e32e347e4c8656c79e8455f05a6fdd6c2e2",
+      "byteLength": 148,
+      "status": "declared-only",
+      "inspection": {
+        "schema": "threecore.saved-file-inspection.v1",
+        "sourceSchema": "threecore.report-set-history-coverage.v1",
+        "byteLength": 148,
+        "title": "補助資料の形式指定",
+        "target": "coverage",
+        "destinationMessage": "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、「保存した履歴範囲JSONを元資料と照合」で選んでください。",
+        "validation": "declared-only",
+        "checksumVerified": false,
+        "sourceDigest": null,
+        "textDigest": null,
+        "scope": null,
+        "originalEvidenceValidated": false,
+        "restorable": false,
+        "automaticallyImported": false,
+        "liveChainRechecked": false,
+        "authenticated": false,
+        "authorizesExecution": false
+      }
+    },
+    {
+      "path": "external-mismatch.json",
+      "expectedSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "actualSha256": "eb780ea838d29f34b04bad4ff98356ba878d56e491f183a350cf7f839b2d8dce",
+      "byteLength": 5847,
+      "status": "checksum-mismatch",
+      "inspection": null
+    },
+    {
+      "path": "missing.json",
+      "expectedSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "actualSha256": null,
+      "byteLength": null,
+      "status": "unreadable",
+      "code": "FILE_MISSING",
+      "inspection": null
+    }
+  ]
+}

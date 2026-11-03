@@ -1,0 +1,86 @@
+{
+  "revision": "23d0a35b129c32be581bf1a3ffad57e228b9b65c",
+  "origin": "http://127.0.0.1:61626",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/rehearsal/",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/examples/wallet-entry.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/src/wallet-session.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/src/security-rpc.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/src/transfer-vault-collection.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/examples/transfer-vault-panel.js",
+      "status": 200,
+      "exactSourceBytes": true,
+      "securityHeadersPresent": true,
+      "passed": true
+    },
+    {
+      "path": "/.env",
+      "status": 404,
+      "foreignOrigin": false,
+      "passed": true
+    },
+    {
+      "path": "/test/browser/",
+      "status": 404,
+      "foreignOrigin": false,
+      "passed": true
+    },
+    {
+      "path": "/",
+      "status": 403,
+      "foreignOrigin": true,
+      "passed": true
+    },
+    {
+      "case": "2001-block-history-refused-before-upstream",
+      "passed": true
+    },
+    {
+      "case": "2000-block-history-accepted-with-unchanged-filter",
+      "passed": true
+    }
+  ],
+  "allPassed": true,
+  "ownServerClosed": true,
+  "realWalletUsed": false,
+  "publicRpcUsed": false,
+  "browserNavigationTested": false
+}

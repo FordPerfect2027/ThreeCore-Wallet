@@ -44,6 +44,21 @@ function panel(options = {}) {
 }
 
 export function registerReconciliationUITests(test) {
+  test("reconciliation: filtered CSV downloads every matching page and preserves source",async()=>{
+    const slot=scenario();slot.archive=archive([record(30,42,Array.from({length:61},(_,i)=>event({amountBaseUnits:"1"},i)))]);
+    const f=panel({initial:workspace([slot])});
+    try{
+      f.click("calculate");const before=reconciliationKey(f.mounted.getWorkspace());
+      f.click("next");f.click("export-filtered-events");await waitFor(()=>f.files.length===1);
+      assert(f.files[0].matched===61&&f.files[0].text.trimEnd().split("\r\n").length===62);
+      assert(f.q("export-status").textContent.includes("まだ"));
+      f.input("search","no results","input");f.click("export-filtered-events");await waitFor(()=>f.files.length===2);
+      assert(f.files[1].matched===0&&f.files[1].text.trimEnd().split("\r\n").length===1);
+      assert(reconciliationKey(f.mounted.getWorkspace())===before);
+      f.input("search","x".repeat(161),"input");assert(f.q("export-filtered-events").disabled);
+    }finally{f.dispose();}
+  });
+
   test("reconciliation: starts without automatic reads or calculations", async () => {
     let reads = 0;
     const f = panel({ readObservation: () => { reads++; return null; } });

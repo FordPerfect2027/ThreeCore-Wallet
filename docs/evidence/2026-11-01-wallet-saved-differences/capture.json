@@ -1,0 +1,89 @@
+{
+  "source": "7b42cd5",
+  "synthetic": true,
+  "captures": [
+    {
+      "case": "changed",
+      "exitCode": 2,
+      "apiAndCLIMatchExactly": true,
+      "beforeSha256": "a126f16b849d177d4ec1c7916b9ab01e3ff667997aab10fb8ce155706ce4afd1",
+      "afterSha256": "849ba7ba3be3c9a8dbdbe65225c82ae28f6568c6907ecd248381154841329241",
+      "differenceCount": 1
+    },
+    {
+      "case": "formatting",
+      "exitCode": 0,
+      "apiAndCLIMatchExactly": true,
+      "beforeSha256": "a126f16b849d177d4ec1c7916b9ab01e3ff667997aab10fb8ce155706ce4afd1",
+      "afterSha256": "eab7a784078a6904788567cccca7f2f7181ad169456fdedf6b1dbd7204163e35",
+      "differenceCount": 0
+    }
+  ],
+  "formattingMatrix": [
+    {
+      "sourceSchema": "threecore-portfolio-snapshot-v1",
+      "sourceTextMatches": false,
+      "parsedJSONValuesMatch": true,
+      "sourceSha256": "6a83d77406088f7861325b276c8e2fe645d9b19a82f4e314830f4f56627de346",
+      "formattedSha256": "fb5f0ae317f98c8f7fe851986abbc94fac5c08ca05f098361c3ad9607a17446d"
+    },
+    {
+      "sourceSchema": "threecore-portfolio-history-v1",
+      "sourceTextMatches": false,
+      "parsedJSONValuesMatch": true,
+      "sourceSha256": "c39b496d7d5af4e91cbc8ac650380d68c210b3feb48d35a39208719b889d2232",
+      "formattedSha256": "9cfb155d3b93e3006d40ef302f2adf7960f3579f88523b60f6da9bff052315af"
+    },
+    {
+      "sourceSchema": "threecore-wallet-setup-v1",
+      "sourceTextMatches": false,
+      "parsedJSONValuesMatch": true,
+      "sourceSha256": "a126f16b849d177d4ec1c7916b9ab01e3ff667997aab10fb8ce155706ce4afd1",
+      "formattedSha256": "1899c10b42f201b531368393c66d2a4049e2759991b6566c676efc79a57efdd5"
+    },
+    {
+      "sourceSchema": "threecore.operation-rehearsal.v1",
+      "sourceTextMatches": false,
+      "parsedJSONValuesMatch": true,
+      "sourceSha256": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe",
+      "formattedSha256": "054b2ddea2c9302778b05ed54a088ff585b0a2da599afe1e1023e7d36547cba1"
+    },
+    {
+      "sourceSchema": "threecore.operation-rehearsal.v2",
+      "sourceTextMatches": false,
+      "parsedJSONValuesMatch": true,
+      "sourceSha256": "afb36e2d9e8f46d5478e3291937abe6c97babc3ad46855c1bd13031ac9c8eb5f",
+      "formattedSha256": "78a2c4b0bc67740f494d6998fcbf4ab5ec5412674c250bad0812c6c1e993bae1"
+    },
+    {
+      "sourceSchema": "threecore.operation-rehearsal-workspace.v1",
+      "sourceTextMatches": false,
+      "parsedJSONValuesMatch": true,
+      "sourceSha256": "f933386f4367458cfb8cdaf64e0f2c1d433ce5eeb318f49b82d1ef66b34a92c7",
+      "formattedSha256": "c074805c0f423b765d9750393cd1b91b40912fd665159ee618ef44e9376747f2"
+    },
+    {
+      "sourceSchema": "threecore.operation-rehearsal-scenario-set.v1",
+      "sourceTextMatches": false,
+      "parsedJSONValuesMatch": true,
+      "sourceSha256": "b64a20a28e090d3d23a5b519430a726741634bc556eda80010f7c55403a3fe7b",
+      "formattedSha256": "59c122685fb54f79782c3bdf87e8f10857d738b0bc7932959795fc46d8834fa7"
+    },
+    {
+      "sourceSchema": "threecore.operation-rehearsal-session.v1",
+      "sourceTextMatches": false,
+      "parsedJSONValuesMatch": true,
+      "sourceSha256": "491b17dc86b8790213e20d7472eb82e58004d01b33bbd06f69316e55a3921a47",
+      "formattedSha256": "1c2332dba81ad5466fe149bd6b962ba11b5d6fae09aa711bf2d1745e2de12ef1"
+    }
+  ],
+  "methods": "actual offline CLI and API receipts; isolated native UI file selection/export covered by separate log",
+  "nativeFocus": "file-read",
+  "nativeFocusedCases": 103,
+  "fullBrowserCoverage": false,
+  "lastFullBrowserSource": "a2eb7e5",
+  "lastFullBrowserCases": 950,
+  "realProviderCalls": 0,
+  "userTabConnectionVerified": false,
+  "nativePickerTested": false
+}

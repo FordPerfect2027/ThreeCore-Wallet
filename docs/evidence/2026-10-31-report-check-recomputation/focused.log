@@ -1,0 +1,26 @@
+✔ review CLI requires two explicit JSON files and rejects ambiguous options (8.5263ms)
+✔ review CLI verifies standalone output and leaves both source and details untouched (1072.3375ms)
+✔ well-formed altered details produce difference exit 2 and recalculated counts (257.6095ms)
+✔ a source checksum failure is rejected before checklist conclusions can be emitted (232.9928ms)
+✔ wrong file kinds, invalid UTF-8 and missing paths fail without exposing path contents (251.4508ms)
+✔ check review recomputes exact details while tolerating JSON whitespace and object-key order (377.6944ms)
+✔ check review detects changed stored integer without trusting saved conclusions (209.7904ms)
+✔ check review detects changed stored hash without trusting saved conclusions (236.0531ms)
+✔ check review detects changed missing check without trusting saved conclusions (169.8962ms)
+✔ check review detects changed check order without trusting saved conclusions (175.1758ms)
+✔ check review detects changed invented continuity without trusting saved conclusions (196.713ms)
+✔ check review detects changed matched count without trusting saved conclusions (226.7661ms)
+✔ check review detects changed live verification claim without trusting saved conclusions (170.0638ms)
+✔ check review detects changed source digest without trusting saved conclusions (152.9839ms)
+✔ wrong original source remains distinguishable even when notes were not exported (162.3143ms)
+✔ empty selections are verified against source-wide counts rather than treated as clean (146.2599ms)
+✔ unexpected fields and missing flags fail comparison without copying arbitrary field names into the result (132.6242ms)
+✔ malformed, duplicate, oversized and unsupported checklist inputs are rejected (106.5362ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3235.2001

@@ -145,6 +145,19 @@ export function decodePortfolioReport(text) {
   });
 }
 
+/** Validated plain text only; callers render through textContent. No decimals are inferred. */
+export function describePortfolioObservation(input) {
+  const snapshot = validatePortfolioSnapshot(input);
+  const lines = [snapshot.agent + " / " + snapshot.account, "チェーン: " + snapshot.chainId,
+    "サイト: " + snapshot.siteOrigin, "参照ブロック: " + snapshot.blockNumber,
+    "ブロックハッシュ: " + snapshot.blockHash, "ETH残高（wei）: " + snapshot.nativeBalanceBaseUnits];
+  for (const row of snapshot.holdings) {
+    lines.push(row.address);
+    lines.push(row.hasCode ? "残高（最小単位）: " + row.balanceBaseUnits : "契約コードなし：残高は確認できません");
+  }
+  return lines.join("\n");
+}
+
 /** Fixed-point display helper; never round through JavaScript Number. */
 export function formatBaseUnits(raw, decimals) {
   uint(raw);

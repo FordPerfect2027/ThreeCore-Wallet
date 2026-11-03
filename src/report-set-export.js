@@ -1,6 +1,18 @@
-import { validateReportSet, validateSetExportOptions } from "./report-set-model.js";
-import { analyzeReportSet } from "./report-set-engine.js";
-import { reportSetDiagnostics, diagnosticText } from "./report-set-diagnostics.js";
+import { prepareReportHistoryFile } from "./report-history-file.js";
+import { preparePeriodLibraryFile } from "./period-library-file.js";
+import { walletSavedFileTargetCode, walletSavedFileTargetMessage } from "./file-read-status.js";
+import { parseSecurityJson, boundedUtf8Length } from "./security-json.js";
+import { sha256Hex, captureOptionalDataFields } from "./security-data.js";
+import { readFormatFileText, readFormatFileName } from "./security-file.js";
+import { validateReportSet, validateSetExportOptions, validateSetSelection, freezeSet, reportSetTokenLibrary, reportSetHistoryDocument } from "./report-set-model.js";
+import { periodFail, createPeriodPlan } from "./period-plan.js";
+import { prepareReportSetFile, decodeReportSetFile } from "./report-set-file.js";
+import { preparePeriodReportFile } from "./period-report-file.js";
+import { preparePeriodFile } from "./period-file.js";
+import { emptyPeriodDraft } from "./period-draft.js";
+import { reportSetTimeline, reportSetMissingHistoryQueue, missingHistoryPageRange } from "./report-set-timeline.js";
+import { analyzeReportSet, compareReportSets, compareReportSetEvents, reportSetEventRecheckRange } from "./report-set-engine.js";
+import { reportSetDiagnostics, querySetDiagnostics, diagnosticQuery, diagnosticText } from "./report-set-diagnostics.js";
 import { escapeReportHTML } from "./period-report-export.js";
 import { reportStatusText } from "./period-report-view.js";
 import { SET_LIMITATION, SET_SEGMENTS, setIssueText, setStatusText, shortSetAddress } from "./report-set-view.js";
@@ -93,4 +105,472 @@ ${tokens}
 <section><h2>ブロックハッシュの照合</h2><p>不一致 ${result.anchors.conflicts.length}件 / 個別記録内の矛盾 ${result.anchors.invalid.length}件</p><ul>${conflicts}</ul></section>
 <footer><small>Historical evidence only. No independent audit, live-chain verification, combined token valuation or profit calculation.</small></footer>
 </main></body></html>\n`, "html", "text/html");
+}
+
+/** A summary row retains source-wide findings even when no checks match. */
+export function reportSetDiagnosticsCSV(value, queryValue = {}, optionsValue = {}) {
+  const input = validateReportSet(value), options = validateSetExportOptions(optionsValue);
+  const found = querySetDiagnostics(input, queryValue), result = analyzeReportSet(input);
+  const byId = new Map(input.entries.map(entry => [entry.id, entry]));
+  const columns = ["row_type", "query_agent", "query_severity", "query_search", "total_checks", "matched_checks",
+    "source_conflicts", "source_missing", "source_review", "source_information", "all_continuous",
+    "historical_only", "live_chain_rechecked", "automatic_repairs", "structured_addresses_shortened", "notes_included",
+    "check_id", "kind", "severity", "title", "action", "agents", "chain_id", "account",
+    "from_block", "to_block", "blocks", "range_notation", "report_ids", "report_labels", "notes"];
+  const prefix = type => [type, found.query.agent, found.query.severity, found.query.search, found.count, found.matched,
+    found.counts.conflict, found.counts.missing, found.counts.review, found.counts.information, result.allContinuous,
+    true, false, false, options.shortAddresses, options.includeNotes];
+  const rows = [[...prefix("summary"), ...Array(15).fill("")]];
+  for (const item of found.items) rows.push([...prefix("check"), item.id, item.kind, item.severity, item.title, item.action,
+    item.agents.join(" "), item.chainId, shortSetAddress(item.account, options.shortAddresses),
+    item.fromBlock, item.toBlock, item.blocks, item.fromBlock === null ? "" : item.fromBlock === item.toBlock ? "single-block" : "(start,end]",
+    JSON.stringify(item.reportIds), JSON.stringify(item.reportLabels),
+    options.includeNotes ? JSON.stringify(item.reportIds.map(id => byId.get(id).note)) : ""]);
+  const text = "\ufeff" + [columns, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
+  return Object.freeze({ ...resultFile(text, "csv", "text/csv"), filename: "ThreeCore-report-set-checks.csv",
+    query: found.query, options, total: found.count, matched: found.matched, summaryRow: true, scope: "all-matches" });
+}
+
+export const REPORT_SET_CHECKS_SCHEMA = "threecore.report-set-check-details.v1";
+export const REPORT_SET_CHECKS_LIMIT = 4 * 1024 * 1024;
+
+/** A bounded, source-linked viewing artifact. Original evidence is kept separately. */
+export async function prepareReportSetChecksFile(value, queryValue = {}, optionsValue = {}, fileOptions = {}) {
+  const input = validateReportSet(value), query = diagnosticQuery(queryValue), options = validateSetExportOptions(optionsValue);
+  const source = await prepareReportSetFile(input, fileOptions);
+  const found = querySetDiagnostics(input, query), report = analyzeReportSet(input);
+  const byId = new Map(input.entries.map(entry => [entry.id, entry]));
+  const items = found.items.map(item => ({ ...item,
+    account: item.account === null ? null : shortSetAddress(item.account, options.shortAddresses),
+    rangeNotation: item.fromBlock === null ? null : item.fromBlock === item.toBlock ? "single-block" : "(start,end]",
+    notes: options.includeNotes ? item.reportIds.map(id => ({ reportId: id, text: byId.get(id).note })) : [],
+  }));
+  const payload = freezeSet({ schema: REPORT_SET_CHECKS_SCHEMA, sourcePayloadDigest: source.digest, digestAlgorithm: "SHA-256",
+    query, options, total: found.count, matched: found.matched, scope: "all-matches",
+    summary: { counts: found.counts, allContinuous: report.allContinuous, conclusionsUseAllSourceEvidence: true },
+    items, historicalOnly: true, liveChainRechecked: false, automaticRepairs: false,
+    authenticated: false, encrypted: false, restorable: false, containsOriginalEvidence: false });
+  const text = JSON.stringify(payload, null, 2) + "\n";
+  if (new TextEncoder().encode(text).byteLength > REPORT_SET_CHECKS_LIMIT) periodFail("PERIOD_SET_CHECKS_SIZE");
+  return Object.freeze({ ...resultFile(text, "json", "application/json"), filename: "ThreeCore-report-set-checks.json",
+    sourcePayloadDigest: source.digest, query, options, total: found.count, matched: found.matched, scope: "all-matches" });
+}
+
+function sameCheckJSON(left, right) {
+  if (Object.is(left, right)) return true;
+  if (!left || !right || typeof left !== "object" || typeof right !== "object" || Array.isArray(left) !== Array.isArray(right)) return false;
+  const keys = Object.keys(left);
+  return keys.length === Object.keys(right).length && keys.every(key => Object.hasOwn(right, key) && sameCheckJSON(left[key], right[key]));
+}
+
+/** Recompute from the original source; saved checklist conclusions are never trusted. */
+export async function reviewReportSetChecksFile(value, text, fileOptions = {}) {
+  const input = validateReportSet(value);
+  let cryptoOptions;
+  try { cryptoOptions = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  let supplied;
+  try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_CHECKS_LIMIT }); }
+  catch { periodFail("PERIOD_SET_CHECKS_JSON"); }
+  const targetCode = walletSavedFileTargetCode(supplied?.schema, "checks");
+  if (targetCode) periodFail(targetCode);
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== REPORT_SET_CHECKS_SCHEMA) periodFail("PERIOD_SET_CHECKS_SCHEMA");
+  const query = diagnosticQuery(supplied.query), options = validateSetExportOptions(supplied.options);
+  const expected = JSON.parse((await prepareReportSetChecksFile(input, query, options, cryptoOptions)).text);
+  let detailsTextSha256;
+  try { detailsTextSha256 = await sha256Hex(new TextEncoder().encode(text), cryptoOptions.subtle, { signal: cryptoOptions.signal, timeoutMs: cryptoOptions.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const known = Object.keys(expected), differences = known.filter(key => !Object.hasOwn(supplied, key) || !sameCheckJSON(supplied[key], expected[key]));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  return freezeSet({ schema: "threecore.report-set-check-review.v1", matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    sourcePayloadDigest: expected.sourcePayloadDigest, sourceDigestMatches: supplied.sourcePayloadDigest === expected.sourcePayloadDigest, detailsTextSha256,
+    query, options, total: expected.total, matched: expected.matched,
+    summary: expected.summary, differences, unexpectedFields,
+    historicalOnly: true, readOnly: true, liveChainRechecked: false, authenticated: false, restorable: false });
+}
+
+/** Uses the same page-wide file budget and cancellation as other saved formats. */
+export async function readReportSetChecksText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_CHECKS_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_CHECKS_SIZE", readCode: "PERIOD_SET_CHECKS_READ", encodingCode: "PERIOD_SET_CHECKS_ENCODING",
+    signal, timeoutMs });
+}
+
+/** Extract one unchanged source report in its established, checksummed format. */
+export async function prepareReportSetSourceFile(value, idValue, fileOptions = {}) {
+  const input = validateReportSet(value), id = validateSetSelection([idValue], { allowEmpty: false })[0];
+  const entry = input.entries.find(row => row.id === id);
+  if (!entry) periodFail("PERIOD_SET_REPORT_MISSING");
+  const file = await preparePeriodReportFile(entry.report, fileOptions);
+  return Object.freeze({ ...file, filename: "ThreeCore-period-report-" + id + ".json",
+    sourceReportId: id, sourceReportLabel: entry.label, containsOriginalEvidence: true });
+}
+
+/** A new empty draft for a proposed window or contiguous page. No original evidence is copied. */
+export function buildMissingHistoryDraft(value, query, number) {
+  const queue = reportSetMissingHistoryQueue(value, query);
+  if (typeof number !== "string") periodFail("PERIOD_SET_QUEUE_WINDOW");
+  const window = number === "page" ? missingHistoryPageRange(queue) : queue.items.find(row => row.number === number);
+  if (number === "page" && queue.items.length && !window) periodFail("PERIOD_SET_QUEUE_DISJOINT");
+  if (!window) periodFail("PERIOD_SET_QUEUE_WINDOW");
+  const draft = emptyPeriodDraft(createPeriodPlan({ context: queue.context,
+    earlierBlock: (BigInt(window.fromBlock) - 1n).toString(), laterBlock: window.toBlock,
+    windowSize: number === "page" ? queue.query.windowSize : Number(window.blocks) }));
+  return Object.freeze({ draft, selectedRange: window, query: queue.query });
+}
+
+export async function prepareMissingHistoryDraftFile(value, query, number, fileOptions = {}) {
+  const prepared = buildMissingHistoryDraft(value, query, number);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const file = await preparePeriodFile(prepared.draft, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-unread-period-" + prepared.draft.plan.context.agent + ".json",
+    encrypted: false, containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: prepared.selectedRange });
+}
+
+/** A reproducible comparison receipt; both original evidence files remain separate. */
+export async function prepareReportSetComparisonFile(beforeValue, afterValue, fileOptions = {}) {
+  const before = validateReportSet(beforeValue), after = validateReportSet(afterValue);
+  const comparison = compareReportSets(before, after);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const { digest: beforePayloadDigest } = await prepareReportSetFile(before, options);
+  const { digest: afterPayloadDigest } = await prepareReportSetFile(after, options);
+  return comparisonReceiptFile(beforePayloadDigest, afterPayloadDigest, comparison);
+}
+
+function comparisonReceiptFile(beforePayloadDigest, afterPayloadDigest, comparison) {
+  const text = JSON.stringify({ schema: "threecore.report-set-comparison-file.v1", algorithm: "SHA-256",
+    beforePayloadDigest, afterPayloadDigest, comparison, authenticated: false, encrypted: false, restorable: false }, null, 2) + "\n";
+  const byteLength = new TextEncoder().encode(text).byteLength;
+  if (byteLength > REPORT_SET_COMPARISON_LIMIT) periodFail("PERIOD_SET_COMPARISON_SIZE");
+  return Object.freeze({ text, byteLength, filename: "ThreeCore-report-set-comparison.json", mimeType: "application/json;charset=utf-8",
+    encrypted: false, authenticated: false, restorable: false, containsOriginalEvidence: false });
+}
+
+export const REPORT_SET_COMPARISON_LIMIT = 4 * 1024 * 1024;
+
+/** Recompute a saved comparison from both originals, including metadata and order. */
+export async function reviewReportSetComparisonFile(beforeValue, afterValue, text, fileOptions = {}) {
+  const before = validateReportSet(beforeValue), after = validateReportSet(afterValue);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  let supplied;
+  try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_COMPARISON_LIMIT }); }
+  catch { periodFail("PERIOD_SET_COMPARISON_JSON"); }
+  const targetCode = walletSavedFileTargetCode(supplied?.schema, "comparison");
+  if (targetCode) periodFail(targetCode);
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) ||
+      supplied.schema !== "threecore.report-set-comparison-file.v1") periodFail("PERIOD_SET_COMPARISON_SCHEMA");
+  const expected = JSON.parse((await prepareReportSetComparisonFile(before, after, options)).text);
+  let comparisonTextSha256;
+  try { comparisonTextSha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle,
+    { signal: options.signal, timeoutMs: options.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || !sameCheckJSON(supplied[key], expected[key]));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  return freezeSet({ schema: "threecore.report-set-comparison-review.v1",
+    matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    beforePayloadDigest: expected.beforePayloadDigest, afterPayloadDigest: expected.afterPayloadDigest,
+    beforeDigestMatches: supplied.beforePayloadDigest === expected.beforePayloadDigest,
+    afterDigestMatches: supplied.afterPayloadDigest === expected.afterPayloadDigest,
+    comparisonTextSha256, differences, unexpectedFields,
+    counts: expected.comparison.counts, sameContents: expected.comparison.sameContents,
+    beforeSummary: expected.comparison.beforeSummary, afterSummary: expected.comparison.afterSummary,
+    historicalOnly: true, readOnly: true, liveChainRechecked: false,
+    authenticated: false, encrypted: false, restorable: false });
+}
+
+export async function readReportSetComparisonText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_COMPARISON_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_COMPARISON_SIZE", readCode: "PERIOD_SET_COMPARISON_READ",
+    encodingCode: "PERIOD_SET_COMPARISON_ENCODING", signal, timeoutMs });
+}
+
+export const REPORT_SET_COVERAGE_LIMIT = 4 * 1024 * 1024;
+
+/** Portable saved-query coverage with source references; no cross-token totals. */
+export async function prepareReportSetCoverageFile(value, format = "json", optionsValue = {}, fileOptions = {}) {
+  if (!["json", "csv"].includes(format)) periodFail("PERIOD_SET_FORMAT");
+  const input = validateReportSet(value), { shortAddresses } = validateSetExportOptions(optionsValue);
+  const timeline = reportSetTimeline(input), analysis = analyzeReportSet(input);
+  const source = await prepareReportSetFile(input, fileOptions);
+  const groups = timeline.groups.map(group => ({ id: group.id,
+    context: { ...group.context, account: shortSetAddress(group.context.account, shortAddresses) },
+    tokenAddress: shortSetAddress(group.tokenAddress, shortAddresses),
+    ...group.historyCoverage,
+    cells: group.historyCoverage.cells.map(cell => ({ ...cell,
+      records: cell.records.map(row => ({ reportId: row.reportId, label: row.label, recordIndex: row.recordIndex,
+        fromBlock: (BigInt(row.start) + 1n).toString(), toBlock: row.end, sourceStatus: row.sourceStatus,
+        requiresNewPlan: row.restricted, archivedReport: row.archivedReport, archivedSource: row.archivedSource,
+        eventsInOriginalWindow: row.eventCount })) })) }));
+  const payload = { schema: "threecore.report-set-history-coverage.v1", sourcePayloadDigest: source.digest,
+    digestAlgorithm: "SHA-256", options: { shortAddresses }, groupCount: groups.length,
+    summary: { reportCount: analysis.reportCount, allContinuous: analysis.allContinuous, issues: analysis.issues,
+      conclusionsUseAllSourceEvidence: true },
+    missingAgents: timeline.missingAgents,
+    missingReportsByAgent: analysis.tokens.map(token => ({ agent: token.agent, reportIds: token.missingReportIds })),
+    groups, rangeNotation: "inclusive", recordIndexBase: 0, eventCountScope: "original-query-window-not-split-cell",
+    blockCountsCombinedAcrossGroups: false, savedQueryPresenceOnly: true,
+    historicalOnly: true, completeHistory: false, liveChainRechecked: false,
+    authenticated: false, encrypted: false, restorable: false, containsOriginalEvidence: false };
+  let text;
+  if (format === "json") text = JSON.stringify(payload, null, 2) + "\n";
+  else {
+    const columns = ["row_type", "source_payload_sha256", "source_all_continuous", "source_issues", "missing_agents",
+      "missing_reports_by_agent", "group_id", "agent", "chain_id", "account", "token_address", "from_inclusive", "to_inclusive",
+      "blocks", "range_kind", "needs_review", "planned_report_ids", "saved_record_refs", "hash_conflict_blocks", "balance_conflict_blocks", "internal_conflict",
+      "span_blocks", "planned_unique_blocks", "recorded_unique_blocks", "pending_planned_blocks", "unplanned_blocks",
+      "multiple_record_blocks", "review_recorded_blocks", "saved_query_records",
+      "historical_only", "complete_history", "live_chain_rechecked", "evidence_backup", "structured_addresses_shortened"];
+    const globals = type => [type, source.digest, analysis.allContinuous, JSON.stringify(analysis.issues),
+      JSON.stringify(timeline.missingAgents), JSON.stringify(payload.missingReportsByAgent)];
+    const tail = [true, false, false, false, shortAddresses];
+    const rows = [[...globals("source-summary"), ...Array(23).fill(""), ...tail]];
+    for (const group of groups) {
+      const identity = [group.id, group.context.agent, group.context.chainId, group.context.account, group.tokenAddress];
+      rows.push([...globals("group-summary"), ...identity, group.fromBlock, group.toBlock, ...Array(8).fill(""),
+        group.spanBlocks, group.plannedUniqueBlocks, group.recordedUniqueBlocks, group.pendingPlannedBlocks,
+        group.unplannedBlocks, group.multipleRecordBlocks, group.reviewRecordedBlocks, group.savedQueryRecords, ...tail]);
+      for (const cell of group.cells) rows.push([...globals("range"), ...identity, cell.fromBlock, cell.toBlock,
+        cell.blocks, cell.kind, cell.needsReview, JSON.stringify(cell.plannedReportIds), JSON.stringify(cell.records),
+        JSON.stringify(cell.hashConflictBlocks), JSON.stringify(cell.balanceConflictBlocks), cell.internalConflict,
+        ...Array(8).fill(""), ...tail]);
+    }
+    text = "\ufeff" + [columns, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
+  }
+  const byteLength = new TextEncoder().encode(text).byteLength;
+  if (byteLength > REPORT_SET_COVERAGE_LIMIT) periodFail("PERIOD_SET_COVERAGE_SIZE");
+  return Object.freeze({ ...resultFile(text, format, format === "json" ? "application/json" : "text/csv"),
+    filename: "ThreeCore-saved-history-coverage." + format, sourcePayloadDigest: source.digest,
+    groupCount: groups.length, allContinuous: analysis.allContinuous, options: Object.freeze({ shortAddresses }) });
+}
+
+export const REPORT_SET_COMPARISON_EVIDENCE_LIMIT = 24 * 1024 * 1024;
+const comparisonEvidenceSources = new WeakMap();
+
+/** A portable pair of canonical originals and their derived comparison, never an apply request. */
+export async function prepareReportSetComparisonEvidenceFile(beforeValue, afterValue, fileOptions = {}) {
+  const before = validateReportSet(beforeValue), after = validateReportSet(afterValue), comparison = compareReportSets(before, after);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const beforeFile = await prepareReportSetFile(before, options), afterFile = await prepareReportSetFile(after, options);
+  const comparisonFile = comparisonReceiptFile(beforeFile.digest, afterFile.digest, comparison);
+  const text = JSON.stringify({ schema: "threecore.report-set-comparison-evidence.v1",
+    beforeFileText: beforeFile.text, afterFileText: afterFile.text, comparisonText: comparisonFile.text,
+    authenticated: false, encrypted: false, authorizesExecution: false }, null, 2) + "\n";
+  try { boundedUtf8Length(text, REPORT_SET_COMPARISON_EVIDENCE_LIMIT); }
+  catch { periodFail("PERIOD_SET_EVIDENCE_SIZE"); }
+  return Object.freeze({ ...resultFile(text, "json", "application/json"),
+    filename: "ThreeCore-report-set-comparison-evidence.json", containsOriginalEvidence: true,
+    beforePayloadDigest: beforeFile.digest, afterPayloadDigest: afterFile.digest, authenticated: false,
+    sourceTextFormat: "canonical-export-not-original-upload-bytes" });
+}
+
+/** Verify both embedded wrappers and regenerate the comparison; never import either source. */
+export async function reviewReportSetComparisonEvidence(text, fileOptions = {}) {
+  let options, evidence;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  try {
+    evidence = parseSecurityJson(text, { bytes: REPORT_SET_COMPARISON_EVIDENCE_LIMIT, stringCharacters: REPORT_SET_COMPARISON_EVIDENCE_LIMIT });
+  } catch { periodFail("PERIOD_SET_EVIDENCE_FORMAT"); }
+  const targetCode = walletSavedFileTargetCode(evidence?.schema, "evidence");
+  if (targetCode) periodFail(targetCode);
+  try {
+    if (!evidence || typeof evidence !== "object" || Array.isArray(evidence) ||
+        Object.keys(evidence).sort().join(",") !== "afterFileText,authenticated,authorizesExecution,beforeFileText,comparisonText,encrypted,schema" ||
+        evidence.schema !== "threecore.report-set-comparison-evidence.v1" || evidence.authenticated !== false ||
+        evidence.encrypted !== false || evidence.authorizesExecution !== false) throw Error();
+    boundedUtf8Length(evidence.beforeFileText, REPORT_SET_COMPARISON_EVIDENCE_LIMIT);
+    boundedUtf8Length(evidence.afterFileText, REPORT_SET_COMPARISON_EVIDENCE_LIMIT);
+    boundedUtf8Length(evidence.comparisonText, REPORT_SET_COMPARISON_LIMIT);
+  } catch { periodFail("PERIOD_SET_EVIDENCE_FORMAT"); }
+  const before = await checkEmbeddedComparisonEvidence(() => decodeReportSetFile(evidence.beforeFileText, options));
+  const after = await checkEmbeddedComparisonEvidence(() => decodeReportSetFile(evidence.afterFileText, options));
+  const comparisonReview = await checkEmbeddedComparisonEvidence(() => reviewReportSetComparisonFile(before.input, after.input, evidence.comparisonText, options));
+  let evidenceTextSha256;
+  try { evidenceTextSha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle,
+    { signal: options.signal, timeoutMs: options.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const result = freezeSet({ schema: "threecore.report-set-comparison-evidence-review.v1", evidenceTextSha256,
+    beforeChecksumVerified: true, afterChecksumVerified: true, comparisonReview,
+    beforeReportCount: before.input.entries.length, afterReportCount: after.input.entries.length,
+    readOnly: true, imported: false, historicalOnly: true, liveChainRechecked: false,
+    authenticated: false, encrypted: false, restorable: false, authorizesExecution: false });
+  comparisonEvidenceSources.set(result, Object.freeze({ beforeFileText: evidence.beforeFileText, afterFileText: evidence.afterFileText }));
+  return result;
+}
+
+export async function readReportSetComparisonEvidenceText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_COMPARISON_EVIDENCE_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_EVIDENCE_SIZE", readCode: "PERIOD_SET_EVIDENCE_READ", encodingCode: "PERIOD_SET_EVIDENCE_ENCODING",
+    signal, timeoutMs });
+}
+
+async function checkEmbeddedComparisonEvidence(check) {
+  try { return await check(); }
+  catch (error) {
+    // An inner file's destination is not a useful destination for the outer bundle.
+    if (walletSavedFileTargetMessage(error?.code)) periodFail("PERIOD_SET_EVIDENCE_CONTENT");
+    throw error;
+  }
+}
+
+/** Only completed reviews owned by this module can expose verified embedded originals. */
+export function prepareComparisonEvidenceSourceFile(receipt, role) {
+  const originals = comparisonEvidenceSources.get(receipt);
+  if (!originals) periodFail("PERIOD_SET_EVIDENCE_SOURCE_REVIEW");
+  if (role !== "before" && role !== "after") periodFail("PERIOD_SET_EVIDENCE_SOURCE_ROLE");
+  const text = role === "before" ? originals.beforeFileText : originals.afterFileText;
+  return Object.freeze({ text, filename: "ThreeCore-recovered-" + role + "-report-set.json",
+    mimeType: "application/json;charset=utf-8", byteLength: new TextEncoder().encode(text).byteLength,
+    sourcePayloadDigest: role === "before" ? receipt.comparisonReview.beforePayloadDigest : receipt.comparisonReview.afterPayloadDigest,
+    evidenceTextSha256: receipt.evidenceTextSha256, role,
+    comparisonMatchesRecomputation: receipt.comparisonReview.matchesRecomputation,
+    authenticated: false, encrypted: false, containsOriginalEvidence: true, restorable: true });
+}
+
+export async function prepareReportSetEventComparisonFile(value, query, fileOptions = {}) {
+  const input = validateReportSet(value), comparison = compareReportSetEvents(input, query);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const source = await prepareReportSetFile(input, options);
+  const text = JSON.stringify({ schema: "threecore.saved-event-comparison-file.v1", sourcePayloadDigest: source.digest,
+    comparison, encrypted: false, authenticated: false, restorable: false, authorizesExecution: false }, null, 2) + "\n";
+  try { boundedUtf8Length(text, REPORT_SET_EVENT_COMPARISON_LIMIT); } catch { periodFail("PERIOD_SET_EVENT_SIZE"); }
+  return Object.freeze({ ...resultFile(text, "json", "application/json"), filename: "ThreeCore-saved-event-comparison.json",
+    sourcePayloadDigest: source.digest, containsOriginalEvidence: true });
+}
+
+export function buildEventRecheckDraft(value, query, selection) {
+  const range = reportSetEventRecheckRange(value, query, selection);
+  const draft = emptyPeriodDraft(createPeriodPlan({ context: range.context,
+    earlierBlock: (BigInt(range.fromBlock) - 1n).toString(), laterBlock: range.toBlock, windowSize: range.windowSize }));
+  return Object.freeze({ draft, selectedRange: range });
+}
+
+export async function prepareReportSetEventRecheckFile(value, query, selection, fileOptions = {}) {
+  const prepared = buildEventRecheckDraft(value, query, selection);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const file = await preparePeriodFile(prepared.draft, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-unread-event-recheck-" + prepared.draft.plan.context.agent + ".json",
+    containsOriginalEvidence: false, newEmptyDraft: true, selectedRange: prepared.selectedRange, executed: false });
+}
+
+export const REPORT_SET_EVENT_COMPARISON_LIMIT = 24 * 1024 * 1024;
+
+/** Recompute the saved comparison from its declared pair in the accepted source. */
+export async function reviewReportSetEventComparisonFile(value, text, fileOptions = {}) {
+  const input = validateReportSet(value);
+  let options, supplied;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_EVENT_COMPARISON_LIMIT }); }
+  catch { periodFail("PERIOD_SET_EVENT_FILE_JSON"); }
+  const targetCode = walletSavedFileTargetCode(supplied?.schema, "event-comparison");
+  if (targetCode) periodFail(targetCode);
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== "threecore.saved-event-comparison-file.v1") periodFail("PERIOD_SET_EVENT_FILE_SCHEMA");
+  const query = compareReportSetEvents(input, supplied.comparison?.query).query;
+  const expected = JSON.parse((await prepareReportSetEventComparisonFile(input, query, options)).text);
+  let comparisonTextSha256;
+  try { comparisonTextSha256 = await sha256Hex(new TextEncoder().encode(text), options.subtle, { signal: options.signal, timeoutMs: options.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || !sameCheckJSON(supplied[key], expected[key]));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  const comparison = expected.comparison;
+  return freezeSet({ schema: "threecore.saved-event-comparison-review.v1",
+    matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    sourcePayloadDigest: expected.sourcePayloadDigest, sourceDigestMatches: supplied.sourcePayloadDigest === expected.sourcePayloadDigest,
+    comparisonTextSha256, query, differences, unexpectedFields,
+    comparisonStatus: comparison.status, comparedBlocks: comparison.comparedBlocks,
+    sources: Object.fromEntries(["before", "after"].map(role => [role, {
+      restricted: comparison[role].restricted, archivedReport: comparison[role].archivedReport,
+      archivedSource: comparison[role].archivedSource, internallyConsistentHashes: comparison[role].internallyConsistentHashes,
+    }])),
+    counts: comparison.counts, sharedAnchorCount: comparison.sharedAnchorCount, anchorDifferenceCount: comparison.anchorDifferences.length,
+    readOnly: true, historicalOnly: true, liveChainRechecked: false, authenticated: false,
+    encrypted: false, restorable: false, containsOriginalEvidence: false, authorizesExecution: false });
+}
+
+export async function readReportSetEventComparisonText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_EVENT_COMPARISON_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_EVENT_SIZE", readCode: "PERIOD_SET_EVENT_FILE_READ", encodingCode: "PERIOD_SET_EVENT_FILE_ENCODING", signal, timeoutMs });
+}
+
+/** Compare saved coverage with all ranges recomputed from the accepted source. */
+export async function reviewReportSetCoverageFile(value, text, fileOptions = {}) {
+  const input = validateReportSet(value);
+  let cryptoOptions, supplied;
+  try { cryptoOptions = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  try { supplied = parseSecurityJson(text, { bytes: REPORT_SET_COVERAGE_LIMIT }); }
+  catch { periodFail("PERIOD_SET_COVERAGE_JSON"); }
+  const targetCode = walletSavedFileTargetCode(supplied?.schema, "coverage");
+  if (targetCode) periodFail(targetCode);
+  if (!supplied || typeof supplied !== "object" || Array.isArray(supplied) || supplied.schema !== "threecore.report-set-history-coverage.v1") periodFail("PERIOD_SET_COVERAGE_SCHEMA");
+  if (!supplied.options || typeof supplied.options !== "object" || Array.isArray(supplied.options) ||
+      Object.keys(supplied.options).join(",") !== "shortAddresses" || typeof supplied.options.shortAddresses !== "boolean") periodFail("PERIOD_SET_COVERAGE_OPTIONS");
+  const options = Object.freeze({ shortAddresses: supplied.options.shortAddresses });
+  const expected = JSON.parse((await prepareReportSetCoverageFile(input, "json", options, cryptoOptions)).text);
+  let coverageTextSha256;
+  try { coverageTextSha256 = await sha256Hex(new TextEncoder().encode(text), cryptoOptions.subtle, { signal: cryptoOptions.signal, timeoutMs: cryptoOptions.timeoutMs }); }
+  catch { periodFail("PERIOD_CRYPTO"); }
+  const differences = Object.keys(expected).filter(key => !Object.hasOwn(supplied, key) || !sameCheckJSON(supplied[key], expected[key]));
+  const unexpectedFields = Object.keys(supplied).filter(key => !Object.hasOwn(expected, key)).length;
+  return freezeSet({ schema: "threecore.report-set-history-coverage-review.v1", matchesRecomputation: differences.length === 0 && unexpectedFields === 0,
+    sourcePayloadDigest: expected.sourcePayloadDigest, sourceDigestMatches: supplied.sourcePayloadDigest === expected.sourcePayloadDigest,
+    coverageTextSha256, options, differences, unexpectedFields, summary: expected.summary, missingAgents: expected.missingAgents,
+    groupCount: expected.groupCount, groups: expected.groups.map(group => ({ id: group.id, agent: group.context.agent, chainId: group.context.chainId,
+      fromBlock: group.fromBlock, toBlock: group.toBlock, plannedUniqueBlocks: group.plannedUniqueBlocks, recordedUniqueBlocks: group.recordedUniqueBlocks,
+      pendingPlannedBlocks: group.pendingPlannedBlocks, unplannedBlocks: group.unplannedBlocks, multipleRecordBlocks: group.multipleRecordBlocks,
+      reviewRecordedBlocks: group.reviewRecordedBlocks, savedQueryRecords: group.savedQueryRecords })),
+    blockCountsCombinedAcrossGroups: false, savedQueryPresenceOnly: true, completeHistory: false,
+    readOnly: true, historicalOnly: true, liveChainRechecked: false, authenticated: false,
+    encrypted: false, restorable: false, containsOriginalEvidence: false, authorizesExecution: false });
+}
+
+export async function readReportSetCoverageText(file, { signal, timeoutMs } = {}) {
+  readFormatFileName(file, { maxLength: 180, fail: periodFail, code: "PERIOD_FILENAME" });
+  return readFormatFileText(file, { maxBytes: REPORT_SET_COVERAGE_LIMIT, fail: periodFail,
+    sizeCode: "PERIOD_SET_COVERAGE_SIZE", readCode: "PERIOD_SET_COVERAGE_READ", encodingCode: "PERIOD_SET_COVERAGE_ENCODING", signal, timeoutMs });
+}
+
+/** Recover a token collection in the existing library format; never silently choose conflicting originals. */
+export async function prepareReportSetTokenLibraryFile(value, agent, fileOptions = {}) {
+  const recovery = reportSetTokenLibrary(value, agent);
+  if (recovery.error) periodFail(recovery.error);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const file = await preparePeriodLibraryFile(recovery.document, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-recovered-period-library-" + recovery.agent + ".json",
+    recovery: Object.freeze({ agent: recovery.agent, reportCount: recovery.reportCount,
+      missingReports: recovery.missingReports, entryCount: recovery.entryCount,
+      duplicateReferences: recovery.duplicateReferences }), containsOriginalEvidence: true,
+    historicalOnly: true, liveChainRechecked: false, automaticallyImported: false, authorizesExecution: false });
+}
+
+/** Export original report-history metadata without inventing entries absent from the set. */
+export async function prepareReportSetHistoryFile(value, fileOptions = {}) {
+  const document = reportSetHistoryDocument(value);
+  let options;
+  try { options = captureOptionalDataFields(fileOptions, ["subtle", "signal", "timeoutMs"]); }
+  catch { periodFail("PERIOD_SET_OPTIONS"); }
+  const file = await prepareReportHistoryFile(document, options);
+  return Object.freeze({ ...file, filename: "ThreeCore-recovered-report-history.json",
+    reportCount: document.entries.length, archivedReports: document.entries.filter(row => row.archived).length,
+    containsOriginalEvidence: true, includesOriginalAnnotations: true,
+    historicalOnly: true, liveChainRechecked: false, automaticallyImported: false, authorizesExecution: false });
 }

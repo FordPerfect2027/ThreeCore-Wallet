@@ -1,0 +1,17 @@
+{
+  "source": "dcafee4",
+  "status": "追加を保留しました。空き容量と矛盾の診断を確認してください。入力欄と履歴は保持しています。",
+  "currentCount": 64,
+  "newSlots": 2,
+  "duplicateCount": 1,
+  "conflictCount": 1,
+  "additionalSpaceNeeded": 2,
+  "blockedApply": true,
+  "sourceAndInputPreserved": true,
+  "correctedDuplicateAccepted": true,
+  "exactUiApi": true,
+  "synthetic": true,
+  "nativeBrowserCases": 142,
+  "externalRpcCalls": 0,
+  "userWalletConnectionVerified": false
+}

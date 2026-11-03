@@ -1,0 +1,50 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-review.v2",
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "authorizesExecution": false,
+  "externalChecksumsCompared": true,
+  "phase": "complete",
+  "complete": true,
+  "allRecomputationsMatch": false,
+  "summary": {
+    "selected": 1,
+    "reviewed": 1,
+    "pending": 0,
+    "matching": 0,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 8486,
+    "checksumsCompared": 1,
+    "checksumsMatching": 0,
+    "checksumMismatches": 1
+  },
+  "files": [
+    {
+      "name": "selected.json",
+      "byteLength": 8486,
+      "status": "checksum-mismatch",
+      "sha256": "abad7511893e8a996ef0442767beb1d5b8eb5bf5e200ed447b1ce38ab1bfaca7",
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null,
+      "expectedSha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2",
+      "checksumMatches": false
+    }
+  ],
+  "referenceProvided": true,
+  "reference": {
+    "text": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2  selected.json\n",
+    "sha256": "b2abfe5f9dff4efd4be5e238bc5038436e25f031e628d30d61a37ac68d5ac11d",
+    "entries": [
+      {
+        "name": "selected.json",
+        "expectedSha256": "2b76659f4c40bdd4939cad0beb299d5bfc3bafac2a4ebe3071b73f8b0db754a2"
+      }
+    ]
+  },
+  "allExternalChecksumsMatch": false
+}

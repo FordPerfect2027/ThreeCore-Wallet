@@ -1,0 +1,226 @@
+{
+  "started": "2026-11-03T09:19:26.948Z",
+  "finished": "2026-11-03T09:19:31.282Z",
+  "success": true,
+  "endpoint": "https://mainnet.base.org",
+  "chainId": 8453,
+  "blockNumber": "53454110",
+  "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+  "canonicalBlockRechecked": true,
+  "requests": [
+    {
+      "method": "eth_chainId",
+      "blockSelector": null,
+      "httpStatus": 200,
+      "responseHeadersMs": 381
+    },
+    {
+      "method": "eth_blockNumber",
+      "blockSelector": null,
+      "httpStatus": 200,
+      "responseHeadersMs": 187
+    },
+    {
+      "method": "eth_getBlockByNumber",
+      "blockSelector": "0x32fa51e",
+      "httpStatus": 200,
+      "responseHeadersMs": 171
+    },
+    {
+      "method": "eth_getBalance",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 195
+    },
+    {
+      "method": "eth_getCode",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 167
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 168
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 170
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 175
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 179
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 174
+    },
+    {
+      "method": "eth_getCode",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 174
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 191
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 162
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 170
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 172
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 177
+    },
+    {
+      "method": "eth_getCode",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 171
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 190
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 176
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 175
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 180
+    },
+    {
+      "method": "eth_call",
+      "blockSelector": {
+        "blockHash": "0x9fe750a0592a3b732730f4b85c6fb8a67f6fd08687924b68822738430ecf15cf",
+        "requireCanonical": true
+      },
+      "httpStatus": 200,
+      "responseHeadersMs": 182
+    },
+    {
+      "method": "eth_getBlockByNumber",
+      "blockSelector": "0x32fa51e",
+      "httpStatus": 200,
+      "responseHeadersMs": 162
+    }
+  ],
+  "requestCount": 23,
+  "walletConnected": false,
+  "tokenIdentityMatches": [
+    {
+      "agent": "DAT",
+      "matched": true
+    },
+    {
+      "agent": "EMA",
+      "matched": true
+    },
+    {
+      "agent": "CAWELON",
+      "matched": true
+    }
+  ],
+  "bytes": 1692,
+  "sha256": "4a4596c54c600dad8201e894839d11be4d3f30a18310f510e79bc8f16c5ea470",
+  "newPrivateFileName": "ThreeCore-public-mainnet-batch-53454110.json"
+}

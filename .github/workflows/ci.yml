@@ -7,6 +7,30 @@ on:
 permissions:
   contents: read
 jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify every tracked development evidence manifest
+        run: node scripts/verify-evidence-collection.js . > evidence-verification.json
+      - name: Verify the published historical read-only checkpoint
+        run: node docs/evidence/2026-10-28-readonly-verification/verify-evidence.mjs > historical-verification.json
+      - name: Keep the verification results with this workflow run
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-verification-${{ github.sha }}
+          path: |
+            evidence-verification.json
+            historical-verification.json
+          if-no-files-found: error
+          retention-days: 30
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -17,8 +41,8 @@ jobs:
           node-version: 22
       - name: Offline mock and read-only regression tests
         run: node --test --test-timeout=60000 --test-concurrency=2 test/*.test.js
-      - name: Demo HTTP routes and test fixture isolation
-        run: node --test --test-concurrency=2 integration/*server.test.mjs
+      - name: Demo HTTP routes, refusal recovery and test fixture isolation
+        run: node --test --test-concurrency=2 integration/*server.test.mjs integration/local-navigation-help.test.mjs
       - name: Browser harness rejects uncaught exceptions and unhandled rejections
         run: node scripts/test-browser-ui.js --verify-error-detection
       - name: Three consecutive synthetic Wallet UI runs in fresh Chrome profiles
@@ -35,11 +59,11 @@ jobs:
       matrix:
         include:
           - repository: DAT
-            ref: e0215f1a32824c19bcc89da96841e758928f4f29
+            ref: c50aae41b9c7aa496833e6260cc3314dc3c3fbfb
           - repository: EMA-Draft
-            ref: 362db49dcc5d5db5560b71ed5acd19bba326575e
+            ref: a37c60574e279980b5ce90775842d27b9c4ce5eb
           - repository: CAWELON-Draft
-            ref: c62f63370f7bcbe559d07b4d757384cf5f43ff0f
+            ref: 0f5dfa00a6e1738df3706e12e59b48459ff875a0
     steps:
       - uses: actions/checkout@v4
         with:
@@ -59,12 +83,32 @@ jobs:
       - name: Install pinned token dependencies
         working-directory: token
         run: npm ci
-      - name: Compile the actual token contract
+      - name: Check source portability, toolchain compatibility and compile the actual token contract
         working-directory: token
-        run: npm run compile
+        run: npm run test:source && npm run test:toolchain && npm run compile
       - name: Validate actual token history and malformed log rejection
         working-directory: token
         run: npm run test:read-only && npm run test:history
       - name: Wallet against local EVM on both supported chain IDs
         working-directory: token
         run: node --test ../wallet/integration/token-compatibility.test.mjs
+      - name: Reproduce recorded deployed source and initial issuance offline
+        if: matrix.repository == 'DAT'
+        working-directory: wallet
+        run: |
+          node docs/evidence/2026-11-02-token-dependency-review/reconstruct-runtime-source.mjs ../token > source-reconstruction.json
+          node docs/evidence/2026-11-02-token-dependency-review/verify-dat-mainnet-source-controls.mjs > dat-mainnet-source-controls.json
+          node docs/evidence/2026-11-02-token-dependency-review/verify-recorded-mainnet-deployments.mjs ../token > mainnet-deployment-verification.json
+          node docs/evidence/2026-11-02-token-dependency-review/verify-recorded-sepolia-deployments.mjs ../token > sepolia-deployment-verification.json
+      - name: Keep the source and deployment comparison results
+        if: ${{ always() && matrix.repository == 'DAT' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployed-source-verification-${{ github.sha }}
+          path: |
+            wallet/source-reconstruction.json
+            wallet/dat-mainnet-source-controls.json
+            wallet/mainnet-deployment-verification.json
+            wallet/sepolia-deployment-verification.json
+          if-no-files-found: error
+          retention-days: 30

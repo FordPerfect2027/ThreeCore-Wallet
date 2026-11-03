@@ -1,0 +1,43 @@
+{
+  "schema": "threecore.operation-rehearsal-batch-selection.v1",
+  "query": {
+    "name": "",
+    "status": "invalid"
+  },
+  "selectedBatchFiles": 2,
+  "matchedFiles": 1,
+  "fullBatchSummary": {
+    "selected": 2,
+    "reviewed": 2,
+    "pending": 0,
+    "matching": 1,
+    "differing": 0,
+    "unsupported": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "reportsWithFailedExpectations": 0,
+    "totalBytes": 6493
+  },
+  "sourcePhase": "complete",
+  "sourceComplete": true,
+  "files": [
+    {
+      "name": "invalid.json",
+      "byteLength": 1,
+      "status": "invalid",
+      "sha256": "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96",
+      "inputSchema": null,
+      "differenceCount": null,
+      "expectedOutcomes": null
+    }
+  ],
+  "sourceReceiptRequiredForRecheck": true,
+  "fullBatchResultIncluded": false,
+  "containsOriginalEvidence": false,
+  "readOnly": true,
+  "simulationOnly": true,
+  "sourceVerified": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "authorizesExecution": false
+}

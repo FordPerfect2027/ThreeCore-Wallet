@@ -1,0 +1,94 @@
+{
+  "source": "5234986",
+  "synthetic": true,
+  "captures": [
+    {
+      "name": "all",
+      "visibleNames": [
+        "FIRST.json",
+        "negative.json",
+        "invalid.json"
+      ],
+      "scope": "表示 3件 ／ 全 3件。絞り込みは一覧の表示だけに適用します。保存する控え・CSV・照合値一覧には全選択資料が含まれます。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。再計算の一致 2件、相違 0件、形式・照合値の問題 1件。期待結果との差が残る資料 1件。"
+    },
+    {
+      "name": "matched",
+      "visibleNames": [
+        "FIRST.json",
+        "negative.json"
+      ],
+      "scope": "表示 2件 ／ 全 3件。絞り込みは一覧の表示だけに適用します。保存する控え・CSV・照合値一覧には全選択資料が含まれます。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。再計算の一致 2件、相違 0件、形式・照合値の問題 1件。期待結果との差が残る資料 1件。"
+    },
+    {
+      "name": "expected-differences",
+      "visibleNames": [
+        "negative.json"
+      ],
+      "scope": "表示 1件 ／ 全 3件。絞り込みは一覧の表示だけに適用します。保存する控え・CSV・照合値一覧には全選択資料が含まれます。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。再計算の一致 2件、相違 0件、形式・照合値の問題 1件。期待結果との差が残る資料 1件。"
+    },
+    {
+      "name": "literal-name",
+      "visibleNames": [
+        "negative.json"
+      ],
+      "scope": "表示 1件 ／ 全 3件。絞り込みは一覧の表示だけに適用します。保存する控え・CSV・照合値一覧には全選択資料が含まれます。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。再計算の一致 2件、相違 0件、形式・照合値の問題 1件。期待結果との差が残る資料 1件。"
+    },
+    {
+      "name": "no-matches",
+      "visibleNames": [],
+      "scope": "表示 0件 ／ 全 3件。絞り込みは一覧の表示だけに適用します。保存する控え・CSV・照合値一覧には全選択資料が含まれます。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。再計算の一致 2件、相違 0件、形式・照合値の問題 1件。期待結果との差が残る資料 1件。"
+    },
+    {
+      "name": "cleared",
+      "visibleNames": [
+        "FIRST.json",
+        "negative.json",
+        "invalid.json"
+      ],
+      "scope": "表示 3件 ／ 全 3件。絞り込みは一覧の表示だけに適用します。保存する控え・CSV・照合値一覧には全選択資料が含まれます。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。再計算の一致 2件、相違 0件、形式・照合値の問題 1件。期待結果との差が残る資料 1件。"
+    }
+  ],
+  "opened": [
+    {
+      "name": "negative.json",
+      "textDigest": "ed0c2d08b57fdde6d575e8c432f4effe8156e9cf48d515499d07134cb2719f0c",
+      "expectedSha256": null
+    }
+  ],
+  "cli": [
+    {
+      "kind": "rehearsal",
+      "exitCode": 0,
+      "fileCount": 2,
+      "outputDigest": "57f03e25f4d9f6029d0eb04c3a1bbd84783a985f570ddcdb816113d870fe9e31",
+      "allInputBytesUnchanged": true
+    },
+    {
+      "kind": "wallet",
+      "exitCode": 2,
+      "fileCount": 2,
+      "outputDigest": "4ccc1f8f975eb0b2d328c452b8ea3c0ae2a88236e0d6e947b88e2c1a87e9b61a",
+      "allInputBytesUnchanged": true
+    }
+  ],
+  "allCompleteExportBytesUnchanged": true,
+  "largeIdentifiers": [
+    "1152921504606846977",
+    "1152921504606846978"
+  ],
+  "largeIdentifiersRoundToSameNumber": true,
+  "regressionCases": 6,
+  "initialRelatedFailure": "FILE_ALIAS_DUPLICATE instead of INVALID_REVIEW_REPORT",
+  "nativeFocusedCases": 114,
+  "lastFullBrowserSource": "ccbbbe3",
+  "lastFullBrowserCases": 959,
+  "fullBrowserCoverage": false,
+  "userTabConnectionVerified": false,
+  "realProviderCalls": 0
+}

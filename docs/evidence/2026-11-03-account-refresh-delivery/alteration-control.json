@@ -1,0 +1,15 @@
+{
+  "recordedAt": "2026-11-03T06:52:56.608Z",
+  "commandExit": 1,
+  "targetCreated": false,
+  "alteredFile": "wallet.bundle",
+  "originalSha256": "25f573e7596c897707ef736d7e68caaec472858bb889ae310c0759e960188b03",
+  "alteredSha256": "d1befdd8216034a67fb79f3d527174b40b34a1cc51fcd8d53d4ef067c9a4c405",
+  "error": "node:internal/modules/run_main:107\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: CHECKSUM_MISMATCH: wallet.bundle\r\n+ actual - expected\r\n\r\n+ 'd1befdd8216034a67fb79f3d527174b40b34a1cc51fcd8d53d4ef067c9a4c405'\r\n- '25f573e7596c897707ef736d7e68caaec472858bb889ae310c0759e960188b03'\r\n\r\n    at verifyPackage (file:///C:/Users/aseet/Downloads/ThreeCore-update-4dfa300-alteration-control-20261103/verify-package.mjs:24:12)\r\n    at async file:///C:/Users/aseet/Downloads/ThreeCore-update-4dfa300-alteration-control-20261103/restore-update.mjs:14:28 {\r\n  generatedMessage: false,\r\n  code: 'ERR_ASSERTION',\r\n  actual: 'd1befdd8216034a67fb79f3d527174b40b34a1cc51fcd8d53d4ef067c9a4c405',\r\n  expected: '25f573e7596c897707ef736d7e68caaec472858bb889ae310c0759e960188b03',\r\n  operator: 'strictEqual',\r\n  diff: 'simple'\r\n}\r\n\r\nNode.js v24.19.0\r\n",
+  "restoredCopyVerification": {
+    "entries": 25,
+    "totalBytes": 1793911,
+    "allMatched": true,
+    "manifestSha256": "298eeb7fc0b156ba88ab76c503b37e4a8a7da5369d1e3751e1d6ab049cb8ccf1"
+  }
+}

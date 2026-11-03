@@ -64,7 +64,7 @@ for (const [field, value] of [
   test("unsupported set envelope rejects " + field + " " + value, async () => {
     const envelope = JSON.parse((await prepareReportSetFile(sequenceSet())).text);
     envelope[field] = value;
-    await rejects(decodeReportSetFile(JSON.stringify(envelope)), "PERIOD_SET_FILE_SCHEMA");
+    await rejects(decodeReportSetFile(JSON.stringify(envelope)), field === "schema" ? "PERIOD_FILE_USE_HISTORY" : "PERIOD_SET_FILE_SCHEMA");
   });
 }
 

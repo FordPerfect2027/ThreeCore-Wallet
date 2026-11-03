@@ -1,0 +1,20 @@
+✔ Stop then Continue keeps the first source and saves linked receipts without reading it again (262.3389ms)
+✔ failed continuation preparation preserves the earlier receipt and leaves continuation available (60.6251ms)
+✔ changing selection or clearing during continuation invalidates old work without restoring it later (79.0999ms)
+✔ continuation retains the exact checked prefix and reads only the remaining source indices (149.9772ms)
+✔ continuation cannot accept uploaded, forged, text-only or already-complete receipts (35.0587ms)
+✔ repeated cancellation preserves successively longer prefixes with separate receipt hashes (25.8772ms)
+✔ a resumed source is still compared with its original manifest and callers cannot replace that reference (31.5456ms)
+✔ completed read failures are retained as failures, with unknown bytes explicit in resumed CSV (13.4317ms)
+✔ pre-cancelled continuation retains its prefix without reading or inventing a previous-receipt hash (11.1416ms)
+✔ receipt-hash failure cannot start later sources or consume the previous continuation (7.0837ms)
+✔ overall continuation deadline retains earlier checked rows while an unfinished reader stays pending (86.491ms)
+✔ saved before/after comparison binds the continuation lineage and rejects an altered retained-count claim (29.4278ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 768.128

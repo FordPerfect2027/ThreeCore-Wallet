@@ -1,0 +1,19 @@
+{
+  "schema": "threecore.saved-file-inspection.v1",
+  "sourceSchema": "threecore.report-set-history-coverage.v1",
+  "byteLength": 148,
+  "title": "補助資料の形式指定",
+  "target": "coverage",
+  "destinationMessage": "これは保存済み・未取得・計画外の範囲を説明する資料の形式です。元の履歴を復元するファイルではありません。元の確認セットJSONを開いて、「保存した履歴範囲JSONを元資料と照合」で選んでください。",
+  "validation": "declared-only",
+  "checksumVerified": false,
+  "sourceDigest": null,
+  "textDigest": null,
+  "scope": null,
+  "originalEvidenceValidated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

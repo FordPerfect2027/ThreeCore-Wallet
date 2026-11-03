@@ -1,0 +1,293 @@
+✖ comparison capture cannot override dispose (9.5701ms)
+✖ comparison capture cannot override clear (2.2066ms)
+✖ comparison capture cannot override replace (6.8526ms)
+✔ comparison retained baseline callback cannot change closed controls (0.951ms)
+✖ comparison retained clear callback cannot change closed controls (0.8077ms)
+✔ history add-current: source dispose prevents admission (9.3224ms)
+✖ history add-current: source invalidate prevents admission (5.6825ms)
+✔ history add-report: source dispose prevents admission (1.9835ms)
+✖ history add-report: source invalidate prevents admission (6.9205ms)
+✖ history validation dispose prevents admission (3.8248ms)
+✖ history validation invalidate prevents admission (3.6252ms)
+✖ history add-current consumes asynchronous adapter failure (39.9927ms)
+✖ history add-report consumes asynchronous adapter failure (2.6994ms)
+✖ history diagnostic getters are not evaluated (1.3923ms)
+✖ history diagnostic reflection cannot rewrite disposed status (1.6411ms)
+✔ history valid source admission and exported bytes still work (1.936ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 4
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 447.6239
+
+✖ failing tests:
+
+test at test\local-history-panel-lifecycle.test.js:19:52
+✖ comparison capture cannot override dispose (9.5701ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '比較元の保存記録を入力して比較してください。'
+  - '比較する結果を先に表示してください。'
+       ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:27:37)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '比較元の保存記録を入力して比較してください。',
+    expected: '比較する結果を先に表示してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:19:52
+✖ comparison capture cannot override clear (2.2066ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '比較元の保存記録を入力して比較してください。'
+  - '比較する結果を先に表示してください。'
+       ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:27:37)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '比較元の保存記録を入力して比較してください。',
+    expected: '比較する結果を先に表示してください。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:19:52
+✖ comparison capture cannot override replace (6.8526ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /44/. Input:
+  
+  '保存記録の比較（現在の残高・送金履歴・利益の証明ではありません）\n' +
+    'DAT / 0x1111111111111111111111111111111111111111\n' +
+    'チェーン: 84532\n' +
+    '比較ブロック: 43 → 43\n' +
+    '前のブロックハッシュ: 0xabababababababababababababababababababababababababababababababab\n' +
+    '後のブロックハッシュ: 0xabababababababababababababababababababababababababababababababab\n' +
+    'ETH残高差（wei）: 0\n' +
+    '0x3333333333333333333333333333333333333333\n' +
+    '残高差（最小単位）: 0\n' +
+    '資産間の合算・価格換算は行っていません。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:29:145)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '保存記録の比較（現在の残高・送金履歴・利益の証明ではありません）\nDAT / 0x1111111111111111111111111111111111111111\nチェーン: 84532\n比較ブロック: 43 → 43\n前のブロックハッシュ: 0xabababababababababababababababababababababababababababababababab\n後のブロックハッシュ: 0xabababababababababababababababababababababababababababababababab\nETH残高差（wei）: 0\n0x3333333333333333333333333333333333333333\n残高差（最小単位）: 0\n資産間の合算・価格換算は行っていません。',
+    expected: /44/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:32:41
+✖ comparison retained clear callback cannot change closed controls (0.8077ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '' !== 'retained'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:35:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: 'retained',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:37:97
+✖ history add-current: source invalidate prevents admission (5.6825ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '確認結果を履歴に追加しました。 履歴 1件。'
+  - '履歴は0件です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:42:32)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '確認結果を履歴に追加しました。 履歴 1件。',
+    expected: '履歴は0件です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:37:97
+✖ history add-report: source invalidate prevents admission (6.9205ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '過去の確認記録を履歴に追加しました。 履歴 1件。'
+  - '履歴は0件です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:42:32)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '過去の確認記録を履歴に追加しました。 履歴 1件。',
+    expected: '履歴は0件です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:46:47
+✖ history validation dispose prevents admission (3.8248ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '確認結果を履歴に追加しました。 履歴 1件。'
+  - '履歴は0件です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:50:39)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '確認結果を履歴に追加しました。 履歴 1件。',
+    expected: '履歴は0件です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:46:47
+✖ history validation invalidate prevents admission (3.6252ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '確認結果を履歴に追加しました。 履歴 1件。'
+  - '履歴は0件です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:50:39)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '確認結果を履歴に追加しました。 履歴 1件。',
+    expected: '履歴は0件です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:54:51
+✖ history add-current consumes asynchronous adapter failure (39.9927ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:58:82)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:54:51
+✖ history add-report consumes asynchronous adapter failure (2.6994ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:58:82)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:62:1
+✖ history diagnostic getters are not evaluated (1.3923ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:65:39)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\local-history-panel-lifecycle.test.js:67:1
+✖ history diagnostic reflection cannot rewrite disposed status (1.6411ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '同じブロックの記録が矛盾しています。履歴は変更していません。'
+  - '履歴は0件です。'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/local-history-panel-lifecycle.test.js:71:76)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '同じブロックの記録が矛盾しています。履歴は変更していません。',
+    expected: '履歴は0件です。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

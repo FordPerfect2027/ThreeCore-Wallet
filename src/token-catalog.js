@@ -52,7 +52,7 @@ export const TOKEN_CATALOG = Object.freeze(definitions.flatMap(item =>
 ));
 
 export function tokenCatalogContext(input) {
-  identityObject(input, ["agent", "chainId"]);
+  input = identityObject(input, ["agent", "chainId"]);
   if (!["DAT", "EMA", "CAWELON"].includes(input.agent) ||
       ![8453, 84532].includes(input.chainId)) identityFail("IDENTITY_CONTEXT");
   return Object.freeze({ agent: input.agent, chainId: input.chainId });
@@ -93,17 +93,21 @@ export function createCatalogSelection() {
   let generation = 0;
   return Object.freeze({
     preview(context, currentText) {
+      review = null;
+      const own = ++generation;
       if (typeof currentText !== "string" || currentText.length > 8192) identityFail("IDENTITY_INPUT");
       const selected = catalogToken(context);
-      review = Object.freeze({ id: ++generation, agent: selected.agent,
+      if (own !== generation) identityFail("IDENTITY_STALE");
+      review = Object.freeze({ id: own, agent: selected.agent,
         chainId: selected.chainId, before: currentText, address: selected.address });
       return review;
     },
     apply(id, context, currentText) {
-      const selected = catalogToken(context);
       const candidate = review;
       review = null;
-      generation++;
+      const own = ++generation;
+      const selected = catalogToken(context);
+      if (own !== generation) identityFail("IDENTITY_STALE");
       if (!candidate || candidate.id !== id) identityFail("IDENTITY_REVIEW_REQUIRED");
       if (candidate.agent !== selected.agent || candidate.chainId !== selected.chainId ||
           candidate.before !== currentText) identityFail("IDENTITY_STALE");

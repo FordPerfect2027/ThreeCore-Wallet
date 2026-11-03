@@ -1,0 +1,123 @@
+Browser module preflight passed: 261 local modules.
+Browser shard 1/2 completion received: 490 passing cases; isolated cleanup pending.
+Browser shard 1/2: 490 cases passed.
+Browser completion summary: {"suite-status":"failed","tests-count":"490","tests-passed":"489","tests-failed":"1","unexpected-errors":"0","error-kinds":"","injected-fault":""}
+FAIL — wallet batch evidence: native source consent and verified reopen keep exact detail files and negative scope: File boundary UI assertion failed
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:61
+    catch (error) { throw Error(error.message + "\nRecent browser diagnostics:\n" + errors); }
+                          ^
+
+Error: Browser test cases failed
+Recent browser diagnostics:
+equest was created", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.584:INFO:CONSOLE:1298] "Starting synthetic UI case: storage-guard: unexpected existing object store schema is not silently migrated", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.598:INFO:CONSOLE:1315] "PASS — storage-guard: unexpected existing object store schema is not silently migrated", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.598:INFO:CONSOLE:1298] "Starting synthetic UI case: storage-guard: native result is detached and frozen before UI receives it", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.614:INFO:CONSOLE:1315] "PASS — storage-guard: native result is detached and frozen before UI receives it", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.614:INFO:CONSOLE:1298] "Starting synthetic UI case: storage-guard: disposed panel cannot cancel newer operations through a retained button", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.649:INFO:CONSOLE:1315] "PASS — storage-guard: disposed panel cannot cancel newer operations through a retained button", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.649:INFO:CONSOLE:1298] "Starting synthetic UI case: access-lifecycle: timer fault shows Japanese recovery guidance and blocks resume", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.653:INFO:CONSOLE:1315] "PASS — access-lifecycle: timer fault shows Japanese recovery guidance and blocks resume", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.653:INFO:CONSOLE:1298] "Starting synthetic UI case: access-lifecycle: cleanup false requires retry then explicit resume", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.666:INFO:CONSOLE:1315] "PASS — access-lifecycle: cleanup false requires retry then explicit resume", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.666:INFO:CONSOLE:1298] "Starting synthetic UI case: access-lifecycle: cleanup reject requires retry then explicit resume", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.670:INFO:CONSOLE:1315] "PASS — access-lifecycle: cleanup reject requires retry then explicit resume", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.670:INFO:CONSOLE:1298] "Starting synthetic UI case: access-lifecycle: DAT clearResult stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.672:INFO:CONSOLE:1315] "PASS — access-lifecycle: DAT clearResult stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.672:INFO:CONSOLE:1298] "Starting synthetic UI case: access-lifecycle: DAT dispose stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.673:INFO:CONSOLE:1315] "PASS — access-lifecycle: DAT dispose stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.673:INFO:CONSOLE:1298] "Starting synthetic UI case: access-lifecycle: EMA disconnect stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.681:INFO:CONSOLE:1315] "PASS — access-lifecycle: EMA disconnect stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.681:INFO:CONSOLE:1298] "Starting synthetic UI case: access-lifecycle: CAWELON clearResult stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.682:INFO:CONSOLE:1315] "PASS — access-lifecycle: CAWELON clearResult stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.682:INFO:CONSOLE:1298] "Starting synthetic UI case: access-lifecycle: CAWELON dispose stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073245.688:INFO:CONSOLE:1315] "PASS — access-lifecycle: CAWELON dispose stops a deferred composite read in the browser", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073245.688:INFO:CONSOLE:1298] "Starting synthetic UI case: acceptance: three independent providers connect, read, save and restore through the full app", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073246.023:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073246.023:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073246.023:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073246.487:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073246.487:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073246.487:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073246.904:INFO:CONSOLE:1315] "PASS — acceptance: three independent providers connect, read, save and restore through the full app", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073246.904:INFO:CONSOLE:1298] "Starting synthetic UI case: acceptance: DAT account change clears only its live results and preserves saved history", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073247.241:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073247.241:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073247.241:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073247.372:INFO:CONSOLE:1315] "PASS — acceptance: DAT account change clears only its live results and preserves saved history", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073247.372:INFO:CONSOLE:1298] "Starting synthetic UI case: acceptance: DAT stop while RPC is delayed never revives results or starts the next subread", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073247.720:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073247.720:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073247.720:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073247.940:INFO:CONSOLE:1315] "PASS — acceptance: DAT stop while RPC is delayed never revives results or starts the next subread", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073247.940:INFO:CONSOLE:1298] "Starting synthetic UI case: acceptance: EMA wrong chain cannot connect or save a new observation", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073248.177:INFO:CONSOLE:1315] "PASS — acceptance: EMA wrong chain cannot connect or save a new observation", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073248.177:INFO:CONSOLE:1298] "Starting synthetic UI case: acceptance: CAWELON account change clears only its live results and preserves saved history", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073248.485:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073248.485:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073248.485:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073248.628:INFO:CONSOLE:1315] "PASS — acceptance: CAWELON account change clears only its live results and preserves saved history", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+[6348:17192:1101/073248.628:INFO:CONSOLE:1298] "Starting synthetic UI case: acceptance: CAWELON stop while RPC is delayed never revives results or starts the next subread", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1298)
+
+[6348:17192:1101/073248.918:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073248.918:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073248.918:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:56267/test/browser/?ci-report=129a1153-30bd-4c72-aa57-f05856dab077&shard-count=2&shard-index=1 (0)
+
+[6348:17192:1101/073249.100:INFO:CONSOLE:1315] "PASS — acceptance: CAWELON stop while RPC is delayed never revives results or starts the next subread", source: http://127.0.0.1:56267/test/browser/ui-tests.js (1315)
+
+
+    at runBrowserPage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:61:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:114:18
+
+Node.js v24.19.0

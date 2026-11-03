@@ -1,6 +1,13 @@
-import { createTokenPlan, encodeTokenPlan, decodeTokenPlan, tokenPlanLinesForContext, TokenPlanError } from "../src/token-plan.js";
+import { createTokenPlan, encodeTokenPlan, decodeTokenPlan, tokenPlanLinesForContext, previewTokenPlanReplacement, TokenPlanError } from "../src/token-plan.js";
+
+import { readOwnErrorCode } from "../src/provider-error.js";
+import { observeCallbackResult } from "../src/security-callback.js";
+import { captureDataRecord } from "../src/security-data.js";
+import { readSecurityFileText } from "../src/security-file.js";
+import { offerWalletDownload } from "./export-download.js";
 
 const ERRORS = Object.freeze({
+  PLAN_APPLY: "入力欄への反映を確認できませんでした。入力欄の現在の内容を確認してください。",
   PLAN_CONTEXT_MISMATCH: "同じエージェント・チェーンのリストを選んでください。",
   PLAN_CHANGED: "確認後にJSONが変わりました。もう一度内容を確認してください。",
   DUPLICATE_TOKEN: "同じ契約アドレスが重複しています。1件ずつに整理してください。",
@@ -10,7 +17,7 @@ const ERRORS = Object.freeze({
 });
 
 /** User must preview and then apply. Neither step accepts a wallet provider. */
-export function mountTokenPlanPanel({ document, parent, getContext, readLines, applyLines }) {
+export function mountTokenPlanPanel({ document, parent, getContext, readLines, applyLines, download = offerWalletDownload }) {
   const section = document.createElement("section");
   section.className = "token-plan-panel";
   const heading = document.createElement("h4");
@@ -32,6 +39,10 @@ export function mountTokenPlanPanel({ document, parent, getContext, readLines, a
     return item;
   };
   const save = button("save", "入力リストをJSONにする");
+  const downloadButton = button("download", "入力リストをファイル保存");
+  const fileLabel = document.createElement("label"); fileLabel.textContent = "保存した入力リストを読み込む（JSON・8 KiBまで）";
+  const file = document.createElement("input"); file.className = "token-plan-file"; file.type = "file"; file.accept = ".json,application/json"; fileLabel.append(file);
+  const stop = button("stop", "ファイル読み込みを中止");
   const preview = button("preview", "JSONの内容を確認する");
   const apply = button("apply", "確認したリストを入力欄へ反映");
   const clear = button("clear", "保存・確認欄を消去");
@@ -43,73 +54,167 @@ export function mountTokenPlanPanel({ document, parent, getContext, readLines, a
   details.className = "token-plan-details";
   const note = document.createElement("p");
   note.className = "notice";
-  note.textContent = "JSONをコピーして保存できます。反映は既存リストを置き換えます。接続・残高照会は別の操作です。契約の実在性・安全性を保証するものではありません。";
-  section.append(heading, save, label, preview, apply, clear, status, details, note);
+  note.textContent = "入力リストはファイル保存・読み込みできます。読み込んだだけでは反映されません。反映は既存リストを置き換えます。接続・残高照会は別の操作です。契約の実在性・安全性を保証するものではありません。";
+  section.append(heading, save, downloadButton, fileLabel, stop, label, preview, apply, clear, status, details, note);
   parent.append(section);
   let candidate = null;
   let candidateText = null;
+  let candidateBaseline = null;
   let disposed = false;
+  let generation = 0;
+  let reading = null;
+  const current = id => !disposed && id === generation;
   const listeners = [];
+  function fileControls() { const busy = Boolean(reading); save.disabled = downloadButton.disabled = preview.disabled = file.disabled = busy; stop.disabled = !busy; section.setAttribute("aria-busy", String(busy)); }
+  function retireRead() { const previous = reading; reading = null; previous?.abort(); fileControls(); }
   function listen(item, event, fn) {
-    item.addEventListener(event, fn);
-    listeners.push(() => item.removeEventListener(event, fn));
+    const listener = () => { if (!disposed) return fn(); };
+    item.addEventListener(event, listener);
+    listeners.push(() => item.removeEventListener(event, listener));
   }
   function reset(message = "保存するリストを入力するか、JSONを貼り付けてください。") {
+    retireRead();
     candidate = null;
     candidateText = null;
+    candidateBaseline = null;
     apply.disabled = true;
     details.textContent = "";
     status.textContent = message;
     text.setAttribute("aria-invalid", "false");
   }
-  function error(value) {
+  function syncSource(callback, code) {
+    const value = callback();
+    if (observeCallbackResult(value) !== "synchronous") throw new TokenPlanError(code, "Expected synchronous local data");
+    return value;
+  }
+  function context() {
+    return captureDataRecord(syncSource(getContext, "INVALID_CONTEXT"), ["agent", "chainId"]);
+  }
+  function error(value, id, override) {
+    if (!current(id)) return;
+    const code = override ?? readOwnErrorCode(value);
+    if (!current(id)) return;
     reset();
     text.setAttribute("aria-invalid", "true");
-    let code;
-    try { code = value?.code; } catch { /* Omit untrusted diagnostics. */ }
     status.textContent = typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code]
       : "リストを確認できませんでした。入力と設定を確認してください。";
   }
+  function sameInput(value) {
+    if (text.value !== value) throw new TokenPlanError("PLAN_CHANGED", "Preview the changed text again");
+  }
+  function currentPlan(id) {
+    const identity = context(); if (!current(id)) return null;
+    const lines = syncSource(readLines, "INVALID_TOKENS"); if (!current(id)) return null;
+    const plan = createTokenPlan(identity, lines); tokenPlanLinesForContext(plan, context());
+    return current(id) ? plan : null;
+  }
   listen(save, "click", () => {
-    if (disposed) return;
+    const id = ++generation;
     reset();
-    text.value = ""; // A failed export must not leave an older list to copy.
+    text.value = "";
     try {
-      text.value = encodeTokenPlan(createTokenPlan(getContext(), readLines()));
+      const plan = currentPlan(id); if (!plan) return;
+      text.value = encodeTokenPlan(plan);
       status.textContent = "入力リストをJSONにしました。コピーして保存できます。";
-    } catch (value) { error(value); }
+    } catch (value) { error(value, id); }
   });
-  listen(text, "input", () => reset("JSONが変わりました。もう一度内容を確認してください。"));
+  listen(downloadButton, "click", () => {
+    if (reading) return; const id = ++generation; reset();
+    try { const plan = currentPlan(id); if (!plan) return;
+      const prepared = { text: encodeTokenPlan(plan), filename: `ThreeCore-${plan.agent}-token-plan-${plan.chainId}.json`, mimeType: "application/json;charset=utf-8", containsOriginalEvidence: false, restorable: false };
+      const result = download({ document, prepared }), kind = observeCallbackResult(result); if (!current(id)) return;
+      if (kind !== "synchronous" || result === false) throw Error();
+      status.textContent = "入力リストの保存を開始しました。ダウンロード先をご確認ください。";
+    } catch { if (current(id)) status.textContent = "入力リストを保存できませんでした。入力と設定、ダウンロード先を確認してください。"; }
+  });
+  listen(file, "change", () => {
+    const chosen = file.files?.[0]; file.value = ""; if (!chosen || reading) return;
+    const id = ++generation; reset(); const local = new AbortController(); reading = local; fileControls();
+    status.textContent = "入力リストのファイルを読み込んでいます。反映はまだ行っていません。";
+    void (async () => { try {
+      const source = await readSecurityFileText(chosen, { maxBytes: 8192, signal: local.signal });
+      if (!current(id) || local.signal.aborted) return;
+      const plan = decodeTokenPlan(source); tokenPlanLinesForContext(plan, context());
+      if (!current(id) || local.signal.aborted) return;
+      text.value = source; status.textContent = "入力リストを読み込みました。「JSONの内容を確認する」で確認してから反映してください。";
+    } catch (value) { if (current(id) && !local.signal.aborted) { const code = readOwnErrorCode(value); if (current(id)) status.textContent = code === "PLAN_CONTEXT_MISMATCH" ? ERRORS[code] : "入力リストを読み込めませんでした。8 KiB以内のUTF-8 JSONを確認してください。元の入力欄は保持しています。"; } }
+    finally { if (current(id) && reading === local) { reading = null; local.abort(); fileControls(); } } })();
+  });
+  listen(stop, "click", () => { if (reading) { generation++; reset("ファイル読み込みを中止しました。元の入力欄は保持しています。"); } });
+  listen(text, "input", () => { generation++; reset("JSONが変わりました。もう一度内容を確認してください。"); });
   listen(preview, "click", () => {
-    if (disposed) return;
+    const id = ++generation, source = text.value;
     reset();
     try {
-      const plan = decodeTokenPlan(text.value);
-      tokenPlanLinesForContext(plan, getContext());
-      details.textContent = plan.agent + " / チェーン: " + plan.chainId + " / " + plan.tokens.length + "件\n" + plan.tokens.join("\n");
+      const plan = decodeTokenPlan(source);
+      const identity = context(); if (!current(id)) return;
+      const baseline = syncSource(readLines, "INVALID_TOKENS"); if (!current(id)) return;
+      const impact = previewTokenPlanReplacement(plan, identity, baseline);
+      tokenPlanLinesForContext(plan, context());
+      if (!current(id)) return;
+      const capturedAgain = syncSource(readLines, "INVALID_TOKENS"); if (!current(id)) return;
+      if (capturedAgain !== baseline) throw new TokenPlanError("PLAN_CHANGED", "Current input changed during preview");
+      sameInput(source);
+      const changes = impact.currentInputValid
+        ? `現在${impact.currentCount}件 → 反映後${impact.targetCount}件 / 追加${impact.added.length}件・削除${impact.removed.length}件・維持${impact.retainedCount}件\n` +
+          (impact.added.length ? "追加する契約:\n" + impact.added.join("\n") + "\n" : "") +
+          (impact.removed.length ? "削除する契約:\n" + impact.removed.join("\n") + "\n" : "") +
+          (impact.sameOrder ? "現在と同じ契約・順序です。\n" : "反映後の順序は下の一覧です。\n")
+        : "現在の入力形式を確認できないため、追加・削除件数は算出していません。反映すると下の一覧で置き換えます。\n";
+      details.textContent = changes + "入力リストだけの変更です。保有資産の追加・削除や送金ではありません。\n" + plan.agent + " / チェーン: " + plan.chainId + " / " + plan.tokens.length + "件\n" + plan.tokens.join("\n");
       candidate = plan;
-      candidateText = text.value;
+      candidateText = source;
+      candidateBaseline = baseline;
       apply.disabled = false;
       status.textContent = "内容を確認し、反映する場合だけ次のボタンを押してください。";
-    } catch (value) { error(value); }
+    } catch (value) { error(value, id); }
   });
   listen(apply, "click", () => {
-    if (disposed || !candidate) return;
+    if (!candidate) return;
+    const id = ++generation, plan = candidate, source = candidateText;
+    let handedOff = false;
     try {
-      if (text.value !== candidateText) throw new TokenPlanError("PLAN_CHANGED", "Preview the changed text again");
-      const lines = tokenPlanLinesForContext(candidate, getContext());
-      reset(); // Consume the candidate before a potentially reentrant callback.
-      applyLines(lines);
+      sameInput(source);
+      const lines = tokenPlanLinesForContext(plan, context());
+      if (!current(id)) return;
+      sameInput(source);
+      const baseline = syncSource(readLines, "INVALID_TOKENS"); if (!current(id)) return;
+      if (baseline !== candidateBaseline) throw new TokenPlanError("PLAN_CHANGED", "Preview the changed current list again");
+      tokenPlanLinesForContext(plan, context()); if (!current(id)) return;
+      const capturedAgain = syncSource(readLines, "INVALID_TOKENS"); if (!current(id)) return;
+      if (capturedAgain !== baseline) throw new TokenPlanError("PLAN_CHANGED", "Current input changed during apply");
+      sameInput(source);
+      reset(); // Consume the candidate before invoking application code.
+      handedOff = true;
+      const receipt = applyLines(lines);
+      const kind = observeCallbackResult(receipt);
+      if (!current(id)) return;
+      if (kind !== "synchronous" || receipt === false) throw new TokenPlanError("PLAN_APPLY", "Unconfirmed application");
       status.textContent = "入力欄へ反映しました。残高照会はまだ行っていません。";
-    } catch (value) { error(value); }
+    } catch (value) { error(value, id, handedOff ? "PLAN_APPLY" : undefined); }
   });
-  listen(clear, "click", () => { text.value = ""; reset("保存・確認欄を消去しました。"); });
+  listen(clear, "click", () => { generation++; text.value = ""; reset("保存・確認欄を消去しました。"); });
   reset();
   return Object.freeze({
-    invalidate() { if (!disposed) { text.value = ""; reset(); } },
+    stagePlan(value) {
+      if (disposed) return false;
+      const id = ++generation, previousText = text.value;
+      reset();
+      try {
+        const encoded = encodeTokenPlan(value); if (!current(id)) return false;
+        const plan = decodeTokenPlan(encoded); tokenPlanLinesForContext(plan, context());
+        if (!current(id)) return false; sameInput(previousText);
+        text.value = encoded;
+        status.textContent = "過去の記録から契約一覧を準備しました。内容を確認してから反映してください。接続・残高照会は行っていません。";
+        try { text.focus?.(); } catch {}
+        return current(id) && text.value === encoded;
+      } catch (value) { error(value, id); return false; }
+    },
+    invalidate() { if (!disposed) { generation++; text.value = ""; reset(); } },
     dispose() {
       if (disposed) return;
       disposed = true;
+      generation++;
       text.value = "";
       reset();
       for (const stop of listeners) stop();

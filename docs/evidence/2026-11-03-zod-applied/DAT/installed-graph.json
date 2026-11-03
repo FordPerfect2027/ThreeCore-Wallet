@@ -1,0 +1,91 @@
+{
+  "version": "0.1.0",
+  "name": "@0628dao/datcore",
+  "problems": [
+    "missing: @nomicfoundation/hardhat-keystore@3.1.2, required by @0628dao/datcore@0.1.0",
+    "missing: @nomicfoundation/hardhat-node-test-runner@3.1.2, required by @0628dao/datcore@0.1.0",
+    "missing: @nomicfoundation/hardhat-viem@3.1.0, required by @0628dao/datcore@0.1.0",
+    "missing: @nomicfoundation/hardhat-zod-utils@file:./vendor/helper.tgz, required by @0628dao/datcore@0.1.0",
+    "missing: @openzeppelin/contracts@5.6.1, required by @0628dao/datcore@0.1.0",
+    "missing: @types/node@22.8.5, required by @0628dao/datcore@0.1.0",
+    "missing: hardhat@3.21.2, required by @0628dao/datcore@0.1.0",
+    "missing: solc@0.8.34, required by @0628dao/datcore@0.1.0",
+    "missing: typescript@6.0.3, required by @0628dao/datcore@0.1.0",
+    "missing: viem@2.56.6, required by @0628dao/datcore@0.1.0",
+    "missing: zod@4.6.6, required by @0628dao/datcore@0.1.0"
+  ],
+  "dependencies": {
+    "@nomicfoundation/hardhat-keystore": {
+      "required": "3.1.2",
+      "missing": true,
+      "problems": [
+        "missing: @nomicfoundation/hardhat-keystore@3.1.2, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "@nomicfoundation/hardhat-node-test-runner": {
+      "missing": true,
+      "problems": [
+        "missing: @nomicfoundation/hardhat-node-test-runner@3.1.2, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "@nomicfoundation/hardhat-viem": {
+      "missing": true,
+      "problems": [
+        "missing: @nomicfoundation/hardhat-viem@3.1.0, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "@nomicfoundation/hardhat-zod-utils": {
+      "missing": true,
+      "problems": [
+        "missing: @nomicfoundation/hardhat-zod-utils@file:./vendor/helper.tgz, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "@openzeppelin/contracts": {
+      "missing": true,
+      "problems": [
+        "missing: @openzeppelin/contracts@5.6.1, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "@types/node": {
+      "missing": true,
+      "problems": [
+        "missing: @types/node@22.8.5, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "hardhat": {
+      "missing": true,
+      "problems": [
+        "missing: hardhat@3.21.2, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "solc": {
+      "missing": true,
+      "problems": [
+        "missing: solc@0.8.34, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "typescript": {
+      "missing": true,
+      "problems": [
+        "missing: typescript@6.0.3, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "viem": {
+      "missing": true,
+      "problems": [
+        "missing: viem@2.56.6, required by @0628dao/datcore@0.1.0"
+      ]
+    },
+    "zod": {
+      "missing": true,
+      "problems": [
+        "missing: zod@4.6.6, required by @0628dao/datcore@0.1.0"
+      ]
+    }
+  },
+  "error": {
+    "code": "ELSPROBLEMS",
+    "summary": "missing: @nomicfoundation/hardhat-keystore@3.1.2, required by @0628dao/datcore@0.1.0\nmissing: @nomicfoundation/hardhat-node-test-runner@3.1.2, required by @0628dao/datcore@0.1.0\nmissing: @nomicfoundation/hardhat-viem@3.1.0, required by @0628dao/datcore@0.1.0\nmissing: @nomicfoundation/hardhat-zod-utils@file:./vendor/helper.tgz, required by @0628dao/datcore@0.1.0\nmissing: @openzeppelin/contracts@5.6.1, required by @0628dao/datcore@0.1.0\nmissing: @types/node@22.8.5, required by @0628dao/datcore@0.1.0\nmissing: hardhat@3.21.2, required by @0628dao/datcore@0.1.0\nmissing: solc@0.8.34, required by @0628dao/datcore@0.1.0\nmissing: typescript@6.0.3, required by @0628dao/datcore@0.1.0\nmissing: viem@2.56.6, required by @0628dao/datcore@0.1.0\nmissing: zod@4.6.6, required by @0628dao/datcore@0.1.0",
+    "detail": ""
+  }
+}

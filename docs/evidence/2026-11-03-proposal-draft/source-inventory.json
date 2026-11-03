@@ -1,0 +1,49 @@
+{
+  "baseCommit": "6c3610192f7bbcf116b966fbb7cb0cbcedc6bd33",
+  "sources": [
+    {
+      "path": "examples/dev-server.js",
+      "sha256": "94f3fa45ed3cad0fd8cda3a7dd7a453d0c9e88d64c7c87deb462f1133f5fdd7e"
+    },
+    {
+      "path": "examples/operation-budget-evidence.html",
+      "sha256": "dd22543f5bd5d10c1cf894f681f9195cfde93ce29d5c7910c2b894a076532768"
+    },
+    {
+      "path": "examples/operation-proposal-page.js",
+      "sha256": "6882283f271321f1f4e933c65f525a5dd0404297c5a3dc1820c93f186d7e4018"
+    },
+    {
+      "path": "examples/operation-proposal.html",
+      "sha256": "d27961dd3a969ff1623642d60677597c157132eadfab4fe4634032894194f0df"
+    },
+    {
+      "path": "examples/operation-proposal-draft-page.js",
+      "sha256": "09d8b243a739d6765f9966cdb8b4d05655af314a908ae013206266649fcf4b9a"
+    },
+    {
+      "path": "examples/operation-proposal-draft.html",
+      "sha256": "ff2e1b283cd11f39ad38e19935b767761cbab6dbe186463dc3acef08bd85a630"
+    },
+    {
+      "path": "integration/proposal-draft-server.test.mjs",
+      "sha256": "a140deac0be9d3de9146c44726dc1d40609d181803171ad4cd355b613d83097b"
+    },
+    {
+      "path": "src/operation-proposal-draft.js",
+      "sha256": "12894371f2eeb9f5e2043adf86015e5f1c8fa39f35398fefd63e09c70a4eeb6d"
+    },
+    {
+      "path": "src/proposal-review-messages.js",
+      "sha256": "255be8427e970ddc8c5dee1216e8e2d58c0ff9f19301148fb655b4ef7204a50c"
+    },
+    {
+      "path": "test/operation-proposal-draft-page.test.js",
+      "sha256": "5740de3008bd9d8601f131341230c87438357e2d1c03d64fba3aa955fc226cb6"
+    },
+    {
+      "path": "test/operation-proposal-draft.test.js",
+      "sha256": "f4f496d386099d157e4eca093c3240aeaff36dc2c554a54dee07e410d49acde8"
+    }
+  ]
+}

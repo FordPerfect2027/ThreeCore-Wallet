@@ -1,0 +1,18 @@
+import {readFile,writeFile,copyFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+import {resolve,dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {decodePublicUsdcFile} from '../../../src/public-usdc-model.js';
+import {inspectBudgetEvidence,BUDGET_EVIDENCE_SCHEMA} from '../../../src/operation-budget-evidence.js';
+const here=dirname(fileURLToPath(import.meta.url)),downloads='C:/Users/aseet/Downloads';
+const file=await readFile(resolve(downloads,'ThreeCore-USDC-53457078.json'),'utf8');
+const current=(await decodePublicUsdcFile(file)).observation,earlier=(await decodePublicUsdcFile(await readFile(resolve(here,'../2026-11-03-usdc-budget/live-usdc-source.json'),'utf8'))).observation;
+const {observedAtSeconds:currentTime,...currentChain}=current,{observedAtSeconds:earlierTime,...earlierChain}=earlier;assert.deepEqual(currentChain,earlierChain);assert(currentTime>=earlierTime);
+const budgetFile=await readFile(resolve(here,'../2026-11-03-usdc-budget/browser-live-budget.json'),'utf8');
+const result=await inspectBudgetEvidence({schema:BUDGET_EVIDENCE_SCHEMA,budgetFile,observationFiles:[file]});assert.equal(result.consistent,true);assert.equal(result.budgetResult.constraintsSatisfied,false);
+await writeFile(resolve(here,'browser-usdc-source.json'),file,{flag:'wx'});
+await copyFile(resolve(downloads,'ThreeCore-USDC-read-20261103.png'),resolve(here,'browser-read.png'));
+await copyFile(resolve(downloads,'ThreeCore-USDC-transfer-20261103.png'),resolve(here,'browser-budget-transfer.png'));
+const record={checkedAt:new Date().toISOString(),download:'ThreeCore-USDC-53457078.json',sha256:createHash('sha256').update(file).digest('hex'),bytes:Buffer.byteLength(file),sameChainFieldsAsEarlierCommand:true,acquisitionTimeChanged:currentTime!==earlierTime,blockNumber:current.blockNumber,blockHash:current.blockHash,usdcUnits:current.balanceBaseUnits,ethWei:current.nativeBalanceBaseUnits,budgetEvidenceConsistent:result.consistent,budgetSatisfied:result.budgetResult.constraintsSatisfied};
+await writeFile(resolve(here,'live-ui-verification.json'),JSON.stringify(record,null,2)+'\n',{flag:'wx'});console.log(JSON.stringify(record));

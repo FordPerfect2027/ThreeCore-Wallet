@@ -1,0 +1,13 @@
+import {spawn} from 'node:child_process';
+import {createWriteStream} from 'node:fs';
+import {writeFile,readdir,mkdir} from 'node:fs/promises';
+const root="C:/Users/aseet/AppData/Local/Temp/threecore-zod4-review-application-20261103/CAWELON";
+const base=Object.fromEntries(Object.entries(process.env).filter(([key])=>/^(path|systemroot|systemdrive|windir|temp|tmp|comspec|pathext)$/i.test(key)));
+const env={...base,CI:'true',APPDATA:root+'/isolated-profile/roaming',LOCALAPPDATA:root+'/isolated-profile/local',XDG_CONFIG_HOME:root+'/isolated-profile/config',XDG_CACHE_HOME:root+'/isolated-profile/cache',XDG_DATA_HOME:root+'/isolated-profile/data'};
+for(const p of Object.values(env).filter(p=>typeof p==='string'&&p.startsWith(root+'/isolated-profile/')))await mkdir(p,{recursive:true});
+const group=process.argv[2];
+const plans={compile:[['compile',["C:/Users/aseet/AppData/Local/Temp/threecore-zod4-review-application-20261103/DAT/node_modules/hardhat/dist/src/cli.js",'compile']]],types:[['types',["C:/Users/aseet/AppData/Local/Temp/threecore-zod4-review-application-20261103/DAT/node_modules/typescript/bin/tsc",'--noEmit']]],readonly:[['source-and-toolchain',['--test','--test-reporter=tap','integration/source-portability.test.mjs','integration/test-routing.test.mjs','integration/toolchain-data.test.mjs']],['readonly',['--test','--test-reporter=tap','--test-concurrency=1',...(await readdir(root+'/test')).filter(p=>p.endsWith('.test.mjs')).sort().map(p=>'test/'+p)]]],audit:[['audit',['C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js','audit','--json','--ignore-scripts','--registry=https://registry.npmjs.org','--userconfig='+root+'/empty-user.npmrc','--globalconfig='+root+'/empty-global.npmrc','--cache='+root+'/npm-cache']]]};
+if(!plans[group])throw Error('Unknown group');
+const steps=[];
+for(const [name,args] of plans[group]){const startedAt=new Date().toISOString(),log=createWriteStream(root+'/'+name+'.log',{flags:'wx'});const outcome=await new Promise((resolve,reject)=>{const child=spawn(process.execPath,args,{cwd:root,env,windowsHide:true,stdio:['ignore','pipe','pipe']});child.stdout.pipe(log,{end:false});child.stderr.pipe(log,{end:false});const timer=setTimeout(()=>child.kill(),360000);child.on('error',e=>{clearTimeout(timer);reject(e);});child.on('close',(code,signal)=>{clearTimeout(timer);log.end(()=>resolve({code,signal}));});});steps.push({name,startedAt,endedAt:new Date().toISOString(),...outcome});await writeFile(root+'/'+group+'-result.json',JSON.stringify({steps,originalProjectConfigLoaded:true,userWalletUsed:false,transactionsExecuted:false,keystoreLookupDisabledByCI:true},null,2)+'\n');if(outcome.code!==0)break;}
+console.log(JSON.stringify({steps}));process.exitCode=steps.every(s=>s.code===0)?0:1;

@@ -1,0 +1,354 @@
+{
+  "recordedAt": "2026-11-03T04:36:46.124Z",
+  "sourceCommitAtObservation": "077e8eaf629fbc5deecf4e1e52e3fd614873fe23",
+  "implementationCommit": "f6f378cc9b44f33fc7e147f4626e23573de06a6c",
+  "origin": "http://127.0.0.1:4233",
+  "browser": "Microsoft Edge, existing user profile",
+  "scope": "Live sequential network change Mainnet to Sepolia followed by Account 1 to Account 2, with explicit reconnect and historical-record preservation",
+  "networkSwitch": {
+    "beforeChainId": 8453,
+    "afterChainId": 84532,
+    "accountUnchanged": "known Account 1",
+    "observedAt": "2026-11-03T04:26:50.648Z",
+    "allThreeCardsStopped": true,
+    "uiStopReason": "接続先が変わりました。内容を確認して再接続してください。",
+    "protectionLogEntryNumbers": [
+      4,
+      5,
+      6
+    ],
+    "protectionLogReason": "Walletのネットワークが変わったか確認できなくなったため、カードの接続を停止しました",
+    "newChainConfirmedByPermittedAccountProbe": true,
+    "manualReconnectObservedAt": "2026-11-03T04:27:50.636Z",
+    "connectedCardsAfterReconnect": 3,
+    "backupBeforeAndImmediatelyAfterByteIdentical": true,
+    "backupBytes": 10100,
+    "backupSha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0",
+    "readResults": [
+      {
+        "token": "DAT",
+        "chainId": 84532,
+        "block": "53791215",
+        "blockHash": "0xd689e1aaa3fa4923bf54dc70131e92bf3a16c8bbecda83a5401c5275021ede2f",
+        "contracts": [
+          {
+            "address": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+            "hasCode": true,
+            "balanceRead": true
+          }
+        ]
+      },
+      {
+        "token": "EMA",
+        "chainId": 84532,
+        "block": "53791215",
+        "blockHash": "0xd689e1aaa3fa4923bf54dc70131e92bf3a16c8bbecda83a5401c5275021ede2f",
+        "contracts": [
+          {
+            "address": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+            "hasCode": true,
+            "balanceRead": true
+          }
+        ]
+      },
+      {
+        "token": "CAWELON",
+        "chainId": 84532,
+        "block": "53791215",
+        "blockHash": "0xd689e1aaa3fa4923bf54dc70131e92bf3a16c8bbecda83a5401c5275021ede2f",
+        "contracts": [
+          {
+            "address": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+            "hasCode": true,
+            "balanceRead": true
+          }
+        ]
+      }
+    ]
+  },
+  "accountSwitch": {
+    "beforeAccount": "known Account 1",
+    "afterAccount": "known Account 2",
+    "chainIdUnchanged": 84532,
+    "observedAt": "2026-11-03T04:31:06.820Z",
+    "allThreeCardsStopped": true,
+    "uiStopReason": "接続先が変わりました。内容を確認して再接続してください。",
+    "protectionLogEntryNumbers": [
+      7,
+      8,
+      9
+    ],
+    "protectionLogReason": "Walletの口座情報が変わったか確認できなくなったため、カードの接続を停止しました",
+    "newAccountAndChainConfirmedByPermittedAccountProbe": true,
+    "manualReconnectObservedAt": "2026-11-03T04:34:43.539Z",
+    "connectedCardsAfterReconnect": 3,
+    "backupBeforeAndImmediatelyAfterByteIdentical": true,
+    "backupBeforeBytes": 10103,
+    "backupBeforeSha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc",
+    "backupAfterReconnectBytes": 10103,
+    "backupAfterReconnectSha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+    "configuredAccountChangedAsExpected": true,
+    "readResults": [
+      {
+        "token": "DAT",
+        "chainId": 84532,
+        "blockNumber": "53793042",
+        "blockHash": "0xebda13715119f987e7c8ef253c3a93dd649fc37f61f479851641e500a916fc00",
+        "contracts": [
+          {
+            "address": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+            "hasCode": true,
+            "balanceRead": true,
+            "notice": null
+          }
+        ]
+      },
+      {
+        "token": "EMA",
+        "chainId": 84532,
+        "blockNumber": "53793042",
+        "blockHash": "0xebda13715119f987e7c8ef253c3a93dd649fc37f61f479851641e500a916fc00",
+        "contracts": [
+          {
+            "address": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+            "hasCode": true,
+            "balanceRead": true,
+            "notice": null
+          }
+        ]
+      },
+      {
+        "token": "CAWELON",
+        "chainId": 84532,
+        "blockNumber": "53793042",
+        "blockHash": "0xebda13715119f987e7c8ef253c3a93dd649fc37f61f479851641e500a916fc00",
+        "contracts": [
+          {
+            "address": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+            "hasCode": true,
+            "balanceRead": true,
+            "notice": null
+          }
+        ]
+      }
+    ]
+  },
+  "preservedHistory": {
+    "recordsPerCard": 3,
+    "total": 9,
+    "exactCanonicalContentUnchanged": true,
+    "sha256": "a450048a9e25861d62561a0db5efa553f664b3efaf15c96f4eb9cb1fe45a3107",
+    "canonicalization": "JSON.stringify(workspace.entries.map(({agent,history}) => ({agent,history})))",
+    "newReadResultsKeptSeparately": 6
+  },
+  "validation": {
+    "checksummedBackups": 5,
+    "allFiveInternalChecksumsMatched": true,
+    "renderedPortfolioSnapshots": 6,
+    "allSixStructureChecksPassed": true,
+    "portfolioSnapshotsHaveInternalChecksum": false,
+    "portfolioCapture": "JSON read from the UI-generated confirmation textbox and saved locally; not presented as browser downloads",
+    "backupCapture": "Browser downloads verified on disk",
+    "files": [
+      {
+        "file": "before-bottom-selector-switch-backup.json",
+        "exitCode": 0,
+        "validation": "validated-original"
+      },
+      {
+        "file": "after-bottom-selector-switch-backup.json",
+        "exitCode": 0,
+        "validation": "validated-original"
+      },
+      {
+        "file": "after-network-reconnect-backup.json",
+        "exitCode": 0,
+        "validation": "validated-original"
+      },
+      {
+        "file": "after-account-switch-backup.json",
+        "exitCode": 0,
+        "validation": "validated-original"
+      },
+      {
+        "file": "after-account-reconnect-backup.json",
+        "exitCode": 0,
+        "validation": "validated-original"
+      },
+      {
+        "file": "post-switch-DAT.json",
+        "exitCode": 2,
+        "validation": "validated-structure"
+      },
+      {
+        "file": "post-account-switch-DAT.json",
+        "exitCode": 2,
+        "validation": "validated-structure"
+      },
+      {
+        "file": "post-switch-EMA.json",
+        "exitCode": 2,
+        "validation": "validated-structure"
+      },
+      {
+        "file": "post-account-switch-EMA.json",
+        "exitCode": 2,
+        "validation": "validated-structure"
+      },
+      {
+        "file": "post-switch-CAWELON.json",
+        "exitCode": 2,
+        "validation": "validated-structure"
+      },
+      {
+        "file": "post-account-switch-CAWELON.json",
+        "exitCode": 2,
+        "validation": "validated-structure"
+      }
+    ]
+  },
+  "limitations": [
+    "One observed direction for each change, with one existing MetaMask profile and three cards sharing one selected account",
+    "Event-driven stopped UI and subsequent provider probes observed; raw provider event payloads were not captured",
+    "No live race during an in-flight read is claimed",
+    "Snapshots and hashes are recorded observations, not independent authentication or security approval",
+    "Outside immutable review ZIP 128ee11; implementation and complete test suite unchanged",
+    "Native MetaMask control remains dependent on the tool being able to identify its URL; user performed these two selections"
+  ],
+  "signatures": false,
+  "transactions": false,
+  "privateKeysAccessed": false,
+  "githubWrites": false,
+  "localEvidenceHashes": [
+    {
+      "name": "account-change-stopped.jpg",
+      "bytes": 36205,
+      "sha256": "8a3edd7b3b0beebef5d076b0527634e23e25418f835f7d307a3b31b391cffd3a"
+    },
+    {
+      "name": "account2-probe-after-switch.txt",
+      "bytes": 941,
+      "sha256": "b63204f76b9188dc5527ad1d3710fe4e9304346bb98faf687dd2d322678c8ed5"
+    },
+    {
+      "name": "account2-read-after-switch.jpg",
+      "bytes": 29148,
+      "sha256": "2d3e34782f72d7c54fe63495c1dd883cb1ecde17326bbc0163fb3f25b941564c"
+    },
+    {
+      "name": "after-account-reconnect-backup.json",
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a"
+    },
+    {
+      "name": "after-account-switch-backup.json",
+      "bytes": 10103,
+      "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc"
+    },
+    {
+      "name": "after-account-switch.json",
+      "bytes": 1808,
+      "sha256": "fd8ed38cac68bfe6d7c76a488e25633f5f8e25b03b52bc9e3d2be4d7f727a73b"
+    },
+    {
+      "name": "after-bottom-selector-switch-backup.json",
+      "bytes": 10100,
+      "sha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0"
+    },
+    {
+      "name": "after-bottom-selector-switch.json",
+      "bytes": 1489,
+      "sha256": "674fbe8c76d75d84ce8c332a87743816f72b790642220f6cfe73769f2446b012"
+    },
+    {
+      "name": "after-network-reconnect-backup.json",
+      "bytes": 10103,
+      "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc"
+    },
+    {
+      "name": "before-bottom-selector-switch-backup.json",
+      "bytes": 10100,
+      "sha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0"
+    },
+    {
+      "name": "before-bottom-selector-switch.jpg",
+      "bytes": 29217,
+      "sha256": "be1be549c3f1286638adb2e232b791c76571ac53c2ff6337e510f5ac89de44dd"
+    },
+    {
+      "name": "before-bottom-selector-switch.json",
+      "bytes": 1073,
+      "sha256": "32c647ae57b5239b7fde66e4f565fb4968bf6e0c0a5687b9832acd9b9fc88107"
+    },
+    {
+      "name": "network-change-stopped.jpg",
+      "bytes": 27805,
+      "sha256": "c26cb98062a799e4edbd69b4ffdc2e1a8238d4cb816146b0522df5daeccdbf18"
+    },
+    {
+      "name": "post-account-switch-CAWELON.json",
+      "bytes": 668,
+      "sha256": "9ad5fede383c36894feec434cf8e478ef74312c9e8cf3c247569573deee855e0"
+    },
+    {
+      "name": "post-account-switch-DAT.json",
+      "bytes": 664,
+      "sha256": "3ab93726615de74afc93de3c4d92200342871013e65f30f3b1b100e2aceb5c3c"
+    },
+    {
+      "name": "post-account-switch-EMA.json",
+      "bytes": 664,
+      "sha256": "ff44bca191030947a63bf29301f002f606368408529ae1dc38565985aae26c92"
+    },
+    {
+      "name": "post-account-switch-read-status.json",
+      "bytes": 2436,
+      "sha256": "6466dadce31d7aa29abaf221139070e344b74d86a43625678a599f2a19921429"
+    },
+    {
+      "name": "post-switch-CAWELON.json",
+      "bytes": 669,
+      "sha256": "38758ca3afbe67ab1f8ab64b0180cc1e95f41468997caf2e23bd4dcd0dc864f4"
+    },
+    {
+      "name": "post-switch-DAT.json",
+      "bytes": 665,
+      "sha256": "86e4aee83296fd41a66b03777790fa268eb68a4017c9264be4dda6c49c424d62"
+    },
+    {
+      "name": "post-switch-EMA.json",
+      "bytes": 665,
+      "sha256": "aa336d661ad59cb1910d744f9cd15667fa9749189e8b0f468482666e610804a3"
+    },
+    {
+      "name": "post-switch-read-status.json",
+      "bytes": 731,
+      "sha256": "923c2a5d9bdf7b9d3946c92034390db030ed87726a705ddd12f238a494db5f84"
+    },
+    {
+      "name": "reconnected-after-account-switch.json",
+      "bytes": 621,
+      "sha256": "edbed065d2c4a290f9854b970c1edbabc2c1ee1d4c9e8a68d8d04067655346fb"
+    },
+    {
+      "name": "reconnected-after-network-switch.json",
+      "bytes": 621,
+      "sha256": "014fe416ac6767a63a4fc6c60142ae638a5636a16710b8a1859c845867a65cd0"
+    },
+    {
+      "name": "saved-file-validations.json",
+      "bytes": 20262,
+      "sha256": "2d5248c395f4804b9b3a149ca99763664632881ea0e2a07ecb2bbe37e8c1620e"
+    },
+    {
+      "name": "sepolia-probe-after-switch.txt",
+      "bytes": 1036,
+      "sha256": "570e3390101d6b4631bca8eeb62ec3a0500827cd1e2ee66d1e2e082f4cdaa0de"
+    },
+    {
+      "name": "sepolia-read-after-network-switch.jpg",
+      "bytes": 29221,
+      "sha256": "0dd9dc8c1cadefe85073702db2aa6ea84b76ebb4950ec1d24b31a49a9b548a78"
+    }
+  ]
+}

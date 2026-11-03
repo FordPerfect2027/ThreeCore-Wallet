@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {dirname,resolve,relative,isAbsolute,sep} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {realpath} from 'node:fs/promises';
+import {verifyPackage} from './verify-package.mjs';
+assert.equal(process.argv.length,3,'Usage: node restore-latest.mjs <new-directory>');
+const root=await realpath(dirname(fileURLToPath(import.meta.url)));
+const target=resolve(process.argv[2]);
+const parent=await realpath(dirname(target));
+const within=relative(root,parent);
+assert(within&& (within==='..'||within.startsWith('..'+sep)||isAbsolute(within)),'RESTORE_OUTSIDE_PACKAGE');
+const checked=await verifyPackage(root);
+console.log(JSON.stringify({completePackage:checked}));
+const output=execFileSync(process.execPath,[resolve(root,'update/restore-update.mjs'),resolve(root,'base'),target],{encoding:'utf8',windowsHide:true,maxBuffer:16*1024*1024,stdio:['ignore','pipe','pipe']});
+process.stdout.write(output);

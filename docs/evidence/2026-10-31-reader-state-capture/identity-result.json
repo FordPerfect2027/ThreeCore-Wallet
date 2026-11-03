@@ -1,0 +1,23 @@
+{
+  "schema": "threecore-token-observation-v1",
+  "catalogVersion": "threecore-erc20-2026-10-23",
+  "agent": "DAT",
+  "account": "0x1111111111111111111111111111111111111111",
+  "chainId": 8453,
+  "siteOrigin": "http://127.0.0.1:4188",
+  "connectionEpoch": 1,
+  "blockNumber": "42",
+  "blockHash": "0xabababababababababababababababababababababababababababababababab",
+  "tokenAddress": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+  "hasCode": true,
+  "metadata": {
+    "name": "DATCORE",
+    "symbol": "DAT",
+    "decimals": 18,
+    "totalSupply": "1000000000000000000000000000"
+  },
+  "balanceBaseUnits": "1234567890123456789",
+  "nativeBalanceBaseUnits": "9007199254740993123",
+  "readOnly": true,
+  "securityAudit": false
+}

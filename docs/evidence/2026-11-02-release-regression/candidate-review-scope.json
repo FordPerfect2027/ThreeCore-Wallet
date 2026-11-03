@@ -1,0 +1,142 @@
+{
+  "schema": "threecore.candidate-review-scope.v1",
+  "reviewedAt": "2026-11-02T02:14:43.767Z",
+  "base": "07041f00efdb503cb76a06fbe12e5531cb380930",
+  "head": "529772807f32e637f19a26853d8a209482fa2f55",
+  "files": [
+    {
+      "path": "examples/file-read-panel.js",
+      "added": 1,
+      "deleted": 1,
+      "sha256": "47d458d04d844c007d954efb4a521206fe6da4ac003b0ded32a30e23641a5413"
+    },
+    {
+      "path": "examples/index.html",
+      "added": 1,
+      "deleted": 1,
+      "sha256": "372096245ec9cadb1afbf7d0e4139fcfdb9dce3d89614fdaeb9248b920767c13"
+    },
+    {
+      "path": "examples/transfer-archive-panel.js",
+      "added": 2,
+      "deleted": 1,
+      "sha256": "ebd10c3ccd337b3d122c60d31b2fd6642f50d57bebd55b6ecca13aace766b9b1"
+    },
+    {
+      "path": "examples/transfer-panel.js",
+      "added": 1,
+      "deleted": 1,
+      "sha256": "0c3f7db860f0ccf631a9c44662e54df6e13c0c9bfb90f12b1cb60d5131348858"
+    },
+    {
+      "path": "examples/transfer-vault-panel.js",
+      "added": 8,
+      "deleted": 0,
+      "sha256": "fcbeb0f2ee0dd2f66c2d7f0d86727d8f2c45fe079441bf8295c778d79188b337"
+    },
+    {
+      "path": "examples/wallet-demo.js",
+      "added": 4,
+      "deleted": 10,
+      "sha256": "f61c2eb012ea6f5bb8f7903cde3181ce1dbc0a87c06bb3fad8d69ceddf986ae3"
+    },
+    {
+      "path": "examples/wallet-setup-panel.js",
+      "added": 4,
+      "deleted": 5,
+      "sha256": "ebc8c21e3489afac745d27cd5370eb17c0e77ef4fc6060cb1e1e001ba7aa3190"
+    },
+    {
+      "path": "examples/workspace-panel.js",
+      "added": 20,
+      "deleted": 2,
+      "sha256": "1cd440385056d69d0105d702a10b8b8c9254ce89f02efd6d17e4554c204021fa"
+    },
+    {
+      "path": "scripts/inspect-wallet-saved-file.js",
+      "added": 1,
+      "deleted": 1,
+      "sha256": "2b04b7515f4fef1f58aa16020ad8835c3169f925f768b6076934eb24b2830520"
+    },
+    {
+      "path": "src/file-read-status.js",
+      "added": 14,
+      "deleted": 5,
+      "sha256": "46bb66b57b3198ef2976fc1dbbd3fcc955fdf3540e837401b3eedefa0c6c68ef"
+    },
+    {
+      "path": "src/security-rpc.js",
+      "added": 3,
+      "deleted": 1,
+      "sha256": "06d262fe66b2a14e2de2f70be52b931bc7b0ae1f46ecd045059702628acb3f4a"
+    },
+    {
+      "path": "src/transfer-archive-controller.js",
+      "added": 24,
+      "deleted": 13,
+      "sha256": "517a2849f5f3a0217230bfd862349126a502588d58bd9f3f4c95a1acf0a95cbb"
+    },
+    {
+      "path": "src/wallet-setup-file.js",
+      "added": 1,
+      "deleted": 1,
+      "sha256": "b0dd9a5aba309cf6d7996b8e1a047e9df72d45c8a963848752b2154200f8120a"
+    },
+    {
+      "path": "src/wallet-setup.js",
+      "added": 2,
+      "deleted": 5,
+      "sha256": "6d7486d4bf6c3e53ae6a0a7afee89160f0c9d1653c06e9a22c6dcb53bcd8f624"
+    },
+    {
+      "path": "src/workspace-file.js",
+      "added": 1,
+      "deleted": 1,
+      "sha256": "def9b3f96eb7dfe688db0dd9fd88933e4669b87661e11f444af0cbf2af213e65"
+    },
+    {
+      "path": "src/workspace-format.js",
+      "added": 1,
+      "deleted": 1,
+      "sha256": "b7c55e3ef5d74385311d6b92d7f6d94788f0aadc4b8a41c2ba35f2a6ee6b338b"
+    },
+    {
+      "path": "src/workspace-overview.js",
+      "added": 35,
+      "deleted": 5,
+      "sha256": "10221c48c1f5a39944cb45d57ade707b30598bec66d8aa6b88726329bf6e9cc7"
+    }
+  ],
+  "totals": {
+    "files": 17,
+    "added": 123,
+    "deleted": 54
+  },
+  "applicationRevision": "96b59459a0f593246c60f0bed4b52052211a464a",
+  "regressionRevision": "e5841f0d1b412b516b3e3eb4a81d75eabaf81edd",
+  "scope": "Bounded developer review of all production delta lines, related source context, and selected existing regression assertions. No independent audit or new test execution.",
+  "publicReadAt": [
+    "2026-11-02T02:13:40.211Z",
+    "2026-11-02T02:13:41.050Z"
+  ],
+  "publicJobsAllPassedAtRecordedHead": true,
+  "localChangesCoveredByPublicJobs": false,
+  "findings": [
+    {
+      "kind": "documentation",
+      "issue": "Handoff labelled older 34d1731 source and 16,451 passes as current and omitted the inclusive RPC range change.",
+      "resolution": "Replaced chronology with the exact current source/evidence map, scoped review table, package pins and remaining acceptance requirements."
+    }
+  ],
+  "newImplementationDefectEstablished": false,
+  "productSourceChanged": false,
+  "testsRerun": false,
+  "independentReviewCompleted": false,
+  "privateAccountFilesCopied": false,
+  "handoffLocalLinkFilesChecked": 10,
+  "reviewLimits": [
+    "Changed Wallet implementation lines and related context only; not every unchanged source line.",
+    "Selected existing test assertions inspected, not a new execution.",
+    "No real account/network switch or independent audit completed."
+  ]
+}

@@ -1,0 +1,450 @@
+# ThreeCore release preparation — November 1, 2026
+
+## Current completion record — November 3
+
+The [current development and release scope](ACCOUNT_REFRESH_DELIVERY_2026-11-03.md#current-development-and-release-scope)
+supersedes the historical assessment tables below. Developer review, the latest
+summary-display correction, complete Wallet regression, actual nine-record
+restoration and one-ZIP/four-source recovery are complete for their recorded
+scope. The standalone package pins Wallet `4dfa300` and the current three token
+revisions. No requester/reviewer identity is pending. Publication remains the
+requested later consolidated action; public CI and independent audit are not
+inferred from local checks. A numerical mainnet percentage remains unmeasured.
+
+The [final startup and browser recovery supplement](FINAL_STARTUP_RECOVERY_2026-11-03.md)
+now verifies ordinary startup from the restored package and the full fixed-version
+file return `4dfa300` → `36ed431` → `4dfa300`. All three actual browser downloads
+match the original nine-record backup exactly. The Edge control limitation and
+older public-checkpoint restriction retain their separate scope.
+
+## Developer-review follow-up — November 3
+
+The user assigned the technical review to Codex. That bounded review is now
+[complete](DEVELOPER_REVIEW_2026-11-03.md): 250 selected Wallet checks passed,
+and all three token environments passed the 14-case toolchain command, including
+six new grouped tests of the actual Hardhat configuration validators. Token
+changes add regression coverage and correct the maintenance record; contracts,
+helper archive and dependency pins are unchanged. The current source-change
+map is [recorded here](evidence/2026-11-03-developer-review/source-changes.json).
+The local workflow points to those new token commits for later publication.
+
+Requester/reviewer assignment is not a blocker to continuing development.
+Independent third-party approval is not claimed. The sealed b7df758 package
+remains unchanged; these changes are a follow-up for consolidated delivery.
+
+
+## Local development follow-up — November 3
+
+The latest status is in the [current handoff](RELEASE_HANDOFF_2026-11-02.md).
+At 13:25–13:35 JST, the [actual network/account-switch exercise](LIVE_RECOVERY_2026-11-03.md#actual-network-and-account-changes--13251335-jst)
+verified three-card invalidation after Mainnet-to-Sepolia and Account-1-to-Account-2
+changes, explicit reconnect, new provider-context reads and preservation of all
+nine original histories. Six new read-only records were saved separately. This
+supersedes the earlier switch-pending statements below for those observed directions.
+That earlier sealed package is `b7df758`, which includes this live evidence and
+the completed local token simulation. See the [review brief](REVIEW_BRIEF_2026-11-03.md)
+and [package verification](CONSOLIDATED_REVIEW_2026-11-03.md).
+The applied private helper repair has separate successful compatibility/build
+checks; its independent review and final release approval remain open.
+
+The [latest fixed-source package and complete regression](FIXED_CANDIDATE_REGRESSION_2026-11-03.md)
+pin `bf690f3`, including navigation recovery, connection diagnostics, evidence
+capacity repair and current token test pins. The clean restored source passed
+16,470 Node/HTTP and 1,024 synthetic browser cases. All 42 package files matched
+after extraction, with a successful alteration-detection control.
+Nine actual observations survived the earlier candidate restore/export byte-for-byte.
+Those regression results closed the later-source coverage gap. Live wallet and
+dependency follow-ups were still pending at that checkpoint; see the update above.
+The later [legacy compatibility check](LEGACY_HISTORY_RECOVERY_2026-11-03.md)
+found the old public checkpoint rejects shared-account files. A separate
+history-view copy retains all nine records and passes both decoders; this does
+not establish full browser rollback or change the sealed package.
+
+The [navigation recovery follow-up](NAVIGATION_RECOVERY_2026-11-03.md) at `f6f378c`
+closes the detached-tab interruption: supported same-origin links reopened the
+Wallet without another manual address-bar entry. Three real Account 1 / Sepolia
+reads completed at block 53,572,089; a verified nine-record backup preserves the
+six prior Account 2 observations. The 62 server/security cases passed. This is
+post-switch recovery evidence; live event invalidation was unverified at that stage.
+
+The [connection-stop diagnostic change](CONNECTION_STOP_DIAGNOSTICS_2026-11-03.md)
+at `856f670` preserves account/network/provider stop reasons after later idle
+stops, without storing wallet payloads. Its 453 targeted Node checks and the
+complete 1,024-case synthetic browser suite passed. It is newer than the fixed
+review package below. The operator reported switching to Account 1, but the
+browser operation connection failed before that post-switch read; live acceptance
+was unverified at that stage. This adds useful diagnostics, not a 90% completion claim.
+
+## Earlier fixed-candidate assessment — November 2, 22:36 JST
+
+The [standalone review package](DISTRIBUTION_CHECKPOINT_2026-11-02.md) pins Wallet
+source `212601977bc6dad8da298f11ebb9e7a421052571` and application `8fa0ed2`.
+Its restored, clean checkout now passed the [complete local regression](FIXED_CANDIDATE_REGRESSION_2026-11-02.md):
+16,454 Node/HTTP cases and 1,021 synthetic browser cases, with no failed, cancelled
+or skipped cases. This supersedes the previous full-regression coverage gap
+for the later copy/layout changes. It does not change product scope or prove 90%.
+
+| Release condition | Current evidence and remaining requirement |
+| --- | --- |
+| Fixed source and regression | The exact packaged Wallet source passed complete local checks. New token toolchain pins retain their separately recorded successful suites. Public PR #4's five passing jobs still apply to its older `07041f0` head; current remote CI remains pending publication. |
+| Evidence and reproducibility | The fixed package restored four complete Git histories and exact source exports; 254 manifests / 2,630 entries matched at packaging. New regression logs and their hashes are saved separately without replacing the source ZIP. |
+| Real wallet acceptance | Account 1/Mainnet and Account 2/Sepolia reads, six-record migration/return and explicit reconnect passed. The latest reported network switch still yielded Sepolia in the controlled tab; live account/chain switching remains unverified. |
+| File recovery | Actual Wallet and rehearsal file restoration and byte-identical round trips passed. Traversal of the original profile's Windows picker remains unverified; browser filechooser evidence is separate. |
+| Read-only/input protection | Existing dispatch/input/cancellation safeguards passed the fixed-source regression. The separate development Zod advisory and independent assessment remain open. |
+| Distribution and rollback | The unchanged fixed-source review package starts from a fresh folder. Actual candidate migration/return passed, but not rollback to an older immutable public release. The public Releases endpoint returned no releases at this check. |
+| Operational support | The operator guide, source pins, source-reconstruction evidence, backup procedures and review package are available. Actual extension-control limitations are recorded. |
+| Independent review and release decision | No independent review or release approval has been completed. These cannot be replaced by more self-tests. |
+
+The 90% planning target remains active. Essential unresolved conditions are not
+offset by test counts, repeated runs or elapsed time. Preserve the existing
+4231/4232 servers and unsaved user tabs. Collect work locally for the requested
+combined publication; no new user-wallet signature, transaction or key access
+is authorized. The records below retain their original historical scopes.
+
+## Earlier development record
+
+The [current review handoff](RELEASE_HANDOFF_2026-11-02.md) now consolidates the
+implementation, regression, token and distribution pins. Its November 2 public
+GET recheck confirms PR #4 remains open/draft at `07041f0`, with the same five
+successful jobs. The bounded review covers all 17 changed implementation files
+against that public head; it does not replace independent review or rerun tests.
+
+The [11:04 JST live-context follow-up](LIVE_ACCEPTANCE_2026-11-02.md#existing-account-context-rejection--11041106-jst-follow-up)
+now verifies wrong-network and wrong-account rejection against the actual
+MetaMask permission, explicit return/reconnection, and a byte-identical workspace
+export. It changes card configuration, not MetaMask's selected account/network;
+that sequence did not establish live switch-event invalidation or migration. The later
+[Account 2 / Sepolia acceptance](LIVE_ACCEPTANCE_2026-11-02.md#account-2--base-sepolia-successful-follow-up)
+now completes three-card reads, file save/restore and explicit reconnect.
+The subsequent [fixed-candidate migration and return](LIVE_ACCEPTANCE_2026-11-02.md#fixed-candidate-migration-and-return-completed)
+also passed: three new live reads at block 53,463,168; six Wallet records restored
+at the original origin; explicit reconnect; and byte-identical 7,237-byte Wallet
+exports. Six fictional rehearsal records and three cases also survived the
+candidate/original-origin file round trip with identical 17,387-byte session
+files. Live switch-event invalidation remains open. Returning to the preserved
+development server is not rollback to a separately pinned older public release.
+
+The latest [source reconstruction](DEPLOYMENT_SOURCE_RECONSTRUCTION_2026-11-02.md)
+reproduces complete runtime bytes for all six deployments. EMA/CAWELON required
+source-path reconstruction; DAT Mainnet additionally required removal of the
+one final LF absent from its recovered published source. Local compilation
+matches the separately saved RPC runtime and all three complete Mainnet creation
+inputs. This closes the DAT metadata comparison. These additions are newer than
+the 23d0a35 archive and do not close independent review or real-wallet switching.
+The separate Sepolia follow-up also locates and validates EMA/CAWELON creation
+and initial issuance, including complete creation-code matches and offline replay.
+
+The earlier [intended-PC acceptance](LIVE_ACCEPTANCE_2026-11-02.md) connected all
+three token cards to one existing MetaMask account on Base Mainnet, saved their
+observations, restored them into a separate empty tab, explicitly reconnected,
+and preserved byte-identical histories after stopping a pending read. Account
+and chain-change invalidation were not exercised in that sequence.
+The later Sepolia session used existing Account 2 for all three cards, saved
+three identity observations and one portfolio record per card, restored the
+actual backup after a DAT token-list edit, explicitly reconnected all cards,
+and produced a byte-identical 4,371-byte re-export. The previous Mainnet files
+remain unchanged. This closes the scoped Sepolia acceptance, not live switching
+or a full candidate-server migration at that stage; the later migration result
+is recorded above.
+The [latest full local regression](NATIVE_CRYPTO_TEST_WAIT_2026-11-02.md), at
+`e5841f0`, passed 16,454 Node/HTTP and 1,021 synthetic browser cases. The initial
+full-run failure and the test-only wait correction are retained.
+
+The earlier unchanged-input [deployed-runtime comparison](DEPLOYED_RUNTIME_COMPARISON_2026-11-02.md)
+covers all six registered ERC-20 deployments. Executable bytes and expected
+constructor immutables match the current builds; complete runtime bytes match
+only DAT on Sepolia because five metadata IPFS digests differ. The later path-only
+reconstruction above explains four of those differences, and recovered DAT source
+explains the fifth. A portable
+offline checker reproduces the distinction. This is developer evidence and
+does not close independent review or real-wallet acceptance.
+
+The latest application change at `8fa0ed2` distinguishes the card's requested
+network from the network returned by MetaMask. Actual Edge checks cover matching
+and mismatching displays; 69 existing cases passed. The observed provider still
+returned Sepolia, so the live-switch gate remains open. See the
+[follow-up record](LIVE_ACCEPTANCE_2026-11-02.md#requested-network-and-observed-network-distinguished).
+
+The earlier copy-only site-specific MetaMask guidance
+at `7c12a28` had its existing permitted-account, card-controller and
+connection-boundary suites passed 82 cases. It changes no RPC or permission
+behavior; live rendering and successful Sepolia reads were subsequently observed
+in the actual Edge session, separately from those tests. The earlier CSS-only permitted-address wrapping fix is
+at `307ed11`, verified in an actual Edge tab at a 296px detail width without
+horizontal overflow. The original working tab and server were preserved.
+The latest behavioral change is `96b5945`: the [RPC history-range correction](RPC_RANGE_BOUNDARY_2026-11-02.md)
+enforces the inclusive 2,000-block limit at the low-level dispatch and HTTP relay,
+with three reproduced failures becoming passes and 585 related cases passing.
+The original running server/tabs were preserved. The latest verified distribution includes this change. The new full
+Wallet/browser results at `e5841f0` include this application change.
+
+The latest [verified distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md) is
+23d0a35: 4,577 source files, 253 manifests / 2,483 evidence entries, 12 isolated
+startup/HTTP checks and a six-deployment offline replay from a fresh minimal
+runtime. The previous 16a0d33 package retained a successful DAT historical
+read. The earlier d904442 distribution discussed below is retained as history.
+The [bounded Zod exposure review](ZOD_EXPOSURE_2026-11-02.md) identifies the
+development surface without closing the advisory or independent-review gate.
+
+The latest [source portability and test-routing correction](SOURCE_PORTABILITY_2026-11-02.md)
+fixes ordinary token builds and an accidental support-preload test failure. All
+three builds, source/routing checks and local EVM/Wallet compatibility checks
+pass; DAT also passes the complete revised standard check command. The earlier
+source-newline mismatch is closed. Real-wallet and independent-review gates remain.
+
+The latest [historical Sepolia verifier correction](SEPOLIA_VERIFIER_2026-11-02.md)
+prevents RPC errors from becoming false PASS results. DAT passes 251 local
+read-only cases and a public historical checkpoint recheck with a reproduced,
+recorded-hash-matching reference. The final default path also passes its 24
+dedicated cases. The later source correction above closes newline portability;
+real-wallet acceptance remains open. This does not establish a release percentage.
+
+The next development target is a release candidate for the **read-only ThreeCore
+Wallet and offline operation rehearsal**, with DAT, EMA and CAWELON checked
+separately. The user's planning target is 90% or higher. The earlier 60% artwork
+was a provisional planning indicator; it is not a measured starting score.
+
+Work is organized around the release gates below. More test invocations, more
+checklist rows or the completed 600-item worklist do not advance a gate by
+themselves. An unresolved essential gate cannot be offset by many small fixes.
+This page does not extend the product to signing, transfers, approvals, custody,
+swaps, bridges, or autonomous spending.
+
+## Operator deadline and work order — updated November 2
+
+The operator set the target deadline to **November 2, 2026, 12:00 JST**
+(`2026-11-02T03:00:00Z`), correcting the earlier conversational reference to
+November 3. The target remains 90% preparation; neither the deadline nor elapsed
+time establishes a completion percentage or a release approval.
+
+Do not wait for three newly created or funded accounts. Complete implementation,
+saved-data compatibility/recovery preparation, candidate review and distribution
+work first. Use the existing accounts for the final real-wallet sequence; an
+optional three-distinct-account exercise can be left until that stage. Reading
+balances and logs does not require funding the observed addresses. A later
+transaction exercise would be separate scope and is not authorized here.
+
+The operator will use this PC for browsing during development. Continue file-
+based work without switching, reloading or closing their browsing tabs. Batch
+remaining real UI acceptance separately. Preserve the original port 4231
+process and unsaved Wallet/rehearsal data. Already passing full suites should
+not be repeated without a relevant code change, new failure or unresolved
+concern. Keep GitHub publication deferred for one combined update.
+
+The later [RPC response-body deadline correction](RPC_BODY_DEADLINE_2026-11-02.md)
+fixes five operational read-only commands in each token. All three complete
+227-entry read-only suites pass in sequential local runs; initial failed runs
+are retained. This source change is newer than the verified delivery below.
+It does not complete real-wallet or independent-review gates.
+
+The earlier [verified combined delivery](evidence/2026-11-02-release-regression/DISTRIBUTION_D904442.md)
+was `d9044422820973e53fa41e0c55908f6e34217d7f`: 4433 Wallet source files,
+253 evidence manifests / 2348 entries, ten isolated startup checks,
+and all 46 outer-archive entries matching after fresh extraction. All three
+token bundles restore into empty Windows directories with spaces in their paths.
+Each receives its own 19-package runtime from the existing npm cache and passes
+30 CLI/input cases; existing node_modules is not reused. Dependencies are not
+vendored, and these cases overlap the earlier 213-case suites. This delivery
+includes the history CLI and runtime-installation corrections, with the open
+Zod compatibility finding. It does not complete real-wallet acceptance.
+
+Subsequent [token dependency review and repair](TOKEN_DEPENDENCY_REVIEW_2026-11-02.md)
+patched two development dependencies and verified all three tokens again against
+the fixed Wallet source. Six audit package entries remain from one Zod root
+advisory and require compatible remediation/exposure review. This unresolved
+finding must accompany the candidate; it is not cleared by the earlier clean
+production-only audit, which predates the runtime dependency reclassification. The prepared new CI pins are local only and require the
+documented token-before-Wallet publication order. The `7d58d08` delivery includes the dependency and canonical-read corrections.
+Subsequent history CLI changes are tracked separately below.
+
+## Earlier acceptance-gate assessment
+
+| Gate | Completion evidence needed | Current assessment |
+| --- | --- | --- |
+| Fixed source and regression | A named commit with successful unit, HTTP, real Chrome fixture, and compiled-token CI jobs | The latest inspected public PR head is `07041f00efdb503cb76a06fbe12e5531cb380930`; [run 41311235726](https://github.com/FordPerfect2027/ThreeCore-Wallet/actions/runs/41311235726) completed all five jobs successfully. PR #4 remains open and draft. The [latest local regression at `e5841f0`](NATIVE_CRYPTO_TEST_WAIT_2026-11-02.md) passed 16,454 Node/HTTP and 1,021 synthetic browser cases. Its behavioral application source is `96b5945`; the later CSS-only change at `307ed11` has a separate actual Edge layout check. The latest copy-only guidance at `7c12a28` passed 82 existing related cases; its rendering was subsequently observed during the actual Account 2 / Sepolia acceptance. Both later changes postdate the full regression. The prior 150 compiled-token compatibility cases retain their own source scope and were not rerun. No new remote CI result or publication applies to the local changes |
+| Public evidence and reproducibility | All referenced files present in a fresh checkout and hashes/record invariants verified | A fresh Windows checkout exposed 460 evidence mismatches caused by automatic line-ending conversion. The [correction at `c53cb26`](EVIDENCE_PORTABILITY_2026-11-02.md) preserves original evidence bytes; its fresh checkout verifies 248 manifests / 2,231 entries with zero mismatches, plus historical-record consistency. The final local package receipt separately covers the new evidence folder. New local evidence has no remote CI result; the successful public evidence job belongs to `07041f0` |
+| Real wallet acceptance | All three token cards with existing accounts (sharing allowed); permission UI, exact balances/block, save/reload/restore, explicit reconnect, and a switch between two existing accounts | Partially completed: [intended-PC Mainnet and Sepolia sequences](LIVE_ACCEPTANCE_2026-11-02.md) passed three-card reads, actual file restore, explicit reconnect and stop/history retention. The fixed candidate now also passed new live reads, six-record migration, return and explicit reconnect. No new account is required. Live two-account/chain-change invalidation remains unverified |
+| File recovery on the intended PC | Actual downloaded bytes, verified re-import, confirmed restore, preserved originals, and a stopped/cancelled operation recorded | [Rehearsal recovery](OPERATOR_RECOVERY_2026-11-01.md) passed for six fictional records / three cases. [Real balance-history recovery](HISTORY_RECOVERY_2026-11-01.md) passed for one permitted EMA account with two observations. [Archive/vault recovery](VAULT_RECOVERY_2026-11-02.md) includes retained archives after disconnect/protective stop, saved-list survival across reload, duplicate-free collection re-import, cancelled/reviewed bundle import and byte-identical exports. [Isolated actual-file checks](ACTUAL_FILE_RECOVERY_2026-11-02.md) cover empty native stores and browser restarts. The [later actual migration](LIVE_ACCEPTANCE_2026-11-02.md#fixed-candidate-migration-and-return-completed) passed candidate and return restoration for both Wallet and rehearsal with byte-identical downloads. Native OS picker traversal remains separate |
+| Read-only and input protection | No write/signing RPC reachable through the supported controls; malformed input, stale provider responses, wrong identity/network and cancellation reviewed and tested | Existing guards and regression are present. A [bounded developer source review](OPERATOR_RECOVERY_2026-11-01.md#connection-guidance-and-bounded-source-review) traced connection/read dispatch, request filtering and stale-result protection. This does not replace review of the final candidate or independent review |
+| Reproducible distribution and rollback | A fixed-source archive that starts from a fresh directory; integrity checks and safe replacement/return instructions; no reliance on the developer's untracked files | The [23d0a35 combined distribution](DISTRIBUTION_CHECKPOINT_2026-11-02.md) passed 4,577 exported-file, 253-manifest / 2,483-entry and 12 startup checks. The newer [Wallet candidate f52109a](SOURCE_CHECKPOINT_2026-11-01.md) passed all 4,658 source-file comparisons and eight fresh startup conditions, then actual Wallet/rehearsal migration and return. Returning to the preserved development server with current client files does not prove a separately pinned older public-release rollback |
+| Operational support | Supported browsers/networks, bounded RPC behavior, failure/retry instructions, backup procedure, and troubleshooting records for the candidate | The [Japanese operator guide](OPERATOR_ACCEPTANCE_JA.md) consolidates account identity, failed connection, preservation, backup and restore steps. Rehearsal file recovery and one real EMA account's settings/history recovery were exercised on the intended PC. The new plain-file comparison also reports exact content matches and retained extra history |
+| Independent review and release decision | Separate review of the final scope and findings, explicit release decision and a deployment plan | Not completed. A developer's self-check or source publication is not independent review or deployment |
+
+The 431 CI HTTP cases exclude the separate local-navigation-help file included
+in `npm run test:wallet`; this explains the different CI/local subtotals. The
+three browser passes exercise the same 1,001 cases repeatedly, not 3,003 unique
+features. Compiled-token jobs use local EVMs and do not send public transactions.
+
+## Work completed after the 600-item checkpoint
+
+1. Reproduced and fixed the CI race in asynchronous report-review test setup.
+   The same native-digest timing control fails before and passes after;
+   [313 related cases also passed](CI_REVIEW_READINESS_2026-11-01.md).
+2. Re-ran the complete public CI successfully on the fixed source above.
+3. Integrated the existing public historical verification records from main
+   without replacing the ongoing implementation.
+4. Added an evidence-integrity CI job. This catches missing committed artifacts
+   as well as modified bytes, including files a local working directory could
+   otherwise supply accidentally. Results are retained as workflow artifacts.
+5. Re-established access to the existing rehearsal tab and opened the wallet
+   through its same-origin link in a separate tab. The rehearsal still showed
+   six fictional records and three comparison cases; it was not reloaded.
+6. Added a read-only source-package verifier and tested missing/changed/extra
+   files, fixed revision selection, size limits and directory redirection.
+   Verified a Git-exported package in a new directory and started its own
+   loopback server without changing the existing 4231 process.
+7. Changed the links between Wallet and operation rehearsal to open a separate
+   tab, with visible wording that tells the operator what will happen. Previously
+   they navigated the current tab, whose `pagehide` handler disposes in-memory
+   state; going back cannot be relied upon to recover it. The existing tab now
+   stays open. This does not add automatic storage or protect a tab that the
+   operator closes or reloads; the page explains when to save files.
+   In Microsoft Edge, ordinary clicks opened distinct tabs in both directions;
+   the Wallet report-name draft and the rehearsal's two fictional records
+   remained unchanged in their original tabs. The user's pre-existing six
+   fictional records and three cases were preserved without a reload. The
+   existing demo-route and local-navigation suites passed all eight cases.
+8. Exercised the complete rehearsal file cycle in Microsoft Edge, including
+   cancelling an import preview before applying a second reviewed import.
+   [Saved evidence](OPERATOR_RECOVERY_2026-11-01.md) includes both downloaded
+   JSON files, their matching hashes, a structural inspection and explicit
+   limits of the observed UI evidence.
+9. Added Japanese messages for wrong account, wrong chain and absent account
+   permission, without changing the identity checks. The existing controller
+   and connection-boundary suites passed 66 cases. Consolidated the operator
+   steps and recorded the bounded read-only source review.
+10. Added an explicit, read-only preview of already permitted wallet addresses,
+    with revalidation before input and a separate Connect action. This removed
+    the need for the operator to copy the selected address during resumption.
+    [Account reconnection evidence](ACCOUNT_RECONNECTION_2026-11-01.md) records
+    116 focused passes, 1,004 synthetic UI passes and the intended-PC observation.
+11. Exercised a real EMA balance-history file round trip and added an explicit
+    comparison of a verified plain backup with current settings and full history.
+    The [history-recovery record](HISTORY_RECOVERY_2026-11-01.md) documents two
+    actual observations and the distinct synthetic automated tests. This
+    continuation is being collected locally; it has not been pushed to GitHub.
+12. Fixed connection invalidation erasing explicitly accepted transfer archives.
+    Active operations and previews are still cancelled, while accepted records
+    remain available for offline JSON saving under their original context.
+    [Archive-retention evidence](TRANSFER_ARCHIVE_RETENTION_2026-11-01.md)
+    separates the automated verification, offline probe and subsequent
+    intended-PC result. The latter now passed for one permitted EMA account.
+    This is local work awaiting the operator's requested combined publication.
+13. Exercised saved-list persistence, idempotent collection re-import, cancelled
+    and reviewed working-bundle import, and individual-card restore in Microsoft
+    Edge. Fixed the generic inspector rejecting the app's own whole-list backup
+    and added the correct restore destination. [Recovery and guide evidence](VAULT_RECOVERY_2026-11-02.md)
+    includes the precise limits of the real-PC exercise and the separate
+    synthetic tests. No new history query or GitHub publication was performed.
+14. Completed the full local regression for the subsequent collection-guide
+    changes, corrected a deadline test's assumption about worker start, and
+    verified whole-list restore into an isolated empty native browser database.
+    [The regression record](RELEASE_REGRESSION_2026-11-02.md) preserves initial
+    failures, the passing reruns and limits. Recovered the two known public
+    accounts from verified backups before asking the operator to re-enter them;
+    the third real account remains unidentified.
+15. Exercised the review package in fresh directories, repaired incomplete Git
+    bundle history, and fixed Windows checkout conversion of checksummed files.
+    [Portability evidence](EVIDENCE_PORTABILITY_2026-11-02.md) retains the original
+    failures, 63 focused passes and the normal-Windows full checkout result.
+    The [independent-review handoff](RELEASE_HANDOFF_2026-11-02.md) is prepared;
+    preparation is not completion of an independent review.
+
+16. Corrected the actual repeated-account restrictions in Connect, permitted-account
+    input, setup export and workspace backup. Added one-account/three-token and
+    two-account scenarios, including shared-provider invalidation and reviewed
+    persistence. [Current evidence](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md)
+    records 16,451 full Node/HTTP passes, 1,021 full synthetic browser passes,
+    150 cases against fresh token builds, and six separately recorded real
+    public-RPC observations. No third real account is required for this scope.
+
+## Earlier real-wallet observations
+
+Account 1's previously missing public address was obtained through the supported
+permitted-account preview. EMA reconnection, canonical metadata/balance reads,
+settings/checkpoint preservation, reload, reviewed restore and Stop/Resume were
+subsequently observed on November 1; see the [resumption record](ACCOUNT_RECONNECTION_2026-11-01.md).
+
+On November 2, nine verified workspace backups identified the two known public
+accounts and their historical card assignments. The intended Edge Wallet tab
+again displayed Account 1, Base Mainnet and one already permitted address.
+No new wallet permission or balance read was performed. A later loss of browser
+debugger attachment prevented further UI/screenshot confirmation; the original
+tab and server were not reloaded or restarted. The public addresses and detailed
+observations remain in private local records.
+
+The existing Wallet's visible DOM and screenshot were subsequently recovered
+without reloading it: two EMA balance observations and one saved archive remained.
+Native browser control still could not establish the active URL for navigation
+to a separate empty-store test page, so that real restore was not performed.
+The temporary empty-store server was then closed; the original server remained.
+
+No third real account was found in those saved files. The initial backup and
+checkpoint collection contain synthetic repeated-digit identities, not a third
+real wallet. [The operator handoff now starts with saved configuration recovery](OPERATOR_ACCEPTANCE_JA.md#接続するアカウントをそろえる),
+followed by the existing permission preview. This one current Mainnet permission
+and two historical identities do not by themselves complete the real-wallet
+checks. The later [shared-account correction](SHARED_ACCOUNT_ACCEPTANCE_2026-11-02.md)
+permits those existing accounts and removes the missing third account as a
+prerequisite. Actual testnet observations are still recorded separately from Mainnet.
+
+The November 2 continuation also completed actual read-only Base Sepolia RPC
+queries for both recovered accounts and all three tokens at canonical block
+53,169,113: six zero-balance observations with contract code present. This did
+not use MetaMask or establish its testnet permission. Account-specific raw data
+remains private in Downloads; the packaged summary is redacted. The existing
+Wallet UI was readable, but further control failed before an action was
+confirmed. Its original tabs and server were preserved.
+
+## Earlier work order
+
+Evidence CI, the fresh-directory source/startup check and the intended-PC
+rehearsal file cycle have passed on their named revisions. Account 1 resumption
+and a two-observation EMA balance-history round trip have now been observed on
+the intended PC. Collect subsequent development and verification locally before
+any combined GitHub publication. One-account saved-collection persistence and
+re-import are also observed. The subsequent [isolated actual-file recovery](ACTUAL_FILE_RECOVERY_2026-11-02.md)
+passes empty-database collection import, complete Wallet restoration, browser-
+process restart and byte-identical native download on the intended PC. The
+original-profile OS chooser and real-wallet permission are separate checks.
+Continue the existing-account public-testnet acceptance matrix, then complete
+independent review before a release decision. Record each material
+finding with its source revision, reproduction, fix and verification. Keep the
+current 4231 server and the user's open rehearsal data intact. New test servers
+must bind loopback on unused ports and be closed only by their own test process.
+
+## Token canonical-read follow-up — November 2
+
+The [canonical token identity correction](CANONICAL_TOKEN_IDENTITY_2026-11-02.md)
+now pins all state reads by canonical block hash and rejects network/block
+changes. All three token read-only suites passed 159 cases, and three public
+Mainnet observations succeeded at block 53,389,236. CLI provider errors are
+redacted. Browser Wallet code, real-wallet acceptance and the remaining Zod
+finding are unchanged. The prepared token CI pins point to the new local
+commits. The 7f92929 delivery remains an earlier checkpoint and does not include
+this correction.
+
+The subsequent [balance and reference-quote correction](CANONICAL_TOKEN_IDENTITY_2026-11-02.md#follow-up-balances-and-reference-quotes)
+now extends canonical hash reads to those two standalone commands. Each token
+passes 194 full read-only cases, superseding the earlier overlapping 159-case
+run. Six new public-RPC observations succeeded; existing-account details are
+retained privately. Real-wallet UI acceptance and independent review remain
+separate.
+
+## History CLI follow-up — November 2
+
+The [history command correction](HISTORY_CLI_2026-11-02.md) now blocks known
+invalid input before RPC and redacts provider error details. Each token passes
+213 read-only cases; 19 history CLI/input cases are included. Before/after
+evidence reproduces unnecessary requests in the original commands. This does
+not close the remaining real-wallet, independent review or Zod gates.
+
+## Read-only runtime installation follow-up
+
+The [runtime installation correction](READ_ONLY_RUNTIME_2026-11-02.md) fixes a
+reproduced missing-viem startup failure after production-only installation.
+Each token passed the existing 213 read-only cases in its own fresh 19-package
+installation with development and optional dependencies omitted. Package versions,
+contracts and readers are unchanged. Full development Zod remediation, real-wallet
+UI acceptance and independent review remain open. The 7d58d08 combined delivery
+predates this follow-up; new CI jobs are prepared locally without a remote result.

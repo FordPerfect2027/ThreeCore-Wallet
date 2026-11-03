@@ -1,0 +1,15 @@
+{
+  "source": "39ce850",
+  "stagedStatus": "比較元の記録を読み込みました。「保存記録と比較する」で比較してください。",
+  "comparedStatus": "保存記録の比較が完了しました。外部通信は行っていません。",
+  "exactTextPreserved": true,
+  "explicitComparisonRequired": true,
+  "exactUiApi": true,
+  "nativeDifferenceBaseUnits": "4",
+  "missingContractRemainsUnknown": true,
+  "synthetic": true,
+  "nativeBrowserCases": 133,
+  "externalRpcCalls": 0,
+  "osPickerVerified": false,
+  "userWalletConnectionVerified": false
+}

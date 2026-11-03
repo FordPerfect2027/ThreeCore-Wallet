@@ -1,0 +1,135 @@
+Browser module preflight passed: 261 local modules.
+Browser completion summary: {"suite-status":"failed","tests-count":"154","tests-passed":"153","tests-failed":"1","unexpected-errors":"0","error-kinds":"","injected-fault":""}
+FAIL — saved collection guide: native inspection opens the collection reader without importing or requesting a wallet: File boundary UI assertion failed
+file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:61
+    catch (error) { throw Error(error.message + "\nRecent browser diagnostics:\n" + errors); }
+                          ^
+
+Error: Browser test cases failed
+Recent browser diagnostics:
+[19528:18452:1102/000447.435:INFO:CONSOLE:1354] "PASS — file-read: history native import clears content before cleanup and contains rejected notifications", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.435:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: settings inaccessible error cannot wedge the panel or overwrite its draft", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000447.447:INFO:CONSOLE:1354] "PASS — file-read: settings inaccessible error cannot wedge the panel or overwrite its draft", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.447:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: workspace inaccessible error cannot wedge the panel or overwrite its draft", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000447.473:INFO:CONSOLE:1354] "PASS — file-read: workspace inaccessible error cannot wedge the panel or overwrite its draft", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.473:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: settings panel cancellation cannot open a file from cleanup", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:14152:1102/000447.476:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 15372: アクセスが拒否されました。 (0x5)
+
+[19528:18452:1102/000447.498:INFO:CONSOLE:1354] "PASS — file-read: settings panel cancellation cannot open a file from cleanup", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.498:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: workspace panel cancellation cannot open a file from cleanup", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000447.529:INFO:CONSOLE:1354] "PASS — file-read: workspace panel cancellation cannot open a file from cleanup", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.529:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: production screen mounts status without wallet requests", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000447.587:INFO:CONSOLE:1354] "PASS — file-read: production screen mounts status without wallet requests", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.587:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: stop button ends waiter but keeps native reservation", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000447.667:INFO:CONSOLE:1354] "PASS — file-read: stop button ends waiter but keeps native reservation", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.667:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: four pending reads refuse a fifth without calling it", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000447.698:INFO:CONSOLE:1354] "PASS — file-read: four pending reads refuse a fifth without calling it", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.698:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: byte reservation cap is visible separately from job count", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000447.726:INFO:CONSOLE:1354] "PASS — file-read: byte reservation cap is visible separately from job count", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.726:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: native File stream ignores a broken unused fallback getter", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000447.732:INFO:CONSOLE:1354] "PASS — file-read: native File stream ignores a broken unused fallback getter", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.732:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: native stream cancellation releases its browser lock", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000447.737:INFO:CONSOLE:1354] "PASS — file-read: native stream cancellation releases its browser lock", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000447.737:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: global protection stop also stops file reads", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.083:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:50085/test/browser/?ci-report=30847775-9e47-40dd-8b92-8434d041b3d2&focus=file-read (0)
+
+[19528:18452:1102/000448.083:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:50085/test/browser/?ci-report=30847775-9e47-40dd-8b92-8434d041b3d2&focus=file-read (0)
+
+[19528:18452:1102/000448.083:INFO:CONSOLE:0] "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o", source: http://127.0.0.1:50085/test/browser/?ci-report=30847775-9e47-40dd-8b92-8434d041b3d2&focus=file-read (0)
+
+[19528:18452:1102/000448.086:INFO:CONSOLE:1354] "PASS — file-read: global protection stop also stops file reads", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.086:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: clock fault appears without echoing adapter errors", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.100:INFO:CONSOLE:1354] "PASS — file-read: clock fault appears without echoing adapter errors", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.100:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: throttled timer cannot accept result after deadline", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:14152:1102/000448.157:ERROR:chrome\updater\ipc\update_service_dialer_win.cc:77] Failed to open named pipe server process 15372: アクセスが拒否されました。 (0x5)
+
+[19528:18452:1102/000448.171:INFO:CONSOLE:1354] "PASS — file-read: throttled timer cannot accept result after deadline", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.171:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: native settings import keeps existing three-account schema", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.171:INFO:CONSOLE:1354] "PASS — file-read: native settings import keeps existing three-account schema", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.171:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: native malformed UTF-8 is rejected 255", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.171:INFO:CONSOLE:1354] "PASS — file-read: native malformed UTF-8 is rejected 255", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.171:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: native malformed UTF-8 is rejected 195", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.171:INFO:CONSOLE:1354] "PASS — file-read: native malformed UTF-8 is rejected 195", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.171:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: native malformed UTF-8 is rejected 244,144,128,128", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.177:INFO:CONSOLE:1354] "PASS — file-read: native malformed UTF-8 is rejected 244,144,128,128", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.177:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: partial native stream is rejected without a completed count", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.183:INFO:CONSOLE:1354] "PASS — file-read: partial native stream is rejected without a completed count", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.183:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: stopped panel does not stop a shared service used elsewhere", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.215:INFO:CONSOLE:1354] "PASS — file-read: stopped panel does not stop a shared service used elsewhere", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.215:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: detached button cannot cancel later work", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.259:INFO:CONSOLE:1354] "PASS — file-read: detached button cannot cancel later work", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.259:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: unknown aggregate field never appears in DOM name", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.263:INFO:CONSOLE:1354] "PASS — file-read: unknown aggregate field never appears in DOM name", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.263:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: unknown aggregate field never appears in DOM path", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.268:INFO:CONSOLE:1354] "PASS — file-read: unknown aggregate field never appears in DOM path", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.268:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: unknown aggregate field never appears in DOM content", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.274:INFO:CONSOLE:1354] "PASS — file-read: unknown aggregate field never appears in DOM content", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.274:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: unknown aggregate field never appears in DOM account", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.279:INFO:CONSOLE:1354] "PASS — file-read: unknown aggregate field never appears in DOM account", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.279:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: unknown aggregate field never appears in DOM debug", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.284:INFO:CONSOLE:1354] "PASS — file-read: unknown aggregate field never appears in DOM debug", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.284:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: fixed cancellation failure message never displays thrown text", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.288:INFO:CONSOLE:1354] "PASS — file-read: fixed cancellation failure message never displays thrown text", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+[19528:18452:1102/000448.289:INFO:CONSOLE:1337] "Starting synthetic UI case: file-read: normal demo import cancellation leaves saved browser sentinel intact", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1337)
+
+[19528:18452:1102/000448.371:INFO:CONSOLE:1354] "PASS — file-read: normal demo import cancellation leaves saved browser sentinel intact", source: http://127.0.0.1:50085/test/browser/ui-tests.js (1354)
+
+
+    at runBrowserPage (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:61:27)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/scripts/test-browser-ui.js:109:30
+
+Node.js v24.19.0

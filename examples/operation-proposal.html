@@ -1,0 +1,29 @@
+<!doctype html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>提案と使用条件の照合 — ThreeCore</title><link rel="stylesheet" href="/examples/operation-rehearsal.css">
+</head><body><main><header>
+<a href="/budget/evidence/" target="_blank" rel="noopener">予算と残高の照合を別タブで開く</a>
+<a href="/proposals/new/" target="_blank" rel="noopener">提案と使用条件を画面で作成する</a>
+<a href="/proposals/quote/" target="_blank" rel="noopener">提案と見積もりの照合を別タブで開く</a>
+<p class="eyebrow">DAT · EMA · CAWELON</p><h1>提案と使用条件の照合</h1>
+<p>提案の対象dApp・口座・ネットワーク・使用額・期限を、比較条件と保存済みの予算・残高に照らして確認します。</p>
+<p class="notice">保存資料を使った確認です。AIによる提案生成や、dAppへの接続・取引実行は行いません。条件が一致しても、現在の残高や対象サービスの安全性を確認したことにはなりません。</p>
+</header>
+<section aria-labelledby="proposal-source-title"><h2 id="proposal-source-title">1. 確認する資料</h2>
+<p>「提案と使用条件を作成」で保存したファイル1個、または以前ここで保存した確認記録1個を選んでください。提案・使用条件・予算と残高の照合ファイルを3個まとめて選ぶ方法も使えます。</p>
+<label class="file-label">提案の確認ファイル<input id="proposal-file" type="file" accept=".json,application/json" multiple></label>
+<p id="proposal-status" role="status" aria-live="polite">ファイルを選んでください。</p>
+<p id="proposal-recorded" class="small"></p>
+<div id="proposal-preview" hidden><h3>提案の内容</h3><p id="proposal-context" class="small"></p><p id="proposal-target" class="small"></p><p id="proposal-amounts" class="small"></p>
+<p id="proposal-origin" class="small"></p><p id="proposal-rationale" class="rehearsal-difference-detail"></p>
+<p class="small">提案元の名前と説明はファイルに書かれた内容です。本人確認や実行の承認には使いません。金額はトークンの最小単位・weiで表示しています。</p></div>
+<button id="proposal-check" type="button" disabled>現在の時刻で照合する</button> <button id="proposal-cancel" type="button">確認を取り消す</button>
+</section>
+<section id="proposal-result" aria-labelledby="proposal-result-title" hidden><h2 id="proposal-result-title">2. 照合結果</h2>
+<p id="proposal-outcome" class="notice"></p><p id="proposal-time" class="small"></p><ul id="proposal-reasons"></ul>
+<div class="table-wrap"><table><caption>照合に使用した残高記録</caption><thead><tr><th>トークン</th><th>口座</th><th>ネットワーク・ブロック</th></tr></thead><tbody id="proposal-rows"></tbody></table></div>
+<p class="small">表示は照合時点の結果です。保存記録の発行者・時刻、現在の残高や費用、dAppの動作は確認していません。同じ提案が過去に使われたかも判定しません。</p>
+<p>保存する記録には、提案・比較条件・公開アドレスを含む元の資料と、照合時刻・結果が入ります。</p>
+<button id="proposal-save" type="button" disabled>結果と元の資料を保存</button><p id="proposal-save-status" role="status" aria-live="polite"></p>
+</section></main><script type="module" src="/examples/operation-proposal-page.js"></script></body></html>

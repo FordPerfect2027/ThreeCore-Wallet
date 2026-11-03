@@ -1,0 +1,301 @@
+[
+  {
+    "id": "@nomicfoundation/hardhat-zod-utils@3.0.8-threecore-zod4.1",
+    "name": "@nomicfoundation/hardhat-zod-utils",
+    "version": "3.0.8-threecore-zod4.1",
+    "size": 14108,
+    "unpackedSize": 53354,
+    "shasum": "cc4a13a1c921b43035d4d4e83efd6109d795c392",
+    "integrity": "sha512-IAOiXFGMOLqMkkNYeAo23o6U3zXM62IOre7IV2zd6TLIrLF7MemG2+Gm3D6hlG69TUuPzgBp4iuI+6HTKels0w==",
+    "filename": "nomicfoundation-hardhat-zod-utils-3.0.8-threecore-zod4.1.tgz",
+    "files": [
+      {
+        "path": "LICENSE",
+        "size": 1073,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 229,
+        "mode": 420
+      },
+      {
+        "path": "THREECORE-MIGRATION.md",
+        "size": 1393,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/index.d.ts",
+        "size": 5492,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/index.js",
+        "size": 6288,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/index.js.map",
+        "size": 2889,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/index.d.ts",
+        "size": 402,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/index.js",
+        "size": 435,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/index.js.map",
+        "size": 361,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/access-list.d.ts",
+        "size": 319,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/access-list.js",
+        "size": 316,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/access-list.js.map",
+        "size": 494,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/address.d.ts",
+        "size": 159,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/address.js",
+        "size": 818,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/address.js.map",
+        "size": 833,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/any.d.ts",
+        "size": 79,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/any.js",
+        "size": 87,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/any.js.map",
+        "size": 213,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/authorization-list.d.ts",
+        "size": 419,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/authorization-list.js",
+        "size": 493,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/authorization-list.js.map",
+        "size": 605,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/data.d.ts",
+        "size": 87,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/data.js",
+        "size": 500,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/data.js.map",
+        "size": 606,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/hash.d.ts",
+        "size": 87,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/hash.js",
+        "size": 646,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/hash.js.map",
+        "size": 731,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/quantity.d.ts",
+        "size": 87,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/quantity.js",
+        "size": 444,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/quantity.js.map",
+        "size": 591,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/rpc-parity.d.ts",
+        "size": 85,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/rpc-parity.js",
+        "size": 691,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/rpc-parity.js.map",
+        "size": 823,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/tx-request.d.ts",
+        "size": 774,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/tx-request.js",
+        "size": 1032,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/types/tx-request.js.map",
+        "size": 1162,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/utils.d.ts",
+        "size": 136,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/utils.js",
+        "size": 273,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/utils.js.map",
+        "size": 351,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/validate-params.d.ts",
+        "size": 239,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/validate-params.js",
+        "size": 1599,
+        "mode": 420
+      },
+      {
+        "path": "dist/src/rpc/validate-params.js.map",
+        "size": 1631,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 1232,
+        "mode": 420
+      },
+      {
+        "path": "src/index.ts",
+        "size": 6977,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/index.ts",
+        "size": 402,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/types/access-list.ts",
+        "size": 517,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/types/address.ts",
+        "size": 883,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/types/any.ts",
+        "size": 108,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/types/authorization-list.ts",
+        "size": 733,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/types/data.ts",
+        "size": 538,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/types/hash.ts",
+        "size": 684,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/types/quantity.ts",
+        "size": 474,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/types/rpc-parity.ts",
+        "size": 740,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/types/tx-request.ts",
+        "size": 1649,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/utils.ts",
+        "size": 289,
+        "mode": 420
+      },
+      {
+        "path": "src/rpc/validate-params.ts",
+        "size": 1732,
+        "mode": 420
+      },
+      {
+        "path": "tsconfig.json",
+        "size": 424,
+        "mode": 420
+      }
+    ],
+    "entryCount": 57,
+    "bundled": []
+  }
+]

@@ -1,30 +1,16 @@
 #!/usr/bin/env node
-import { open } from "node:fs/promises";
+import { readBoundedLocalBytes } from "./read-bounded-local-file.js";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { decodeEncryptedArchive, ENCRYPTED_ARCHIVE_LIMIT } from "../src/encrypted-library-archive.js";
-import { encryptedLibrarySummary, libraryErrorCode } from "../src/encrypted-library-model.js";
+import { encryptedLibrarySummary, libraryErrorCode, EncryptedLibraryError } from "../src/encrypted-library-model.js";
 
 /** Offline inspection only. Does not request a password, decrypt, import or modify a file. */
 export async function inspectEncryptedLibraryFile(path) {
-  let handle;
   try {
-    handle = await open(path, "r");
-    const before = await handle.stat();
-    if (!before.isFile() || before.size < 1 || before.size > ENCRYPTED_ARCHIVE_LIMIT) {
-      return { ok: false, code: "LIBRARY_FORMAT" };
-    }
-    const bytes = new Uint8Array(before.size);
-    let offset = 0;
-    while (offset < bytes.length) {
-      const result = await handle.read(bytes, offset, Math.min(65536, bytes.length - offset), offset);
-      if (result.bytesRead < 1) return { ok: false, code: "LIBRARY_FORMAT" };
-      offset += result.bytesRead;
-    }
-    const after = await handle.stat();
-    if (after.size !== before.size || after.mtimeMs !== before.mtimeMs || after.ino !== before.ino) {
-      return { ok: false, code: "LIBRARY_CONFLICT" };
-    }
+    const bytes = await readBoundedLocalBytes(path, ENCRYPTED_ARCHIVE_LIMIT, {
+      fail: code => { throw new EncryptedLibraryError(code); }, sizeCode: "LIBRARY_FORMAT", changedCode: "LIBRARY_CONFLICT",
+    });
     let text;
     try { text = new TextDecoder("utf-8", { fatal: true }).decode(bytes); }
     catch { return { ok: false, code: "LIBRARY_FORMAT" }; }
@@ -35,7 +21,6 @@ export async function inspectEncryptedLibraryFile(path) {
       passwordChecked: false, workspaceDecrypted: false, imported: false,
       note: "Envelope structure and ciphertext digests verified; password authentication has not been performed." };
   } catch (error) { return { ok: false, code: libraryErrorCode(error) }; }
-  finally { await handle?.close().catch(() => {}); }
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {

@@ -1,0 +1,14 @@
+Development dependency review supplement / 2026-11-02
+
+The Zod advisory remains open: https://github.com/advisories/GHSA-mrhx-c7xc-m3w5
+The registry still identifies installed Zod 3.25.76 as affected; the official advisory lists 4.6.6 as patched. The earlier major-version compatibility probe failed, so no blanket override was adopted.
+
+A bounded follow-up imported the installed Hardhat RPC collection schemas directly, without creating an account handler or reading configuration/keys. For 1, 4, 16 and 64 fictional invalid objects, the access-list schema produced 2 issues per object and the authorization-list schema produced 6. This confirms a development validation surface that accumulates issues; it does not reproduce resource exhaustion or prove public network exploitability.
+
+A direct-import scan of Wallet src/examples found no Zod/Hardhat imports. This is static evidence only, not universal dynamic reachability proof. Separately, each freshly restored minimal runtime contains 19 packages and no Hardhat, compiler or Zod. Those profiles are distinct from the affected full development installation.
+
+No advisory waiver, independent review or security clearance is asserted. Do not expose a development Hardhat service or accept untrusted arbitrary transaction/configuration payloads on the basis of this check. The supported read-only runtime and the original 4231 application were not changed.
+
+ZOD-EXPOSURE.json contains exact versions, source hashes and bounded observations. The method file retains local paths; it is a recorded method rather than a general-purpose installer. An initial analysis-only assertion counted seven authorization fields; inspection showed six, and the method was corrected before recording results.
+
+A dated public npm metadata check found Hardhat 3.21.2 and helper 3.0.8 as latest, still declaring Zod ^3.23.8; latest Zod was 4.6.7. This suggests that updating Hardhat alone would not remove the affected dependency range. No package was installed or changed by that metadata lookup. Exact responses are identified by hashes in TOOLCHAIN-METADATA.json.

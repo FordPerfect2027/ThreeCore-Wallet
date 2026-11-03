@@ -1,0 +1,51 @@
+Running node:test tests
+
+  CAWELONCore
+    ✔ uses CAWELON CORE as the token name
+    ✔ uses CAWELON as the token symbol
+    ✔ uses 18 decimals
+    ✔ publishes the fixed supply unit constant
+    ✔ publishes the fixed base-unit supply constant
+    ✔ mints the complete supply exactly once
+    ✔ assigns the complete supply to the initial holder
+    ✔ rejects the zero address as initial holder (249ms)
+    ✔ transfers CAWELON between holders
+    ✔ rejects transfers greater than the holder balance
+    ✔ mints to a separate initial holder, not the transaction sender
+    ✔ rejects a burn exceeding the spender allowance
+    ✔ rejects a permit signed for another contract
+    ✔ records ERC-20 allowances (135ms)
+    ✔ supports allowance-based transfers (82ms)
+    ✔ lets a holder burn its own CAWELON
+    ✔ allows burnFrom only through an explicit allowance
+    ✔ blocks burnFrom without an allowance
+    ✔ blocks transfers to the zero address
+    ✔ supports EIP-2612 nonce tracking
+    ✔ executes a signed EIP-2612 permit and rejects its replay
+    ✔ rejects an expired EIP-2612 permit
+    ✔ publishes the expected EIP-712 domain
+    ✔ does not expose administrator mint, pause, or upgrade functions (152ms)
+    ✔ does not expose an owner or administrator getter (118ms)
+
+  CAWELONCore permit authorization boundaries
+    ✔ rejects wrong chain without changing state or consuming the valid permit (140ms)
+    ✔ rejects wrong contract without changing state or consuming the valid permit
+    ✔ rejects wrong domain name without changing state or consuming the valid permit
+    ✔ rejects wrong version without changing state or consuming the valid permit
+    ✔ rejects wrong nonce without changing state or consuming the valid permit
+    ✔ rejects wrong signer without changing state or consuming the valid permit
+    ✔ rejects changed owner without changing state or consuming the valid permit
+    ✔ rejects changed spender without changing state or consuming the valid permit
+    ✔ rejects changed value without changing state or consuming the valid permit
+    ✔ rejects changed deadline without changing state or consuming the valid permit
+
+  CAWELONCore balance and allowance invariants
+    ✔ preserves total supply and account balances across delegated transfers
+    ✔ rejects an unapproved transferFrom without changing balances
+    ✔ does not allow delegated spending beyond remaining allowance
+    ✔ reduces supply exactly by cumulative burns without changing other balances
+
+
+  39 passing (6808ms)
+
+

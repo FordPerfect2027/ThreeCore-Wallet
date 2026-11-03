@@ -1,0 +1,45 @@
+✔ pre-aborted diagnostic signals prevent transport even if aborted is shadowed (4.9063ms)
+✔ caller cancellation ends a hanging fetch, aborts its transport signal and consumes late failure (20.956ms)
+✔ late headers after cancellation release their unread body (3.4556ms)
+✔ cancellation during response-body reading does not return an empty or zero result (67.9429ms)
+✔ request capture that cancels cannot start a subsequent fetch (1.0185ms)
+✔ completed reads release cancellation listeners and preserve reusable transport (26.3774ms)
+✔ per-request timeout remains distinguishable from later caller cancellation (115.7815ms)
+✖ invalid signal and accessor options fail before transport (3.7168ms)
+✔ network pre-aborted diagnostics do not start a read (2.8314ms)
+✔ network cancellation at the first response prevents subsequent requests (2.1259ms)
+✔ network options are captured without running input getters (0.7656ms)
+✔ contracts pre-aborted diagnostics do not start a read (1.3746ms)
+✔ contracts cancellation at the first response prevents subsequent requests (0.8865ms)
+✔ contracts options are captured without running input getters (0.5077ms)
+✔ pools pre-aborted diagnostics do not start a read (1.8829ms)
+✔ pools cancellation at the first response prevents subsequent requests (1.2011ms)
+✔ pools options are captured without running input getters (0.4848ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 16
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 591.6722
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-public-cancel-draft-TldU7b\test\public-diagnostic-cancellation.test.js:46:1
+✖ invalid signal and accessor options fail before transport (3.7168ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-public-cancel-draft-TldU7b/test/public-diagnostic-cancellation.test.js:47:98)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_SIGNAL' },
+    operator: 'throws',
+    diff: 'simple'
+  }

@@ -1,0 +1,39 @@
+{
+  "token": "DAT",
+  "kind": "readiness",
+  "startedAt": "2026-11-01T21:27:18.274Z",
+  "finishedAt": "2026-11-01T21:27:24.441Z",
+  "endpoint": "https://mainnet.base.org",
+  "exitCode": 0,
+  "sourceSha256": {
+    "src/canonical-state-read.js": "1947bbf1d2ef78e5152523b4ec93602dab03f6d24d450484f85f4429176c765b",
+    "src/wallet-readiness.js": "8fd73a9885ab722982261bf1b5f9d8a2ecd47172f214258f183a0d0a8a30dcbf",
+    "src/dex-quote.js": "3df944fe80188d85878438f1b9fcc0e870760b779be874b36c48bab37afff116",
+    "scripts/inspect-wallet-readiness.js": "da2a2a66e748106bb4215e9fca9dcddf3e9ef3ab7618d9eeb41ede7140865206",
+    "scripts/quote-dex.js": "480518792ba9b3801326bd4883af17a372ff9cbafb76c4b4f43551458b5da11c"
+  },
+  "privateOriginalSha256": "515271c9520c17933eaf7b0fa4b2222778e17332254b3f9f8b41e30b06aad2e4",
+  "observation": {
+    "chainId": 8453,
+    "observedBlockNumber": "53389548",
+    "observedBlockHash": "0xc40b3e92705fd58e9154afc437b30d020f9235e329540f1146a1a57d42d6ac1f",
+    "contractAddress": "0x6c83dd253F2F882B9884Fd1ac3A7754ED6405de5",
+    "classicRouterAddress": "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+    "canonicalBlockRequired": true,
+    "canonicalBlockRechecked": true,
+    "readOnly": true,
+    "walletConnected": false,
+    "transactionSent": false,
+    "approvalGranted": false,
+    "contractAudited": false
+  },
+  "redacted": [
+    "publicWalletAddress",
+    "nativeGasBalanceWei",
+    "tokenBalanceBaseUnits",
+    "existingClassicRouterAllowanceBaseUnits",
+    "missingNativeGas",
+    "existingClassicRouterApproval"
+  ],
+  "privateInputRetainedLocally": true
+}

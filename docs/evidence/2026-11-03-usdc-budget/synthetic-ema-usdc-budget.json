@@ -1,0 +1,26 @@
+{
+  "schema": "threecore.usdc-operation-budget.v1",
+  "simulationOnly": true,
+  "agent": "EMA",
+  "chainId": 8453,
+  "token": {
+    "decimals": 6,
+    "balanceUnits": "10000000",
+    "reservedUnits": "1000000",
+    "reserveFloorUnits": "1000000",
+    "spendUnits": "4000000"
+  },
+  "native": {
+    "balanceWei": "10000000000000000",
+    "reservedWei": "1000000000000000",
+    "reserveFloorWei": "2000000000000000",
+    "valueWei": "0"
+  },
+  "fees": {
+    "gasLimit": "200000",
+    "maxFeePerGasWei": "100000000",
+    "l1FeeBudgetWei": "10000000000000",
+    "operatorFeeBudgetWei": "0",
+    "bufferWei": "10000000000000"
+  }
+}

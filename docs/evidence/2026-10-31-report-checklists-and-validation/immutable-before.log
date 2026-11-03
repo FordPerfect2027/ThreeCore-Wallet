@@ -1,0 +1,600 @@
+✖ period draft reuses only its own fully validated immutable snapshot (12.5817ms)
+✔ period draft never trusts a previously observed mutable caller object (3.1834ms)
+✔ period draft a frozen outer object cannot conceal invalid mutable nested evidence (4.6316ms)
+✖ period draft proxy wrappers cannot borrow validated object identity (11.7313ms)
+✖ period report reuses only its own fully validated immutable snapshot (21.159ms)
+✔ period report never trusts a previously observed mutable caller object (9.9407ms)
+✔ period report a frozen outer object cannot conceal invalid mutable nested evidence (8.0075ms)
+✖ period report proxy wrappers cannot borrow validated object identity (20.5787ms)
+✖ report history reuses only its own fully validated immutable snapshot (128.2571ms)
+✔ report history never trusts a previously observed mutable caller object (50.8432ms)
+✔ report history a frozen outer object cannot conceal invalid mutable nested evidence (49.4793ms)
+✖ report history proxy wrappers cannot borrow validated object identity (92.6619ms)
+✖ report set reuses only its own fully validated immutable snapshot (112.1919ms)
+✔ report set never trusts a previously observed mutable caller object (43.4486ms)
+✔ report set a frozen outer object cannot conceal invalid mutable nested evidence (34.8451ms)
+✖ report set proxy wrappers cannot borrow validated object identity (86.4364ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 8
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1823.7518
+
+✖ failing tests:
+
+test at test\immutable-report-validation.test.js:22:3
+✖ period draft reuses only its own fully validated immutable snapshot (12.5817ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    earlier: {
+      account: '0x1111111111111111111111111111111111111111',
+      agent: 'DAT',
+      balanceBaseUnits: '100000000000000000000',
+      blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+      blockNumber: '30',
+      catalogVersion: 'threecore-erc20-2026-10-23',
+      chainId: 84532,
+      connectionEpoch: 1,
+      hasCode: true,
+      metadata: {
+        decimals: 18,
+        name: 'DATCORE',
+        symbol: 'DAT',
+        totalSupply: '1000000000000000000000000000'
+      },
+      nativeBalanceBaseUnits: '1000000000000000000',
+      readOnly: true,
+      schema: 'threecore-token-observation-v1',
+      securityAudit: false,
+      siteOrigin: 'http://127.0.0.1:4192',
+      tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+    },
+    independentlyVerified: false,
+    later: {
+      account: '0x1111111111111111111111111111111111111111',
+      agent: 'DAT',
+      balanceBaseUnits: '107000000000000000000',
+      blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+      blockNumber: '42',
+      catalogVersion: 'threecore-erc20-2026-10-23',
+      chainId: 84532,
+      connectionEpoch: 1,
+      hasCode: true,
+      metadata: {
+        decimals: 18,
+        name: 'DATCORE',
+        symbol: 'DAT',
+        totalSupply: '1000000000000000000000000000'
+      },
+      nativeBalanceBaseUnits: '1000000000000000000',
+      readOnly: true,
+      schema: 'threecore-token-observation-v1',
+      securityAudit: false,
+      siteOrigin: 'http://127.0.0.1:4192',
+      tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+    },
+    plan: {
+      context: {
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-report-validation.test.js:24:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.period-draft.v1', plan: { schema: 'threecore.period-plan.v1', context: [Object], earlierBlock: '30', laterBlock: '42', windowSize: 5 }, earlier: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 84532, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4', hasCode: true, metadata: [Object], balanceBaseUnits: '100000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false }, later: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 84532, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '42', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412', tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4', hasCode: true, metadata: [Object], balanceBaseUnits: '107000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false }, records: [ [Object], [Object], [Object] ], readOnly: true, independentlyVerified: false },
+    expected: { schema: 'threecore.period-draft.v1', plan: { schema: 'threecore.period-plan.v1', context: [Object], earlierBlock: '30', laterBlock: '42', windowSize: 5 }, earlier: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 84532, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4', hasCode: true, metadata: [Object], balanceBaseUnits: '100000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false }, later: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 84532, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '42', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412', tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4', hasCode: true, metadata: [Object], balanceBaseUnits: '107000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false }, records: [ [Object], [Object], [Object] ], readOnly: true, independentlyVerified: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-report-validation.test.js:38:3
+✖ period draft proxy wrappers cannot borrow validated object identity (11.7313ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    earlier: {
+      account: '0x1111111111111111111111111111111111111111',
+      agent: 'DAT',
+      balanceBaseUnits: '100000000000000000000',
+      blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+      blockNumber: '30',
+      catalogVersion: 'threecore-erc20-2026-10-23',
+      chainId: 84532,
+      connectionEpoch: 1,
+      hasCode: true,
+      metadata: {
+        decimals: 18,
+        name: 'DATCORE',
+        symbol: 'DAT',
+        totalSupply: '1000000000000000000000000000'
+      },
+      nativeBalanceBaseUnits: '1000000000000000000',
+      readOnly: true,
+      schema: 'threecore-token-observation-v1',
+      securityAudit: false,
+      siteOrigin: 'http://127.0.0.1:4192',
+      tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+    },
+    independentlyVerified: false,
+    later: {
+      account: '0x1111111111111111111111111111111111111111',
+      agent: 'DAT',
+      balanceBaseUnits: '107000000000000000000',
+      blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+      blockNumber: '42',
+      catalogVersion: 'threecore-erc20-2026-10-23',
+      chainId: 84532,
+      connectionEpoch: 1,
+      hasCode: true,
+      metadata: {
+        decimals: 18,
+        name: 'DATCORE',
+        symbol: 'DAT',
+        totalSupply: '1000000000000000000000000000'
+      },
+      nativeBalanceBaseUnits: '1000000000000000000',
+      readOnly: true,
+      schema: 'threecore-token-observation-v1',
+      securityAudit: false,
+      siteOrigin: 'http://127.0.0.1:4192',
+      tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+    },
+    plan: {
+      context: {
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-report-validation.test.js:44:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.period-draft.v1', plan: { schema: 'threecore.period-plan.v1', context: [Object], earlierBlock: '30', laterBlock: '42', windowSize: 5 }, earlier: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 84532, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4', hasCode: true, metadata: [Object], balanceBaseUnits: '100000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false }, later: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 84532, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '42', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412', tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4', hasCode: true, metadata: [Object], balanceBaseUnits: '107000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false }, records: [ [Object], [Object], [Object] ], readOnly: true, independentlyVerified: false },
+    expected: { schema: 'threecore.period-draft.v1', plan: { schema: 'threecore.period-plan.v1', context: [Object], earlierBlock: '30', laterBlock: '42', windowSize: 5 }, earlier: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 84532, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '30', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406', tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4', hasCode: true, metadata: [Object], balanceBaseUnits: '100000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false }, later: { schema: 'threecore-token-observation-v1', catalogVersion: 'threecore-erc20-2026-10-23', agent: 'DAT', account: '0x1111111111111111111111111111111111111111', chainId: 84532, siteOrigin: 'http://127.0.0.1:4192', connectionEpoch: 1, blockNumber: '42', blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412', tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4', hasCode: true, metadata: [Object], balanceBaseUnits: '107000000000000000000', nativeBalanceBaseUnits: '1000000000000000000', readOnly: true, securityAudit: false }, records: [ [Object], [Object], [Object] ], readOnly: true, independentlyVerified: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-report-validation.test.js:22:3
+✖ period report reuses only its own fully validated immutable snapshot (21.159ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    createdAt: '2026-10-24T02:00:00.000Z',
+    historicalOnly: true,
+    independentlyVerified: false,
+    schema: 'threecore.period-report-input.v1',
+    slots: [
+      {
+        agent: 'DAT',
+        entry: {
+          archived: false,
+          createdAt: '2026-10-24T01:00:00.000Z',
+          draft: {
+            earlier: {
+              account: '0x1111111111111111111111111111111111111111',
+              agent: 'DAT',
+              balanceBaseUnits: '100000000000000000000',
+              blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+              blockNumber: '30',
+              catalogVersion: 'threecore-erc20-2026-10-23',
+              chainId: 84532,
+              connectionEpoch: 1,
+              hasCode: true,
+              metadata: {
+                decimals: 18,
+                name: 'DATCORE',
+                symbol: 'DAT',
+                totalSupply: '1000000000000000000000000000'
+              },
+              nativeBalanceBaseUnits: '1000000000000000000',
+              readOnly: true,
+              schema: 'threecore-token-observation-v1',
+              securityAudit: false,
+              siteOrigin: 'http://127.0.0.1:4192',
+              tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+            },
+            independentlyVerified: false,
+            later: {
+              account: '0x1111111111111111111111111111111111111111',
+              agent: 'DAT',
+              balanceBaseUnits: '107000000000000000000',
+              blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+              blockNumber: '42',
+              catalogVersion: 'threecore-erc20-2026-10-23',
+              chainId: 84532,
+              connectionEpoch: 1,
+              hasCode: true,
+              metadata: {
+                decimals: 18,
+                name: 'DATCORE',
+                symbol: 'DAT',
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-report-validation.test.js:24:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.period-report-input.v1', title: '期間確認 1', createdAt: '2026-10-24T02:00:00.000Z', slots: [ [Object], [Object], [Object] ], historicalOnly: true, independentlyVerified: false },
+    expected: { schema: 'threecore.period-report-input.v1', title: '期間確認 1', createdAt: '2026-10-24T02:00:00.000Z', slots: [ [Object], [Object], [Object] ], historicalOnly: true, independentlyVerified: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-report-validation.test.js:38:3
+✖ period report proxy wrappers cannot borrow validated object identity (20.5787ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    createdAt: '2026-10-24T02:00:00.000Z',
+    historicalOnly: true,
+    independentlyVerified: false,
+    schema: 'threecore.period-report-input.v1',
+    slots: [
+      {
+        agent: 'DAT',
+        entry: {
+          archived: false,
+          createdAt: '2026-10-24T01:00:00.000Z',
+          draft: {
+            earlier: {
+              account: '0x1111111111111111111111111111111111111111',
+              agent: 'DAT',
+              balanceBaseUnits: '100000000000000000000',
+              blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+              blockNumber: '30',
+              catalogVersion: 'threecore-erc20-2026-10-23',
+              chainId: 84532,
+              connectionEpoch: 1,
+              hasCode: true,
+              metadata: {
+                decimals: 18,
+                name: 'DATCORE',
+                symbol: 'DAT',
+                totalSupply: '1000000000000000000000000000'
+              },
+              nativeBalanceBaseUnits: '1000000000000000000',
+              readOnly: true,
+              schema: 'threecore-token-observation-v1',
+              securityAudit: false,
+              siteOrigin: 'http://127.0.0.1:4192',
+              tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+            },
+            independentlyVerified: false,
+            later: {
+              account: '0x1111111111111111111111111111111111111111',
+              agent: 'DAT',
+              balanceBaseUnits: '107000000000000000000',
+              blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+              blockNumber: '42',
+              catalogVersion: 'threecore-erc20-2026-10-23',
+              chainId: 84532,
+              connectionEpoch: 1,
+              hasCode: true,
+              metadata: {
+                decimals: 18,
+                name: 'DATCORE',
+                symbol: 'DAT',
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-report-validation.test.js:44:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.period-report-input.v1', title: '期間確認 1', createdAt: '2026-10-24T02:00:00.000Z', slots: [ [Object], [Object], [Object] ], historicalOnly: true, independentlyVerified: false },
+    expected: { schema: 'threecore.period-report-input.v1', title: '期間確認 1', createdAt: '2026-10-24T02:00:00.000Z', slots: [ [Object], [Object], [Object] ], historicalOnly: true, independentlyVerified: false },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-report-validation.test.js:22:3
+✖ report history reuses only its own fully validated immutable snapshot (128.2571ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    entries: [
+      {
+        archived: false,
+        id: '12345678-1234-4234-8234-000000000101',
+        label: '報告 1',
+        note: '確認用メモ 1',
+        report: {
+          createdAt: '2026-10-24T02:00:00.000Z',
+          historicalOnly: true,
+          independentlyVerified: false,
+          schema: 'threecore.period-report-input.v1',
+          slots: [
+            {
+              agent: 'DAT',
+              entry: {
+                archived: false,
+                createdAt: '2026-10-24T01:00:00.000Z',
+                draft: {
+                  earlier: {
+                    account: '0x1111111111111111111111111111111111111111',
+                    agent: 'DAT',
+                    balanceBaseUnits: '100000000000000000000',
+                    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+                    blockNumber: '30',
+                    catalogVersion: 'threecore-erc20-2026-10-23',
+                    chainId: 84532,
+                    connectionEpoch: 1,
+                    hasCode: true,
+                    metadata: {
+                      decimals: 18,
+                      name: 'DATCORE',
+                      symbol: 'DAT',
+                      totalSupply: '1000000000000000000000000000'
+                    },
+                    nativeBalanceBaseUnits: '1000000000000000000',
+                    readOnly: true,
+                    schema: 'threecore-token-observation-v1',
+                    securityAudit: false,
+                    siteOrigin: 'http://127.0.0.1:4192',
+                    tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+                  },
+                  independentlyVerified: false,
+                  later: {
+                    account: '0x1111111111111111111111111111111111111111',
+                    agent: 'DAT',
+                    balanceBaseUnits: '107000000000000000000',
+                    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+                    blockNumber: '42',
+                    catalogVersion: 'threecore-erc20-2026-10-23',
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-report-validation.test.js:24:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.report-history.v1', revision: 3, entries: [ [Object], [Object], [Object] ] },
+    expected: { schema: 'threecore.report-history.v1', revision: 3, entries: [ [Object], [Object], [Object] ] },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-report-validation.test.js:38:3
+✖ report history proxy wrappers cannot borrow validated object identity (92.6619ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    entries: [
+      {
+        archived: false,
+        id: '12345678-1234-4234-8234-000000000101',
+        label: '報告 1',
+        note: '確認用メモ 1',
+        report: {
+          createdAt: '2026-10-24T02:00:00.000Z',
+          historicalOnly: true,
+          independentlyVerified: false,
+          schema: 'threecore.period-report-input.v1',
+          slots: [
+            {
+              agent: 'DAT',
+              entry: {
+                archived: false,
+                createdAt: '2026-10-24T01:00:00.000Z',
+                draft: {
+                  earlier: {
+                    account: '0x1111111111111111111111111111111111111111',
+                    agent: 'DAT',
+                    balanceBaseUnits: '100000000000000000000',
+                    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+                    blockNumber: '30',
+                    catalogVersion: 'threecore-erc20-2026-10-23',
+                    chainId: 84532,
+                    connectionEpoch: 1,
+                    hasCode: true,
+                    metadata: {
+                      decimals: 18,
+                      name: 'DATCORE',
+                      symbol: 'DAT',
+                      totalSupply: '1000000000000000000000000000'
+                    },
+                    nativeBalanceBaseUnits: '1000000000000000000',
+                    readOnly: true,
+                    schema: 'threecore-token-observation-v1',
+                    securityAudit: false,
+                    siteOrigin: 'http://127.0.0.1:4192',
+                    tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+                  },
+                  independentlyVerified: false,
+                  later: {
+                    account: '0x1111111111111111111111111111111111111111',
+                    agent: 'DAT',
+                    balanceBaseUnits: '107000000000000000000',
+                    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+                    blockNumber: '42',
+                    catalogVersion: 'threecore-erc20-2026-10-23',
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-report-validation.test.js:44:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.report-history.v1', revision: 3, entries: [ [Object], [Object], [Object] ] },
+    expected: { schema: 'threecore.report-history.v1', revision: 3, entries: [ [Object], [Object], [Object] ] },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-report-validation.test.js:22:3
+✖ report set reuses only its own fully validated immutable snapshot (112.1919ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    createdAt: '2026-10-24T03:00:00.000Z',
+    entries: [
+      {
+        archived: false,
+        id: '12345678-1234-4234-8234-000000000101',
+        label: '報告 1',
+        note: '確認用メモ 1',
+        report: {
+          createdAt: '2026-10-24T02:00:00.000Z',
+          historicalOnly: true,
+          independentlyVerified: false,
+          schema: 'threecore.period-report-input.v1',
+          slots: [
+            {
+              agent: 'DAT',
+              entry: {
+                archived: false,
+                createdAt: '2026-10-24T01:00:00.000Z',
+                draft: {
+                  earlier: {
+                    account: '0x1111111111111111111111111111111111111111',
+                    agent: 'DAT',
+                    balanceBaseUnits: '100000000000000000000',
+                    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+                    blockNumber: '30',
+                    catalogVersion: 'threecore-erc20-2026-10-23',
+                    chainId: 84532,
+                    connectionEpoch: 1,
+                    hasCode: true,
+                    metadata: {
+                      decimals: 18,
+                      name: 'DATCORE',
+                      symbol: 'DAT',
+                      totalSupply: '1000000000000000000000000000'
+                    },
+                    nativeBalanceBaseUnits: '1000000000000000000',
+                    readOnly: true,
+                    schema: 'threecore-token-observation-v1',
+                    securityAudit: false,
+                    siteOrigin: 'http://127.0.0.1:4192',
+                    tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+                  },
+                  independentlyVerified: false,
+                  later: {
+                    account: '0x1111111111111111111111111111111111111111',
+                    agent: 'DAT',
+                    balanceBaseUnits: '107000000000000000000',
+                    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+                    blockNumber: '42',
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-report-validation.test.js:24:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.report-set.v1', title: '3期間の確認', createdAt: '2026-10-24T03:00:00.000Z', sourceRevision: 3, entries: [ [Object], [Object], [Object] ], historicalOnly: true },
+    expected: { schema: 'threecore.report-set.v1', title: '3期間の確認', createdAt: '2026-10-24T03:00:00.000Z', sourceRevision: 3, entries: [ [Object], [Object], [Object] ], historicalOnly: true },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\immutable-report-validation.test.js:38:3
+✖ report set proxy wrappers cannot borrow validated object identity (86.4364ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  ... Skipped lines
+  {
+    createdAt: '2026-10-24T03:00:00.000Z',
+    entries: [
+      {
+        archived: false,
+        id: '12345678-1234-4234-8234-000000000101',
+        label: '報告 1',
+        note: '確認用メモ 1',
+        report: {
+          createdAt: '2026-10-24T02:00:00.000Z',
+          historicalOnly: true,
+          independentlyVerified: false,
+          schema: 'threecore.period-report-input.v1',
+          slots: [
+            {
+              agent: 'DAT',
+              entry: {
+                archived: false,
+                createdAt: '2026-10-24T01:00:00.000Z',
+                draft: {
+                  earlier: {
+                    account: '0x1111111111111111111111111111111111111111',
+                    agent: 'DAT',
+                    balanceBaseUnits: '100000000000000000000',
+                    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000406',
+                    blockNumber: '30',
+                    catalogVersion: 'threecore-erc20-2026-10-23',
+                    chainId: 84532,
+                    connectionEpoch: 1,
+                    hasCode: true,
+                    metadata: {
+                      decimals: 18,
+                      name: 'DATCORE',
+                      symbol: 'DAT',
+                      totalSupply: '1000000000000000000000000000'
+                    },
+                    nativeBalanceBaseUnits: '1000000000000000000',
+                    readOnly: true,
+                    schema: 'threecore-token-observation-v1',
+                    securityAudit: false,
+                    siteOrigin: 'http://127.0.0.1:4192',
+                    tokenAddress: '0x2474a062ec669c1912ed41bc491e8a97db4743d4'
+                  },
+                  independentlyVerified: false,
+                  later: {
+                    account: '0x1111111111111111111111111111111111111111',
+                    agent: 'DAT',
+                    balanceBaseUnits: '107000000000000000000',
+                    blockHash: '0x0000000000000000000000000000000000000000000000000000000000000412',
+                    blockNumber: '42',
+  ...}
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/test/immutable-report-validation.test.js:44:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schema: 'threecore.report-set.v1', title: '3期間の確認', createdAt: '2026-10-24T03:00:00.000Z', sourceRevision: 3, entries: [ [Object], [Object], [Object] ], historicalOnly: true },
+    expected: { schema: 'threecore.report-set.v1', title: '3期間の確認', createdAt: '2026-10-24T03:00:00.000Z', sourceRevision: 3, entries: [ [Object], [Object], [Object] ], historicalOnly: true },
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,33 @@
+{
+  "schema": "threecore.saved-file-inspection.v1",
+  "sourceSchema": "threecore.period-library-file.v1",
+  "byteLength": 4551,
+  "title": "期間の保存一覧",
+  "target": "library",
+  "destinationMessage": "「途中の控えを、名前を付けて保管する」の「期間の保存一覧JSONを読み込む」で、この元のファイルを選んでください。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "94a72fa1997466939ad83bdc8e687add2a9f5839ee48fbc7017071e42ac3bc72",
+  "textDigest": "199e5d80960e2d00dcf92937f8bfd238810df5d2049f2f3717e39f33a8f7b3a4",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": 1,
+    "draftReferences": 1,
+    "archivedEntryReferences": 1,
+    "restrictedEntryReferences": 1,
+    "incompleteDraftReferences": 0,
+    "emptyDraftReferences": 0,
+    "agents": [
+      "DAT"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": false
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

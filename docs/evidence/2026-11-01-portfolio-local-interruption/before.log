@@ -1,0 +1,265 @@
+✖ portfolio controller releases its local pending wait on cancel (219.4762ms)
+✖ portfolio controller releases its local pending wait on clear (215.193ms)
+✖ portfolio controller releases its local pending wait on dispose (203.29ms)
+✖ portfolio controller releases its local pending wait on replace (203.9115ms)
+✖ portfolio controller releases its local pending wait on external (202.8373ms)
+✖ portfolio controller ignores signal instance override aborted (1.291ms)
+✖ portfolio controller ignores signal instance override addEventListener (0.4363ms)
+✖ portfolio controller ignores signal instance override removeEventListener (0.5889ms)
+✖ portfolio controller checks native pre-cancellation before reader invocation (1.1723ms)
+✖ portfolio loading observer cancellation prevents even a custom reader call (1.6778ms)
+✖ portfolio artificial abort event cannot stop a read or consume genuine cancellation (1.0296ms)
+✖ portfolio ready observer cancellation cannot return an accepted snapshot (1.0758ms)
+✔ invalid native signal prototype preserves existing ready state (1.5503ms)
+✔ invalid native signal proxy preserves existing ready state (0.5335ms)
+✔ invalid native signal revoked preserves existing ready state (0.4695ms)
+✖ reader rewriting its received signal cannot hide cancellation (205.255ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 3
+ℹ fail 13
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2580.788
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:6:71
+✖ portfolio controller releases its local pending wait on cancel (219.4762ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + 'still-waiting'
+  - {
+  -   accepted: false,
+  -   result: null
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:10:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'still-waiting',
+    expected: { accepted: false, result: null },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:6:71
+✖ portfolio controller releases its local pending wait on clear (215.193ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + 'still-waiting'
+  - {
+  -   accepted: false,
+  -   result: null
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:10:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'still-waiting',
+    expected: { accepted: false, result: null },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:6:71
+✖ portfolio controller releases its local pending wait on dispose (203.29ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + 'still-waiting'
+  - {
+  -   accepted: false,
+  -   result: null
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:10:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'still-waiting',
+    expected: { accepted: false, result: null },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:6:71
+✖ portfolio controller releases its local pending wait on replace (203.9115ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + 'still-waiting'
+  - {
+  -   accepted: false,
+  -   result: null
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:10:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'still-waiting',
+    expected: { accepted: false, result: null },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:6:71
+✖ portfolio controller releases its local pending wait on external (202.8373ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + 'still-waiting'
+  - {
+  -   accepted: false,
+  -   result: null
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:10:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'still-waiting',
+    expected: { accepted: false, result: null },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:14:73
+✖ portfolio controller ignores signal instance override aborted (1.291ms)
+  Error: private override
+      at AbortSignal.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:15:122)
+      at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-controller.js:72:17)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:16:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:14:73
+✖ portfolio controller ignores signal instance override addEventListener (0.4363ms)
+  Error: private override
+      at AbortSignal.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:15:122)
+      at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-controller.js:73:18)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:16:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:14:73
+✖ portfolio controller ignores signal instance override removeEventListener (0.5889ms)
+  Error: private override
+      at AbortSignal.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:15:122)
+      at Object.refresh (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-controller.js:113:15)
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:16:20)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:18:1
+✖ portfolio controller checks native pre-cancellation before reader invocation (1.1723ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:20:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:22:1
+✖ portfolio loading observer cancellation prevents even a custom reader call (1.6778ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:24:90)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:26:1
+✖ portfolio artificial abort event cannot stop a read or consume genuine cancellation (1.0296ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:28:63)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:30:1
+✖ portfolio ready observer cancellation cannot return an accepted snapshot (1.0758ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:32:13)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-portfolio-interrupt-tests-515.mjs:40:1
+✖ reader rewriting its received signal cannot hide cancellation (205.255ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + 'still-waiting'
+  - {
+  -   accepted: false,
+  -   result: null
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-portfolio-interrupt-tests-515.mjs:42:30)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'still-waiting',
+    expected: { accepted: false, result: null },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

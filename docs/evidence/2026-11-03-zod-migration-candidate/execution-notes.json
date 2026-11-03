@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-11-02T19:09:07.362Z",
+  "sourceWorktreesCreated": false,
+  "worktreeToolOutcome": "Source roots not registered as chat workspace folders; ordinary source copies and patch artifacts used, without altering the restriction.",
+  "originalTokenRepositoriesChanged": false,
+  "originalInstalledHelperChanged": false,
+  "appliedReviewCopyToolchainTest": {
+    "command": "node --test --test-reporter=tap integration/toolchain-data.test.mjs integration/zod-migration.test.mjs",
+    "exitCode": 0,
+    "tests": 8,
+    "pass": 8,
+    "fail": 0,
+    "source": "terminal tool result, not a separate raw log"
+  },
+  "reproductionRegressionExit": "Eight-pass final summary exists in regression.log, but the first terminal exit response was truncated. No inferred exit code is recorded. Later applied-review-copy test command has observed exit 0.",
+  "typeCheckExitRecovery": "Type check repeated once with a saved child-exit receipt because prior terminal result was truncated; not counted as new functionality.",
+  "reviewPatchJsonFormatting": "JSON line endings were changed to match original Git blobs after a successful npm ci; parsed objects and dependency integrity stayed unchanged.",
+  "excluded": [
+    "user wallet",
+    "signatures",
+    "transactions",
+    "keystore lookup",
+    "public RPC",
+    "GitHub writes",
+    "contract-execution/local-EVM transaction suites"
+  ],
+  "adoptionStatus": "prepared local review candidate only"
+}

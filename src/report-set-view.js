@@ -1,5 +1,6 @@
 import { historyErrorText, historyErrorCode } from "./report-history-view.js";
 import { reportStatusText } from "./period-report-view.js";
+import { REPORT_CHANGE_TEXT } from "./period-report-comparison.js";
 
 export const SET_LIMITATION = "保存した報告の計画範囲と証拠の照合です。現在のチェーン状態や履歴の完全性を認証しません。トークン数量やイベントを合算せず、利益も計算しません。";
 export const SET_ISSUES = Object.freeze({
@@ -17,11 +18,57 @@ export const SET_ISSUES = Object.freeze({
 export const SET_SEGMENTS = Object.freeze({ single: "計画1件", gap: "計画の抜け", overlap: "計画の重複", repeated: "同じ証拠の重複" });
 export const SET_SOURCE_STATUS = Object.freeze({ exact: "保存内容と一致", metadata: "名前・メモ・保管状態が変更", changed: "報告の証拠が変更", missing: "保存番号が見つからない" });
 const ERRORS = Object.freeze({
+  PERIOD_SET_LIBRARY_AGENT: "取り出すトークンを選んでください。",
+  PERIOD_SET_LIBRARY_EMPTY: "この確認セットには、選んだトークンの元の控えがありません。",
+  PERIOD_SET_LIBRARY_CONFLICT: "同じ保存番号に異なる元の控えがあります。どちらかを選んだり上書きしたりせず、一覧への出力を中止します。元レポートを個別に保存して確認してください。",
+  PERIOD_SET_LIBRARY_CAPACITY: "元の控えをまとめると一覧の容量上限を超えます。元レポートを個別に保存して保全してください。",
+  PERIOD_SET_COVERAGE_JSON: "履歴範囲のJSONを読み取れませんでした。保存した元ファイルを確認してください。",
+  PERIOD_SET_COVERAGE_SCHEMA: "保存した履歴範囲JSONを選んでください。CSVはこの照合欄では読み込めません。",
+  PERIOD_SET_COVERAGE_OPTIONS: "履歴範囲JSONのアドレス表示設定が正しくありません。保存した元ファイルを確認してください。",
+  PERIOD_SET_COVERAGE_READ: "履歴範囲ファイルを読み込めませんでした。",
+  PERIOD_SET_COVERAGE_ENCODING: "履歴範囲はUTF-8のJSONを選んでください。",
+  PERIOD_SET_COVERAGE_NO_REVIEW: "先に保存した履歴範囲JSONを元資料と照合してください。",
+  PERIOD_SET_EVENT_FILE_JSON: "履歴比較のJSONを読み取れませんでした。保存した元のファイルを確認してください。",
+  PERIOD_SET_EVENT_FILE_SCHEMA: "保存済み履歴の比較JSONを選んでください。",
+  PERIOD_SET_EVENT_FILE_READ: "履歴比較ファイルを読み込めませんでした。",
+  PERIOD_SET_EVENT_FILE_ENCODING: "履歴比較はUTF-8のJSONを選んでください。",
+  PERIOD_SET_EVENT_NO_REVIEW: "先に保存した履歴比較ファイルを元資料と照合してください。",
   PERIOD_SET_EMPTY: "確認する報告を1件以上選んでください。",
   PERIOD_SET_SCHEMA: "対応する確認セットの形式ではありません。",
   PERIOD_SET_TITLE: "確認名を確認してください。",
   PERIOD_SET_DUPLICATE_SELECTION: "同じ報告が重複して選ばれています。",
   PERIOD_SET_SOURCE_MISSING: "選択した報告が保存一覧にありません。読み直してください。",
+  PERIOD_SET_REPORT_MISSING: "表示中の確認セットに、その元レポートは含まれていません。選び直してください。",
+  PERIOD_SET_QUEUE_WINDOW: "表示した予定から保存する区間を選び直してください。",
+  PERIOD_SET_QUEUE_QUERY: "予定の範囲・ブロック数・ページ番号を確認してください。",
+  PERIOD_SET_QUEUE_GROUP: "表示中の確認セットに、そのアカウントの区間はありません。",
+  PERIOD_SET_QUEUE_PAGE: "指定したページには予定がありません。最初のページから選び直してください。",
+  PERIOD_SET_QUEUE_DISJOINT: "このページの区間は連続していません。1区間ずつ保存対象に選んでください。",
+  PERIOD_SET_EVIDENCE_SIZE: "比較の証拠一式は、空でない24 MiB以下のJSONを選んでください。出力が上限を超える場合は元資料を別々に保存してください。",
+  PERIOD_SET_EVIDENCE_FORMAT: "比較の証拠一式として保存したJSONを選んでください。元資料と比較結果の両方が必要です。",
+  PERIOD_SET_EVIDENCE_CONTENT: "一式に含まれる元資料または比較結果が、必要なファイル形式と異なります。別の欄へこの一式を移す操作はせず、保存した元の証拠一式を選び直してください。",
+  PERIOD_SET_EVIDENCE_READ: "比較の証拠一式を読み取れませんでした。",
+  PERIOD_SET_EVIDENCE_ENCODING: "比較の証拠一式はUTF-8で保存されたJSONを選んでください。",
+  PERIOD_SET_PROPOSAL_UNAVAILABLE: "この画面では読み取り画面への直接受け渡しを利用できません。未取得の控えをJSON保存し、期間読み取り画面で開いてください。",
+  PERIOD_SET_PROPOSAL_REFUSED: "期間読み取り画面へ渡せませんでした。そちらが処理中なら、完了または停止してから渡してください。元資料は保持しています。",
+  PERIOD_SET_EVENT_RECHECK_SELECTION: "比較結果から、確認し直すイベントまたはブロックの食い違いを選んでください。",
+  PERIOD_SET_EVENT_RECHECK_RANGE: "選んだ観測位置を1つの期間控えに収められません。元の比較範囲を確認してください。",
+  PERIOD_SET_EVENT_QUERY: "異なる2つの報告と、比較するトークンを選んでください。",
+  PERIOD_SET_EVENT_SOURCE: "選んだ報告が現在の確認セットにありません。選び直してください。",
+  PERIOD_SET_EVENT_SLOT: "選んだ報告の片方に、このトークンの期間控えがありません。",
+  PERIOD_SET_EVENT_CONTEXT: "アカウントまたはチェーンが違うため、履歴を比較できません。同じ対象の報告を選んでください。",
+  PERIOD_SET_EVENT_SIZE: "履歴の比較ファイルが24 MiBを超えました。省略せず保存を中止しました。",
+  PERIOD_SET_EVIDENCE_SOURCE_REVIEW: "先に元の比較の証拠一式JSONを、この画面で検証してください。検証結果の控えだけでは元資料を取り出せません。",
+  PERIOD_SET_EVIDENCE_SOURCE_ROLE: "差し替え前か候補か、取り出す元資料を選んでください。",
+  PERIOD_SET_EVIDENCE_NO_REVIEW: "先に比較の証拠一式を確認してください。",
+  PERIOD_SET_COVERAGE_SIZE: "保存済み履歴範囲の説明ファイルが上限4 MiBを超えています。元の確認セットJSONを保管してください。",
+  PERIOD_SET_COMPARISON_JSON: "比較ファイルのJSONを読み取れません。",
+  PERIOD_SET_COMPARISON_SCHEMA: "差し替え比較のJSONを選んでください。",
+  PERIOD_SET_COMPARISON_READ: "比較ファイルを読み取れませんでした。",
+  PERIOD_SET_COMPARISON_ENCODING: "比較ファイルの文字コードを確認してください。",
+  PERIOD_SET_COMPARISON_NO_REVIEW: "先に比較ファイルを照合してください。",
+  PERIOD_SET_NO_COMPARISON: "表示中の確認セットがある状態で、差し替える候補を先に確認してください。",
+  PERIOD_SET_COMPARISON_SIZE: "比較ファイルが保存できる大きさを超えています。",
   PERIOD_SET_SOURCE_CHANGED: "確認中に選択した報告が変わりました。保存一覧を読み直して選び直してください。",
   PERIOD_SET_NOT_LOADED: "先に報告の一覧を読み込んでください。",
   PERIOD_SET_NO_REVIEW: "先に選択内容を確認してください。",
@@ -29,6 +76,12 @@ const ERRORS = Object.freeze({
   PERIOD_SET_BUSY: "確認セットの処理中です。完了を待つか中止してください。",
   PERIOD_SET_SIZE: "確認セットの上限は12報告・64 MiBです。",
   PERIOD_SET_FILE_SIZE: "ファイルの大きさが不正です。96 MiBまでのJSONを選んでください。",
+  PERIOD_SET_CHECKS_SIZE: "確認箇所JSONは、空でない4 MiB以下のファイルを選んでください。出力が大きい場合はトークンや種類で絞り込んでください。",
+  PERIOD_SET_CHECKS_READ: "確認箇所JSONを読み込めませんでした。元の資料は変更していません。",
+  PERIOD_SET_CHECKS_ENCODING: "確認箇所JSONはUTF-8のテキストファイルを選んでください。",
+  PERIOD_SET_CHECKS_JSON: "確認箇所JSONの内容を読み取れません。保存した元のファイルを確認してください。",
+  PERIOD_SET_CHECKS_SCHEMA: "対応する確認箇所JSONではありません。確認セットJSONや照合結果JSONとは異なります。",
+  PERIOD_SET_CHECKS_NO_REVIEW: "先に確認箇所JSONを選んで照合してください。",
   PERIOD_SET_FILE_SCHEMA: "確認セット用のバックアップJSONではありません。",
   PERIOD_SET_ACK: "保存される情報の内容を確認してチェックを入れてください。",
   PERIOD_SET_EXPORT_OPTIONS: "説明用ファイルの出力設定が不正です。",
@@ -42,14 +95,28 @@ export function setErrorCode(value) {
   const code = historyErrorCode(value);
   return code === "PERIOD_HISTORY_FAILED" ? "PERIOD_SET_FAILED" : code;
 }
-export function setErrorText(code) { return ERRORS[code] ?? historyErrorText(code); }
+export function setErrorText(code) { return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code] : historyErrorText(code); }
+
+export function setCheckReviewText(value) {
+  if (!value) return "まだ確認箇所JSONを照合していません。";
+  const fields = { sourcePayloadDigest: "参照元資料", items: "確認箇所・ハッシュ・保存値", query: "検索条件",
+    options: "表示設定", summary: "元資料全体の確認結果", total: "全体件数", matched: "該当件数",
+    liveChainRechecked: "現在のチェーン確認の表示", authenticated: "出所認証の表示", restorable: "復元可否の表示" };
+  return ["最後に完了した照合結果", value.matchesRecomputation ? "元資料からの再計算と一致" : "再計算と食い違いがあります",
+    "参照元資料の識別値: " + (value.sourceDigestMatches ? "一致" : "不一致"),
+    "再計算した確認箇所: " + value.matched + " / " + value.total + "件",
+    "元資料全体: " + (value.summary.allContinuous ? "選択範囲の境界は一致" : "確認が必要な箇所あり"),
+    ...value.differences.map(field => "・食い違い: " + (fields[field] ?? "確認情報の項目")),
+    ...(value.unexpectedFields ? ["定義外の項目: " + value.unexpectedFields + "件"] : []),
+    "一致は出所の認証や、現在のチェーン状態の確認を意味しません。照合したテキストの識別値は結果JSONに残ります。"].join("\n");
+}
 export function shortSetAddress(value, shorten = true) {
   return !value ? "—" : shorten ? value.slice(0, 8) + "…" + value.slice(-6) : value;
 }
 export function setStatusText(result) {
   return result.allContinuous ? "選択した証拠は3トークンとも期間境界で一致" : "確認が必要な箇所があります";
 }
-export function setIssueText(code) { return SET_ISSUES[code] ?? "確認が必要です。"; }
+export function setIssueText(code) { return typeof code === "string" && Object.hasOwn(SET_ISSUES, code) ? SET_ISSUES[code] : "確認が必要です。"; }
 
 export function setSummaryText(result) {
   if (!result) return "";
@@ -79,4 +146,140 @@ export function setSourcesText(inspection) {
   return ["現在のPC内保存一覧との照合 / 版 " + inspection.revision,
     ...inspection.rows.map(row => row.label + ": " + SET_SOURCE_STATUS[row.status]),
     "照合のみです。確認セットと元の保存一覧は変更していません。"].join("\n");
+}
+
+
+export function setComparisonText(comparison) {
+  if (!comparison) return "";
+  const kinds = { added: "表示対象に追加", removed: "表示対象から外れる", changed: "保存した証拠の変更", "metadata-only": "名前・保管情報などの変更", unchanged: "同じ記録" };
+  const metadata = { label: "保存名", note: "メモ", tags: "タグ", savedAt: "保存日時", updatedAt: "更新日時", archived: "非表示保管", title: "報告名", createdAt: "作成日時", sourceRevision: "元一覧の版番号" };
+  const c = comparison.counts;
+  const lines = ["現在表示中の確認セットとの差", comparison.beforeTitle + " → " + comparison.afterTitle,
+    "報告数: " + comparison.beforeCount + " → " + comparison.afterCount,
+    "追加 " + c.added + " / 対象外へ " + c.removed + " / 証拠の変更 " + c.changed + " / 名前・保管情報 " + c["metadata-only"] + " / 同一 " + c.unchanged];
+  if (comparison.metadataChanges.length) lines.push("確認セットの変更項目: " + comparison.metadataChanges.map(key => metadata[key]).join("、"));
+  if (comparison.orderChanged) lines.push("報告の選択または並び順が変わります。");
+  for (const row of comparison.rows) {
+    if (row.kind === "unchanged") continue;
+    lines.push("", kinds[row.kind] + ": " + (row.afterLabel ?? row.beforeLabel) + " / " + row.id);
+    if (row.metadataChanges.length) lines.push("  保存情報の変更: " + row.metadataChanges.map(key => metadata[key]).join("、"));
+    if (row.reportMetadataChanges.length) lines.push("  報告内の変更: " + row.reportMetadataChanges.map(key => metadata[key]).join("、"));
+    for (const slot of row.tokenChanges.filter(item => item.kind !== "unchanged")) {
+      lines.push("  " + slot.agent + ": " + REPORT_CHANGE_TEXT[slot.kind]);
+      if (slot.beforeSteps !== null && slot.afterSteps !== null) lines.push("    取得工程: " + slot.beforeSteps + " → " + slot.afterSteps);
+      if (slot.changedAnchorCount) lines.push("    同じブロックの観測ハッシュが変わった箇所: " + slot.changedAnchorCount);
+      if (slot.restrictionChange !== "unchanged") lines.push("    再取得が必要という印が" + (slot.restrictionChange === "introduced" ? "付きます。" : "外れます。この比較で妥当性を認証したものではありません。"));
+      if (slot.archiveChange !== "unchanged") lines.push("    元控えの保管状態が変わります。");
+      if (slot.eventChanges) lines.push("    保存履歴の差: 追加 " + slot.eventChanges.added + " / 除外 " + slot.eventChanges.removed + " / 内容変更 " + slot.eventChanges.changed);
+    }
+  }
+  lines.push("", "対象から外れてもPC内の保存履歴を削除しません。差し替え後の全体に確認点があるか: " +
+    (comparison.afterSummary.allContinuous ? "この保存資料内では連続" : "要確認"),
+    "過去の保存資料同士の比較です。時刻や版番号の大きさで信頼性を判断せず、現在のチェーンの再検証や自動統合も行いません。");
+  return lines.join("\n");
+}
+
+export function setComparisonReviewText(value) {
+  if (!value) return "保存した比較ファイルを、現在表示中の元資料と差し替え候補に照らして確認できます。";
+  return ["最後に完了した比較ファイルの照合結果:", value.matchesRecomputation ? "比較ファイルは再計算と一致しました。" : "比較ファイルに再計算との食い違いがあります。",
+    "差し替え前の元資料: " + (value.beforeDigestMatches ? "一致" : "不一致"),
+    "候補の元資料: " + (value.afterDigestMatches ? "一致" : "不一致"),
+    "異なる項目: " + (value.differences.join(", ") || "なし") + " / 余分な項目: " + value.unexpectedFields,
+    "比較ファイルのテキスト SHA-256: " + value.comparisonTextSha256,
+    "読み取ったテキストと元資料からの再計算を照合した結果です。出所の認証や現在のチェーン確認ではありません。",
+    "資料の差し替え・保存履歴の変更は行っていません。"].join("\n");
+}
+
+export function setComparisonEvidenceReviewText(value) {
+  if (!value) return "保存した証拠一式に含まれる2つの元資料と比較結果を検証します。表示中の確認セットには取り込みません。";
+  return ["最後に完了した証拠一式の確認:",
+    "元資料の検査値: 両方とも一致 / 報告数 " + value.beforeReportCount + " → " + value.afterReportCount,
+    "証拠一式のテキスト SHA-256: " + value.evidenceTextSha256,
+    setComparisonReviewText(value.comparisonReview),
+    "検証した一式は表示中の確認セットとは別です。元資料の取り込み・署名・送金は行っていません。"].join("\n");
+}
+
+export function setEventComparisonText(value, page = 0) {
+  if (!value) return "同じトークン・アカウント・チェーンの報告を2つ選んでください。両方に保存した履歴範囲だけを比較します。";
+  const labels = { "no-common-coverage": "両方が履歴を保存した共通範囲はありません。比較は未成立です。",
+    differences: "保存したイベントまたはブロック情報に食い違いがあります。",
+    "saved-observations-match": "共通範囲に保存したイベントと共有ブロック情報は一致しています。" };
+  const counts = value.counts, limit = 50, pages = Math.max(1, Math.ceil(value.differences.length / limit));
+  if (!Number.isInteger(page) || page < 0 || page >= pages) return "表示ページを確認してください。";
+  const lines = [labels[value.status], value.context.agent + " / Chain " + value.context.chainId + " / " + value.context.account,
+    "資料A: " + value.before.label + " / " + value.before.reportId,
+    "資料B: " + value.after.label + " / " + value.after.reportId,
+    "共通取得範囲: " + (value.commonRanges.map(row => row.fromBlock + " ～ " + row.toBlock).join("、") || "なし") + " / " + value.comparedBlocks + "ブロック（両端を含む）",
+    "同一 " + counts.matching + " / 内容違い " + counts.changed + " / Aだけ " + counts.onlyBefore + " / Bだけ " + counts.onlyAfter,
+    "共通範囲外として除外: A " + value.before.excludedEvents + " / B " + value.after.excludedEvents + "件",
+    "両資料で照合できたブロック情報 " + value.sharedAnchorCount + " / ハッシュ不一致 " + value.anchorDifferences.length];
+  for (const [name, source] of [["A", value.before], ["B", value.after]]) {
+    if (!source.internallyConsistentHashes) lines.push(name + "の元資料内にブロック情報の矛盾があります。");
+    if (source.restricted) lines.push(name + "には再取得が必要という印があります。");
+    if (source.archivedReport || source.archivedSource) lines.push(name + "には非表示保管の記録を含みます。");
+  }
+  for (const row of value.anchorDifferences) lines.push("Block " + row.blockNumber + " / A " + row.beforeHash + " / B " + row.afterHash);
+  lines.push("イベントの差 " + (page + 1) + "/" + pages + "ページ（最大50件ずつ。JSON保存は全件です）");
+  const kinds = { onlyBefore: "Aだけに保存", onlyAfter: "Bだけに保存", changed: "同じ取引・ログ番号で内容違い" };
+  const fields = { blockNumber: "ブロック番号", blockHash: "ブロックハッシュ", transactionIndex: "取引の位置", from: "送信元", to: "受信先", amountBaseUnits: "数量（最小単位）" };
+  for (const row of value.differences.slice(page * limit, (page + 1) * limit)) {
+    lines.push("", kinds[row.kind] + " / " + row.transactionHash + " / log " + row.logIndex);
+    if (row.changedFields.length) lines.push("異なる値: " + row.changedFields.map(field => fields[field]).join("、"));
+    for (const [name, source] of [["A", row.before], ["B", row.after]]) {
+      if (!source) { lines.push(name + ": 共通範囲の保存記録にはありません"); continue; }
+      const event = source.event;
+      lines.push(name + ": 保存区間 " + (source.recordIndex + 1) + " / イベント " + (source.eventIndex + 1),
+        "  Block " + event.blockNumber + " / hash " + event.blockHash + " / 取引の位置 " + event.transactionIndex,
+        "  " + event.from + " → " + event.to + " / 数量（最小単位） " + event.amountBaseUnits);
+    }
+  }
+  lines.push("", "保存資料同士の比較です。片方に記録がない理由や正しい取得元は確定できません。現在のチェーン照合・履歴の統合・送金は行いません。");
+  return lines.join("\n");
+}
+
+export function setEventComparisonReviewText(value) {
+  if (!value) return "元の確認セットを開き、保存した履歴比較JSONを選んで再計算と照合します。ファイルに記載された資料A・B・トークンを使います。";
+  const meanings = { "saved-observations-match": "共通範囲の保存観測は一致", differences: "保存観測に食い違いあり", "no-common-coverage": "共通取得範囲がなく比較未成立" };
+  return ["最後に完了した履歴比較ファイルの照合:",
+    value.matchesRecomputation ? "ファイルの内容は再計算と一致しました。" : "ファイルの内容に再計算との食い違いがあります。",
+    "元資料の検査値: " + (value.sourceDigestMatches ? "一致" : "不一致"),
+    "資料A: " + value.query.beforeId, "資料B: " + value.query.afterId, "トークン: " + value.query.agent,
+    "再計算した履歴比較: " + meanings[value.comparisonStatus] + " / 共通範囲 " + value.comparedBlocks + "ブロック",
+    ...Object.entries(value.sources).flatMap(([role, source]) => {
+      const name = role === "before" ? "A" : "B";
+      return [source.restricted ? name + "には再取得が必要という印があります。" : "",
+        source.archivedReport || source.archivedSource ? name + "には非表示保管の記録を含みます。" : "",
+        !source.internallyConsistentHashes ? name + "の元資料内にブロック情報の矛盾があります。" : ""].filter(Boolean);
+    }),
+    "同一 " + value.counts.matching + " / 内容違い " + value.counts.changed + " / Aだけ " + value.counts.onlyBefore + " / Bだけ " + value.counts.onlyAfter + " / ブロックハッシュ不一致 " + value.anchorDifferenceCount,
+    "異なる項目: " + (value.differences.join(", ") || "なし") + " / 余分な項目: " + value.unexpectedFields,
+    "履歴比較ファイルのテキスト SHA-256: " + value.comparisonTextSha256,
+    "ファイルと再計算の一致は、A・Bの履歴が一致したという意味とは別です。出所や現在のチェーン状態を認証せず、資料の差し替え・履歴の統合も行いません。"].join("\n");
+}
+
+export function setCoverageReviewText(value) {
+  if (!value) return "保存した履歴範囲JSONを、表示中の元資料から再計算して照合します。ファイルに記載されたアドレス表示設定を使います。";
+  return ["最後に完了した履歴範囲JSONの照合:",
+    value.matchesRecomputation ? "ファイルの内容は再計算と一致しました。" : "ファイルの内容に再計算との食い違いがあります。",
+    "元資料の検査値: " + (value.sourceDigestMatches ? "一致" : "不一致"),
+    "再計算した資料全体: " + (value.summary.allContinuous ? "この保存資料内では連続条件に一致" : "追加確認が必要"),
+    "含まれないトークン: " + (value.missingAgents.join(", ") || "なし"),
+    "グループ別に " + value.groupCount + "件（ブロック数はグループをまたいで合算しません）",
+    ...value.groups.flatMap(group => [group.id + " / " + group.agent + " / Chain " + group.chainId + " / " + group.fromBlock + " ～ " + group.toBlock,
+      "  計画内 " + group.plannedUniqueBlocks + " / 保存済み " + group.recordedUniqueBlocks + " / 計画内で履歴記録なし " + group.pendingPlannedBlocks + " / 計画外 " + group.unplannedBlocks + " / 保存済みのうち要確認 " + group.reviewRecordedBlocks]),
+    "異なる項目: " + (value.differences.join(", ") || "なし") + " / 余分な項目: " + value.unexpectedFields,
+    "履歴範囲ファイルのテキスト SHA-256: " + value.coverageTextSha256,
+    "ファイルと再計算の一致は、全履歴の取得完了を意味しません。保存された問い合わせ区間の存在を照合しています。元資料の変更・履歴の統合・チェーンへの読み取りは行いません。"].join("\n");
+}
+
+export function setTokenLibraryText(recovery) {
+  if (!recovery) return "先に確認セットを開いてください。";
+  return [recovery.agent + "の元の控えを、表示中の確認セット全体から取り出します。",
+    `元の報告 ${recovery.reportCount}件 / このトークンの控えがない報告 ${recovery.missingReports}件`,
+    `元の保存番号 ${recovery.entryCount}件 / 同じ番号・同じ内容の重複参照 ${recovery.duplicateReferences}件`,
+    recovery.error ? setErrorText(recovery.error) : "保存一覧のJSONにまとめられます。PC内の一覧にはまだ追加しません。",
+    ...recovery.conflicts.map(row => "相違する保存番号 " + row.entryId + " · 報告 " + row.firstReportId + " / " + row.conflictingReportId),
+    "このトークンの全アカウント・全期間の元の控えを含みます。再取得・非表示保管の印は元の控えのままです。",
+    "報告側の名前・メモ・保管状態と、複数報告の比較結果は含めません。元の確認セットも保全してください。",
+    "保存したJSONは「期間の保存一覧JSONを読み込む」で確認できます。自動接続・取得は行いません。"].join("\n");
 }

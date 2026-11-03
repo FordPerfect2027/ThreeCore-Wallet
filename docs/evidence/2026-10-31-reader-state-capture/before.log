@@ -1,0 +1,498 @@
+✖ history filters use their captured own values when a property trap offers another account (102.3131ms)
+✖ history filter reflection failure is a public query error (2.9367ms)
+✖ coverage rejects an array-provided map before it can substitute different ranges (1.5428ms)
+✖ coverage captures range fields without property-read traps (1.0777ms)
+✖ coverage rejects accessor slots, accessor endpoints and revoked arrays with public errors (1.0522ms)
+✖ portfolio rejects state field accessors before any provider call (19.2739ms)
+✖ portfolio uses captured capabilities instead of a misleading get trap (2.9478ms)
+✖ portfolio captures valid descriptors without executing property-read traps (1.2723ms)
+✖ portfolio maps a throwing state adapter to its public error (2.0437ms)
+✔ portfolio permits unrelated state metadata without reading its accessor (10.3731ms)
+✖ identity rejects state field accessors before any provider call (9.9071ms)
+✖ identity uses captured capabilities instead of a misleading get trap (2.9043ms)
+✖ identity captures valid descriptors without executing property-read traps (0.4764ms)
+✖ identity maps a throwing state adapter to its public error (2.7397ms)
+✔ identity permits unrelated state metadata without reading its accessor (5.3809ms)
+✖ allowance rejects state field accessors before any provider call (11.0052ms)
+✖ allowance uses captured capabilities instead of a misleading get trap (11.513ms)
+✖ allowance captures valid descriptors without executing property-read traps (0.5831ms)
+✖ allowance maps a throwing state adapter to its public error (0.8716ms)
+✔ allowance permits unrelated state metadata without reading its accessor (3.052ms)
+✖ transfer rejects state field accessors before any provider call (24.0008ms)
+✖ transfer uses captured capabilities instead of a misleading get trap (3.0645ms)
+✖ transfer captures valid descriptors without executing property-read traps (0.4196ms)
+✖ transfer maps a throwing state adapter to its public error (0.5754ms)
+✔ transfer permits unrelated state metadata without reading its accessor (2.8716ms)
+✖ period rejects state field accessors before any provider call (75.9358ms)
+✖ period uses captured capabilities instead of a misleading get trap (119.0688ms)
+✖ period captures valid descriptors without executing property-read traps (1.8118ms)
+✖ period maps a throwing state adapter to its public error (1.6572ms)
+✔ period permits unrelated state metadata without reading its accessor (107.783ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 5
+ℹ fail 25
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1169.3274
+
+✖ failing tests:
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-query-coverage-before.test.mjs:5:1
+✖ history filters use their captured own values when a property trap offers another account (102.3131ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '0x2222222222222222222222222222222222222222'
+  - '0x1111111111111111111111111111111111111111'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-query-coverage-before.test.mjs:8:56)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '0x2222222222222222222222222222222222222222',
+    expected: '0x1111111111111111111111111111111111111111',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-query-coverage-before.test.mjs:11:1
+✖ history filter reflection failure is a public query error (2.9367ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + Comparison {}
+  - Comparison {
+  -   code: 'INVALID_HISTORY_QUERY'
+  - }
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-query-coverage-before.test.mjs:12:62)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: TypeError: Cannot perform 'IsArray' on a proxy that has been revoked
+        at Array.isArray (<anonymous>)
+        at validateHistoryQuery (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/history-query.js:20:52)
+        at assert.throws.code (file:///C:/Users/aseet/AppData/Local/Temp/threecore-query-coverage-before.test.mjs:12:73)
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-query-coverage-before.test.mjs:12:62)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: { code: 'INVALID_HISTORY_QUERY' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-query-coverage-before.test.mjs:15:1
+✖ coverage rejects an array-provided map before it can substitute different ranges (1.5428ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-query-coverage-before.test.mjs:17:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'RECONCILIATION_RANGES' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-query-coverage-before.test.mjs:19:1
+✖ coverage captures range fields without property-read traps (1.0777ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '1' !== '2'
+  
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-query-coverage-before.test.mjs:21:63)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1',
+    expected: '2',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-query-coverage-before.test.mjs:23:1
+✖ coverage rejects accessor slots, accessor endpoints and revoked arrays with public errors (1.0522ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-query-coverage-before.test.mjs:26:52)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'RECONCILIATION_RANGES' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:19:2
+✖ portfolio rejects state field accessors before any provider call (19.2739ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:22:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'INVALID_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:24:2
+✖ portfolio uses captured capabilities instead of a misleading get trap (2.9478ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:28:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'UNSAFE_CAPABILITIES' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:30:2
+✖ portfolio captures valid descriptors without executing property-read traps (1.2723ms)
+  Error: PRIVATE_STATE
+      at Object.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:31:96)
+      at identity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:23:43)
+      at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:115:19)
+      at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:12:49)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:32:91)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:34:2
+✖ portfolio maps a throwing state adapter to its public error (2.0437ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: PRIVATE_STATE
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE_STATE
+        at Object.get [as state] (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:35:99)
+        at identity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:22:24)
+        at readPortfolioSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/portfolio-snapshot.js:115:19)
+        at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:12:49)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:31)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:19:2
+✖ identity rejects state field accessors before any provider call (9.9071ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:22:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'IDENTITY_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:24:2
+✖ identity uses captured capabilities instead of a misleading get trap (2.9043ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:28:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'IDENTITY_CAPABILITIES' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:30:2
+✖ identity captures valid descriptors without executing property-read traps (0.4764ms)
+  Error: PRIVATE_STATE
+      at Object.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:31:96)
+      at sessionIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:10:23)
+      at readTokenIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:47:19)
+      at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:13:48)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:32:91)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:34:2
+✖ identity maps a throwing state adapter to its public error (2.7397ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: PRIVATE_STATE
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE_STATE
+        at Object.get [as state] (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:35:99)
+        at sessionIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:9:24)
+        at readTokenIdentity (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/token-identity-reader.js:47:19)
+        at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:13:48)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:31)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:19:2
+✖ allowance rejects state field accessors before any provider call (11.0052ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:22:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'ALLOWANCE_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:24:2
+✖ allowance uses captured capabilities instead of a misleading get trap (11.513ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:28:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'ALLOWANCE_CAPABILITIES' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:30:2
+✖ allowance captures valid descriptors without executing property-read traps (0.5831ms)
+  Error: PRIVATE_STATE
+      at Object.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:31:96)
+      at sessionKey (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:10:23)
+      at readAllowanceSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:24:15)
+      at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:14:46)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:32:91)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:34:2
+✖ allowance maps a throwing state adapter to its public error (0.8716ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: PRIVATE_STATE
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE_STATE
+        at Object.get [as state] (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:35:99)
+        at sessionKey (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:9:24)
+        at readAllowanceSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/allowance-reader.js:24:15)
+        at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:14:46)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:31)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:19:2
+✖ transfer rejects state field accessors before any provider call (24.0008ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:22:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'TRANSFER_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:24:2
+✖ transfer uses captured capabilities instead of a misleading get trap (3.0645ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:28:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'TRANSFER_CAPABILITIES' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:30:2
+✖ transfer captures valid descriptors without executing property-read traps (0.4196ms)
+  Error: PRIVATE_STATE
+      at Object.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:31:96)
+      at binding (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:12:23)
+      at readTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:46:19)
+      at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:15:48)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:32:91)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:34:2
+✖ transfer maps a throwing state adapter to its public error (0.5754ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: PRIVATE_STATE
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE_STATE
+        at Object.get [as state] (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:35:99)
+        at binding (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:11:24)
+        at readTransferSnapshot (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/transfer-reader.js:46:19)
+        at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:15:48)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:31)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:19:2
+✖ period rejects state field accessors before any provider call (75.9358ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:22:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_SESSION' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:24:2
+✖ period uses captured capabilities instead of a misleading get trap (119.0688ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:28:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { code: 'PERIOD_CAPABILITIES' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:30:2
+✖ period captures valid descriptors without executing property-read traps (1.8118ms)
+  Error: PRIVATE_STATE
+      at Object.get (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:31:96)
+      at binding (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:15:23)
+      at collectPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:60:19)
+      at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:16:46)
+      at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:32:91)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+
+test at ..\..\..\..\..\..\AppData\Local\Temp\threecore-read-state-before.test.mjs:34:2
+✖ period maps a throwing state adapter to its public error (1.6572ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: PRIVATE_STATE
+      at async TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: PRIVATE_STATE
+        at Object.get [as state] (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:35:99)
+        at binding (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:14:24)
+        at collectPeriod (file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/src/period-reader.js:60:19)
+        at Object.run (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:16:46)
+        at TestContext.<anonymous> (file:///C:/Users/aseet/AppData/Local/Temp/threecore-read-state-before.test.mjs:36:31)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    operator: 'rejects',
+    diff: 'simple'
+  }

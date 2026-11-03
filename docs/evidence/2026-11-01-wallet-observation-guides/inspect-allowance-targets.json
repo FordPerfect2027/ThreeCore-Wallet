@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.saved-file-inspection.v2",
+  "sourceSchema": "threecore-allowance-file-v1",
+  "byteLength": 593,
+  "title": "利用許可の確認用保存資料",
+  "target": "allowance",
+  "destinationMessage": "既存の利用許可を調べる対象一覧、または過去の観測JSONです。利用許可の確認画面で元のJSONを確認してください。許可を付与・変更する操作ではありません。",
+  "validation": "validated-original",
+  "checksumVerified": true,
+  "sourceDigest": "bcc112585bf9c12d1fec035d3e9b37103d5156df69a118dc91d3dd7001028e8a",
+  "textDigest": "58a70eeb27c8eb330f9f49df6a9df3af9c2a9521bc19f31582b8fee9405f90b2",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": false,
+    "archiveReferences": null,
+    "transferRecordReferences": null,
+    "eventReferences": null,
+    "identityObservationReferences": null,
+    "allowanceTargetReferences": 2,
+    "allowanceObservationReferences": null
+  },
+  "originalEvidenceValidated": true,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

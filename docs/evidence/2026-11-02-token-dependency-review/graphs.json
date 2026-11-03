@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-11-01T18:20:47.175Z",
+  "sameDependencyGraph": true,
+  "rows": [
+    {
+      "name": "DAT",
+      "lockSha256": "29a17e64514fbe4b5452a5f3b3c0615e2b7f9fcbdaa1207790c958505b4101c2",
+      "dependencyGraphSha256": "31028f0aba869bcb0635e3e3601db9317851538337b9fbf747959abc08e92d49",
+      "transitivePackageCount": 141
+    },
+    {
+      "name": "EMA-Draft",
+      "lockSha256": "a68d778d169a12e3f2269e94ee6ad96dae6ae92594549483782f960fd27e11ee",
+      "dependencyGraphSha256": "31028f0aba869bcb0635e3e3601db9317851538337b9fbf747959abc08e92d49",
+      "transitivePackageCount": 141
+    },
+    {
+      "name": "CAWELON-Draft",
+      "lockSha256": "394b83cc49585a7350ddc1b709685b318f313cbe2c1812f8740f44d418713bea",
+      "dependencyGraphSha256": "31028f0aba869bcb0635e3e3601db9317851538337b9fbf747959abc08e92d49",
+      "transitivePackageCount": 141
+    }
+  ]
+}

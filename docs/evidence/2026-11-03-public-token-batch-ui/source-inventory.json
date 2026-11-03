@@ -1,0 +1,82 @@
+[
+  {
+    "file": "src/public-token-batch-request.js",
+    "bytes": 725,
+    "sha256": "2ab092790431460e53362e1764f5a41c1584a491ca8b66d924e39c74607c9b9d"
+  },
+  {
+    "file": "src/public-token-batch-client.js",
+    "bytes": 1773,
+    "sha256": "0b2c23668ae6371d9747b7fb3a34724c58c2072ddcec4909cbcc8b4545350726"
+  },
+  {
+    "file": "src/public-token-batch-model.js",
+    "bytes": 6128,
+    "sha256": "d541764a30a9d7e0558b8f93aace97e822dca535f1a31c02b237ad6fe1c0288b"
+  },
+  {
+    "file": "src/public-token-batch-reader.js",
+    "bytes": 3971,
+    "sha256": "5605b0cb2617219526c93ec480521befbf2aa7f0c7df629adc19c8a4c4366205"
+  },
+  {
+    "file": "examples/public-token-batch-http.js",
+    "bytes": 2755,
+    "sha256": "8600a16ca94c5824342cf6c3295d1f960bef4d85ba5e7c9368226d950bf36f51"
+  },
+  {
+    "file": "examples/public-token-batch-page.js",
+    "bytes": 5929,
+    "sha256": "7795b9ee99197504846e5d63824e3eb33e351fd3b85e9aa27a9585972bb4b11b"
+  },
+  {
+    "file": "examples/public-token-batch.html",
+    "bytes": 3271,
+    "sha256": "45a4fb19816e2b90dd25bb456ad1898a93ee941de647548d92ec60a9b119dfdb"
+  },
+  {
+    "file": "examples/dev-server.js",
+    "bytes": 35539,
+    "sha256": "5764e3eb2a6f81919f1fd5ec12cfb4722b12360b12452ddd35e860be65fbb67b"
+  },
+  {
+    "file": "examples/index.html",
+    "bytes": 9987,
+    "sha256": "ca791324f94ce06fa9279261e688da948f2ff86362948bca14d574b8307cee09"
+  },
+  {
+    "file": "examples/operation-budget.html",
+    "bytes": 7990,
+    "sha256": "1725010d8ea6d6c665ce342f378609e521bc1be0baa296ea65cc02466b896b75"
+  },
+  {
+    "file": "examples/operation-budget-page.js",
+    "bytes": 13517,
+    "sha256": "a0eda6b0604696b897e946e6ca01b4bc51ff01d3fb0dba9388770f696d3cd259"
+  },
+  {
+    "file": "examples/operation-budget-evidence.html",
+    "bytes": 3761,
+    "sha256": "dd4e84c02b90267938c4456402b834712ddafa9d2690fc103e939673ddc708dd"
+  },
+  {
+    "file": "integration/public-token-batch-server.test.mjs",
+    "bytes": 6406,
+    "sha256": "52a983695bd090f155c300986f2ba0335fa72572acc5a6cbed140fd049ad0e0f"
+  },
+  {
+    "file": "test/public-token-batch-client.test.js",
+    "bytes": 2529,
+    "sha256": "be67049aeb0df8f9756d0c4fa989b90e952767cff88fe2ea29dbc1d85c4c387e"
+  },
+  {
+    "file": "test/public-token-batch-page.test.js",
+    "bytes": 5296,
+    "sha256": "4e9903b14a495ed0d1adcdfb996f00ce424fcf520e3bbe4f6f0a36b0233d9529"
+  },
+  {
+    "file": "test/operation-budget-public-source.test.js",
+    "bytes": 5652,
+    "sha256": "9bf8dfef08700c795a28b9969f329b499630f3723d7f12b69a82df9dac12fbfb"
+  }
+]

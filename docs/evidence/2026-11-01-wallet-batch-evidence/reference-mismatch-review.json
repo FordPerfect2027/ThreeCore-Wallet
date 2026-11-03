@@ -1,0 +1,32 @@
+{
+  "schema": "threecore.wallet-saved-batch-evidence-review.v1",
+  "textDigest": "c18ee9e60a109d138972ffeaee6d0fc7338025732d0970102edf37058c3778c1",
+  "matchesRecomputation": true,
+  "differences": [],
+  "unexpectedFields": 0,
+  "expectedSummary": {
+    "selected": 1,
+    "checked": 1,
+    "pending": 0,
+    "validatedOriginals": 0,
+    "declaredOnly": 0,
+    "invalid": 0,
+    "hashUnavailable": 0,
+    "totalBytes": 5847,
+    "checksumsCompared": 1,
+    "checksumsMatching": 0,
+    "checksumMismatches": 1
+  },
+  "allOriginalsValidated": false,
+  "allExternalChecksumsMatch": false,
+  "externalChecksumsCompared": true,
+  "readOnly": true,
+  "authenticated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "containsOriginalEvidence": false,
+  "authorizesExecution": false,
+  "liveChainRechecked": false,
+  "atomicSnapshot": false,
+  "recordedProcessVerified": false
+}

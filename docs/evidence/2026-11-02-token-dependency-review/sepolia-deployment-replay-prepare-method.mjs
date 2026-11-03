@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile} from 'node:fs/promises';
+const root='C:/Users/aseet/AppData/Local/Temp/';
+const evidence='C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/docs/evidence/2026-11-02-token-dependency-review';
+let source=await readFile(root+'threecore-sepolia-deployment-locate-v2-20261102.mjs','utf8');
+function swap(oldText,newText){assert(source.includes(oldText),oldText);source=source.replace(oldText,newText);}
+swap("import {readFile,writeFile,mkdir} from 'node:fs/promises';", "import {readFile} from 'node:fs/promises';\nimport {dirname,join,resolve} from 'node:path';");
+swap("import {pathToFileURL} from 'node:url';", "import {fileURLToPath} from 'node:url';");
+swap("const work='C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work',dat=work+'/token-dependency-repair-DAT-20261102';\nconst evidence=work+'/threecore-wallet-operation-rehearsal-20261029/docs/evidence/2026-11-02-token-dependency-review';\nconst output='C:/Users/aseet/Downloads/ThreeCore-sepolia-deployment-check-20261102-v2';", "if(process.argv.length!==3)throw Error('Usage: node verify-recorded-sepolia-deployments.mjs <token-checkout-with-solc-and-viem>');\nconst dat=resolve(process.argv[2]),evidence=dirname(fileURLToPath(import.meta.url));");
+swap('await mkdir(output);','');
+swap("{createPublicClient,getContractAddress,keccak256,stringToHex}","{getContractAddress,keccak256,stringToHex}");
+swap("const {createReadOnlyHttp}=await import(pathToFileURL(dat+'/src/read-only-http.js'));\nconst client=createPublicClient({transport:createReadOnlyHttp('https://sepolia.base.org')});", "const recorded=JSON.parse(await readFile(join(evidence,'sepolia-deployment-results.json'),'utf8'));\nconst rawBytes=await readFile(join(evidence,'sepolia-deployment-rpc.json'));\nassert.equal(recorded.error,undefined);assert.equal(recorded.chainId,84532);assert.equal(recorded.lowerBoundBlock,'46500000');assert.equal(recorded.requests,96);assert.equal(recorded.rows.length,2);\nassert.equal(createHash('sha256').update(rawBytes).digest('hex'),recorded.rawSha256);");
+swap("const hex=n=>'0x'+n.toString(16),raw=[],headers=new Map();", "const hex=n=>'0x'+n.toString(16),raw=JSON.parse(rawBytes),headers=new Map();let cursor=0;assert.equal(raw.length,96);");
+const oldRequest=source.split('\n').find(line=>line.startsWith('async function request('));assert(oldRequest);
+swap(oldRequest,"async function request(method,params){const entry=raw[cursor++];assert(entry);assert.equal(entry.error,undefined);assert.equal(entry.method,method);assert.deepEqual(entry.params,params);return structuredClone(entry.result);}");
+swap("console.log(JSON.stringify({token,creationBlock:hi.toString(),transaction:hash(tx.hash),fullCreationBytecodeMatches:true,initialMintMatches:true,requests:raw.length}));",'');
+const tail=source.indexOf('report.finishedAt=new Date().toISOString();');assert(tail>0);
+source=source.slice(0,tail)+"assert.equal(report.error,undefined);assert.equal(cursor,raw.length);assert.deepEqual(report.rows,recorded.rows);assert(report.chainAndObservationHeaderRechecked);\nconsole.log(JSON.stringify({offline:true,recordedRequestsReplayed:cursor,creationAndInitialMintMatches:report.rows.length,rows:report.rows.map(({searches,...row})=>row),currentChainReverified:false,currentHolderBalanceVerified:false,independentAudit:false},null,2));\n";
+await writeFile(evidence+'/verify-recorded-sepolia-deployments.mjs',source,{flag:'wx'});
+for(const [name,from]of [['sepolia-deployment-rpc.json','raw-rpc.json'],['sepolia-deployment-results.json','results.json']])await writeFile(evidence+'/'+name,await readFile('C:/Users/aseet/Downloads/ThreeCore-sepolia-deployment-check-20261102-v2/'+from),{flag:'wx'});
+console.log('Prepared offline replay with no public RPC transport.');

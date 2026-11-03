@@ -1,0 +1,63 @@
+{
+  "source": "55f9913",
+  "synthetic": true,
+  "captures": [
+    {
+      "name": "all",
+      "visibleNames": [
+        "FIRST.json",
+        "invalid.json",
+        "last.json"
+      ],
+      "shownScope": "表示 3件 / 選択した全 3件。絞り込みは表示だけです。JSON・CSV・照合値一覧の保存は全件が対象です。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。元記録 0件、補助資料 0件、形式・照合値の問題 1件。 練習用 2件（実際の入出金の証拠ではありません）。 データ形式を確認・内部チェックサムなし 2件。内部チェックサム付きの元記録とは分けています。"
+    },
+    {
+      "name": "validated-structure",
+      "visibleNames": [
+        "FIRST.json",
+        "last.json"
+      ],
+      "shownScope": "表示 2件 / 選択した全 3件。絞り込みは表示だけです。JSON・CSV・照合値一覧の保存は全件が対象です。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。元記録 0件、補助資料 0件、形式・照合値の問題 1件。 練習用 2件（実際の入出金の証拠ではありません）。 データ形式を確認・内部チェックサムなし 2件。内部チェックサム付きの元記録とは分けています。"
+    },
+    {
+      "name": "last",
+      "visibleNames": [
+        "last.json"
+      ],
+      "shownScope": "表示 1件 / 選択した全 3件。絞り込みは表示だけです。JSON・CSV・照合値一覧の保存は全件が対象です。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。元記録 0件、補助資料 0件、形式・照合値の問題 1件。 練習用 2件（実際の入出金の証拠ではありません）。 データ形式を確認・内部チェックサムなし 2件。内部チェックサム付きの元記録とは分けています。"
+    },
+    {
+      "name": "no-matches",
+      "visibleNames": [],
+      "shownScope": "表示 0件 / 選択した全 3件。絞り込みは表示だけです。JSON・CSV・照合値一覧の保存は全件が対象です。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。元記録 0件、補助資料 0件、形式・照合値の問題 1件。 練習用 2件（実際の入出金の証拠ではありません）。 データ形式を確認・内部チェックサムなし 2件。内部チェックサム付きの元記録とは分けています。"
+    },
+    {
+      "name": "cleared",
+      "visibleNames": [
+        "FIRST.json",
+        "invalid.json",
+        "last.json"
+      ],
+      "shownScope": "表示 3件 / 選択した全 3件。絞り込みは表示だけです。JSON・CSV・照合値一覧の保存は全件が対象です。",
+      "wholeSummary": "3件中、確認済み 3件／未確認 0件。元記録 0件、補助資料 0件、形式・照合値の問題 1件。 練習用 2件（実際の入出金の証拠ではありません）。 データ形式を確認・内部チェックサムなし 2件。内部チェックサム付きの元記録とは分けています。"
+    }
+  ],
+  "opened": [
+    {
+      "name": "last.json",
+      "digest": "1d570350fdba84e889fcb67a37399783934825644b4974bbb14cc09c45838dfe"
+    }
+  ],
+  "fullReceiptBytesUnchanged": true,
+  "filterDoesNotReinspectSources": true,
+  "lastFullBrowserSource": "ccbbbe3",
+  "lastFullBrowserCases": 959,
+  "fullBrowserCoverage": false,
+  "nativeFocusedCases": 113,
+  "userTabConnectionVerified": false,
+  "realProviderCalls": 0
+}

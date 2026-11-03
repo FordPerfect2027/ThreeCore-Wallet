@@ -1,0 +1,39 @@
+{
+  "schema": "threecore.saved-file-inspection.v3",
+  "sourceSchema": "threecore.operation-rehearsal-workspace.v1",
+  "byteLength": 2941,
+  "title": "運用リハーサルの3トークン履歴",
+  "target": "rehearsal-workspace",
+  "destinationMessage": "運用リハーサルの練習用の3トークン履歴です。「保存した3トークンの履歴を戻す」で元のJSONを選んでください。実際の入出金の証拠ではありません。",
+  "validation": "validated-structure",
+  "simulationOnly": true,
+  "checksumVerified": false,
+  "sourceDigest": null,
+  "textDigest": "f933386f4367458cfb8cdaf64e0f2c1d433ce5eeb318f49b82d1ef66b34a92c7",
+  "scope": {
+    "reportCount": null,
+    "archivedReports": null,
+    "entryReferences": null,
+    "draftReferences": null,
+    "archivedEntryReferences": null,
+    "restrictedEntryReferences": null,
+    "incompleteDraftReferences": null,
+    "emptyDraftReferences": null,
+    "agents": [
+      "DAT",
+      "EMA"
+    ],
+    "annotationValuesIncluded": false,
+    "repeatedReferencesMayExist": true,
+    "rehearsalLedgerReferences": 2,
+    "rehearsalRecordReferences": 3,
+    "rehearsalRejectedRecordReferences": 1,
+    "rehearsalScenarioReferences": null
+  },
+  "originalEvidenceValidated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "liveChainRechecked": false,
+  "authenticated": false,
+  "authorizesExecution": false
+}

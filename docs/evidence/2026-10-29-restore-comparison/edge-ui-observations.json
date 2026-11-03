@@ -1,0 +1,184 @@
+[
+  {
+    "step": "fresh-updated-page",
+    "at": "2026-10-29T13:19:04.620Z",
+    "state": {
+      "applyDisabled": true,
+      "changes": "",
+      "comparisonExportDisabled": true,
+      "details": "",
+      "exportStatus": "",
+      "metrics": "",
+      "overview": "DAT\t未作成\t—\t—\t—\nEMA\t未作成\t—\t—\t—\nCAWELON\t未作成\t—\t—\t—",
+      "stage": "1 / 3 — 保存した記録を選ぶ"
+    }
+  },
+  {
+    "step": "baseline-six-records-restored",
+    "at": "2026-10-29T13:19:09.377Z",
+    "state": {
+      "applyDisabled": true,
+      "changes": "",
+      "comparisonExportDisabled": true,
+      "details": "",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "3 / 3 — 復旧が完了しました"
+    }
+  },
+  {
+    "step": "changed-context-and-records-preview-keeps-original",
+    "at": "2026-10-29T13:20:02.464Z",
+    "state": {
+      "applyDisabled": false,
+      "changes": "DAT\t3件\t3件\t置き換える\nEMA\t2件\t3件\t置き換える\nCAWELON\t1件\t未作成\t履歴を消去する",
+      "comparisonExportDisabled": false,
+      "details": "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。 復旧後の表示対象: DAT → EMA。\n\nDATの照合詳細 — 置き換える\nEMAの照合詳細 — 置き換える\nCAWELONの照合詳細 — 履歴を消去する",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "2 / 3 — 選択できています。次は復旧ボタンを押してください"
+    }
+  },
+  {
+    "step": "DAT-detail-shows-network-account-asset-destination-policy-and-rejections",
+    "at": "2026-10-29T13:20:53.442Z",
+    "state": {
+      "applyDisabled": false,
+      "changes": "DAT\t3件\t3件\t置き換える\nEMA\t2件\t3件\t置き換える\nCAWELON\t1件\t未作成\t履歴を消去する",
+      "comparisonExportDisabled": false,
+      "details": "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。 復旧後の表示対象: DAT → EMA。\n\nDATの照合詳細 — 置き換える\n\n記録の追加 0件 / 削除 0件 / 同じIDの内容変更 1件 / 共通する記録の順序変更: なし。\n\n変わる項目: ネットワーク番号・記録上の口座・資産の契約アドレス・記録上のサイト・記録上の利用先契約。\n\n口座・ネットワーク・資産のいずれかが異なります。異なる対象の金額を合算・差し引きしていません。\n\n口座・ネットワーク・資産・利用先\n確認する項目\t現在\t復旧後\nネットワーク番号\t84532\t8453\n記録上の口座\t0x1111111111111111111111111111111111111111\t0x9999999999999999999999999999999999999999\n資産の契約アドレス\t0x4444444444444444444444444444444444444444\t0x8888888888888888888888888888888888888888\n資産名\tSIM\tSIM\n小数桁数\t6\t6\n記録上のサイト\thttps://training.example\thttps://other-training.example\n記録上の利用先契約\t0x5555555555555555555555555555555555555555\t0x7777777777777777777777777777777777777777\n記録の形式\tthreecore.operation-rehearsal.v2\tthreecore.operation-rehearsal.v2\n変わる利用条件\n確認する項目\t現在\t復旧後\n開始時の資金\t1000 SIM\t1200 SIM\n1回の元本上限\t100 SIM\t90 SIM\n仮の還元割合\t10%\t15%\n新しい利用の停止\t停止していない\t停止\n\n復旧後の試算: 条件外の記録 3件、未決済 0件、利益を超える予約: なし。実行の許可を示すものではありません。\n\n内容が変わる記録ID: settle-one\n\nEMAの照合詳細 — 置き換える\nCAWELONの照合詳細 — 履歴を消去する",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "2 / 3 — 選択できています。次は復旧ボタンを押してください"
+    }
+  },
+  {
+    "step": "EMA-detail-shows-added-record",
+    "at": "2026-10-29T13:20:57.349Z",
+    "state": {
+      "applyDisabled": false,
+      "changes": "DAT\t3件\t3件\t置き換える\nEMA\t2件\t3件\t置き換える\nCAWELON\t1件\t未作成\t履歴を消去する",
+      "comparisonExportDisabled": false,
+      "details": "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。 復旧後の表示対象: DAT → EMA。\n\nDATの照合詳細 — 置き換える\nEMAの照合詳細 — 置き換える\n\n記録の追加 1件 / 削除 0件 / 同じIDの内容変更 0件 / 共通する記録の順序変更: なし。\n\n口座・ネットワーク・資産・利用先\n確認する項目\t現在\t復旧後\nネットワーク番号\t84532\t84532\n記録上の口座\t0x2222222222222222222222222222222222222222\t0x2222222222222222222222222222222222222222\n資産の契約アドレス\t0x4444444444444444444444444444444444444444\t0x4444444444444444444444444444444444444444\n資産名\tSIM\tSIM\n小数桁数\t6\t6\n記録上のサイト\thttps://training.example\thttps://training.example\n記録上の利用先契約\t0x5555555555555555555555555555555555555555\t0x5555555555555555555555555555555555555555\n記録の形式\tthreecore.operation-rehearsal.v2\tthreecore.operation-rehearsal.v2\n\n利用条件の変更はありません。\n\n復旧後の試算: 条件外の記録 0件、未決済 0件、利益を超える予約: なし。実行の許可を示すものではありません。\n\n追加する記録ID: comparison-extra\n\nCAWELONの照合詳細 — 履歴を消去する",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "2 / 3 — 選択できています。次は復旧ボタンを押してください"
+    }
+  },
+  {
+    "step": "CAWELON-detail-shows-removed-record",
+    "at": "2026-10-29T13:21:01.211Z",
+    "state": {
+      "applyDisabled": false,
+      "changes": "DAT\t3件\t3件\t置き換える\nEMA\t2件\t3件\t置き換える\nCAWELON\t1件\t未作成\t履歴を消去する",
+      "comparisonExportDisabled": false,
+      "details": "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。 復旧後の表示対象: DAT → EMA。\n\nDATの照合詳細 — 置き換える\nEMAの照合詳細 — 置き換える\nCAWELONの照合詳細 — 履歴を消去する\n\n記録の追加 0件 / 削除 1件 / 同じIDの内容変更 0件 / 共通する記録の順序変更: なし。\n\n口座・ネットワーク・資産・利用先\n確認する項目\t現在\t復旧後\nネットワーク番号\t84532\t未作成\n記録上の口座\t0x3333333333333333333333333333333333333333\t未作成\n資産の契約アドレス\t0x4444444444444444444444444444444444444444\t未作成\n資産名\tSIM\t未作成\n小数桁数\t6\t未作成\n記録上のサイト\thttps://training.example\t未作成\n記録上の利用先契約\t0x5555555555555555555555555555555555555555\t未作成\n記録の形式\tthreecore.operation-rehearsal.v2\t未作成\n変わる利用条件\n確認する項目\t現在\t復旧後\n開始時の資金\t1000 SIM\t未作成\n1回の元本上限\t100 SIM\t未作成\n未決済元本の上限\t200 SIM\t未作成\n予備資金\t200 SIM\t未作成\n損失上限\t250 SIM\t未作成\n仮の還元割合\t10%\t未作成\n新しい利用の停止\t停止していない\t未作成\n開始費用の上限\t3 SIM\t未作成\n決済費用の上限\t5 SIM\t未作成\n\n削除する記録ID: open-one",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "2 / 3 — 選択できています。次は復旧ボタンを押してください"
+    }
+  },
+  {
+    "step": "comparison-download-started-without-applying",
+    "at": "2026-10-29T13:21:04.696Z",
+    "state": {
+      "applyDisabled": false,
+      "changes": "DAT\t3件\t3件\t置き換える\nEMA\t2件\t3件\t置き換える\nCAWELON\t1件\t未作成\t履歴を消去する",
+      "comparisonExportDisabled": false,
+      "details": "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。 復旧後の表示対象: DAT → EMA。\n\nDATの照合詳細 — 置き換える\nEMAの照合詳細 — 置き換える\nCAWELONの照合詳細 — 履歴を消去する",
+      "exportStatus": "照合資料の保存を開始しました。復旧前と復旧後の入力記録を含みます。履歴にはまだ反映していません。",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "2 / 3 — 選択できています。次は復旧ボタンを押してください"
+    }
+  },
+  {
+    "step": "cancel-clears-comparison-and-keeps-original",
+    "at": "2026-10-29T13:22:40.689Z",
+    "state": {
+      "applyDisabled": true,
+      "changes": "",
+      "comparisonExportDisabled": true,
+      "details": "",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "1 / 3 — 保存した記録を選ぶ"
+    }
+  },
+  {
+    "step": "comparison-report-is-rejected-as-restoration-input",
+    "at": "2026-10-29T13:22:42.205Z",
+    "state": {
+      "applyDisabled": true,
+      "changes": "",
+      "comparisonExportDisabled": true,
+      "details": "",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "読み込めませんでした — 現在の履歴は変更していません"
+    }
+  },
+  {
+    "step": "identical-input-is-labeled-unchanged-for-all-agents",
+    "at": "2026-10-29T13:22:43.822Z",
+    "state": {
+      "applyDisabled": false,
+      "changes": "DAT\t3件\t3件\t内容は同じ\nEMA\t2件\t2件\t内容は同じ\nCAWELON\t1件\t1件\t内容は同じ",
+      "comparisonExportDisabled": false,
+      "details": "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。\n\nDATの照合詳細 — 内容は同じ\nEMAの照合詳細 — 内容は同じ\nCAWELONの照合詳細 — 内容は同じ",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "2 / 3 — 選択できています。次は復旧ボタンを押してください"
+    }
+  },
+  {
+    "step": "unchanged-CAWELON-still-discloses-unsettled-position",
+    "at": "2026-10-29T13:22:45.269Z",
+    "state": {
+      "applyDisabled": false,
+      "changes": "DAT\t3件\t3件\t内容は同じ\nEMA\t2件\t2件\t内容は同じ\nCAWELON\t1件\t1件\t内容は同じ",
+      "comparisonExportDisabled": false,
+      "details": "ファイルに記載された情報同士の照合です。実際の口座・ネットワーク・契約の正しさは確認していません。「内容は同じ」は書式を除いた入力内容の一致です。\n\nDATの照合詳細 — 内容は同じ\nEMAの照合詳細 — 内容は同じ\nCAWELONの照合詳細 — 内容は同じ\n\n記録の追加 0件 / 削除 0件 / 同じIDの内容変更 0件 / 共通する記録の順序変更: なし。\n\n口座・ネットワーク・資産・利用先\n確認する項目\t現在\t復旧後\nネットワーク番号\t84532\t84532\n記録上の口座\t0x3333333333333333333333333333333333333333\t0x3333333333333333333333333333333333333333\n資産の契約アドレス\t0x4444444444444444444444444444444444444444\t0x4444444444444444444444444444444444444444\n資産名\tSIM\tSIM\n小数桁数\t6\t6\n記録上のサイト\thttps://training.example\thttps://training.example\n記録上の利用先契約\t0x5555555555555555555555555555555555555555\t0x5555555555555555555555555555555555555555\n記録の形式\tthreecore.operation-rehearsal.v2\tthreecore.operation-rehearsal.v2\n\n利用条件の変更はありません。\n\n復旧後の試算: 条件外の記録 0件、未決済 1件、利益を超える予約: なし。実行の許可を示すものではありません。",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "2 / 3 — 選択できています。次は復旧ボタンを押してください"
+    }
+  },
+  {
+    "step": "original-six-records-restored-final",
+    "at": "2026-10-29T13:22:46.316Z",
+    "state": {
+      "applyDisabled": true,
+      "changes": "",
+      "comparisonExportDisabled": true,
+      "details": "",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "3 / 3 — 復旧が完了しました"
+    }
+  },
+  {
+    "step": "original-six-records-download-started",
+    "at": "2026-10-29T13:22:49.918Z",
+    "state": {
+      "applyDisabled": true,
+      "changes": "",
+      "comparisonExportDisabled": true,
+      "details": "",
+      "exportStatus": "",
+      "metrics": "手元資金\n1028 SIM\n未決済元本\n0 SIM\n累計実現損益\n28 SIM\n費用合計\n2 SIM\n確保した決済費用\n0 SIM\n予約済みの還元額\n2.8 SIM\n予約を除く手元資金\n1025.2 SIM\n利益を超える予約額\n0 SIM",
+      "overview": "DAT\t3件\t28 SIM\t2.8 SIM\t0 SIM\nEMA\t2件\t-42 SIM\t0 SIM\t0 SIM\nCAWELON\t1件\t-1 SIM\t0 SIM\t0 SIM",
+      "stage": "3 / 3 — 復旧が完了しました"
+    }
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "schema": "threecore-wallet-setup-v1",
+  "entries": [
+    {
+      "agent": "DAT",
+      "account": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "chainId": 84532
+    },
+    {
+      "agent": "EMA",
+      "account": "0x2222222222222222222222222222222222222222",
+      "chainId": 84532
+    },
+    {
+      "agent": "CAWELON",
+      "account": "0x3333333333333333333333333333333333333333",
+      "chainId": 84532
+    }
+  ]
+}

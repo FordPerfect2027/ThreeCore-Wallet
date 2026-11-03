@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-11-01T18:29:34.835Z",
+  "commits": [
+    {
+      "name": "DAT",
+      "previous": "e0215f1a32824c19bcc89da96841e758928f4f29",
+      "revision": "fb5a5f6940563b1efa5c5bb5006b270b086e303b",
+      "contractCases": 161,
+      "readOnlyCases": 124,
+      "historyCases": 10,
+      "walletCompatibilityCases": 50,
+      "checkExit": 0,
+      "abiAndBytecodeUnchanged": true
+    },
+    {
+      "name": "EMA",
+      "previous": "362db49dcc5d5db5560b71ed5acd19bba326575e",
+      "revision": "69c89da9a0697a6d6f6f7a1fa82ab25354c7f7ab",
+      "contractCases": 163,
+      "readOnlyCases": 124,
+      "historyCases": 10,
+      "walletCompatibilityCases": 50,
+      "checkExit": 0,
+      "abiAndBytecodeUnchanged": true
+    },
+    {
+      "name": "CAWELON",
+      "previous": "c62f63370f7bcbe559d07b4d757384cf5f43ff0f",
+      "revision": "5fe773a62d1676b381a4a33156db0a3c033617f2",
+      "contractCases": 163,
+      "readOnlyCases": 124,
+      "historyCases": 10,
+      "walletCompatibilityCases": 50,
+      "checkExit": 0,
+      "abiAndBytecodeUnchanged": true
+    }
+  ],
+  "auditBeforeHigh": 8,
+  "auditAfterHigh": 6,
+  "remainingRootAdvisories": 1,
+  "remainingAdvisory": "GHSA-mrhx-c7xc-m3w5",
+  "productionAuditFindings": 0,
+  "published": false,
+  "independentReviewComplete": false
+}

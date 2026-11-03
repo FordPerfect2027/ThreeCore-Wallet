@@ -1,3 +1,5 @@
+import { captureOptionalDataFields } from "./security-data.js";
+import { observeCallbackResult, consumeCallback } from "./security-callback.js";
 /**
  * One visible read operation. Cancellation ends local waiting and prevents its
  * next subread. It cannot cancel an RPC already accepted by a wallet extension.
@@ -10,13 +12,24 @@ export const WALLET_READ_METHODS = Object.freeze([
 const MAX_PENDING = 32;
 const stale = () => Object.assign(new Error("Obsolete view operation"), { code: "STALE_VIEW" });
 
+/** Observe the adapter's state once, then copy its supported own data fields.
+ * The state getter is an adapter call; getters inside its returned data are not.
+ * This is not an authenticity check or an atomic snapshot of an external wallet.
+ */
+export function captureWalletReadState(session) {
+  const value=session?.state;
+  if(value===null||value===undefined)return value;
+  return captureOptionalDataFields(value,["agent","account","chainId","siteOrigin","connectionEpoch",
+    "connected","canSign","canSendTransactions","canBridge"]);
+}
+
 export function createWalletReadScope({ isCurrent, onSettled = () => {} }) {
   if (typeof isCurrent !== "function" || typeof onSettled !== "function") throw TypeError("READ_SCOPE_CONFIG");
   let closed = false;
   let inspecting = false;
   const pending = new Set();
   function notifySettled() {
-    try { Promise.resolve(onSettled()).catch(() => {}); } catch {}
+    consumeCallback(onSettled);
   }
   function cancel() {
     if (closed) return false;
@@ -33,12 +46,7 @@ export function createWalletReadScope({ isCurrent, onSettled = () => {} }) {
     let accepted = false;
     try {
       const value = isCurrent();
-      if (value && ["object", "function"].includes(typeof value)) {
-        const then = value.then;
-        if (typeof then === "function") {
-          new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
-        }
-      }
+      observeCallbackResult(value);
       accepted = value === true;
     } catch {}
     finally { inspecting = false; }

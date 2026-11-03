@@ -1,0 +1,18 @@
+✔ CLI options require explicit source kind and reject ambiguous combinations before any read (7.8351ms)
+✔ help requires no file and states all-match scope and output privacy (0.8534ms)
+✔ reconciliation command reproduces browser CSV bytes and leaves its input unchanged (660.1351ms)
+✔ reconciliation JSON records an empty selection and unfiltered conclusions (114.2068ms)
+✔ reconciliation rejects tampered checksum without partial stdout (113.4464ms)
+✔ period command reproduces browser CSV bytes and leaves its input unchanged (679.2317ms)
+✔ period JSON records an empty selection and unfiltered conclusions (165.2273ms)
+✔ period rejects tampered checksum without partial stdout (77.4004ms)
+✔ strict status is based on all source slots even when the query hides every issue (157.3804ms)
+✔ wrong source type, invalid UTF-8 and missing path fail without echoing file paths (71.4349ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2474.0994

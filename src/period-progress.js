@@ -1,4 +1,5 @@
 import { periodFail, periodWindows } from "./period-plan.js";
+import { captureOptionalDataFields } from "./security-data.js";
 
 const STAGES = Object.freeze(["resume-check", "earlier", "later", "history", "final-check", "complete"]);
 const IDENTITY_DETAILS = Object.freeze(["block", "code", "native", "metadata", "balance", "canonical", "complete"]);
@@ -6,6 +7,8 @@ const HISTORY_DETAILS = Object.freeze(["range", "token", "outgoing", "incoming",
 
 /** Sanitize progress independently from financial observations. Never keep arbitrary text. */
 export function validatePeriodProgress(value) {
+  try { value = captureOptionalDataFields(value, ["stage", "checked", "checks", "detail", "windowIndex"]); }
+  catch { periodFail("PERIOD_PROGRESS"); }
   if (!value || !STAGES.includes(value.stage)) periodFail("PERIOD_PROGRESS");
   const { stage, checked, checks } = value;
   if (!Number.isSafeInteger(checked) || !Number.isSafeInteger(checks) ||

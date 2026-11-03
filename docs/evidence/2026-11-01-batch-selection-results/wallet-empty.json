@@ -1,0 +1,30 @@
+{
+  "schema": "threecore.wallet-saved-batch-selection.v1",
+  "query": {
+    "name": "absent",
+    "status": "invalid"
+  },
+  "selectedBatchFiles": 2,
+  "matchedFiles": 0,
+  "fullBatchSummary": {
+    "selected": 2,
+    "checked": 2,
+    "pending": 0,
+    "validatedOriginals": 1,
+    "declaredOnly": 0,
+    "invalid": 1,
+    "hashUnavailable": 0,
+    "totalBytes": 5848
+  },
+  "sourcePhase": "complete",
+  "sourceComplete": true,
+  "files": [],
+  "sourceReceiptRequiredForRecheck": true,
+  "fullBatchResultIncluded": false,
+  "containsOriginalEvidence": false,
+  "readOnly": true,
+  "authenticated": false,
+  "restorable": false,
+  "automaticallyImported": false,
+  "authorizesExecution": false
+}

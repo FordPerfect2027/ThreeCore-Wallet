@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {mkdtempSync,writeFileSync,rmSync} from 'node:fs';import {tmpdir} from 'node:os';import {join,resolve,sep} from 'node:path';import {spawnSync} from 'node:child_process';import {savedDifferencePageFixtures} from './helpers/workspace-fixtures.js';import {parseSavedDifferencesArgs} from '../scripts/inspect-wallet-saved-differences.js';
+test('offline page CLI preserves global difference exit status for empty filters and supports scoped CSV',()=>{
+ const folder=mkdtempSync(join(tmpdir(),'threecore-difference-pages-')),pair=savedDifferencePageFixtures(),before=join(folder,'before.json'),after=join(folder,'after.json'),run=(extra,exit=2)=>{const result=spawnSync(process.execPath,['scripts/inspect-wallet-saved-differences.js',before,after,...extra],{encoding:'utf8',windowsHide:true,timeout:30000});assert.equal(result.error,undefined);assert.equal(result.status,exit,result.stderr);return result;};
+ try{writeFileSync(before,pair.before);writeFileSync(after,pair.after);const page=JSON.parse(run(['--path','/events','--offset','80','--json']).stdout);assert.equal(page.matchedDifferences,85);assert.equal(page.differences[0].ordinal,82);const empty=JSON.parse(run(['--path','missing','--json']).stdout);assert.equal(empty.matchedDifferences,0);assert.equal(empty.totalDifferences,86);assert(run(['--path','/policy','--csv']).stdout.includes('"scope"'));assert.equal(run(['--offset','120','--json'],1).stdout,'');}
+ finally{assert(resolve(folder).startsWith(resolve(tmpdir())+sep));rmSync(folder,{recursive:true,force:true});}
+});
+test('page command rejects ambiguous or invalid switches before file I/O',()=>{
+ for(const args of [['--json','--csv'],['--offset','1'],['--offset','0','--offset','40'],['--path'],['--path','--json'],['--unknown'],['--path','a\nb']])assert.throws(()=>parseSavedDifferencesArgs(['before.json','after.json',...args]));
+ assert.deepEqual(parseSavedDifferencesArgs(['before.json','after.json','--json']).query,{});assert.equal(parseSavedDifferencesArgs(['before.json','after.json','--json']).paged,false);
+});

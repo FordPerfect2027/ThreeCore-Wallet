@@ -1,3 +1,4 @@
+import { observeCallbackResult } from "./security-callback.js";
 import { observeWalletProvider } from "./provider-events.js";
 import { createWalletReadScope } from "./wallet-read-scope.js";
 import { ThreeCoreWalletSession, normalizeAddress, normalizeChainId } from "./wallet-session.js";
@@ -7,6 +8,10 @@ import { readTokenIdentity } from "./token-identity-reader.js";
 import { readAllowanceSnapshot } from "./allowance-reader.js";
 import { readTransferSnapshot } from "./transfer-reader.js";
 import { collectPeriod } from "./period-reader.js";
+import { periodFail, validatePeriodPlan } from "./period-plan.js";
+import { validatePeriodDraft } from "./period-draft.js";
+import { captureOptionalDataFields } from "./security-data.js";
+import { subscribeReadAbort } from "./security-abort.js";
 import { portfolioFailureStatus } from "./portfolio-progress.js";
 import { readErrorCode, readErrorMessage } from "./provider-error.js";
 
@@ -17,6 +22,7 @@ import { readErrorCode, readErrorMessage } from "./provider-error.js";
  */
 export function createWalletCardController({
   agent, siteOrigin, rpcSupervisor, onChange = () => {}, isAccessAllowed = () => true,
+  onConnectionInvalidated = () => {},
   createSession = (options) => new ThreeCoreWalletSession(options),
 }) {
   let wallet = null;
@@ -32,13 +38,8 @@ export function createWalletCardController({
     boundaryDepth++;
     try { return fn(); } finally { boundaryDepth--; }
   }
-  function consume(value) {
-    if (value === null || !["object", "function"].includes(typeof value)) return false;
-    const then = value.then;
-    if (typeof then !== "function") return false;
-    new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
-    return true;
-  }
+  function consume(value) { return observeCallbackResult(value) !== "synchronous"; }
+
   function cleanup(fn) {
     try {
       return boundary(() => { const result = fn(); return !consume(result) && result !== false; });
@@ -97,19 +98,24 @@ export function createWalletCardController({
     return completed;
   }
   function watch(provider, session, account, chainId) {
-    const invalidate = () => {
-      if (wallet === session) disconnect("接続先が変わりました。内容を確認して再接続してください。");
+    const invalidate = kind => {
+      if (wallet !== session || disposed) return;
+      disconnect("接続先が変わりました。内容を確認して再接続してください。");
+      // Record only a fixed reason, after access is closed. An observer must
+      // never prevent invalidation, restart a connection or receive payloads.
+      if (!disposed) cleanup(() => onConnectionInvalidated(kind));
     };
     const events = {
       accountsChanged(accounts) {
         try {
-          if (!Array.isArray(accounts) || !accounts.length || normalizeAddress(accounts[0]) !== account) invalidate();
-        } catch { invalidate(); }
+          if (!Array.isArray(accounts) || !accounts.length || normalizeAddress(accounts[0]) !== account) invalidate("wallet-account");
+        } catch { invalidate("wallet-account"); }
       },
       chainChanged(chain) {
-        try { if (normalizeChainId(chain) !== chainId) invalidate(); } catch { invalidate(); }
+        try { if (normalizeChainId(chain) !== chainId) invalidate("wallet-network"); } catch { invalidate("wallet-network"); }
       },
-      disconnect: invalidate,
+      // Also covers the event-rate guard, not only a provider disconnect event.
+      disconnect: () => invalidate("wallet-unavailable"),
     };
     const observer = observeWalletProvider(provider, events, () => wallet === session && !disposed);
     if (wallet === session && !disposed) unwatch = observer.dispose;
@@ -160,6 +166,9 @@ export function createWalletCardController({
         release();
         const messages = {
           __proto__: null,
+          WRONG_ACCOUNT: "Walletがこのサイトに許可したアカウントが、このカードの公開アドレスと一致しません。Walletの接続サイトの設定で確認対象の口座を選び直し、再接続してください。",
+          WRONG_CHAIN: "Walletのこのサイト向けネットワークが、このカードのチェーンと一致しません。Walletの接続サイトの設定で確認対象のネットワークを選び直し、再接続してください。",
+          NO_ACCOUNTS: "Walletから接続を許可したアカウントを確認できませんでした。Wallet側の接続許可を確認して、再接続してください。",
           CONNECT_TIMEOUT: "Walletからの応答がないため接続を終了しました。再接続してください。",
           PERMISSION_TIMEOUT: "接続許可の待機を終了しました。Walletの許可画面を確認し、完了後に再接続してください。",
           PERMISSION_PENDING: "Walletの許可画面がまだ処理中です。Wallet側で許可または拒否を完了してから再接続してください。",
@@ -278,22 +287,31 @@ export function createWalletCardController({
   return Object.freeze({
     get state() { return state; }, connect, disconnect, clearResult, readBalances, inspect, dispose,
     async readPeriod(plan, options = {}) {
+      // Capture before publishing the reading state: view callbacks may mutate
+      // the caller's objects, but cannot redirect an already accepted read.
+      try { options = boundary(() => captureOptionalDataFields(options,
+        ["draft", "timeoutMs", "stepTimeoutMs", "signal", "onProgress", "onCheckpoint"])); }
+      catch { periodFail("PERIOD_OPTIONS"); }
+      plan = boundary(() => validatePeriodPlan(plan));
+      if (options.draft !== undefined) options = { ...options,
+        draft: boundary(() => validatePeriodDraft(options.draft)) };
       let result;
       let failure;
       const accepted = await runRead(async (session, read) => {
         const aborter = new AbortController();
         activePeriodAborter = aborter;
         const cancel = () => aborter.abort();
-        options.signal?.addEventListener("abort", cancel, { once: true });
-        if (options.signal?.aborted) aborter.abort();
+        let cancellation;
         try {
+          try { cancellation = subscribeReadAbort(options.signal, cancel); }
+          catch { periodFail("PERIOD_SIGNAL"); }
           result = await read(() => collectPeriod(session, plan, { ...options, signal: aborter.signal }));
           return { kind: "period", blockNumber: result.plan.laterBlock };
         } catch (error) {
           failure = readErrorCode(error);
           throw error;
         } finally {
-          options.signal?.removeEventListener("abort", cancel);
+          cancellation?.dispose();
           if (activePeriodAborter === aborter) activePeriodAborter = null;
         }
       });
