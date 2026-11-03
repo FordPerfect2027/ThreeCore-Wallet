@@ -94,6 +94,16 @@
       "sha256": "15f22a8b6bc88a23cdd88f0f497a23a913e5edf590183ee8e4f0d50d0d4ba391"
     },
     {
+      "name": "last-active-network-probe.jpg",
+      "bytes": 36655,
+      "sha256": "cae26e74bea049e45e1e5b6b4580dc2438e2f0452aa58d5c1b5c8a4cc18e99c0"
+    },
+    {
+      "name": "last-active-network-probe.txt",
+      "bytes": 940,
+      "sha256": "aff49fd81fe7d252cd8571d245c513f77f34fec35c2ac8e96b7da8c474b31eb9"
+    },
+    {
       "name": "protection-after-native-stop.txt",
       "bytes": 356,
       "sha256": "0066947f483a4f634c30937a5d0fa8c050367bc8caa861eab5b3066b3f90b997"
@@ -130,7 +140,7 @@
   "githubWrites": false,
   "independentlyReviewed": false,
   "percentageCalculated": false,
-  "updatedAt": "2026-11-03T02:06:38.373Z",
+  "updatedAt": "2026-11-03T02:09:31.145Z",
   "protectionFollowup": {
     "pageHiddenStopObserved": true,
     "explicitResume": true,
@@ -156,5 +166,12 @@
   "officialGuidance": [
     "https://support.metamask.io/configure/networks/how-to-change-networks",
     "https://support.metamask.io/more-web3/dapps/manage-dapp-permissions/"
-  ]
+  ],
+  "finalProbe": {
+    "observedAt": "2026-11-03T02:09:20.471Z",
+    "chainId": 8453,
+    "permittedAddressCount": 1,
+    "accountMatchesAccount1": true,
+    "threeCardsReconnectedAfterIdle": false
+  }
 }
