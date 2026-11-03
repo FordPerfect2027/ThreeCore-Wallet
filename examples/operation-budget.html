@@ -14,7 +14,7 @@
     <p><a href="/budget/evidence/" target="_blank" rel="noopener">予算と保存済み残高を照合する</a></p>
     <p class="eyebrow">DAT · EMA · CAWELON</p><h1>元本とガス代の予算確認</h1>
     <p>トークンで使う元本と、ETHで払う費用を分けて試算します。別の用途に確保した額と、残しておく予備資金も差し引きます。</p>
-    <p class="notice">すべて手入力の仮定です。現在の残高・手数料は取得しません。Wallet接続・署名・送金は行いません。</p>
+    <p class="notice">入力した仮定で予算を確認します。保存した公開残高を転記することもできます。このページでは現在の残高・手数料は取得しません。Wallet接続・署名・送金は行いません。</p>
     <p class="small">Baseでは実行ガス代のほかにL1データ費用などが必要です。追加費用が不明な場合は空欄にすると、総額を「未確定」と表示します。入力した費用予算は実際の請求上限ではありません。</p>
     <button id="budget-example" type="button">仮の入力例を表示</button>
   </header>
@@ -29,6 +29,15 @@
       <label>残しておくトークン<input id="budget-token-floor" inputmode="decimal" maxlength="100"></label>
       <label>今回使うトークン<input id="budget-token-spend" inputmode="decimal" maxlength="100"></label>
     </div>
+  </section>
+  <section aria-labelledby="budget-source-title">
+    <h2 id="budget-source-title">保存した公開残高を転記する（任意）</h2>
+    <p>上で対象トークンとネットワークを選び、<a href="/tokens/read/" target="_blank" rel="noopener">3トークンの公開残高確認</a>から保存したJSONを選んでください。口座とブロックを確認してから、残高と小数桁数だけを転記します。</p>
+    <label class="file-label">公開残高の一括ファイル<input id="budget-source-file" type="file" accept=".json,application/json"></label>
+    <p id="budget-source-status" role="status" aria-live="polite"></p>
+    <div id="budget-source-preview" hidden><div class="table-wrap"><table><caption>転記する公開残高</caption><tbody id="budget-source-rows"></tbody></table></div></div>
+    <button id="budget-source-apply" type="button" disabled>確認した残高を転記する</button> <button id="budget-source-cancel" type="button">残高の確認を取り消す</button>
+    <p class="small">使用額・確保額・予備資金・費用は変更しません。過去の残高であり、現在の資産や取引実行を保証するものではありません。元の残高ファイルを保管し、予算の保存後に「予算と保存済み残高の照合」で一緒に確認してください。</p>
   </section>
   <section aria-labelledby="budget-native-title">
     <h2 id="budget-native-title">2. ETHの残高と予備資金</h2>

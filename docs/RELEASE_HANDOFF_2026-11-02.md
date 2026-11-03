@@ -11,8 +11,11 @@ adds original-record linkage, 920 related checks and actual historical-file
 match/mismatch evidence. Neither feature verifies current chain balances.
 The subsequent [same-block public acquisition](PUBLIC_TOKEN_BATCH_2026-11-03.md)
 now works through a bounded reader and command, with live Sepolia/Mainnet evidence,
-1,058 related checks and browser file recovery. An explicit on-screen acquisition
-and cancellation flow is the next implementation target.
+1,058 related checks and browser file recovery. The subsequent
+[on-screen acquisition and balance transfer](PUBLIC_TOKEN_BATCH_UI_2026-11-03.md)
+adds explicit read/cancel/save, exact account/network/block binding, an origin-bound
+HTTP boundary and preview-before-apply balance transfer into a budget. Actual
+Sepolia/Mainnet UI files match the earlier command results byte-for-byte.
 Signing, sending and secret access remain excluded; GitHub publication is
 still deferred. The previously sealed package is unchanged and excludes this work.
 

@@ -1,6 +1,7 @@
 import { SECURITY_HEADERS, inspectLocalRequest } from "./security-http.js";
 import { renderLocalNavigationHelp } from "./local-navigation-help.js";
 import { createBaseStateRpcHandler } from "./base-state-rpc.js";
+import { createPublicBatchHandler } from "./public-token-batch-http.js";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -8,6 +9,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/tokens/read/", { file: resolve(here, "public-token-batch.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/public-token-batch-page.js", { file: resolve(here, "public-token-batch-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["public-token-batch-request", "public-token-batch-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/budget/", { file: resolve(here, "operation-budget.html"), mime: "text/html; charset=utf-8" }],
   ["/budget/evidence/", { file: resolve(here, "operation-budget-evidence.html"), mime: "text/html; charset=utf-8" }],
   ["/src/operation-budget-evidence.js", { file: resolve(here, "../src/operation-budget-evidence.js"), mime: "text/javascript; charset=utf-8" }],
@@ -145,8 +150,9 @@ const publicPaths = [
   ["/src/dapp-preflight.js", { file: resolve(here, "../src/dapp-preflight.js"), mime: "text/javascript; charset=utf-8" }],
 ];
 
-export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch } = {}) {
+export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch, publicBatchFetch = globalThis.fetch } = {}) {
   const serveBaseStateRpc = createBaseStateRpcHandler(stateFetch);
+  const servePublicBatch = createPublicBatchHandler(publicBatchFetch);
   const paths = new Map(publicPaths);
   if (uiTest) {
     for (const name of ['acceptance-fixture', 'acceptance-ui-tests', 'acceptance-demo']) {
@@ -258,6 +264,10 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
       return;
     }
     const item = paths.get(verdict.pathname);
+    if (verdict.pathname === "/rpc/public-token-batch") {
+      await servePublicBatch(request, response);
+      return;
+    }
     if (verdict.pathname === "/rpc/base-mainnet") {
       await serveBaseStateRpc(request, response);
       return;

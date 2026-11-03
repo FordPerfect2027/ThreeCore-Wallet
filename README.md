@@ -8,6 +8,8 @@ The subsequent [saved-observation budget check](docs/OPERATION_BUDGET_EVIDENCE_2
 
 The [same-block public token reader](docs/PUBLIC_TOKEN_BATCH_2026-11-03.md) now acquires all three tokens and ETH at one canonical hash without connecting a wallet. Live Sepolia and Mainnet reads succeeded, followed by saved-file checks and an actual browser budget-evidence round trip; 1,058 related checks passed. Public-RPC provenance remains explicit, and the observation does not authorize transactions.
 
+The [public balance screen and budget transfer](docs/PUBLIC_TOKEN_BATCH_UI_2026-11-03.md) add explicit read/cancel/save at `/tokens/read/` and preview-before-apply transfer of saved balances into `/budget/`. Actual browser files from both networks match the command results. Balance transfer preserves planned spending, reserves and unknown fees; source consistency remains separate from budget sufficiency.
+
 **November 3, 2026 consolidated local delivery:** [One-ZIP recovery and current completion record](docs/ACCOUNT_REFRESH_DELIVERY_2026-11-03.md). The corrected Wallet and three token projects were restored from a fresh extraction; all 62 package files matched. Existing folders are preserved and altered files are rejected before restoration.
 
 The [final package startup and browser recovery](docs/FINAL_STARTUP_RECOVERY_2026-11-03.md) also passed: the documented startup serves source-identical assets, and an actual browser file return through both fixed candidate versions preserves all nine saved histories byte-for-byte.

@@ -4,6 +4,7 @@ import { parseRehearsalUnits, formatRehearsalUnits } from "../src/operation-rehe
 import { createFileReadScope } from "../src/security-file.js";
 import { requireSyncExport } from "../src/export-policy.js";
 import { offerWalletDownload } from "./export-download.js";
+import { decodePublicTokenBatchFile, publicBatchObservations, PUBLIC_TOKEN_BATCH_FILE_LIMIT } from "../src/public-token-batch-model.js";
 
 const FIELDS = ["agent", "chain", "decimals", "token-balance", "token-reserved", "token-floor", "token-spend",
   "native-balance", "native-reserved", "native-floor", "native-value", "gas", "fee", "l1", "operator", "buffer"];
@@ -12,14 +13,17 @@ const LABELS = ["対象トークン", "想定ネットワーク", "小数桁数"
 const REASONS = { ZERO_TOKEN_SPEND: "今回使うトークンが0です。", TOKEN_BUDGET_SHORTFALL: "トークン元本と予備資金が不足します。",
   FEE_COMPONENT_UNKNOWN: "不明な費用があるため、ETHの総必要額は未確定です。", NATIVE_BUDGET_SHORTFALL: "分かっている費用だけでもETHが不足します。" };
 
-export function mountOperationBudgetPage(document, { download = offerWalletDownload } = {}) {
+export function mountOperationBudgetPage(document, { download = offerWalletDownload, decodePublicSource = decodePublicTokenBatchFile } = {}) {
   const get = name => document.getElementById("budget-" + name), fileReader = createFileReadScope();
-  const listeners = []; let revision = 0, disposed = false, calculated = null, pending = null;
+  const listeners = []; let revision = 0, disposed = false, calculated = null, pending = null, pendingSource = null, sourceAbort = null;
   const listen = (name, type, action) => {
     const handler = () => { if (!disposed) return action(); };
     get(name).addEventListener(type, handler); listeners.push(() => get(name).removeEventListener(type, handler));
   };
   function clearImport() {
+    sourceAbort?.abort(); sourceAbort = null; pendingSource = null;
+    get("source-apply").disabled = true; get("source-preview").hidden = true;
+    get("source-rows").replaceChildren(); get("source-status").textContent = "";
     pending = null; get("apply").disabled = true; get("preview").hidden = true;
     get("preview-rows").replaceChildren(); get("import-status").textContent = ""; fileReader.cancel();
   }
@@ -109,6 +113,39 @@ export function mountOperationBudgetPage(document, { download = offerWalletDownl
     FIELDS.forEach((name, i) => { get(name).value = values[i]; }); calculate();
   });
   listen("cancel", "click", () => { revision++; clearImport(); get("import-status").textContent = "ファイル確認を取り消しました。現在の入力は保持しています。"; });
+  listen("source-file", "change", async () => {
+    const file = get("source-file").files?.[0]; if (!file) return;
+    revision++; clearImport(); const own = revision, agent = get("agent").value, chainId = Number(get("chain").value);
+    const aborter = new AbortController(); sourceAbort = aborter; get("source-file").value = "";
+    get("source-status").textContent = "公開残高ファイルのチェックサムと対象トークンを確認しています。";
+    try {
+      const text = await fileReader.readText(file, { maxBytes: PUBLIC_TOKEN_BATCH_FILE_LIMIT });
+      if (disposed || own !== revision) return;
+      const { batch } = await decodePublicSource(text, { signal: aborter.signal });
+      if (disposed || own !== revision) return;
+      const row = publicBatchObservations(batch).find(item => item.agent === agent);
+      if (batch.chainId !== chainId || !row?.identityMatches || row.metadata.decimals > 18) throw Error("SOURCE_CONTEXT");
+      table("source-rows", [["対象", agent + " / " + (chainId === 8453 ? "Base Mainnet" : "Base Sepolia")],
+        ["公開口座", batch.account], ["ブロック", batch.blockNumber + " / " + batch.blockHash],
+        ["転記するトークン残高", formatRehearsalUnits(row.balanceBaseUnits, row.metadata.decimals)],
+        ["転記するETH残高", formatRehearsalUnits(batch.nativeBalanceBaseUnits, 18) + " ETH"]]);
+      if (disposed || own !== revision) return;
+      pendingSource = row; get("source-preview").hidden = false; get("source-apply").disabled = false;
+      get("source-status").textContent = "口座・ブロック・残高を確認してから転記してください。現在の入力はまだ変更していません。";
+    } catch {
+      if (!disposed && own === revision) get("source-status").textContent = "残高を転記できません。選択中のトークンとネットワークに対応する、情報照合済みの公開残高ファイルを選んでください。チェックサムや容量も確認します。";
+    } finally { aborter.abort(); if (!disposed && own === revision) sourceAbort = null; }
+  });
+  listen("source-apply", "click", () => {
+    if (!pendingSource) return; const row = pendingSource;
+    if (get("agent").value !== row.agent || Number(get("chain").value) !== row.chainId) { invalidate(); return; }
+    invalidate();
+    get("decimals").value = String(row.metadata.decimals);
+    get("token-balance").value = formatRehearsalUnits(row.balanceBaseUnits, row.metadata.decimals);
+    get("native-balance").value = formatRehearsalUnits(row.nativeBalanceBaseUnits, 18);
+    get("source-status").textContent = row.agent + "のブロック" + row.blockNumber + "の残高を転記しました。使用額・予備資金・費用は元の入力を保っています。予算を再確認してください。";
+  });
+  listen("source-cancel", "click", () => { revision++; clearImport(); get("source-status").textContent = "残高ファイルの確認を取り消しました。現在の入力は保持しています。"; });
   const view = document.defaultView;
   if (view?.addEventListener && view?.removeEventListener) {
     for (const type of ["pagehide"]) {

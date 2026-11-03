@@ -1,0 +1,22 @@
+<!doctype html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>3トークンの公開残高確認 — ThreeCore</title><link rel="stylesheet" href="/examples/operation-rehearsal.css">
+</head><body><main><header>
+<a href="/budget/evidence/" target="_blank" rel="noopener">保存した残高と予算を照合する</a>
+<p class="eyebrow">DAT · EMA · CAWELON</p><h1>3トークンの公開残高確認</h1>
+<p>公開アドレスを入力し、DAT・EMA・CAWELONとETHの残高を同じブロックから確認します。MetaMaskへの接続は必要ありません。</p>
+<p class="notice">読み取り専用です。公開アドレスを選択したネットワークのBase公式RPCへ送ります。署名・送金は行いません。秘密鍵やシードフレーズは入力しないでください。</p>
+</header><section aria-labelledby="batch-input-title"><h2 id="batch-input-title">読み取る口座とネットワーク</h2>
+<label>公開アドレス<input id="batch-account" type="text" autocomplete="off" spellcheck="false" maxlength="42" placeholder="0x…"></label>
+<div class="fields"><label for="batch-chain">ネットワーク<select id="batch-chain"><option value="84532">Base Sepolia（テストネット）</option><option value="8453">Base Mainnet（本番）</option></select></label>
+<label>ブロック番号（空欄で取得開始時の最新）<input id="batch-block" inputmode="numeric" autocomplete="off" maxlength="78"></label></div>
+<button id="batch-read" type="button">3トークンを読み取る</button> <button id="batch-cancel" type="button" disabled>読み取りを中止</button>
+<p id="batch-status" role="status" aria-live="polite">公開アドレスを入力してください。</p></section>
+<section id="batch-result" aria-labelledby="batch-result-title" hidden><h2 id="batch-result-title">取得したブロックでの残高</h2>
+<p id="batch-context" class="restore-source"></p><p id="batch-block-result" class="restore-source"></p><p id="batch-source" class="small"></p><p id="batch-native" class="notice"></p>
+<div class="table-wrap"><table><caption>公開RPCから取得した3トークン</caption><thead><tr><th>トークン</th><th>コントラクト</th><th>残高</th><th>情報照合</th></tr></thead><tbody id="batch-rows"></tbody></table></div>
+<p>取得先が返した結果です。取引の安全性や口座の所有者を証明するものではありません。残高は表示したブロック時点の値で、後の変更は反映しません。</p>
+<p>保存ファイルには公開アドレス・3トークンの残高・ETH残高・ブロック情報・チェックサムが含まれます。「予算と保存済み残高の照合」で使用できます。</p>
+<button id="batch-save" type="button" disabled>3トークンの記録を保存</button><p id="batch-save-status" role="status" aria-live="polite"></p>
+</section></main><script type="module" src="/examples/public-token-batch-page.js"></script></body></html>
