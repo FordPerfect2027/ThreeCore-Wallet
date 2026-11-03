@@ -36,6 +36,8 @@ started this restored Wallet with its ordinary command. All 219 served assets
 matched source bytes. Actual browser imports and downloads then preserved all
 nine histories byte-for-byte through fixed versions `4dfa300` → `36ed431` →
 `4dfa300`. This used the supported in-app browser, separately from MetaMask.
+The rehearsal page then passed the same version return: six fictional records
+and three comparison cases produced byte-identical 17,387-byte session exports.
 
 With Node.js 22 or later and Git installed, run from the extracted package:
 

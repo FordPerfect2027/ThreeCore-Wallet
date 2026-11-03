@@ -1,0 +1,87 @@
+{
+  "schema": "threecore.fixed-candidate-rehearsal-return.v1",
+  "recordedAt": "2026-11-03T07:44:05.235Z",
+  "browser": "Codex in-app browser on the intended Windows PC",
+  "versions": [
+    "4dfa300aa2efc0b068ee5537df941282a21df1f4",
+    "36ed4318806b8ee0921471dba5600d0e048b7d7f",
+    "4dfa300aa2efc0b068ee5537df941282a21df1f4"
+  ],
+  "ports": [
+    4240,
+    51031,
+    4240
+  ],
+  "original": "ThreeCore-rehearsal-session (16).json",
+  "files": [
+    {
+      "filename": "ThreeCore-rehearsal-session (17).json",
+      "bytes": 17387,
+      "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c",
+      "modifiedAt": "2026-11-03T07:39:45.242Z",
+      "exactOriginalMatch": true
+    },
+    {
+      "filename": "ThreeCore-rehearsal-session (18).json",
+      "bytes": 17387,
+      "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c",
+      "modifiedAt": "2026-11-03T07:40:40.763Z",
+      "exactOriginalMatch": true
+    },
+    {
+      "filename": "ThreeCore-rehearsal-session (19).json",
+      "bytes": 17387,
+      "sha256": "22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c",
+      "modifiedAt": "2026-11-03T07:41:36.404Z",
+      "exactOriginalMatch": true
+    }
+  ],
+  "records": {
+    "DAT": 3,
+    "EMA": 2,
+    "CAWELON": 1
+  },
+  "comparisonCases": 3,
+  "visibleResults": {
+    "DAT": {
+      "profit": "28 SIM",
+      "reserved": "2.8 SIM",
+      "additional": "0 SIM"
+    },
+    "EMA": {
+      "profit": "-42 SIM",
+      "reserved": "0 SIM",
+      "additional": "0 SIM"
+    },
+    "CAWELON": {
+      "profit": "-1 SIM",
+      "reserved": "0 SIM",
+      "additional": "0 SIM"
+    }
+  },
+  "allBytesAndConfigurationPreserved": true,
+  "eachPreview": {
+    "fromAgents": 0,
+    "toAgents": 3,
+    "fromCases": 0,
+    "toCases": 3
+  },
+  "simulationOnly": true,
+  "walletUsed": false,
+  "originalTabsReloaded": false,
+  "scope": "Actual supported filechooser, reviewed restore, downloaded bytes and displayed results. Fictional SIM records, not public-chain transactions.",
+  "screenshot": {
+    "filename": "returned-rehearsal-package.png",
+    "actualMimeType": "image/jpeg",
+    "bytes": 76384,
+    "sha256": "d5ee2daaf7e8116d325a4b484ac020cee31bd953d4129802c6224e177ea11032"
+  },
+  "displayObservation": {
+    "initialScreenshotAppearedClipped": true,
+    "documentClientWidth": 1265,
+    "documentScrollWidth": 1265,
+    "restoreRegionClientWidth": 1210,
+    "restoreRegionScrollWidth": 1210,
+    "conclusion": "No document or restore-region horizontal overflow established; no application layout defect or correction claimed."
+  }
+}

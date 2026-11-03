@@ -55,6 +55,33 @@ extension connection, a new MetaMask exercise, native Windows picker traversal,
 or compatibility with the older public `07041f0` checkpoint. No wallet provider
 was detected in these tabs, and no connection or chain read was requested.
 
+## Rehearsal session return
+
+The separate `/rehearsal/` page also completed the same fixed-version sequence
+in three new, empty in-app-browser tabs. The saved session contains six fictional
+SIM records (DAT 3, EMA 2, CAWELON 1) and three comparison cases. Each preview
+showed zero to three created histories and zero to three cases before the
+explicit restore. All three pages displayed the same calculated results: DAT
+profit 28 SIM and reserved allocation 2.8 SIM; EMA profit -42 SIM; CAWELON
+profit -1 SIM.
+
+Downloads (17), (18) and (19) are each exactly equal to the original session
+(16): 17,387 bytes, SHA-256
+`22c7909969a4221d443d8452cefb4e147fa796782f9ef7ce50462cb6ea4d8f9c`.
+This comparison covers the saved conditions and complete case inputs as well
+as record counts. The [rehearsal receipt](evidence/2026-11-03-final-startup/rehearsal-version-return.json)
+records actual file times and results. The final restored rehearsal tab is
+retained alongside the restored Wallet. These are fictional rehearsal data,
+separate from the Wallet's nine chain observations.
+
+The screenshot initially appeared clipped at the right edge. Read-only page
+measurements showed document client/scroll widths both 1,265 pixels and restore
+region client/scroll widths both 1,210 pixels. No page overflow was established;
+the apparent capture difference was not counted as an application defect or
+fixed by speculative CSS changes. The screenshot file has JPEG bytes despite
+the capture's original `.png` filename; its recorded hash refers to those
+unaltered bytes.
+
 ## Current technical checkpoint
 
 The [source and evidence audit](evidence/2026-11-03-final-startup/checkpoint-audit.json)
