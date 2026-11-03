@@ -1,6 +1,21 @@
 # ThreeCore candidate review handoff — November 2, 2026
 
+## Overall development target — confirmed November 3
+
+The user explicitly confirmed that the provisional 90% target covers Token,
+Wallet, AI and dApp together. The [whole-project scope and next implementation
+sequence](WHOLE_PROJECT_SCOPE_2026-11-03.md) separates the completed read-only
+capabilities from the missing product integration. A local Wallet delivery does
+not complete that broader goal. Continue implementation without waiting for
+funded accounts or repeating completed live connection exercises.
+
 ## Active development beyond the sealed package — November 3
+
+The [integrated public-reading and budget delivery](INTEGRATED_PUBLIC_BUDGET_DELIVERY_2026-11-03.md)
+now pins `cd7f7ed`, passes 16,585 Node/HTTP and 1,026 synthetic browser cases,
+and restores all four source projects from one ZIP. Fresh ordinary startup and
+actual Wallet, rehearsal and budget-source file returns passed. This is the
+latest local package; the preceding `4dfa300` package remains unchanged.
 
 The user requested continued development toward the broader 90% planning target.
 The earlier package and recovery checkpoint did not complete that goal.
@@ -19,7 +34,7 @@ Sepolia/Mainnet UI files match the earlier command results byte-for-byte.
 Signing, sending and secret access remain excluded; GitHub publication is
 still deferred. The previously sealed package is unchanged and excludes this work.
 
-## Latest consolidated delivery — November 3
+## Earlier consolidated delivery — November 3, source 4dfa300
 
 Start with the [current delivery and completion record](ACCOUNT_REFRESH_DELIVERY_2026-11-03.md).
 `ThreeCore-complete-4dfa300-20261103.zip` contains the corrected Wallet and all
@@ -32,9 +47,9 @@ also confirms ordinary startup from the restored package and an actual in-app
 browser file return through fixed versions `4dfa300` → `36ed431` → `4dfa300`,
 preserving all nine histories byte-for-byte.
 
-## Current Wallet correction — November 3
+## Earlier Wallet correction — November 3, source 7bdb23d
 
-The latest implementation is `7bdb23d3398e1e92582a602bb22f06d364825412`.
+The implementation recorded in this section is `7bdb23d3398e1e92582a602bb22f06d364825412`.
 It fixes stale configuration and backup-state summaries after applying a
 permitted account. Read the [finding, correction and validation record](ACCOUNT_INPUT_REFRESH_2026-11-03.md)
 alongside the earlier review. The corrected source passed 16,470 Node/HTTP and

@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-11-03T10:25:49.322Z",
+  "http": [
+    {
+      "port": 4231,
+      "status": 200
+    },
+    {
+      "port": 4232,
+      "status": 200
+    },
+    {
+      "port": 4233,
+      "status": 200
+    },
+    {
+      "port": 4247,
+      "status": 200
+    }
+  ],
+  "previousZipUnchanged": true,
+  "previousZipSha256": "296fabf3de800ccf8bc9d5344248f0bd5f8c571e57a926391f7995b588992ca5"
+}

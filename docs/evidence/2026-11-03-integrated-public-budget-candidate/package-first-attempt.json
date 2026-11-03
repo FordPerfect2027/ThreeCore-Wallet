@@ -1,0 +1,7 @@
+{
+  "result": "failed before manifest, ZIP or source restoration",
+  "error": "fatal: Refusing to create empty bundle.",
+  "cause": "The positive revision was a raw commit ID, which did not give git bundle a named output ref.",
+  "correction": "Use HEAD after asserting it equals the pinned cd7f7ed revision. Keep the incomplete directory and build in a new r1 directory.",
+  "incompleteDirectory": "C:/Users/aseet/Downloads/ThreeCore-complete-cd7f7ed-20261103"
+}

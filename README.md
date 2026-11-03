@@ -169,10 +169,13 @@ Base Mainnet chain ID is `8453`, Base Sepolia is `84532`. Network support here i
 
 | Capability | Status |
 | --- | --- |
-| Three named agent identities, each bound to an expected account | Mock-tested connector |
-| Explicit site origin and network validation | Mock-tested connector |
-| EIP-1193 account request, chain/account/disconnect handling | Mock-tested connector |
-| Read-only native/ERC-20 balance, existing allowance, and contract-code requests | Mock-tested connector |
+| Three named agent identities, each bound to an expected account | Implemented; synthetic isolation tests and actual three-card MetaMask connection records. The actual switch exercises used one shared account at a time, not three distinct custodial accounts. |
+| Explicit site origin and network validation | Implemented; local HTTP origin guards, synthetic connector checks and recorded live network validation. |
+| EIP-1193 account request, chain/account/disconnect handling | Synthetic regression plus actual Mainnet-to-Sepolia and Account-1-to-Account-2 invalidation, explicit reconnect and nine-record preservation. Other live directions and in-flight races are not inferred. |
+| Read-only native/ERC-20 balance and token identity | Wallet observations and separate public same-block DAT/EMA/CAWELON reads recorded on Base Mainnet and Base Sepolia. Public reads do not imply a wallet connection. |
+| Existing allowance and dApp contract-code preflight | Implemented read-only requests with synthetic regression; no grant/revoke or real dApp login is inferred. |
+| Token/ETH operation budgets | Separate token, native reserve and fee calculations, shared-account totals and reviewed source-file import. Unknown fees remain unknown; recorded balances do not establish current affordability. |
+| Saved records and local recovery | Actual nine-record Wallet and six-record rehearsal file returns; source-pinned local delivery records below distinguish each version. |
 | Wallet interaction on a third-party live decentralized site | Synthetic Aerodrome connection flow only; real-wallet login unverified |
 | User-approved transaction signatures and token allowances | Not implemented |
 | Autonomous trade execution, bridges and cross-chain settlements | Not implemented |
@@ -182,10 +185,16 @@ Base Mainnet chain ID is `8453`, Base Sepolia is `84532`. Network support here i
 ## What comes next (not a claim of delivery)
 
 - Agree on the permitted decentralized-site domains and their wallet connection methods.
-- Connect to a user-selected public test environment; verify chain, account, balances and error handling end-to-end.
+- Extend the recorded public-network and wallet exercises only for remaining acceptance scenarios; do not repeat completed connection checks as if no live evidence exists.
 - Define permission limits separately for DAT, EMA and CAWELON before any signature or asset movement.
 - Design robust limits for transaction simulation, explicit approvals, gas, price impact, nonces, replay prevention, and failure recovery if future transaction execution is authorized.
 - Any bridge or cross-chain movement requires separate risk assessment and explicit authorization.
+
+The [latest integrated delivery record](docs/INTEGRATED_PUBLIC_BUDGET_DELIVERY_2026-11-03.md),
+[same-block public reading record](docs/PUBLIC_TOKEN_BATCH_2026-11-03.md) and
+[on-screen balance import record](docs/PUBLIC_TOKEN_BATCH_UI_2026-11-03.md)
+identify the exact source versions, observed results and remaining scope.
+These capabilities do not establish a percentage for the wider Token/Wallet/AI/dApp vision.
 
 ### Security boundaries
 
