@@ -1,0 +1,20 @@
+▶ CAWELONCore: event history against the local EVM
+  ✔ reads actual mint, transfer, self-transfer and burn logs with mined identities (352.1002ms)
+  ✔ keeps Approval event amounts distinct from allowance consumed by transferFrom (385.5789ms)
+  ✔ preserves maximum approval and a later zero-amount revocation exactly (280.7009ms)
+  ✔ keeps the sampled allowance when the local chain advances during history reads (88.4482ms)
+  ✔ Transfer: refuses removed flags injected into otherwise real local logs (99.0528ms)
+  ✔ Transfer: refuses a conflicting duplicate of an actual local event (135.4906ms)
+  ✔ Transfer: rejects a local chain replacement and succeeds on a fresh snapshot (177.9351ms)
+  ✔ Approval: refuses removed flags injected into otherwise real local logs (119.2118ms)
+  ✔ Approval: refuses a conflicting duplicate of an actual local event (112.0903ms)
+  ✔ Approval: rejects a local chain replacement and succeeds on a fresh snapshot (169.9633ms)
+✔ CAWELONCore: event history against the local EVM (1933.143ms)
+ℹ tests 10
+ℹ suites 1
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10853.1063
