@@ -24,6 +24,10 @@ The user requested this operating method on November 3, 2026 (Japan time).
   out these ordinary actions when supported controls can identify the intended
   wallet and site. Do not ask the user to repeat them merely because they are in
   MetaMask. Authorization does not remove tool-enforced access restrictions.
+- Codex is assigned the developer technical review by the user. Do not wait
+  for requester/reviewer identification or treat an unassigned third-party
+  reviewer as a reason to stop authorized development. Distinguish this review
+  from independent external approval; finish the technical work and record it.
 - Keep GitHub writes deferred for the requested consolidated publication.
 - Preserve loaded user pages and their unsaved data. Use an existing same-origin
   in-app link to open a fresh Wallet tab when an old automation tab is detached;

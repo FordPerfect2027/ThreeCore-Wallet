@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-11-03T05:42:00.776Z",
+  "runs": [
+    {
+      "token": "DAT",
+      "exitCode": 0,
+      "tests": 14,
+      "pass": 14,
+      "fail": 0
+    },
+    {
+      "token": "EMA",
+      "exitCode": 0,
+      "tests": 14,
+      "pass": 14,
+      "fail": 0
+    },
+    {
+      "token": "CAWELON",
+      "exitCode": 0,
+      "tests": 14,
+      "pass": 14,
+      "fail": 0
+    }
+  ],
+  "scope": "Pure validator and existing toolchain regression. No runtime, configuration-variable resolution, provider or user wallet."
+}

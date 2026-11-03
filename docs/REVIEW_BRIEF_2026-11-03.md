@@ -1,6 +1,10 @@
 # Review brief: ThreeCore candidate after live-switch acceptance
 
-Review status: **prepared; no independent reviewer or release approval recorded**.
+Review status: **bounded developer review completed by Codex after the sealed package**.
+See [the review and follow-up changes](DEVELOPER_REVIEW_2026-11-03.md). The user
+assigned this technical review; no reviewer-identification action is pending.
+Independent third-party approval and public release are not claimed.
+The source pins below describe the unchanged sealed package.
 The exact Wallet source pin is in the enclosing package's `package-receipt.json`.
 Use that pin rather than a moving development branch. Token revisions are DAT
 `dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1`, EMA
@@ -21,7 +25,7 @@ any live contract transaction require their own decisions.
 | Real context-change invalidation | [Live observations](LIVE_RECOVERY_2026-11-03.md#actual-network-and-account-changes--13251335-jst): Mainnet → Sepolia, then Account 1 → Account 2; three stopped cards, actual provider probes, explicit reconnect and exact nine-record preservation | One profile and one direction for each change; raw event payloads and a live in-flight race were not captured |
 | Current-context read after reconnect | Same live receipt: three Account 1 reads at Sepolia 53,791,215, then three Account 2 reads at 53,793,042; full block hashes saved | Historical observations, not a continuing live-balance guarantee; three tokens are not three distinct accounts |
 | Token implementation/identity reconstruction | [Source reconstruction](DEPLOYMENT_SOURCE_RECONSTRUCTION_2026-11-02.md): exact runtime and creation-input comparisons, compiler/replay kit | No economic-security, token-value or independent audit conclusion |
-| Applied dependency repair | [Applied source and builds](ZOD_APPLIED_2026-11-03.md), [68-case decoder comparison](HELPER_DECODER_COMPATIBILITY_2026-11-03.md), [local simulation](TOKEN_SIMULATION_2026-11-03.md): final contract suites 115 and local-history suites 30 pass; complete artifact bytes unchanged | Private helper fork still needs source review and an accountable maintenance/release decision; dated audit results are not perpetual clearance |
+| Applied dependency repair | [Applied source and builds](ZOD_APPLIED_2026-11-03.md), [68-case decoder comparison](HELPER_DECODER_COMPATIBILITY_2026-11-03.md), [local simulation](TOKEN_SIMULATION_2026-11-03.md): final contract suites 115 and local-history suites 30 pass; complete artifact bytes unchanged | The later developer review and maintenance procedure are recorded separately; final publication remains deferred; dated audit results are not perpetual clearance |
 | File preservation and recovery | [Actual-file recovery](ACTUAL_FILE_RECOVERY_2026-11-02.md), [candidate migration/return](LIVE_ACCEPTANCE_2026-11-02.md#fixed-candidate-migration-and-return-completed), current nine-record exports and checkpoint | Native Windows file-picker traversal is unverified; browser filechooser and saved bytes were verified |
 | Rollback compatibility | [Legacy compatibility](LEGACY_HISTORY_RECOVERY_2026-11-03.md): public PR checkpoint `07041f0` rejects shared-account backups; separate history-only copy retains nine records | Do not approve unrestricted rollback to `07041f0`. Final deployment must name and verify its rollback baseline, or explicitly document first-release/history-only recovery scope |
 | Reproducible handoff | Exact source archives, complete Git bundles, manifest results and outer-package verification | Hashes establish consistency, not publisher identity or safety |

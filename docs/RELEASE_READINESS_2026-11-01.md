@@ -1,5 +1,21 @@
 # ThreeCore release preparation — November 1, 2026
 
+## Developer-review follow-up — November 3
+
+The user assigned the technical review to Codex. That bounded review is now
+[complete](DEVELOPER_REVIEW_2026-11-03.md): 250 selected Wallet checks passed,
+and all three token environments passed the 14-case toolchain command, including
+six new grouped tests of the actual Hardhat configuration validators. Token
+changes add regression coverage and correct the maintenance record; contracts,
+helper archive and dependency pins are unchanged. The current source-change
+map is [recorded here](evidence/2026-11-03-developer-review/source-changes.json).
+The local workflow points to those new token commits for later publication.
+
+Requester/reviewer assignment is not a blocker to continuing development.
+Independent third-party approval is not claimed. The sealed b7df758 package
+remains unchanged; these changes are a follow-up for consolidated delivery.
+
+
 ## Local development follow-up — November 3
 
 The latest status is in the [current handoff](RELEASE_HANDOFF_2026-11-02.md).

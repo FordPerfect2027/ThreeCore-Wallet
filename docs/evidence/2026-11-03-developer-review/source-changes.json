@@ -1,0 +1,46 @@
+{
+  "recordedAt": "2026-11-03T05:46:33.908Z",
+  "walletBase": "95be8d63ad5726153f2204c79d7fabeb50f5db68",
+  "tokenChanges": [
+    {
+      "token": "DAT",
+      "base": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+      "head": "c50aae41b9c7aa496833e6260cc3314dc3c3fbfb",
+      "changedFiles": [
+        "integration/config-validation.test.mjs",
+        "package.json",
+        "vendor/README.md"
+      ],
+      "helperSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "configTestSha256": "23860540c635af8afba62dc0a1d66442b6a323ffc0615cee92ac45a09951f015",
+      "workingTreeClean": true
+    },
+    {
+      "token": "EMA",
+      "base": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+      "head": "a37c60574e279980b5ce90775842d27b9c4ce5eb",
+      "changedFiles": [
+        "integration/config-validation.test.mjs",
+        "package.json",
+        "vendor/README.md"
+      ],
+      "helperSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "configTestSha256": "23860540c635af8afba62dc0a1d66442b6a323ffc0615cee92ac45a09951f015",
+      "workingTreeClean": true
+    },
+    {
+      "token": "CAWELON",
+      "base": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+      "head": "0f5dfa00a6e1738df3706e12e59b48459ff875a0",
+      "changedFiles": [
+        "integration/config-validation.test.mjs",
+        "package.json",
+        "vendor/README.md"
+      ],
+      "helperSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "configTestSha256": "23860540c635af8afba62dc0a1d66442b6a323ffc0615cee92ac45a09951f015",
+      "workingTreeClean": true
+    }
+  ],
+  "noRuntimeOrDependencyChange": true
+}

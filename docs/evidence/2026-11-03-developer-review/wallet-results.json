@@ -1,0 +1,17 @@
+{
+  "recordedAt": "2026-11-03T05:42:42.476Z",
+  "files": [
+    "test/wallet-card-controller.test.js",
+    "test/provider-event-integration.test.js",
+    "test/provider-observer-boundaries.test.js",
+    "test/access-read-scope.test.js",
+    "test/file-read-scope-lifecycle.test.js",
+    "test/workspace-file.test.js",
+    "test/workspace-write-boundaries.test.js",
+    "test/workspace-security-transaction.test.js"
+  ],
+  "exitCode": 0,
+  "tests": 250,
+  "pass": 250,
+  "fail": 0
+}
