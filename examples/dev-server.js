@@ -2,6 +2,7 @@ import { SECURITY_HEADERS, inspectLocalRequest } from "./security-http.js";
 import { renderLocalNavigationHelp } from "./local-navigation-help.js";
 import { createBaseStateRpcHandler } from "./base-state-rpc.js";
 import { createPublicBatchHandler } from "./public-token-batch-http.js";
+import { createAerodromeQuoteHandler } from "./aerodrome-quote-http.js";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -9,6 +10,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/quotes/", { file: resolve(here, "aerodrome-quote.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/aerodrome-quote-page.js", { file: resolve(here, "aerodrome-quote-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["aerodrome-quote-request", "aerodrome-quote-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/proposals/quote/", { file: resolve(here, "proposal-quote.html"), mime: "text/html; charset=utf-8" }],
   ["/examples/proposal-quote-page.js", { file: resolve(here, "proposal-quote-page.js"), mime: "text/javascript; charset=utf-8" }],
   ...["proposal-quote-file", "aerodrome-quote-model", "aerodrome-readonly", "aerodrome-pools", "public-base-rpc"].map(name =>
@@ -158,9 +163,10 @@ const publicPaths = [
   ["/src/dapp-preflight.js", { file: resolve(here, "../src/dapp-preflight.js"), mime: "text/javascript; charset=utf-8" }],
 ];
 
-export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch, publicBatchFetch = globalThis.fetch } = {}) {
+export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch, publicBatchFetch = globalThis.fetch, quoteFetch = globalThis.fetch } = {}) {
   const serveBaseStateRpc = createBaseStateRpcHandler(stateFetch);
   const servePublicBatch = createPublicBatchHandler(publicBatchFetch);
+  const serveQuote = createAerodromeQuoteHandler(quoteFetch);
   const paths = new Map(publicPaths);
   if (uiTest) {
     for (const name of ['acceptance-fixture', 'acceptance-ui-tests', 'acceptance-demo']) {
@@ -272,6 +278,10 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
       return;
     }
     const item = paths.get(verdict.pathname);
+    if (verdict.pathname === "/rpc/aerodrome-quote") {
+      await serveQuote(request, response);
+      return;
+    }
     if (verdict.pathname === "/rpc/public-token-batch") {
       await servePublicBatch(request, response);
       return;

@@ -1,0 +1,21 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Aerodromeの見積もり確認 — ThreeCore</title><link rel="stylesheet" href="/examples/operation-rehearsal.css"></head>
+<body><main><header><a href="/proposals/quote/" target="_blank" rel="noopener">提案と見積もりの照合を別タブで開く</a>
+<p class="eyebrow">DAT · EMA · CAWELON</p><h1>Aerodromeの見積もり確認</h1>
+<p>Base Mainnetの3トークンとUSDCの見積もりを取得します。MetaMaskへの接続は不要です。</p>
+<p class="notice">トークン・入力額・ブロック番号をBase公式RPCへ送り、同じブロックでプール・Routerの返答と計算を照合します。署名・送金・承認取引は行いません。</p></header>
+<section aria-labelledby="market-input-title"><h2 id="market-input-title">見積もりの条件</h2>
+<div class="fields"><label>トークン<select id="market-agent"><option>DAT</option><option>EMA</option><option>CAWELON</option></select></label>
+<label>見積もりの方向<select id="market-direction"><option value="sell">Token → USDC</option><option value="buy">USDC → Token</option></select></label></div>
+<label>入力額<input id="market-amount" inputmode="decimal" autocomplete="off" maxlength="100" placeholder="例：1000"></label><p id="market-unit" class="small">DAT単位で入力してください（小数18桁まで）。</p>
+<label>最小受取額の計算に使う許容変動（0〜99.99%）<input id="market-slippage" inputmode="decimal" autocomplete="off" maxlength="6" placeholder="例：0.50"></label>
+<label>ブロック番号（空欄で取得開始時の最新）<input id="market-block" inputmode="numeric" autocomplete="off" maxlength="78"></label>
+<p class="small">提案と照合する場合は、予算の元になった残高と同じブロック番号を指定してください。古いブロックの再取得では、ブロック自体の時刻は新しくなりません。</p>
+<button id="market-read" type="button">見積もりを読み取る</button> <button id="market-cancel" type="button" disabled>読み取りを中止</button><p id="market-status" role="status" aria-live="polite">入力額と許容変動を指定してください。</p></section>
+<section id="market-result" aria-labelledby="market-result-title" hidden><h2 id="market-result-title">取得したブロックでの見積もり</h2>
+<p id="market-context"></p><p id="market-output" class="notice"></p><p id="market-minimum"></p><p id="market-shortfall"></p>
+<p id="market-block-result" class="small"></p><p id="market-time" class="small"></p><p id="market-contract" class="small"></p>
+<p>表示した時点の見積もりです。ガス代・承認額・実際の受取額や取引の安全性は確認していません。USDCを支出する提案の予算照合は未対応です。</p>
+<button id="market-save" type="button" disabled>見積もりを保存</button><p id="market-save-status" role="status" aria-live="polite"></p></section>
+</main><script type="module" src="/examples/aerodrome-quote-page.js"></script></body></html>

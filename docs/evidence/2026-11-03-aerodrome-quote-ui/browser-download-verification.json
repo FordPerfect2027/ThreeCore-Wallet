@@ -1,0 +1,47 @@
+{
+  "records": [
+    {
+      "original": "ThreeCore-Aerodrome-DAT-sell-quote.json",
+      "file": "DAT-sell-browser-quote.json",
+      "sha256": "d35d59d4ec3fc09d0f3c3a984c1d0af71d5cd104555466fc60f357924b812804",
+      "bytes": 1214,
+      "reference": "DAT-sell1000-quote.json",
+      "referenceFieldsMatchExceptAcquisitionTime": true,
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "observedAtSeconds": 1793705048,
+      "inputBaseUnits": "1000000000000000000000",
+      "outputBaseUnits": "9889"
+    },
+    {
+      "original": "ThreeCore-Aerodrome-EMA-buy-quote.json",
+      "file": "EMA-buy-browser-quote.json",
+      "sha256": "854d55ee59c51a662049c4c5da755d07e1756562481ab9fde650254a41ec58c0",
+      "bytes": 1235,
+      "reference": "EMA-buy-quote.json",
+      "referenceFieldsMatchExceptAcquisitionTime": true,
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "observedAtSeconds": 1793705081,
+      "inputBaseUnits": "1000000",
+      "outputBaseUnits": "83298950016060663452663"
+    },
+    {
+      "original": "ThreeCore-Aerodrome-CAWELON-buy-quote.json",
+      "file": "CAWELON-buy-browser-quote.json",
+      "sha256": "6f6ae9103bea76d9c1d4284e369eb4105fdd7acef5333482135f0c3ef1f4639e",
+      "bytes": 1257,
+      "reference": "CAWELON-buy-quote.json",
+      "referenceFieldsMatchExceptAcquisitionTime": true,
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "observedAtSeconds": 1793705120,
+      "inputBaseUnits": "1000000",
+      "outputBaseUnits": "41853288417310238740546419920"
+    }
+  ],
+  "realPublicChain": true,
+  "normalServerPort": 4250,
+  "walletCalled": false,
+  "transactionExecuted": false
+}

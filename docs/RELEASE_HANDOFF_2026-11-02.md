@@ -11,13 +11,21 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [public quote acquisition screen](AERODROME_QUOTE_UI_2026-11-03.md) now
+provides `/quotes/` through a bounded same-origin endpoint, exact decimal input,
+cancel-on-change and quote-file download. All 56 related checks passed.
+Normal-browser DAT sell, EMA buy and CAWELON buy at block 53,457,078 are recorded
+separately from synthetic UI tests. Next independent work is USDC spending
+budgets, gas/allowance binding and isolated execution; the AI credential choice
+is still pending and should not be requested again.
+
 The [proposal/quote screen and archive](PROPOSAL_QUOTE_UI_2026-11-03.md)
 adds offline `/proposals/quote/`, exact source/limit preservation, recorded-time
 replay and current-time recheck. Related tests passed 48/48. Four actual browser
 downloads were recomputed; pass, over-limit and expiry used synthetic inputs,
 while a fourth deliberately paired a live quote with an unrelated synthetic
-proposal and rejected its amount/block/time mismatches. Quote acquisition still
-uses the CLI; its screen, USDC budgets and isolated execution are next work.
+proposal and rejected its amount/block/time mismatches. Quote acquisition was
+subsequently connected to the public screen described above.
 
 The [Aerodrome proposal quote integration](AERODROME_PROPOSAL_QUOTE_2026-11-03.md)
 now obtains canonical single-pool buy/sell quotes for all three agents, compares
@@ -25,7 +33,7 @@ Pool and Router results with reserve/fee arithmetic, and binds saved quotes to
 current proposal conditions and the original budget block. Live reads saved
 eight valid observations plus two expected zero-output rejections. Final
 feature/proposal tests passed 38/38; the overlapping public-reader regression
-passed 167/167. Quote acquisition UI, USDC spending budgets and isolated execution remain
+passed 167/167. USDC spending budgets and isolated execution remain
 unfinished. Product AI authentication is awaiting the already-sent user choice;
 independent non-AI development can continue without another credential question.
 
@@ -36,7 +44,7 @@ command, a local screen and source-preserving saved-result verification.
 All 25 feature and 207 related tests passed; actual browser downloads reproduced
 success, expiry and over-limit results using explicitly synthetic data.
 This follow-up is not in the sealed `cd7f7ed` ZIP. Actual product AI generation,
-quote acquisition UI and isolated execution integration are the next missing work.
+USDC budgets and isolated execution integration are the next missing work.
 
 The [integrated public-reading and budget delivery](INTEGRATED_PUBLIC_BUDGET_DELIVERY_2026-11-03.md)
 now pins `cd7f7ed`, passes 16,585 Node/HTTP and 1,026 synthetic browser cases,
