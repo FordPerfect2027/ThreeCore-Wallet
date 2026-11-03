@@ -17,7 +17,8 @@ All four complete Git histories, 5,022 Wallet source files, 285 token source
 files and 264 manifests / 2,903 evidence entries matched. The outer ZIP was
 freshly extracted and all 29 listed files matched; an alteration control failed
 as expected. Wallet implementation/test files are unchanged from the complete
-regression below. No new full regression or live event pass is claimed.
+regression below. The sealed ZIP predates the live-switch supplement below;
+no new full regression is claimed.
 
 The earlier standalone package is `ThreeCore-review-bf690f3-20261103-r1.zip`.
 It includes the diagnostics, navigation recovery, evidence-checker repair and
@@ -53,20 +54,19 @@ also restored and re-exported the actual nine records byte-for-byte at port
 4233. That origin still required Wallet permission; no new live-switch pass
 is inferred from file restoration.
 
-The [later Account 1 follow-up](LIVE_RECOVERY_2026-11-03.md#later-account-1-permission-and-connection-confirmed)
-now confirms permission and three explicit Mainnet connections at 4233, with
-all nine original histories retained in a validated export. After a reported
-site-network change, the controlled page still returned/rendered Mainnet and
-completed a native-balance read. The requested Sepolia change was not observed;
-live switch-event acceptance remains open. Subsequent page-hidden and inactivity
-protection stops retained all nine histories in byte-identical, validated exports.
-The later photograph and [foreground-tab recovery](LIVE_RECOVERY_2026-11-03.md#foreground-tab-alignment-and-recovery--1320-jst)
-confirmed that the user had been viewing Edge's Extensions page with MetaMask's
-asset-network filter. The visible Wallet is now identified and has all nine
-records restored, with a verified browser-local checkpoint and identical export.
-Its provider still returns Mainnet. The current dependency is comparing the
-actual MetaMask site panel with that visible Wallet, without blindly repeating
-the already reported network-selection or permission steps.
+The [Account 1 follow-up](LIVE_RECOVERY_2026-11-03.md#later-account-1-permission-and-connection-confirmed)
+and [foreground-tab recovery](LIVE_RECOVERY_2026-11-03.md#foreground-tab-alignment-and-recovery--1320-jst)
+established the actual visible Wallet and preserved all nine histories after
+earlier attempts had changed only MetaMask's asset-list filter. The later
+[live-switch exercise](LIVE_RECOVERY_2026-11-03.md#actual-network-and-account-changes--13251335-jst)
+now confirms Mainnet-to-Sepolia invalidation, then Account-1-to-Account-2
+invalidation at 4233. All three cards stopped with the respective wallet-change
+reasons, the new context was read from the provider, and explicit reconnection
+was required. Before/immediately-after downloads match byte-for-byte for each
+change. Nine original histories survived both reconnections unchanged. Six new
+read-only observations are saved separately: Account 1 at Sepolia block
+53,791,215 and Account 2 at 53,793,042. This is one observed direction for each
+change in one existing profile, not a live in-flight race or independent review.
 
 The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
@@ -74,7 +74,7 @@ The original permitted origin was recovered through the rehearsal page, three
 Account 1 / Sepolia reads completed at block 53,572,089, and a nine-record backup
 was verified. The prior [connection-stop diagnostic improvement](CONNECTION_STOP_DIAGNOSTICS_2026-11-03.md)
 at `856f670` passed 453 targeted Node cases and 1,024 synthetic browser cases.
-Live switch-event invalidation remains separately unverified.
+Live switch-event invalidation is covered by the scoped later exercise above.
 The [latest full fixed-source regression](FIXED_CANDIDATE_REGRESSION_2026-11-03.md)
 at `bf690f3` includes both changes and the later checker/test fixes. Public CI
 still applies only to its older published head; local results are not remote CI.
@@ -254,7 +254,7 @@ all three 17,387-byte session files match exactly. Both original PID 2108 /
 port 4231 and candidate PID 28252 / port 4232 retained their recorded start times.
 This closes the scoped candidate migration/return exercise. Return used the
 preserved development server with current client files, not a separately pinned
-older public release. Actual account/chain-switch invalidation remains open.
+older public release. The later account/chain-switch exercise is recorded above.
 No browser protection was changed.
 
 The earlier standalone combined review package in Downloads is
@@ -335,7 +335,6 @@ Do not clear the user's database or reload their working tab to create a test.
 
 | Open item | Evidence needed to close it | Current limit |
 | --- | --- | --- |
-| Actual account and chain switching | Observe existing MetaMask accounts switching and Base Mainnet/Sepolia changes; verify invalidation, explicit reconnect and preserved records | Separate Account 1/Mainnet, Account 1/Sepolia and Account 2/Sepolia sessions passed. The later 4233 Account 1/Mainnet session connected all three cards with nine original histories. After a reported change, that page still rendered/read Mainnet. Page-hidden/inactivity stops and unchanged nine-record exports were observed separately; the requested new chain and live switch-event invalidation remain unobserved |
 | Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files. Offline follow-up found public checkpoint `07041f0` rejects shared-account backups; a nine-record history-only recovery copy is verified, but browser rollback to a public release is not |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
 | Development dependency release review | Independently review the applied private helper fork and approve its maintenance/release scope | The affected Zod version is replaced in all three local installations; final builds/types, dependency graphs, exact bytecode comparisons and dated full audits pass. Transaction-executing suites were not rerun; independent review and release approval remain open |

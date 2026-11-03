@@ -159,3 +159,70 @@ Private files and screenshots remain in Downloads under
 [receipt](evidence/2026-11-03-visible-wallet-recovery/summary.json) are added here.
 The fixed review ZIP, implementation and tests are unchanged. No transaction,
 signature, key access, server restart, or GitHub write occurred.
+
+## Actual network and account changes — 13:25–13:35 JST
+
+The later foreground photograph identified the actual site-network selector in
+MetaMask's Edge side panel: the circular network icon and down arrow on the
+bottom `127.0.0.1:4233` row, immediately left of the gear. It is separate from
+the asset-list network filter above. The operator used this selector for the
+network change and the same row's gear for the following account change.
+
+At **13:25:07 JST**, all three cards were connected to Account 1 / Base Mainnet.
+The downloaded before-change backup `(27).json` contained all nine histories.
+At **13:26:50 JST**, after the operator selected Base Sepolia, all three cards
+showed disconnected with the reason `接続先が変わりました。内容を確認して再接続してください。`.
+Protection-log entries 4–6 specifically recorded wallet-network invalidation;
+no new hidden-page or inactivity stop intervened. The subsequent permitted-account
+probe returned the same known Account 1 address and **84532 / Base Sepolia**.
+These observations supersede the earlier unconfirmed network-selection attempts.
+
+The immediately-after-change download `(28).json` was byte-identical to `(27)`:
+10,100 bytes, SHA-256
+`0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0`.
+Only after preserving that state were the requested card networks changed and
+all three cards explicitly reconnected. At **13:27:50 JST**, all displayed
+Account 1 / 84532. Three subsequent read-only portfolio checks succeeded at
+block **53,791,215**, hash
+`0xd689e1aaa3fa4923bf54dc70131e92bf3a16c8bbecda83a5401c5275021ede2f`.
+Export `(29).json`, after reconnect, matched the original 10,103-byte backup.
+
+The operator then changed the site's permitted account to existing Account 2,
+keeping Base Sepolia. At **13:31:06 JST**, all three cards were again stopped
+with the changed-context reason. Protection-log entries 7–9 specifically
+recorded wallet-account invalidation. Before changing card inputs, the probe
+returned the known Account 2 address and 84532; download `(30).json` was
+byte-identical to the pre-change `(29)` file, SHA-256
+`3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc`.
+
+The checked Account 2 address was then applied through the UI and all three
+cards explicitly reconnected. At **13:34:43 JST**, all displayed Account 2 /
+84532. Three read-only portfolio checks completed at block **53,793,042**, hash
+`0xebda13715119f987e7c8ef253c3a93dd649fc37f61f479851641e500a916fc00`.
+Each token contract had code and returned a balance without a read error.
+Export `(31).json` contains the expected new card accounts and unchanged nine
+historical observations: 10,103 bytes, SHA-256
+`6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a`.
+Canonical history content still has SHA-256
+`a450048a9e25861d62561a0db5efa553f664b3efaf15c96f4eb9cb1fe45a3107`.
+
+The saved-file inspector validated the internal checksums of all five backups.
+The six new portfolio JSON records were captured from the UI-generated result
+textboxes and saved separately; they were not appended to the original nine
+histories. All six passed structure validation (CLI exit 2). That format has no
+internal checksum, and these captures are not described as browser downloads.
+
+The [redacted live-switch receipt](evidence/2026-11-03-live-context-switch/summary.json)
+contains timestamps, exact download hashes, read metadata, validation outcomes
+and hashes of 26 local evidence files. Full account observations and screenshots
+remain in `Downloads/ThreeCore-visible-wallet-recovery-20261103/`.
+
+This closes the scoped live Mainnet-to-Sepolia and Account-1-to-Account-2
+invalidation/reconnect/preservation exercise in the current profile. It does not
+claim the reverse directions, an in-flight read race, captured raw event payloads,
+native automation of MetaMask, independent review or 90% completion. The operator
+performed the two MetaMask selections; the assistant performed subsequent probes,
+reconnections, read-only checks, saves and comparisons. The later explicit user
+authorization permits routine MetaMask operation wherever supported controls can
+identify the intended wallet and site; it does not alter the no-signing scope.
+The sealed review ZIP remains unchanged; this evidence is a later supplement.

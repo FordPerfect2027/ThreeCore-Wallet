@@ -19,6 +19,11 @@ The user requested this operating method on November 3, 2026 (Japan time).
   90% or a release gate solely from elapsed time or the number of passing tests.
 - No user-wallet signing, sending, token approvals, swaps, private-key or seed
   access. Normal authorized connection and read-only work may proceed.
+- The user explicitly authorized routine MetaMask operation, including existing
+  account selection, network selection and the ThreeCore site connection. Carry
+  out these ordinary actions when supported controls can identify the intended
+  wallet and site. Do not ask the user to repeat them merely because they are in
+  MetaMask. Authorization does not remove tool-enforced access restrictions.
 - Keep GitHub writes deferred for the requested consolidated publication.
 - Preserve loaded user pages and their unsaved data. Use an existing same-origin
   in-app link to open a fresh Wallet tab when an old automation tab is detached;

@@ -2,14 +2,24 @@
 
 ## Local development follow-up — November 3
 
+The latest status is in the [current handoff](RELEASE_HANDOFF_2026-11-02.md).
+At 13:25–13:35 JST, the [actual network/account-switch exercise](LIVE_RECOVERY_2026-11-03.md#actual-network-and-account-changes--13251335-jst)
+verified three-card invalidation after Mainnet-to-Sepolia and Account-1-to-Account-2
+changes, explicit reconnect, new provider-context reads and preservation of all
+nine original histories. Six new read-only records were saved separately. This
+supersedes the earlier switch-pending statements below for those observed directions.
+The current sealed package is `128ee11`; this live evidence is a later supplement.
+The applied private helper repair has separate successful compatibility/build
+checks; its independent review and final release approval remain open.
+
 The [latest fixed-source package and complete regression](FIXED_CANDIDATE_REGRESSION_2026-11-03.md)
 pin `bf690f3`, including navigation recovery, connection diagnostics, evidence
 capacity repair and current token test pins. The clean restored source passed
 16,470 Node/HTTP and 1,024 synthetic browser cases. All 42 package files matched
 after extraction, with a successful alteration-detection control.
 Nine actual observations survived the earlier candidate restore/export byte-for-byte.
-These results close the later-source full-regression coverage gap; actual wallet
-switch invalidation, dependency disposition and independent review remain open.
+Those regression results closed the later-source coverage gap. Live wallet and
+dependency follow-ups were still pending at that checkpoint; see the update above.
 The later [legacy compatibility check](LEGACY_HISTORY_RECOVERY_2026-11-03.md)
 found the old public checkpoint rejects shared-account files. A separate
 history-view copy retains all nine records and passes both decoders; this does
@@ -20,15 +30,15 @@ closes the detached-tab interruption: supported same-origin links reopened the
 Wallet without another manual address-bar entry. Three real Account 1 / Sepolia
 reads completed at block 53,572,089; a verified nine-record backup preserves the
 six prior Account 2 observations. The 62 server/security cases passed. This is
-post-switch recovery evidence; live event invalidation remains unverified.
+post-switch recovery evidence; live event invalidation was unverified at that stage.
 
 The [connection-stop diagnostic change](CONNECTION_STOP_DIAGNOSTICS_2026-11-03.md)
 at `856f670` preserves account/network/provider stop reasons after later idle
 stops, without storing wallet payloads. Its 453 targeted Node checks and the
 complete 1,024-case synthetic browser suite passed. It is newer than the fixed
 review package below. The operator reported switching to Account 1, but the
-browser operation connection failed before the post-switch read; live acceptance
-remains unverified. This adds useful diagnostics, not a 90% completion claim.
+browser operation connection failed before that post-switch read; live acceptance
+was unverified at that stage. This adds useful diagnostics, not a 90% completion claim.
 
 ## Earlier fixed-candidate assessment — November 2, 22:36 JST
 
