@@ -1,0 +1,31 @@
+{
+  "schema": "threecore.aerodrome-classic-quote-file.v1",
+  "quote": {
+    "schema": "threecore.aerodrome-classic-quote.v1",
+    "agent": "CAWELON",
+    "chainId": 8453,
+    "dappOrigin": "https://aerodrome.finance",
+    "routerAddress": "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+    "factoryAddress": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+    "poolAddress": "0x5445b0f683c74aff048149bb9e0865d05a85b0b4",
+    "direction": "buy",
+    "inputToken": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+    "outputToken": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+    "inputDecimals": 6,
+    "outputDecimals": 18,
+    "inputBaseUnits": "1000000",
+    "reserveInBaseUnits": "99527483",
+    "reserveOutBaseUnits": "4219940000000000000000000000000",
+    "feeBps": 30,
+    "poolOutputBaseUnits": "41853288417310238740546419920",
+    "routerOutputBaseUnits": "41853288417310238740546419920",
+    "slippageBps": 50,
+    "blockNumber": "53457078",
+    "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+    "blockTimestampSeconds": 1793703503,
+    "observedAtSeconds": 1793703631,
+    "canonicalBlockRechecked": true,
+    "readOnly": true
+  },
+  "sha256": "ea7099a7aec522e9ab3f8b5aa1761910d32800d4052c1efb9cefa33052f8b7bf"
+}

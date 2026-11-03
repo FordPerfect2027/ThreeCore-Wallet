@@ -1,0 +1,779 @@
+{
+  "recordedAt": "2026-11-03T11:00:44.007Z",
+  "endpoint": "https://mainnet.base.org",
+  "direction": "sell",
+  "inputBaseUnits": "1000000000000000000000",
+  "readOnly": true,
+  "walletConnected": false,
+  "transactionsExecuted": false,
+  "rows": [
+    {
+      "agent": "DAT",
+      "startedAt": "2026-11-03T11:00:31.887Z",
+      "completedAt": "2026-11-03T11:00:36.187Z",
+      "ok": true,
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "pool": "0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6",
+      "feeBps": 30,
+      "inputBaseUnits": "1000000000000000000000",
+      "outputBaseUnits": "9889",
+      "minimumOutputBaseUnits": "9839",
+      "outputShortfallBpsCeil": 32,
+      "cliVerified": true,
+      "fileSha256": "7e3de6592b2592316df6823742f1e9b9ad745e03191b4a7460dd8bae57ad49a8",
+      "requests": [
+        {
+          "method": "eth_chainId",
+          "params": []
+        },
+        {
+          "method": "eth_getBlockByNumber",
+          "params": [
+            "0x32fb0b6",
+            false
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0x420dd381b31aef6683db6b902084cb0ffece40da",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+              "data": "0xb187bd26"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+              "data": "0xd4b6846d"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+              "data": "0x79bc57d50000000000000000000000006c83dd253f2f882b9884fd1ac3a7754ed6405de5000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6",
+              "data": "0xc45a0155"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6",
+              "data": "0x22be3de1"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6",
+              "data": "0x0dfe1681"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6",
+              "data": "0xd21220a7"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x6c83dd253f2f882b9884fd1ac3a7754ed6405de5",
+              "data": "0x313ce567"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "data": "0x313ce567"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6",
+              "data": "0x0902f1ac"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+              "data": "0xcc56b2c5000000000000000000000000eda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e60000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xeda4a249bb22f1c4f8f4e9a244380e1b2cc0c2e6",
+              "data": "0xf140a35a00000000000000000000000000000000000000000000003635c9adc5dea000000000000000000000000000006c83dd253f2f882b9884fd1ac3a7754ed6405de5"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+              "data": "0x5509a1ac00000000000000000000000000000000000000000000003635c9adc5dea00000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000010000000000000000000000006c83dd253f2f882b9884fd1ac3a7754ed6405de5000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000000000000000000000000000000000000000000000000000000000000000000000420dd381b31aef6683db6b902084cb0ffece40da"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getBlockByNumber",
+          "params": [
+            "0x32fb0b6",
+            false
+          ]
+        },
+        {
+          "method": "eth_chainId",
+          "params": []
+        }
+      ]
+    },
+    {
+      "agent": "EMA",
+      "startedAt": "2026-11-03T11:00:36.188Z",
+      "completedAt": "2026-11-03T11:00:40.147Z",
+      "ok": true,
+      "blockNumber": "53457078",
+      "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+      "pool": "0x8c0689ee10cf35a76149ba37808b5758c5826688",
+      "feeBps": 30,
+      "inputBaseUnits": "1000000000000000000000",
+      "outputBaseUnits": "11808",
+      "minimumOutputBaseUnits": "11748",
+      "outputShortfallBpsCeil": 32,
+      "cliVerified": true,
+      "fileSha256": "4c5d6ef181241c0ad40e4130f829dd40f159e85947faac4c23156e8d81fc9031",
+      "requests": [
+        {
+          "method": "eth_chainId",
+          "params": []
+        },
+        {
+          "method": "eth_getBlockByNumber",
+          "params": [
+            "0x32fb0b6",
+            false
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0x420dd381b31aef6683db6b902084cb0ffece40da",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+              "data": "0xb187bd26"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+              "data": "0xd4b6846d"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+              "data": "0x79bc57d5000000000000000000000000bae0933d509b83b7bbab3aab9fed413504382a76000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0x8c0689ee10cf35a76149ba37808b5758c5826688",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x8c0689ee10cf35a76149ba37808b5758c5826688",
+              "data": "0xc45a0155"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x8c0689ee10cf35a76149ba37808b5758c5826688",
+              "data": "0x22be3de1"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x8c0689ee10cf35a76149ba37808b5758c5826688",
+              "data": "0x0dfe1681"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x8c0689ee10cf35a76149ba37808b5758c5826688",
+              "data": "0xd21220a7"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xbae0933d509b83b7bbab3aab9fed413504382a76",
+              "data": "0x313ce567"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "data": "0x313ce567"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x8c0689ee10cf35a76149ba37808b5758c5826688",
+              "data": "0x0902f1ac"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+              "data": "0xcc56b2c50000000000000000000000008c0689ee10cf35a76149ba37808b5758c58266880000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x8c0689ee10cf35a76149ba37808b5758c5826688",
+              "data": "0xf140a35a00000000000000000000000000000000000000000000003635c9adc5dea00000000000000000000000000000bae0933d509b83b7bbab3aab9fed413504382a76"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+              "data": "0x5509a1ac00000000000000000000000000000000000000000000003635c9adc5dea0000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000bae0933d509b83b7bbab3aab9fed413504382a76000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000000000000000000000000000000000000000000000000000000000000000000000420dd381b31aef6683db6b902084cb0ffece40da"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getBlockByNumber",
+          "params": [
+            "0x32fb0b6",
+            false
+          ]
+        },
+        {
+          "method": "eth_chainId",
+          "params": []
+        }
+      ]
+    },
+    {
+      "agent": "CAWELON",
+      "startedAt": "2026-11-03T11:00:40.148Z",
+      "completedAt": "2026-11-03T11:00:44.007Z",
+      "ok": false,
+      "errorCode": "QUOTE_ZERO_OR_INVALID_OUTPUT",
+      "requests": [
+        {
+          "method": "eth_chainId",
+          "params": []
+        },
+        {
+          "method": "eth_getBlockByNumber",
+          "params": [
+            "0x32fb0b6",
+            false
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0x420dd381b31aef6683db6b902084cb0ffece40da",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+              "data": "0xb187bd26"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+              "data": "0xd4b6846d"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+              "data": "0x79bc57d5000000000000000000000000b4654b5a4617fe2c27a0dd6eaee98f8aa941b895000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getCode",
+          "params": [
+            "0x5445b0f683c74aff048149bb9e0865d05a85b0b4",
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x5445b0f683c74aff048149bb9e0865d05a85b0b4",
+              "data": "0xc45a0155"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x5445b0f683c74aff048149bb9e0865d05a85b0b4",
+              "data": "0x22be3de1"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x5445b0f683c74aff048149bb9e0865d05a85b0b4",
+              "data": "0x0dfe1681"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x5445b0f683c74aff048149bb9e0865d05a85b0b4",
+              "data": "0xd21220a7"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xb4654b5a4617fe2c27a0dd6eaee98f8aa941b895",
+              "data": "0x313ce567"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "data": "0x313ce567"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x5445b0f683c74aff048149bb9e0865d05a85b0b4",
+              "data": "0x0902f1ac"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x420dd381b31aef6683db6b902084cb0ffece40da",
+              "data": "0xcc56b2c50000000000000000000000005445b0f683c74aff048149bb9e0865d05a85b0b40000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0x5445b0f683c74aff048149bb9e0865d05a85b0b4",
+              "data": "0xf140a35a00000000000000000000000000000000000000000000003635c9adc5dea00000000000000000000000000000b4654b5a4617fe2c27a0dd6eaee98f8aa941b895"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_call",
+          "params": [
+            {
+              "to": "0xcf77a3ba9a5ca399b7c97c74d54e5b1beb874e43",
+              "data": "0x5509a1ac00000000000000000000000000000000000000000000003635c9adc5dea0000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000b4654b5a4617fe2c27a0dd6eaee98f8aa941b895000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000000000000000000000000000000000000000000000000000000000000000000000420dd381b31aef6683db6b902084cb0ffece40da"
+            },
+            {
+              "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+              "requireCanonical": true
+            }
+          ]
+        },
+        {
+          "method": "eth_getBlockByNumber",
+          "params": [
+            "0x32fb0b6",
+            false
+          ]
+        },
+        {
+          "method": "eth_chainId",
+          "params": []
+        }
+      ]
+    }
+  ]
+}

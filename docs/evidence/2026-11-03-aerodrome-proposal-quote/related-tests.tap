@@ -1,0 +1,1012 @@
+TAP version 13
+# Subtest: native Base USDC address is the one published by Circle
+ok 1 - native Base USDC address is the one published by Circle
+  ---
+  duration_ms: 3.1862
+  type: 'test'
+  ...
+# Subtest: discovers DAT/USDC volatile pair and reports correctly ordered raw reserves
+ok 2 - discovers DAT/USDC volatile pair and reports correctly ordered raw reserves
+  ---
+  duration_ms: 121.584
+  type: 'test'
+  ...
+# Subtest: stable pair is tracked separately from volatile pair
+ok 3 - stable pair is tracked separately from volatile pair
+  ---
+  duration_ms: 13.0917
+  type: 'test'
+  ...
+# Subtest: absent pools are reported as null and reserve reads are not attempted
+ok 4 - absent pools are reported as null and reserve reads are not attempted
+  ---
+  duration_ms: 15.9202
+  type: 'test'
+  ...
+# Subtest: pool address with no deployed code has unknown reserves
+ok 5 - pool address with no deployed code has unknown reserves
+  ---
+  duration_ms: 14.8194
+  type: 'test'
+  ...
+# Subtest: incorrect pool token identity fails closed
+ok 6 - incorrect pool token identity fails closed
+  ---
+  duration_ms: 10.252
+  type: 'test'
+  ...
+# Subtest: chain mismatch fails before discovering any pools
+ok 7 - chain mismatch fails before discovering any pools
+  ---
+  duration_ms: 2.7669
+  type: 'test'
+  ...
+# Subtest: invalid block number and mismatched JSON-RPC ID are rejected
+ok 8 - invalid block number and mismatched JSON-RPC ID are rejected
+  ---
+  duration_ms: 3.2365
+  type: 'test'
+  ...
+# Subtest: transport and timeout validation happens before network access
+ok 9 - transport and timeout validation happens before network access
+  ---
+  duration_ms: 1.1404
+  type: 'test'
+  ...
+# Subtest: all operations use only read-only RPC methods at one block
+ok 10 - all operations use only read-only RPC methods at one block
+  ---
+  duration_ms: 16.592
+  type: 'test'
+  ...
+# Subtest: quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+ok 11 - quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+  ---
+  duration_ms: 7.1433
+  type: 'test'
+  ...
+# Subtest: quote files revalidate arithmetic and checksum rather than trusting saved output
+ok 12 - quote files revalidate arithmetic and checksum rather than trusting saved output
+  ---
+  duration_ms: 35.1171
+  type: 'test'
+  ...
+# Subtest: proposal, exact input amount, router, original budget block and current limits bind the quote
+ok 13 - proposal, exact input amount, router, original budget block and current limits bind the quote
+  ---
+  duration_ms: 173.8951
+  type: 'test'
+  ...
+# Subtest: comparison limits must be explicit and valid; cancellation interrupts archived source validation
+ok 14 - comparison limits must be explicit and valid; cancellation interrupts archived source validation
+  ---
+  duration_ms: 13.4352
+  type: 'test'
+  ...
+# Subtest: all three agents and both quote directions compare pool, router and reserve arithmetic at one hash
+ok 15 - all three agents and both quote directions compare pool, router and reserve arithmetic at one hash
+  ---
+  duration_ms: 215.6223
+  type: 'test'
+  ...
+# Subtest: single-route encoding matches independently generated viem 2.56.6 ABI vector
+ok 16 - single-route encoding matches independently generated viem 2.56.6 ABI vector
+  ---
+  duration_ms: 0.5005
+  type: 'test'
+  ...
+# Subtest: invalid amounts, source options and cancellation fail before network access
+ok 17 - invalid amounts, source options and cancellation fail before network access
+  ---
+  duration_ms: 14.1631
+  type: 'test'
+  ...
+# Subtest: explicit historical height skips latest and still rechecks its exact canonical hash
+ok 18 - explicit historical height skips latest and still rechecks its exact canonical hash
+  ---
+  duration_ms: 28.2309
+  type: 'test'
+  ...
+# Subtest: identity, empty pool, decimals, output, timestamps and network transitions cannot produce a quote
+ok 19 - identity, empty pool, decimals, output, timestamps and network transitions cannot produce a quote
+  ---
+  duration_ms: 178.0977
+  type: 'test'
+  ...
+# Subtest: stalled requests, body timeout and mid-read cancellation settle and never fall back to an unpinned read
+ok 20 - stalled requests, body timeout and mid-read cancellation settle and never fall back to an unpinned read
+  ---
+  duration_ms: 232.2806
+  type: 'test'
+  ...
+# Subtest: quote view selectors accept only exact lengths and canonical single-route ABI
+ok 21 - quote view selectors accept only exact lengths and canonical single-route ABI
+  ---
+  duration_ms: 106.8244
+  type: 'test'
+  ...
+# Subtest: timestamp-aware headers fail on missing or noncanonical time while old header shape stays unchanged
+ok 22 - timestamp-aware headers fail on missing or noncanonical time while old header shape stays unchanged
+  ---
+  duration_ms: 23.0302
+  type: 'test'
+  ...
+# Subtest: published contract manifest covers all three ThreeCore tokens
+ok 23 - published contract manifest covers all three ThreeCore tokens
+  ---
+  duration_ms: 6.21
+  type: 'test'
+  ...
+# Subtest: reads Base chain, block and code for six published addresses
+ok 24 - reads Base chain, block and code for six published addresses
+  ---
+  duration_ms: 121.8822
+  type: 'test'
+  ...
+# Subtest: a wallet address is strictly optional and never requested from a provider
+ok 25 - a wallet address is strictly optional and never requested from a provider
+  ---
+  duration_ms: 10.8669
+  type: 'test'
+  ...
+# Subtest: reads balances and existing Aerodrome classic-router allowances for all three tokens
+ok 26 - reads balances and existing Aerodrome classic-router allowances for all three tokens
+  ---
+  duration_ms: 32.3407
+  type: 'test'
+  ...
+# Subtest: zero deployed bytecode is reported missing, not certified safe
+ok 27 - zero deployed bytecode is reported missing, not certified safe
+  ---
+  duration_ms: 7.0273
+  type: 'test'
+  ...
+# Subtest: rejects RPC chain mismatch before inspecting any contracts
+ok 28 - rejects RPC chain mismatch before inspecting any contracts
+  ---
+  duration_ms: 11.6942
+  type: 'test'
+  ...
+# Subtest: invalid wallet address is rejected before any RPC calls
+ok 29 - invalid wallet address is rejected before any RPC calls
+  ---
+  duration_ms: 0.7278
+  type: 'test'
+  ...
+# Subtest: rejects invalid fetch functions and timeouts without network usage
+ok 30 - rejects invalid fetch functions and timeouts without network usage
+  ---
+  duration_ms: 0.6638
+  type: 'test'
+  ...
+# Subtest: rejects malformed block response rather than returning a snapshot
+ok 31 - rejects malformed block response rather than returning a snapshot
+  ---
+  duration_ms: 6.4996
+  type: 'test'
+  ...
+# Subtest: rejects malformed or odd-length EVM bytecode
+ok 32 - rejects malformed or odd-length EVM bytecode
+  ---
+  duration_ms: 7.5097
+  type: 'test'
+  ...
+# Subtest: rejects malformed token balance and allowance responses
+ok 33 - rejects malformed token balance and allowance responses
+  ---
+  duration_ms: 23.4632
+  type: 'test'
+  ...
+# Subtest: rejects mismatched response IDs, JSON-RPC errors and HTTP errors
+ok 34 - rejects mismatched response IDs, JSON-RPC errors and HTTP errors
+  ---
+  duration_ms: 3.7989
+  type: 'test'
+  ...
+# Subtest: all network operations are read-only and do not request wallet credentials
+ok 35 - all network operations are read-only and do not request wallet credentials
+  ---
+  duration_ms: 19.4078
+  type: 'test'
+  ...
+# Subtest: code, balances and allowances share the reported block despite advancing latest
+ok 36 - code, balances and allowances share the reported block despite advancing latest
+  ---
+  duration_ms: 11.2385
+  type: 'test'
+  ...
+# Subtest: overflow balances and allowances cannot produce a snapshot
+ok 37 - overflow balances and allowances cannot produce a snapshot
+  ---
+  duration_ms: 14.2259
+  type: 'test'
+  ...
+# Subtest: truncated and trailing ERC-20 return data cannot produce a snapshot
+ok 38 - truncated and trailing ERC-20 return data cannot produce a snapshot
+  ---
+  duration_ms: 97.1481
+  type: 'test'
+  ...
+# Subtest: holdings: noncanonical and oversized block values stop state reads
+ok 39 - holdings: noncanonical and oversized block values stop state reads
+  ---
+  duration_ms: 140.8757
+  type: 'test'
+  ...
+# Subtest: holdings: advertised and streamed overflow are cancelled without returning a report
+ok 40 - holdings: advertised and streamed overflow are cancelled without returning a report
+  ---
+  duration_ms: 6.9651
+  type: 'test'
+  ...
+# Subtest: holdings: malformed envelopes and unsafe JSON cannot become empty readings
+ok 41 - holdings: malformed envelopes and unsafe JSON cannot become empty readings
+  ---
+  duration_ms: 9.436
+  type: 'test'
+  ...
+# Subtest: holdings: timeout stops an uncooperative initial fetch and cancels a late response
+ok 42 - holdings: timeout stops an uncooperative initial fetch and cancels a late response
+  ---
+  duration_ms: 44.9204
+  type: 'test'
+  ...
+# Subtest: holdings: timeout includes a stalled body even when cancellation never resolves
+ok 43 - holdings: timeout includes a stalled body even when cancellation never resolves
+  ---
+  duration_ms: 4.6008
+  type: 'test'
+  ...
+# Subtest: holdings: HTTP refusal and redirect do not parse a body or return a partial report
+ok 44 - holdings: HTTP refusal and redirect do not parse a body or return a partial report
+  ---
+  duration_ms: 2.2406
+  type: 'test'
+  ...
+# Subtest: holdings: transport errors are sanitized, with no fallback to zero
+ok 45 - holdings: transport errors are sanitized, with no fallback to zero
+  ---
+  duration_ms: 2.2457
+  type: 'test'
+  ...
+# Subtest: holdings: oversized code is rejected before later inspection calls
+ok 46 - holdings: oversized code is rejected before later inspection calls
+  ---
+  duration_ms: 24.5445
+  type: 'test'
+  ...
+# Subtest: holdings: successful reads exclude credentials and pin every state call to one block
+ok 47 - holdings: successful reads exclude credentials and pin every state call to one block
+  ---
+  duration_ms: 36.0133
+  type: 'test'
+  ...
+# Subtest: holdings: a failure on the last read discards earlier successful observations
+ok 48 - holdings: a failure on the last read discards earlier successful observations
+  ---
+  duration_ms: 22.808
+  type: 'test'
+  ...
+# Subtest: holdings: the report records its canonical hash and rechecks the same height after all state reads
+ok 49 - holdings: the report records its canonical hash and rechecks the same height after all state reads
+  ---
+  duration_ms: 17.0689
+  type: 'test'
+  ...
+# Subtest: holdings: a changed canonical hash discards the complete inspection
+ok 50 - holdings: a changed canonical hash discards the complete inspection
+  ---
+  duration_ms: 12.1028
+  type: 'test'
+  ...
+# Subtest: holdings: unavailable, malformed or wrong-height headers stop before state reads
+ok 51 - holdings: unavailable, malformed or wrong-height headers stop before state reads
+  ---
+  duration_ms: 16.304
+  type: 'test'
+  ...
+# Subtest: holdings: rejecting a canonical hash selector never retries latest or a block number
+ok 52 - holdings: rejecting a canonical hash selector never retries latest or a block number
+  ---
+  duration_ms: 6.2533
+  type: 'test'
+  ...
+# Subtest: pools: noncanonical and oversized block values stop state reads
+ok 53 - pools: noncanonical and oversized block values stop state reads
+  ---
+  duration_ms: 16.596
+  type: 'test'
+  ...
+# Subtest: pools: advertised and streamed overflow are cancelled without returning a report
+ok 54 - pools: advertised and streamed overflow are cancelled without returning a report
+  ---
+  duration_ms: 2.6318
+  type: 'test'
+  ...
+# Subtest: pools: malformed envelopes and unsafe JSON cannot become empty readings
+ok 55 - pools: malformed envelopes and unsafe JSON cannot become empty readings
+  ---
+  duration_ms: 12.3265
+  type: 'test'
+  ...
+# Subtest: pools: timeout stops an uncooperative initial fetch and cancels a late response
+ok 56 - pools: timeout stops an uncooperative initial fetch and cancels a late response
+  ---
+  duration_ms: 67.2797
+  type: 'test'
+  ...
+# Subtest: pools: timeout includes a stalled body even when cancellation never resolves
+ok 57 - pools: timeout includes a stalled body even when cancellation never resolves
+  ---
+  duration_ms: 4.9118
+  type: 'test'
+  ...
+# Subtest: pools: HTTP refusal and redirect do not parse a body or return a partial report
+ok 58 - pools: HTTP refusal and redirect do not parse a body or return a partial report
+  ---
+  duration_ms: 1.0986
+  type: 'test'
+  ...
+# Subtest: pools: transport errors are sanitized, with no fallback to zero
+ok 59 - pools: transport errors are sanitized, with no fallback to zero
+  ---
+  duration_ms: 1.1782
+  type: 'test'
+  ...
+# Subtest: pools: oversized code is rejected before later inspection calls
+ok 60 - pools: oversized code is rejected before later inspection calls
+  ---
+  duration_ms: 22.4133
+  type: 'test'
+  ...
+# Subtest: pools: successful reads exclude credentials and pin every state call to one block
+ok 61 - pools: successful reads exclude credentials and pin every state call to one block
+  ---
+  duration_ms: 7.3093
+  type: 'test'
+  ...
+# Subtest: pools: a failure on the last read discards earlier successful observations
+ok 62 - pools: a failure on the last read discards earlier successful observations
+  ---
+  duration_ms: 7.6168
+  type: 'test'
+  ...
+# Subtest: pools: the report records its canonical hash and rechecks the same height after all state reads
+ok 63 - pools: the report records its canonical hash and rechecks the same height after all state reads
+  ---
+  duration_ms: 7.6091
+  type: 'test'
+  ...
+# Subtest: pools: a changed canonical hash discards the complete inspection
+ok 64 - pools: a changed canonical hash discards the complete inspection
+  ---
+  duration_ms: 6.1593
+  type: 'test'
+  ...
+# Subtest: pools: unavailable, malformed or wrong-height headers stop before state reads
+ok 65 - pools: unavailable, malformed or wrong-height headers stop before state reads
+  ---
+  duration_ms: 14.4806
+  type: 'test'
+  ...
+# Subtest: pools: rejecting a canonical hash selector never retries latest or a block number
+ok 66 - pools: rejecting a canonical hash selector never retries latest or a block number
+  ---
+  duration_ms: 3.5067
+  type: 'test'
+  ...
+# Subtest: file cleanup consumes rejected asynchronous adapter results: native
+ok 67 - file cleanup consumes rejected asynchronous adapter results: native
+  ---
+  duration_ms: 18.6955
+  type: 'test'
+  ...
+# Subtest: file cleanup consumes rejected asynchronous adapter results: malformed
+ok 68 - file cleanup consumes rejected asynchronous adapter results: malformed
+  ---
+  duration_ms: 3.0708
+  type: 'test'
+  ...
+# Subtest: secure expiry consumes malformed asynchronous notification and remains expired
+ok 69 - secure expiry consumes malformed asynchronous notification and remains expired
+  ---
+  duration_ms: 3.1507
+  type: 'test'
+  ...
+# Subtest: read-scope eligibility rejection is consumed without invoking a wallet method
+ok 70 - read-scope eligibility rejection is consumed without invoking a wallet method
+  ---
+  duration_ms: 5.3428
+  type: 'test'
+  ...
+# Subtest: read completion observer failure cannot escape or replace the method result
+ok 71 - read completion observer failure cannot escape or replace the method result
+  ---
+  duration_ms: 2.3877
+  type: 'test'
+  ...
+# Subtest: wallet card view notification failure is consumed after disconnect
+ok 72 - wallet card view notification failure is consumed after disconnect
+  ---
+  duration_ms: 6.2054
+  type: 'test'
+  ...
+# Subtest: wallet card asynchronous access result cannot create a wallet session
+ok 73 - wallet card asynchronous access result cannot create a wallet session
+  ---
+  duration_ms: 5.0576
+  type: 'test'
+  ...
+# Subtest: discarded HTTP headers consume malformed body-cancellation failures
+ok 74 - discarded HTTP headers consume malformed body-cancellation failures
+  ---
+  duration_ms: 4.2356
+  type: 'test'
+  ...
+# Subtest: pre-aborted body reads consume cancellation failures without reading
+ok 75 - pre-aborted body reads consume cancellation failures without reading
+  ---
+  duration_ms: 9.5245
+  type: 'test'
+  ...
+# Subtest: oversized declared responses consume body-cancellation failures before opening a reader
+ok 76 - oversized declared responses consume body-cancellation failures before opening a reader
+  ---
+  duration_ms: 2.0692
+  type: 'test'
+  ...
+# Subtest: HTTP reader cancel failure cannot escape a rejected response
+ok 77 - HTTP reader cancel failure cannot escape a rejected response
+  ---
+  duration_ms: 3.0931
+  type: 'test'
+  ...
+# Subtest: HTTP reader releaseLock failure cannot escape a rejected response
+ok 78 - HTTP reader releaseLock failure cannot escape a rejected response
+  ---
+  duration_ms: 1.4481
+  type: 'test'
+  ...
+# Subtest: public RPC response cleanup cannot escape its transport error
+ok 79 - public RPC response cleanup cannot escape its transport error
+  ---
+  duration_ms: 6.8236
+  type: 'test'
+  ...
+# Subtest: the ThreeCore target is 5,000 USDC per pool using six USDC decimals
+ok 80 - the ThreeCore target is 5,000 USDC per pool using six USDC decimals
+  ---
+  duration_ms: 5.1106
+  type: 'test'
+  ...
+# Subtest: all three pools at 100 USDC show 2% progress and 4,900 USDC individual gap
+ok 81 - all three pools at 100 USDC show 2% progress and 4,900 USDC individual gap
+  ---
+  duration_ms: 4.9567
+  type: 'test'
+  ...
+# Subtest: exactly 5,000 USDC counts as target met with no further shortfall
+ok 82 - exactly 5,000 USDC counts as target met with no further shortfall
+  ---
+  duration_ms: 0.8863
+  type: 'test'
+  ...
+# Subtest: one pool's excess reserves must not compensate for another pool's shortfall
+ok 83 - one pool's excess reserves must not compensate for another pool's shortfall
+  ---
+  duration_ms: 1.1381
+  type: 'test'
+  ...
+# Subtest: zero USDC reserve is not enough to calculate a proportional token estimate
+ok 84 - zero USDC reserve is not enough to calculate a proportional token estimate
+  ---
+  duration_ms: 1.3557
+  type: 'test'
+  ...
+# Subtest: missing or unverified pools must never be counted as zero reserve
+ok 85 - missing or unverified pools must never be counted as zero reserve
+  ---
+  duration_ms: 1.9062
+  type: 'test'
+  ...
+# Subtest: rounding never hides a tiny reserve deficit
+ok 86 - rounding never hides a tiny reserve deficit
+  ---
+  duration_ms: 0.912
+  type: 'test'
+  ...
+# Subtest: token-side illustration uses raw ratio without assuming ERC-20 decimals
+ok 87 - token-side illustration uses raw ratio without assuming ERC-20 decimals
+  ---
+  duration_ms: 0.8964
+  type: 'test'
+  ...
+# Subtest: invalid quantities, including negative and floating-point reserve inputs, fail closed
+ok 88 - invalid quantities, including negative and floating-point reserve inputs, fail closed
+  ---
+  duration_ms: 4.069
+  type: 'test'
+  ...
+# Subtest: invalid reports do not generate a target progress claim
+ok 89 - invalid reports do not generate a target progress claim
+  ---
+  duration_ms: 2.1807
+  type: 'test'
+  ...
+# Subtest: foreign factory, foreign quote token and missing provenance cannot produce USDC percentages
+ok 90 - foreign factory, foreign quote token and missing provenance cannot produce USDC percentages
+  ---
+  duration_ms: 1.95
+  type: 'test'
+  ...
+# Subtest: block numbers must be canonical bounded decimal strings without coercion
+ok 91 - block numbers must be canonical bounded decimal strings without coercion
+  ---
+  duration_ms: 1.666
+  type: 'test'
+  ...
+# Subtest: reserves and timestamps reject uint256 overflow and excessive text before conversion
+ok 92 - reserves and timestamps reject uint256 overflow and excessive text before conversion
+  ---
+  duration_ms: 2.2727
+  type: 'test'
+  ...
+# Subtest: three maximum reserves aggregate exactly even when their sum exceeds uint256
+ok 93 - three maximum reserves aggregate exactly even when their sum exceeds uint256
+  ---
+  duration_ms: 0.9803
+  type: 'test'
+  ...
+# Subtest: duplicate pool addresses cannot double-count observed liquidity
+ok 94 - duplicate pool addresses cannot double-count observed liquidity
+  ---
+  duration_ms: 1.2501
+  type: 'test'
+  ...
+# Subtest: invalid or contradictory pool identity cannot be downgraded to an unknown successful entry
+ok 95 - invalid or contradictory pool identity cannot be downgraded to an unknown successful entry
+  ---
+  duration_ms: 1.1358
+  type: 'test'
+  ...
+# Subtest: a valid address without code remains unknown and never contributes a zero
+ok 96 - a valid address without code remains unknown and never contributes a zero
+  ---
+  duration_ms: 0.4755
+  type: 'test'
+  ...
+# Subtest: liquidity progress retains its canonical source hash and refuses unanchored input
+ok 97 - liquidity progress retains its canonical source hash and refuses unanchored input
+  ---
+  duration_ms: 1.0141
+  type: 'test'
+  ...
+# Subtest: liquidity calculation rejects getters at every consumed object layer without invoking them
+ok 98 - liquidity calculation rejects getters at every consumed object layer without invoking them
+  ---
+  duration_ms: 1.3172
+  type: 'test'
+  ...
+# Subtest: liquidity calculation ignores unused properties and stable-pool accessors
+ok 99 - liquidity calculation ignores unused properties and stable-pool accessors
+  ---
+  duration_ms: 0.8656
+  type: 'test'
+  ...
+# Subtest: captured values cannot change between validation and result formatting through property reads
+ok 100 - captured values cannot change between validation and result formatting through property reads
+  ---
+  duration_ms: 1.2626
+  type: 'test'
+  ...
+# Subtest: inherited fields and unusual object prototypes are not observations
+ok 101 - inherited fields and unusual object prototypes are not observations
+  ---
+  duration_ms: 0.9877
+  type: 'test'
+  ...
+# Subtest: null-prototype JSON-like records remain accepted and source records stay unchanged
+ok 102 - null-prototype JSON-like records remain accepted and source records stay unchanged
+  ---
+  duration_ms: 1.0507
+  type: 'test'
+  ...
+# Subtest: throwing reflection traps become a bounded local error
+ok 103 - throwing reflection traps become a bounded local error
+  ---
+  duration_ms: 1.8605
+  type: 'test'
+  ...
+# Subtest: diagnostic endpoint validation cannot be replaced with an arbitrary URL
+ok 104 - diagnostic endpoint validation cannot be replaced with an arbitrary URL
+  ---
+  duration_ms: 5.2584
+  type: 'test'
+  ...
+# Subtest: write methods, approval selectors, extra transaction fields and latest tags fail before transport
+ok 105 - write methods, approval selectors, extra transaction fields and latest tags fail before transport
+  ---
+  duration_ms: 7.8338
+  type: 'test'
+  ...
+# Subtest: only established read selectors are accepted with canonical ABI arguments
+ok 106 - only established read selectors are accepted with canonical ABI arguments
+  ---
+  duration_ms: 116.5092
+  type: 'test'
+  ...
+# Subtest: public batch additions permit only explicit native-balance and argument-free metadata reads
+ok 107 - public batch additions permit only explicit native-balance and argument-free metadata reads
+  ---
+  duration_ms: 7.7588
+  type: 'test'
+  ...
+# Subtest: canonical hash selectors require complete own data and cannot execute accessors
+ok 108 - canonical hash selectors require complete own data and cannot execute accessors
+  ---
+  duration_ms: 5.1383
+  type: 'test'
+  ...
+# Subtest: header reads reject latest, full transaction requests and a mismatched returned height
+ok 109 - header reads reject latest, full transaction requests and a mismatched returned height
+  ---
+  duration_ms: 1.8947
+  type: 'test'
+  ...
+# Subtest: pre-aborted diagnostic signals prevent transport even if aborted is shadowed
+ok 110 - pre-aborted diagnostic signals prevent transport even if aborted is shadowed
+  ---
+  duration_ms: 22.4209
+  type: 'test'
+  ...
+# Subtest: caller cancellation ends a hanging fetch, aborts its transport signal and consumes late failure
+ok 111 - caller cancellation ends a hanging fetch, aborts its transport signal and consumes late failure
+  ---
+  duration_ms: 26.1716
+  type: 'test'
+  ...
+# Subtest: late headers after cancellation release their unread body
+ok 112 - late headers after cancellation release their unread body
+  ---
+  duration_ms: 7.2125
+  type: 'test'
+  ...
+# Subtest: cancellation during response-body reading does not return an empty or zero result
+ok 113 - cancellation during response-body reading does not return an empty or zero result
+  ---
+  duration_ms: 101.9329
+  type: 'test'
+  ...
+# Subtest: request capture that cancels cannot start a subsequent fetch
+ok 114 - request capture that cancels cannot start a subsequent fetch
+  ---
+  duration_ms: 1.7475
+  type: 'test'
+  ...
+# Subtest: completed reads release cancellation listeners and preserve reusable transport
+ok 115 - completed reads release cancellation listeners and preserve reusable transport
+  ---
+  duration_ms: 46.3409
+  type: 'test'
+  ...
+# Subtest: per-request timeout remains distinguishable from later caller cancellation
+ok 116 - per-request timeout remains distinguishable from later caller cancellation
+  ---
+  duration_ms: 106.5404
+  type: 'test'
+  ...
+# Subtest: invalid signal and accessor options fail before transport
+ok 117 - invalid signal and accessor options fail before transport
+  ---
+  duration_ms: 2.5472
+  type: 'test'
+  ...
+# Subtest: network pre-aborted diagnostics do not start a read
+ok 118 - network pre-aborted diagnostics do not start a read
+  ---
+  duration_ms: 1.3389
+  type: 'test'
+  ...
+# Subtest: network cancellation at the first response prevents subsequent requests
+ok 119 - network cancellation at the first response prevents subsequent requests
+  ---
+  duration_ms: 1.63
+  type: 'test'
+  ...
+# Subtest: network options are captured without running input getters
+ok 120 - network options are captured without running input getters
+  ---
+  duration_ms: 0.5591
+  type: 'test'
+  ...
+# Subtest: contracts pre-aborted diagnostics do not start a read
+ok 121 - contracts pre-aborted diagnostics do not start a read
+  ---
+  duration_ms: 1.317
+  type: 'test'
+  ...
+# Subtest: contracts cancellation at the first response prevents subsequent requests
+ok 122 - contracts cancellation at the first response prevents subsequent requests
+  ---
+  duration_ms: 0.8847
+  type: 'test'
+  ...
+# Subtest: contracts options are captured without running input getters
+ok 123 - contracts options are captured without running input getters
+  ---
+  duration_ms: 0.49
+  type: 'test'
+  ...
+# Subtest: pools pre-aborted diagnostics do not start a read
+ok 124 - pools pre-aborted diagnostics do not start a read
+  ---
+  duration_ms: 2.0388
+  type: 'test'
+  ...
+# Subtest: pools cancellation at the first response prevents subsequent requests
+ok 125 - pools cancellation at the first response prevents subsequent requests
+  ---
+  duration_ms: 1.0109
+  type: 'test'
+  ...
+# Subtest: pools options are captured without running input getters
+ok 126 - pools options are captured without running input getters
+  ---
+  duration_ms: 0.4924
+  type: 'test'
+  ...
+# Subtest: option parsing keeps supported invocations and rejects extra or ambiguous arguments
+ok 127 - option parsing keeps supported invocations and rejects extra or ambiguous arguments
+  ---
+  duration_ms: 5.9705
+  type: 'test'
+  ...
+# Subtest: probe-base.js: help exits successfully without RPC
+ok 128 - probe-base.js: help exits successfully without RPC
+  ---
+  duration_ms: 299.5584
+  type: 'test'
+  ...
+# Subtest: probe-base.js: invalid usage exits 2 without RPC or echoing the argument
+ok 129 - probe-base.js: invalid usage exits 2 without RPC or echoing the argument
+  ---
+  duration_ms: 243.0492
+  type: 'test'
+  ...
+# Subtest: probe-base.js: transport failure exits 1 with no successful JSON or private error text
+ok 130 - probe-base.js: transport failure exits 1 with no successful JSON or private error text
+  ---
+  duration_ms: 256.744
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome.js: help exits successfully without RPC
+ok 131 - inspect-aerodrome.js: help exits successfully without RPC
+  ---
+  duration_ms: 259.4933
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome.js: invalid usage exits 2 without RPC or echoing the argument
+ok 132 - inspect-aerodrome.js: invalid usage exits 2 without RPC or echoing the argument
+  ---
+  duration_ms: 269.0423
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome.js: transport failure exits 1 with no successful JSON or private error text
+ok 133 - inspect-aerodrome.js: transport failure exits 1 with no successful JSON or private error text
+  ---
+  duration_ms: 277.0877
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome-pools.js: help exits successfully without RPC
+ok 134 - inspect-aerodrome-pools.js: help exits successfully without RPC
+  ---
+  duration_ms: 283.1986
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome-pools.js: invalid usage exits 2 without RPC or echoing the argument
+ok 135 - inspect-aerodrome-pools.js: invalid usage exits 2 without RPC or echoing the argument
+  ---
+  duration_ms: 320.1722
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome-pools.js: transport failure exits 1 with no successful JSON or private error text
+ok 136 - inspect-aerodrome-pools.js: transport failure exits 1 with no successful JSON or private error text
+  ---
+  duration_ms: 319.2662
+  type: 'test'
+  ...
+# Subtest: liquidity-progress.js: help exits successfully without RPC
+ok 137 - liquidity-progress.js: help exits successfully without RPC
+  ---
+  duration_ms: 356.866
+  type: 'test'
+  ...
+# Subtest: liquidity-progress.js: invalid usage exits 2 without RPC or echoing the argument
+ok 138 - liquidity-progress.js: invalid usage exits 2 without RPC or echoing the argument
+  ---
+  duration_ms: 344.0383
+  type: 'test'
+  ...
+# Subtest: liquidity-progress.js: transport failure exits 1 with no successful JSON or private error text
+ok 139 - liquidity-progress.js: transport failure exits 1 with no successful JSON or private error text
+  ---
+  duration_ms: 276.771
+  type: 'test'
+  ...
+# Subtest: Base and holdings CLI JSON preserves exact observations and read-only flags
+ok 140 - Base and holdings CLI JSON preserves exact observations and read-only flags
+  ---
+  duration_ms: 783.4881
+  type: 'test'
+  ...
+# Subtest: pool CLI output feeds the stricter liquidity assessment without inventing unknown reserves
+ok 141 - pool CLI output feeds the stricter liquidity assessment without inventing unknown reserves
+  ---
+  duration_ms: 1153.8265
+  type: 'test'
+  ...
+# Subtest: probe-base.js: interrupt-fetch cancels the active read without partial output or later calls
+ok 142 - probe-base.js: interrupt-fetch cancels the active read without partial output or later calls
+  ---
+  duration_ms: 301.5425
+  type: 'test'
+  ...
+# Subtest: probe-base.js: interrupt-body cancels the active read without partial output or later calls
+ok 143 - probe-base.js: interrupt-body cancels the active read without partial output or later calls
+  ---
+  duration_ms: 413.53
+  type: 'test'
+  ...
+# Subtest: probe-base.js: terminate-fetch cancels the active read without partial output or later calls
+ok 144 - probe-base.js: terminate-fetch cancels the active read without partial output or later calls
+  ---
+  duration_ms: 270.9093
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome.js: interrupt-fetch cancels the active read without partial output or later calls
+ok 145 - inspect-aerodrome.js: interrupt-fetch cancels the active read without partial output or later calls
+  ---
+  duration_ms: 311.1102
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome.js: interrupt-body cancels the active read without partial output or later calls
+ok 146 - inspect-aerodrome.js: interrupt-body cancels the active read without partial output or later calls
+  ---
+  duration_ms: 392.0615
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome.js: terminate-fetch cancels the active read without partial output or later calls
+ok 147 - inspect-aerodrome.js: terminate-fetch cancels the active read without partial output or later calls
+  ---
+  duration_ms: 258.2076
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome-pools.js: interrupt-fetch cancels the active read without partial output or later calls
+ok 148 - inspect-aerodrome-pools.js: interrupt-fetch cancels the active read without partial output or later calls
+  ---
+  duration_ms: 341.8855
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome-pools.js: interrupt-body cancels the active read without partial output or later calls
+ok 149 - inspect-aerodrome-pools.js: interrupt-body cancels the active read without partial output or later calls
+  ---
+  duration_ms: 414.5088
+  type: 'test'
+  ...
+# Subtest: inspect-aerodrome-pools.js: terminate-fetch cancels the active read without partial output or later calls
+ok 150 - inspect-aerodrome-pools.js: terminate-fetch cancels the active read without partial output or later calls
+  ---
+  duration_ms: 307.431
+  type: 'test'
+  ...
+# Subtest: liquidity-progress.js: interrupt-fetch cancels the active read without partial output or later calls
+ok 151 - liquidity-progress.js: interrupt-fetch cancels the active read without partial output or later calls
+  ---
+  duration_ms: 304.4336
+  type: 'test'
+  ...
+# Subtest: liquidity-progress.js: interrupt-body cancels the active read without partial output or later calls
+ok 152 - liquidity-progress.js: interrupt-body cancels the active read without partial output or later calls
+  ---
+  duration_ms: 367.2898
+  type: 'test'
+  ...
+# Subtest: liquidity-progress.js: terminate-fetch cancels the active read without partial output or later calls
+ok 153 - liquidity-progress.js: terminate-fetch cancels the active read without partial output or later calls
+  ---
+  duration_ms: 277.0771
+  type: 'test'
+  ...
+# Subtest: a signal proxy that rejects event registration produces a public error before transport
+ok 154 - a signal proxy that rejects event registration produces a public error before transport
+  ---
+  duration_ms: 7.5203
+  type: 'test'
+  ...
+# Subtest: partial registration failure removes the installed callback and does not call fetch
+ok 155 - partial registration failure removes the installed callback and does not call fetch
+  ---
+  duration_ms: 3.5977
+  type: 'test'
+  ...
+# Subtest: an abort during failed registration keeps cancellation and consumes its rejected stop promise
+ok 156 - an abort during failed registration keeps cancellation and consumes its rejected stop promise
+  ---
+  duration_ms: 14.2772
+  type: 'test'
+  ...
+# Subtest: failure reading signal state after registration still releases the installed callback
+ok 157 - failure reading signal state after registration still releases the installed callback
+  ---
+  duration_ms: 4.7925
+  type: 'test'
+  ...
+# Subtest: a cleanup exception after listener removal cannot replace a successful public result
+ok 158 - a cleanup exception after listener removal cannot replace a successful public result
+  ---
+  duration_ms: 105.3329
+  type: 'test'
+  ...
+# Subtest: public batch pins all three tokens and native balance to one hash on 8453
+ok 159 - public batch pins all three tokens and native balance to one hash on 8453
+  ---
+  duration_ms: 170.0545
+  type: 'test'
+  ...
+# Subtest: public batch pins all three tokens and native balance to one hash on 84532
+ok 160 - public batch pins all three tokens and native balance to one hash on 84532
+  ---
+  duration_ms: 25.437
+  type: 'test'
+  ...
+# Subtest: explicit historical height avoids latest and rechecks the exact same height
+ok 161 - explicit historical height avoids latest and rechecks the exact same height
+  ---
+  duration_ms: 21.1316
+  type: 'test'
+  ...
+# Subtest: chain mismatch, changed canonical block and rejected hash selectors yield no partial batch or fallback
+ok 162 - chain mismatch, changed canonical block and rejected hash selectors yield no partial batch or fallback
+  ---
+  duration_ms: 26.4655
+  type: 'test'
+  ...
+# Subtest: missing code preserves unknown token balance and skips metadata and balance calls for that token
+ok 163 - missing code preserves unknown token balance and skips metadata and balance calls for that token
+  ---
+  duration_ms: 14.5115
+  type: 'test'
+  ...
+# Subtest: malformed uint and metadata responses fail without manufacturing known balances
+ok 164 - malformed uint and metadata responses fail without manufacturing known balances
+  ---
+  duration_ms: 8.8702
+  type: 'test'
+  ...
+# Subtest: cancel and total deadline prevent late completion and further reads
+ok 165 - cancel and total deadline prevent late completion and further reads
+  ---
+  duration_ms: 128.1482
+  type: 'test'
+  ...
+# Subtest: invalid options, account, block and pre-aborted signals never contact the endpoint
+ok 166 - invalid options, account, block and pre-aborted signals never contact the endpoint
+  ---
+  duration_ms: 1.7912
+  type: 'test'
+  ...
+# Subtest: file binds canonical public batch without pretending a wallet connection; corruption fails
+ok 167 - file binds canonical public batch without pretending a wallet connection; corruption fails
+  ---
+  duration_ms: 25.8947
+  type: 'test'
+  ...
+1..167
+# tests 167
+# suites 0
+# pass 167
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9066.8198

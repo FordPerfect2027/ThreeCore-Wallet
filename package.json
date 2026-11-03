@@ -22,6 +22,7 @@
     "budget:shared": "node scripts/check-shared-operation-budget.js",
     "budget:evidence": "node scripts/check-operation-budget-evidence.js",
     "proposal:check": "node scripts/check-operation-proposal.js",
+    "dapp:quote": "node scripts/aerodrome-quote.js",
     "tokens:read": "node scripts/public-token-batch.js",
     "rehearsal:compare": "node scripts/compare-rehearsal-workspaces.js",
     "demo": "node examples/dev-server.js",

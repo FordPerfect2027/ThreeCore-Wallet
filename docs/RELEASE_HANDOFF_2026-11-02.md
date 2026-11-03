@@ -11,6 +11,16 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [Aerodrome proposal quote integration](AERODROME_PROPOSAL_QUOTE_2026-11-03.md)
+now obtains canonical single-pool buy/sell quotes for all three agents, compares
+Pool and Router results with reserve/fee arithmetic, and binds saved quotes to
+current proposal conditions and the original budget block. Live reads saved
+eight valid observations plus two expected zero-output rejections. Final
+feature/proposal tests passed 38/38; the overlapping public-reader regression
+passed 167/167. Quote UI, USDC spending budgets and isolated execution remain
+unfinished. Product AI authentication is awaiting the already-sent user choice;
+independent non-AI development can continue without another credential question.
+
 The [proposal comparison foundation](OPERATION_PROPOSAL_REVIEW_2026-11-03.md)
 now binds imported proposals to exact budget evidence, account/network/token,
 dApp origin and contract, amount limits and time windows. It includes an offline

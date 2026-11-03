@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-11-03T11:02:20.053Z",
+  "readOnly": true,
+  "transactionsExecuted": false,
+  "source": "CAWELON-buy-quote.json",
+  "sourceOutputUsedAsReverseInput": true,
+  "blockNumber": "53457078",
+  "blockHash": "0xe60495e68f89e6bf1dc9d70baadf368aa30027864b71dcbdf57b8c78f0ad656a",
+  "inputBaseUnits": "41853288417310238740546419920",
+  "outputBaseUnits": "974514",
+  "zeroInputControls": [
+    {
+      "inputBaseUnits": "1000000000000000000",
+      "computedOutputBaseUnits": "0"
+    },
+    {
+      "inputBaseUnits": "1000000000000000000000",
+      "computedOutputBaseUnits": "0"
+    }
+  ]
+}

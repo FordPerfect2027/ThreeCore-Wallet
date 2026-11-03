@@ -31,6 +31,13 @@ function allowedCall(call) {
   const selector = call.data.slice(0, 10).toLowerCase();
   const data = call.data.slice(10);
   if (["0x0dfe1681", "0xd21220a7", "0x0902f1ac"].includes(selector)) return data.length === 0;
+  if (["0x22be3de1", "0xc45a0155", "0xb187bd26", "0xd4b6846d"].includes(selector)) return data.length === 0;
+  // Classic quote view functions only: exact ABI lengths and one explicit route.
+  if (selector === "0xf140a35a") return data.length === 128 && ADDRESS_WORD.test(data.slice(64));
+  if (selector === "0xcc56b2c5") return data.length === 128 && ADDRESS_WORD.test(data.slice(0,64)) && /^0{63}[01]$/.test(data.slice(64));
+  if (selector === "0x5509a1ac") return data.length === 448 && data.slice(64,128) === "40".padStart(64,"0") &&
+    data.slice(128,192) === "1".padStart(64,"0") && ADDRESS_WORD.test(data.slice(192,256)) && ADDRESS_WORD.test(data.slice(256,320)) &&
+    /^0{63}[01]$/.test(data.slice(320,384)) && ADDRESS_WORD.test(data.slice(384,448));
   if (["0x06fdde03", "0x95d89b41", "0x313ce567", "0x18160ddd"].includes(selector)) return data.length === 0;
   if (selector === "0x70a08231") return data.length === 64 && ADDRESS_WORD.test(data);
   if (selector === "0xdd62ed3e") return data.length === 128 &&
@@ -70,9 +77,10 @@ function validateRequest(method, params) {
 /** Bounded per-request deadlines and caller cancellation for fixed public Base diagnostics. */
 export function createPublicBaseRpcReader(input = {}) {
   let options;
-  try { options=captureOptionalDataFields(input,["rpcUrl","fetchImpl","timeoutMs","signal"]); }
+  try { options=captureOptionalDataFields(input,["rpcUrl","fetchImpl","timeoutMs","signal","includeBlockTimestamp"]); }
   catch { fail("INVALID_OPTIONS","Diagnostic options must contain own data fields"); }
-  const {rpcUrl,fetchImpl=globalThis.fetch,timeoutMs=10000,signal}=options;
+  const {rpcUrl,fetchImpl=globalThis.fetch,timeoutMs=10000,signal,includeBlockTimestamp=false}=options;
+  if(typeof includeBlockTimestamp!=="boolean")fail("INVALID_OPTIONS","Timestamp option must be boolean");
   if (!ENDPOINTS.has(rpcUrl)) fail("UNSUPPORTED_ENDPOINT", "Only fixed public Base endpoints are supported");
   if (typeof fetchImpl !== "function") fail("INVALID_TRANSPORT", "Fetch transport is missing");
   if (!Number.isInteger(timeoutMs) || timeoutMs < 100 || timeoutMs > 30000)
@@ -134,7 +142,10 @@ export function createPublicBaseRpcReader(input = {}) {
           if (!header || typeof header.number !== "string" || !QUANTITY.test(header.number) ||
               BigInt(header.number) !== BigInt(params[0]) || typeof header.hash !== "string" || !HASH.test(header.hash))
             fail("INVALID_RPC_RESPONSE", "Base RPC returned an invalid or mismatched block header");
-          return Object.freeze({ number: "0x" + BigInt(header.number).toString(16), hash: header.hash.toLowerCase() });
+          if(includeBlockTimestamp && (typeof header.timestamp!=="string" || !QUANTITY.test(header.timestamp)))
+            fail("INVALID_RPC_RESPONSE","A block timestamp is required for this diagnostic");
+          return Object.freeze({ number: "0x" + BigInt(header.number).toString(16), hash: header.hash.toLowerCase(),
+            ...(includeBlockTimestamp?{timestamp:"0x"+BigInt(header.timestamp).toString(16)}:{}) });
         }
         if (typeof json.result !== "string") fail("INVALID_RPC_RESPONSE", "Expected a diagnostic string result");
         if (["eth_chainId", "eth_blockNumber", "eth_getBalance"].includes(method) && !QUANTITY.test(json.result))

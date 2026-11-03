@@ -1,0 +1,89 @@
+{
+  "recordedAt": "2026-11-03T11:03:11.909Z",
+  "officialRevision": "1ba30815bba620f7e9faa34769ffd00c214c9b82",
+  "references": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/aerodrome-finance/contracts/1ba30815bba620f7e9faa34769ffd00c214c9b82/README.md",
+      "bytes": 7237,
+      "sha256": "4a27e9c4a346d39b9d196d8d04209a1c38d707bffd7fffb7f90b852b4748417e"
+    },
+    {
+      "path": "contracts/Pool.sol",
+      "url": "https://raw.githubusercontent.com/aerodrome-finance/contracts/1ba30815bba620f7e9faa34769ffd00c214c9b82/contracts/Pool.sol",
+      "bytes": 21989,
+      "sha256": "348d3c313dbbb9a2d0598480075bf91e77ceb2d774aeddbe229c9f551186c8bf"
+    },
+    {
+      "path": "contracts/Router.sol",
+      "url": "https://raw.githubusercontent.com/aerodrome-finance/contracts/1ba30815bba620f7e9faa34769ffd00c214c9b82/contracts/Router.sol",
+      "bytes": 32103,
+      "sha256": "56360d4a54711234e10921391f5af9eb91724f7b037f550dd834042a2c575760"
+    },
+    {
+      "path": "contracts/interfaces/IRouter.sol",
+      "url": "https://raw.githubusercontent.com/aerodrome-finance/contracts/1ba30815bba620f7e9faa34769ffd00c214c9b82/contracts/interfaces/IRouter.sol",
+      "bytes": 20743,
+      "sha256": "2c0af7ca32880175d8d5ecd583e7f52fb63707ccdbe83b6c7696fd3a13c1ef82"
+    },
+    {
+      "path": "contracts/factories/PoolFactory.sol",
+      "url": "https://raw.githubusercontent.com/aerodrome-finance/contracts/1ba30815bba620f7e9faa34769ffd00c214c9b82/contracts/factories/PoolFactory.sol",
+      "bytes": 5318,
+      "sha256": "9d0f6dd4ceb216e826d1e8ac263bd31fa2fbb53ffd546cc2ec21a8dc916f8b58"
+    }
+  ],
+  "independentAbiLibrary": "viem 2.56.6",
+  "selectors": [
+    {
+      "signature": "getPool(address,address,bool)",
+      "selector": "0x79bc57d5"
+    },
+    {
+      "signature": "token0()",
+      "selector": "0x0dfe1681"
+    },
+    {
+      "signature": "token1()",
+      "selector": "0xd21220a7"
+    },
+    {
+      "signature": "getReserves()",
+      "selector": "0x0902f1ac"
+    },
+    {
+      "signature": "stable()",
+      "selector": "0x22be3de1"
+    },
+    {
+      "signature": "factory()",
+      "selector": "0xc45a0155"
+    },
+    {
+      "signature": "isPaused()",
+      "selector": "0xb187bd26"
+    },
+    {
+      "signature": "defaultFactory()",
+      "selector": "0xd4b6846d"
+    },
+    {
+      "signature": "decimals()",
+      "selector": "0x313ce567"
+    },
+    {
+      "signature": "getFee(address,bool)",
+      "selector": "0xcc56b2c5"
+    },
+    {
+      "signature": "getAmountOut(uint256,address)",
+      "selector": "0xf140a35a"
+    },
+    {
+      "signature": "getAmountsOut(uint256,(address,address,bool,address)[])",
+      "selector": "0x5509a1ac"
+    }
+  ],
+  "singleRouteCalldata": "0x5509a1ac0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000010000000000000000000000006c83dd253f2f882b9884fd1ac3a7754ed6405de5000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda029130000000000000000000000000000000000000000000000000000000000000000000000000000000000000000420dd381b31aef6683db6b902084cb0ffece40da",
+  "allMatches": true
+}
