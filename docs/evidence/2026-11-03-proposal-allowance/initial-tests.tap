@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: allowance screen and complete browser module graph load, reader remains private and endpoint reads canonical state
+ok 1 - allowance screen and complete browser module graph load, reader remains private and endpoint reads canonical state
+  ---
+  duration_ms: 1122.8134
+  type: 'test'
+  ...
+# Subtest: external origin, duplicate keys, invalid UTF8, extra RPC/contract fields and oversized bodies make no upstream calls
+ok 2 - external origin, duplicate keys, invalid UTF8, extra RPC/contract fields and oversized bodies make no upstream calls
+  ---
+  duration_ms: 146.8603
+  type: 'test'
+  ...
+# Subtest: two active jobs limit concurrency, disconnect releases capacity and errors reveal no transport details
+ok 3 - two active jobs limit concurrency, disconnect releases capacity and errors reveal no transport details
+  ---
+  duration_ms: 102.9674
+  type: 'test'
+  ...
+# Subtest: screen reads explicitly, displays precise USDC, saves exact source and reopens before current recheck
+ok 4 - screen reads explicitly, displays precise USDC, saves exact source and reopens before current recheck
+  ---
+  duration_ms: 271.8961
+  type: 'test'
+  ...
+# Subtest: insufficient and expired observations are displayed and saved honestly; invalid input cannot replace them
+ok 5 - insufficient and expired observations are displayed and saved honestly; invalid input cannot replace them
+  ---
+  duration_ms: 159.1464
+  type: 'test'
+  ...
+# Subtest: cancel, replacement, condition edits, leaving, disposal and file-read cancellation discard late work
+ok 6 - cancel, replacement, condition edits, leaving, disposal and file-read cancellation discard late work
+  ---
+  duration_ms: 149.7778
+  type: 'test'
+  ...
+# Subtest: failed/wrong-context reads, download errors and reentrant cancellation preserve consistent controls
+ok 7 - failed/wrong-context reads, download errors and reentrant cancellation preserve consistent controls
+  ---
+  duration_ms: 66.9685
+  type: 'test'
+  ...
+# Subtest: DAT sell and all three USDC buy proposals retain exact amount, original source, expiry and replay
+ok 8 - DAT sell and all three USDC buy proposals retain exact amount, original source, expiry and replay
+  ---
+  duration_ms: 470.8081
+  type: 'test'
+  ...
+# Subtest: amount insufficiency, unknown code, wrong context, reorg, stale/future times and differing balance cannot pass
+ok 9 - amount insufficiency, unknown code, wrong context, reorg, stale/future times and differing balance cannot pass
+  ---
+  duration_ms: 177.4523
+  type: 'test'
+  ...
+# Subtest: saved result, observation hash and recorded time cannot be silently changed
+ok 10 - saved result, observation hash and recorded time cannot be silently changed
+  ---
+  duration_ms: 79.4025
+  type: 'test'
+  ...
+# Subtest: reader fixes RPC, contracts and canonical hash for every state read and rechecks chain/header
+ok 11 - reader fixes RPC, contracts and canonical hash for every state read and rechecks chain/header
+  ---
+  duration_ms: 156.6906
+  type: 'test'
+  ...
+# Subtest: reader rejects changed blocks/chains, malformed amounts and unrequested target without latest fallback
+ok 12 - reader rejects changed blocks/chains, malformed amounts and unrequested target without latest fallback
+  ---
+  duration_ms: 42.6126
+  type: 'test'
+  ...
+# Subtest: reader/client cancellation and deadlines release stalled requests; client binds each request field
+ok 13 - reader/client cancellation and deadlines release stalled requests; client binds each request field
+  ---
+  duration_ms: 178.207
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2770.3348

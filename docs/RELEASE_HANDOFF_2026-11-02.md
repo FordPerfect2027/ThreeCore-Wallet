@@ -11,6 +11,15 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [proposal/allowance workflow](PROPOSAL_ALLOWANCE_2026-11-03.md) now binds
+public canonical allowance reads to saved proposals and quotes, including USDC
+buying and project-token selling. The screen supports read, cancellation,
+source-preserving save, recorded replay and current recheck. All 47 related
+checks passed. Real Account 2 evidence at block 53,457,078 shows zero USDC
+allowance/balance and the correct 1 USDC example shortfall; three browser
+downloads were verified. Next: transaction-specific fee/preflight and isolated
+execution. The provisional whole-project view remains around 70%, not 90%.
+
 The [manual proposal authoring screen](MANUAL_PROPOSAL_DRAFT_2026-11-03.md)
 now creates proposal/condition review files directly from verified saved budget
 evidence. Related checks pass 37/37. Actual browser files reproduce pass,

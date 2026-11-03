@@ -1,0 +1,292 @@
+TAP version 13
+# Subtest: allowance screen and complete browser module graph load, reader remains private and endpoint reads canonical state
+ok 1 - allowance screen and complete browser module graph load, reader remains private and endpoint reads canonical state
+  ---
+  duration_ms: 938.8917
+  type: 'test'
+  ...
+# Subtest: external origin, duplicate keys, invalid UTF8, extra RPC/contract fields and oversized bodies make no upstream calls
+ok 2 - external origin, duplicate keys, invalid UTF8, extra RPC/contract fields and oversized bodies make no upstream calls
+  ---
+  duration_ms: 140.1857
+  type: 'test'
+  ...
+# Subtest: two active jobs limit concurrency, disconnect releases capacity and errors reveal no transport details
+ok 3 - two active jobs limit concurrency, disconnect releases capacity and errors reveal no transport details
+  ---
+  duration_ms: 146.0715
+  type: 'test'
+  ...
+# Subtest: draft screen and both old/new review module graphs are reachable under offline page policy
+ok 4 - draft screen and both old/new review module graphs are reachable under offline page policy
+  ---
+  duration_ms: 941.9908
+  type: 'test'
+  ...
+# Subtest: quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+ok 5 - quote review page and complete static module import graph load under offline CSP; quote endpoint refuses GET
+  ---
+  duration_ms: 1029.6517
+  type: 'test'
+  ...
+# Subtest: USDC page and browser dependencies are served; server reader is private; fixed RPC returns canonical data
+ok 6 - USDC page and browser dependencies are served; server reader is private; fixed RPC returns canonical data
+  ---
+  duration_ms: 289.1206
+  type: 'test'
+  ...
+# Subtest: origin, body, extra fields and UTF-8 checks reject unsafe requests before upstream
+ok 7 - origin, body, extra fields and UTF-8 checks reject unsafe requests before upstream
+  ---
+  duration_ms: 137.1313
+  type: 'test'
+  ...
+# Subtest: only two jobs run together; disconnect aborts requests and releases capacity
+ok 8 - only two jobs run together; disconnect aborts requests and releases capacity
+  ---
+  duration_ms: 75.4017
+  type: 'test'
+  ...
+# Subtest: upstream error produces no partial balance or private error text
+ok 9 - upstream error produces no partial balance or private error text
+  ---
+  duration_ms: 27.1544
+  type: 'test'
+  ...
+# Subtest: quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+ok 10 - quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+  ---
+  duration_ms: 8.4512
+  type: 'test'
+  ...
+# Subtest: quote files revalidate arithmetic and checksum rather than trusting saved output
+ok 11 - quote files revalidate arithmetic and checksum rather than trusting saved output
+  ---
+  duration_ms: 40.9721
+  type: 'test'
+  ...
+# Subtest: proposal, exact input amount, router, original budget block and current limits bind the quote
+ok 12 - proposal, exact input amount, router, original budget block and current limits bind the quote
+  ---
+  duration_ms: 212.5442
+  type: 'test'
+  ...
+# Subtest: comparison limits must be explicit and valid; cancellation interrupts archived source validation
+ok 13 - comparison limits must be explicit and valid; cancellation interrupts archived source validation
+  ---
+  duration_ms: 19.218
+  type: 'test'
+  ...
+# Subtest: quote view selectors accept only exact lengths and canonical single-route ABI
+ok 14 - quote view selectors accept only exact lengths and canonical single-route ABI
+  ---
+  duration_ms: 129.5461
+  type: 'test'
+  ...
+# Subtest: timestamp-aware headers fail on missing or noncanonical time while old header shape stays unchanged
+ok 15 - timestamp-aware headers fail on missing or noncanonical time while old header shape stays unchanged
+  ---
+  duration_ms: 9.8673
+  type: 'test'
+  ...
+# Subtest: manual draft binds all three shared-budget choices to original context and saves directly reviewable sources
+ok 16 - manual draft binds all three shared-budget choices to original context and saves directly reviewable sources
+  ---
+  duration_ms: 341.0784
+  type: 'test'
+  ...
+# Subtest: USDC limits use six decimals; insufficient budgets and smaller limits cannot be promoted to pass
+ok 17 - USDC limits use six decimals; insufficient budgets and smaller limits cannot be promoted to pass
+  ---
+  duration_ms: 58.1485
+  type: 'test'
+  ...
+# Subtest: unknown fees remain blocked despite an entered zero ceiling; inconsistent sources and invalid fields cannot create a draft
+ok 18 - unknown fees remain blocked despite an entered zero ceiling; inconsistent sources and invalid fields cannot create a draft
+  ---
+  duration_ms: 87.3389
+  type: 'test'
+  ...
+# Subtest: saved draft does not extend its validity when replayed and exact budget bytes remain bound
+ok 19 - saved draft does not extend its validity when replayed and exact budget bytes remain bound
+  ---
+  duration_ms: 20.1628
+  type: 'test'
+  ...
+# Subtest: screen reads explicitly, displays precise USDC, saves exact source and reopens before current recheck
+ok 20 - screen reads explicitly, displays precise USDC, saves exact source and reopens before current recheck
+  ---
+  duration_ms: 308.475
+  type: 'test'
+  ...
+# Subtest: insufficient and expired observations are displayed and saved honestly; invalid input cannot replace them
+ok 21 - insufficient and expired observations are displayed and saved honestly; invalid input cannot replace them
+  ---
+  duration_ms: 154.1879
+  type: 'test'
+  ...
+# Subtest: cancel, replacement, condition edits, leaving, disposal and file-read cancellation discard late work
+ok 22 - cancel, replacement, condition edits, leaving, disposal and file-read cancellation discard late work
+  ---
+  duration_ms: 162.553
+  type: 'test'
+  ...
+# Subtest: failed/wrong-context reads, download errors and reentrant cancellation preserve consistent controls
+ok 23 - failed/wrong-context reads, download errors and reentrant cancellation preserve consistent controls
+  ---
+  duration_ms: 88.2386
+  type: 'test'
+  ...
+# Subtest: DAT sell and all three USDC buy proposals retain exact amount, original source, expiry and replay
+ok 24 - DAT sell and all three USDC buy proposals retain exact amount, original source, expiry and replay
+  ---
+  duration_ms: 528.7242
+  type: 'test'
+  ...
+# Subtest: amount insufficiency, unknown code, wrong context, reorg, stale/future times and differing balance cannot pass
+ok 25 - amount insufficiency, unknown code, wrong context, reorg, stale/future times and differing balance cannot pass
+  ---
+  duration_ms: 163.8927
+  type: 'test'
+  ...
+# Subtest: saved result, observation hash and recorded time cannot be silently changed
+ok 26 - saved result, observation hash and recorded time cannot be silently changed
+  ---
+  duration_ms: 165.6457
+  type: 'test'
+  ...
+# Subtest: reader fixes RPC, contracts and canonical hash for every state read and rechecks chain/header
+ok 27 - reader fixes RPC, contracts and canonical hash for every state read and rechecks chain/header
+  ---
+  duration_ms: 140.1094
+  type: 'test'
+  ...
+# Subtest: reader rejects changed blocks/chains, malformed amounts and unrequested target without latest fallback
+ok 28 - reader rejects changed blocks/chains, malformed amounts and unrequested target without latest fallback
+  ---
+  duration_ms: 62.9001
+  type: 'test'
+  ...
+# Subtest: reader/client cancellation and deadlines release stalled requests; client binds each request field
+ok 29 - reader/client cancellation and deadlines release stalled requests; client binds each request field
+  ---
+  duration_ms: 194.8425
+  type: 'test'
+  ...
+# Subtest: saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+ok 30 - saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+  ---
+  duration_ms: 110.189
+  type: 'test'
+  ...
+# Subtest: changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+ok 31 - changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+  ---
+  duration_ms: 86.0815
+  type: 'test'
+  ...
+# Subtest: page previews units, compares, saves exact inputs and limits, then reopens without assuming current success
+ok 32 - page previews units, compares, saves exact inputs and limits, then reopens without assuming current success
+  ---
+  duration_ms: 237.3632
+  type: 'test'
+  ...
+# Subtest: recorded success is re-evaluated as stale at current time; stricter slippage invalidates the visible result
+ok 33 - recorded success is re-evaluated as stale at current time; stricter slippage invalidates the visible result
+  ---
+  duration_ms: 76.4237
+  type: 'test'
+  ...
+# Subtest: cancel aborts and discards a delayed comparison
+ok 34 - cancel aborts and discards a delayed comparison
+  ---
+  duration_ms: 73.6434
+  type: 'test'
+  ...
+# Subtest: new-file aborts and discards a delayed comparison
+ok 35 - new-file aborts and discards a delayed comparison
+  ---
+  duration_ms: 60.4082
+  type: 'test'
+  ...
+# Subtest: limit-change aborts and discards a delayed comparison
+ok 36 - limit-change aborts and discards a delayed comparison
+  ---
+  duration_ms: 51.1081
+  type: 'test'
+  ...
+# Subtest: pagehide aborts and discards a delayed comparison
+ok 37 - pagehide aborts and discards a delayed comparison
+  ---
+  duration_ms: 44.1695
+  type: 'test'
+  ...
+# Subtest: dispose aborts and discards a delayed comparison
+ok 38 - dispose aborts and discards a delayed comparison
+  ---
+  duration_ms: 36.1559
+  type: 'test'
+  ...
+# Subtest: invalid or duplicate files and forged saved verdict clear old results; cancelled file reads cannot restore them
+ok 39 - invalid or duplicate files and forged saved verdict clear old results; cancelled file reads cannot restore them
+  ---
+  duration_ms: 75.2597
+  type: 'test'
+  ...
+# Subtest: blank, out-of-range, exponent and overprecise conditions never produce a saved result
+ok 40 - blank, out-of-range, exponent and overprecise conditions never produce a saved result
+  ---
+  duration_ms: 31.3847
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download keeps state consistent
+ok 41 - failed or reentrant download keeps state consistent
+  ---
+  duration_ms: 60.0885
+  type: 'test'
+  ...
+# Subtest: client restricts transport, binds account/height and rejects caller-selected networks or endpoints
+ok 42 - client restricts transport, binds account/height and rejects caller-selected networks or endpoints
+  ---
+  duration_ms: 118.1796
+  type: 'test'
+  ...
+# Subtest: client deadlines and cancellation stop a stalled fetch and stalled body
+ok 43 - client deadlines and cancellation stop a stalled fetch and stalled body
+  ---
+  duration_ms: 36.8682
+  type: 'test'
+  ...
+# Subtest: screen reads only explicitly, shows exact balances, saves decodable source and rejects unnoticed context change
+ok 44 - screen reads only explicitly, shows exact balances, saves decodable source and rejects unnoticed context change
+  ---
+  duration_ms: 21.2123
+  type: 'test'
+  ...
+# Subtest: editing, cancellation and leaving the page reject late reads and late checksums
+ok 45 - editing, cancellation and leaving the page reject late reads and late checksums
+  ---
+  duration_ms: 7.1484
+  type: 'test'
+  ...
+# Subtest: failure, wrong account and wrong height remain unavailable; explicit retry succeeds
+ok 46 - failure, wrong account and wrong height remain unavailable; explicit retry succeeds
+  ---
+  duration_ms: 6.5337
+  type: 'test'
+  ...
+# Subtest: failed download keeps a result; reentrant edits cannot report saved stale data
+ok 47 - failed download keeps a result; reentrant edits cannot report saved stale data
+  ---
+  duration_ms: 4.0764
+  type: 'test'
+  ...
+1..47
+# tests 47
+# suites 0
+# pass 47
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7598.7589
