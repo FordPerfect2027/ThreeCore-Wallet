@@ -17,6 +17,11 @@ All three working trees were clean after committing. Contract source, compiler,
 Hardhat, OpenZeppelin, viem and plugin versions are unchanged. Only two installed
 package entries change, plus the focused regression and provenance files.
 The helper archive retains the upstream MIT license and complete source.
+The later [full local simulation](TOKEN_SIMULATION_2026-11-03.md) adds successful
+existing contract suites (37 DAT, 39 EMA, 39 CAWELON cases) and ten local history
+cases per token, using only disposable simulator accounts. Full artifact bytes
+remain unchanged. This supersedes the earlier no-rerun limit below, while
+independent helper review and maintenance approval remain open.
 See the [preparation and compatibility record](ZOD_MIGRATION_CANDIDATE_2026-11-03.md)
 for the source repair and the earlier clean-install/full-plugin experiments.
 
@@ -80,8 +85,9 @@ running that workflow. No remote job was triggered by this edit.
 The private helper fork still needs independent review and a maintenance/release
 decision. A zero dated audit is not proof of token safety or a promise about
 future advisories. Unbounded schemas do not acquire a universal size cap merely
-from using Zod 4. Actual MetaMask account/network-switch acceptance also remains
-open; this dependency repair does not claim to resolve browser connectivity.
+from using Zod 4. The separate [live wallet follow-up](LIVE_RECOVERY_2026-11-03.md#actual-network-and-account-changes--13251335-jst)
+now records network/account invalidation, reconnection and history preservation;
+those results are not inferred from this dependency repair.
 
 ## Evidence
 

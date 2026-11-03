@@ -46,6 +46,12 @@ audit. The earlier shared-directory installation error was repaired and final
 checks rerun. These supplements are outside the sealed Wallet ZIP and do not
 close live-wallet or independent-review gates.
 
+The later [local token simulation](TOKEN_SIMULATION_2026-11-03.md) closes the
+missing functional regression after the helper repair: 115 existing contract
+cases and 30 local history cases passed with the actual final token installations.
+Only disposable simulator accounts were used. Complete artifact files and clean
+source trees are unchanged; independent helper review remains open.
+
 The [later pure-decoder comparison](HELPER_DECODER_COMPATIBILITY_2026-11-03.md)
 adds 68 input fixtures in each actual token installation. Acceptance, decoded
 values and error paths match upstream helper 3.0.8; three standard message
@@ -337,7 +343,7 @@ Do not clear the user's database or reload their working tab to create a test.
 | --- | --- | --- |
 | Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files. Offline follow-up found public checkpoint `07041f0` rejects shared-account backups; a nine-record history-only recovery copy is verified, but browser rollback to a public release is not |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
-| Development dependency release review | Independently review the applied private helper fork and approve its maintenance/release scope | The affected Zod version is replaced in all three local installations; final builds/types, dependency graphs, exact bytecode comparisons and dated full audits pass. Transaction-executing suites were not rerun; independent review and release approval remain open |
+| Development dependency release review | Independently review the applied private helper fork and approve its maintenance/release scope | The affected Zod version is replaced in all three local installations; final builds/types, graphs, exact artifacts and dated audits pass. Later contract and local-history suites pass with simulator-only accounts (115 + 30 cases). Independent review and release approval remain open |
 | Independent review and release | Review the exact final scope, resolve findings, approve the deployment plan and release explicitly | No independent reviewer has completed or approved this candidate |
 
 The original server was not restarted; its old imported server modules are not

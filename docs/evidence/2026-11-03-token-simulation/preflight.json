@@ -1,0 +1,42 @@
+[
+  {
+    "token": "DAT",
+    "root": "C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-toolchain-empty-data-DAT-20261102",
+    "revision": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+    "workingTree": "",
+    "moduleDirectory": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-toolchain-empty-data-DAT-20261102\\node_modules",
+    "moduleDirectoryIsLink": false,
+    "specs": [
+      "cmc-market-context.ts",
+      "DATCore.ts",
+      "PermitBoundaries.ts",
+      "TransferInvariants.ts"
+    ]
+  },
+  {
+    "token": "EMA",
+    "root": "C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-toolchain-empty-data-EMA-20261102",
+    "revision": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+    "workingTree": "",
+    "moduleDirectory": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-toolchain-empty-data-EMA-20261102\\node_modules",
+    "moduleDirectoryIsLink": false,
+    "specs": [
+      "EMACore.ts",
+      "PermitBoundaries.ts",
+      "TransferInvariants.ts"
+    ]
+  },
+  {
+    "token": "CAWELON",
+    "root": "C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/token-toolchain-empty-data-CAWELON-20261102",
+    "revision": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+    "workingTree": "",
+    "moduleDirectory": "C:\\Users\\aseet\\Documents\\Codex\\2026-10-26\\test-4\\work\\token-toolchain-empty-data-CAWELON-20261102\\node_modules",
+    "moduleDirectoryIsLink": false,
+    "specs": [
+      "CAWELONCore.ts",
+      "PermitBoundaries.ts",
+      "TransferInvariants.ts"
+    ]
+  }
+]

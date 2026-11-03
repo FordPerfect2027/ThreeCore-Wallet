@@ -1,0 +1,77 @@
+{
+  "schema": "threecore.token-local-simulation.v1",
+  "recordedAt": "2026-11-03T04:50:28.651Z",
+  "walletEvidenceBase": "26f20b0eb77f5546a57b4f21b6463beb1c5c597d",
+  "node": "v24.19.0",
+  "tokens": [
+    {
+      "token": "DAT",
+      "revision": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+      "contractCases": 37,
+      "localHistoryCases": 10,
+      "failed": 0,
+      "skipped": 0,
+      "workingTreeClean": true,
+      "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "creationBytecodeSha256": "020b75b4c2d6eb1a0c5ed4fff5ca20e6d951b427d1e007e5495c79a900f2a47e",
+      "runtimeBytecodeSha256": "ef220d542d00ffc51e662dc60b1387d95f17afbe7d1f8a917444398a2008b1ba",
+      "artifactSha256": "ee5993ac0526aff0f9d75e1de75e0a544acdcd1bd384b94c692aa72f25d78722",
+      "artifactBytesUnchangedFromSealedPackage": true
+    },
+    {
+      "token": "EMA",
+      "revision": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+      "contractCases": 39,
+      "localHistoryCases": 10,
+      "failed": 0,
+      "skipped": 0,
+      "workingTreeClean": true,
+      "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "creationBytecodeSha256": "682f3f86499820ba17e35112ac9e92f9f4712177bcf685a41230d2c6253b7ed1",
+      "runtimeBytecodeSha256": "bd159fe5dc1c45a8e94494b52e5b26d20028c13a54fd39ce31a3b4c3592ee8a1",
+      "artifactSha256": "c0c37c5107798e11e3ed137deda6917f2793cd7286c8981ef07cc2e5e20ac11b",
+      "artifactBytesUnchangedFromSealedPackage": true
+    },
+    {
+      "token": "CAWELON",
+      "revision": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+      "contractCases": 39,
+      "localHistoryCases": 10,
+      "failed": 0,
+      "skipped": 0,
+      "workingTreeClean": true,
+      "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "creationBytecodeSha256": "7062666990f900e167dd1ac72a8279b58dd911e3e91ed3832cf17af172db959a",
+      "runtimeBytecodeSha256": "0f5370d0d395d44281c8c9f6db808ef755d4887d0d206bffe2a01af5ea697f40",
+      "artifactSha256": "3029fc8833a522b5bf34bb2171317fca3c4029985904677e8f8e70ea9e87aaac",
+      "artifactBytesUnchangedFromSealedPackage": true
+    }
+  ],
+  "totalContractCases": 115,
+  "totalHistoryCases": 30,
+  "simulatedSignaturesAndTransactions": true,
+  "realWalletUsed": false,
+  "realAssetsMoved": false,
+  "userKeysRead": false,
+  "publicChainWrites": false,
+  "externalNetworkAttempts": 0,
+  "blockedLocalNamedPipeAttempts": 3,
+  "networkGuard": "JavaScript fetch/http/https/tls/net calls refused; not an OS network boundary. EDR network configuration independently confirmed simulated and non-forking.",
+  "guardControl": {
+    "blockedFetchAndTcp": 2,
+    "passed": true
+  },
+  "keystore": "CI environment causes installed keystore fetchValue hook to delegate before keystore initialization; no real config variable resolved",
+  "dependenciesInstalled": false,
+  "compilationRerun": false,
+  "githubWrites": false,
+  "executionNotes": [
+    "First attempt failed before tests because Windows --import needs a file URL; corrected in saved run.mjs",
+    "Initial contract run passed but orchestration classified blocked tsx named-pipe IPC as network access; stack identified tsx getPipePath. Final guard still denied it and classified it separately; full final runs passed",
+    "Hardhat simulated EVM uses disposable test accounts and intentionally exercises synthetic permit/transfer/approval/burn behavior. This is not permission to use a user wallet or a public chain"
+  ],
+  "limits": [
+    "Independent helper review and maintenance approval remain open",
+    "No live contract transaction, public deployment or 90% completion is established"
+  ]
+}
