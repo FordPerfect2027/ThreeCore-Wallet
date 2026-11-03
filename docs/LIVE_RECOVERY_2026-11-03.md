@@ -118,3 +118,44 @@ repeating the same export. The latest tab is preserved with protections enabled.
 This follow-up is outside the sealed `128ee11` review ZIP. It does not change
 source code, rerun the full test suite, perform a transaction, establish
 independent review, or assert 90% completion.
+
+## Foreground-tab alignment and recovery — 13:20 JST
+
+The operator's later photograph showed Edge's internal Extensions settings page
+in the foreground and MetaMask's Account 1 / Base Sepolia asset-list filter.
+It did not show a ThreeCore connected-site panel. The browser API refused to
+claim that internal settings tab; this boundary was respected. After the operator
+opened the Wallet, browser inventory identified tab `148649894` at origin 4233
+and native inventory also reported the foreground Edge title as ThreeCore Wallet.
+The supported browser tab was claimed successfully. This supersedes the earlier
+uncertainty about whether the foreground page itself was the Wallet.
+
+The new visible page had no saved history. The actual original backup was
+selected, its preview showed three additions and zero removals per card, and
+restoration completed. Export `(26).json`, saved at **13:20:41 JST**, is 10,103
+bytes and byte-identical to the original nine-record backup, with SHA-256
+`3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc`.
+The saved-file inspector confirmed its internal checksum and all nine records.
+
+At the same 4233 origin, the browser-local checkpoint list initially held zero
+entries. One explicit checkpoint named `表示中Wallet復旧 1103 — 9件・接続未確認`
+was saved at **13:20:10 JST**. Reloading the list showed one of five slots used;
+inspecting that stored entry confirmed its checksum and all nine records.
+No previous checkpoint was overwritten or removed. This adds a recovery copy,
+not a new set of balance observations or an automatic Wallet connection.
+
+The foreground page's actual permitted-account read still returned the known
+Account 1 address and chain 8453 while its requested card network was 84532.
+The earlier photograph's asset filter is not evidence that the dapp switched.
+Native inspection of MetaMask again triggered the tool's Windows URL safety stop
+in the prior turn; the stop instruction was followed. Only supported browser
+controls were used for this later restoration. The remaining diagnostic is the
+actual MetaMask site panel with the now-visible Wallet, not another blind repeat
+of the network-selection instructions. Live account/chain-event acceptance
+remains unproved.
+
+Private files and screenshots remain in Downloads under
+`ThreeCore-visible-wallet-recovery-20261103/`; only their hashes and the redacted
+[receipt](evidence/2026-11-03-visible-wallet-recovery/summary.json) are added here.
+The fixed review ZIP, implementation and tests are unchanged. No transaction,
+signature, key access, server restart, or GitHub write occurred.

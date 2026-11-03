@@ -60,10 +60,13 @@ site-network change, the controlled page still returned/rendered Mainnet and
 completed a native-balance read. The requested Sepolia change was not observed;
 live switch-event acceptance remains open. Subsequent page-hidden and inactivity
 protection stops retained all nine histories in byte-identical, validated exports.
-The current operator dependency is selecting the site's active network through
-MetaMask's site icon and current Base display, not repeating Account 1 permission
-or editing only the list of networks the site is permitted to use. The exact
-4233 target and distinction are recorded in the updated operator guide.
+The later photograph and [foreground-tab recovery](LIVE_RECOVERY_2026-11-03.md#foreground-tab-alignment-and-recovery--1320-jst)
+confirmed that the user had been viewing Edge's Extensions page with MetaMask's
+asset-network filter. The visible Wallet is now identified and has all nine
+records restored, with a verified browser-local checkpoint and identical export.
+Its provider still returns Mainnet. The current dependency is comparing the
+actual MetaMask site panel with that visible Wallet, without blindly repeating
+the already reported network-selection or permission steps.
 
 The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
