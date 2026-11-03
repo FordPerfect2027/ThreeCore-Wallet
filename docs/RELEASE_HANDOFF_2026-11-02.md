@@ -11,6 +11,14 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [fixed simulation-input builder](PROPOSAL_SIMULATION_PLAN_2026-11-03.md)
+now derives unsigned Classic Router call data from the entire validated source
+chain and the earliest expiry. Its offline command and saved replay passed all
+27 related checks; four synthetic ABI encodings matched viem independently.
+Historical Account 2 insufficiency correctly yields no call data. Gas estimation
+and EVM simulation are still the next implementation, not completed by this
+input builder. Keep the complete-goal active and use existing isolated runtimes.
+
 The [proposal/allowance workflow](PROPOSAL_ALLOWANCE_2026-11-03.md) now binds
 public canonical allowance reads to saved proposals and quotes, including USDC
 buying and project-token selling. The screen supports read, cancellation,

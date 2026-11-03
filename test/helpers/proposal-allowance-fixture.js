@@ -3,6 +3,7 @@ import { quoteFixture, word } from './aerodrome-quote-fixture.js';
 import { proposalFixture, proposalHash } from './proposal-fixtures.js';
 import { usdcFixture, usdcBudget } from './usdc-fixture.js';
 import { encodeOperationBudget } from '../../src/operation-budget.js';
+import { SHARED_BUDGET_SCHEMA,encodeSharedOperationBudget } from '../../src/shared-operation-budget.js';
 import { BUDGET_EVIDENCE_SCHEMA, encodeBudgetEvidence } from '../../src/operation-budget-evidence.js';
 import { preparePublicUsdcFile } from '../../src/public-usdc-model.js';
 import { encodeOperationProposal, encodeProposalReviewPolicy } from '../../src/operation-proposal.js';
@@ -12,11 +13,13 @@ import { prepareProposalQuoteReview } from '../../src/proposal-quote-file.js';
 import { PROPOSAL_ALLOWANCE_SCHEMA, allowanceRequestFromReview } from '../../src/proposal-allowance.js';
 import { AERODROME_BASE } from '../../src/aerodrome-readonly.js';
 import { BASE_NATIVE_USDC } from '../../src/aerodrome-pools.js';
-export async function allowanceFixture({nowSeconds=1793700002,buy=false,agent='DAT'}={}) {
+export async function allowanceFixture({nowSeconds=1793700002,buy=false,agent='DAT',shared=false,omitAgent=false}={}) {
  let f=await proposalQuoteFixture({nowSeconds});
  if(buy) {
   const b=usdcBudget(agent),o=usdcFixture({blockTimestampSeconds:nowSeconds-2,observedAtSeconds:nowSeconds}),p=await proposalFixture({agent,nowSeconds});
-  const evidenceText=encodeBudgetEvidence({schema:BUDGET_EVIDENCE_SCHEMA,budgetFile:encodeOperationBudget(b),observationFiles:[(await preparePublicUsdcFile(o)).text]});
+  const budgets=['DAT','EMA','CAWELON'].filter(a=>!omitAgent||a!==agent).map((a,i)=>{const row=usdcBudget(a);row.fees.gasLimit=String(200000+i*10000);return row;});
+  const budgetFile=shared?encodeSharedOperationBudget({schema:SHARED_BUDGET_SCHEMA,simulationOnly:true,sameAccount:true,budgets}):encodeOperationBudget(b);
+  const evidenceText=encodeBudgetEvidence({schema:BUDGET_EVIDENCE_SCHEMA,budgetFile,observationFiles:[(await preparePublicUsdcFile(o)).text]});
   for(const row of [p.proposal,p.policy]){row.chainId=8453;row.tokenAddress=BASE_NATIVE_USDC;}
   Object.assign(p.proposal,{spendUnits:'1000000',budgetEvidenceSha256:proposalHash(evidenceText),dapp:{origin:'https://aerodrome.finance',contract:AERODROME_BASE.router}});p.policy.maxTokenSpendUnits='1000000';p.policy.allowedDapps=[p.proposal.dapp];
   const review=await prepareOperationProposalReview({proposalFile:encodeOperationProposal(p.proposal),policyFile:encodeProposalReviewPolicy(p.policy),budgetEvidenceFile:evidenceText},{nowSeconds});

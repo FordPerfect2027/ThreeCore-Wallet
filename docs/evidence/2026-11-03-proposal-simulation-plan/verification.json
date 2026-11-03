@@ -1,0 +1,39 @@
+{
+  "officialReference": "https://raw.githubusercontent.com/aerodrome-finance/contracts/1ba30815bba620f7e9faa34769ffd00c214c9b82/contracts/interfaces/IRouter.sol",
+  "officialSha256": "2c0af7ca32880175d8d5ecd583e7f52fb63707ccdbe83b6c7696fd3a13c1ef82",
+  "independentAbiLibrary": "viem 2.56.6",
+  "selector": "0xcac88ea9",
+  "verified": [
+    {
+      "file": "DAT-sell-synthetic-plan.json",
+      "sourceType": "synthetic",
+      "abiMatches": true,
+      "bytes": 324,
+      "sha256": "a7119b68cfba6198b9de5dc2e212b30dfce38472b5308b5fe044c6d55fddb752"
+    },
+    {
+      "file": "DAT-buy-synthetic-plan.json",
+      "sourceType": "synthetic",
+      "abiMatches": true,
+      "bytes": 324,
+      "sha256": "e728bf01513adb12f4e1ca6c19f6b96debb1a8fa83bba6c7cfc1c2849512042e"
+    },
+    {
+      "file": "EMA-buy-synthetic-plan.json",
+      "sourceType": "synthetic",
+      "abiMatches": true,
+      "bytes": 324,
+      "sha256": "8e123e4b454e9f31f4a9370ba1260c8e601468b4adbb55f8224bfa67aacfa08c"
+    },
+    {
+      "file": "CAWELON-buy-synthetic-plan.json",
+      "sourceType": "synthetic",
+      "abiMatches": true,
+      "bytes": 324,
+      "sha256": "639500f48b2418c1c1813e9d91a2bd9fd545a1b0e267f73ac9738dfa19051a8f"
+    }
+  ],
+  "historicalAccount2Blocked": true,
+  "transactionsSent": false,
+  "simulationExecuted": false
+}

@@ -1,0 +1,25 @@
+{
+  "baseCommit": "48d447d",
+  "sources": [
+    {
+      "path": "src/proposal-simulation-plan.js",
+      "bytes": 5548,
+      "sha256": "c8187814787dc41476b491204c8881a0ce34c5a19361ed68aceb412ae8923400"
+    },
+    {
+      "path": "scripts/proposal-simulation-plan.js",
+      "bytes": 2142,
+      "sha256": "6b6ee0d02fe4a9d76bb60c5f165b7e4247d0639a9d359e5bc6688f8e4784db95"
+    },
+    {
+      "path": "test/proposal-simulation-plan.test.js",
+      "bytes": 5555,
+      "sha256": "f90e7624e2c2fb63b46c48ffe9e97dddb391cd0a29ab0d0838e244a8a044671f"
+    },
+    {
+      "path": "test/helpers/proposal-allowance-fixture.js",
+      "bytes": 4711,
+      "sha256": "5689778dda3648a0c302c14d7780a2f3bbbde06cbe77260e9fb4ac238f760283"
+    }
+  ]
+}
