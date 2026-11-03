@@ -10,6 +10,16 @@ custody, swaps, bridges and autonomous spending are outside this candidate.
 A 90% planning target is not an achieved release gate or a measured score.
 
 The current standalone review package is
+[`ThreeCore-review-b7df758-20261103.zip`](CONSOLIDATED_REVIEW_2026-11-03.md#latest-handoff-live-switches-and-complete-local-token-simulation).
+It pins `b7df758`, includes the actual network/account-switch observations and
+complete local token simulations, and supplies an actionable
+[independent-review brief](REVIEW_BRIEF_2026-11-03.md).
+All four histories were restored without remotes; 5,060 Wallet files, 285 token
+files, 269 evidence manifests / 2,933 entries and all 32 outer package files
+matched. Fresh extraction and an alteration-detection control passed. No
+independent approval or percentage follows from packaging.
+
+The earlier standalone review package is
 [`ThreeCore-review-128ee11-20261103.zip`](CONSOLIDATED_REVIEW_2026-11-03.md).
 It contains the applied private helper repair in all three token sources and
 the later 68-case decoder comparison and nine-record recovery evidence.

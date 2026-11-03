@@ -8,7 +8,9 @@ verified three-card invalidation after Mainnet-to-Sepolia and Account-1-to-Accou
 changes, explicit reconnect, new provider-context reads and preservation of all
 nine original histories. Six new read-only records were saved separately. This
 supersedes the earlier switch-pending statements below for those observed directions.
-The current sealed package is `128ee11`; this live evidence is a later supplement.
+The current sealed package is `b7df758`, which includes this live evidence and
+the completed local token simulation. See the [review brief](REVIEW_BRIEF_2026-11-03.md)
+and [package verification](CONSOLIDATED_REVIEW_2026-11-03.md).
 The applied private helper repair has separate successful compatibility/build
 checks; its independent review and final release approval remain open.
 

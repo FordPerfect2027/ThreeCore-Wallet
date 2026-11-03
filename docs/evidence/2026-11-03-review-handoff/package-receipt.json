@@ -1,0 +1,711 @@
+{
+  "schema": "threecore.combined-review-package.v6",
+  "recordedAt": "2026-11-03T04:55:31.352Z",
+  "node": "v24.19.0",
+  "sourceRevision": "b7df758492f759066492152d7de433d220d7c3b7",
+  "walletImplementation": "f6f378cc9b44f33fc7e147f4626e23573de06a6c",
+  "latestCompleteWalletRegression": "bf690f38b070362aab1369fbf22c8e68b1a6567f",
+  "walletImplementationAndTestFilesUnchangedSinceRegression": true,
+  "earlierRegression": {
+    "nodeHttp": 16470,
+    "syntheticBrowser": 1024,
+    "rerunDuringPackaging": false
+  },
+  "walletSourceSummary": {
+    "files": 5060,
+    "matched": 5060,
+    "mismatched": 0,
+    "unreadable": 0,
+    "unexpected": 0,
+    "inspectedBytes": 136133534
+  },
+  "evidenceSummary": {
+    "manifests": 269,
+    "matchedManifests": 269,
+    "failedManifests": 0,
+    "files": 2933,
+    "mismatchedFiles": 0,
+    "unreadableFiles": 0,
+    "verifiedBytes": 124395658,
+    "admittedBytes": 124395658
+  },
+  "tokenSources": [
+    {
+      "token": "DAT",
+      "revision": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+      "sourceSummary": {
+        "files": 105,
+        "matched": 105,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 543527
+      },
+      "completeHistoryVerified": true,
+      "restoredWorkingTreeClean": true,
+      "sourceSha256": "685a1ae60d561c5a5edeee2ff6cc6c2500c88bd54e110f3e295cc5d025de19e6",
+      "artifactSha256": "ee5993ac0526aff0f9d75e1de75e0a544acdcd1bd384b94c692aa72f25d78722",
+      "creationBytecodeSha256": "020b75b4c2d6eb1a0c5ed4fff5ca20e6d951b427d1e007e5495c79a900f2a47e",
+      "runtimeBytecodeSha256": "ef220d542d00ffc51e662dc60b1387d95f17afbe7d1f8a917444398a2008b1ba",
+      "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "helperVersion": "3.0.8-threecore-zod4.1",
+      "zodVersion": "4.6.6",
+      "appliedVerification": [
+        {
+          "name": "schema-final",
+          "startedAt": "2026-11-02T19:21:13.206Z",
+          "endedAt": "2026-11-02T19:21:16.873Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "compile-final",
+          "startedAt": "2026-11-02T19:21:16.900Z",
+          "endedAt": "2026-11-02T19:21:32.378Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "types-final",
+          "startedAt": "2026-11-02T19:21:32.380Z",
+          "endedAt": "2026-11-02T19:21:54.375Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "audit-final",
+          "startedAt": "2026-11-02T19:21:54.381Z",
+          "endedAt": "2026-11-02T19:21:57.643Z",
+          "code": 0,
+          "signal": null
+        }
+      ],
+      "auditAtRecordedTime": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "compatibilityCases": 68,
+      "dependenciesInstalledDuringPackaging": false,
+      "contractsRebuiltDuringPackaging": false,
+      "contractExecutionTestsRerunDuringPackaging": false,
+      "laterLocalSimulation": {
+        "token": "DAT",
+        "revision": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+        "contractCases": 37,
+        "localHistoryCases": 10,
+        "failed": 0,
+        "skipped": 0,
+        "workingTreeClean": true,
+        "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+        "creationBytecodeSha256": "020b75b4c2d6eb1a0c5ed4fff5ca20e6d951b427d1e007e5495c79a900f2a47e",
+        "runtimeBytecodeSha256": "ef220d542d00ffc51e662dc60b1387d95f17afbe7d1f8a917444398a2008b1ba",
+        "artifactSha256": "ee5993ac0526aff0f9d75e1de75e0a544acdcd1bd384b94c692aa72f25d78722",
+        "artifactBytesUnchangedFromSealedPackage": true
+      }
+    },
+    {
+      "token": "EMA",
+      "revision": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+      "sourceSummary": {
+        "files": 90,
+        "matched": 90,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 472776
+      },
+      "completeHistoryVerified": true,
+      "restoredWorkingTreeClean": true,
+      "sourceSha256": "8234f4b8a94d9a2d25cde34bc2900ae080223e698633420cad7ad533390d7444",
+      "artifactSha256": "c0c37c5107798e11e3ed137deda6917f2793cd7286c8981ef07cc2e5e20ac11b",
+      "creationBytecodeSha256": "682f3f86499820ba17e35112ac9e92f9f4712177bcf685a41230d2c6253b7ed1",
+      "runtimeBytecodeSha256": "bd159fe5dc1c45a8e94494b52e5b26d20028c13a54fd39ce31a3b4c3592ee8a1",
+      "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "helperVersion": "3.0.8-threecore-zod4.1",
+      "zodVersion": "4.6.6",
+      "appliedVerification": [
+        {
+          "name": "schema",
+          "startedAt": "2026-11-02T19:18:38.006Z",
+          "endedAt": "2026-11-02T19:18:39.963Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "compile",
+          "startedAt": "2026-11-02T19:18:39.966Z",
+          "endedAt": "2026-11-02T19:18:56.165Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "types",
+          "startedAt": "2026-11-02T19:18:56.166Z",
+          "endedAt": "2026-11-02T19:19:18.238Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "audit",
+          "startedAt": "2026-11-02T19:19:18.239Z",
+          "endedAt": "2026-11-02T19:19:21.743Z",
+          "code": 0,
+          "signal": null
+        }
+      ],
+      "auditAtRecordedTime": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "compatibilityCases": 68,
+      "dependenciesInstalledDuringPackaging": false,
+      "contractsRebuiltDuringPackaging": false,
+      "contractExecutionTestsRerunDuringPackaging": false,
+      "laterLocalSimulation": {
+        "token": "EMA",
+        "revision": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+        "contractCases": 39,
+        "localHistoryCases": 10,
+        "failed": 0,
+        "skipped": 0,
+        "workingTreeClean": true,
+        "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+        "creationBytecodeSha256": "682f3f86499820ba17e35112ac9e92f9f4712177bcf685a41230d2c6253b7ed1",
+        "runtimeBytecodeSha256": "bd159fe5dc1c45a8e94494b52e5b26d20028c13a54fd39ce31a3b4c3592ee8a1",
+        "artifactSha256": "c0c37c5107798e11e3ed137deda6917f2793cd7286c8981ef07cc2e5e20ac11b",
+        "artifactBytesUnchangedFromSealedPackage": true
+      }
+    },
+    {
+      "token": "CAWELON",
+      "revision": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+      "sourceSummary": {
+        "files": 90,
+        "matched": 90,
+        "mismatched": 0,
+        "unreadable": 0,
+        "unexpected": 0,
+        "inspectedBytes": 490759
+      },
+      "completeHistoryVerified": true,
+      "restoredWorkingTreeClean": true,
+      "sourceSha256": "51adf4a8edecc3d9e0fb79d359d57129085487661171c9174d77ad5c3497a2b5",
+      "artifactSha256": "3029fc8833a522b5bf34bb2171317fca3c4029985904677e8f8e70ea9e87aaac",
+      "creationBytecodeSha256": "7062666990f900e167dd1ac72a8279b58dd911e3e91ed3832cf17af172db959a",
+      "runtimeBytecodeSha256": "0f5370d0d395d44281c8c9f6db808ef755d4887d0d206bffe2a01af5ea697f40",
+      "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+      "helperVersion": "3.0.8-threecore-zod4.1",
+      "zodVersion": "4.6.6",
+      "appliedVerification": [
+        {
+          "name": "schema",
+          "startedAt": "2026-11-02T19:21:13.204Z",
+          "endedAt": "2026-11-02T19:21:17.278Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "compile",
+          "startedAt": "2026-11-02T19:21:17.292Z",
+          "endedAt": "2026-11-02T19:21:32.782Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "types",
+          "startedAt": "2026-11-02T19:21:32.783Z",
+          "endedAt": "2026-11-02T19:21:55.266Z",
+          "code": 0,
+          "signal": null
+        },
+        {
+          "name": "audit",
+          "startedAt": "2026-11-02T19:21:55.274Z",
+          "endedAt": "2026-11-02T19:21:57.996Z",
+          "code": 0,
+          "signal": null
+        }
+      ],
+      "auditAtRecordedTime": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "compatibilityCases": 68,
+      "dependenciesInstalledDuringPackaging": false,
+      "contractsRebuiltDuringPackaging": false,
+      "contractExecutionTestsRerunDuringPackaging": false,
+      "laterLocalSimulation": {
+        "token": "CAWELON",
+        "revision": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+        "contractCases": 39,
+        "localHistoryCases": 10,
+        "failed": 0,
+        "skipped": 0,
+        "workingTreeClean": true,
+        "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+        "creationBytecodeSha256": "7062666990f900e167dd1ac72a8279b58dd911e3e91ed3832cf17af172db959a",
+        "runtimeBytecodeSha256": "0f5370d0d395d44281c8c9f6db808ef755d4887d0d206bffe2a01af5ea697f40",
+        "artifactSha256": "3029fc8833a522b5bf34bb2171317fca3c4029985904677e8f8e70ea9e87aaac",
+        "artifactBytesUnchangedFromSealedPackage": true
+      }
+    }
+  ],
+  "sourceHistoryComplete": true,
+  "restoredCheckoutsHaveNoRemotes": true,
+  "packageContainsDependencyInstallations": false,
+  "privateHelperArchiveIncluded": true,
+  "privateWalletBackupsIncluded": false,
+  "liveContextSwitchAcceptance": {
+    "recordedAt": "2026-11-03T04:36:46.124Z",
+    "sourceCommitAtObservation": "077e8eaf629fbc5deecf4e1e52e3fd614873fe23",
+    "implementationCommit": "f6f378cc9b44f33fc7e147f4626e23573de06a6c",
+    "origin": "http://127.0.0.1:4233",
+    "browser": "Microsoft Edge, existing user profile",
+    "scope": "Live sequential network change Mainnet to Sepolia followed by Account 1 to Account 2, with explicit reconnect and historical-record preservation",
+    "networkSwitch": {
+      "beforeChainId": 8453,
+      "afterChainId": 84532,
+      "accountUnchanged": "known Account 1",
+      "observedAt": "2026-11-03T04:26:50.648Z",
+      "allThreeCardsStopped": true,
+      "uiStopReason": "接続先が変わりました。内容を確認して再接続してください。",
+      "protectionLogEntryNumbers": [
+        4,
+        5,
+        6
+      ],
+      "protectionLogReason": "Walletのネットワークが変わったか確認できなくなったため、カードの接続を停止しました",
+      "newChainConfirmedByPermittedAccountProbe": true,
+      "manualReconnectObservedAt": "2026-11-03T04:27:50.636Z",
+      "connectedCardsAfterReconnect": 3,
+      "backupBeforeAndImmediatelyAfterByteIdentical": true,
+      "backupBytes": 10100,
+      "backupSha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0",
+      "readResults": [
+        {
+          "token": "DAT",
+          "chainId": 84532,
+          "block": "53791215",
+          "blockHash": "0xd689e1aaa3fa4923bf54dc70131e92bf3a16c8bbecda83a5401c5275021ede2f",
+          "contracts": [
+            {
+              "address": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+              "hasCode": true,
+              "balanceRead": true
+            }
+          ]
+        },
+        {
+          "token": "EMA",
+          "chainId": 84532,
+          "block": "53791215",
+          "blockHash": "0xd689e1aaa3fa4923bf54dc70131e92bf3a16c8bbecda83a5401c5275021ede2f",
+          "contracts": [
+            {
+              "address": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+              "hasCode": true,
+              "balanceRead": true
+            }
+          ]
+        },
+        {
+          "token": "CAWELON",
+          "chainId": 84532,
+          "block": "53791215",
+          "blockHash": "0xd689e1aaa3fa4923bf54dc70131e92bf3a16c8bbecda83a5401c5275021ede2f",
+          "contracts": [
+            {
+              "address": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+              "hasCode": true,
+              "balanceRead": true
+            }
+          ]
+        }
+      ]
+    },
+    "accountSwitch": {
+      "beforeAccount": "known Account 1",
+      "afterAccount": "known Account 2",
+      "chainIdUnchanged": 84532,
+      "observedAt": "2026-11-03T04:31:06.820Z",
+      "allThreeCardsStopped": true,
+      "uiStopReason": "接続先が変わりました。内容を確認して再接続してください。",
+      "protectionLogEntryNumbers": [
+        7,
+        8,
+        9
+      ],
+      "protectionLogReason": "Walletの口座情報が変わったか確認できなくなったため、カードの接続を停止しました",
+      "newAccountAndChainConfirmedByPermittedAccountProbe": true,
+      "manualReconnectObservedAt": "2026-11-03T04:34:43.539Z",
+      "connectedCardsAfterReconnect": 3,
+      "backupBeforeAndImmediatelyAfterByteIdentical": true,
+      "backupBeforeBytes": 10103,
+      "backupBeforeSha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc",
+      "backupAfterReconnectBytes": 10103,
+      "backupAfterReconnectSha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "configuredAccountChangedAsExpected": true,
+      "readResults": [
+        {
+          "token": "DAT",
+          "chainId": 84532,
+          "blockNumber": "53793042",
+          "blockHash": "0xebda13715119f987e7c8ef253c3a93dd649fc37f61f479851641e500a916fc00",
+          "contracts": [
+            {
+              "address": "0x2474a062ec669c1912ed41bc491e8a97db4743d4",
+              "hasCode": true,
+              "balanceRead": true,
+              "notice": null
+            }
+          ]
+        },
+        {
+          "token": "EMA",
+          "chainId": 84532,
+          "blockNumber": "53793042",
+          "blockHash": "0xebda13715119f987e7c8ef253c3a93dd649fc37f61f479851641e500a916fc00",
+          "contracts": [
+            {
+              "address": "0x20c3bb2548a1ce188229a6128df0e9612259185e",
+              "hasCode": true,
+              "balanceRead": true,
+              "notice": null
+            }
+          ]
+        },
+        {
+          "token": "CAWELON",
+          "chainId": 84532,
+          "blockNumber": "53793042",
+          "blockHash": "0xebda13715119f987e7c8ef253c3a93dd649fc37f61f479851641e500a916fc00",
+          "contracts": [
+            {
+              "address": "0x9c2aeb2f80e074dac065d0e5db41c2f01fed280f",
+              "hasCode": true,
+              "balanceRead": true,
+              "notice": null
+            }
+          ]
+        }
+      ]
+    },
+    "preservedHistory": {
+      "recordsPerCard": 3,
+      "total": 9,
+      "exactCanonicalContentUnchanged": true,
+      "sha256": "a450048a9e25861d62561a0db5efa553f664b3efaf15c96f4eb9cb1fe45a3107",
+      "canonicalization": "JSON.stringify(workspace.entries.map(({agent,history}) => ({agent,history})))",
+      "newReadResultsKeptSeparately": 6
+    },
+    "validation": {
+      "checksummedBackups": 5,
+      "allFiveInternalChecksumsMatched": true,
+      "renderedPortfolioSnapshots": 6,
+      "allSixStructureChecksPassed": true,
+      "portfolioSnapshotsHaveInternalChecksum": false,
+      "portfolioCapture": "JSON read from the UI-generated confirmation textbox and saved locally; not presented as browser downloads",
+      "backupCapture": "Browser downloads verified on disk",
+      "files": [
+        {
+          "file": "before-bottom-selector-switch-backup.json",
+          "exitCode": 0,
+          "validation": "validated-original"
+        },
+        {
+          "file": "after-bottom-selector-switch-backup.json",
+          "exitCode": 0,
+          "validation": "validated-original"
+        },
+        {
+          "file": "after-network-reconnect-backup.json",
+          "exitCode": 0,
+          "validation": "validated-original"
+        },
+        {
+          "file": "after-account-switch-backup.json",
+          "exitCode": 0,
+          "validation": "validated-original"
+        },
+        {
+          "file": "after-account-reconnect-backup.json",
+          "exitCode": 0,
+          "validation": "validated-original"
+        },
+        {
+          "file": "post-switch-DAT.json",
+          "exitCode": 2,
+          "validation": "validated-structure"
+        },
+        {
+          "file": "post-account-switch-DAT.json",
+          "exitCode": 2,
+          "validation": "validated-structure"
+        },
+        {
+          "file": "post-switch-EMA.json",
+          "exitCode": 2,
+          "validation": "validated-structure"
+        },
+        {
+          "file": "post-account-switch-EMA.json",
+          "exitCode": 2,
+          "validation": "validated-structure"
+        },
+        {
+          "file": "post-switch-CAWELON.json",
+          "exitCode": 2,
+          "validation": "validated-structure"
+        },
+        {
+          "file": "post-account-switch-CAWELON.json",
+          "exitCode": 2,
+          "validation": "validated-structure"
+        }
+      ]
+    },
+    "limitations": [
+      "One observed direction for each change, with one existing MetaMask profile and three cards sharing one selected account",
+      "Event-driven stopped UI and subsequent provider probes observed; raw provider event payloads were not captured",
+      "No live race during an in-flight read is claimed",
+      "Snapshots and hashes are recorded observations, not independent authentication or security approval",
+      "Outside immutable review ZIP 128ee11; implementation and complete test suite unchanged",
+      "Native MetaMask control remains dependent on the tool being able to identify its URL; user performed these two selections"
+    ],
+    "signatures": false,
+    "transactions": false,
+    "privateKeysAccessed": false,
+    "githubWrites": false,
+    "localEvidenceHashes": [
+      {
+        "name": "account-change-stopped.jpg",
+        "bytes": 36205,
+        "sha256": "8a3edd7b3b0beebef5d076b0527634e23e25418f835f7d307a3b31b391cffd3a"
+      },
+      {
+        "name": "account2-probe-after-switch.txt",
+        "bytes": 941,
+        "sha256": "b63204f76b9188dc5527ad1d3710fe4e9304346bb98faf687dd2d322678c8ed5"
+      },
+      {
+        "name": "account2-read-after-switch.jpg",
+        "bytes": 29148,
+        "sha256": "2d3e34782f72d7c54fe63495c1dd883cb1ecde17326bbc0163fb3f25b941564c"
+      },
+      {
+        "name": "after-account-reconnect-backup.json",
+        "bytes": 10103,
+        "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a"
+      },
+      {
+        "name": "after-account-switch-backup.json",
+        "bytes": 10103,
+        "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc"
+      },
+      {
+        "name": "after-account-switch.json",
+        "bytes": 1808,
+        "sha256": "fd8ed38cac68bfe6d7c76a488e25633f5f8e25b03b52bc9e3d2be4d7f727a73b"
+      },
+      {
+        "name": "after-bottom-selector-switch-backup.json",
+        "bytes": 10100,
+        "sha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0"
+      },
+      {
+        "name": "after-bottom-selector-switch.json",
+        "bytes": 1489,
+        "sha256": "674fbe8c76d75d84ce8c332a87743816f72b790642220f6cfe73769f2446b012"
+      },
+      {
+        "name": "after-network-reconnect-backup.json",
+        "bytes": 10103,
+        "sha256": "3ebf36e36f94d12fb6b09387c723a3144933918c720ab26cd78a7c1d6ab5d4bc"
+      },
+      {
+        "name": "before-bottom-selector-switch-backup.json",
+        "bytes": 10100,
+        "sha256": "0c1981e2e49654961fa98b66ea8696e6efd5897af47ca4791715babb124e2ae0"
+      },
+      {
+        "name": "before-bottom-selector-switch.jpg",
+        "bytes": 29217,
+        "sha256": "be1be549c3f1286638adb2e232b791c76571ac53c2ff6337e510f5ac89de44dd"
+      },
+      {
+        "name": "before-bottom-selector-switch.json",
+        "bytes": 1073,
+        "sha256": "32c647ae57b5239b7fde66e4f565fb4968bf6e0c0a5687b9832acd9b9fc88107"
+      },
+      {
+        "name": "network-change-stopped.jpg",
+        "bytes": 27805,
+        "sha256": "c26cb98062a799e4edbd69b4ffdc2e1a8238d4cb816146b0522df5daeccdbf18"
+      },
+      {
+        "name": "post-account-switch-CAWELON.json",
+        "bytes": 668,
+        "sha256": "9ad5fede383c36894feec434cf8e478ef74312c9e8cf3c247569573deee855e0"
+      },
+      {
+        "name": "post-account-switch-DAT.json",
+        "bytes": 664,
+        "sha256": "3ab93726615de74afc93de3c4d92200342871013e65f30f3b1b100e2aceb5c3c"
+      },
+      {
+        "name": "post-account-switch-EMA.json",
+        "bytes": 664,
+        "sha256": "ff44bca191030947a63bf29301f002f606368408529ae1dc38565985aae26c92"
+      },
+      {
+        "name": "post-account-switch-read-status.json",
+        "bytes": 2436,
+        "sha256": "6466dadce31d7aa29abaf221139070e344b74d86a43625678a599f2a19921429"
+      },
+      {
+        "name": "post-switch-CAWELON.json",
+        "bytes": 669,
+        "sha256": "38758ca3afbe67ab1f8ab64b0180cc1e95f41468997caf2e23bd4dcd0dc864f4"
+      },
+      {
+        "name": "post-switch-DAT.json",
+        "bytes": 665,
+        "sha256": "86e4aee83296fd41a66b03777790fa268eb68a4017c9264be4dda6c49c424d62"
+      },
+      {
+        "name": "post-switch-EMA.json",
+        "bytes": 665,
+        "sha256": "aa336d661ad59cb1910d744f9cd15667fa9749189e8b0f468482666e610804a3"
+      },
+      {
+        "name": "post-switch-read-status.json",
+        "bytes": 731,
+        "sha256": "923c2a5d9bdf7b9d3946c92034390db030ed87726a705ddd12f238a494db5f84"
+      },
+      {
+        "name": "reconnected-after-account-switch.json",
+        "bytes": 621,
+        "sha256": "edbed065d2c4a290f9854b970c1edbabc2c1ee1d4c9e8a68d8d04067655346fb"
+      },
+      {
+        "name": "reconnected-after-network-switch.json",
+        "bytes": 621,
+        "sha256": "014fe416ac6767a63a4fc6c60142ae638a5636a16710b8a1859c845867a65cd0"
+      },
+      {
+        "name": "saved-file-validations.json",
+        "bytes": 20262,
+        "sha256": "2d5248c395f4804b9b3a149ca99763664632881ea0e2a07ecb2bbe37e8c1620e"
+      },
+      {
+        "name": "sepolia-probe-after-switch.txt",
+        "bytes": 1036,
+        "sha256": "570e3390101d6b4631bca8eeb62ec3a0500827cd1e2ee66d1e2e082f4cdaa0de"
+      },
+      {
+        "name": "sepolia-read-after-network-switch.jpg",
+        "bytes": 29221,
+        "sha256": "0dd9dc8c1cadefe85073702db2aa6ea84b76ebb4950ec1d24b31a49a9b548a78"
+      }
+    ]
+  },
+  "localTokenSimulation": {
+    "schema": "threecore.token-local-simulation.v1",
+    "recordedAt": "2026-11-03T04:50:28.651Z",
+    "walletEvidenceBase": "26f20b0eb77f5546a57b4f21b6463beb1c5c597d",
+    "node": "v24.19.0",
+    "tokens": [
+      {
+        "token": "DAT",
+        "revision": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+        "contractCases": 37,
+        "localHistoryCases": 10,
+        "failed": 0,
+        "skipped": 0,
+        "workingTreeClean": true,
+        "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+        "creationBytecodeSha256": "020b75b4c2d6eb1a0c5ed4fff5ca20e6d951b427d1e007e5495c79a900f2a47e",
+        "runtimeBytecodeSha256": "ef220d542d00ffc51e662dc60b1387d95f17afbe7d1f8a917444398a2008b1ba",
+        "artifactSha256": "ee5993ac0526aff0f9d75e1de75e0a544acdcd1bd384b94c692aa72f25d78722",
+        "artifactBytesUnchangedFromSealedPackage": true
+      },
+      {
+        "token": "EMA",
+        "revision": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+        "contractCases": 39,
+        "localHistoryCases": 10,
+        "failed": 0,
+        "skipped": 0,
+        "workingTreeClean": true,
+        "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+        "creationBytecodeSha256": "682f3f86499820ba17e35112ac9e92f9f4712177bcf685a41230d2c6253b7ed1",
+        "runtimeBytecodeSha256": "bd159fe5dc1c45a8e94494b52e5b26d20028c13a54fd39ce31a3b4c3592ee8a1",
+        "artifactSha256": "c0c37c5107798e11e3ed137deda6917f2793cd7286c8981ef07cc2e5e20ac11b",
+        "artifactBytesUnchangedFromSealedPackage": true
+      },
+      {
+        "token": "CAWELON",
+        "revision": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+        "contractCases": 39,
+        "localHistoryCases": 10,
+        "failed": 0,
+        "skipped": 0,
+        "workingTreeClean": true,
+        "helperArchiveSha256": "1013b53b9eb2c2cdead0e16a0be8a9e5397db31e38a446f4d67b4483e5e9abf1",
+        "creationBytecodeSha256": "7062666990f900e167dd1ac72a8279b58dd911e3e91ed3832cf17af172db959a",
+        "runtimeBytecodeSha256": "0f5370d0d395d44281c8c9f6db808ef755d4887d0d206bffe2a01af5ea697f40",
+        "artifactSha256": "3029fc8833a522b5bf34bb2171317fca3c4029985904677e8f8e70ea9e87aaac",
+        "artifactBytesUnchangedFromSealedPackage": true
+      }
+    ],
+    "totalContractCases": 115,
+    "totalHistoryCases": 30,
+    "simulatedSignaturesAndTransactions": true,
+    "realWalletUsed": false,
+    "realAssetsMoved": false,
+    "userKeysRead": false,
+    "publicChainWrites": false,
+    "externalNetworkAttempts": 0,
+    "blockedLocalNamedPipeAttempts": 3,
+    "networkGuard": "JavaScript fetch/http/https/tls/net calls refused; not an OS network boundary. EDR network configuration independently confirmed simulated and non-forking.",
+    "guardControl": {
+      "blockedFetchAndTcp": 2,
+      "passed": true
+    },
+    "keystore": "CI environment causes installed keystore fetchValue hook to delegate before keystore initialization; no real config variable resolved",
+    "dependenciesInstalled": false,
+    "compilationRerun": false,
+    "githubWrites": false,
+    "executionNotes": [
+      "First attempt failed before tests because Windows --import needs a file URL; corrected in saved run.mjs",
+      "Initial contract run passed but orchestration classified blocked tsx named-pipe IPC as network access; stack identified tsx getPipePath. Final guard still denied it and classified it separately; full final runs passed",
+      "Hardhat simulated EVM uses disposable test accounts and intentionally exercises synthetic permit/transfer/approval/burn behavior. This is not permission to use a user wallet or a public chain"
+    ],
+    "limits": [
+      "Independent helper review and maintenance approval remain open",
+      "No live contract transaction, public deployment or 90% completion is established"
+    ]
+  },
+  "remaining": [
+    "Native Windows picker traversal",
+    "Older immutable public-release rollback if required",
+    "Independent private-helper review and maintenance approval",
+    "Independent candidate review and explicit release decision"
+  ],
+  "originalServersRestarted": false,
+  "realWalletUsedDuringPackaging": false,
+  "githubWrites": false,
+  "percentageCalculated": false
+}
