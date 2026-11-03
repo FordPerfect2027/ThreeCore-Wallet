@@ -1,5 +1,15 @@
 # ThreeCore candidate review handoff — November 2, 2026
 
+## Current Wallet correction — November 3
+
+The latest implementation is `7bdb23d3398e1e92582a602bb22f06d364825412`.
+It fixes stale configuration and backup-state summaries after applying a
+permitted account. Read the [finding, correction and validation record](ACCOUNT_INPUT_REFRESH_2026-11-03.md)
+alongside the earlier review. The corrected source passed 16,470 Node/HTTP and
+1,026 synthetic browser cases. An actual Edge permission-input exercise confirmed
+both display changes, and fixed-version restoration/export preserved all nine
+histories byte-for-byte. Original servers and user tabs were preserved.
+
 ## Developer-review follow-up — November 3
 
 The user assigned the technical review to Codex. That bounded review is now
@@ -120,11 +130,11 @@ still applies only to its older published head; local results are not remote CI.
 | Item | Fixed revision | What it establishes |
 | --- | --- | --- |
 | Earlier bounded code-review checkpoint | `529772807f32e637f19a26853d8a209482fa2f55` | Source, reconstruction evidence and actual-context acceptance receipt before this handoff correction |
-| Latest Wallet implementation | `f6f378cc9b44f33fc7e147f4626e23573de06a6c` | Explicit same-origin entry-guide link; 62 server/security cases and actual Edge recovery passed; controller diagnostics remain at `856f670` |
-| Latest complete Wallet regression | `bf690f38b070362aab1369fbf22c8e68b1a6567f` | Restored standalone package: 16,470 Node/HTTP and 1,024 synthetic browser passes on unchanged source |
-| DAT | `dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1` | Earlier empty-data fix plus applied private Zod 4 helper repair; contract bytes unchanged |
-| EMA | `cae4130e8e01fd325fdcb6a589a46338be08b27e` | Earlier empty-data fix plus applied private Zod 4 helper repair; contract bytes unchanged |
-| CAWELON | `9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d` | Earlier empty-data fix plus applied private Zod 4 helper repair; contract bytes unchanged |
+| Latest Wallet implementation | `7bdb23d3398e1e92582a602bb22f06d364825412` | Post-input configuration/backup summary refresh; see the current correction record above. Includes the earlier navigation and connection-stop improvements |
+| Latest complete Wallet regression | `7bdb23d3398e1e92582a602bb22f06d364825412` | 16,470 Node/HTTP and 1,026 synthetic browser passes on the exact implementation/test files; the final browser rerun includes successful cleanup |
+| DAT | `c50aae41b9c7aa496833e6260cc3314dc3c3fbfb` | Applied helper repair plus configuration-validator regression and maintenance record; contract bytes unchanged |
+| EMA | `a37c60574e279980b5ce90775842d27b9c4ce5eb` | Applied helper repair plus configuration-validator regression and maintenance record; contract bytes unchanged |
+| CAWELON | `0f5dfa00a6e1738df3706e12e59b48459ff875a0` | Applied helper repair plus configuration-validator regression and maintenance record; contract bytes unchanged |
 | Public PR #4 head | `07041f00efdb503cb76a06fbe12e5531cb380930` | Earlier public source only |
 
 All three token working trees were clean when this source map was checked.

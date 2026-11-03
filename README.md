@@ -2,6 +2,8 @@
 
 日本語の操作手順: [接続するアカウントの確認、保存と別タブでの復旧](docs/OPERATOR_ACCEPTANCE_JA.md)。
 
+**November 3, 2026 account-input correction:** [Current configuration and backup summaries](docs/ACCOUNT_INPUT_REFRESH_2026-11-03.md) now refresh immediately after a reviewed permitted-account input. The corrected source passed 16,470 Node/HTTP and 1,026 synthetic browser cases. Actual Edge verification confirmed the display change and preserved all nine saved histories through fixed-version restoration and re-export. Earlier cleanup failures remain recorded separately.
+
 **November 3, 2026 local review follow-up:** [Completed developer technical review](docs/DEVELOPER_REVIEW_2026-11-03.md) and [verified incremental delivery/recovery](docs/DEVELOPER_UPDATE_DELIVERY_2026-11-03.md). The three token projects now include actual Hardhat configuration-validator regression; the restored four-repository update retains the nine-record backup byte-for-byte. [Current source map and remaining scope](docs/RELEASE_HANDOFF_2026-11-02.md). These changes are local pending consolidated publication.
 
 **November 1, 2026 release preparation:** [Acceptance gates and remaining work](docs/RELEASE_READINESS_2026-11-01.md). The public CI timing failure was reproduced and fixed; all four original jobs passed. A new [source checkpoint verifier](docs/SOURCE_CHECKPOINT_2026-11-01.md) checks an extracted package against an exact Git commit, with a verified 4,227-file export and separate-directory startup check.
@@ -64,7 +66,7 @@ The ThreeCore project's current liquidity-depth objective is **5,000 USDC held o
 Run `npm run liquidity:progress` (or `npm run liquidity:progress -- --json`) for a fresh, read-only on-chain progress report. The displayed block number anchors each observation. The target calculator reports an unverified pool as unknown, never as zero. No wallet authorization, LP deposit, swap or token transfer is performed.
 ## Current engineering focus
 
-1. Bind each DAT, EMA or CAWELON session to a separately assigned EVM account.
+1. Bind each DAT, EMA or CAWELON session to its explicitly configured EVM account. The same account may serve multiple token cards; their sessions and histories remain separate.
 2. Recognize the connected decentralized application's HTTPS origin and explicitly approved destinations.
 3. Request wallet connection only after a user presses Connect Wallet.
 4. Reject the wrong wallet account and the wrong chain, rather than silently switching.
@@ -89,7 +91,7 @@ npm test
 npm run demo
 ```
 
-For the demo open `http://127.0.0.1:4173` in a browser with a compatible injected EIP-1193 wallet (e.g. MetaMask). **Never enter a seed phrase or private key.** Set a distinct expected public address for the chosen agent. The demo asks the wallet extension for account permission; any wallet prompt must be confirmed by the actual user. No transaction-signing methods are used.
+For the demo open `http://127.0.0.1:4173` in a browser with a compatible injected EIP-1193 wallet (e.g. MetaMask). **Never enter a seed phrase or private key.** Set the expected public address for each chosen agent; an existing account may be shared by multiple cards. Wallet connection permission must be explicitly approved, and file restoration never grants it. No transaction-signing methods are used.
 
 ### Base Mainnet state reads with MetaMask
 

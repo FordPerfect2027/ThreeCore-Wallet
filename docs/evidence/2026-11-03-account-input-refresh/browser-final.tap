@@ -1,0 +1,6 @@
+Browser module preflight passed: 261 local modules.
+Browser shard 1/2 completion received: 513 passing cases; isolated cleanup pending.
+Browser shard 1/2: 513 cases passed.
+Browser shard 2/2 completion received: 513 passing cases; isolated cleanup pending.
+Browser shard 2/2: 513 cases passed.
+1026 browser UI tests passed with a synthetic provider and no external RPC.

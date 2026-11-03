@@ -1,0 +1,62 @@
+{
+  "recordedAt": "2026-11-03T06:43:09.254Z",
+  "implementation": "7bdb23d3398e1e92582a602bb22f06d364825412",
+  "runs": [
+    {
+      "command": "node scripts/test-browser-ui.js",
+      "phase": "before correction",
+      "exitCode": 1,
+      "executed": 513,
+      "passed": 512,
+      "failed": 1,
+      "expectedFailure": "permitted-account: changing a saved address immediately marks the backup stale",
+      "secondShardExecuted": false,
+      "log": "browser-before.tap"
+    },
+    {
+      "command": "node scripts/test-browser-ui.js",
+      "phase": "first corrected run",
+      "exitCode": 1,
+      "casePasses": 1026,
+      "caseFailures": 0,
+      "cleanupCompleted": false,
+      "log": "browser-after-cleanup-failure.tap"
+    },
+    {
+      "command": "node --test test/permitted-account.test.js test/wallet-setup-panel.test.js test/workspace-panel.test.js test/shared-account-workflow.test.js",
+      "exitCode": 0,
+      "tests": 81,
+      "passed": 81,
+      "failed": 0,
+      "log": "node-targeted.tap"
+    },
+    {
+      "command": "node --test --test-concurrency=2 test/*.test.js integration/*-server.test.mjs integration/local-navigation-help.test.mjs",
+      "exitCode": 0,
+      "tests": 16470,
+      "passed": 16470,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 729360.4331,
+      "log": "node-full.tap"
+    },
+    {
+      "command": "node scripts/test-browser-ui.js",
+      "phase": "after Node suite finished",
+      "exitCode": 0,
+      "tests": 1026,
+      "passed": 1026,
+      "failed": 0,
+      "cleanupCompleted": true,
+      "log": "browser-final.tap"
+    }
+  ],
+  "scopes": {
+    "browser": "synthetic provider, no extension or external RPC",
+    "targetedNode": "subset of the full Node suite",
+    "newCases": 2,
+    "actualEdge": "separate live-restoration-and-refresh.json receipt"
+  }
+}
