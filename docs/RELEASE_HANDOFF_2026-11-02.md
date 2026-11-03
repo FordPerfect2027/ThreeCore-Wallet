@@ -373,8 +373,8 @@ Do not clear the user's database or reload their working tab to create a test.
 | --- | --- | --- |
 | Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files. Offline follow-up found public checkpoint `07041f0` rejects shared-account backups; a nine-record history-only recovery copy is verified, but browser rollback to a public release is not |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
-| Development dependency release review | Independently review the applied private helper fork and approve its maintenance/release scope | The affected Zod version is replaced in all three local installations; final builds/types, graphs, exact artifacts and dated audits pass. Later contract and local-history suites pass with simulator-only accounts (115 + 30 cases). Independent review and release approval remain open |
-| Independent review and release | Review the exact final scope, resolve findings, approve the deployment plan and release explicitly | No independent reviewer has completed or approved this candidate |
+| Private-helper publication scope | Include its exact archive, source delta, maintenance procedure and completed developer review in the consolidated delivery | Developer review is complete under the user's assignment. Configuration regression and simulated contract/history checks pass. Public distribution remains deferred; third-party approval is not claimed |
+| Final publication/deployment decision | Present the finished source/evidence package and the intended delivery scope before the deferred publication | The user assigned developer review to Codex; no reviewer-identification response is pending. A separate third-party audit is not completed or implied |
 
 The original server was not restarted; its old imported server modules are not
 a demonstration of the complete candidate. Current native browser automation
@@ -383,7 +383,7 @@ limitation instead of bypassing browser protections.
 
 The DAT Mainnet metadata comparison was closed by the later Sourcify-input
 recovery and local compilation against the separately recorded RPC bytes.
-This closes that developer verification item, not the independent-review gate.
+This closes that developer verification item. Third-party audit status remains separate.
 The full Wallet distribution and the older 9838e5b kit predate this follow-up;
 their source pins and earlier results remain unchanged. The f7aaec1 source kit
 includes the complete comparison.
