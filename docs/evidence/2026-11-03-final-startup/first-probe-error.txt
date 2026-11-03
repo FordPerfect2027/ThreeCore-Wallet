@@ -1,0 +1,19 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /ThreeCore Walletを開く/. Input:
+
+'Cross-origin request refused'
+
+    at file:///C:/Users/aseet/Documents/Codex/2026-10-26/test-4/work/threecore-wallet-operation-rehearsal-20261029/docs/evidence/2026-11-03-final-startup/verify-restored-startup.mjs:70:8
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'Cross-origin request refused',
+  expected: /ThreeCore Walletを開く/,
+  operator: 'match',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

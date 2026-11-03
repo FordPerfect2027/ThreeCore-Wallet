@@ -1,0 +1,78 @@
+{
+  "recordedAt": "2026-11-03T07:26:58.725Z",
+  "browser": "Codex in-app browser on the intended Windows PC",
+  "scope": "Actual file chooser, reviewed restore and browser downloads between fixed candidate versions; no MetaMask or new chain read.",
+  "versions": [
+    "4dfa300aa2efc0b068ee5537df941282a21df1f4",
+    "36ed4318806b8ee0921471dba5600d0e048b7d7f",
+    "4dfa300aa2efc0b068ee5537df941282a21df1f4"
+  ],
+  "ports": [
+    4240,
+    51031,
+    4240
+  ],
+  "eachPreview": {
+    "additions": [
+      3,
+      3,
+      3
+    ],
+    "removals": [
+      0,
+      0,
+      0
+    ]
+  },
+  "files": [
+    {
+      "filename": "ThreeCore-workspace-backup (37).json",
+      "modifiedAt": "2026-11-03T07:21:59.503Z",
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "cards": 3,
+      "histories": 9,
+      "exactOriginalMatch": true
+    },
+    {
+      "filename": "ThreeCore-workspace-backup (38).json",
+      "modifiedAt": "2026-11-03T07:24:43.544Z",
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "cards": 3,
+      "histories": 9,
+      "exactOriginalMatch": true
+    },
+    {
+      "filename": "ThreeCore-workspace-backup (39).json",
+      "modifiedAt": "2026-11-03T07:25:46.223Z",
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "cards": 3,
+      "histories": 9,
+      "exactOriginalMatch": true
+    }
+  ],
+  "screenshots": [
+    {
+      "filename": "final-package-iab-restored.png",
+      "bytes": 50479,
+      "sha256": "bb811b42dc1cfca90471587c39da0c598d53e73d5488163cd43d39bb7a193a1e"
+    },
+    {
+      "filename": "previous-package-iab-restored.png",
+      "bytes": 68876,
+      "sha256": "ad9e31ad8f846f9ba371fa101e3b6e15fb14f37faf9e626397b1654a62e7e0bc"
+    },
+    {
+      "filename": "returned-package-iab-restored.png",
+      "bytes": 68876,
+      "sha256": "ad9e31ad8f846f9ba371fa101e3b6e15fb14f37faf9e626397b1654a62e7e0bc"
+    }
+  ],
+  "autoConnection": false,
+  "olderPublic07041f0Rollback": false,
+  "originalUserTabsReloaded": false,
+  "originalServersRestarted": false,
+  "walletProviderDetected": false
+}

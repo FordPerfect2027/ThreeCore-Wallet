@@ -1,0 +1,6 @@
+{
+  "recordedAt": "2026-11-03T07:18:14.787Z",
+  "requested": "navigate",
+  "received": "cors",
+  "repair": "Use node:http for negative navigation fixture; application unchanged."
+}

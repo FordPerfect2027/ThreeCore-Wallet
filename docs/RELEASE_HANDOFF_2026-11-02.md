@@ -8,6 +8,10 @@ three token projects in one package. Fresh extraction verified 62 entries;
 the supplied single command restored all four exact source trees. Its contents
 include the account-input correction and completed developer review below.
 The older package records retain their historical scope and unchanged bytes.
+The [final startup and recovery supplement](FINAL_STARTUP_RECOVERY_2026-11-03.md)
+also confirms ordinary startup from the restored package and an actual in-app
+browser file return through fixed versions `4dfa300` → `36ed431` → `4dfa300`,
+preserving all nine histories byte-for-byte.
 
 ## Current Wallet correction — November 3
 
@@ -48,7 +52,7 @@ DAT, EMA and CAWELON checked separately. Signing, transactions, token approvals,
 custody, swaps, bridges and autonomous spending are outside this candidate.
 A 90% planning target is not an achieved release gate or a measured score.
 
-The current standalone review package is
+The earlier standalone review package is
 [`ThreeCore-review-b7df758-20261103.zip`](CONSOLIDATED_REVIEW_2026-11-03.md#latest-handoff-live-switches-and-complete-local-token-simulation).
 It pins `b7df758`, includes the actual network/account-switch observations and
 complete local token simulations, and supplies an actionable
@@ -123,7 +127,7 @@ read-only observations are saved separately: Account 1 at Sepolia block
 53,791,215 and Account 2 at 53,793,042. This is one observed direction for each
 change in one existing profile, not a live in-flight race or independent review.
 
-The latest local implementation is the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
+The earlier local implementation includes the [navigation recovery improvement](NAVIGATION_RECOVERY_2026-11-03.md)
 at `f6f378c`: 62 server/security cases and actual Edge navigation passed.
 The original permitted origin was recovered through the rehearsal page, three
 Account 1 / Sepolia reads completed at block 53,572,089, and a nine-record backup
@@ -390,7 +394,7 @@ Do not clear the user's database or reload their working tab to create a test.
 
 | Open item | Evidence needed to close it | Current limit |
 | --- | --- | --- |
-| Older immutable release rollback, if required for release | Exercise the final deployment's pinned previous-release rollback plan | Candidate `f52109a` migration and return to the preserved development server now passed for Wallet and rehearsal. That server serves current client files. Offline follow-up found public checkpoint `07041f0` rejects shared-account backups; a nine-record history-only recovery copy is verified, but browser rollback to a public release is not |
+| Older public-release rollback, if required for release | Exercise the final deployment's pinned previous-public-release rollback plan | Actual browser file return between immutable candidates `4dfa300` and `36ed431` passed, preserving nine histories exactly. The older public `07041f0` rejects shared-account configuration; its separate nine-record history-only recovery is verified, but full browser rollback to that public checkpoint is not |
 | Native OS file-selection path | Select and cancel through the original profile's Windows file picker, then verify actual imported bytes | Supported browser filechooser and real files passed; native picker traversal was not exercised |
 | Private-helper publication scope | Include its exact archive, source delta, maintenance procedure and completed developer review in the consolidated delivery | Developer review is complete under the user's assignment. Configuration regression and simulated contract/history checks pass. Public distribution remains deferred; third-party approval is not claimed |
 | Final publication/deployment decision | Present the finished source/evidence package and the intended delivery scope before the deferred publication | The user assigned developer review to Codex; no reviewer-identification response is pending. A separate third-party audit is not completed or implied |

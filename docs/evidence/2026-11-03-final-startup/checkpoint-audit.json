@@ -1,0 +1,155 @@
+{
+  "schema": "threecore.development-checkpoint.v1",
+  "recordedAt": "2026-11-03T07:35:50.773Z",
+  "source": {
+    "Wallet": {
+      "source": "4dfa300aa2efc0b068ee5537df941282a21df1f4",
+      "implementation": "7bdb23d3398e1e92582a602bb22f06d364825412",
+      "workingHead": "237714679786bf6cd32bde142b56bd4e60c71264"
+    },
+    "tokens": [
+      {
+        "token": "DAT",
+        "base": "dc2535732e9b83bddd8c5f4a2208c65fdff0a6d1",
+        "head": "c50aae41b9c7aa496833e6260cc3314dc3c3fbfb",
+        "clean": true,
+        "changedSinceSimulation": [
+          "integration/config-validation.test.mjs",
+          "package.json",
+          "vendor/README.md"
+        ]
+      },
+      {
+        "token": "EMA",
+        "base": "cae4130e8e01fd325fdcb6a589a46338be08b27e",
+        "head": "a37c60574e279980b5ce90775842d27b9c4ce5eb",
+        "clean": true,
+        "changedSinceSimulation": [
+          "integration/config-validation.test.mjs",
+          "package.json",
+          "vendor/README.md"
+        ]
+      },
+      {
+        "token": "CAWELON",
+        "base": "9fc0ffa988f5b9a80d75d7f95b80e6a759f1610d",
+        "head": "0f5dfa00a6e1738df3706e12e59b48459ff875a0",
+        "clean": true,
+        "changedSinceSimulation": [
+          "integration/config-validation.test.mjs",
+          "package.json",
+          "vendor/README.md"
+        ]
+      }
+    ]
+  },
+  "implementationUnchangedSinceCompleteRegression": true,
+  "scope": "Read-only Wallet, offline rehearsal and local token/helper development; not overall mainnet percentage",
+  "conditions": [
+    {
+      "id": "assigned-developer-review",
+      "status": "completed-for-recorded-boundaries",
+      "evidence": [
+        "docs/DEVELOPER_REVIEW_2026-11-03.md",
+        "docs/evidence/2026-11-03-developer-review/wallet-results.json",
+        "docs/evidence/2026-11-03-developer-review/toolchain-results.json"
+      ]
+    },
+    {
+      "id": "helper-repair",
+      "status": "applied-and-verified-for-three-pinned-tokens",
+      "evidence": [
+        "docs/evidence/2026-11-03-zod-applied/final-summary.json",
+        "docs/evidence/2026-11-03-token-simulation/summary.json",
+        "docs/evidence/2026-11-03-helper-decoder-compatibility/comparison-DAT.json",
+        "docs/evidence/2026-11-03-helper-decoder-compatibility/comparison-EMA.json",
+        "docs/evidence/2026-11-03-helper-decoder-compatibility/comparison-CAWELON.json"
+      ]
+    },
+    {
+      "id": "wallet-context-change",
+      "status": "observed-mainnet-to-sepolia-and-account1-to-account2-only",
+      "evidence": [
+        "docs/evidence/2026-11-03-live-context-switch/summary.json"
+      ],
+      "limits": "Does not establish every direction, a live in-flight race, or renewed Edge control."
+    },
+    {
+      "id": "account-summary-finding",
+      "status": "corrected-and-retested",
+      "evidence": [
+        "docs/evidence/2026-11-03-account-input-refresh/test-results.json",
+        "docs/evidence/2026-11-03-account-input-refresh/live-restoration-and-refresh.json"
+      ]
+    },
+    {
+      "id": "complete-wallet-regression",
+      "status": "passed-on-unchanged-implementation",
+      "nodeHttp": 16470,
+      "syntheticBrowser": 1026,
+      "evidence": [
+        "docs/evidence/2026-11-03-account-input-refresh/test-results.json"
+      ],
+      "limits": "Selected subsets and reruns are not additional features."
+    },
+    {
+      "id": "fixed-distribution",
+      "status": "fresh-extraction-four-source-restoration-and-controls-passed",
+      "evidence": [
+        "docs/evidence/2026-11-03-account-refresh-delivery/complete-delivery-result.json",
+        "docs/evidence/2026-11-03-account-refresh-delivery/complete-package-controls.json"
+      ]
+    },
+    {
+      "id": "documented-startup",
+      "status": "passed-on-clean-final-restoration",
+      "evidence": [
+        "docs/evidence/2026-11-03-final-startup/startup-result.json"
+      ],
+      "limits": "219 literal assets; not a general dynamic module coverage claim."
+    },
+    {
+      "id": "fixed-candidate-browser-file-return",
+      "status": "passed-4dfa300-to-36ed431-to-4dfa300",
+      "evidence": [
+        "docs/evidence/2026-11-03-final-startup/browser-version-return.json"
+      ],
+      "limits": "Supported in-app browser; not MetaMask or native Windows picker traversal."
+    }
+  ],
+  "openOrSeparate": [
+    {
+      "id": "consolidated-publication",
+      "status": "deferred-under-user-instruction"
+    },
+    {
+      "id": "edge-extension-automation",
+      "status": "not-repaired; supported in-app-browser path used for file verification only"
+    },
+    {
+      "id": "native-windows-picker",
+      "status": "unobserved; supported filechooser and disk-byte verification completed"
+    },
+    {
+      "id": "older-public-07041f0-full-rollback",
+      "status": "incompatible-with-shared-account-configuration; separate history-only recovery documented"
+    },
+    {
+      "id": "independent-audit",
+      "status": "not-performed; distinct from assigned developer review"
+    },
+    {
+      "id": "overall-mainnet-percentage",
+      "status": "not-measured; not inferred from tests, files, elapsed time or this checkpoint"
+    }
+  ],
+  "userWalletSigning": false,
+  "userWalletTransactions": false,
+  "secretAccess": false,
+  "githubWrites": false,
+  "sealedArchive": {
+    "filename": "ThreeCore-complete-4dfa300-20261103.zip",
+    "bytes": 55011589,
+    "sha256": "296fabf3de800ccf8bc9d5344248f0bd5f8c571e57a926391f7995b588992ca5"
+  }
+}

@@ -1,0 +1,1565 @@
+{
+  "recordedAt": "2026-11-03T07:18:20.743Z",
+  "origin": "http://127.0.0.1:4240",
+  "mode": "ordinary npm run demo, no --ui-test",
+  "assetCount": 219,
+  "allServedBytesMatch": true,
+  "assets": [
+    {
+      "route": "/",
+      "sourcePath": "examples/index.html",
+      "bytes": 9804,
+      "sha256": "4a763e42abd894831290ee2cacfcf757be989f84aca71fca4762672bdf97f408",
+      "matched": true
+    },
+    {
+      "route": "/rehearsal/",
+      "sourcePath": "examples/operation-rehearsal.html",
+      "bytes": 60880,
+      "sha256": "b688d8c281208ed2faf5f5272c03426b8b714c17113afb5c5db7cc112aad0bb6",
+      "matched": true
+    },
+    {
+      "route": "/examples/wallet-entry.js",
+      "sourcePath": "examples/wallet-entry.js",
+      "bytes": 863,
+      "sha256": "691fc62f83fdd6acdc7957f2837d8228b6175459ed5aa108d6992c7c01414c76",
+      "matched": true
+    },
+    {
+      "route": "/examples/security.css",
+      "sourcePath": "examples/security.css",
+      "bytes": 7158,
+      "sha256": "be66b7f2f73f1b756796fd8a555792c23a325f6aa74c09981201fb11cf2a409b",
+      "matched": true
+    },
+    {
+      "route": "/examples/secure-backup.css",
+      "sourcePath": "examples/secure-backup.css",
+      "bytes": 1827,
+      "sha256": "af0d59e713c56815ad8a259959ac98384e02c2e787657b73f8ff7f144e0b93ac",
+      "matched": true
+    },
+    {
+      "route": "/examples/reconciliation.css",
+      "sourcePath": "examples/reconciliation.css",
+      "bytes": 4628,
+      "sha256": "edcbd6f0de389d07d97f4740ad518db4cd0c3c6a7b532e4606d42be970e9bb14",
+      "matched": true
+    },
+    {
+      "route": "/examples/period.css",
+      "sourcePath": "examples/period.css",
+      "bytes": 4266,
+      "sha256": "f6af4253044a5b5bd7ffd15071f1ea8791b2c2e7c1b67d5df3000c0a6660f92d",
+      "matched": true
+    },
+    {
+      "route": "/examples/period-library.css",
+      "sourcePath": "examples/period-library.css",
+      "bytes": 4199,
+      "sha256": "5904e011621f39eb27a942e440198997043d9945230606c962494e3b3bbcb754",
+      "matched": true
+    },
+    {
+      "route": "/examples/period-report.css",
+      "sourcePath": "examples/period-report.css",
+      "bytes": 4544,
+      "sha256": "ed015b0126a73352c49f2995e85f4d0526b77aa7ee60e3024583b35f558858ac",
+      "matched": true
+    },
+    {
+      "route": "/examples/report-history.css",
+      "sourcePath": "examples/report-history.css",
+      "bytes": 2931,
+      "sha256": "d245dd79160d70b2ae506b2bcbc09b02badea147152ce995039243781a36c820",
+      "matched": true
+    },
+    {
+      "route": "/examples/report-set.css",
+      "sourcePath": "examples/report-set.css",
+      "bytes": 6462,
+      "sha256": "f0a259038ab677049b62084498af2dfa016d1d5db9c865fc7b4cb7a412744090",
+      "matched": true
+    },
+    {
+      "route": "/examples/operation-rehearsal-page.js",
+      "sourcePath": "examples/operation-rehearsal-page.js",
+      "bytes": 52111,
+      "sha256": "fd986d0f07e3e080d47b8db926c9dc2d81dfb509a2f3d9f926b48b393a659e7c",
+      "matched": true
+    },
+    {
+      "route": "/examples/operation-rehearsal.css",
+      "sourcePath": "examples/operation-rehearsal.css",
+      "bytes": 4274,
+      "sha256": "dff2d3bfed83fe6798888c31cbac15ce5e2b8605a403b56d534829c2df0c833f",
+      "matched": true
+    },
+    {
+      "route": "/examples/wallet-demo.js",
+      "sourcePath": "examples/wallet-demo.js",
+      "bytes": 31731,
+      "sha256": "755ed36c24cc64c1e067690eaa26e95b07633b475ae734aac837e4ead7f8131a",
+      "matched": true
+    },
+    {
+      "route": "/src/wallet-session.js",
+      "sourcePath": "src/wallet-session.js",
+      "bytes": 28894,
+      "sha256": "836638bf80386977c739d7301a52030a3e9488cc3a59f7e20716c73602f3e3ca",
+      "matched": true
+    },
+    {
+      "route": "/src/base-state-provider.js",
+      "sourcePath": "src/base-state-provider.js",
+      "bytes": 1969,
+      "sha256": "8710d21a984a142f04401a160b4df863618bd55f353eaa826f7ad31bf6ef0836",
+      "matched": true
+    },
+    {
+      "route": "/examples/file-read-panel.js",
+      "sourcePath": "examples/file-read-panel.js",
+      "bytes": 145897,
+      "sha256": "47d458d04d844c007d954efb4a521206fe6da4ac003b0ded32a30e23641a5413",
+      "matched": true
+    },
+    {
+      "route": "/src/security-file.js",
+      "sourcePath": "src/security-file.js",
+      "bytes": 3204,
+      "sha256": "a7d8f9d1ed6e436c6b0b19f381a6abb852bdbf1054f34d04c7642090358ac32f",
+      "matched": true
+    },
+    {
+      "route": "/src/file-read-status.js",
+      "sourcePath": "src/file-read-status.js",
+      "bytes": 154213,
+      "sha256": "46bb66b57b3198ef2976fc1dbbd3fcc955fdf3540e837401b3eedefa0c6c68ef",
+      "matched": true
+    },
+    {
+      "route": "/src/export-policy.js",
+      "sourcePath": "src/export-policy.js",
+      "bytes": 1585,
+      "sha256": "231b61eece58e3aca4f99e45b4e11d842971b9962f98cc27873523c45d90a855",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal.js",
+      "sourcePath": "src/operation-rehearsal.js",
+      "bytes": 15063,
+      "sha256": "4a167a7487c2378788852ee3139ab68c796e5f7ac343f3234a67a298d849e68e",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-examples.js",
+      "sourcePath": "src/operation-rehearsal-examples.js",
+      "bytes": 2245,
+      "sha256": "43ba92f6232ecd331d63e2b4468cf95909469fe3c273f5cbafc948d0197d036d",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-ledger.js",
+      "sourcePath": "src/operation-rehearsal-ledger.js",
+      "bytes": 3361,
+      "sha256": "1c2d12656809c3343ddf1c27e458273161d9f0d24ec60dfde36cec1a7a54b8b3",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-workspace.js",
+      "sourcePath": "src/operation-rehearsal-workspace.js",
+      "bytes": 6109,
+      "sha256": "1c0d59bce30b9276dc8e089158d7078f5df99a7bb5a8a49d0e402a162597238e",
+      "matched": true
+    },
+    {
+      "route": "/examples/export-download.js",
+      "sourcePath": "examples/export-download.js",
+      "bytes": 1965,
+      "sha256": "e0b23f665f2932748e19367d5099ab82c4a84232c65066336dfcb04cff006861",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-comparison.js",
+      "sourcePath": "src/operation-rehearsal-comparison.js",
+      "bytes": 4362,
+      "sha256": "bd56083888f514655f636cd3af90675bb084c07c2df5d3bc4b37093c028b0cac",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-overview.js",
+      "sourcePath": "src/operation-rehearsal-overview.js",
+      "bytes": 3878,
+      "sha256": "9e01158568e8d735bfa8d944a1dff60be5dc8c7513f693b9424a62d8bb6e95e0",
+      "matched": true
+    },
+    {
+      "route": "/examples/operation-rehearsal-scenario-panel.js",
+      "sourcePath": "examples/operation-rehearsal-scenario-panel.js",
+      "bytes": 13042,
+      "sha256": "2d7e3a4860dbd4b704f2eda99e2253a6acb7de8a5a6b5f6eefc886d3e92d4941",
+      "matched": true
+    },
+    {
+      "route": "/examples/operation-rehearsal-review-panel.js",
+      "sourcePath": "examples/operation-rehearsal-review-panel.js",
+      "bytes": 97962,
+      "sha256": "f7787afb672f10844b6514d0a48fe48c17f50b97a2e0ab8ba9bfbb84dfdd1e59",
+      "matched": true
+    },
+    {
+      "route": "/examples/operation-rehearsal-scenario-set-panel.js",
+      "sourcePath": "examples/operation-rehearsal-scenario-set-panel.js",
+      "bytes": 16847,
+      "sha256": "7f1c324b43ee1fee7f535ad5bf1169b405629d8a2a3e0a5eb4e9307e51f1bc81",
+      "matched": true
+    },
+    {
+      "route": "/examples/operation-rehearsal-check-panel.js",
+      "sourcePath": "examples/operation-rehearsal-check-panel.js",
+      "bytes": 10043,
+      "sha256": "fa5e9fc030b4bf971b10838add0c991858af494e00d3aeea5395c036eb416fee",
+      "matched": true
+    },
+    {
+      "route": "/examples/operation-rehearsal-records-panel.js",
+      "sourcePath": "examples/operation-rehearsal-records-panel.js",
+      "bytes": 24607,
+      "sha256": "505674b3c5dbc1b52a0de3083c6563b14b0c3b65fc1fb931c3acad58102ee271",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-session.js",
+      "sourcePath": "src/operation-rehearsal-session.js",
+      "bytes": 7158,
+      "sha256": "b5f9a5be896579c872b106a313d865802a2f98f0f8eac9b9f2c34929de3a7ffb",
+      "matched": true
+    },
+    {
+      "route": "/examples/operation-rehearsal-session-panel.js",
+      "sourcePath": "examples/operation-rehearsal-session-panel.js",
+      "bytes": 10083,
+      "sha256": "3c01e17cbcc6c764359e675b9ee1bd29af866b8a2fbd6e6c66188164508c0557",
+      "matched": true
+    },
+    {
+      "route": "/src/security-callback.js",
+      "sourcePath": "src/security-callback.js",
+      "bytes": 2169,
+      "sha256": "1324089eb5488d56d3ec85a9de8090ef55a887b415703790a04292e2fbe9553f",
+      "matched": true
+    },
+    {
+      "route": "/src/storage-guard.js",
+      "sourcePath": "src/storage-guard.js",
+      "bytes": 4448,
+      "sha256": "7a51e582dafdb5d2e8effc38304edb8a3bba7bee0e5db7196ce86fa9024bb88e",
+      "matched": true
+    },
+    {
+      "route": "/examples/storage-guard-panel.js",
+      "sourcePath": "examples/storage-guard-panel.js",
+      "bytes": 3682,
+      "sha256": "4a9143a8ce8b3ff63b0d251f317c9292cc404b49f6e669069424d629a1288685",
+      "matched": true
+    },
+    {
+      "route": "/examples/export-guard-panel.js",
+      "sourcePath": "examples/export-guard-panel.js",
+      "bytes": 4082,
+      "sha256": "5b3b655317484559219a78ea55f80921b8b5fb75edabf4653d0e61b1fd2bec3c",
+      "matched": true
+    },
+    {
+      "route": "/src/file-read-service.js",
+      "sourcePath": "src/file-read-service.js",
+      "bytes": 10973,
+      "sha256": "73fd08ff9c88a8b4faa33c8d8195e203724aa78da5f924d23a16ee4f23a05fd6",
+      "matched": true
+    },
+    {
+      "route": "/src/rpc-supervisor.js",
+      "sourcePath": "src/rpc-supervisor.js",
+      "bytes": 8066,
+      "sha256": "51cfe7088b5d478552c7188d0dd6a30b38c6b8a3ebb528fb0a65137724f3e570",
+      "matched": true
+    },
+    {
+      "route": "/examples/rpc-status-panel.js",
+      "sourcePath": "examples/rpc-status-panel.js",
+      "bytes": 2878,
+      "sha256": "13379cc726a0fe342460d9c777c55c1316af33f57f69cb5c52f023c5d2e16e76",
+      "matched": true
+    },
+    {
+      "route": "/examples/security-panel.js",
+      "sourcePath": "examples/security-panel.js",
+      "bytes": 9934,
+      "sha256": "9a698836966243f7f102f9277b6f4f7919c4da7da41fca03c93510158aab5e60",
+      "matched": true
+    },
+    {
+      "route": "/src/protection-batch.js",
+      "sourcePath": "src/protection-batch.js",
+      "bytes": 1808,
+      "sha256": "cf225182ceaf7ceeea40860edb5ed2136af75d33992cbbc2f60cf9734cd823cb",
+      "matched": true
+    },
+    {
+      "route": "/examples/report-set-panel.js",
+      "sourcePath": "examples/report-set-panel.js",
+      "bytes": 51194,
+      "sha256": "5c928163ebba5cd8655c99f273e1690448011a3f1f422417d1cce37a4a710036",
+      "matched": true
+    },
+    {
+      "route": "/examples/report-history-panel.js",
+      "sourcePath": "examples/report-history-panel.js",
+      "bytes": 21195,
+      "sha256": "0197ae261e37fbf22d641739e1f349b4454772c52d8298c7c9ffa961e637a202",
+      "matched": true
+    },
+    {
+      "route": "/examples/period-report-panel.js",
+      "sourcePath": "examples/period-report-panel.js",
+      "bytes": 17477,
+      "sha256": "bc495ba270baa5d7c7e6cb531c9fd1c02e3626cafa736444dab2956c4069e936",
+      "matched": true
+    },
+    {
+      "route": "/examples/period-library-panel.js",
+      "sourcePath": "examples/period-library-panel.js",
+      "bytes": 13480,
+      "sha256": "d11f9ed8f051f8aa7fec8e33786fab2da1e375b5c440599fc6c7cd376e06bb3e",
+      "matched": true
+    },
+    {
+      "route": "/examples/period-panel.js",
+      "sourcePath": "examples/period-panel.js",
+      "bytes": 13921,
+      "sha256": "86a2a1a2c97be71eae7f4409997dee75cbdea49afa5acc5def7166426893bfc9",
+      "matched": true
+    },
+    {
+      "route": "/src/period-plan.js",
+      "sourcePath": "src/period-plan.js",
+      "bytes": 3310,
+      "sha256": "a86ff3124a1754d2adbe7174d7befdeaf2c889e6160fe2daa5cf4a18adec3bb4",
+      "matched": true
+    },
+    {
+      "route": "/examples/reconciliation-panel.js",
+      "sourcePath": "examples/reconciliation-panel.js",
+      "bytes": 18335,
+      "sha256": "8f66081255df258f013fb2d9b5d631568df13fb24abdf9bf6ebbeca7ede152fa",
+      "matched": true
+    },
+    {
+      "route": "/examples/transfer-vault-panel.js",
+      "sourcePath": "examples/transfer-vault-panel.js",
+      "bytes": 21326,
+      "sha256": "fcbeb0f2ee0dd2f66c2d7f0d86727d8f2c45fe079441bf8295c778d79188b337",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-vault-model.js",
+      "sourcePath": "src/transfer-vault-model.js",
+      "bytes": 11379,
+      "sha256": "1bef5c4de927793878c5b3330e73a497c37ba720eea7f9eabe4c073940d1fd23",
+      "matched": true
+    },
+    {
+      "route": "/src/wallet-card-controller.js",
+      "sourcePath": "src/wallet-card-controller.js",
+      "bytes": 18351,
+      "sha256": "05e72c9e7b4d5b6e7d52bdb606cec0bf56ce0e6d64ec3cafc7384086d1d960fa",
+      "matched": true
+    },
+    {
+      "route": "/src/provider-registry.js",
+      "sourcePath": "src/provider-registry.js",
+      "bytes": 5066,
+      "sha256": "8c579af1cf6029712896a17f9818ef02e78b276a0ba19f879c7c132365f57b3c",
+      "matched": true
+    },
+    {
+      "route": "/examples/portfolio-panel.js",
+      "sourcePath": "examples/portfolio-panel.js",
+      "bytes": 12903,
+      "sha256": "6bb80ea8eff452a3ebcae69f0715bd882544c3537b175d31b533e3e390899891",
+      "matched": true
+    },
+    {
+      "route": "/examples/wallet-setup-panel.js",
+      "sourcePath": "examples/wallet-setup-panel.js",
+      "bytes": 19727,
+      "sha256": "f678be440144a738b564dd6c0910cb2fc59fec6dc29eb7f6c070ba5503748c8b",
+      "matched": true
+    },
+    {
+      "route": "/examples/workspace-panel.js",
+      "sourcePath": "examples/workspace-panel.js",
+      "bytes": 22375,
+      "sha256": "103667d9d80e8c3dbd24f2df3c6f19b3388dafd1a8a47a3b419b0248e0afbde9",
+      "matched": true
+    },
+    {
+      "route": "/src/workspace-format.js",
+      "sourcePath": "src/workspace-format.js",
+      "bytes": 11828,
+      "sha256": "b7c55e3ef5d74385311d6b92d7f6d94788f0aadc4b8a41c2ba35f2a6ee6b338b",
+      "matched": true
+    },
+    {
+      "route": "/examples/checkpoint-panel.js",
+      "sourcePath": "examples/checkpoint-panel.js",
+      "bytes": 16623,
+      "sha256": "d84145e82f09be0e59aa8f9cb2ec80b694d7e5e425635be64df29362dbab8acf",
+      "matched": true
+    },
+    {
+      "route": "/examples/token-identity-panel.js",
+      "sourcePath": "examples/token-identity-panel.js",
+      "bytes": 9981,
+      "sha256": "b824d7b283dd7ab0cd8ac5262ca2824121b42715a51ce8f6f5fe2d786943f667",
+      "matched": true
+    },
+    {
+      "route": "/src/identity-overview.js",
+      "sourcePath": "src/identity-overview.js",
+      "bytes": 4908,
+      "sha256": "ade8a3d4fe5511502022524cb845985587c7cd1bda9974e362c4fe3906cf439c",
+      "matched": true
+    },
+    {
+      "route": "/examples/allowance-panel.js",
+      "sourcePath": "examples/allowance-panel.js",
+      "bytes": 10087,
+      "sha256": "56b56e62d27811e944ebee96c45c1b03e844d2f397c8e4dd7dd5584de004c279",
+      "matched": true
+    },
+    {
+      "route": "/src/allowance-overview.js",
+      "sourcePath": "src/allowance-overview.js",
+      "bytes": 2573,
+      "sha256": "007bccd8118598f50524f8a9de83c87455a76a92449631face593afffa92c1b2",
+      "matched": true
+    },
+    {
+      "route": "/examples/allowance-bundle-panel.js",
+      "sourcePath": "examples/allowance-bundle-panel.js",
+      "bytes": 7465,
+      "sha256": "25bce36e662825f7de37d591bae5e9b9a6993bed605c8ff6640251f92e3938f1",
+      "matched": true
+    },
+    {
+      "route": "/examples/transfer-panel.js",
+      "sourcePath": "examples/transfer-panel.js",
+      "bytes": 17177,
+      "sha256": "0c3f7db860f0ccf631a9c44662e54df6e13c0c9bfb90f12b1cb60d5131348858",
+      "matched": true
+    },
+    {
+      "route": "/src/provider-events.js",
+      "sourcePath": "src/provider-events.js",
+      "bytes": 4464,
+      "sha256": "25444e7d4c8de90e6823ad3f8f0886a094803ed14f5b3c6d63185d9fd0093cbe",
+      "matched": true
+    },
+    {
+      "route": "/src/security-rpc.js",
+      "sourcePath": "src/security-rpc.js",
+      "bytes": 8556,
+      "sha256": "06d262fe66b2a14e2de2f70be52b931bc7b0ae1f46ecd045059702628acb3f4a",
+      "matched": true
+    },
+    {
+      "route": "/src/security-provider-error.js",
+      "sourcePath": "src/security-provider-error.js",
+      "bytes": 1531,
+      "sha256": "a8e5fa60a57dac85a1f2f3b3b4c5d48455895889befbc7512cc7691fd89cd402",
+      "matched": true
+    },
+    {
+      "route": "/src/provider-error.js",
+      "sourcePath": "src/provider-error.js",
+      "bytes": 1035,
+      "sha256": "6c273768ab7e5939a411c5c5b70937fbd0ceb78fec36395644d8710c4daf953d",
+      "matched": true
+    },
+    {
+      "route": "/src/token-identity-codec.js",
+      "sourcePath": "src/token-identity-codec.js",
+      "bytes": 4885,
+      "sha256": "830310c2c63fd762215b39bd358a6e29322812ce3285d58ca946cfd91c57e383",
+      "matched": true
+    },
+    {
+      "route": "/src/token-catalog.js",
+      "sourcePath": "src/token-catalog.js",
+      "bytes": 5016,
+      "sha256": "08189966c76365c8e4d0629f328d3eb4d3ddd36f5e683ebd78337fa144f1bedf",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-codec.js",
+      "sourcePath": "src/transfer-codec.js",
+      "bytes": 12086,
+      "sha256": "2a971ddbb7c7bdd3b4e108a880adbe852e7a20aa81d8fd8d2f40cb434b9a5802",
+      "matched": true
+    },
+    {
+      "route": "/src/state-rpc-http.js",
+      "sourcePath": "src/state-rpc-http.js",
+      "bytes": 4100,
+      "sha256": "fb0a91228af81be280156bb7479e4f4c1912e6ff561f15e24caeef06ad8fef44",
+      "matched": true
+    },
+    {
+      "route": "/src/file-read-policy.js",
+      "sourcePath": "src/file-read-policy.js",
+      "bytes": 1278,
+      "sha256": "ddab213a827c6dc7c5585b43331d22c4571600095d2ed620cadb289508ed5021",
+      "matched": true
+    },
+    {
+      "route": "/src/security-json.js",
+      "sourcePath": "src/security-json.js",
+      "bytes": 5707,
+      "sha256": "ddf74c094c63f321c6864231e727d6ac66d8de7af19fe94a33309aca241dff88",
+      "matched": true
+    },
+    {
+      "route": "/src/security-data.js",
+      "sourcePath": "src/security-data.js",
+      "bytes": 8394,
+      "sha256": "27e3bf0f45186639cd24400c318eb7f1d84b25cb63db38ae125031f5e24f671a",
+      "matched": true
+    },
+    {
+      "route": "/src/security-abort.js",
+      "sourcePath": "src/security-abort.js",
+      "bytes": 2207,
+      "sha256": "9ea8c4dfd561f37157afba2df2730783802c29e089e43520f869905eb0ed62bc",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-scenario-set.js",
+      "sourcePath": "src/operation-rehearsal-scenario-set.js",
+      "bytes": 6357,
+      "sha256": "958f2c370c1625e1793425b5e7bd373bd8514aff54847cbe89506a357dbdb42e",
+      "matched": true
+    },
+    {
+      "route": "/src/portfolio-report.js",
+      "sourcePath": "src/portfolio-report.js",
+      "bytes": 6918,
+      "sha256": "5508fc116282e2b353c9165f9a8932b99fa4ff3cd76318d779b45a009cce4434",
+      "matched": true
+    },
+    {
+      "route": "/src/portfolio-history.js",
+      "sourcePath": "src/portfolio-history.js",
+      "bytes": 9772,
+      "sha256": "3d61604fc4e5fc9fb3ddbb37f680b7463273285d4bf58f56624bc29c2c2fadda",
+      "matched": true
+    },
+    {
+      "route": "/src/token-plan.js",
+      "sourcePath": "src/token-plan.js",
+      "bytes": 4847,
+      "sha256": "48051389fbd5fcfcc6a1974d795d9a2f63759baf1f10a2596a05ce69565ccdca",
+      "matched": true
+    },
+    {
+      "route": "/src/history-query.js",
+      "sourcePath": "src/history-query.js",
+      "bytes": 10802,
+      "sha256": "f1820bc799c8b7c8aaca41a3e2869bcc39b3ff50fbb658dad2f54b08f72ba7ad",
+      "matched": true
+    },
+    {
+      "route": "/src/portfolio-comparison.js",
+      "sourcePath": "src/portfolio-comparison.js",
+      "bytes": 8109,
+      "sha256": "aff28a29df7c327e743104f463c0b503e82c0871b38ce0c74f0d13d4488bb576",
+      "matched": true
+    },
+    {
+      "route": "/src/wallet-setup.js",
+      "sourcePath": "src/wallet-setup.js",
+      "bytes": 9505,
+      "sha256": "6d7486d4bf6c3e53ae6a0a7afee89160f0c9d1653c06e9a22c6dcb53bcd8f624",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-file.js",
+      "sourcePath": "src/transfer-file.js",
+      "bytes": 3744,
+      "sha256": "8870761f90bcf43a44fd987fa8c488b1f4904d8070f4b75777a050c2fcbf0f7a",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-archive-file.js",
+      "sourcePath": "src/transfer-archive-file.js",
+      "bytes": 3155,
+      "sha256": "20b96ebf3d77e00c7518f4ebc10aa46814d28f1947d027b3924b49018153d40a",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-vault-file.js",
+      "sourcePath": "src/transfer-vault-file.js",
+      "bytes": 3806,
+      "sha256": "90df2d0f62cf5b3cd06cd12a69064e6bdf46cd214186794475d66aab4e7d5e4b",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-vault-collection.js",
+      "sourcePath": "src/transfer-vault-collection.js",
+      "bytes": 4635,
+      "sha256": "ffeae6a1191d73609ecbb356aa1f71b2cd665cf900d970095449f0668825009c",
+      "matched": true
+    },
+    {
+      "route": "/src/token-identity-report.js",
+      "sourcePath": "src/token-identity-report.js",
+      "bytes": 3813,
+      "sha256": "2c4859d050fa49cb9e44c80c4c9b4b31d12ec7916682f1775144491725a31b9c",
+      "matched": true
+    },
+    {
+      "route": "/src/allowance-file.js",
+      "sourcePath": "src/allowance-file.js",
+      "bytes": 3630,
+      "sha256": "0b344c205ea8d91fe20c8b9aa299776a38ee505605c7a1d5961cc673068740e1",
+      "matched": true
+    },
+    {
+      "route": "/src/workspace-file.js",
+      "sourcePath": "src/workspace-file.js",
+      "bytes": 7488,
+      "sha256": "def9b3f96eb7dfe688db0dd9fd88933e4669b87661e11f444af0cbf2af213e65",
+      "matched": true
+    },
+    {
+      "route": "/src/reconciliation-file.js",
+      "sourcePath": "src/reconciliation-file.js",
+      "bytes": 5165,
+      "sha256": "466242cb6ab50f80d93008a37b5fcc4223f9b3366460f6f066e46e63e756937f",
+      "matched": true
+    },
+    {
+      "route": "/src/period-file.js",
+      "sourcePath": "src/period-file.js",
+      "bytes": 3194,
+      "sha256": "33add9d1b54cbf0bc2f1a0a206083af3f8f0d60fe7701f07053420f68afddd03",
+      "matched": true
+    },
+    {
+      "route": "/src/period-library-file.js",
+      "sourcePath": "src/period-library-file.js",
+      "bytes": 4339,
+      "sha256": "cf2f7df6c92d29f86e65ac3788471d9da2912e36cd0612705feb053af2fd6e05",
+      "matched": true
+    },
+    {
+      "route": "/src/period-report-file.js",
+      "sourcePath": "src/period-report-file.js",
+      "bytes": 4206,
+      "sha256": "a6e6df0d9407695deb892e2b3e2319ffa846e82f0bbedd6c21292e0d8c666879",
+      "matched": true
+    },
+    {
+      "route": "/src/report-history-file.js",
+      "sourcePath": "src/report-history-file.js",
+      "bytes": 4635,
+      "sha256": "3dd0e9e4ab8aa58765c1fa5c54b5ae7df047b15fc72e0187a468f0e58fa81ff2",
+      "matched": true
+    },
+    {
+      "route": "/src/report-set-file.js",
+      "sourcePath": "src/report-set-file.js",
+      "bytes": 3086,
+      "sha256": "38458308900feabc76d5b459a77ad7e6fb5adc10671a7ee62bf468633ac4787e",
+      "matched": true
+    },
+    {
+      "route": "/src/period-draft.js",
+      "sourcePath": "src/period-draft.js",
+      "bytes": 6210,
+      "sha256": "d987cab102eb119f0ab25e7e8c907fa8c0d0f85cde81b0d988ee2e4f5ac52b34",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-report-review.js",
+      "sourcePath": "src/operation-rehearsal-report-review.js",
+      "bytes": 78084,
+      "sha256": "284ad2960be7f5a6172512c2d3c02133c261e9c71a32e7027fd53078af8230af",
+      "matched": true
+    },
+    {
+      "route": "/src/export-guard.js",
+      "sourcePath": "src/export-guard.js",
+      "bytes": 7299,
+      "sha256": "dadb8db8df5f536012a8b5d251483efcd13c1583a91e481342988ea32dead030",
+      "matched": true
+    },
+    {
+      "route": "/examples/export-resource.js",
+      "sourcePath": "examples/export-resource.js",
+      "bytes": 3946,
+      "sha256": "13b39ba2bb7ef325b3e71984d0501b67138924bbe5c6b0c7306df2d91e480ca4",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-scenario.js",
+      "sourcePath": "src/operation-rehearsal-scenario.js",
+      "bytes": 4989,
+      "sha256": "3e4c4caac5be6ace88ae3cd98eb8aaa1f7b82f4568ddaae630ee015a8726a4bf",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-records.js",
+      "sourcePath": "src/operation-rehearsal-records.js",
+      "bytes": 22082,
+      "sha256": "49cee2608021bf744bddf90d87cd885693ac2daf54aa0d5df8c870014a087713",
+      "matched": true
+    },
+    {
+      "route": "/src/operation-rehearsal-check-suite.js",
+      "sourcePath": "src/operation-rehearsal-check-suite.js",
+      "bytes": 8516,
+      "sha256": "bbb07be00c88d80b68c1f8a5fe3dab1bccd0b984c702c753f74baffc40e206a6",
+      "matched": true
+    },
+    {
+      "route": "/src/state-notifier.js",
+      "sourcePath": "src/state-notifier.js",
+      "bytes": 2434,
+      "sha256": "e542cd172354b0fb0c56d1261716540a30840bdef857e355f5e822d40cf8eb45",
+      "matched": true
+    },
+    {
+      "route": "/src/storage-guard-policy.js",
+      "sourcePath": "src/storage-guard-policy.js",
+      "bytes": 4336,
+      "sha256": "401fe9b59df25a0bed5ccdf4287add309e0c27483cad3e1aede3c729b9422857",
+      "matched": true
+    },
+    {
+      "route": "/src/storage-guard-status.js",
+      "sourcePath": "src/storage-guard-status.js",
+      "bytes": 4216,
+      "sha256": "38bd809afa62b5662a20cec4e1f6792101ed713d2d67f6936f1761cd63deab1a",
+      "matched": true
+    },
+    {
+      "route": "/src/export-status.js",
+      "sourcePath": "src/export-status.js",
+      "bytes": 3861,
+      "sha256": "0d868344a6c1be630d90710ad5502189c3c651b3c55f8fec2283287083ed3791",
+      "matched": true
+    },
+    {
+      "route": "/src/file-read-source.js",
+      "sourcePath": "src/file-read-source.js",
+      "bytes": 3997,
+      "sha256": "ac2013d2acc1b4ee0917fd49411e7b71dbf488316a11f3ab67e93b608da238b7",
+      "matched": true
+    },
+    {
+      "route": "/src/rpc-capacity.js",
+      "sourcePath": "src/rpc-capacity.js",
+      "bytes": 1825,
+      "sha256": "d982590cb334b03f4448b38f571d002c4895a657512f24066fa18bd8f534c072",
+      "matched": true
+    },
+    {
+      "route": "/src/rpc-status.js",
+      "sourcePath": "src/rpc-status.js",
+      "bytes": 4031,
+      "sha256": "cb29ecdfeacf055e8e5096e4b7da428d67a3cee14fb90891274014ca0588c165",
+      "matched": true
+    },
+    {
+      "route": "/src/security-lock.js",
+      "sourcePath": "src/security-lock.js",
+      "bytes": 7855,
+      "sha256": "1572d19a3f9a2930679def2212aa2ead96168e7c94c5d29b5e2bef633e74b8f2",
+      "matched": true
+    },
+    {
+      "route": "/src/security-journal.js",
+      "sourcePath": "src/security-journal.js",
+      "bytes": 7529,
+      "sha256": "df55f2fa45907d7b8360babb8044f17bb148e7d30cbf960a346112cbc59c3458",
+      "matched": true
+    },
+    {
+      "route": "/examples/security-journal-panel.js",
+      "sourcePath": "examples/security-journal-panel.js",
+      "bytes": 4441,
+      "sha256": "913527c66b594dbbec78dfda3dc22f402bd290cddfa1341311e456e48814217f",
+      "matched": true
+    },
+    {
+      "route": "/examples/tab-guard-panel.js",
+      "sourcePath": "examples/tab-guard-panel.js",
+      "bytes": 4434,
+      "sha256": "fcf2b4386371d714cbf7a48f1e4900cbae6a340f6519cd4841a0bea487b2e52b",
+      "matched": true
+    },
+    {
+      "route": "/src/report-set-model.js",
+      "sourcePath": "src/report-set-model.js",
+      "bytes": 6805,
+      "sha256": "5f90c3247cdbba4b92e12a65c1f1ed216b0b130fe07999c1291179c62df9d4c1",
+      "matched": true
+    },
+    {
+      "route": "/src/report-set-engine.js",
+      "sourcePath": "src/report-set-engine.js",
+      "bytes": 20386,
+      "sha256": "a4a3d69368853b8c2c03b57e2b97a79c68cbbfdcba56b636649ad05942bbd44a",
+      "matched": true
+    },
+    {
+      "route": "/src/report-history-storage.js",
+      "sourcePath": "src/report-history-storage.js",
+      "bytes": 989,
+      "sha256": "14bb5c74f3ed796b3db54ceac3c02bfffcfc2927264f4b51cf68ee630e5d5372",
+      "matched": true
+    },
+    {
+      "route": "/src/report-set-controller.js",
+      "sourcePath": "src/report-set-controller.js",
+      "bytes": 34855,
+      "sha256": "85bd6454a8c5d56613ecf31eb2d30fcd5eeeacc28b6504eb7e683bfbcadba0d7",
+      "matched": true
+    },
+    {
+      "route": "/src/report-history-query.js",
+      "sourcePath": "src/report-history-query.js",
+      "bytes": 6460,
+      "sha256": "1539a212f0f2b6ba90b41ceda9fae1b25292222aab08965ec94467bf6dc62106",
+      "matched": true
+    },
+    {
+      "route": "/src/report-set-diagnostics.js",
+      "sourcePath": "src/report-set-diagnostics.js",
+      "bytes": 10917,
+      "sha256": "0930b127b94c71629321b3e5794c1c51f72f37ba3553f9fe22a5d461ffd9db7e",
+      "matched": true
+    },
+    {
+      "route": "/examples/report-set-timeline-panel.js",
+      "sourcePath": "examples/report-set-timeline-panel.js",
+      "bytes": 13708,
+      "sha256": "26932ae1756213a4f5bbeeb7b96e8a45d3169f86023b9b0f90208d3b489dd255",
+      "matched": true
+    },
+    {
+      "route": "/src/report-set-view.js",
+      "sourcePath": "src/report-set-view.js",
+      "bytes": 28811,
+      "sha256": "5c7320e99e49bfa7e686fd0519d3399e32a6c2040f2405a0ad8931dee5dd2d12",
+      "matched": true
+    },
+    {
+      "route": "/src/period-library-storage.js",
+      "sourcePath": "src/period-library-storage.js",
+      "bytes": 997,
+      "sha256": "aaaf315f2ddad5208f1a7fa9c3d10d12037092f13555558cf67a7771dec0fecc",
+      "matched": true
+    },
+    {
+      "route": "/src/report-history-sources.js",
+      "sourcePath": "src/report-history-sources.js",
+      "bytes": 5078,
+      "sha256": "2a2b23da924ef29c012b441629818a352be7aed7a453e5578731923e08ae86cd",
+      "matched": true
+    },
+    {
+      "route": "/src/report-history-continuity.js",
+      "sourcePath": "src/report-history-continuity.js",
+      "bytes": 7006,
+      "sha256": "560566ee5417f87425b99a85bdbf84bb0dbba64fb46019dbd0df32154334678a",
+      "matched": true
+    },
+    {
+      "route": "/src/report-history-controller.js",
+      "sourcePath": "src/report-history-controller.js",
+      "bytes": 20482,
+      "sha256": "42e768130997268c745057b076a6dd1e490f4f376aeb1e795baf78fcbc92d64a",
+      "matched": true
+    },
+    {
+      "route": "/src/report-history-view.js",
+      "sourcePath": "src/report-history-view.js",
+      "bytes": 8606,
+      "sha256": "2ac8ca5af293636352aa14acd333eed26c8f4178e2ea5f933693918bdd10fd32",
+      "matched": true
+    },
+    {
+      "route": "/src/period-report-view.js",
+      "sourcePath": "src/period-report-view.js",
+      "bytes": 7498,
+      "sha256": "b89fd2fd10495e57a44838c06d67b927cb397ade5a825cc58c8d520b67fb9806",
+      "matched": true
+    },
+    {
+      "route": "/src/period-report-comparison.js",
+      "sourcePath": "src/period-report-comparison.js",
+      "bytes": 10264,
+      "sha256": "d984713f8732ab2b874fe6f0c3695ebaeeea515724c20dc3e7d330dc21e21316",
+      "matched": true
+    },
+    {
+      "route": "/src/period-report-controller.js",
+      "sourcePath": "src/period-report-controller.js",
+      "bytes": 12311,
+      "sha256": "5ad46b63da31ebf4a049b0e94c5ad030aa331a193201a73cbd5b7be975e0b324",
+      "matched": true
+    },
+    {
+      "route": "/src/period-report-model.js",
+      "sourcePath": "src/period-report-model.js",
+      "bytes": 4631,
+      "sha256": "92231a972efd9da33e8a30ae15e0be63d2bd22752b350a5d8bdea5ed01e5eca5",
+      "matched": true
+    },
+    {
+      "route": "/src/period-library-model.js",
+      "sourcePath": "src/period-library-model.js",
+      "bytes": 12481,
+      "sha256": "bd65f50e8d223edd552f4f041ade0cd5a2f7d0d43f4ea64458f1aa876c64ba73",
+      "matched": true
+    },
+    {
+      "route": "/src/period-report-query.js",
+      "sourcePath": "src/period-report-query.js",
+      "bytes": 2317,
+      "sha256": "afc96cee1e73a2c8c95842e6e1dcf36f2664b0efd06d4755292e85c7b71adb59",
+      "matched": true
+    },
+    {
+      "route": "/src/period-library-controller.js",
+      "sourcePath": "src/period-library-controller.js",
+      "bytes": 13488,
+      "sha256": "d3bc2ada049a7b9c7e922e937704c9ee60eb7b93d95f75db5766733af3248e6d",
+      "matched": true
+    },
+    {
+      "route": "/src/period-library-query.js",
+      "sourcePath": "src/period-library-query.js",
+      "bytes": 4419,
+      "sha256": "2706eb6b0b7dbe8456567a62a0f23d2091ec1711165829087cb8e44d5bca91dd",
+      "matched": true
+    },
+    {
+      "route": "/src/period-library-view.js",
+      "sourcePath": "src/period-library-view.js",
+      "bytes": 9726,
+      "sha256": "f84b59e419b579aab30a59324733a6f69a28d85c8b725240bf3ce16c6a558ba6",
+      "matched": true
+    },
+    {
+      "route": "/src/period-controller.js",
+      "sourcePath": "src/period-controller.js",
+      "bytes": 16472,
+      "sha256": "9b8e2f7ab117bab33364dd6c90dd56abe3360df16ef71f7a41472bb956d31fcf",
+      "matched": true
+    },
+    {
+      "route": "/src/period-view.js",
+      "sourcePath": "src/period-view.js",
+      "bytes": 7617,
+      "sha256": "97544240a293ca7cd4fb576850d12bd74086734ca0a72b63ab5230afda171b5a",
+      "matched": true
+    },
+    {
+      "route": "/src/period-recovery.js",
+      "sourcePath": "src/period-recovery.js",
+      "bytes": 4090,
+      "sha256": "697f9330b101e501b79c95962ee52bede81fc044e3c61665e1aa3ba7299e6037",
+      "matched": true
+    },
+    {
+      "route": "/src/period-progress.js",
+      "sourcePath": "src/period-progress.js",
+      "bytes": 3290,
+      "sha256": "492b05f7948928dd50f54715a6c73e8252a084899ea20b0235ad398c9f4d3900",
+      "matched": true
+    },
+    {
+      "route": "/src/reconciliation-ledger.js",
+      "sourcePath": "src/reconciliation-ledger.js",
+      "bytes": 8963,
+      "sha256": "7acc357fda49729c545c06b10571398c811a5aac351a27fb49fba57950b33e4a",
+      "matched": true
+    },
+    {
+      "route": "/src/reconciliation-controller.js",
+      "sourcePath": "src/reconciliation-controller.js",
+      "bytes": 12684,
+      "sha256": "652f8001ff061276b0a140468fbfc44576838cfc8b6b3ad224b1e15615260f11",
+      "matched": true
+    },
+    {
+      "route": "/src/reconciliation-model.js",
+      "sourcePath": "src/reconciliation-model.js",
+      "bytes": 6409,
+      "sha256": "cf5c8b90385fada20cf0b783c3eef832925c1b83473bd0ccba4d70df076a6793",
+      "matched": true
+    },
+    {
+      "route": "/src/reconciliation-engine.js",
+      "sourcePath": "src/reconciliation-engine.js",
+      "bytes": 11176,
+      "sha256": "63aacfb373a891cf922f97a9c8beaf0c6a919f40fa9e003984f9e6712bd844c0",
+      "matched": true
+    },
+    {
+      "route": "/src/reconciliation-query.js",
+      "sourcePath": "src/reconciliation-query.js",
+      "bytes": 3745,
+      "sha256": "92ca9424b0b9ce695b398b3ae452fc8529c61fffd61a9806b0f2e1410f9b9460",
+      "matched": true
+    },
+    {
+      "route": "/src/reconciliation-view.js",
+      "sourcePath": "src/reconciliation-view.js",
+      "bytes": 13064,
+      "sha256": "97e0973ad438aa61a8f1280fc22f2291b479ec5cd593095c3c962637c9f3ea6a",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-vault-controller.js",
+      "sourcePath": "src/transfer-vault-controller.js",
+      "bytes": 17076,
+      "sha256": "7c5f3696e34657d3d4d40faa77b7c2f33be793348f159b62f256676560d7cf37",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-vault-storage.js",
+      "sourcePath": "src/transfer-vault-storage.js",
+      "bytes": 973,
+      "sha256": "5aa61e3361365dae3956fdc60707d3dba4cbb9b4f2d88ac359129046ad54dc48",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-vault-analytics.js",
+      "sourcePath": "src/transfer-vault-analytics.js",
+      "bytes": 8838,
+      "sha256": "255555291459ad3a77f9b7abad442783048cbf09cafbf2669fa0783cbdd6acea",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-vault-messages.js",
+      "sourcePath": "src/transfer-vault-messages.js",
+      "bytes": 7077,
+      "sha256": "a85a83817cab337629996b0c64c7d882ca94a3c3fa791d6b054f1e42e82f0201",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-view.js",
+      "sourcePath": "src/transfer-view.js",
+      "bytes": 9076,
+      "sha256": "ef62108ea8f4a927a9401fd20cfa5110cabaf3af527c781ecfb927a1ff0353c2",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-archive.js",
+      "sourcePath": "src/transfer-archive.js",
+      "bytes": 6748,
+      "sha256": "e6bd6d71483d493a896345778d7cc5d8f49674f878112ef1f0c0c5d1ddf6dcbc",
+      "matched": true
+    },
+    {
+      "route": "/src/checkpoint-model.js",
+      "sourcePath": "src/checkpoint-model.js",
+      "bytes": 7760,
+      "sha256": "deb1ff74ab3e2c724852fbdee38f5b3f5c3c6d07b5200e11b07f1ddac5e5499b",
+      "matched": true
+    },
+    {
+      "route": "/src/wallet-read-scope.js",
+      "sourcePath": "src/wallet-read-scope.js",
+      "bytes": 4389,
+      "sha256": "77646d6ece947a1e3214289aafafc7991ba886899191c8716d340d041cce60c4",
+      "matched": true
+    },
+    {
+      "route": "/src/dapp-preflight.js",
+      "sourcePath": "src/dapp-preflight.js",
+      "bytes": 6049,
+      "sha256": "914ef535d3636ec3e98f9f36ed7ba340bbaa8f89d1f7e6a36a2c0089be379644",
+      "matched": true
+    },
+    {
+      "route": "/src/portfolio-snapshot.js",
+      "sourcePath": "src/portfolio-snapshot.js",
+      "bytes": 8055,
+      "sha256": "6d51520831d203832b6d07b710a33b26d72b68a3ab5c881b2bc512078ca87c96",
+      "matched": true
+    },
+    {
+      "route": "/src/token-identity-reader.js",
+      "sourcePath": "src/token-identity-reader.js",
+      "bytes": 6872,
+      "sha256": "344543e4a4aa544ef01d634b235ce1f0aab831c2bf066cd1adb6b2685e4b48ea",
+      "matched": true
+    },
+    {
+      "route": "/src/allowance-reader.js",
+      "sourcePath": "src/allowance-reader.js",
+      "bytes": 6385,
+      "sha256": "eca9d6b9d0a552cba7c4898e1eb5703c254f64b5b06babfea3e911bedfa3c9ca",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-reader.js",
+      "sourcePath": "src/transfer-reader.js",
+      "bytes": 7937,
+      "sha256": "de796a9f20b31c3d1b0082264fa28209b3d1fd0950793bd7cc060dcff13d73ed",
+      "matched": true
+    },
+    {
+      "route": "/src/period-reader.js",
+      "sourcePath": "src/period-reader.js",
+      "bytes": 7854,
+      "sha256": "5e7fa4c0f45558f911e86d4e2b161bf97c5bee7f43a4d7c64bf2ec8a6286aa4e",
+      "matched": true
+    },
+    {
+      "route": "/src/portfolio-progress.js",
+      "sourcePath": "src/portfolio-progress.js",
+      "bytes": 5986,
+      "sha256": "e69998bcdb2958ec46cbd153411d62437aaaafe83d75b341dbbab990e6028fc8",
+      "matched": true
+    },
+    {
+      "route": "/examples/history-panel.js",
+      "sourcePath": "examples/history-panel.js",
+      "bytes": 23593,
+      "sha256": "6a185c57c612933d2c04eace568671fbc62f881a59dd173c26a6079421d8cf29",
+      "matched": true
+    },
+    {
+      "route": "/examples/comparison-panel.js",
+      "sourcePath": "examples/comparison-panel.js",
+      "bytes": 15448,
+      "sha256": "164f74b240427408f9f67ca12b54a7f0b1b8f9a91080d07af907a9cd11c700e9",
+      "matched": true
+    },
+    {
+      "route": "/examples/token-plan-panel.js",
+      "sourcePath": "examples/token-plan-panel.js",
+      "bytes": 13631,
+      "sha256": "fbcccb115bb997451d36f3d04b4940f924eb7d6989373b63b0eb2a78a98f6ecd",
+      "matched": true
+    },
+    {
+      "route": "/src/wallet-setup-file.js",
+      "sourcePath": "src/wallet-setup-file.js",
+      "bytes": 4475,
+      "sha256": "b0dd9a5aba309cf6d7996b8e1a047e9df72d45c8a963848752b2154200f8120a",
+      "matched": true
+    },
+    {
+      "route": "/examples/history-files.js",
+      "sourcePath": "examples/history-files.js",
+      "bytes": 35720,
+      "sha256": "0955d6d6f92fa847c4e12c3fab6a29b44215730a966aafc142cb08994c84048d",
+      "matched": true
+    },
+    {
+      "route": "/examples/secure-backup-panel.js",
+      "sourcePath": "examples/secure-backup-panel.js",
+      "bytes": 16074,
+      "sha256": "8af6261fb004d89b39f46a07b3253b4eb6f7908512185e3007f88e3354eda1e4",
+      "matched": true
+    },
+    {
+      "route": "/src/workspace-controller.js",
+      "sourcePath": "src/workspace-controller.js",
+      "bytes": 8107,
+      "sha256": "9d146bcf436086afcbee06807c3e564631d4baf212e0f5e796263958d0f9020d",
+      "matched": true
+    },
+    {
+      "route": "/src/workspace-overview.js",
+      "sourcePath": "src/workspace-overview.js",
+      "bytes": 11625,
+      "sha256": "10221c48c1f5a39944cb45d57ade707b30598bec66d8aa6b88726329bf6e9cc7",
+      "matched": true
+    },
+    {
+      "route": "/src/checkpoint-controller.js",
+      "sourcePath": "src/checkpoint-controller.js",
+      "bytes": 12581,
+      "sha256": "9357752a371ec27b9abb49c971f8fe9204f15c3bc01e0298567955fc0785252c",
+      "matched": true
+    },
+    {
+      "route": "/src/checkpoint-storage.js",
+      "sourcePath": "src/checkpoint-storage.js",
+      "bytes": 18489,
+      "sha256": "66dc7517f49ff23b4638b59076fe9e8bd0d7d8ca2c872d4f1a76842d6bfbfd57",
+      "matched": true
+    },
+    {
+      "route": "/src/checkpoint-transfer.js",
+      "sourcePath": "src/checkpoint-transfer.js",
+      "bytes": 6846,
+      "sha256": "6d5fbcda3868bb80e1bfcef08d41d2f40c56fbf2cc1bf0bf772a74f0043a9b3d",
+      "matched": true
+    },
+    {
+      "route": "/src/token-identity-controller.js",
+      "sourcePath": "src/token-identity-controller.js",
+      "bytes": 9299,
+      "sha256": "a1e1e9c424b3b5c666000b66ad6c52f89296aaebe832d3e56d11b27de725e874",
+      "matched": true
+    },
+    {
+      "route": "/src/token-identity-view.js",
+      "sourcePath": "src/token-identity-view.js",
+      "bytes": 8517,
+      "sha256": "1d57b02e3dd8c12632b76cbb876606a79533d8096c343d4415cc6874cfd0ae90",
+      "matched": true
+    },
+    {
+      "route": "/src/token-identity-model.js",
+      "sourcePath": "src/token-identity-model.js",
+      "bytes": 7274,
+      "sha256": "d9f2f3edecf4b86e1f9a1ba178e021bd9fc6b8c689ef13483858edbe85fddb5d",
+      "matched": true
+    },
+    {
+      "route": "/src/allowance-controller.js",
+      "sourcePath": "src/allowance-controller.js",
+      "bytes": 11480,
+      "sha256": "f3892b4a7cad7573172fccce77312b0a9addcd3335a4fa7d4e0df1e2383087f6",
+      "matched": true
+    },
+    {
+      "route": "/src/allowance-targets.js",
+      "sourcePath": "src/allowance-targets.js",
+      "bytes": 4420,
+      "sha256": "25a7c43691155597ae05cff011ad1bfd25bb8b15cbecdcf27d972f54f874dfa0",
+      "matched": true
+    },
+    {
+      "route": "/src/allowance-view.js",
+      "sourcePath": "src/allowance-view.js",
+      "bytes": 10095,
+      "sha256": "35a26644117e886462093a15f2c16feb263ba5f57dc771c81ae964a8ca9106b4",
+      "matched": true
+    },
+    {
+      "route": "/src/allowance-observation.js",
+      "sourcePath": "src/allowance-observation.js",
+      "bytes": 9004,
+      "sha256": "1bd34d2bc8683c98be51c844e342f6b211957a4913773d2bba1279b8fecb7172",
+      "matched": true
+    },
+    {
+      "route": "/src/allowance-bundle.js",
+      "sourcePath": "src/allowance-bundle.js",
+      "bytes": 5684,
+      "sha256": "f9822227bf8f169f23b1450d6bb5d02872d49a501295b225a6874ace108ddcca",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-controller.js",
+      "sourcePath": "src/transfer-controller.js",
+      "bytes": 10418,
+      "sha256": "cf1b49e889bdfc6112c73cf98c7eb8a52f4ea3913f0e77a30b7cc2645ce2dad2",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-messages.js",
+      "sourcePath": "src/transfer-messages.js",
+      "bytes": 5043,
+      "sha256": "7a6440fa702c4287b93fa25e4a8e7645c4cc7339871da3737352ee92ed0926c1",
+      "matched": true
+    },
+    {
+      "route": "/examples/transfer-archive-panel.js",
+      "sourcePath": "examples/transfer-archive-panel.js",
+      "bytes": 8077,
+      "sha256": "ebd10c3ccd337b3d122c60d31b2fd6642f50d57bebd55b6ecca13aace766b9b1",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-window.js",
+      "sourcePath": "src/transfer-window.js",
+      "bytes": 2279,
+      "sha256": "ec63aed87b4578b411280e3b7e8abacf66d39887ef0011a5956036315699e735",
+      "matched": true
+    },
+    {
+      "route": "/src/provider-event-gate.js",
+      "sourcePath": "src/provider-event-gate.js",
+      "bytes": 1711,
+      "sha256": "f5c6e18559b8c06af15091ffbe558b351c5fd4215d43c9fe9823c4c3fd77881f",
+      "matched": true
+    },
+    {
+      "route": "/src/export-payload.js",
+      "sourcePath": "src/export-payload.js",
+      "bytes": 3094,
+      "sha256": "5625a60d3d739a622e4c54028af8b162f5119d28071da76ed2722cd1b2f5b22e",
+      "matched": true
+    },
+    {
+      "route": "/src/report-history-model.js",
+      "sourcePath": "src/report-history-model.js",
+      "bytes": 12545,
+      "sha256": "0d9365ca88392d839c051ed646204debed72094b3db906c1332abe15d8f6e617",
+      "matched": true
+    },
+    {
+      "route": "/src/tab-guard-controller.js",
+      "sourcePath": "src/tab-guard-controller.js",
+      "bytes": 7805,
+      "sha256": "ccaffb5a72a9abfe5d00ba7ce1bf08337341b411f8020765d00dc8082a840220",
+      "matched": true
+    },
+    {
+      "route": "/src/tab-guard-transport.js",
+      "sourcePath": "src/tab-guard-transport.js",
+      "bytes": 2820,
+      "sha256": "eb1388ea355076c88e39e866cc8fdb09265a0407043e0d2b18136a4fbdcbfccb",
+      "matched": true
+    },
+    {
+      "route": "/src/period-report-engine.js",
+      "sourcePath": "src/period-report-engine.js",
+      "bytes": 6607,
+      "sha256": "d782123495f9a14db1a0abd7c74f783d616c9211afd835a316bb9d9db362c4e3",
+      "matched": true
+    },
+    {
+      "route": "/src/report-set-export.js",
+      "sourcePath": "src/report-set-export.js",
+      "bytes": 44034,
+      "sha256": "5db6785728a42f5c39339dd7b14798657848e8a52b119f753625d0b3042d7c72",
+      "matched": true
+    },
+    {
+      "route": "/src/report-set-timeline.js",
+      "sourcePath": "src/report-set-timeline.js",
+      "bytes": 17336,
+      "sha256": "73cfbe6185ac7fe181215f09f2900f7c8d806d3fa5b768d7850b41afabdfd092",
+      "matched": true
+    },
+    {
+      "route": "/src/period-report-export.js",
+      "sourcePath": "src/period-report-export.js",
+      "bytes": 6762,
+      "sha256": "5c2e0c6af4de0aae87a6bda5abed5aac0b437fa66877e1974d1ac20226f272f9",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-vault-timeline.js",
+      "sourcePath": "src/transfer-vault-timeline.js",
+      "bytes": 2786,
+      "sha256": "ec212fe8c4054c22433874180edd7392b17ee478ea30efd6e1d4972b355df5ca",
+      "matched": true
+    },
+    {
+      "route": "/src/history-recovery.js",
+      "sourcePath": "src/history-recovery.js",
+      "bytes": 5488,
+      "sha256": "824c9cfc56baa4e451ae74b682117b30cb698cf4073f865d2e7fbf39399cce1a",
+      "matched": true
+    },
+    {
+      "route": "/examples/history-recovery-panel.js",
+      "sourcePath": "examples/history-recovery-panel.js",
+      "bytes": 8512,
+      "sha256": "fb4f237a7ac2316f0865f5119cd6c424306dda7f8bcfd595f19f04bbba689285",
+      "matched": true
+    },
+    {
+      "route": "/examples/history-review-panel.js",
+      "sourcePath": "examples/history-review-panel.js",
+      "bytes": 7341,
+      "sha256": "f96f6f3f4e81f1f3f564fd7b7ad7bdaceb3e36322cb2ba0d557235fc5d720cab",
+      "matched": true
+    },
+    {
+      "route": "/src/history-import-controller.js",
+      "sourcePath": "src/history-import-controller.js",
+      "bytes": 6822,
+      "sha256": "aa8256d0eea67ef40dfa15abe9fa396def86685843be4d866968124c5c1e273a",
+      "matched": true
+    },
+    {
+      "route": "/src/portfolio-history-summary.js",
+      "sourcePath": "src/portfolio-history-summary.js",
+      "bytes": 3571,
+      "sha256": "c77b303bcfdb5dd8053f8b368ab12c2bd6d42a26101bd437bbcd8504c88ab8c5",
+      "matched": true
+    },
+    {
+      "route": "/src/history-review.js",
+      "sourcePath": "src/history-review.js",
+      "bytes": 15702,
+      "sha256": "28995edf70f62f20113bb4288e724618c3f195ac8052443758cc4e42fe47d185",
+      "matched": true
+    },
+    {
+      "route": "/src/history-file-reader.js",
+      "sourcePath": "src/history-file-reader.js",
+      "bytes": 4307,
+      "sha256": "3dfb3d30ce2f6103eeff99b89a748f9ed0dcbe503b62f40b44aae00d3413c514",
+      "matched": true
+    },
+    {
+      "route": "/src/history-file.js",
+      "sourcePath": "src/history-file.js",
+      "bytes": 6652,
+      "sha256": "b5e0189006025086c7db0a6a6b459fedb45f8a5a680295811d41f1bdfed53721",
+      "matched": true
+    },
+    {
+      "route": "/examples/secure-operation-panel.js",
+      "sourcePath": "examples/secure-operation-panel.js",
+      "bytes": 2558,
+      "sha256": "9e44f380f6dd55dc5a4c6235c1d44a77f096fd37936b45852b4e4b57c2cb3007",
+      "matched": true
+    },
+    {
+      "route": "/src/secure-deadline.js",
+      "sourcePath": "src/secure-deadline.js",
+      "bytes": 4394,
+      "sha256": "f98dc052d05894b1aeb2af6c488a22f84fedef874be432c8a987409b5a43aa0a",
+      "matched": true
+    },
+    {
+      "route": "/src/secure-backup-controller.js",
+      "sourcePath": "src/secure-backup-controller.js",
+      "bytes": 11142,
+      "sha256": "f9bd19f9589a8534c79e742bb9ab7bb26146fd32ac6af7d147487592ab9fa8d1",
+      "matched": true
+    },
+    {
+      "route": "/examples/encrypted-library-panel.js",
+      "sourcePath": "examples/encrypted-library-panel.js",
+      "bytes": 13267,
+      "sha256": "de129d24e63a518ae821510a56c36eb0ec194bbbbc414490300363a8f02d0d3e",
+      "matched": true
+    },
+    {
+      "route": "/src/workspace-review.js",
+      "sourcePath": "src/workspace-review.js",
+      "bytes": 5049,
+      "sha256": "13bc2df87c9143b8b6753280c07ef571eed746981a8733aaeaf19c0643457b17",
+      "matched": true
+    },
+    {
+      "route": "/src/transfer-archive-controller.js",
+      "sourcePath": "src/transfer-archive-controller.js",
+      "bytes": 8288,
+      "sha256": "517a2849f5f3a0217230bfd862349126a502588d58bd9f3f4c95a1acf0a95cbb",
+      "matched": true
+    },
+    {
+      "route": "/src/tab-guard-protocol.js",
+      "sourcePath": "src/tab-guard-protocol.js",
+      "bytes": 4471,
+      "sha256": "069b174b0b728e43e2d8ef051f95e62265ec1467bdd7960fe526a71ae2dcfe2c",
+      "matched": true
+    },
+    {
+      "route": "/src/history-recovery-report.js",
+      "sourcePath": "src/history-recovery-report.js",
+      "bytes": 2921,
+      "sha256": "cfb5d705fef067a2b9531873395982c66b9f04833fe01e69320b1ea3b7bd3d87",
+      "matched": true
+    },
+    {
+      "route": "/src/secure-backup-runner.js",
+      "sourcePath": "src/secure-backup-runner.js",
+      "bytes": 6381,
+      "sha256": "e927efde58223d0529efbe7105161460088881052ba1e864e437d8bf3c1744ac",
+      "matched": true
+    },
+    {
+      "route": "/src/secure-backup-status.js",
+      "sourcePath": "src/secure-backup-status.js",
+      "bytes": 2808,
+      "sha256": "1b8361e32359616723729b82d0623c3fb9e4a7e18bca5664ebf16bbf8a45bc28",
+      "matched": true
+    },
+    {
+      "route": "/src/secure-backup-format.js",
+      "sourcePath": "src/secure-backup-format.js",
+      "bytes": 7184,
+      "sha256": "a750693464b241a1e047cd0263c11562edb183849e635d0c50f1165d72a2dd08",
+      "matched": true
+    },
+    {
+      "route": "/src/secure-backup-crypto.js",
+      "sourcePath": "src/secure-backup-crypto.js",
+      "bytes": 3825,
+      "sha256": "0b8bc768879d2d47c69391ea6bf374fce5802da0adca4482d86a2d44f50c77c2",
+      "matched": true
+    },
+    {
+      "route": "/src/encrypted-library-controller.js",
+      "sourcePath": "src/encrypted-library-controller.js",
+      "bytes": 13354,
+      "sha256": "5db1f23cb3393baf2619796a7f17022229f170c1b9aa9f23b9e77b381941648f",
+      "matched": true
+    },
+    {
+      "route": "/src/encrypted-library-model.js",
+      "sourcePath": "src/encrypted-library-model.js",
+      "bytes": 9216,
+      "sha256": "0ab300210fff526fd3ce92482654146463bf9407414fc30f83f1993ce449b8ad",
+      "matched": true
+    },
+    {
+      "route": "/src/encrypted-library-storage.js",
+      "sourcePath": "src/encrypted-library-storage.js",
+      "bytes": 2993,
+      "sha256": "e1eb3e7dd9bfd38ef6ad2ff460af7166a21eb894667ae605703e28f3425c7d44",
+      "matched": true
+    },
+    {
+      "route": "/src/encrypted-library-archive.js",
+      "sourcePath": "src/encrypted-library-archive.js",
+      "bytes": 2271,
+      "sha256": "1ab0afca64f9e3d35a1fa103ae425a2318ed15038f3ff21ab05cfc0cdf69f1b3",
+      "matched": true
+    }
+  ],
+  "denied": [
+    {
+      "route": "/test/browser/",
+      "status": 404
+    },
+    {
+      "route": "/test/browser/ui-tests.js",
+      "status": 404
+    },
+    {
+      "route": "/test/browser/acceptance-fixture.js",
+      "status": 404
+    },
+    {
+      "route": "/package.json",
+      "status": 404
+    }
+  ],
+  "crossOriginNavigation": {
+    "status": 403,
+    "explicitLocalLink": true
+  },
+  "scope": "HTTP startup and literal module/CSS availability only. No browser rendering, wallet, external RPC or new full regression."
+}

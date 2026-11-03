@@ -11,6 +11,12 @@ revisions. No requester/reviewer identity is pending. Publication remains the
 requested later consolidated action; public CI and independent audit are not
 inferred from local checks. A numerical mainnet percentage remains unmeasured.
 
+The [final startup and browser recovery supplement](FINAL_STARTUP_RECOVERY_2026-11-03.md)
+now verifies ordinary startup from the restored package and the full fixed-version
+file return `4dfa300` → `36ed431` → `4dfa300`. All three actual browser downloads
+match the original nine-record backup exactly. The Edge control limitation and
+older public-checkpoint restriction retain their separate scope.
+
 ## Developer-review follow-up — November 3
 
 The user assigned the technical review to Codex. That bounded review is now
@@ -35,7 +41,7 @@ verified three-card invalidation after Mainnet-to-Sepolia and Account-1-to-Accou
 changes, explicit reconnect, new provider-context reads and preservation of all
 nine original histories. Six new read-only records were saved separately. This
 supersedes the earlier switch-pending statements below for those observed directions.
-The current sealed package is `b7df758`, which includes this live evidence and
+That earlier sealed package is `b7df758`, which includes this live evidence and
 the completed local token simulation. See the [review brief](REVIEW_BRIEF_2026-11-03.md)
 and [package verification](CONSOLIDATED_REVIEW_2026-11-03.md).
 The applied private helper repair has separate successful compatibility/build

@@ -31,6 +31,12 @@ The freshly restored Wallet also verified all **273 evidence manifests / 2,963
 entries / 125,898,575 bytes**, with no mismatch or unreadable entry. These are
 saved evidence counts, not additional features or test passes.
 
+The later [documented startup and browser return](FINAL_STARTUP_RECOVERY_2026-11-03.md)
+started this restored Wallet with its ordinary command. All 219 served assets
+matched source bytes. Actual browser imports and downloads then preserved all
+nine histories byte-for-byte through fixed versions `4dfa300` → `36ed431` →
+`4dfa300`. This used the supported in-app browser, separately from MetaMask.
+
 With Node.js 22 or later and Git installed, run from the extracted package:
 
 ```powershell
@@ -79,6 +85,8 @@ automation attachment before an import could be performed. It was not counted
 as a browser rollback pass. No user tab was reloaded or duplicate import made.
 The [retained failures](evidence/2026-11-03-account-refresh-delivery/retained-failures.json)
 distinguish these attempts from completed checks.
+The later supported in-app-browser sequence above completed the fixed-candidate
+file return; it did not repair or bypass the Edge extension-control limitation.
 
 ## Current development and release scope
 
@@ -87,9 +95,9 @@ distinguish these attempts from completed checks.
 | Assigned developer review | Completed; no requester/reviewer identification is pending. The later account-input finding was corrected and retested. |
 | Corrected fixed source | Complete regression and actual Edge display exercise passed on the recorded implementation. |
 | Account/network change handling | The earlier actual Mainnet-to-Sepolia and Account-1-to-Account-2 exercises passed three-card invalidation, explicit reconnect and history preservation. No additional direction or in-flight live race is inferred. |
-| Current data restoration | Actual nine-record restore/export passed at fixed prior and corrected candidate versions; final-source offline re-export matches the original bytes. |
+| Current data restoration | Actual nine-record restore/export passed at fixed prior and corrected candidate versions. The final package also passed a full `4dfa300` → `36ed431` → `4dfa300` file return in the in-app browser, with all downloads identical to the original bytes. |
 | Token/helper work | Applied compatibility repair, source/artifact comparisons, local simulation, configuration-validator coverage and developer maintenance review are recorded for the exact token pins. |
-| Local delivery/recovery | One freshly extracted ZIP restores all four fixed source trees; altered and wrong-destination controls reject safely. |
+| Local delivery/recovery | One freshly extracted ZIP restores all four fixed source trees; altered and wrong-destination controls reject safely. The restored Wallet starts with the documented ordinary command and serves source-identical assets. |
 | Publication | Consolidated local delivery is ready for the requested later publication. These local results are not remote CI on the unpublished source. |
 
 The intended candidate remains the read-only Wallet and offline rehearsal.

@@ -4,6 +4,8 @@
 
 **November 3, 2026 consolidated local delivery:** [One-ZIP recovery and current completion record](docs/ACCOUNT_REFRESH_DELIVERY_2026-11-03.md). The corrected Wallet and three token projects were restored from a fresh extraction; all 62 package files matched. Existing folders are preserved and altered files are rejected before restoration.
 
+The [final package startup and browser recovery](docs/FINAL_STARTUP_RECOVERY_2026-11-03.md) also passed: the documented startup serves source-identical assets, and an actual browser file return through both fixed candidate versions preserves all nine saved histories byte-for-byte.
+
 **November 3, 2026 account-input correction:** [Current configuration and backup summaries](docs/ACCOUNT_INPUT_REFRESH_2026-11-03.md) now refresh immediately after a reviewed permitted-account input. The corrected source passed 16,470 Node/HTTP and 1,026 synthetic browser cases. Actual Edge verification confirmed the display change and preserved all nine saved histories through fixed-version restoration and re-export. Earlier cleanup failures remain recorded separately.
 
 **November 3, 2026 local review follow-up:** [Completed developer technical review](docs/DEVELOPER_REVIEW_2026-11-03.md) and [verified incremental delivery/recovery](docs/DEVELOPER_UPDATE_DELIVERY_2026-11-03.md). The three token projects now include actual Hardhat configuration-validator regression; the restored four-repository update retains the nine-record backup byte-for-byte. [Current source map and remaining scope](docs/RELEASE_HANDOFF_2026-11-02.md). These changes are local pending consolidated publication.
