@@ -1,0 +1,298 @@
+TAP version 13
+# Subtest: demo serves production modules and gates browser fixtures (uiTest=false)
+ok 1 - demo serves production modules and gates browser fixtures (uiTest=false)
+  ---
+  duration_ms: 850.3525
+  type: 'test'
+  ...
+# Subtest: demo serves production modules and gates browser fixtures (uiTest=true)
+ok 2 - demo serves production modules and gates browser fixtures (uiTest=true)
+  ---
+  duration_ms: 878.8365
+  type: 'test'
+  ...
+# Subtest: refused rehearsal navigation stays 403 and offers one fixed same-origin link
+ok 3 - refused rehearsal navigation stays 403 and offers one fixed same-origin link
+  ---
+  duration_ms: 167.6707
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /
+ok 4 - explicit same-origin navigation loads only the fixed screen after a refusal: /
+  ---
+  duration_ms: 63.8665
+  type: 'test'
+  ...
+# Subtest: explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+ok 5 - explicit same-origin navigation loads only the fixed screen after a refusal: /rehearsal/
+  ---
+  duration_ms: 25.8979
+  type: 'test'
+  ...
+# Subtest: wallet entry guide uses only the local listening port and fixed root route
+ok 6 - wallet entry guide uses only the local listening port and fixed root route
+  ---
+  duration_ms: 35.5054
+  type: 'test'
+  ...
+# Subtest: RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+ok 7 - RPC, assets, unknown paths, embedding and write requests do not get the HTML guide
+  ---
+  duration_ms: 24.6938
+  type: 'test'
+  ...
+# Subtest: invalid Host remains a plain rejection and is never echoed in a recovery URL
+ok 8 - invalid Host remains a plain rejection and is never echoed in a recovery URL
+  ---
+  duration_ms: 18.6445
+  type: 'test'
+  ...
+# Subtest: ordinary direct navigation still serves the actual rehearsal page
+ok 9 - ordinary direct navigation still serves the actual rehearsal page
+  ---
+  duration_ms: 48.6451
+  type: 'test'
+  ...
+# Subtest: guide helper refuses invalid local ports and unrelated verdicts
+ok 10 - guide helper refuses invalid local ports and unrelated verdicts
+  ---
+  duration_ms: 1.1897
+  type: 'test'
+  ...
+# Subtest: quote review page and complete static module import graph load under offline CSP; no quote endpoint exists
+ok 11 - quote review page and complete static module import graph load under offline CSP; no quote endpoint exists
+  ---
+  duration_ms: 840.3791
+  type: 'test'
+  ...
+# Subtest: quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+ok 12 - quote arithmetic preserves fee flooring and conservatively rounds minimum output and shortfall
+  ---
+  duration_ms: 10.1101
+  type: 'test'
+  ...
+# Subtest: quote files revalidate arithmetic and checksum rather than trusting saved output
+ok 13 - quote files revalidate arithmetic and checksum rather than trusting saved output
+  ---
+  duration_ms: 47.7334
+  type: 'test'
+  ...
+# Subtest: proposal, exact input amount, router, original budget block and current limits bind the quote
+ok 14 - proposal, exact input amount, router, original budget block and current limits bind the quote
+  ---
+  duration_ms: 196.5417
+  type: 'test'
+  ...
+# Subtest: comparison limits must be explicit and valid; cancellation interrupts archived source validation
+ok 15 - comparison limits must be explicit and valid; cancellation interrupts archived source validation
+  ---
+  duration_ms: 22.4447
+  type: 'test'
+  ...
+# Subtest: saved proposal review retains original text and recomputes historical success and failure
+ok 16 - saved proposal review retains original text and recomputes historical success and failure
+  ---
+  duration_ms: 125.9871
+  type: 'test'
+  ...
+# Subtest: saved verdict, reasons, time and permissions cannot substitute for recomputation
+ok 17 - saved verdict, reasons, time and permissions cannot substitute for recomputation
+  ---
+  duration_ms: 35.7897
+  type: 'test'
+  ...
+# Subtest: page previews text without executing it, then saves and reloads exact sources with current-time recheck
+ok 18 - page previews text without executing it, then saves and reloads exact sources with current-time recheck
+  ---
+  duration_ms: 141.2824
+  type: 'test'
+  ...
+# Subtest: historical pass is not retained as a current pass after expiry
+ok 19 - historical pass is not retained as a current pass after expiry
+  ---
+  duration_ms: 58.388
+  type: 'test'
+  ...
+# Subtest: cancel discards stale comparison and aborts work
+ok 20 - cancel discards stale comparison and aborts work
+  ---
+  duration_ms: 24.5029
+  type: 'test'
+  ...
+# Subtest: new-file discards stale comparison and aborts work
+ok 21 - new-file discards stale comparison and aborts work
+  ---
+  duration_ms: 22.4344
+  type: 'test'
+  ...
+# Subtest: pagehide discards stale comparison and aborts work
+ok 22 - pagehide discards stale comparison and aborts work
+  ---
+  duration_ms: 7.7992
+  type: 'test'
+  ...
+# Subtest: dispose discards stale comparison and aborts work
+ok 23 - dispose discards stale comparison and aborts work
+  ---
+  duration_ms: 7.1825
+  type: 'test'
+  ...
+# Subtest: wrong file count, duplicate types, changed evidence and changed saved verdict never retain old result
+ok 24 - wrong file count, duplicate types, changed evidence and changed saved verdict never retain old result
+  ---
+  duration_ms: 66.4888
+  type: 'test'
+  ...
+# Subtest: cancelled reads and saved-record verification cannot repopulate the page
+ok 25 - cancelled reads and saved-record verification cannot repopulate the page
+  ---
+  duration_ms: 45.6916
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download does not lose result or report revoked export success
+ok 26 - failed or reentrant download does not lose result or report revoked export success
+  ---
+  duration_ms: 32.5224
+  type: 'test'
+  ...
+# Subtest: all three agents bind original evidence and budget without granting authority to an AI label
+ok 27 - all three agents bind original evidence and budget without granting authority to an AI label
+  ---
+  duration_ms: 99.6148
+  type: 'test'
+  ...
+# Subtest: an exact source-file hash prevents substituting or reformatting the linked budget evidence
+ok 28 - an exact source-file hash prevents substituting or reformatting the linked budget evidence
+  ---
+  duration_ms: 32.2898
+  type: 'test'
+  ...
+# Subtest: policy context and exact origin/contract pair must match, independently of reassuring rationale
+ok 29 - policy context and exact origin/contract pair must match, independently of reassuring rationale
+  ---
+  duration_ms: 71.796
+  type: 'test'
+  ...
+# Subtest: policy and proposal time windows use exclusive expiry and bounded lifetimes
+ok 30 - policy and proposal time windows use exclusive expiry and bounded lifetimes
+  ---
+  duration_ms: 54.8559
+  type: 'test'
+  ...
+# Subtest: spend, native value and known fee limits are exact uint256 comparisons
+ok 31 - spend, native value and known fee limits are exact uint256 comparisons
+  ---
+  duration_ms: 19.4413
+  type: 'test'
+  ...
+# Subtest: a proposal and policy agreeing with each other cannot replace the evidence account or token
+ok 32 - a proposal and policy agreeing with each other cannot replace the evidence account or token
+  ---
+  duration_ms: 16.7571
+  type: 'test'
+  ...
+# Subtest: unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+ok 33 - unknown fee and insufficient budget remain reasons even when evidence bytes are correctly linked
+  ---
+  duration_ms: 7.1106
+  type: 'test'
+  ...
+# Subtest: shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+ok 34 - shared-account aggregate cost cannot be ignored by selecting one individually affordable proposal
+  ---
+  duration_ms: 19.3814
+  type: 'test'
+  ...
+# Subtest: strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+ok 35 - strict schemas reject commands, getters, unsafe origins, duplicate policies and unbounded amounts
+  ---
+  duration_ms: 7.6313
+  type: 'test'
+  ...
+# Subtest: async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+ok 36 - async checks retain captured proposal/policy and reject cancelled or malformed nested evidence
+  ---
+  duration_ms: 8.5802
+  type: 'test'
+  ...
+# Subtest: saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+ok 37 - saved quote comparison preserves exact originals and selected limits, replaying success and expiry
+  ---
+  duration_ms: 171.3636
+  type: 'test'
+  ...
+# Subtest: changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+ok 38 - changed verdict, time, limits, permissions and source must pass recomputation; invalid structure and cancellation fail closed
+  ---
+  duration_ms: 86.6524
+  type: 'test'
+  ...
+# Subtest: page previews units, compares, saves exact inputs and limits, then reopens without assuming current success
+ok 39 - page previews units, compares, saves exact inputs and limits, then reopens without assuming current success
+  ---
+  duration_ms: 167.7773
+  type: 'test'
+  ...
+# Subtest: recorded success is re-evaluated as stale at current time; stricter slippage invalidates the visible result
+ok 40 - recorded success is re-evaluated as stale at current time; stricter slippage invalidates the visible result
+  ---
+  duration_ms: 66.0058
+  type: 'test'
+  ...
+# Subtest: cancel aborts and discards a delayed comparison
+ok 41 - cancel aborts and discards a delayed comparison
+  ---
+  duration_ms: 37.8508
+  type: 'test'
+  ...
+# Subtest: new-file aborts and discards a delayed comparison
+ok 42 - new-file aborts and discards a delayed comparison
+  ---
+  duration_ms: 56.2833
+  type: 'test'
+  ...
+# Subtest: limit-change aborts and discards a delayed comparison
+ok 43 - limit-change aborts and discards a delayed comparison
+  ---
+  duration_ms: 22.8592
+  type: 'test'
+  ...
+# Subtest: pagehide aborts and discards a delayed comparison
+ok 44 - pagehide aborts and discards a delayed comparison
+  ---
+  duration_ms: 23.73
+  type: 'test'
+  ...
+# Subtest: dispose aborts and discards a delayed comparison
+ok 45 - dispose aborts and discards a delayed comparison
+  ---
+  duration_ms: 34.853
+  type: 'test'
+  ...
+# Subtest: invalid or duplicate files and forged saved verdict clear old results; cancelled file reads cannot restore them
+ok 46 - invalid or duplicate files and forged saved verdict clear old results; cancelled file reads cannot restore them
+  ---
+  duration_ms: 31.753
+  type: 'test'
+  ...
+# Subtest: blank, out-of-range, exponent and overprecise conditions never produce a saved result
+ok 47 - blank, out-of-range, exponent and overprecise conditions never produce a saved result
+  ---
+  duration_ms: 31.8876
+  type: 'test'
+  ...
+# Subtest: failed or reentrant download keeps state consistent
+ok 48 - failed or reentrant download keeps state consistent
+  ---
+  duration_ms: 61.452
+  type: 'test'
+  ...
+1..48
+# tests 48
+# suites 0
+# pass 48
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4983.4583

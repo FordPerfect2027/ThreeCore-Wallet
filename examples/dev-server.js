@@ -9,6 +9,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/proposals/quote/", { file: resolve(here, "proposal-quote.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/proposal-quote-page.js", { file: resolve(here, "proposal-quote-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["proposal-quote-file", "aerodrome-quote-model", "aerodrome-readonly", "aerodrome-pools", "public-base-rpc"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/proposals/", { file: resolve(here, "operation-proposal.html"), mime: "text/html; charset=utf-8" }],
   ["/examples/operation-proposal-page.js", { file: resolve(here, "operation-proposal-page.js"), mime: "text/javascript; charset=utf-8" }],
   ...["operation-proposal", "operation-proposal-file"].map(name =>

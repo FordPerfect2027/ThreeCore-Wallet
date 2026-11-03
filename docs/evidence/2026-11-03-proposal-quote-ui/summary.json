@@ -1,0 +1,102 @@
+{
+  "baseCommit": "731f213",
+  "records": [
+    {
+      "original": "ThreeCore-proposal-quote-review.json",
+      "file": "browser-review-0.json",
+      "bytes": 6941,
+      "sha256": "d918ed958bc83d2ee21a920968ec2c7abe0dabec2c87b1e18ad20712dff3f5b4",
+      "reasons": [],
+      "recordedChecksSatisfied": true,
+      "syntheticProposal": true,
+      "syntheticQuote": true
+    },
+    {
+      "original": "ThreeCore-proposal-quote-review (1).json",
+      "file": "browser-review-1.json",
+      "bytes": 6976,
+      "sha256": "aa3636e5e4c3f2e4ebe9e0b5ba88946b49508f760a6c9a639550613f599a3af1",
+      "reasons": [
+        "QUOTE_SLIPPAGE_LIMIT"
+      ],
+      "recordedChecksSatisfied": false,
+      "syntheticProposal": true,
+      "syntheticQuote": true
+    },
+    {
+      "original": "ThreeCore-proposal-quote-review (2).json",
+      "file": "browser-review-2.json",
+      "bytes": 7033,
+      "sha256": "30974532a24845c5933c544ac4aff084e1e79c07a35b09f73f5997b6f3178d87",
+      "reasons": [
+        "PROPOSAL_CONDITIONS_UNSATISFIED",
+        "QUOTE_STALE",
+        "QUOTE_BLOCK_STALE"
+      ],
+      "recordedChecksSatisfied": false,
+      "syntheticProposal": true,
+      "syntheticQuote": true
+    },
+    {
+      "original": "ThreeCore-proposal-quote-review (3).json",
+      "file": "browser-review-3.json",
+      "bytes": 7070,
+      "sha256": "404a434e983c937e27ff789297820350e06a110540de09cb76b9b321e397c52c",
+      "reasons": [
+        "QUOTE_PROPOSAL_MISMATCH",
+        "QUOTE_BUDGET_BLOCK_MISMATCH",
+        "QUOTE_STALE",
+        "QUOTE_BLOCK_STALE"
+      ],
+      "recordedChecksSatisfied": false,
+      "syntheticProposal": true,
+      "syntheticQuote": false
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/proposal-quote-file.js",
+      "sha256": "87ebb9cfa73df478b41e74c648a2ae5b727ca8183b5abe0ed04d689cf360f185"
+    },
+    {
+      "path": "examples/proposal-quote.html",
+      "sha256": "93cd226bf8c699367b2e4598dc9eddbb34178bbc8b500bbc220bc2cdaeee5d59"
+    },
+    {
+      "path": "examples/proposal-quote-page.js",
+      "sha256": "229cdddf16cff72be6879d9738907b45f02cb355bcd369b472856eaabe308cdb"
+    },
+    {
+      "path": "examples/operation-proposal.html",
+      "sha256": "7c7294e88dc8dced4690886591f63c994cf7971c52d85c05d21368e99d4d7728"
+    },
+    {
+      "path": "examples/dev-server.js",
+      "sha256": "ec65ce192effa997aa005c2928542aa089373a8b1fc33c7f858a5ed108fdf4cd"
+    },
+    {
+      "path": "test/proposal-quote-file.test.js",
+      "sha256": "010e8521da20e625f7bc966701f4744442954b46c255d53845f525a7b28d1470"
+    },
+    {
+      "path": "test/proposal-quote-page.test.js",
+      "sha256": "6bacd8f82b14782c298cf023a49ac5b2b98f19d29a3e5609e1c1e08a97dac29c"
+    },
+    {
+      "path": "test/helpers/proposal-quote-fixture.js",
+      "sha256": "aedd589a8d9accf581ce3d2e664bdbf87becbc649fbd2f3063da6742ec80137d"
+    },
+    {
+      "path": "integration/proposal-quote-server.test.mjs",
+      "sha256": "13257ba6cb85bcac75417582652b585a9eb75045c95ace6b775b74317ba61c77"
+    }
+  ],
+  "relatedTestsPassed": 48,
+  "actualBrowserDownloadAndReload": true,
+  "normalServerPort": 4249,
+  "sourceFilesRetained": true,
+  "currentStateVerified": false,
+  "transactionExecuted": false,
+  "productModelCalled": false,
+  "overallReadinessPercent": null
+}

@@ -1,0 +1,33 @@
+<!doctype html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>提案と見積もりの照合 — ThreeCore</title><link rel="stylesheet" href="/examples/operation-rehearsal.css">
+</head><body><main><header>
+<a href="/proposals/" target="_blank" rel="noopener">提案と使用条件の照合を別タブで開く</a>
+<p class="eyebrow">DAT · EMA · CAWELON</p><h1>提案と見積もりの照合</h1>
+<p>保存した提案とAerodromeの見積もりを、元の予算・残高のブロック、使用額、期限、受取額の条件で確認します。</p>
+<p class="notice">対象はBase MainnetのDAT・EMA・CAWELONからUSDCへの見積もりです。保存資料の照合画面で、現在の価格や残高の取得、取引の実行は行いません。</p>
+</header>
+<section aria-labelledby="quote-source-title"><h2 id="quote-source-title">1. 資料を選ぶ</h2>
+<p>「提案と使用条件の照合」で保存した記録と、Aerodromeの見積もりファイルの2個を選んでください。この画面で保存した記録1個も読み戻せます。</p>
+<label class="file-label">提案と見積もりのファイル<input id="quote-file" type="file" accept=".json,application/json" multiple></label>
+<p id="quote-status" role="status" aria-live="polite">ファイルを選んでください。</p><p id="quote-recorded" class="small"></p>
+<div id="quote-preview" hidden><h3>選んだ内容</h3><p id="quote-context" class="small"></p><p id="quote-target" class="small"></p><p id="quote-block" class="small"></p>
+<p id="quote-amount"></p><p id="quote-estimate"></p><p id="quote-source-time" class="small"></p></div>
+</section>
+<section aria-labelledby="quote-limits-title"><h2 id="quote-limits-title">2. 今回の比較条件</h2>
+<p>許容する時間と割合を入力してください。資料を読み戻した場合は、保存されていた条件が入ります。</p>
+<label>見積もりの取得から何秒まで許容するか（1〜3600秒）<input id="quote-max-age" type="number" min="1" max="3600" step="1" inputmode="numeric"></label>
+<label>元のブロック時刻から何秒まで許容するか（1〜3600秒）<input id="quote-block-age" type="number" min="1" max="3600" step="1" inputmode="numeric"></label>
+<label>プールの残高比から計算した額に対する減少の上限（0〜100%）<input id="quote-shortfall" type="number" min="0" max="100" step="0.01" inputmode="decimal"></label>
+<p class="small">この減少には、手数料・価格の変化・最小単位への丸めが含まれます。</p>
+<label>見積もりに設定された受取額の許容変動の上限（0〜99.99%）<input id="quote-slippage" type="number" min="0" max="99.99" step="0.01" inputmode="decimal"></label>
+<button id="quote-check" type="button" disabled>現在の時刻で照合する</button> <button id="quote-cancel" type="button">確認を取り消す</button>
+</section>
+<section id="quote-result" aria-labelledby="quote-result-title" hidden><h2 id="quote-result-title">3. 照合結果</h2>
+<p id="quote-outcome" class="notice"></p><p id="quote-time" class="small"></p><ul id="quote-reasons"></ul>
+<p id="quote-minimum"></p><p id="quote-shortfall-result"></p>
+<p class="small">一致しても取引実行の許可にはなりません。現在のチェーン状態、ガス代、承認額、実行時の動作、資料の発行者は確認していません。</p>
+<p>保存する記録には、公開アドレスを含む元の資料、比較条件、照合時刻と結果が入ります。</p>
+<button id="quote-save" type="button" disabled>結果と元の資料を保存</button><p id="quote-save-status" role="status" aria-live="polite"></p>
+</section></main><script type="module" src="/examples/proposal-quote-page.js"></script></body></html>

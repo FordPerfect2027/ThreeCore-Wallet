@@ -1,5 +1,7 @@
 # ThreeCore Wallet
 
+**November 3 proposal/quote screen:** [Source-preserving comparison and file recovery](docs/PROPOSAL_QUOTE_UI_2026-11-03.md) at `/proposals/quote/` adds explicit age and percentage limits, current-time comparison and historical replay. All 48 related tests passed, with four verified browser downloads covering synthetic pass/limit/expiry and a deliberate live-quote mismatch. Acquisition UI and execution integration remain unfinished.
+
 日本語の操作手順: [接続するアカウントの確認、保存と別タブでの復旧](docs/OPERATOR_ACCEPTANCE_JA.md)。
 
 **November 3, 2026 dApp quote integration:** [Canonical Aerodrome quotes bound to proposal budgets](docs/AERODROME_PROPOSAL_QUOTE_2026-11-03.md) add Pool/Router/arithmetic comparison, explicit freshness and slippage limits, and source-block binding. Actual read-only buy and sell observations succeeded for all three tokens; two tiny CAWELON outputs were correctly rejected as zero. This is a command/API foundation; the quote screen, USDC spending budgets and execution simulation remain to be integrated.

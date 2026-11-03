@@ -11,13 +11,21 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [proposal/quote screen and archive](PROPOSAL_QUOTE_UI_2026-11-03.md)
+adds offline `/proposals/quote/`, exact source/limit preservation, recorded-time
+replay and current-time recheck. Related tests passed 48/48. Four actual browser
+downloads were recomputed; pass, over-limit and expiry used synthetic inputs,
+while a fourth deliberately paired a live quote with an unrelated synthetic
+proposal and rejected its amount/block/time mismatches. Quote acquisition still
+uses the CLI; its screen, USDC budgets and isolated execution are next work.
+
 The [Aerodrome proposal quote integration](AERODROME_PROPOSAL_QUOTE_2026-11-03.md)
 now obtains canonical single-pool buy/sell quotes for all three agents, compares
 Pool and Router results with reserve/fee arithmetic, and binds saved quotes to
 current proposal conditions and the original budget block. Live reads saved
 eight valid observations plus two expected zero-output rejections. Final
 feature/proposal tests passed 38/38; the overlapping public-reader regression
-passed 167/167. Quote UI, USDC spending budgets and isolated execution remain
+passed 167/167. Quote acquisition UI, USDC spending budgets and isolated execution remain
 unfinished. Product AI authentication is awaiting the already-sent user choice;
 independent non-AI development can continue without another credential question.
 
@@ -28,7 +36,7 @@ command, a local screen and source-preserving saved-result verification.
 All 25 feature and 207 related tests passed; actual browser downloads reproduced
 success, expiry and over-limit results using explicitly synthetic data.
 This follow-up is not in the sealed `cd7f7ed` ZIP. Actual product AI generation,
-live dApp quotes and isolated execution integration are the next missing work.
+quote acquisition UI and isolated execution integration are the next missing work.
 
 The [integrated public-reading and budget delivery](INTEGRATED_PUBLIC_BUDGET_DELIVERY_2026-11-03.md)
 now pins `cd7f7ed`, passes 16,585 Node/HTTP and 1,026 synthetic browser cases,
