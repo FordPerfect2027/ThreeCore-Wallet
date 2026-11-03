@@ -1,0 +1,70 @@
+{
+  "recordedAt": "2026-11-03T08:32:07.396Z",
+  "baseCommit": "2f45900",
+  "scope": "New offline token/native fee budget development; no deployed transaction feature",
+  "verification": {
+    "firstTargeted": {
+      "tests": 27,
+      "passed": 16,
+      "failed": 11,
+      "reason": "Page disposal called a nonexistent fileReader.dispose method. Existing scope exposes cancel; invalidate already cancels the read. Fixed production cleanup, kept tests."
+    },
+    "finalTargeted": {
+      "tests": 27,
+      "passed": 27,
+      "failed": 0
+    },
+    "focusedWithExisting": {
+      "tests": 665,
+      "passed": 665,
+      "failed": 0,
+      "log": "focused-tests.tap"
+    },
+    "finalPageAfterNetworkLabel": {
+      "tests": 11,
+      "passed": 11,
+      "failed": 0,
+      "log": "page-final.tap",
+      "subsetOfFocused": true
+    }
+  },
+  "actualBrowser": {
+    "type": "Codex in-app browser",
+    "origin": "http://127.0.0.1:4241",
+    "observations": [
+      "Unknown operator fee leaves total and ETH sufficiency unconfirmed",
+      "Explicit fictional zero operator fee permits a complete arithmetic comparison",
+      "Input edit clears old result and disables its export",
+      "ETH zero is insufficient despite 650 DAT surplus after reservations",
+      "File selection previews all 16 inputs without changing current fields",
+      "Explicit restoration recalculates; re-export matches original 679 bytes"
+    ],
+    "byteLength": 679,
+    "sha256": "be10ab6ff7af92f82f2cded2589b0f19012020263ae7328e2d76af6de60dc933",
+    "roundtripEqual": true,
+    "screenshots": [
+      {
+        "name": "ThreeCore-budget-shortfall-20261103.jpg",
+        "bytes": 53146,
+        "sha256": "12fa67a8811bafb7c0a770a8e2dcb2cd1d0075bbbdeb5750223ff5bc2d2a26c9"
+      },
+      {
+        "name": "ThreeCore-budget-restored-20261103.jpg",
+        "bytes": 54157,
+        "sha256": "00512b8322c9af19cff388a40d372a5a11c28eeddf1001a7975a14603200edae"
+      }
+    ]
+  },
+  "reference": {
+    "url": "https://docs.base.org/specifications/transactions/network-fees",
+    "readDate": "2026-11-03",
+    "usedFor": "Separate L2 execution, L1 data and operator fee assumptions; no current gas price copied into implementation."
+  },
+  "noWalletRequests": true,
+  "noExternalAppRequests": true,
+  "noUserSecrets": true,
+  "githubWrites": false,
+  "fullWalletRegressionRerun": false,
+  "oldPackageUnchanged": true,
+  "overall90PercentEstablished": false
+}

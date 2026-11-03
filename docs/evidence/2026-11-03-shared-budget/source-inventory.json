@@ -1,0 +1,92 @@
+[
+  {
+    "file": "src/operation-budget.js",
+    "bytes": 6060,
+    "sha256": "0ceb8fbd0038a3de0fc2c40df6053c0146ba233ade52f24e78ecff63f2799bb7"
+  },
+  {
+    "file": "src/shared-operation-budget.js",
+    "bytes": 4041,
+    "sha256": "c2186c74a5a0c1fec48d5de16625404183a9f359d72afdc28f1b9127939bd90f"
+  },
+  {
+    "file": "examples/operation-budget.html",
+    "bytes": 6396,
+    "sha256": "6deaca201ba104ccb339c9d8f739c80a2058ce0eca2c19b156c2b7990073b8a7"
+  },
+  {
+    "file": "examples/operation-budget-page.js",
+    "bytes": 10010,
+    "sha256": "61728478acd4f0c3cee7e61e39cccc4a834e8b259042f4f930ccb374ecb671d6"
+  },
+  {
+    "file": "examples/shared-operation-budget.html",
+    "bytes": 3914,
+    "sha256": "fd58f773af28e48e02e97c74987ee0e684b45d8d409997dc68574edf7c37cfef"
+  },
+  {
+    "file": "examples/shared-operation-budget-page.js",
+    "bytes": 7987,
+    "sha256": "5c2f6cbde29aaae57b36680b6b0b8bd7da8029cd34dfaaabf5ffcab9dcad6017"
+  },
+  {
+    "file": "examples/dev-server.js",
+    "bytes": 34227,
+    "sha256": "04b60e563f7eea25fc559904c70c9d1202439aae3cf7269b0685382379f37156"
+  },
+  {
+    "file": "examples/operation-rehearsal.html",
+    "bytes": 61012,
+    "sha256": "f532a616f075baf9238d7a30de052ed9d7167341af328643372cc900c11289ec"
+  },
+  {
+    "file": "scripts/check-operation-budget.js",
+    "bytes": 1798,
+    "sha256": "c9b6f22da2dc25559614c10a7a1fee5003c772b5a64315880296dfdb4f6eb00b"
+  },
+  {
+    "file": "scripts/check-shared-operation-budget.js",
+    "bytes": 2391,
+    "sha256": "c411845366a7f5a75aa0f313bf6a14ac2707b9d5d65d965dd269f780fdffe950"
+  },
+  {
+    "file": "package.json",
+    "bytes": 4458,
+    "sha256": "01df3973d6f3fbc038448c439b7f22108214f89f58c3dbc4cdb784aa5caa60e1"
+  },
+  {
+    "file": "test/operation-budget.test.js",
+    "bytes": 7370,
+    "sha256": "ed47386161df0f25f0fa0c9983f77f4f5c590ffc5c0885b29bbd45342263bc97"
+  },
+  {
+    "file": "test/operation-budget-page.test.js",
+    "bytes": 6188,
+    "sha256": "24cf4d2fdf60f84f4fe31b3f4fe3a6e7aaa7716c36a3c212dd34f9e3ad647a88"
+  },
+  {
+    "file": "test/operation-budget-cli.test.js",
+    "bytes": 2576,
+    "sha256": "d4029ca302cc15dd93a56229e26642f3c002deca2d00fbd0c8174ad250345f27"
+  },
+  {
+    "file": "test/shared-operation-budget.test.js",
+    "bytes": 5616,
+    "sha256": "935b03f541b1441c1804c4a49b299575848b7a964526f12c7f1422522d6d304b"
+  },
+  {
+    "file": "test/shared-operation-budget-page.test.js",
+    "bytes": 6427,
+    "sha256": "61f4fd5c51a611ad2b2b917e2244975b4fe18b189515c96b96b5667f2beaf976"
+  },
+  {
+    "file": "test/shared-operation-budget-cli.test.js",
+    "bytes": 2992,
+    "sha256": "165b5fa91f87bd89c53abc01cf55363a5a474e401b349e12183de3dbc00d7b29"
+  },
+  {
+    "file": "integration/operation-budget-server.test.mjs",
+    "bytes": 2520,
+    "sha256": "98a398f7d4697b159cd45d15f49cfa1802b1e51605ed6c41880dab1f3d97c932"
+  }
+]

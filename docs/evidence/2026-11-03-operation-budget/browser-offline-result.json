@@ -1,0 +1,62 @@
+{
+  "sha256": "be10ab6ff7af92f82f2cded2589b0f19012020263ae7328e2d76af6de60dc933",
+  "byteLength": 679,
+  "networkRequests": 0,
+  "walletRequests": 0,
+  "filesModified": 0,
+  "result": {
+    "schema": "threecore.operation-budget-result.v1",
+    "input": {
+      "schema": "threecore.operation-budget.v1",
+      "simulationOnly": true,
+      "agent": "DAT",
+      "chainId": 84532,
+      "token": {
+        "decimals": 18,
+        "balanceUnits": "1000000000000000000000",
+        "reservedUnits": "100000000000000000000",
+        "reserveFloorUnits": "200000000000000000000",
+        "spendUnits": "50000000000000000000"
+      },
+      "native": {
+        "balanceWei": "10000000000000000",
+        "reservedWei": "1000000000000000",
+        "reserveFloorWei": "2000000000000000",
+        "valueWei": "0"
+      },
+      "fees": {
+        "gasLimit": "200000",
+        "maxFeePerGasWei": "100000000",
+        "l1FeeBudgetWei": "10000000000000",
+        "operatorFeeBudgetWei": "0",
+        "bufferWei": "10000000000000"
+      }
+    },
+    "simulationOnly": true,
+    "sourceVerified": false,
+    "authorizesExecution": false,
+    "onchainFeeCap": false,
+    "constraintsSatisfied": true,
+    "reasons": [],
+    "token": {
+      "required": "350000000000000000000",
+      "shortfall": "0",
+      "surplus": "650000000000000000000"
+    },
+    "executionBudgetWei": "20000000000000",
+    "knownFeeBudgetWei": "40000000000000",
+    "unknownComponents": [],
+    "plannedFeeBudgetWei": "40000000000000",
+    "plannedNativeCostWei": "40000000000000",
+    "native": {
+      "required": "3040000000000000",
+      "shortfall": "0",
+      "surplus": "6960000000000000"
+    },
+    "knownNativeMinimum": {
+      "required": "3040000000000000",
+      "shortfall": "0",
+      "surplus": "6960000000000000"
+    }
+  }
+}

@@ -8,6 +8,12 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/budget/", { file: resolve(here, "operation-budget.html"), mime: "text/html; charset=utf-8" }],
+  ["/budget/shared/", { file: resolve(here, "shared-operation-budget.html"), mime: "text/html; charset=utf-8" }],
+  ["/src/shared-operation-budget.js", { file: resolve(here, "../src/shared-operation-budget.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/shared-operation-budget-page.js", { file: resolve(here, "shared-operation-budget-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/src/operation-budget.js", { file: resolve(here, "../src/operation-budget.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-budget-page.js", { file: resolve(here, "operation-budget-page.js"), mime: "text/javascript; charset=utf-8" }],
   ["/rehearsal/", { file: resolve(here, "operation-rehearsal.html"), mime: "text/html; charset=utf-8" }],
   ...["operation-rehearsal", "operation-rehearsal-examples", "operation-rehearsal-ledger", "operation-rehearsal-workspace", "operation-rehearsal-comparison", "operation-rehearsal-overview", "operation-rehearsal-scenario", "operation-rehearsal-report-review", "operation-rehearsal-scenario-set", "operation-rehearsal-check-suite", "operation-rehearsal-records", "operation-rehearsal-session"].map(name =>
     ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),

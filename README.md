@@ -2,6 +2,8 @@
 
 日本語の操作手順: [接続するアカウントの確認、保存と別タブでの復旧](docs/OPERATOR_ACCEPTANCE_JA.md)。
 
+**November 3, 2026 continuing development:** [Token capital, ETH fee budgets and shared-account totals](docs/OPERATION_BUDGET_2026-11-03.md). New `/budget/` and `/budget/shared/` pages keep token principal separate from ETH costs and detect plans that pass individually but exhaust the same ETH balance together. Saved inputs reproduce offline; 683 related checks and actual browser file round trips passed. These are manual assumptions, not current chain observations or transaction authorization. The earlier sealed ZIP does not contain this follow-up; the overall development goal remains active.
+
 **November 3, 2026 consolidated local delivery:** [One-ZIP recovery and current completion record](docs/ACCOUNT_REFRESH_DELIVERY_2026-11-03.md). The corrected Wallet and three token projects were restored from a fresh extraction; all 62 package files matched. Existing folders are preserved and altered files are rejected before restoration.
 
 The [final package startup and browser recovery](docs/FINAL_STARTUP_RECOVERY_2026-11-03.md) also passed: the documented startup serves source-identical assets, and an actual browser file return through both fixed candidate versions preserves all nine saved histories byte-for-byte.

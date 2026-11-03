@@ -1,5 +1,16 @@
 # ThreeCore candidate review handoff — November 2, 2026
 
+## Active development beyond the sealed package — November 3
+
+The user requested continued development toward the broader 90% planning target.
+The earlier package and recovery checkpoint did not complete that goal.
+The [new budget screens](OPERATION_BUDGET_2026-11-03.md) add separate token/ETH
+calculations and shared-account fee totals, with 683 related checks and actual
+save/restore/re-export evidence. These assumptions do not verify current accounts
+or chain balances. Source-linked observation input remains the next implementation
+target. Signing, sending and secret access remain excluded; GitHub publication is
+still deferred. The previously sealed package is unchanged and excludes this work.
+
 ## Latest consolidated delivery — November 3
 
 Start with the [current delivery and completion record](ACCOUNT_REFRESH_DELIVERY_2026-11-03.md).

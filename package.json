@@ -18,6 +18,8 @@
     "test:wallet": "node --test --test-concurrency=2 test/*.test.js integration/*-server.test.mjs integration/local-navigation-help.test.mjs",
     "check": "npm test",
     "rehearsal:check": "node scripts/check-rehearsal.js",
+    "budget:check": "node scripts/check-operation-budget.js",
+    "budget:shared": "node scripts/check-shared-operation-budget.js",
     "rehearsal:compare": "node scripts/compare-rehearsal-workspaces.js",
     "demo": "node examples/dev-server.js",
     "test:demo-server": "node --test integration/demo-server.test.mjs",
