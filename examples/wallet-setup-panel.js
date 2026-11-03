@@ -225,6 +225,7 @@ export function mountWalletSetupPanel({ document, parent, readFields, applyPlan,
   controls();
   refresh();
   return Object.freeze({
+    refreshReadiness() { return refresh(); },
     invalidate() {
       if (disposed) return;
       const id = ++generation;

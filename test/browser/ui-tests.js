@@ -153,6 +153,56 @@ test("permitted-account: reviewed address can share another card's account witho
   assert(f.field('.read').disabled, 'Shared address input connected the wallet');
 });
 
+test("permitted-account: final shared-account input refreshes all three card summaries", async use => {
+  const f = use();
+  const cards = ["DAT", "EMA", "CAWELON"].map(agent => document.querySelector('[data-agent="' + agent + '"]'));
+  for (const card of cards) {
+    for (const [selector, value, event] of [[".account", B, "input"], [".chain", "8453", "change"]]) {
+      card.querySelector(selector).value = value;
+      card.querySelector(selector).dispatchEvent(new Event(event, { bubbles: true }));
+    }
+  }
+  const histories = cards.map(card => card.querySelector('.history-list').textContent);
+  for (const card of cards) {
+    card.querySelector('.account-probe-read').click();
+    await waitFor(() => !card.querySelector('.account-probe-apply').disabled);
+    card.querySelector('.account-probe-apply').click();
+    await waitFor(() => card.querySelector('.account').value === A);
+  }
+  const summary = document.querySelector('.wallet-setup-readiness').textContent;
+  assert(summary.includes('カードの設定: 3 / 3') && summary.includes('異なる公開アドレス: 1（'), 'Summary retained a previous card address');
+  assert((summary.match(/他のカードと口座を共用/g) ?? []).length === 3, 'All three cards must show the shared account');
+  assert(cards.every((card, index) => card.querySelector('.history-list').textContent === histories[index]), 'Address input changed saved history');
+  assert(cards.every(card => card.querySelector('.read').disabled), 'Address input connected a wallet');
+  assert(f.calls.every(call => ['eth_chainId', 'eth_accounts'].includes(call.method)), 'Unexpected permission or financial request');
+});
+
+test("permitted-account: changing a saved address immediately marks the backup stale", async use => {
+  const f = use();
+  for (const agent of ['EMA', 'CAWELON']) {
+    for (const [selector, value, event] of [['.account', A, 'input'], ['.chain', '8453', 'change']]) {
+      const node = document.querySelector('[data-agent="' + agent + '"] ' + selector);
+      node.value = value; node.dispatchEvent(new Event(event, { bubbles: true }));
+    }
+  }
+  f.input('.account', B);
+  const originalClick = HTMLAnchorElement.prototype.click;
+  const downloads = [];
+  HTMLAnchorElement.prototype.click = function () { downloads.push(this.download); };
+  try {
+    document.querySelector('.workspace-save').click();
+    await waitFor(() => document.querySelector('.workspace-backup-status').textContent.includes('現在の内容でダウンロードを開始済み'));
+    assert(downloads.length === 1, 'Expected exactly one synthetic download offer');
+    f.field('.account-probe-read').click();
+    await waitFor(() => !f.field('.account-probe-apply').disabled);
+    f.field('.account-probe-apply').click();
+    await waitFor(() => f.field('.account').value === A);
+    assert(document.querySelector('.workspace-backup-status').textContent.includes('前回の保存開始時から内容が変わった'), 'Backup still describes the previous address as current');
+    assert(downloads.length === 1, 'Address input automatically saved data');
+    assert(f.calls.every(call => ['eth_chainId', 'eth_accounts'].includes(call.method)), 'Unexpected wallet request');
+  } finally { HTMLAnchorElement.prototype.click = originalClick; }
+});
+
 test("wallet-navigation: task links focus existing sections without wallet requests", async use => {
   const f=use(),nav=document.querySelector(".wallet-navigation");assert(nav?.getAttribute("aria-label")==="ウォレットの各機能","Named task navigation");
   const links=[...nav.querySelectorAll("a")],ids=links.map(link=>link.getAttribute("href").slice(1));assert(links.length===13&&new Set(ids).size===13,"Distinct navigation destinations");

@@ -436,6 +436,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
   controls();
   return Object.freeze({
     stageText,
+    refreshBackupStatus() { updateBackup(); },
     protect() { securePanel.protect(); },
     invalidate() {
       if (disposed) return;

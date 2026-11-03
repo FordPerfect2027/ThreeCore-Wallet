@@ -283,6 +283,10 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         workspacePanel?.invalidate(); checkCurrent();
         checkpointPanel?.invalidateDraft(); checkCurrent();
         card.querySelector(".account").value = result.account;
+        // Retire old reads and restore previews before committing the address;
+        // then render summaries from the committed inputs without a new input event.
+        setupPanel?.refreshReadiness();
+        workspacePanel?.refreshBackupStatus();
       },
     });
     accountPanels.push(accountPanel);
