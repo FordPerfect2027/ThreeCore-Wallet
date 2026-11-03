@@ -1,0 +1,70 @@
+{
+  "sourceSha256": "f1bd4c968464e92fdbaff42e999a24fffc4cd4cf32a57a8899da65736fb96298",
+  "reviewSha256": "c5a9399de9a4a1d5a9d84df7c97104bd298d499cfc6351e404db6580c7dec343",
+  "diagnostics": {
+    "rpcUrl": "https://mainnet.base.org",
+    "headSelectedAtStart": "53463194",
+    "canonicalBlockRechecked": true,
+    "oracleFailures": [],
+    "originalCallUnchanged": true,
+    "nonceRead": false,
+    "signed": false,
+    "transactionBroadcast": false,
+    "authorizesExecution": false
+  },
+  "result": {
+    "planSha256": "f1bd4c968464e92fdbaff42e999a24fffc4cd4cf32a57a8899da65736fb96298",
+    "agent": "EMA",
+    "account": "0xcfae42798e867968c60fedf38d7ee401120072c8",
+    "evaluatedAtSeconds": 1793715738,
+    "deadlineSeconds": 1793703563,
+    "environment": "public-rpc",
+    "observation": {
+      "schema": "threecore.proposal-state-observation.v1",
+      "planSha256": "f1bd4c968464e92fdbaff42e999a24fffc4cd4cf32a57a8899da65736fb96298",
+      "environment": "public-rpc",
+      "chainId": 8453,
+      "blockNumber": "53463194",
+      "blockHash": "0x24cfbd3667d48c7420bc44194995c10826136ce1778376ce389a351ec52d2129",
+      "blockTimestampSeconds": 1793715735,
+      "observedAtSeconds": 1793715738,
+      "sourceBlockCanonical": true,
+      "tokenHasCode": true,
+      "spenderHasCode": true,
+      "tokenBalanceBaseUnits": "0",
+      "allowanceBaseUnits": "0",
+      "nativeBalanceWei": "700000000000000",
+      "baseFeePerGasWei": "5000000",
+      "priorityFeePerGasWei": "1000000",
+      "l1FeeUpperBoundWei": "10748844487",
+      "operatorFeeUpperBoundWei": "0",
+      "simulation": {
+        "status": "skipped",
+        "outputBaseUnits": null,
+        "estimatedGas": null
+      },
+      "canonicalBlockRechecked": true,
+      "readOnly": true,
+      "walletConnected": false
+    },
+    "tokenRequiredBaseUnits": "3000000",
+    "nativeRequiredWei": "3040000000000000",
+    "feeCeilingWei": "30010748844487",
+    "checksSatisfied": false,
+    "reasons": [
+      "STATE_SOURCE_BLOCKED",
+      "STATE_WINDOW_CLOSED",
+      "STATE_ALLOWANCE_SHORTFALL",
+      "STATE_TOKEN_RESERVATION_SHORTFALL",
+      "STATE_NATIVE_RESERVATION_SHORTFALL",
+      "STATE_SIMULATION_MISSING"
+    ],
+    "scope": "one proposal with source ETH and same-token reservations",
+    "observedAtPinnedBlockOnly": true,
+    "currentStateGuaranteed": false,
+    "sourceAuthorAuthenticated": false,
+    "signed": false,
+    "transactionBroadcast": false,
+    "authorizesExecution": false
+  }
+}

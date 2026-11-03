@@ -5,6 +5,7 @@ import { createPublicBatchHandler } from "./public-token-batch-http.js";
 import { createPublicUsdcHandler } from "./public-usdc-http.js";
 import { createProposalAllowanceHandler } from "./proposal-allowance-http.js";
 import { createProposalFeeHandler } from "./proposal-fee-http.js";
+import { readProposalStateReview } from "../src/proposal-state-reader.js";
 import { createAerodromeQuoteHandler } from "./aerodrome-quote-http.js";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -13,6 +14,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/proposals/state/", { file: resolve(here, "proposal-state.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/proposal-state-page.js", { file: resolve(here, "proposal-state-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["proposal-state-review", "proposal-state-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/proposals/fees/", { file: resolve(here, "proposal-fee.html"), mime: "text/html; charset=utf-8" }],
   ["/examples/proposal-fee-page.js", { file: resolve(here, "proposal-fee-page.js"), mime: "text/javascript; charset=utf-8" }],
   ...["proposal-fee-review", "proposal-simulation-plan", "proposal-fee-request", "proposal-fee-client"].map(name =>
@@ -184,6 +189,7 @@ const publicPaths = [
 
 export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch, publicBatchFetch = globalThis.fetch, quoteFetch = globalThis.fetch, usdcFetch = globalThis.fetch, allowanceFetch = globalThis.fetch, feeFetch = globalThis.fetch } = {}) {
   const serveProposalFees = createProposalFeeHandler(feeFetch);
+  const serveProposalState = createProposalFeeHandler(feeFetch, readProposalStateReview);
   const serveProposalAllowance = createProposalAllowanceHandler(allowanceFetch);
   const serveBaseStateRpc = createBaseStateRpcHandler(stateFetch);
   const servePublicBatch = createPublicBatchHandler(publicBatchFetch);
@@ -309,6 +315,9 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
     }
     if (verdict.pathname === "/rpc/proposal-fees") {
       await serveProposalFees(request, response); return;
+    }
+    if (verdict.pathname === "/rpc/proposal-state") {
+      await serveProposalState(request, response); return;
     }
     if (verdict.pathname === "/rpc/proposal-allowance") {
       await serveProposalAllowance(request, response); return;

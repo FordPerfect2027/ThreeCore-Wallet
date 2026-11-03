@@ -11,6 +11,19 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [fresh proposal-state screen and reader](PROPOSAL_CURRENT_STATE_2026-11-03.md)
+now preserve the original call, deadline and shared reserves while inspecting a
+new pinned public block. Blocked sources still produce useful diagnostics;
+simulation requires all preserved conditions. Related tests passed 183/183 and
+ordinary server checks 2/2. Actual Account 2 public diagnostics (53,463,194 and
+53,463,239) remained blocked with no swap. The browser download/reopen/reexport
+was byte-exact; current-time recheck retained source/observation and added expiry.
+Port 4260 serves the new screen. This feature is outside the older sealed ZIP.
+With the public-fee, integrated restore and new-state paths connected, the
+whole-project provisional planning estimate is now around 80%; 90% is not yet
+complete. Next prioritize persistent replay-prevention integration and policy
+authority, while product AI stays deferred and GitHub stays consolidated.
+
 The [new integrated proposal delivery](INTEGRATED_PROPOSAL_DELIVERY_2026-11-03.md)
 pins `288efc3` and includes proposals, quotes, allowance checks, simulation inputs
 and fee acquisition/review. Its new full Node/HTTP run passed 16,730 cases; the

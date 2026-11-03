@@ -2,7 +2,7 @@ import {parseSecurityJson} from '../src/security-json.js';
 import {validateProposalFeeReadRequest} from '../src/proposal-fee-request.js';
 import {readProposalFeeReview} from '../src/proposal-fee-reader.js';
 const MAX_BODY=1048576;
-export function createProposalFeeHandler(fetchImpl=globalThis.fetch){
+export function createProposalFeeHandler(fetchImpl=globalThis.fetch, read=readProposalFeeReview){
  let active=0;
  return async(request,response)=>{
   const send=(status,value)=>{if(response.destroyed||response.writableEnded)return;response.writeHead(status,{'content-type':'application/json; charset=utf-8'});response.end(JSON.stringify(value));};
@@ -16,7 +16,7 @@ export function createProposalFeeHandler(fetchImpl=globalThis.fetch){
    let size=0;const chunks=[];for await(const chunk of request){size+=chunk.length;if(size>MAX_BODY){error(413,'FEE_REQUEST_SIZE');return;}if(controller.signal.aborted)return;chunks.push(chunk);}
    clearTimeout(timer);let data;
    try{data=validateProposalFeeReadRequest(parseSecurityJson(new TextDecoder('utf-8',{fatal:true}).decode(Buffer.concat(chunks)),{bytes:MAX_BODY,depth:3,nodes:10,stringCharacters:524288}));}catch{error(400,'FEE_REQUEST');return;}
-   if(controller.signal.aborted)return;const result=await readProposalFeeReview(data.simulationPlanFile,{fetchImpl,signal:controller.signal});
+   if(controller.signal.aborted)return;const result=await read(data.simulationPlanFile,{fetchImpl,signal:controller.signal});
    if(!controller.signal.aborted)send(200,{reviewFile:result.review.text});
   }catch{error(controller.signal.aborted?504:502,'FEE_UNAVAILABLE');}
   finally{clearTimeout(timer);controller.abort();response.removeListener('close',close);active--;}

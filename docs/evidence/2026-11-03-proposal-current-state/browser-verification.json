@@ -1,0 +1,38 @@
+{
+  "browser": "Codex in-app browser",
+  "origin": "http://127.0.0.1:4260",
+  "sourceSha256": "f1bd4c968464e92fdbaff42e999a24fffc4cd4cf32a57a8899da65736fb96298",
+  "records": [
+    {
+      "filename": "ThreeCore-proposal-state-review.json",
+      "bytes": 29528,
+      "sha256": "f53ba1a4911c326520024497dafdce4a3e5e2ed410689c6b58cf0647070732d2"
+    },
+    {
+      "filename": "ThreeCore-proposal-state-review (1).json",
+      "bytes": 29528,
+      "sha256": "f53ba1a4911c326520024497dafdce4a3e5e2ed410689c6b58cf0647070732d2"
+    },
+    {
+      "filename": "ThreeCore-proposal-state-review (2).json",
+      "bytes": 29549,
+      "sha256": "32910a71bf1e37f0c36c13b795fbfc5a9fee2c703a57104c96562089416a29b3"
+    }
+  ],
+  "block": "53463239",
+  "reexportByteExact": true,
+  "originalSourceByteExact": true,
+  "localExpiryRecheckPreservedObservation": true,
+  "newRecheckReasons": [
+    "STATE_SOURCE_BLOCKED",
+    "STATE_WINDOW_CLOSED",
+    "STATE_STALE",
+    "STATE_ALLOWANCE_SHORTFALL",
+    "STATE_TOKEN_RESERVATION_SHORTFALL",
+    "STATE_NATIVE_RESERVATION_SHORTFALL",
+    "STATE_SIMULATION_MISSING"
+  ],
+  "publicSwapSimulated": false,
+  "signed": false,
+  "transactionBroadcast": false
+}

@@ -1,0 +1,340 @@
+TAP version 13
+# Subtest: CLI validates source and returns a complete replayable review without altering original file
+ok 1 - CLI validates source and returns a complete replayable review without altering original file
+  ---
+  duration_ms: 1241.6488
+  type: 'test'
+  ...
+# Subtest: CLI bounds retain inputs and distinguish unknown components from failure without publishing remote error text
+ok 2 - CLI bounds retain inputs and distinguish unknown components from failure without publishing remote error text
+  ---
+  duration_ms: 3.978
+  type: 'test'
+  ...
+# Subtest: recorded results remain distinct from current expiry and reexport preserves the complete original
+ok 3 - recorded results remain distinct from current expiry and reexport preserves the complete original
+  ---
+  duration_ms: 1212.044
+  type: 'test'
+  ...
+# Subtest: two-file import accepts either order, shows unknown totals and rejects duplicates or malformed files
+ok 4 - two-file import accepts either order, shows unknown totals and rejects duplicates or malformed files
+  ---
+  duration_ms: 980.5959
+  type: 'test'
+  ...
+# Subtest: cancel, edit, replacement, navigation and disposal suppress delayed results
+ok 5 - cancel, edit, replacement, navigation and disposal suppress delayed results
+  ---
+  duration_ms: 869.94
+  type: 'test'
+  ...
+# Subtest: invalid age, failed comparison and failed download cannot advertise an unsaved or stale success
+ok 6 - invalid age, failed comparison and failed download cannot advertise an unsaved or stale success
+  ---
+  duration_ms: 486.186
+  type: 'test'
+  ...
+# Subtest: one-plan import reads only on explicit click, preserves source and saves a replayable acquired review
+ok 7 - one-plan import reads only on explicit click, preserves source and saves a replayable acquired review
+  ---
+  duration_ms: 524.178
+  type: 'test'
+  ...
+# Subtest: failed or wrong-context acquisition retains input; cancelling or replacing rejects delayed acquired results
+ok 8 - failed or wrong-context acquisition retains input; cancelling or replacing rejects delayed acquired results
+  ---
+  duration_ms: 477.2807
+  type: 'test'
+  ...
+# Subtest: public fee path binds all buys and selling to exact source calls, canonical block, caps and saved review
+ok 9 - public fee path binds all buys and selling to exact source calls, canonical block, caps and saved review
+  ---
+  duration_ms: 1770.4815
+  type: 'test'
+  ...
+# Subtest: wrong chain/header/time, failed simulation, changed output, excessive gas and price are blocked
+ok 10 - wrong chain/header/time, failed simulation, changed output, excessive gas and price are blocked
+  ---
+  duration_ms: 732.535
+  type: 'test'
+  ...
+# Subtest: unsupported oracle functions remain unknown; malformed oracle output is never treated as zero
+ok 11 - unsupported oracle functions remain unknown; malformed oracle output is never treated as zero
+  ---
+  duration_ms: 284.7272
+  type: 'test'
+  ...
+# Subtest: expired/forged inputs and cancelled requests do not reach transport
+ok 12 - expired/forged inputs and cancelled requests do not reach transport
+  ---
+  duration_ms: 287.8404
+  type: 'test'
+  ...
+# Subtest: non-cooperating transport is interrupted by request deadline, whole deadline and caller cancellation
+ok 13 - non-cooperating transport is interrupted by request deadline, whole deadline and caller cancellation
+  ---
+  duration_ms: 219.5713
+  type: 'test'
+  ...
+# Subtest: generic public fee bounds do not claim swap execution and validate caller size, gas and block selection
+ok 14 - generic public fee bounds do not claim swap execution and validate caller size, gas and block selection
+  ---
+  duration_ms: 66.0994
+  type: 'test'
+  ...
+# Subtest: fee review retains source caps for three buys, selling and shared-agent budgets
+ok 15 - fee review retains source caps for three buys, selling and shared-agent budgets
+  ---
+  duration_ms: 1383.5525
+  type: 'test'
+  ...
+# Subtest: each component cap is enforced with exact integers, including the total policy ceiling
+ok 16 - each component cap is enforced with exact integers, including the total policy ceiling
+  ---
+  duration_ms: 727.7375
+  type: 'test'
+  ...
+# Subtest: unknown L1/operator fees stay unknown; zero is distinct and partial totals cannot pass
+ok 17 - unknown L1/operator fees stay unknown; zero is distinct and partial totals cannot pass
+  ---
+  duration_ms: 271.4358
+  type: 'test'
+  ...
+# Subtest: source hash, canonical block and observation time cannot be replaced or extended
+ok 18 - source hash, canonical block and observation time cannot be replaced or extended
+  ---
+  duration_ms: 1023.9578
+  type: 'test'
+  ...
+# Subtest: malformed, accessor, oversized, aborted and forged saved fee results are rejected
+ok 19 - malformed, accessor, oversized, aborted and forged saved fee results are rejected
+  ---
+  duration_ms: 454.7025
+  type: 'test'
+  ...
+# Subtest: offline command distinguishes complete, blocked, historical and invalid evidence
+ok 20 - offline command distinguishes complete, blocked, historical and invalid evidence
+  ---
+  duration_ms: 416.2598
+  type: 'test'
+  ...
+# Subtest: browser client and ordinary HTTP server round trip preserve exact source and offline-replayable result
+ok 21 - browser client and ordinary HTTP server round trip preserve exact source and offline-replayable result
+  ---
+  duration_ms: 834.6157
+  type: 'test'
+  ...
+# Subtest: HTTP rejects cross-origin, extra fields, malformed UTF-8 and oversized requests before public RPC
+ok 22 - HTTP rejects cross-origin, extra fields, malformed UTF-8 and oversized requests before public RPC
+  ---
+  duration_ms: 131.1328
+  type: 'test'
+  ...
+# Subtest: a valid source at the 512 KiB input boundary survives both JSON envelopes with exact bytes
+ok 23 - a valid source at the 512 KiB input boundary survives both JSON envelopes with exact bytes
+  ---
+  duration_ms: 776.649
+  type: 'test'
+  ...
+# Subtest: HTTP capacity is bounded and cancelling requests releases both public reads and capacity
+ok 24 - HTTP capacity is bounded and cancelling requests releases both public reads and capacity
+  ---
+  duration_ms: 714.1528
+  type: 'test'
+  ...
+# Subtest: client rejects another source, synthetic response, extra envelope fields, malformed and oversized replies
+ok 25 - client rejects another source, synthetic response, extra envelope fields, malformed and oversized replies
+  ---
+  duration_ms: 912.0132
+  type: 'test'
+  ...
+# Subtest: client input validation, pre-cancellation and deadlines prevent or interrupt transport
+ok 26 - client input validation, pre-cancellation and deadlines prevent or interrupt transport
+  ---
+  duration_ms: 35.9288
+  type: 'test'
+  ...
+# Subtest: CLI read/verify exit codes distinguish recorded failure from acquisition errors
+ok 27 - CLI read/verify exit codes distinguish recorded failure from acquisition errors
+  ---
+  duration_ms: 796.779
+  type: 'test'
+  ...
+# Subtest: page imports a source without RPC, explicitly acquires, shows values and saves an exact replayable result
+ok 28 - page imports a source without RPC, explicitly acquires, shows values and saves an exact replayable result
+  ---
+  duration_ms: 1085.3366
+  type: 'test'
+  ...
+# Subtest: saved archive is replayed and reexported unchanged; new-time check shows expiry and preserves original bytes
+ok 29 - saved archive is replayed and reexported unchanged; new-time check shows expiry and preserves original bytes
+  ---
+  duration_ms: 768.9672
+  type: 'test'
+  ...
+# Subtest: late acquisition after cancel, source replacement, page navigation or disposal is ignored
+ok 30 - late acquisition after cancel, source replacement, page navigation or disposal is ignored
+  ---
+  duration_ms: 535.1763
+  type: 'test'
+  ...
+# Subtest: bad imports and failed acquisition/download do not advertise success or discard source for retry
+ok 31 - bad imports and failed acquisition/download do not advertise success or discard source for retry
+  ---
+  duration_ms: 446.5401
+  type: 'test'
+  ...
+# Subtest: ordinary server and client return the exact plan, pinned fresh block and replayable result
+ok 32 - ordinary server and client return the exact plan, pinned fresh block and replayable result
+  ---
+  duration_ms: 1055.5074
+  type: 'test'
+  ...
+# Subtest: new route rejects cross origin, bad body, alternate endpoint and oversized requests before RPC
+ok 33 - new route rejects cross origin, bad body, alternate endpoint and oversized requests before RPC
+  ---
+  duration_ms: 83.22
+  type: 'test'
+  ...
+# Subtest: 512 KiB source survives both HTTP envelopes without weakening the saved source binding
+ok 34 - 512 KiB source survives both HTTP envelopes without weakening the saved source binding
+  ---
+  duration_ms: 962.9029
+  type: 'test'
+  ...
+# Subtest: client rejects wrong-source, synthetic, malformed and extra-field server responses
+ok 35 - client rejects wrong-source, synthetic, malformed and extra-field server responses
+  ---
+  duration_ms: 668.0948
+  type: 'test'
+  ...
+# Subtest: cancel and deadline interrupt a noncooperating HTTP transport; precancel never calls it
+ok 36 - cancel and deadline interrupt a noncooperating HTTP transport; precancel never calls it
+  ---
+  duration_ms: 70.2557
+  type: 'test'
+  ...
+# Subtest: new block checks preserve fixed calldata, budgets, source bytes and all three token routes
+ok 37 - new block checks preserve fixed calldata, budgets, source bytes and all three token routes
+  ---
+  duration_ms: 1719.0001
+  type: 'test'
+  ...
+# Subtest: shared USDC and ETH reservations remain required when checking a single proposal
+ok 38 - shared USDC and ETH reservations remain required when checking a single proposal
+  ---
+  duration_ms: 618.4567
+  type: 'test'
+  ...
+# Subtest: insufficiency, missing code, fee caps, oracle unknown and source reorg produce saveable blocked diagnostics before swap
+ok 39 - insufficiency, missing code, fee caps, oracle unknown and source reorg produce saveable blocked diagnostics before swap
+  ---
+  duration_ms: 1840.7177
+  type: 'test'
+  ...
+# Subtest: expired/blocked original source is readable but never repaired, extended or simulated
+ok 40 - expired/blocked original source is readable but never repaired, extended or simulated
+  ---
+  duration_ms: 314.5008
+  type: 'test'
+  ...
+# Subtest: changed output is acceptable only above the original minimum; rejection and excessive gas are saved
+ok 41 - changed output is acceptable only above the original minimum; rejection and excessive gas are saved
+  ---
+  duration_ms: 1120.1043
+  type: 'test'
+  ...
+# Subtest: chain changes, new-block reorg, malformed results and source forgery cannot create successful archives
+ok 42 - chain changes, new-block reorg, malformed results and source forgery cannot create successful archives
+  ---
+  duration_ms: 687.4718
+  type: 'test'
+  ...
+# Subtest: saved result, source hash, time, and simulation claims are replayed and checked
+ok 43 - saved result, source hash, time, and simulation claims are replayed and checked
+  ---
+  duration_ms: 574.1116
+  type: 'test'
+  ...
+# Subtest: caller cancellation and noncooperating RPC timeouts terminate without any signed operation
+ok 44 - caller cancellation and noncooperating RPC timeouts terminate without any signed operation
+  ---
+  duration_ms: 219.841
+  type: 'test'
+  ...
+# Subtest: archive string allowance is explicitly bounded without changing the RPC default or byte cap
+ok 45 - archive string allowance is explicitly bounded without changing the RPC default or byte cap
+  ---
+  duration_ms: 169.7845
+  type: 'test'
+  ...
+# Subtest: pre-aborted read cancels body without acquiring a reader
+ok 46 - pre-aborted read cancels body without acquiring a reader
+  ---
+  duration_ms: 1.6628
+  type: 'test'
+  ...
+# Subtest: abort rejects a pending read without awaiting an uncooperative cancellation
+ok 47 - abort rejects a pending read without awaiting an uncooperative cancellation
+  ---
+  duration_ms: 38.3847
+  type: 'test'
+  ...
+# Subtest: successful split UTF-8 read removes abort listener and releases stream lock
+ok 48 - successful split UTF-8 read removes abort listener and releases stream lock
+  ---
+  duration_ms: 5.5751
+  type: 'test'
+  ...
+# Subtest: declared oversize rejection is not delayed by body cancellation
+ok 49 - declared oversize rejection is not delayed by body cancellation
+  ---
+  duration_ms: 2.1289
+  type: 'test'
+  ...
+# Subtest: parsing failure also cleans up listener and lock
+ok 50 - parsing failure also cleans up listener and lock
+  ---
+  duration_ms: 1.7189
+  type: 'test'
+  ...
+# Subtest: header read rejects a pre-aborted signal without invoking fetch
+ok 51 - header read rejects a pre-aborted signal without invoking fetch
+  ---
+  duration_ms: 1.2049
+  type: 'test'
+  ...
+# Subtest: header read aborts promptly and cancels a late response without retaining the listener
+ok 52 - header read aborts promptly and cancels a late response without retaining the listener
+  ---
+  duration_ms: 6.8785
+  type: 'test'
+  ...
+# Subtest: late header rejection is consumed after the caller has aborted
+ok 53 - late header rejection is consumed after the caller has aborted
+  ---
+  duration_ms: 1.7548
+  type: 'test'
+  ...
+# Subtest: accepted headers remove their listener without cancelling the body
+ok 54 - accepted headers remove their listener without cancelling the body
+  ---
+  duration_ms: 1.8773
+  type: 'test'
+  ...
+# Subtest: redirected headers are cancelled even if the transport ignored redirect policy
+ok 55 - redirected headers are cancelled even if the transport ignored redirect policy
+  ---
+  duration_ms: 0.8968
+  type: 'test'
+  ...
+1..55
+# tests 55
+# suites 0
+# pass 55
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 22044.6104

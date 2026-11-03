@@ -25,7 +25,7 @@ export async function withBaseFeeReads(options, work) {
     timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeout);
     const read = async (method, params = []) => {
       guard();
-      if (!['eth_chainId', 'eth_blockNumber', 'eth_getBlockByNumber', 'eth_getCode', 'eth_call', 'eth_estimateGas', 'eth_maxPriorityFeePerGas'].includes(method)) fail('FEE_METHOD_BLOCKED');
+      if (!['eth_chainId', 'eth_blockNumber', 'eth_getBlockByNumber', 'eth_getCode', 'eth_getBalance', 'eth_call', 'eth_estimateGas', 'eth_maxPriorityFeePerGas'].includes(method)) fail('FEE_METHOD_BLOCKED');
       const local = new AbortController(), sub = subscribeReadAbort(controller.signal, () => local.abort()), requestId = ++id;
       let expired = false; const deadline = setTimeout(() => { expired = true; local.abort(); }, requestTimeout);
       try {
