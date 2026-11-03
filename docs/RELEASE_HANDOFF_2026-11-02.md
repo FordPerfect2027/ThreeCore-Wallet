@@ -11,6 +11,17 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [public proposal fee path](PUBLIC_PROPOSAL_FEES_2026-11-03.md) now connects
+fixed-call simulation and canonical Base fee-oracle reads to the fee screen,
+bounded local HTTP, source-preserving download and offline replay. All 55 related
+checks pass; 60 independent serialization cases confirm the size bound. Actual
+Base oracle reads are saved at block 53,461,696. Full happy-path swap reads use
+synthetic transport; real historical insufficient/expired sources are rejected
+before RPC. An eligible funded public swap remains unverified. Browser port 4256
+and both downloads were checked. Continue with near-complete integration/delivery
+work; product AI remains deferred. The planning view stays around 75% pending
+the next broader integration milestone, with the whole-project goal still active.
+
 The [isolated Aerodrome integration and fee-review screen](ISOLATED_AERODROME_AND_FEES_2026-11-03.md)
 now complete six local swaps using pinned real contracts and the three token
 artifacts, 24 rejection controls, exact state deltas and six reconciled OP fee

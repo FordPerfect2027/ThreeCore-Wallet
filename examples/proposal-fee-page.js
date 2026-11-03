@@ -4,6 +4,7 @@ import { SIMULATION_PLAN_FILE_SCHEMA, inspectProposalSimulationPlanFile } from '
 import { PROPOSAL_FEE_SCHEMA, PROPOSAL_FEE_FILE_SCHEMA, PROPOSAL_FEE_FILE_LIMIT, validateProposalFeeObservation, prepareProposalFeeReview, inspectProposalFeeReviewFile } from '../src/proposal-fee-review.js';
 import { offerWalletDownload } from './export-download.js';
 import { requireSyncExport } from '../src/export-policy.js';
+import { requestProposalFeeReview } from '../src/proposal-fee-client.js';
 const REASONS = {
   FEE_PLAN_BLOCKED: '元の提案に不足・不一致・期限超過があります。', FEE_PLAN_MISMATCH: '費用記録がこの提案の検証用データと一致しません。',
   FEE_BLOCK_MISMATCH: '対象のネットワークまたはブロックが一致しません。', FEE_OBSERVATION_BEFORE_PLAN: '費用の取得時刻が検証用データの作成より前です。',
@@ -15,11 +16,11 @@ const REASONS = {
 };
 const ENVIRONMENT = { 'isolated-evm': '独立したテスト環境', 'synthetic-test': '模擬データ', 'public-rpc': '公開情報として記録されたデータ' };
 function eth(raw) { if (raw === null) return '未確認'; const s = raw.padStart(19, '0'), fraction = s.slice(-18).replace(/0+$/, ''); return s.slice(0, -18) + (fraction ? '.' + fraction : '') + ' ETH'; }
-export function mountProposalFeePage(document, { prepare = prepareProposalFeeReview, inspectSaved = inspectProposalFeeReviewFile, download = offerWalletDownload } = {}) {
+export function mountProposalFeePage(document, { prepare = prepareProposalFeeReview, inspectSaved = inspectProposalFeeReviewFile, read = requestProposalFeeReview, download = offerWalletDownload } = {}) {
   const get = name => document.getElementById('fee-' + name), reader = createFileReadScope(), removers = [];
   let revision = 0, disposed = false, controller = null, pending = null, prepared = null, savedAge = null;
   const current = own => !disposed && revision === own;
-  function buttons(busy = false) { get('check').disabled = busy || !pending; get('save').disabled = !prepared; }
+  function buttons(busy = false) { get('read').disabled = busy || !pending; get('check').disabled = busy || !pending?.observation; get('save').disabled = !prepared; }
   function reset(clear = false) {
     revision++; reader.cancel(); controller?.abort(); controller = null; prepared = null; savedAge = null;
     if (clear) { pending = null; get('preview').hidden = true; }
@@ -51,6 +52,8 @@ export function mountProposalFeePage(document, { prepare = prepareProposalFeeRev
       let files, stored;
       if (texts.length === 1 && parseSecurityJson(texts[0])?.schema === PROPOSAL_FEE_FILE_SCHEMA) {
         stored = await inspectSaved(texts[0], { signal: c.signal }); if (!current(own)) return; files = stored.files;
+      } else if (texts.length === 1 && parseSecurityJson(texts[0])?.schema === SIMULATION_PLAN_FILE_SCHEMA) {
+        files = { simulationPlanFile: texts[0], observation: null };
       } else if (texts.length === 2) {
         let simulationPlanFile, observation;
         for (const text of texts) {
@@ -68,22 +71,30 @@ export function mountProposalFeePage(document, { prepare = prepareProposalFeeRev
       if (stored) {
         get('age').value = String(stored.recordedResult.maxObservationAgeSeconds); savedAge = age(); prepared = { text: texts[0], result: stored.recordedResult };
         show(stored.recordedResult, true); get('status').textContent = '保存時の結果を再計算し、一致を確認しました。現在の時刻でも再照合できます。';
-      } else get('status').textContent = '2つの資料を読み込みました。現在の時刻で照合してください。';
+      } else get('status').textContent = files.observation ? '2つの資料を読み込みました。現在の時刻で照合してください。' : '検証用データを読み込みました。公開情報から費用を取得できます。';
       buttons();
-    } catch { if (current(own)) { reset(true); get('status').textContent = '読み込めませんでした。費用の保存記録1個、または検証用データと費用記録の2個を選んでください。'; } }
+    } catch { if (current(own)) { reset(true); get('status').textContent = '読み込めませんでした。検証用データ・費用の保存記録1個、または検証用データと費用記録の2個を選んでください。'; } }
     finally { c.abort(); if (current(own)) controller = null; }
   });
-  listen('check', 'click', async () => {
-    if (!pending) return; reset(); const own = revision, files = pending; let maxAge;
+  async function run(acquire) {
+    if (!pending || (!acquire && !pending.observation)) return; reset(); const own = revision, source = pending; let maxAge;
     try { maxAge = age(); } catch { get('status').textContent = '時間を1〜600秒の整数で入力してください。'; return; }
-    const c = new AbortController(); controller = c; buttons(true); get('status').textContent = '元の資料と費用を再照合しています。';
+    const c = new AbortController(); controller = c; buttons(true); get('status').textContent = acquire ? '同じブロックの費用取得とシミュレーションを行っています。' : '元の資料と費用を再照合しています。';
     try {
+      let files = source;
+      if (acquire) {
+        const text = await read(source.simulationPlanFile, { signal: c.signal }); if (!current(own)) return;
+        const verified = await inspectSaved(text, { signal: c.signal }); if (!current(own)) return;
+        if (verified.files.simulationPlanFile !== source.simulationPlanFile || verified.recordedResult.environment !== 'public-rpc') throw Error('FEE_CONTEXT');
+        files = verified.files;
+      }
       const checked = await prepare(files, { maxObservationAgeSeconds: maxAge, signal: c.signal }); if (!current(own)) return;
       if (age() !== maxAge) { reset(); get('status').textContent = '比較条件が変わりました。再照合してください。'; return; }
-      prepared = checked; savedAge = maxAge; show(checked.result, false); get('status').textContent = '照合が終わりました。元の資料と結果を保存できます。';
-    } catch { if (current(own)) get('status').textContent = '照合できませんでした。元の資料を保持しています。再試行できます。'; }
+      pending = files; prepared = checked; savedAge = maxAge; show(checked.result, false); get('status').textContent = '照合が終わりました。元の資料と結果を保存できます。';
+    } catch { if (current(own)) get('status').textContent = acquire ? '取得できませんでした。元の資料の期限・条件、接続先の対応を確認してください。資料は保持しています。' : '照合できませんでした。元の資料を保持しています。再試行できます。'; }
     finally { c.abort(); if (current(own)) { controller = null; buttons(); } }
-  });
+  }
+  listen('read', 'click', () => run(true)); listen('check', 'click', () => run(false));
   listen('save', 'click', () => {
     if (!prepared) return; const own = revision;
     try {

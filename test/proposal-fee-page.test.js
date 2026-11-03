@@ -36,7 +36,7 @@ test('two-file import accepts either order, shows unknown totals and rejects dup
     ui.choose(...pair); await until(() => !ui.get('check').disabled); assert(ui.get('save').disabled); ui.get('check').click(); await until(() => !ui.get('save').disabled);
     assert.match(ui.get('total').textContent, /未確認/); assert.match(ui.get('extra').textContent, /未確認/); assert(ui.get('reasons').children.some(e => e.textContent.includes('L1')));
   }
-  for (const files of [[f.files.simulationPlanFile], [f.saved.text, f.saved.text], ['{'], [f.saved.text, f.saved.text, f.saved.text]]) {
+  for (const files of [[f.saved.text, f.saved.text], ['{'], [f.saved.text, f.saved.text, f.saved.text]]) {
     ui.choose(...files); await until(() => ui.get('status').textContent.startsWith('読み込めません')); assert(ui.get('save').disabled); assert(ui.get('check').disabled);
   }
   ui.page.dispose();
@@ -56,4 +56,32 @@ test('invalid age, failed comparison and failed download cannot advertise an uns
   ui.choose(f.saved.text); await until(() => !ui.get('save').disabled); ui.get('save').click(); assert.match(ui.get('save-status').textContent, /保持/);
   for (const age of ['', '0', '601', '1.5']) { ui.get('age').value = age; ui.get('check').click(); assert(ui.get('save').disabled); assert.match(ui.get('status').textContent, /1〜600/); }
   ui.get('age').value = '60'; ui.get('check').click(); await until(() => !ui.get('check').disabled); assert(ui.get('save').disabled); assert.match(ui.get('status').textContent, /再試行/); ui.page.dispose();
+});
+
+test('one-plan import reads only on explicit click, preserves source and saves a replayable acquired review', async () => {
+  const f = await fixture(); let calls = 0;
+  const publicRecord = await prepareProposalFeeReview({ ...f.files, observation: { ...f.files.observation, environment: 'public-rpc' } });
+  const ui = setup({ read: async (text, options) => { calls++; assert.equal(text, f.files.simulationPlanFile); assert.equal(options.signal.aborted, false); return publicRecord.text; } });
+  ui.choose(f.files.simulationPlanFile); await until(() => !ui.get('read').disabled);
+  assert.equal(calls, 0); assert(ui.get('check').disabled); assert(ui.get('save').disabled);
+  ui.get('read').click(); await until(() => !ui.get('save').disabled); assert.equal(calls, 1);
+  ui.get('save').click(); const saved = await inspectProposalFeeReviewFile(ui.downloads[0].text);
+  assert.equal(saved.files.simulationPlanFile, f.files.simulationPlanFile); assert.equal(saved.recordedResult.environment, 'public-rpc');
+  assert.equal(saved.recordedResult.authorizesExecution, false); ui.page.dispose();
+});
+
+test('failed or wrong-context acquisition retains input; cancelling or replacing rejects delayed acquired results', async () => {
+  const f = await fixture();
+  for (const reply of [null, f.saved.text]) {
+    const ui = setup({ read: async () => { if (reply === null) throw Error(); return reply; } });
+    ui.choose(f.files.simulationPlanFile); await until(() => !ui.get('read').disabled); ui.get('read').click();
+    await until(() => !ui.get('read').disabled); assert.match(ui.get('status').textContent, /資料は保持/); assert(ui.get('save').disabled); assert(ui.get('check').disabled); ui.page.dispose();
+  }
+  for (const action of ['cancel', 'replacement', 'edit', 'pagehide', 'dispose']) {
+    let release, signal; const ui = setup({ read: (_text, options) => { signal = options.signal; return new Promise(resolve => { release = resolve; }); } });
+    ui.choose(f.files.simulationPlanFile); await until(() => !ui.get('read').disabled); ui.get('read').click(); await until(() => !!release);
+    if (action === 'cancel') ui.get('cancel').click(); if (action === 'replacement') ui.choose('{'); if (action === 'edit') ui.get('age').dispatchEvent(new Event('input'));
+    if (action === 'pagehide') ui.view.dispatchEvent(new Event('pagehide')); if (action === 'dispose') ui.page.dispose();
+    assert.equal(signal.aborted, true); release(f.saved.text); await tick(); assert(ui.get('save').disabled); assert(ui.get('result').hidden); ui.page.dispose();
+  }
 });

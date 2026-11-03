@@ -3,6 +3,14 @@ import assert from "node:assert/strict";
 import { getEventListeners } from "node:events";
 import { fetchStateRpcResponse, readStateRpcJson, STATE_RPC_RESPONSE_LIMIT } from "../src/state-rpc-http.js";
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
+
+test('archive string allowance is explicitly bounded without changing the RPC default or byte cap', async () => {
+  const value = { archive: 'x'.repeat(300001) };
+  await assert.rejects(readStateRpcJson(Response.json(value)), { code: 'STATE_RPC_UNAVAILABLE' });
+  assert.deepEqual(await readStateRpcJson(Response.json(value), { stringCharacters: 524288 }), value);
+  for (const stringCharacters of [0, -1, 1.5, '524288', STATE_RPC_RESPONSE_LIMIT + 1]) await assert.rejects(readStateRpcJson(Response.json(value), { stringCharacters }));
+  await assert.rejects(readStateRpcJson(Response.json({ archive: 'x'.repeat(STATE_RPC_RESPONSE_LIMIT) }), { stringCharacters: STATE_RPC_RESPONSE_LIMIT }));
+});
 test("pre-aborted read cancels body without acquiring a reader",async()=>{
   const aborter=new AbortController();aborter.abort();let cancelled=false,acquired=false;
   await assert.rejects(readStateRpcJson({body:{cancel(){cancelled=true;return Promise.resolve();},getReader(){acquired=true;}}},{signal:aborter.signal}),

@@ -1,0 +1,430 @@
+{
+  "encoder": "viem",
+  "version": "2.56.6",
+  "packageSha256": "2dbbc89a7375b8beb0b967a4bfed79636d6c6da3fac87673bc5b7e05dc11d5f5",
+  "syntheticTransaction": true,
+  "signed": false,
+  "broadcast": false,
+  "cases": [
+    {
+      "gas": "21000",
+      "price": "0",
+      "nonce": "0",
+      "independentlySerializedBytes": 363,
+      "upperBoundBytes": 371
+    },
+    {
+      "gas": "21000",
+      "price": "0",
+      "nonce": "127",
+      "independentlySerializedBytes": 363,
+      "upperBoundBytes": 371
+    },
+    {
+      "gas": "21000",
+      "price": "0",
+      "nonce": "128",
+      "independentlySerializedBytes": 364,
+      "upperBoundBytes": 371
+    },
+    {
+      "gas": "21000",
+      "price": "0",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 371,
+      "upperBoundBytes": 371
+    },
+    {
+      "gas": "21000",
+      "price": "127",
+      "nonce": "0",
+      "independentlySerializedBytes": 363,
+      "upperBoundBytes": 371
+    },
+    {
+      "gas": "21000",
+      "price": "127",
+      "nonce": "127",
+      "independentlySerializedBytes": 363,
+      "upperBoundBytes": 371
+    },
+    {
+      "gas": "21000",
+      "price": "127",
+      "nonce": "128",
+      "independentlySerializedBytes": 364,
+      "upperBoundBytes": 371
+    },
+    {
+      "gas": "21000",
+      "price": "127",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 371,
+      "upperBoundBytes": 371
+    },
+    {
+      "gas": "21000",
+      "price": "128",
+      "nonce": "0",
+      "independentlySerializedBytes": 365,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "21000",
+      "price": "128",
+      "nonce": "127",
+      "independentlySerializedBytes": 365,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "21000",
+      "price": "128",
+      "nonce": "128",
+      "independentlySerializedBytes": 366,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "21000",
+      "price": "128",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 373,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "21000",
+      "price": "1000000000",
+      "nonce": "0",
+      "independentlySerializedBytes": 371,
+      "upperBoundBytes": 379
+    },
+    {
+      "gas": "21000",
+      "price": "1000000000",
+      "nonce": "127",
+      "independentlySerializedBytes": 371,
+      "upperBoundBytes": 379
+    },
+    {
+      "gas": "21000",
+      "price": "1000000000",
+      "nonce": "128",
+      "independentlySerializedBytes": 372,
+      "upperBoundBytes": 379
+    },
+    {
+      "gas": "21000",
+      "price": "1000000000",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 379,
+      "upperBoundBytes": 379
+    },
+    {
+      "gas": "21000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "0",
+      "independentlySerializedBytes": 427,
+      "upperBoundBytes": 435
+    },
+    {
+      "gas": "21000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "127",
+      "independentlySerializedBytes": 427,
+      "upperBoundBytes": 435
+    },
+    {
+      "gas": "21000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "128",
+      "independentlySerializedBytes": 428,
+      "upperBoundBytes": 435
+    },
+    {
+      "gas": "21000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 435,
+      "upperBoundBytes": 435
+    },
+    {
+      "gas": "500000",
+      "price": "0",
+      "nonce": "0",
+      "independentlySerializedBytes": 364,
+      "upperBoundBytes": 372
+    },
+    {
+      "gas": "500000",
+      "price": "0",
+      "nonce": "127",
+      "independentlySerializedBytes": 364,
+      "upperBoundBytes": 372
+    },
+    {
+      "gas": "500000",
+      "price": "0",
+      "nonce": "128",
+      "independentlySerializedBytes": 365,
+      "upperBoundBytes": 372
+    },
+    {
+      "gas": "500000",
+      "price": "0",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 372,
+      "upperBoundBytes": 372
+    },
+    {
+      "gas": "500000",
+      "price": "127",
+      "nonce": "0",
+      "independentlySerializedBytes": 364,
+      "upperBoundBytes": 372
+    },
+    {
+      "gas": "500000",
+      "price": "127",
+      "nonce": "127",
+      "independentlySerializedBytes": 364,
+      "upperBoundBytes": 372
+    },
+    {
+      "gas": "500000",
+      "price": "127",
+      "nonce": "128",
+      "independentlySerializedBytes": 365,
+      "upperBoundBytes": 372
+    },
+    {
+      "gas": "500000",
+      "price": "127",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 372,
+      "upperBoundBytes": 372
+    },
+    {
+      "gas": "500000",
+      "price": "128",
+      "nonce": "0",
+      "independentlySerializedBytes": 366,
+      "upperBoundBytes": 374
+    },
+    {
+      "gas": "500000",
+      "price": "128",
+      "nonce": "127",
+      "independentlySerializedBytes": 366,
+      "upperBoundBytes": 374
+    },
+    {
+      "gas": "500000",
+      "price": "128",
+      "nonce": "128",
+      "independentlySerializedBytes": 367,
+      "upperBoundBytes": 374
+    },
+    {
+      "gas": "500000",
+      "price": "128",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 374,
+      "upperBoundBytes": 374
+    },
+    {
+      "gas": "500000",
+      "price": "1000000000",
+      "nonce": "0",
+      "independentlySerializedBytes": 372,
+      "upperBoundBytes": 380
+    },
+    {
+      "gas": "500000",
+      "price": "1000000000",
+      "nonce": "127",
+      "independentlySerializedBytes": 372,
+      "upperBoundBytes": 380
+    },
+    {
+      "gas": "500000",
+      "price": "1000000000",
+      "nonce": "128",
+      "independentlySerializedBytes": 373,
+      "upperBoundBytes": 380
+    },
+    {
+      "gas": "500000",
+      "price": "1000000000",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 380,
+      "upperBoundBytes": 380
+    },
+    {
+      "gas": "500000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "0",
+      "independentlySerializedBytes": 428,
+      "upperBoundBytes": 436
+    },
+    {
+      "gas": "500000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "127",
+      "independentlySerializedBytes": 428,
+      "upperBoundBytes": 436
+    },
+    {
+      "gas": "500000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "128",
+      "independentlySerializedBytes": 429,
+      "upperBoundBytes": 436
+    },
+    {
+      "gas": "500000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 436,
+      "upperBoundBytes": 436
+    },
+    {
+      "gas": "30000000",
+      "price": "0",
+      "nonce": "0",
+      "independentlySerializedBytes": 365,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "30000000",
+      "price": "0",
+      "nonce": "127",
+      "independentlySerializedBytes": 365,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "30000000",
+      "price": "0",
+      "nonce": "128",
+      "independentlySerializedBytes": 366,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "30000000",
+      "price": "0",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 373,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "30000000",
+      "price": "127",
+      "nonce": "0",
+      "independentlySerializedBytes": 365,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "30000000",
+      "price": "127",
+      "nonce": "127",
+      "independentlySerializedBytes": 365,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "30000000",
+      "price": "127",
+      "nonce": "128",
+      "independentlySerializedBytes": 366,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "30000000",
+      "price": "127",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 373,
+      "upperBoundBytes": 373
+    },
+    {
+      "gas": "30000000",
+      "price": "128",
+      "nonce": "0",
+      "independentlySerializedBytes": 367,
+      "upperBoundBytes": 375
+    },
+    {
+      "gas": "30000000",
+      "price": "128",
+      "nonce": "127",
+      "independentlySerializedBytes": 367,
+      "upperBoundBytes": 375
+    },
+    {
+      "gas": "30000000",
+      "price": "128",
+      "nonce": "128",
+      "independentlySerializedBytes": 368,
+      "upperBoundBytes": 375
+    },
+    {
+      "gas": "30000000",
+      "price": "128",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 375,
+      "upperBoundBytes": 375
+    },
+    {
+      "gas": "30000000",
+      "price": "1000000000",
+      "nonce": "0",
+      "independentlySerializedBytes": 373,
+      "upperBoundBytes": 381
+    },
+    {
+      "gas": "30000000",
+      "price": "1000000000",
+      "nonce": "127",
+      "independentlySerializedBytes": 373,
+      "upperBoundBytes": 381
+    },
+    {
+      "gas": "30000000",
+      "price": "1000000000",
+      "nonce": "128",
+      "independentlySerializedBytes": 374,
+      "upperBoundBytes": 381
+    },
+    {
+      "gas": "30000000",
+      "price": "1000000000",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 381,
+      "upperBoundBytes": 381
+    },
+    {
+      "gas": "30000000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "0",
+      "independentlySerializedBytes": 429,
+      "upperBoundBytes": 437
+    },
+    {
+      "gas": "30000000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "127",
+      "independentlySerializedBytes": 429,
+      "upperBoundBytes": 437
+    },
+    {
+      "gas": "30000000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "128",
+      "independentlySerializedBytes": 430,
+      "upperBoundBytes": 437
+    },
+    {
+      "gas": "30000000",
+      "price": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      "nonce": "18446744073709551615",
+      "independentlySerializedBytes": 437,
+      "upperBoundBytes": 437
+    }
+  ]
+}

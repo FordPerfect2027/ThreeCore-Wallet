@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-11-03T13:32:22.978Z",
+  "bounds": {
+    "schema": "threecore.base-fee-bounds.v1",
+    "chainId": 8453,
+    "rpcUrl": "https://mainnet.base.org",
+    "oracleAddress": "0x420000000000000000000000000000000000000f",
+    "blockNumber": "53461696",
+    "blockHash": "0xb7cefe22950d4f5514eb5c742714b4531b520e82cc582383b1daf42d2a409d9e",
+    "blockTimestampSeconds": 1793712739,
+    "observedAtSeconds": 1793712742,
+    "baseFeePerGasWei": "5695624",
+    "unsignedTransactionBytes": 400,
+    "gasLimit": "500000",
+    "l1FeeUpperBoundWei": "7968017949",
+    "operatorFeeUpperBoundWei": "0",
+    "failures": [],
+    "canonicalBlockRechecked": true,
+    "transactionSimulated": false,
+    "boundMethod": "GasPriceOracle practical upper-bound estimate at this block",
+    "readOnly": true,
+    "walletConnected": false
+  },
+  "oracleCallGas": "48934",
+  "oracleEstimateSupportsCanonicalHash": true,
+  "oracleViewCallOnly": true,
+  "threeCoreSwapSimulatedPublicly": false,
+  "walletUsed": false,
+  "signed": false,
+  "transactionBroadcast": false,
+  "blocked": [
+    {
+      "source": "../2026-11-03-proposal-simulation-plan/account2-blocked-plan.json",
+      "sha256": "f1bd4c968464e92fdbaff42e999a24fffc4cd4cf32a57a8899da65736fb96298",
+      "result": "FEE_PLAN_BLOCKED",
+      "publicRpcRequests": 0
+    },
+    {
+      "source": "../2026-11-03-isolated-aerodrome/DAT-buy-plan.json",
+      "sha256": "e5ffd10366617b809ea8ff1aa36d5ec395464517da00912d983ce82d1e7fb42e",
+      "result": "FEE_PLAN_BLOCKED",
+      "publicRpcRequests": 0
+    }
+  ]
+}

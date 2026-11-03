@@ -54,7 +54,7 @@ export async function readStateRpcJson(response, options = {}) {
     });
   }
   const decoder = new TextDecoder("utf-8", { fatal: true });
-  let size = 0, text = "", chunks = 0;
+  let size = 0, text = "", chunks = 0, maxStringCharacters = 300_000;
   let stopReading;
   const interrupted = new Promise((_, reject) => { stopReading = reject; });
   interrupted.catch(() => {});
@@ -77,10 +77,14 @@ export async function readStateRpcJson(response, options = {}) {
     }
     text += decoder.decode();
     return parseSecurityJson(text, { bytes: STATE_RPC_RESPONSE_LIMIT, depth: 24,
-      nodes: 50_000, stringCharacters: 300_000 });
+      nodes: 50_000, stringCharacters: maxStringCharacters });
   }
   try {
-    const { signal } = captureOptionalDataFields(options, ["signal"]);
+    const { signal, stringCharacters } = captureOptionalDataFields(options, ["signal", "stringCharacters"]);
+    if (stringCharacters !== undefined) {
+      if (!Number.isSafeInteger(stringCharacters) || stringCharacters < 1 || stringCharacters > STATE_RPC_RESPONSE_LIMIT) throw new StateRpcError();
+      maxStringCharacters = stringCharacters;
+    }
     cancellation = subscribeReadAbort(signal, abort);
     if (cancellation.aborted()) throw new StateRpcError();
     const declared = response.headers.get("content-length");

@@ -1,0 +1,21 @@
+{
+  "schema": "threecore.base-fee-bounds.v1",
+  "chainId": 8453,
+  "rpcUrl": "https://mainnet.base.org",
+  "oracleAddress": "0x420000000000000000000000000000000000000f",
+  "blockNumber": "53461696",
+  "blockHash": "0xb7cefe22950d4f5514eb5c742714b4531b520e82cc582383b1daf42d2a409d9e",
+  "blockTimestampSeconds": 1793712739,
+  "observedAtSeconds": 1793712742,
+  "baseFeePerGasWei": "5695624",
+  "unsignedTransactionBytes": 400,
+  "gasLimit": "500000",
+  "l1FeeUpperBoundWei": "7968017949",
+  "operatorFeeUpperBoundWei": "0",
+  "failures": [],
+  "canonicalBlockRechecked": true,
+  "transactionSimulated": false,
+  "boundMethod": "GasPriceOracle practical upper-bound estimate at this block",
+  "readOnly": true,
+  "walletConnected": false
+}
