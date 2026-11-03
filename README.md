@@ -1,5 +1,31 @@
 # ThreeCore Wallet
 
+## Current development checkpoint — November 3, 2026
+
+**ThreeCore whole-project progress: approximately 80% (provisional planning estimate).**
+The scope includes Token, Wallet, AI and dApp. The completed paths now connect
+public token/USDC reads, shared budgets, manual proposals, Aerodrome quotes,
+existing allowances, fee checks, fresh-state inspection and recoverable files.
+
+[English progress report with direct evidence links](docs/DEVELOPMENT_UPDATE_80_2026-11-03_EN.md) ·
+[全体の進捗・次の開発順](docs/WHOLE_PROJECT_SCOPE_2026-11-03.md) ·
+[Latest state-check evidence](docs/PROPOSAL_CURRENT_STATE_2026-11-03.md) ·
+[Consolidated development PR](https://github.com/FordPerfect2027/ThreeCore-Wallet/pull/4)
+
+The integrated baseline passed 16,730 Node/HTTP tests and 1,026 synthetic browser
+cases. The subsequent fresh-state feature passed 183 related checks and two
+ordinary-server checks, with actual public reads and byte-exact browser exports.
+These runs cover different snapshots and overlap; their counts are not added.
+
+Policy-author authentication, persistent replay prevention, final public contract
+configuration and product transaction execution remain open. Product AI connection
+is deferred. Existing user Wallets are used only for permitted read-only work.
+
+## Earlier checkpoint notes
+
+The dated notes below preserve the status of their original snapshots. The
+current scope and remaining work are maintained in the progress report above.
+
 **November 3 public quote screen:** [Aerodrome quote acquisition and download](docs/AERODROME_QUOTE_UI_2026-11-03.md) at `/quotes/` supports both directions, exact decimal input, optional fixed blocks and cancellation. The same-origin reader permits only fixed public Base reads. Related tests passed 56/56; browser downloads are compared against the earlier fixed-block CLI observations. USDC proposal budgets and isolated execution remain unfinished.
 
 **November 3 proposal/quote screen:** [Source-preserving comparison and file recovery](docs/PROPOSAL_QUOTE_UI_2026-11-03.md) at `/proposals/quote/` adds explicit age and percentage limits, current-time comparison and historical replay. All 48 related tests passed, with four verified browser downloads covering synthetic pass/limit/expiry and a deliberate live-quote mismatch. Acquisition was subsequently added in the public screen above; execution integration remains unfinished.
