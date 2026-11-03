@@ -1,0 +1,80 @@
+{
+  "baseCommit": "01848e6",
+  "sources": [
+    {
+      "path": "scripts/prepare-local-aerodrome.js",
+      "bytes": 3633,
+      "sha256": "b738b4feab588adc664a1f14833ae37b55a2a74579f7b631b53b41760bf10edd"
+    },
+    {
+      "path": "scripts/compile-local-aerodrome.js",
+      "bytes": 1944,
+      "sha256": "ac92fc24f7384e3f6084aa0a9034eacb132c31932d1d1c1d4340e4a7b6ac189b"
+    },
+    {
+      "path": "scripts/run-local-aerodrome-simulation.js",
+      "bytes": 2773,
+      "sha256": "e20ea12b25992db1d4bd25efd745bef83cccd2ebc35a311c01c10e77887f468d"
+    },
+    {
+      "path": "scripts/verify-local-aerodrome-evidence.js",
+      "bytes": 5964,
+      "sha256": "3f4e30a45e9a6487ae8ced36bdd0ac8d28d19f2240f2c62d5c6f1ccf72c0c426"
+    },
+    {
+      "path": "integration/local-aerodrome-simulation.mjs",
+      "bytes": 13673,
+      "sha256": "fd9b1a0da4b8a9c72be9c66734d6d2546ceff9e06b9e23fb0b3cc3928a5dff34"
+    },
+    {
+      "path": "integration/fixtures/ThreeCoreTestUSDC.sol",
+      "bytes": 426,
+      "sha256": "dc682045148fe5c281c21ef0eb85680c37dd77a7e96712d5409d404e42940d73"
+    },
+    {
+      "path": "integration/fixtures/local-proposal-source.js",
+      "bytes": 5366,
+      "sha256": "d7f62da722565d4833c27c0c2a7479a2101f30c1ad284b10e267f3bcd9d68314"
+    },
+    {
+      "path": "src/proposal-fee-review.js",
+      "bytes": 7571,
+      "sha256": "e987372cc1cba5faf0eb35b69449200f8d19bd03b3aaabc122242aa3af45a182"
+    },
+    {
+      "path": "scripts/proposal-fee-review.js",
+      "bytes": 2585,
+      "sha256": "bdef49097e69b16cc4a68ed5397aa510f9748063726594cd01a1e4ac109da5a1"
+    },
+    {
+      "path": "examples/proposal-fee-page.js",
+      "bytes": 9864,
+      "sha256": "05e984298e18d8e553c025dc8a2973ac88891ffa7b0ba2eba6d8c85008da10d2"
+    },
+    {
+      "path": "examples/proposal-fee.html",
+      "bytes": 2346,
+      "sha256": "2a70d950dc0397ebcfbe99cf175489ef29f44afd8b1100025be15b78fe172c25"
+    },
+    {
+      "path": "examples/dev-server.js",
+      "bytes": 39517,
+      "sha256": "32335ed960b46c8136b3ddc685c61394fefba26a1260bb1fd4875b7934f549c3"
+    },
+    {
+      "path": "examples/proposal-allowance.html",
+      "bytes": 2858,
+      "sha256": "b041b5476809a84aa69484aeb22d67d0289219ecdd6117e4a20549115b768dca"
+    },
+    {
+      "path": "test/proposal-fee-review.test.js",
+      "bytes": 8489,
+      "sha256": "7ca8f42a11ae4270a68abc1a311e157ffee878b8d081e6a1bbb3ddca0e2129e7"
+    },
+    {
+      "path": "test/proposal-fee-page.test.js",
+      "bytes": 6360,
+      "sha256": "968e2a9207b32de7c425c7629d96f09eee235ffa275b7d80eae852a7646d2fba"
+    }
+  ]
+}

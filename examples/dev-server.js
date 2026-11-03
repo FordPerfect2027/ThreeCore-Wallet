@@ -12,6 +12,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/proposals/fees/", { file: resolve(here, "proposal-fee.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/proposal-fee-page.js", { file: resolve(here, "proposal-fee-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["proposal-fee-review", "proposal-simulation-plan"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/proposals/allowance/", { file: resolve(here, "proposal-allowance.html"), mime: "text/html; charset=utf-8" }],
   ["/examples/proposal-allowance-page.js", { file: resolve(here, "proposal-allowance-page.js"), mime: "text/javascript; charset=utf-8" }],
   ...["proposal-allowance", "proposal-allowance-client"].map(name =>

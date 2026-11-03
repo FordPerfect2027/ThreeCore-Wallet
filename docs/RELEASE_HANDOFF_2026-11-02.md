@@ -11,6 +11,17 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [isolated Aerodrome integration and fee-review screen](ISOLATED_AERODROME_AND_FEES_2026-11-03.md)
+now complete six local swaps using pinned real contracts and the three token
+artifacts, 24 rejection controls, exact state deltas and six reconciled OP fee
+breakdowns. Network attempts were zero. The fee model/command/screen bind exact
+source bytes and original ceilings, retain unknown L1/operator estimates and
+recheck expiry. All 39 related checks pass; actual browser downloads replay.
+This supersedes the earlier "simulation is next" status below. Public fee
+acquisition and current-state simulation are next; product AI remains deferred.
+The whole-project provisional view is now around 75% following this integration,
+not a count of tests or a statement of public launch readiness.
+
 The [fixed simulation-input builder](PROPOSAL_SIMULATION_PLAN_2026-11-03.md)
 now derives unsigned Classic Router call data from the entire validated source
 chain and the earliest expiry. Its offline command and saved replay passed all
