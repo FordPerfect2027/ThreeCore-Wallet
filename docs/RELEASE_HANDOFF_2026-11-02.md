@@ -6,9 +6,11 @@ The user requested continued development toward the broader 90% planning target.
 The earlier package and recovery checkpoint did not complete that goal.
 The [new budget screens](OPERATION_BUDGET_2026-11-03.md) add separate token/ETH
 calculations and shared-account fee totals, with 683 related checks and actual
-save/restore/re-export evidence. These assumptions do not verify current accounts
-or chain balances. Source-linked observation input remains the next implementation
-target. Signing, sending and secret access remain excluded; GitHub publication is
+save/restore/re-export evidence. The later [saved-observation comparison](OPERATION_BUDGET_EVIDENCE_2026-11-03.md)
+adds original-record linkage, 920 related checks and actual historical-file
+match/mismatch evidence. Neither feature verifies current chain balances.
+Same-block three-token acquisition is the next implementation target.
+Signing, sending and secret access remain excluded; GitHub publication is
 still deferred. The previously sealed package is unchanged and excludes this work.
 
 ## Latest consolidated delivery — November 3

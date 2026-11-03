@@ -20,6 +20,7 @@
     "rehearsal:check": "node scripts/check-rehearsal.js",
     "budget:check": "node scripts/check-operation-budget.js",
     "budget:shared": "node scripts/check-shared-operation-budget.js",
+    "budget:evidence": "node scripts/check-operation-budget-evidence.js",
     "rehearsal:compare": "node scripts/compare-rehearsal-workspaces.js",
     "demo": "node examples/dev-server.js",
     "test:demo-server": "node --test integration/demo-server.test.mjs",

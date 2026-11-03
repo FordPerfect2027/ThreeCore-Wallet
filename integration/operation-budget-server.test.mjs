@@ -15,7 +15,9 @@ test("budget page serves its complete local graph and denies network/write/file 
     assert.match(html, /href="\/budget\/shared\/"/);
     const shared = await fetch(origin + "/budget/shared/"); assert.equal(shared.status, 200);
     const sharedHtml = await shared.text(); assert.match(sharedHtml, /connect-src 'none'/); assert.match(sharedHtml, /同じ口座/);
-    const pending = ["/examples/operation-budget-page.js", "/examples/shared-operation-budget-page.js"], visited = new Set();
+    const evidence = await fetch(origin + "/budget/evidence/"); assert.equal(evidence.status, 200);
+    const evidenceHtml = await evidence.text(); assert.match(evidenceHtml, /connect-src 'none'/); assert.match(evidenceHtml, /保存された過去の記録/);
+    const pending = ["/examples/operation-budget-page.js", "/examples/shared-operation-budget-page.js", "/examples/operation-budget-evidence-page.js"], visited = new Set();
     while (pending.length) {
       const route = pending.pop(); if (visited.has(route)) continue; visited.add(route); assert.ok(visited.size <= 40);
       const response = await fetch(origin + route); assert.equal(response.status, 200, route);
@@ -26,6 +28,7 @@ test("budget page serves its complete local graph and denies network/write/file 
       }
     }
     assert.ok(visited.has("/src/operation-budget.js")); assert.ok(visited.has("/src/shared-operation-budget.js")); assert.ok(visited.has("/src/security-file.js"));
+    assert.ok(visited.has("/src/operation-budget-evidence.js")); assert.ok(visited.has("/src/token-identity-report.js"));
     for (const path of ["/budget/.env", "/budget/record.json", "/scripts/check-operation-budget.js"])
       assert.equal((await fetch(origin + path)).status, 404);
     assert.equal((await fetch(origin + "/budget/", { method: "POST", body: "{}" })).status, 404);

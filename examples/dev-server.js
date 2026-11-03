@@ -9,6 +9,9 @@ import { dirname, resolve } from "node:path";
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
   ["/budget/", { file: resolve(here, "operation-budget.html"), mime: "text/html; charset=utf-8" }],
+  ["/budget/evidence/", { file: resolve(here, "operation-budget-evidence.html"), mime: "text/html; charset=utf-8" }],
+  ["/src/operation-budget-evidence.js", { file: resolve(here, "../src/operation-budget-evidence.js"), mime: "text/javascript; charset=utf-8" }],
+  ["/examples/operation-budget-evidence-page.js", { file: resolve(here, "operation-budget-evidence-page.js"), mime: "text/javascript; charset=utf-8" }],
   ["/budget/shared/", { file: resolve(here, "shared-operation-budget.html"), mime: "text/html; charset=utf-8" }],
   ["/src/shared-operation-budget.js", { file: resolve(here, "../src/shared-operation-budget.js"), mime: "text/javascript; charset=utf-8" }],
   ["/examples/shared-operation-budget-page.js", { file: resolve(here, "shared-operation-budget-page.js"), mime: "text/javascript; charset=utf-8" }],

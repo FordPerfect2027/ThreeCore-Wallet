@@ -1,0 +1,23 @@
+<!doctype html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>予算と保存済み残高の照合 — ThreeCore</title><link rel="stylesheet" href="/examples/operation-rehearsal.css">
+</head><body><main><header>
+<a href="/budget/" target="_blank" rel="noopener">予算入力を別タブで開く</a>
+<p class="eyebrow">DAT · EMA · CAWELON</p><h1>予算と保存済み残高の照合</h1>
+<p>予算に入力したトークン・ETH残高を、Walletで保存したコントラクト情報・残高記録と照合します。共通口座の予算では、口座・ネットワーク・ブロックがそろっていることも確認します。</p>
+<p class="notice">保存された過去の記録の照合です。現在の残高、記録の発行者、記録内容が実際のチェーンと一致することは確認しません。Walletへの接続・署名・送金は行いません。</p></header>
+<section aria-labelledby="evidence-source-title"><h2 id="evidence-source-title">1. 元になるファイルを選ぶ</h2>
+<p>予算入力1個と、対応する各トークンの「コントラクト情報・残高」保存ファイル1〜3個をまとめて選択してください。保存済みの照合ファイル1個を読み戻すこともできます。</p>
+<p class="small">通常のWalletバックアップや送受信履歴ではなく、各トークンのコントラクト情報・残高確認から保存したJSONを使います。元のファイルは書き換えません。</p>
+<label class="file-label">予算と残高の保存ファイル<input id="evidence-file" type="file" accept=".json,application/json" multiple></label>
+<p id="evidence-status" role="status" aria-live="polite">ファイルを選んでください。</p>
+<button id="evidence-check" type="button" disabled>読み込んだファイルを照合</button> <button id="evidence-cancel" type="button">確認を取り消す</button>
+</section>
+<section id="evidence-result" aria-labelledby="evidence-result-title" hidden><h2 id="evidence-result-title">2. 保存記録との一致</h2>
+<p id="evidence-outcome" class="notice"></p><p id="evidence-budget"></p><p id="evidence-reasons"></p>
+<div class="table-wrap"><table><caption>参照した記録と照合結果</caption><thead><tr><th>トークン</th><th>記録の口座</th><th>ネットワーク・ブロック</th><th>結果</th></tr></thead><tbody id="evidence-rows"></tbody></table></div>
+<p class="small">整合した場合も現在の支払能力や取引実行の許可にはなりません。元のファイルとSHA-256を保持して、あとから同じ照合を再現できます。チェックサムは発行者の証明ではありません。</p>
+<p>保存する照合ファイルには、参照した公開アドレスと元の残高記録が含まれます。</p>
+<button id="evidence-save" type="button" disabled>元の記録と予算をまとめて保存</button><p id="evidence-save-status" role="status" aria-live="polite"></p>
+</section></main><script type="module" src="/examples/operation-budget-evidence-page.js"></script></body></html>

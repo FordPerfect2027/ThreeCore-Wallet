@@ -4,6 +4,8 @@
 
 **November 3, 2026 continuing development:** [Token capital, ETH fee budgets and shared-account totals](docs/OPERATION_BUDGET_2026-11-03.md). New `/budget/` and `/budget/shared/` pages keep token principal separate from ETH costs and detect plans that pass individually but exhaust the same ETH balance together. Saved inputs reproduce offline; 683 related checks and actual browser file round trips passed. These are manual assumptions, not current chain observations or transaction authorization. The earlier sealed ZIP does not contain this follow-up; the overall development goal remains active.
 
+The subsequent [saved-observation budget check](docs/OPERATION_BUDGET_EVIDENCE_2026-11-03.md) binds those inputs to original Wallet observation files. It rejects mixed accounts, networks, blocks and balances while keeping source consistency separate from budget sufficiency. Actual saved Account 2 files reproduced both a two-token match and a three-token block mismatch; all 920 related checks passed. No new chain read or wallet transaction is implied.
+
 **November 3, 2026 consolidated local delivery:** [One-ZIP recovery and current completion record](docs/ACCOUNT_REFRESH_DELIVERY_2026-11-03.md). The corrected Wallet and three token projects were restored from a fresh extraction; all 62 package files matched. Existing folders are preserved and altered files are rejected before restoration.
 
 The [final package startup and browser recovery](docs/FINAL_STARTUP_RECOVERY_2026-11-03.md) also passed: the documented startup serves source-identical assets, and an actual browser file return through both fixed candidate versions preserves all nine saved histories byte-for-byte.
